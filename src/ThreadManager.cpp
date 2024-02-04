@@ -289,7 +289,7 @@ void ThreadManager::executeOneJob(Job* job)
     }
 }
 
-bool ThreadManager::doneWithJobs()
+bool ThreadManager::doneWithJobs() const
 {
     return queueJobs.jobs.empty() &&
            queueJobsIO.jobs.empty() &&

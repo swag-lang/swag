@@ -701,7 +701,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     dep->node             = importNode;
     dep->name             = importNode->token.text;
     dep->location         = tokenLocation.text;
-    dep->version          = tokenVersion.text.empty() ? "?.?.?" : tokenVersion.text;
+    dep->version          = tokenVersion.text.empty() ? Utf8{"?.?.?"} : tokenVersion.text;
     dep->tokenLocation    = tokenLocation;
     dep->tokenVersion     = tokenVersion;
     moduleDependencies.push_front(dep);

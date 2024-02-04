@@ -349,7 +349,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 #endif
 }
 
-void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line)
+void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line)
 {
     const bool forDbg = options.curIp != nullptr;
 

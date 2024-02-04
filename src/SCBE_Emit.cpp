@@ -4,7 +4,7 @@
 #include "Math.h"
 #include "SCBE.h"
 
-void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits)
+void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {

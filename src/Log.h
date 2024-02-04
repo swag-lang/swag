@@ -60,7 +60,7 @@ struct Log
     void lock();
     void unlock();
 
-    Utf8 removeFormat(const char* message);
+    static Utf8 removeFormat(const char* message);
     Utf8 format(const char* message);
 
     void printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot);

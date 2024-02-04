@@ -857,7 +857,7 @@ bool TypeInfoFuncAttr::isCVariadic()
     return false;
 }
 
-TypeInfo* TypeInfoFuncAttr::concreteReturnType()
+TypeInfo* TypeInfoFuncAttr::concreteReturnType() const
 {
     if (!returnType)
         return g_TypeMgr->typeInfoVoid;
@@ -914,7 +914,7 @@ int TypeInfoFuncAttr::numParamsRegisters()
     return total;
 }
 
-int TypeInfoFuncAttr::numReturnRegisters()
+int TypeInfoFuncAttr::numReturnRegisters() const
 {
     return returnType ? returnType->numRegisters() : 0;
 }
@@ -924,7 +924,7 @@ int TypeInfoFuncAttr::numTotalRegisters()
     return numReturnRegisters() + numParamsRegisters();
 }
 
-const CallConv& TypeInfoFuncAttr::getCallConv()
+const CallConv& TypeInfoFuncAttr::getCallConv() const
 {
     return g_CallConv[callConv];
 }
@@ -1175,7 +1175,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
     return true;
 }
 
-bool TypeInfoStruct::canRawCopy()
+bool TypeInfoStruct::canRawCopy() const
 {
     return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct;
 }

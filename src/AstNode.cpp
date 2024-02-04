@@ -549,7 +549,7 @@ void AstNode::inheritOrFlag(uint64_t flag)
         flags |= child->flags & flag;
 }
 
-void AstNode::inheritOrFlag(AstNode* op, uint64_t flag)
+void AstNode::inheritOrFlag(const AstNode* op, uint64_t flag)
 {
     if (!op)
         return;
@@ -636,7 +636,7 @@ void AstNode::inheritTokenLocation(const AstNode* node)
     sourceFile          = node->sourceFile;
 }
 
-void AstNode::inheritOwners(AstNode* op)
+void AstNode::inheritOwners(const AstNode* op)
 {
     if (!op)
         return;

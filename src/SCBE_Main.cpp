@@ -7,7 +7,7 @@
 #include "SCBE.h"
 #include "TypeManager.h"
 
-bool SCBE::emitOS(const BuildParameters& buildParameters)
+bool SCBE::emitOS(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;

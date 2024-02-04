@@ -19,7 +19,7 @@ bool Parser::testIsSingleIdentifier(AstNode* node)
     return true;
 }
 
-bool Parser::testIsValidUserName(AstNode* node)
+bool Parser::testIsValidUserName(const AstNode* node) const
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;

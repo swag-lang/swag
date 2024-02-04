@@ -96,7 +96,7 @@ void Diagnostic::printMarginLineNo(int lineNo) const
     g_Log.print(" ");
 }
 
-void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
+void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo) const
 {
     if (!printLineNo)
     {

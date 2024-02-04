@@ -77,14 +77,14 @@ struct Parser
     void setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file);
     bool generateAst();
 
-    bool saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine);
-    bool constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated, AstNode** result = nullptr);
+    static bool saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine);
+    bool        constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated, AstNode** result = nullptr);
 
-    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
-    bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
-    bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr);
+    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
+    bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
+    bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr) const;
     bool invalidTokenError(InvalidTokenError kind, AstNode* parent = nullptr);
-    bool invalidIdentifierError(TokenParse& tokenParse, const char* msg = nullptr);
+    bool invalidIdentifierError(TokenParse& tokenParse, const char* msg = nullptr) const;
 
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
@@ -93,10 +93,10 @@ struct Parser
     bool eatTokenError(TokenId id, const Utf8& err);
     bool eatSemiCol(const char* msg);
 
-    bool        testIsSingleIdentifier(AstNode* node);
+    static bool        testIsSingleIdentifier(AstNode* node);
     bool        checkIsSingleIdentifier(AstNode* node, const char* msg);
     bool        checkIsIdentifier(TokenParse& token, const char* msg);
-    bool        testIsValidUserName(AstNode* node);
+    bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
     bool        doCheckPublicInternalPrivate(Token& tokenAttr);
@@ -149,57 +149,57 @@ struct Parser
                              AstNodeKind       kind,
                              AstNode**         result,
                              bool              forLet = false);
-    bool doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
-    bool doTopLevelIdentifier(AstNode* parent, AstNode** result);
-    bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
-    bool doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
-    bool doDiscard(AstNode* parent, AstNode** result);
-    bool doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard = false);
-    bool doThrow(AstNode* parent, AstNode** result);
-    bool doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal);
-    bool doNamespace(AstNode* parent, AstNode** result);
-    bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
-    bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName = nullptr);
-    bool doEnumContent(AstNode* parent, AstNode** result);
-    bool doSubEnumValue(AstNode* parent, AstNode** result);
-    bool doEnumValue(AstNode* parent, AstNode** result);
-    bool doEnum(AstNode* parent, AstNode** result);
-    bool doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result);
-    bool doStruct(AstNode* parent, AstNode** result);
-    bool doStructContent(AstStruct* structNode, SyntaxStructType structType);
-    bool doImpl(AstNode* parent, AstNode** result);
-    bool doAssignmentExpression(AstNode* parent, AstNode** result);
-    bool doExpressionListTuple(AstNode* parent, AstNode** result);
-    bool doExpressionListArray(AstNode* parent, AstNode** result);
-    bool doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doLiteral(AstNode* parent, AstNode** result);
-    bool doIntrinsicProp(AstNode* parent, AstNode** result);
-    bool doIndex(AstNode* parent, AstNode** result);
-    bool doKeepRef(AstNode* parent, AstNode** result);
-    bool doMoveRef(AstNode* parent, AstNode** result);
-    bool doDeRef(AstNode* parent, AstNode** result);
-    bool doOperatorPrecedence(AstNode** result);
-    bool doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node = nullptr);
-    bool doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result);
-    bool doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doGenericDeclParameters(AstNode* parent, AstNode** result);
-    bool doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
-    bool doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
-    bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
-    bool doFuncDeclParameters(AstNode*  parent,
-                              AstNode** result,
-                              bool      acceptMissingType = false,
-                              bool*     hasMissingType    = nullptr,
-                              bool      isMethod          = false,
-                              bool      isConstMethod     = false,
-                              bool      isItfMethod       = false);
+    bool        doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool        doTopLevelIdentifier(AstNode* parent, AstNode** result);
+    bool        doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
+    bool        doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
+    bool        doDiscard(AstNode* parent, AstNode** result);
+    bool        doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard = false);
+    bool        doThrow(AstNode* parent, AstNode** result);
+    bool        doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal);
+    bool        doNamespace(AstNode* parent, AstNode** result);
+    bool        doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
+    bool        doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName = nullptr);
+    bool        doEnumContent(AstNode* parent, AstNode** result);
+    bool        doSubEnumValue(AstNode* parent, AstNode** result);
+    bool        doEnumValue(AstNode* parent, AstNode** result);
+    bool        doEnum(AstNode* parent, AstNode** result);
+    bool        doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result);
+    bool        doStruct(AstNode* parent, AstNode** result);
+    bool        doStructContent(AstStruct* structNode, SyntaxStructType structType);
+    bool        doImpl(AstNode* parent, AstNode** result);
+    bool        doAssignmentExpression(AstNode* parent, AstNode** result);
+    bool        doExpressionListTuple(AstNode* parent, AstNode** result);
+    bool        doExpressionListArray(AstNode* parent, AstNode** result);
+    bool        doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doLiteral(AstNode* parent, AstNode** result);
+    bool        doIntrinsicProp(AstNode* parent, AstNode** result);
+    bool        doIndex(AstNode* parent, AstNode** result);
+    bool        doKeepRef(AstNode* parent, AstNode** result);
+    bool        doMoveRef(AstNode* parent, AstNode** result);
+    bool        doDeRef(AstNode* parent, AstNode** result);
+    static bool doOperatorPrecedence(AstNode** result);
+    bool        doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node = nullptr);
+    bool        doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result);
+    bool        doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doGenericDeclParameters(AstNode* parent, AstNode** result);
+    bool        doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
+    bool        doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
+    bool        doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
+    bool        doFuncDeclParameters(AstNode* parent,
+                              AstNode**       result,
+                              bool            acceptMissingType = false,
+                              bool*           hasMissingType    = nullptr,
+                              bool            isMethod          = false,
+                              bool            isConstMethod     = false,
+                              bool            isItfMethod       = false);
     bool doAttrDecl(AstNode* parent, AstNode** result);
     bool doAttrUse(AstNode* parent, AstNode** result, bool single = false);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result);

@@ -12,7 +12,7 @@ Utf8::~Utf8()
     freeBuffer();
 }
 
-void Utf8::freeBuffer()
+void Utf8::freeBuffer() const
 {
     Allocator::free(buffer, allocated);
 #ifdef SWAG_STATS
@@ -90,7 +90,7 @@ Utf8::Utf8(const Utf8& from)
     count = len;
 }
 
-Utf8::Utf8(const Utf8& from, uint32_t capcity)
+Utf8::Utf8(const Utf8& from, uint32_t capacity)
 {
     const uint32_t len = from.count;
     if (!len)
@@ -105,7 +105,7 @@ Utf8::Utf8(const Utf8& from, uint32_t capcity)
         return;
     }
 
-    reserve(max(len + 1, capcity));
+    reserve(max(len + 1, capacity));
     memcpy(buffer, from.buffer, len + 1);
     count = len;
 }
@@ -258,13 +258,6 @@ Utf8 operator+(const Utf8& str1, const char* str2)
     return result;
 }
 
-Utf8 operator+(const char* str1, const Utf8& str2)
-{
-    Utf8 result{str1};
-    result.append(str2);
-    return result;
-}
-
 void Utf8::operator+=(char c)
 {
     append(c);
@@ -293,7 +286,7 @@ void Utf8::operator+=(uint32_t c)
         append(c);
 }
 
-Utf8::operator const char*()
+Utf8::operator const char*() const
 {
     return c_str();
 }
@@ -372,7 +365,7 @@ void Utf8::makeLower()
         buffer[i]   = (char) tolower(buffer[i]);
 }
 
-bool Utf8::compareNoCase(const Utf8& txt1)
+bool Utf8::compareNoCase(const Utf8& txt1) const
 {
     if (count != txt1.count)
         return false;
@@ -473,7 +466,7 @@ bool Utf8::toChar32(uint32_t& ch)
     return true;
 }
 
-void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars)
+void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars) const
 {
     uni.clear();
 
@@ -490,7 +483,7 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars)
     }
 }
 
-void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
+void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars) const
 {
     uni.clear();
 

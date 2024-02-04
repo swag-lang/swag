@@ -27,7 +27,7 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
     return (uint32_t) steps.size();
 }
 
-Utf8 ByteCodeStack::getStepName(AstNode* node, ByteCodeInstruction* ip)
+Utf8 ByteCodeStack::getStepName(const AstNode* node, const ByteCodeInstruction* ip)
 {
     const auto fct = node->ownerInline && node->ownerInline->ownerFct == ip->node->ownerFct ? node->ownerInline->func : node->ownerFct;
     if (fct && fct->hasExtByteCode() && fct->extByteCode()->bc)

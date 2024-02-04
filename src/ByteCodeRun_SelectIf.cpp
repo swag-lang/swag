@@ -7,7 +7,7 @@
 #include "Module.h"
 #include "TypeInfo.h"
 
-bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
+bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
     const auto paramIdx   = ip->c.u32;
     const auto callParams = context->callerContext->validIfParameters;
@@ -62,7 +62,7 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
     return false;
 }
 
-void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     const uint32_t paramIdx   = ip->c.u32;
     const auto     callParams = context->callerContext->validIfParameters;

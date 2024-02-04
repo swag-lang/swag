@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SCBE.h"
 
-bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me)
+bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const
 {
     if (dataSegment->buckets.empty())
         return true;

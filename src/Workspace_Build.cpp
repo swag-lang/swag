@@ -177,7 +177,7 @@ Utf8 Workspace::getTargetFullName(const Utf8& buildCfg, const BackendTarget& tar
     return buildCfg + "-" + Backend::getOsName(target) + "-" + Backend::getArchName(target);
 }
 
-Path Workspace::getTargetPath(const Utf8& buildCfg, const BackendTarget& target)
+Path Workspace::getTargetPath(const Utf8& buildCfg, const BackendTarget& target) const
 {
     Path p = workspacePath;
     p.append(SWAG_OUTPUT_FOLDER);
@@ -226,7 +226,7 @@ void Workspace::setupTarget()
         g_Log.messageVerbose(Fmt("cache path is [[%s]]", cachePath.string().c_str()));
 }
 
-Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
+Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 {
     AstNode* prevNodeLocal = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
     SWAG_ASSERT(prevNodeLocal);

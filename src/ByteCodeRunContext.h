@@ -25,10 +25,10 @@ struct ByteCodeRunContext
 {
     ~ByteCodeRunContext();
 
-    void setup(SourceFile* sf, AstNode* node, ByteCode* nodebc);
-    void releaseStack();
-    void stackOverflow();
-    int  getRegCount(int cur);
+    void        setup(SourceFile* sf, AstNode* node, ByteCode* nodebc);
+    void        releaseStack();
+    static void stackOverflow();
+    int         getRegCount(int cur);
 
     template<typename T>
     inline T pop()

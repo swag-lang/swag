@@ -236,7 +236,7 @@ namespace BackendLinker
         }
     }
 
-    bool link(const BuildParameters& buildParameters, Module* module, Vector<Path>& objectFiles)
+    bool link(const BuildParameters& buildParameters, Module* module, const Vector<Path>& objectFiles)
     {
         Vector<Utf8> linkArguments;
         getArguments(buildParameters, module, linkArguments, false);

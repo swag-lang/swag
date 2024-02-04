@@ -74,7 +74,7 @@ static bool canCollectNode(AstNode* node)
     return true;
 }
 
-Utf8 GenDoc::getDocComment(AstNode* node)
+Utf8 GenDoc::getDocComment(const AstNode* node)
 {
     if (node->hasExtMisc() && !node->extMisc()->docComment.empty())
         return node->extMisc()->docComment;

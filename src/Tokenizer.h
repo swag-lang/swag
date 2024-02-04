@@ -61,12 +61,12 @@ struct SourceLocation
     uint32_t line   = 0;
     uint32_t column = 0;
 
-    bool operator==(const SourceLocation& other)
+    bool operator==(const SourceLocation& other) const
     {
         return line == other.line && column == other.column;
     }
 
-    bool operator!=(const SourceLocation& other)
+    bool operator!=(const SourceLocation& other) const
     {
         return line != other.line || column != other.column;
     }
@@ -98,12 +98,12 @@ struct TokenParse : public Token
 
 struct Tokenizer
 {
-    bool error(TokenParse& token, const Utf8& msg, const Utf8& hint = "");
-    void trimMultilineString(Utf8& text);
-    void appendTokenName(TokenParse& token);
+    bool        error(TokenParse& token, const Utf8& msg, const Utf8& hint = "") const;
+    static void trimMultilineString(Utf8& text);
+    void        appendTokenName(TokenParse& token) const;
 
     uint32_t readChar();
-    uint32_t peekChar(unsigned& offset);
+    uint32_t peekChar(unsigned& offset) const;
     void     processChar(uint32_t c, unsigned offset);
     void     eatChar(uint32_t c, unsigned offset);
 

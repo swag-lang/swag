@@ -101,11 +101,11 @@ struct TypeInfo
     bool isPointerTo(NativeTypeKind pointerKind);
     bool isPointerTo(TypeInfoKind pointerKind);
     bool isPointerTo(TypeInfo* finalType);
-    bool isPointerNull();
+    bool isPointerNull() const;
     bool isPointerVoid();
     bool isPointerConstVoid();
     bool isPointerToTypeInfo();
-    bool isInitializerList();
+    bool isInitializerList() const;
     bool isArrayOfStruct();
     bool isArrayOfEnum();
     bool isMethod();
@@ -116,55 +116,55 @@ struct TypeInfo
     TypeInfo*       getConcreteAlias();
 
     // clang-format off
-    bool isSlice()                          { return kind == TypeInfoKind::Slice; }
-    bool isInterface()                      { return kind == TypeInfoKind::Interface; }
-    bool isStruct()                         { return kind == TypeInfoKind::Struct; }
-    bool isPointer()                        { return kind == TypeInfoKind::Pointer; }
-    bool isNative()                         { return kind == TypeInfoKind::Native; }
-    bool isArray()                          { return kind == TypeInfoKind::Array; }
-    bool isEnum()                           { return kind == TypeInfoKind::Enum; }
-    bool isAlias()                          { return kind == TypeInfoKind::Alias; }
-    bool isFuncAttr()                       { return kind == TypeInfoKind::FuncAttr; }
-    bool isListArray()                      { return kind == TypeInfoKind::TypeListArray; }
-    bool isListTuple()                      { return kind == TypeInfoKind::TypeListTuple; }
-    bool isVariadic()                       { return kind == TypeInfoKind::Variadic; }
-    bool isTypedVariadic()                  { return kind == TypeInfoKind::TypedVariadic; }
-    bool isCVariadic()                      { return kind == TypeInfoKind::CVariadic; }
-    bool isCode()                           { return kind == TypeInfoKind::Code; }
-    bool isLambdaClosure()                  { return kind == TypeInfoKind::LambdaClosure; }
-    bool isKindGeneric()                    { return kind == TypeInfoKind::Generic; }
-    bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
-    bool isAny()                            { return isNative(NativeTypeKind::Any); }
-    bool isString()                         { return isNative(NativeTypeKind::String); }
-    bool isBool()                           { return isNative(NativeTypeKind::Bool); }
-    bool isRune()                           { return isNative(NativeTypeKind::Rune); }
-    bool isVoid()                           { return isNative(NativeTypeKind::Void); }
-    bool isUndefined()                      { return isNative(NativeTypeKind::Undefined); }
-    bool isCString()                        { return (kind == TypeInfoKind::Pointer) && (flags & TYPEINFO_C_STRING); }
-    bool isLambda()                         { return (kind == TypeInfoKind::LambdaClosure) && !isClosure(); }
-    bool isClosure()                        { return (flags & TYPEINFO_CLOSURE); }
-    bool isNativeInteger()                  { return (flags & TYPEINFO_INTEGER); }
-    bool isNativeIntegerUnsignedOrRune()    { return ((flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED)) || isRune(); }
-    bool isNativeIntegerUnsigned()          { return (flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED); }
-    bool isNativeIntegerSigned()            { return (flags & TYPEINFO_INTEGER) && !(flags & TYPEINFO_UNSIGNED); }
-    bool isNativeIntegerOrRune()            { return (flags & TYPEINFO_INTEGER) || isRune(); }
-    bool isNativeFloat()                    { return (flags & TYPEINFO_FLOAT); }
-    bool isConst()                          { return (flags & TYPEINFO_CONST); }
-    bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
-    bool isGeneric()                        { return (flags & TYPEINFO_GENERIC); }
-    bool isFromGeneric()                    { return (flags & TYPEINFO_FROM_GENERIC); }
-    bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
-    bool isPointerRef()                     { return (flags & TYPEINFO_POINTER_REF); }
-    bool isPointerMoveRef()                 { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_POINTER_MOVE_REF); }
-    bool isConstPointerRef()                { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }
-    bool isAutoConstPointerRef()            { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST) && (flags & TYPEINFO_POINTER_AUTO_REF); }
-    bool isPointerArithmetic()              { return (flags & TYPEINFO_POINTER_ARITHMETIC); }
-    bool isSelf()                           { return (flags & TYPEINFO_SELF); }
-    bool isUntypedInteger()                 { return (flags & TYPEINFO_UNTYPED_INTEGER); }
-    bool isUntypedFloat()                   { return (flags & TYPEINFO_UNTYPED_FLOAT); }
-    bool isUntypedBinHex()                  { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
-    bool isConstAlias()                      { return (flags & TYPEINFO_CONST_ALIAS); }
-    bool isCharacter()                      { return (flags & TYPEINFO_CHARACTER); }
+    bool isSlice() const                       { return kind == TypeInfoKind::Slice; }
+    bool isInterface() const                   { return kind == TypeInfoKind::Interface; }
+    bool isStruct() const                      { return kind == TypeInfoKind::Struct; }
+    bool isPointer() const                     { return kind == TypeInfoKind::Pointer; }
+    bool isNative() const                      { return kind == TypeInfoKind::Native; }
+    bool isArray() const                       { return kind == TypeInfoKind::Array; }
+    bool isEnum() const                        { return kind == TypeInfoKind::Enum; }
+    bool isAlias() const                       { return kind == TypeInfoKind::Alias; }
+    bool isFuncAttr() const                    { return kind == TypeInfoKind::FuncAttr; }
+    bool isListArray() const                   { return kind == TypeInfoKind::TypeListArray; }
+    bool isListTuple() const                   { return kind == TypeInfoKind::TypeListTuple; }
+    bool isVariadic() const                    { return kind == TypeInfoKind::Variadic; }
+    bool isTypedVariadic() const               { return kind == TypeInfoKind::TypedVariadic; }
+    bool isCVariadic() const                   { return kind == TypeInfoKind::CVariadic; }
+    bool isCode() const                        { return kind == TypeInfoKind::Code; }
+    bool isLambdaClosure() const               { return kind == TypeInfoKind::LambdaClosure; }
+    bool isKindGeneric() const                 { return kind == TypeInfoKind::Generic; }
+    bool isNative(NativeTypeKind native) const { return (kind == TypeInfoKind::Native) && (nativeType == native); }
+    bool isAny() const                         { return isNative(NativeTypeKind::Any); }
+    bool isString() const                      { return isNative(NativeTypeKind::String); }
+    bool isBool() const                        { return isNative(NativeTypeKind::Bool); }
+    bool isRune() const                        { return isNative(NativeTypeKind::Rune); }
+    bool isVoid() const                        { return isNative(NativeTypeKind::Void); }
+    bool isUndefined() const                   { return isNative(NativeTypeKind::Undefined); }
+    bool isCString() const                     { return (kind == TypeInfoKind::Pointer) && (flags & TYPEINFO_C_STRING); }
+    bool isLambda() const                      { return (kind == TypeInfoKind::LambdaClosure) && !isClosure(); }
+    bool isClosure() const                     { return (flags & TYPEINFO_CLOSURE); }
+    bool isNativeInteger() const               { return (flags & TYPEINFO_INTEGER); }
+    bool isNativeIntegerUnsignedOrRune() const { return ((flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED)) || isRune(); }
+    bool isNativeIntegerUnsigned() const       { return (flags & TYPEINFO_INTEGER) && (flags & TYPEINFO_UNSIGNED); }
+    bool isNativeIntegerSigned() const         { return (flags & TYPEINFO_INTEGER) && !(flags & TYPEINFO_UNSIGNED); }
+    bool isNativeIntegerOrRune() const         { return (flags & TYPEINFO_INTEGER) || isRune(); }
+    bool isNativeFloat() const                 { return (flags & TYPEINFO_FLOAT); }
+    bool isConst() const                       { return (flags & TYPEINFO_CONST); }
+    bool isStrict() const                      { return (flags & TYPEINFO_STRICT); }
+    bool isGeneric() const                     { return (flags & TYPEINFO_GENERIC); }
+    bool isFromGeneric() const                 { return (flags & TYPEINFO_FROM_GENERIC); }
+    bool isTuple() const                       { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
+    bool isPointerRef() const                  { return (flags & TYPEINFO_POINTER_REF); }
+    bool isPointerMoveRef() const              { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_POINTER_MOVE_REF); }
+    bool isConstPointerRef() const             { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST); }
+    bool isAutoConstPointerRef() const         { return (flags & TYPEINFO_POINTER_REF) && (flags & TYPEINFO_CONST) && (flags & TYPEINFO_POINTER_AUTO_REF); }
+    bool isPointerArithmetic() const           { return (flags & TYPEINFO_POINTER_ARITHMETIC); }
+    bool isSelf() const                        { return (flags & TYPEINFO_SELF); }
+    bool isUntypedInteger() const              { return (flags & TYPEINFO_UNTYPED_INTEGER); }
+    bool isUntypedFloat() const                { return (flags & TYPEINFO_UNTYPED_FLOAT); }
+    bool isUntypedBinHex() const               { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
+    bool isConstAlias() const                  { return (flags & TYPEINFO_CONST_ALIAS); }
+    bool isCharacter() const                   { return (flags & TYPEINFO_CHARACTER); }
     // clang-format on
 
     virtual bool      isSame(TypeInfo* from, uint64_t castFlags);
@@ -186,7 +186,7 @@ struct TypeInfo
     void        removeGenericFlag();
     void        clearName();
     void        forceComputeName();
-    void        getScopedName(Utf8& name);
+    void        getScopedName(Utf8& name) const;
     Utf8        getName();
     Utf8        getTypeName(bool forceNoScope);
     const Utf8& computeWhateverName(uint32_t nameType);
@@ -212,9 +212,9 @@ struct TypeInfo
 
 struct TypeInfoParam
 {
-    int            numRegisters();
-    bool           isSame(TypeInfoParam* to, uint64_t castFlags);
-    TypeInfoParam* clone();
+    int            numRegisters() const;
+    bool           isSame(TypeInfoParam* to, uint64_t castFlags) const;
+    TypeInfoParam* clone() const;
     void           allocateComputedValue();
 
     Utf8          name;
@@ -308,15 +308,15 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     bool            isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
     bool            isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
-    TypeInfo*       concreteReturnType();
+    TypeInfo*       concreteReturnType() const;
     bool            isVariadic();
     bool            isCVariadic();
     uint32_t        registerIdxToParamIdx(int argIdx);
     TypeInfo*       registerIdxToType(int argIdx);
     int             numParamsRegisters();
-    int             numReturnRegisters();
+    int             numReturnRegisters() const;
     int             numTotalRegisters();
-    const CallConv& getCallConv();
+    const CallConv& getCallConv() const;
 
     VectorNative<TypeInfoParam*>        capture;
     VectorNative<TypeInfoParam*>        genericParameters;
@@ -458,7 +458,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
     static Utf8    computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType);
-    bool           canRawCopy();
+    bool           canRawCopy() const;
     bool           isPlainOldData();
     void           flattenUsingFields();
 

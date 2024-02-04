@@ -20,7 +20,7 @@ void ByteCode::release()
     out = nullptr;
 }
 
-ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline)
+ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool getInline)
 {
     SWAG_ASSERT(bc && ip);
     if (!ip->node || !ip->node->ownerScope || !bc->sourceFile)

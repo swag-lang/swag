@@ -221,7 +221,7 @@ FuncCB makeCallback(void* lambda)
     }
 
     // No more room
-    if (g_MakeCallbackCount == sizeof(g_CallbackArr) / sizeof(g_CallbackArr[0]))
+    if (g_MakeCallbackCount == std::size(g_CallbackArr))
         return nullptr;
 
     // Use a new slot

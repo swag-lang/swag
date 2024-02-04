@@ -259,11 +259,11 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
     }
 }
 
-void ByteCodeOptimizer::parseTree(ByteCodeOptContext*                                               context,
-                                  uint32_t                                                          startNode,
-                                  ByteCodeInstruction*                                              startIp,
-                                  uint32_t                                                          doneFlag,
-                                  function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb)
+void ByteCodeOptimizer::parseTree(ByteCodeOptContext*                                                      context,
+                                  uint32_t                                                                 startNode,
+                                  ByteCodeInstruction*                                                     startIp,
+                                  uint32_t                                                                 doneFlag,
+                                  const function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)>& cb)
 {
     for (uint32_t i = 0; i < context->nextTreeNode; i++)
         context->tree[i].flags &= ~doneFlag;

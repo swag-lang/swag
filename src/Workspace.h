@@ -44,14 +44,14 @@ struct PendingJob
 struct Workspace
 
 {
-    Diagnostic* errorPendingJob(Job* prevJob, Job* depJob);
-    void        errorPendingJobs(Vector<PendingJob>& pendingJobs);
-    void        computeWaitingJobs();
-    void        checkPendingJobs();
-    bool        buildRTModule(Module* module);
-    bool        buildTarget();
-    bool        build();
-    Module*     createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
+    static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
+    void               errorPendingJobs(Vector<PendingJob>& pendingJobs);
+    static void        computeWaitingJobs();
+    void               checkPendingJobs();
+    bool               buildRTModule(Module* module);
+    bool               buildTarget();
+    bool               build();
+    Module*            createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
     void        addBootstrap();
     void        addRuntime();
@@ -60,23 +60,23 @@ struct Workspace
     void        setupInternalTags();
     void        setupUserTags();
     void        setup();
-    void        computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
+    static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
     SourceFile* findFile(const char* fileName) const;
     Module*     getModuleByName(const Utf8& moduleName);
-    void        cleanFolderContent(const Path& path);
+    static void cleanFolderContent(const Path& path);
     OneTag*     hasTag(const Utf8& name);
     void        setupCachePath();
     void        setScriptWorkspace(const Utf8& name);
-    Utf8        getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
-    Path        getTargetPath(const Utf8& buildCfg, const BackendTarget& target);
+    static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
+    Path        getTargetPath(const Utf8& buildCfg, const BackendTarget& target) const;
     void        setupTarget();
 
-    void cleanPublic(const Path& basePath);
-    void cleanScript(bool all);
-    void cleanCommand();
-    void newModule(const Utf8& moduleName) const;
-    void newCommand();
-    void scriptCommand();
+    void        cleanPublic(const Path& basePath);
+    void        cleanScript(bool all);
+    void        cleanCommand();
+    void        newModule(const Utf8& moduleName) const;
+    void        newCommand();
+    static void scriptCommand();
 
     Path                  workspacePath;
     Path                  targetPath;

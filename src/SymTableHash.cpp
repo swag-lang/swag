@@ -14,7 +14,7 @@ void SymTableHash::clone(SymTableHash* from)
     memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
 }
 
-SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
+SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc) const
 {
     if (!allocated)
         return nullptr;

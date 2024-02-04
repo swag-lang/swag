@@ -59,9 +59,9 @@ struct Scope
     void        removeChildNoLock(Scope* child);
     bool        isParentOf(Scope* child);
     bool        isSameOrParentOf(Scope* child);
-    bool        isGlobal();
-    bool        isTopLevel();
-    bool        isGlobalOrImpl();
+    bool        isGlobal() const;
+    bool        isTopLevel() const;
+    bool        isGlobalOrImpl() const;
 
     SharedMutex             mutex;
     SymTable                symTable;

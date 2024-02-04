@@ -132,7 +132,7 @@ struct OneSymbolMatch
     uint32_t    asFlags = 0;
     bool        remove  = false;
 
-    bool operator==(const OneSymbolMatch& other)
+    bool operator==(const OneSymbolMatch& other) const
     {
         return symbol == other.symbol;
     }

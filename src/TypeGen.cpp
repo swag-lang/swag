@@ -234,7 +234,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        SWAG_CHECK(genExportedStuct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
+        SWAG_CHECK(genExportedStruct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
         break;
     }
 
@@ -637,7 +637,7 @@ TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
     return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
-bool TypeGen::genExportedStuct(JobContext*       context,
+bool TypeGen::genExportedStruct(JobContext*       context,
                                const Utf8&       typeName,
                                ExportedTypeInfo* exportedTypeInfoValue,
                                TypeInfo*         typeInfo,

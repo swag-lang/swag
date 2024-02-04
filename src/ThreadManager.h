@@ -21,7 +21,7 @@ struct ThreadManager
     Job* getJob(JobQueue& queue);
     void eatJob(Job* job);
     Job* getJob(JobThread* thread);
-    bool doneWithJobs();
+    bool doneWithJobs() const;
     void clearOptionalJobs();
     void executeOneJob(Job* job);
     void jobHasEnded(Job* job, JobResult result);

@@ -43,10 +43,10 @@ struct SymTable
     SymbolOverload* addSymbolTypeInfo(ErrorContext* context, AddSymbolTypeInfo& toAdd);
     SymbolOverload* addSymbolTypeInfoNoLock(ErrorContext* context, AddSymbolTypeInfo& toAdd);
 
-    bool acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol);
-    bool checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags);
-    void addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
-    bool registerNameAlias(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload);
+    bool        acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol) const;
+    bool        checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags);
+    void        addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
+    static bool registerNameAlias(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload);
 
     static void disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol);
 

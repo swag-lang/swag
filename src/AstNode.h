@@ -271,7 +271,7 @@ struct AstNode
     void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
 
     void inheritOrFlag(uint64_t flag);
-    void inheritOrFlag(AstNode* op, uint64_t flag);
+    void inheritOrFlag(const AstNode* op, uint64_t flag);
     void inheritAndFlag1(uint64_t flag);
     void inheritAndFlag2(uint64_t flag1, uint64_t flag2);
     void inheritAndFlag3(uint64_t flag1, uint64_t flag2, uint64_t flag3);
@@ -281,7 +281,7 @@ struct AstNode
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritTokenLocation(const AstNode* node);
-    void inheritOwners(AstNode* op);
+    void inheritOwners(const AstNode* op);
     void inheritOwnersAndFlags(const Parser* parser);
 
     void              allocateComputedValue();

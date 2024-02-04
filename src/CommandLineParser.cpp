@@ -145,7 +145,7 @@ static void getArgValue(CommandLineArgument* oneArg, Utf8& value, Utf8& defaultV
     }
 }
 
-void CommandLineParser::logArguments(const Utf8& cmd)
+void CommandLineParser::logArguments(const Utf8& cmd) const
 {
     Utf8 line0, line1;
 

@@ -399,7 +399,7 @@ namespace OS
         }
     }
 
-    void visitFiles(const char* folder, function<void(const char*)> user)
+    void visitFiles(const char* folder, const function<void(const char*)>& user)
     {
         WIN32_FIND_DATAA findfile;
         Utf8             searchPath = folder;
@@ -418,7 +418,7 @@ namespace OS
         }
     }
 
-    void visitFolders(const char* folder, function<void(const char*)> user, const char* match)
+    void visitFolders(const char* folder, const function<void(const char*)>& user, const char* match)
     {
         WIN32_FIND_DATAA findfile;
         Utf8             searchPath = folder;
@@ -440,7 +440,7 @@ namespace OS
         }
     }
 
-    void visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user)
+    void visitFilesFolders(const char* folder, const function<void(uint64_t, const char*, bool)>& user)
     {
         WIN32_FIND_DATAA findfile;
         Utf8             searchPath = folder;
@@ -468,7 +468,7 @@ namespace OS
         }
     }
 
-    void visitFilesRec(const char* folder, function<void(const char*)> user)
+    void visitFilesRec(const char* folder, const function<void(const char*)>& user)
     {
         WIN32_FIND_DATAA findfile;
         Path             searchPath = folder;

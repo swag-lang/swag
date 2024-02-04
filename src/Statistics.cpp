@@ -105,7 +105,7 @@ void Stats::printFreq()
     g_Log.setDefaultColor();
 }
 
-void Stats::print()
+void Stats::print() const
 {
     if (!g_CommandLine.stats)
         return;

@@ -33,7 +33,7 @@ namespace Ast
     void             setForceConstType(AstNode* node);
     Utf8             enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
     Utf8             literalToString(TypeInfo* typeInfo, const ComputedValue& value);
-    void             normalizeIdentifierName(Utf8& name);
+    void             normalizeIdentifierName(const Utf8& name);
     AstNode*         cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
     AstNode*         clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
     Utf8             computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);

@@ -14,7 +14,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          const VectorNative<uint32_t>&    unwindOffsetRegs,
                          uint32_t                         sizeStack,
                          uint32_t                         offsetSubRSP,
-                         VectorNative<uint16_t>&          unwind)
+                         VectorNative<uint16_t>&          unwind) const
 {
     const auto objFileType = Backend::getObjType(g_CommandLine.target);
     switch (objFileType)

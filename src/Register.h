@@ -108,7 +108,7 @@ struct RegisterList
         return true;
     }
 
-    operator uint32_t()
+    operator uint32_t() const
     {
         return (*this)[0];
     }

@@ -16,17 +16,17 @@ void Scope::release()
     // Allocator::free<Scope>(this);
 }
 
-bool Scope::isGlobal()
+bool Scope::isGlobal() const
 {
     return kind == ScopeKind::Module || kind == ScopeKind::File || kind == ScopeKind::Namespace;
 }
 
-bool Scope::isTopLevel()
+bool Scope::isTopLevel() const
 {
     return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_AUTO_GENERATED));
 }
 
-bool Scope::isGlobalOrImpl()
+bool Scope::isGlobalOrImpl() const
 {
     if (isGlobal() || kind == ScopeKind::Impl)
         return true;

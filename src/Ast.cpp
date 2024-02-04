@@ -382,7 +382,7 @@ AstNode* Ast::clone(AstNode* source, AstNode* parent, uint64_t forceFlags, uint6
     return source->clone(cloneContext);
 }
 
-void Ast::normalizeIdentifierName(Utf8& name)
+void Ast::normalizeIdentifierName(const Utf8& name)
 {
     const auto len = name.length();
     auto       pz  = name.buffer;

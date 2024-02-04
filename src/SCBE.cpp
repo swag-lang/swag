@@ -21,7 +21,7 @@ SCBE::SCBE()
     memset(perThread, 0, sizeof(perThread));
 }
 
-bool SCBE::createRuntime(const BuildParameters& buildParameters)
+bool SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -236,7 +236,7 @@ void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAdd
     fct->unwind       = std::move(unwind);
 }
 
-bool SCBE::saveObjFile(const BuildParameters& buildParameters)
+bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;

@@ -175,10 +175,10 @@ void SCBE::emitInternalCallExt(SCBE_X64& pp, Module* moduleToGen, const Utf8& fu
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
-void SCBE::emitByteCodeCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     int idxReg = 0;
-    for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
+    for (int idxParam = typeFuncBc->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
         switch (idxReg)
         {
@@ -188,10 +188,12 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t
         case 1:
             pp.emit_LoadAddress_Indirect(offsetRT + sizeof(Register), R8, RDI);
             break;
+        default:
+            break;
         }
     }
 
-    uint32_t stackOffset = typeFuncBC->numReturnRegisters() * sizeof(Register);
+    uint32_t stackOffset = typeFuncBc->numReturnRegisters() * sizeof(Register);
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
         static constexpr CPURegister idxToReg[4] = {RDX, R8, R9};

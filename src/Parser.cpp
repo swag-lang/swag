@@ -11,7 +11,7 @@
 #include "Timer.h"
 #endif
 
-bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
+bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint) const
 {
     Diagnostic        diag{node, msg.c_str()};
     const Diagnostic* note = nullptr;
@@ -22,7 +22,7 @@ bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char*
     return context->report(diag, note);
 }
 
-bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint)
+bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint) const
 {
     Diagnostic        diag{sourceFile, tk, msg.c_str()};
     const Diagnostic* note = nullptr;
@@ -33,7 +33,7 @@ bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const cha
     return context->report(diag, note);
 }
 
-bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
+bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help) const
 {
     const Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
     const Diagnostic* note = nullptr;
@@ -148,7 +148,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     return error(token, msg, note.empty() ? nullptr : note.c_str());
 }
 
-bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg)
+bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg) const
 {
     const Diagnostic* note = nullptr;
 
@@ -257,7 +257,7 @@ bool Parser::eatSemiCol(const char* msg)
     return true;
 }
 
-bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine)
+bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine)
 {
     const auto modl = fromNode->sourceFile->module;
 

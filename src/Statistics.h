@@ -65,7 +65,7 @@ struct Stats
     atomic<int> countTypesByKind[50] = {0};
 #endif
 
-    void print();
+    void print() const;
     void printFreq();
 };
 

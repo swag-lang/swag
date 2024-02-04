@@ -158,11 +158,11 @@ struct TypeManager
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
 
-    TypeInfo*        makeUnConst(TypeInfo* typeInfo);
-    TypeInfo*        makeConst(TypeInfo* typeInfo);
-    TypeInfoPointer* makePointerTo(TypeInfo* toType, uint64_t ptrFlags = 0);
-    TypeInfoParam*   makeParam();
-    void             registerTypeType();
+    TypeInfo*             makeUnConst(TypeInfo* typeInfo);
+    TypeInfo*             makeConst(TypeInfo* typeInfo);
+    TypeInfoPointer*      makePointerTo(TypeInfo* toType, uint64_t ptrFlags = 0);
+    static TypeInfoParam* makeParam();
+    void                  registerTypeType();
 
     Mutex mutex;
 
@@ -225,7 +225,7 @@ T* makeType(TypeInfoKind k = TypeInfoKind::Invalid)
     g_Stats.memTypes += sizeof(T);
 #ifdef SWAG_DEV_MODE
     SWAG_ASSERT(newType->kind != TypeInfoKind::Invalid);
-    SWAG_ASSERT((size_t) newType->kind < sizeof(g_Stats.countTypesByKind) / sizeof(g_Stats.countTypesByKind[0]));
+    SWAG_ASSERT((size_t) newType->kind < std::size(g_Stats.countTypesByKind));
     g_Stats.countTypesByKind[(int) newType->kind] += 1;
 #endif
 #endif

@@ -264,193 +264,201 @@ struct Context
     int                       state   = 0;
     Set<ByteCodeInstruction*> statesHere;
     Vector<State*>            states;
-    bool                      cansetConstants = true;
+    bool                      canSetConstants = true;
 };
 
-static void setStackConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint32_t offset, uint8_t* value, int sizeOf)
+namespace
 {
-    if (!cxt.cansetConstants)
-        return;
-    if (kind != ValueKind::Constant)
-        return;
-    if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
-        return;
-
-    const auto context = cxt.context;
-    switch (sizeOf)
+    void setStackConstant(const Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint32_t offset, uint8_t* value, int sizeOf)
     {
-    case 1:
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer8);
-        ip->flags |= BCI_IMM_B;
-        ip->a.u32 = offset;
-        ip->b.u64 = *(uint8_t*) value;
-        break;
-    case 2:
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
-        ip->flags |= BCI_IMM_B;
-        ip->a.u32 = offset;
-        ip->b.u64 = *(uint16_t*) value;
-        break;
-    case 4:
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
-        ip->flags |= BCI_IMM_B;
-        ip->a.u32 = offset;
-        ip->b.u64 = *(uint32_t*) value;
-        break;
-    case 8:
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
-        ip->flags |= BCI_IMM_B;
-        ip->a.u32 = offset;
-        ip->b.u64 = *(uint64_t*) value;
-        break;
+        if (!cxt.canSetConstants)
+            return;
+        if (kind != ValueKind::Constant)
+            return;
+        if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
+            return;
+
+        const auto context = cxt.context;
+        switch (sizeOf)
+        {
+        case 1:
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer8);
+            ip->flags |= BCI_IMM_B;
+            ip->a.u32 = offset;
+            ip->b.u64 = *(uint8_t*) value;
+            break;
+        case 2:
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
+            ip->flags |= BCI_IMM_B;
+            ip->a.u32 = offset;
+            ip->b.u64 = *(uint16_t*) value;
+            break;
+        case 4:
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
+            ip->flags |= BCI_IMM_B;
+            ip->a.u32 = offset;
+            ip->b.u64 = *(uint32_t*) value;
+            break;
+        case 8:
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
+            ip->flags |= BCI_IMM_B;
+            ip->a.u32 = offset;
+            ip->b.u64 = *(uint64_t*) value;
+            break;
+        default:
+            break;
+        }
     }
-}
 
-static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint64_t value, ConstantKind cstKind)
-{
-    if (!cxt.cansetConstants)
-        return;
-    if (kind != ValueKind::Constant)
-        return;
-    if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
-        return;
-
-    const auto context = cxt.context;
-    switch (cstKind)
+    void setConstant(const Context& cxt, ValueKind kind, ByteCodeInstruction* ip, uint64_t value, ConstantKind cstKind)
     {
-    case ConstantKind::SetImmediateA:
-        SET_OP(ip, ByteCodeOp::SetImmediate64);
-        ip->b.u64 = value;
-        break;
-    case ConstantKind::SetImmediateC:
-        SET_OP(ip, ByteCodeOp::SetImmediate64);
-        ip->a.u32 = ip->c.u32;
-        ip->b.u64 = value;
-        break;
-    default:
-        break;
+        if (!cxt.canSetConstants)
+            return;
+        if (kind != ValueKind::Constant)
+            return;
+        if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
+            return;
+
+        const auto context = cxt.context;
+        switch (cstKind)
+        {
+        case ConstantKind::SetImmediateA:
+            SET_OP(ip, ByteCodeOp::SetImmediate64);
+            ip->b.u64 = value;
+            break;
+        case ConstantKind::SetImmediateC:
+            SET_OP(ip, ByteCodeOp::SetImmediate64);
+            ip->a.u32 = ip->c.u32;
+            ip->b.u64 = value;
+            break;
+        default:
+            break;
+        }
     }
-}
 
-static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t sizeOf)
-{
-    const auto offset = (uint8_t*) addr - STATE()->stack.buffer;
-    SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
-    auto addrValue = STATE()->stackValue.buffer + offset;
-
-    result.kind     = addrValue->kind;
-    result.overload = addrValue->overload;
-    addrValue++;
-
-    for (uint32_t i = 1; i < sizeOf; i++)
+    bool getStackValue(Value& result, const Context& cxt, void* addr, uint32_t sizeOf)
     {
-        const auto value = *addrValue;
+        const auto offset = (uint8_t*) addr - STATE()->stack.buffer;
+        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
+        auto addrValue = STATE()->stackValue.buffer + offset;
+
+        result.kind     = addrValue->kind;
+        result.overload = addrValue->overload;
         addrValue++;
 
-        if (value.kind != result.kind)
+        for (uint32_t i = 1; i < sizeOf; i++)
         {
-            result.kind     = ValueKind::Unknown;
-            result.overload = nullptr;
-            return true;
+            const auto value = *addrValue;
+            addrValue++;
+
+            if (value.kind != result.kind)
+            {
+                result.kind     = ValueKind::Unknown;
+                result.overload = nullptr;
+                return true;
+            }
+
+            result = value;
         }
 
-        result = value;
+        return true;
     }
-
-    return true;
 }
 
 /////////////////////////////////////
 /////////////////////////////////////
 /////////////////////////////////////
 
-static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullptr)
+namespace
 {
-    if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
-        return true;
-
-    AstNode*   nodeLoc = nullptr;
-    const auto ip      = cxt.states[cxt.state]->ip;
-    if (overload && ip->node)
+    bool raiseError(const Context& cxt, const Utf8& msg, const SymbolOverload* overload = nullptr)
     {
-        Ast::visit(ip->node, [&](AstNode* n)
+        if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
+            return true;
+
+        AstNode*   nodeLoc = nullptr;
+        const auto ip      = cxt.states[cxt.state]->ip;
+        if (overload && ip->node)
         {
-            if (n->resolvedSymbolOverload == overload && !nodeLoc)
+            Ast::visit(ip->node, [&](AstNode* n)
             {
-                nodeLoc = n;
-                return;
-            }
-        });
-    }
+                if (n->resolvedSymbolOverload == overload && !nodeLoc)
+                {
+                    nodeLoc = n;
+                    return;
+                }
+            });
+        }
 
-    if (nodeLoc)
-    {
-        const Diagnostic diag({nodeLoc, nodeLoc->token, msg});
+        if (nodeLoc)
+        {
+            const Diagnostic diag({nodeLoc, nodeLoc->token, msg});
+            return cxt.context->report(diag);
+        }
+
+        const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
+
+        const Diagnostic diag({loc.file, *loc.location, msg});
         return cxt.context->report(diag);
     }
 
-    const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
-
-    const Diagnostic diag({loc.file, *loc.location, msg});
-    return cxt.context->report(diag);
-}
-
-static bool checkOverflow(Context& cxt, bool isValid, const char* msgKind, TypeInfo* type)
-{
-    if (isValid)
-        return true;
-    return raiseError(cxt, Fmt(Err(San0010), msgKind, type->getDisplayNameC()));
-}
-
-static bool checkDivZero(Context& cxt, Value& value, bool isZero, SymbolOverload* overload = nullptr)
-{
-    if (value.kind != ValueKind::Constant)
-        return true;
-    if (!isZero)
-        return true;
-    if (overload)
-        return raiseError(cxt, Fmt(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-    return raiseError(cxt, Err(San0001));
-}
-
-static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset, SymbolOverload* overload = nullptr)
-{
-    SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
-    if (overload)
-        return raiseError(cxt, Fmt(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-    return raiseError(cxt, Err(San0003));
-}
-
-static bool checkStackOffset(Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
-{
-    if (stackOffset + sizeOf > (size_t) STATE()->stack.count)
-        return raiseError(cxt, Fmt(Err(San0007), stackOffset + sizeOf, STATE()->stack.count));
-    return true;
-}
-
-static bool checkNotNull(Context& cxt, Value* value)
-{
-    if (value->kind != ValueKind::Constant)
-        return true;
-    if (value->reg.u64)
-        return true;
-    if (value->overload)
-        return raiseError(cxt, Fmt(Err(San0006), Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
-    return raiseError(cxt, Err(San0005));
-}
-
-static bool checkStackInitialized(Context& cxt, void* addr, uint32_t sizeOf, SymbolOverload* overload = nullptr)
-{
-    Value value;
-    SWAG_CHECK(getStackValue(value, cxt, addr, sizeOf));
-    if (value.kind == ValueKind::Invalid)
+    bool checkOverflow(const Context& cxt, bool isValid, const char* msgKind, TypeInfo* type)
     {
-        if (overload)
-            return raiseError(cxt, Fmt(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-        return raiseError(cxt, Err(San0009));
+        if (isValid)
+            return true;
+        return raiseError(cxt, Fmt(Err(San0010), msgKind, type->getDisplayNameC()));
     }
 
-    return true;
+    bool checkDivZero(const Context& cxt, const Value& value, bool isZero, SymbolOverload* overload = nullptr)
+    {
+        if (value.kind != ValueKind::Constant)
+            return true;
+        if (!isZero)
+            return true;
+        if (overload)
+            return raiseError(cxt, Fmt(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, Err(San0001));
+    }
+
+    bool checkEscapeFrame(const Context& cxt, uint64_t stackOffset, SymbolOverload* overload = nullptr)
+    {
+        SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
+        if (overload)
+            return raiseError(cxt, Fmt(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, Err(San0003));
+    }
+
+    bool checkStackOffset(const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
+    {
+        if (stackOffset + sizeOf > (size_t) STATE()->stack.count)
+            return raiseError(cxt, Fmt(Err(San0007), stackOffset + sizeOf, STATE()->stack.count));
+        return true;
+    }
+
+    bool checkNotNull(const Context& cxt, Value* value)
+    {
+        if (value->kind != ValueKind::Constant)
+            return true;
+        if (value->reg.u64)
+            return true;
+        if (value->overload)
+            return raiseError(cxt, Fmt(Err(San0006), Naming::kindName(value->overload).c_str(), value->overload->symbol->name.c_str()), value->overload);
+        return raiseError(cxt, Err(San0005));
+    }
+
+    bool checkStackInitialized(Context& cxt, void* addr, uint32_t sizeOf, SymbolOverload* overload = nullptr)
+    {
+        Value value;
+        SWAG_CHECK(getStackValue(value, cxt, addr, sizeOf));
+        if (value.kind == ValueKind::Invalid)
+        {
+            if (overload)
+                return raiseError(cxt, Fmt(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+            return raiseError(cxt, Err(San0009));
+        }
+
+        return true;
+    }
 }
 
 /////////////////////////////////////
@@ -569,7 +577,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         }
 
         if (ip->flags & BCI_START_STMT_N)
-            cxt.cansetConstants = false;
+            cxt.canSetConstants = false;
 
         STATE()->ip = ip;
         switch (ip->op)

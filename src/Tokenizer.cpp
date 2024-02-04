@@ -23,7 +23,7 @@ const uint32_t g_TokenFlags[] =
 #include "TokenIds.h"
 };
 
-bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint)
+bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint) const
 {
     token.endLocation = location;
 
@@ -32,7 +32,7 @@ bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint)
     return errorContext->report(diag);
 }
 
-void Tokenizer::appendTokenName(TokenParse& token)
+void Tokenizer::appendTokenName(TokenParse& token) const
 {
     if (realAppendName)
         token.text.append(startTokenName, (int) (curBuffer - startTokenName));
@@ -78,7 +78,7 @@ void Tokenizer::restoreState(TokenParse& token)
     comment             = st_comment;
 }
 
-uint32_t Tokenizer::peekChar(unsigned& offset)
+uint32_t Tokenizer::peekChar(unsigned& offset) const
 {
     if (curBuffer >= endBuffer)
     {

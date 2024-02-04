@@ -18,7 +18,7 @@ void TypeInfo::forceComputeName()
     computeWhateverName(COMPUTE_NAME);
 }
 
-void TypeInfo::getScopedName(Utf8& newName)
+void TypeInfo::getScopedName(Utf8& newName) const
 {
     if (declNode && declNode->ownerScope && declNode->ownerScope->kind != ScopeKind::Function)
     {
@@ -246,12 +246,12 @@ bool TypeInfo::isPointerToTypeInfo()
     return ptr->pointedType->getConcreteAlias()->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 
-bool TypeInfo::isPointerNull()
+bool TypeInfo::isPointerNull() const
 {
     return this == g_TypeMgr->typeInfoNull;
 }
 
-bool TypeInfo::isInitializerList()
+bool TypeInfo::isInitializerList() const
 {
     if (kind != TypeInfoKind::TypeListTuple)
         return false;
@@ -352,12 +352,12 @@ void TypeInfo::removeGenericFlag()
     }
 }
 
-int TypeInfoParam::numRegisters()
+int TypeInfoParam::numRegisters() const
 {
     return typeInfo->numRegisters();
 }
 
-TypeInfoParam* TypeInfoParam::clone()
+TypeInfoParam* TypeInfoParam::clone() const
 {
     const auto newType  = g_TypeMgr->makeParam();
     newType->name       = name;
@@ -377,7 +377,7 @@ TypeInfoParam* TypeInfoParam::clone()
     return newType;
 }
 
-bool TypeInfoParam::isSame(TypeInfoParam* to, uint64_t castFlags)
+bool TypeInfoParam::isSame(TypeInfoParam* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;

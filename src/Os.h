@@ -47,10 +47,10 @@ namespace OS
     void errorBox(const char* expr, const char* title);
     void assertBox(const char* expr, const char* file, int line);
 
-    void visitFiles(const char* folder, function<void(const char*)> user);
-    void visitFolders(const char* folder, function<void(const char*)> user, const char* match = "*");
-    void visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
-    void visitFilesRec(const char* folder, function<void(const char*)> user);
+    void visitFiles(const char* folder, const function<void(const char*)>& user);
+    void visitFolders(const char* folder, const function<void(const char*)>& user, const char* match = "*");
+    void visitFilesFolders(const char* folder, const function<void(uint64_t, const char*, bool)>& user);
+    void visitFilesRec(const char* folder, const function<void(const char*)>& user);
 
     void     ensureFileIsWritten(const char* fileName);
     uint64_t getFileWriteTime(const char* fileName);

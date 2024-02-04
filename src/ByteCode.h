@@ -33,7 +33,7 @@ struct ByteCode
         SourceLocation* location = nullptr;
     };
 
-    static uint32_t getSetZeroAtPointerSize(ByteCodeInstruction* inst, uint32_t& offset)
+    static uint32_t getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint32_t& offset)
     {
         switch (inst->op)
         {
@@ -59,7 +59,7 @@ struct ByteCode
         return 0;
     }
 
-    static uint32_t getSetZeroStackSize(ByteCodeInstruction* inst, uint32_t& offset)
+    static uint32_t getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t& offset)
     {
         switch (inst->op)
         {
@@ -139,13 +139,13 @@ struct ByteCode
     void release();
 
     // clang-format off
-    static bool     isMemCpy(ByteCodeInstruction* inst)     { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_MEMCPY; }
-    static bool     isPushParam(ByteCodeInstruction* inst)  { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_PUSH_PARAM; }
-    static bool     isCall(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_CALL; }
-    static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
-    static bool     isJumpDyn(ByteCodeInstruction* inst)    { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_JUMPDYN; }
-    static bool     isJumpOrDyn(ByteCodeInstruction* inst)  { return (g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_IS_JUMP| OPFLAG_IS_JUMPDYN)); }
-    static bool     isRet(ByteCodeInstruction* inst)        { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRBtoRRRet; }
+    static bool isMemCpy(const ByteCodeInstruction* inst)         { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_MEMCPY; }
+    static bool isPushParam(const ByteCodeInstruction* inst)      { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_PUSH_PARAM; }
+    static bool isCall(const ByteCodeInstruction* inst)           { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_CALL; }
+    static bool isJump(const ByteCodeInstruction* inst)           { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
+    static bool isJumpDyn(const ByteCodeInstruction* inst)        { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_JUMPDYN; }
+    static bool isJumpOrDyn(const ByteCodeInstruction* inst)      { return (g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_IS_JUMP| OPFLAG_IS_JUMPDYN)); }
+    static bool isRet(const ByteCodeInstruction* inst)            { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRBtoRRRet; }
 
     inline static bool hasRefToRegA(ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !(inst->flags & BCI_IMM_A) && g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_A | OPFLAG_WRITE_A); }
     inline static bool hasRefToRegB(ByteCodeInstruction* inst, uint32_t reg) { return inst->b.u32 == reg && !(inst->flags & BCI_IMM_B) && g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_B | OPFLAG_WRITE_B); }
@@ -184,7 +184,7 @@ struct ByteCode
     static void*    doByteCodeLambda(void* ptr);
     static void*    undoByteCodeLambda(void* ptr);
     static bool     isByteCodeLambda(void* ptr);
-    static Location getLocation(ByteCode* bc, ByteCodeInstruction* ip, bool getInline = false);
+    static Location getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool getInline = false);
 
     struct PrintInstructionLine
     {
@@ -202,7 +202,7 @@ struct ByteCode
     static Utf8       getPrettyInstruction(ByteCodeInstruction* ip);
     static Utf8       getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const;
-    static void       printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line);
+    static void       printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line);
     void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
     static void       alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
     void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count);

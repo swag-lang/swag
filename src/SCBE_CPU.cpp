@@ -98,7 +98,7 @@ CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
-uint32_t SCBE_CPU::getParamStackOffset(CPUFunction* cpuFct, int paramIdx)
+uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, int paramIdx)
 {
     const auto& cc = cpuFct->typeFunc->getCallConv();
 

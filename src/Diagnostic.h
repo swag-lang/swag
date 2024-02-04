@@ -147,7 +147,7 @@ struct Diagnostic
     void printSourceLine() const;
     void printErrorLevel();
     void printMarginLineNo(int lineNo) const;
-    void printMargin(bool eol = false, bool printLineNo = false, int lineNo = 0);
+    void printMargin(bool eol = false, bool printLineNo = false, int lineNo = 0) const;
     void printPreRemarks();
     void printRemarks();
     void setColorRanges(DiagnosticLevel level) const;

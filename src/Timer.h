@@ -25,7 +25,7 @@ struct Timer
 #endif
     }
 
-    void stop()
+    void stop() const
     {
         if (timeBefore)
             *destValue += OS::timerNow() - timeBefore;
