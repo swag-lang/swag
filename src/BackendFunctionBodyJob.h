@@ -8,7 +8,7 @@ struct ByteCode;
 
 struct BackendFunctionBodyJob : public Job
 {
-    virtual ~BackendFunctionBodyJob() = default;
+    virtual   ~BackendFunctionBodyJob() = default;
     JobResult execute() override;
 
     void release() override

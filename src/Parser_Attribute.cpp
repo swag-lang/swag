@@ -10,7 +10,7 @@
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
     const auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
-    *result       = attrNode;
+    *result             = attrNode;
     attrNode->allocateExtension(ExtensionKind::Semantic);
     attrNode->extSemantic()->semanticBeforeFct = Semantic::preResolveAttrDecl;
     attrNode->semanticFct                      = Semantic::resolveAttrDecl;
@@ -21,9 +21,9 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->inheritTokenName(token);
     attrNode->tokenName = token;
 
-    const auto typeInfo      = makeType<TypeInfoFuncAttr>();
-    typeInfo->declNode = attrNode;
-    attrNode->typeInfo = typeInfo;
+    const auto typeInfo = makeType<TypeInfoFuncAttr>();
+    typeInfo->declNode  = attrNode;
+    attrNode->typeInfo  = typeInfo;
     typeInfo->flags |= TYPEINFO_FUNC_IS_ATTR;
 
     // Register attribute
@@ -62,7 +62,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 {
     const auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    *result            = attrBlockNode;
+    *result                  = attrBlockNode;
 
     if (tokenizer.comment.length())
     {

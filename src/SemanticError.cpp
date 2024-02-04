@@ -38,7 +38,8 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = Fmt(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(), overload->node->ownerStructScope->owner->token.ctext());
+                const auto msg = Fmt(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(),
+                                     overload->node->ownerStructScope->owner->token.ctext());
                 diag->remarks.push_back(msg);
             }
 
@@ -69,7 +70,13 @@ bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeIn
     return context->report(diag);
 }
 
-bool SemanticError::duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl)
+bool SemanticError::duplicatedSymbolError(ErrorContext* context,
+                                          SourceFile*   sourceFile,
+                                          Token&        token,
+                                          SymbolKind    thisKind,
+                                          const Utf8&   thisName,
+                                          SymbolKind    otherKind,
+                                          AstNode*      otherSymbolDecl)
 {
     Utf8 as;
     if (thisKind != otherKind)

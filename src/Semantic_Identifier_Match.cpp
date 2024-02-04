@@ -189,7 +189,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             {
                 setUnRef(nodeCall);
             }
-            else if(oneMatch.solvedCastFlags[i] & CASTFLAG_RESULT_FROM_REF)
+            else if (oneMatch.solvedCastFlags[i] & CASTFLAG_RESULT_FROM_REF)
             {
                 setUnRef(nodeCall);
             }

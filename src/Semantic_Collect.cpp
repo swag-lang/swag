@@ -59,7 +59,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             // Then reference that value and the concrete type info
             // Pointer to the value
             const auto ptrStorage = constSegment->address(storageOffsetValue);
-            ptrAny->value   = ptrStorage;
+            ptrAny->value         = ptrStorage;
             storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
             // :AnyTypeSegment
@@ -86,7 +86,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         else if (assignType && assignType->isSlice())
         {
             const auto slice = (SwagSlice*) value->getStorageAddr();
-            *ptrSlice  = *slice;
+            *ptrSlice        = *slice;
             if (slice->buffer)
             {
                 const auto storageOffsetValue = value->storageSegment->offset((uint8_t*) slice->buffer);
@@ -103,9 +103,9 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignType, assignment));
 
             // Then setup the pointer to that data, and the data count
-            const auto ptrStorage  = constSegment->address(storageOffsetValue);
-            ptrSlice->buffer = ptrStorage;
-            ptrSlice->count  = assignment->childs.size();
+            const auto ptrStorage = constSegment->address(storageOffsetValue);
+            ptrSlice->buffer      = ptrStorage;
+            ptrSlice->count       = assignment->childs.size();
             storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
         }
 
@@ -175,7 +175,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node)
 {
     const AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
+    const auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structNode->typeInfo, TypeInfoKind::Struct);
 
     for (const auto field : typeStruct->fields)
     {
@@ -558,8 +558,8 @@ bool Semantic::collectConstantSlice(SemanticContext* context, AstNode* assignNod
         storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
 
         const auto typeList = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
-        slice->buffer = storageSegment->address(storageOffsetValues);
-        slice->count  = typeList->subTypes.size();
+        slice->buffer       = storageSegment->address(storageOffsetValues);
+        slice->count        = typeList->subTypes.size();
     }
     else if (assignType->isPointerNull() || (assignNode && assignNode->castedTypeInfo && assignNode->castedTypeInfo->isPointerNull()))
     {

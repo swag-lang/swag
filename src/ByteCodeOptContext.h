@@ -1,4 +1,3 @@
-
 #pragma once
 #include "ByteCode.h"
 #include "ByteCodeOp.h"

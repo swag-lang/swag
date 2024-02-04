@@ -27,7 +27,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
             // If the user has specified a generic type, take it
             if (callGenericParameters && i < callGenericParameters->childs.size())
             {
-                const auto genParam             = callGenericParameters->childs[i];
+                const auto genParam       = callGenericParameters->childs[i];
                 param->typeInfo           = genParam->typeInfo;
                 varDecl->genTypeComesFrom = genParam;
 
@@ -78,7 +78,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
             if (param->typeInfo->isUntypedInteger() || param->typeInfo->isUntypedFloat())
             {
                 const auto symbol  = match.symbolName;
-                auto errNode = context->node;
+                auto       errNode = context->node;
 
                 TypeInfo* errType = nullptr;
                 for (const auto& v : match.genericReplaceTypes)
@@ -163,8 +163,8 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
         // In that case, we want to be sure that the kind is function
         if (typeInfo->isFuncAttr() && it->second.typeInfoReplace->isLambdaClosure())
         {
-            const auto t  = it->second.typeInfoReplace->clone();
-            t->kind = TypeInfoKind::FuncAttr;
+            const auto t = it->second.typeInfoReplace->clone();
+            t->kind      = TypeInfoKind::FuncAttr;
             return t;
         }
 
@@ -280,7 +280,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
         for (size_t idx = 0; idx < numParams; idx++)
         {
             const auto param = typeLambda->parameters[idx];
-            newType    = replaceGenericTypes(replaceTypes, param->typeInfo);
+            newType          = replaceGenericTypes(replaceTypes, param->typeInfo);
 
             // If generic parameter is a closure, but the instantiated type is a lambda, then a conversion will
             // take place.
@@ -307,8 +307,8 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
                     newLambda->replaceTypes = replaceTypes;
                 }
 
-                const auto newParam      = newLambda->parameters[idx];
-                newParam->typeInfo = newType;
+                const auto newParam = newLambda->parameters[idx];
+                newParam->typeInfo  = newType;
                 newParam->flags |= TYPEINFOPARAM_FROM_GENERIC;
             }
         }

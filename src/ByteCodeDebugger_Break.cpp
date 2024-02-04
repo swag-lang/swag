@@ -220,7 +220,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
         return BcDbgCommandResult::BadArguments;
 
     const auto cmd     = arg.split[0];
-    bool oneShot = false;
+    bool       oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
@@ -246,7 +246,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
         return BcDbgCommandResult::BadArguments;
 
     const auto cmd     = arg.split[0];
-    bool oneShot = false;
+    bool       oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
@@ -273,7 +273,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
         return BcDbgCommandResult::BadArguments;
 
     const auto cmd     = arg.split[0];
-    bool oneShot = false;
+    bool       oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 

@@ -141,7 +141,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
         if (left->kind == AstNodeKind::Identifier && left->specFlags & (AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
         {
             const auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
-            hint        = "this is equivalent to [[";
+            hint              = "this is equivalent to [[";
             for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
             {
                 const auto c = orgLeft->childs[ic];
@@ -273,15 +273,20 @@ bool Semantic::resolveAffect(SemanticContext* context)
     if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
     {
         PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]()
-                          { return Diagnostic::isType(rightTypeInfo); });
+        {
+            return Diagnostic::isType(rightTypeInfo);
+        });
 
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->flags & AST_NO_LEFT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+                    context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_NO_RIGHT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+                    context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_FORCE_MOVE)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+                    context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any

@@ -11,8 +11,8 @@
 bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     const auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto       leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto       rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
     // Compile time compare of two types
     if (left->isConstantGenTypeInfo() && right->isConstantGenTypeInfo())
@@ -33,7 +33,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            const auto slice                 = (SwagSlice*) left->computedValue->getStorageAddr();
+            const auto slice           = (SwagSlice*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !slice->buffer;
             return true;
         }
@@ -43,7 +43,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            const auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
+            const auto slice           = (SwagInterface*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !slice->itable;
             return true;
         }
@@ -386,8 +386,8 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 bool Semantic::resolveCompareExpression(SemanticContext* context)
 {
     const auto node  = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
-    auto left  = node->childs[0];
-    auto right = node->childs[1];
+    auto       left  = node->childs[0];
+    auto       right = node->childs[1];
 
     SWAG_CHECK(checkIsConcreteOrType(context, left));
     YIELD();
@@ -525,7 +525,9 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in a opEquals function.
     else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE | CASTFLAG_ACCEPT_PENDING));
+        SWAG_CHECK(
+            TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE | CASTFLAG_ACCEPT_PENDING
+            ));
         YIELD();
     }
 

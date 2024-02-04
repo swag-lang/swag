@@ -136,7 +136,7 @@ static bool badParentScope(AstIdentifier* identifier, Vector<const Diagnostic*>&
     else
     {
         const Diagnostic* note     = nullptr;
-        const auto  kindName = Naming::aKindName(prev->resolvedSymbolName->kind);
+        const auto        kindName = Naming::aKindName(prev->resolvedSymbolName->kind);
         if (prev->typeInfo)
             note = Diagnostic::note(prev, Fmt(Nte(Nte0004), prev->token.ctext(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
         else

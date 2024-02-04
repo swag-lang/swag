@@ -92,8 +92,20 @@ namespace Semantic
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
     void collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes);
     void collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
-    void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
-    bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+    void collectAlternativeScopeHierarchy(SemanticContext*                   context,
+                                          VectorNative<AlternativeScope>&    scopes,
+                                          VectorNative<AlternativeScopeVar>& scopesVars,
+                                          AstNode*                           startNode,
+                                          uint32_t                           flags,
+                                          IdentifierScopeUpMode              scopeUpMode  = IdentifierScopeUpMode::None,
+                                          TokenParse*                        scopeUpValue = nullptr);
+    bool collectScopeHierarchy(SemanticContext*                   context,
+                               VectorNative<AlternativeScope>&    scopes,
+                               VectorNative<AlternativeScopeVar>& scopesVars,
+                               AstNode*                           startNode,
+                               uint32_t                           flags,
+                               IdentifierScopeUpMode              scopeUpMode  = IdentifierScopeUpMode::None,
+                               TokenParse*                        scopeUpValue = nullptr);
     bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
@@ -109,70 +121,74 @@ namespace Semantic
     void     computeAccessRec(AstNode* node);
     bool     checkAccess(JobContext* context, AstNode* node);
 
-    void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
-    void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
-    void           decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
-    uint32_t       alignOf(AstVarDecl* node);
-    bool           isCompilerContext(AstNode* node);
-    DataSegment*   getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
-    bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
-    void           inheritAttributesFromParent(AstNode* child);
-    void           inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
-    void           inheritAttributesFromOwnerFunc(AstNode* child);
-    bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
-    bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
-    bool           derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
-    uint32_t       getMaxStackSize(AstNode* node);
-    void           setOwnerMaxStackSize(AstNode* node, uint32_t size);
-    bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
-    bool           makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
-    void           sortParameters(AstNode* allParams);
-    void           dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
-    bool           setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
-    bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    void           resolvePendingLambdaTyping(SemanticContext* context, AstNode* funcDecl, TypeInfo* resolvedType, int i);
-    void           allocateOnStack(AstNode* node, TypeInfo* typeInfo);
-    bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
-    Diagnostic*    computeNonConstExprNote(AstNode* node);
-    bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
-    bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
-    bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
-    bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, uint32_t flags = 0);
-    bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
-    bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
-    bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
-    bool           waitForStructUserOps(SemanticContext* context, AstNode* node);
-    bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags);
-    bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
-    bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);
-    bool           collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
-    bool           collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
-    void           disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
-    void           propagateReturn(AstNode* node);
-    bool           resolveMakePointer(SemanticContext* context);
-    bool           resolveMakePointerLambda(SemanticContext* context);
-    bool           boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
-    bool           getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
-    void           forceConstType(SemanticContext* context, AstTypeExpression* node);
-    void           setVarDeclResolve(AstVarDecl* varNode);
-    bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
-    DataSegment*   getSegmentForVar(SemanticContext* context, AstVarDecl* node);
-    bool           getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pz, int& result, const char* errMsg);
-    bool           processLiteralString(SemanticContext* context);
-    bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);
-    bool           getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
-    bool           canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
-    bool           getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
-    bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
-    bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
-    bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
-    bool           needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
-    bool           needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol);
-    bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
-    TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
-    bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
+    void decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
+    void decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
+    void decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
+    uint32_t alignOf(AstVarDecl* node);
+    bool isCompilerContext(AstNode* node);
+    DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
+    bool setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
+    void inheritAttributesFromParent(AstNode* child);
+    void inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
+    void inheritAttributesFromOwnerFunc(AstNode* child);
+    bool setupIdentifierRef(SemanticContext* context, AstNode* node);
+    bool derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
+    bool derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
+    uint32_t getMaxStackSize(AstNode* node);
+    void setOwnerMaxStackSize(AstNode* node, uint32_t size);
+    bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    void sortParameters(AstNode* allParams);
+    void dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
+    bool setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
+    bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    void resolvePendingLambdaTyping(SemanticContext* context, AstNode* funcDecl, TypeInfo* resolvedType, int i);
+    void allocateOnStack(AstNode* node, TypeInfo* typeInfo);
+    bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
+    Diagnostic* computeNonConstExprNote(AstNode* node);
+    bool executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
+    bool doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
+    bool reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    bool storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    bool isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
+    bool matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, uint32_t flags = 0);
+    bool evaluateConstExpression(SemanticContext* context, AstNode* node);
+    bool evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
+    bool evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
+    bool waitForStructUserOps(SemanticContext* context, AstNode* node);
+    bool collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags);
+    bool collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
+    bool collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);
+    bool collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
+    bool collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
+    void disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
+    void propagateReturn(AstNode* node);
+    bool resolveMakePointer(SemanticContext* context);
+    bool resolveMakePointerLambda(SemanticContext* context);
+    bool boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
+    bool getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
+    void forceConstType(SemanticContext* context, AstTypeExpression* node);
+    void setVarDeclResolve(AstVarDecl* varNode);
+    bool convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
+    DataSegment* getSegmentForVar(SemanticContext* context, AstVarDecl* node);
+    bool getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pz, int& result, const char* errMsg);
+    bool processLiteralString(SemanticContext* context);
+    bool computeExpressionListTupleType(SemanticContext* context, AstNode* node);
+    bool getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
+    bool canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
+    bool getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
+    bool appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
+    bool fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
+    bool fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
+    bool needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
+    bool needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol);
+    bool resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
+    TypeInfoEnum* findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
+    bool findEnumTypeInContext(SemanticContext* context,
+                               AstNode* node,
+                               VectorNative<TypeInfoEnum*>& result,
+                               VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has,
+                               VectorNative<SymbolOverload*>& testedOver);
     void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     bool           filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
@@ -296,7 +312,15 @@ namespace Semantic
     bool resolveImplForAfterFor(SemanticContext* context);
     bool resolveImplForType(SemanticContext* context);
     bool resolveImplFor(SemanticContext* context);
-    bool generateMissingInterfaceFct(const uint32_t& numFctInterface, VectorNative<AstFuncDecl*>& mapItIdxToFunc, SemanticContext* context, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface, AstImpl* node, TypeInfo* typeInfo, bool& retFlag);
+    bool generateMissingInterfaceFct(const uint32_t&             numFctInterface,
+                                     VectorNative<AstFuncDecl*>& mapItIdxToFunc,
+                                     SemanticContext*            context,
+                                     TypeInfoStruct*             typeStruct,
+                                     TypeInfoStruct*             typeBaseInterface,
+                                     TypeInfoStruct*             typeInterface,
+                                     AstImpl*                    node,
+                                     TypeInfo*                   typeInfo,
+                                     bool&                       retFlag);
     bool resolveStruct(SemanticContext* context);
     bool resolveInterface(SemanticContext* context);
     bool resolveEnum(SemanticContext* context);

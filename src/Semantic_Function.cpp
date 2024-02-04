@@ -87,7 +87,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
 
         const auto paramType     = nodeParam->typeInfo;
-        auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
+        auto       paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
 
         // Code is only valid for a macro or mixin
         if (paramType->isCode())
@@ -230,8 +230,8 @@ bool Semantic::resolveFuncDeclAfterSI(SemanticContext* context)
     const auto saveNode = context->node;
     if (context->node->parent->kind == AstNodeKind::Inline)
     {
-        const auto node     = CastAst<AstInline>(context->node->parent, AstNodeKind::Inline);
-        context->node = node->func;
+        const auto node = CastAst<AstInline>(context->node->parent, AstNodeKind::Inline);
+        context->node   = node->func;
     }
     else
     {
@@ -356,7 +356,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
             if (implNode->identifierFor)
             {
                 const auto forId = implNode->identifier->childs.back();
-                implFor    = true;
+                implFor          = true;
 
                 // Be sure interface has been fully solved
                 {
@@ -773,7 +773,8 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0102), typeStruct->getDisplayNameC())}));
+            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR),
+                        context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0102), typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
@@ -990,7 +991,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         {
             ScopedLock lk(typeStruct->mutex);
             SWAG_ASSERT(funcNode->methodParam);
-            const auto typeFunc                     = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc               = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
             funcNode->methodParam->attributes = typeFunc->attributes;
         }
 
@@ -1081,7 +1082,7 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
         if (typeField->isArray())
         {
             const auto typeArray = CastTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);
-            typeField      = typeArray->finalType;
+            typeField            = typeArray->finalType;
         }
 
         if (typeField->isPointer())
@@ -1429,7 +1430,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
     // Deduce return type
     const auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    bool lateRegister = funcNode->specFlags & AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
+    bool       lateRegister = funcNode->specFlags & AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
     if (funcReturnType->isVoid() || funcReturnType->isGeneric())
     {
         if (!(funcNode->specFlags & AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE))
@@ -1535,7 +1536,9 @@ bool Semantic::resolveReturn(SemanticContext* context)
         if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
         {
             PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, []()
-                              { return Nte(Nte0134); },
+                              {
+                                  return Nte(Nte0134);
+                              },
                               true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
@@ -1543,7 +1546,9 @@ bool Semantic::resolveReturn(SemanticContext* context)
         else if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
             PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType]()
-                              { return Fmt(Nte(Nte0007), returnType->getDisplayNameC()); },
+                              {
+                                  return Fmt(Nte(Nte0007), returnType->getDisplayNameC());
+                              },
                               true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
@@ -1554,7 +1559,9 @@ bool Semantic::resolveReturn(SemanticContext* context)
             if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->childs.empty())
                 nodeErr = funcNode->returnType->childs.front();
             PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType]()
-                              { return Fmt(Nte(Nte0007), returnType->getDisplayNameC()); }};
+            {
+                return Fmt(Nte(Nte0007), returnType->getDisplayNameC());
+            }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }
@@ -1566,9 +1573,9 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     auto childType = TypeManager::concreteType(child->typeInfo);
-    if(!returnType->isPointerRef() && childType->isPointerRef())
+    if (!returnType->isPointerRef() && childType->isPointerRef())
         setUnRef(child);
-    
+
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && (returnType->isStruct() || returnType->isArrayOfStruct()))
     {
@@ -1589,8 +1596,8 @@ bool Semantic::resolveReturn(SemanticContext* context)
             const auto varNode = Ast::newVarDecl(context->sourceFile, Fmt("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
             varNode->inheritTokenLocation(child);
 
-            const auto typeExpr      = Ast::newTypeExpression(context->sourceFile, varNode);
-            typeExpr->typeInfo = child->typeInfo;
+            const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode);
+            typeExpr->typeInfo  = child->typeInfo;
             typeExpr->flags |= AST_NO_SEMANTIC;
             varNode->type = typeExpr;
 
@@ -1711,7 +1718,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // The content will be inline in its separated syntax block
-    const auto inlineNode            = Ast::newInline(identifier->sourceFile, identifier);
+    const auto inlineNode      = Ast::newInline(identifier->sourceFile, identifier);
     inlineNode->attributeFlags = funcDecl->attributeFlags;
     inlineNode->func           = funcDecl;
     inlineNode->scope          = identifier->ownerScope;
@@ -1861,7 +1868,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         // Replace user #mixin
         if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SPEC_MIXIN)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i                                        = 0; i < 10; i++)
                 cloneContext.replaceNames[Fmt("#mixin%d", i)] = Fmt("__mixin%d", g_UniqueID.fetch_add(1));
         }
 

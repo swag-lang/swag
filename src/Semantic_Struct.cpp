@@ -37,7 +37,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 
     if (structDecl->scope != node->structScope)
     {
-        const auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
         ScopedLock lk1(typeStruct->mutex);
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
@@ -258,8 +258,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             case MatchResult::BadSignature:
             {
                 const Diagnostic diag{childFct, childFct->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
-                const auto       note  = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2], Fmt(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                const auto       note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                const auto       note = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2],
+                                                         Fmt(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                const auto note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
+                                                    Fmt(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                 return context->report(diag, note, note1);
             }
 
@@ -393,7 +395,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     }
 
     // itable
-    const auto typeITable        = makeType<TypeInfoStruct>();
+    const auto typeITable  = makeType<TypeInfoStruct>();
     typeITable->name       = node->token.text;
     typeITable->structName = node->token.text;
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
@@ -457,7 +459,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         typeITable->sizeOf += sizeof(void*);
 
         // Register lambda variable in the scope of the itable struct
-        const auto              overload = child->resolvedSymbolOverload;
+        const auto        overload = child->resolvedSymbolOverload;
         auto&             symTable = typeITable->scope->symTable;
         AddSymbolTypeInfo toAdd;
         toAdd.node          = child;
@@ -640,11 +642,12 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
         Ast::addChildFront(structNode, structNode->genericParameters);
 
         Ast::visit(structNode->genericParameters, [&](AstNode* n)
-                   {
-                       n->inheritOwners(structNode);
-                       n->ownerStructScope = structNode->scope;
-                       n->ownerScope       = structNode->scope;
-                       n->flags |= AST_IS_GENERIC; });
+        {
+            n->inheritOwners(structNode);
+            n->ownerStructScope = structNode->scope;
+            n->ownerScope       = structNode->scope;
+            n->flags |= AST_IS_GENERIC;
+        });
     }
 
     return true;
@@ -699,7 +702,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
         symbolKind = SymbolKind::Struct;
         break;
     case AstNodeKind::InterfaceDecl:
-        symbolKind     = SymbolKind::Interface;
+        symbolKind = SymbolKind::Interface;
         typeInfo->kind = TypeInfoKind::Interface;
         break;
     default:
@@ -776,7 +779,7 @@ bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 
     if (!expr->hasComputedValue())
     {
-        const auto node                  = context->node;
+        const auto node            = context->node;
         context->validIfParameters = structDecl->genericParameters;
 
         PushErrCxtStep ec(context, node, ErrCxtStepKind::ValidIf, nullptr);

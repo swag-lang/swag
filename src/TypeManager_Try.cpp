@@ -12,7 +12,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
         const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
-        structType   = typePtr->pointedType;
+        structType         = typePtr->pointedType;
     }
 
     bool isMoveRef = false;
@@ -21,17 +21,17 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     if (structType->isConstPointerRef() && castFlags & CASTFLAG_PARAMS)
     {
         const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
-        structType   = typePtr->pointedType;
-        toType       = structType;
+        structType         = typePtr->pointedType;
+        toType             = structType;
     }
 
     // We can also match a moveref with an opAffect
     else if (structType->isPointerMoveRef() && castFlags & CASTFLAG_PARAMS)
     {
         const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
-        structType   = typePtr->pointedType;
-        toType       = structType;
-        isMoveRef    = true;
+        structType         = typePtr->pointedType;
+        toType             = structType;
+        isMoveRef          = true;
     }
 
     if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
@@ -161,7 +161,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
         const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
-        structType   = typePtr->pointedType;
+        structType         = typePtr->pointedType;
     }
 
     if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))

@@ -59,15 +59,15 @@ void SCBE_CPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, u
     relocTableTextSection.table.push_back(reloc);
 }
 
-CPUSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
+CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
 {
-    const auto       it  = globalStrings.find(str);
+    const auto it  = globalStrings.find(str);
     CPUSymbol* sym = nullptr;
     if (it != globalStrings.end())
         sym = &allSymbols[it->second];
     else
     {
-        const Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
+        const Utf8 symName = Fmt("__str%u", (uint32_t) globalStrings.size());
         sym                = getOrAddSymbol(symName, CPUSymbolKind::GlobalString);
         globalStrings[str] = sym->index;
         sym->value         = stringSegment.addStringNoLock(str);
@@ -76,13 +76,13 @@ CPUSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
     return sym;
 }
 
-uint32_t SCBE_CPU ::getOrCreateLabel(uint32_t ip)
+uint32_t SCBE_CPU::getOrCreateLabel(uint32_t ip)
 {
     const auto it = labels.find(ip);
     if (it == labels.end())
     {
         const auto count = concat.totalCount();
-        labels[ip] = count;
+        labels[ip]       = count;
         return count;
     }
 
@@ -98,7 +98,7 @@ CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
-uint32_t SCBE_CPU ::getParamStackOffset(CPUFunction* cpuFct, int paramIdx)
+uint32_t SCBE_CPU::getParamStackOffset(CPUFunction* cpuFct, int paramIdx)
 {
     const auto& cc = cpuFct->typeFunc->getCallConv();
 

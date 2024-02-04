@@ -98,13 +98,13 @@ SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolType
     occupied = true;
 
     // Be sure we have a symbol
-    const auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
-    toAdd.symbolName = findNoLock(*symName);
+    const auto symName = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
+    toAdd.symbolName   = findNoLock(*symName);
     if (!toAdd.symbolName)
         toAdd.symbolName = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
 
     const auto res = addSymbolTypeInfoNoLock(context, toAdd);
-    occupied = false;
+    occupied       = false;
     return res;
 }
 
@@ -118,9 +118,9 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // In case an #if block has passed before us
     if (symbol->cptOverloadsInit == 0)
     {
-        const auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
-        symbol           = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
-        toAdd.symbolName = symbol;
+        const auto symName = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
+        symbol             = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
+        toAdd.symbolName   = symbol;
     }
 
     // Only add an inline parameter/retval once in a given scope
@@ -244,8 +244,8 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
     // An array of structs
     else if (typeInfo->isArrayOfStruct())
     {
-        const auto typeArr  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType->getConcreteAlias(), TypeInfoKind::Struct);
+        const auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        st.typeStruct      = CastTypeInfo<TypeInfoStruct>(typeArr->finalType->getConcreteAlias(), TypeInfoKind::Struct);
     }
     else
     {
@@ -285,14 +285,14 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     {
     case AstNodeKind::EnumDecl:
     {
-        const auto enumNode   = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
-        enumNode->scope = nullptr;
+        const auto enumNode = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
+        enumNode->scope     = nullptr;
         break;
     }
     case AstNodeKind::StructDecl:
     {
-        const auto structNode   = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        structNode->scope = nullptr;
+        const auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        structNode->scope     = nullptr;
         break;
     }
     default:
@@ -329,7 +329,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     if (node->kind == AstNodeKind::FuncDecl)
     {
         const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        token         = &funcNode->tokenName;
+        token               = &funcNode->tokenName;
     }
 
     if (!symbol)

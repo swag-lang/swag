@@ -9,13 +9,13 @@
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
-    const auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
+    const auto node   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
     if (inTypeVarDecl)
     {
-        const auto        newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
+        const auto  newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
         Scoped      scoped(this, newScope);
         ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
@@ -39,8 +39,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         node->kind = AstNodeKind::TypeClosure;
         SWAG_CHECK(eatToken());
 
-        // :ClosureForceFirstParam
-        // A closure always has at least one parameter : the capture context
+    // :ClosureForceFirstParam
+    // A closure always has at least one parameter : the capture context
         params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters         = params;
         firstAddedType           = Ast::newTypeExpression(sourceFile, params);
@@ -332,8 +332,8 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->extMisc()->exportNode = structNode;
 
-    const auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
-    structNode->content = contentNode;
+    const auto contentNode = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
+    structNode->content    = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
@@ -361,8 +361,8 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->extMisc()->alternativeNode = parent;
 
-    const auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
-    structNode->scope = newScope;
+    const auto newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
+    structNode->scope   = newScope;
 
     {
         ScopedSelfStruct sf(this, parent->ownerStructScope);
@@ -378,14 +378,14 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
     // Reference to that struct
     const auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
-    *result    = idRef;
+    *result          = idRef;
 
     idRef->childs.back()->flags |= AST_GENERATED;
     Ast::removeFromParent(structNode);
     Ast::addChildBack(newParent, structNode);
     structNode->inheritOwners(newParent);
 
-    const auto typeInfo        = makeType<TypeInfoStruct>();
+    const auto typeInfo  = makeType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->token.text;
     typeInfo->structName = structNode->token.text;
@@ -396,10 +396,11 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
 
     Ast::visit(structNode->content, [&](AstNode* n)
-               {
-                   n->inheritOwners(structNode);
-                   n->ownerStructScope = newScope;
-                   n->ownerScope       = newScope; });
+    {
+        n->inheritOwners(structNode);
+        n->ownerStructScope = newScope;
+        n->ownerScope       = newScope;
+    });
 
     return true;
 }
@@ -485,7 +486,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
     const auto node = Ast::newTypeExpression(sourceFile, parent, this);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
 
     // Const keyword
@@ -607,7 +608,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     if (token.id == TokenId::KwdCode)
     {
         const auto node = Ast::newTypeExpression(sourceFile, parent, this);
-        *result   = node;
+        *result         = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeInfo = g_TypeMgr->typeInfoCode;
         node->typeFlags |= TYPEFLAG_IS_CODE;
@@ -618,7 +619,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     // retval
     if (token.id == TokenId::KwdRetVal)
     {
-        const auto node         = Ast::newTypeExpression(sourceFile, parent, this);
+        const auto node   = Ast::newTypeExpression(sourceFile, parent, this);
         *result           = node;
         node->semanticFct = Semantic::resolveRetVal;
         node->flags |= AST_NO_BYTECODE_CHILDS;
@@ -657,7 +658,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 
 bool Parser::doCast(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
+    const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
@@ -698,7 +699,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
 bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
+    const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveExplicitAutoCast;
 

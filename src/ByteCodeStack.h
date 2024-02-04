@@ -26,13 +26,13 @@ struct ByteCodeStack
     {
         if (steps.count < steps.allocated)
         {
-            const auto buf   = steps.buffer + steps.count++;
-            buf->bc    = context->bc;
-            buf->ip    = context->ip - 1;
-            buf->bp    = context->bp;
-            buf->sp    = context->sp;
-            buf->spAlt = context->spAlt;
-            buf->stack = context->stack;
+            const auto buf = steps.buffer + steps.count++;
+            buf->bc        = context->bc;
+            buf->ip        = context->ip - 1;
+            buf->bp        = context->bp;
+            buf->sp        = context->sp;
+            buf->spAlt     = context->spAlt;
+            buf->stack     = context->stack;
         }
         else
         {

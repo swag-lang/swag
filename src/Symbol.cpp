@@ -52,9 +52,9 @@ void SymbolName::decreaseOverloadNoLock()
 
 SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    const auto overload      = Allocator::alloc<SymbolOverload>();
-    overload->typeInfo = typeInfo;
-    overload->node     = node;
+    const auto overload = Allocator::alloc<SymbolOverload>();
+    overload->typeInfo  = typeInfo;
+    overload->node      = node;
 #ifdef SWAG_STATS
     g_Stats.memSymOver += sizeof(SymbolOverload);
 #endif

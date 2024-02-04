@@ -16,7 +16,7 @@ void SemanticJob::release()
 
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
-    const auto job          = Allocator::alloc<SemanticJob>();
+    const auto job    = Allocator::alloc<SemanticJob>();
     job->sourceFile   = sourceFile;
     job->module       = sourceFile->module;
     job->dependentJob = dependentJob;
@@ -67,7 +67,7 @@ bool SemanticJob::spawnJob()
             if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
             {
                 SWAG_ASSERT(sourceFile->module == module);
-                const auto job                 = newJob(dependentJob, sourceFile, node, false);
+                const auto job           = newJob(dependentJob, sourceFile, node, false);
                 job->context.errCxtSteps = context.errCxtSteps;
                 g_ThreadMgr.addJob(job);
             }
@@ -107,14 +107,14 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        const auto node      = nodes.back();
-        context.node   = node;
-        context.result = ContextResult::Done;
+        const auto node = nodes.back();
+        context.node    = node;
+        context.result  = ContextResult::Done;
 
         // To be sure that a bytecode job is not running on those nodes !
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
-                    node->bytecodeState == AstNodeResolveState::PostChilds ||
-                    (node->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)));
+            node->bytecodeState == AstNodeResolveState::PostChilds ||
+            (node->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)));
 
         // Some attribute flags must propagate from parent to childs, whatever
         Semantic::inheritAttributesFromParent(node);
@@ -191,7 +191,7 @@ JobResult SemanticJob::execute()
                 return JobResult::ReleaseJob;
             SWAG_ASSERT(context.result != ContextResult::Pending);
             SWAG_ASSERT(context.result != ContextResult::NewChilds);
-            // fallthrough
+        // fallthrough
 
         case AstNodeResolveState::PostChilds:
             if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)

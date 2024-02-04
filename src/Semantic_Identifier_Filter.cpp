@@ -236,7 +236,7 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
                     // If interface name is alone, then we take in priority the interface definition, not the impl block
                     if (node == node->parent->childs.front())
                         curMatch->remove = true;
-                    // If interface name is not alone (like X.ITruc), then we take in priority the sub scope
+                        // If interface name is not alone (like X.ITruc), then we take in priority the sub scope
                     else
                         matches[j]->remove = true;
                 }
@@ -435,7 +435,9 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
     }
 
     sort(matches.begin(), matches.end(), [](OneMatch* x, OneMatch* y)
-         { return x->prio < y->prio; });
+    {
+        return x->prio < y->prio;
+    });
 
     const auto prio = matches[0]->prio;
     for (const auto m : matches)
@@ -646,7 +648,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
             const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->replaceTypes.size())
             {
-                const auto                   node = context->node;
+                const auto             node = context->node;
                 VectorNative<AstNode*> toCheck;
 
                 // Pick contextual generic type replacements
@@ -685,8 +687,8 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
 
 bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
-    const auto  identifierRef    = node->identifierRef();
-    auto& dependentSymbols = context->cacheDependentSymbols;
+    const auto identifierRef    = node->identifierRef();
+    auto&      dependentSymbols = context->cacheDependentSymbols;
 
     if (dependentSymbols.size() == 1)
         return true;

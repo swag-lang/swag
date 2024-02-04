@@ -545,19 +545,19 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     case TypeInfoKind::Interface:
     {
         const auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
+        attr            = &type->attributes;
         break;
     }
     case TypeInfoKind::FuncAttr:
     {
         const auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
+        attr            = &type->attributes;
         break;
     }
     case TypeInfoKind::Enum:
     {
         const auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
-        attr      = &type->attributes;
+        attr            = &type->attributes;
         break;
     }
     default:
@@ -1002,7 +1002,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     if (typeInfo->isAutoConstPointerRef())
     {
         const auto typeRef = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        typeInfo     = typeRef->pointedType;
+        typeInfo           = typeRef->pointedType;
     }
 
     if (typeInfo->isSelf())
@@ -2131,7 +2131,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (const auto one : publicSet->publicAttr)
         {
-            const auto              node     = CastAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
+            const auto        node     = CastAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
             concat.addIndent(context.indent);

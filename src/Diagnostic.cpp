@@ -245,7 +245,7 @@ static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& r
         return;
 
     const uint32_t decal = startLocation.column;
-    uint32_t cpt   = 0;
+    uint32_t       cpt   = 0;
     for (uint32_t i = decal; i < lineCode.length() && i < decal + range; i++)
     {
         if (lineCode[i] == c1)
@@ -277,7 +277,9 @@ static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& r
 void Diagnostic::sortRanges()
 {
     sort(ranges.begin(), ranges.end(), [](auto& r1, auto& r2)
-         { return r1.startLocation.column < r2.startLocation.column; });
+    {
+        return r1.startLocation.column < r2.startLocation.column;
+    });
 }
 
 void Diagnostic::collectRanges()
@@ -539,8 +541,8 @@ void Diagnostic::printRanges()
     // The last one in on the same line as the underline if there is enough room
     if (ranges.size())
     {
-        const auto&      r        = ranges.back();
-        const auto unformat = g_Log.removeFormat(r.hint.c_str());
+        const auto& r        = ranges.back();
+        const auto  unformat = g_Log.removeFormat(r.hint.c_str());
         if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
             g_Log.print(" ");

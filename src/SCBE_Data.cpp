@@ -54,7 +54,7 @@ bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment
     {
         *(void**) dataSegment->address(k.first) = 0;
 
-        const auto sym             = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
+        const auto sym       = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;

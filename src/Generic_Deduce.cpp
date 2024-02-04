@@ -5,7 +5,12 @@
 #include "Symbol.h"
 #include "TypeManager.h"
 
-void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo*& callTypeInfo, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter)
+void Generic::deduceSubType(SymbolMatchContext&      context,
+                            TypeInfo*                wantedTypeInfo,
+                            TypeInfo*&               callTypeInfo,
+                            VectorNative<TypeInfo*>& wantedTypeInfos,
+                            VectorNative<TypeInfo*>& callTypeInfos,
+                            AstNode*                 callParameter)
 {
     switch (wantedTypeInfo->kind)
     {
@@ -47,7 +52,7 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 // order to get the corresponding field name. Then we will search for the name in the typelist (if
                 // specified).
                 const auto p       = wantedStruct->genericParameters[idx];
-                Utf8 nameVar = p->name;
+                Utf8       nameVar = p->name;
                 for (size_t idx1 = 0; idx1 < wantedStruct->fields.size(); idx1++)
                 {
                     if (wantedStruct->fields[idx1]->typeInfo->name == wantedStruct->genericParameters[idx]->typeInfo->name)
@@ -59,7 +64,7 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
 
                 // Then the corresponding field name is searched in the typelist in case the user has specified one.
                 const auto p1        = callList->subTypes[idx];
-                auto typeField = p1->typeInfo;
+                auto       typeField = p1->typeInfo;
                 for (const auto& subType : callList->subTypes)
                 {
                     if (nameVar == subType->name)
@@ -152,8 +157,8 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
             cv->reg.s64       = count;
 
             // Constant already defined ?
-            const auto&      cstName = wantedArray->sizeNode->resolvedSymbolName->name;
-            const auto it      = context.genericReplaceValues.find(cstName);
+            const auto& cstName = wantedArray->sizeNode->resolvedSymbolName->name;
+            const auto  it      = context.genericReplaceValues.find(cstName);
             if (it != context.genericReplaceValues.end())
             {
                 if (!Semantic::valueEqualsTo(it->second, cv, typeSize, 0))
@@ -269,14 +274,22 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
     }
 }
 
-void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, uint64_t castFlags, int idxParam, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter)
+void Generic::deduceType(SymbolMatchContext&      context,
+                         TypeInfo*                wantedTypeInfo,
+                         TypeInfo*                callTypeInfo,
+                         uint64_t                 castFlags,
+                         int                      idxParam,
+                         VectorNative<TypeInfo*>& wantedTypeInfos,
+                         VectorNative<TypeInfo*>& callTypeInfos,
+                         AstNode*                 callParameter)
 {
     // Do we already have mapped the generic parameter to something ?
     const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
     if (it != context.genericReplaceTypes.end())
     {
         // We must be sure that the registered type is the same as the new one
-        const bool same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+        const bool same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr,
+                                                       CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;
 
@@ -325,7 +338,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
             callStruct->genericParameters.size())
         {
             const auto newStructType = (TypeInfoStruct*) callStruct->clone();
-            for (size_t i = 0; i < callStruct->genericParameters.size(); i++)
+            for (size_t i                                 = 0; i < callStruct->genericParameters.size(); i++)
                 newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
             regTypeInfo = newStructType;
         }

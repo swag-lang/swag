@@ -392,7 +392,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
         for (; start < (int) lines.size(); start++)
         {
             const bool lastLine = start == (int) lines.size() - 1;
-            auto line     = lines[start];
+            auto       line     = lines[start];
             line.trim();
 
             bool mustEnd = false;
@@ -1319,12 +1319,13 @@ void GenDoc::constructPage()
     {
         helpOutput += "<div class=\"swag-watermark\">\n";
         const time_t t = time(nullptr);
-        tm     nt;
+        tm           nt;
         localtime_s(&nt, &t);
         std::ostringstream oss;
         oss << std::put_time(&nt, "%d-%m-%Y");
         const string dateTime = oss.str();
-        helpOutput += Fmt("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        helpOutput += Fmt("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION,
+                          SWAG_BUILD_NUM);
         helpOutput += "</div>\n";
     }
 

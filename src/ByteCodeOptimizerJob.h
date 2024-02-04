@@ -5,7 +5,7 @@ struct ByteCode;
 
 struct ByteCodeOptimizerJob : public Job
 {
-    virtual ~ByteCodeOptimizerJob() = default;
+    virtual   ~ByteCodeOptimizerJob() = default;
     JobResult execute() override;
 
     void release() override

@@ -179,7 +179,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
     {
         appendLiteralValueProtected(context, result, fmt, addr);
     }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
         result = "<error>";
     }
@@ -292,7 +292,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 for (int i = 0; i < indent + 1; i++)
                     str += "   ";
-                str += Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE.c_str(), p->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str(), COLOR_VTS_NAME.c_str(), p->name.c_str(), COLOR_VTS_DEFAULT.c_str());
+                str += Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE.c_str(), p->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str(), COLOR_VTS_NAME.c_str(), p->name.c_str(),
+                           COLOR_VTS_DEFAULT.c_str());
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
                 res1.addr = ((uint8_t*) addr) + p->offset;
@@ -487,7 +488,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, 
     {
         appendTypedValueProtected(context, str, res, indent);
     }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
         str += "<error>";
     }
@@ -503,7 +504,8 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
     if (!testNameFilter(over->symbol->name, filter))
         return;
 
-    Utf8 str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE.c_str(), over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str(), COLOR_VTS_NAME.c_str(), over->symbol->name.c_str(), COLOR_VTS_DEFAULT.c_str());
+    Utf8 str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE.c_str(), over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str(), COLOR_VTS_NAME.c_str(), over->symbol->name.c_str(),
+                   COLOR_VTS_DEFAULT.c_str());
 
     EvaluateResult res;
     res.type = over->typeInfo;

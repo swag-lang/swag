@@ -100,8 +100,8 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
     EMIT_INST1(context, ByteCodeOp::Jump, ifTrue->resultRegisterRC);
 
     // After this, this is the IfFalse block, so update jump value after the expression
-    const auto inst   = &context->bc->out[binNode->seekJumpIfFalse];
-    inst->b.s32 = context->bc->numInstructions - binNode->seekJumpIfFalse - 1;
+    const auto inst = &context->bc->out[binNode->seekJumpIfFalse];
+    inst->b.s32     = context->bc->numInstructions - binNode->seekJumpIfFalse - 1;
 
     return true;
 }
@@ -121,8 +121,8 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], ifFalse->resultRegisterRC[0]);
 
     // Update jump after the IfTrue block
-    const auto inst   = &context->bc->out[node->seekJumpAfterIfFalse];
-    inst->b.s32 = context->bc->numInstructions - node->seekJumpAfterIfFalse - 1;
+    const auto inst = &context->bc->out[node->seekJumpAfterIfFalse];
+    inst->b.s32     = context->bc->numInstructions - node->seekJumpAfterIfFalse - 1;
 
     freeRegisterRC(context, expression);
     freeRegisterRC(context, ifTrue);
@@ -237,7 +237,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         }
 
         // Emit one affectation per child
-        const auto         oneOffset   = typeList->subTypes.front()->typeInfo->sizeOf;
+        const auto   oneOffset   = typeList->subTypes.front()->typeInfo->sizeOf;
         size_t       totalOffset = 0;
         RegisterList r0;
         reserveRegisterRC(context, r0, 1);
@@ -321,7 +321,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     if (node->kind == AstNodeKind::Identifier)
     {
         const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        identifierRef   = identifier->identifierRef();
+        identifierRef         = identifier->identifierRef();
     }
     else if (node->kind == AstNodeKind::ArrayPointerIndex)
     {

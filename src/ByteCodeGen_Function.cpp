@@ -13,7 +13,7 @@
 
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
-    const auto         funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto   funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     PushLocation pl(context, &funcDecl->content->token.endLocation);
     PushNode     pn(context, funcDecl->content);
 
@@ -80,7 +80,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
     {
         const auto returnExpression = node->childs.front();
-        auto backExpression   = node->childs.back();
+        auto       backExpression   = node->childs.back();
         if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch || backExpression->kind == AstNodeKind::TryCatch)
             backExpression = backExpression->childs.back();
         const auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
@@ -1196,7 +1196,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     if (node->isSilentCall())
     {
         const auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
-        typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
+        typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
     }
 
     // A closure is the pointer to the variable, not the function address
@@ -1267,7 +1267,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
 
 void ByteCodeGen::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
 {
-    const auto seg        = Semantic::getConstantSegFromContext(context->node, forceCompiler);
+    const auto seg  = Semantic::getConstantSegFromContext(context->node, forceCompiler);
     *storageSegment = seg;
 
     const auto sourceFile = node->sourceFile;
@@ -1562,8 +1562,8 @@ bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* 
     }
 
     // Store in RR0 the address of the stack to store the result
-    const auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-    inst->b.u64 = node->computedValue->storageOffset;
+    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+    inst->b.u64     = node->computedValue->storageOffset;
     EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRC);
     context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
@@ -1581,7 +1581,14 @@ bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* 
     return true;
 }
 
-bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams)
+bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
+                           AstNode*            allParams,
+                           AstFuncDecl*        funcNode,
+                           AstVarDecl*         varNode,
+                           RegisterList&       varNodeRegisters,
+                           bool                foreign,
+                           bool                lambda,
+                           bool                freeRegistersParams)
 {
     AstNode* node = context->node;
 
@@ -1671,10 +1678,11 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
     if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
     {
         sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2)
-             {
-                 const AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-                 const AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-                 return p1->indexParam < p2->indexParam; });
+        {
+            const AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+            const AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+            return p1->indexParam < p2->indexParam;
+        });
     }
     else if (allParams && (allParams->semFlags & SEMFLAG_INVERSE_PARAMS))
     {
@@ -2224,7 +2232,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
 bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 {
     const auto node     = context->node;
-    auto funcNode = node->ownerFct;
+    auto       funcNode = node->ownerFct;
     SWAG_ASSERT(funcNode);
     PushNode pn(context, funcNode->content);
 

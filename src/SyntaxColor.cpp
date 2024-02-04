@@ -26,7 +26,7 @@ static void rgbToHsl(RGBColor color, float* h, float* s, float* l)
     else
     {
         const float d = maxVal - minVal;
-        *s      = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
+        *s            = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
 
         if (maxVal == r)
         {

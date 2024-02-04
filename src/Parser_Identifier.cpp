@@ -45,7 +45,9 @@ bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
     // Pour toi frangouille, ajouté le jour de ton départ
     if (node->token.text.compareNoCase("jyb37"))
     {
-        const Diagnostic diag{node, "I'm sorry, but 'JYB' is my little brother's nickname, and '37' is the age when he passed away at 1:29 AM on 11-26-2023. Please, please use another identifier. I love you, bro."};
+        const Diagnostic diag{
+            node,
+            "I'm sorry, but 'JYB' is my little brother's nickname, and '37' is the age when he passed away at 1:29 AM on 11-26-2023. Please, please use another identifier. I love you, bro."};
         context->report(diag);
         return false;
     }
@@ -222,7 +224,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
     const auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
-    *result            = identifierRef;
+    *result                  = identifierRef;
 
     switch (token.id)
     {
@@ -391,7 +393,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 bool Parser::doThrow(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     SWAG_VERIFY(node->ownerFct, error(node, Err(Err0471)));
     node->semanticFct = Semantic::resolveThrow;
     SWAG_CHECK(eatToken());
@@ -413,7 +415,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
 
 bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
+    const auto node   = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
     node->kwdLoc      = token;
     node->semanticFct = Semantic::resolveUsing;
 
@@ -441,7 +443,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 
 bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
+    const auto node   = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
     node->kwdLoc      = token;
     node->semanticFct = Semantic::resolveUsing;
 
@@ -472,7 +474,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
     const auto tokenIdentifier = token;
     eatToken();
 
-    const Diagnostic                diag{sourceFile, tokenIdentifier, Fmt(Err(Err0689), tokenIdentifier.ctext())};
+    const Diagnostic          diag{sourceFile, tokenIdentifier, Fmt(Err(Err0689), tokenIdentifier.ctext())};
     Vector<const Diagnostic*> notes;
 
     if (token.id == TokenId::Identifier)

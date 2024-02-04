@@ -133,7 +133,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterF64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -226,7 +226,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterS8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -319,7 +319,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterS16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -412,7 +412,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterS32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -505,7 +505,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterS64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -598,7 +598,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterU8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -691,7 +691,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterU16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -784,7 +784,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterU32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -877,7 +877,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfGreaterU64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -970,7 +970,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
             break;
 
-            //
+        //
         case ByteCodeOp::JumpIfFalse:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
@@ -1484,7 +1484,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfFalse:
             destIp = ip + ip->b.s32 + 1;
 
-            // Jump if false to a jump if false with the same register
+        // Jump if false to a jump if false with the same register
             if (destIp->op == ByteCodeOp::JumpIfFalse &&
                 destIp->a.u32 == ip->a.u32 &&
                 !(ip->flags & BCI_IMM_A) &&
@@ -1524,7 +1524,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfTrue:
             destIp = ip + ip->b.s32 + 1;
 
-            // Jump if true to a jump if true with the same register
+        // Jump if true to a jump if true with the same register
             if (destIp->op == ByteCodeOp::JumpIfTrue &&
                 destIp->a.u32 == ip->a.u32 &&
                 !(ip->flags & BCI_IMM_A) &&
@@ -1852,7 +1852,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
             continue;
 
         const auto orgValue0 = ip->a.u32;
-        auto orgValue1 = UINT32_MAX;
+        auto       orgValue1 = UINT32_MAX;
         if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !(ip->flags & BCI_START_STMT))
             orgValue1 = ip[-1].a.u32;
 
@@ -1971,13 +1971,13 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         int32_t* patchCompiler = (int32_t*) addrCompiler;
 
         // Set table to default jump
-        for (uint32_t i = 0; i < range + 1; i++)
+        for (uint32_t i      = 0; i < range + 1; i++)
             patchCompiler[i] = (int32_t) (defaultIp - ipStart) - 1;
 
         // Then register each value
         for (const auto& it : context->map6432)
         {
-            const int64_t v            = it.first - minValue;
+            const int64_t v      = it.first - minValue;
             patchCompiler[v + 1] = it.second;
         }
 

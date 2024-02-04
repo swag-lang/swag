@@ -39,8 +39,8 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoNamespace::clone()
 {
-    const auto newType   = makeType<TypeInfoNamespace>();
-    newType->scope = scope;
+    const auto newType = makeType<TypeInfoNamespace>();
+    newType->scope     = scope;
     newType->copyFrom(this);
     return newType;
 }
@@ -65,8 +65,8 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoAlias::clone()
 {
-    const auto newType     = makeType<TypeInfoAlias>();
-    newType->rawType = rawType;
+    const auto newType = makeType<TypeInfoAlias>();
+    newType->rawType   = rawType;
     newType->copyFrom(this);
     return newType;
 }
@@ -110,7 +110,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoPointer::clone()
 {
-    const auto newType         = makeType<TypeInfoPointer>();
+    const auto newType   = makeType<TypeInfoPointer>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -202,7 +202,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoArray::clone()
 {
-    const auto newType         = makeType<TypeInfoArray>();
+    const auto newType   = makeType<TypeInfoArray>();
     newType->pointedType = pointedType;
     newType->finalType   = finalType;
     newType->count       = count;
@@ -279,7 +279,7 @@ void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 TypeInfo* TypeInfoSlice::clone()
 {
-    const auto newType         = makeType<TypeInfoSlice>();
+    const auto newType   = makeType<TypeInfoSlice>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -459,7 +459,7 @@ void TypeInfoEnum::collectEnums(VectorNative<TypeInfoEnum*>& collect)
 
 TypeInfo* TypeInfoEnum::clone()
 {
-    const auto newType        = makeType<TypeInfoEnum>();
+    const auto newType  = makeType<TypeInfoEnum>();
     newType->scope      = scope;
     newType->rawType    = rawType;
     newType->attributes = attributes;
@@ -517,7 +517,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 {
     ScopedLock lk(mutex);
 
-    const auto newType                  = makeType<TypeInfoFuncAttr>();
+    const auto newType            = makeType<TypeInfoFuncAttr>();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
@@ -984,7 +984,7 @@ TypeInfo* TypeInfoStruct::clone()
 {
     ScopedLock lk(mutex);
 
-    const auto newType               = makeType<TypeInfoStruct>();
+    const auto newType         = makeType<TypeInfoStruct>();
     newType->scope             = scope;
     newType->opInit            = opInit;
     newType->opUserInitFct     = opUserInitFct;
@@ -1105,8 +1105,10 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
                 if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
                 {
                     SemanticContext cxt;
-                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE) &&
-                        !TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr,
+                                                      castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE) &&
+                        !TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr,
+                                                      castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
                         return false;
 
                     if (!Semantic::valueEqualsTo(myGenParam->value, otherGenParam->value, myGenParam->typeInfo, 0))

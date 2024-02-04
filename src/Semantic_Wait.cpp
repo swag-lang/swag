@@ -20,7 +20,7 @@ void Semantic::waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (job->module->waitImplForToSolve(job, typeInfoStruct))
@@ -45,7 +45,7 @@ void Semantic::waitAllStructInterfaces(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (job->module->waitImplForToSolve(job, typeInfoStruct))
@@ -70,7 +70,7 @@ void Semantic::waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingSpecialMethods == 0)
         return;
@@ -88,7 +88,7 @@ void Semantic::waitAllStructMethods(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingMethods == 0)
         return;
@@ -208,7 +208,7 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         return;
 
     //  :BecauseOfThat
-    const auto       structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    const auto structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     ScopedLock lk(structNode->mutex);
     if (!structNode->resolvedSymbolOverload)
     {

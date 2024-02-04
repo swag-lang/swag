@@ -362,14 +362,14 @@ void Utf8::makeUpper()
 {
     makeLocal();
     for (uint32_t i = 0; i < count; i++)
-        buffer[i] = (char) toupper(buffer[i]);
+        buffer[i]   = (char) toupper(buffer[i]);
 }
 
 void Utf8::makeLower()
 {
     makeLocal();
     for (uint32_t i = 0; i < count; i++)
-        buffer[i] = (char) tolower(buffer[i]);
+        buffer[i]   = (char) tolower(buffer[i]);
 }
 
 bool Utf8::compareNoCase(const Utf8& txt1)
@@ -939,7 +939,7 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
     s2len = str2.length();
 
     unsigned int* column = new unsigned int[s1len + 1];
-    for (y = 1; y <= s1len; y++)
+    for (y        = 1; y <= s1len; y++)
         column[y] = y;
     for (x = 1; x <= s2len; x++)
     {

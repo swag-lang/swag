@@ -55,7 +55,7 @@ struct Concat
     T* addObj()
     {
         ensureSpace(sizeof(T));
-        ::new (currentSP) T;
+        ::new(currentSP) T;
         auto result = (T*) currentSP;
         currentSP += sizeof(T);
         return result;

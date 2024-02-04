@@ -21,10 +21,10 @@ Module* ModuleDepManager::getCfgModule(const Utf8& name)
 
 void ModuleDepManager::parseCfgFile(Module* cfgModule)
 {
-    const auto buildJob    = Allocator::alloc<ModuleBuildJob>();
-    buildJob->module = cfgModule;
+    const auto buildJob = Allocator::alloc<ModuleBuildJob>();
+    buildJob->module    = cfgModule;
 
-    const auto syntaxJob        = Allocator::alloc<SyntaxJob>();
+    const auto syntaxJob  = Allocator::alloc<SyntaxJob>();
     syntaxJob->sourceFile = cfgModule->files.front();
     syntaxJob->addDependentJob(buildJob);
 
@@ -46,7 +46,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     else
         g_Workspace->computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
-    const auto cfgModule          = Allocator::alloc<Module>();
+    const auto cfgModule    = Allocator::alloc<Module>();
     cfgModule->kind         = ModuleKind::Config;
     cfgModule->isScriptFile = file->isScriptFile;
     cfgModule->setup(moduleName, moduleFolder);
@@ -73,7 +73,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
 
 void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
 {
-    const auto file       = Allocator::alloc<SourceFile>();
+    const auto file = Allocator::alloc<SourceFile>();
     file->name      = fileName;
     file->isCfgFile = true;
     Path pathFile   = dirName.c_str();
@@ -135,7 +135,9 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
     if (!allFiles.empty())
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
-             { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+        {
+            return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+        });
         for (const auto file : allFiles)
             registerCfgFile(file);
     }
@@ -310,7 +312,8 @@ bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     {
         cfgModule->fetchDep = dep;
 
-        const auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->buildCfg.moduleVersion, cfgModule->buildCfg.moduleRevision, cfgModule->buildCfg.moduleBuildNum);
+        const auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->buildCfg.moduleVersion, cfgModule->buildCfg.moduleRevision,
+                                         cfgModule->buildCfg.moduleBuildNum);
         switch (cmp)
         {
         // If the dependency requests a bigger version, then we will have to fetch the dependency configuration from the
@@ -580,7 +583,8 @@ bool ModuleDepManager::execute()
         // content
         if (!module->wasAddedDep && !module->mustFetchDep)
         {
-            cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+            cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion,
+                                  module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (cmp != CompareVersionResult::EQUAL)
                 module->mustFetchDep = true;
             else if (g_CommandLine.getDepCmd && g_CommandLine.getDepForce)
@@ -631,15 +635,15 @@ bool ModuleDepManager::execute()
             Job* fetchJob = nullptr;
             switch (m.second->fetchDep->fetchKind)
             {
-                // Copy from the disk, elsewhere
+            // Copy from the disk, elsewhere
             case DependencyFetchKind::Disk:
                 fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
                 break;
 
-                // This is a dependency to the swag compiler std workspace
-                // No need to make a copy, as we already have the source tree with the compiler
-                // So we create a special dependency file named SWAG_ALIAS_FILENAME which will trick the compiler
-                // That file will contain the path to the corresponding module location
+            // This is a dependency to the swag compiler std workspace
+            // No need to make a copy, as we already have the source tree with the compiler
+            // So we create a special dependency file named SWAG_ALIAS_FILENAME which will trick the compiler
+            // That file will contain the path to the corresponding module location
             case DependencyFetchKind::Swag:
             {
                 error_code err;

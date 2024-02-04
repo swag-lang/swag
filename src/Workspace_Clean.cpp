@@ -89,7 +89,8 @@ void Workspace::cleanScript(bool all)
             auto path = cacheFolder;
             path.append(folder);
             g_Log.messageHeaderCentered("Cleaning", path.string().c_str());
-            cleanFolderContent(path); },
+            cleanFolderContent(path);
+        },
         Fmt("%s-*", SWAG_SCRIPT_WORKSPACE).c_str());
 }
 

@@ -142,8 +142,8 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
         }
         else
         {
-            const auto     fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
-            ifstream fle(fileToRead->path, ios::binary);
+            const auto fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
+            ifstream   fle(fileToRead->path, ios::binary);
             if (!fle.is_open())
                 return "?";
 

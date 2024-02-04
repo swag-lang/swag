@@ -138,9 +138,9 @@ bool Semantic::resolveAssume(SemanticContext* context)
 
 bool Semantic::resolveThrow(SemanticContext* context)
 {
-    const auto node      = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-    auto expr      = node->childs.front();
-    node->typeInfo = expr->typeInfo;
+    const auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
+    auto       expr = node->childs.front();
+    node->typeInfo  = expr->typeInfo;
 
     SWAG_CHECK(checkCanThrow(context));
 

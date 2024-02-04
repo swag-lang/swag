@@ -22,40 +22,41 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     case AstNodeKind::FuncDecl:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::EnumDecl:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::StructDecl:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::InterfaceDecl:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::EnumValue:
     {
         const auto typeInfo = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        v             = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     default:
         break;
     }
 
-    const Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
-    const auto       note1 = Diagnostic::note(node, node->token, Nte(Nte0066));
-    note1->canBeMerged     = false;
+    const Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()),
+                          DiagnosticLevel::Warning};
+    const auto note1   = Diagnostic::note(node, node->token, Nte(Nte0066));
+    note1->canBeMerged = false;
 
     if (v && v->text.empty())
     {
@@ -85,7 +86,8 @@ bool SemanticError::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
         return true;
     if (funcDecl->flags & (AST_IS_GENERIC | AST_GENERATED | AST_FROM_GENERIC))
         return true;
-    if (funcDecl->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_INLINE | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_COMPILER))
+    if (funcDecl->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_INLINE | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_MAIN_FUNC |
+                                    ATTRIBUTE_COMPILER))
         return true;
 
     if (one->node->resolvedSymbolName->flags & SYMBOL_USED || one->isUsed)
@@ -178,7 +180,8 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
 
         if (overload->flags & OVERLOAD_VAR_LOCAL)
         {
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
+                            DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
@@ -195,27 +198,31 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
 
             if (front->isGeneratedSelf())
             {
-                Diagnostic diag{front->ownerFct, front->ownerFct->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                Diagnostic diag{front->ownerFct, front->ownerFct->token,
+                                Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
                 diag.hint       = Nte(Nte0145);
                 const auto note = Diagnostic::note(Nte(Nte0039));
                 isOk            = isOk && context->report(diag, note);
             }
             else
             {
-                Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
+                                DiagnosticLevel::Warning};
                 const auto note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
                 isOk            = isOk && context->report(diag, note);
             }
         }
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
+                            DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {
-            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+            Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
+                            DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }

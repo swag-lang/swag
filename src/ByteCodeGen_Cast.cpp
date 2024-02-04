@@ -109,8 +109,8 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
     // Need to make the pointer on the data
     if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
     {
-        const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
-        inst->b.u64 = exprNode->extMisc()->castOffset;
+        const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
+        inst->b.u64     = exprNode->extMisc()->castOffset;
         inst->flags |= BCI_IMM_B;
     }
 
@@ -643,7 +643,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     if (fromTypeInfo->isTypedVariadic())
     {
         const auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
-        fromTypeInfo      = TypeManager::concreteType(typeVariadic->rawType);
+        fromTypeInfo            = TypeManager::concreteType(typeVariadic->rawType);
     }
 
     if (fromTypeInfo->isPointerNull() || fromTypeInfo->isString())
@@ -675,7 +675,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
         const auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         const auto diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
-        const auto inst              = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRC[1]);
+        const auto inst        = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRC[1]);
         inst->b.u64            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
@@ -807,8 +807,8 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
         if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
         {
-            const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-            inst->b.u64 = exprNode->extMisc()->castOffset;
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            inst->b.u64     = exprNode->extMisc()->castOffset;
             inst->flags |= BCI_IMM_B;
         }
 
@@ -859,8 +859,8 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
             if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
             {
-                const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-                inst->b.u64 = exprNode->extMisc()->castOffset;
+                const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+                inst->b.u64     = exprNode->extMisc()->castOffset;
                 inst->flags |= BCI_IMM_B;
             }
 

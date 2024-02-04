@@ -90,8 +90,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
             optPostWrite = true;
 
-            // Read/write to A, and A is a constant, we store the current value in B. The constant folding pass can take care of that
-            // depending on the instruction
+        // Read/write to A, and A is a constant, we store the current value in B. The constant folding pass can take care of that
+        // depending on the instruction
             if (!(ip->flags & BCI_IMM_B) && (flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_A) && regs.contains(ip->a.u32) &&
                 !(flags & OPFLAG_READ_B) && !(flags & OPFLAG_READ_VAL32_B) && !(flags & OPFLAG_READ_VAL64_B))
             {
@@ -112,8 +112,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 break;
             }
 
-            // Read/write to A, and A is a constant, we store the current value in C. The constant folding pass can take care of that
-            // depending on the instruction
+        // Read/write to A, and A is a constant, we store the current value in C. The constant folding pass can take care of that
+        // depending on the instruction
             if (!(ip->flags & BCI_IMM_C) && (flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_A) && regs.contains(ip->a.u32) &&
                 !(flags & OPFLAG_READ_C) && !(flags & OPFLAG_READ_VAL32_C) && !(flags & OPFLAG_READ_VAL64_C))
             {
@@ -124,8 +124,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 break;
             }
 
-            // Operators can read from A and write to C, with A == C.
-            // In that case we want the optim to take place on A if it's immediate, so do not cancel it for C.
+        // Operators can read from A and write to C, with A == C.
+        // In that case we want the optim to take place on A if it's immediate, so do not cancel it for C.
             if ((flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_A) && regs.contains(ip->a.u32))
                 break;
 

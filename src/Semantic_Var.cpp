@@ -326,7 +326,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
         return context->report(diag);
     }
 
-    const auto sourceFile            = context->sourceFile;
+    const auto sourceFile      = context->sourceFile;
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
 
     const auto numParams = assign->childs.size();
@@ -465,8 +465,8 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
             // Generate an undefined type to make the match
             if (!mpl->tryLambdaType)
             {
-                const auto tryType  = makeType<TypeInfoFuncAttr>();
-                tryType->kind = TypeInfoKind::LambdaClosure;
+                const auto tryType = makeType<TypeInfoFuncAttr>();
+                tryType->kind      = TypeInfoKind::LambdaClosure;
                 if (nodeParam->ownerFct->captureParameters)
                     tryType->flags |= TYPEINFO_CLOSURE;
 
@@ -884,7 +884,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 YIELD();
             }
 
-            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT | CASTFLAG_ACCEPT_PENDING;
+            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT |
+                             CASTFLAG_ACCEPT_PENDING;
             if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             else

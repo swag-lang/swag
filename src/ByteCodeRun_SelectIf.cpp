@@ -71,7 +71,7 @@ void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstru
     if (paramIdx >= callParams->childs.size())
         return nullptr;
 
-    const auto         child          = callParams->childs[paramIdx];
+    const auto   child          = callParams->childs[paramIdx];
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
     ByteCodeGen::computeSourceLocation(context->callerContext, child, &storageOffset, &storageSegment, true);
@@ -156,7 +156,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     {
         if (child->typeInfo->isArray())
         {
-            const auto typeArray                 = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+            const auto typeArray           = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = typeArray->totalCount;
             return;
@@ -164,7 +164,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
         if (child->typeInfo->isListArray())
         {
-            const auto typeList                  = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
+            const auto typeList            = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = typeList->subTypes.size();
             return;
@@ -183,7 +183,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         {
         case NativeTypeKind::String:
             registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue->text.buffer;
-            registersRC[ip->b.u32].u64     = child->computedValue->text.length();
+            registersRC[ip->b.u32].u64 = child->computedValue->text.length();
             return;
 
         case NativeTypeKind::S8:

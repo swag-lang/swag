@@ -20,8 +20,8 @@ bool Semantic::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        const Diagnostic  diag({node, node->getTokenName(), Fmt(Err(Err0080), node->resolvedSymbolName->name.c_str())});
-        Diagnostic* note = nullptr;
+        const Diagnostic diag({node, node->getTokenName(), Fmt(Err(Err0080), node->resolvedSymbolName->name.c_str())});
+        Diagnostic*      note = nullptr;
         for (const auto p : node->resolvedSymbolName->nodes)
         {
             if (p != node)
@@ -250,11 +250,11 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // Store the value in the enum type
-    const auto typeParam      = g_TypeMgr->makeParam();
-    typeParam->name     = node->token.text;
-    typeParam->typeInfo = typeSubEnum;
-    typeParam->index    = (uint32_t) typeEnum->values.size();
-    typeParam->declNode = node;
+    const auto typeParam = g_TypeMgr->makeParam();
+    typeParam->name      = node->token.text;
+    typeParam->typeInfo  = typeSubEnum;
+    typeParam->index     = (uint32_t) typeEnum->values.size();
+    typeParam->declNode  = node;
     SWAG_CHECK(collectAttributes(context, node, &typeParam->attributes));
     typeEnum->values.push_back(typeParam);
     typeEnum->flags |= TYPEINFO_ENUM_HAS_USING;

@@ -45,7 +45,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
 
         if (context->sourceFile->module->buildCfg.errorStackTrace)
         {
-            const auto         r0 = reserveRegisterRC(context);
+            const auto   r0 = reserveRegisterRC(context);
             uint32_t     storageOffset;
             DataSegment* storageSegment;
             computeSourceLocation(context, context->node, &storageOffset, &storageSegment);

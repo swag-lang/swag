@@ -108,9 +108,9 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
     const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicLocationSI, node->resultRegisterRC);
     SWAG_ASSERT(front->resolvedSymbolOverload);
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
-    const auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-    inst->c.u32     = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
-    inst->d.pointer = (uint8_t*) front->resolvedSymbolOverload;
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
+    inst->d.pointer     = (uint8_t*) front->resolvedSymbolOverload;
 
     return true;
 }
@@ -124,9 +124,9 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRC);
     SWAG_ASSERT(front->resolvedSymbolOverload);
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
-    const auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-    inst->c.u32     = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
-    inst->d.pointer = (uint8_t*) front->resolvedSymbolOverload;
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
+    inst->d.pointer     = (uint8_t*) front->resolvedSymbolOverload;
 
     return true;
 }
@@ -143,8 +143,8 @@ bool ByteCodeGen::emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInf
     if (from == TypeInfoKind::Interface)
     {
         EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC, 2);
-        const auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-        inst->b.u64 = sizeof(void*);
+        const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+        inst->b.u64     = sizeof(void*);
         inst->flags |= BCI_IMM_B;
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
     }

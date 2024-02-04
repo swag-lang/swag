@@ -116,15 +116,15 @@ static void getArgValue(CommandLineArgument* oneArg, Utf8& value, Utf8& defaultV
             defaultValue += "false";
         break;
     case CommandLineType::Int:
-        value        = "<integer>";
+        value = "<integer>";
         defaultValue = to_string(*(int*) oneArg->buffer);
         break;
     case CommandLineType::String:
-        value        = "<string>";
+        value = "<string>";
         defaultValue = *(Utf8*) oneArg->buffer;
         break;
     case CommandLineType::StringPath:
-        value        = "<path>";
+        value = "<path>";
         defaultValue = ((Path*) oneArg->buffer)->string();
         break;
     case CommandLineType::StringSet:
@@ -139,7 +139,7 @@ static void getArgValue(CommandLineArgument* oneArg, Utf8& value, Utf8& defaultV
         break;
     }
     case CommandLineType::EnumString:
-        value        = oneArg->param;
+        value = oneArg->param;
         defaultValue = *(Utf8*) oneArg->buffer;
         break;
     }

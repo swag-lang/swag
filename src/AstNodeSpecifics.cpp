@@ -303,8 +303,8 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     // Normalize token.text
     const auto len = nameForeign.length();
-    auto pz  = nameForeign.buffer;
-    auto pzd = fullnameForeign.buffer;
+    auto       pz  = nameForeign.buffer;
+    auto       pzd = fullnameForeign.buffer;
     for (uint32_t i = 0; i < len; i++)
     {
         if (*pz == ' ')
@@ -388,7 +388,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             {
                 const int id = g_UniqueID.fetch_add(1);
                 subDecl->token.text += to_string(id);
-                const auto idRef        = CastAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
+                const auto idRef  = CastAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
                 idRef->token.text = subDecl->token.text;
             }
 
@@ -455,7 +455,7 @@ AstFuncDecl::~AstFuncDecl()
 AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     const auto newNode      = Ast::newNode<AstFuncDecl>();
-    auto cloneContext = context;
+    auto       cloneContext = context;
     cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
 
     newNode->copyFrom(context, this, false);
@@ -508,7 +508,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     if (content)
     {
-        const auto bodyScope           = Ast::newScope(newNode, newNode->token.text, ScopeKind::FunctionBody, functionScope);
+        const auto bodyScope     = Ast::newScope(newNode, newNode->token.text, ScopeKind::FunctionBody, functionScope);
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
 
@@ -925,13 +925,13 @@ AstNode* AstImpl::clone(CloneContext& context)
     // :SubScopeImplFor
     if (identifierFor)
     {
-        const auto baseScope           = cloneContext.ownerStructScope;
-        auto itfName             = childs.front()->token.text;
+        const auto baseScope     = cloneContext.ownerStructScope;
+        auto       itfName       = childs.front()->token.text;
         cloneContext.parentScope = Ast::newScope(newNode, itfName, ScopeKind::Impl, baseScope);
         newNode->scope           = cloneContext.parentScope;
 
         // :FakeImplForType
-        const auto implTypeInfo        = makeType<TypeInfoStruct>();
+        const auto implTypeInfo  = makeType<TypeInfoStruct>();
         implTypeInfo->name       = itfName;
         implTypeInfo->structName = implTypeInfo->name;
         implTypeInfo->scope      = newNode->scope;
@@ -952,7 +952,7 @@ AstNode* AstImpl::clone(CloneContext& context)
 
         if (newChild->kind == AstNodeKind::FuncDecl)
         {
-            const auto newFunc             = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
+            const auto newFunc       = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
             newFunc->originalGeneric = c;
 
             // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
@@ -1200,7 +1200,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         const int  id      = g_UniqueID.fetch_add(1);
         const Utf8 newName = "__cmpfunc" + to_string(id);
 
-        const auto func        = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
+        const auto func  = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
         func->token.text = newName;
         func->flags &= ~AST_NO_SEMANTIC;
         func->content->flags &= ~AST_NO_SEMANTIC;
@@ -1208,7 +1208,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
-        const auto idRef                       = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
+        const auto idRef                 = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
         idRef->childs.back()->token.text = newName;
     }
 

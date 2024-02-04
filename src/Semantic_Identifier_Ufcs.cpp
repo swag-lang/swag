@@ -62,15 +62,15 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
         // Before was a variable
         if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
             canTry = true;
-        // Before was an enum value
+            // Before was an enum value
         else if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
             canTry = true;
-        // Before was a function call
+            // Before was a function call
         else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
             canTry = true;
-        // Before was an inlined function call
+            // Before was an inlined function call
         else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
@@ -90,7 +90,7 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
             }
 
             const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-            canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
+            canTry              = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
             YIELD();
             if (canTry)
                 *ufcsFirstParam = identifierRef->previousResolvedNode;
@@ -122,8 +122,9 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
         {
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
             {
-                const auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-                Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0317), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
+                const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
+                Diagnostic diag{subNode, subNode->token,
+                                Fmt(Err(Err0317), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
                 diag.addRange(node->token, Nte(Nte0159));
                 return context->report(diag);
             }

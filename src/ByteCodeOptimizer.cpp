@@ -19,9 +19,9 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
 
     if (context->nextTreeNode < context->tree.size())
     {
-        const auto tn   = &context->tree[context->nextTreeNode];
-        tn->start = ip;
-        tn->end   = nullptr;
+        const auto tn = &context->tree[context->nextTreeNode];
+        tn->start     = ip;
+        tn->end       = nullptr;
         tn->next.clear();
         tn->parent.clear();
         tn->mark  = 0;
@@ -37,7 +37,7 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
     context->tree.push_back(newNode);
     context->nextTreeNode++;
 
-    const uint32_t pos             = (uint32_t) context->tree.size() - 1;
+    const uint32_t pos       = (uint32_t) context->tree.size() - 1;
     context->mapInstNode[ip] = pos;
     return pos;
 }
@@ -259,7 +259,11 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
     }
 }
 
-void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb)
+void ByteCodeOptimizer::parseTree(ByteCodeOptContext*                                               context,
+                                  uint32_t                                                          startNode,
+                                  ByteCodeInstruction*                                              startIp,
+                                  uint32_t                                                          doneFlag,
+                                  function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb)
 {
     for (uint32_t i = 0; i < context->nextTreeNode; i++)
         context->tree[i].flags &= ~doneFlag;
@@ -415,8 +419,8 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
             context->jumps[it]++;
     }
 
-    const auto   insIndex = insert - context->bc->out;
-    size_t size     = context->bc->numInstructions - insIndex;
+    const auto insIndex = insert - context->bc->out;
+    size_t     size     = context->bc->numInstructions - insIndex;
     size *= sizeof(ByteCodeInstruction);
     memmove(insert + 1, insert, size);
     insert->op = ByteCodeOp::Nop;
@@ -507,7 +511,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         size_t startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
         {
-            const auto newJob          = Allocator::alloc<ByteCodeOptimizerJob>();
+            const auto newJob    = Allocator::alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
             newJob->dependentJob = job;
             newJob->startIndex   = (int) startIndex;

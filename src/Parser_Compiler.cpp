@@ -10,7 +10,7 @@
 
 bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
+    const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveIntrinsicTag;
 
@@ -40,7 +40,7 @@ bool Parser::doCompilerIf(AstNode* parent, AstNode** result)
 bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     const auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
-    *result   = node;
+    *result         = node;
 
     // Expression
     {
@@ -56,8 +56,8 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
 
     // Block
     {
-        const auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
-        node->ifBlock = block;
+        const auto block = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        node->ifBlock    = block;
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
             node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
 
@@ -68,8 +68,8 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
     // Else block
     if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)
     {
-        const auto block      = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
-        node->elseBlock = block;
+        const auto block = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        node->elseBlock  = block;
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
             node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
 
@@ -88,7 +88,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
 
 bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, parent);
+    const auto node   = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveCompilerMixin;
     node->token       = token;
@@ -133,13 +133,13 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
 bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstCompilerMacro>(this, AstNodeKind::CompilerMacro, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::resolveCompilerMacro;
 
     SWAG_CHECK(eatToken());
     const auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
-    node->scope   = newScope;
+    node->scope         = newScope;
 
     Scoped scoped(this, newScope);
     SWAG_CHECK(doCurlyStatement(node, &dummyResult));
@@ -149,7 +149,7 @@ bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
 bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
@@ -166,7 +166,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 bool Parser::doCompilerError(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerError, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
@@ -182,7 +182,7 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
 bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerWarning, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
@@ -243,7 +243,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
 bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerAst, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
     node->semanticFct                      = Semantic::resolveCompilerAstExpression;
@@ -258,7 +258,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 
         const auto idRef = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->inheritTokenLocation(node);
-        const auto identifier            = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        const auto identifier      = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
         identifier->inheritTokenLocation(node);
     }
@@ -281,7 +281,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     }
 
     const auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = Semantic::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
@@ -292,7 +292,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
@@ -326,7 +326,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
-    *result   = node;
+    *result         = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
@@ -341,7 +341,7 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
+    const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveCompilerForeignLib;
 
@@ -387,7 +387,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (token.id == TokenId::CompilerIf)
     {
         const auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
-        *result   = node;
+        *result         = node;
         node->flags |= AST_GLOBAL_NODE;
 
         SWAG_CHECK(eatToken());
@@ -395,8 +395,8 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->boolExpression->allocateExtension(ExtensionKind::Semantic);
         node->boolExpression->extSemantic()->semanticAfterFct = Semantic::resolveCompilerIf;
 
-        const auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
-        node->ifBlock = block;
+        const auto block = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        node->ifBlock    = block;
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
             node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
         block->flags |= AST_GLOBAL_NODE;
@@ -571,7 +571,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialValue, sourceFile, parent);
-    *result       = exprNode;
+    *result             = exprNode;
     SWAG_CHECK(eatToken());
     exprNode->semanticFct = Semantic::resolveCompilerSpecialValue;
     return true;
@@ -580,7 +580,7 @@ bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
 bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicLocation, sourceFile, parent);
-    *result       = exprNode;
+    *result             = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
 
@@ -598,7 +598,7 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
 bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicDefined, sourceFile, parent);
-    *result       = exprNode;
+    *result             = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
 
@@ -635,7 +635,7 @@ bool Parser::doCompilerDependencies(AstNode* parent)
 bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
-    *result       = exprNode;
+    *result             = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
 

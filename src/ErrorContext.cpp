@@ -55,12 +55,12 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 break;
 
             case ErrCxtStepKind::Inline:
-                exp.hide   = doneInline;
+                exp.hide = doneInline;
                 doneInline = true;
                 break;
 
             case ErrCxtStepKind::CompileTime:
-                exp.hide     = doneCompTime;
+                exp.hide = doneCompTime;
                 doneCompTime = true;
                 break;
 
@@ -105,15 +105,15 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 msg = Fmt(Nte(Nte0097), name.c_str());
                 break;
             case ErrCxtStepKind::Generic:
-                msg            = Fmt(Nte(Nte0095), name.c_str());
+                msg = Fmt(Nte(Nte0095), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrCxtStepKind::Inline:
-                msg            = Fmt(Nte(Nte0096), name.c_str());
+                msg = Fmt(Nte(Nte0096), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrCxtStepKind::CompileTime:
-                msg            = Fmt(Nte(Nte0091), name.c_str());
+                msg = Fmt(Nte(Nte0091), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrCxtStepKind::ValidIf:
@@ -124,7 +124,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 exp.locIsToken = true;
                 break;
             case ErrCxtStepKind::ValidIfx:
-                msg            = Fmt(Nte(Nte0094), name.c_str());
+                msg = Fmt(Nte(Nte0094), name.c_str());
                 exp.locIsToken = true;
                 break;
             case ErrCxtStepKind::HereIs:

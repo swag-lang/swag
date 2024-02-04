@@ -52,7 +52,7 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
     size_t startIndex = 0;
     while (startIndex < compilerMessages[pass].size())
     {
-        const auto newJob          = Allocator::alloc<PrepCompilerMsgJob>();
+        const auto newJob    = Allocator::alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
         newJob->pass         = pass;
         newJob->startIndex   = (int) startIndex;

@@ -324,7 +324,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
-        // GetErr/Jump just after
+    // GetErr/Jump just after
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
             ip[1].a.u32 == ip[0].a.u32 &&
             ip[0].flags & BCI_TRYCATCH &&
@@ -336,7 +336,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
-        // Useless InternalHasErr
+    // Useless InternalHasErr
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
             ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
             ip[3].op == ByteCodeOp::InternalStackTrace &&
@@ -360,7 +360,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
-        // Useless InternalHasErr
+    // Useless InternalHasErr
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
             ip[2].op == ByteCodeOp::InternalHasErr &&
             ip[3].op == ByteCodeOp::JumpIfZero32 &&
@@ -371,7 +371,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
-        // GetErr/Jump on another GetErr/Jump, make a shortcut
+    // GetErr/Jump on another GetErr/Jump, make a shortcut
         if (ip[1].op == ByteCodeOp::JumpIfZero32)
         {
             const auto ipNext = &ip[1] + ip[1].b.s32 + 1;
@@ -383,7 +383,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             }
         }
 
-        // InternalHasErr followed by return
+    // InternalHasErr followed by return
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
             ip[2].op == ByteCodeOp::Ret &&
             ip[1].b.s32 == 1 &&
@@ -396,7 +396,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
-        // Compact error test
+    // Compact error test
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
             ip[0].a.u32 == ip[1].a.u32)
         {
@@ -416,7 +416,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
-        // If there's not SetErr between push and pop, then remove them
+    // If there's not SetErr between push and pop, then remove them
         {
             auto                 ipScan    = ip + 1;
             auto                 cpt       = 1;
@@ -853,7 +853,7 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         case ByteCodeOp::DeRef32:
         case ByteCodeOp::DeRef64:
         {
-            const auto s                        = ip[1].a.u32;
+            const auto s                  = ip[1].a.u32;
             ip[1]                         = ip[0];
             ip[1].a.u32                   = s;
             context->passHasDoneSomething = true;
@@ -1412,8 +1412,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
-        // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
-        // leave the MakeStackPointer which will be removed later (?) if no more used
+    // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
+    // leave the MakeStackPointer which will be removed later (?) if no more used
         if (ip[1].op == ByteCodeOp::SetAtPointer8 &&
             ip[0].a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
@@ -2087,7 +2087,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
         break;
 
-        // DeRef, by convention, clear the remaining bits. So no need for a cast just after
+    // DeRef, by convention, clear the remaining bits. So no need for a cast just after
     case ByteCodeOp::DeRef8:
         if ((ip[1].op == ByteCodeOp::ClearMaskU32 || ip[1].op == ByteCodeOp::ClearMaskU64) &&
             ip[0].a.u32 == ip[1].a.u32 &&
@@ -2129,7 +2129,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
         break;
 
-        // Copy64 followed by cast
+    // Copy64 followed by cast
     case ByteCodeOp::CopyRBtoRA64:
         if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
             ip[0].a.u32 == ip[1].a.u32 &&
@@ -2253,7 +2253,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 
         break;
 
-        // Indirect assign to register. Make it direct
+    // Indirect assign to register. Make it direct
     case ByteCodeOp::ClearRA:
         if (ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
             ip[2].op == ByteCodeOp::SetAtPointer64 &&
@@ -3013,8 +3013,8 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
 
         break;
 
-        // GetFromStack8/16/32 clear the other bits by convention, so no need to
-        // have a ClearMask after
+    // GetFromStack8/16/32 clear the other bits by convention, so no need to
+    // have a ClearMask after
     case ByteCodeOp::GetFromStack8:
     case ByteCodeOp::GetIncFromStack64DeRef8:
         if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
@@ -3102,7 +3102,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         }
         break;
 
-        // Useless pop/push
+    // Useless pop/push
     case ByteCodeOp::InternalPushErr:
         if (ip[1].op == ByteCodeOp::InternalPopErr)
         {
@@ -3112,7 +3112,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         }
         break;
 
-        // Useless multi return
+    // Useless multi return
     case ByteCodeOp::Ret:
         if (ip[1].op == ByteCodeOp::Ret)
         {
@@ -3121,7 +3121,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         }
         break;
 
-        // Duplicated safety
+    // Duplicated safety
     case ByteCodeOp::JumpIfNotZero64:
         if (ip[1].op == ByteCodeOp::InternalPanic &&
             ip[2].op == ByteCodeOp::JumpIfNotZero64 &&
@@ -3358,9 +3358,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u8 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                const auto s    = ip->a.u32;
-                ip->a.u32 = ip->c.u32;
-                ip->b.u32 = s;
+                const auto s = ip->a.u32;
+                ip->a.u32    = ip->c.u32;
+                ip->b.u32    = s;
                 ip->flags &= ~BCI_IMM_B;
             }
             break;
@@ -3376,9 +3376,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u16 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                const auto s    = ip->a.u32;
-                ip->a.u32 = ip->c.u32;
-                ip->b.u32 = s;
+                const auto s = ip->a.u32;
+                ip->a.u32    = ip->c.u32;
+                ip->b.u32    = s;
                 ip->flags &= ~BCI_IMM_B;
             }
             break;
@@ -3394,9 +3394,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u32 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                const auto s    = ip->a.u32;
-                ip->a.u32 = ip->c.u32;
-                ip->b.u32 = s;
+                const auto s = ip->a.u32;
+                ip->a.u32    = ip->c.u32;
+                ip->b.u32    = s;
                 ip->flags &= ~BCI_IMM_B;
             }
             break;
@@ -3412,9 +3412,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u64 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                const auto s    = ip->a.u32;
-                ip->a.u32 = ip->c.u32;
-                ip->b.u32 = s;
+                const auto s = ip->a.u32;
+                ip->a.u32    = ip->c.u32;
+                ip->b.u32    = s;
                 ip->flags &= ~BCI_IMM_B;
             }
             break;
@@ -3426,9 +3426,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u32 == 1)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                const auto s    = ip->a.u32;
-                ip->a.u32 = ip->c.u32;
-                ip->b.u32 = s;
+                const auto s = ip->a.u32;
+                ip->a.u32    = ip->c.u32;
+                ip->b.u32    = s;
                 ip->flags &= ~BCI_IMM_B;
             }
             break;
@@ -3440,9 +3440,9 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u64 == 1)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                const auto s    = ip->a.u32;
-                ip->a.u32 = ip->c.u32;
-                ip->b.u32 = s;
+                const auto s = ip->a.u32;
+                ip->a.u32    = ip->c.u32;
+                ip->b.u32    = s;
                 ip->flags &= ~BCI_IMM_B;
             }
             break;
@@ -3925,7 +3925,7 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 
         break;
 
-        // Mix compare and jump
+    // Mix compare and jump
     case ByteCodeOp::CompareOpEqual8:
         if (ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&
@@ -4112,7 +4112,7 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 
         break;
 
-        // Mix compare and jump
+    // Mix compare and jump
     case ByteCodeOp::CompareOpNotEqual8:
         if (ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&

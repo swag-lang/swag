@@ -17,7 +17,7 @@ struct Allocator
     static T* alloc()
     {
         auto returnData = allocRaw<T>();
-        ::new (returnData) T;
+        ::new(returnData) T;
         return returnData;
     }
 

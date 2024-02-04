@@ -12,7 +12,7 @@ bool GenDoc::generatePages()
         files.push_back(file->path);
 
     // Import additional pages
-    const Utf8         morePages(module->buildCfg.genDoc.morePages);
+    const Utf8   morePages(module->buildCfg.genDoc.morePages);
     Vector<Utf8> pages;
     Utf8::tokenize(morePages, ';', pages);
     for (auto& addPage : pages)

@@ -41,7 +41,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     SWAG_ASSERT(node);
 
     const auto module         = node->sourceFile->module;
-    bool stackAllocated = false;
+    bool       stackAllocated = false;
 
     if (!g_RunContext->stack)
     {
@@ -101,7 +101,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     for (size_t i = 0; i < returnRegisters.size(); i++)
     {
         const auto r = returnRegisters[i];
-        *r     = g_RunContext->registersRR[i];
+        *r           = g_RunContext->registersRR[i];
     }
 
     if (stackAllocated)

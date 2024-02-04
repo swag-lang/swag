@@ -13,7 +13,9 @@ struct RaceCondition
         std::atomic<int> countWrite = 0;
     };
 
-    RaceCondition(){};
+    RaceCondition()
+    {
+    };
     RaceCondition(Instance* _instance, bool read);
     ~RaceCondition();
     void lock(Instance* _instance, bool read);

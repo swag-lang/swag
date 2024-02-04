@@ -34,7 +34,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
                 const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                auto remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes);
+                auto       remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
@@ -46,7 +46,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
                 const auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-                auto remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
@@ -57,7 +57,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
             {
                 doneGenParamsRemarks.insert(genCheckNode->typeInfo);
                 const auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
-                auto remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
@@ -80,7 +80,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
     // Error message can have different parts.
     // We generate hint and notes...
-    const auto         err = notes[0];
+    const auto   err = notes[0];
     Vector<Utf8> parts;
     Diagnostic::tokenizeError(err->textMsg, parts);
     if (parts.size() > 1)
@@ -380,7 +380,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
         if (node->kind == AstNodeKind::AttrUse)
         {
             const auto attrUse   = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
-            bool retResult = true;
+            bool       retResult = true;
             if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
                 return retResult;
         }
@@ -486,7 +486,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     ScopedLock lock(g_Log.mutexAccess);
 
     const auto copyDiag  = new Diagnostic{inDiag};
-    auto copyNotes = inNotes;
+    auto       copyNotes = inNotes;
 
     if (!dealWithWarning(*copyDiag, copyNotes))
         return true;
@@ -509,7 +509,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         sourceFile->numErrors++;
         sourceFile->module->numErrors++;
 
-        // Do not raise an error if we are waiting for one, during tests
+    // Do not raise an error if we are waiting for one, during tests
         if (sourceFile->shouldHaveError)
         {
             bool dismiss = true;
@@ -549,7 +549,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         sourceFile->numWarnings++;
         sourceFile->module->numWarnings++;
 
-        // Do not raise a warning if we are waiting for one, during tests
+    // Do not raise a warning if we are waiting for one, during tests
         if (sourceFile->shouldHaveWarning)
         {
             bool dismiss = true;

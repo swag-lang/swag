@@ -203,14 +203,14 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
 
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
-    const auto node                        = CastAst<AstFor>(context->node, AstNodeKind::For);
+    const auto node                  = CastAst<AstFor>(context->node, AstNodeKind::For);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
 
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
-    const auto node                        = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    const auto node                  = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
@@ -373,7 +373,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         // When a switch is marked as complete, be sure every definitions have been covered
         if (node->typeInfo->isEnum())
         {
-            const auto                        typeEnum0 = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            const auto                  typeEnum0 = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
             VectorNative<TypeInfoEnum*> collect;
             typeEnum0->collectEnums(collect);
             for (const auto typeEnum : collect)
@@ -475,8 +475,10 @@ bool Semantic::resolveCase(SemanticContext* context)
                 else
                 {
                     PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
-                                      { return Fmt(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo); });
-                    const auto           typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
+                    {
+                        return Fmt(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo);
+                    });
+                    const auto typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));
                 }
 
@@ -498,7 +500,8 @@ bool Semantic::resolveCase(SemanticContext* context)
             // switch without an expression : a case is a boolean expression
             else
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_FOR_COMPARE | CASTFLAG_AUTO_BOOL));
+                SWAG_CHECK(
+                    TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_FOR_COMPARE | CASTFLAG_AUTO_BOOL));
             }
         }
     }
@@ -531,7 +534,9 @@ bool Semantic::resolveLoop(SemanticContext* context)
             {
                 PushErrCxtStep ec(
                     context, node, ErrCxtStepKind::Note, []()
-                    { return Nte(Nte0021); },
+                    {
+                        return Nte(Nte0021);
+                    },
                     true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 YIELD();
@@ -936,24 +941,25 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     // In case of error (like an already defined identifier), we need to set the correct location of declared
     // variables
-    size_t countVar   = 0;
-    size_t countAlias = 0;
+    size_t                                 countVar   = 0;
+    size_t                                 countAlias = 0;
     Ast::visit(newExpression, [&](AstNode* x)
-               {
-                   if (countAlias >= node->aliasNames.size())
-                       return;
-                   if (x->kind == AstNodeKind::VarDecl)
-                   {
-                       if (countVar == firstAliasVar)
-                       {
-                           x->token.startLocation = node->aliasNames[countAlias].startLocation;
-                           x->token.endLocation   = node->aliasNames[countAlias].endLocation;
-                           countAlias++;
-                           firstAliasVar++;
-                       }
+    {
+        if (countAlias >= node->aliasNames.size())
+            return;
+        if (x->kind == AstNodeKind::VarDecl)
+        {
+            if (countVar == firstAliasVar)
+            {
+                x->token.startLocation = node->aliasNames[countAlias].startLocation;
+                x->token.endLocation   = node->aliasNames[countAlias].endLocation;
+                countAlias++;
+                firstAliasVar++;
+            }
 
-                       countVar++;
-                   } });
+            countVar++;
+        }
+    });
 
     // First child is the let in the statement, and first child of this is the loop node
     auto loopNode            = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
@@ -962,20 +968,21 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
     Ast::visit(context, node->block, [&](ErrorContext* context, AstNode* x)
-               {
-                    if (!x->ownerBreakable)
-                        x->ownerBreakable = loopNode;
-                    else if (x->ownerBreakable->isParentOf(loopNode))
-                    {
-                        if (x->tokenId == TokenId::KwdBreak)
-                            x->ownerBreakable->breakList.erase_unordered_byval((AstBreakContinue*)x);
-                        else if (x->tokenId == TokenId::KwdContinue)
-                            x->ownerBreakable->continueList.erase_unordered_byval((AstBreakContinue*) x);
-                        x->ownerBreakable = loopNode;
-                    }
-                    if (x->kind == AstNodeKind::Visit)
-                        return Ast::VisitResult::Stop;
-                    return Ast::VisitResult::Continue; });
+    {
+        if (!x->ownerBreakable)
+            x->ownerBreakable = loopNode;
+        else if (x->ownerBreakable->isParentOf(loopNode))
+        {
+            if (x->tokenId == TokenId::KwdBreak)
+                x->ownerBreakable->breakList.erase_unordered_byval((AstBreakContinue*) x);
+            else if (x->tokenId == TokenId::KwdContinue)
+                x->ownerBreakable->continueList.erase_unordered_byval((AstBreakContinue*) x);
+            x->ownerBreakable = loopNode;
+        }
+        if (x->kind == AstNodeKind::Visit)
+            return Ast::VisitResult::Stop;
+        return Ast::VisitResult::Continue;
+    });
     node->block->flags &= ~AST_NO_SEMANTIC;
     loopNode->block->token.endLocation = node->block->token.endLocation;
 

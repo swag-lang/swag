@@ -157,10 +157,10 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
 
         const auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
-        *result         = parentNode;
+        *result               = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
-        const auto        tmpVarName  = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
+        const auto  tmpVarName  = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
@@ -216,7 +216,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
                 orgVarNode->publicName += ", ";
             orgVarNode->publicName += identifier->token.text;
 
-            const auto varNode         = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            const auto varNode   = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;

@@ -58,7 +58,7 @@ typedef struct SwagInterface
 {
     void* data   = nullptr;
     void* itable = nullptr;
-} SwagInterface;
+}         SwagInterface;
 
 typedef struct SwagScratchAllocator
 {
@@ -70,13 +70,13 @@ typedef struct SwagScratchAllocator
     void*         firstLeak = nullptr;
     uint64_t      totalLeak = 0;
     uint64_t      maxLeak   = 0;
-} SwagTempAllocator;
+}                 SwagTempAllocator;
 
 typedef struct SwagSlice
 {
     void*    buffer = nullptr;
     uint64_t count  = 0;
-} SwagSlice;
+}            SwagSlice;
 
 struct SwagAny
 {
@@ -88,7 +88,7 @@ struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
     uint32_t  lineStart, colStart;
-    uint32_t  lineEnd, colEnd;
+    uint32_t  lineEnd,   colEnd;
 };
 
 struct SwagCVaList
@@ -125,7 +125,7 @@ typedef struct SwagErrorValue
     SwagAny  value;
     uint32_t pushUsedAlloc;
     uint32_t pushTraceIndex;
-} SwagError;
+}            SwagError;
 
 typedef struct SwagContext
 {
@@ -148,12 +148,12 @@ typedef struct SwagContext
     uint32_t                errorIndex;
     uint32_t                traceIndex;
     uint32_t                hasError;
-} SwagContext;
+}                           SwagContext;
 
-using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*);
+using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*);
 
-typedef void (*SwagBytecodeRun)(void*, ...);
-typedef void (*SwagThreadRun)(void*);
+typedef void (*  SwagBytecodeRun)(void*, ...);
+typedef void (*  SwagThreadRun)(void*);
 typedef FuncCB (*SwagMakeCallback)(void*);
 
 enum class SwagBackendGenType : uint32_t
@@ -190,7 +190,7 @@ typedef struct SwagProcessInfos
     SwagBytecodeRun    byteCodeRun    = nullptr;
     SwagMakeCallback   makeCallback   = nullptr;
     SwagBackendGenType backendKind    = SwagBackendGenType::SCBE;
-} SwagProcessInfos;
+}                      SwagProcessInfos;
 
 struct BuildCfgLLVM
 {

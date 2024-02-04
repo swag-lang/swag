@@ -374,11 +374,13 @@ static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullpt
     if (overload && ip->node)
     {
         Ast::visit(ip->node, [&](AstNode* n)
-                   { if (n->resolvedSymbolOverload == overload && !nodeLoc)
-                        {
-                            nodeLoc = n;
-                            return;
-                        } });
+        {
+            if (n->resolvedSymbolOverload == overload && !nodeLoc)
+            {
+                nodeLoc = n;
+                return;
+            }
+        });
     }
 
     if (nodeLoc)
@@ -533,7 +535,7 @@ static void setStackValue(Context& cxt, void* addr, uint32_t sizeOf, ValueKind k
 {
     const auto offset = (uint32_t) ((uint8_t*) addr - STATE()->stack.buffer);
     SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE()->stackValue.count);
-    for (uint32_t i = offset; i < offset + sizeOf; i++)
+    for (uint32_t i                 = offset; i < offset + sizeOf; i++)
         STATE()->stackValue[i].kind = kind;
 }
 
@@ -613,7 +615,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::ClearRRX:
             break;
 
-            // Fake 1 value
+        // Fake 1 value
         case ByteCodeOp::InternalGetTlsPtr:
         case ByteCodeOp::IntrinsicGetContext:
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -772,7 +774,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             rd->kind = ValueKind::Unknown;
             break;
 
-            // Fake 2 values
+        // Fake 2 values
         case ByteCodeOp::IntrinsicGvtd:
         case ByteCodeOp::IntrinsicGetErr:
         case ByteCodeOp::IntrinsicModules:
@@ -2385,7 +2387,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         if (over->computedValue.storageOffset + over->typeInfo->sizeOf > (uint32_t) state->stackValue.count)
             continue;
 
-        for (uint32_t i = 0; i < over->typeInfo->sizeOf; i++)
+        for (uint32_t i                                                       = 0; i < over->typeInfo->sizeOf; i++)
             state->stackValue[i + over->computedValue.storageOffset].overload = over;
     }
 

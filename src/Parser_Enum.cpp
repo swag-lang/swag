@@ -9,7 +9,7 @@
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)
 {
-    const auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
+    const auto enumNode   = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     enumNode->semanticFct = Semantic::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
     enumNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
@@ -39,9 +39,10 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 const auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                const Diagnostic diag{implNode->identifier, Fmt(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
-                const auto       note  = Diagnostic::hereIs(enumNode);
-                const auto       note1 = Diagnostic::note(Fmt(Nte(Nte0043), implNode->token.ctext()));
+                const Diagnostic diag{implNode->identifier,
+                                      Fmt(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
+                const auto note  = Diagnostic::hereIs(enumNode);
+                const auto note1 = Diagnostic::note(Fmt(Nte(Nte0043), implNode->token.ctext()));
                 return context->report(diag, note, note1);
             }
             else
@@ -75,7 +76,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
 
     // Raw type
     SWAG_CHECK(eatToken());
-    const auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
+    const auto typeNode   = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
     typeNode->semanticFct = Semantic::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
@@ -175,7 +176,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0265), token.ctext())));
 
     const auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
-    *result        = enumValue;
+    *result              = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = Semantic::resolveEnumValue;
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);

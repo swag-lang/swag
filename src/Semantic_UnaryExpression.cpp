@@ -189,7 +189,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
             child->computedValue->reg.u64 = child->computedValue->reg.u8;
-            child->computedValue->reg.u8  = ~child->computedValue->reg.u8;
+            child->computedValue->reg.u8 = ~child->computedValue->reg.u8;
             break;
 
         case NativeTypeKind::S16:

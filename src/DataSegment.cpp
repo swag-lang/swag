@@ -298,19 +298,19 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
     switch (typeInfo->sizeOf)
     {
     case 1:
-        *(uint8_t*) addr                    = computedValue.reg.u8;
+        *(uint8_t*) addr = computedValue.reg.u8;
         storedValues8[computedValue.reg.u8] = {storageOffset, addr};
         break;
     case 2:
-        *(uint16_t*) addr                     = computedValue.reg.u16;
+        *(uint16_t*) addr = computedValue.reg.u16;
         storedValues16[computedValue.reg.u16] = {storageOffset, addr};
         break;
     case 4:
-        *(uint32_t*) addr                     = computedValue.reg.u32;
+        *(uint32_t*) addr = computedValue.reg.u32;
         storedValues32[computedValue.reg.u32] = {storageOffset, addr};
         break;
     case 8:
-        *(uint64_t*) addr                     = computedValue.reg.u64;
+        *(uint64_t*) addr = computedValue.reg.u64;
         storedValues64[computedValue.reg.u64] = {storageOffset, addr};
         break;
     }
@@ -329,7 +329,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     // Same string already there ?
-    using P                      = MapUtf8<CacheValue>;
+    using P = MapUtf8<CacheValue>;
     const pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
     if (!iter.second)
     {
@@ -378,9 +378,9 @@ void DataSegment::doPatchMethods(JobContext* context)
     ScopedLock lk(mutexPatchMethod);
     for (const auto it : patchMethods)
     {
-        const auto      funcNode  = it.first;
-        void*     lambdaPtr = nullptr;
-        ByteCode* bc        = nullptr;
+        const auto funcNode  = it.first;
+        void*      lambdaPtr = nullptr;
+        ByteCode*  bc        = nullptr;
         if (funcNode->isForeign())
         {
             funcNode->computeFullNameForeign(false);
@@ -398,8 +398,8 @@ void DataSegment::doPatchMethods(JobContext* context)
 
         if (lambdaPtr)
         {
-            const auto addr      = address(it.second);
-            *(void**) addr = lambdaPtr;
+            const auto addr = address(it.second);
+            *(void**) addr  = lambdaPtr;
         }
     }
 }
@@ -512,16 +512,16 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
     switch (size)
     {
     case 1:
-        savedValues[address] = {(void*) (size_t) * (uint8_t*) address, size};
+        savedValues[address] = {(void*) (size_t) *(uint8_t*) address, size};
         break;
     case 2:
-        savedValues[address] = {(void*) (size_t) * (uint16_t*) address, size};
+        savedValues[address] = {(void*) (size_t) *(uint16_t*) address, size};
         break;
     case 4:
-        savedValues[address] = {(void*) (size_t) * (uint32_t*) address, size};
+        savedValues[address] = {(void*) (size_t) *(uint32_t*) address, size};
         break;
     case 8:
-        savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
+        savedValues[address] = {(void*) (size_t) *(uint64_t*) address, size};
         break;
     default:
         const auto buf = Allocator::alloc(Allocator::alignSize(size));
@@ -545,16 +545,16 @@ void DataSegment::restoreAllValues()
         switch (one.second.size)
         {
         case 1:
-            *(uint8_t*) one.first = (uint8_t) * (uint8_t*) &one.second.ptr;
+            *(uint8_t*) one.first = (uint8_t) *(uint8_t*) &one.second.ptr;
             break;
         case 2:
-            *(uint16_t*) one.first = (uint16_t) * (uint16_t*) &one.second.ptr;
+            *(uint16_t*) one.first = (uint16_t) *(uint16_t*) &one.second.ptr;
             break;
         case 4:
-            *(uint32_t*) one.first = (uint32_t) * (uint32_t*) &one.second.ptr;
+            *(uint32_t*) one.first = (uint32_t) *(uint32_t*) &one.second.ptr;
             break;
         case 8:
-            *(uint64_t*) one.first = (uint64_t) * (uint64_t*) &one.second.ptr;
+            *(uint64_t*) one.first = (uint64_t) *(uint64_t*) &one.second.ptr;
             break;
         default:
             memcpy(one.first, one.second.ptr, one.second.size);

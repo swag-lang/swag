@@ -8,7 +8,7 @@ struct AstNode;
 struct SemanticJob : public Job
 {
     virtual ~SemanticJob() = default;
-    void release() override;
+    void    release() override;
 
     bool                spawnJob();
     JobResult           execute() override;

@@ -65,7 +65,7 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
 
     if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
-        const auto inst       = EMIT_INST0(context, ByteCodeOp::ForeignCall);
+        const auto inst = EMIT_INST0(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
         inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcDecl));
@@ -75,9 +75,9 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
     {
         const auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(bc || (funcDecl && funcDecl->hasExtByteCode() && funcDecl->extByteCode()->bc));
-        const auto bcReal     = bc ? bc : funcDecl->extByteCode()->bc;
-        bcReal->isUsed  = true;
-        inst->a.pointer = (uint8_t*) bcReal;
+        const auto bcReal = bc ? bc : funcDecl->extByteCode()->bc;
+        bcReal->isUsed    = true;
+        inst->a.pointer   = (uint8_t*) bcReal;
         SWAG_ASSERT(inst->a.pointer);
         SWAG_ASSERT(numParams <= 2);
         inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr->typeInfoOpCall : (uint8_t*) g_TypeMgr->typeInfoOpCall2;
@@ -95,13 +95,13 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
         return;
 
     // Type of those functions
-    const auto typeInfoFunc                     = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
+    const auto typeInfoFunc               = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
     typeInfoFunc->parameters[0]->typeInfo = g_TypeMgr->makePointerTo(typeInfoStruct, typeInfoFunc->parameters[0]->typeInfo->flags);
     typeInfoFunc->forceComputeName();
 
     for (int i = 0; i < (int) EmitOpUserKind::Max; i++)
     {
-        const auto        kind  = (EmitOpUserKind) i;
+        const auto  kind  = (EmitOpUserKind) i;
         ByteCode**  resOp = nullptr;
         Utf8        addName;
         SymbolName* symbol = nullptr;
@@ -322,11 +322,11 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             break;
         }
 
-        const auto      sourceFile = context->sourceFile;
-        ByteCode* opInit     = Allocator::alloc<ByteCode>();
-        opInit->sourceFile   = sourceFile;
-        opInit->typeInfoFunc = typeInfoFunc;
-        opInit->name         = structNode->ownerScope->getFullName();
+        const auto sourceFile = context->sourceFile;
+        ByteCode*  opInit     = Allocator::alloc<ByteCode>();
+        opInit->sourceFile    = sourceFile;
+        opInit->typeInfoFunc  = typeInfoFunc;
+        opInit->name          = structNode->ownerScope->getFullName();
         opInit->name += ".";
         opInit->name += structNode->token.text;
         opInit->name += addName;
@@ -340,7 +340,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if (!(structNode->flags & AST_FROM_GENERIC))
             {
-                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opInitGenerated;
@@ -358,7 +358,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
-                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opDropGenerated;
@@ -375,7 +375,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
-                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
@@ -392,7 +392,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
-                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
@@ -865,7 +865,8 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop")}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION),
+                    context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
@@ -977,7 +978,8 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy")}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION),
+                    context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
@@ -1087,7 +1089,8 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove")}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION),
+                    context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
@@ -1144,7 +1147,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
     YIELD();
 
-    const auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
     structNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();
@@ -1310,7 +1313,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
         RegisterList r0 = reserveRegisterRC(context);
 
         const auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        auto typeId         = typeExpression;
+        auto       typeId         = typeExpression;
         while (typeId->typeFlags & TYPEFLAG_IS_SUB_TYPE)
             typeId = CastAst<AstTypeExpression>(typeId->childs.back(), AstNodeKind::TypeExpression);
         const auto identifier = CastAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
@@ -1399,7 +1402,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     if (node->count)
     {
         const auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
-        pointedType         = typeExpression->pointedType;
+        pointedType               = typeExpression->pointedType;
     }
     else
     {
@@ -1407,8 +1410,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
         if (pointedType->isArray())
         {
             const auto typeArray = CastTypeInfo<TypeInfoArray>(pointedType, TypeInfoKind::Array);
-            pointedType    = typeArray->finalType;
-            numToInit      = typeArray->totalCount;
+            pointedType          = typeArray->finalType;
+            numToInit            = typeArray->totalCount;
         }
     }
 
@@ -1529,8 +1532,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64 = typeStruct->sizeOf;
                 EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
-                const auto instJump   = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
-                instJump->b.s32 = startLoop - context->bc->numInstructions;
+                const auto instJump = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
+                instJump->b.s32     = startLoop - context->bc->numInstructions;
                 freeRegisterRC(context, regCount);
             }
         }
@@ -1569,7 +1572,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = pointedType->sizeOf;
 
-            const auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+            const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
@@ -1616,11 +1619,11 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
         if (numToInit != 1)
         {
-            const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
-            inst->b.u64 = pointedType->sizeOf;
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+            inst->b.u64     = pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
 
-            const auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+            const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
@@ -1725,10 +1728,10 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 
         if (numToDo != 1)
         {
-            const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
-            inst->b.u64 = typeExpression->pointedType->sizeOf;
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            inst->b.u64     = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
-            const auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+            const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }

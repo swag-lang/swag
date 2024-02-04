@@ -13,7 +13,7 @@
 
 SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value)
 {
-    const auto                tr0 = addTypeRecord(pp);
+    const auto          tr0 = addTypeRecord(pp);
     SCBE_DebugTypeField field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
@@ -29,7 +29,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, T
     field.name.setView(g_LangSpec->name_count);
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
-    const auto tr1                      = addTypeRecord(pp);
+    const auto tr1                = addTypeRecord(pp);
     tr1->kind                     = LF_STRUCTURE;
     tr1->LF_Structure.memberCount = 2;
     tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -85,7 +85,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
 
     // In the cache
     /////////////////////////////////
-    using P                      = Map<TypeInfo*, SCBE_DebugTypeIndex>;
+    using P = Map<TypeInfo*, SCBE_DebugTypeIndex>;
     pair<P::iterator, bool> iter = pp.dbgMapTypes.insert(P::value_type(typeInfo, 0));
     if (!iter.second)
         return iter.first->second;
@@ -339,7 +339,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         auto numArgs  = (uint16_t) typeFunc->parameters.size();
 
         SCBE_DebugTypeIndex argsTypeIndex;
-        using P1                       = MapUtf8<SCBE_DebugTypeIndex>;
+        using P1 = MapUtf8<SCBE_DebugTypeIndex>;
         pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
         if (iter1.second)
         {
@@ -448,7 +448,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo*
         return (SCBE_DebugTypeIndex) (simpleType | (NearPointer64 << 8));
 
     // Pointer to something complex
-    const auto tr                    = addTypeRecord(pp);
+    const auto tr              = addTypeRecord(pp);
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = getOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;
@@ -458,7 +458,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo*
 SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
-    const auto tr                    = addTypeRecord(pp);
+    const auto tr              = addTypeRecord(pp);
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = getOrCreatePointerToType(pp, typeInfo, false);
     return tr->index;
@@ -466,8 +466,8 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerPointerToType(SCBE_CPU& pp, Ty
 
 SCBE_DebugTypeRecord* SCBE_Debug::addTypeRecord(SCBE_CPU& pp)
 {
-    const auto tr   = pp.dbgTypeRecords.addObj<SCBE_DebugTypeRecord>();
-    tr->index = (SCBE_DebugTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
+    const auto tr = pp.dbgTypeRecords.addObj<SCBE_DebugTypeRecord>();
+    tr->index     = (SCBE_DebugTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
     pp.dbgTypeRecordsCount++;
     return tr;
 }
@@ -475,7 +475,7 @@ SCBE_DebugTypeRecord* SCBE_Debug::addTypeRecord(SCBE_CPU& pp)
 Utf8 SCBE_Debug::getScopedName(AstNode* node)
 {
     const auto nn = node->getScopedName();
-    Utf8 result;
+    Utf8       result;
     result.reserve(nn.allocated);
 
     auto pz      = nn.buffer;

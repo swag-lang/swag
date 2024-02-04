@@ -5,7 +5,7 @@
 struct ByteCodeGenJob : public Job
 {
     virtual ~ByteCodeGenJob() = default;
-    void release() override;
+    void    release() override;
 
     JobResult              leaveJob(AstNode* node);
     JobResult              execute() override;

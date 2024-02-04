@@ -389,7 +389,7 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
 {
     auto checkSymIndex = 0;
 
-    using P                      = MapPath<uint32_t>;
+    using P = MapPath<uint32_t>;
     const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
     if (iter.second)
     {
@@ -480,7 +480,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
             continue;
 
         const SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        const auto      typeInfo = overload->typeInfo;
+        const auto            typeInfo = overload->typeInfo;
 
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
@@ -527,7 +527,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
             continue;
 
         const SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        const auto      typeInfo = overload->typeInfo;
+        const auto            typeInfo = overload->typeInfo;
 
         //////////
         emitStartRecord(pp, S_LOCAL);
@@ -559,7 +559,9 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     if (scope->childScopes.size() > 1)
     {
         sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2)
-             { return n1->backendStart < n2->backendStart; });
+        {
+            return n1->backendStart < n2->backendStart;
+        });
     }
 
     for (const auto c : scope->childScopes)
@@ -590,8 +592,8 @@ static bool emitFctDebugS(SCBE_CPU& pp)
 
         // Add a func id type record
         /////////////////////////////////
-        const auto tr  = SCBE_Debug::addTypeRecord(pp);
-        tr->node = f.node;
+        const auto tr = SCBE_Debug::addTypeRecord(pp);
+        tr->node      = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
@@ -690,7 +692,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 const auto countParams = decl->parameters->childs.size();
-                int  regCounter  = 0;
+                int        regCounter  = 0;
                 for (size_t i = 0; i < countParams; i++)
                 {
                     const auto child     = decl->parameters->childs[i];

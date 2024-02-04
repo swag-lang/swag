@@ -21,7 +21,7 @@ void compileString(Module* module, const char* str, uint32_t count)
     module->compileString(text);
 }
 
-using cb = void* (*) (Module*);
+using cb = void* (*)(Module*);
 
 static cb itable[] = {
     (cb) getMessage,

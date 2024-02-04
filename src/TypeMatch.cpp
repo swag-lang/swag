@@ -173,7 +173,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         if (callParameter->kind == AstNodeKind::FuncCallParam)
         {
-            const auto param               = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            const auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             param->resolvedParameter = wantedParameter;
             param->indexParam        = context.cptResolved;
         }
@@ -182,7 +182,11 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     }
 }
 
-static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
+static void matchNamedParameter(SymbolMatchContext&           context,
+                                AstFuncCallParam*             callParameter,
+                                int                           parameterIndex,
+                                VectorNative<TypeInfoParam*>& parameters,
+                                uint64_t                      forceCastFlags = 0)
 {
     for (size_t j = 0; j < parameters.size(); j++)
     {
@@ -211,7 +215,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             }
 
             const auto callTypeInfo   = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
-            auto wantedTypeInfo = wantedParameter->typeInfo;
+            auto       wantedTypeInfo = wantedParameter->typeInfo;
 
             // For a typed variadic, cast against the underlying type
             // In case of a spread, match the underlying type too
@@ -494,7 +498,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         firstChild->setFlagsValueIsComputed();
                         Semantic::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
 
-                        const auto typeList                             = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
+                        const auto typeList                       = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
                         firstChild->computedValue->reg.u64        = typeList->subTypes.size();
                         firstChild->computedValue->storageOffset  = storageOffset;
                         firstChild->computedValue->storageSegment = storageSegment;
@@ -558,7 +562,8 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         if (typeInfo->isAny() && !symbolParameter->typeInfo->isGeneric() && !symbolParameter->typeInfo->isAny())
             same = false;
         else
-            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_FOR_GENERIC | CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING);
+            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr,
+                                                CASTFLAG_FOR_GENERIC | CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING);
         if (context.semContext->result != ContextResult::Done)
             return;
 
@@ -677,8 +682,8 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     context.cptResolved = min(context.cptResolved, cptDone);
 
     // Not enough parameters
-    const size_t firstDefault  = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
-    context.firstDefault = (uint32_t) firstDefault;
+    const size_t firstDefault = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
+    context.firstDefault      = (uint32_t) firstDefault;
     if (context.cptResolved < (int) firstDefault && typeFunc->parameters.size() && context.result == MatchResult::Ok)
     {
         const auto back = typeFunc->parameters.back()->typeInfo;

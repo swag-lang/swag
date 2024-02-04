@@ -17,7 +17,7 @@ JobResult SyntaxJob::execute()
     // Then load the file
     if (!sourceFile->buffer)
     {
-        const auto loadJob        = Allocator::alloc<LoadSourceFileJob>();
+        const auto loadJob  = Allocator::alloc<LoadSourceFileJob>();
         loadJob->sourceFile = sourceFile;
         loadJob->addDependentJob(this);
         jobsToAdd.push_back(loadJob);

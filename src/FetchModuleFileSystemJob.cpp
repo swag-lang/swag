@@ -13,10 +13,10 @@ JobResult FetchModuleFileSystemJob::execute()
     const auto dep = module->fetchDep;
 
     const auto depName = Fmt("%s %u.%d.%d",
-                       dep->name.c_str(),
-                       dep->module->buildCfg.moduleVersion,
-                       dep->module->buildCfg.moduleRevision,
-                       dep->module->buildCfg.moduleBuildNum);
+                             dep->name.c_str(),
+                             dep->module->buildCfg.moduleVersion,
+                             dep->module->buildCfg.moduleRevision,
+                             dep->module->buildCfg.moduleBuildNum);
     if (collectSourceFiles)
         g_Log.messageHeaderCentered("Copying", depName.c_str());
     else
@@ -114,7 +114,7 @@ JobResult FetchModuleFileSystemJob::execute()
             return JobResult::ReleaseJob;
         }
 
-        const auto job        = Allocator::alloc<CopyFileJob>();
+        const auto job  = Allocator::alloc<CopyFileJob>();
         job->module     = module;
         job->sourcePath = srcFileName;
         job->destPath   = destFileName;

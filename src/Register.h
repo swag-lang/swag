@@ -21,7 +21,7 @@ union Register
     {
         uint32_t low;
         uint32_t high;
-    } u64u32;
+    }            u64u32;
 
     Register() = default;
     Register(uint64_t val)

@@ -27,7 +27,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     off                     = min(off, maxLevel);
 
-    const auto oldIndex                  = context->debugStackFrameOffset;
+    const auto oldIndex            = context->debugStackFrameOffset;
     context->debugStackFrameOffset = maxLevel - off;
     g_ByteCodeDebugger.computeDebugContext(context);
     if (!g_ByteCodeDebugger.debugCxtIp)

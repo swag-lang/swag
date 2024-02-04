@@ -18,7 +18,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
     if (typeInfo->isAny() && node->hasComputedValue())
     {
-        const auto any                           = (SwagAny*) node->computedValue->getStorageAddr();
+        const auto any                     = (SwagAny*) node->computedValue->getStorageAddr();
         node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
         node->flags |= AST_VALUE_IS_GEN_TYPEINFO;
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
@@ -32,7 +32,9 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
         auto& typeGen                       = node->sourceFile->module->typeGen;
 
         TypeInfo* resultTypeInfo = nullptr;
-        SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &resultTypeInfo));
+        SWAG_CHECK(
+            typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &
+                resultTypeInfo));
         YIELD();
 
         node->typeInfo = resultTypeInfo;
@@ -377,9 +379,9 @@ bool Semantic::resolveType(SemanticContext* context)
         // Typed variadic ?
         if (typeNode->typeInfo->isVariadic() && !typeNode->childs.empty())
         {
-            const auto typeVariadic     = (TypeInfoVariadic*) typeNode->typeInfo->clone();
-            typeVariadic->kind    = TypeInfoKind::TypedVariadic;
-            typeVariadic->rawType = typeNode->childs.front()->typeInfo;
+            const auto typeVariadic = (TypeInfoVariadic*) typeNode->typeInfo->clone();
+            typeVariadic->kind      = TypeInfoKind::TypedVariadic;
+            typeVariadic->rawType   = typeNode->childs.front()->typeInfo;
             typeVariadic->flags |= (typeVariadic->rawType->flags & TYPEINFO_GENERIC);
             typeVariadic->forceComputeName();
             typeNode->typeFromLiteral = typeVariadic;
@@ -463,7 +465,7 @@ bool Semantic::resolveType(SemanticContext* context)
     // In fact, this is a slice
     if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
     {
-        const auto ptrSlice         = makeType<TypeInfoSlice>();
+        const auto ptrSlice   = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
         if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -488,7 +490,7 @@ bool Semantic::resolveType(SemanticContext* context)
             ptrFlags |= TYPEINFO_POINTER_MOVE_REF;
         }
 
-        const auto typeRef       = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
+        const auto typeRef = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
         typeNode->typeInfo = typeRef;
         return true;
     }
@@ -501,7 +503,7 @@ bool Semantic::resolveType(SemanticContext* context)
         // Array without a specified size
         if (typeNode->arrayDim == UINT8_MAX)
         {
-            const auto ptrArray         = makeType<TypeInfoArray>();
+            const auto ptrArray   = makeType<TypeInfoArray>();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = typeNode->typeInfo;
@@ -550,8 +552,8 @@ bool Semantic::resolveType(SemanticContext* context)
             SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
             SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0210)}));
 
-            const auto ptrArray   = makeType<TypeInfoArray>();
-            ptrArray->count = count;
+            const auto ptrArray = makeType<TypeInfoArray>();
+            ptrArray->count     = count;
             totalCount *= ptrArray->count;
             SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
             ptrArray->totalCount  = totalCount;
@@ -596,9 +598,9 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
 
-    const auto typeInfo      = makeType<TypeInfoAlias>();
-    typeInfo->declNode = node;
-    typeInfo->name     = node->token.text;
+    const auto typeInfo = makeType<TypeInfoAlias>();
+    typeInfo->declNode  = node;
+    typeInfo->name      = node->token.text;
     if (node->attributeFlags & ATTRIBUTE_STRICT)
         typeInfo->flags |= TYPEINFO_STRICT;
     node->typeInfo = typeInfo;
@@ -815,7 +817,9 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     node->allocateComputedValue();
     node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
     node->computedValue->storageSegment = getConstantSegFromContext(node);
-    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags, resultTypeInfo));
+    SWAG_CHECK(
+        typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags,
+            resultTypeInfo));
     YIELD();
     node->setFlagsValueIsComputed();
     node->flags |= AST_VALUE_IS_GEN_TYPEINFO;

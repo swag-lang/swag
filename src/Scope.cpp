@@ -189,7 +189,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
         }
     }
 
-    const auto newScope         = Allocator::alloc<Scope>();
+    const auto newScope   = Allocator::alloc<Scope>();
     newScope->kind        = scopeKind;
     newScope->parentScope = this;
     SWAG_ASSERT(nodeOwner);

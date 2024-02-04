@@ -12,7 +12,7 @@
 bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result)
 {
     const auto callParams = Ast::newFuncCallGenParams(sourceFile, parent, this);
-    *result         = callParams;
+    *result               = callParams;
 
     bool       multi    = false;
     const auto startLoc = token.startLocation;
@@ -24,8 +24,8 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
 
     while (token.id != TokenId::SymRightParen)
     {
-        const auto param   = Ast::newFuncCallParam(sourceFile, callParams, this);
-        param->token = token;
+        const auto param = Ast::newFuncCallParam(sourceFile, callParams, this);
+        param->token     = token;
         switch (token.id)
         {
         case TokenId::Identifier:
@@ -124,7 +124,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
     {
         while (true)
         {
-            const auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
+            const auto param   = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
             param->semanticFct = Semantic::resolveFuncCallParam;
             param->token       = token;
             AstNode* paramExpression;
@@ -216,7 +216,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         if (token.id == TokenId::KwdConst)
         {
             const auto constToken = token;
-            isConst         = true;
+            isConst               = true;
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(constToken, Fmt(Err(Err0457), token.ctext())));
             paramNode->token.text = g_LangSpec->name_self;
@@ -306,7 +306,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                const auto newTypeExpression               = Ast::newTypeExpression(sourceFile, paramNode);
+                const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                 paramNode->type                      = newTypeExpression;
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                 newTypeExpression->token.endLocation = token.endLocation;
@@ -315,7 +315,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
-                const auto newTypeExpression               = Ast::newTypeExpression(sourceFile, paramNode);
+                const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                 paramNode->type                      = newTypeExpression;
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
                 newTypeExpression->token.endLocation = token.endLocation;
@@ -330,7 +330,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 if (token.id == TokenId::SymDotDotDot)
                 {
                     Ast::removeFromParent(typeExpression);
-                    const auto newTypeExpression               = Ast::newTypeExpression(sourceFile, paramNode);
+                    const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
                     paramNode->type                      = newTypeExpression;
                     newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                     newTypeExpression->token.endLocation = token.endLocation;
@@ -376,8 +376,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (!acceptMissingType)
             {
                 prepareExpectTokenError();
-                const Diagnostic  diag{sourceFile, token, Fmt(Err(Err0571), token.ctext())};
-                Diagnostic* note;
+                const Diagnostic diag{sourceFile, token, Fmt(Err(Err0571), token.ctext())};
+                Diagnostic*      note;
                 if (otherVariables.empty())
                     note = Diagnostic::note(paramNode, Nte(Nte0169));
                 else
@@ -499,7 +499,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
     const auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
-    *result        = allParams;
+    *result              = allParams;
 
     SWAG_ASSERT(token.id == TokenId::SymLeftParen);
     const auto startLoc = token.startLocation;
@@ -559,7 +559,9 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
                 isType = true;
                 PushErrCxtStep ec1(
                     context, nullptr, ErrCxtStepKind::Note, [oneParam]()
-                    { return Fmt(Nte(Nte0083), oneParam->token.ctext()); },
+                    {
+                        return Fmt(Nte(Nte0083), oneParam->token.ctext());
+                    },
                     true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
@@ -632,67 +634,67 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         {
         case TokenId::CompilerFuncTest:
             funcNode->token.text = "__test" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncInit:
             funcNode->token.text = "__init" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncDrop:
             funcNode->token.text = "__drop" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncPreMain:
             funcNode->token.text = "__premain" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerRun:
             funcNode->token.text = "__run" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerGeneratedRun:
             funcNode->token.text = "__run" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerGeneratedRunExp:
             funcNode->token.text = "__run" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_RUN_GENERATED_EXP | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "__main" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncMessage:
             funcNode->token.text = "__compiler" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             module->numCompilerFunctions++;
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "__ast" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerValidIf:
             funcNode->token.text = "__validif" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_MATCH_VALIDIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerValidIfx:
             funcNode->token.text = "__validifx" + to_string(id);
-            funcNode->tokenName  = funcNode->token;
+            funcNode->tokenName = funcNode->token;
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_MATCH_VALIDIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
@@ -779,9 +781,10 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     if (funcNode->genericParameters)
     {
         Ast::visit(funcNode->genericParameters, [&](AstNode* n)
-                   {
-                       n->ownerFct   = funcNode;
-                       n->ownerScope = newScope; });
+        {
+            n->ownerFct   = funcNode;
+            n->ownerScope = newScope;
+        });
     }
 
     // Parameters
@@ -1015,7 +1018,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
 bool Parser::doReturn(AstNode* parent, AstNode** result)
 {
-    const auto node         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
+    const auto node   = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveReturn;
 
@@ -1031,16 +1034,16 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
-    const auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    const auto funcNode   = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
     funcNode->semanticFct = Semantic::resolveFuncDecl;
     funcNode->flags |= AST_GENERATED;
 
-    const int id               = g_UniqueID.fetch_add(1);
+    const int id         = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + to_string(id);
 
-    const auto typeInfo      = makeType<TypeInfoFuncAttr>();
-    typeInfo->declNode = funcNode;
+    const auto typeInfo = makeType<TypeInfoFuncAttr>();
+    typeInfo->declNode  = funcNode;
 
     auto newScope      = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
     funcNode->typeInfo = typeInfo;
@@ -1052,8 +1055,8 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     {
         // captureParameters will be solved with capture block, that's why we do NOT put it as a child
         // of the function.
-        const auto capture      = Ast::newFuncCallParams(sourceFile, funcNode, this);
-        capture->ownerFct = funcNode;
+        const auto capture = Ast::newFuncCallParams(sourceFile, funcNode, this);
+        capture->ownerFct  = funcNode;
         Ast::removeFromParent(capture);
         capture->semanticFct        = Semantic::resolveCaptureFuncCallParams;
         funcNode->captureParameters = capture;
@@ -1067,7 +1070,9 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         {
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
-                                  { return Nte(Nte0011); });
+                {
+                    return Nte(Nte0011);
+                });
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
             }
 
@@ -1142,7 +1147,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     }
 
     // Return type
-    const auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    const auto typeNode   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = Semantic::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
@@ -1166,7 +1171,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            const auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
+            const auto returnNode   = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
             returnNode->semanticFct = Semantic::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
@@ -1197,8 +1202,8 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     if (exprFlags & EXPR_FLAG_IN_CALL)
         acceptMissingType = true;
 
-    // We accept missing types if lambda is in an affectation, because we can deduce them from the
-    // type on the left
+        // We accept missing types if lambda is in an affectation, because we can deduce them from the
+        // type on the left
     else if (parent->kind == AstNodeKind::AffectOp)
     {
         acceptMissingType = true;
@@ -1234,7 +1239,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)
         registerSubDecl(lambda);
-    // If the lambda is created at global scope, register it as a normal function
+        // If the lambda is created at global scope, register it as a normal function
     else
         Ast::addChildBack(sourceFile->astRoot, lambda);
 
@@ -1266,7 +1271,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         const auto block            = Ast::newVarDecl(sourceFile, nameCaptureBlock, exprNode, this);
         block->inheritTokenLocation(lambdaDecl->captureParameters);
         block->flags |= AST_GENERATED;
-        const auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
+        const auto exprList   = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = Semantic::resolveExpressionListTuple;
         exprList->addSpecFlags(AstExpressionList::SPECFLAG_FOR_TUPLE | AstExpressionList::SPECFLAG_FOR_CAPTURE);
         exprList->inheritTokenLocation(lambdaDecl->captureParameters);

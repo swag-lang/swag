@@ -131,19 +131,19 @@ bool Semantic::resolveUsing(SemanticContext* context)
     case TypeInfoKind::Namespace:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
-        scope         = typeInfo->scope;
+        scope               = typeInfo->scope;
         break;
     }
     case TypeInfoKind::Enum:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
-        scope         = typeInfo->scope;
+        scope               = typeInfo->scope;
         break;
     }
     case TypeInfoKind::Struct:
     {
         const auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
-        scope         = typeInfo->scope;
+        scope               = typeInfo->scope;
         break;
     }
     default:
@@ -160,7 +160,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
 
 bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 {
-    const auto node                        = context->node;
+    const auto node                  = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     node->allocateExtension(ExtensionKind::ByteCode);
 

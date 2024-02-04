@@ -110,7 +110,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // Be sure the output file is here, and is more recent than the export file
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
-        const auto       outFileFame = getOutputFileName(module->buildParameters);
+        const auto outFileFame = getOutputFileName(module->buildParameters);
         error_code err;
         if (!filesystem::exists(outFileFame, err))
             return false;

@@ -39,8 +39,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (!node->resultRegisterRC.size())
         return true;
 
-    const auto realType  = TypeManager::concreteType(node->typeInfo);
-    node->typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
+    const auto realType = TypeManager::concreteType(node->typeInfo);
+    node->typeInfo      = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
     runContext->registersRR[0].u64 = runContext->registers.buffer[node->resultRegisterRC[0]].u64;
@@ -82,8 +82,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         node->computedValue->storageSegment = storageSegment;
         const auto addrSrc                  = runContext->registersRR[0].pointer;
         memcpy(addrDst, addrSrc, realType->sizeOf);
-        const auto typeList  = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
-        node->typeInfo = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
+        const auto typeList = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
+        node->typeInfo      = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
         return true;
     }
 
@@ -108,7 +108,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 
         // Make a copy of the returned struct, as we will lose the memory
         const auto selfSize = Allocator::alignSize(realType->sizeOf);
-        auto self     = Allocator::alloc(selfSize);
+        auto       self     = Allocator::alloc(selfSize);
         memcpy(self, runContext->registersRR[0].pointer, realType->sizeOf);
 
         // Call opPostMove if defined
@@ -137,9 +137,9 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (!runContext->registersRR[0].u64 || !runContext->registersRR[1].u64)
             return callerContext->report({node, Fmt(Err(Err0028), realType->getDisplayNameC())});
 
-        const auto      concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
-        uint32_t  sizeSlice    = 0;
-        TypeInfo* sliceType    = nullptr;
+        const auto concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
+        uint32_t   sizeSlice    = 0;
+        TypeInfo*  sliceType    = nullptr;
 
         if (concreteType->isString())
         {
@@ -149,8 +149,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         else
         {
             const auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
-            sizeSlice      = (uint32_t) runContext->registersRR[1].u64 * typeSlice->pointedType->sizeOf;
-            sliceType      = typeSlice->pointedType;
+            sizeSlice            = (uint32_t) runContext->registersRR[1].u64 * typeSlice->pointedType->sizeOf;
+            sliceType            = typeSlice->pointedType;
         }
 
         SWAG_CHECK(callerContext->checkSizeOverflow("array", sizeSlice, SWAG_LIMIT_ARRAY_SIZE));
@@ -172,7 +172,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             memcpy(addrDst, addrSrc, sizeSlice);
 
             // Then transform the returned type to a static array
-            const auto typeArray         = makeType<TypeInfoArray>();
+            const auto typeArray   = makeType<TypeInfoArray>();
             typeArray->pointedType = sliceType;
             typeArray->finalType   = sliceType;
             typeArray->count       = runContext->registersRR[1].u32;
@@ -220,8 +220,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Pointer
     if (realType->isPointerToTypeInfo())
     {
-        const auto     module = node->sourceFile->module;
-        uint32_t offset = module->compilerSegment.tryOffset(runContext->registersRR[0].pointer);
+        const auto module = node->sourceFile->module;
+        uint32_t   offset = module->compilerSegment.tryOffset(runContext->registersRR[0].pointer);
         if (offset != UINT32_MAX)
         {
             node->flags |= AST_VALUE_IS_GEN_TYPEINFO;

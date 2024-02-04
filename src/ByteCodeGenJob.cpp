@@ -14,7 +14,7 @@ void ByteCodeGenJob::release()
 
 ByteCodeGenJob* ByteCodeGenJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root)
 {
-    const auto byteCodeJob          = Allocator::alloc<ByteCodeGenJob>();
+    const auto byteCodeJob    = Allocator::alloc<ByteCodeGenJob>();
     byteCodeJob->sourceFile   = sourceFile;
     byteCodeJob->module       = sourceFile->module;
     byteCodeJob->dependentJob = dependentJob;
@@ -146,9 +146,9 @@ JobResult ByteCodeGenJob::execute()
             if (sourceFile->numErrors)
                 return leaveJob(originalNode);
 
-            const auto node      = nodes.back();
-            context.node   = node;
-            context.result = ContextResult::Done;
+            const auto node = nodes.back();
+            context.node    = node;
+            context.result  = ContextResult::Done;
 
             switch (node->bytecodeState)
             {
@@ -182,7 +182,7 @@ JobResult ByteCodeGenJob::execute()
 
                     break;
                 }
-                // passthrough
+            // passthrough
 
             case AstNodeResolveState::ProcessingChilds:
                 if (node->flags & AST_NO_BYTECODE)
@@ -191,7 +191,7 @@ JobResult ByteCodeGenJob::execute()
                     break;
                 }
 
-                // Computed constexpr value. Just emit the result
+            // Computed constexpr value. Just emit the result
                 if (node->hasComputedValue())
                 {
                     if (!ByteCodeGen::emitComputedValue(&context))
@@ -208,7 +208,7 @@ JobResult ByteCodeGenJob::execute()
                 }
 
                 node->bytecodeState = AstNodeResolveState::PostChilds;
-                // passthrough
+            // passthrough
 
             case AstNodeResolveState::PostChilds:
                 if (node->flags & AST_NO_BYTECODE)

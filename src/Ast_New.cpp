@@ -1,4 +1,3 @@
-
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
@@ -18,7 +17,7 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
 
 AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent);
+    const auto node   = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent);
     node->semanticFct = Semantic::resolveAffect;
     node->attributeFlags |= attributeFlags;
     node->addSpecFlags(opFlags);
@@ -27,14 +26,14 @@ AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFla
 
 AstStruct* Ast::newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstStruct>(parser, AstNodeKind::StructDecl, sourceFile, parent);
+    const auto node   = Ast::newNode<AstStruct>(parser, AstNodeKind::StructDecl, sourceFile, parent);
     node->semanticFct = Semantic::resolveStruct;
     return node;
 }
 
 AstNode* Ast::newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstNode>(parser, AstNodeKind::FuncDeclParams, sourceFile, parent);
+    const auto node   = Ast::newNode<AstNode>(parser, AstNodeKind::FuncDeclParams, sourceFile, parent);
     node->semanticFct = Semantic::resolveFuncDeclParams;
     node->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
     return node;
@@ -42,28 +41,28 @@ AstNode* Ast::newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser*
 
 AstFuncCallParams* Ast::newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
+    const auto node   = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
     node->semanticFct = Semantic::resolveFuncCallGenParams;
     return node;
 }
 
 AstFuncCallParams* Ast::newFuncCallParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
+    const auto node   = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
     node->semanticFct = Semantic::resolveFuncCallParams;
     return node;
 }
 
 AstFuncCallParam* Ast::newFuncCallParam(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstFuncCallParam>(parser, AstNodeKind::FuncCallParam, sourceFile, parent);
+    const auto node   = Ast::newNode<AstFuncCallParam>(parser, AstNodeKind::FuncCallParam, sourceFile, parent);
     node->semanticFct = Semantic::resolveFuncCallParam;
     return node;
 }
 
 AstVarDecl* Ast::newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser, AstNodeKind kind)
 {
-    const auto node         = Ast::newNode<AstVarDecl>(parser, kind, sourceFile, parent);
+    const auto node   = Ast::newNode<AstVarDecl>(parser, kind, sourceFile, parent);
     node->token.text  = name;
     node->semanticFct = Semantic::resolveVarDecl;
     return node;
@@ -71,7 +70,7 @@ AstVarDecl* Ast::newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* p
 
 AstIntrinsicProp* Ast::newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstIntrinsicProp>(parser, AstNodeKind::IntrinsicProp, sourceFile, parent);
+    const auto node   = Ast::newNode<AstIntrinsicProp>(parser, AstNodeKind::IntrinsicProp, sourceFile, parent);
     node->tokenId     = id;
     node->semanticFct = Semantic::resolveIntrinsicProperty;
     return node;
@@ -79,14 +78,14 @@ AstIntrinsicProp* Ast::newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstN
 
 AstTypeExpression* Ast::newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstTypeExpression>(parser, AstNodeKind::TypeExpression, sourceFile, parent);
+    const auto node   = Ast::newNode<AstTypeExpression>(parser, AstNodeKind::TypeExpression, sourceFile, parent);
     node->semanticFct = Semantic::resolveType;
     return node;
 }
 
 AstIdentifier* Ast::newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser)
 {
-    const auto node         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
+    const auto node   = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
     node->token.text  = name;
     node->semanticFct = Semantic::resolveIdentifier;
     if (identifierRef)
@@ -108,10 +107,10 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, const Utf8& name
 {
     SWAG_ASSERT(!name.empty());
 
-    const auto node        = Ast::newIdentifierRef(sourceFile, parent, parser);
+    const auto node  = Ast::newIdentifierRef(sourceFile, parent, parser);
     node->token.text = name;
 
-    const auto id         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
+    const auto id   = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
     id->semanticFct = Semantic::resolveIdentifier;
     id->token.text  = name;
     id->tokenId     = TokenId::Identifier;
@@ -124,7 +123,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
 {
     SWAG_ASSERT(!name.empty());
 
-    const auto node        = Ast::newIdentifierRef(sourceFile, parent, parser);
+    const auto node  = Ast::newIdentifierRef(sourceFile, parent, parser);
     node->token.text = name;
 
     auto       pz    = name.buffer;
@@ -135,7 +134,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
         while (*pz != '.' && pz != pzEnd)
             pz++;
 
-        const auto id              = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
+        const auto id        = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
         id->semanticFct      = Semantic::resolveIdentifier;
         id->token.text.count = (int) (pz - pzStart);
         if (name.allocated)

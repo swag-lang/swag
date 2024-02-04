@@ -339,9 +339,9 @@ void Module::buildGlobalVarsToDropSlice()
         else
         {
             SWAG_ASSERT(g.type->opDrop);
-            const auto opDrop     = g.type->opDrop;
-            oneVar->opDrop  = opDrop;
-            opDrop->isInSeg = true;
+            const auto opDrop = g.type->opDrop;
+            oneVar->opDrop    = opDrop;
+            opDrop->isInSeg   = true;
 
             if (opDrop->node)
             {
@@ -380,7 +380,7 @@ void Module::buildTypesSlice()
     offset += sizeof(uint64_t);
 
     // Initialize the "current module" slice of types
-    const auto moduleSlice          = (SwagModule*) constantSegment.address(modulesSliceOffset);
+    const auto moduleSlice    = (SwagModule*) constantSegment.address(modulesSliceOffset);
     moduleSlice->types.buffer = resultPtr;
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
@@ -565,8 +565,8 @@ void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegme
     if (typeNode->isArrayOfStruct())
     {
         const auto typeArray = CastTypeInfo<TypeInfoArray>(typeNode, TypeInfoKind::Array);
-        typeNode       = typeArray->finalType;
-        count          = typeArray->totalCount;
+        typeNode             = typeArray->finalType;
+        count                = typeArray->totalCount;
     }
 
     TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
@@ -858,7 +858,9 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
 {
     result = moduleDependencies;
     sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2)
-         { return n2->module->hasDependencyTo(n1->module); });
+    {
+        return n2->module->hasDependencyTo(n1->module);
+    });
 }
 
 void Module::setBuildPass(BuildPass buildP)
@@ -953,10 +955,10 @@ bool Module::hasBytecodeToRun()
     // If we have some #test functions, and we are in test mode
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !byteCodeTestFunc.empty())
         runByteCode = true;
-    // If we have #run functions
+        // If we have #run functions
     else if (!byteCodeRunFunc.empty())
         runByteCode = true;
-    // If we need to run in bytecode mode
+        // If we need to run in bytecode mode
     else if (g_CommandLine.run && g_CommandLine.scriptMode)
         runByteCode = true;
     return runByteCode;
@@ -1019,10 +1021,10 @@ bool Module::mustOutputSomething()
         mustOutput = false;
     else if (files.empty())
         mustOutput = false;
-    // a test module needs swag to be in test mode
+        // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
         mustOutput = false;
-    // if all files are exported, then do not generate a module
+        // if all files are exported, then do not generate a module
     else if (buildCfg.backendKind == BuildCfgBackendKind::Export)
         mustOutput = false;
     else if (kind != ModuleKind::Test && buildCfg.backendKind == BuildCfgBackendKind::None)
@@ -1173,15 +1175,17 @@ bool Module::filterFunctionsToEmit()
     }
 
     sort(byteCodeFuncToGen.begin(), byteCodeFuncToGen.end(), [](ByteCode* bc1, ByteCode* bc2)
-         { return (size_t) bc1->sourceFile < (size_t) bc2->sourceFile; });
+    {
+        return (size_t) bc1->sourceFile < (size_t) bc2->sourceFile;
+    });
 
     return true;
 }
 
 void Module::flushGenFiles()
 {
-    const auto newJob    = Allocator::alloc<SaveGenJob>();
-    newJob->module = this;
+    const auto newJob = Allocator::alloc<SaveGenJob>();
+    newJob->module    = this;
     g_ThreadMgr.addJob(newJob);
 }
 

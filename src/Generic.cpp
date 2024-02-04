@@ -80,7 +80,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         if (!genericParameters && (firstMatch.matchFlags & SymbolMatchContext::MATCH_GENERIC_AUTO))
         {
             SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
-            const auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+            const auto identifier         = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
             for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
@@ -106,7 +106,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
             if (alias)
             {
-                const auto oneMatch            = context->getOneMatch();
+                const auto oneMatch      = context->getOneMatch();
                 oneMatch->symbolOverload = firstMatch.symbolOverload;
                 matches.push_back(oneMatch);
             }
@@ -118,7 +118,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         // So we match a generic struct as a normal match without instantiation (for now).
         else if (!(node->flags & AST_IS_GENERIC))
         {
-            const auto oneMatch            = context->getOneMatch();
+            const auto oneMatch      = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -128,7 +128,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         else
         {
             SWAG_ASSERT(genericParameters);
-            const auto oneMatch            = context->getOneMatch();
+            const auto oneMatch      = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -139,7 +139,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             if (newStructType->genericParameters.size() == genericParameters->childs.size() && genericParameters->childs.size())
             {
                 const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
-                newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
+                newStructType            = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
                 for (size_t i = 0; i < genericParameters->childs.size(); i++)
                 {
                     newStructType->genericParameters[i]->name     = genericParameters->childs[i]->typeInfo->name;
@@ -254,7 +254,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
     for (int i = 0; i < wantedNumGenericParams; i++)
     {
-        const auto genType                                          = genericParameters[i]->typeInfo;
+        const auto genType                                    = genericParameters[i]->typeInfo;
         context.mapGenericTypeToIndex[genType->name]          = i;
         context.genericParametersCallTypes[i].typeInfoGeneric = genType;
     }

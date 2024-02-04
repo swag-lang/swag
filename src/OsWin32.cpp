@@ -43,7 +43,7 @@ namespace OS
             return false;
 
         const auto value = new wchar_t[length + 1];
-        rc         = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, (LPBYTE) value, &length);
+        rc               = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, (LPBYTE) value, &length);
         RegCloseKey(hKey);
         if (rc != S_OK)
             return false;
@@ -58,38 +58,39 @@ namespace OS
         winSdkFolder = str.c_str();
         winSdkFolder.append("Lib");
 
-        int  bestVersion[4] = {0};
-        Utf8 bestName;
+        int                                                         bestVersion[4] = {0};
+        Utf8                                                        bestName;
         visitFolders(winSdkFolder.string().c_str(), [&](const char* cFileName)
-                     {
-                         int        i0, i1, i2, i3;
-                         const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
-                         if (success < 4)
-                             return;
+        {
+            int        i0, i1, i2, i3;
+            const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
+            if (success < 4)
+                return;
 
-                         if (i0 < bestVersion[0])
-                             return;
-                         if (i0 == bestVersion[0])
-                         {
-                             if (i1 < bestVersion[1])
-                                 return;
-                             if (i1 == bestVersion[1])
-                             {
-                                 if (i2 < bestVersion[2])
-                                     return;
-                                 if (i2 == bestVersion[2])
-                                 {
-                                     if (i3 < bestVersion[3])
-                                         return;
-                                 }
-                             }
-                         }
+            if (i0 < bestVersion[0])
+                return;
+            if (i0 == bestVersion[0])
+            {
+                if (i1 < bestVersion[1])
+                    return;
+                if (i1 == bestVersion[1])
+                {
+                    if (i2 < bestVersion[2])
+                        return;
+                    if (i2 == bestVersion[2])
+                    {
+                        if (i3 < bestVersion[3])
+                            return;
+                    }
+                }
+            }
 
-                         bestName = cFileName;
-                         bestVersion[0] = i0;
-                         bestVersion[1] = i1;
-                         bestVersion[2] = i2;
-                         bestVersion[3] = i3; });
+            bestName       = cFileName;
+            bestVersion[0] = i0;
+            bestVersion[1] = i1;
+            bestVersion[2] = i2;
+            bestVersion[3] = i3;
+        });
 
         if (bestVersion[0] == 0)
             return false;
@@ -509,7 +510,7 @@ namespace OS
         LPCSTR szName;     // Pointer to name (in user addr space).
         DWORD  dwThreadID; // Thread ID (-1=caller thread).
         DWORD  dwFlags;    // Reserved for future use, must be zero.
-    } THREADNAME_INFO;
+    }          THREADNAME_INFO;
 #pragma pack(pop)
 
     void setThreadName(uint32_t dwThreadID, const char* threadName)
@@ -524,7 +525,7 @@ namespace OS
         {
             RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
         }
-        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
         }
     }
@@ -574,10 +575,10 @@ namespace OS
     Utf8 captureStack()
     {
         constexpr int SYM_LEN_NAME = 128;
-        TCHAR     sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
-        DWORD64   displacement = 0;
+        TCHAR         sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
+        DWORD64       displacement = 0;
 
-        const auto psym          = (SYMBOL_INFO*) sym;
+        const auto psym    = (SYMBOL_INFO*) sym;
         psym->SizeOfStruct = sizeof(SYMBOL_INFO);
         psym->MaxNameLen   = SYM_LEN_NAME;
 
@@ -930,7 +931,7 @@ namespace OS
         MK_ALIGN16(stackSize);
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
-        auto&            gen             = g_X64GenFFI;
+        auto&                gen             = g_X64GenFFI;
         if (!gen.concat.firstBucket)
         {
             // Generate a buffer big enough to store the call, and be aware that this could be recursive, that's
@@ -1009,7 +1010,7 @@ namespace OS
             if (hglob)
             {
                 const auto pz     = GlobalLock(hglob);
-                Utf8 result = (const char*) pz;
+                Utf8       result = (const char*) pz;
                 GlobalUnlock(pz);
                 return result;
             }

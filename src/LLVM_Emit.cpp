@@ -190,7 +190,12 @@ void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildPara
         builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
-void LLVM::storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
+void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
+                               const BuildParameters& buildParameters,
+                               uint32_t               reg0,
+                               uint32_t               reg1,
+                               llvm::AllocaInst*      allocR,
+                               llvm::AllocaInst*      allocRR)
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;

@@ -307,7 +307,7 @@ bool ByteCodeGen::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, 
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -368,7 +368,7 @@ bool ByteCodeGen::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0,
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -429,7 +429,7 @@ bool ByteCodeGen::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, u
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -479,7 +479,7 @@ bool ByteCodeGen::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, u
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -516,7 +516,7 @@ bool ByteCodeGen::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, ui
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -553,7 +553,7 @@ bool ByteCodeGen::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, u
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -590,7 +590,7 @@ bool ByteCodeGen::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -634,7 +634,7 @@ bool ByteCodeGen::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -679,7 +679,7 @@ bool ByteCodeGen::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 
@@ -731,7 +731,7 @@ bool ByteCodeGen::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, u
     const AstNode* node = context->node;
 
     const auto front        = node->childs.front();
-    auto leftTypeInfo = TypeManager::concreteType(front->typeInfo);
+    auto       leftTypeInfo = TypeManager::concreteType(front->typeInfo);
     if (front->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = TypeManager::concretePtrRefType(leftTypeInfo);
 

@@ -132,9 +132,9 @@ void Workspace::addBootstrap()
     bootstrapModule->setup("bootstrap", "");
     modules.push_back(bootstrapModule);
 
-    const auto file  = Allocator::alloc<SourceFile>();
-    file->name = "bootstrap.swg";
-    file->path = g_CommandLine.exePath.parent_path();
+    const auto file = Allocator::alloc<SourceFile>();
+    file->name      = "bootstrap.swg";
+    file->path      = g_CommandLine.exePath.parent_path();
     file->path.append("runtime");
     file->path.append("bootstrap.swg");
     file->module          = bootstrapModule;
@@ -144,9 +144,9 @@ void Workspace::addBootstrap()
 
 void Workspace::addRuntimeFile(const char* fileName)
 {
-    const auto file  = Allocator::alloc<SourceFile>();
-    file->name = fileName;
-    file->path = g_CommandLine.exePath.parent_path();
+    const auto file = Allocator::alloc<SourceFile>();
+    file->name      = fileName;
+    file->path      = g_CommandLine.exePath.parent_path();
     file->path.append("runtime");
     file->path.append(fileName);
     file->module        = runtimeModule;
@@ -297,7 +297,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         }
     }
 
-    const auto note         = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
+    const auto note   = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
     note->canBeMerged = false;
     note->hint        = hint;
 
@@ -389,7 +389,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                     notes.push_back(note);
                 }
 
-                const auto note   = errorPendingJob(prevJob, depJob);
+                const auto note = errorPendingJob(prevJob, depJob);
                 if (note)
                     notes.push_back(note);
                 prevJob = depJob;
@@ -399,10 +399,10 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             if (note)
                 notes.push_back(note);
 
-            const auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
+            const auto prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
             Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
-            const auto sourceFile                   = Report::getDiagFile(diag);
+            const auto sourceFile             = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;
             continue;
         }
@@ -543,7 +543,7 @@ bool Workspace::buildRTModule(Module* module)
 {
     for (const auto f : module->files)
     {
-        const auto job        = Allocator::alloc<SyntaxJob>();
+        const auto job  = Allocator::alloc<SyntaxJob>();
         job->sourceFile = f;
         g_ThreadMgr.addJob(job);
     }
@@ -556,8 +556,8 @@ bool Workspace::buildRTModule(Module* module)
         return false;
     }
 
-    const auto job    = Allocator::alloc<ModuleSemanticJob>();
-    job->module = module;
+    const auto job = Allocator::alloc<ModuleSemanticJob>();
+    job->module    = module;
     g_ThreadMgr.addJob(job);
     g_ThreadMgr.waitEndJobs();
     checkPendingJobs();
@@ -586,7 +586,7 @@ bool Workspace::buildTarget()
 
     if (g_ThreadMgr.numWorkers != 1 && !g_CommandLine.scriptCommand)
     {
-        const auto enumJob0          = Allocator::alloc<EnumerateModuleJob>();
+        const auto enumJob0    = Allocator::alloc<EnumerateModuleJob>();
         enumJob0->readFileMode = true;
         g_ThreadMgr.addJob(enumJob0);
     }
@@ -636,7 +636,7 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    const auto enumJob1          = Allocator::alloc<EnumerateModuleJob>();
+    const auto enumJob1    = Allocator::alloc<EnumerateModuleJob>();
     enumJob1->readFileMode = false;
     g_ThreadMgr.addJob(enumJob1);
     g_ThreadMgr.waitEndJobs();
@@ -692,8 +692,8 @@ bool Workspace::buildTarget()
                 continue;
             if (module->isErrorModule)
                 continue;
-            const auto job    = Allocator::alloc<ModuleBuildJob>();
-            job->module = module;
+            const auto job = Allocator::alloc<ModuleBuildJob>();
+            job->module    = module;
             g_ThreadMgr.addJob(job);
         }
     }
@@ -832,9 +832,11 @@ bool Workspace::build()
         else if (g_Workspace->numErrors.load())
             g_Log.messageHeaderCentered("Done", Fmt("%d errors", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
         else if (g_Workspace->numWarnings.load() == 1)
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
+                                        LogColor::Magenta);
         else if (g_Workspace->numWarnings.load())
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
+            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
+                                        LogColor::Magenta);
         else
             g_Log.messageHeaderCentered("Done", Fmt("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
     }

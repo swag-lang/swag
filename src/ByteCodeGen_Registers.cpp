@@ -26,7 +26,9 @@ void ByteCodeGen::sortRegistersRC(ByteCodeGenContext* context)
     if (context->bc->availableRegistersRC.size() <= 1)
         return;
     sort(context->bc->availableRegistersRC.begin(), context->bc->availableRegistersRC.end(), [](uint32_t a, uint32_t b)
-         { return a > b; });
+    {
+        return a > b;
+    });
 }
 
 void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)

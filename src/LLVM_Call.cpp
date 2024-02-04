@@ -433,7 +433,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
             else
             {
                 const auto ty = swagTypeToLLVMType(buildParameters, module, param);
-                r0      = builder.CreatePointerCast(r0, ty->getPointerTo());
+                r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
                 builder.CreateStore(arg, r0);
             }
         }
@@ -442,8 +442,8 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
         else
         {
             const auto ty = swagTypeToLLVMType(buildParameters, module, param);
-            auto r0 = GEP64(allocR, rdest);
-            r0      = builder.CreatePointerCast(r0, ty->getPointerTo());
+            auto       r0 = GEP64(allocR, rdest);
+            r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
         }
     }

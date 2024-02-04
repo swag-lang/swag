@@ -35,7 +35,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                             return context->report(diag, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload));
                         }
 
-                        const auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
+                        const auto child    = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                         cloneContext.parent = child;
                         param->assignment->clone(cloneContext);
                     }
@@ -49,7 +49,9 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                     context->result     = ContextResult::NewChilds;
                     node->semanticState = AstNodeResolveState::Enter;
                     Ast::visit(node, [](AstNode* n)
-                               { n->semFlags &= ~SEMFLAG_ONCE; });
+                    {
+                        n->semFlags &= ~SEMFLAG_ONCE;
+                    });
                     return true;
                 }
             }

@@ -93,7 +93,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg  = Fmt(Err(Err0381), token.ctext());
+        msg = Fmt(Err(Err0381), token.ctext());
         note = Nte(Nte0167);
         break;
     case InvalidTokenError::EmbeddedInstruction:
@@ -120,7 +120,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
             token = startToken;
         }
 
-        // Default more generic message
+    // Default more generic message
         msg = Fmt(Err(Err0283), token.ctext());
 
         if (parent)
@@ -128,17 +128,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
             if (Tokenizer::isKeyword(parent->tokenId))
             {
                 const Utf8 forWhat = Fmt("[[%s]]", parent->token.ctext());
-                msg          = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
+                msg                = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isCompiler(parent->tokenId))
             {
                 const Utf8 forWhat = Fmt("the compiler directive [[%s]]", parent->token.ctext());
-                msg          = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
+                msg                = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isSymbol(parent->tokenId))
             {
                 const Utf8 forWhat = Fmt("the symbol [[%s]]", parent->token.ctext());
-                msg          = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
+                msg                = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
             }
         }
 
@@ -272,7 +272,8 @@ bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFi
             countEol++;
     }
 
-    const Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+    const Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1,
+                                fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
     modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
     previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
@@ -327,7 +328,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     if (kind == CompilerAstKind::MissingInterfaceMtd)
     {
-        const auto impl          = CastAst<AstImpl>(parent, AstNodeKind::Impl);
+        const auto impl    = CastAst<AstImpl>(parent, AstNodeKind::Impl);
         currentScope       = impl->scope;
         currentStructScope = impl->structScope;
     }
@@ -422,14 +423,14 @@ bool Parser::generateAst()
             npName = moduleForNp->name;
         Ast::normalizeIdentifierName(npName);
 
-        const auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        const auto namespaceNode  = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
         namespaceNode->token.text = npName;
 
         ScopedLock lk(parentScope->symTable.mutex);
         const auto symbol = parentScope->symTable.findNoLock(npName);
         if (!symbol)
         {
-            const auto typeInfo           = makeType<TypeInfoNamespace>();
+            const auto typeInfo     = makeType<TypeInfoNamespace>();
             typeInfo->name          = npName;
             typeInfo->scope         = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
             namespaceNode->typeInfo = typeInfo;

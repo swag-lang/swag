@@ -54,7 +54,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
     Vector<const Diagnostic*> notes;
     for (const auto match : matches)
     {
-        const auto        overload = match->symbolOverload;
+        const auto  overload = match->symbolOverload;
         Diagnostic* note     = nullptr;
 
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
@@ -75,8 +75,8 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         else
         {
             const auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-            auto couldBe      = Fmt(Nte(Nte0046), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-            note              = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+            auto       couldBe      = Fmt(Nte(Nte0046), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
+            note                    = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
 
         note->canBeMerged = false;

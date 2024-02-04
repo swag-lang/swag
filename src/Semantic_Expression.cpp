@@ -70,10 +70,10 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         YIELD();
     }
 
-    const auto typeInfo      = makeType<TypeInfoList>(TypeInfoKind::TypeListTuple);
-    typeInfo->name     = "{";
-    typeInfo->sizeOf   = 0;
-    typeInfo->declNode = node;
+    const auto typeInfo = makeType<TypeInfoList>(TypeInfoKind::TypeListTuple);
+    typeInfo->name      = "{";
+    typeInfo->sizeOf    = 0;
+    typeInfo->declNode  = node;
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (const auto child : node->childs)
@@ -249,7 +249,9 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
     // Make the cast
     {
         PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, []()
-                          { return Nte(Nte0185); });
+        {
+            return Nte(Nte0185);
+        });
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
     }
 
@@ -366,7 +368,9 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     else
     {
         PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, []()
-                           { return Nte(Nte0023); });
+        {
+            return Nte(Nte0023);
+        });
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;
@@ -378,7 +382,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 
 bool Semantic::resolveDefer(SemanticContext* context)
 {
-    const auto node         = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
+    const auto node   = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     node->byteCodeFct = ByteCodeGen::emitDefer;
 
     SWAG_ASSERT(node->childs.size() == 1);

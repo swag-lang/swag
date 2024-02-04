@@ -15,7 +15,13 @@ bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataS
     return genExportedTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
 }
 
-bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
+                                        ExportedTypeInfo** result,
+                                        TypeInfo*          typeInfo,
+                                        DataSegment*       storageSegment,
+                                        uint32_t*          storage,
+                                        uint32_t           cflags,
+                                        TypeInfo**         ptrTypeInfo)
 {
     switch (typeInfo->kind)
     {
@@ -177,8 +183,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
 
     // Register type and value
     // Do it now to break recursive references
-    const auto    typePtr = makeType<TypeInfoPointer>();
-    MapType mapType;
+    const auto typePtr = makeType<TypeInfoPointer>();
+    MapType    mapType;
     mapType.realType      = typeInfo;
     mapType.newRealType   = typePtr;
     mapType.exportedType  = exportedTypeInfoValue;
@@ -204,7 +210,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
     {
     case TypeInfoKind::Native:
     {
-        const auto concreteType        = (ExportedTypeInfoNative*) exportedTypeInfoValue;
+        const auto concreteType  = (ExportedTypeInfoNative*) exportedTypeInfoValue;
         concreteType->nativeKind = typeInfo->nativeType;
         break;
     }
@@ -247,7 +253,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
         {
             const uint32_t count = (uint32_t) concreteType->generics.count;
             uint32_t       storageArray;
-            const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+            const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
+                                                                             &concreteType->generics.buffer, storageArray);
             for (size_t param = 0; param < concreteType->generics.count; param++)
             {
                 SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
@@ -271,7 +278,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
         {
             const uint32_t count = (uint32_t) realType->parameters.size();
             uint32_t       storageArray;
-            const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->parameters.buffer, storageArray);
+            const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
+                                                                             &concreteType->parameters.buffer, storageArray);
             for (size_t param = firstParam; param < realType->parameters.size(); param++)
             {
                 SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], cflags));
@@ -296,7 +304,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
         {
             const uint32_t count = (uint32_t) realType->values.size();
             uint32_t       storageArray;
-            const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->values.buffer, storageArray);
+            const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
+                                                                             &concreteType->values.buffer, storageArray);
             for (size_t param = 0; param < concreteType->values.count; param++)
             {
                 SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], cflags));
@@ -343,7 +352,13 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
     return true;
 }
 
-bool TypeGen::genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** result, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
+                                     ExportedTypeInfo** result,
+                                     void*              exportedTypeInfoValue,
+                                     DataSegment*       storageSegment,
+                                     uint32_t           storageOffset,
+                                     TypeInfo*          typeInfo,
+                                     uint32_t           cflags)
 {
     if (!typeInfo)
     {
@@ -374,7 +389,13 @@ bool TypeGen::genExportedString(JobContext* context, SwagSlice* result, const Ut
     return true;
 }
 
-void* TypeGen::genExportedSlice(JobContext* context, uint32_t sizeOf, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
+void* TypeGen::genExportedSlice(JobContext*  context,
+                                uint32_t     sizeOf,
+                                void*        exportedTypeInfoValue,
+                                DataSegment* storageSegment,
+                                uint32_t     storageOffset,
+                                void**       result,
+                                uint32_t&    storageArray)
 {
     uint8_t* addrDst;
     storageArray = storageSegment->reserve(sizeOf, &addrDst);
@@ -400,10 +421,16 @@ void* TypeGen::genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegmen
     return addrDst;
 }
 
-bool TypeGen::genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::genExportedAny(JobContext*    context,
+                             SwagAny*       ptrAny,
+                             DataSegment*   storageSegment,
+                             uint32_t       storageOffset,
+                             ComputedValue& computedValue,
+                             TypeInfo*      typeInfo,
+                             uint32_t       cflags)
 {
     const auto sourceFile = context->sourceFile;
-    ptrAny->value   = nullptr;
+    ptrAny->value         = nullptr;
 
     if (typeInfo->isNative())
     {
@@ -448,7 +475,13 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
     return true;
 }
 
-bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attributes, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, uint32_t cflags)
+bool TypeGen::genExportedAttributes(JobContext*    context,
+                                    AttributeList& attributes,
+                                    void*          exportedTypeInfoValue,
+                                    DataSegment*   storageSegment,
+                                    uint32_t       storageOffset,
+                                    SwagSlice*     result,
+                                    uint32_t       cflags)
 {
     if (attributes.empty())
         return true;
@@ -460,7 +493,8 @@ bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attribut
 
     uint32_t count = (uint32_t) result->count;
     uint32_t storageOffsetAttributes;
-    auto     ptrStorageAttributes = (uint8_t*) genExportedSlice(context, count * sizeof(ExportedAttribute), exportedTypeInfoValue, storageSegment, storageOffset, &result->buffer, storageOffsetAttributes);
+    auto     ptrStorageAttributes = (uint8_t*) genExportedSlice(context, count * sizeof(ExportedAttribute), exportedTypeInfoValue, storageSegment, storageOffset, &result->buffer,
+                                                                storageOffsetAttributes);
 
     uint32_t curOffsetAttributes = storageOffsetAttributes;
     for (auto& one : attributes.allAttributes)
@@ -474,16 +508,17 @@ bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attribut
         ptrStorageAttributes += sizeof(ExportedTypeInfo*);
 
         // Slice to all parameters
-        const auto ptrParamsAttribute    = (SwagSlice*) ptrStorageAttributes;
-        ptrParamsAttribute->buffer = nullptr;
-        ptrParamsAttribute->count  = one.parameters.size();
+        const auto ptrParamsAttribute = (SwagSlice*) ptrStorageAttributes;
+        ptrParamsAttribute->buffer    = nullptr;
+        ptrParamsAttribute->count     = one.parameters.size();
 
         // Parameters
         if (!one.parameters.empty())
         {
             count = (uint32_t) one.parameters.size();
             uint32_t storageOffsetParams;
-            auto     ptrStorageAllParams = (uint8_t*) genExportedSlice(context, count * sizeof(ExportedAttributeParameter), storageSegment, curOffsetAttributes, &ptrParamsAttribute->buffer, storageOffsetParams);
+            auto     ptrStorageAllParams = (uint8_t*) genExportedSlice(context, count * sizeof(ExportedAttributeParameter), storageSegment, curOffsetAttributes,
+                                                                       &ptrParamsAttribute->buffer, storageOffsetParams);
 
             uint32_t curOffsetParams = storageOffsetParams;
             uint32_t cptParam        = 0;
@@ -501,14 +536,14 @@ bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attribut
                 if (one.typeFunc && one.typeFunc->flags & TYPEINFO_TYPED_VARIADIC && cptParam >= one.typeFunc->parameters.size() - 1)
                 {
                     const auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
-                    typeValue         = typeVariadic->rawType;
+                    typeValue               = typeVariadic->rawType;
                 }
 
                 // typeinfo
                 if (typeValue->isPointerToTypeInfo())
                 {
-                    const auto  addr      = oneParam.value.getStorageAddr();
-                    auto& mapPerSeg = getMapPerSeg(oneParam.value.storageSegment);
+                    const auto addr      = oneParam.value.getStorageAddr();
+                    auto&      mapPerSeg = getMapPerSeg(oneParam.value.storageSegment);
                     if (oneParam.value.storageSegment != storageSegment)
                         mapPerSeg.mutex.lock();
                     const auto it = mapPerSeg.exportedTypesReverse.find((ExportedTypeInfo*) addr);
@@ -579,7 +614,7 @@ void TypeGen::setup(const Utf8& moduleName)
 {
     name = moduleName;
     mapPerSegment.set_size_clear(2 + g_ThreadMgr.numWorkers);
-    for (uint32_t i = 0; i < mapPerSegment.count; i++)
+    for (uint32_t i      = 0; i < mapPerSegment.count; i++)
         mapPerSegment[i] = new MapPerSeg;
 }
 
@@ -602,7 +637,13 @@ TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
     return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
-bool TypeGen::genExportedStuct(JobContext* context, const Utf8& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
+bool TypeGen::genExportedStuct(JobContext*       context,
+                               const Utf8&       typeName,
+                               ExportedTypeInfo* exportedTypeInfoValue,
+                               TypeInfo*         typeInfo,
+                               DataSegment*      storageSegment,
+                               uint32_t          storageOffset,
+                               uint32_t          cflags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
     if (context->baseJob->waitingKind == JobWaitKind::GenExportedType && context->result != ContextResult::Done)

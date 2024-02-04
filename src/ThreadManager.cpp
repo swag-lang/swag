@@ -190,11 +190,11 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     if (result != JobResult::KeepJobAlive)
         wakeUpParent = true;
 
-    // or if we are waiting for a placeholder symbol to be solved, because the parent job *will* generate the placeholder
+        // or if we are waiting for a placeholder symbol to be solved, because the parent job *will* generate the placeholder
     else if (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
         wakeUpParent = true;
 
-    // or if the symbol is waiting for code generation
+        // or if the symbol is waiting for code generation
     else if (job->waitingSymbolSolved && job->waitingSymbolSolved->flags & SYMBOL_ATTRIBUTE_GEN)
         wakeUpParent = true;
 
@@ -283,7 +283,7 @@ void ThreadManager::executeOneJob(Job* job)
         if (result == JobResult::ReleaseJob)
             job->release();
     }
-    SWAG_EXCEPT(exceptionHandler(job, SWAG_GET_EXCEPTION_INFOS()))
+    SWAG_EXCEPT (exceptionHandler(job, SWAG_GET_EXCEPTION_INFOS()))
     {
         OS::exit(-1);
     }
@@ -324,7 +324,9 @@ void ThreadManager::clearOptionalJobs()
 
 void ThreadManager::waitEndJobsSync()
 {
-    while (tryExecuteJob()) {}
+    while (tryExecuteJob())
+    {
+    }
 }
 
 void ThreadManager::waitEndJobs()

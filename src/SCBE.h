@@ -53,10 +53,19 @@ struct SCBE : public Backend
     void emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall);
     void emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
     void emitInternalCall(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
-    void emitInternalCallExt(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
+    void emitInternalCallExt(SCBE_X64&                         pp,
+                             Module*                           moduleToGen,
+                             const Utf8&                       funcName,
+                             const VectorNative<CPUPushParam>& pushParams,
+                             uint32_t                          offsetRT = UINT32_MAX,
+                             TypeInfoFuncAttr*                 typeFunc = nullptr);
 
     bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me);
-    void computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
+    void computeUnwind(const VectorNative<CPURegister>& unwindRegs,
+                       const VectorNative<uint32_t>&    unwindOffsetRegs,
+                       uint32_t                         sizeStack,
+                       uint32_t                         offsetSubRSP,
+                       VectorNative<uint16_t>&          unwind);
     void initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
 
     SCBE_X64* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];

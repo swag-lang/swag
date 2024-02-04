@@ -63,14 +63,18 @@ namespace Ast
     void     convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typeStruct);
     bool     convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier);
 
-    bool generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface);
+    bool generateMissingInterfaceFct(SemanticContext*            context,
+                                     VectorNative<AstFuncDecl*>& mapItIdxToFunc,
+                                     TypeInfoStruct*             typeStruct,
+                                     TypeInfoStruct*             typeBaseInterface,
+                                     TypeInfoStruct*             typeInterface);
     bool generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
 
     template<typename T>
     void constructNode(T* node)
     {
         memset(node, 0, sizeof(T));
-        ::new (node) T;
+        ::new(node) T;
     }
 
     template<typename T>

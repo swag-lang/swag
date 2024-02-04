@@ -219,8 +219,13 @@ struct ByteCode
     bool              isDoingNothing() const;
     void              makeRoomForInstructions(uint32_t room = 1);
 
-    static bool areSame(ByteCodeInstruction* start0, const ByteCodeInstruction* end0, const ByteCodeInstruction* start1, const ByteCodeInstruction* end1, bool specialJump, bool specialCall);
-    uint32_t    computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
+    static bool areSame(ByteCodeInstruction*       start0,
+                        const ByteCodeInstruction* end0,
+                        const ByteCodeInstruction* start1,
+                        const ByteCodeInstruction* end1,
+                        bool                       specialJump,
+                        bool                       specialCall);
+    uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
 
     VectorNative<uint32_t>            availableRegistersRC;
     VectorNative<pair<void*, size_t>> autoFree;

@@ -12,7 +12,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             continue;
 
         const auto ipStart = ip + ip->b.s32 + 1;
-        auto ipScan  = ipStart;
+        auto       ipScan  = ipStart;
         if (ipScan->op == ByteCodeOp::IncJumpIfEqual64)
             ipScan++;
 

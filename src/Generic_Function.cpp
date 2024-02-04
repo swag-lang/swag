@@ -80,7 +80,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         if (v.second.typeInfoReplace->isListTuple())
         {
             const auto tpt = CastTypeInfo<TypeInfoList>(v.second.typeInfoReplace, TypeInfoKind::TypeListTuple);
-            int  idx = 0;
+            int        idx = 0;
             for (const auto p : match.parameters)
             {
                 if (p->typeInfo == tpt)
@@ -259,7 +259,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                         return context->report(diag, Diagnostic::hereIs(identifier->resolvedSymbolOverload));
                     }
 
-                    const auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
+                    const auto child    = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                     cloneContext.parent = child;
                     param->assignment->clone(cloneContext);
                 }
@@ -271,7 +271,9 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 context->result     = ContextResult::NewChilds1;
                 node->semanticState = AstNodeResolveState::Enter;
                 Ast::visit(node, [](AstNode* n)
-                           { n->semFlags &= ~SEMFLAG_ONCE; });
+                {
+                    n->semFlags &= ~SEMFLAG_ONCE;
+                });
                 return true;
             }
         }

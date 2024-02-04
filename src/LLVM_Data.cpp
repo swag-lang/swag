@@ -110,11 +110,11 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     SWAG_ASSERT(precompileIndex == 0);
 
     const auto& pp      = *perThread[ct][precompileIndex];
-    auto& context = *pp.context;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.module;
+    auto&       context = *pp.context;
+    auto&       builder = *pp.builder;
+    auto&       modu    = *pp.module;
 
-    const auto                  fctType = llvm::FunctionType::get(VOID_TY(), false);
+    const auto            fctType = llvm::FunctionType::get(VOID_TY(), false);
     const char*           name    = nullptr;
     llvm::GlobalVariable* gVar    = nullptr;
     switch (me)

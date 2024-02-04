@@ -64,7 +64,7 @@ void TypeManager::setup()
     typeInfoOpCall             = new TypeInfoFuncAttr();
     typeInfoOpCall->returnType = typeInfoVoid;
     typeInfoOpCall->parameters.push_back(new TypeInfoParam());
-    const auto typePtr         = new TypeInfoPointer();
+    const auto typePtr   = new TypeInfoPointer();
     typePtr->pointedType = typeInfoVoid;
     typePtr->sizeOf      = sizeof(void*);
     typePtr->computeName();
@@ -197,7 +197,7 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     // A struct/interface is forced to be a const reference
     if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
     {
-        const auto typeRef         = makeType<TypeInfoPointer>();
+        const auto typeRef   = makeType<TypeInfoPointer>();
         typeInfo             = typeInfo->getConstAlias();
         typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
         typeRef->pointedType = typeInfo;
@@ -270,9 +270,9 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->fields.reserve((int) typeList->subTypes.size());
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
-        const auto one          = typeList->subTypes[idx];
-        auto typeParam    = (TypeInfoParam*) one->clone();
-        typeParam->offset = typeStruct->sizeOf;
+        const auto one       = typeList->subTypes[idx];
+        auto       typeParam = (TypeInfoParam*) one->clone();
+        typeParam->offset    = typeStruct->sizeOf;
 
         if (typeParam->name.empty())
         {
@@ -477,7 +477,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)
         }
     }
 
-    const auto ptrType         = makeType<TypeInfoPointer>();
+    const auto ptrType   = makeType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
     ptrType->flags       = ptrFlags;

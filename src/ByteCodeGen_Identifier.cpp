@@ -70,7 +70,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         node->parent->resultRegisterRC                = node->resultRegisterRC;
 
         // Get capture block pointer (first parameter)
-        const auto inst          = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+        const auto inst    = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
         inst->b.u64u32.low = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
 
         // :VariadicAndClosure
@@ -111,7 +111,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             // Get the ITable pointer
             if (node->flags & AST_FROM_UFCS)
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = resolved->computedValue.storageOffset + 8;
-            // Get the structure pointer
+                // Get the structure pointer
             else
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = resolved->computedValue.storageOffset;
 
@@ -149,7 +149,8 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     else if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
         node->resultRegisterRC = identifier->identifierRef()->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.ctext()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0,
+                    Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.ctext()).c_str()));
         forStruct = true;
     }
 
@@ -230,9 +231,9 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 inst = EMIT_INST2(context, ByteCodeOp::GetParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[0]);
             }
 
-            const auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            inst->c.u64     = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
-            inst->d.pointer = (uint8_t*) resolved;
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            inst->c.u64         = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
+            inst->d.pointer     = (uint8_t*) resolved;
 
             identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
             node->parent->resultRegisterRC                = node->resultRegisterRC;
@@ -248,7 +249,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->semFlags & SEMFLAG_FROM_REF)
         {
-            const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
             inst->b.u64u32.high = resolved->storageIndex;
             if (!node->isForceTakeAddress())
@@ -262,7 +263,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         {
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
             {
-                const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+                const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
                 inst->b.u64u32.low  = resolved->computedValue.storageOffset;
                 inst->b.u64u32.high = resolved->storageIndex;
             }
@@ -286,7 +287,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
-            const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
             inst->b.u64u32.high = resolved->storageIndex;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
@@ -299,21 +300,21 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             // Get the ITable pointer
             if (node->flags & AST_FROM_UFCS)
             {
-                const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+                const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
                 inst->b.u64u32.low  = resolved->computedValue.storageOffset + 8;
                 inst->b.u64u32.high = resolved->storageIndex + 1;
             }
             // Get the structure pointer
             else
             {
-                const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+                const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
                 inst->b.u64u32.low  = resolved->computedValue.storageOffset;
                 inst->b.u64u32.high = resolved->storageIndex;
             }
         }
         else if (typeInfo->isClosure())
         {
-            const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
             inst->b.u64u32.high = resolved->storageIndex;
         }
@@ -330,7 +331,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             SWAG_ASSERT(typeInfo->numRegisters() == 1);
-            const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
+            const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
             inst->b.u64u32.high = resolved->storageIndex;
             SWAG_CHECK(emitSafetyValue(context, node->resultRegisterRC, node->typeInfo));
@@ -444,8 +445,8 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                const auto inst   = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-                inst->b.u64 = resolved->computedValue.storageOffset;
+                const auto inst = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
+                inst->b.u64     = resolved->computedValue.storageOffset;
             }
 
             if (!node->isForceTakeAddress())
@@ -575,7 +576,8 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->symRegisters.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated [[%s]]", identifier->token.ctext()).c_str()));
+        SWAG_VERIFY(resolved->symRegisters.size() > 0,
+                    Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated [[%s]]", identifier->token.ctext()).c_str()));
         SWAG_ASSERT(resolved->flags & OVERLOAD_INLINE_REG);
         reserveRegisterRC(context, node->resultRegisterRC, resolved->symRegisters.size());
 

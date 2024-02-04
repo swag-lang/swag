@@ -59,7 +59,7 @@ void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
     // Add all #public files
     for (const auto one : moduleToPublish->exportSourceFiles)
     {
-        const auto job        = Allocator::alloc<CopyFileJob>();
+        const auto job  = Allocator::alloc<CopyFileJob>();
         job->module     = module;
         job->sourcePath = one->path;
         job->destPath   = publicPath;
@@ -82,7 +82,7 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
     OS::visitFiles(publishPath.string().c_str(),
                    [&](const char* cFileName)
                    {
-                       const auto job        = Allocator::alloc<CopyFileJob>();
+                       const auto job  = Allocator::alloc<CopyFileJob>();
                        job->module     = module;
                        job->sourcePath = publishPath;
                        job->sourcePath.append(cFileName);
@@ -102,7 +102,7 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
         OS::visitFiles(osArchPath.string().c_str(),
                        [&](const char* cFileName)
                        {
-                           const auto job        = Allocator::alloc<CopyFileJob>();
+                           const auto job  = Allocator::alloc<CopyFileJob>();
                            job->module     = module;
                            job->sourcePath = osArchPath;
                            job->sourcePath.append(cFileName);
@@ -167,9 +167,9 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
                            const auto pz = strrchr(filename, '.');
                            if (pz && !_strcmpi(pz, ".swg"))
                            {
-                               const auto file  = Allocator::alloc<SourceFile>();
-                               file->name = filename;
-                               file->path = publicPath;
+                               const auto file = Allocator::alloc<SourceFile>();
+                               file->name      = filename;
+                               file->path      = publicPath;
                                file->path.append(filename);
                                file->imported = depModule;
                                files.push_back(file);
@@ -182,7 +182,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
     {
         module->addFile(one);
 
-        const auto syntaxJob          = Allocator::alloc<SyntaxJob>();
+        const auto syntaxJob    = Allocator::alloc<SyntaxJob>();
         syntaxJob->sourceFile   = one;
         syntaxJob->module       = module;
         syntaxJob->dependentJob = this;

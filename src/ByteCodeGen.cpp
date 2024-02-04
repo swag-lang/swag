@@ -180,11 +180,12 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
             return Ast::VisitResult::Continue;
         if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
         {
-            cxt->report({ n->childs.front(), Fmt(Err(Err0403), n->childs.front()->token.ctext()) });
+            cxt->report({n->childs.front(), Fmt(Err(Err0403), n->childs.front()->token.ctext())});
             return Ast::VisitResult::Stop;
         }
 
-        return Ast::VisitResult::Continue; });
+        return Ast::VisitResult::Continue;
+    });
 
     return res == Ast::VisitResult::Stop ? false : true;
 }

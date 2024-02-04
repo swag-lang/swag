@@ -12,7 +12,7 @@ void* operator new(size_t t)
     t = Allocator::alignSize((int) t + 2 * sizeof(uint64_t));
 
     const auto p = (uint64_t*) Allocator::alloc(t, 2 * sizeof(uint64_t));
-    *p     = (uint64_t) t;
+    *p           = (uint64_t) t;
 
 #ifdef SWAG_STATS
     g_Stats.memNew += t;
@@ -44,8 +44,7 @@ void* Allocator::alloc(size_t size, size_t align)
 #ifdef SWAG_STATS
     g_Stats.allocatedMemory += size;
     auto prevValue = g_Stats.maxAllocatedMemory.load();
-    while (prevValue < g_Stats.allocatedMemory.load() && !g_Stats.maxAllocatedMemory.compare_exchange_weak(prevValue, g_Stats.allocatedMemory.load()))
-        ;
+    while (prevValue < g_Stats.allocatedMemory.load() && !g_Stats.maxAllocatedMemory.compare_exchange_weak(prevValue, g_Stats.allocatedMemory.load()));
 #endif
 
     return result;

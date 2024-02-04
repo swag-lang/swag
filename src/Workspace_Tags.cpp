@@ -169,7 +169,7 @@ void Workspace::setupInternalTags()
     switch (g_CommandLine.target.arch)
     {
     case SwagTargetArch::X86_64:
-        oneTag.type       = g_TypeMgr->typeInfoString;
+        oneTag.type = g_TypeMgr->typeInfoString;
         oneTag.value.text = "little";
         oneTag.name       = "Swag.Endian";
         tags.push_back(oneTag);

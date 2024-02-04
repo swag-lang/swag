@@ -14,9 +14,11 @@
 
 Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
 {
-    VectorNative<AstNode*> childs;
+    VectorNative<AstNode*>        childs;
     Ast::visit(node, [&](AstNode* n)
-               { childs.push_back(n); });
+    {
+        childs.push_back(n);
+    });
 
     for (int i = (int) childs.size() - 1; i >= 0; i--)
     {
@@ -32,8 +34,8 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
-                        result->hint = Nte(Nte0079);
+                        const auto result = Diagnostic::note(c, c->token, Fmt(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
+                        result->hint      = Nte(Nte0079);
                         return result;
                     }
 
@@ -723,7 +725,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         node->semFlags |= SEMFLAG_LOAD;
 
         const auto filename = back->computedValue->text;
-        Path fullFileName;
+        Path       fullFileName;
 
         // Search first in the same folder as the source file
         fullFileName = node->sourceFile->path.parent_path();
@@ -764,7 +766,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         job->setPending(JobWaitKind::LoadFile, nullptr, node, nullptr);
 
         // Creates return type
-        const auto ptrArray         = makeType<TypeInfoArray>();
+        const auto ptrArray   = makeType<TypeInfoArray>();
         ptrArray->count       = stat_buf.st_size;
         ptrArray->pointedType = g_TypeMgr->typeInfoU8;
         ptrArray->finalType   = g_TypeMgr->typeInfoU8;
@@ -781,9 +783,9 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 {
-    const auto node      = context->node;
-    auto locNode   = node->childs.front();
-    node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
+    const auto node    = context->node;
+    auto       locNode = node->childs.front();
+    node->typeInfo     = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
 
     if (locNode->isValidIfParam(locNode->resolvedSymbolOverload))
     {

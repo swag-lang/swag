@@ -199,7 +199,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Continue;
 
     const auto concrete = res.type->getConcreteAlias();
-    Utf8 str;
+    Utf8       str;
     if (hasFormat)
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())

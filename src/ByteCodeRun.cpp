@@ -500,7 +500,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     case ByteCodeOp::CopyRBtoRRRet:
         context->registersRR[0].u64 = IMMB_U64(ip);
-        // fallthrough
+    // fallthrough
     case ByteCodeOp::Ret:
     {
         context->incSP(ip->a.u32);
@@ -3243,7 +3243,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpPlusEqS8:
         if (addWillOverflow(ip, ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
@@ -3385,7 +3385,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(double*) (context->bp + ip->a.u32) += *(double*) (context->bp + ip->b.u32);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpMinusEqS8:
         if (subWillOverflow(ip, ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
@@ -3527,7 +3527,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(double*) (context->bp + ip->a.u32) -= *(double*) (context->bp + ip->b.u32);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpMulEqS8:
         if (mulWillOverflow(ip, ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
@@ -3669,7 +3669,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(double*) (context->bp + ip->a.u32) *= *(double*) (context->bp + ip->b.u32);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpDivEqS8:
         *(int8_t*) registersRC[ip->a.u32].pointer /= IMMB_S8(ip);
@@ -3771,7 +3771,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(double*) (context->bp + ip->a.u32) /= *(double*) (context->bp + ip->b.u32);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpModuloEqS8:
         *(int8_t*) registersRC[ip->a.u32].pointer %= IMMB_S8(ip);
@@ -3853,7 +3853,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint64_t*) (context->bp + ip->a.u32) %= *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpAndEqU8:
         *(int8_t*) registersRC[ip->a.u32].pointer &= IMMB_S8(ip);
@@ -3871,7 +3871,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(int64_t*) registersRC[ip->a.u32].pointer &= IMMB_S64(ip);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpOrEqU8:
         *(uint8_t*) registersRC[ip->a.u32].pointer |= IMMB_S8(ip);
@@ -3889,7 +3889,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint64_t*) registersRC[ip->a.u32].pointer |= IMMB_S64(ip);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpXorEqU8:
         *(uint8_t*) registersRC[ip->a.u32].pointer ^= IMMB_S8(ip);
@@ -3907,7 +3907,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint64_t*) registersRC[ip->a.u32].pointer ^= IMMB_S64(ip);
         break;
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpShiftLeftEqS8:
     case ByteCodeOp::AffectOpShiftLeftEqU8:
@@ -3954,7 +3954,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::AffectOpShiftRightEqS8:
     {
@@ -4038,7 +4038,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-        /////////////////////////////////////
+    /////////////////////////////////////
 
     case ByteCodeOp::ZeroToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 == 0 ? true : false;
@@ -4154,8 +4154,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
 void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
 {
-    while (executeInstruction(context, context->ip++))
-        ;
+    while (executeInstruction(context, context->ip++));
 }
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
@@ -4210,9 +4209,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     tmpLoc.fileName.buffer = (void*) _strdup(loc.file->path.string().c_str());
     tmpLoc.fileName.count  = loc.file->path.string().length();
-    tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
-    tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
-    location                        = &tmpLoc;
+    tmpLoc.lineStart       = tmpLoc.lineEnd = loc.location->line;
+    tmpLoc.colStart        = tmpLoc.colEnd  = loc.location->column;
+    location               = &tmpLoc;
 
     // Exception 666 raised during bytecode execution
     /////////////////////////////////////////////////
@@ -4251,7 +4250,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             else
                 userMsg = txt;
 
-            // Additional panic infos
+        // Additional panic infos
             if (runContext->internalPanicSymbol)
             {
                 notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
@@ -4305,12 +4304,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
     else if (runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
         diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-    // Otherwise get the source file from the top of the bytecode stack if possible
+        // Otherwise get the source file from the top of the bytecode stack if possible
     else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
         diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
     else if (g_ByteCodeStackTrace->steps.size() > 1 && g_ByteCodeStackTrace->steps[1].bc)
         diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
-    // Otherwise take the current bytecode source file
+        // Otherwise take the current bytecode source file
     else
         diag->contextFile = runContext->bc->sourceFile;
 
@@ -4341,7 +4340,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         {
             return module->runner.runLoop(runContext);
         }
-        SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
+        SWAG_EXCEPT (exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
         {
             if (runContext->forDebugger)
                 continue;

@@ -141,7 +141,14 @@ struct Parser
     bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
     bool doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
     bool doDefer(AstNode* parent, AstNode** result);
-    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
+    bool doVarDeclExpression(AstNode*          parent,
+                             AstNode*          leftNode,
+                             AstNode*          type,
+                             AstNode*          assign,
+                             const TokenParse& assignToken,
+                             AstNodeKind       kind,
+                             AstNode**         result,
+                             bool              forLet = false);
     bool doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
     bool doTopLevelIdentifier(AstNode* parent, AstNode** result);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
@@ -186,7 +193,13 @@ struct Parser
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
-    bool doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr, bool isMethod = false, bool isConstMethod = false, bool isItfMethod = false);
+    bool doFuncDeclParameters(AstNode*  parent,
+                              AstNode** result,
+                              bool      acceptMissingType = false,
+                              bool*     hasMissingType    = nullptr,
+                              bool      isMethod          = false,
+                              bool      isConstMethod     = false,
+                              bool      isItfMethod       = false);
     bool doAttrDecl(AstNode* parent, AstNode** result);
     bool doAttrUse(AstNode* parent, AstNode** result, bool single = false);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result);

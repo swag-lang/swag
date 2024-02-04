@@ -21,7 +21,7 @@ JobResult ModuleOutputJob::execute()
         // Generate .swg file with public definitions
         if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable || module->isErrorModule)
         {
-            const auto exportJob          = Allocator::alloc<ModuleExportJob>();
+            const auto exportJob    = Allocator::alloc<ModuleExportJob>();
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
@@ -46,7 +46,7 @@ JobResult ModuleOutputJob::execute()
         if (!module->filterFunctionsToEmit())
             return JobResult::ReleaseJob;
 
-        const auto backend                  = module->backend;
+        const auto backend            = module->backend;
         backend->numPreCompileBuffers = module->buildParameters.buildCfg->backendNumCU;
         if (backend->numPreCompileBuffers == 0)
         {
@@ -64,7 +64,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                const auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
+                const auto preCompileJob                       = Allocator::alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -76,7 +76,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile the normal version
             if (module->mustGenerateLegit())
             {
-                const auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
+                const auto preCompileJob                       = Allocator::alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -106,7 +106,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                const auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage2Job>();
+                const auto preCompileJob                       = Allocator::alloc<ModulePrepOutputStage2Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -118,7 +118,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile the normal version
             if (module->mustGenerateLegit())
             {
-                const auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage2Job>();
+                const auto preCompileJob                       = Allocator::alloc<ModulePrepOutputStage2Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -161,7 +161,7 @@ JobResult ModuleOutputJob::execute()
         // Compile a specific version, to test it
         if (module->mustGenerateTestExe())
         {
-            const auto compileJob                            = Allocator::alloc<ModuleGenOutputJob>();
+            const auto compileJob                      = Allocator::alloc<ModuleGenOutputJob>();
             compileJob->module                         = module;
             compileJob->dependentJob                   = this;
             compileJob->buildParameters                = module->buildParameters;
@@ -174,7 +174,7 @@ JobResult ModuleOutputJob::execute()
         // there's no official version for the test folder, only a test executable)
         if (module->mustGenerateLegit())
         {
-            const auto compileJob             = Allocator::alloc<ModuleGenOutputJob>();
+            const auto compileJob       = Allocator::alloc<ModuleGenOutputJob>();
             compileJob->module          = module;
             compileJob->dependentJob    = this;
             compileJob->buildParameters = module->buildParameters;
