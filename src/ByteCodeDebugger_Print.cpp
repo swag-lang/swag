@@ -361,7 +361,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     // Print format
     ValueFormat fmt;
     size_t      startIdx = 0;
-    if (!exprCmds.empty() && g_ByteCodeDebugger.getValueFormat(exprCmds[0], fmt))
+    if (!exprCmds.empty() && ByteCodeDebugger::getValueFormat(exprCmds[0], fmt))
         startIdx++;
     fmt.print0x = false;
 
@@ -440,7 +440,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         for (int i = 0; i < min(count, perLine); i++)
         {
             Utf8 str;
-            g_ByteCodeDebugger.appendLiteralValue(context, str, fmt, addrB);
+            ByteCodeDebugger::appendLiteralValue(context, str, fmt, addrB);
             g_Log.print(str);
             addrB += fmt.bitCount / 8;
         }
@@ -515,7 +515,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (arg.split.size() > 1)
     {
         const auto name = arg.split[1];
-        toLogBc         = g_ByteCodeDebugger.findCmdBc(name);
+        toLogBc         = ByteCodeDebugger::findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
         toLogIp = toLogBc->out;
@@ -579,7 +579,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.split.size() > 1)
     {
         const auto name = arg.split[1];
-        toLogBc         = g_ByteCodeDebugger.findCmdBc(name);
+        toLogBc         = ByteCodeDebugger::findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
         toLogIp = toLogBc->out;

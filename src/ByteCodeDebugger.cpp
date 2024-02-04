@@ -113,7 +113,7 @@ void ByteCodeDebugger::setup()
 
 ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
 {
-    auto bc = g_ByteCodeDebugger.findBc(name.c_str());
+    auto bc = ByteCodeDebugger::findBc(name.c_str());
     if (bc.size() == 1)
         return bc[0];
 
