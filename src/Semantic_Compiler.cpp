@@ -291,6 +291,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 {
     const auto node   = context->node;
@@ -365,7 +366,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 
     if (!expression->computedValue->text.empty())
     {
-        CompilerAstKind kind = CompilerAstKind::TopLevelInstruction;
+        CompilerAstKind kind;
         if (node->ownerScope->kind == ScopeKind::Struct)
             kind = CompilerAstKind::StructVarDecl;
         else if (node->ownerScope->kind == ScopeKind::Enum)
@@ -498,6 +499,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 {
     const auto node = context->node;
@@ -686,7 +688,7 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
     YIELD();
 
     node->boolExpression->flags |= AST_NO_BYTECODE;
-    AstCompilerIfBlock* validatedNode = nullptr;
+    AstCompilerIfBlock* validatedNode;
     if (node->boolExpression->computedValue->reg.b)
     {
         validatedNode = node->ifBlock;
@@ -725,10 +727,9 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         node->semFlags |= SEMFLAG_LOAD;
 
         const auto filename = back->computedValue->text;
-        Path       fullFileName;
 
         // Search first in the same folder as the source file
-        fullFileName = node->sourceFile->path.parent_path();
+        Path fullFileName = node->sourceFile->path.parent_path();
         fullFileName.append(filename.c_str());
         error_code err;
         if (!filesystem::exists(fullFileName, err))
@@ -832,7 +833,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         if (locNode->ownerFct && locNode->ownerFct->typeInfo && locNode->ownerFct->requestedGeneric)
         {
             const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            for (const auto it : typeFunc->replaceTypes)
+            for (const auto& it : typeFunc->replaceTypes)
             {
                 bool fromGen = false;
                 if (it.second.typeInfoReplace == locNode->typeInfo)
@@ -866,6 +867,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
     const auto node = context->node;
@@ -875,7 +877,7 @@ bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
     return true;
 }
 
-Utf8 Semantic::getCompilerFunctionString(AstNode* node, TokenId id)
+Utf8 Semantic::getCompilerFunctionString(const AstNode* node, TokenId id)
 {
     switch (id)
     {

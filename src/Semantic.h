@@ -215,7 +215,7 @@ namespace Semantic
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
     bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
 
-    Utf8 getCompilerFunctionString(AstNode* node, TokenId id);
+    Utf8 getCompilerFunctionString(const AstNode* node, TokenId id);
     bool sendCompilerMsgFuncDecl(SemanticContext* context);
     bool sendCompilerMsgTypeDecl(SemanticContext* context);
     bool sendCompilerMsgGlobalVar(SemanticContext* context);

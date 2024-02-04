@@ -53,6 +53,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const 
     return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression, errMsg, errParam);
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 {
     const auto node = context->node;
@@ -255,7 +256,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
     }
 
-    // Determin if we should take the type from the "false" expression, or from the "true"
+    // Determine if we should take the type from the "false" expression, or from the "true"
     if (ifTrue->typeInfo->isPointerNull())
         node->typeInfo = ifFalse->typeInfo;
     else
@@ -351,6 +352,8 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
             case 8:
                 notNull = expression->computedValue->reg.u64 != 0;
                 break;
+            default:
+                break;
             }
         }
 
@@ -380,6 +383,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveDefer(SemanticContext* context)
 {
     const auto node   = CastAst<AstDefer>(context->node, AstNodeKind::Defer);

@@ -124,7 +124,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
         return true;
     }
 
-    Scope*     scope        = nullptr;
+    Scope*     scope;
     const auto typeResolved = idref->resolvedSymbolOverload->typeInfo;
     switch (typeResolved->kind)
     {
@@ -158,6 +158,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 {
     const auto node                  = context->node;

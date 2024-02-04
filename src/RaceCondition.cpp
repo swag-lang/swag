@@ -4,23 +4,23 @@
 #include "Assert.h"
 #include "Mutex.h"
 
-RaceCondition::RaceCondition(Instance* instance, bool read)
+RaceCondition::RaceCondition(Instance* inst, bool read)
 {
-    lock(instance, read);
+    lock(inst, read);
 }
 
-void RaceCondition::lock(Instance* instance, bool r)
+void RaceCondition::lock(Instance* inst, bool r)
 {
-    ScopedLock lk(instance->mutex);
-    myInstance = instance;
+    ScopedLock lk(inst->mutex);
+    myInstance = inst;
 
-    auto currentThreadId = this_thread::get_id();
+    const auto currentThreadId = this_thread::get_id();
     SWAG_ASSERT(!myInstance->countWrite || myInstance->lastThreadID == currentThreadId);
     read = r;
 
     if (!r)
     {
-        myInstance->countWrite++;
+        ++myInstance->countWrite;
         myInstance->lastThreadID = currentThreadId;
     }
 }
@@ -30,13 +30,13 @@ RaceCondition::~RaceCondition()
     unlock();
 }
 
-void RaceCondition::unlock()
+void RaceCondition::unlock() const
 {
     ScopedLock lk(myInstance->mutex);
     if (!read && myInstance->lastThreadID == this_thread::get_id())
     {
         SWAG_ASSERT(myInstance->countWrite);
-        myInstance->countWrite--;
+        --myInstance->countWrite;
     }
 }
 

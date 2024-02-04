@@ -1054,7 +1054,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
-    // Determin if we must promote.
+    // Determine if we must promote.
     if (node->tokenId != TokenId::SymVertical &&
         node->tokenId != TokenId::SymAmpersand &&
         node->tokenId != TokenId::SymCircumflex)

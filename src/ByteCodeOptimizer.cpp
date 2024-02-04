@@ -479,7 +479,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     if (module->numErrors)
         return false;
 
-    // Determin if we need to restart the whole optim pass because something has been done
+    // Determine if we need to restart the whole optim pass because something has been done
     if (module->optimPass == 1)
     {
         if (module->buildCfg.byteCodeOptimizeLevel == 2 && module->optimNeedRestart.load() > 0)
