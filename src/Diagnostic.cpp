@@ -244,9 +244,10 @@ static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& r
     if (range == 1)
         return;
 
-    const uint32_t decal = startLocation.column;
-    uint32_t       cpt   = 0;
-    for (uint32_t i = decal; i < lineCode.length() && i < decal + range; i++)
+    const int decal = (int) startLocation.column;
+    int       cpt   = 0;
+
+    for (int i = decal; i < (int) lineCode.length() && i < decal + range; i++)
     {
         if (lineCode[i] == c1)
             cpt++;
@@ -254,21 +255,21 @@ static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& r
             cpt--;
     }
 
-    if (cpt > 0 && ((decal + range) < lineCode.length()) && lineCode[decal + range] == c2)
+    if (cpt > 0 && ((decal + range) < (int) lineCode.length()) && lineCode[decal + range] == c2)
     {
         range++;
     }
-    else if (cpt > 0 && (decal < lineCode.length()) && lineCode[decal] == c1)
+    else if (cpt > 0 && (decal < (int) lineCode.length()) && lineCode[decal] == c1)
     {
         startLocation.column++;
         range--;
     }
-    else if (cpt < 0 && decal && ((decal - 1) < lineCode.length()) && lineCode[decal - 1] == c1)
+    else if (cpt < 0 && decal && ((decal - 1) < (int) lineCode.length()) && lineCode[decal - 1] == c1)
     {
         startLocation.column--;
         range++;
     }
-    else if (cpt < 0 && ((decal + range - 1) < lineCode.length()) && lineCode[decal + range - 1] == c2)
+    else if (cpt < 0 && ((decal + range - 1) < (int) lineCode.length()) && lineCode[decal + range - 1] == c2)
     {
         range--;
     }

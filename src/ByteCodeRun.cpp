@@ -4369,5 +4369,6 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
     }
 
+    // ReSharper disable once CppUnreachableCode
     return true;
 }
