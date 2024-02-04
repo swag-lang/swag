@@ -3,7 +3,7 @@
 #include "Parser.h"
 #include "TypeManager.h"
 
-void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
+void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
 {
     node->kind       = kind;
     node->parent     = parent;

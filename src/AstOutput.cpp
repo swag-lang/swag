@@ -11,7 +11,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void AstOutput::incIndentStatement(AstNode* node, int& indent)
+void AstOutput::incIndentStatement(const AstNode* node, int& indent)
 {
     if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
         return;
@@ -19,7 +19,7 @@ void AstOutput::incIndentStatement(AstNode* node, int& indent)
         indent++;
 }
 
-void AstOutput::decIndentStatement(AstNode* node, int& indent)
+void AstOutput::decIndentStatement(const AstNode* node, int& indent)
 {
     if (node->kind == AstNodeKind::CompilerIfBlock && node->childs.front()->kind == AstNodeKind::Statement)
         return;
@@ -111,7 +111,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-bool AstOutput::outputFuncName(OutputContext& context, Concat& concat, AstFuncDecl* node)
+bool AstOutput::outputFuncName(OutputContext& context, Concat& concat, const AstFuncDecl* node)
 {
     concat.addString(node->token.text);
     return true;
@@ -383,46 +383,49 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     return true;
 }
 
-bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc)
+bool AstOutput::outputAttributesUsage(const OutputContext& context, Concat& concat, const TypeInfoFuncAttr* typeFunc)
 {
     bool first = true;
     concat.addIndent(context.indent);
     concat.addString("#[AttrUsage(");
 
-#define ADD_ATTRUSAGE(__f, __n)                      \
-    if (typeFunc->attributeUsage & (int) __f)        \
-    {                                                \
-        if (!first)                                  \
-            CONCAT_FIXED_STR(concat, "|");           \
-        first = false;                               \
-        CONCAT_FIXED_STR(concat, "AttributeUsage."); \
-        CONCAT_FIXED_STR(concat, __n);               \
-    }
+#define ADD_ATTR_USAGE(__f, __n)                         \
+    do                                                   \
+    {                                                    \
+        if (typeFunc->attributeUsage & (int) (__f))      \
+        {                                                \
+            if (!first)                                  \
+                CONCAT_FIXED_STR(concat, "|");           \
+            first = false;                               \
+            CONCAT_FIXED_STR(concat, "AttributeUsage."); \
+            CONCAT_FIXED_STR(concat, __n);               \
+        }                                                \
+    } while(0)
 
-    ADD_ATTRUSAGE(AttributeUsage::Enum, "Enum");
-    ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
-    ADD_ATTRUSAGE(AttributeUsage::StructVariable, "Field");
-    ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
-    ADD_ATTRUSAGE(AttributeUsage::Variable, "Variable");
-    ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
-    ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
-    ADD_ATTRUSAGE(AttributeUsage::FunctionParameter, "FunctionParameter");
-    ADD_ATTRUSAGE(AttributeUsage::File, "File");
-    ADD_ATTRUSAGE(AttributeUsage::Constant, "Constant");
+    ADD_ATTR_USAGE(AttributeUsage::Enum, "Enum");
+    ADD_ATTR_USAGE(AttributeUsage::EnumValue, "EnumValue");
+    ADD_ATTR_USAGE(AttributeUsage::StructVariable, "Field");
+    ADD_ATTR_USAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
+    ADD_ATTR_USAGE(AttributeUsage::Variable, "Variable");
+    ADD_ATTR_USAGE(AttributeUsage::Struct, "Struct");
+    ADD_ATTR_USAGE(AttributeUsage::Function, "Function");
+    ADD_ATTR_USAGE(AttributeUsage::FunctionParameter, "FunctionParameter");
+    ADD_ATTR_USAGE(AttributeUsage::File, "File");
+    ADD_ATTR_USAGE(AttributeUsage::Constant, "Constant");
 
-    ADD_ATTRUSAGE(AttributeUsage::Multi, "Multi");
-    ADD_ATTRUSAGE(AttributeUsage::Gen, "Gen");
-    ADD_ATTRUSAGE(AttributeUsage::All, "All");
+    ADD_ATTR_USAGE(AttributeUsage::Multi, "Multi");
+    ADD_ATTR_USAGE(AttributeUsage::Gen, "Gen");
+    ADD_ATTR_USAGE(AttributeUsage::All, "All");
 
     concat.addString(")]");
     concat.addEol();
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, AttributeList& attributes)
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const AttributeList& attributes)
 {
     const auto attr = &attributes;
-    if (attr && !attr->empty())
+    if (!attr->empty())
     {
         Set<AstNode*> done;
         bool          first = true;
@@ -487,7 +490,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     return true;
 }
 
-bool AstOutput::outputAttributesGlobalUsing(OutputContext& context, Concat& concat, AstNode* node)
+bool AstOutput::outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node)
 {
     // Global using
     bool one         = false;
@@ -538,7 +541,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
 
     SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
 
-    AttributeList* attr = nullptr;
+    const AttributeList* attr = nullptr;
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Struct:
@@ -704,7 +707,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
     return true;
 }
 
-bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl* varNode, bool isSelf)
+bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf)
 {
     if (!(varNode->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
     {
@@ -748,7 +751,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl
     return true;
 }
 
-bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* varNode)
+bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode)
 {
     if (varNode->flags & AST_DECL_USING)
         CONCAT_FIXED_STR(concat, "using ");
@@ -842,7 +845,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
             concat.addEol();
         }
 
-        // Everything in the structure is initiaized to zero
+        // Everything in the structure is initialized to zero
         else
         {
             concat.addIndent(context.indent + 1);
@@ -1031,7 +1034,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
         return true;
 
-    // Preprend some stuff
+    // Prepend some stuff
     if (node->hasExtMisc() && node->extMisc()->isNamed)
     {
         concat.addString(node->extMisc()->isNamed->token.text);
@@ -1677,7 +1680,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::VarDecl:
     case AstNodeKind::FuncDeclParam:
     {
-        AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+        const AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
         SWAG_CHECK(outputVar(context, concat, varDecl));
         break;
     }
@@ -2064,7 +2067,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     return true;
 }
 
-bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
+bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const Module* moduleToGen, const Scope* scope)
 {
     const auto publicSet = scope->publicSet;
     if (!publicSet)
@@ -2093,10 +2096,10 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
                 continue;
 
-            // Remape special functions to their generated equivalent
+            // Remap special functions to their generated equivalent
             node->computeFullNameForeign(true);
             concat.addIndent(context.indent);
-            concat.addStringFormat("#[Foreign(\"%s\", \"%s\")]", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
+            concat.addStringFormat(R"(#[Foreign("%s", "%s")])", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
             concat.addEol();
             SWAG_CHECK(outputAttributes(context, concat, node, node->typeInfo));
 
@@ -2131,8 +2134,8 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
     {
         for (const auto one : publicSet->publicAttr)
         {
-            const auto        node     = CastAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
-            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            const auto              node     = CastAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
+            const TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
             concat.addIndent(context.indent);
             SWAG_CHECK(outputFuncSignature(context, concat, node, nullptr, node->parameters, nullptr));

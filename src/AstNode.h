@@ -463,7 +463,7 @@ struct AstVarDecl : public AstNode
     static constexpr uint16_t SPECFLAG_TUPLE_AFFECT     = 0x0200;
 
     AstNode* clone(CloneContext& context);
-    bool     isConstDecl();
+    bool     isConstDecl() const;
 
     AttributeList attributes;
     Utf8          publicName;
@@ -509,7 +509,7 @@ struct AstIdentifier : public AstNode
     ~AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
-    AstIdentifierRef* identifierRef();
+    AstIdentifierRef* identifierRef() const;
 
     AstFuncCallParams*   genericParameters;
     AstFuncCallParams*   callParameters;
@@ -538,12 +538,12 @@ struct AstFuncDecl : public AstNode
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeign(bool forExport);
-    Utf8        getDisplayName();
-    const char* getDisplayNameC();
+    Utf8        getDisplayName() const;
+    const char* getDisplayNameC() const;
     Utf8        getNameForUserCompiler();
-    bool        mustAutoInline();
-    bool        mustUserInline(bool forExport = false);
-    bool        mustInline();
+    bool        mustAutoInline() const;
+    bool        mustUserInline(bool forExport = false) const;
+    bool        mustInline() const;
     Utf8        getCallName();
 
     DependentJobs          dependentJobs;
@@ -665,12 +665,11 @@ constexpr uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000008;
 
 struct AstBreakable : public AstNode
 {
-    bool needIndex()
-    {
-        return breakableFlags & BREAKABLE_NEED_INDEX;
-    }
-
     void copyFrom(CloneContext& context, AstBreakable* from);
+
+    // clang-format off
+    bool needIndex() const  { return breakableFlags & BREAKABLE_NEED_INDEX; }
+    // clang-format on
 
     VectorNative<AstBreakContinue*> breakList;
     VectorNative<AstBreakContinue*> continueList;

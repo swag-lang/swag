@@ -3,7 +3,7 @@
 #include "Scope.h"
 #include "TypeManager.h"
 
-void SymbolOverload::from(SymbolOverload* other)
+void SymbolOverload::from(const SymbolOverload* other)
 {
     computedValue   = other->computedValue;
     symRegisters    = other->symRegisters;
@@ -50,7 +50,7 @@ void SymbolName::decreaseOverloadNoLock()
         dependentJobs.setRunning();
 }
 
-SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
+SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue)
 {
     const auto overload = Allocator::alloc<SymbolOverload>();
     overload->typeInfo  = typeInfo;
@@ -94,14 +94,14 @@ void SymbolName::addDependentJobNoLock(Job* job)
     dependentJobs.add(job);
 }
 
-Utf8 SymbolName::getFullName()
+Utf8 SymbolName::getFullName() const
 {
     Utf8 fullName;
     Scope::makeFullName(fullName, ownerTable->scope->getFullName(), name);
     return fullName;
 }
 
-void SymbolName::unregisterNode(AstNode* node)
+void SymbolName::unregisterNode(const AstNode* node)
 {
     // Unregister the node in the symbol
     for (size_t i = 0; i < nodes.size(); i++)

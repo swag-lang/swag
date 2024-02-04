@@ -53,7 +53,7 @@ struct SymbolOverload
     uint32_t storageIndex = 0;
     uint32_t flags        = 0;
 
-    void from(SymbolOverload* other);
+    void from(const SymbolOverload* other);
     void setRegisters(const RegisterList& reg, uint32_t flags);
 };
 
@@ -81,12 +81,12 @@ constexpr uint16_t SYMBOL_USED          = 0x0002;
 struct SymbolName
 {
     void            decreaseOverloadNoLock();
-    SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
+    SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);
     void            addDependentJob(Job* job);
     void            addDependentJobNoLock(Job* job);
-    Utf8            getFullName();
-    void            unregisterNode(AstNode* node);
+    Utf8            getFullName() const;
+    void            unregisterNode(const AstNode* node);
 
     SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;

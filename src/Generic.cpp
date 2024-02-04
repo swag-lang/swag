@@ -6,7 +6,7 @@
 #include "Scope.h"
 #include "SemanticJob.h"
 
-Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, GenericReplaceType>& replaceTypes)
+Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, const VectorMap<Utf8, GenericReplaceType>& replaceTypes)
 {
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
@@ -136,7 +136,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             // :DupGen
             // We generate a new struct with the wanted generic parameters to have those names for replacement.
             auto newStructType = CastTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
-            if (newStructType->genericParameters.size() == genericParameters->childs.size() && genericParameters->childs.size())
+            if (newStructType->genericParameters.size() == genericParameters->childs.size() && !genericParameters->childs.empty())
             {
                 const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
                 newStructType            = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
@@ -260,7 +260,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     }
 }
 
-void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
+void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, uint32_t flags)
 {
     const auto node = context->node;
 
@@ -318,11 +318,11 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
             const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
 
             oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
-            for (auto oneReplace : typeFunc->replaceTypes)
+            for (const auto& oneReplace : typeFunc->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
 
             oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
-            for (auto oneReplace : typeFunc->replaceValues)
+            for (const auto& oneReplace : typeFunc->replaceValues)
                 oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
         }
         else if (one->kind == AstNodeKind::StructDecl)
@@ -331,19 +331,19 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
             const auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
 
             oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
-            for (auto oneReplace : typeStruct->replaceTypes)
+            for (const auto& oneReplace : typeStruct->replaceTypes)
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
 
             oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
-            for (auto oneReplace : typeStruct->replaceValues)
+            for (const auto& oneReplace : typeStruct->replaceValues)
                 oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
         }
     }
 }
 
-Vector<Utf8> Generic::computeGenericParametersReplacement(VectorMap<Utf8, GenericReplaceType>& replace)
+Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replace)
 {
-    if (!replace.size())
+    if (replace.empty())
         return {};
 
     Vector<Utf8> result;

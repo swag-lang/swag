@@ -37,7 +37,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     return newNode;
 }
 
-bool AstVarDecl::isConstDecl()
+bool AstVarDecl::isConstDecl() const
 {
     if (kind == AstNodeKind::ConstDecl)
         return true;
@@ -70,7 +70,7 @@ AstIdentifier::~AstIdentifier()
         Allocator::free<IdentifierExtension>(identifierExtension);
 }
 
-AstIdentifierRef* AstIdentifier::identifierRef()
+AstIdentifierRef* AstIdentifier::identifierRef() const
 {
     if (parent->kind == AstNodeKind::IdentifierRef)
         return CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
@@ -144,7 +144,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     return newNode;
 }
 
-bool AstFuncDecl::mustAutoInline()
+bool AstFuncDecl::mustAutoInline() const
 {
     if (!content)
         return false;
@@ -160,7 +160,7 @@ bool AstFuncDecl::mustAutoInline()
     return false;
 }
 
-bool AstFuncDecl::mustUserInline(bool forExport)
+bool AstFuncDecl::mustUserInline(bool forExport) const
 {
     if (!content)
         return false;
@@ -173,7 +173,7 @@ bool AstFuncDecl::mustUserInline(bool forExport)
     return false;
 }
 
-bool AstFuncDecl::mustInline()
+bool AstFuncDecl::mustInline() const
 {
     return mustUserInline() || mustAutoInline();
 }
@@ -207,13 +207,13 @@ Utf8 AstFuncDecl::getNameForUserCompiler()
     return getScopedName();
 }
 
-const char* AstFuncDecl::getDisplayNameC()
+const char* AstFuncDecl::getDisplayNameC() const
 {
     const auto res = getDisplayName();
     return _strdup(res.c_str()); // Leak and slow, but only for messages
 }
 
-Utf8 AstFuncDecl::getDisplayName()
+Utf8 AstFuncDecl::getDisplayName() const
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
         return "[[#ast]] block";
@@ -381,7 +381,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 
             // If function is linked to a makePointerLambda, then we make a unique name for the function, and change the
             // corresponding reference.
-            // This way, even if the lambda is used insided a mixin, we won't have any name collisions if the mixin is included multiple times
+            // This way, even if the lambda is used inside a mixin, we won't have any name collisions if the mixin is included multiple times
             // in the same scope.
             // Example 4506.
             if (nodeFunc->makePointerLambda)
@@ -484,7 +484,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = makePointerLambda;
 
-    // We have a correponsing MakePointerLambda, which has already been duplicated.
+    // We have a corresponding MakePointerLambda, which has already been duplicated.
     // We then need to make 'makePointerLambda' point to it.
     if (makePointerLambda)
     {
@@ -1128,7 +1128,7 @@ AstNode* AstInline::clone(CloneContext& context)
     // Is this correct ? Seems a little wierd, but that way we do not have to copy the parametersScope
     // content, which is not really possible for now (12/07/2021) (i.e. no way to copy already registered symbols in the scope).
     // Because it can happen that an inline block already solved is copied.
-    // For example because of convertStructParamsToTmpVar, with inline calls as parameters: titi(A{round(6)}) => round already inlined.
+    // For example because of convertStructParamsToTmpVar, with inline calls as parameters: func(A{round(6)}) => round already inlined.
     // I guess one day this will hit me in the face...
     newNode->parametersScope = parametersScope;
 
@@ -1198,6 +1198,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
         const int  id      = g_UniqueID.fetch_add(1);
+        // ReSharper disable once StringLiteralTypo
         const Utf8 newName = "__cmpfunc" + to_string(id);
 
         const auto func  = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
@@ -1262,7 +1263,7 @@ AstNode* AstFuncCallParams::clone(CloneContext& context)
 
     // Propagate aliases
     int idx = 0;
-    for (auto it : newNode->aliasNames)
+    for (const auto& it : newNode->aliasNames)
     {
         auto itn = context.replaceNames.find(it.text);
         if (itn != context.replaceNames.end())
@@ -1303,8 +1304,8 @@ AstNode* AstMakePointer::clone(CloneContext& context)
     if (lambda)
     {
         // This is super hacky
-        // The problem is that the relation between a lambda and the makepointer lambda is tight,
-        // and with #mixin the lambda is not duplicated, but the makepointer lambda is...
+        // The problem is that the relation between a lambda and the make pointer lambda is tight,
+        // and with #mixin the lambda is not duplicated, but the make pointer lambda is...
         // So this is a mess
         if (context.forceFlags & AST_IN_MIXIN)
         {

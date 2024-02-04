@@ -335,7 +335,7 @@ void Generic::deduceType(SymbolMatchContext&      context,
         const auto callStruct   = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
         const auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
         if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() &&
-            callStruct->genericParameters.size())
+            !callStruct->genericParameters.empty())
         {
             const auto newStructType = (TypeInfoStruct*) callStruct->clone();
             for (size_t i                                 = 0; i < callStruct->genericParameters.size(); i++)
@@ -371,7 +371,7 @@ void Generic::deduceGenericTypes(SymbolMatchContext& context, AstNode* callParam
     wantedTypeInfos.push_back(wantedTypeInfo);
     callTypeInfos.push_back(callTypeInfo);
 
-    while (wantedTypeInfos.size())
+    while (!wantedTypeInfos.empty())
     {
         // When we have a reference, we match with the real type, as we do not want a generic function/struct to have a
         // reference as a concrete type
