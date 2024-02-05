@@ -31,7 +31,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
         const auto it = context->map32Node.find(node->crc);
         if (it != context->map32Node.end())
         {
-            const bool same = context->bc->areSame(node->start, node->end + 1, it->second->start, it->second->end + 1, true, false);
+            const bool same = ByteCode::areSame(node->start, node->end + 1, it->second->start, it->second->end + 1, true, false);
             if (same)
             {
                 SET_OP(node->start, ByteCodeOp::Jump);
