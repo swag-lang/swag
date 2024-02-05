@@ -138,7 +138,7 @@ void Stats::print() const
     g_Log.eol();
 
     g_Log.messageHeaderDot("instructions", FMT("%u", numInstructions.load()), COLOR_HEADER, COLOR_VALUE);
-    const float pc1 = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
+    const float pc1 = ((float) totalOptimsBC.load() * 100.0f) / (numInstructions.load());
     g_Log.messageHeaderDot("kicked", FMT("%d %.1f%%", totalOptimsBC.load(), pc1), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("total", FMT("%u", numInstructions.load() - totalOptimsBC.load()), COLOR_HEADER, COLOR_VALUE);
     g_Log.eol();
@@ -157,12 +157,8 @@ void Stats::print() const
     g_Log.messageHeaderDot("semantic time", FMT("%.3fs", OS::timerToSeconds(semanticTime.load())), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("run time", FMT("%.3fs", OS::timerToSeconds(runTime.load())), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("run test time", FMT("%.3fs", OS::timerToSeconds(runTestTime.load())), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("prep out 1 time",
-                           FMT("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load())), COLOR_HEADER,
-                           COLOR_VALUE);
-    g_Log.messageHeaderDot("prep out 2 time",
-                           FMT("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())), COLOR_HEADER,
-                           COLOR_VALUE);
+    g_Log.messageHeaderDot("prep out 1 time", FMT("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load())), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("prep out 2 time", FMT("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("gen out time", FMT("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("optim bc time", FMT("%.3fs", OS::timerToSeconds(optimBCTime.load())), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("total time", FMT("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), COLOR_HEADER, COLOR_VALUE);
@@ -188,10 +184,10 @@ void Stats::print() const
     g_Log.messageHeaderDot("mem seg", FMT("%s", Utf8::toNiceSize(memSeg.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem bc instr", FMT("%s", Utf8::toNiceSize(memInstructions.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem bc stack", FMT("%s", Utf8::toNiceSize(memBcStack.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem symtable", FMT("%s", Utf8::toNiceSize(memSymTable.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem symname", FMT("%s", Utf8::toNiceSize(memSymName.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem symover", FMT("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    g_Log.messageHeaderDot("mem cstr", FMT("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem sym table", FMT("%s", Utf8::toNiceSize(memSymTable.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem sym name", FMT("%s", Utf8::toNiceSize(memSymName.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem sym over", FMT("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
+    g_Log.messageHeaderDot("mem c str", FMT("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     if (g_CommandLine.backendGenType == BackendGenType::SCBE)
         g_Log.messageHeaderDot("mem x64 dbg", FMT("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
 

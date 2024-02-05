@@ -54,13 +54,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc",           "--devmode",                  nullptr,    CommandLineType::Bool,          &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif                                                          
 #ifdef SWAG_DEV_MODE                                                                                        
-    addArg("bu sc doc",           "--print-bc-ext",             nullptr,    CommandLineType::Bool,          &cmdLine->dbgPrintBcExt, nullptr, "print more bytecode informations");
+    addArg("bu sc doc",           "--print-bc-ext",             nullptr,    CommandLineType::Bool,          &cmdLine->dbgPrintBcExt, nullptr, "print more bytecode information");
     addArg("bu sc doc",           "--randomize",                nullptr,    CommandLineType::Bool,          &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc doc",           "--seed",                     nullptr,    CommandLineType::Int,           &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
 #endif                                                                                                      
                                                                                                             
     addArg("bu cl sc",            "--cfg",                      nullptr,    CommandLineType::String,        &cmdLine->buildCfg, nullptr, "set the build configuration (debug|fast-debug|fast-compile|release are predefined)");
-    addArg("bu cl sc",            "--cfg-debug",                nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgDebug, "true|false|default", "generate debug informations");
+    addArg("bu cl sc",            "--cfg-debug",                nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgDebug, "true|false|default", "generate debug information");
     addArg("bu cl sc",            "--cfg-safety",               nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgSafety, "true|false|default", "generate safety guards");
     addArg("bu cl sc",            "--cfg-inline-bc",            nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgInlineBC, "true|false|default", "inline marked functions");
     addArg("bu cl sc",            "--cfg-optim-bc",             nullptr,    CommandLineType::EnumString,    &cmdLine->buildCfgOptimBC, "0|1|2|default", "bytecode optimization level");
@@ -104,44 +104,47 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     // clang-format on
 }
 
-static void getArgValue(CommandLineArgument* oneArg, Utf8& value, Utf8& defaultValue)
+namespace
 {
-    switch (oneArg->type)
+    void getArgValue(const CommandLineArgument* oneArg, Utf8& value, Utf8& defaultValue)
     {
-    case CommandLineType::Bool:
-        value = "true|false";
-        if (*(bool*) oneArg->buffer)
-            defaultValue += "true";
-        else
-            defaultValue += "false";
-        break;
-    case CommandLineType::Int:
-        value = "<integer>";
-        defaultValue = to_string(*(int*) oneArg->buffer);
-        break;
-    case CommandLineType::String:
-        value = "<string>";
-        defaultValue = *(Utf8*) oneArg->buffer;
-        break;
-    case CommandLineType::StringPath:
-        value = "<path>";
-        defaultValue = ((Path*) oneArg->buffer)->string();
-        break;
-    case CommandLineType::StringSet:
-        value = "<string>";
-        break;
-    case CommandLineType::EnumInt:
-    {
-        value = oneArg->param;
-        Vector<Utf8> tokens;
-        Utf8::tokenize(oneArg->param, '|', tokens);
-        defaultValue = tokens[*(int*) oneArg->buffer];
-        break;
-    }
-    case CommandLineType::EnumString:
-        value = oneArg->param;
-        defaultValue = *(Utf8*) oneArg->buffer;
-        break;
+        switch (oneArg->type)
+        {
+        case CommandLineType::Bool:
+            value = "true|false";
+            if (*(bool*) oneArg->buffer)
+                defaultValue += "true";
+            else
+                defaultValue += "false";
+            break;
+        case CommandLineType::Int:
+            value = "<integer>";
+            defaultValue = to_string(*(int*) oneArg->buffer);
+            break;
+        case CommandLineType::String:
+            value = "<string>";
+            defaultValue = *(Utf8*) oneArg->buffer;
+            break;
+        case CommandLineType::StringPath:
+            value = "<path>";
+            defaultValue = ((Path*) oneArg->buffer)->string();
+            break;
+        case CommandLineType::StringSet:
+            value = "<string>";
+            break;
+        case CommandLineType::EnumInt:
+        {
+            value = oneArg->param;
+            Vector<Utf8> tokens;
+            Utf8::tokenize(oneArg->param, '|', tokens);
+            defaultValue = tokens[*(int*) oneArg->buffer];
+            break;
+        }
+        case CommandLineType::EnumString:
+            value = oneArg->param;
+            defaultValue = *(Utf8*) oneArg->buffer;
+            break;
+        }
     }
 }
 
@@ -159,7 +162,7 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
     columns[3] = SPACE + strlen("Default");
     columns[4] = SPACE + strlen("Help");
 
-    for (auto arg : longNameArgs)
+    for (const auto& arg : longNameArgs)
     {
         auto oneArg = arg.second;
         if (!isArgValidFor(cmd, oneArg))
@@ -210,7 +213,7 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
     g_Log.messageInfo(line0);
     g_Log.messageInfo(line1);
 
-    for (auto arg : longNameArgs)
+    for (const auto& arg : longNameArgs)
     {
         auto oneArg = arg.second;
         if (!isArgValidFor(cmd, oneArg))
@@ -463,7 +466,7 @@ Utf8 CommandLineParser::buildString(bool full) const
     defaultParser.setup(&defaultValues);
 
     Utf8 result;
-    for (auto arg : longNameArgs)
+    for (const auto& arg : longNameArgs)
     {
         auto itDefault  = defaultParser.longNameArgs.find(arg.first);
         auto defaultArg = itDefault->second;

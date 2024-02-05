@@ -3,19 +3,22 @@
 #include "Os.h"
 #include "Version.h"
 
-static void printExamples()
+namespace
 {
-    g_Log.messageInfo("\n");
-    g_Log.messageInfo("Examples\n");
-    g_Log.messageInfo("--------\n");
+    void printExamples()
+    {
+        g_Log.messageInfo("\n");
+        g_Log.messageInfo("Examples\n");
+        g_Log.messageInfo("--------\n");
+    }
+
+    void printVersion()
+    {
+        g_Log.messageInfo(FMT("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    }
 }
 
-static void printVersion()
-{
-    g_Log.messageInfo(FMT("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-}
-
-void help(CommandLineParser& cmdParser, const Utf8& cmd)
+void help(const CommandLineParser& cmdParser, const Utf8& cmd)
 {
     ////////////////////////////////////////////////////////
     if (cmd == "version")

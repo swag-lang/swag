@@ -12,7 +12,7 @@
 
 bool g_Exiting = false;
 
-extern void help(CommandLineParser& cmdParser, const Utf8& cmd);
+extern void help(const CommandLineParser& cmdParser, const Utf8& cmd);
 extern void help(CommandLineParser& cmdParser);
 
 int main(int argc, const char* argv[])
