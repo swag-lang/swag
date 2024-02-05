@@ -20,7 +20,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
         if (countBlock == 1)
             return;
 
-        // If this is a return block, then when exaclty should we factorise ?
+        // If this is a return block, then when exactly should we factorise ?
         // Is it a good idea to add a jump (for speed) ? 
         // Should we test optimize for size versus optimize for speed ?
 

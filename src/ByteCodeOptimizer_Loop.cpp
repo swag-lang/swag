@@ -83,7 +83,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 break;
             if (ByteCode::isJumpDyn(it))
             {
-                const int32_t* table = (int32_t*) context->module->compilerSegment.address(it->d.u32);
+                const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(it->d.u32));
                 for (uint32_t i = 0; i < it->c.u32; i++)
                 {
                     const auto ipJump = it + table[i] + 1;

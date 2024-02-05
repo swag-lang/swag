@@ -26,7 +26,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         if (ip->op == ByteCodeOp::CopyRBtoRA64)
         {
-            // CopyRBRA followed by one single pushraparam, take the original register
+            // CopyRBRA followed by one single PushRAParam, take the original register
             if (ip[1].op == ByteCodeOp::PushRAParam &&
                 ip[0].a.u32 == ip[1].a.u32 &&
                 !(ip[1].flags & BCI_START_STMT))
@@ -35,7 +35,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 context->passHasDoneSomething = true;
             }
 
-            // 2 CopyRBRA followed by one single pushraparam2, take the original registers
+            // 2 CopyRBRA followed by one single PushRAParam2, take the original registers
             if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
                 ip[2].op == ByteCodeOp::PushRAParam2 &&
                 ip[0].a.u32 == ip[2].b.u32 &&
@@ -84,7 +84,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             continue;
 
         // If we use a register that comes from a CopyRBRA, then use the initial register instead.
-        // That way, the Copy can become deadstore and removed later.
+        // That way, the Copy can become dead store and removed later.
         // Specific instructions only, as ByteCodeOp::CopyRBtoRA32 will clear the high 32 bit, if the following instruction
         // deal with 64 bits, this could be a pb not to do that clean by just using the original 32 bits register.
         if (op == ByteCodeOp::CopyRBtoRA32)
@@ -133,7 +133,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
         else if (op == ByteCodeOp::CopyRBtoRA64)
         {
             // If we use a register that comes from a CopyRBRA, then use the initial
-            // register instead (that way, the Copy can become deadstore and removed later)
+            // register instead (that way, the Copy can become dead store and removed later)
             // Do it only for CopyRBtoRA64, as other copy have an implicit cast
             // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
             // *NOT* for CopySP, because the register numbers are important in case of variadic parameters.

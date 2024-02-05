@@ -2,10 +2,6 @@
 #include "AstNode.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeOptimizer.h"
-#include "Diagnostic.h"
-#include "Log.h"
-#include "SourceFile.h"
-#include "Tokenizer.h"
 
 // If an instruction can have an immediate form, then transform it if the corresponding
 // register is a constant.
