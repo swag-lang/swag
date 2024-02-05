@@ -86,7 +86,7 @@ struct SymbolMatchContext
     static constexpr uint32_t MATCH_GENERIC_AUTO      = 0x00000004;
     static constexpr uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
     static constexpr uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
-    static constexpr uint32_t MATCH_UNCONST           = 0x00000020;
+    static constexpr uint32_t MATCH_UN_CONST          = 0x00000020;
     static constexpr uint32_t MATCH_UFCS              = 0x00000040;
     static constexpr uint32_t MATCH_CLOSURE_PARAM     = 0x00000080;
 
@@ -155,4 +155,4 @@ namespace Match
 {
     void match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context);
     void match(TypeInfoStruct* typeStruct, SymbolMatchContext& context);
-}; // namespace Match
+};

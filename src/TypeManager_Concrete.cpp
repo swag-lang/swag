@@ -3,12 +3,15 @@
 #include "AstFlags.h"
 #include "TypeManager.h"
 
-static const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
+namespace
 {
-    if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) ExportedTypeInfoFlags::Strict))
-        return type1;
-    const auto typeAlias = (const ExportedTypeInfoAlias*) type1;
-    return concreteAlias((ExportedTypeInfo*) typeAlias->rawType);
+    const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
+    {
+        if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) ExportedTypeInfoFlags::Strict))
+            return type1;
+        const auto typeAlias = (const ExportedTypeInfoAlias*) type1;
+        return concreteAlias((ExportedTypeInfo*) typeAlias->rawType);
+    }
 }
 
 bool TypeManager::compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2)
@@ -98,7 +101,7 @@ TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
     return typeInfo;
 }
 
-TypeInfo* TypeManager::concretePtrRefCond(TypeInfo* typeInfo, AstNode* node)
+TypeInfo* TypeManager::concretePtrRefCond(TypeInfo* typeInfo, const AstNode* node)
 {
     if (node->semFlags & SEMFLAG_FROM_REF)
         return concretePtrRef(typeInfo);

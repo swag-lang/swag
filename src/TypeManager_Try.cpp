@@ -52,7 +52,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     else
         symbol = structNode->scope->symbolOpAffect;
 
-    // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
+    // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the instantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
         structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
@@ -196,7 +196,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     SymbolName* symbol     = structNode->scope->symbolOpCast;
 
-    // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
+    // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the instantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
         structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);

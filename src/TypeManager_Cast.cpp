@@ -780,7 +780,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             fromNode->typeInfo = g_TypeMgr->typeInfoU32;
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Rune:  if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.u32; return true;
+        case NativeTypeKind::Rune:  if (canChange) fromNode->computedValue->reg.u64 = fromNode->computedValue->reg.u32; return true;
         case NativeTypeKind::S8:    if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s8; return true;
         case NativeTypeKind::S16:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s16; return true;
         case NativeTypeKind::S32:   if (canChange) fromNode->computedValue->reg.u64 = (uint32_t) fromNode->computedValue->reg.s32; return true;
@@ -1612,7 +1612,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             const auto    native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
             const auto    value  = native->valueInteger;
             const float   tmpF   = (float) value;
-            const int64_t tmpI   = (int64_t) tmpF;
+            const int64_t tmpI   = tmpF;
             if (tmpI != value)
                 return false;
         }
@@ -1676,7 +1676,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         {
             const auto    native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
             const auto    value  = native->valueInteger;
-            const double  tmpF   = (double) value;
+            const double  tmpF   = value;
             const int64_t tmpI   = (int64_t) tmpF;
             if (tmpI != value)
                 return false;
@@ -2115,7 +2115,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         {
             if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                // When casting something complexe to any, we will copy the value to the stack to be sure
+                // When casting something complex to any, we will copy the value to the stack to be sure
                 // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
                 // See ByteCodeGen::emitCastToNativeAny
                 if (toNode->ownerFct && toType->numRegisters() > 1)
@@ -2142,7 +2142,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            // When casting something complexe to any, we will copy the value to the stack to be sure
+            // When casting something complex to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
             // See ByteCodeGen::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
@@ -2170,11 +2170,11 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
-            // Ambigous. Do we check for a bool, or do we check for null
+            // Ambiguous. Do we check for a bool, or do we check for null
             if (toRealType->isBool())
                 return castError(context, toRealType, fromType, fromNode, castFlags);
 
-            // To convert a simple any to something more complexe, need an explicit cast
+            // To convert a simple any to something more complex, need an explicit cast
             if (toRealType->isSlice() ||
                 toRealType->isArray() ||
                 toRealType->isPointer())
@@ -2197,7 +2197,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             else
             {
                 const SwagAny* any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
-                const auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
+                const auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, any->type);
 
                 // need to check the type
                 if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
@@ -2223,7 +2223,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            // When casting something complexe to any, we will copy the value to the stack to be sure
+            // When casting something complex to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
             // See ByteCodeGen::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
@@ -2372,7 +2372,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
     return true;
 }
 
-bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst)
+bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, const TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst)
 {
     const TypeInfoParam* foundField = nullptr;
 
@@ -2526,7 +2526,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
 
-        // When affecting a ref, constness must be the same
+        // When affecting a ref, const must be the same
         if (fromNode &&
             fromType->isPointerRef() &&
             (castFlags & CASTFLAG_FOR_AFFECT) &&
@@ -3084,7 +3084,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         fromNode->typeInfo->flags |= TYPEINFO_SPREAD;
     }
 
-    // autocast
+    // auto cast
     if ((fromNode->typeInfo->flags & TYPEINFO_AUTO_CAST) && !fromNode->castedTypeInfo)
     {
         if (!(castFlags & CASTFLAG_JUST_CHECK))

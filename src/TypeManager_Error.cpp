@@ -6,7 +6,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool TypeManager::isOverflowEnabled(SemanticContext* context, AstNode* fromNode, uint64_t castFlags)
+bool TypeManager::isOverflowEnabled(const SemanticContext* context, AstNode* fromNode, uint64_t castFlags)
 {
     if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_CAN_OVERFLOW))
         return true;
@@ -17,7 +17,7 @@ bool TypeManager::isOverflowEnabled(SemanticContext* context, AstNode* fromNode,
     return false;
 }
 
-bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
+bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, const TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
     {

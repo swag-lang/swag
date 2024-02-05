@@ -74,11 +74,11 @@ struct TypeManager
 {
     void setup();
 
-    static bool isOverflowEnabled(SemanticContext* context, AstNode* fromNode, uint64_t castFlags);
-    static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
+    static bool isOverflowEnabled(const SemanticContext* context, AstNode* fromNode, uint64_t castFlags);
+    static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, const TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
     static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static void getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
-    static bool castError(SemanticContext* context, TypeInfo* requestedType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType = CastErrorType::Zero);
+    static bool castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType = CastErrorType::Zero);
 
     static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
@@ -118,7 +118,7 @@ struct TypeManager
     static TypeInfoArray*  convertTypeListToArray(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
     static TypeInfoStruct* convertTypeListToStruct(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
 
-    static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
+    static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, const TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
     static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
     static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
@@ -130,13 +130,13 @@ struct TypeManager
     static bool      promoteLeft(SemanticContext* context, AstNode* left, AstNode* right);
     static bool      promote32(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
-    static void      promoteUntypedInteger(AstNode* left, AstNode* right);
+    static void      promoteUntypedInteger(AstNode* left, const AstNode* right);
 
     static bool      compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2);
     static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concreteType(const TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
-    static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
+    static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, const AstNode* node);
 
     TypeInfo*             makeUnConst(TypeInfo* typeInfo);
     TypeInfo*             makeConst(TypeInfo* typeInfo);

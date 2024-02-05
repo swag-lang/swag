@@ -13,7 +13,7 @@ TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
     return typeInfo;
 }
 
-void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
+void TypeManager::promoteUntypedInteger(AstNode* left, const AstNode* right)
 {
     TypeInfo* leftTypeInfo = TypeManager::concreteType(left->typeInfo);
     SWAG_ASSERT(leftTypeInfo->isUntypedInteger());
@@ -51,7 +51,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
 
 bool TypeManager::promote32(SemanticContext* context, AstNode* left)
 {
-    TypeInfo* typeInfo = TypeManager::concreteType(left->typeInfo);
+    const TypeInfo* typeInfo = TypeManager::concreteType(left->typeInfo);
     if (!typeInfo->isNative())
         return true;
 
