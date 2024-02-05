@@ -48,7 +48,7 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters) const
         offset += sizeof(void*);
         pp.symMC_mainContext_flags = pp.getOrAddSymbol("swag_main_context_flags", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
-        // defaultAllocTable, an interface itable that contains only one entry
+        // defaultAllocTable, an interface ITable that contains only one entry
         offset                  = pp.globalSegment.reserve(8, nullptr, 8);
         pp.symDefaultAllocTable = pp.getOrAddSymbol("swag_default_alloc_table", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
@@ -179,9 +179,9 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
         // Specific functions in the main file
         if (precompileIndex == 0)
         {
-            buildRelocSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
-            buildRelocSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
-            buildRelocSegment(buildParameters, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
+            buildRelocationSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
+            buildRelocationSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
+            buildRelocationSegment(buildParameters, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
             module->constantSegment.applyPatchPtr();
             emitGetTypeTable(buildParameters);
             emitGlobalInit(buildParameters);

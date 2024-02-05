@@ -56,7 +56,7 @@ bool SCBE::emitOS(const BuildParameters& buildParameters) const
     }
 }
 
-bool SCBE::emitMain(const BuildParameters& buildParameters)
+bool SCBE::emitMain(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -238,7 +238,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
+bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 {
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::DynamicLib)
         return true;
@@ -275,7 +275,7 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
+bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -330,7 +330,7 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
+bool SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -411,7 +411,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     return true;
 }
 
-bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
+bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
