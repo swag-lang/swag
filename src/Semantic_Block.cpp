@@ -480,7 +480,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 {
                     PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
                     {
-                        return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo);
+                        return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
                     });
                     const auto typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));

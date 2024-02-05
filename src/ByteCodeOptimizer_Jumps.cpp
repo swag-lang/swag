@@ -2,7 +2,6 @@
 #include "AstNode.h"
 #include "ByteCodeOptimizer.h"
 #include "Module.h"
-#include "SourceFile.h"
 
 // Eliminate unnecessary jumps
 bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
@@ -1587,180 +1586,183 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             break;
         }
 
-#define OPT_JMPAC(__op, __val)        \
-    if (ip->a.__val __op ip->c.__val) \
-    {                                 \
-        SET_OP(ip, ByteCodeOp::Jump); \
-    }                                 \
-    else                              \
-    {                                 \
-        setNop(context, ip);          \
-    }
+#define OPT_JMP_AC(__op, __val)           \
+    do                                    \
+    {                                     \
+        if (ip->a.__val __op ip->c.__val) \
+        {                                 \
+            SET_OP(ip, ByteCodeOp::Jump); \
+        }                                 \
+        else                              \
+        {                                 \
+            setNop(context, ip);          \
+        }                                 \
+    } while(0)
 
         if (ip->flags & BCI_IMM_A && ip->flags & BCI_IMM_C)
         {
             switch (ip->op)
             {
             case ByteCodeOp::JumpIfEqual8:
-                OPT_JMPAC(==, u8);
+                OPT_JMP_AC(==, u8);
                 break;
             case ByteCodeOp::JumpIfEqual16:
-                OPT_JMPAC(==, u16);
+                OPT_JMP_AC(==, u16);
                 break;
             case ByteCodeOp::JumpIfEqual32:
-                OPT_JMPAC(==, u32);
+                OPT_JMP_AC(==, u32);
                 break;
             case ByteCodeOp::JumpIfEqual64:
-                OPT_JMPAC(==, u64);
+                OPT_JMP_AC(==, u64);
                 break;
             case ByteCodeOp::JumpIfEqualF32:
-                OPT_JMPAC(==, f32);
+                OPT_JMP_AC(==, f32);
                 break;
             case ByteCodeOp::JumpIfEqualF64:
-                OPT_JMPAC(==, f64);
+                OPT_JMP_AC(==, f64);
                 break;
 
             case ByteCodeOp::JumpIfNotEqual8:
-                OPT_JMPAC(!=, u8);
+                OPT_JMP_AC(!=, u8);
                 break;
             case ByteCodeOp::JumpIfNotEqual16:
-                OPT_JMPAC(!=, u16);
+                OPT_JMP_AC(!=, u16);
                 break;
             case ByteCodeOp::JumpIfNotEqual32:
-                OPT_JMPAC(!=, u32);
+                OPT_JMP_AC(!=, u32);
                 break;
             case ByteCodeOp::JumpIfNotEqual64:
-                OPT_JMPAC(!=, u64);
+                OPT_JMP_AC(!=, u64);
                 break;
             case ByteCodeOp::JumpIfNotEqualF32:
-                OPT_JMPAC(!=, f32);
+                OPT_JMP_AC(!=, f32);
                 break;
             case ByteCodeOp::JumpIfNotEqualF64:
-                OPT_JMPAC(!=, f64);
+                OPT_JMP_AC(!=, f64);
                 break;
 
             case ByteCodeOp::JumpIfGreaterS8:
-                OPT_JMPAC(>, s8);
+                OPT_JMP_AC(>, s8);
                 break;
             case ByteCodeOp::JumpIfGreaterS16:
-                OPT_JMPAC(>, s16);
+                OPT_JMP_AC(>, s16);
                 break;
             case ByteCodeOp::JumpIfGreaterS32:
-                OPT_JMPAC(>, s32);
+                OPT_JMP_AC(>, s32);
                 break;
             case ByteCodeOp::JumpIfGreaterS64:
-                OPT_JMPAC(>, s64);
+                OPT_JMP_AC(>, s64);
                 break;
             case ByteCodeOp::JumpIfGreaterU8:
-                OPT_JMPAC(>, u8);
+                OPT_JMP_AC(>, u8);
                 break;
             case ByteCodeOp::JumpIfGreaterU16:
-                OPT_JMPAC(>, u16);
+                OPT_JMP_AC(>, u16);
                 break;
             case ByteCodeOp::JumpIfGreaterU32:
-                OPT_JMPAC(>, u32);
+                OPT_JMP_AC(>, u32);
                 break;
             case ByteCodeOp::JumpIfGreaterU64:
-                OPT_JMPAC(>, u64);
+                OPT_JMP_AC(>, u64);
                 break;
             case ByteCodeOp::JumpIfGreaterF32:
-                OPT_JMPAC(>, f32);
+                OPT_JMP_AC(>, f32);
                 break;
             case ByteCodeOp::JumpIfGreaterF64:
-                OPT_JMPAC(>, f64);
+                OPT_JMP_AC(>, f64);
                 break;
 
             case ByteCodeOp::JumpIfGreaterEqS8:
-                OPT_JMPAC(>=, s8);
+                OPT_JMP_AC(>=, s8);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS16:
-                OPT_JMPAC(>=, s16);
+                OPT_JMP_AC(>=, s16);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS32:
-                OPT_JMPAC(>=, s32);
+                OPT_JMP_AC(>=, s32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS64:
-                OPT_JMPAC(>=, s64);
+                OPT_JMP_AC(>=, s64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU8:
-                OPT_JMPAC(>=, u8);
+                OPT_JMP_AC(>=, u8);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU16:
-                OPT_JMPAC(>=, u16);
+                OPT_JMP_AC(>=, u16);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU32:
-                OPT_JMPAC(>=, u32);
+                OPT_JMP_AC(>=, u32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU64:
-                OPT_JMPAC(>=, u64);
+                OPT_JMP_AC(>=, u64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF32:
-                OPT_JMPAC(>=, f32);
+                OPT_JMP_AC(>=, f32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF64:
-                OPT_JMPAC(>=, f64);
+                OPT_JMP_AC(>=, f64);
                 break;
 
             case ByteCodeOp::JumpIfLowerS8:
-                OPT_JMPAC(<, s8);
+                OPT_JMP_AC(<, s8);
                 break;
             case ByteCodeOp::JumpIfLowerS16:
-                OPT_JMPAC(<, s16);
+                OPT_JMP_AC(<, s16);
                 break;
             case ByteCodeOp::JumpIfLowerS32:
-                OPT_JMPAC(<, s32);
+                OPT_JMP_AC(<, s32);
                 break;
             case ByteCodeOp::JumpIfLowerS64:
-                OPT_JMPAC(<, s64);
+                OPT_JMP_AC(<, s64);
                 break;
             case ByteCodeOp::JumpIfLowerU8:
-                OPT_JMPAC(<, u8);
+                OPT_JMP_AC(<, u8);
                 break;
             case ByteCodeOp::JumpIfLowerU16:
-                OPT_JMPAC(<, u16);
+                OPT_JMP_AC(<, u16);
                 break;
             case ByteCodeOp::JumpIfLowerU32:
-                OPT_JMPAC(<, u32);
+                OPT_JMP_AC(<, u32);
                 break;
             case ByteCodeOp::JumpIfLowerU64:
-                OPT_JMPAC(<, u64);
+                OPT_JMP_AC(<, u64);
                 break;
             case ByteCodeOp::JumpIfLowerF32:
-                OPT_JMPAC(<, f32);
+                OPT_JMP_AC(<, f32);
                 break;
             case ByteCodeOp::JumpIfLowerF64:
-                OPT_JMPAC(<, f64);
+                OPT_JMP_AC(<, f64);
                 break;
 
             case ByteCodeOp::JumpIfLowerEqS8:
-                OPT_JMPAC(<=, s8);
+                OPT_JMP_AC(<=, s8);
                 break;
             case ByteCodeOp::JumpIfLowerEqS16:
-                OPT_JMPAC(<=, s16);
+                OPT_JMP_AC(<=, s16);
                 break;
             case ByteCodeOp::JumpIfLowerEqS32:
-                OPT_JMPAC(<=, s32);
+                OPT_JMP_AC(<=, s32);
                 break;
             case ByteCodeOp::JumpIfLowerEqS64:
-                OPT_JMPAC(<=, s64);
+                OPT_JMP_AC(<=, s64);
                 break;
             case ByteCodeOp::JumpIfLowerEqU8:
-                OPT_JMPAC(<=, u8);
+                OPT_JMP_AC(<=, u8);
                 break;
             case ByteCodeOp::JumpIfLowerEqU16:
-                OPT_JMPAC(<=, u16);
+                OPT_JMP_AC(<=, u16);
                 break;
             case ByteCodeOp::JumpIfLowerEqU32:
-                OPT_JMPAC(<=, u32);
+                OPT_JMP_AC(<=, u32);
                 break;
             case ByteCodeOp::JumpIfLowerEqU64:
-                OPT_JMPAC(<=, u64);
+                OPT_JMP_AC(<=, u64);
                 break;
             case ByteCodeOp::JumpIfLowerEqF32:
-                OPT_JMPAC(<=, f32);
+                OPT_JMP_AC(<=, f32);
                 break;
             case ByteCodeOp::JumpIfLowerEqF64:
-                OPT_JMPAC(<=, f64);
+                OPT_JMP_AC(<=, f64);
                 break;
 
             default:
@@ -1768,15 +1770,18 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
         }
 
-#define OPT_JMPA0(__op, __val)        \
-    if (ip->a.__val __op 0)           \
-    {                                 \
-        SET_OP(ip, ByteCodeOp::Jump); \
-    }                                 \
-    else                              \
-    {                                 \
-        setNop(context, ip);          \
-    }
+#define OPT_JMP_A0(__op, __val)           \
+    do                                    \
+    {                                     \
+        if (ip->a.__val __op 0)           \
+        {                                 \
+            SET_OP(ip, ByteCodeOp::Jump); \
+        }                                 \
+        else                              \
+        {                                 \
+            setNop(context, ip);          \
+        }                                 \
+    } while(0)
 
         // Evaluate the jump if the condition is constant
         if (ip->flags & BCI_IMM_A)
@@ -1785,29 +1790,29 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             {
             case ByteCodeOp::JumpIfFalse:
             case ByteCodeOp::JumpIfZero8:
-                OPT_JMPA0(==, u8);
+                OPT_JMP_A0(==, u8);
                 break;
             case ByteCodeOp::JumpIfTrue:
             case ByteCodeOp::JumpIfNotZero8:
-                OPT_JMPA0(!=, u8);
+                OPT_JMP_A0(!=, u8);
                 break;
             case ByteCodeOp::JumpIfZero16:
-                OPT_JMPA0(==, u16);
+                OPT_JMP_A0(==, u16);
                 break;
             case ByteCodeOp::JumpIfZero32:
-                OPT_JMPA0(==, u32);
+                OPT_JMP_A0(==, u32);
                 break;
             case ByteCodeOp::JumpIfZero64:
-                OPT_JMPA0(==, u64);
+                OPT_JMP_A0(==, u64);
                 break;
             case ByteCodeOp::JumpIfNotZero16:
-                OPT_JMPA0(!=, u16);
+                OPT_JMP_A0(!=, u16);
                 break;
             case ByteCodeOp::JumpIfNotZero32:
-                OPT_JMPA0(!=, u32);
+                OPT_JMP_A0(!=, u32);
                 break;
             case ByteCodeOp::JumpIfNotZero64:
-                OPT_JMPA0(!=, u64);
+                OPT_JMP_A0(!=, u64);
                 break;
 
             default:
@@ -1888,6 +1893,8 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                 case 8:
                     context->map6432[destIp->c.s64] = offset;
                     break;
+                default:
+                    break;
                 }
 
                 destIp++;
@@ -1915,6 +1922,8 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                     break;
                 case 8:
                     context->map6432[destIp->c.s64] = offset;
+                    break;
+                default:
                     break;
                 }
 
@@ -1947,6 +1956,8 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                 minValue = min(minValue, inst->c.s64);
                 maxValue = max(maxValue, inst->c.s64);
                 break;
+            default:
+                break;
             }
         }
 
@@ -1968,7 +1979,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         uint8_t*   addrCompiler        = nullptr;
         const auto offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
 
-        int32_t* patchCompiler = (int32_t*) addrCompiler;
+        const auto patchCompiler = (int32_t*) addrCompiler;
 
         // Set table to default jump
         for (uint32_t i      = 0; i < range + 1; i++)
@@ -1994,6 +2005,8 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
             break;
         case 8:
             SET_OP(ipStart, ByteCodeOp::JumpDyn64);
+            break;
+        default:
             break;
         }
 
