@@ -15,17 +15,17 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
     for (size_t i = 0; i < debugBreakpoints.size(); i++)
     {
         const auto& bkp = debugBreakpoints[i];
-        g_Log.print(Fmt("#%d: ", i + 1));
+        g_Log.print(FMT("#%d: ", i + 1));
         switch (bkp.type)
         {
         case DebugBkpType::FuncName:
-            g_Log.print(Fmt("function with a match on [[%s]]", bkp.name.c_str()));
+            g_Log.print(FMT("function with a match on [[%s]]", bkp.name.c_str()));
             break;
         case DebugBkpType::FileLine:
-            g_Log.print(Fmt("file %s, line [[%d]]", bkp.name.c_str(), bkp.line));
+            g_Log.print(FMT("file %s, line [[%d]]", bkp.name.c_str(), bkp.line));
             break;
         case DebugBkpType::InstructionIndex:
-            g_Log.print(Fmt("instruction [[%d]]", bkp.line));
+            g_Log.print(FMT("instruction [[%d]]", bkp.line));
             break;
         }
 
@@ -54,7 +54,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    printMsgBkp(Fmt("breakpoint hit #%d function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
+                    printMsgBkp(FMT("breakpoint hit #%d function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -80,7 +80,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    printMsgBkp(Fmt("breakpoint hit #%d at line [[%d]]", idxBkp, bkp.line));
+                    printMsgBkp(FMT("breakpoint hit #%d at line [[%d]]", idxBkp, bkp.line));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -105,7 +105,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    printMsgBkp(Fmt("breakpoint hit #%d at instruction [[%d]]", idxBkp, bkp.line));
+                    printMsgBkp(FMT("breakpoint hit #%d at instruction [[%d]]", idxBkp, bkp.line));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -154,7 +154,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
     else
     {
         g_ByteCodeDebugger.debugBreakpoints[numB - 1].disabled = false;
-        printCmdResult(Fmt("breakpoint #%d has been enabled", numB));
+        printCmdResult(FMT("breakpoint #%d has been enabled", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -173,7 +173,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
     else
     {
         g_ByteCodeDebugger.debugBreakpoints[numB - 1].disabled = true;
-        printCmdResult(Fmt("breakpoint #%d has been disabled", numB));
+        printCmdResult(FMT("breakpoint #%d has been disabled", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -186,7 +186,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
         if (g_ByteCodeDebugger.debugBreakpoints.empty())
             printCmdError("no breakpoint to remove");
         else
-            printCmdResult(Fmt("%d breakpoint(s) have been removed", g_ByteCodeDebugger.debugBreakpoints.size()));
+            printCmdResult(FMT("%d breakpoint(s) have been removed", g_ByteCodeDebugger.debugBreakpoints.size()));
         g_ByteCodeDebugger.debugBreakpoints.clear();
         return BcDbgCommandResult::Continue;
     }
@@ -202,7 +202,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
     else
     {
         g_ByteCodeDebugger.debugBreakpoints.erase(g_ByteCodeDebugger.debugBreakpoints.begin() + numB - 1);
-        printCmdResult(Fmt("breakpoint #%d has been removed", numB));
+        printCmdResult(FMT("breakpoint #%d has been removed", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -232,7 +232,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        printCmdResult(Fmt("breakpoint #%d function with a match on [[%s]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str()));
+        printCmdResult(FMT("breakpoint #%d function with a match on [[%s]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str()));
     }
 
     return BcDbgCommandResult::Continue;
@@ -259,7 +259,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
+        printCmdResult(FMT("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
     }
 
     return BcDbgCommandResult::Continue;
@@ -284,7 +284,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
         curFile = g_Workspace->findFile(arg.split[2] + ".swgs");
     if (!curFile)
     {
-        printCmdError(Fmt("cannot find file [[%s]]", arg.split[2].c_str()));
+        printCmdError(FMT("cannot find file [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Continue;
     }
 
@@ -295,7 +295,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
+        printCmdResult(FMT("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
     }
 
     return BcDbgCommandResult::Continue;

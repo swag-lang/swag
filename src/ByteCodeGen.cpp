@@ -149,7 +149,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
             // Be sure that every used registers have been released
             if (context->bc->maxReservedRegisterRC > context->bc->availableRegistersRC.size() + context->bc->staticRegs)
             {
-                Report::internalError(funcNode, Fmt("function [[%s]] does not release all registers !", funcNode->token.ctext()));
+                Report::internalError(funcNode, FMT("function [[%s]] does not release all registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
                     constexpr ByteCodePrintOptions opt;
@@ -158,7 +158,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
             }
             else if (context->bc->maxReservedRegisterRC < context->bc->availableRegistersRC.size())
             {
-                Report::internalError(funcNode, Fmt("function [[%s]] releases too many registers !", funcNode->token.ctext()));
+                Report::internalError(funcNode, FMT("function [[%s]] releases too many registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
                     constexpr ByteCodePrintOptions opt;
@@ -180,7 +180,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
             return Ast::VisitResult::Continue;
         if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
         {
-            cxt->report({n->childs.front(), Fmt(Err(Err0403), n->childs.front()->token.ctext())});
+            cxt->report({n->childs.front(), FMT(Err(Err0403), n->childs.front()->token.ctext())});
             return Ast::VisitResult::Stop;
         }
 

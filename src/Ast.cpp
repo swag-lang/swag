@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Parser.h"
 #include "TypeManager.h"
 
@@ -171,7 +172,7 @@ Utf8 Ast::literalToString(TypeInfo* typeInfo, const ComputedValue& value)
 
     if (typeInfo->isStruct() || typeInfo->isListArray())
     {
-        result = Fmt("%u", value.storageOffset);
+        result = FMT("%u", value.storageOffset);
         return result;
     }
 
@@ -181,36 +182,36 @@ Utf8 Ast::literalToString(TypeInfo* typeInfo, const ComputedValue& value)
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
-        result = Fmt("%u", reg.u8);
+        result = FMT("%u", reg.u8);
         break;
     case NativeTypeKind::U16:
-        result = Fmt("%u", reg.u16);
+        result = FMT("%u", reg.u16);
         break;
     case NativeTypeKind::U32:
-        result = Fmt("%u", reg.u32);
+        result = FMT("%u", reg.u32);
         break;
     case NativeTypeKind::Rune:
         if (reg.ch < 32)
-            result += Fmt("\\x%02x", reg.ch);
+            result += FMT("\\x%02x", reg.ch);
         else if (reg.ch > 127 && reg.ch <= 255)
-            result += Fmt("\\x%02x", reg.ch);
+            result += FMT("\\x%02x", reg.ch);
         else
             result += reg.ch;
         break;
     case NativeTypeKind::U64:
-        result = Fmt("%llu", reg.u64);
+        result = FMT("%llu", reg.u64);
         break;
     case NativeTypeKind::S8:
-        result = Fmt("%d", reg.s8);
+        result = FMT("%d", reg.s8);
         break;
     case NativeTypeKind::S16:
-        result = Fmt("%d", reg.s16);
+        result = FMT("%d", reg.s16);
         break;
     case NativeTypeKind::S32:
-        result = Fmt("%d", reg.s32);
+        result = FMT("%d", reg.s32);
         break;
     case NativeTypeKind::S64:
-        result = Fmt("%lld", reg.s64);
+        result = FMT("%lld", reg.s64);
         break;
     case NativeTypeKind::F32:
         result = Utf8::toStringF64(reg.f32);
@@ -226,9 +227,9 @@ Utf8 Ast::literalToString(TypeInfo* typeInfo, const ComputedValue& value)
         for (const auto c : value.text)
         {
             if (c < 32)
-                result += Fmt("\\x%02x", c);
+                result += FMT("\\x%02x", c);
             else if (c > 127)
-                result += Fmt("\\x%02x", c);
+                result += FMT("\\x%02x", c);
             else
                 result += c;
         }

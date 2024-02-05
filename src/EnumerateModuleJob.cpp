@@ -96,7 +96,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
                 filePath = filePath1;
             if (!filesystem::exists(filePath, err))
             {
-                const Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0709), n->token.ctext())};
+                const Diagnostic diag{n->sourceFile, n->token, FMT(Err(Err0709), n->token.ctext())};
                 Report::report(diag);
                 return false;
             }

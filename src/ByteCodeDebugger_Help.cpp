@@ -50,17 +50,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
             if (arg.split[1] == c.name || arg.split[1] == c.shortname)
             {
                 g_Log.setColor(LogColor::Gray);
-                g_Log.print(Fmt("command:     %s%s %s%s\n", COLOR_VTS_NAME.c_str(), c.name, COLOR_VTS_TYPE.c_str(), c.args));
+                g_Log.print(FMT("command:     %s%s %s%s\n", COLOR_VTS_NAME.c_str(), c.name, COLOR_VTS_TYPE.c_str(), c.args));
                 g_Log.setColor(LogColor::Gray);
-                g_Log.print(Fmt("short name:  %s\n", c.shortname));
-                g_Log.print(Fmt("description: %s\n", c.help));
+                g_Log.print(FMT("short name:  %s\n", c.shortname));
+                g_Log.print(FMT("description: %s\n", c.help));
                 g_Log.eol();
                 ok = true;
             }
         }
 
         if (!ok)
-            printCmdError(Fmt("unknown debugger command [[%s]]", arg.split[1].c_str()));
+            printCmdError(FMT("unknown debugger command [[%s]]", arg.split[1].c_str()));
         return BcDbgCommandResult::Continue;
     }
 

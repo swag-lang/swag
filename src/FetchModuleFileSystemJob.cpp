@@ -12,7 +12,7 @@ JobResult FetchModuleFileSystemJob::execute()
 {
     const auto dep = module->fetchDep;
 
-    const auto depName = Fmt("%s %u.%d.%d",
+    const auto depName = FMT("%s %u.%d.%d",
                              dep->name.c_str(),
                              dep->module->buildCfg.moduleVersion,
                              dep->module->buildCfg.moduleRevision,
@@ -92,7 +92,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
             if (!filesystem::remove(n))
             {
-                Report::errorOS(Fmt(Err(Err0090), n.string().c_str()));
+                Report::errorOS(FMT(Err(Err0090), n.string().c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -110,7 +110,7 @@ JobResult FetchModuleFileSystemJob::execute()
         error_code err;
         if (!filesystem::exists(folder, err) && !filesystem::create_directories(folder, err))
         {
-            Report::errorOS(Fmt(Err(Err0100), folder.string().c_str()));
+            Report::errorOS(FMT(Err(Err0100), folder.string().c_str()));
             return JobResult::ReleaseJob;
         }
 

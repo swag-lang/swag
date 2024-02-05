@@ -301,6 +301,8 @@ bool Tokenizer::doSymbol(TokenParse& token, uint32_t c)
             token.id = TokenId::SymGreater;
         }
         return true;
+    default:
+        break;
     }
 
     return false;

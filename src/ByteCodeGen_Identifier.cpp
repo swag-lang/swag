@@ -20,15 +20,15 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* ov
     if (context->node->isSameStackFrame(overload))
         return true;
 
-    const Diagnostic diag{context->node, Fmt(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
+    const Diagnostic diag{context->node, FMT(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
 
     Vector<const Diagnostic*> notes;
 
     notes.push_back(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
-        notes.push_back(Diagnostic::note(Fmt(Nte(Nte0194), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str())));
+        notes.push_back(Diagnostic::note(FMT(Nte(Nte0194), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str())));
     if (overload->fromInlineParam)
-        notes.push_back(Diagnostic::note(overload->fromInlineParam, Fmt(Nte(Nte0077), overload->symbol->name.c_str())));
+        notes.push_back(Diagnostic::note(overload->fromInlineParam, FMT(Nte(Nte0077), overload->symbol->name.c_str())));
 
     return context->report(diag, notes);
 }
@@ -150,7 +150,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRc = identifier->identifierRef()->resultRegisterRc;
         SWAG_VERIFY(node->resultRegisterRc.size() > 0,
-                    Report::internalError(context->node, Fmt("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.ctext()).c_str()));
+                    Report::internalError(context->node, FMT("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.ctext()).c_str()));
         forStruct = true;
     }
 
@@ -281,7 +281,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                const Diagnostic diag{node, node->token, Fmt(Err(Err0181), typeInfo->getDisplayNameC())};
+                const Diagnostic diag{node, node->token, FMT(Err(Err0181), typeInfo->getDisplayNameC())};
                 return context->report(diag);
             }
         }
@@ -577,7 +577,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->symRegisters.size() > 0,
-                    Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated [[%s]]", identifier->token.ctext()).c_str()));
+                    Report::internalError(context->node, FMT("emitIdentifier, identifier not generated [[%s]]", identifier->token.ctext()).c_str()));
         SWAG_ASSERT(resolved->flags & OVERLOAD_INLINE_REG);
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 

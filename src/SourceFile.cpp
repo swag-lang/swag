@@ -76,7 +76,7 @@ bool SourceFile::load()
     {
         numErrors++;
         module->numErrors++;
-        Report::errorOS(Fmt(Err(Err0095), path.string().c_str()));
+        Report::errorOS(FMT(Err(Err0095), path.string().c_str()));
         return false;
     }
 
@@ -103,7 +103,7 @@ bool SourceFile::load()
         Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 
-        Report::errorOS(Fmt(Err(Err0098), path.string().c_str()));
+        Report::errorOS(FMT(Err(Err0098), path.string().c_str()));
         return false;
     }
 

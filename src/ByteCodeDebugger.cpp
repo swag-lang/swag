@@ -125,7 +125,7 @@ ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
         return nullptr;
     }
 
-    printCmdError(Fmt("cannot find function [[%s]]", name.c_str()));
+    printCmdError(FMT("cannot find function [[%s]]", name.c_str()));
     return nullptr;
 }
 
@@ -178,7 +178,7 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, i
 
     if (regN >= context->getRegCount(debugCxtRc))
     {
-        printCmdError(Fmt("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(debugCxtRc) - 1));
+        printCmdError(FMT("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(debugCxtRc) - 1));
         return false;
     }
 
@@ -348,14 +348,14 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         //////////////////////////////////
         case OS::Key::Home:
             if (cursorX)
-                fputs(Fmt("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
+                fputs(FMT("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
             cursorX = 0;
             continue;
 
         //////////////////////////////////
         case OS::Key::End:
             if (cursorX != line.count)
-                fputs(Fmt("\x1B[%dC", line.count - cursorX), stdout); // Move the cursor to the end of line
+                fputs(FMT("\x1B[%dC", line.count - cursorX), stdout); // Move the cursor to the end of line
             cursorX = line.count;
             continue;
 
@@ -381,8 +381,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             if (debugCmdHistoryIndex == 0)
                 continue;
             if (cursorX) // Move the cursor at 0
-                fputs(Fmt("\x1B[%dD", cursorX), stdout);
-            fputs(Fmt("\x1B[%dX", line.count), stdout); // Erase the current command
+                fputs(FMT("\x1B[%dD", cursorX), stdout);
+            fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
             line = debugCmdHistory[--debugCmdHistoryIndex];
             fputs(line, stdout); // Insert command from history
             cursorX = line.count;
@@ -393,8 +393,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             if (debugCmdHistoryIndex == debugCmdHistory.size())
                 continue;
             if (cursorX) // Move the cursor at 0
-                fputs(Fmt("\x1B[%dD", cursorX), stdout);
-            fputs(Fmt("\x1B[%dX", line.count), stdout); // Erase the current command
+                fputs(FMT("\x1B[%dD", cursorX), stdout);
+            fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
             debugCmdHistoryIndex++;
             if (debugCmdHistoryIndex != debugCmdHistory.size())
             {
@@ -412,8 +412,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         //////////////////////////////////
         case OS::Key::Escape:
             if (cursorX) // Move the cursor at 0
-                fputs(Fmt("\x1B[%dD", cursorX), stdout);
-            fputs(Fmt("\x1B[%dX", line.count), stdout); // Erase the current command
+                fputs(FMT("\x1B[%dD", cursorX), stdout);
+            fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
             line.clear();
             cursorX = 0;
             break;
@@ -422,7 +422,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         case OS::Key::PasteFromClipboard:
         {
             Utf8 str = OS::getClipboardString();
-            fputs(Fmt("\x1B[%d@", str.length()), stdout); // Insert n blanks and shift right
+            fputs(FMT("\x1B[%d@", str.length()), stdout); // Insert n blanks and shift right
             for (const auto cc : str)
             {
                 fputc(cc, stdout);
@@ -706,7 +706,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 g_Log.print(LogSymbol::HorizontalLine);
             g_Log.eol();
 
-            g_Log.print(Fmt("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.c_str()));
+            g_Log.print(FMT("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.c_str()));
 
             const Module* module = nullptr;
             if (context->bc->sourceFile)
@@ -715,8 +715,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 module = context->bc->node->sourceFile->module;
             if (module)
             {
-                g_Log.print(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
-                g_Log.print(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
+                g_Log.print(FMT("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
+                g_Log.print(FMT("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
             }
 
             for (int i = 0; i < LINE_W; i++)
@@ -803,9 +803,9 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         else if (result == BcDbgCommandResult::Return)
             return false;
         else if (result == BcDbgCommandResult::BadArguments)
-            printCmdError(Fmt("bad [[%s]] arguments", arg.cmd.c_str()));
+            printCmdError(FMT("bad [[%s]] arguments", arg.cmd.c_str()));
         else if (result == BcDbgCommandResult::Invalid)
-            printCmdError(Fmt("unknown debugger command [[%s]]", arg.cmd.c_str()));
+            printCmdError(FMT("unknown debugger command [[%s]]", arg.cmd.c_str()));
         continue;
     }
 
@@ -830,14 +830,14 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
 
         if (pz[1] == 's' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
         {
-            result += Fmt("0x%llx", (uint64_t) context->sp);
+            result += FMT("0x%llx", (uint64_t) context->sp);
             pz += 3;
             continue;
         }
 
         if (pz[1] == 'b' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
         {
-            result += Fmt("0x%llx", (uint64_t) context->bp);
+            result += FMT("0x%llx", (uint64_t) context->bp);
             pz += 3;
             continue;
         }
@@ -849,7 +849,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
                 return;
 
             const auto& regP = context->getRegBuffer(debugCxtRc)[regN];
-            result += Fmt("0x%llx", regP.u64);
+            result += FMT("0x%llx", regP.u64);
             pz += 2;
             while (SWAG_IS_DIGIT(*pz))
                 pz++;

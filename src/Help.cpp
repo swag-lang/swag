@@ -12,7 +12,7 @@ static void printExamples()
 
 static void printVersion()
 {
-    g_Log.messageInfo(Fmt("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    g_Log.messageInfo(FMT("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 }
 
 void help(CommandLineParser& cmdParser, const Utf8& cmd)

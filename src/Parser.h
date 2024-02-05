@@ -1,5 +1,4 @@
 #pragma once
-#include "AstFlags.h"
 #include "ErrorContext.h"
 #include "Scope.h"
 #include "Tokenizer.h"
@@ -48,7 +47,7 @@ constexpr uint32_t MODIFIER_NO_LEFT_DROP  = 0x00000004;
 constexpr uint32_t MODIFIER_MOVE          = 0x00000008;
 constexpr uint32_t MODIFIER_NO_RIGHT_DROP = 0x00000010;
 constexpr uint32_t MODIFIER_BIT           = 0x00000020;
-constexpr uint32_t MODIFIER_UNCONST       = 0x00000040;
+constexpr uint32_t MODIFIER_UN_CONST      = 0x00000040;
 constexpr uint32_t MODIFIER_BACK          = 0x00000080;
 
 constexpr uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
@@ -93,13 +92,13 @@ struct Parser
     bool eatTokenError(TokenId id, const Utf8& err);
     bool eatSemiCol(const char* msg);
 
-    static bool        testIsSingleIdentifier(AstNode* node);
+    static bool testIsSingleIdentifier(AstNode* node);
     bool        checkIsSingleIdentifier(AstNode* node, const char* msg);
     bool        checkIsIdentifier(TokenParse& token, const char* msg);
     bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
     bool        checkIsValidVarName(AstNode* node);
-    bool        doCheckPublicInternalPrivate(Token& tokenAttr);
+    bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
     static void isForceTakeAddress(AstNode* node);
 

@@ -95,7 +95,7 @@ namespace
             if (color == SyntaxColor::SyntaxDefault)
                 color = SyntaxColor::SyntaxCode;
             const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
-            return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+            return FMT("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
         }
 
         case SyntaxColorMode::ForDoc:
@@ -147,7 +147,7 @@ namespace
             }
 
             if (colorName)
-                return Fmt("<span class=\"%s\">", colorName);
+                return FMT("<span class=\"%s\">", colorName);
             break;
         }
         }

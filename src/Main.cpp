@@ -52,7 +52,7 @@ int main(int argc, const char* argv[])
         command != "version" &&
         command != "script")
     {
-        Report::error(Fmt(Err(Fat0026), argv[1]));
+        Report::error(FMT(Err(Fat0026), argv[1]));
         OS::exit(-1);
     }
 
@@ -128,7 +128,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "version")
     {
-        g_Log.messageInfo(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+        g_Log.messageInfo(FMT("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
 
     // Prints stats, then exit

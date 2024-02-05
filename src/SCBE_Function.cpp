@@ -60,7 +60,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-            pp.directives += Fmt("/EXPORT:%s ", funcName.c_str());
+            pp.directives += FMT("/EXPORT:%s ", funcName.c_str());
     }
 
     // Symbol
@@ -4053,7 +4053,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4098,7 +4098,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4143,7 +4143,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4188,7 +4188,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4215,7 +4215,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4241,7 +4241,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4267,7 +4267,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4293,7 +4293,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4332,7 +4332,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4370,7 +4370,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4408,7 +4408,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4446,7 +4446,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4488,7 +4488,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -4528,7 +4528,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -4613,7 +4613,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4699,7 +4699,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4757,7 +4757,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         default:
             ok = false;
-            Report::internalError(moduleToGen, Fmt("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+            Report::internalError(moduleToGen, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
             break;
         }
     }

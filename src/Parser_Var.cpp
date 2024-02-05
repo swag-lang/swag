@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
@@ -16,9 +17,9 @@ bool Parser::checkIsValidVarName(AstNode* node)
     {
         const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, Fmt(Err(Err0410), identifier->token.ctext()));
+            return error(identifier->genericParameters, FMT(Err(Err0410), identifier->token.ctext()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, Fmt(Err(Err0411), identifier->token.ctext()));
+            return error(identifier->callParameters, FMT(Err(Err0411), identifier->token.ctext()));
     }
 
     if (node->token.text[0] != '#')
@@ -38,14 +39,14 @@ bool Parser::checkIsValidVarName(AstNode* node)
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, Fmt(Err(Err0142), node->token.ctext() + 6));
+                    return error(node->token, FMT(Err(Err0142), node->token.ctext() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 10)
-                return error(node->token, Fmt(Err(Err0601), num));
+                return error(node->token, FMT(Err(Err0601), num));
             if (node->ownerFct)
                 node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_SPEC_MIXIN);
 
@@ -64,14 +65,14 @@ bool Parser::checkIsValidVarName(AstNode* node)
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, Fmt(Err(Err0138), node->token.ctext() + 6));
+                    return error(node->token, FMT(Err(Err0138), node->token.ctext() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 32)
-                return error(node->token, Fmt(Err(Err0600), num));
+                return error(node->token, FMT(Err(Err0600), num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -79,7 +80,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return error(node->token, Fmt(Err(Err0407), node->token.ctext()));
+    return error(node->token, FMT(Err(Err0407), node->token.ctext()));
 }
 
 bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
@@ -154,13 +155,13 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
+        SWAG_VERIFY(acceptDeref, error(leftNode, FMT(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
 
         const auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         *result               = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
-        const auto  tmpVarName  = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
+        const auto  tmpVarName  = FMT("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
@@ -225,7 +226,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->addSpecFlags(AstVarDecl::SPECFLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-            identifier          = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
+            identifier          = Ast::newMultiIdentifierRef(sourceFile, FMT("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             Semantic::setVarDeclResolve(varNode);
             varNode->assignment->flags |= AST_TUPLE_UNPACK;
@@ -271,7 +272,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0249), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0249), token.ctext())));
     }
     else
     {
@@ -279,7 +280,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0409), isLet ? "let" : "var", token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0409), isLet ? "let" : "var", token.ctext())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
@@ -298,9 +299,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = Fmt(Err(Err0546), token.ctext());
+                msg = FMT(Err(Err0546), token.ctext());
             else
-                msg = Fmt(Err(Err0584), token.ctext());
+                msg = FMT(Err(Err0584), token.ctext());
 
             const Diagnostic diag{sourceFile, token, msg};
             if (token.id == TokenId::SymEqualEqual)
@@ -325,8 +326,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 const auto typeExpr = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    const Diagnostic diag{sourceFile, token, Fmt(Err(Err0021), typeExpr->identifier->token.ctext())};
-                    const auto       note  = Diagnostic::note(Fmt(Nte(Nte0183), typeExpr->identifier->token.ctext(), typeExpr->identifier->token.ctext()));
+                    const Diagnostic diag{sourceFile, token, FMT(Err(Err0021), typeExpr->identifier->token.ctext())};
+                    const auto       note  = Diagnostic::note(FMT(Nte(Nte0183), typeExpr->identifier->token.ctext(), typeExpr->identifier->token.ctext()));
                     const auto       note1 = Diagnostic::note(Nte(Nte0179));
                     return context->report(diag, note, note1);
                 }

@@ -21,10 +21,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     const auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, Fmt(Err(Err0451), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, FMT(Err(Err0451), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, Fmt(Err(Err0450), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, FMT(Err(Err0450), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     return true;
 }
@@ -43,7 +43,7 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     const auto lastChild = identifierRef->childs.back();
-    return context->report({node, node->token, Fmt(Err(Err0499), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
+    return context->report({node, node->token, FMT(Err(Err0499), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
 }
 
 bool Semantic::resolveTryBlock(SemanticContext* context)
@@ -148,7 +148,7 @@ bool Semantic::resolveThrow(SemanticContext* context)
 
     SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0379)}));
     if (!type->isAny() || !(node->specFlags & AstTryCatchAssume::SPECFLAG_THROW_GET_ERR))
-        SWAG_VERIFY(type->isStruct(), context->report({expr, Fmt(Err(Err0380), type->getDisplayNameC())}));
+        SWAG_VERIFY(type->isStruct(), context->report({expr, FMT(Err(Err0380), type->getDisplayNameC())}));
 
     if (type->isString())
         context->node->printLoc();

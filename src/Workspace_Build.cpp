@@ -24,7 +24,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     if (!Module::isValidName(cFileName, errorStr))
     {
         errorStr = "fatal error: " + errorStr;
-        errorStr += Fmt(" (path is [[%s]])", path.string().c_str());
+        errorStr += FMT(" (path is [[%s]])", path.string().c_str());
         Report::error(errorStr);
         OS::exit(-1);
     }
@@ -190,12 +190,12 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(Fmt("target path is [[%s]]", targetPath.string().c_str()));
+        g_Log.messageVerbose(FMT("target path is [[%s]]", targetPath.string().c_str()));
 
     error_code err;
     if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0021), targetPath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0021), targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -203,14 +203,14 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!filesystem::exists(cachePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0010), cachePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0010), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0016), cachePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0016), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -218,12 +218,12 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0016), cachePath.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0016), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(Fmt("cache path is [[%s]]", cachePath.string().c_str()));
+        g_Log.messageVerbose(FMT("cache path is [[%s]]", cachePath.string().c_str()));
 }
 
 Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
@@ -259,25 +259,25 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     if (depNode)
     {
-        msg = Fmt(Nte(Nte0110), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), Naming::kindName(depNode).c_str(), depNode->token.ctext());
+        msg = FMT(Nte(Nte0110), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), Naming::kindName(depNode).c_str(), depNode->token.ctext());
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = Fmt(Nte(Nte0055), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), prevJob->waitingType->getDisplayNameC());
+        msg  = FMT(Nte(Nte0055), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
-        msg      = Fmt(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
+        msg      = FMT(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
         prevNode = prevJob->waitingType->declNode;
     }
     else if (prevJob->waitingType)
     {
-        msg = Fmt(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
+        msg = FMT(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
     }
     else
     {
-        msg  = Fmt(Nte(Nte0186), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
+        msg  = FMT(Nte(Nte0186), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
@@ -290,7 +290,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
         case AstNodeKind::VarDecl:
         case AstNodeKind::EnumValue:
             msg += " ";
-            msg += Fmt("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            msg += FMT("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
             break;
         default:
             break;
@@ -303,7 +303,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     Utf8 remark, sym;
     if (prevJob->waitingSymbolSolved)
-        sym = Fmt("%s [[%s]]", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
+        sym = FMT("%s [[%s]]", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
 
     switch (prevJob->waitingKind)
     {
@@ -318,10 +318,10 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
         remark = "waiting for the type to be exported";
         break;
     case JobWaitKind::SemFullResolve:
-        remark = Fmt("waiting for %s to be fully solved", sym.c_str());
+        remark = FMT("waiting for %s to be fully solved", sym.c_str());
         break;
     case JobWaitKind::WaitSymbol:
-        remark = Fmt("waiting for %s to be solved", sym.c_str());
+        remark = FMT("waiting for %s to be solved", sym.c_str());
         break;
     default:
         break;
@@ -382,7 +382,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                 {
                     const auto front  = prevJob->nodes.front();
                     const auto back   = prevJob->nodes.back();
-                    auto       msg    = Fmt(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
+                    auto       msg    = FMT(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);
@@ -400,7 +400,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             const auto prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
+            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, FMT(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
             const auto sourceFile             = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;
@@ -650,7 +650,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            Report::error(Fmt(Err(Fat0029), g_CommandLine.moduleName.c_str()));
+            Report::error(FMT(Err(Fat0029), g_CommandLine.moduleName.c_str()));
             return false;
         }
 
@@ -665,7 +665,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    Report::error(Fmt(Err(Fat0011), dep->name.c_str()));
+                    Report::error(FMT(Err(Fat0011), dep->name.c_str()));
                     return false;
                 }
 
@@ -764,7 +764,7 @@ bool Workspace::build()
 
         srand(g_CommandLine.randSeed);
         g_Log.setColor(LogColor::DarkBlue);
-        g_Log.print(Fmt("[devmode] randomize seed is %d\n", g_CommandLine.randSeed));
+        g_Log.print(FMT("[devmode] randomize seed is %d\n", g_CommandLine.randSeed));
         g_Log.setDefaultColor();
     }
 #endif
@@ -798,20 +798,20 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.messageVerbose(Fmt("workspace path is [[%s]]", workspacePath.string().c_str()));
+                g_Log.messageVerbose(FMT("workspace path is [[%s]]", workspacePath.string().c_str()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else
             {
                 const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-                g_Log.messageHeaderCentered("Workspace", Fmt("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
+                g_Log.messageHeaderCentered("Workspace", FMT("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
             }
         }
         else
         {
             const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
             const Path p              = g_CommandLine.scriptName;
-            g_Log.messageHeaderCentered("Script", Fmt("%s [%s]", p.filename().string().c_str(), targetFullName.c_str()));
+            g_Log.messageHeaderCentered("Script", FMT("%s [%s]", p.filename().string().c_str(), targetFullName.c_str()));
         }
 
         addBootstrap();
@@ -825,20 +825,20 @@ bool Workspace::build()
     if (!g_CommandLine.scriptCommand)
     {
         if (g_Workspace->skippedModules.load() > 0)
-            g_Log.messageHeaderCentered("Skipped modules", Fmt("%d", g_Workspace->skippedModules.load()));
+            g_Log.messageHeaderCentered("Skipped modules", FMT("%d", g_Workspace->skippedModules.load()));
 
         if (g_Workspace->numErrors.load() == 1)
-            g_Log.messageHeaderCentered("Done", Fmt("%d error", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
+            g_Log.messageHeaderCentered("Done", FMT("%d error", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
         else if (g_Workspace->numErrors.load())
-            g_Log.messageHeaderCentered("Done", Fmt("%d errors", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
+            g_Log.messageHeaderCentered("Done", FMT("%d errors", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
         else if (g_Workspace->numWarnings.load() == 1)
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
+            g_Log.messageHeaderCentered("Done", FMT("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
                                         LogColor::Magenta);
         else if (g_Workspace->numWarnings.load())
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
+            g_Log.messageHeaderCentered("Done", FMT("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
                                         LogColor::Magenta);
         else
-            g_Log.messageHeaderCentered("Done", Fmt("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
+            g_Log.messageHeaderCentered("Done", FMT("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
     }
 
     return result;

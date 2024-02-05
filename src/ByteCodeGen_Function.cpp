@@ -1466,12 +1466,12 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
 
         if (callNode->kind == AstNodeKind::Inline)
         {
-            const Diagnostic diag{callNode->sourceFile, callNode->token, Fmt(Err(Err0544), funcNode->token.ctext())};
+            const Diagnostic diag{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
         else
         {
-            const Diagnostic diag{callNode, Fmt(Err(Err0544), funcNode->token.ctext())};
+            const Diagnostic diag{callNode, FMT(Err(Err0544), funcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
     }
@@ -1485,7 +1485,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            const Diagnostic diag{parent, parent->token, Fmt(Err(Err0502), parent->token.ctext(), srcNode->token.ctext())};
+            const Diagnostic diag{parent, parent->token, FMT(Err(Err0502), parent->token.ctext(), srcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
     }
@@ -1956,7 +1956,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Pass a variadic parameter to another function
     auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
-        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, Fmt(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
+        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, FMT(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
     auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
 
@@ -2274,7 +2274,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
     if (funcNode->stackSize > g_CommandLine.limitStackRT)
-        Report::report({funcNode, Fmt(Err(Err0024), Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
+        Report::report({funcNode, FMT(Err(Err0024), Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
 
     context->bc->stackSize    = funcNode->stackSize;
     context->bc->dynStackSize = funcNode->stackSize;

@@ -16,7 +16,7 @@ void Workspace::cleanFolderContent(const Path& path)
                           std::error_code err;
                           if (filesystem::remove_all(cFileName, err) == static_cast<std::uintmax_t>(-1))
                           {
-                              Report::errorOS(Fmt(Err(Fat0023), cFileName));
+                              Report::errorOS(FMT(Err(Fat0023), cFileName));
                               OS::exit(-1);
                           }
                       });
@@ -24,7 +24,7 @@ void Workspace::cleanFolderContent(const Path& path)
     std::error_code err;
     if (remove_all(path, err) == static_cast<std::uintmax_t>(-1))
     {
-        Report::errorOS(Fmt(Err(Fat0022), path.string().c_str()));
+        Report::errorOS(FMT(Err(Fat0022), path.string().c_str()));
         OS::exit(-1);
     }
 }
@@ -85,7 +85,7 @@ void Workspace::cleanScript(bool all)
             g_Log.messageHeaderCentered("Cleaning", path.string().c_str());
             cleanFolderContent(path);
         },
-        Fmt("%s-*", SWAG_SCRIPT_WORKSPACE).c_str());
+        FMT("%s-*", SWAG_SCRIPT_WORKSPACE).c_str());
 }
 
 void Workspace::cleanCommand()

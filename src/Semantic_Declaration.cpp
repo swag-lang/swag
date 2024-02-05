@@ -15,7 +15,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, Fmt(Err(Err0477), Naming::kindName(node->ownerScope->kind).c_str())}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, FMT(Err(Err0477), Naming::kindName(node->ownerScope->kind).c_str())}));
 
     const uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_STRUCT_USING : 0;
 
@@ -30,14 +30,14 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     else if (typeInfoVar->isPointer())
     {
         const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, Fmt(Err(Err0476), typePointer->pointedType->getDisplayNameC())}));
+        SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, FMT(Err(Err0476), typePointer->pointedType->getDisplayNameC())}));
         const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
     else
     {
-        return context->report({node, Fmt(Err(Err0474), typeInfoVar->getDisplayNameC())});
+        return context->report({node, FMT(Err(Err0474), typeInfoVar->getDisplayNameC())});
     }
 
     return true;
@@ -92,7 +92,7 @@ bool Semantic::resolveWith(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
         if (!typeResolved->isPointerTo(TypeInfoKind::Struct))
-            return context->report({node, Fmt(Err(Err0173), typeResolved->getDisplayNameC())});
+            return context->report({node, FMT(Err(Err0173), typeResolved->getDisplayNameC())});
         break;
 
     case TypeInfoKind::Namespace:
@@ -101,11 +101,11 @@ bool Semantic::resolveWith(SemanticContext* context)
 
     case TypeInfoKind::Enum:
         if (fromVar)
-            return context->report({node, Fmt(Err(Err0172), typeResolved->getDisplayNameC())});
+            return context->report({node, FMT(Err(Err0172), typeResolved->getDisplayNameC())});
         break;
 
     default:
-        return context->report({node, Fmt(Err(Err0173), typeResolved->getDisplayNameC())});
+        return context->report({node, FMT(Err(Err0173), typeResolved->getDisplayNameC())});
     }
 
     return true;
@@ -147,7 +147,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
         break;
     }
     default:
-        return context->report({node, Fmt(Err(Err0472), typeResolved->getDisplayNameC())});
+        return context->report({node, FMT(Err(Err0472), typeResolved->getDisplayNameC())});
     }
 
     node->parent->addAlternativeScope(scope, ALTSCOPE_USING);

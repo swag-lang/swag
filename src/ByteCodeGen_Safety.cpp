@@ -18,11 +18,11 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
         {
         case SafetyMsg::CastAnyNull:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0002), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0002), toType->name.c_str());
             break;
         case SafetyMsg::CastAny:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0001), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0001), toType->name.c_str());
             break;
         case SafetyMsg::NullCheck:
             typedMsg[m][0][0] = Err(Saf0017);
@@ -56,67 +56,67 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
             break;
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::CastNeg:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::Plus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "+", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "+", toType->name.c_str());
             break;
         case SafetyMsg::Minus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "-", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
             break;
         case SafetyMsg::Mul:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "*", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "*", toType->name.c_str());
             break;
         case SafetyMsg::PlusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "+=", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "+=", toType->name.c_str());
             break;
         case SafetyMsg::MinusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "-=", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "-=", toType->name.c_str());
             break;
         case SafetyMsg::MulEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "*=", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "*=", toType->name.c_str());
             break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0026), "-", toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicAbs:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0008), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0008), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicSqrt:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0014), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0014), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicLog:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0011), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0011), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicLog2:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0013), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0013), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicLog10:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0012), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0012), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicASin:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0010), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0010), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicACos:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(Err(Saf0009), toType->name.c_str());
+            typedMsg[m][i][j] = FMT(Err(Saf0009), toType->name.c_str());
             break;
         default:
             break;

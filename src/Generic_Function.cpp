@@ -255,7 +255,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     const auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                     if (!param->assignment)
                     {
-                        const Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0556), identifier->resolvedSymbolName->name.c_str())};
+                        const Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0556), identifier->resolvedSymbolName->name.c_str())};
                         return context->report(diag, Diagnostic::hereIs(identifier->resolvedSymbolOverload));
                     }
 
@@ -293,12 +293,12 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 const auto contextualNode = idRef->previousResolvedNode;
                 if (contextualNode)
                 {
-                    const Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0556), node->token.ctext())};
+                    const Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0556), node->token.ctext())};
                     return context->report(diag);
                 }
             }
         }
     }
 
-    return context->report({node->sourceFile, node->token, Fmt(Err(Err0300), node->token.ctext())});
+    return context->report({node->sourceFile, node->token, FMT(Err(Err0300), node->token.ctext())});
 }

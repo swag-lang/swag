@@ -36,8 +36,8 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters) const
         pp.symCSIndex  = pp.getOrAddSymbol("__cs", CPUSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex  = pp.getOrAddSymbol("__ms", CPUSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTLSIndex = pp.getOrAddSymbol("__tls", CPUSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
-        pp.symCOIndex  = pp.getOrAddSymbol(Fmt("__co%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = pp.getOrAddSymbol(Fmt("__xd%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symCOIndex  = pp.getOrAddSymbol(FMT("__co%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = pp.getOrAddSymbol(FMT("__xd%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure SwagContext declared in Runtime.h
         auto offset                         = pp.globalSegment.reserve(sizeof(SwagContext), nullptr, sizeof(uint64_t));
@@ -96,8 +96,8 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters) const
         pp.symCSIndex  = pp.getOrAddSymbol("__cs", CPUSymbolKind::Extern)->index;
         pp.symMSIndex  = pp.getOrAddSymbol("__ms", CPUSymbolKind::Extern)->index;
         pp.symTLSIndex = pp.getOrAddSymbol("__tls", CPUSymbolKind::Extern)->index;
-        pp.symCOIndex  = pp.getOrAddSymbol(Fmt("__co%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = pp.getOrAddSymbol(Fmt("__xd%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symCOIndex  = pp.getOrAddSymbol(FMT("__co%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = pp.getOrAddSymbol(FMT("__xd%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CPUSymbolKind::Extern)->index;
         pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CPUSymbolKind::Extern)->index;
@@ -140,7 +140,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
 
     if (pp.pass == BackendPreCompilePass::Init)
     {
-        pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = FMT("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
         switch (objFileType)
@@ -249,7 +249,7 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
     FILE* f = nullptr;
     if (fopen_s(&f, filename.string().c_str(), "wb"))
     {
-        Report::errorOS(Fmt(Err(Err0096), filename.string().c_str()));
+        Report::errorOS(FMT(Err(Err0096), filename.string().c_str()));
         return false;
     }
 

@@ -256,7 +256,7 @@ JobResult ModuleBuildJob::execute()
             auto depModule = g_Workspace->getModuleByName(dep->name);
             if (!depModule)
             {
-                Report::error(module, Fmt(Err(Err0707), dep->name.c_str()));
+                Report::error(module, FMT(Err(Err0707), dep->name.c_str()));
                 return JobResult::ReleaseJob;
             }
 
@@ -590,7 +590,7 @@ JobResult ModuleBuildJob::execute()
         auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
         SWAG_ASSERT(setupFct);
 
-        module->logStage(Fmt("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
+        module->logStage(FMT("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
         ExecuteNodeParams execParams;
         auto              runtimeFlags = Backend::getRuntimeFlags(module);
         runtimeFlags |= (uint64_t) SwagRuntimeFlags::FromCompiler;
@@ -613,7 +613,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeInitFunc)
             {
-                module->logStage(Fmt("#init %s\n", func->node->sourceFile->name.c_str()));
+                module->logStage(FMT("#init %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -623,7 +623,7 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodePreMainFunc)
             {
-                module->logStage(Fmt("#premain %s\n", func->node->sourceFile->name.c_str()));
+                module->logStage(FMT("#premain %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -645,7 +645,7 @@ JobResult ModuleBuildJob::execute()
 #ifdef SWAG_STATS
                 g_Stats.runFunctions++;
 #endif
-                module->logStage(Fmt("#run %s\n", func->node->sourceFile->name.c_str()));
+                module->logStage(FMT("#run %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -671,7 +671,7 @@ JobResult ModuleBuildJob::execute()
 #ifdef SWAG_STATS
                     g_Stats.testFunctions++;
 #endif
-                    module->logStage(Fmt("#test %s\n", func->node->sourceFile->name.c_str()));
+                    module->logStage(FMT("#test %s\n", func->node->sourceFile->name.c_str()));
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
                         return JobResult::ReleaseJob;
@@ -701,7 +701,7 @@ JobResult ModuleBuildJob::execute()
             }
             else
             {
-                module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
+                module->logStage(FMT("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
                 ExecuteNodeParams params;
                 params.breakOnStart = g_CommandLine.dbgMain;
                 module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
@@ -718,7 +718,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeDropFunc)
             {
-                module->logStage(Fmt("#drop %s\n", func->node->sourceFile->name.c_str()));
+                module->logStage(FMT("#drop %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;

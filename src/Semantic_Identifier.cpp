@@ -45,7 +45,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         back->resolvedSymbolName->kind != SymbolKind::Function &&
         back->resolvedSymbolName->kind != SymbolKind::Variable)
     {
-        const Diagnostic          diag{back, Fmt(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+        const Diagnostic          diag{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
         Vector<const Diagnostic*> notes;
 
         notes.push_back(Diagnostic::note(Nte(Nte0013)));
@@ -55,7 +55,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             back->resolvedSymbolName->kind == SymbolKind::TypeAlias ||
             back->resolvedSymbolName->kind == SymbolKind::Struct)
         {
-            notes.push_back(Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
+            notes.push_back(Diagnostic::note(node, node->kwdLoc, FMT(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
         }
 
         return context->report(diag, notes);
@@ -649,14 +649,14 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->isGeneratedSelf())
             {
-                const Diagnostic diag{dependentVar, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                const Diagnostic diag{dependentVar, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
                 const auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
                 const auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
             }
             else
             {
-                const Diagnostic diag{dep.node, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                const Diagnostic diag{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
                 const auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
                 const auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
@@ -724,7 +724,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         case AstNodeKind::While:
                         {
                             const Diagnostic diag{node, node->token,
-                                                  Fmt(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
+                                                  FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
                         default:
@@ -801,12 +801,12 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*    context,
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                const Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0290), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0290), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
             else
             {
-                const Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+                const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
         }
@@ -873,8 +873,8 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             const auto       firstNode = symbol->nodes.front();
-            const Diagnostic diag{genericParameters, Fmt(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
-            const auto       note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0199), node->token.ctext(), Naming::aKindName(symbol->kind).c_str()));
+            const Diagnostic diag{genericParameters, FMT(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
+            const auto       note = Diagnostic::note(node, node->token, FMT(Nte(Nte0199), node->token.ctext(), Naming::aKindName(symbol->kind).c_str()));
             return context->report(diag, note, Diagnostic::hereIs(firstNode));
         }
 
@@ -1094,7 +1094,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (dependentSymbols.empty())
-        return context->report({identifier, Fmt(Err(Err0730), identifier->token.ctext())});
+        return context->report({identifier, FMT(Err(Err0730), identifier->token.ctext())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwhise it
     // can lead to ambiguities, or even worse, take the wrong one.
@@ -1201,7 +1201,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            return context->report({identifier, Fmt(Err(Err0730), identifier->token.ctext())});
+            return context->report({identifier, FMT(Err(Err0730), identifier->token.ctext())});
         }
 
         auto& listTryMatch = context->cacheListTryMatch;

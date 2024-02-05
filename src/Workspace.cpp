@@ -26,21 +26,21 @@ void Workspace::setup()
     error_code err;
     if (!filesystem::exists(workspacePath, err))
     {
-        Report::error(Fmt(Err(Fat0035), workspacePath.string().c_str()));
+        Report::error(FMT(Err(Fat0035), workspacePath.string().c_str()));
         g_Log.messageInfo(Nte(Nte0190));
         OS::exit(-1);
     }
 
     if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath, err) && !filesystem::exists(testsPath, err))
     {
-        Report::error(Fmt(Err(Fat0027), workspacePath.string().c_str()));
+        Report::error(FMT(Err(Fat0027), workspacePath.string().c_str()));
         g_Log.messageInfo(Nte(Nte0190));
         OS::exit(-1);
     }
 
     if (g_CommandLine.scriptCommand && !filesystem::exists(g_CommandLine.scriptName.c_str(), err))
     {
-        Report::error(Fmt(Err(Fat0030), g_CommandLine.scriptName.c_str()));
+        Report::error(FMT(Err(Fat0030), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 

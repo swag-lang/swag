@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
@@ -16,7 +17,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->semanticFct                      = Semantic::resolveAttrDecl;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0219), token.ctext())));
+    SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0219), token.ctext())));
 
     attrNode->inheritTokenName(token);
     attrNode->tokenName = token;
@@ -79,13 +80,13 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, Fmt(Err(Err0220), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, FMT(Err(Err0220), token.ctext())));
 
             if (token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
                 SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Err0543)));
-                SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0219), token.ctext())));
+                SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0219), token.ctext())));
             }
         }
 

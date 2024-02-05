@@ -1910,7 +1910,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childs.size())
     {
-        const auto       msg = Fmt(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size());
+        const auto       msg = FMT(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size());
         const Diagnostic diag{child->childs[toTypeStruct->fields.count], msg};
         return context->report(diag);
     }
@@ -2352,7 +2352,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                     {
                         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                         {
-                            const Diagnostic diag{fromNode, Fmt(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(),
+                            const Diagnostic diag{fromNode, FMT(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(),
                                                                 toStruct->getDisplayNameC())};
                             const auto note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
                             const auto note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
@@ -2391,7 +2391,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             {
                 if (foundField)
                 {
-                    const Diagnostic diag{context->node, Fmt(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                    const Diagnostic diag{context->node, FMT(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
                     const auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0150));
                     const auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0152));
                     return context->report(diag, note1, note2);
@@ -2859,9 +2859,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, Fmt(Err(Err0595), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, FMT(Err(Err0595), toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, Fmt(Err(Err0635), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, FMT(Err(Err0635), toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

@@ -25,7 +25,7 @@ void LLVM_Debug::setup(LLVM* m, llvm::Module* modu)
     mainFile            = dbgBuilder->createFile("<stdin>", "c:/");
     const Path expPath  = m->exportFilePath;
     exportFile          = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
-    const Utf8 compiler = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    const Utf8 compiler = FMT("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit         = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
                                                 compiler.c_str(),
@@ -194,7 +194,7 @@ llvm::DIType* LLVM_Debug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType
 
     const auto     fileScope = file->getScope();
     constexpr auto noFlag    = llvm::DINode::DIFlags::FlagZero;
-    const auto     name      = Fmt("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
+    const auto     name      = FMT("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
     auto           result    = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     const auto realType = getPointerToType(pointedType, file);

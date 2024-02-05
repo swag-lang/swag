@@ -12,19 +12,19 @@ constexpr int COL4 = 48;
 static Utf8 getProfileBc(ByteCode* bc, int level)
 {
     Utf8 line;
-    line += Fmt("%d", bc->profileCallCount);
+    line += FMT("%d", bc->profileCallCount);
 
     while (line.count < COL1)
         line += " ";
-    line += Fmt("%0.6f", OS::timerToSeconds(bc->profileCumTime));
+    line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
 
     while (line.count < COL2)
         line += " ";
-    line += Fmt("%0.6f", OS::timerToSeconds(bc->profileFFI));
+    line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
 
     while (line.count < COL3)
         line += " ";
-    line += Fmt("%0.6f", bc->profilePerCall);
+    line += FMT("%0.6f", bc->profilePerCall);
 
     while (line.count < COL4)
         line += " ";
@@ -45,11 +45,11 @@ static Utf8 getProfileBc(ByteCode* bc, int level)
 static Utf8 getProfileFFI(FFIStat& ffi, int level)
 {
     Utf8 line;
-    line += Fmt("%d", ffi.count);
+    line += FMT("%d", ffi.count);
 
     while (line.count < COL1)
         line += " ";
-    line += Fmt("%0.6f", OS::timerToSeconds(ffi.cum));
+    line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
 
     while (line.count < COL2)
         line += " ";

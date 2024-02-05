@@ -27,7 +27,7 @@ bool GenDoc::generatePages()
             path = path1;
 
         if (!filesystem::exists(path, err))
-            Report::errorOS(Fmt(Err(Err0092), path.string().c_str()));
+            Report::errorOS(FMT(Err(Err0092), path.string().c_str()));
         else
             files.push_back(path);
     }
@@ -47,7 +47,7 @@ bool GenDoc::generatePages()
         FILE* f = nullptr;
         if (fopen_s(&f, fullFileName.c_str(), "wb"))
         {
-            Report::errorOS(Fmt(Err(Err0096), fullFileName.c_str()));
+            Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
             return false;
         }
 
@@ -68,7 +68,7 @@ bool GenDoc::generatePages()
         // Write and close file
         if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
         {
-            Report::errorOS(Fmt(Err(Err0099), fullFileName.c_str()));
+            Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
             fclose(f);
             return false;
         }

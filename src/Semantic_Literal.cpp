@@ -148,14 +148,14 @@ bool Semantic::processLiteralString(SemanticContext* context)
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c8, msg));
             const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
             if (cw > Utf8::MAX_ENCODED_UNICODE)
-                return context->report({node->sourceFile, loc, Fmt(Err(Err0405), cw)});
+                return context->report({node->sourceFile, loc, FMT(Err(Err0405), cw)});
             result.append(cw);
             loc.column += 8;
             continue;
         }
         }
 
-        return context->report({node->sourceFile, loc, Fmt(Err(Err0275), c)});
+        return context->report({node->sourceFile, loc, FMT(Err(Err0275), c)});
     }
 
     node->computedValue->text = result;
@@ -201,7 +201,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);
         if (uni.size() != 1)
-            return Fmt(Err(Err0236), computedValue.text.c_str());
+            return FMT(Err(Err0236), computedValue.text.c_str());
 
         if (typeSuffix->isUntypedInteger())
         {
@@ -217,13 +217,13 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
             case NativeTypeKind::U8:
                 if (uni[0] > UINT8_MAX)
-                    return Fmt(Err(Err0607), uni[0]);
+                    return FMT(Err(Err0607), uni[0]);
                 computedValue.reg.u8 = (uint8_t) uni[0];
                 break;
 
             case NativeTypeKind::U16:
                 if (uni[0] > UINT16_MAX)
-                    return Fmt(Err(Err0606), uni[0]);
+                    return FMT(Err(Err0606), uni[0]);
                 computedValue.reg.u16 = (uint16_t) uni[0];
                 break;
 
@@ -236,7 +236,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
                 break;
 
             default:
-                return Fmt(Err(Err0235), typeSuffix->getDisplayNameC());
+                return FMT(Err(Err0235), typeSuffix->getDisplayNameC());
             }
         }
 
@@ -256,7 +256,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
                 computedValue.reg.f64 = -computedValue.reg.f64;
             break;
         default:
-            return Fmt(Err(Err0321), typeSuffix->getDisplayNameC());
+            return FMT(Err(Err0321), typeSuffix->getDisplayNameC());
         }
         break;
 
@@ -267,37 +267,37 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "u8"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u8"));
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "u16"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u16"));
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "u32"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u32"));
             break;
         case NativeTypeKind::U64:
             break;
 
         case NativeTypeKind::S8:
             if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
-                return Fmt(Err(Err0425), computedValue.reg.s64, "s8");
+                return FMT(Err(Err0425), computedValue.reg.s64, "s8");
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
-                return Fmt(Err(Err0425), computedValue.reg.s64, "s16");
+                return FMT(Err(Err0425), computedValue.reg.s64, "s16");
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
-                return Fmt(Err(Err0425), computedValue.reg.s64, "s32");
+                return FMT(Err(Err0425), computedValue.reg.s64, "s32");
             break;
         case NativeTypeKind::S64:
             break;
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "rune"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "rune"));
             break;
 
         case NativeTypeKind::F32:
@@ -308,7 +308,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
             break;
 
         default:
-            return Fmt(Err(Err0318), computedValue.reg.u64);
+            return FMT(Err(Err0318), computedValue.reg.u64);
         }
 
         break;
@@ -320,43 +320,43 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "u8"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u8"));
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "u16"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u16"));
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "u32"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u32"));
             break;
         case NativeTypeKind::U64:
             break;
 
         case NativeTypeKind::S8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "s8"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s8"));
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "s16"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s16"));
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "s32"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s32"));
             break;
         case NativeTypeKind::S64:
             if (computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "s64"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s64"));
             break;
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Fmt(Err(Err0425), computedValue.reg.u64, "rune"));
+                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "rune"));
             break;
 
         default:
-            return Fmt(Err(Err0318), computedValue.reg.u64);
+            return FMT(Err(Err0318), computedValue.reg.u64);
         }
 
         break;
@@ -495,12 +495,12 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
         if (suffix->resolvedSymbolName && suffix->resolvedSymbolName->kind != SymbolKind::TypeAlias)
         {
-            return context->report({suffix, Fmt(Err(Err0319), suffix->resolvedSymbolName->name.c_str(), Naming::aKindName(suffix->resolvedSymbolName->kind).c_str())});
+            return context->report({suffix, FMT(Err(Err0319), suffix->resolvedSymbolName->name.c_str(), Naming::aKindName(suffix->resolvedSymbolName->kind).c_str())});
         }
     }
 
     const auto suffixType = TypeManager::concreteType(suffix->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(suffixType->isNative(), context->report({suffix, Fmt(Err(Err0320), suffixType->getDisplayNameC())}));
+    SWAG_VERIFY(suffixType->isNative(), context->report({suffix, FMT(Err(Err0320), suffixType->getDisplayNameC())}));
 
     switch (suffixType->nativeType)
     {
@@ -517,7 +517,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     case NativeTypeKind::F64:
         break;
     default:
-        return context->report({suffix, Fmt(Err(Err0320), suffix->typeInfo->getDisplayNameC())});
+        return context->report({suffix, FMT(Err(Err0320), suffix->typeInfo->getDisplayNameC())});
     }
 
     // Check if this is in fact a negative literal. This is important to know now, in order
@@ -545,7 +545,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         const Diagnostic  diag{node, node->token, errMsg};
         const Diagnostic* note = nullptr;
         if (suffix && suffix->typeInfo)
-            note = Diagnostic::note(suffix, Fmt(Nte(Nte0198), suffix->typeInfo->getDisplayNameC()));
+            note = Diagnostic::note(suffix, FMT(Nte(Nte0198), suffix->typeInfo->getDisplayNameC()));
         return context->report(diag, note);
     }
 

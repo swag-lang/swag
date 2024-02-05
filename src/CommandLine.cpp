@@ -12,14 +12,14 @@ bool CommandLine::check()
     limitStackRT = (uint32_t) Allocator::alignSize(limitStackRT);
     if (limitStackRT < SWAG_LIMIT_MIN_STACK || limitStackRT > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(Fmt(Err(Fat0006), Utf8::toNiceSize(limitStackRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(FMT(Err(Fat0006), Utf8::toNiceSize(limitStackRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
     limitStackBC = (uint32_t) Allocator::alignSize(limitStackBC);
     if (limitStackBC < SWAG_LIMIT_MIN_STACK || limitStackBC > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(Fmt(Err(Fat0006), Utf8::toNiceSize(limitStackBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(FMT(Err(Fat0006), Utf8::toNiceSize(limitStackBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
@@ -35,13 +35,13 @@ bool CommandLine::check()
     {
         if (target.os != SwagTargetOs::Windows)
         {
-            Report::error(Fmt(Err(Fat0009), Backend::getOsName(target)));
+            Report::error(FMT(Err(Fat0009), Backend::getOsName(target)));
             return false;
         }
 
         if (target.arch != SwagTargetArch::X86_64)
         {
-            Report::error(Fmt(Err(Fat0008), Backend::getArchName(target)));
+            Report::error(FMT(Err(Fat0008), Backend::getArchName(target)));
             return false;
         }
     }
@@ -75,7 +75,7 @@ bool CommandLine::check()
         }
         else if (p.extension().string() != ".swgs")
         {
-            Report::error(Fmt(Err(Fat0025), p.extension().string().c_str()));
+            Report::error(FMT(Err(Fat0025), p.extension().string().c_str()));
             return false;
         }
     }

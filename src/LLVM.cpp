@@ -222,7 +222,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = FMT("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
         pp.context = new llvm::LLVMContext();
@@ -327,7 +327,7 @@ bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
         break;
     }
 
-    Utf8 targetTriple = Fmt("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    Utf8 targetTriple = FMT("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
     bool isDebug      = buildParameters.isDebug();
 
     // Setup target
@@ -336,7 +336,7 @@ bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
     if (!target)
     {
-        Report::error(Fmt(Err(Err0422), targetTriple.c_str()));
+        Report::error(FMT(Err(Err0422), targetTriple.c_str()));
         return false;
     }
 
@@ -483,7 +483,7 @@ bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
         modu.print(destFileIR, nullptr);
         destFileIR.flush();
         destFileIR.close();
-        g_Log.messageVerbose(Fmt("generating llvm %s", irName.c_str()));
+        g_Log.messageVerbose(FMT("generating llvm %s", irName.c_str()));
     }
 
     delete targetMachine;

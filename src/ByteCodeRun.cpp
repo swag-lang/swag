@@ -1459,7 +1459,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
                     context->internalPanicSymbol = over;
                     context->internalPanicHint   = Nte(Nte0081);
-                    callInternalPanic(context, ip, Fmt(Err(Err0117), over->node->token.ctext()));
+                    callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1482,7 +1482,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
                         context->internalPanicSymbol = over;
                         context->internalPanicHint   = Nte(Nte0081);
-                        callInternalPanic(context, ip, Fmt(Err(Err0117), over->node->token.ctext()));
+                        callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
                     }
                 }
             }
@@ -4232,21 +4232,21 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         default:
             level = DiagnosticLevel::Error;
             if (!Diagnostic::hastErrorId(txt))
-                userMsg = Fmt(Err(Err0002), txt.c_str());
+                userMsg = FMT(Err(Err0002), txt.c_str());
             else
                 userMsg = txt;
             break;
         case SwagExceptionKind::Warning:
             level = DiagnosticLevel::Warning;
             if (!Diagnostic::hastErrorId(txt))
-                userMsg = Fmt(Err(Wrn0001), txt.c_str());
+                userMsg = FMT(Err(Wrn0001), txt.c_str());
             else
                 userMsg = txt;
             break;
         case SwagExceptionKind::Panic:
             level = DiagnosticLevel::Panic;
             if (!Diagnostic::hastErrorId(txt))
-                userMsg = Fmt(Err(Err0003), txt.c_str());
+                userMsg = FMT(Err(Err0003), txt.c_str());
             else
                 userMsg = txt;
 

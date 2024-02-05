@@ -262,7 +262,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     const auto typeStruct = makeType<TypeInfoStruct>();
 
     Utf8 name = context->sourceFile->scopeFile->name + "_tpl4_";
-    name += Fmt("%d", g_UniqueID.fetch_add(1));
+    name += FMT("%d", g_UniqueID.fetch_add(1));
     typeStruct->name = name;
 
     typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GHOST_TUPLE;
@@ -276,7 +276,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 
         if (typeParam->name.empty())
         {
-            typeParam->name = Fmt("item%u", idx);
+            typeParam->name = FMT("item%u", idx);
             typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
         }
 

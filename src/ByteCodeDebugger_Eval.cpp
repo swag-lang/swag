@@ -43,7 +43,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -62,7 +62,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -101,7 +101,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -136,7 +136,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(FMT("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -204,7 +204,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            printCmdError(Fmt("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
+            printCmdError(FMT("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
             return BcDbgCommandResult::Continue;
         }
 
@@ -214,7 +214,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
     else
     {
-        str = Fmt("(%s%s%s) ", COLOR_VTS_TYPE.c_str(), res.type->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str());
+        str = FMT("(%s%s%s) ", COLOR_VTS_TYPE.c_str(), res.type->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str());
         g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 

@@ -16,16 +16,16 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<U
         a0.makeLower();
         a1.makeLower();
         if (a0 == a1)
-            appendMsg = Fmt("do you mean [[%s]]? (notice the capitalization)", best[0].c_str());
+            appendMsg = FMT("do you mean [[%s]]? (notice the capitalization)", best[0].c_str());
         else
-            appendMsg = Fmt("do you mean [[%s]]?", best[0].c_str());
+            appendMsg = FMT("do you mean [[%s]]?", best[0].c_str());
         break;
     }
     case 2:
-        appendMsg = Fmt("do you mean [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str());
+        appendMsg = FMT("do you mean [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str());
         break;
     case 3:
-        appendMsg = Fmt("do you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
+        appendMsg = FMT("do you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
         break;
     default:
         break;

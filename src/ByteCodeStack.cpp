@@ -55,9 +55,9 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     Utf8 header;
     header += ByteCodeDebugger::COLOR_VTS_INDEX;
     if (current)
-        header += Fmt("[%03u] ", level);
+        header += FMT("[%03u] ", level);
     else
-        header += Fmt("-%03u- ", level);
+        header += FMT("-%03u- ", level);
     header += ByteCodeDebugger::COLOR_VTS_NAME;
 
     Utf8 inl;
@@ -90,7 +90,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     str += "      ";
     str += ByteCodeDebugger::COLOR_VTS_LOCATION;
     if (sourceFile)
-        str += Fmt(" %s:%d:%d", sourceFile->path.string().c_str(), location->line + 1, location->column + 1);
+        str += FMT(" %s:%d:%d", sourceFile->path.string().c_str(), location->line + 1, location->column + 1);
     str += "\n";
     str += sourceLine(sourceFile, location->line);
     str += "\n";
@@ -112,7 +112,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
                 str += "\n";
                 str += "      ";
                 str += ByteCodeDebugger::COLOR_VTS_LOCATION;
-                str += Fmt(" %s:%d:%d:%d:%d",
+                str += FMT(" %s:%d:%d:%d:%d",
                            owner->sourceFile->path.string().c_str(),
                            owner->token.startLocation.line + 1,
                            owner->token.startLocation.column + 1,
@@ -139,7 +139,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             str += "\n";
             str += "      ";
             str += ByteCodeDebugger::COLOR_VTS_LOCATION;
-            str += Fmt(" %s:%d:%d:%d:%d",
+            str += FMT(" %s:%d:%d:%d:%d",
                        parent->sourceFile->path.string().c_str(),
                        parent->token.startLocation.line + 1,
                        parent->token.startLocation.column + 1,

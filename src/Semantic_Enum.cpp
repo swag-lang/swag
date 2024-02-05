@@ -20,7 +20,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        const Diagnostic diag({node, node->getTokenName(), Fmt(Err(Err0080), node->resolvedSymbolName->name.c_str())});
+        const Diagnostic diag({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName->name.c_str())});
         Diagnostic*      note = nullptr;
         for (const auto p : node->resolvedSymbolName->nodes)
         {
@@ -52,7 +52,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         const auto rawType = TypeManager::concreteType(typeInfo->rawType);
         if (!rawType->isNative() && !rawType->isString())
         {
-            const Diagnostic diag{node->childs.front(), Fmt(Err(Err0269), rawType->getDisplayNameC())};
+            const Diagnostic diag{node->childs.front(), FMT(Err(Err0269), rawType->getDisplayNameC())};
             return context->report(diag);
         }
 
@@ -71,10 +71,10 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     auto it = valText.find(one->value->text);
                     if (it != valText.end())
                     {
-                        const Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0069), one->name.c_str())};
+                        const Diagnostic diag{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
                         const auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0071));
                         const auto       val   = Ast::literalToString(rawType, *one->value);
-                        const auto       note1 = Diagnostic::note(Fmt(Nte(Nte0116), val.c_str()));
+                        const auto       note1 = Diagnostic::note(FMT(Nte(Nte0116), val.c_str()));
                         return context->report(diag, note, note1);
                     }
 
@@ -90,10 +90,10 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     auto it = val64.find(one->value->reg.u64);
                     if (it != val64.end())
                     {
-                        const Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0069), one->name.c_str())};
+                        const Diagnostic diag{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
                         const auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0071));
                         const auto       val   = Ast::literalToString(rawType, *one->value);
-                        const auto       note1 = Diagnostic::note(Fmt(Nte(Nte0116), val.c_str()));
+                        const auto       note1 = Diagnostic::note(FMT(Nte(Nte0116), val.c_str()));
                         return context->report(diag, note, note1);
                     }
 
@@ -142,7 +142,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->isNativeInteger()) || concreteType->isNativeIntegerSigned())
-            return context->report({typeNode->childs.front(), Fmt(Err(Err0267), rawTypeInfo->getDisplayNameC())});
+            return context->report({typeNode->childs.front(), FMT(Err(Err0267), rawTypeInfo->getDisplayNameC())});
     }
 
     if (enumNode->attributeFlags & ATTRIBUTE_ENUM_INDEX)
@@ -150,7 +150,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->isNativeInteger()))
-            return context->report({typeNode->childs.front(), Fmt(Err(Err0268), rawTypeInfo->getDisplayNameC())});
+            return context->report({typeNode->childs.front(), FMT(Err(Err0268), rawTypeInfo->getDisplayNameC())});
     }
 
     if (enumNode->attributeFlags & ATTRIBUTE_INCOMPLETE)
@@ -168,15 +168,15 @@ bool Semantic::resolveEnumType(SemanticContext* context)
         if (typeArray->count == UINT32_MAX)
         {
             const auto       front = typeNode->childs.front();
-            const Diagnostic diag{front, Fmt(Err(Err0271), rawTypeInfo->getDisplayNameC())};
+            const Diagnostic diag{front, FMT(Err(Err0271), rawTypeInfo->getDisplayNameC())};
             return context->report(diag);
         }
 
         if (!rawTypeInfo->isConst())
         {
             const auto       front = typeNode->childs.front();
-            const Diagnostic diag{front, Fmt(Err(Err0270), rawTypeInfo->getDisplayNameC())};
-            const auto       note = Diagnostic::note(Fmt(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
+            const Diagnostic diag{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
+            const auto       note = Diagnostic::note(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
             return context->report(diag, note);
         }
 
@@ -186,14 +186,14 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     case TypeInfoKind::Slice:
     {
         const auto       front = typeNode->childs.front();
-        const Diagnostic diag{front, Fmt(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
+        const Diagnostic diag{front, FMT(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
         SWAG_VERIFY(rawTypeInfo->isConst(), context->report(diag));
         return true;
     }
 
     case TypeInfoKind::Native:
         if (rawTypeInfo->nativeType == NativeTypeKind::Any)
-            return context->report({typeNode->childs.front(), Fmt(Err(Err0273), rawTypeInfo->getDisplayNameC())});
+            return context->report({typeNode->childs.front(), FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
         return true;
 
     default:
@@ -205,7 +205,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
     if (!typeNode->childs.empty())
         typeNode = typeNode->childs.front();
-    return context->report({typeNode, Fmt(Err(Err0273), rawTypeInfo->getDisplayNameC())});
+    return context->report({typeNode, FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
 }
 
 bool Semantic::resolveSubEnumValue(SemanticContext* context)
@@ -220,7 +220,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     // Be sure the identifier is an enum
     if (!node->typeInfo->isEnum())
     {
-        const Diagnostic diag{node, Fmt(Err(Err0261), node->typeInfo->getDisplayNameC())};
+        const Diagnostic diag{node, FMT(Err(Err0261), node->typeInfo->getDisplayNameC())};
         return context->report(diag, Diagnostic::hereIs(node->resolvedSymbolOverload));
     }
 
@@ -235,7 +235,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CASTFLAG_EXACT))
     {
-        const Diagnostic diag{node, Fmt(Err(Err0429), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
+        const Diagnostic diag{node, FMT(Err(Err0429), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
         const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload);
         const auto       note1 = Diagnostic::hereIs(enumNode->type);
         return context->report(diag, note, note1);
@@ -325,14 +325,14 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::String:
             case NativeTypeKind::F32:
             case NativeTypeKind::F64:
-                return context->report({valNode, Fmt(Err(Err0567), valNode->token.ctext(), rawTypeInfo->getDisplayNameC())});
+                return context->report({valNode, FMT(Err(Err0567), valNode->token.ctext(), rawTypeInfo->getDisplayNameC())});
             default:
                 break;
             }
             break;
 
         case TypeInfoKind::Slice:
-            return context->report({valNode, Fmt(Err(Err0567), valNode->token.ctext(), rawTypeInfo->getDisplayNameC())});
+            return context->report({valNode, FMT(Err(Err0567), valNode->token.ctext(), rawTypeInfo->getDisplayNameC())});
 
         default:
             break;
@@ -363,11 +363,11 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
             {
             case NativeTypeKind::U8:
                 if (enumNode->computedValue->reg.u8 == UINT8_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u8)
                 {
                     const auto n = enumNode->computedValue->reg.u8;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Fmt(Err(Err0551), valNode->token.ctext())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.ctext())}));
                     enumNode->computedValue->reg.u8 <<= 1;
                 }
                 else
@@ -375,11 +375,11 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U16:
                 if (enumNode->computedValue->reg.u16 == UINT16_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u16)
                 {
                     const auto n = enumNode->computedValue->reg.u16;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Fmt(Err(Err0551), valNode->token.ctext())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.ctext())}));
                     enumNode->computedValue->reg.u16 <<= 1;
                 }
                 else
@@ -387,11 +387,11 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U32:
                 if (enumNode->computedValue->reg.u32 == UINT32_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u32)
                 {
                     const auto n = enumNode->computedValue->reg.u32;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Fmt(Err(Err0551), valNode->token.ctext())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.ctext())}));
                     enumNode->computedValue->reg.u32 <<= 1;
                 }
                 else
@@ -399,11 +399,11 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U64:
                 if (enumNode->computedValue->reg.u64 == UINT64_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u64)
                 {
                     const auto n = enumNode->computedValue->reg.u64;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Fmt(Err(Err0551), valNode->token.ctext())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.ctext())}));
                     enumNode->computedValue->reg.u64 <<= 1;
                 }
                 else
@@ -412,22 +412,22 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
             case NativeTypeKind::S8:
                 if (enumNode->computedValue->reg.s8 <= INT8_MIN || enumNode->computedValue->reg.s8 >= INT8_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s8++;
                 break;
             case NativeTypeKind::S16:
                 if (enumNode->computedValue->reg.s16 <= INT16_MIN || enumNode->computedValue->reg.s16 >= INT16_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s16++;
                 break;
             case NativeTypeKind::S32:
                 if (enumNode->computedValue->reg.s32 <= INT32_MIN || enumNode->computedValue->reg.s32 >= INT32_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s32++;
                 break;
             case NativeTypeKind::S64:
                 if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
-                    return context->report({valNode, Fmt(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
+                    return context->report({valNode, FMT(Err(Err0608), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s64++;
                 break;
             default:

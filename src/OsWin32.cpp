@@ -97,7 +97,7 @@ namespace OS
 
         winSdkFolder.append(bestName.c_str());
         if (g_CommandLine.verbosePath)
-            g_Log.messageVerbose(Fmt("winsdk path is [[%s]]", winSdkFolder.string().c_str()));
+            g_Log.messageVerbose(FMT("winsdk path is [[%s]]", winSdkFolder.string().c_str()));
 
         return true;
     }
@@ -182,7 +182,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            Report::error(Fmt(Err(Err0628), cmdline.c_str()));
+            Report::error(FMT(Err(Err0628), cmdline.c_str()));
             return false;
         }
 
@@ -206,7 +206,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                Report::errorOS(Fmt(Err(Err0629), cmdline.c_str()));
+                Report::errorOS(FMT(Err(Err0629), cmdline.c_str()));
                 return false;
             }
         }
@@ -603,7 +603,7 @@ namespace OS
                     if (hasLine)
                     {
                         str += ByteCodeDebugger::COLOR_VTS_LOCATION;
-                        str += Fmt(" %s:%d", line.FileName, line.LineNumber);
+                        str += FMT(" %s:%d", line.FileName, line.LineNumber);
                     }
 
                     str += "\n";

@@ -15,7 +15,7 @@ bool SaveGenJob::flush(Module* module)
 
         auto publicPath  = module->publicPath;
         auto tmpFilePath = publicPath;
-        auto tmpFileName = Fmt("%s%d.gwg", module->name.c_str(), idx);
+        auto tmpFileName = FMT("%s%d.gwg", module->name.c_str(), idx);
 
         publicPath.append(tmpFileName.c_str());
 
@@ -23,7 +23,7 @@ bool SaveGenJob::flush(Module* module)
         if (fopen_s(&h, publicPath.string().c_str(), "wN"))
         {
             module->numErrors++;
-            Report::errorOS(Fmt(Err(Err0096), publicPath.string().c_str()));
+            Report::errorOS(FMT(Err(Err0096), publicPath.string().c_str()));
             return false;
         }
 

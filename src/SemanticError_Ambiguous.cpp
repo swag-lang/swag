@@ -11,7 +11,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     if (!node)
         node = context->node;
 
-    const Diagnostic diag{node, node->token, Fmt(Err(Err0019), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    const Diagnostic diag{node, node->token, FMT(Err(Err0019), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
     Vector<const Diagnostic*> notes;
     for (const auto match : genericMatches)
@@ -49,7 +49,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
     }
 
-    const Diagnostic diag{node, node->token, Fmt(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    const Diagnostic diag{node, node->token, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
     Vector<const Diagnostic*> notes;
     for (const auto match : matches)
@@ -59,23 +59,23 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
         {
-            auto couldBe = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
+            auto couldBe = FMT(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
             note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
         else if (overload->typeInfo->isFuncAttr())
         {
-            auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
+            auto couldBe = FMT(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
             note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
         else if (overload->typeInfo->isStruct())
         {
-            auto couldBe = Fmt(Nte(Nte0050), overload->typeInfo->getDisplayNameC());
+            auto couldBe = FMT(Nte(Nte0050), overload->typeInfo->getDisplayNameC());
             note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
         else
         {
             const auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-            auto       couldBe      = Fmt(Nte(Nte0046), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
+            auto       couldBe      = FMT(Nte(Nte0046), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
             note                    = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
 
@@ -88,12 +88,12 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
 bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols)
 {
-    const Diagnostic diag{identifier, Fmt(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
+    const Diagnostic diag{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
 
     Vector<const Diagnostic*> notes;
     for (const auto& p1 : dependentSymbols)
     {
-        auto       couldBe = Fmt(Nte(Nte0047), Naming::aKindName(p1.symbol->kind).c_str());
+        auto       couldBe = FMT(Nte(Nte0047), Naming::aKindName(p1.symbol->kind).c_str());
         const auto note    = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->getTokenName(), couldBe);
         note->canBeMerged  = false;
         notes.push_back(note);

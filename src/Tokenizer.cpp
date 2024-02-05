@@ -381,7 +381,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         token.text = c;
         token.id   = TokenId::Invalid;
-        return error(token, Fmt(Err(Err0234), token.ctext()));
+        return error(token, FMT(Err(Err0234), token.ctext()));
     }
 
     return true;

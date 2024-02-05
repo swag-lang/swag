@@ -241,14 +241,14 @@ Utf8 AstFuncDecl::getDisplayName() const
         return "lambda";
 
     if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        return Fmt("[[%s]] block", token.ctext());
+        return FMT("[[%s]] block", token.ctext());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return Fmt("[[%s]] mixin", token.ctext());
+        return FMT("[[%s]] mixin", token.ctext());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return Fmt("[[%s]] macro", token.ctext());
+        return FMT("[[%s]] macro", token.ctext());
 
-    return Fmt("[[%s]] function", token.ctext());
+    return FMT("[[%s]] function", token.ctext());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
@@ -361,7 +361,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             const auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             if (sym)
             {
-                const Diagnostic diag{nodeFunc, nodeFunc->tokenName, Fmt(Err(Err0627), "function", subDecl->token.ctext())};
+                const Diagnostic diag{nodeFunc, nodeFunc->tokenName, FMT(Err(Err0627), "function", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
@@ -399,7 +399,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             const auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             if (sym)
             {
-                const Diagnostic diag{nodeStruct, nodeStruct->tokenName, Fmt(Err(Err0627), "struct", subDecl->token.ctext())};
+                const Diagnostic diag{nodeStruct, nodeStruct->tokenName, FMT(Err(Err0627), "struct", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
@@ -411,7 +411,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         case AstNodeKind::InterfaceDecl:
             if (sym)
             {
-                const Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0627), "interface", subDecl->token.ctext())};
+                const Diagnostic diag{subDecl, subDecl->token, FMT(Err(Err0627), "interface", subDecl->token.ctext())};
                 return context->report(diag);
             }
 

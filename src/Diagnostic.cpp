@@ -80,7 +80,7 @@ void Diagnostic::printSourceLine() const
         g_Log.setColor(sourceFileColor);
     g_Log.print(path.string().c_str());
     if (hasLocation)
-        g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+        g_Log.print(FMT(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else
         g_Log.print(": ");
 }
@@ -93,7 +93,7 @@ void Diagnostic::printMarginLineNo(int lineNo) const
     while (m++ < lineCodeMaxDigits + 1)
         g_Log.print(" ");
     if (lineNo)
-        g_Log.print(Fmt("%d", lineNo));
+        g_Log.print(FMT("%d", lineNo));
     g_Log.print(" ");
 }
 
@@ -342,7 +342,7 @@ void Diagnostic::collectRanges()
                 const bool isCWord = isalpha(lineCode[decal]) || lineCode[decal] == '_' || lineCode[decal] == '#' || lineCode[decal] == '@';
                 if (isCWord)
                 {
-                    while (SWAG_IS_ALNUM(lineCode[decal + 1]) || lineCode[decal + 1] == '_')
+                    while (SWAG_IS_AL_NUM(lineCode[decal + 1]) || lineCode[decal + 1] == '_')
                     {
                         decal += 1;
                         r.width += 1;
@@ -692,13 +692,13 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = Fmt(Nte(Nte0177), typeInfo->getDisplayNameC());
+    auto str = FMT(Nte(Nte0177), typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
         const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         if (typeAlias->rawType)
-            str += Fmt(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
+            str += FMT(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
     }
 
     return str;
@@ -708,7 +708,7 @@ Utf8 Diagnostic::isType(SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return Fmt(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return FMT(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(AstNode* node)
@@ -736,7 +736,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node)
         node->tokenId != TokenId::KwdPublic)
         return nullptr;
 
-    const auto msg = Fmt(Nte(Nte0062), Naming::kindName(node).c_str(), node->token.ctext());
+    const auto msg = FMT(Nte(Nte0062), Naming::kindName(node).c_str(), node->token.ctext());
     return Diagnostic::note(node, node->getTokenName(), msg);
 }
 

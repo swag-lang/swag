@@ -344,7 +344,7 @@ bool Concat::flushToFile(const Path& path)
     FILE* f = nullptr;
     if (fopen_s(&f, path.string().c_str(), "wb"))
     {
-        Report::errorOS(Fmt(Err(Err0096), path.string().c_str()));
+        Report::errorOS(FMT(Err(Err0096), path.string().c_str()));
         return false;
     }
 

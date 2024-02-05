@@ -307,7 +307,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
     const auto node = context->node;
     if (node->semFlags & SEMFLAG_LITERAL_SUFFIX)
-        return context->report({node->childs.front(), Fmt(Err(Err0403), node->childs.front()->token.ctext())});
+        return context->report({node->childs.front(), FMT(Err(Err0403), node->childs.front()->token.ctext())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRc));
     return true;
 }
@@ -496,7 +496,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     }
     else
     {
-        return Report::internalError(context->node, Fmt("emitLiteral, unsupported type [[%s]]", typeInfo->getDisplayNameC()).c_str());
+        return Report::internalError(context->node, FMT("emitLiteral, unsupported type [[%s]]", typeInfo->getDisplayNameC()).c_str());
     }
 
     return true;

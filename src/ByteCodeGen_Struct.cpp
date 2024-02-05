@@ -866,7 +866,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION),
-                    context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop")}));
+                    context->report({typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
@@ -979,7 +979,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION),
-                    context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy")}));
+                    context->report({typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
@@ -1090,7 +1090,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION),
-                    context->report({typeParam->declNode, Fmt(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove")}));
+                    context->report({typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
@@ -1179,7 +1179,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, 
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            const Diagnostic diag{from, Fmt(Err(Err0113), typeInfo->getDisplayNameC())};
+            const Diagnostic diag{from, FMT(Err(Err0113), typeInfo->getDisplayNameC())};
             return context->report(diag);
         }
 

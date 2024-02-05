@@ -120,11 +120,11 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    const Diagnostic          diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
+                    const Diagnostic          diag{identifierRef, FMT(Err(Err0018), node->token.ctext())};
                     Vector<const Diagnostic*> notes;
                     for (const auto t : typeEnum)
                     {
-                        auto msg = Fmt(Nte(Nte0197), t->getDisplayNameC());
+                        auto msg = FMT(Nte(Nte0197), t->getDisplayNameC());
                         notes.push_back(Diagnostic::note(t->declNode, t->declNode->getTokenName(), msg));
                     }
 
@@ -147,7 +147,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (!hasEnum.empty())
                         {
-                            const Diagnostic diag{identifierRef, Fmt(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            const Diagnostic diag{identifierRef, FMT(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
                             const auto closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
@@ -158,7 +158,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                             return context->report(diag, notes);
                         }
 
-                        const Diagnostic diag{identifierRef, Fmt(Err(Err0718), node->token.ctext())};
+                        const Diagnostic diag{identifierRef, FMT(Err(Err0718), node->token.ctext())};
 
                         // Call to a function ?
                         const Diagnostic* note = nullptr;
@@ -596,7 +596,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 
                 if (!startScope && i)
                 {
-                    const Diagnostic diag{context->node, *scopeUpValue, Fmt(Err(Err0148), scopeUpValue->literalValue.u8)};
+                    const Diagnostic diag{context->node, *scopeUpValue, FMT(Err(Err0148), scopeUpValue->literalValue.u8)};
                     return context->report(diag);
                 }
 

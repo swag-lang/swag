@@ -35,8 +35,8 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     Utf8 content;
 
-    content += Fmt("impl %s {\n", typeLeftStruct->structName.c_str());
-    content += Fmt("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.c_str());
+    content += FMT("impl %s {\n", typeLeftStruct->structName.c_str());
+    content += FMT("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.c_str());
     if (!hasStruct)
     {
         content += "return @memcmp(cast(const ^void) self, cast(const ^void) &o, @sizeof(Self)) == 0\n";
@@ -53,17 +53,17 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
             {
                 const auto typeArr = CastTypeInfo<TypeInfoArray>(typeField->typeInfo, TypeInfoKind::Array);
                 if (!typeArr->finalType->isStruct())
-                    content += Fmt("if @memcmp(&%s[0], &o.%s[0], @sizeof(%s)) != 0 do return false\n", leftN, rightN, leftN);
+                    content += FMT("if @memcmp(&%s[0], &o.%s[0], @sizeof(%s)) != 0 do return false\n", leftN, rightN, leftN);
                 else
                 {
-                    content += Fmt("loop i: %s do ", leftN);
-                    content += Fmt("if %s[i] != o.%s[i] do return false\n", leftN, rightN);
+                    content += FMT("loop i: %s do ", leftN);
+                    content += FMT("if %s[i] != o.%s[i] do return false\n", leftN, rightN);
                 }
 
                 continue;
             }
 
-            content += Fmt("if %s != o.%s do return false\n", leftN, rightN);
+            content += FMT("if %s != o.%s do return false\n", leftN, rightN);
         }
 
         content += "return true\n";
@@ -118,8 +118,8 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         const auto missingNode = typeInterface->fields[idx];
         if (!itfRef.itf)
         {
-            const Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0129), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            const auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->getTokenName(), Fmt("missing [[%s]]", missingNode->name.c_str()));
+            const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0129), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
+            const auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->getTokenName(), FMT("missing [[%s]]", missingNode->name.c_str()));
             return context->report(diag, note);
         }
 
@@ -133,7 +133,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             content += ", ";
             const auto type = typeFunc->parameters[i]->typeInfo;
             type->computeScopedNameExport();
-            content += Fmt("p%d: %s", i, type->scopedNameExport.c_str());
+            content += FMT("p%d: %s", i, type->scopedNameExport.c_str());
         }
         content += ")";
 
@@ -149,7 +149,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         {
             if (i != 1)
                 content += ",";
-            content += Fmt("p%d", i);
+            content += FMT("p%d", i);
         }
         content += ")\n";
     }

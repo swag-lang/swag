@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AstFlags.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "Context.h"
@@ -173,7 +174,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(Fmt(Err(Fat0019), publicPath.string().c_str()));
+                Report::errorOS(FMT(Err(Fat0019), publicPath.string().c_str()));
                 OS::exit(-1);
             }
         }
@@ -188,7 +189,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(Fmt(Err(Fat0019), publicPath.string().c_str()));
+                Report::errorOS(FMT(Err(Fat0019), publicPath.string().c_str()));
                 OS::exit(-1);
             }
         }
@@ -229,7 +230,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
             if (!isalnum(i) && i != '_')
             {
                 error  = true;
-                reason = Fmt("forbidden character [[%c]]", i);
+                reason = FMT("forbidden character [[%c]]", i);
                 break;
             }
         }
@@ -237,7 +238,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 
     if (error)
     {
-        errorStr = Fmt("invalid module name [[%s]], ", name.c_str());
+        errorStr = FMT("invalid module name [[%s]], ", name.c_str());
         errorStr += reason;
         return false;
     }
@@ -681,14 +682,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                const Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
+                const Diagnostic diag{importNode, tokenLocation, FMT(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
                 const auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
                 return Report::report(diag, note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                const Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
+                const Diagnostic diag{importNode, tokenVersion, FMT(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
                 const auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
                 return Report::report(diag, note);
             }
@@ -761,10 +762,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
         case 1:
-            SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0127), dep->revNum)}));
+            SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0127), dep->revNum)}));
             break;
         case 2:
-            SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0126), dep->buildNum)}));
+            SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0126), dep->buildNum)}));
             break;
         }
     }
@@ -1160,7 +1161,7 @@ void Module::callPreMain()
 
 Utf8 Module::getGlobalPrivFct(const Utf8& nameFct) const
 {
-    return Fmt(nameFct.c_str(), nameNormalized.c_str());
+    return FMT(nameFct.c_str(), nameNormalized.c_str());
 }
 
 bool Module::filterFunctionsToEmit()
@@ -1193,7 +1194,7 @@ void Module::logStage(const char* msg) const
 {
     if (!g_CommandLine.verboseStages)
         return;
-    g_Log.messageVerbose(Fmt("[%s] -- %s", name.c_str(), msg));
+    g_Log.messageVerbose(FMT("[%s] -- %s", name.c_str(), msg));
 }
 
 void Module::logPass(ModuleBuildPass pass)

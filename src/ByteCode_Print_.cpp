@@ -48,7 +48,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
             if (forDbg)
                 g_Log.print("   ");
             g_Log.setColor(ByteCodeDebugger::COLOR_LOCATION);
-            g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
+            g_Log.print(FMT("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
             g_Log.eol();
         }
     }
@@ -61,79 +61,79 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (ip->flags & BCI_IMM_A || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
     {
-        str.replace("_rau8_", Fmt("%u", ip->a.u8));
-        str.replace("_rau16_", Fmt("%u", ip->a.u16));
-        str.replace("_rau32_", Fmt("%u", ip->a.u32));
-        str.replace("_rau64_", Fmt("%llu", ip->a.u64));
-        str.replace("_ras8_", Fmt("%d", ip->a.s8));
-        str.replace("_ras16_", Fmt("%d", ip->a.s16));
-        str.replace("_ras32_", Fmt("%d", ip->a.s32));
-        str.replace("_ras64_", Fmt("%lld", ip->a.s64));
-        str.replace("_raf32_", Fmt("%f", ip->a.f32));
-        str.replace("_raf64_", Fmt("%lf", ip->a.f64));
-        str.replace("_rax32_", Fmt("0x%x", ip->a.u32));
-        str.replace("_rax64_", Fmt("0x%llx", ip->a.u64));
-        str.replace("_rah32_", Fmt("%u", ip->a.u64u32.high));
-        str.replace("_ral32_", Fmt("%u", ip->a.u64u32.low));
+        str.replace("_rau8_", FMT("%u", ip->a.u8));
+        str.replace("_rau16_", FMT("%u", ip->a.u16));
+        str.replace("_rau32_", FMT("%u", ip->a.u32));
+        str.replace("_rau64_", FMT("%llu", ip->a.u64));
+        str.replace("_ras8_", FMT("%d", ip->a.s8));
+        str.replace("_ras16_", FMT("%d", ip->a.s16));
+        str.replace("_ras32_", FMT("%d", ip->a.s32));
+        str.replace("_ras64_", FMT("%lld", ip->a.s64));
+        str.replace("_raf32_", FMT("%f", ip->a.f32));
+        str.replace("_raf64_", FMT("%lf", ip->a.f64));
+        str.replace("_rax32_", FMT("0x%x", ip->a.u32));
+        str.replace("_rax64_", FMT("0x%llx", ip->a.u64));
+        str.replace("_rah32_", FMT("%u", ip->a.u64u32.high));
+        str.replace("_ral32_", FMT("%u", ip->a.u64u32.low));
     }
 
     if (ip->flags & BCI_IMM_B || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
     {
-        str.replace("_rbu8_", Fmt("%u", ip->b.u8));
-        str.replace("_rbu16_", Fmt("%u", ip->b.u16));
-        str.replace("_rbu32_", Fmt("%u", ip->b.u32));
-        str.replace("_rbu64_", Fmt("%llu", ip->b.u64));
-        str.replace("_rbs8_", Fmt("%d", ip->b.s8));
-        str.replace("_rbs16_", Fmt("%d", ip->b.s16));
-        str.replace("_rbs32_", Fmt("%d", ip->b.s32));
-        str.replace("_rbs64_", Fmt("%lld", ip->b.s64));
-        str.replace("_rbf32_", Fmt("%f", ip->b.f32));
-        str.replace("_rbf64_", Fmt("%lf", ip->b.f64));
-        str.replace("_rbx32_", Fmt("0x%x", ip->b.u32));
-        str.replace("_rbx64_", Fmt("0x%llx", ip->b.u64));
-        str.replace("_rbh32_", Fmt("%u", ip->b.u64u32.high));
-        str.replace("_rbl32_", Fmt("%u", ip->b.u64u32.low));
+        str.replace("_rbu8_", FMT("%u", ip->b.u8));
+        str.replace("_rbu16_", FMT("%u", ip->b.u16));
+        str.replace("_rbu32_", FMT("%u", ip->b.u32));
+        str.replace("_rbu64_", FMT("%llu", ip->b.u64));
+        str.replace("_rbs8_", FMT("%d", ip->b.s8));
+        str.replace("_rbs16_", FMT("%d", ip->b.s16));
+        str.replace("_rbs32_", FMT("%d", ip->b.s32));
+        str.replace("_rbs64_", FMT("%lld", ip->b.s64));
+        str.replace("_rbf32_", FMT("%f", ip->b.f32));
+        str.replace("_rbf64_", FMT("%lf", ip->b.f64));
+        str.replace("_rbx32_", FMT("0x%x", ip->b.u32));
+        str.replace("_rbx64_", FMT("0x%llx", ip->b.u64));
+        str.replace("_rbh32_", FMT("%u", ip->b.u64u32.high));
+        str.replace("_rbl32_", FMT("%u", ip->b.u64u32.low));
     }
 
     if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
     {
-        str.replace("_rcu8_", Fmt("%u", ip->c.u8));
-        str.replace("_rcu16_", Fmt("%u", ip->c.u16));
-        str.replace("_rcu32_", Fmt("%u", ip->c.u32));
-        str.replace("_rcu64_", Fmt("%llu", ip->c.u64));
-        str.replace("_rcs8_", Fmt("%d", ip->c.s8));
-        str.replace("_rcs16_", Fmt("%d", ip->c.s16));
-        str.replace("_rcs32_", Fmt("%d", ip->c.s32));
-        str.replace("_rcs64_", Fmt("%lld", ip->c.s64));
-        str.replace("_rcf32_", Fmt("%f", ip->c.f32));
-        str.replace("_rcf64_", Fmt("%lf", ip->c.f64));
-        str.replace("_rcx32_", Fmt("0x%x", ip->c.u32));
-        str.replace("_rcx64_", Fmt("0x%llx", ip->c.u64));
-        str.replace("_rch32_", Fmt("%u", ip->c.u64u32.high));
-        str.replace("_rcl32_", Fmt("%u", ip->c.u64u32.low));
+        str.replace("_rcu8_", FMT("%u", ip->c.u8));
+        str.replace("_rcu16_", FMT("%u", ip->c.u16));
+        str.replace("_rcu32_", FMT("%u", ip->c.u32));
+        str.replace("_rcu64_", FMT("%llu", ip->c.u64));
+        str.replace("_rcs8_", FMT("%d", ip->c.s8));
+        str.replace("_rcs16_", FMT("%d", ip->c.s16));
+        str.replace("_rcs32_", FMT("%d", ip->c.s32));
+        str.replace("_rcs64_", FMT("%lld", ip->c.s64));
+        str.replace("_rcf32_", FMT("%f", ip->c.f32));
+        str.replace("_rcf64_", FMT("%lf", ip->c.f64));
+        str.replace("_rcx32_", FMT("0x%x", ip->c.u32));
+        str.replace("_rcx64_", FMT("0x%llx", ip->c.u64));
+        str.replace("_rch32_", FMT("%u", ip->c.u64u32.high));
+        str.replace("_rcl32_", FMT("%u", ip->c.u64u32.low));
     }
 
     if (ip->flags & BCI_IMM_D || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
     {
-        str.replace("_rdu8_", Fmt("%u", ip->d.u8));
-        str.replace("_rdu16_", Fmt("%u", ip->d.u16));
-        str.replace("_rdu32_", Fmt("%u", ip->d.u32));
-        str.replace("_rdu64_", Fmt("%llu", ip->d.u64));
-        str.replace("_rds8_", Fmt("%d", ip->d.s8));
-        str.replace("_rds16_", Fmt("%d", ip->d.s16));
-        str.replace("_rds32_", Fmt("%d", ip->d.s32));
-        str.replace("_rds64_", Fmt("%lld", ip->d.s64));
-        str.replace("_rdf32_", Fmt("%f", ip->d.f32));
-        str.replace("_rdf64_", Fmt("%lf", ip->d.f64));
-        str.replace("_rdx32_", Fmt("0x%x", ip->d.u32));
-        str.replace("_rdx64_", Fmt("0x%llx", ip->d.u64));
-        str.replace("_rdh32_", Fmt("%u", ip->d.u64u32.high));
-        str.replace("_rdl32_", Fmt("%u", ip->d.u64u32.low));
+        str.replace("_rdu8_", FMT("%u", ip->d.u8));
+        str.replace("_rdu16_", FMT("%u", ip->d.u16));
+        str.replace("_rdu32_", FMT("%u", ip->d.u32));
+        str.replace("_rdu64_", FMT("%llu", ip->d.u64));
+        str.replace("_rds8_", FMT("%d", ip->d.s8));
+        str.replace("_rds16_", FMT("%d", ip->d.s16));
+        str.replace("_rds32_", FMT("%d", ip->d.s32));
+        str.replace("_rds64_", FMT("%lld", ip->d.s64));
+        str.replace("_rdf32_", FMT("%f", ip->d.f32));
+        str.replace("_rdf64_", FMT("%lf", ip->d.f64));
+        str.replace("_rdx32_", FMT("0x%x", ip->d.u32));
+        str.replace("_rdx64_", FMT("0x%llx", ip->d.u64));
+        str.replace("_rdh32_", FMT("%u", ip->d.u64u32.high));
+        str.replace("_rdl32_", FMT("%u", ip->d.u64u32.low));
     }
 
     if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
     {
-        auto ra = Fmt("r%u", ip->a.u32);
+        auto ra = FMT("r%u", ip->a.u32);
         str.replace("_ra_", ra);
         str.replace("_rau8_", ra);
         str.replace("_rau16_", ra);
@@ -149,7 +149,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_B | OPFLAG_WRITE_B))
     {
-        auto rb = Fmt("r%u", ip->b.u32);
+        auto rb = FMT("r%u", ip->b.u32);
         str.replace("_rb_", rb);
         str.replace("_rbu8_", rb);
         str.replace("_rbu16_", rb);
@@ -165,7 +165,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_C | OPFLAG_WRITE_C))
     {
-        auto rc = Fmt("r%u", ip->c.u32);
+        auto rc = FMT("r%u", ip->c.u32);
         str.replace("_rc_", rc);
         str.replace("_rcu8_", rc);
         str.replace("_rcu16_", rc);
@@ -181,7 +181,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_D | OPFLAG_WRITE_D))
     {
-        auto rd = Fmt("r%u", ip->d.u32);
+        auto rd = FMT("r%u", ip->d.u32);
         str.replace("_rd_", rd);
         str.replace("_rdu8_", rd);
         str.replace("_rdu16_", rd);
@@ -227,11 +227,11 @@ Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool reg
 {
     Utf8 str;
     if (regW)
-        str += Fmt("%s[%u] ", name, reg.u32);
+        str += FMT("%s[%u] ", name, reg.u32);
     if (regR && !regImm)
-        str += Fmt("%s(%u) ", name, reg.u32);
+        str += FMT("%s(%u) ", name, reg.u32);
     if (regImm)
-        str += Fmt("%s{0x%llX} ", name, reg.u64);
+        str += FMT("%s{0x%llX} ", name, reg.u64);
     return str;
 }
 
@@ -248,7 +248,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
         else
             line.rank += "   ";
     }
-    line.rank += Fmt("%08d", i);
+    line.rank += FMT("%08d", i);
 
     // Instruction name
     line.name += g_ByteCodeOpDesc[(int) ip->op].name;
@@ -283,7 +283,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     line.pretty += " ";
 
     if (ByteCode::isJump(ip))
-        line.pretty += Fmt("%08d ", ip->b.s32 + i + 1);
+        line.pretty += FMT("%08d ", ip->b.s32 + i + 1);
 
     switch (ip->op)
     {
@@ -339,11 +339,11 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
-        // line.devMode = Fmt("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
+        // line.devMode = FMT("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
         if (ip->sourceFile)
         {
             const Path sf = ip->sourceFile;
-            line.devMode += Fmt("%s:%d", sf.filename().string().c_str(), ip->sourceLine);
+            line.devMode += FMT("%s:%d", sf.filename().string().c_str(), ip->sourceLine);
         }
     }
 #endif

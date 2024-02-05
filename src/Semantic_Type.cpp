@@ -55,13 +55,13 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     else
     {
-        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0351), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
@@ -140,7 +140,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // Reference to a static struct member
     if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
     {
-        const Diagnostic  diag{node, Fmt(Err(Err0590), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str())};
+        const Diagnostic  diag{node, FMT(Err(Err0590), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str())};
         const Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -165,12 +165,12 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(diag, note);
     }
 
-    const Diagnostic  diag{node, Fmt(Err(Err0589), Naming::kindName(node->resolvedSymbolName->kind).c_str(), node->resolvedSymbolName->name.c_str())};
+    const Diagnostic  diag{node, FMT(Err(Err0589), Naming::kindName(node->resolvedSymbolName->kind).c_str(), node->resolvedSymbolName->name.c_str())};
     const Diagnostic* note = nullptr;
 
     // struct.field
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct)
-        note = Diagnostic::note(Fmt(Nte(Nte0088), node->resolvedSymbolName->name.c_str(), node->resolvedSymbolName->name.c_str()));
+        note = Diagnostic::note(FMT(Nte(Nte0088), node->resolvedSymbolName->name.c_str(), node->resolvedSymbolName->name.c_str()));
 
     return context->report(diag, note);
 }
@@ -347,7 +347,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->typeFlags & TYPEFLAG_IS_CODE)
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0512), "code")}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, FMT(Err(Err0512), "code")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
@@ -356,7 +356,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->flags & TYPEINFO_C_VARIADIC)
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0512), "cvarargs")}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, FMT(Err(Err0512), "cvarargs")}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
         return true;
     }
@@ -418,14 +418,14 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic        diag{child->sourceFile, child->token, Fmt(Err(Err0399), child->token.ctext(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic        diag{child->sourceFile, child->token, FMT(Err(Err0399), child->token.ctext(), Naming::aKindName(symName->kind).c_str())};
                     const Diagnostic* note = Diagnostic::hereIs(symOver);
                     if ((typeNode->typeFlags & TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
                             diag.hint        = Nte(Nte0160);
-                            const auto note1 = Diagnostic::note(Fmt(Nte(Nte0182), symName->name.c_str(), symName->name.c_str()));
+                            const auto note1 = Diagnostic::note(FMT(Nte(Nte0182), symName->name.c_str(), symName->name.c_str()));
                             return context->report(diag, note1, note);
                         }
                         else
@@ -486,7 +486,7 @@ bool Semantic::resolveType(SemanticContext* context)
         if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
         {
             const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0512), "&&")}));
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, FMT(Err(Err0512), "&&")}));
             ptrFlags |= TYPEINFO_POINTER_MOVE_REF;
         }
 
@@ -548,7 +548,7 @@ bool Semantic::resolveType(SemanticContext* context)
             }
 
             const auto childType = TypeManager::concreteType(child->typeInfo);
-            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(Err(Err0211), child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(childType->isNativeInteger(), context->report({child, FMT(Err(Err0211), child->typeInfo->getDisplayNameC())}));
             SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
             SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0210)}));
 
@@ -584,7 +584,7 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeC->isArray() &&
         !typeC->isStruct())
     {
-        const Diagnostic diag{typeNode->sourceFile, typeNode->locConst, Fmt(Err(Err0395), typeNode->typeInfo->getDisplayNameC())};
+        const Diagnostic diag{typeNode->sourceFile, typeNode->locConst, FMT(Err(Err0395), typeNode->typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -659,7 +659,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isRune())
     {
-        const Diagnostic diag{typeNode, Fmt(Err(Err0230), typeInfo->getDisplayNameC())};
+        const Diagnostic diag{typeNode, FMT(Err(Err0230), typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -668,13 +668,13 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         !exprTypeInfo->isRune() &&
         !exprTypeInfo->isPointer())
     {
-        const Diagnostic diag{exprNode, Fmt(Err(Err0228), exprTypeInfo->getDisplayNameC())};
+        const Diagnostic diag{exprNode, FMT(Err(Err0228), exprTypeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
     if (typeInfo->sizeOf > exprTypeInfo->sizeOf)
     {
-        const Diagnostic diag{exprNode, Fmt(Err(Err0229), exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
+        const Diagnostic diag{exprNode, FMT(Err(Err0229), exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 

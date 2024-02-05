@@ -120,7 +120,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     const auto solved = (SymbolOverload*) ip->d.pointer;
     if (!executeIsConstExprSI(context, ip))
     {
-        callInternalCompilerError(context, ip, Fmt(Err(Err0031), solved->symbol->name.c_str()));
+        callInternalCompilerError(context, ip, FMT(Err(Err0031), solved->symbol->name.c_str()));
         return;
     }
 
@@ -141,7 +141,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     {
         if (!getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]))
         {
-            callInternalCompilerError(context, ip, Fmt(Err(Err0039), solved->typeInfo->getDisplayNameC()));
+            callInternalCompilerError(context, ip, FMT(Err(Err0039), solved->typeInfo->getDisplayNameC()));
             return;
         }
 
@@ -170,7 +170,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
             return;
         }
 
-        callInternalCompilerError(context, ip, Fmt(Err(Err0039), solved->typeInfo->getDisplayNameC()));
+        callInternalCompilerError(context, ip, FMT(Err(Err0039), solved->typeInfo->getDisplayNameC()));
         return;
     }
 
@@ -206,5 +206,5 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         }
     }
 
-    callInternalCompilerError(context, ip, Fmt(Err(Err0039), solved->typeInfo->getDisplayNameC()));
+    callInternalCompilerError(context, ip, FMT(Err(Err0039), solved->typeInfo->getDisplayNameC()));
 }

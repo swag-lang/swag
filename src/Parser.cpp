@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "Parser.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "JobThread.h"
 #include "Module.h"
 #include "Naming.h"
+#include "Parser.h"
 #include "Scoped.h"
 #include "TypeManager.h"
 #ifdef SWAG_STATS
@@ -48,11 +49,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     {
     case TokenId::SymAmpersandAmpersand:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Err0323), "and", "&&"));
+            return error(token, FMT(Err(Err0323), "and", "&&"));
         break;
     case TokenId::SymVerticalVertical:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Err0323), "or", "||"));
+            return error(token, FMT(Err(Err0323), "or", "||"));
         break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
@@ -93,14 +94,14 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg = Fmt(Err(Err0381), token.ctext());
+        msg = FMT(Err(Err0381), token.ctext());
         note = Nte(Nte0167);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg = Fmt(Err(Err0262), token.ctext());
+        msg = FMT(Err(Err0262), token.ctext());
         break;
     case InvalidTokenError::LeftExpression:
-        msg = Fmt(Err(Err0283), token.ctext());
+        msg = FMT(Err(Err0283), token.ctext());
         break;
     case InvalidTokenError::PrimaryExpression:
 
@@ -113,32 +114,30 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
             eatToken();
             if (token.id == TokenId::SymQuote)
             {
-                const Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, Fmt(Err(Err0237), inToken.ctext())};
+                const Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, FMT(Err(Err0237), inToken.ctext())};
                 return context->report(diag);
             }
 
             token = startToken;
         }
 
-    // Default more generic message
-        msg = Fmt(Err(Err0283), token.ctext());
-
+        msg = FMT(Err(Err0283), token.ctext());
         if (parent)
         {
             if (Tokenizer::isKeyword(parent->tokenId))
             {
-                const Utf8 forWhat = Fmt("[[%s]]", parent->token.ctext());
-                msg                = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
+                const Utf8 forWhat = FMT("[[%s]]", parent->token.ctext());
+                msg                = FMT(Err(Err0281), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isCompiler(parent->tokenId))
             {
-                const Utf8 forWhat = Fmt("the compiler directive [[%s]]", parent->token.ctext());
-                msg                = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
+                const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.ctext());
+                msg                = FMT(Err(Err0281), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isSymbol(parent->tokenId))
             {
-                const Utf8 forWhat = Fmt("the symbol [[%s]]", parent->token.ctext());
-                msg                = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
+                const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.ctext());
+                msg                = FMT(Err(Err0281), forWhat.c_str(), token.ctext());
             }
         }
 
@@ -153,9 +152,9 @@ bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg) con
     const Diagnostic* note = nullptr;
 
     if (Tokenizer::isKeyword(tokenParse.id))
-        note = Diagnostic::note(Fmt(Nte(Nte0125), tokenParse.ctext()));
+        note = Diagnostic::note(FMT(Nte(Nte0125), tokenParse.ctext()));
 
-    const Diagnostic diag{sourceFile, token, msg ? msg : Fmt(Err(Err0310), token.ctext()).c_str()};
+    const Diagnostic diag{sourceFile, token, msg ? msg : FMT(Err(Err0310), token.ctext()).c_str()};
     return context->report(diag, note);
 }
 
@@ -173,7 +172,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (token.id != id)
     {
         const Utf8 related = Naming::tokenToName(id);
-        const auto diagMsg = Fmt(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext());
+        const auto diagMsg = FMT(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext());
 
         if (token.id == TokenId::EndOfFile)
         {
@@ -181,7 +180,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             return context->report(diag);
         }
         const Diagnostic diag{sourceFile, token, diagMsg};
-        const auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0180), related.c_str()));
+        const auto       note = Diagnostic::note(sourceFile, start, start, FMT(Nte(Nte0180), related.c_str()));
         return context->report(diag, note);
     }
 
@@ -205,7 +204,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& err)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        const Diagnostic diag{sourceFile, token, Fmt(err.c_str(), token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(err.c_str(), token.ctext())};
         return context->report(diag);
     }
 
@@ -219,7 +218,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        const Diagnostic diag{sourceFile, token, Fmt(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
         return context->report(diag);
     }
 
@@ -240,13 +239,13 @@ bool Parser::eatSemiCol(const char* msg)
             if (token.id == TokenId::SymSlash)
             {
                 token.startLocation = st.startLocation;
-                return error(token, Fmt(Err(Err0680), msg));
+                return error(token, FMT(Err(Err0680), msg));
             }
 
             token = st;
         }
 
-        return error(token, Fmt(Err(Err0550), msg, token.ctext()));
+        return error(token, FMT(Err(Err0550), msg, token.ctext()));
     }
 
     if (token.id == TokenId::SymSemiColon)
@@ -259,7 +258,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
     const auto modl = fromNode->sourceFile->module;
 
     tmpFilePath = modl->publicPath;
-    tmpFileName = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
+    tmpFileName = FMT("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
 
     uint32_t   countEol = 0;
     const auto size     = content.length();
@@ -269,7 +268,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
             countEol++;
     }
 
-    const Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1,
+    const Utf8 sourceCode = FMT("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1,
                                 fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
     modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;

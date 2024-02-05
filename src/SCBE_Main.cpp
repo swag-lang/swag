@@ -257,7 +257,7 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-        pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
+        pp.directives += FMT("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -291,7 +291,7 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-        pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
+        pp.directives += FMT("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -346,7 +346,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-        pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
+        pp.directives += FMT("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -426,7 +426,7 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-        pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
+        pp.directives += FMT("/EXPORT:%s ", thisDrop.c_str());
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
@@ -69,7 +70,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         }
         else
         {
-            nameVar = Fmt("__%d", g_UniqueID.fetch_add(1));
+            nameVar = FMT("__%d", g_UniqueID.fetch_add(1));
         }
 
         auto param = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
@@ -112,7 +113,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 thisIsAType = true;
                 curIsAlone  = false;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0527), token.ctext())));
+                SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0527), token.ctext())));
             }
 
             if (token.id == TokenId::KwdConst)
@@ -235,7 +236,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             // If we are in a type declaration, generate a variable and not just a type
             if (inTypeVarDecl)
             {
-                auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));
+                auto nameVar = namedParam ? namedParam->token.text : FMT("__%d", g_UniqueID.fetch_add(1));
                 auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
                 if (!namedParam)
                     param->addSpecFlags(AstVarDecl::SPECFLAG_UNNAMED);
@@ -286,8 +287,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     tokenAmb.endLocation   = token.startLocation;
 
                     Diagnostic diag{sourceFile, tokenAmb, Err(Err0022)};
-                    auto       note = Diagnostic::note(lastParameter, Fmt(Nte(Nte0008), lastParameter->type->token.ctext()));
-                    note->hint      = Fmt(Nte(Nte0189), lastParameter->type->token.ctext());
+                    auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.ctext()));
+                    note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.ctext());
                     return context->report(diag, note);
                 }
 
@@ -339,7 +340,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tpl3_";
-    name += Fmt("%d", g_UniqueID.fetch_add(1));
+    name += FMT("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = std::move(name);
 
     // :SubDeclParent
@@ -463,7 +464,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     // Specific error messages
     if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
     {
-        const Diagnostic diag{sourceFile, token, Fmt(Err(Err0401), token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(Err(Err0401), token.ctext())};
         return context->report(diag);
     }
 
@@ -473,11 +474,11 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     else if (token.id == TokenId::SymDotDotDot)
         note = Diagnostic::note(Nte(Nte0138));
     else if (Tokenizer::isKeyword(token.id))
-        note = Diagnostic::note(Fmt(Nte(Nte0125), token.ctext()));
+        note = Diagnostic::note(FMT(Nte(Nte0125), token.ctext()));
     else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
         note = Diagnostic::note(Nte(Nte0085));
 
-    const Diagnostic diag{sourceFile, token, Fmt(Err(Err0400), token.ctext())};
+    const Diagnostic diag{sourceFile, token, FMT(Err(Err0400), token.ctext())};
     return context->report(diag, note);
 }
 
@@ -575,7 +576,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
         if (token.id == TokenId::SymComma)
         {
-            const Diagnostic diag{sourceFile, token, Fmt(Err(Err0402), token.ctext())};
+            const Diagnostic diag{sourceFile, token, FMT(Err(Err0402), token.ctext())};
             return context->report(diag);
         }
 
@@ -677,10 +678,10 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
     {
-        return error(node, Fmt(Err(Err0053), "bit", "over"));
+        return error(node, FMT(Err(Err0053), "bit", "over"));
     }
 
-    if (mdfFlags & MODIFIER_UNCONST)
+    if (mdfFlags & MODIFIER_UN_CONST)
     {
         node->addSpecFlags(AstCast::SPECFLAG_UN_CONST);
     }

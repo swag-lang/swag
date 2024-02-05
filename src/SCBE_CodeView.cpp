@@ -58,7 +58,7 @@ static void emitCompilerFlagsDebugS(SCBE_CPU& pp)
     concat.addU16(0);
 
     // Compiler version
-    const Utf8 version = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    const Utf8 version = FMT("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
     concat.align(4);
     *patchRecordCount = (uint16_t) (concat.totalCount() - patchRecordOffset);

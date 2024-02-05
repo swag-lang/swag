@@ -33,7 +33,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
 
     if (all.empty())
     {
-        printCmdError(Fmt("...no match (%d parsed functions)", total));
+        printCmdError(FMT("...no match (%d parsed functions)", total));
         return BcDbgCommandResult::Continue;
     }
 
@@ -152,13 +152,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
         Utf8  str;
         ByteCodeDebugger::appendLiteralValue(context, str, fmt, &regP);
         str.trim();
-        g_Log.print(Fmt("%s$r%d%s = ", COLOR_VTS_NAME.c_str(), i, COLOR_VTS_DEFAULT.c_str()));
+        g_Log.print(FMT("%s$r%d%s = ", COLOR_VTS_NAME.c_str(), i, COLOR_VTS_DEFAULT.c_str()));
         g_Log.print(str);
         g_Log.eol();
     }
 
-    g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_VTS_NAME.c_str(), COLOR_VTS_DEFAULT.c_str(), context->sp));
-    g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_VTS_NAME.c_str(), COLOR_VTS_DEFAULT.c_str(), context->bp));
+    g_Log.print(FMT("%s$sp%s = 0x%016llx\n", COLOR_VTS_NAME.c_str(), COLOR_VTS_DEFAULT.c_str(), context->sp));
+    g_Log.print(FMT("%s$bp%s = 0x%016llx\n", COLOR_VTS_NAME.c_str(), COLOR_VTS_DEFAULT.c_str(), context->bp));
 
     return BcDbgCommandResult::Continue;
 }

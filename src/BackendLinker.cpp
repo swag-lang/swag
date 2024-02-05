@@ -46,14 +46,14 @@ namespace BackendLinker
                             {
                                 Utf8 l2 = pze + 8;
                                 l2.trim();
-                                const auto l1 = Fmt("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
+                                const auto l1 = FMT("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
                                 l             = l1;
                             }
                             else
                             {
                                 Utf8 l2 = pzw + 10;
                                 l2.trim();
-                                const auto l1 = Fmt("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
+                                const auto l1 = FMT("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
                                 l             = l1;
                             }
                         }
@@ -176,7 +176,7 @@ namespace BackendLinker
             arguments.push_back("/MACHINE:X64");
 
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Executable)
-            arguments.push_back(Fmt("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
+            arguments.push_back(FMT("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
 
         if (buildParameters.buildCfg->backendDebugInformations)
         {

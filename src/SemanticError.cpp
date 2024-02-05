@@ -16,7 +16,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         tryMatches[0]->dependentVar &&
         !tryMatches[0]->dependentVar->isGeneratedSelf())
     {
-        const auto msg  = Fmt(Nte(Nte0137), tryMatches[0]->overload->symbol->getFullName().c_str());
+        const auto msg  = FMT(Nte(Nte0137), tryMatches[0]->overload->symbol->getFullName().c_str());
         const auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
         notes.push_back(note);
     }
@@ -38,7 +38,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = Fmt(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(),
+                const auto msg = FMT(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(),
                                      overload->node->ownerStructScope->owner->token.ctext());
                 diag->remarks.push_back(msg);
             }
@@ -47,7 +47,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
             {
                 if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
                 {
-                    auto msg = Fmt(Nte(Nte0136), node->token.ctext(), s->getFullName().c_str());
+                    auto msg = FMT(Nte(Nte0136), node->token.ctext(), s->getFullName().c_str());
                     diag->remarks.push_back(msg);
                 }
             }
@@ -57,7 +57,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = Fmt(Err(Err0351), node->token.ctext(), typeInfo->getDisplayNameC());
+    Utf8 text = FMT(Err(Err0351), node->token.ctext(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -80,9 +80,9 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
 {
     Utf8 as;
     if (thisKind != otherKind)
-        as = Fmt("as %s", Naming::aKindName(otherKind).c_str());
+        as = FMT("as %s", Naming::aKindName(otherKind).c_str());
 
-    const Diagnostic diag{sourceFile, token, Fmt(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    const Diagnostic diag{sourceFile, token, FMT(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
     const auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
     return context->report(diag, note);
 }

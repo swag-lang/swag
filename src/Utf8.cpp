@@ -896,7 +896,7 @@ void Utf8::tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens)
 
 Utf8 Utf8::toStringF64(double v)
 {
-    Utf8 s = Fmt("%.35lf", v);
+    Utf8 s = FMT("%.35lf", v);
     while (s.buffer[s.count - 1] == '0')
     {
         s.buffer[s.count - 1] = 0;
@@ -910,14 +910,14 @@ Utf8 Utf8::toStringF64(double v)
 Utf8 Utf8::toNiceSize(size_t size)
 {
     if (size <= 1)
-        return Fmt("%u byte", size);
+        return FMT("%u byte", size);
     if (size < 1024)
-        return Fmt("%u bytes", size);
+        return FMT("%u bytes", size);
     if (size < 1024 * 1024)
-        return Fmt("%.1f Kb", size / 1024.0f);
+        return FMT("%.1f Kb", size / 1024.0f);
     if (size < 1024 * 1024 * 1024)
-        return Fmt("%.1f Mb", size / (1024.0f * 1024.0f));
-    return Fmt("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
+        return FMT("%.1f Mb", size / (1024.0f * 1024.0f));
+    return FMT("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
 }
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
