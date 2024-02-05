@@ -147,7 +147,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
 
     if (ByteCode::isJumpDyn(node->end))
     {
-        const int32_t* table = (int32_t*) context->module->compilerSegment.address(node->end->d.u32);
+        const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(node->end->d.u32));
         for (uint32_t i = 0; i < node->end->c.u32; i++)
         {
             auto newNode = newTreeNode(context, node->end + table[i] + 1, here);
@@ -338,7 +338,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         }
         else if (ByteCode::isJumpDyn(ip))
         {
-            int32_t* table = (int32_t*) context->module->compilerSegment.address(ip->d.u32);
+            const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(ip->d.u32));
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
                 const auto srcJump = (int) (ip - context->bc->out);
@@ -384,7 +384,7 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
 
         if (ByteCode::isJumpDyn(jump))
         {
-            int32_t* table = (int32_t*) context->module->compilerSegment.address(jump->d.u32);
+            const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(jump->d.u32));
             for (uint32_t i = 0; i < jump->c.u32; i++)
             {
                 const auto ipDest = jump + table[i] + 1;
@@ -450,7 +450,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     {
         if (ByteCode::isJumpDyn(jump))
         {
-            const int32_t* table = (int32_t*) context->module->compilerSegment.address(jump->d.u64 & 0xFFFFFFFF);
+            const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(jump->d.u64 & 0xFFFFFFFF));
             for (uint32_t i = 0; i < jump->c.u32; i++)
             {
                 if (jump->flags & BCI_SAFETY)
@@ -497,7 +497,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     {
         module->optimNeedRestart.store(0);
 
-        // Divide so that each job has the quite same amout of bytecode to optimize
+        // Divide so that each job has the quite same amount of bytecode to optimize
         uint32_t totalInstructions = 0;
         for (const auto bc : module->byteCodeFunc)
         {
@@ -543,11 +543,14 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     return true;
 }
 
-#define OPT_PASS(__func)                     \
-    optContext.passHasDoneSomething = false; \
-    if (!__func(&optContext))                \
-        return false;                        \
-    optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
+#define OPT_PASS(__func)                         \
+    do                                           \
+    {                                            \
+        optContext.passHasDoneSomething = false; \
+        if (!__func(&optContext))                \
+            return false;                        \
+        optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething; \
+    } while(0)
 
 bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart)
 {

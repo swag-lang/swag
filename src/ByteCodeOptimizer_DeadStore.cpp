@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "Log.h"
 
 // If two instructions write in the same register in the same block (between jumps), and there's no
 // read of that register between them, then the first write is useless and can be removed
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
-    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
+    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt)
     {
         const auto ip    = parseCxt.curIp;
         const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
@@ -119,125 +118,128 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
     return true;
 }
 
-static bool optimizePassDeadStoreDupScan(ByteCodeOptContext*  context,
-                                         uint32_t             curNode,
-                                         ByteCodeOptTreeNode* node,
-                                         ByteCodeInstruction* ip,
-                                         ByteCodeInstruction* ipScan,
-                                         bool&                canRemove)
+namespace
 {
-    node->mark = context->mark;
-
-    const bool hasA = ByteCode::hasWriteRegInA(ip);
-    const bool hasB = ByteCode::hasWriteRegInB(ip);
-    const bool hasC = ByteCode::hasWriteRegInC(ip);
-    const bool hasD = ByteCode::hasWriteRegInD(ip);
-
-    if (ipScan >= node->start)
+    bool optimizePassDeadStoreDupScan(ByteCodeOptContext*  context,
+                                      uint32_t             curNode,
+                                      ByteCodeOptTreeNode* node,
+                                      ByteCodeInstruction* ip,
+                                      ByteCodeInstruction* ipScan,
+                                      bool&                canRemove)
     {
-        while (true)
+        node->mark = context->mark;
+
+        const bool hasA = ByteCode::hasWriteRegInA(ip);
+        const bool hasB = ByteCode::hasWriteRegInB(ip);
+        const bool hasC = ByteCode::hasWriteRegInC(ip);
+        const bool hasD = ByteCode::hasWriteRegInD(ip);
+
+        if (ipScan >= node->start)
         {
-            if (ipScan == ip)
-                return false;
-
-            if (ipScan->op == ip->op)
+            while (true)
             {
-                switch (ip->op)
+                if (ipScan == ip)
+                    return false;
+
+                if (ipScan->op == ip->op)
                 {
-                case ByteCodeOp::ClearRA:
-                    if (ipScan->a.u32 == ip->a.u32)
+                    switch (ip->op)
                     {
-                        canRemove = true;
-                        return true;
-                    }
-                    break;
+                    case ByteCodeOp::ClearRA:
+                        if (ipScan->a.u32 == ip->a.u32)
+                        {
+                            canRemove = true;
+                            return true;
+                        }
+                        break;
 
-                case ByteCodeOp::SetImmediate32:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
-                    {
-                        canRemove = true;
-                        return true;
-                    }
-                    break;
-                case ByteCodeOp::SetImmediate64:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
-                    {
-                        canRemove = true;
-                        return true;
-                    }
-                    break;
+                    case ByteCodeOp::SetImmediate32:
+                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
+                        {
+                            canRemove = true;
+                            return true;
+                        }
+                        break;
+                    case ByteCodeOp::SetImmediate64:
+                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
+                        {
+                            canRemove = true;
+                            return true;
+                        }
+                        break;
 
-                case ByteCodeOp::MakeStackPointer:
-                case ByteCodeOp::MakeConstantSegPointer:
-                case ByteCodeOp::MakeCompilerSegPointer:
-                case ByteCodeOp::MakeBssSegPointer:
-                case ByteCodeOp::MakeMutableSegPointer:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
-                    {
-                        canRemove = true;
-                        return true;
-                    }
-                    break;
+                    case ByteCodeOp::MakeStackPointer:
+                    case ByteCodeOp::MakeConstantSegPointer:
+                    case ByteCodeOp::MakeCompilerSegPointer:
+                    case ByteCodeOp::MakeBssSegPointer:
+                    case ByteCodeOp::MakeMutableSegPointer:
+                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
+                        {
+                            canRemove = true;
+                            return true;
+                        }
+                        break;
 
-                case ByteCodeOp::GetParam8:
-                case ByteCodeOp::GetParam16:
-                case ByteCodeOp::GetParam32:
-                case ByteCodeOp::GetParam64:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
-                    {
-                        canRemove = true;
-                        return true;
-                    }
-                    break;
+                    case ByteCodeOp::GetParam8:
+                    case ByteCodeOp::GetParam16:
+                    case ByteCodeOp::GetParam32:
+                    case ByteCodeOp::GetParam64:
+                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
+                        {
+                            canRemove = true;
+                            return true;
+                        }
+                        break;
 
-                case ByteCodeOp::GetIncParam64:
-                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64 && ipScan->d.u64 == ip->d.u64)
-                    {
-                        canRemove = true;
-                        return true;
+                    case ByteCodeOp::GetIncParam64:
+                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64 && ipScan->d.u64 == ip->d.u64)
+                        {
+                            canRemove = true;
+                            return true;
+                        }
+                        break;
+                    default:
+                        break;
                     }
-                    break;
-                default:
-                    break;
                 }
+
+                if (hasA && ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                    return false;
+                if (hasB && ByteCode::hasWriteRefToReg(ipScan, ip->b.u32))
+                    return false;
+                if (hasC && ByteCode::hasWriteRefToReg(ipScan, ip->c.u32))
+                    return false;
+                if (hasD && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
+                    return false;
+
+                if (ipScan <= node->start)
+                    break;
+                ipScan--;
             }
-
-            if (hasA && ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
-                return false;
-            if (hasB && ByteCode::hasWriteRefToReg(ipScan, ip->b.u32))
-                return false;
-            if (hasC && ByteCode::hasWriteRefToReg(ipScan, ip->c.u32))
-                return false;
-            if (hasD && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
-                return false;
-
-            if (ipScan <= node->start)
-                break;
-            ipScan--;
         }
-    }
 
-    // In on first block, then we must keep the instruction
-    if (node->parent.empty())
-        return false;
-
-    for (const auto n : node->parent)
-    {
-        ByteCodeOptTreeNode* parentNode = &context->tree[n];
-        if (parentNode->mark == context->mark && n != curNode)
-            continue;
-
-        if (!optimizePassDeadStoreDupScan(context, curNode, parentNode, ip, parentNode->end, canRemove))
+        // In on first block, then we must keep the instruction
+        if (node->parent.empty())
             return false;
-    }
 
-    return true;
+        for (const auto n : node->parent)
+        {
+            ByteCodeOptTreeNode* parentNode = &context->tree[n];
+            if (parentNode->mark == context->mark && n != curNode)
+                continue;
+
+            if (!optimizePassDeadStoreDupScan(context, curNode, parentNode, ip, parentNode->end, canRemove))
+                return false;
+        }
+
+        return true;
+    }
 }
 
 bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 {
     context->mark = 0;
-    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
+    parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt)
     {
         const auto ip = parseCxt.curIp;
         switch (ip->op)

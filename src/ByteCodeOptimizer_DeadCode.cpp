@@ -9,13 +9,15 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
     context->vecInst.reserve(context->bc->numInstructions);
     context->vecInst.clear();
 
-#define ADD_TODO(__ip)                       \
-    if (!((__ip)->dynFlags & BCID_OPT_FLAG)) \
-    {                                        \
-        (__ip)->dynFlags |= BCID_OPT_FLAG;   \
-        context->vecInst.push_back(__ip);    \
-    }
-
+#define ADD_TODO(__ip) \
+    do { \
+        if (!((__ip)->dynFlags & BCID_OPT_FLAG)) \
+        { \
+            (__ip)->dynFlags |= BCID_OPT_FLAG; \
+            context->vecInst.push_back(__ip); \
+        } \
+    } while(0)
+    
     ADD_TODO(context->bc->out);
     while (!context->vecInst.empty())
     {

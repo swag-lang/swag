@@ -1,38 +1,41 @@
 #pragma once
 #include "ByteCode.h"
-#include "ByteCodeOp.h"
 #include "Job.h"
 #include "MapRegTo.h"
 
 struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;
-struct Module;
 struct Job;
+struct Module;
 
 constexpr uint32_t BCOTN_USER1 = 0x00000001;
 constexpr uint32_t BCOTN_USER2 = 0x00000002;
 
 struct ByteCodeOptTreeNode
 {
-    ByteCodeInstruction*   start = nullptr;
-    ByteCodeInstruction*   end   = nullptr;
     VectorNative<uint32_t> next;
     VectorNative<uint32_t> parent;
-    uint32_t               mark  = 0;
-    uint32_t               flags = 0;
-    uint32_t               crc   = 0;
+
+    ByteCodeInstruction* start = nullptr;
+    ByteCodeInstruction* end   = nullptr;
+
+    uint32_t mark  = 0;
+    uint32_t flags = 0;
+    uint32_t crc   = 0;
 };
 
 struct ByteCodeOptContext;
 struct ByteCodeOptTreeParseContext
 {
-    uint32_t             curNode;
-    ByteCodeInstruction* startIp       = nullptr;
-    ByteCodeInstruction* curIp         = nullptr;
-    bool                 mustStopAll   = false;
-    bool                 mustStopBlock = false;
-    uint32_t             doneFlag      = 0;
+    ByteCodeInstruction* startIp = nullptr;
+    ByteCodeInstruction* curIp   = nullptr;
+
+    uint32_t curNode  = 0;
+    uint32_t doneFlag = 0;
+
+    bool mustStopAll   = false;
+    bool mustStopBlock = false;
 
     function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
@@ -62,8 +65,8 @@ struct ByteCodeOptContext : JobContext
     Map<ByteCodeInstruction*, uint32_t>                 mapInstNode;
     Map<ByteCodeInstruction*, ByteCodeInstruction*>     mapInstInst;
 
-    ByteCode* bc;
-    Module*   module;
+    ByteCode* bc     = nullptr;
+    Module*   module = nullptr;
 
     uint32_t mark           = 0;
     uint32_t contextBcFlags = 0;
