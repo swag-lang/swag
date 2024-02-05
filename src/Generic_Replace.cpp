@@ -23,7 +23,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
 
         if (doType)
         {
-            const auto varDecl = CastAst<AstVarDecl>(nodeGenericParameters[i], AstNodeKind::FuncDeclParam);
+            const auto varDecl = castAst<AstVarDecl>(nodeGenericParameters[i], AstNodeKind::FuncDeclParam);
 
             // If the user has specified a generic type, take it
             if (callGenericParameters && i < callGenericParameters->childs.size())
@@ -97,7 +97,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
 
                     if (fromNode->typeInfo->isListArray())
                     {
-                        const auto listArr = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListArray);
+                        const auto listArr = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListArray);
                         if (listArr->subTypes[0]->typeInfo->isUntypedInteger() || listArr->subTypes[0]->typeInfo->isUntypedFloat())
                         {
                             errType = fromNode->typeInfo = listArr->subTypes[0]->typeInfo;
@@ -136,7 +136,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                     SwagSlice* slice;
                     const auto storageSegment               = nodeParam->computedValue->storageSegment;
                     nodeParam->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
-                    const auto typeList                     = CastTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
+                    const auto typeList                     = castTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
                     slice->buffer                           = storageSegment->address(param->value->storageOffset);
                     slice->count                            = typeList->subTypes.size();
                 }
@@ -181,11 +181,11 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
     {
     case TypeInfoKind::TypedVariadic:
     {
-        auto       typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+        auto       typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
         const auto newType      = replaceGenericTypes(replaceTypes, typeVariadic->rawType);
         if (newType != typeVariadic->rawType)
         {
-            typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
+            typeVariadic          = castTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
             typeVariadic->rawType = newType;
             typeVariadic->removeGenericFlag();
             typeVariadic->forceComputeName();
@@ -197,11 +197,11 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Alias:
     {
-        auto       typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+        auto       typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         const auto newType   = replaceGenericTypes(replaceTypes, typeAlias->rawType);
         if (newType != typeAlias->rawType)
         {
-            typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
+            typeAlias          = castTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
             typeAlias->rawType = newType;
             typeAlias->removeGenericFlag();
             typeAlias->forceComputeName();
@@ -213,7 +213,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Pointer:
     {
-        auto       typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto       typePointer = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         const auto newType     = replaceGenericTypes(replaceTypes, typePointer->pointedType);
         if (newType != typePointer->pointedType)
         {
@@ -226,14 +226,14 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Array:
     {
-        auto       typeArray      = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto       typeArray      = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         const auto newPointedType = replaceGenericTypes(replaceTypes, typeArray->pointedType);
         TypeInfo*  newFinalType   = newPointedType;
         if (typeArray->pointedType != typeArray->finalType)
             newFinalType = replaceGenericTypes(replaceTypes, typeArray->finalType);
         if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
         {
-            typeArray              = CastTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
+            typeArray              = castTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
             typeArray->pointedType = newPointedType;
             typeArray->finalType   = newFinalType;
             if (typeArray->count)
@@ -248,11 +248,11 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Slice:
     {
-        auto       typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto       typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         const auto newType   = replaceGenericTypes(replaceTypes, typeSlice->pointedType);
         if (newType != typeSlice->pointedType)
         {
-            typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
+            typeSlice              = castTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
             typeSlice->pointedType = newType;
             typeSlice->removeGenericFlag();
             typeSlice->forceComputeName();
@@ -266,12 +266,12 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
     case TypeInfoKind::FuncAttr:
     {
         TypeInfoFuncAttr* newLambda  = nullptr;
-        const auto        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        const auto        typeLambda = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
         auto newType = replaceGenericTypes(replaceTypes, typeLambda->returnType);
         if (newType != typeLambda->returnType)
         {
-            newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
+            newLambda = castTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
             newLambda->removeGenericFlag();
             newLambda->returnType   = newType;
             newLambda->replaceTypes = replaceTypes;
@@ -295,7 +295,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
                 auto newParam         = TypeManager::makeParam();
                 newParam->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-                const auto newTypeFct = CastTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
+                const auto newTypeFct = castTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
                 newTypeFct->parameters.push_front(newParam);
             }
 
@@ -303,7 +303,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
             {
                 if (!newLambda)
                 {
-                    newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                    newLambda = castTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     newLambda->removeGenericFlag();
                     newLambda->replaceTypes = replaceTypes;
                 }

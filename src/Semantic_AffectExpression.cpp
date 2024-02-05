@@ -53,7 +53,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     const auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
     if (!findMpl)
         return true;
-    const auto mpl = CastAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
+    const auto mpl = castAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
     if (!(mpl->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
         return true;
 
@@ -117,7 +117,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
             if (child->kind == AstNodeKind::ArrayPointerIndex)
             {
-                const auto arr = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                const auto arr = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                 if (arr->array->typeInfo->isString())
                 {
                     left = arr->array;
@@ -141,7 +141,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
         if (left->kind == AstNodeKind::Identifier && left->specFlags & (AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
         {
-            const auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
+            const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint              = "this is equivalent to [[";
             for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
             {
@@ -224,7 +224,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
 bool Semantic::resolveAffect(SemanticContext* context)
 {
-    auto       node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
+    auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
     auto       left    = node->childs[0];
     auto       right   = node->childs[1];
     const auto tokenId = node->tokenId;
@@ -302,7 +302,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     AstArrayPointerIndex* arrayNode = nullptr;
     if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
     {
-        arrayNode            = CastAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
+        arrayNode            = castAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
         const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
         if (!arrayType->isStruct())
             arrayNode = nullptr;
@@ -314,7 +314,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             {
                 auto leftNode = arrayNode;
                 while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
-                    leftNode = CastAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
+                    leftNode = castAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_back(right);
                 arrayNode->structFlatParams.push_front(leftNode->array);
                 node->semFlags |= SEMFLAG_FLAT_PARAMS;

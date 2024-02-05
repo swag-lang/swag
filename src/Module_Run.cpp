@@ -82,7 +82,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         node->computedValue->storageSegment = storageSegment;
         const auto addrSrc                  = runContext->registersRR[0].pointer;
         memcpy(addrDst, addrSrc, realType->sizeOf);
-        const auto typeList = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
+        const auto typeList = castTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
         node->typeInfo      = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
         return true;
     }
@@ -148,7 +148,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         }
         else
         {
-            const auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+            const auto typeSlice = castTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
             sizeSlice            = (uint32_t) runContext->registersRR[1].u64 * typeSlice->pointedType->sizeOf;
             sliceType            = typeSlice->pointedType;
         }
@@ -265,7 +265,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         SWAG_ASSERT(node->isForeign());
         bc                  = &bcTmp;
         instTmp.op          = ByteCodeOp::ForeignCall;
-        instTmp.a.pointer   = (uint8_t*) CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        instTmp.a.pointer   = (uint8_t*) castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         instTmp.b.pointer   = (uint8_t*) node->typeInfo;
         bc->out             = &instTmp;
         bc->numInstructions = 1;

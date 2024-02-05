@@ -73,7 +73,7 @@ AstIdentifier::~AstIdentifier()
 AstIdentifierRef* AstIdentifier::identifierRef() const
 {
     if (parent->kind == AstNodeKind::IdentifierRef)
-        return CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+        return castAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
 
     auto check = parent;
     while (check->kind != AstNodeKind::IdentifierRef)
@@ -82,7 +82,7 @@ AstIdentifierRef* AstIdentifier::identifierRef() const
         SWAG_ASSERT(check);
     }
 
-    return CastAst<AstIdentifierRef>(check, AstNodeKind::IdentifierRef);
+    return castAst<AstIdentifierRef>(check, AstNodeKind::IdentifierRef);
 }
 
 void AstIdentifier::allocateIdentifierExtension()
@@ -257,7 +257,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     if (!fullnameForeign.empty())
         return;
 
-    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
     if (!forExport)
     {
         const auto value = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
@@ -358,7 +358,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         {
         case AstNodeKind::FuncDecl:
         {
-            const auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
+            const auto nodeFunc = castAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             if (sym)
             {
                 const Diagnostic diag{nodeFunc, nodeFunc->tokenName, FMT(Err(Err0627), "function", subDecl->token.ctext())};
@@ -388,7 +388,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             {
                 const int id = g_UniqueID.fetch_add(1);
                 subDecl->token.text += to_string(id);
-                const auto idRef  = CastAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
+                const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
                 idRef->token.text = subDecl->token.text;
             }
 
@@ -396,7 +396,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         }
         case AstNodeKind::StructDecl:
         {
-            const auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
+            const auto nodeStruct = castAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             if (sym)
             {
                 const Diagnostic diag{nodeStruct, nodeStruct->tokenName, FMT(Err(Err0627), "struct", subDecl->token.ctext())};
@@ -404,7 +404,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             }
 
             symKind               = SymbolKind::Struct;
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
             typeStruct->scope     = nodeStruct->scope;
             break;
         }
@@ -495,7 +495,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         {
             if (p.node->kind == AstNodeKind::MakePointerLambda)
             {
-                const auto mpl = CastAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
+                const auto mpl = castAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
                 if (mpl->lambda == newNode)
                     newNode->makePointerLambda = mpl;
             }
@@ -763,7 +763,7 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->block       = findChildRef(block, newNode);
-    newNode->ownerSwitch = CastAst<AstSwitch>(context.parent, AstNodeKind::Switch);
+    newNode->ownerSwitch = castAst<AstSwitch>(context.parent, AstNodeKind::Switch);
     newNode->caseIndex   = caseIndex;
     for (const auto expr : expressions)
         newNode->expressions.push_back(findChildRef(expr, newNode));
@@ -784,7 +784,7 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
     newNode->copyFrom(cloneContext, this);
     context.propagateResult(cloneContext);
 
-    newNode->ownerCase = CastAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
+    newNode->ownerCase = castAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
     return newNode;
 }
 
@@ -810,7 +810,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
         {
             SWAG_ASSERT(newNode->identifier);
             newNode->identifier->flags &= ~AST_NO_SEMANTIC;
-            const auto back = CastAst<AstIdentifier>(newNode->identifier->childs.back(), AstNodeKind::Identifier);
+            const auto back = castAst<AstIdentifier>(newNode->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_ASSERT(back->callParameters);
             back->callParameters->flags &= ~AST_NO_SEMANTIC;
         }
@@ -952,7 +952,7 @@ AstNode* AstImpl::clone(CloneContext& context)
 
         if (newChild->kind == AstNodeKind::FuncDecl)
         {
-            const auto newFunc       = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
+            const auto newFunc       = castAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
             newFunc->originalGeneric = c;
 
             // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
@@ -1201,7 +1201,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // ReSharper disable once StringLiteralTypo
         const Utf8 newName = "__cmpfunc" + to_string(id);
 
-        const auto func  = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
+        const auto func  = castAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
         func->token.text = newName;
         func->flags &= ~AST_NO_SEMANTIC;
         func->content->flags &= ~AST_NO_SEMANTIC;
@@ -1209,7 +1209,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
-        const auto idRef                 = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
+        const auto idRef                 = castAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
         idRef->childs.back()->token.text = newName;
     }
 

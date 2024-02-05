@@ -37,7 +37,7 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
             CONCAT_FIXED_STR(concat, ", ");
         concat.addString(p->token.text);
 
-        const AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        const AstVarDecl* varDecl = castAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
         if (varDecl->type)
         {
             CONCAT_FIXED_STR(concat, ": ");
@@ -64,7 +64,7 @@ bool AstOutput::outputGenericParameters(OutputContext& context, Concat& concat, 
 
 bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* node, bool& hasSomething)
 {
-    const auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+    const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 
     // Be sure this is not an empty attribute block (empty or that contains
     // other empty blocks)
@@ -139,7 +139,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         outputFuncName(context, concat, funcNode);
     }
     else
@@ -154,8 +154,8 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     // Return type, in case of function (not attr)
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
         auto returnNode = funcNode->returnType;
         if (returnNode && !returnNode->childs.empty())
@@ -249,7 +249,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     if (returnNode && !returnNode->childs.empty())
         returnNode = returnNode->childs.front();
 
-    const auto typeFunc = funcDecl->typeInfo ? CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
+    const auto typeFunc = funcDecl->typeInfo ? castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure) : nullptr;
     if (typeFunc && typeFunc->returnType && !typeFunc->returnType->isVoid())
     {
         CONCAT_FIXED_STR(concat, "->");
@@ -547,19 +547,19 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        const auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+        const auto type = castTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
         attr            = &type->attributes;
         break;
     }
     case TypeInfoKind::FuncAttr:
     {
-        const auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
+        const auto type = castTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
         attr            = &type->attributes;
         break;
     }
     case TypeInfoKind::Enum:
     {
-        const auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
+        const auto type = castTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
         attr            = &type->attributes;
         break;
     }
@@ -624,7 +624,7 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
 
 bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
 {
-    const AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Closure capture parameters
     if (funcDecl->captureParameters)
@@ -669,7 +669,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
                 CONCAT_FIXED_STR(concat, ", ");
 
             first            = false;
-            const auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+            const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
             if (param->specFlags & AstVarDecl::SPECFLAG_UNNAMED)
                 concat.addChar('?');
             else
@@ -731,11 +731,11 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
         else
         {
             CONCAT_FIXED_STR(concat, " = ");
-            const auto typeExpr = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
+            const auto typeExpr = castAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
             SWAG_ASSERT(!varNode->assignment);
             SWAG_ASSERT(typeExpr->identifier);
             SWAG_ASSERT(varNode->type->typeInfo && (varNode->type->typeInfo->isTuple()));
-            const auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
+            const auto id = castAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
             concat.addChar('{');
             SWAG_CHECK(outputNode(context, concat, id->callParameters));
             concat.addChar('}');
@@ -784,7 +784,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     // #[Swag.ExportType] attribute
     if (node->attributeFlags & ATTRIBUTE_OPAQUE)
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
         {
@@ -800,7 +800,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     else
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl);
-        const auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
         if (structNode->specFlags & AstStruct::SPECFLAG_UNION)
             CONCAT_FIXED_STR(concat, "union");
         else
@@ -833,7 +833,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         concat.addChar('{');
         concat.addEol();
 
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
 
         // Everything in the structure is not initialized
@@ -868,8 +868,8 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
 {
     typeInfo = TypeManager::concretePtrRef(typeInfo);
     SWAG_ASSERT(typeInfo->isTuple());
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    const auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto nodeStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     SWAG_CHECK(outputStruct(context, concat, nodeStruct));
     return true;
 }
@@ -894,7 +894,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
 
             if (node->identifier)
             {
-                const auto id = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+                const auto id = castAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
                 if (id->callParameters)
                 {
                     if (id->flags & AST_GENERATED)
@@ -1004,7 +1004,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     // When this is a reference, take the original (struct) type instead
     if (typeInfo->isAutoConstPointerRef())
     {
-        const auto typeRef = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto typeRef = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         typeInfo           = typeRef->pointedType;
     }
 
@@ -1141,7 +1141,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::FuncDecl:
     {
-        const auto nodeFunc = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto nodeFunc = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         SWAG_CHECK(outputFunc(context, concat, nodeFunc));
         break;
     }
@@ -1153,7 +1153,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::EnumDecl:
     {
-        const auto nodeEnum = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
+        const auto nodeEnum = castAst<AstEnum>(node, AstNodeKind::EnumDecl);
         SWAG_CHECK(outputEnum(context, concat, nodeEnum));
         break;
     }
@@ -1179,7 +1179,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::StructDecl:
     case AstNodeKind::InterfaceDecl:
     {
-        const auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+        const auto nodeStruct = castAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
         SWAG_CHECK(outputStruct(context, concat, nodeStruct));
         break;
     }
@@ -1197,7 +1197,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (!hasSomething)
             break;
         concat.addEolIndent(context.indent);
-        const auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+        const auto nodeAttr = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
         SWAG_CHECK(outputNode(context, concat, nodeAttr->content));
         break;
     }
@@ -1255,7 +1255,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Break:
     {
-        const auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
+        const auto nodeBreak = castAst<AstBreakContinue>(node, AstNodeKind::Break);
         CONCAT_FIXED_STR(concat, "break ");
         concat.addString(nodeBreak->label.text);
         break;
@@ -1263,7 +1263,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Continue:
     {
-        const auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
+        const auto nodeContinue = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
         CONCAT_FIXED_STR(concat, "continue ");
         concat.addString(nodeContinue->label.text);
         break;
@@ -1278,7 +1278,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::MakePointerLambda:
     {
-        const auto lambdaNode = CastAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda);
+        const auto lambdaNode = castAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda);
         SWAG_CHECK(outputLambdaExpression(context, concat, lambdaNode->lambda));
         break;
     }
@@ -1295,7 +1295,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::ArrayPointerSlicing:
     {
-        const auto arrayNode = CastAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
+        const auto arrayNode = castAst<AstArrayPointerSlicing>(node, AstNodeKind::ArrayPointerSlicing);
         SWAG_CHECK(outputNode(context, concat, arrayNode->array));
         concat.addChar('[');
         SWAG_CHECK(outputNode(context, concat, arrayNode->lowerBound));
@@ -1310,7 +1310,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::ArrayPointerIndex:
     {
-        const auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
+        const auto arrayNode = castAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
         if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DEREF)
         {
             CONCAT_FIXED_STR(concat, "dref ");
@@ -1328,7 +1328,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::ExpressionList:
     {
-        const auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
+        const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
         if (exprNode->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE)
             concat.addChar('{');
         else
@@ -1378,7 +1378,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         const auto front = node->childs.front();
         if (front->kind == AstNodeKind::FuncDecl)
         {
-            const AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
+            const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
             incIndentStatement(funcDecl->content, context.indent);
             concat.addEolIndent(context.indent);
             SWAG_CHECK(outputNode(context, concat, funcDecl->content));
@@ -1409,7 +1409,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::CompilerMixin:
     {
-        const auto compilerMixin = CastAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
+        const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
         CONCAT_FIXED_STR(concat, "#mixin ");
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         if (!compilerMixin->replaceTokens.empty())
@@ -1465,7 +1465,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::CompilerIf:
     {
-        const auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
+        const auto compilerIf = castAst<AstIf>(node, AstNodeKind::CompilerIf);
         CONCAT_FIXED_STR(concat, "#if ");
         SWAG_CHECK(outputNode(context, concat, compilerIf->boolExpression));
 
@@ -1497,12 +1497,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::If:
     {
-        const auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
+        const auto compilerIf = castAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
         CONCAT_FIXED_STR(concat, "if ");
 
         if (compilerIf->specFlags & AstIf::SPECFLAG_ASSIGN)
         {
-            const auto varNode = CastAst<AstVarDecl>(compilerIf->childs.front(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+            const auto varNode = castAst<AstVarDecl>(compilerIf->childs.front(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
             if (varNode->tokenId == TokenId::KwdConst)
                 CONCAT_FIXED_STR(concat, "const ");
             else
@@ -1531,7 +1531,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::For:
     {
-        const auto forNode = CastAst<AstFor>(node, AstNodeKind::For);
+        const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
         CONCAT_FIXED_STR(concat, "for ");
         SWAG_CHECK(outputNode(context, concat, forNode->preExpression));
         CONCAT_FIXED_STR(concat, "; ");
@@ -1547,7 +1547,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Visit:
     {
-        const auto visitNode = CastAst<AstVisit>(node, AstNodeKind::Visit);
+        const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
         CONCAT_FIXED_STR(concat, "visit ");
 
         if (visitNode->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
@@ -1574,7 +1574,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Loop:
     {
-        const auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
+        const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
         CONCAT_FIXED_STR(concat, "loop");
         if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
             CONCAT_FIXED_STR(concat, ",back");
@@ -1596,7 +1596,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::While:
     {
-        const auto whileNode = CastAst<AstWhile>(node, AstNodeKind::While);
+        const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
         CONCAT_FIXED_STR(concat, "while ");
         SWAG_CHECK(outputNode(context, concat, whileNode->boolExpression));
         incIndentStatement(whileNode->block, context.indent);
@@ -1718,7 +1718,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::IntrinsicProp:
     {
-        const auto propertyNode = CastAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
+        const auto propertyNode = castAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
         concat.addString(propertyNode->token.text);
         concat.addChar('(');
         int idx = 0;
@@ -1754,7 +1754,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Identifier:
     {
-        const auto ident = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto ident = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (ident->identifierExtension && ident->identifierExtension->scopeUpMode != IdentifierScopeUpMode::None)
         {
             CONCAT_FIXED_STR(concat, "#up");
@@ -1803,7 +1803,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Switch:
     {
-        const auto nodeSwitch = CastAst<AstSwitch>(node, AstNodeKind::Switch);
+        const auto nodeSwitch = castAst<AstSwitch>(node, AstNodeKind::Switch);
         CONCAT_FIXED_STR(concat, "switch ");
         SWAG_CHECK(outputNode(context, concat, nodeSwitch->expression));
         concat.addEolIndent(context.indent);
@@ -1879,7 +1879,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::FuncCallParams:
     {
-        const auto funcCallParams = CastAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
+        const auto funcCallParams = castAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
 
         // Aliases
         bool first = true;
@@ -1924,7 +1924,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::AffectOp:
     {
-        const auto opNode = CastAst<AstOp>(node, AstNodeKind::AffectOp);
+        const auto opNode = castAst<AstOp>(node, AstNodeKind::AffectOp);
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         concat.addChar(' ');
         concat.addString(node->token.text);
@@ -1937,7 +1937,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::FactorOp:
     {
-        const auto opNode = CastAst<AstOp>(node, AstNodeKind::FactorOp);
+        const auto opNode = castAst<AstOp>(node, AstNodeKind::FactorOp);
         concat.addChar('(');
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         concat.addChar(' ');
@@ -1988,7 +1988,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Literal:
     {
-        const auto literalNode = CastAst<AstLiteral>(node, AstNodeKind::Literal);
+        const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
         if (literalNode->literalType == LiteralType::TT_STRING_RAW)
             CONCAT_FIXED_STR(concat, "#\"");
         else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
@@ -2090,7 +2090,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
     {
         for (const auto one : publicSet->publicFunc)
         {
-            AstFuncDecl* node = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            AstFuncDecl* node = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
 
             // Can be removed in case of special functions
             if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
@@ -2134,8 +2134,8 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
     {
         for (const auto one : publicSet->publicAttr)
         {
-            const auto              node     = CastAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
-            const TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            const auto              node     = castAst<AstAttrDecl>(one, AstNodeKind::AttrDecl);
+            const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             SWAG_CHECK(outputAttributesUsage(context, concat, typeFunc));
             concat.addIndent(context.indent);
             SWAG_CHECK(outputFuncSignature(context, concat, node, nullptr, node->parameters, nullptr));
@@ -2191,7 +2191,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         concat.addIndent(context.indent);
         if (scope->kind == ScopeKind::Impl)
         {
-            const auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
+            const auto nodeImpl = castAst<AstImpl>(scope->owner, AstNodeKind::Impl);
             const auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
             concat.addStringFormat("impl %s for ", symbol->node->getScopedName().c_str());
             concat.addString(scope->parentScope->name);

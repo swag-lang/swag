@@ -33,7 +33,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
                 !doneGenParamsRemarks.contains(genCheckNode->ownerFct->typeInfo))
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
-                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto       remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
@@ -45,7 +45,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
                 !doneGenParamsRemarks.contains(genCheckNode->ownerStructScope->owner->typeInfo))
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
-                const auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+                const auto typeStruct = castTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
                 auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
@@ -56,7 +56,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
                 !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
             {
                 doneGenParamsRemarks.insert(genCheckNode->typeInfo);
-                const auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
+                const auto typeStruct = castTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
                 auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
@@ -379,7 +379,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     {
         if (node->kind == AstNodeKind::AttrUse)
         {
-            const auto attrUse   = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+            const auto attrUse   = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
             bool       retResult = true;
             if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
                 return retResult;

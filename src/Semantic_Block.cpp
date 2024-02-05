@@ -15,7 +15,7 @@
 bool Semantic::resolveIf(SemanticContext* context)
 {
     const auto module = context->sourceFile->module;
-    const auto node   = CastAst<AstIf>(context->node, AstNodeKind::If);
+    const auto node   = castAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     // :ConcreteRef
@@ -49,7 +49,7 @@ bool Semantic::resolveIf(SemanticContext* context)
 bool Semantic::resolveWhile(SemanticContext* context)
 {
     const auto module = context->sourceFile->module;
-    const auto node   = CastAst<AstWhile>(context->node, AstNodeKind::While);
+    const auto node   = castAst<AstWhile>(context->node, AstNodeKind::While);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     // :ConcreteRef
@@ -87,7 +87,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
 bool Semantic::resolveInlineBefore(SemanticContext* context)
 {
-    const auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
 
     ErrorCxtStep expNode;
     expNode.node = node->parent;
@@ -99,7 +99,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     node->semFlags |= SEMFLAG_RESOLVE_INLINED;
 
     const auto func         = node->func;
-    const auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
     // :DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
@@ -120,7 +120,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     {
         const AstIdentifier* identifier = nullptr;
         if (node->parent->kind == AstNodeKind::Identifier)
-            identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+            identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         for (size_t i = 0; i < func->parameters->childs.size(); i++)
         {
             const auto funcParam = func->parameters->childs[i];
@@ -136,7 +136,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
             {
                 for (const auto& child : identifier->callParameters->childs)
                 {
-                    const auto callParam = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+                    const auto callParam = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                     if (callParam->indexParam != (int) i)
                         continue;
                     orgCallParam = callParam;
@@ -181,7 +181,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 
 bool Semantic::resolveInlineAfter(SemanticContext* context)
 {
-    const auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
     const auto fct  = node->func;
 
     // No need to check missing return for inline only, because the function has already been
@@ -206,7 +206,7 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
-    const auto node                  = CastAst<AstFor>(context->node, AstNodeKind::For);
+    const auto node                  = castAst<AstFor>(context->node, AstNodeKind::For);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
@@ -214,14 +214,14 @@ bool Semantic::resolveForBefore(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
-    const auto node                  = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    const auto node                  = castAst<AstLoop>(context->node, AstNodeKind::Loop);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
 
 bool Semantic::resolveFor(SemanticContext* context)
 {
-    const auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
+    const auto node = castAst<AstFor>(context->node, AstNodeKind::For);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression));
@@ -243,14 +243,14 @@ bool Semantic::resolveFor(SemanticContext* context)
 bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
 {
     const auto node       = context->node;
-    const auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
+    const auto switchNode = castAst<AstSwitch>(node->parent, AstNodeKind::Switch);
     const auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
 
     // For a switch on an enum, force a 'using' for each case
     if (typeInfo->isEnum())
     {
         // :AutoScope
-        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         for (const auto switchCase : switchNode->cases)
         {
             switchCase->addAlternativeScope(typeEnum->scope);
@@ -269,7 +269,7 @@ bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
 
 bool Semantic::resolveSwitch(SemanticContext* context)
 {
-    auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    auto node = castAst<AstSwitch>(context->node, AstNodeKind::Switch);
 
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
@@ -377,7 +377,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         // When a switch is marked as complete, be sure every definitions have been covered
         if (node->typeInfo->isEnum())
         {
-            const auto                  typeEnum0 = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            const auto                  typeEnum0 = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
             VectorNative<TypeInfoEnum*> collect;
             typeEnum0->collectEnums(collect);
             for (const auto typeEnum : collect)
@@ -427,7 +427,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
 bool Semantic::resolveCase(SemanticContext* context)
 {
-    const auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    const auto node = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (const auto oneExpression : node->expressions)
     {
         oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
@@ -435,7 +435,7 @@ bool Semantic::resolveCase(SemanticContext* context)
         // Range
         if (oneExpression->kind == AstNodeKind::Range)
         {
-            auto rangeNode = CastAst<AstRange>(oneExpression, AstNodeKind::Range);
+            auto rangeNode = castAst<AstRange>(oneExpression, AstNodeKind::Range);
             if (node->ownerSwitch->expression)
             {
                 const auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
@@ -524,7 +524,7 @@ bool Semantic::resolveCase(SemanticContext* context)
 bool Semantic::resolveLoop(SemanticContext* context)
 {
     const auto module = context->sourceFile->module;
-    const auto node   = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    const auto node   = castAst<AstLoop>(context->node, AstNodeKind::Loop);
 
     if (node->expression)
     {
@@ -564,7 +564,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
         // Range
         else
         {
-            const auto rangeNode = CastAst<AstRange>(node->expression, AstNodeKind::Range);
+            const auto rangeNode = castAst<AstRange>(node->expression, AstNodeKind::Range);
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
         }
@@ -590,7 +590,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 {
     auto job        = context->baseJob;
     auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
+    auto node       = castAst<AstVisit>(context->node, AstNodeKind::Visit);
 
     auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
 
@@ -711,7 +711,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Multi dimensional array
     if (typeInfo->isArray() && ((TypeInfoArray*) typeInfo)->pointedType->isArray())
     {
-        auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
         auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
@@ -752,7 +752,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // One dimensional array
     else if (typeInfo->isArray())
     {
-        auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
 
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
@@ -792,7 +792,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Slice
     else if (typeInfo->isSlice())
     {
-        auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto typeSlice   = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto pointedType = typeSlice->pointedType;
 
         auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
@@ -889,7 +889,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         content += FMT("{ let __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += FMT("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
@@ -909,7 +909,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         // Special error in case of a pointer
         if (typeInfo->isPointer())
         {
-            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            auto typePtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             if (typePtr->pointedType->isEnum() ||
                 typePtr->pointedType->isVariadic() ||
                 typePtr->pointedType->isTypedVariadic() ||
@@ -966,7 +966,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     });
 
     // First child is the let in the statement, and first child of this is the loop node
-    auto loopNode            = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+    auto loopNode            = castAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
     loopNode->ownerBreakable = node->ownerBreakable;
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
@@ -1017,7 +1017,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
     // Take the type from the expression
     if (ownerBreakable->kind == AstNodeKind::Loop)
     {
-        const auto loopNode = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
+        const auto loopNode = castAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
         if (loopNode->expression && loopNode->expression->typeInfo->isNativeInteger())
             node->typeInfo = loopNode->expression->typeInfo;
     }
@@ -1031,7 +1031,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
-    const auto node = CastAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
+    const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
     if (node->ownerBreakable == node->altSubstBreakable)
         node->defaultSubst->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -1043,7 +1043,7 @@ bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 
 bool Semantic::resolveBreak(SemanticContext* context)
 {
-    auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
+    auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
     // Label has been defined : search the corresponding ScopeBreakable node
     if (!node->label.text.empty())
@@ -1073,7 +1073,7 @@ bool Semantic::resolveUnreachable(SemanticContext* context)
 
 bool Semantic::resolveFallThrough(SemanticContext* context)
 {
-    auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
+    auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
     SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Err(Err0463)}));
     node->ownerBreakable->fallThroughList.push_back(node);
 
@@ -1082,11 +1082,11 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
     while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
         parent = parent->parent;
     SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0462)}));
-    node->switchCase = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+    node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
     SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0462)}));
 
     // 'fallthrough' cannot be used on the last case, this has no sens
-    const auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
+    const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
     SWAG_VERIFY(node->switchCase->caseIndex < (int) switchBlock->cases.size() - 1, context->report({node, Err(Err0461)}));
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
@@ -1097,7 +1097,7 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
 
 bool Semantic::resolveContinue(SemanticContext* context)
 {
-    auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
+    auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
     SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0459)}));
 
     auto checkBreakable = node->ownerBreakable;
@@ -1115,7 +1115,7 @@ bool Semantic::resolveContinue(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
-    const auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
+    const auto node = castAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->setBcNotifyBefore(ByteCodeGen::emitLabelBeforeBlock);
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
     return true;

@@ -2369,7 +2369,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     state->ip   = nullptr;
     cxt.context = context;
 
-    const auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
 
     state->stack.reserve(funcDecl->stackSize);
     state->stack.count = funcDecl->stackSize;

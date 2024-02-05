@@ -325,7 +325,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     if (kind == CompilerAstKind::MissingInterfaceMtd)
     {
-        const auto impl    = CastAst<AstImpl>(parent, AstNodeKind::Impl);
+        const auto impl    = castAst<AstImpl>(parent, AstNodeKind::Impl);
         currentScope       = impl->scope;
         currentStructScope = impl->structScope;
     }
@@ -441,7 +441,7 @@ bool Parser::generateAst()
         }
         else
         {
-            parentScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
+            parentScope = castTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
         }
 
         if (sourceFile->imported)

@@ -23,7 +23,7 @@ void Semantic::waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (job->module->waitImplForToSolve(job, typeInfoStruct))
@@ -48,7 +48,7 @@ void Semantic::waitAllStructInterfaces(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (job->module->waitImplForToSolve(job, typeInfoStruct))
@@ -73,7 +73,7 @@ void Semantic::waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingSpecialMethods == 0)
         return;
@@ -91,7 +91,7 @@ void Semantic::waitAllStructMethods(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingMethods == 0)
         return;
@@ -113,7 +113,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     if (typeInfo->isGeneric())
         return;
 
-    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
     if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
@@ -121,7 +121,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
     if (!(structNode->semFlags & SEMFLAG_STRUCT_OP_ALLOCATED))
@@ -144,7 +144,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (typeInfo->isGeneric())
         return;
 
-    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
     if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
@@ -152,7 +152,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
     if (!(structNode->semFlags & SEMFLAG_BYTECODE_GENERATED))
@@ -199,9 +199,9 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
     auto orgTypeInfo = typeInfo;
     typeInfo         = TypeManager::concreteType(typeInfo);
     if (typeInfo->isSlice())
-        typeInfo = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice)->pointedType;
+        typeInfo = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice)->pointedType;
     if (typeInfo->isArray())
-        typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
+        typeInfo = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
     typeInfo = TypeManager::concreteType(typeInfo);
     if (!typeInfo->isStruct() && !typeInfo->isInterface())
         return;
@@ -211,7 +211,7 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         return;
 
     //  :BecauseOfThat
-    const auto structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    const auto structNode = castAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     ScopedLock lk(structNode->mutex);
     if (!structNode->resolvedSymbolOverload)
     {
@@ -262,7 +262,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
             continue;
         if (typeInfo->isStruct())
         {
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             if (typeStruct->fromGeneric)
                 continue;
 
@@ -309,13 +309,13 @@ bool Semantic::needToCompleteSymbol(SemanticContext* context, AstIdentifier* ide
     // If identifier is in a pointer type expression, can incomplete resolve
     if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
     {
-        auto typeExprNode = CastAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
+        auto typeExprNode = castAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
         if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
             return false;
 
         if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
         {
-            typeExprNode = CastAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
+            typeExprNode = castAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
             if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
                 return false;
         }

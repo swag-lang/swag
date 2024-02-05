@@ -12,8 +12,8 @@
 
 bool Semantic::resolveEnum(SemanticContext* context)
 {
-    const auto node     = CastAst<AstEnum>(context->node, AstNodeKind::EnumDecl);
-    const auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+    const auto node     = castAst<AstEnum>(context->node, AstNodeKind::EnumDecl);
+    const auto typeInfo = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
 
     // An enum can be in a function, so do not generate bytecode for it !
     node->flags |= AST_NO_BYTECODE;
@@ -120,7 +120,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     auto       typeNode = context->node;
     const auto enumNode = context->node->parent;
 
-    const auto typeInfo = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    const auto typeInfo = castTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     SWAG_CHECK(collectAttributes(context, enumNode, &typeInfo->attributes));
 
     // Hardcoded swag enums
@@ -165,7 +165,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX)
         {
             const auto       front = typeNode->childs.front();
@@ -225,13 +225,13 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
         return context->report(diag, Diagnostic::hereIs(node->resolvedSymbolOverload));
     }
 
-    const auto enumNode = CastAst<AstEnum>(node->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
-    const auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    const auto enumNode = castAst<AstEnum>(node->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
+    const auto typeEnum = castTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     if (typeEnum->rawType->isGeneric())
         return true;
 
     // Be sure enum types are the same
-    const auto typeSubEnum         = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+    const auto typeSubEnum         = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
     const auto concreteTypeSubEnum = TypeManager::concreteType(typeSubEnum->rawType, CONCRETE_ALIAS);
     const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CASTFLAG_EXACT))
@@ -265,10 +265,10 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
 
 bool Semantic::resolveEnumValue(SemanticContext* context)
 {
-    auto       valNode  = CastAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
+    auto       valNode  = castAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
     const auto enumNode = valNode->findParent(AstNodeKind::EnumDecl);
     SWAG_ASSERT(enumNode);
-    const auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    const auto typeEnum = castTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     if (typeEnum->rawType->isGeneric())
         return true;
 
@@ -342,7 +342,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
     if (rawTypeInfo->isNative())
     {
-        const auto rawType = CastTypeInfo<TypeInfoNative>(rawTypeInfo, TypeInfoKind::Native);
+        const auto rawType = castTypeInfo<TypeInfoNative>(rawTypeInfo, TypeInfoKind::Native);
 
         // First child is enumType
         const AstNode* firstEnumValue = nullptr;

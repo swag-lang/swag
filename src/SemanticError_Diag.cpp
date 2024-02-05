@@ -297,8 +297,8 @@ namespace
         // In case of lambda, replace undefined with the corresponding match, if possible
         if (bi.badSignatureRequestedType->isLambdaClosure() && bi.badSignatureGivenType->isLambdaClosure())
         {
-            const auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
-            const auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
+            const auto type1 = castTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
+            const auto type2 = castTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
             for (uint32_t i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
             {
                 if (type2->parameters[i]->typeInfo->isUndefined())
@@ -318,7 +318,7 @@ namespace
         bool        addSpecificCastErr = true;
         if (overload->typeInfo->isStruct())
         {
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             typeStruct->flattenUsingFields();
             const auto msg = FMT(Err(Err0653), bi.badSignatureRequestedType->getDisplayNameC(), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(),
                                  bi.badSignatureGivenType->getDisplayNameC());
@@ -484,22 +484,22 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     SWAG_ASSERT(declNode);
     if (declNode->kind == AstNodeKind::FuncDecl)
     {
-        errorParam.destFuncDecl   = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+        errorParam.destFuncDecl   = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
         errorParam.destParameters = errorParam.destFuncDecl->parameters;
     }
     else if (declNode->kind == AstNodeKind::AttrDecl)
     {
-        errorParam.destAttrDecl   = CastAst<AstAttrDecl>(declNode, AstNodeKind::AttrDecl);
+        errorParam.destAttrDecl   = castAst<AstAttrDecl>(declNode, AstNodeKind::AttrDecl);
         errorParam.destParameters = errorParam.destAttrDecl->parameters;
     }
     else if (declNode->kind == AstNodeKind::VarDecl)
     {
-        errorParam.destLambdaDecl = CastAst<AstTypeLambda>(declNode->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+        errorParam.destLambdaDecl = castAst<AstTypeLambda>(declNode->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
         errorParam.destParameters = errorParam.destLambdaDecl->parameters;
     }
     else if (declNode->kind == AstNodeKind::StructDecl)
     {
-        errorParam.destStructDecl = CastAst<AstStruct>(declNode, AstNodeKind::StructDecl);
+        errorParam.destStructDecl = castAst<AstStruct>(declNode, AstNodeKind::StructDecl);
     }
 
     // See if it would have worked with an explicit cast, to give a hint in the error message

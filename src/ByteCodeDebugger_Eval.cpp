@@ -27,7 +27,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     AstNode parent;
     Ast::constructNode(&parent);
     parent.ownerScope = debugCxtIp->node ? debugCxtIp->node->ownerScope : nullptr;
-    parent.ownerFct   = CastAst<AstFuncDecl>(debugCxtBc->node, AstNodeKind::FuncDecl);
+    parent.ownerFct   = castAst<AstFuncDecl>(debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
     parent.parent     = debugCxtIp->node;
 

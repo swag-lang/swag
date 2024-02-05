@@ -32,8 +32,8 @@ bool Semantic::checkCanThrow(SemanticContext* context)
 
 bool Semantic::checkCanCatch(SemanticContext* context)
 {
-    auto       node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
-    const auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto       node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
+    const auto identifierRef = castAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
 
     for (const auto c : identifierRef->childs)
     {
@@ -55,8 +55,8 @@ bool Semantic::resolveTryBlock(SemanticContext* context)
 
 bool Semantic::resolveTry(SemanticContext* context)
 {
-    const auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
-    const auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    const auto node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
+    const auto identifierRef = castAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     const auto lastChild     = identifierRef->childs.back();
 
     SWAG_CHECK(checkCanThrow(context));
@@ -72,8 +72,8 @@ bool Semantic::resolveTry(SemanticContext* context)
 
 bool Semantic::resolveTryCatch(SemanticContext* context)
 {
-    const auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::TryCatch);
-    const auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    const auto node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::TryCatch);
+    const auto identifierRef = castAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     const auto lastChild     = identifierRef->childs.back();
 
     SWAG_CHECK(checkCanCatch(context));
@@ -92,8 +92,8 @@ bool Semantic::resolveTryCatch(SemanticContext* context)
 
 bool Semantic::resolveCatch(SemanticContext* context)
 {
-    const auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Catch);
-    const auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    const auto node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Catch);
+    const auto identifierRef = castAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     const auto lastChild     = identifierRef->childs.back();
 
     SWAG_CHECK(checkCanCatch(context));
@@ -119,8 +119,8 @@ bool Semantic::resolveAssumeBlock(SemanticContext* context)
 
 bool Semantic::resolveAssume(SemanticContext* context)
 {
-    const auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Assume);
-    const auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    const auto node          = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Assume);
+    const auto identifierRef = castAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     const auto lastChild     = identifierRef->childs.back();
 
     SWAG_CHECK(checkCanCatch(context));
@@ -139,7 +139,7 @@ bool Semantic::resolveAssume(SemanticContext* context)
 
 bool Semantic::resolveThrow(SemanticContext* context)
 {
-    const auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
+    const auto node = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     auto       expr = node->childs.front();
     node->typeInfo  = expr->typeInfo;
 

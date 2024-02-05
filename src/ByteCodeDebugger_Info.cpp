@@ -116,7 +116,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
-    const auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
         printCmdError("no arguments");

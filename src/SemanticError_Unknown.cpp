@@ -21,7 +21,7 @@ namespace
         if (typeRef && typeRef->isTuple())
         {
             const auto diag       = new Diagnostic{node, FMT(Err(Err0716), node->token.ctext())};
-            const auto structNode = CastAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
+            const auto structNode = castAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
             const auto note       = Diagnostic::note(errNode, Nte(Nte0078));
             notes.push_back(note);
@@ -30,7 +30,7 @@ namespace
 
         AstIdentifier* prevIdentifier = nullptr;
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier)
-            prevIdentifier = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
+            prevIdentifier = castAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
 
         const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind).c_str();
 
@@ -74,7 +74,7 @@ namespace
         }
         else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text.startsWith(g_LangSpec->name_opVisit))
         {
-            const auto visitNode = CastAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
+            const auto visitNode = castAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
             const Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
             diag = new Diagnostic{visitNode, visitNode->extraNameToken, FMT(Err(Err0419), variant.c_str(), typeWhere->getDisplayNameC())};
         }
@@ -131,8 +131,8 @@ namespace
         }
         else if (prev->kind == AstNodeKind::ArrayPointerIndex)
         {
-            const auto api       = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
-            const auto typeArray = CastTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
+            const auto api       = castAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
+            const auto typeArray = castTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
             const auto note      = Diagnostic::note(api->array, FMT(Nte(Nte0006), api->array->token.ctext(), typeArray->finalType->getDisplayNameC()));
             notes.push_back(note);
         }

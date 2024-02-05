@@ -116,7 +116,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
 
 bool Semantic::resolveExpressionListTuple(SemanticContext* context)
 {
-    const auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    const auto node = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
     YIELD();
 
@@ -136,7 +136,7 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
 
 bool Semantic::resolveExpressionListArray(SemanticContext* context)
 {
-    const auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    const auto node = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     for (const auto child : node->childs)
     {
@@ -392,7 +392,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveDefer(SemanticContext* context)
 {
-    const auto node   = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
+    const auto node   = castAst<AstDefer>(context->node, AstNodeKind::Defer);
     node->byteCodeFct = ByteCodeGen::emitDefer;
 
     SWAG_ASSERT(node->childs.size() == 1);
@@ -404,7 +404,7 @@ bool Semantic::resolveDefer(SemanticContext* context)
 
 bool Semantic::resolveRange(SemanticContext* context)
 {
-    const auto node = CastAst<AstRange>(context->node, AstNodeKind::Range);
+    const auto node = castAst<AstRange>(context->node, AstNodeKind::Range);
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
 

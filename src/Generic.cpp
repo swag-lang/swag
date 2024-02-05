@@ -80,7 +80,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         if (!genericParameters && (firstMatch.matchFlags & SymbolMatchContext::MATCH_GENERIC_AUTO))
         {
             SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
-            const auto identifier         = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+            const auto identifier         = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
             for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
@@ -135,11 +135,11 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
 
             // :DupGen
             // We generate a new struct with the wanted generic parameters to have those names for replacement.
-            auto newStructType = CastTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
+            auto newStructType = castTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
             if (newStructType->genericParameters.size() == genericParameters->childs.size() && !genericParameters->childs.empty())
             {
                 const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
-                newStructType            = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
+                newStructType            = castTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
                 for (size_t i = 0; i < genericParameters->childs.size(); i++)
                 {
                     newStructType->genericParameters[i]->name     = genericParameters->childs[i]->typeInfo->name;
@@ -292,7 +292,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     // With A.B form, we try to get generic parameters from A if they exist
     if (node->kind == AstNodeKind::Identifier)
     {
-        const auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+        const auto identifier = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
         if (identifier->identifierRef()->startScope)
             toCheck.push_back(identifier->identifierRef()->startScope->owner);
     }
@@ -304,7 +304,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     {
         if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->isStruct())
         {
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
             toCheck.push_back(typeStruct->declNode);
         }
     }
@@ -314,8 +314,8 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     {
         if (one->kind == AstNodeKind::FuncDecl)
         {
-            const auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto nodeFunc = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
 
             oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
             for (const auto& oneReplace : typeFunc->replaceTypes)
@@ -327,8 +327,8 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
         }
         else if (one->kind == AstNodeKind::StructDecl)
         {
-            const auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
+            const auto nodeStruct = castAst<AstStruct>(one, AstNodeKind::StructDecl);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
 
             oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
             for (const auto& oneReplace : typeStruct->replaceTypes)

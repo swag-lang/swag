@@ -96,7 +96,7 @@ bool CallConv::returnStructByValue(TypeInfoFuncAttr* typeFunc)
 
     if (typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
-        const auto fctNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+        const auto fctNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
         if (fctNode->mustInline())
             return false;
     }
@@ -105,7 +105,7 @@ bool CallConv::returnStructByValue(TypeInfoFuncAttr* typeFunc)
     if (!type->isStruct())
         return false;
 
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(type, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(type, TypeInfoKind::Struct);
     if (!typeStruct->isPlainOldData())
         return false;
 

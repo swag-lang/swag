@@ -43,7 +43,7 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::FuncAttr:
         if (flags & CONCRETE_FUNC)
         {
-            const auto returnType = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
+            const auto returnType = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
             if (!returnType)
                 return g_TypeMgr->typeInfoVoid;
             return concreteType(returnType, flags);
@@ -52,13 +52,13 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
 
     case TypeInfoKind::Enum:
         if (flags & CONCRETE_ENUM)
-            return concreteType(CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum)->rawType, flags);
+            return concreteType(castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum)->rawType, flags);
         break;
 
     case TypeInfoKind::Alias:
         if (flags & (CONCRETE_ALIAS | CONCRETE_FORCE_ALIAS))
         {
-            const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+            const auto typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
             if (typeAlias->isStrict() && !(flags & CONCRETE_FORCE_ALIAS))
                 return const_cast<TypeInfo*>(static_cast<const TypeInfo*>(typeAlias));
             return concreteType(typeAlias->rawType, flags);
@@ -68,7 +68,7 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::Generic:
         if (flags & CONCRETE_GENERIC)
         {
-            const auto typeGeneric = CastTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
+            const auto typeGeneric = castTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
             if (!typeGeneric->rawType)
                 return const_cast<TypeInfo*>(static_cast<const TypeInfo*>(typeGeneric));
             return concreteType(typeGeneric->rawType, flags);
@@ -97,7 +97,7 @@ TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
     if (!typeInfo)
         return nullptr;
     if (typeInfo->flags & TYPEINFO_POINTER_REF)
-        return CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer)->pointedType;
+        return castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer)->pointedType;
     return typeInfo;
 }
 

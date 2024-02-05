@@ -45,7 +45,7 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
     Utf8 result;
 
     bool       found    = false;
-    const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 
     if (typeEnum->declNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
     {

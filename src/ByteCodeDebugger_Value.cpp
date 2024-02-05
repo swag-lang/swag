@@ -280,7 +280,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         if (res.value)
             addr = res.value->reg.pointer;
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         if (!debugPrintStruct)
         {
             str += "<hidden>";
@@ -308,7 +308,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isArray())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         str += FMT("0x%016llx ", addr);
         if (!debugPrintArray)
         {
@@ -336,7 +336,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isSlice())
     {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto ptr       = ((uint8_t**) addr)[0];
         auto count     = ((uint64_t*) addr)[1];
         if (ptr == nullptr)

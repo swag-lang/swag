@@ -526,7 +526,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
         }
         else if (typeParam->isPointer())
         {
-            const auto typePtr  = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
+            const auto typePtr  = castTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
             const auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }

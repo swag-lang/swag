@@ -12,15 +12,15 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
 {
     if (node->typeInfo->isStruct() && node->type && node->type->kind == AstNodeKind::TypeExpression)
     {
-        const auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        const auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         if (typeExpr->identifier)
         {
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            const auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            const auto nodeStruct = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
             if (nodeStruct->genericParameters)
             {
-                const auto idRef      = CastAst<AstIdentifierRef>(typeExpr->identifier, AstNodeKind::IdentifierRef);
-                const auto identifier = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+                const auto idRef      = castAst<AstIdentifierRef>(typeExpr->identifier, AstNodeKind::IdentifierRef);
+                const auto identifier = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
                 if (!identifier->genericParameters)
                 {
                     identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
@@ -29,7 +29,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                     CloneContext cloneContext;
                     for (const auto p : nodeStruct->genericParameters->childs)
                     {
-                        const auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+                        const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
                             const Diagnostic diag{node->sourceFile, node->type->token, FMT(Err(Err0557), typeExpr->identifier->resolvedSymbolName->name.c_str())};
@@ -69,7 +69,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
     Semantic::waitAllStructSpecialMethods(context->baseJob, typeStruct);
     YIELD();
     Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
@@ -81,17 +81,17 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Can be a type alias
     // In that case, we need to retrieve the real struct
-    const auto genericStructType = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
+    const auto genericStructType = castTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     const auto sourceSymbol      = match.symbolName;
     SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, FMT(Err(Err0297), node->token.ctext())}));
 
     // Make a new type
-    const auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
+    const auto newType = castTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
     newType->removeGenericFlag();
     newType->fromGeneric = genericStructType;
 
     // Replace generic types in the struct generic parameters
-    const auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
+    const auto sourceNodeStruct = castAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     SWAG_CHECK(replaceGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
 
     // For a tuple, replace inside types with real ones
@@ -153,7 +153,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         val.typeInfoReplace = TypeManager::concreteType(val.typeInfoReplace, CONCRETE_ALIAS);
     }
 
-    const auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, structNode);
@@ -179,7 +179,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     {
         if (method->declNode->isSpecialFunctionName())
         {
-            auto specFunc = CastAst<AstFuncDecl>(method->declNode, AstNodeKind::FuncDecl);
+            auto specFunc = castAst<AstFuncDecl>(method->declNode, AstNodeKind::FuncDecl);
             if (specFunc != genericStructType->opUserDropFct &&
                 specFunc != genericStructType->opUserPostCopyFct &&
                 specFunc != genericStructType->opUserPostMoveFct &&

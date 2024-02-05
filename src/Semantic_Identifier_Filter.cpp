@@ -50,7 +50,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
             !(context->node->flags & AST_IN_VALIDIF) &&
             !(context->node->attributeFlags & ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
-            const auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
+            const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->validif)
             {
                 SWAG_CHECK(solveValidIf(context, curMatch, funcDecl));
@@ -353,14 +353,14 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
-            const auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isSelf())
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
-                        const auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        const auto typeFunc1 = castTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (typeFunc1->parameters.empty() || !typeFunc1->parameters[0]->typeInfo->isSelf())
                         {
                             curMatch->remove = true;
@@ -374,14 +374,14 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // If we did match with ufcs, then priority to a match that starts with 'self'
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
-            const auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isSelf())
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
-                        const auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        const auto typeFunc1 = castTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->isSelf()))
                         {
                             curMatch->remove = true;
@@ -395,14 +395,14 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // 2 ufcs : priority to the first parameter that is not const
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
-            const auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters[0]->typeInfo->isConst())
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->ufcs && matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
-                        const auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        const auto typeFunc1 = castTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters[0]->typeInfo->isConst())
                         {
                             curMatch->remove = true;
@@ -463,7 +463,7 @@ namespace
         if (typeInfo->kind != TypeInfoKind::FuncAttr)
             return false;
 
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
         if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
             return false;
 
@@ -651,7 +651,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
         // if the generic type has not been deduced from parameters (if any).
         if (over->symbol->kind == SymbolKind::Function)
         {
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc->replaceTypes.empty())
             {
                 const auto             node = context->node;
@@ -665,7 +665,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
 
                 for (const auto c : toCheck)
                 {
-                    const auto typeFuncCheck = CastTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
+                    const auto typeFuncCheck = castTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
                     if (typeFuncCheck->replaceTypes.size() != typeFunc->replaceTypes.size())
                         continue;
                     for (auto& it : typeFunc->replaceTypes)

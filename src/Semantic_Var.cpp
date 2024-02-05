@@ -29,8 +29,8 @@ bool Semantic::resolveTupleUnpackBeforeVar(SemanticContext* context)
 // Will be called after solving the initial var affect, but before tuple unpacking
 bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 {
-    const auto scopeNode = CastAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope, AstNodeKind::Statement);
-    const auto varDecl   = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
+    const auto scopeNode = castAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope, AstNodeKind::Statement);
+    const auto varDecl   = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
 
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
     if (typeVar->isListTuple() && !varDecl->type)
@@ -59,7 +59,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
         return context->report(diag);
     }
 
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     const auto numUnpack  = scopeNode->childs.size() - 1;
 
     if (typeStruct->fields.empty())
@@ -135,15 +135,15 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
     const auto typeInfo = varDecl->type->typeInfo->getConcreteAlias();
     if (typeInfo->isEnum())
     {
-        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         varDecl->assignment->addAlternativeScope(typeEnum->scope);
     }
     else if (typeInfo->isArray())
     {
-        const auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArr->finalType->isEnum())
         {
-            const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
+            const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
             varDecl->assignment->addAlternativeScope(typeEnum->scope);
         }
     }
@@ -153,7 +153,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
 
 bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
-    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // When exporting func inside interfaces, we need to "func" form to be typed, in order
     // to export correctly
@@ -255,7 +255,7 @@ bool Semantic::sendCompilerMsgGlobalVar(SemanticContext* context)
 
 bool Semantic::resolveVarDeclBefore(SemanticContext* context)
 {
-    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, &node->attributes));
@@ -298,7 +298,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     if (!assign || assign->kind != AstNodeKind::ExpressionList)
         return true;
 
-    const auto exprList = CastAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
+    const auto exprList = castAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
     if (!(exprList->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
         return true;
 
@@ -315,11 +315,11 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     }
 
     // Here we will transform the struct literal to a type initialization
-    const auto typeExpression = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+    const auto typeExpression = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
     if (!typeExpression->identifier)
         return true;
 
-    const auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+    const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
     if (identifier->callParameters)
     {
         Diagnostic diag{assign, Err(Err0063)};
@@ -364,7 +364,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 
 bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags)
 {
-    const auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
+    const auto typeList  = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
     const auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
     node->typeInfo       = typeArray;
 
@@ -400,7 +400,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, AstVarDecl* va
     // An array of struct with default values should go to the mutable segment
     if (varNode->typeInfo->isArrayOfStruct())
     {
-        const auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
+        const auto typeArr = castTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
         if (typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             return &module->mutableSegment;
     }
@@ -434,7 +434,7 @@ TypeInfo* Semantic::getDeducedLambdaType(SemanticContext* context, AstMakePointe
     }
     else if (node->parent->kind == AstNodeKind::VarDecl)
     {
-        const auto varDecl = CastAst<AstVarDecl>(node->parent, AstNodeKind::VarDecl);
+        const auto varDecl = castAst<AstVarDecl>(node->parent, AstNodeKind::VarDecl);
         SWAG_ASSERT(varDecl->type);
         result = varDecl->type->typeInfo;
     }
@@ -498,11 +498,11 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
             if (context->cacheMatches.empty() || context->cacheMatches.size() > 1)
                 return true;
 
-            const auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeOverload = castTypeInfo<TypeInfoFuncAttr>(context->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeOverload->parameters[1]->typeInfo->isLambdaClosure())
                 return true;
 
-            typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::LambdaClosure);
+            typeLambda = castTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::LambdaClosure);
             if (!typeLambda)
                 return true;
         }
@@ -510,7 +510,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
     else
     {
         SWAG_ASSERT(frontType->isLambdaClosure());
-        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::LambdaClosure);
+        typeLambda = castTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::LambdaClosure);
     }
 
     auto paramIdx = nodeParam->childParentIdx();
@@ -673,7 +673,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             node->kind != AstNodeKind::FuncDeclParam &&
             !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
-            auto                        concreteTypeEnum = CastTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
+            auto                        concreteTypeEnum = castTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
             VectorNative<TypeInfoEnum*> collect;
             concreteTypeEnum->collectEnums(collect);
 
@@ -822,7 +822,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             if (node->assignment->typeInfo->isLambdaClosure())
             {
                 SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0213)}));
-                auto funcNode = CastAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+                auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
             else
@@ -835,7 +835,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // Be sure that an array without a size has an initializer, to deduce its size
     if (concreteNodeType && concreteNodeType->isArray())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
+        auto typeArray = castTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
             return context->report({node->type, Err(Err0212)});
 
@@ -971,7 +971,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // :ConcreteRef
         if (node->typeInfo->isPointerRef() && setUnRef(node->assignment))
         {
-            auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+            auto typePointer = castTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
             node->typeInfo   = typePointer->pointedType;
         }
     }
@@ -1040,20 +1040,20 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
-        auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-            typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
-        auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+            typeExpression = castAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+        auto identifier = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 
         TypeInfoStruct* typeStruct = nullptr;
         if (node->typeInfo->isStruct())
-            typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         else if (node->typeInfo->isArray())
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+            auto typeArray = castTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
             while (typeArray->pointedType->isArray())
-                typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
-            typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
+                typeArray = castTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
+            typeStruct = castTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
         }
 
         if (typeStruct && identifier->callParameters)
@@ -1133,7 +1133,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 YIELD();
                 if (typeNode->isArrayOfStruct())
                     typeNode = ((TypeInfoArray*) typeNode)->finalType;
-                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
+                TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
                 if (typeStruct->opDrop || typeStruct->opUserDropFct)
                     isGlobalToDrop = true;
             }
@@ -1210,11 +1210,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
         if (node->type && node->type->kind == AstNodeKind::TypeExpression)
         {
-            auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+            auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
             if (typeExpr->typeFlags & TYPEFLAG_IS_RETVAL)
             {
                 auto ownerFct   = getFunctionForReturn(node);
-                auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
                 Semantic::waitStructGenerated(context->baseJob, returnType);
                 YIELD();

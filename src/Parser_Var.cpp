@@ -15,7 +15,7 @@ bool Parser::checkIsValidVarName(AstNode* node) const
 
     if (node->kind == AstNodeKind::Identifier)
     {
-        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
             return error(identifier->genericParameters, FMT(Err(Err0410), identifier->token.ctext()));
         if (identifier->callParameters)
@@ -100,14 +100,14 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         }
 
         // Declare first variable, and affect it
-        const auto front = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+        const auto front = castAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
 
         // Then declare all other variables, and assign them to the first one
         bool firstDone = false;
         for (const auto child : leftNode->childs)
         {
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-            const auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+            const auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(checkIsValidVarName(identifier));
 
@@ -209,7 +209,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             }
 
             SWAG_CHECK(checkIsValidUserName(child));
-            auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+            auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(checkIsValidVarName(identifier));
 
@@ -323,7 +323,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 !(token.flags & TOKENPARSE_LAST_EOL) &&
                 type->kind == AstNodeKind::TypeExpression)
             {
-                const auto typeExpr = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
+                const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
                     const Diagnostic diag{sourceFile, token, FMT(Err(Err0021), typeExpr->identifier->token.ctext())};
@@ -351,16 +351,16 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
         if (type && type->kind == AstNodeKind::TypeExpression)
         {
-            auto typeExpression = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
+            auto typeExpression = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
             while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-                typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+                typeExpression = castAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
 
             if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
             {
                 const auto back = typeExpression->identifier->childs.back();
                 if (back->kind == AstNodeKind::Identifier)
                 {
-                    const auto identifier = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
+                    const auto identifier = castAst<AstIdentifier>(back, AstNodeKind::Identifier);
                     if (identifier->callParameters)
                     {
                         typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;

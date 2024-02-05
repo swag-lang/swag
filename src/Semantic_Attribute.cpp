@@ -57,7 +57,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (checkNode->kind == AstNodeKind::AttrUse)
     {
-        const auto attrUse = CastAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
+        const auto attrUse = castAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
         if (checkNode->flags & AST_GENERATED && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->flags & AST_GENERATED)
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->childs.front()));
         else
@@ -70,7 +70,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         return context->report({oneAttribute, FMT(Err(Err0218), oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).c_str())});
 
     const auto kind     = checkNode->kind;
-    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
     if (typeInfo->attributeUsage & All)
@@ -296,7 +296,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             if (!child->typeInfo || !child->typeInfo->isFuncAttr())
                 continue;
 
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
             {
                 if (isHereTmp.contains(typeInfo))
@@ -312,7 +312,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+                auto typeAttr = castTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                 auto value    = curAttr->attributes.getValue(g_LangSpec->name_Swag_AttrUsage, g_LangSpec->name_usage);
 
                 if (value)
@@ -372,7 +372,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             //////
             else if (child->token.text == g_LangSpec->name_Using)
             {
-                auto id = CastAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
+                auto id = castAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
                 id->flags |= AST_NO_SEMANTIC;
 
                 SWAG_VERIFY(id->callParameters && !id->callParameters->childs.empty(), context->report({id, Err(Err0541)}));
@@ -386,19 +386,19 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     {
                     case TypeInfoKind::Namespace:
                     {
-                        auto typeInfo1 = CastTypeInfo<TypeInfoNamespace>(typeChild, typeChild->kind);
+                        auto typeInfo1 = castTypeInfo<TypeInfoNamespace>(typeChild, typeChild->kind);
                         scope          = typeInfo1->scope;
                         break;
                     }
                     case TypeInfoKind::Enum:
                     {
-                        auto typeInfo1 = CastTypeInfo<TypeInfoEnum>(typeChild, typeChild->kind);
+                        auto typeInfo1 = castTypeInfo<TypeInfoEnum>(typeChild, typeChild->kind);
                         scope          = typeInfo1->scope;
                         break;
                     }
                     case TypeInfoKind::Struct:
                     {
-                        auto typeInfo1 = CastTypeInfo<TypeInfoStruct>(typeChild, typeChild->kind);
+                        auto typeInfo1 = castTypeInfo<TypeInfoStruct>(typeChild, typeChild->kind);
                         scope          = typeInfo1->scope;
                         break;
                     }
@@ -634,16 +634,16 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
 bool Semantic::preResolveAttrDecl(SemanticContext* context)
 {
-    const auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
-    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    const auto node     = castAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     return true;
 }
 
 bool Semantic::resolveAttrDecl(SemanticContext* context)
 {
-    const auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
-    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    const auto node     = castAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
 
@@ -662,7 +662,7 @@ bool Semantic::resolveAttrDecl(SemanticContext* context)
 
 bool Semantic::resolveAttrUse(SemanticContext* context)
 {
-    auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
+    auto node = castAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
     SWAG_VERIFY(node->content || (node->specFlags & AstAttrUse::SPECFLAG_GLOBAL), context->report({node, Err(Err0485)}));
     SWAG_CHECK(resolveAttrUse(context, node));
     return true;
@@ -681,7 +681,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             SWAG_CHECK(checkAttribute(context, child, node->content));
 
         // Collect parameters
-        auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+        auto identifierRef = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
         auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
 
         // Be sure this is an attribute
@@ -697,7 +697,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         // Check that global attribute is authorized
         if (node->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
         {
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & File))
             {
                 Diagnostic diag{identifier, identifier->token, FMT(Err(Err0493), resolvedName->name.c_str())};
@@ -719,7 +719,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             numParams = identifier->callParameters->childs.count;
             for (auto one : identifier->callParameters->childs)
             {
-                auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
+                auto param = castAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_CHECK(checkIsConstExpr(context, param->hasComputedValue(), param, Err(Err0037)));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, param->resolvedParameter->typeInfo, param->typeInfo, nullptr, param, CASTFLAG_EXPLICIT));
 
@@ -733,14 +733,14 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         }
 
         // The rest (default parameters)
-        auto funcDecl    = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
-        auto typeFunc    = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
+        auto funcDecl    = castAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
+        auto typeFunc    = castTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
         auto countParams = (int) typeFunc->parameters.size();
         if (typeFunc->isVariadic())
             countParams--;
         for (int i = numParams; i < countParams; i++)
         {
-            auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            auto param = castAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
             SWAG_ASSERT(param->assignment);
 
             AttributeParameter attrParam;
@@ -758,7 +758,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
     AttributeList* list    = nullptr;
     if (node->content && node->content->kind == AstNodeKind::FuncDeclParam)
     {
-        auto funcDeclParam = CastAst<AstVarDecl>(node->content, AstNodeKind::FuncDeclParam);
+        auto funcDeclParam = castAst<AstVarDecl>(node->content, AstNodeKind::FuncDeclParam);
         list               = &funcDeclParam->attributes;
         forNode            = node->content;
     }

@@ -603,7 +603,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         // Native lambda
         else
         {
-            auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::LambdaClosure);
+            auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::LambdaClosure);
             ffiCall(context, ip, (void*) ptr, typeInfoFunc);
             if (ip->op == ByteCodeOp::LambdaCallPop)
                 context->incSP(ip->c.u32);

@@ -633,7 +633,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
         {
             node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
-            const auto id    = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+            const auto id    = castAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
             id->flags |= AST_IN_TYPE_VAR_DECLARATION;

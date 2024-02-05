@@ -9,8 +9,8 @@
 
 bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
 {
-    const auto typeLeftStruct  = CastTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
-    const auto typeRightStruct = CastTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
+    const auto typeLeftStruct  = castTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
+    const auto typeRightStruct = castTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
 
     bool hasStruct = false;
     for (const auto f : typeLeftStruct->fields)
@@ -52,7 +52,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
             if (typeField->typeInfo->isArray())
             {
-                const auto typeArr = CastTypeInfo<TypeInfoArray>(typeField->typeInfo, TypeInfoKind::Array);
+                const auto typeArr = castTypeInfo<TypeInfoArray>(typeField->typeInfo, TypeInfoKind::Array);
                 if (!typeArr->finalType->isStruct())
                     content += FMT("if @memcmp(&%s[0], &o.%s[0], @sizeof(%s)) != 0 do return false\n", leftN, rightN, leftN);
                 else
@@ -74,7 +74,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     Parser parser;
     parser.setup(context, context->sourceFile->module, context->sourceFile);
-    const auto structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
+    const auto structDecl = castAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
     AstNode*   result     = nullptr;
     SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, true, &result));
 
@@ -95,7 +95,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
                                       TypeInfoStruct*             typeBaseInterface,
                                       TypeInfoStruct*             typeInterface)
 {
-    const auto     node            = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    const auto     node            = castAst<AstImpl>(context->node, AstNodeKind::Impl);
     const uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
     const auto     typeInfo        = node->identifier->typeInfo;
 
@@ -128,7 +128,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         content += missingNode->name;
 
         content += "(using self";
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
         for (size_t i = 1; i < typeFunc->parameters.size(); i++)
         {
             content += ", ";

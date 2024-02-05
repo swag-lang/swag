@@ -22,7 +22,7 @@ bool ByteCodeGen::emitInitStackTrace(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
 {
-    const auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
+    const auto node = castAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
     if (!(context->node->semFlags & SEMFLAG_STACK_TRACE))
@@ -94,7 +94,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         }
         else if (returnType->isArray())
         {
-            const auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
+            const auto typeArr = castTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
             if (!typeArr->finalType->isStruct())
             {
                 if (node->ownerInline)
@@ -187,7 +187,7 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
 
     const auto parent = node->findParent(AstNodeKind::Defer);
     SWAG_ASSERT(parent);
-    const auto defer = CastAst<AstDefer>(parent, AstNodeKind::Defer);
+    const auto defer = castAst<AstDefer>(parent, AstNodeKind::Defer);
     if (defer->deferKind == DeferKind::NoError)
         return true;
 
@@ -214,7 +214,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
     SWAG_CHECK(checkEscapedThrow(context));
 
     PushICFlags ic(context, BCI_TRYCATCH);
-    const auto  node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
+    const auto  node = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     const auto  expr = node->childs.front();
 
     if (!(node->semFlags & SEMFLAG_CAST1))
@@ -268,7 +268,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 
     PushICFlags ic(context, BCI_TRYCATCH);
     const auto  node    = context->node;
-    const auto  tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
+    const auto  tryNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
 
     // try in a top level function is equivalent to assume
     const AstFuncDecl* parentFct = nullptr;
@@ -301,7 +301,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
-    const auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
+    const auto tryNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
 
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
@@ -337,7 +337,7 @@ bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
     PushICFlags ic(context, BCI_TRYCATCH);
 
     const auto node       = context->node;
-    const auto assumeNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+    const auto assumeNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
 
     SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
     const auto rt = reserveRegisterRC(context);

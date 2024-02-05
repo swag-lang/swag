@@ -145,8 +145,8 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (castError == CastErrorType::SliceArray)
     {
-        const auto to   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
-        const auto from = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        const auto to   = castTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
+        const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         hint            = FMT(Nte(Nte0113), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
@@ -158,7 +158,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         if (fromType->isPointerTo(TypeInfoKind::Struct))
         {
             hint     = Diagnostic::isType(fromType);
-            fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
+            fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
         msg = FMT(ErrNte(Err0314, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
@@ -178,13 +178,13 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
-        const auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
+        const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
             msg = FMT(ErrNte(Err0251, forNote));
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
-        const auto toPtrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+        const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CASTFLAG_CAST))
             hint = Nte(Nte0196);
     }

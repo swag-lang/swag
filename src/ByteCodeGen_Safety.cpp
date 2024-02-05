@@ -422,7 +422,7 @@ void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, Ast
     const auto typeVar = TypeManager::concreteType(node->array->typeInfo);
     if (typeVar->isArray())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
         maxBoundReg          = reserveRegisterRC(context);
         const auto inst      = EMIT_INST1(context, ByteCodeOp::SetImmediate64, maxBoundReg);
         inst->b.u64          = typeArray->count;

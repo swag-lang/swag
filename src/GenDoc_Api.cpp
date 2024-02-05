@@ -144,7 +144,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             Utf8 parameters;
             if (symbolsMap.find(n1->token.text)->second.size() > 1)
             {
-                const AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
+                const AstFuncDecl* funcNode = castAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
                 parameters                  = "(";
                 if (funcNode->parameters && !funcNode->parameters->childs.empty())
                 {
@@ -153,7 +153,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                     {
                         if (c->kind != AstNodeKind::FuncDeclParam)
                             continue;
-                        const AstVarDecl* varNode = CastAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
+                        const AstVarDecl* varNode = castAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
                         if (!varNode->type && !varNode->typeInfo)
                             continue;
                         if (!firstParam)
@@ -311,7 +311,7 @@ void GenDoc::outputType(AstNode* node)
 {
     auto typeInfo = node->typeInfo;
     if (typeInfo && typeInfo->kind == TypeInfoKind::Alias)
-        typeInfo = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias)->rawType;
+        typeInfo = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias)->rawType;
 
     if (typeInfo)
     {
@@ -320,12 +320,12 @@ void GenDoc::outputType(AstNode* node)
     }
     else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
     {
-        const auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        const auto varDecl = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         outputCode(getOutputNode(varDecl->type), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
     else if (node->kind == AstNodeKind::TypeAlias)
     {
-        const auto typeDecl = CastAst<AstAlias>(node, AstNodeKind::TypeAlias);
+        const auto typeDecl = castAst<AstAlias>(node, AstNodeKind::TypeAlias);
         outputCode(getOutputNode(typeDecl->childs.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
 }
@@ -549,10 +549,10 @@ void GenDoc::generateContent()
                 outputUserComment(userComment);
             }
 
-            auto namespaceDecl = CastAst<AstNameSpace>(n0, AstNodeKind::Namespace);
+            auto namespaceDecl = castAst<AstNameSpace>(n0, AstNodeKind::Namespace);
             if (namespaceDecl->typeInfo)
             {
-                auto scope = CastTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
+                auto scope = castTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
                 outputTable(scope, AstNodeKind::StructDecl, "Structs", COLLECT_TABLE_ZERO);
                 outputTable(scope, AstNodeKind::EnumDecl, "Enums", COLLECT_TABLE_ZERO);
                 outputTable(scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
@@ -585,7 +585,7 @@ void GenDoc::generateContent()
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"code-type\">";
-                auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
+                auto varDecl = castAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                 outputType(varDecl);
                 helpContent += "</td>\n";
 
@@ -626,7 +626,7 @@ void GenDoc::generateContent()
                 helpContent += "</td>\n";
 
                 helpContent += "<td class=\"code-type\">";
-                auto typeDecl = CastAst<AstAlias>(n, AstNodeKind::TypeAlias);
+                auto typeDecl = castAst<AstAlias>(n, AstNodeKind::TypeAlias);
                 outputType(typeDecl);
                 helpContent += "</td>\n";
 
@@ -657,7 +657,7 @@ void GenDoc::generateContent()
                 outputUserBlock(userComment.shortDesc);
             }
 
-            auto structNode = CastAst<AstStruct>(n0, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+            auto structNode = castAst<AstStruct>(n0, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
 
             // Output signature if structure is generic
             if (structNode->typeInfo && structNode->typeInfo->isGeneric())
@@ -689,7 +689,7 @@ void GenDoc::generateContent()
                         first = false;
                     }
 
-                    auto varDecl = CastAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                    auto varDecl = castAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
                     helpContent += "<tr>\n";
 
@@ -739,7 +739,7 @@ void GenDoc::generateContent()
                 outputUserBlock(userComment.shortDesc);
             }
 
-            auto enumNode = CastAst<AstEnum>(n0, AstNodeKind::EnumDecl);
+            auto enumNode = castAst<AstEnum>(n0, AstNodeKind::EnumDecl);
 
             helpContent += "<table class=\"table-enumeration\">\n";
             for (auto enumVal : enumNode->scope->symTable.allSymbols)
@@ -779,7 +779,7 @@ void GenDoc::generateContent()
                 auto        subDocComment = getDocComment(n);
                 computeUserComments(subUserComment, subDocComment);
 
-                auto funcNode = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+                auto funcNode = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
 
                 if (n->attributeFlags & ATTRIBUTE_MACRO)
                     code += "#[Swag.Macro]\n";
@@ -797,7 +797,7 @@ void GenDoc::generateContent()
 
                 if (funcNode->typeInfo)
                 {
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                    auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     if (typeFunc->returnType && !typeFunc->returnType->isVoid())
                     {
                         typeFunc->returnType->computeScopedNameExport();
@@ -848,8 +848,8 @@ void GenDoc::generateContent()
                 computeUserComments(subUserComment, subDocComment);
                 outputUserBlock(subUserComment.shortDesc);
 
-                auto attrNode = CastAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
-                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(attrNode->typeInfo, TypeInfoKind::FuncAttr);
+                auto attrNode = castAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
+                auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(attrNode->typeInfo, TypeInfoKind::FuncAttr);
 
                 helpContent += "<div class=\"api-additional-infos\">";
                 helpContent += "<b>Usage</b>: ";

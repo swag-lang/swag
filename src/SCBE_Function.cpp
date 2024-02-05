@@ -54,7 +54,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
     // Get function name
     Utf8         funcName   = bc->getCallNameFromDecl();
-    AstFuncDecl* bcFuncNode = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
+    AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Export symbol
     if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
@@ -3515,7 +3515,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::CopySPVaargs:
         {
-            auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+            auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
             if (!pushRVParams.empty())
             {
                 auto     sizeOf            = pushRVParams[0].second;
@@ -3662,7 +3662,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::MakeLambda:
         {
-            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            auto funcNode = castAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == (ByteCode*) ip->c.pointer));
             Utf8 callName = funcNode->getCallName();
             pp.emit_Load64_Immediate(RAX, 0, true);

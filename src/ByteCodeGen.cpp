@@ -18,7 +18,7 @@ bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
     // Register allocator interface to the default bytecode context
     if (node->token.text == g_LangSpec->name_SystemAllocator)
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
         YIELD();
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
@@ -30,7 +30,7 @@ bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
 
     if (node->token.text == g_LangSpec->name_DebugAllocator)
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
         YIELD();
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
@@ -79,7 +79,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
         if (context->bc->node &&
             context->bc->node->kind == AstNodeKind::FuncDecl)
         {
-            const auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+            const auto funcNode = castAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
 
             // Retrieve the persistent registers
             if (funcNode->registerGetContext != UINT32_MAX)
@@ -143,7 +143,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
     if (context->bc->node &&
         context->bc->node->kind == AstNodeKind::FuncDecl)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
         if (!funcNode->sourceFile->shouldHaveError)
         {
             // Be sure that every used registers have been released
@@ -201,7 +201,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
     AstFuncDecl* funcDecl = nullptr;
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         if (funcDecl->content && (funcDecl->content->flags & AST_NO_SEMANTIC))
             return;
 
@@ -335,7 +335,7 @@ void ByteCodeGen::getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& de
     // Struct: special functions
     else
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(depNode->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(depNode->typeInfo, TypeInfoKind::Struct);
         if (typeStruct->opInit)
             dep.append(typeStruct->opInit->dependentCalls);
         if (typeStruct->opDrop)

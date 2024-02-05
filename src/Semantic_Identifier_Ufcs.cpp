@@ -90,7 +90,7 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
                 return context->report(diag, note);
             }
 
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
             canTry              = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
             YIELD();
             if (canTry)
@@ -139,7 +139,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 {
     const auto symbol       = match.symbolOverload->symbol;
     const auto dependentVar = match.dependentVar;
-    const auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    const auto node         = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
     const auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)

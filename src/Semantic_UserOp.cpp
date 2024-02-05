@@ -172,7 +172,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     TypeInfo*  typeStruct = nullptr;
     if (parent)
     {
-        const auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
+        const auto implNode = castAst<AstImpl>(parent, AstNodeKind::Impl);
 
         // No need to raise an error, the semantic pass on the impl node will fail
         typeStruct = implNode->identifier->typeInfo;
@@ -184,7 +184,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         auto       firstGen  = node->parameters->childs.front();
         const auto firstType = firstGen->typeInfo;
         SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, FMT(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
-        const auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
+        const auto firstTypePtr = castTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
         SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, CASTFLAG_CAST),
                     context->report({firstGen, FMT(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
     }
@@ -472,11 +472,11 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* le
 {
     auto leftType = TypeManager::concreteType(left->typeInfo);
     if (leftType->isArray())
-        leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
+        leftType = castTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     else if (leftType->isPointer())
-        leftType = CastTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;
+        leftType = castTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;
     leftType              = leftType->getConcreteAlias();
-    const auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
+    const auto leftStruct = castTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     return hasUserOp(context, name, leftStruct, result);
 }
 
@@ -501,7 +501,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
     Token       savedToken;
     if (context->node->kind == AstNodeKind::VarDecl)
     {
-        varDecl    = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
+        varDecl    = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
         savedToken = varDecl->token;
         if (varDecl->assignToken.id != TokenId::Invalid)
             varDecl->token = varDecl->assignToken;
@@ -795,7 +795,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     SWAG_ASSERT(overload);
 
     // Allocate room on the stack to store the result of the function call
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+    auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     if (CallConv::returnNeedsStack(typeFunc))
         allocateOnStack(node, typeFunc->concreteReturnType());
 

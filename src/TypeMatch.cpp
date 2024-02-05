@@ -51,7 +51,7 @@ namespace
             if (callParameter->semFlags & SEMFLAG_AUTO_CODE_PARAM)
             {
                 context.cptResolved                             = (int) context.parameters.size();
-                const auto param                                = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+                const auto param                                = castAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
                 param->resolvedParameter                        = parameters.back();
                 param->indexParam                               = (int) parameters.size() - 1;
                 context.doneParameters[param->indexParam]       = true;
@@ -175,7 +175,7 @@ namespace
 
             if (callParameter->kind == AstNodeKind::FuncCallParam)
             {
-                const auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+                const auto param         = castAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
                 param->resolvedParameter = wantedParameter;
                 param->indexParam        = context.cptResolved;
             }
@@ -264,7 +264,7 @@ namespace
             // Search inside a sub structure marked with 'using'
             if (parameters[j]->typeInfo->isStruct() && parameters[j]->declNode->flags & AST_DECL_USING)
             {
-                const auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
+                const auto subStruct = castTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
                 matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields, forceCastFlags);
                 if (callParameter->resolvedParameter)
                     return;
@@ -298,7 +298,7 @@ namespace
                 callParameter       = &fakeParam;
             }
 
-            const auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            const auto param = castAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
 
             // If this is a code parameter added by the semantic, force to match the last parameter
             // of the function
@@ -454,8 +454,8 @@ namespace
         {
             if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
             {
-                const auto myFunc     = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
-                const auto typeMyFunc = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+                const auto myFunc     = castAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
+                const auto typeMyFunc = castTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
                 if (!(typeMyFunc->replaceTypes.empty()))
                 {
                     for (auto one : context.genericReplaceTypes)
@@ -496,7 +496,7 @@ namespace
                             firstChild->setFlagsValueIsComputed();
                             Semantic::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
 
-                            const auto typeList                       = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
+                            const auto typeList                       = castTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
                             firstChild->computedValue->reg.u64        = typeList->subTypes.size();
                             firstChild->computedValue->storageOffset  = storageOffset;
                             firstChild->computedValue->storageSegment = storageSegment;
@@ -633,7 +633,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     context.castFlagsResult &= ~CASTFLAG_RESULT_GEN_AUTO_OP_CAST;
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {
             SymbolMatchContext cpyContext = context;

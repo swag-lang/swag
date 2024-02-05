@@ -588,7 +588,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)
         {
             toLogBc->printName();

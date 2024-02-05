@@ -152,8 +152,8 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         {
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
             {
-                const auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
-                const auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
+                const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
                     note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
@@ -206,7 +206,7 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
 
 bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 {
-    const auto node     = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+    const auto node     = castAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
     const auto typeInfo = makeType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
     typeInfo->declNode  = node;
 
@@ -302,7 +302,7 @@ void Semantic::forceConstType(SemanticContext* context, AstTypeExpression* node)
 
 bool Semantic::resolveType(SemanticContext* context)
 {
-    auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
+    auto typeNode = castAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Array with predefined dimensions, we evaluate all dimensions as const
     // Do it first because of potential pending
@@ -626,7 +626,7 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
 bool Semantic::resolveTypeAlias(SemanticContext* context)
 {
     const auto node     = context->node;
-    const auto typeInfo = CastTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
+    const auto typeInfo = castTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
     typeInfo->rawType   = node->childs.front()->typeInfo;
     typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
@@ -647,7 +647,7 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 
 bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 {
-    const auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
+    const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
     const auto typeNode = node->childs[0];
     const auto exprNode = node->childs[1];
 
@@ -718,7 +718,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 
 bool Semantic::resolveExplicitCast(SemanticContext* context)
 {
-    const auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
+    const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
     const auto typeNode = node->childs[0];
     const auto exprNode = node->childs[1];
 
@@ -781,7 +781,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
-    const auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
     const auto exprNode = node->childs[0];
 
     exprNode->typeInfo   = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);

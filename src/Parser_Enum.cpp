@@ -38,7 +38,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
-                const auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                const auto       implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 const Diagnostic diag{implNode->identifier, FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
                 const auto       note  = Diagnostic::hereIs(enumNode);
                 const auto       note1 = Diagnostic::note(FMT(Nte(Nte0043), implNode->token.ctext()));

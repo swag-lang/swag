@@ -21,31 +21,31 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     {
     case AstNodeKind::FuncDecl:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::EnumDecl:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+        const auto typeInfo = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
         v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::StructDecl:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::InterfaceDecl:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+        const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
         v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
     case AstNodeKind::EnumValue:
     {
-        const auto typeInfo = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
+        const auto typeInfo = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
         v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
         break;
     }
@@ -81,7 +81,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
         return true;
     if (one->node->sourceFile->forceExport || one->node->sourceFile->globalAttr & ATTRIBUTE_PUBLIC)
         return true;
-    const auto funcDecl = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
     if (funcDecl->fromItfSymbol)
         return true;
     if (funcDecl->flags & (AST_IS_GENERIC | AST_GENERATED | AST_FROM_GENERIC))
@@ -187,7 +187,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
         }
         else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
         {
-            const auto funcDecl = CastAst<AstFuncDecl>(front->findParent(AstNodeKind::FuncDecl), AstNodeKind::FuncDecl);
+            const auto funcDecl = castAst<AstFuncDecl>(front->findParent(AstNodeKind::FuncDecl), AstNodeKind::FuncDecl);
 
             // If the function is an interface implementation, no unused check
             if (funcDecl->fromItfSymbol)
@@ -240,7 +240,7 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
     {
         if (node->parent->kind == AstNodeKind::If)
         {
-            const AstIf* ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
+            const AstIf* ifNode = castAst<AstIf>(node->parent, AstNodeKind::If);
             if (ifNode->ifBlock == node || ifNode->elseBlock == node)
                 return true;
         }

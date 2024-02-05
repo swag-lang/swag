@@ -473,7 +473,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     // Local variables marked as global
     /////////////////////////////////
     const auto funcDecl = (AstFuncDecl*) f.node;
-    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     for (const auto localVar : funcDecl->localGlobalVars)
     {
         if (localVar->ownerScope != scope)
@@ -587,8 +587,8 @@ static bool emitFctDebugS(SCBE_CPU& pp)
         if (!f.node || f.node->isSpecialFunctionGenerated())
             continue;
 
-        const auto decl     = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
+        const auto decl     = castAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
 
         // Add a func id type record
         /////////////////////////////////
@@ -597,7 +597,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
-            const auto typeThis       = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typeThis       = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
             tr->LF_MFuncId.parentType = SCBE_Debug::getOrCreateType(pp, typeThis->pointedType);
             tr->LF_MFuncId.type       = SCBE_Debug::getOrCreateType(pp, typeFunc);
         }
@@ -816,7 +816,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
 
             // Lexical blocks
             /////////////////////////////////
-            const auto funcDecl = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+            const auto funcDecl = castAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
             emitScope(pp, f, funcDecl->scope);
 
             // End

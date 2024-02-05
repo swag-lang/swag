@@ -100,7 +100,7 @@ llvm::DIType* LLVM_Debug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
         return it->second;
 
     // Normal c enum, integer only
-    const auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    const auto typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     if (typeInfoEnum->rawType->isNativeInteger())
     {
         const auto                    scope = file->getScope();
@@ -170,7 +170,7 @@ llvm::DIType* LLVM_Debug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     // Deal with the struct content now that the struct is registered
     VectorNative<llvm::Metadata*> subscripts;
-    const auto                    typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto                    typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     for (const auto& field : typeStruct->fields)
     {
         const auto fieldLine = field->declNode->token.startLocation.line + 1;
@@ -227,7 +227,7 @@ llvm::DIType* LLVM_Debug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     case TypeInfoKind::Array:
     {
-        const auto                    typeInfoPtr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto                    typeInfoPtr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         VectorNative<llvm::Metadata*> subscripts;
 
         auto* countNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::getSigned(llvm::Type::getInt64Ty(*llvmContext), typeInfoPtr->count));
@@ -241,7 +241,7 @@ llvm::DIType* LLVM_Debug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     case TypeInfoKind::Pointer:
     {
-        const auto    typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto    typeInfoPtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         llvm::DIType* result      = nullptr;
         if (typeInfoPtr->isPointerArithmetic())
             result = getPointerToType(typeInfoPtr->pointedType, file);
@@ -253,13 +253,13 @@ llvm::DIType* LLVM_Debug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     case TypeInfoKind::Slice:
     {
-        const auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto typeInfoPtr = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         return getSliceType(typeInfo, typeInfoPtr->pointedType, file);
     }
 
     case TypeInfoKind::TypedVariadic:
     {
-        const auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+        const auto typeInfoPtr = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
         return getSliceType(typeInfo, typeInfoPtr->rawType, file);
     }
 
@@ -270,7 +270,7 @@ llvm::DIType* LLVM_Debug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     case TypeInfoKind::LambdaClosure:
     {
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure);
         return dbgBuilder->createPointerType(getFunctionType(typeFunc, file), 64);
     }
 
@@ -379,10 +379,10 @@ llvm::DISubprogram* LLVM_Debug::startFunction(ByteCode* bc, AstFuncDecl** result
 
     if (bc->node)
     {
-        decl     = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+        decl     = castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
         name     = decl->token.text;
         line     = decl->token.startLocation.line;
-        typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
+        typeFunc = castTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
 
     if (resultDecl)
@@ -435,7 +435,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, LLVMPerTh
     TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
     llvm::DIFile*     file     = getOrCreateFile(bc->sourceFile);
     if (decl)
-        typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
+        typeFunc = castTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
 
     VectorNative<llvm::AllocaInst*> allocaParams;
     VectorNative<llvm::AllocaInst*> allocaRetval;
@@ -701,7 +701,7 @@ llvm::DIScope* LLVM_Debug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
         if (scanScope->kind == ScopeKind::FunctionBody)
         {
             SWAG_ASSERT(scanScope->parentScope->kind == ScopeKind::Function);
-            const auto decl = CastAst<AstFuncDecl>(scanScope->parentScope->owner, AstNodeKind::FuncDecl);
+            const auto decl = castAst<AstFuncDecl>(scanScope->parentScope->owner, AstNodeKind::FuncDecl);
             SWAG_ASSERT(decl->hasExtByteCode());
             parent = startFunction(decl->extByteCode()->bc);
             break;

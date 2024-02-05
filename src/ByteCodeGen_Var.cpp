@@ -9,7 +9,7 @@
 
 bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // No need to generate a local variable if it is never used
     if (context->sourceFile->module->mustOptimizeBytecode(node))
@@ -40,7 +40,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // Debug
     context->bc->localVars.push_back(context->node);
@@ -62,7 +62,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     bool mustDropLeft = false;
     if (typeInfo->isStruct())
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
@@ -186,7 +186,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 
     if (typeInfo->isArrayOfStruct())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         const auto finalType = typeArray->finalType;
         if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         {
@@ -195,7 +195,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 if (typeArray->totalCount == 1)
                 {
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
+                        emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
                     emitStructParameters(context, UINT32_MAX, retVal);
                 }
                 else
@@ -208,7 +208,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                     const auto seekJump = context->bc->numInstructions;
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
+                        emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
                     emitStructParameters(context, r0[1], retVal);
 
                     EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);

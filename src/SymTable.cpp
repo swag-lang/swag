@@ -238,14 +238,14 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
     // A struct
     if (typeInfo->isStruct())
     {
-        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        st.typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     }
 
     // An array of structs
     else if (typeInfo->isArrayOfStruct())
     {
-        const auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        st.typeStruct      = CastTypeInfo<TypeInfoStruct>(typeArr->finalType->getConcreteAlias(), TypeInfoKind::Struct);
+        const auto typeArr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        st.typeStruct      = castTypeInfo<TypeInfoStruct>(typeArr->finalType->getConcreteAlias(), TypeInfoKind::Struct);
     }
     else
     {
@@ -285,13 +285,13 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     {
     case AstNodeKind::EnumDecl:
     {
-        const auto enumNode = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
+        const auto enumNode = castAst<AstEnum>(node, AstNodeKind::EnumDecl);
         enumNode->scope     = nullptr;
         break;
     }
     case AstNodeKind::StructDecl:
     {
-        const auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
         structNode->scope     = nullptr;
         break;
     }
@@ -328,7 +328,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         token               = &funcNode->tokenName;
     }
 

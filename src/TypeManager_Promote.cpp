@@ -22,7 +22,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, const AstNode* right)
     if (!rightTypeInfo->isNativeInteger())
         return;
 
-    const auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
+    const auto leftNative = castTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
     if (leftNative->valueInteger == 0)
     {
         left->typeInfo = rightTypeInfo;

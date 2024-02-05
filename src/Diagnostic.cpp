@@ -700,7 +700,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 
     if (typeInfo->isAlias())
     {
-        const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+        const auto typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         if (typeAlias->rawType)
             str += FMT(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
     }

@@ -81,7 +81,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
     }
 
     context->tmpIdRef->parent = node;
-    const auto id             = CastAst<AstIdentifier>(context->tmpIdRef->childs.back(), AstNodeKind::Identifier);
+    const auto id             = castAst<AstIdentifier>(context->tmpIdRef->childs.back(), AstNodeKind::Identifier);
     id->sourceFile            = context->sourceFile;
     id->token.text            = node->token.text;
     id->inheritOwners(node);

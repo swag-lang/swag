@@ -227,7 +227,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
         const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
-        const auto identifier           = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        const auto identifier           = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
         identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
         identifier->token.startLocation = node->token.startLocation;
         identifier->token.endLocation   = node->token.endLocation;
@@ -259,7 +259,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 
         const auto idRef = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->inheritTokenLocation(node);
-        const auto identifier      = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        const auto identifier      = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
         identifier->inheritTokenLocation(node);
     }
@@ -310,7 +310,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
         const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
-        const auto identifier           = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        const auto identifier           = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
         identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
         identifier->token.startLocation = node->token.startLocation;
         identifier->token.endLocation   = node->token.endLocation;

@@ -125,7 +125,7 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
     if (!typeFirst->isLambdaClosure())
         return context->report({first, FMT(Err(Err0204), typeFirst->getDisplayNameC())});
 
-    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
     {
         const Diagnostic diag{first, FMT(Err(Err0738), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
@@ -154,7 +154,7 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
     if (!first->typeInfo->isPointerArithmetic() && !first->typeInfo->isCString())
         return context->report({first, FMT(Err(Err0195), name, first->typeInfo->getDisplayNameC())});
 
-    const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    const auto ptrPointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     SWAG_ASSERT(ptrPointer->pointedType);
 
     // Slice count
@@ -181,7 +181,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
     if (!first->typeInfo->isPointer())
         return context->report({first, FMT(Err(Err0196), node->token.ctext(), first->typeInfo->getDisplayNameC())});
 
-    const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    const auto ptrPointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
         return context->report({first, Err(Err0202)});
 
@@ -255,7 +255,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
 
     if (typeInfo->isEnum())
     {
-        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeEnum->values.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -288,7 +288,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     {
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
         node->setFlagsValueIsComputed();
-        const auto typeArray         = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray         = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue->reg.u64 = typeArray->count;
         if (node->computedValue->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoU64;
@@ -319,7 +319,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     else if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
-        const auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+        const auto typeList  = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeList->subTypes.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -393,7 +393,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 
     if (typeInfo->isListArray())
     {
-        const auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
+        const auto typeList  = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
         const auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->flags & AST_CONST_EXPR);
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeArray, nullptr, expression, CASTFLAG_DEFAULT));
         typeInfo = typeArray;
@@ -430,7 +430,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
-        const auto ptrSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrSlice->isConst())
             ptrFlags |= TYPEINFO_CONST;
@@ -461,7 +461,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
-        const auto ptrArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrArray->isConst())
             ptrFlags |= TYPEINFO_CONST;
@@ -571,7 +571,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
         concat.init(4 * 1024);
 
         AstOutput::OutputContext outputContext;
-        const auto               typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+        const auto               typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
         AstOutput::outputNode(outputContext, concat, typeCode->content);
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
             node->computedValue->text.append((const char*) b->datas, concat.bucketCount(b));
@@ -653,7 +653,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 {
-    auto       node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto       node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto       expr     = node->childs.front();
     const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
     node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
@@ -662,17 +662,17 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 
     if (typeInfo->isArray())
     {
-        const auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->typeInfo     = typeArr->pointedType;
     }
     else if (typeInfo->isSlice())
     {
-        const auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         node->typeInfo       = typeSlice->pointedType;
     }
     else if (typeInfo->isListArray())
     {
-        const auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
+        const auto typeList = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
         node->typeInfo      = typeList->subTypes[0]->typeInfo;
 
         // Need to be sure that the expression list can be casted to the equivalent array
@@ -705,7 +705,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 {
-    const auto node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    const auto node       = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto expr       = node->childs.front();
     const auto sourceFile = context->sourceFile;
     auto&      typeGen    = sourceFile->module->typeGen;
@@ -769,7 +769,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
     // For an enum, this is the raw type
     if (expr->typeInfo->isEnum())
     {
-        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
+        const auto typeEnum = castTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeEnum->rawType, &node->typeInfo));
         YIELD();
         node->inheritComputedValue(expr);
@@ -780,7 +780,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
     // For an alias, this is the raw type
     if (expr->typeInfo->isAlias())
     {
-        const auto typeAlias = CastTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
+        const auto typeAlias = castTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeAlias->rawType, &node->typeInfo));
         YIELD();
         node->inheritComputedValue(expr);
@@ -794,7 +794,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 {
-    const auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto       expr     = node->childs.front();
     auto       typeInfo = expr->typeInfo;
 
@@ -834,7 +834,7 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
 {
-    const auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto       expr     = node->childs.front();
     const auto typeInfo = expr->typeInfo;
 
@@ -851,7 +851,7 @@ bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 {
-    auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto node = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
 
     switch (node->tokenId)
     {

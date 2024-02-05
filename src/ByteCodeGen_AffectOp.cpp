@@ -9,7 +9,7 @@
 
 bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
-    const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+    const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
     const auto finalType = TypeManager::concreteType(typeArray->finalType);
     if (!finalType->isStruct())
     {
@@ -60,7 +60,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
         return true;
     }
 
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct);
     if (typeStruct->flags & TYPEINFO_STRUCT_NO_COPY)
     {
         Diagnostic diag{from, FMT(Err(Err0113), typeStruct->getDisplayNameC()), Diagnostic::isType(typeArray)};
@@ -180,9 +180,9 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0,
             inst->c.u32 = sizeof(void*);
 
             // Copy closure capture buffer
-            const auto nodeCapture = CastAst<AstMakePointer>(from, AstNodeKind::MakePointerLambda);
+            const auto nodeCapture = castAst<AstMakePointer>(from, AstNodeKind::MakePointerLambda);
             SWAG_ASSERT(nodeCapture->lambda->captureParameters);
-            const auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
+            const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
             if (!typeBlock->fields.empty())
             {
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
@@ -224,7 +224,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0,
         {
             EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
-            const auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
+            const auto typeArray = castTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
             const auto r2        = reserveRegisterRC(context);
 
             EMIT_INST1(context, ByteCodeOp::SetImmediate64, r2)->b.u64     = typeArray->count;
@@ -352,7 +352,7 @@ bool ByteCodeGen::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, 
     }
     else if (leftTypeInfo->isPointer())
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         const auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
             EMIT_INST1(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
@@ -413,7 +413,7 @@ bool ByteCodeGen::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0,
     }
     else if (leftTypeInfo->isPointer())
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         const auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
             EMIT_INST1(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
@@ -809,7 +809,7 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
     {
         if (node->semFlags & SEMFLAG_FLAT_PARAMS)
         {
-            const auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
+            const auto arrayNode = castAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
             context->allocateTempCallParams();
             context->allParamsTmp->childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, context->allParamsTmp));

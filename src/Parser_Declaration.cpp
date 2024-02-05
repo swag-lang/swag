@@ -285,7 +285,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
                 return SemanticError::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
             }
             else
-                newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
+                newScope = castTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
         }
 
         if (privName)
@@ -906,7 +906,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         Token tokenDot = token;
         eatToken();
         SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0367), token.ctext())));
-        return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
+        return doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With));
     }
 
     case TokenId::NativeType:

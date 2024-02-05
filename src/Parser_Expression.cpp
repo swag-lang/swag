@@ -282,7 +282,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         AstNode* idref;
         SWAG_CHECK(doIdentifierRef(parent, &idref));
         *result = idref;
-        CastAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
+        castAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
         break;
     }
 
@@ -1079,7 +1079,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
             const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
             idRef->token.startLocation      = node->token.startLocation;
             idRef->token.endLocation        = node->token.endLocation;
-            const auto identifier           = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+            const auto identifier           = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
             identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
             identifier->token.startLocation = node->token.startLocation;
             identifier->token.endLocation   = node->token.endLocation;
@@ -1473,7 +1473,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             // If the affect expression is a literal, it's better to duplicate also
             AstNode*   affectExpression = nullptr;
             bool       firstDone        = false;
-            const auto front            = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+            const auto front            = castAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
             front->computeName();
 
             const auto cloneFront = Ast::clone(front, nullptr);

@@ -101,7 +101,7 @@ Utf8 ByteCode::getCallNameFromDecl()
 {
     if (node)
     {
-        const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         return funcNode->getCallName();
     }
 
@@ -148,7 +148,7 @@ TypeInfoFuncAttr* ByteCode::getCallType() const
     if (alias)
         return alias->getCallType();
     if (out && node && node->typeInfo->isFuncAttr())
-        return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        return castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     return typeInfoFunc;
 }
 
@@ -248,7 +248,7 @@ bool ByteCode::canEmit() const
     if (!node)
         return true;
 
-    const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Do we need to generate that function ?
     if (funcNode->attributeFlags & ATTRIBUTE_COMPILER)
@@ -409,7 +409,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     // This is to mitigate the number of re-allocations, without wasting too much memory.
     if (!maxInstructions && node && node->kind == AstNodeKind::FuncDecl)
     {
-        const auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.
         maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
     }

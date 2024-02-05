@@ -91,7 +91,7 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 
 bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 {
-    const auto node  = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
+    const auto node  = castAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
     AstNode*   child = nullptr;
 
     // When this is a closure, we have /capture params/ref to the function/capture block/ref to the capture block
@@ -122,7 +122,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     // Block capture
     if (node->lambda && node->lambda->captureParameters)
     {
-        const auto     typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
+        const auto     typeBlock = castTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
         constexpr auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
         SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report({node->lambda->captureParameters, FMT(Err(Err0026), typeBlock->sizeOf, MaxSize)}));
     }
@@ -132,7 +132,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 
 bool Semantic::resolveMakePointer(SemanticContext* context)
 {
-    const auto node     = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
+    const auto node     = castAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
     const auto child    = node->childs.front();
     auto       typeInfo = child->typeInfo;
 
@@ -167,7 +167,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
             if (back->kind != AstNodeKind::Identifier)
                 return resolveMakePointerLambda(context);
 
-            const auto idBack = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
+            const auto idBack = castAst<AstIdentifier>(back, AstNodeKind::Identifier);
             if (!idBack->callParameters)
                 return resolveMakePointerLambda(context);
         }
@@ -219,7 +219,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         while (typeInfo->isArray())
         {
-            const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             typeInfo             = typeArray->pointedType;
         }
 
@@ -277,7 +277,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 bool Semantic::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
 {
     const auto arrayNode = context->node;
-    const auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
+    const auto slicing   = castAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     const auto upperNode = slicing->upperBound;
 
     context->node = upperNode;
@@ -300,7 +300,7 @@ bool Semantic::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 {
-    auto node         = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    auto node         = castAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto typeVar      = getConcreteTypeUnRef(node->array, CONCRETE_ALL);
     typeVar           = TypeManager::concreteType(typeVar);
     uint64_t maxBound = 0;
@@ -338,7 +338,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of an array
     if (typeVar->isArray())
     {
-        const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+        const auto typeInfoArray = castTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
         {
             Diagnostic diag{node, node->token, Err(Err0376)};
@@ -374,7 +374,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        const auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
+        const auto typeInfoPointer = castTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
         const auto ptrSlice        = makeType<TypeInfoSlice>();
         ptrSlice->pointedType      = typeInfoPointer->pointedType;
         if (typeInfoPointer->isConst())
@@ -533,7 +533,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 {
-    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (node->isForceTakeAddress())
         SWAG_CHECK(resolveArrayPointerRef(context));
@@ -548,7 +548,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
     // we must take the address and not dereference that identifier
     if (node->parent->kind == AstNodeKind::IdentifierRef)
     {
-        const auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+        const auto parent = castAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
         {
             // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
@@ -565,7 +565,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             // Unref
             if (typeReturn->isPointerRef() && !(node->semFlags & SEMFLAG_FROM_REF))
             {
-                const auto returnType = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
+                const auto returnType = castTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
                 if (returnType->isPointer())
                     node->semFlags |= SEMFLAG_FROM_PTR_REF;
             }
@@ -575,14 +575,14 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             // Get the pointed type if we have a pointer
             if (typeReturn->isPointer())
             {
-                const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
+                const auto typePointer = castTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
                 typeReturn             = typePointer->pointedType;
             }
 
             // And if this is a struct or an interface, we fill the startScope
             if (typeReturn->isStruct() || typeReturn->isInterface())
             {
-                const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
+                const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
                 parent->startScope    = typeStruct->scope;
             }
         }
@@ -595,7 +595,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 {
-    const auto arrayNode              = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayNode              = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     arrayNode->inheritOrFlag(arrayNode->array, AST_L_VALUE);
@@ -646,7 +646,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
 
         if (typePtr->pointedType->isVoid())
         {
@@ -685,7 +685,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typeArray   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+        const auto typeArray   = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typeArray->pointedType;
         arrayNode->byteCodeFct = ByteCodeGen::emitArrayRef;
 
@@ -709,7 +709,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Slice:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typePtr     = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+        const auto typePtr     = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGen::emitSliceRef;
         break;
@@ -757,7 +757,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 AstNode* child = arrayNode->array;
                 while (child->kind == AstNodeKind::ArrayPointerIndex)
                 {
-                    const auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                    const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                     arrayNode->structFlatParams.push_front(arrayChild->access);
                     child = arrayChild->array;
                 }
@@ -776,9 +776,9 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
 bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment)
 {
-    const auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayNode = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     const auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
-    const auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+    const auto typePtr   = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
 
     if (!arrayNode->typeInfo->isArray() && arrayNode->access->hasComputedValue())
     {
@@ -790,7 +790,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
         auto subArray = arrayNode;
         while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
         {
-            subArray      = CastAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
+            subArray      = castAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
             isConstAccess = isConstAccess && subArray->access->hasComputedValue();
             if (isConstAccess)
             {
@@ -798,7 +798,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
                     isConstAccess = false;
                 else
                 {
-                    const auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
+                    const auto subTypePtr = castTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
                     SWAG_CHECK(boundCheck(context, subArray->array->typeInfo, subArray->array, subArray->access, subTypePtr->count));
                     offsetAccess += subArray->access->computedValue->reg.u64 * subTypePtr->pointedType->sizeOf;
                 }
@@ -834,7 +834,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
 
 bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 {
-    const auto arrayNode   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayNode   = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     const auto arrayAccess = arrayNode->access;
     const auto arrayType   = getConcreteTypeUnRef(arrayNode->array, CONCRETE_ALL);
     arrayNode->byteCodeFct = ByteCodeGen::emitPointerDeRef;
@@ -905,7 +905,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
 
         if (typePtr->pointedType->isVoid())
         {
@@ -950,7 +950,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typePtr  = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+        const auto typePtr  = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode);
 
@@ -979,7 +979,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Slice:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typeSlice = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+        const auto typeSlice = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo  = typeSlice->pointedType;
         setupIdentifierRef(context, arrayNode);
 
@@ -1009,7 +1009,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::TypedVariadic:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        const auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
+        const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo     = typeVariadic->rawType;
         setupIdentifierRef(context, arrayNode);
         break;
@@ -1037,7 +1037,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         while (child->kind == AstNodeKind::ArrayPointerIndex &&
                (child->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL) == serial)
         {
-            const auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+            const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
             arrayNode->structFlatParams.push_front(arrayChild->access);
             child = arrayChild->array;
         }
@@ -1117,7 +1117,7 @@ bool Semantic::checkInitDropCount(SemanticContext* context, AstNode* node, AstNo
 
 bool Semantic::resolveInit(SemanticContext* context)
 {
-    const auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    const auto node               = castAst<AstInit>(context->node, AstNodeKind::Init);
     auto       expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     if (!node->count)
@@ -1142,7 +1142,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         TypeInfo* pointedType = nullptr;
         if (node->count)
         {
-            const auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+            const auto typeinfoPointer = castTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
             pointedType                = typeinfoPointer->pointedType;
         }
         else
@@ -1160,7 +1160,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         }
         else if (pointedType->isStruct())
         {
-            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
 
             SymbolMatchContext symMatchContext;
             symMatchContext.reset();
@@ -1208,7 +1208,7 @@ bool Semantic::resolveInit(SemanticContext* context)
 
 bool Semantic::resolveDropCopyMove(SemanticContext* context)
 {
-    const auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
+    const auto node               = castAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     const auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, FMT(Err(Err0196), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
@@ -1218,7 +1218,7 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
     {
-        const auto ptrType     = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+        const auto ptrType     = castTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
         const auto pointedType = TypeManager::concreteType(ptrType->pointedType);
         if (pointedType->flags & TYPEINFO_STRUCT_NO_COPY)
         {

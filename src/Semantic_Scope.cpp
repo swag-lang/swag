@@ -43,7 +43,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         SWAG_CHECK(resolveRetVal(context));
         const auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
         SWAG_ASSERT(fctDecl);
-        const auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(typeFct->returnType->isStruct());
         addDependentSymbol(dependentSymbols, typeFct->returnType->declNode->resolvedSymbolName, nullptr, 0);
         return true;
@@ -168,7 +168,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                         return context->report(diag, note);
                     }
 
-                    const auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
+                    const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);
 
                     // Prepend the 'with' identifier, and reevaluate
                     for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
@@ -384,10 +384,10 @@ void Semantic::collectAlternativeScopeVars(AstNode* startNode, VectorNative<Alte
                     // If this is a struct that comes from a generic, we need to also register the generic scope in order
                     // to be able to find generic functions to instantiate
                     SWAG_ASSERT(it0.scope->owner->typeInfo->isStruct());
-                    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
+                    const auto typeStruct = castTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
                     if (typeStruct->fromGeneric)
                     {
-                        const auto structDecl = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+                        const auto structDecl = castAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
                         addAlternativeScopeOnce(scopes, structDecl->scope, 0);
                     }
                 }
@@ -483,7 +483,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // That scope does not have a parent, so the hierarchy scan will stop at it.
     if (startNode->kind == AstNodeKind::Inline && !(flags & COLLECT_NO_INLINE_PARAMS))
     {
-        const auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+        const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
         addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
     }
@@ -512,7 +512,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
     else if (startNode->kind == AstNodeKind::Inline)
     {
-        const auto inlineBlock = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+        const auto inlineBlock = castAst<AstInline>(startNode, AstNodeKind::Inline);
         if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MIXIN))
         {
             if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MACRO))
@@ -553,7 +553,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
         if (startNode->kind == AstNodeKind::Inline)
         {
-            const auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+            const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
             SWAG_ASSERT(inlineNode->parametersScope);
             addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
         }

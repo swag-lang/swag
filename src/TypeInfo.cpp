@@ -133,7 +133,7 @@ bool TypeInfo::isPointerVoid()
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    const auto ptr   = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    const auto ptr   = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
     const auto unref = ptr->pointedType->getConcreteAlias();
     if (!unref->isNative())
         return false;
@@ -173,19 +173,19 @@ TypeInfo* TypeInfo::getFinalType()
     {
         if (retType->isPointer())
         {
-            retType = CastTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
+            retType = castTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
             continue;
         }
 
         if (retType->isSlice())
         {
-            retType = CastTypeInfo<TypeInfoSlice>(retType, TypeInfoKind::Slice)->pointedType;
+            retType = castTypeInfo<TypeInfoSlice>(retType, TypeInfoKind::Slice)->pointedType;
             continue;
         }
 
         if (retType->isArray())
         {
-            retType = CastTypeInfo<TypeInfoArray>(retType, TypeInfoKind::Array)->finalType;
+            retType = castTypeInfo<TypeInfoArray>(retType, TypeInfoKind::Array)->finalType;
             continue;
         }
 
@@ -199,14 +199,14 @@ TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
 {
     const auto self = getConcreteAlias();
     if (self->kind == TypeInfoKind::Struct)
-        return CastTypeInfo<TypeInfoStruct>(self, TypeInfoKind::Struct);
+        return castTypeInfo<TypeInfoStruct>(self, TypeInfoKind::Struct);
 
     if (self->kind == TypeInfoKind::Pointer)
     {
-        const auto typePointer = CastTypeInfo<TypeInfoPointer>(self, TypeInfoKind::Pointer);
+        const auto typePointer = castTypeInfo<TypeInfoPointer>(self, TypeInfoKind::Pointer);
         const auto pointed     = typePointer->pointedType->getConcreteAlias();
         if (pointed->isStruct())
-            return CastTypeInfo<TypeInfoStruct>(pointed, TypeInfoKind::Struct);
+            return castTypeInfo<TypeInfoStruct>(pointed, TypeInfoKind::Struct);
     }
 
     return nullptr;
@@ -216,7 +216,7 @@ bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    const auto ptr = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
     if (!ptr->pointedType)
         return false;
     return ptr->pointedType->getConcreteAlias()->isNative(pointerKind);
@@ -226,7 +226,7 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    const auto ptr = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
     if (!ptr->pointedType)
         return false;
     return ptr->pointedType->getConcreteAlias()->kind == pointerKind;
@@ -236,7 +236,7 @@ bool TypeInfo::isPointerTo(const TypeInfo* finalType)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    const auto ptr = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
     if (!ptr->pointedType)
         return false;
     return ptr->pointedType->getConcreteAlias() == finalType;
@@ -246,7 +246,7 @@ bool TypeInfo::isPointerToTypeInfo() const
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+    const auto ptr = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
     if (!ptr->pointedType)
         return false;
     return ptr->pointedType->getConcreteAlias()->flags & TYPEINFO_STRUCT_TYPEINFO;
@@ -268,7 +268,7 @@ bool TypeInfo::isArrayOfStruct() const
 {
     if (kind != TypeInfoKind::Array)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoArray>(this, TypeInfoKind::Array);
+    const auto ptr = castTypeInfo<TypeInfoArray>(this, TypeInfoKind::Array);
     return ptr->finalType->getConcreteAlias()->isStruct();
 }
 
@@ -276,7 +276,7 @@ bool TypeInfo::isArrayOfEnum() const
 {
     if (kind != TypeInfoKind::Array)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoArray>(this, TypeInfoKind::Array);
+    const auto ptr = castTypeInfo<TypeInfoArray>(this, TypeInfoKind::Array);
     return ptr->finalType->getConcreteAlias()->isEnum();
 }
 
@@ -284,7 +284,7 @@ bool TypeInfo::isMethod() const
 {
     if (kind != TypeInfoKind::FuncAttr)
         return false;
-    const auto ptr = CastTypeInfo<TypeInfoFuncAttr>(this, kind);
+    const auto ptr = castTypeInfo<TypeInfoFuncAttr>(this, kind);
     if (ptr->parameters.empty())
         return false;
     const auto param = ptr->parameters[0];

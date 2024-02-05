@@ -53,7 +53,7 @@ bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeIn
     }
     else if (typeInfo->isPointer())
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         const auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
         {
@@ -97,7 +97,7 @@ bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeI
         const auto rightTypeInfo = TypeManager::concretePtrRefType(node->childs[1]->typeInfo);
         if (rightTypeInfo->isPointer())
         {
-            const auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
+            const auto rightTypePointer = castTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
             EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             const auto sizeOf = rightTypePointer->pointedType->sizeOf;
             if (sizeOf > 1)
@@ -147,7 +147,7 @@ bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeI
     }
     else if (typeInfo->isPointer())
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         const auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
         {
@@ -500,7 +500,7 @@ bool ByteCodeGen::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, u
 bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 {
     const auto left    = context->node;
-    const auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+    const auto binNode = castAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
@@ -553,7 +553,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    const auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    const auto node = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
 
     // Because of the shortcuts, there's no need to actually do a 'and' here, as we are sure that the
     // expression on the left is true because of the shortcut
@@ -570,7 +570,7 @@ bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint3
 bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 {
     const auto left    = context->node;
-    const auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+    const auto binNode = castAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
@@ -617,7 +617,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    const auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    const auto node = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
     const auto inst = &context->bc->out[node->seekJumpExpression];
@@ -770,7 +770,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     SWAG_ASSERT(node->extension);
     const auto symbolOverload = node->extMisc()->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
-    const auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
     // Note: Do not inline a call when evaluation compile time affectation (SEMFLAG_EXEC_RET_STACK)
     if (funcDecl->mustInline() && !(node->semFlags & SEMFLAG_EXEC_RET_STACK))

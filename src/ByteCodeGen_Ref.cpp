@@ -9,7 +9,7 @@
 
 bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -41,7 +41,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -62,9 +62,9 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 {
-    const auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node          = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     const auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCE_ALIAS);
-    const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
+    const auto typeInfoArray = castTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -94,7 +94,7 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -253,7 +253,7 @@ bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, T
 
 bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    const auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node     = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     const auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
     const auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
@@ -284,7 +284,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     {
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
-        const auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto typeInfoSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
@@ -337,7 +337,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a pointer
     else if (typeInfo->isPointer())
     {
-        const auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto typeInfoPointer = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
@@ -365,7 +365,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of an array
     else if (typeInfo->isArray())
     {
-        const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeInfoArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
         if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRc, typeInfoArray);
@@ -452,7 +452,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
+    const auto node = castAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
 
     AstNode* front;
     if (node->lambda && node->lambda->captureParameters)
@@ -460,7 +460,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     else
         front = node->childs.front();
 
-    const auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    const auto funcNode = castAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     if (!funcNode->isForeign())
     {
@@ -504,7 +504,7 @@ bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context)
 {
     const auto upperNode = context->node;
-    const auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
+    const auto slicing   = castAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     const auto arrayNode = slicing->array;
 
     if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
@@ -534,7 +534,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
 
 bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
-    const auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    const auto node    = castAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     const auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
 
     if (!(node->lowerBound->semFlags & SEMFLAG_CAST1))
@@ -576,13 +576,13 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 
     uint64_t sizeOf;
     if (typeVar->isArray())
-        sizeOf = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->finalType->sizeOf;
+        sizeOf = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->finalType->sizeOf;
     else if (typeVar->isString())
         sizeOf = 1;
     else if (typeVar->isSlice())
-        sizeOf = CastTypeInfo<TypeInfoSlice>(typeVar, TypeInfoKind::Slice)->pointedType->sizeOf;
+        sizeOf = castTypeInfo<TypeInfoSlice>(typeVar, TypeInfoKind::Slice)->pointedType->sizeOf;
     else if (typeVar->isPointer())
-        sizeOf = CastTypeInfo<TypeInfoPointer>(typeVar, TypeInfoKind::Pointer)->pointedType->sizeOf;
+        sizeOf = castTypeInfo<TypeInfoPointer>(typeVar, TypeInfoKind::Pointer)->pointedType->sizeOf;
     else
         return Report::internalError(context->node, "emitMakeArrayPointerSlicing, type not supported");
 

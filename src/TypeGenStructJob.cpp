@@ -10,7 +10,7 @@
 bool TypeGenStructJob::computeStruct()
 {
     const auto concreteType = (ExportedTypeInfoStruct*) exportedTypeInfoValue;
-    const auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+    const auto realType     = castTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     const auto attributes   = realType->declNode ? realType->declNode->attributeFlags : 0;
 
     concreteType->base.sizeOf = realType->sizeOf;
@@ -204,7 +204,7 @@ bool TypeGenStructJob::computeStruct()
                     // 'value' will contain a pointer to the lambda.
                     // Register it for later patches
                     uint32_t     fieldOffset = storageArray + offsetof(ExportedTypeValue, value);
-                    AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+                    AstFuncDecl* funcNode    = castAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
                     patchMethods.push_back({funcNode, fieldOffset});
 
                     storageArray += sizeof(ExportedTypeValue);
@@ -259,7 +259,7 @@ JobResult TypeGenStructJob::execute()
     baseContext        = &context;
 
     SWAG_ASSERT(typeInfo->isStruct() || typeInfo->isInterface());
-    const auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+    const auto realType = castTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
 
     Semantic::waitTypeCompleted(this, typeInfo);
     if (baseContext->result != ContextResult::Done)

@@ -175,14 +175,14 @@ void Semantic::setDefaultAccess(AstNode* node)
     {
         if (node->kind == AstNodeKind::StructDecl)
         {
-            const auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+            const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
             SWAG_ASSERT(structNode->originalGeneric);
             node->semFlags |= structNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK;
         }
 
         if (node->kind == AstNodeKind::FuncDecl)
         {
-            const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+            const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode->originalGeneric);
             node->semFlags |= funcNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK;
         }
@@ -242,7 +242,7 @@ namespace
                     {
                         if (n->kind == AstNodeKind::ConstDecl || n->kind == AstNodeKind::VarDecl)
                         {
-                            const auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
+                            const auto varDecl = castAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
                             if (varDecl->type)
                                 *onNode = varDecl->type;
                         }

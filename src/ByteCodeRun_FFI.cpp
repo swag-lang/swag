@@ -8,7 +8,7 @@
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip)
 {
-    const auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    const auto nodeFunc = castAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     return ffiGetFuncAddress(context, nodeFunc);
 }
 
@@ -16,7 +16,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 {
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload);
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload->typeInfo);
-    const auto  typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+    const auto  typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
     const auto& funcName = nodeFunc->token.text;
 
     // Load module if specified
@@ -88,7 +88,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             return;
     }
 
-    const auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
+    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
     ffiCall(context, ip, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 
@@ -161,7 +161,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
 
         if (ip->op == ByteCodeOp::ForeignCall || ip->op == ByteCodeOp::ForeignCallPop)
         {
-            const auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            const auto funcDecl = castAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
             const auto callName = funcDecl->getCallName();
             context->bc->ffiProfile[callName].count += 1;
             context->bc->ffiProfile[callName].cum += now - context->bc->profileStart;

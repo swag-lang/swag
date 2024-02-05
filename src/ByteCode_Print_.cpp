@@ -309,7 +309,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     case ByteCodeOp::ForeignCall:
     case ByteCodeOp::ForeignCallPop:
     {
-        const auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
         line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
         line.pretty += " ";
         break;

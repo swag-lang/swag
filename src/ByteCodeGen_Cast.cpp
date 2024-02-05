@@ -88,12 +88,12 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
     SWAG_IF_ASSERT(const TypeInfoStruct* fromTypeStruct = nullptr);
     if (fromTypeInfo->isStruct())
     {
-        SWAG_IF_ASSERT(fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct));
+        SWAG_IF_ASSERT(fromTypeStruct = castTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct));
     }
     else if (fromTypeInfo->isPointerTo(TypeInfoKind::Struct))
     {
-        SWAG_IF_ASSERT(const auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer));
-        SWAG_IF_ASSERT(fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct));
+        SWAG_IF_ASSERT(const auto fromTypePointer = castTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer));
+        SWAG_IF_ASSERT(fromTypeStruct = castTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct));
     }
     else
     {
@@ -610,7 +610,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
 
     if (fromTypeInfo->isArray())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode->resultRegisterRc);
         node->resultRegisterRc = exprNode->resultRegisterRc;
         const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRc[1]);
@@ -621,7 +621,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
     if (fromTypeInfo->isListTuple())
     {
 #ifdef SWAG_HAS_ASSERT
-        const auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
+        const auto typeList = castTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         SWAG_ASSERT(typeList->subTypes.size() == 2);
         SWAG_ASSERT(typeList->subTypes[0]->typeInfo->isPointer() || typeList->subTypes[0]->typeInfo->isArray());
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->isNative());
@@ -638,11 +638,11 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
 bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     const auto node        = context->node;
-    const auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+    const auto toTypeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
     if (fromTypeInfo->isTypedVariadic())
     {
-        const auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
+        const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
         fromTypeInfo            = TypeManager::concreteType(typeVariadic->rawType);
     }
 
@@ -652,7 +652,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     }
     else if (fromTypeInfo->isSlice())
     {
-        const auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
+        const auto fromTypeSlice = castTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
 
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
         if (fromTypeSlice->pointedType->sizeOf > toTypeSlice->pointedType->sizeOf)
@@ -672,7 +672,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     }
     else if (fromTypeInfo->isListTuple())
     {
-        const auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
+        const auto fromTypeList = castTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         const auto diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
         const auto inst        = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRc[1]);
@@ -681,7 +681,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     }
     else if (fromTypeInfo->isListArray())
     {
-        const auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
+        const auto fromTypeList = castTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
         transformResultToLinear2(context, exprNode->resultRegisterRc);
         node->resultRegisterRc = exprNode->resultRegisterRc;
         const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1]);
@@ -689,7 +689,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     }
     else if (fromTypeInfo->isArray())
     {
-        const auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        const auto fromTypeArray = castTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode->resultRegisterRc);
         node->resultRegisterRc = exprNode->resultRegisterRc;
         const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1]);
@@ -976,7 +976,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
 bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 {
-    const auto node         = CastAst<AstCast>(context->node, AstNodeKind::Cast);
+    const auto node         = castAst<AstCast>(context->node, AstNodeKind::Cast);
     const auto typeInfo     = node->toCastTypeInfo;
     const auto exprNode     = node->childs[1];
     const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
@@ -999,7 +999,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
-    const auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
     const auto exprNode = node->childs[0];
 
     // Will be done by parent in case of a func call param

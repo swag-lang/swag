@@ -13,7 +13,7 @@
 
 bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto       node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    auto       node          = castAst<AstOp>(context->node, AstNodeKind::FactorOp);
     const auto sourceFile    = context->sourceFile;
     auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -1157,7 +1157,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 
 bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    const auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    const auto node         = castAst<AstOp>(context->node, AstNodeKind::FactorOp);
     const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->isStruct())
@@ -1235,7 +1235,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
 bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    const auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    const auto node         = castAst<AstOp>(context->node, AstNodeKind::FactorOp);
     const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->isStruct())

@@ -16,10 +16,10 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
     {
     case TypeInfoKind::Struct:
     {
-        const auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+        const auto wantedStruct = castTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
         if (callTypeInfo->isStruct())
         {
-            const auto callStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
+            const auto callStruct = castTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
             if (!callStruct->genericParameters.empty())
             {
                 const auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
@@ -41,7 +41,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
         }
         else if (callTypeInfo->isListTuple())
         {
-            const auto callList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
+            const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
             const auto num      = min(wantedStruct->genericParameters.size(), callList->subTypes.size());
             for (size_t idx = 0; idx < num; idx++)
             {
@@ -84,13 +84,13 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 
     case TypeInfoKind::Pointer:
     {
-        const auto wantedPointer = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
+        const auto wantedPointer = castTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
         if (wantedPointer->isPointerTo(TypeInfoKind::Struct) && callTypeInfo->isPointerTo(TypeInfoKind::Struct))
         {
             // Because of using var cast, we can have here *A and *B with a match.
             // But we do not want A and B to match in generic replacement.
             // So we check they are the same.
-            const auto callPointer = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
+            const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
             if (wantedPointer->pointedType->isSame(callPointer->pointedType, CASTFLAG_CAST))
             {
                 wantedTypeInfos.push_back(wantedPointer->pointedType);
@@ -110,7 +110,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
         }
         else if (callTypeInfo->isPointer())
         {
-            const auto callPointer = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
+            const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
             wantedTypeInfos.push_back(wantedPointer->pointedType);
             callTypeInfos.push_back(callPointer->pointedType);
         }
@@ -124,19 +124,19 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 
     case TypeInfoKind::Array:
     {
-        const auto wantedArray = CastTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
+        const auto wantedArray = castTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
 
         uint32_t count = 0;
         if (callTypeInfo->isArray())
         {
-            const auto callArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+            const auto callArray = castTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
             wantedTypeInfos.push_back(wantedArray->finalType);
             callTypeInfos.push_back(callArray->finalType);
             count = callArray->count;
         }
         else if (callTypeInfo->isListArray())
         {
-            const auto callList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+            const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
             wantedTypeInfos.push_back(wantedArray->finalType);
             callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
             count = callList->subTypes.count;
@@ -191,22 +191,22 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 
     case TypeInfoKind::Slice:
     {
-        const auto wantedSlice = CastTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
+        const auto wantedSlice = castTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
         if (callTypeInfo->isSlice())
         {
-            const auto callSlice = CastTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
+            const auto callSlice = castTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
             wantedTypeInfos.push_back(wantedSlice->pointedType);
             callTypeInfos.push_back(callSlice->pointedType);
         }
         else if (callTypeInfo->isArray())
         {
-            const auto callArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+            const auto callArray = castTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
             wantedTypeInfos.push_back(wantedSlice->pointedType);
             callTypeInfos.push_back(callArray->pointedType);
         }
         else if (callTypeInfo->isListArray())
         {
-            const auto callList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+            const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
             wantedTypeInfos.push_back(wantedSlice->pointedType);
             callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
         }
@@ -220,8 +220,8 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 
     case TypeInfoKind::LambdaClosure:
     {
-        const auto wantedLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
-        const auto callLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
+        const auto wantedLambda = castTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
+        const auto callLambda   = castTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
 
         if (wantedLambda->returnType &&
             wantedLambda->returnType->isGeneric())
@@ -233,7 +233,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             }
             else
             {
-                const AstFuncDecl* decl = CastAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
+                const AstFuncDecl* decl = castAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
                 if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->flags & OVERLOAD_UNDEFINED)
                 {
                     const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
@@ -332,8 +332,8 @@ void Generic::deduceType(SymbolMatchContext&      context,
     // :DupGen
     if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
     {
-        const auto callStruct   = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
-        const auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+        const auto callStruct   = castTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
+        const auto wantedStruct = castTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
         if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() &&
             !callStruct->genericParameters.empty())
         {

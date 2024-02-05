@@ -37,7 +37,7 @@ bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& star
 
 bool Semantic::processLiteralString(SemanticContext* context)
 {
-    const auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
+    const auto node = castAst<AstLiteral>(context->node, AstNodeKind::Literal);
     if (node->literalType != LiteralType::TT_STRING_ESCAPE &&
         node->literalType != LiteralType::TT_STRING_MULTILINE_ESCAPE &&
         node->literalType != LiteralType::TT_CHARACTER_ESCAPE)
@@ -384,7 +384,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
     // Search if identifier is a type
     if (node->tokenId == TokenId::Identifier)
     {
-        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
         // We do not want error. If identifier is not known, then we consider it as a 'user' suffix
         identifier->identifierRef()->flags |= AST_SILENT_CHECK;
@@ -404,7 +404,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
 
 bool Semantic::resolveLiteral(SemanticContext* context)
 {
-    auto       node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
+    auto       node       = castAst<AstLiteral>(context->node, AstNodeKind::Literal);
     const auto sourceFile = context->sourceFile;
 
     switch (node->tokenId)

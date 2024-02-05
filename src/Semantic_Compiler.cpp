@@ -132,7 +132,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
             SymbolName* symCount   = nullptr;
             SymbolName* symSlice   = nullptr;
-            auto        typeStruct = CastTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
+            auto        typeStruct = castTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
             SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, typeStruct, &symCount));
             SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
 
@@ -196,7 +196,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     ok = true;
                 else if (concreteType->isSlice())
                 {
-                    auto typeSlice        = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+                    auto typeSlice        = castTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
                     auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
                     if (typeSliceContent->isString() ||
                         typeSliceContent->isBool() ||
@@ -303,7 +303,7 @@ bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 
 bool Semantic::resolveCompilerRun(SemanticContext* context)
 {
-    const auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun, AstNodeKind::CompilerRunExpression);
+    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun, AstNodeKind::CompilerRunExpression);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -325,7 +325,7 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
 
 bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 {
-    const auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
+    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -342,7 +342,7 @@ bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 
 bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 {
-    const auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
+    const auto node = castAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -459,7 +459,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
 bool Semantic::resolveCompilerMixin(SemanticContext* context)
 {
-    const auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
+    const auto node = castAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
 
     if (node->semFlags & SEMFLAG_COMPILER_INSERT)
     {
@@ -476,7 +476,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
-    const auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+    const auto typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
     SWAG_ASSERT(typeCode->content);
 
     CloneContext cloneContext;
@@ -682,7 +682,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
 
 bool Semantic::resolveCompilerIf(SemanticContext* context)
 {
-    const auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
+    const auto node = castAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
@@ -810,7 +810,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
         if (locNode->kind == AstNodeKind::FuncCallParam && locNode->childs.front()->kind == AstNodeKind::IdentifierRef)
         {
-            const auto id = CastAst<AstIdentifier>(locNode->childs.back()->childs.back(), AstNodeKind::Identifier);
+            const auto id = castAst<AstIdentifier>(locNode->childs.back()->childs.back(), AstNodeKind::Identifier);
             if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
             {
                 locNode = id->identifierExtension->fromAlternateVar;
@@ -822,7 +822,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         // :ForLocationInValidIf
         if (locNode->kind == AstNodeKind::IdentifierRef)
         {
-            const auto id = CastAst<AstIdentifier>(locNode->childs.back(), AstNodeKind::Identifier);
+            const auto id = castAst<AstIdentifier>(locNode->childs.back(), AstNodeKind::Identifier);
             if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
             {
                 locNode = id->identifierExtension->fromAlternateVar;
@@ -833,7 +833,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
         if (locNode->ownerFct && locNode->ownerFct->typeInfo && locNode->ownerFct->requestedGeneric)
         {
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             for (const auto& val : typeFunc->replaceTypes | views::values)
             {
                 bool fromGen = false;

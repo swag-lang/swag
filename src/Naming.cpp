@@ -344,7 +344,7 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
     case AstNodeKind::Impl:
     {
         article        = "an";
-        const auto ast = CastAst<AstImpl>(node, AstNodeKind::Impl);
+        const auto ast = castAst<AstImpl>(node, AstNodeKind::Impl);
         if (ast->identifierFor)
             return "interface implementation block";
         return "implementation block";

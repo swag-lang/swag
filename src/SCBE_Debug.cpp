@@ -60,7 +60,7 @@ void SCBE_Debug::getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInf
 
         if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
         {
-            const auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
+            const auto typeStructField = castTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
             getStructFields(pp, tr, typeStructField, baseOffset + p->offset);
         }
     }
@@ -79,7 +79,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isPointer())
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto typePtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         return getOrCreatePointerToType(pp, typePtr->pointedType, typePtr->isPointerRef() && !forceUnRef);
     }
 
@@ -94,7 +94,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isSlice())
     {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto typeInfoPtr = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         return getTypeSlice(pp, typeInfo, typeInfoPtr->pointedType, &iter.first->second);
     }
 
@@ -109,7 +109,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isTypedVariadic())
     {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+        auto typeInfoPtr = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
         return getTypeSlice(pp, typeInfo, typeInfoPtr->rawType, &iter.first->second);
     }
 
@@ -117,7 +117,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isArray())
     {
-        auto typeArr             = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeArr             = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto tr                  = addTypeRecord(pp);
         tr->kind                 = LF_ARRAY;
         tr->LF_Array.elementType = getOrCreateType(pp, typeArr->pointedType, true);
@@ -224,7 +224,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isStruct())
     {
-        TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto            sname      = SCBE_Debug::getScopedName(typeStruct->declNode);
 
         if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
@@ -273,7 +273,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isEnum())
     {
-        TypeInfoEnum* typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        TypeInfoEnum* typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         auto          sname        = SCBE_Debug::getScopedName(typeInfoEnum->declNode);
 
         // List of values
@@ -323,7 +323,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isFuncAttr() || typeInfo->isLambdaClosure())
     {
-        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         auto              tr0      = addTypeRecord(pp);
 
         // Get the arg list type. We construct a string with all parameters to be able to
@@ -361,7 +361,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         {
             tr0->kind                    = LF_MFUNCTION;
             tr0->LF_MFunction.returnType = getOrCreateType(pp, typeFunc->returnType);
-            auto typeThis                = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeThis                = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
             tr0->LF_MFunction.structType = getOrCreateType(pp, typeThis->pointedType);
             tr0->LF_MFunction.thisType   = getOrCreateType(pp, typeThis);
             tr0->LF_MFunction.numArgs    = numArgs;

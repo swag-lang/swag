@@ -13,13 +13,13 @@
 
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
-    const auto   funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto   funcDecl = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     PushLocation pl(context, &funcDecl->content->token.endLocation);
     PushNode     pn(context, funcDecl->content);
 
     // No need to do the scope leave stuff if the function does return something, because
     // it has been covered by the mandatory return
-    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     if (!typeInfo->returnType->isVoid())
         return true;
 
@@ -34,7 +34,7 @@ bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
+    const auto node = castAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
 
     // Special case when the parameter comes from an ufcs call that returns an interface.
     // In that case 'specUfcsNode' is the node that makes the call. The register will be
@@ -66,7 +66,7 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
 {
-    AstReturn* node       = CastAst<AstReturn>(context->node, AstNodeKind::Return);
+    AstReturn* node       = castAst<AstReturn>(context->node, AstNodeKind::Return);
     const auto funcNode   = node->ownerFct;
     TypeInfo*  returnType = nullptr;
 
@@ -132,9 +132,9 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 {
                     // Copy closure capture buffer
                     // Do it first, because source stack can be shared with node->ownerInline->resultRegisterRC
-                    const auto nodeCapture = CastAst<AstMakePointer>(returnExpression, AstNodeKind::MakePointerLambda);
+                    const auto nodeCapture = castAst<AstMakePointer>(returnExpression, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
-                    const auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
+                    const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
                     if (!typeBlock->fields.empty())
                     {
                         const auto r1 = reserveRegisterRC(context);
@@ -176,7 +176,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         {
             if (returnType->isStruct())
             {
-                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
                 // :ReturnStructByValue
                 if (CallConv::returnStructByValue(typeFunc))
@@ -251,9 +251,9 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     inst->c.u32 = sizeof(void*);
 
                     // Copy closure capture buffer
-                    const auto nodeCapture = CastAst<AstMakePointer>(child, AstNodeKind::MakePointerLambda);
+                    const auto nodeCapture = castAst<AstMakePointer>(child, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
-                    const auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
+                    const auto typeBlock = castTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
                     if (!typeBlock->fields.empty())
                     {
                         EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
@@ -319,7 +319,7 @@ bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     const auto storageOffset = param->resolvedSymbolOverload->computedValue.storageOffset;
     SWAG_ASSERT(storageOffset != UINT32_MAX);
     inst->b.u64         = storageOffset;
-    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
     inst->c.u32         = typeInfo->numTotalRegisters();
     freeRegisterRC(context, childDest);
     return true;
@@ -349,8 +349,8 @@ bool ByteCodeGen::emitIntrinsicCVaArg(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 {
-    auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
-    auto callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
+    auto node       = castAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
+    auto callParams = castAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
 
     // If the intrinsic is defined in runtime, then need to wait for the function bytecode
     // to be generated
@@ -1182,7 +1182,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 {
-    const auto node     = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    const auto node     = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     const auto overload = node->resolvedSymbolOverload;
 
     SWAG_CHECK(emitIdentifier(context));
@@ -1195,7 +1195,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 
     if (node->isSilentCall())
     {
-        const auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
+        const auto typeArr = castTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
         typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
     }
 
@@ -1255,7 +1255,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
 {
     AstNode*   node     = context->node;
     const auto overload = node->resolvedSymbolOverload;
-    const auto funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    const auto funcNode = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     const auto allParams = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
@@ -1330,7 +1330,7 @@ void ByteCodeGen::computeSourceLocation(JobContext* context, AstNode* node, uint
 bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
 {
     const auto node         = context->node;
-    const auto defaultParam = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
+    const auto defaultParam = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
     SWAG_ASSERT(defaultParam->assignment);
 
     if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
@@ -1514,13 +1514,13 @@ bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* 
         {
             if (node->ownerInline)
             {
-                SWAG_IF_ASSERT(const auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerInline->func->typeInfo, TypeInfoKind::FuncAttr));
+                SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerInline->func->typeInfo, TypeInfoKind::FuncAttr));
                 SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline->resultRegisterRc);
             }
             else
             {
-                SWAG_IF_ASSERT(const auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr));
+                SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr));
                 SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRc);
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
@@ -1547,9 +1547,9 @@ bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* 
         testReturn->parent->parent->parent->typeInfo &&
         testReturn->parent->parent->parent->typeInfo->isStruct())
     {
-        const auto varNode  = CastAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        const auto varNode  = castAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         const auto resolved = varNode->resolvedSymbolOverload;
-        const auto param    = CastAst<AstFuncCallParam>(testReturn->parent, AstNodeKind::FuncCallParam);
+        const auto param    = castAst<AstFuncCallParam>(testReturn->parent, AstNodeKind::FuncCallParam);
         SWAG_ASSERT(param->resolvedParameter);
         const auto typeParam = param->resolvedParameter;
 
@@ -1595,25 +1595,25 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
     if (funcNode)
     {
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+        typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     }
     else if (varNode->typeInfo->isArray())
     {
         // :SilentCall
-        auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
+        auto typeArr = castTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
         auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
+        typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
     else if (varNode->typeInfo->isPointerRef())
     {
         auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_FORCE_ALIAS);
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
+        typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
     }
     else
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_FORCE_ALIAS);
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
+        typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
 
     // Be sure referenced function has bytecode
@@ -1657,7 +1657,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     bool RRsaved = false;
     if (node->ownerFct && node->flags & AST_IN_DEFER)
     {
-        auto ownerTypeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        auto ownerTypeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
         if (!ownerReturnType->isVoid())
         {
@@ -1679,8 +1679,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     {
         ranges::sort(allParams->childs, [](AstNode* n1, AstNode* n2)
         {
-            const AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-            const AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+            const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+            const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
             return p1->indexParam < p2->indexParam;
         });
     }
@@ -1759,7 +1759,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             bool covered = false;
             for (int j = 0; j < numCallParams; j++)
             {
-                auto param = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
+                auto param = castAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                 if (param->indexParam == i)
                 {
                     if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
@@ -1798,18 +1798,18 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                     SWAG_ASSERT(typeInfoFunc->declNode);
                     if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
                     {
-                        auto funcDesc = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
+                        auto funcDesc = castAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
                         parameters    = funcDesc->parameters;
                     }
                     else
                     {
-                        auto funcDesc = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+                        auto funcDesc = castAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
                         parameters    = funcDesc->childs.front();
                     }
                 }
 
                 // Empty variadic parameter
-                auto defaultParam = CastAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
+                auto defaultParam = castAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
                 if (!defaultParam->typeInfo->isVariadic() &&
                     !defaultParam->typeInfo->isTypedVariadic() &&
                     !defaultParam->typeInfo->isCVariadic())
@@ -1843,7 +1843,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         bool      forVariadic     = false;
         if (typeInfoFunc->parameters.back()->typeInfo->isTypedVariadic())
         {
-            auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+            auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
             typeRawVariadic   = typeVariadic->rawType;
             forVariadic       = true;
         }
@@ -2032,7 +2032,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
     else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
     {
-        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+        auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
         auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters());
 
         RegisterList r0;
@@ -2121,7 +2121,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
                 if (node->semFlags & SEMFLAG_FROM_REF && !node->isForceTakeAddress())
                 {
-                    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
+                    auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
                     SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
                     SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, ptrPointer->pointedType));
                 }
@@ -2249,7 +2249,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     // Store RR if input value is defined (return by address)
     // If we are in a function that need to keep the RR0 register alive, we need to save it
-    const auto ownerTypeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto ownerTypeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
     const auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
     if (!ownerReturnType->isVoid())
     {
@@ -2291,7 +2291,7 @@ bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
 {
     AstNode*   node      = context->node;
     const auto overload  = node->resolvedSymbolOverload;
-    const auto funcNode  = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    const auto funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     const auto allParams = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, true, false, true);

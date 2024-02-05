@@ -72,7 +72,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 {
     const auto expr    = context->node;
-    const auto binNode = CastAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
+    const auto binNode = castAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
@@ -88,7 +88,7 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 {
     const auto ifTrue  = context->node;
-    const auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
+    const auto binNode = castAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
 
     // Reserve registers in the main node to copy the result
     reserveRegisterRC(context, binNode->resultRegisterRc, ifTrue->resultRegisterRc.size());
@@ -108,7 +108,7 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 {
-    const auto node       = CastAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
+    const auto node       = castAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
     const auto expression = node->childs[0];
     const auto ifTrue     = node->childs[1];
     const auto ifFalse    = node->childs[2];
@@ -156,8 +156,8 @@ void ByteCodeGen::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* o
 
 bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 {
-    const auto node     = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    const auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+    const auto node     = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    const auto typeList = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     // A non const expression list will be collected by the top ExpressionList
     if (!(node->flags & AST_CONST_EXPR))
@@ -188,7 +188,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         }
 
         // Must be called only on the real node !
-        const auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+        const auto listNode = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
         // If in a return expression, just push the caller retval
         AstNode* parentReturn = listNode->inSimpleReturn();
@@ -213,7 +213,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // That way can avoid one affectation.
         else if (listNode->parent->kind == AstNodeKind::VarDecl)
         {
-            const auto varDecl = CastAst<AstVarDecl>(listNode->parent, AstNodeKind::VarDecl);
+            const auto varDecl = castAst<AstVarDecl>(listNode->parent, AstNodeKind::VarDecl);
             if (varDecl->assignment == listNode)
             {
                 const auto typeVar = TypeManager::concreteType(varDecl->typeInfo, CONCRETE_ALIAS);
@@ -320,7 +320,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     AstIdentifierRef* identifierRef = nullptr;
     if (node->kind == AstNodeKind::Identifier)
     {
-        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         identifierRef         = identifier->identifierRef();
     }
     else if (node->kind == AstNodeKind::ArrayPointerIndex)
@@ -455,7 +455,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     }
     else if (typeInfo->isArray())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
@@ -517,7 +517,7 @@ bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitDefer(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
+    const auto node = castAst<AstDefer>(context->node, AstNodeKind::Defer);
     SWAG_ASSERT(node->childs.size() == 1);
     node->ownerScope->deferredNodes.push_back(node);
     return true;

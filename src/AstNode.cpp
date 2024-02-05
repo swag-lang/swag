@@ -205,7 +205,7 @@ void AstNode::release()
     {
     case AstNodeKind::FuncDecl:
     {
-        const auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+        const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
         if (funcDecl->content)
             funcDecl->content->ownerScope->release();
         break;
@@ -755,7 +755,7 @@ bool AstNode::isEmptyFct()
 {
     if (kind != AstNodeKind::FuncDecl)
         return false;
-    const auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
     return funcDecl->content == nullptr;
 }
 
@@ -785,7 +785,7 @@ bool AstNode::isFunctionCall()
     if (kind != AstNodeKind::Identifier)
         return false;
 
-    const auto id = CastAst<AstIdentifier>(this, AstNodeKind::Identifier);
+    const auto id = castAst<AstIdentifier>(this, AstNodeKind::Identifier);
     return id->callParameters != nullptr;
 }
 
@@ -1017,37 +1017,37 @@ const Token& AstNode::getTokenName()
 {
     if (kind == AstNodeKind::FuncDecl)
     {
-        const auto fctDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+        const auto fctDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
         return fctDecl->tokenName;
     }
 
     if (kind == AstNodeKind::AttrDecl)
     {
-        const auto attrDecl = CastAst<AstAttrDecl>(this, AstNodeKind::AttrDecl);
+        const auto attrDecl = castAst<AstAttrDecl>(this, AstNodeKind::AttrDecl);
         return attrDecl->tokenName;
     }
 
     if (kind == AstNodeKind::StructDecl)
     {
-        const auto structDecl = CastAst<AstStruct>(this, AstNodeKind::StructDecl);
+        const auto structDecl = castAst<AstStruct>(this, AstNodeKind::StructDecl);
         return structDecl->tokenName;
     }
 
     if (kind == AstNodeKind::InterfaceDecl)
     {
-        const auto itfDecl = CastAst<AstStruct>(this, AstNodeKind::InterfaceDecl);
+        const auto itfDecl = castAst<AstStruct>(this, AstNodeKind::InterfaceDecl);
         return itfDecl->tokenName;
     }
 
     if (kind == AstNodeKind::EnumDecl)
     {
-        const auto enumDecl = CastAst<AstEnum>(this, AstNodeKind::EnumDecl);
+        const auto enumDecl = castAst<AstEnum>(this, AstNodeKind::EnumDecl);
         return enumDecl->tokenName;
     }
 
     if (kind == AstNodeKind::Impl)
     {
-        const auto implDecl = CastAst<AstImpl>(this, AstNodeKind::Impl);
+        const auto implDecl = castAst<AstImpl>(this, AstNodeKind::Impl);
         return implDecl->identifier->getTokenName();
     }
 
@@ -1215,7 +1215,7 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name) const
     {
         if (search->kind == AstNodeKind::AttrUse)
         {
-            const auto attrDecl = CastAst<AstAttrUse>(search, AstNodeKind::AttrUse);
+            const auto attrDecl = castAst<AstAttrUse>(search, AstNodeKind::AttrUse);
             const auto it       = attrDecl->attributes.getAttribute(name);
             if (it)
                 return it->child ? it->child : it->node;

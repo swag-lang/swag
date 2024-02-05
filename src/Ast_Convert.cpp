@@ -17,7 +17,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     fromNode->flags |= AST_STRUCT_CONVERT;
 
     const auto sourceFile = context->sourceFile;
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
 
     if (fromNode->kind == AstNodeKind::FuncCallParam)
     {
@@ -68,7 +68,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_GENERATED;
 
     // Make parameters
-    const auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    const auto identifier = castAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->inheritTokenLocation(fromNode);
     identifier->callParameters = newFuncCallParams(sourceFile, identifier);
     identifier->callParameters->addSpecFlags(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
@@ -96,7 +96,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
         // If this is for a return, remember it, in order to make a move or a copy
         if ((typeStruct->isTuple()) && fromNode->parent->kind == AstNodeKind::Return)
-            oneParam->autoTupleReturn = CastAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
+            oneParam->autoTupleReturn = castAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
 
     // For a tuple initialization, every parameters must be covered
@@ -141,7 +141,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode)
 {
     const auto sourceFile = context->sourceFile;
-    const auto typeList   = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple);
+    const auto typeList   = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple);
 
     // :SubDeclParent
     auto newParent = fromNode->parent;
@@ -273,7 +273,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
     structNode->content        = contentNode;
     structNode->originalParent = assignment;
 
-    const auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
+    const auto typeList = castTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8       varName;
     const int  numChilds = (int) typeList->subTypes.size();
     for (int idx = 0; idx < numChilds; idx++)
@@ -461,7 +461,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     cloneContext.parent     = typeNode;
     cloneContext.cloneFlags = CLONE_RAW;
     typeNode->identifier    = identifier->identifierRef()->clone(cloneContext);
-    const auto back         = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    const auto back         = castAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
@@ -512,7 +512,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
     // Tuple item is a lambda
     if (childType->isLambdaClosure())
     {
-        const auto typeLambda       = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
+        const auto typeLambda       = castTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
         const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
         typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
         if (childType->flags & TYPEINFO_CAN_THROW)

@@ -28,7 +28,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
             if (toType->isPointerRef() && toType->isConst())
             {
-                const auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+                const auto ptrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
                 if (ptrRef->pointedType->isStruct())
                 {
                     toType  = ptrRef->pointedType;
@@ -79,10 +79,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             if (fromNode && (fromNode->flags & AST_CONST_EXPR))
             {
 #ifdef SWAG_HAS_ASSERT
-                const TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+                const TypeInfoList* typeList = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
-                const auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
+                const auto exprList = castAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
                 if (exprList && !(exprList->semFlags & SEMFLAG_EXPR_LIST_CST))
                 {
                     exprList->semFlags |= SEMFLAG_EXPR_LIST_CST;
@@ -116,7 +116,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
         if (realToType->isConstPointerRef())
         {
-            const auto ptrRef = CastTypeInfo<TypeInfoPointer>(realToType, TypeInfoKind::Pointer);
+            const auto ptrRef = castTypeInfo<TypeInfoPointer>(realToType, TypeInfoKind::Pointer);
             if (ptrRef->pointedType->isStruct())
                 return true;
         }
@@ -213,7 +213,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->isPointerRef() ||
         (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))
     {
-        const auto fromTypeRef = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
+        const auto fromTypeRef = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         if (fromTypeRef == toType)
         {
             castFlags |= CASTFLAG_FORCE_UN_CONST;

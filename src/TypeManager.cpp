@@ -228,7 +228,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
         if (typeArray->pointedType->isListTuple())
         {
-            typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListTuple);
+            typeList               = castTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListTuple);
             typeArray->pointedType = convertTypeListToStruct(context, typeList, isCompilerConstant);
             finalType              = typeArray->pointedType;
             break;
@@ -236,7 +236,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
         if (typeArray->pointedType->isListArray())
         {
-            typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
+            typeList               = castTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
             typeArray->pointedType = makeType<TypeInfoArray>();
             typeArray              = (TypeInfoArray*) typeArray->pointedType;
             continue;
@@ -253,7 +253,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         typeArray->computeName();
         if (!typeArray->pointedType->isArray())
             break;
-        typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
+        typeArray = castTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
     }
 
     orgTypeArray->sizeOf = orgTypeArray->finalType->sizeOf * orgTypeArray->totalCount;
@@ -385,14 +385,14 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 {
     if (typeInfo->isStruct())
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct->sizeOf);
         SWAG_ASSERT(typeStruct->alignOf);
         return typeStruct->alignOf;
     }
     else if (typeInfo->isArray())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         return alignOf(typeArray->finalType);
     }
     else if (typeInfo->isPointer())

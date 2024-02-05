@@ -28,7 +28,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
     // Get function name
     Utf8         funcName   = bc->getCallNameFromDecl();
-    AstFuncDecl* bcFuncNode = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
+    AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Function prototype
     auto            funcType = getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
@@ -5056,7 +5056,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             {
                 // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
                 // we have a dynamic test for bytecode execution. But for runtime, be put it back.
-                auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 auto sizeB        = ip->b.u32;
                 if (typeFuncCall->isClosure())
                     sizeB += sizeof(Register);
@@ -5088,9 +5088,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::MakeLambda:
         {
-            auto              funcNode     = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            auto              funcNode     = castAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             Utf8              callName     = funcNode->getCallName();
-            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            TypeInfoFuncAttr* typeFuncNode = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
             auto T = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncNode);
             auto F = (llvm::Function*) modu.getOrInsertFunction(callName.c_str(), T).getCallee();
@@ -5836,13 +5836,13 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
 
     if (typeInfo->isEnum())
     {
-        const auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        const auto typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         return swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType);
     }
 
     if (typeInfo->isPointer())
     {
-        const auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto typeInfoPointer = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         const auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();

@@ -11,7 +11,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType         = typePtr->pointedType;
     }
 
@@ -20,7 +20,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     // Cast to a const reference, must take the pointed struct
     if (structType->isConstPointerRef() && castFlags & CASTFLAG_PARAMS)
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType         = typePtr->pointedType;
         toType             = structType;
     }
@@ -28,7 +28,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     // We can also match a moveref with an opAffect
     else if (structType->isPointerMoveRef() && castFlags & CASTFLAG_PARAMS)
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType         = typePtr->pointedType;
         toType             = structType;
         isMoveRef          = true;
@@ -36,11 +36,11 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST)))
         return false;
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
     if (!typeStruct->declNode)
         return false;
 
-    auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    auto        structNode = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     SymbolName* symbol;
 
     bool isSuffix = false;
@@ -55,7 +55,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the instantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
-        structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+        structNode = castAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
         if (isSuffix)
             symbol = structNode->scope->symbolOpAffectSuffix;
         else
@@ -114,7 +114,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         SharedLock ls(symbol->mutex);
         for (auto over : symbol->overloads)
         {
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
             if (typeFunc->parameters.size() <= 1)
@@ -160,13 +160,13 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     auto structType = fromType;
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
-        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType         = typePtr->pointedType;
     }
 
     if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST)))
         return false;
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
     if (!typeStruct->declNode)
         return false;
 
@@ -193,13 +193,13 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         }
     }
 
-    auto        structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    auto        structNode = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
     SymbolName* symbol     = structNode->scope->symbolOpCast;
 
     // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the instantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
-        structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+        structNode = castAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
         symbol     = structNode->scope->symbolOpCast;
     }
 
@@ -225,7 +225,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         SharedLock ls(symbol->mutex);
         for (auto over : symbol->overloads)
         {
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
                 continue;
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))

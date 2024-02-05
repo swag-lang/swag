@@ -14,7 +14,7 @@
 
 bool Semantic::resolveNameAlias(SemanticContext* context)
 {
-    const auto node = CastAst<AstAlias>(context->node, AstNodeKind::NameAlias);
+    const auto node = castAst<AstAlias>(context->node, AstNodeKind::NameAlias);
     auto       back = node->childs.back();
 
     SWAG_ASSERT(node->resolvedSymbolName);
@@ -70,7 +70,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 {
-    const auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
+    const auto node = castAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
 
     // When duplicating an identifier ref, and solve it again, we need to be sure that all that
     // stuff is reset
@@ -151,7 +151,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
-    const auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+    const auto identifierRef = castAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
@@ -168,7 +168,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     auto       scopeType = typeInfo->getConcreteAlias();
     if (scopeType->isLambdaClosure())
     {
-        const auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
+        const auto funcType = castTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
         scopeType           = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCE_ALIAS);
     }
 
@@ -189,48 +189,48 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     {
     case TypeInfoKind::Enum:
     {
-        identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
+        identifierRef->startScope = castTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
         node->typeInfo            = typeInfo;
         break;
     }
     case TypeInfoKind::Pointer:
     {
-        const auto typePointer = CastTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
+        const auto typePointer = castTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
         const auto subType     = TypeManager::concreteType(typePointer->pointedType);
         if (subType->isStruct() || subType->isInterface())
-            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
     }
 
     case TypeInfoKind::TypeListArray:
     case TypeInfoKind::TypeListTuple:
-        identifierRef->startScope = CastTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
+        identifierRef->startScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
 
     case TypeInfoKind::Interface:
     case TypeInfoKind::Struct:
-        identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
+        identifierRef->startScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
 
     case TypeInfoKind::Array:
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
         const auto subType   = TypeManager::concreteType(typeArray->finalType);
         if (subType->isStruct())
-            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
     }
 
     case TypeInfoKind::Slice:
     {
-        const auto typeSlice = CastTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
+        const auto typeSlice = castTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
         const auto subType   = TypeManager::concreteType(typeSlice->pointedType);
         if (subType->isStruct())
-            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
     }
@@ -247,7 +247,7 @@ bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, co
     const AstIdentifier* id = nullptr;
     if (node && node->kind == AstNodeKind::Identifier)
     {
-        id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (id != id->identifierRef()->childs.back())
             return false;
     }
@@ -304,28 +304,28 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext*, TypeInfo* typeIn
 
         if (typeInfo->isArray())
         {
-            const auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            const auto typeArr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             typeInfo           = typeArr->finalType;
             continue;
         }
 
         if (typeInfo->isSlice())
         {
-            const auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            const auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
             typeInfo             = typeSlice->pointedType;
             continue;
         }
 
         if (typeInfo->isPointer())
         {
-            const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             typeInfo               = typePointer->pointedType;
             continue;
         }
 
         if (typeInfo->isEnum())
         {
-            return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+            return castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         }
 
         return nullptr;
@@ -351,8 +351,8 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     {
         VectorNative<OneSymbolMatch> symbolMatch;
 
-        const auto idref = CastAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
-        const auto id    = CastAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
+        const auto idref = castAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
+        const auto id    = castAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
 
         context->silentError++;
         const auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
@@ -392,7 +392,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                     continue;
 
                 testedOver.push_back(overload);
-                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
                 // If there's only one corresponding type in the function, then take it
                 // If it's not the correct parameter, the match will not be done, so we do not really care here
@@ -461,7 +461,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 const auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
                 if (typeInfo->isEnum())
                 {
-                    auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+                    auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
                     has.push_back_once({nullptr, typeEnum});
                     if (typeEnum->contains(node->token.text))
                     {
@@ -500,7 +500,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 // Take first child of an expression list
                 if (c->kind == AstNodeKind::ExpressionList)
                 {
-                    const auto expr = CastAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
+                    const auto expr = castAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
                     typeInfoChild   = expr->childs[0]->typeInfo;
                 }
 
@@ -582,7 +582,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         bool okForUfcs = false;
         if (symbol->kind == SymbolKind::Function)
         {
-            const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->parameters.empty())
             {
                 const auto firstParam = typeInfo->parameters.front()->typeInfo;
@@ -674,7 +674,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             if (symbol->kind == SymbolKind::Function)
             {
                 // Be sure we have a missing parameter in order to try ufcs
-                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
                 const bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
                 YIELD();
                 if (canTry)
@@ -699,7 +699,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
         node->semFlags |= SEMFLAG_LAST_PARAM_CODE;
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->isCode())
         {
             if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
@@ -769,7 +769,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
     if (identifier->isSilentCall())
     {
         SWAG_ASSERT(typeRef->isArray());
-        const auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
+        const auto typeArr = castTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
         typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
     }
 
@@ -819,7 +819,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         const auto childCount = callParameters->childs.size();
         for (size_t i = 0; i < childCount; i++)
         {
-            const auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
+            const auto oneParam = castAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.parameters.push_back(oneParam);
 
             // Be sure all interfaces of the structure have been solved, in case a cast to an interface is necessary to match
@@ -827,11 +827,11 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
             // :WaitInterfaceReg
             const TypeInfoStruct* typeStruct = nullptr;
             if (oneParam->typeInfo->isStruct())
-                typeStruct = CastTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct);
+                typeStruct = castTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct);
             else if (oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
-                const auto typePtr = CastTypeInfo<TypeInfoPointer>(oneParam->typeInfo, TypeInfoKind::Pointer);
-                typeStruct         = CastTypeInfo<TypeInfoStruct>(typePtr->pointedType, TypeInfoKind::Struct);
+                const auto typePtr = castTypeInfo<TypeInfoPointer>(oneParam->typeInfo, TypeInfoKind::Pointer);
+                typeStruct         = castTypeInfo<TypeInfoStruct>(typePtr->pointedType, TypeInfoKind::Struct);
             }
 
             if (typeStruct)
@@ -883,7 +883,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         const auto childCount = genericParameters->childs.size();
         for (size_t i = 0; i < childCount; i++)
         {
-            const auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
+            const auto oneParam = castAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);
             GenericReplaceType st;
             st.typeInfoReplace = oneParam->typeInfo;
@@ -964,7 +964,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         {
             ErrorCxtStep expNode;
 
-            const auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc  = castTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             expNode.node         = context->node;
             expNode.replaceTypes = typeFunc->replaceTypes;
             if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
@@ -990,7 +990,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 
 bool Semantic::resolveIdentifier(SemanticContext* context)
 {
-    const auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     return resolveIdentifier(context, node, RI_ZERO);
 }
 
@@ -1321,7 +1321,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            SemanticError::unknownIdentifierError(context, identifierRef, CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
+            SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
             return false;
         }
 

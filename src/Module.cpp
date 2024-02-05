@@ -346,7 +346,7 @@ void Module::buildGlobalVarsToDropSlice()
 
             if (opDrop->node)
             {
-                const auto funcNode = CastAst<AstFuncDecl>(opDrop->node, AstNodeKind::FuncDecl);
+                const auto funcNode = castAst<AstFuncDecl>(opDrop->node, AstNodeKind::FuncDecl);
                 mutableSegment.addInitPtrFunc(offset + sizeof(void*), funcNode->getCallName());
             }
             else
@@ -565,19 +565,19 @@ void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegme
     uint32_t count = 1;
     if (typeNode->isArrayOfStruct())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeNode, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(typeNode, TypeInfoKind::Array);
         typeNode             = typeArray->finalType;
         count                = typeArray->totalCount;
     }
 
-    TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
+    TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
     SWAG_ASSERT(typeStruct->opDrop || (typeStruct->opUserDropFct && typeStruct->opUserDropFct->isForeign()));
     globalVarsToDrop.push_back({typeStruct, storageOffset, storageSegment, count});
 }
 
 void Module::addCompilerFunc(ByteCode* bc)
 {
-    const auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
 
     SWAG_ASSERT(funcDecl->parameters);
     SWAG_ASSERT(funcDecl->parameters->hasComputedValue());

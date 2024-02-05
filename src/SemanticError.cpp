@@ -27,7 +27,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
     if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
         tryMatches.size() == 1)
     {
-        const auto identifier    = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        const auto identifier    = castAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         const auto identifierRef = identifier->identifierRef();
         const auto overload      = tryMatches[0]->overload;
 

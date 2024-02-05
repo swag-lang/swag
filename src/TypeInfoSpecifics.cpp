@@ -30,7 +30,7 @@ bool TypeInfoNative::isSame(const TypeInfo* to, uint64_t castFlags) const
     if (to->kind != TypeInfoKind::Native)
         return false;
 
-    const auto other = CastTypeInfo<TypeInfoNative>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoNative>(to, to->kind);
     if (nativeType != other->nativeType)
         return false;
 
@@ -100,7 +100,7 @@ bool TypeInfoAlias::isSame(const TypeInfo* to, uint64_t castFlags) const
 
     if (to->isAlias())
     {
-        const auto other = CastTypeInfo<TypeInfoAlias>(to, to->kind);
+        const auto other = castTypeInfo<TypeInfoAlias>(to, to->kind);
         return rawType->isSame(other->rawType, castFlags);
     }
 
@@ -184,7 +184,7 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
             return true;
     }
 
-    const auto other = CastTypeInfo<TypeInfoPointer>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoPointer>(to, to->kind);
 
     // Anonymous pointers
     if (castFlags & CASTFLAG_CAST)
@@ -221,7 +221,7 @@ bool TypeInfoArray::isSame(const TypeInfo* to, uint64_t castFlags) const
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    const auto other = CastTypeInfo<TypeInfoArray>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoArray>(to, to->kind);
     if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
     {
         if (count != other->count)
@@ -253,7 +253,7 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
         auto pType = pointedType;
         while (pType->isArray() && pType != finalType)
         {
-            const auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
+            const auto subType = castTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
             if (subType->count == 0)
                 resName += FMT(",?", subType->count);
             else
@@ -291,7 +291,7 @@ bool TypeInfoSlice::isSame(const TypeInfo* to, uint64_t castFlags) const
         return true;
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto castedFrom = CastTypeInfo<TypeInfoSlice>(to, to->kind);
+    const auto castedFrom = castTypeInfo<TypeInfoSlice>(to, to->kind);
     return pointedType->isSame(castedFrom->pointedType, castFlags);
 }
 
@@ -347,7 +347,7 @@ bool TypeInfoList::isSame(const TypeInfo* to, uint64_t castFlags) const
 
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto other = CastTypeInfo<TypeInfoList>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoList>(to, to->kind);
     if (subTypes.size() != other->subTypes.size())
         return false;
 
@@ -391,7 +391,7 @@ bool TypeInfoVariadic::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto other = CastTypeInfo<TypeInfoVariadic>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoVariadic>(to, to->kind);
     if (rawType && !other->rawType)
         return false;
     if (!rawType && other->rawType)
@@ -451,7 +451,7 @@ void TypeInfoEnum::collectEnums(VectorNative<TypeInfoEnum*>& collect)
     {
         if (value->typeInfo->isEnum())
         {
-            auto subType = CastTypeInfo<TypeInfoEnum>(value->typeInfo, TypeInfoKind::Enum);
+            auto subType = castTypeInfo<TypeInfoEnum>(value->typeInfo, TypeInfoKind::Enum);
             collect.push_back_once(subType);
         }
     }
@@ -492,7 +492,7 @@ bool TypeInfoEnum::isSame(const TypeInfo* to, uint64_t castFlags) const
     if (name != to->name)
         return false;
 
-    const auto other = CastTypeInfo<TypeInfoEnum>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoEnum>(to, to->kind);
     if (!rawType->isSame(other->rawType, castFlags))
         return false;
     if (values.size() != other->values.size())
@@ -718,10 +718,10 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         // If the types does not match, then the two functions are not the same.
         if (declNode && declNode->kind == AstNodeKind::FuncDecl && other->declNode && other->declNode->kind == AstNodeKind::FuncDecl)
         {
-            const auto myFunc        = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
-            const auto typeMyFunc    = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
-            const auto otherFunc     = CastAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
-            const auto typeOtherFunc = CastTypeInfo<TypeInfoFuncAttr>(otherFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto myFunc        = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+            const auto typeMyFunc    = castTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto otherFunc     = castAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
+            const auto typeOtherFunc = castTypeInfo<TypeInfoFuncAttr>(otherFunc->typeInfo, TypeInfoKind::FuncAttr);
             if (typeMyFunc->replaceTypes.size() != typeOtherFunc->replaceTypes.size())
                 return false;
             for (const auto& r : typeMyFunc->replaceTypes)
@@ -822,7 +822,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    const auto other = CastTypeInfo<TypeInfoFuncAttr>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoFuncAttr>(to, to->kind);
     SWAG_ASSERT(to->isFuncAttr() || to->isLambdaClosure());
     if (!isSame(other, castFlags))
         return false;
@@ -942,7 +942,7 @@ namespace
             return;
         }
 
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
         for (const auto p : typeStruct->fields)
             flatten(result, p);
     }
@@ -1052,7 +1052,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
         return true;
 
     if (to->flags & TYPEINFO_CONST_ALIAS)
-        to = CastTypeInfo<TypeInfoAlias>(to, to->kind);
+        to = castTypeInfo<TypeInfoAlias>(to, to->kind);
 
     if (castFlags & CASTFLAG_CAST)
     {
@@ -1064,7 +1064,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
     {
         if (kind == TypeInfoKind::Interface && to->isStruct())
         {
-            const auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
+            const auto other = castTypeInfo<TypeInfoStruct>(to, to->kind);
             if (other->hasInterface(this))
                 return true;
         }
@@ -1083,7 +1083,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
     }
 
     const bool hasTuple = isTuple() || to->isTuple();
-    const auto other    = CastTypeInfo<TypeInfoStruct>(to, to->kind);
+    const auto other    = castTypeInfo<TypeInfoStruct>(to, to->kind);
 
     // Do not compare names if one is a tuple
     const bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;

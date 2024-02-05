@@ -761,7 +761,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     // Count number of methods to resolve
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
     {
-        auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
+        auto typeStruct       = castTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
         auto typeParam        = TypeManager::makeParam();
         typeParam->name       = funcNode->token.text;
         typeParam->typeInfo   = funcNode->typeInfo;
@@ -1232,7 +1232,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     lambda->token.startLocation = start;
     lambda->token.endLocation   = end;
 
-    const auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
+    const auto lambdaDecl = castAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
     lambdaDecl->addSpecFlags(AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION);
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, Err(Err0496));
@@ -1253,7 +1253,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     if (lambdaDecl->captureParameters)
     {
         // To solve captured parameters
-        const auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
+        const auto cp = castAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
         Ast::addChildBack(exprNode, cp);
         cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 

@@ -89,7 +89,7 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
 void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     if (typeInfoStruct->flags & TYPEINFO_SPEC_OP_GENERATED)
         return;
@@ -279,10 +279,10 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             {
                 auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
                 if (typeVar->isArray())
-                    typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+                    typeVar = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
                 if (!typeVar->isStruct())
                     continue;
-                const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+                const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
                 generateStructAlloc(context, typeStructVar);
                 if (context->result != ContextResult::Done)
                     return;
@@ -419,8 +419,8 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
 {
     SWAG_ASSERT(typeVar->isArrayOfStruct());
-    const auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-    const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+    const auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+    const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
     if (typeArray->totalCount == 1)
     {
         if (!pushParam)
@@ -483,8 +483,8 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
         const auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArrayOfStruct())
         {
-            const auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-            const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+            const auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
 
             switch (kind)
             {
@@ -512,7 +512,7 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
         }
         else if (typeVar->isStruct())
         {
-            const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             emitOpCallUser(context, typeStructVar, kind, true, typeParam->offset);
         }
     }
@@ -524,7 +524,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_INIT)
         return true;
 
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol;
 
@@ -573,10 +573,10 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
-            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+            typeVar = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
@@ -639,7 +639,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 
     for (auto param : typeInfoStruct->fields)
     {
-        auto varDecl = CastAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
+        auto varDecl = castAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
@@ -671,7 +671,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
             {
                 if (varDecl->assignment->kind == AstNodeKind::ExpressionList)
                 {
-                    auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
+                    auto exprList = castAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                     SWAG_ASSERT(exprList->computedValue->storageSegment);
                     SWAG_ASSERT(exprList->computedValue->storageOffset != UINT32_MAX);
                     emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
@@ -756,8 +756,8 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         // Default initialization
         if (typeVar->isArrayOfStruct())
         {
-            auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+            auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
             if (typeVarStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
                 emitOpCallUserArrayOfStruct(&cxt, typeVar, EmitOpUserKind::Init, false, 0);
             else
@@ -765,7 +765,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         }
         else if (typeVar->isStruct() && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
-            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
             EMIT_INST1(&cxt, ByteCodeOp::PushRAParam, 0);
             emitOpCallUser(&cxt, typeVarStruct->opUserInitFct, typeVarStruct->opInit, false);
@@ -802,7 +802,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 
     SWAG_ASSERT(typeInfoStruct->declNode);
     const auto sourceFile = context->sourceFile;
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol = nullptr;
 
@@ -853,10 +853,10 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
-            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+            typeVar = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
@@ -915,7 +915,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         return true;
 
     const auto sourceFile = context->sourceFile;
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol = nullptr;
 
@@ -966,10 +966,10 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
-            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+            typeVar = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
@@ -1026,7 +1026,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         return true;
 
     const auto sourceFile = context->sourceFile;
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol = nullptr;
 
@@ -1077,10 +1077,10 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
-            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+            typeVar = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
@@ -1132,8 +1132,8 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
 
 bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
 {
-    AstStruct*      node           = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
-    TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    AstStruct*      node           = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    TypeInfoStruct* typeInfoStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     generateStructAlloc(context, typeInfoStruct);
     YIELD();
@@ -1147,7 +1147,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
     YIELD();
 
-    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
     structNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();
@@ -1156,7 +1156,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
-    const TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const TypeInfoStruct* typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     // Need to drop first
     if (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct)
@@ -1305,18 +1305,18 @@ bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* ty
 void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal)
 {
     PushContextFlags cf(context, BCC_FLAG_NOSAFETY);
-    const auto       node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto       node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
     const auto       resolved = node->resolvedSymbolOverload;
 
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         RegisterList r0 = reserveRegisterRC(context);
 
-        const auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        const auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto       typeId         = typeExpression;
         while (typeId->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-            typeId = CastAst<AstTypeExpression>(typeId->childs.back(), AstNodeKind::TypeExpression);
-        const auto identifier = CastAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
+            typeId = castAst<AstTypeExpression>(typeId->childs.back(), AstNodeKind::TypeExpression);
+        const auto identifier = castAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
 
         if (identifier->callParameters)
         {
@@ -1329,7 +1329,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
                     continue;
                 }
 
-                const auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+                const auto param = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                 SWAG_ASSERT(param->resolvedParameter);
                 const auto typeParam = param->resolvedParameter;
 
@@ -1364,13 +1364,13 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
 void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
+    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
-        auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-            typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
-        const auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+            typeExpression = castAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+        const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
         if (identifier->callParameters)
         {
             for (const auto child : identifier->callParameters->childs)
@@ -1383,7 +1383,7 @@ void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
 {
-    const auto node = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    const auto node = castAst<AstInit>(context->node, AstNodeKind::Init);
 
     // Number of values to initialize. 0 is dynamic (comes from a register)
     uint64_t numToInit = 0;
@@ -1401,7 +1401,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     TypeInfo* pointedType = nullptr;
     if (node->count)
     {
-        const auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+        const auto typeExpression = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
         pointedType               = typeExpression->pointedType;
     }
     else
@@ -1409,7 +1409,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
         pointedType = node->expression->typeInfo;
         if (pointedType->isArray())
         {
-            const auto typeArray = CastTypeInfo<TypeInfoArray>(pointedType, TypeInfoKind::Array);
+            const auto typeArray = castTypeInfo<TypeInfoArray>(pointedType, TypeInfoKind::Array);
             pointedType          = typeArray->finalType;
             numToInit            = typeArray->totalCount;
         }
@@ -1454,7 +1454,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
     TypeInfoStruct* typeStruct = nullptr;
     if (pointedType->isStruct())
     {
-        typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
+        typeStruct = castTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStruct);
         YIELD();
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
@@ -1608,7 +1608,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
         for (const auto child : parameters->childs)
         {
-            const auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+            const auto param     = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
             const auto typeParam = param->resolvedParameter;
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
             if (typeParam->offset)
@@ -1640,8 +1640,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
 bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 {
-    const auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
-    const auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+    const auto node           = castAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
+    const auto typeExpression = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
     if (!typeExpression->pointedType->isStruct())
     {
@@ -1663,7 +1663,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         node->count->semFlags |= SEMFLAG_CAST1;
     }
 
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
     Semantic::waitTypeCompleted(context->baseJob, typeStruct);
     YIELD();
 

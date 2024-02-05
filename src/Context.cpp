@@ -22,7 +22,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     SWAG_ASSERT((uint64_t) byteCodePtr != SWAG_PATCH_MARKER);
 #endif
     ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
-    TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
+    TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
     VectorNative<Register*> returnRegisters;
     VectorNative<Register*> paramRegisters;
@@ -197,7 +197,7 @@ static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void*
 
     void*             result   = nullptr;
     const ByteCode*   bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode);
-    TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
+    TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
     if (typeFunc->numReturnRegisters())

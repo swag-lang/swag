@@ -59,7 +59,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         identifierStruct                          = implNode->identifierFor;
         implInterface                             = true;
 
-        const auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
+        const auto last = castAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
         SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Err0686)}));
     }
     else
@@ -124,7 +124,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         // See test 2909 for that kind of case...
         module->addImplForToSolve(structName);
 
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
 
@@ -163,7 +163,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         }
         else
         {
-            const auto typeInfo = CastTypeInfo<TypeInfoStruct>(symbol->overloads[0]->typeInfo, TypeInfoKind::Struct);
+            const auto typeInfo = castTypeInfo<TypeInfoStruct>(symbol->overloads[0]->typeInfo, TypeInfoKind::Struct);
             subScope            = typeInfo->scope;
         }
 
@@ -224,7 +224,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
     else if (currentScope && currentScope->kind == ScopeKind::Struct && currentScope->owner->kind == AstNodeKind::StructDecl)
     {
-        const auto parentStruct = CastAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
+        const auto parentStruct = castAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
         if (parentStruct->genericParameters)
         {
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
@@ -258,7 +258,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
-                const auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                const auto       implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 const Diagnostic diag{implNode->identifier,
                                       FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
                 const auto note = Diagnostic::hereIs(structNode);
@@ -282,7 +282,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         }
         else
         {
-            typeInfo = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, newScope->owner->typeInfo->kind);
+            typeInfo = castTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, newScope->owner->typeInfo->kind);
         }
 
         SWAG_ASSERT(typeInfo->isStruct());
@@ -316,7 +316,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             n->flags |= AST_IS_GENERIC;
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
-                const auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
+                const auto param = castAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
                 newScope->symTable.registerSymbolName(context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
             }
         });
@@ -439,7 +439,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Err0478)}));
         SWAG_CHECK(eatToken());
-        const auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+        const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->addSpecFlags(AstStruct::SPECFLAG_HAS_USING);
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));

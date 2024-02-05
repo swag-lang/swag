@@ -8,7 +8,7 @@
 
 bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {
-    const auto rangeNode  = CastAst<AstRange>(right, AstNodeKind::Range);
+    const auto rangeNode  = castAst<AstRange>(right, AstNodeKind::Range);
     auto       low        = rangeNode->expressionLow;
     auto       up         = rangeNode->expressionUp;
     bool       excludeLow = false;

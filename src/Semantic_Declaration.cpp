@@ -23,16 +23,16 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
     if (typeInfoVar->isStruct())
     {
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension(ExtensionKind::Misc);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
     else if (typeInfoVar->isPointer())
     {
-        const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
+        const auto typePointer = castTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, FMT(Err(Err0476), typePointer->pointedType->getDisplayNameC())}));
-        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
@@ -62,7 +62,7 @@ bool Semantic::resolveWith(SemanticContext* context)
 {
     const auto n = context->node->findParent(AstNodeKind::With);
     SWAG_ASSERT(n);
-    auto node = CastAst<AstWith>(n, AstNodeKind::With);
+    auto node = castAst<AstWith>(n, AstNodeKind::With);
 
     // If this is a simple identifier, no bytecode generation
     TypeInfo*  typeResolved = nullptr;
@@ -115,7 +115,7 @@ bool Semantic::resolveWith(SemanticContext* context)
 bool Semantic::resolveUsing(SemanticContext* context)
 {
     auto       node  = context->node;
-    const auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
+    const auto idref = castAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
     node->flags |= AST_NO_BYTECODE;
 
     SWAG_ASSERT(idref->resolvedSymbolName);
@@ -131,19 +131,19 @@ bool Semantic::resolveUsing(SemanticContext* context)
     {
     case TypeInfoKind::Namespace:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
+        const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
         scope               = typeInfo->scope;
         break;
     }
     case TypeInfoKind::Enum:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
+        const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
         scope               = typeInfo->scope;
         break;
     }
     case TypeInfoKind::Struct:
     {
-        const auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
+        const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
         scope               = typeInfo->scope;
         break;
     }
@@ -188,7 +188,7 @@ bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
 
 bool Semantic::resolveSubDeclRef(SemanticContext* context)
 {
-    const auto node = CastAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);
+    const auto node = castAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);
 
     ScopedLock lk(node->refSubDecl->mutex);
     if (node->refSubDecl->flags & AST_SPEC_SEMANTIC3)

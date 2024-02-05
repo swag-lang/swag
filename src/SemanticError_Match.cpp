@@ -119,13 +119,13 @@ namespace
             concat.clear();
             if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
             {
-                const auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
+                const auto funcNode = castAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
                 AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
             }
             else if (tryResult[i]->overload->node->kind == AstNodeKind::VarDecl)
             {
-                const auto varNode = CastAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
-                const auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+                const auto varNode = castAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
+                const auto lambda  = castAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
                 AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
             }
             else
@@ -175,7 +175,7 @@ namespace
     {
         // Be sure this is not because of an invalid special function signature
         if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
-            SWAG_CHECK(Semantic::checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
+            SWAG_CHECK(Semantic::checkFuncPrototype(context, castAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
         Vector<const Diagnostic*> errs0, errs1;
         SemanticError::getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
@@ -226,7 +226,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
     // node can be null when we try to resolve a userOp
     if (node && (node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall))
     {
-        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         genericParameters     = identifier->genericParameters;
     }
     else

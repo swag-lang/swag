@@ -536,7 +536,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                 // This is a typed variadic
                 if (one.typeFunc && one.typeFunc->flags & TYPEINFO_TYPED_VARIADIC && cptParam >= one.typeFunc->parameters.size() - 1)
                 {
-                    const auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+                    const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
                     typeValue               = typeVariadic->rawType;
                 }
 

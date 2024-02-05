@@ -386,7 +386,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 
 bool Semantic::resolveCompareExpression(SemanticContext* context)
 {
-    const auto node  = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    const auto node  = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     auto       left  = node->childs[0];
     auto       right = node->childs[1];
 

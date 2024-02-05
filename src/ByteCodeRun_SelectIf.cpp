@@ -45,7 +45,7 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
 
     if (child->typeInfo->isListArray())
     {
-        const auto typeList = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
+        const auto typeList = castTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
         if (regCount)
             regCount->u64 = typeList->subTypes.size();
         return true;
@@ -53,7 +53,7 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
 
     if (child->typeInfo->isArray())
     {
-        const auto typeArray = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+        const auto typeArray = castTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
         if (regCount)
             regCount->u64 = typeArray->totalCount;
         return true;
@@ -156,7 +156,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     {
         if (child->typeInfo->isArray())
         {
-            const auto typeArray           = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+            const auto typeArray           = castTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = typeArray->totalCount;
             return;
@@ -164,7 +164,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
         if (child->typeInfo->isListArray())
         {
-            const auto typeList            = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
+            const auto typeList            = castTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = typeList->subTypes.size();
             return;

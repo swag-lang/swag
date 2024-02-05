@@ -39,7 +39,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     if (!(node->flags & AST_L_VALUE) && !(node->flags & AST_R_VALUE))
         return true;
 
-    const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+    const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
     const auto resolved   = node->resolvedSymbolOverload;
     const auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
     SWAG_VERIFY(!typeInfo->isKindGeneric(), Report::internalError(context->node, "emitIdentifier, type is generic"));
@@ -75,7 +75,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
         // :VariadicAndClosure
         // If function is variable, then parameter of the capture context is 2 (after the slice), and not 0.
-        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
         if (typeFunc->isVariadic())
             inst->b.u64u32.high = 2;
 
@@ -192,7 +192,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         if (node->semFlags & SEMFLAG_FROM_REF)
         {
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-            const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeField, TypeInfoKind::Pointer);
+            const auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeField, TypeInfoKind::Pointer);
             SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
             typeField = ptrPointer->pointedType;
         }
@@ -231,7 +231,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 inst = EMIT_INST2(context, ByteCodeOp::GetParam64SI, node->resultRegisterRc[0], node->resultRegisterRc[0]);
             }
 
-            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             inst->c.u64         = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
             inst->d.pointer     = (uint8_t*) resolved;
 
@@ -254,7 +254,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64u32.high = resolved->storageIndex;
             if (!node->isForceTakeAddress())
             {
-                const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+                const auto ptrPointer = castTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
                 SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, ptrPointer->pointedType));
             }
@@ -349,7 +349,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
         if (node->isSilentCall())
         {
-            const auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            const auto typeArr   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             const auto finalType = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALL);
 
             // A closure is the pointer to the data, not a pointer to the function.
