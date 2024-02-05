@@ -24,7 +24,7 @@ void initCallConvKinds()
     ccSwag.structReturnByRegister  = true;
 }
 
-bool CallConv::structParamByValue(TypeInfoFuncAttr* typeFunc, TypeInfo* typeParam)
+bool CallConv::structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam)
 {
     const auto& cc = typeFunc->getCallConv();
     return cc.structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
@@ -85,7 +85,7 @@ bool CallConv::returnByValue(TypeInfoFuncAttr* typeFunc)
     return !CallConv::returnByAddress(typeFunc);
 }
 
-bool CallConv::returnStructByValue(TypeInfoFuncAttr* typeFunc)
+bool CallConv::returnStructByValue(const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;

@@ -214,7 +214,7 @@ void SCBE::emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CP
     pp.emit_StoreF32_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
-void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     emitBinOpFloat64(pp, ip, op);
     pp.emit_StoreF64_Indirect(REG_OFFSET(ip->c.u32), XMM0);

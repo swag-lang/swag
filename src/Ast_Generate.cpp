@@ -92,7 +92,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
                                       VectorNative<AstFuncDecl*>& mapItIdxToFunc,
                                       TypeInfoStruct*             typeStruct,
-                                      TypeInfoStruct*             typeBaseInterface,
+                                      const TypeInfoStruct*       typeBaseInterface,
                                       TypeInfoStruct*             typeInterface)
 {
     const auto     node            = castAst<AstImpl>(context->node, AstNodeKind::Impl);

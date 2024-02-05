@@ -277,7 +277,7 @@ bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     return false;
 }
 
-bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependency* dep)
+bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDependency* dep)
 {
     // If location dependency is not defined, then we take the remote location of the module
     // with that dependency
@@ -480,9 +480,9 @@ bool ModuleDepManager::execute()
 
     // Remember the configuration of the local modules
     //////////////////////////////////////////////////
-    for (auto m : allModules)
+    for (auto val : allModules | views::values)
     {
-        auto module         = m.second;
+        auto module         = val;
         module->localCfgDep = module->buildCfg;
     }
 

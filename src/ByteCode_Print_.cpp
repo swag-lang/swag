@@ -5,7 +5,7 @@
 #include "Module.h"
 #include "TypeInfo.h"
 
-void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)
+void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile) const
 {
     if (ip->op == ByteCodeOp::End)
         return;
@@ -133,7 +133,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
     {
-        auto ra = FMT("r%u", ip->a.u32);
+        const auto ra = FMT("r%u", ip->a.u32);
         str.replace("_ra_", ra);
         str.replace("_rau8_", ra);
         str.replace("_rau16_", ra);
@@ -149,7 +149,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_B | OPFLAG_WRITE_B))
     {
-        auto rb = FMT("r%u", ip->b.u32);
+        const auto rb = FMT("r%u", ip->b.u32);
         str.replace("_rb_", rb);
         str.replace("_rbu8_", rb);
         str.replace("_rbu16_", rb);
@@ -165,7 +165,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_C | OPFLAG_WRITE_C))
     {
-        auto rc = FMT("r%u", ip->c.u32);
+        const auto rc = FMT("r%u", ip->c.u32);
         str.replace("_rc_", rc);
         str.replace("_rcu8_", rc);
         str.replace("_rcu16_", rc);
@@ -181,7 +181,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     if (flags & (OPFLAG_READ_D | OPFLAG_WRITE_D))
     {
-        auto rd = FMT("r%u", ip->d.u32);
+        const auto rd = FMT("r%u", ip->d.u32);
         str.replace("_rd_", rd);
         str.replace("_rdu8_", rd);
         str.replace("_rdu16_", rd);

@@ -15,7 +15,7 @@
 namespace OS
 {
     static BackendTarget      nativeTarget;
-    static HANDLE             consoleHandle     = NULL;
+    static HANDLE             consoleHandle     = nullptr;
     static WORD               defaultAttributes = 0;
     static thread_local void* exceptionParams[4];
     static Path               winSdkFolder;
@@ -38,12 +38,12 @@ namespace OS
             return false;
 
         DWORD length;
-        rc = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, NULL, &length);
+        rc = RegQueryValueExW(hKey, L"KitsRoot10", nullptr, nullptr, nullptr, &length);
         if (rc != S_OK)
             return false;
 
         const auto value = new wchar_t[length + 1];
-        rc               = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, (LPBYTE) value, &length);
+        rc               = RegQueryValueExW(hKey, L"KitsRoot10", nullptr, nullptr, (LPBYTE) value, &length);
         RegCloseKey(hKey);
         if (rc != S_OK)
             return false;
@@ -51,9 +51,9 @@ namespace OS
 
         // Convert to UTF8
         const std::wstring wstr{value};
-        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), NULL, 0, NULL, NULL);
+        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), nullptr, 0, nullptr, nullptr);
         std::string        str(sizeNeeded, 0);
-        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &str[0], sizeNeeded, NULL, NULL);
+        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &str[0], sizeNeeded, nullptr, nullptr);
 
         winSdkFolder = str.c_str();
         winSdkFolder.append("Lib");
@@ -322,7 +322,7 @@ namespace OS
     Path getExePath()
     {
         char az[_MAX_PATH];
-        GetModuleFileNameA(NULL, az, _MAX_PATH);
+        GetModuleFileNameA(nullptr, az, _MAX_PATH);
         return az;
     }
 
@@ -335,12 +335,12 @@ namespace OS
 
         LPSTR        messageBuffer = nullptr;
         const size_t size          = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                                                    NULL,
+                                                    nullptr,
                                                     errorMessageID,
                                                     MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
                                                     (LPSTR) &messageBuffer,
                                                     0,
-                                                    NULL);
+        nullptr);
 
         // Remove unwanted characters
         char* pz = messageBuffer;
@@ -372,7 +372,7 @@ namespace OS
 
     uint64_t getFileWriteTime(const char* fileName)
     {
-        const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+        const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if (hFile == INVALID_HANDLE_VALUE)
             return 0;
 
@@ -558,7 +558,7 @@ namespace OS
 
     void errorBox(const char* title, const char* expr)
     {
-        MessageBoxA(NULL, expr, title, MB_OK | MB_ICONERROR);
+        MessageBoxA(nullptr, expr, title, MB_OK | MB_ICONERROR);
     }
 
     void exit(int code)
@@ -616,7 +616,7 @@ namespace OS
 
     void raiseException(int code, const char* msg)
     {
-        msg                = msg ? _strdup(msg) : 0;
+        msg                = msg ? _strdup(msg) : nullptr;
         exceptionParams[0] = nullptr;
         exceptionParams[1] = (void*) msg;
         exceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
@@ -645,7 +645,7 @@ namespace OS
         strcat_s(msg, expr);
         strcat_s(msg, "\n");
 
-        const auto result = MessageBoxA(NULL, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
+        const auto result = MessageBoxA(nullptr, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
         switch (result)
         {
         case IDCANCEL:

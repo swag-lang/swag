@@ -14,7 +14,7 @@ struct SCBE_Coff
 {
     static bool emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp);
     static void emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind);
-    static bool emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
+    static bool emitRelocationTable(Concat& concat, const CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     static bool emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp);
 
     static void computeUnwind(const VectorNative<CPURegister>& unwindRegs,

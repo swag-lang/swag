@@ -1265,7 +1265,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGen::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
+void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
 {
     const auto seg  = Semantic::getConstantSegFromContext(context->node, forceCompiler);
     *storageSegment = seg;
@@ -1456,7 +1456,7 @@ void ByteCodeGen::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uin
     accParams.clear();
 }
 
-bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
+bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc)
 {
     const bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->hasExtOwner() || !callNode->extOwner()->ownerTryCatchAssume))
@@ -1493,7 +1493,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     return true;
 }
 
-bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc)
+bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, const TypeInfoFuncAttr* typeInfoFunc)
 {
     node->resultRegisterRc = reserveRegisterRC(context);
 

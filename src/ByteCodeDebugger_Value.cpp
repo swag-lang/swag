@@ -494,7 +494,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, 
     }
 }
 
-void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result)
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, const AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result)
 {
     const auto over = node->resolvedSymbolOverload;
     if (!over)

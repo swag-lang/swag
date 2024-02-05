@@ -81,7 +81,7 @@ void LLVM_Debug::setup(LLVM* m, llvm::Module* modu)
     }
 }
 
-llvm::DIFile* LLVM_Debug::getOrCreateFile(SourceFile* file)
+llvm::DIFile* LLVM_Debug::getOrCreateFile(const SourceFile* file)
 {
     const auto it = mapFiles.find(file->path);
     if (it != mapFiles.end())
@@ -368,7 +368,7 @@ llvm::DISubroutineType* LLVM_Debug::getFunctionType(TypeInfoFuncAttr* typeFunc, 
     return result;
 }
 
-llvm::DISubprogram* LLVM_Debug::startFunction(ByteCode* bc, AstFuncDecl** resultDecl)
+llvm::DISubprogram* LLVM_Debug::startFunction(const ByteCode* bc, AstFuncDecl** resultDecl)
 {
     SWAG_ASSERT(dbgBuilder);
 
@@ -416,7 +416,7 @@ llvm::DISubprogram* LLVM_Debug::startFunction(ByteCode* bc, AstFuncDecl** result
     return SP;
 }
 
-void LLVM_Debug::startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -631,7 +631,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, LLVMPerTh
     }
 }
 
-void LLVM_Debug::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
+void LLVM_Debug::setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, const ByteCodeInstruction* ip)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;

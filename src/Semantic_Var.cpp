@@ -378,7 +378,7 @@ bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node
     return true;
 }
 
-DataSegment* Semantic::getSegmentForVar(SemanticContext* context, AstVarDecl* varNode)
+DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDecl* varNode)
 {
     const auto module   = varNode->sourceFile->module;
     const auto typeInfo = TypeManager::concreteType(varNode->typeInfo);
@@ -420,7 +420,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, AstVarDecl* va
 }
 
 // :DeduceLambdaType
-TypeInfo* Semantic::getDeducedLambdaType(SemanticContext* context, AstMakePointer* node)
+TypeInfo* Semantic::getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node)
 {
     SWAG_ASSERT(node->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE);
 

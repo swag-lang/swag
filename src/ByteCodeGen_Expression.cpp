@@ -312,7 +312,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList)
+bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const TypeInfo* toType, RegisterList& regList)
 {
     auto typeInfo = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
     typeInfo      = TypeManager::concreteType(typeInfo);

@@ -92,7 +92,7 @@ struct Concat
         }
     }
 
-    uint32_t bucketCount(ConcatBucket* b) const
+    uint32_t bucketCount(const ConcatBucket* b) const
     {
         if (b != lastBucket)
             return b->countBytes;

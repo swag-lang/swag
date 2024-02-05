@@ -43,7 +43,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     path += ext.c_str();
 
     auto h = OS::loadLibrary(path.string().c_str());
-    if (h == NULL)
+    if (h == nullptr)
     {
         // Try on system folders
         if (canBeSystem)
@@ -53,7 +53,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
             h = OS::loadLibrary(path.string().c_str());
         }
 
-        if (h == NULL)
+        if (h == nullptr)
         {
             ScopedLock lk(mutexLoaded);
             loadModuleError = OS::getLastErrorAsString();
@@ -71,7 +71,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     // Should initialize the module the first time
     // Note that the allocator function of the default context is not set, so the module
     // will initialize it with its internal function
-    auto callName = name;
+    const auto callName = name;
     Ast::normalizeIdentifierName(callName);
     const Utf8 funcName = FMT(g_LangSpec->name_globalInit, callName.c_str());
     const auto ptr      = OS::getProcAddress(h, funcName.c_str());
@@ -103,7 +103,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
     return nullptr;
 }
 
-const Utf8& ModuleManager::getForeignModuleName(AstFuncDecl* func)
+const Utf8& ModuleManager::getForeignModuleName(const AstFuncDecl* func)
 {
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
     const auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);

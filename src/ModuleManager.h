@@ -16,7 +16,7 @@ struct ModuleManager
     void  addPatchFuncAddress(DataSegment* seg, void** patchAddress, AstFuncDecl* func);
     bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
 
-    static const Utf8& getForeignModuleName(AstFuncDecl* func);
+    static const Utf8& getForeignModuleName(const AstFuncDecl* func);
 
     SharedMutex    mutex;
     SharedMutex    mutexLoaded;

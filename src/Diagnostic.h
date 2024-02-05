@@ -163,7 +163,7 @@ struct Diagnostic
     static Utf8        oneLiner(const Utf8& err);
     static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
-    static Utf8        isType(SymbolOverload* overload);
+    static Utf8        isType(const SymbolOverload* overload);
     static Utf8        isType(const AstNode* node);
     static Diagnostic* hereIs(AstNode* node);
     static Diagnostic* hereIs(const SymbolOverload* overload);

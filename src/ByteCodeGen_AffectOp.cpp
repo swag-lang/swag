@@ -3,6 +3,7 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "ByteCodeGenContext.h"
 #include "Report.h"
 #include "Semantic.h"
 #include "TypeManager.h"
@@ -108,9 +109,9 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
 
 bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
-    AstNode*  node         = context->node;
-    auto      typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
-    TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
+    AstNode*        node         = context->node;
+    auto            typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
+    const TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 
     typeInfo = TypeManager::concreteType(typeInfo);
     if (node->childs.front()->semFlags & SEMFLAG_FROM_REF)

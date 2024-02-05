@@ -11,7 +11,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     switch (kind)
     {
@@ -32,7 +32,7 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* ty
     }
 }
 
-void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
         return;
@@ -1154,7 +1154,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
+bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
     const TypeInfoStruct* typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
@@ -1237,7 +1237,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, 
     return true;
 }
 
-void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* resolved, RegisterList& r0, bool retVal, uint32_t stackOffset)
+void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverload* resolved, const RegisterList& r0, bool retVal, uint32_t stackOffset)
 {
     const auto node = context->node;
     if (retVal)
@@ -1258,7 +1258,7 @@ void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* res
     }
 }
 
-bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
+bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
     const auto node     = context->node;
     const auto resolved = node->resolvedSymbolOverload;
@@ -1429,7 +1429,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters)
+bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, RegisterList& rExpr, uint64_t numToInit, const AstNode* count, AstNode* parameters)
 {
     // Determine if we just need to clear the memory
     bool justClear = true;

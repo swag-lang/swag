@@ -189,7 +189,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     printDisplay(context);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdWhere(const ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
@@ -232,7 +232,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const
+void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const
 {
     Vector<Utf8> lines;
     bool         eof = false;

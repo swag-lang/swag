@@ -455,7 +455,7 @@ int Utf8::find(const Utf8& str, uint32_t startPos) const
     return (int) (pz - buffer);
 }
 
-bool Utf8::toChar32(uint32_t& ch)
+bool Utf8::toChar32(uint32_t& ch) const
 {
     ch = 0;
     VectorNative<uint32_t> uni;

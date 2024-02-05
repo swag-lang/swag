@@ -1039,14 +1039,14 @@ void Semantic::launchResolveSubDecl(const JobContext* context, AstNode* node)
     }
 }
 
-void Semantic::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
+void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
 {
     if (!funcNode)
         return;
 
     // If we have sub declarations, then now we can solve them, except for a generic function.
-    // Because for a generic function, the sub declarations will be cloned and solved after instanciation.
-    // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instancation
+    // Because for a generic function, the sub declarations will be cloned and solved after instantiation.
+    // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instantiation
     // at the same time.
     if (!(funcNode->flags & AST_IS_GENERIC) && funcNode->content && !(funcNode->content->flags & AST_NO_SEMANTIC))
     {

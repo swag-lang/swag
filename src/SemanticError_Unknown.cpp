@@ -113,7 +113,7 @@ namespace
         return diag;
     }
 
-    bool badParentScope(AstIdentifier* identifier, Vector<const Diagnostic*>& notes)
+    bool badParentScope(const AstIdentifier* identifier, Vector<const Diagnostic*>& notes)
     {
         if (identifier->identifierRef()->startScope || identifier == identifier->parent->childs.front())
             return false;

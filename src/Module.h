@@ -145,7 +145,7 @@ struct Module
     void        initProcessInfos();
     void        callPreMain();
     Utf8        getGlobalPrivFct(const Utf8& name) const;
-    void        inheritCfgFrom(Module* from);
+    void        inheritCfgFrom(const Module* from);
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);
@@ -157,28 +157,28 @@ struct Module
     void startBuilding(const BuildParameters& bp) const;
     void printBC();
 
-    bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params);
+    bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, const ExecuteNodeParams* params);
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params = nullptr);
     bool compileString(const Utf8& text);
     bool hasBytecodeToRun() const;
 
-    bool mustOptimizeBytecode(AstNode* node) const;
-    bool mustOptimizeBackend(AstNode* node) const;
+    bool mustOptimizeBytecode(const AstNode* node) const;
+    bool mustOptimizeBackend(const AstNode* node) const;
     bool mustEmitSafetyOverflow(AstNode* node, bool compileTime = false) const;
-    bool mustEmitSafety(AstNode* node, uint16_t what, bool compileTime = false) const;
+    bool mustEmitSafety(const AstNode* node, uint16_t what, bool compileTime = false) const;
 
     void setBuildPass(BuildPass buildP);
 
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob);
     bool postCompilerMessage(JobContext* context, CompilerMessage& msg);
-    bool prepareCompilerMessages(JobContext* context, uint32_t pass);
+    bool prepareCompilerMessages(const JobContext* context, uint32_t pass);
     bool flushCompilerMessages(JobContext* context, uint32_t pass, Job* job);
 
     void              addCompilerFunc(ByteCode* bc);
     void              addByteCodeFunc(ByteCode* bc);
     void              addGlobalVar(AstNode* node, GlobalVarKind varKind);
-    void              addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegment* storageSegment);
+    void              addGlobalVarToDrop(const AstNode* node, uint32_t storageOffset, DataSegment* storageSegment);
     void              addForeignLib(const Utf8& text);
     TypeInfoFuncAttr* getRuntimeTypeFct(const Utf8& fctName);
     ByteCode*         getRuntimeFct(const Utf8& fctName);
@@ -186,7 +186,7 @@ struct Module
     bool addFileToLoad(AstNode* includeNode);
     bool removeFileToLoad(AstNode* includeNode);
     bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
-    bool removeDependency(AstNode* importNode);
+    bool removeDependency(const AstNode* importNode);
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const;
     bool waitForDependenciesDone(Job* job, const SetUtf8& modules);
@@ -201,8 +201,8 @@ struct Module
     void     flushGenFiles();
 
     void addImplForToSolve(const Utf8& structName, uint32_t count = 1);
-    bool waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
-    void decImplForToSolve(TypeInfoStruct* typeStruct);
+    bool waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct);
+    void decImplForToSolve(const TypeInfoStruct* typeStruct);
 
     void logStage(const char* msg) const;
     void logPass(ModuleBuildPass pass);

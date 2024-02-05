@@ -113,7 +113,7 @@ struct TypeInfo
     TypeInfoStruct* getStructOrPointedStruct();
     TypeInfo*       getConstAlias();
     const TypeInfo* getConstAlias() const;
-    TypeInfo*       getConcreteAlias();
+    TypeInfo*       getConcreteAlias() const;
 
     // clang-format off
     bool isSlice() const                       { return kind == TypeInfoKind::Slice; }

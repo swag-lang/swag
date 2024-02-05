@@ -5,7 +5,7 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 
-static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip, uint32_t orgOffset)
+static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, const ByteCodeInstruction* ip, uint32_t orgOffset)
 {
     // We start before the function call, because we can have opDrop in try/catch blocks
     auto ipe = ipOrg + 1;
@@ -98,7 +98,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
         ByteCodeOptimizer::setNop(context, ip++);
 }
 
-void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, const ByteCodeInstruction* ip)
 {
     switch (ip->op)
     {

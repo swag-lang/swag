@@ -26,7 +26,7 @@ struct ByteCodeOptimizer
     static bool insertNopBefore(ByteCodeOptContext* context, ByteCodeInstruction* insert);
     static void removeNops(ByteCodeOptContext* context);
 
-    static void registerParamsReg(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void registerParamsReg(ByteCodeOptContext* context, const ByteCodeInstruction* ip);
     static void registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
 
     static bool optimizePassJumps(ByteCodeOptContext* context);

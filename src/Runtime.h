@@ -182,8 +182,8 @@ enum class SwagRuntimeFlags : uint64_t
 
 typedef struct SwagProcessInfos
 {
-    SwagSlice          modules        = {0};
-    SwagSlice          args           = {0};
+    SwagSlice          modules        = {nullptr};
+    SwagSlice          args           = {nullptr};
     uint64_t           contextTlsId   = 0;
     SwagContext*       defaultContext = nullptr;
     SwagBytecodeRun    byteCodeRun    = nullptr;

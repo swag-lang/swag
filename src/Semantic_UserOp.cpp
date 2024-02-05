@@ -460,7 +460,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
     return true;
 }
 
-bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
+bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result)
 {
     auto leftType = TypeManager::concreteType(left->typeInfo);
     if (leftType->isArray())

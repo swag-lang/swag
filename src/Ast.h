@@ -32,7 +32,7 @@ namespace Ast
     VisitResult  visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fctor);
     void         setForceConstType(AstNode* node);
     Utf8         enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
-    Utf8         literalToString(TypeInfo* typeInfo, const ComputedValue& value);
+    Utf8         literalToString(const TypeInfo* typeInfo, const ComputedValue& value);
     void         normalizeIdentifierName(const Utf8& name);
     AstNode*     cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
     AstNode*     clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
@@ -48,7 +48,7 @@ namespace Ast
     AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr, AstNodeKind kind = AstNodeKind::VarDecl);
     AstIntrinsicProp*  newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* parser = nullptr);
     AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
-    AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser = nullptr);
+    AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, const AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser = nullptr);
     AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
     AstIdentifierRef*  newMultiIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
@@ -66,7 +66,7 @@ namespace Ast
     bool generateMissingInterfaceFct(SemanticContext*            context,
                                      VectorNative<AstFuncDecl*>& mapItIdxToFunc,
                                      TypeInfoStruct*             typeStruct,
-                                     TypeInfoStruct*             typeBaseInterface,
+                                     const TypeInfoStruct*       typeBaseInterface,
                                      TypeInfoStruct*             typeInterface);
     bool generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
 

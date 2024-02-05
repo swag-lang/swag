@@ -12,7 +12,7 @@
 thread_local ByteCodeStack  g_ByteCodeStackTraceVal;
 thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 
-uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
+uint32_t ByteCodeStack::maxLevel(const ByteCodeRunContext* runContext)
 {
     if (!runContext)
         return (uint32_t) steps.size() - 1;
@@ -176,7 +176,7 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, const B
     }
 }
 
-Utf8 ByteCodeStack::log(ByteCodeRunContext* runContext)
+Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext)
 {
     // Add one step for the current context if necessary
     VectorNative<ByteCodeStackStep> copySteps;

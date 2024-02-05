@@ -165,7 +165,7 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
     return result;
 }
 
-Utf8 Ast::literalToString(TypeInfo* typeInfo, const ComputedValue& value)
+Utf8 Ast::literalToString(const TypeInfo* typeInfo, const ComputedValue& value)
 {
     Utf8 result;
     result.reserve(value.text.capacity());

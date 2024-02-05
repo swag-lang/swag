@@ -161,7 +161,7 @@ const TypeInfo* TypeInfo::getConstAlias() const
     return ((const TypeInfoAlias*) this)->rawType;
 }
 
-TypeInfo* TypeInfo::getConcreteAlias()
+TypeInfo* TypeInfo::getConcreteAlias() const
 {
     return TypeManager::concreteType(this, CONCRETE_FORCE_ALIAS);
 }

@@ -121,13 +121,13 @@ struct ByteCodeDebugger
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
 
-    static void appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result);
+    static void appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, const AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result);
     void        appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
     void        appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
     static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
     static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
-    void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const;
+    void printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const;
     void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset = 3) const;
     void printInstructions(ByteCodeRunContext* context, ByteCode* bc, const ByteCodeInstruction* ip, int num = 1) const;
 
@@ -152,7 +152,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdUntil(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdUntili(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-    static BcDbgCommandResult cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdWhere(const ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdInstructionDump(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

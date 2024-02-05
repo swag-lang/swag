@@ -249,7 +249,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
         // Generics
-        concreteType->generics.buffer = 0;
+        concreteType->generics.buffer = nullptr;
         concreteType->generics.count  = realType->genericParameters.size();
         if (concreteType->generics.count)
         {
@@ -265,7 +265,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         }
 
         // Parameters
-        concreteType->parameters.buffer = 0;
+        concreteType->parameters.buffer = nullptr;
         concreteType->parameters.count  = realType->parameters.size();
 
         // Do not count the first generated parameter of a closure
@@ -300,7 +300,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
         SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 
-        concreteType->values.buffer = 0;
+        concreteType->values.buffer = nullptr;
         concreteType->values.count  = realType->values.size();
         if (concreteType->values.count)
         {
@@ -315,7 +315,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             }
         }
 
-        concreteType->rawType = 0;
+        concreteType->rawType = nullptr;
         if (realType->rawType)
             SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
         break;
@@ -364,7 +364,7 @@ bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
 {
     if (!typeInfo)
     {
-        *result = 0;
+        *result = nullptr;
         return true;
     }
 
@@ -572,7 +572,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
     return true;
 }
 
-void TypeGen::tableJobDone(TypeGenStructJob* job, DataSegment* segment)
+void TypeGen::tableJobDone(const TypeGenStructJob* job, DataSegment* segment)
 {
     auto&      mapPerSeg = getMapPerSeg(segment);
     const auto it        = mapPerSeg.exportedTypesJob.find(job->typeName);
@@ -582,7 +582,7 @@ void TypeGen::tableJobDone(TypeGenStructJob* job, DataSegment* segment)
         segment->addPatchMethod(it1.first, it1.second);
 }
 
-TypeInfo* TypeGen::getRealType(DataSegment* segment, ExportedTypeInfo* concreteType)
+TypeInfo* TypeGen::getRealType(const DataSegment* segment, ExportedTypeInfo* concreteType)
 {
     auto&      mapPerSeg = getMapPerSeg(segment);
     SharedLock lk(mapPerSeg.mutex);

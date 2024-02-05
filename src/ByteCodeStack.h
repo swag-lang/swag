@@ -21,7 +21,7 @@ struct ByteCodeStack
         steps.push_back(step);
     }
 
-    SWAG_FORCE_INLINE void push(ByteCodeRunContext* context)
+    SWAG_FORCE_INLINE void push(const ByteCodeRunContext* context)
     {
         if (steps.count < steps.allocated)
         {
@@ -62,11 +62,11 @@ struct ByteCodeStack
         steps.clear();
     }
 
-    uint32_t    maxLevel(ByteCodeRunContext* runContext);
+    uint32_t    maxLevel(const ByteCodeRunContext* runContext);
     void        getSteps(VectorNative<ByteCodeStackStep>& copySteps, const ByteCodeRunContext* runContext) const;
     static Utf8 getStepName(const AstNode* node, const ByteCodeInstruction* ip);
-    Utf8        getLogStep(int level, bool current, ByteCodeStackStep& step);
-    Utf8        log(ByteCodeRunContext* runContext);
+    static Utf8 getLogStep(int level, bool current, ByteCodeStackStep& step);
+    Utf8        log(const ByteCodeRunContext* runContext);
 
     VectorNative<ByteCodeStackStep> steps;
 };

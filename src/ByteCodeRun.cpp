@@ -80,7 +80,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
     localCallNoTrace(context, bc, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
 
-void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
+void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg)
 {
     msg            = _strdup(msg); // Leak and slow, but only for messages
     const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__compilererror);
@@ -92,7 +92,7 @@ void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCod
     localCall(context, bc, 4);
 }
 
-void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
+void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg)
 {
     msg            = _strdup(msg); // Leak and slow, but only for messages
     const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);

@@ -15,7 +15,7 @@ bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
+bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverload* overload)
 {
     if (context->node->isSameStackFrame(overload))
         return true;

@@ -691,7 +691,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
     return true;
 }
 
-bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
+bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload)
 {
     if (!(node->semFlags & SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {

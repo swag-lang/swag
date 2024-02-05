@@ -13,7 +13,7 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 
-bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode* node)
 {
     // Register allocator interface to the default bytecode context
     if (node->token.text == g_LangSpec->name_SystemAllocator)
@@ -107,7 +107,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
     return true;
 }
 
-bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node)
 {
     // Inform dependencies that everything is done
     ByteCodeGen::releaseByteCodeJob(node);
@@ -174,7 +174,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
 bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    const auto res = Ast::visit(context, node, [](ErrorContext* cxt, AstNode* n)
+    const auto res = Ast::visit(context, node, [](ErrorContext* cxt, const AstNode* n)
     {
         if (n->kind != AstNodeKind::Literal)
             return Ast::VisitResult::Continue;
@@ -323,7 +323,7 @@ void ByteCodeGen::releaseByteCodeJob(AstNode* node)
     node->extByteCode()->byteCodeJob = nullptr;
 }
 
-void ByteCodeGen::getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep)
+void ByteCodeGen::getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep)
 {
     // Normal function
     SWAG_ASSERT(depNode->hasExtByteCode());

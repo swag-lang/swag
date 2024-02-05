@@ -6,7 +6,7 @@
 #include "ModuleManager.h"
 #include "TypeManager.h"
 
-void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip)
+void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, const ByteCodeInstruction* ip)
 {
     const auto nodeFunc = castAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     return ffiGetFuncAddress(context, nodeFunc);
@@ -92,7 +92,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     ffiCall(context, ip, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 
-void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
 {
     uint32_t cptParam = 0;
 

@@ -42,7 +42,7 @@ struct SCBE : Backend
     static void emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
-    static void emitBinOpFloat64AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
+    static void emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitBinOpIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitBinOpDivIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);

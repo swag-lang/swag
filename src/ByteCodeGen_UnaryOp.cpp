@@ -35,7 +35,7 @@ bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeIn
     }
 }
 
-bool ByteCodeGen::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
+bool ByteCodeGen::emitUnaryOpInvert(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())

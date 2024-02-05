@@ -4274,7 +4274,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
             auto v0 = builder.CreateLoad(I64_TY(), r0);
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, 0});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
             break;
         }
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -5909,7 +5909,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func
     return it->second;
 }
 
-void LLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func)
+void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const
 {
     if (!moduleToGen->mustOptimizeBackend(bc->node))
     {

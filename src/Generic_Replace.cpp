@@ -81,7 +81,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 const auto symbol  = match.symbolName;
                 auto       errNode = context->node;
 
-                TypeInfo* errType = nullptr;
+                const TypeInfo* errType = nullptr;
                 for (const auto& val : match.genericReplaceTypes | views::values)
                 {
                     const auto fromNode = val.fromNode;

@@ -171,7 +171,7 @@ struct Parser
     bool        doMoveRef(AstNode* parent, AstNode** result);
     bool        doDeRef(AstNode* parent, AstNode** result);
     static bool doOperatorPrecedence(AstNode** result);
-    bool        doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node = nullptr);
+    bool        doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node = nullptr);
     bool        doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool        doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool        doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
@@ -213,7 +213,7 @@ struct Parser
     bool        doContinue(AstNode* parent, AstNode** result);
     bool        doArrayPointerIndex(AstNode** exprNode);
     bool        doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
-    bool        doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, AstWith* withNode = nullptr);
+    bool        doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, const AstWith* withNode = nullptr);
     bool        doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
     bool        doInit(AstNode* parent, AstNode** result);
     bool        doDropCopyMove(AstNode* parent, AstNode** result);

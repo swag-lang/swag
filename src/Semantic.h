@@ -78,11 +78,11 @@ namespace Semantic
     bool checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right);
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
-    bool checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count);
+    bool checkInitDropCount(SemanticContext* context, const AstNode* node, AstNode* expression, AstNode* count);
 
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result);
-    bool hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result);
+    bool hasUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result);
     bool waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result);
 
     void addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
@@ -170,14 +170,14 @@ namespace Semantic
     void          forceConstType(SemanticContext* context, AstTypeExpression* node);
     void          setVarDeclResolve(AstVarDecl* varNode);
     bool          convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
-    DataSegment*  getSegmentForVar(SemanticContext* context, AstVarDecl* node);
+    DataSegment*  getSegmentForVar(SemanticContext* context, const AstVarDecl* node);
     bool          getDigitHex(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pz, int& result, const char* errMsg);
     bool          processLiteralString(SemanticContext* context);
     bool          computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     bool          getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* node, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
     bool          canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
-    bool          getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
-    bool          appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
+    bool          getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam);
+    bool          appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
     bool          fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload, AstNode* ufcsFirstParam);
     bool          fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
     bool          needToCompleteSymbol(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
@@ -205,9 +205,9 @@ namespace Semantic
     bool           isMethod(const AstFuncDecl* funcNode);
     void           launchResolveSubDecl(const JobContext* context, AstNode* node);
     bool           registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
-    void           resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
+    void           resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode);
     Utf8           getSpecialOpSignature(const AstFuncDecl* node);
-    TypeInfo*      getDeducedLambdaType(SemanticContext* context, AstMakePointer* node);
+    TypeInfo*      getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node);
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
     AstFuncDecl*   getFunctionForReturn(AstNode* node);
     bool           setUnRef(AstNode* node);

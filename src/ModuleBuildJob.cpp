@@ -15,7 +15,7 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 
-void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
+void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
 {
     if (module->exportSourceFiles.empty())
         return;
@@ -69,7 +69,7 @@ void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
     }
 }
 
-void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
+void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
 {
     Path publishPath = moduleToPublish->path;
     publishPath.append(SWAG_PUBLISH_FOLDER);

@@ -7,7 +7,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
+bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, const ExecuteNodeParams* params)
 {
     if (params && params->forDebugger)
     {

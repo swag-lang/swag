@@ -40,7 +40,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
     return true;
 }
 
-bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
+bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam)
 {
     const auto symbol = overload->symbol;
 

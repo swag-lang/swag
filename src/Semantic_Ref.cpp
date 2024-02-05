@@ -1084,7 +1084,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     return true;
 }
 
-bool Semantic::checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count)
+bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node, AstNode* expression, AstNode* count)
 {
     if (!count)
         return true;

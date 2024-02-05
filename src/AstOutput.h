@@ -37,7 +37,7 @@ struct AstOutput
     static bool outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validif);
     static bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputAttributesUsage(const OutputContext& context, Concat& concat, const TypeInfoFuncAttr* typeFunc);
-    static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const AttributeList& attributes);
+    static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, const TypeInfo* typeInfo, const AttributeList& attributes);
     static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo);
     static bool outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node);
     static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);

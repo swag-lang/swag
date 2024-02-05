@@ -6,7 +6,7 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
+bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, const RegisterList& r2)
 {
     const auto rangeNode  = castAst<AstRange>(right, AstNodeKind::Range);
     auto       low        = rangeNode->expressionLow;
@@ -95,7 +95,7 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, TokenId op)
+bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r1, TokenId op)
 {
     SWAG_ASSERT(left->hasSpecialFuncCall());
 
@@ -184,7 +184,7 @@ bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, Toke
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -333,7 +333,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
     return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
 }
 
-bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -554,7 +554,7 @@ bool ByteCodeGen::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0, ui
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -617,7 +617,7 @@ bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, u
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -680,7 +680,7 @@ bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t r0,
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -743,7 +743,7 @@ bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0,
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())

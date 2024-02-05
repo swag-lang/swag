@@ -83,7 +83,7 @@ AstTypeExpression* Ast::newTypeExpression(SourceFile* sourceFile, AstNode* paren
     return node;
 }
 
-AstIdentifier* Ast::newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser)
+AstIdentifier* Ast::newIdentifier(SourceFile* sourceFile, const Utf8& name, const AstIdentifierRef* identifierRef, AstNode* parent, Parser* parser)
 {
     const auto node   = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
     node->token.text  = name;

@@ -11,67 +11,70 @@ constexpr int COL2 = 24;
 constexpr int COL3 = 36;
 constexpr int COL4 = 48;
 
-static Utf8 getProfileBc(ByteCode* bc, int level)
+namespace
 {
-    Utf8 line;
-    line += FMT("%d", bc->profileCallCount);
-
-    while (line.count < COL1)
-        line += " ";
-    line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
-
-    while (line.count < COL2)
-        line += " ";
-    line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
-
-    while (line.count < COL3)
-        line += " ";
-    line += FMT("%0.6f", bc->profilePerCall);
-
-    while (line.count < COL4)
-        line += " ";
-
-    while (level--)
-        line += "    ";
-
-    if (bc->sourceFile)
+    Utf8 getProfileBc(ByteCode* bc, int level)
     {
-        line += bc->sourceFile->name;
-        line += " -- ";
+        Utf8 line;
+        line += FMT("%d", bc->profileCallCount);
+
+        while (line.count < COL1)
+            line += " ";
+        line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
+
+        while (line.count < COL2)
+            line += " ";
+        line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
+
+        while (line.count < COL3)
+            line += " ";
+        line += FMT("%0.6f", bc->profilePerCall);
+
+        while (line.count < COL4)
+            line += " ";
+
+        while (level--)
+            line += "    ";
+
+        if (bc->sourceFile)
+        {
+            line += bc->sourceFile->name;
+            line += " -- ";
+        }
+
+        line += bc->getCallName();
+        return line;
     }
 
-    line += bc->getCallName();
-    return line;
-}
-
-static Utf8 getProfileFFI(FFIStat& ffi, int level)
-{
-    Utf8 line;
-    line += FMT("%d", ffi.count);
-
-    while (line.count < COL1)
-        line += " ";
-    line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
-
-    while (line.count < COL2)
-        line += " ";
-
-    line += ffi.name;
-    return line;
-}
-
-static void printChilds(ByteCode* bc, int level)
-{
-    if (level >= g_CommandLine.profileChildsLevel)
-        return;
-
-    level++;
-    for (const auto child : bc->profileChilds)
+    Utf8 getProfileFFI(const FFIStat& ffi, int level)
     {
-        Utf8 line = getProfileBc(child, level);
-        g_Log.print(line);
-        g_Log.eol();
-        printChilds(child, level);
+        Utf8 line;
+        line += FMT("%d", ffi.count);
+
+        while (line.count < COL1)
+            line += " ";
+        line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
+
+        while (line.count < COL2)
+            line += " ";
+
+        line += ffi.name;
+        return line;
+    }
+
+    void printChilds(const ByteCode* bc, int level)
+    {
+        if (level >= g_CommandLine.profileChildsLevel)
+            return;
+
+        level++;
+        for (const auto child : bc->profileChilds)
+        {
+            Utf8 line = getProfileBc(child, level);
+            g_Log.print(line);
+            g_Log.eol();
+            printChilds(child, level);
+        }
     }
 }
 

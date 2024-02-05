@@ -95,7 +95,7 @@ static void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, ui
     concat.addU16(0);
 }
 
-static void emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val)
+static void emitEmbeddedValue(SCBE_CPU& pp, const TypeInfo* valueType, const ComputedValue& val)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(valueType->isNative());
@@ -296,7 +296,7 @@ static bool emitDataDebugT(SCBE_CPU& pp)
     return true;
 }
 
-static void emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
+static void emitConstant(SCBE_CPU& pp, const AstNode* node, const Utf8& name)
 {
     auto& concat = pp.concat;
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
@@ -412,7 +412,7 @@ static bool emitLines(SCBE_CPU&          pp,
                       Vector<uint32_t>&  arrFileNames,
                       Utf8&              stringTable,
                       Concat&            concat,
-                      CPUFunction&       f,
+                      const CPUFunction& f,
                       size_t             idxDbgLines)
 {
     const auto& dbgLines   = f.dbgLines[idxDbgLines];

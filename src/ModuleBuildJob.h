@@ -9,8 +9,8 @@ struct ModuleBuildJob : Job
     void      release() override;
     bool      loadDependency(ModuleDependency* dep);
     bool      loadDependency(Module* depModule);
-    void      publishFilesToPublic(Module* moduleToPublish);
-    void      publishFilesToTarget(Module* moduleToPublish);
+    void      publishFilesToPublic(const Module* moduleToPublish);
+    void      publishFilesToTarget(const Module* moduleToPublish);
     void      publishFilesToPublic();
     void      publishFilesToTarget();
     void      checkMissingErrors() const;

@@ -1420,7 +1420,7 @@ void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
     helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
-Utf8 GenDoc::getFileExtension(Module* mdl)
+Utf8 GenDoc::getFileExtension(const Module* mdl)
 {
     Utf8 extName{mdl->buildCfg.genDoc.outputExtension};
     if (!g_CommandLine.docExtension.empty())

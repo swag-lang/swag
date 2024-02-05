@@ -409,7 +409,7 @@ namespace
         return raiseError(cxt, FMT(Err(San0010), msgKind, type->getDisplayNameC()));
     }
 
-    bool checkDivZero(const Context& cxt, const Value& value, bool isZero, SymbolOverload* overload = nullptr)
+    bool checkDivZero(const Context& cxt, const Value& value, bool isZero, const SymbolOverload* overload = nullptr)
     {
         if (value.kind != ValueKind::Constant)
             return true;
@@ -420,7 +420,7 @@ namespace
         return raiseError(cxt, Err(San0001));
     }
 
-    bool checkEscapeFrame(const Context& cxt, uint64_t stackOffset, SymbolOverload* overload = nullptr)
+    bool checkEscapeFrame(const Context& cxt, uint64_t stackOffset, const SymbolOverload* overload = nullptr)
     {
         SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
         if (overload)
@@ -435,7 +435,7 @@ namespace
         return true;
     }
 
-    bool checkNotNull(const Context& cxt, Value* value)
+    bool checkNotNull(const Context& cxt, const Value* value)
     {
         if (value->kind != ValueKind::Constant)
             return true;
@@ -446,7 +446,7 @@ namespace
         return raiseError(cxt, Err(San0005));
     }
 
-    bool checkStackInitialized(Context& cxt, void* addr, uint32_t sizeOf, SymbolOverload* overload = nullptr)
+    bool checkStackInitialized(const Context& cxt, void* addr, uint32_t sizeOf, const SymbolOverload* overload = nullptr)
     {
         Value value;
         SWAG_CHECK(getStackValue(value, cxt, addr, sizeOf));
@@ -465,14 +465,14 @@ namespace
 /////////////////////////////////////
 /////////////////////////////////////
 
-static bool getRegister(Value*& result, Context& cxt, uint32_t reg)
+static bool getRegister(Value*& result, const Context& cxt, uint32_t reg)
 {
     SWAG_ASSERT(reg < (uint32_t) STATE()->regs.count);
     result = &STATE()->regs[reg];
     return true;
 }
 
-static bool getImmediateA(Value& result, Context& cxt, ByteCodeInstruction* ip)
+static bool getImmediateA(Value& result, Context& cxt, const ByteCodeInstruction* ip)
 {
     if (ip->flags & BCI_IMM_A)
     {
@@ -487,7 +487,7 @@ static bool getImmediateA(Value& result, Context& cxt, ByteCodeInstruction* ip)
     return true;
 }
 
-static bool getImmediateB(Value& result, Context& cxt, ByteCodeInstruction* ip)
+static bool getImmediateB(Value& result, Context& cxt, const ByteCodeInstruction* ip)
 {
     if (ip->flags & BCI_IMM_B)
     {
@@ -502,7 +502,7 @@ static bool getImmediateB(Value& result, Context& cxt, ByteCodeInstruction* ip)
     return true;
 }
 
-static bool getImmediateC(Value& result, Context& cxt, ByteCodeInstruction* ip)
+static bool getImmediateC(Value& result, Context& cxt, const ByteCodeInstruction* ip)
 {
     if (ip->flags & BCI_IMM_C)
     {
@@ -517,7 +517,7 @@ static bool getImmediateC(Value& result, Context& cxt, ByteCodeInstruction* ip)
     return true;
 }
 
-static bool getImmediateD(Value& result, Context& cxt, ByteCodeInstruction* ip)
+static bool getImmediateD(Value& result, Context& cxt, const ByteCodeInstruction* ip)
 {
     if (ip->flags & BCI_IMM_D)
     {
@@ -532,14 +532,14 @@ static bool getImmediateD(Value& result, Context& cxt, ByteCodeInstruction* ip)
     return true;
 }
 
-static bool getStackAddress(uint8_t*& result, Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
+static bool getStackAddress(uint8_t*& result, const Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
 {
     SWAG_CHECK(checkStackOffset(cxt, stackOffset, sizeOf));
     result = STATE()->stack.buffer + stackOffset;
     return true;
 }
 
-static void setStackValue(Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
+static void setStackValue(const Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
 {
     const auto offset = (uint32_t) ((uint8_t*) addr - STATE()->stack.buffer);
     SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE()->stackValue.count);

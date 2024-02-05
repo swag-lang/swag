@@ -50,8 +50,8 @@ struct TypeGen
     bool         genExportedStruct(const JobContext* context, const Utf8& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags);
 
     MapPerSeg& getMapPerSeg(const DataSegment* segment);
-    void       tableJobDone(TypeGenStructJob* job, DataSegment* segment);
-    TypeInfo*  getRealType(DataSegment* segment, ExportedTypeInfo* concreteType);
+    void       tableJobDone(const TypeGenStructJob* job, DataSegment* segment);
+    TypeInfo*  getRealType(const DataSegment* segment, ExportedTypeInfo* concreteType);
     void       initFrom(Module* module, TypeGen* other);
 
     Utf8                     name;

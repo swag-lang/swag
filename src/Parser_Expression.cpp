@@ -590,7 +590,7 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
     return doPrimaryExpression(parent, exprFlags, result);
 }
 
-bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node)
+bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node)
 {
     const auto opId = tokenId;
 
@@ -1287,7 +1287,7 @@ void Parser::isForceTakeAddress(AstNode* node)
     }
 }
 
-bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, AstWith* withNode)
+bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, const AstWith* withNode)
 {
     switch (token.id)
     {

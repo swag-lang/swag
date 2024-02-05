@@ -11,7 +11,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value)
+SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value)
 {
     const auto          tr0 = addTypeRecord(pp);
     SCBE_DebugTypeField field;
@@ -401,7 +401,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     }
 }
 
-SCBE_DebugTypeIndex SCBE_Debug::getSimpleType(TypeInfo* typeInfo)
+SCBE_DebugTypeIndex SCBE_Debug::getSimpleType(const TypeInfo* typeInfo)
 {
     if (typeInfo->isNative())
     {
@@ -498,7 +498,7 @@ Utf8 SCBE_Debug::getScopedName(AstNode* node)
     return result;
 }
 
-void SCBE_Debug::setLocation(CPUFunction* cpuFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
+void SCBE_Debug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!cpuFct->node || cpuFct->node->isSpecialFunctionGenerated())
         return;

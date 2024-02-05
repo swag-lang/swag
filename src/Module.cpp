@@ -467,7 +467,7 @@ void Module::allocateBackend()
     }
 }
 
-void Module::inheritCfgFrom(Module* from)
+void Module::inheritCfgFrom(const Module* from)
 {
     buildCfg.warnAsErrors        = from->buildCfg.warnAsErrors;
     buildCfg.warnAsWarnings      = from->buildCfg.warnAsWarnings;
@@ -555,7 +555,7 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
     }
 }
 
-void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegment* storageSegment)
+void Module::addGlobalVarToDrop(const AstNode* node, uint32_t storageOffset, DataSegment* storageSegment)
 {
     ScopedLock lk(mutexGlobalVars);
 
@@ -774,7 +774,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     return true;
 }
 
-bool Module::removeDependency(AstNode* importNode)
+bool Module::removeDependency(const AstNode* importNode)
 {
     ScopedLock lk(mutexDependency);
     for (size_t i = 0; i < moduleDependencies.size(); i++)
@@ -907,7 +907,7 @@ bool Module::mustEmitSafetyOverflow(AstNode* node, bool compileTime) const
     return mustEmitSafety(node, SAFETY_OVERFLOW, compileTime);
 }
 
-bool Module::mustEmitSafety(AstNode* node, uint16_t what, bool compileTime) const
+bool Module::mustEmitSafety(const AstNode* node, uint16_t what, bool compileTime) const
 {
     if (what == SAFETY_OVERFLOW)
     {
@@ -927,7 +927,7 @@ bool Module::mustEmitSafety(AstNode* node, uint16_t what, bool compileTime) cons
     return (buildCfg.safetyGuards & what);
 }
 
-bool Module::mustOptimizeBytecode(AstNode* node) const
+bool Module::mustOptimizeBytecode(const AstNode* node) const
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;
@@ -944,7 +944,7 @@ bool Module::mustOptimizeBytecode(AstNode* node) const
     return buildCfg.byteCodeOptimizeLevel > 0;
 }
 
-bool Module::mustOptimizeBackend(AstNode* node) const
+bool Module::mustOptimizeBackend(const AstNode* node) const
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;
@@ -1109,7 +1109,7 @@ void Module::addImplForToSolve(const Utf8& structName, uint32_t count)
     it->second.count += count;
 }
 
-bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
+bool Module::waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct)
 {
     ScopedLock lk(mutexFile);
 
@@ -1125,7 +1125,7 @@ bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
     return true;
 }
 
-void Module::decImplForToSolve(TypeInfoStruct* typeStruct)
+void Module::decImplForToSolve(const TypeInfoStruct* typeStruct)
 {
     ScopedLock lk(mutexFile);
 

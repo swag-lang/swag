@@ -38,7 +38,7 @@ namespace SemanticError
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor);
 
     bool warnUnusedFunction(const Module* moduleToGen, const ByteCode* one);
-    bool warnUnusedVariables(SemanticContext* context, Scope* scope);
+    bool warnUnusedVariables(SemanticContext* context, const Scope* scope);
     bool warnUnreachableCode(SemanticContext* context);
     bool warnDeprecated(SemanticContext* context, AstNode* identifier);
 

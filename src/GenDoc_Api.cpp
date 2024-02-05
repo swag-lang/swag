@@ -8,70 +8,73 @@
 #include "TypeInfo.h"
 #include "Workspace.h"
 
-constexpr uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
-constexpr uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
+constexpr uint32_t COLLECT_TABLE_ZERO      = 0x00000000;
+constexpr uint32_t COLLECT_TABLE_SPEC_FUNC = 0x00000001;
 
-static int sortOrder(AstNodeKind kind)
+namespace
 {
-    switch (kind)
+    int sortOrder(AstNodeKind kind)
     {
-    case AstNodeKind::Namespace:
-        return 0;
-    case AstNodeKind::StructDecl:
-        return 1;
-    case AstNodeKind::InterfaceDecl:
-        return 2;
-    case AstNodeKind::EnumDecl:
-        return 3;
-    case AstNodeKind::ConstDecl:
-        return 4;
-    case AstNodeKind::TypeAlias:
-        return 5;
-    case AstNodeKind::FuncDecl:
-        return 6;
-    case AstNodeKind::AttrDecl:
-        return 7;
-    default:
-        return 8;
-    }
-}
-
-static bool canCollectNode(AstNode* node)
-{
-    if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
-        return false;
-    if (node->flags & AST_FROM_GENERIC)
-        return false;
-    if (node->flags & AST_GENERATED)
-        return false;
-    if (node->attributeFlags & ATTRIBUTE_NO_DOC)
-        return false;
-    if (!node->sourceFile)
-        return false;
-
-    switch (node->kind)
-    {
-    case AstNodeKind::Namespace:
-    case AstNodeKind::StructDecl:
-    case AstNodeKind::InterfaceDecl:
-    case AstNodeKind::FuncDecl:
-    case AstNodeKind::EnumDecl:
-    case AstNodeKind::ConstDecl:
-    case AstNodeKind::AttrDecl:
-    case AstNodeKind::TypeAlias:
-        break;
-    default:
-        return false;
+        switch (kind)
+        {
+        case AstNodeKind::Namespace:
+            return 0;
+        case AstNodeKind::StructDecl:
+            return 1;
+        case AstNodeKind::InterfaceDecl:
+            return 2;
+        case AstNodeKind::EnumDecl:
+            return 3;
+        case AstNodeKind::ConstDecl:
+            return 4;
+        case AstNodeKind::TypeAlias:
+            return 5;
+        case AstNodeKind::FuncDecl:
+            return 6;
+        case AstNodeKind::AttrDecl:
+            return 7;
+        default:
+            return 8;
+        }
     }
 
-    if (node->sourceFile->isRuntimeFile)
-        return true;
-    if (node->sourceFile->isBootstrapFile)
-        return true;
-    if (!node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
-        return false;
+    bool canCollectNode(const AstNode* node)
+    {
+        if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
+            return false;
+        if (node->flags & AST_FROM_GENERIC)
+            return false;
+        if (node->flags & AST_GENERATED)
+            return false;
+        if (node->attributeFlags & ATTRIBUTE_NO_DOC)
+            return false;
+        if (!node->sourceFile)
+            return false;
 
-    return true;
+        switch (node->kind)
+        {
+        case AstNodeKind::Namespace:
+        case AstNodeKind::StructDecl:
+        case AstNodeKind::InterfaceDecl:
+        case AstNodeKind::FuncDecl:
+        case AstNodeKind::EnumDecl:
+        case AstNodeKind::ConstDecl:
+        case AstNodeKind::AttrDecl:
+        case AstNodeKind::TypeAlias:
+            break;
+        default:
+            return false;
+        }
+
+        if (node->sourceFile->isRuntimeFile)
+            return true;
+        if (node->sourceFile->isBootstrapFile)
+            return true;
+        if (!node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+            return false;
+
+        return true;
+    }
 }
 
 Utf8 GenDoc::getDocComment(const AstNode* node)
@@ -99,9 +102,9 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             if (n1->kind != kind)
                 continue;
 
-            if (kind == AstNodeKind::FuncDecl && (collectFlags & COLLECT_TABLE_SPECFUNC) && !n1->isSpecialFunctionName())
+            if (kind == AstNodeKind::FuncDecl && (collectFlags & COLLECT_TABLE_SPEC_FUNC) && !n1->isSpecialFunctionName())
                 continue;
-            if (kind == AstNodeKind::FuncDecl && !(collectFlags & COLLECT_TABLE_SPECFUNC) && n1->isSpecialFunctionName())
+            if (kind == AstNodeKind::FuncDecl && !(collectFlags & COLLECT_TABLE_SPEC_FUNC) && n1->isSpecialFunctionName())
                 continue;
 
             if (!canCollectNode(n1))
@@ -723,7 +726,7 @@ void GenDoc::generateContent()
 
             // Functions
             outputTable(structNode->scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
-            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Special Functions", COLLECT_TABLE_SPECFUNC);
+            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Special Functions", COLLECT_TABLE_SPEC_FUNC);
             break;
         }
 

@@ -195,9 +195,9 @@ static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void*
 
     SWAG_ASSERT(cbIndex != UINT32_MAX);
 
-    void*             result   = nullptr;
-    const ByteCode*   bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode);
-    TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
+    void*                   result   = nullptr;
+    const ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode);
+    const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
     if (typeFunc->numReturnRegisters())
@@ -253,7 +253,7 @@ void initDefaultContext()
     g_ProcessInfos.backendKind    = SwagBackendGenType::ByteCode;
 }
 
-uint64_t getDefaultContextFlags(Module* module)
+uint64_t getDefaultContextFlags(const Module* module)
 {
     uint64_t flags = 0;
     if (module->kind == ModuleKind::Test)

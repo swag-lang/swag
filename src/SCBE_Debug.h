@@ -125,12 +125,12 @@ struct SCBE_DebugLines
 struct SCBE_Debug
 {
     static void                  getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    static SCBE_DebugTypeIndex   getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value);
-    static SCBE_DebugTypeIndex   getSimpleType(TypeInfo* typeInfo);
+    static SCBE_DebugTypeIndex   getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value);
+    static SCBE_DebugTypeIndex   getSimpleType(const TypeInfo* typeInfo);
     static SCBE_DebugTypeIndex   getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef);
     static SCBE_DebugTypeIndex   getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo);
     static SCBE_DebugTypeIndex   getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
     static SCBE_DebugTypeRecord* addTypeRecord(SCBE_CPU& pp);
-    static void                  setLocation(CPUFunction* cpuFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    static void                  setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t byteOffset);
     static Utf8                  getScopedName(AstNode* node);
 };

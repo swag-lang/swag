@@ -24,7 +24,7 @@ bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
     return true;
 }
 
-bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
+bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
 {
     // Eliminate messages without a corresponding #message
     for (size_t i = 0; i < compilerMessages[pass].size(); i++)

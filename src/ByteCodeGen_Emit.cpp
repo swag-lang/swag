@@ -59,7 +59,7 @@ bool ByteCodeGen::emitDebugNop(ByteCodeGenContext* context)
     return true;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
+ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
 {
     SWAG_ASSERT(storageSegment);
     switch (storageSegment->kind)
@@ -79,7 +79,7 @@ ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(ByteCodeGenContext* context
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits)
+ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits)
 {
     SWAG_ASSERT(storageSegment);
 
@@ -147,7 +147,7 @@ ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(ByteCodeGenContext* context, Da
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
+ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
 {
     AstNode*   node = context->node;
     const auto bc   = context->bc;

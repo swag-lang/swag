@@ -282,7 +282,7 @@ namespace
 
 void Diagnostic::sortRanges()
 {
-    sort(ranges.begin(), ranges.end(), [](auto& r1, auto& r2)
+    ranges::sort(ranges, [](auto& r1, auto& r2)
     {
         return r1.startLocation.column < r2.startLocation.column;
     });
@@ -708,7 +708,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     return str;
 }
 
-Utf8 Diagnostic::isType(SymbolOverload* overload)
+Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";

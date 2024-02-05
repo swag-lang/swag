@@ -389,7 +389,7 @@ void SCBE_Coff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog
     }
 }
 
-bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
+bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
 {
     SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
     const auto tableSize = (uint32_t) cofftable.table.size();

@@ -105,12 +105,12 @@ struct LLVM : Backend
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     bool                createRuntime(const BuildParameters& buildParameters);
-    static llvm::Value* getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);
+    static llvm::Value* getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits);
     llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo);
     void                createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     llvm::FunctionType* getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, bool closureToLambda = false);
-    void                emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message);
-    void                setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func);
+    void                emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message);
+    void                setFuncAttributes(const BuildParameters& buildParameters, const Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const;
     void                storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const;
     void                storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR) const;
     void                getReturnResult(llvm::LLVMContext& context,
@@ -118,23 +118,23 @@ struct LLVM : Backend
                          Module*                           moduleToGen,
                          TypeInfo*                         returnType,
                          bool                              imm,
-                         Register&                         reg,
+                         const Register&                   reg,
                          llvm::AllocaInst*                 allocR,
                          llvm::AllocaInst*                 allocResult);
     void emitByteCodeCallParameters(const BuildParameters&      buildParameters,
                                     llvm::AllocaInst*           allocR,
                                     llvm::AllocaInst*           allocRR,
-                                    llvm::AllocaInst*           allocT,
+                                    const llvm::AllocaInst*     allocT,
                                     VectorNative<llvm::Value*>& params,
                                     TypeInfoFuncAttr*           typeFuncBC,
                                     VectorNative<uint32_t>&     pushRAParams,
                                     const Vector<llvm::Value*>& values,
                                     bool                        closureToLambda = false);
 
-    void        emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);
-    static void emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);
-    void        emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned);
-    static void emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned);
+    static void emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);
+    static void emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits);
+    static void emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned);
+    static void emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned);
 
     bool emitCallParameters(const BuildParameters&        buildParameters,
                             llvm::AllocaInst*             allocR,
@@ -168,17 +168,17 @@ struct LLVM : Backend
     bool emitOS(const BuildParameters& buildParameters) const;
     bool emitMain(const BuildParameters& buildParameters);
 
-    llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
-    bool              emitGetParam(llvm::LLVMContext&     context,
-                                   const BuildParameters& buildParameters,
-                                   llvm::Function*        func,
-                                   TypeInfoFuncAttr*      typeFunc,
-                                   uint32_t               rdest,
-                                   uint32_t               paramIdx,
-                                   llvm::AllocaInst*      allocR,
-                                   int                    sizeOf    = 0,
-                                   uint64_t               toAdd     = 0,
-                                   int                    deRefSize = 0);
+    static llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
+    bool                     emitGetParam(llvm::LLVMContext& context,
+                                   const BuildParameters&    buildParameters,
+                                   const llvm::Function*     func,
+                                   TypeInfoFuncAttr*         typeFunc,
+                                   uint32_t                  rdest,
+                                   uint32_t                  paramIdx,
+                                   llvm::AllocaInst*         allocR,
+                                   int                       sizeOf    = 0,
+                                   uint64_t                  toAdd     = 0,
+                                   int                       deRefSize = 0);
     llvm::Value* emitCall(const BuildParameters&      buildParameters,
                           Module*                     moduleToGen,
                           const char*                 name,

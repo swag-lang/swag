@@ -29,7 +29,7 @@ void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
+void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
     if (ip->flags & BCI_IMM_B)
     {
@@ -84,7 +84,7 @@ void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& build
     }
 }
 
-void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
+void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {
@@ -114,7 +114,7 @@ void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& bui
     }
 }
 
-void LLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
+void LLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message)
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -143,7 +143,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* mod
     emitCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
-llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
+llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
     if (ip->flags & BCI_IMM_A)
     {

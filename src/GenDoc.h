@@ -56,13 +56,13 @@ struct GenDoc
     static Utf8        toRef(Utf8 str);
     Utf8               getTocTitleRef() const;
     void               addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
-    static Utf8        getFileExtension(Module* module);
+    static Utf8        getFileExtension(const Module* module);
     bool               generate(Module* mdl, BuildCfgDocKind kind);
     void               outputStyles();
     Utf8               findReference(const Utf8& name);
-    void               computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
+    static void        computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
     static void        computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc);
-    void               computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
+    static void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
     static const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink = true);
     Utf8               getFormattedText(const Utf8& user);
     void               outputCode(const Utf8& code, uint32_t flags);

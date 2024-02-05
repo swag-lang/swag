@@ -15,12 +15,12 @@ struct TypeInfoFuncAttr;
 struct LLVM_Debug
 {
     void                    setup(LLVM* m, llvm::Module* module);
-    llvm::DISubprogram*     startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
-    void                    startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
+    llvm::DISubprogram*     startFunction(const ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
+    void                    startFunction(const BuildParameters& buildParameters, const LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void                    finalize() const;
-    void                    setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip);
+    void                    setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, const ByteCodeInstruction* ip);
     void                    createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
-    llvm::DIFile*           getOrCreateFile(SourceFile* file);
+    llvm::DIFile*           getOrCreateFile(const SourceFile* file);
     llvm::DIType*           getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file);
     llvm::DIType*           getEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);

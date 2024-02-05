@@ -198,7 +198,7 @@ struct ByteCode
 #endif
     };
 
-    void              printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
+    void              printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr) const;
     static Utf8       getPrettyInstruction(ByteCodeInstruction* ip);
     static Utf8       getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const;

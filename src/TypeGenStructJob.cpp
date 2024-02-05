@@ -133,7 +133,7 @@ bool TypeGenStructJob::computeStruct()
     }
 
     // Generic types
-    concreteType->generics.buffer = 0;
+    concreteType->generics.buffer = nullptr;
     concreteType->generics.count  = realType->genericParameters.size();
     if (concreteType->generics.count)
     {
@@ -154,7 +154,7 @@ bool TypeGenStructJob::computeStruct()
     }
 
     // Fields
-    concreteType->fields.buffer = 0;
+    concreteType->fields.buffer = nullptr;
     concreteType->fields.count  = 0;
     if ((attributes & ATTRIBUTE_EXPORT_TYPE_METHODS) || !(realType->flags & TYPEINFO_STRUCT_IS_ITABLE))
     {
@@ -179,7 +179,7 @@ bool TypeGenStructJob::computeStruct()
     }
 
     // Methods
-    concreteType->methods.buffer = 0;
+    concreteType->methods.buffer = nullptr;
     concreteType->methods.count  = 0;
     if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
     {
@@ -214,7 +214,7 @@ bool TypeGenStructJob::computeStruct()
     }
 
     // Interfaces
-    concreteType->interfaces.buffer = 0;
+    concreteType->interfaces.buffer = nullptr;
     concreteType->interfaces.count  = 0;
     if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
     {

@@ -360,7 +360,7 @@ bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job
     return false;
 }
 
-void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
+void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
 {
     for (const auto& it : pendingJobs)
     {

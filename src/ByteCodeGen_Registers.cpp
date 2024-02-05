@@ -116,7 +116,7 @@ void ByteCodeGen::transformResultToLinear2(ByteCodeGenContext* context, Register
     }
 }
 
-void ByteCodeGen::truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count)
+void ByteCodeGen::truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int count)
 {
     if (rc.size() == count)
         return;
@@ -137,7 +137,7 @@ void ByteCodeGen::truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc,
     rc            = rs;
 }
 
-void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
+void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, RegisterList& rc)
 {
     if (rc.cannotFree)
         return;

@@ -133,7 +133,7 @@ void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const ch
     EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
 }
 
-bool ByteCodeGen::mustEmitSafety(ByteCodeGenContext* context, uint16_t what)
+bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, uint16_t what)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
         return false;
@@ -349,7 +349,7 @@ void ByteCodeGen::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_
     emitSafetyBoundCheckLowerU64(context, r0, r1);
 }
 
-void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)
+void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, const TypeInfoArray* typeInfoArray)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -362,7 +362,7 @@ void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* toType)
+void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* exprNode, TypeInfo* toType)
 {
     if (!mustEmitSafety(context, SAFETY_ANY))
         return;
@@ -390,7 +390,7 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNo
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, AstRange* node)
+void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* node)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -409,7 +409,7 @@ void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, AstRange* node)
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
+void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;

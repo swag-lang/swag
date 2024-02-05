@@ -101,7 +101,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
     return Report::report(diag);
 }
 
-bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
+bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* scope)
 {
     const auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)
@@ -115,8 +115,8 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
     if (scope->owner != node && !node->isParentOf(scope->owner))
         return true;
 
-    auto&      table = scope->symTable;
-    ScopedLock lock(table.mutex);
+    const auto& table = scope->symTable;
+    ScopedLock  lock(table.mutex);
 
     uint32_t cptDone = 0;
     bool     isOk    = true;

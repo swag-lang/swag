@@ -61,7 +61,7 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
     return false;
 }
 
-void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, ByteCodeInstruction* ip)
+void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
     const uint32_t paramIdx   = ip->c.u32;
     const auto     callParams = context->callerContext->validIfParameters;
@@ -77,7 +77,7 @@ void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, ByteCode
     return storageSegment->address(storageOffset);
 }
 
-bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
     const auto solved = (SymbolOverload*) ip->d.pointer;
 
@@ -113,7 +113,7 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
     return false;
 }
 
-void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
     // Is this constexpr ?
     const auto solved = (SymbolOverload*) ip->d.pointer;

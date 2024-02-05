@@ -11,7 +11,7 @@ inline bool isPowerOfTwo(size_t v)
     return (v & (v - 1)) == 0;
 }
 
-inline bool overflowIsEnabled(ByteCodeInstruction* ip, AstNode* node)
+inline bool overflowIsEnabled(const ByteCodeInstruction* ip, AstNode* node)
 {
     if (ip && ip->flags & BCI_CAN_OVERFLOW)
         return true;
@@ -22,7 +22,7 @@ inline bool overflowIsEnabled(ByteCodeInstruction* ip, AstNode* node)
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, int8_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int8_t x, int8_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -34,7 +34,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, in
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, int16_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int16_t x, int16_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -46,7 +46,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, i
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, int32_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int32_t x, int32_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -58,7 +58,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, i
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, int64_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int64_t x, int64_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -71,7 +71,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, i
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -83,7 +83,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, u
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -95,7 +95,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, 
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -107,7 +107,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, 
     return false;
 }
 
-inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, uint64_t y)
+inline bool addWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint64_t x, uint64_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -118,7 +118,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, 
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, int8_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int8_t x, int8_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -130,7 +130,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, in
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, int16_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int16_t x, int16_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -142,7 +142,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, i
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, int32_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int32_t x, int32_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -154,7 +154,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, i
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, int64_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int64_t x, int64_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -166,7 +166,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, i
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
 {
     const uint32_t result = (uint32_t) x - (uint32_t) y;
     if (!overflowIsEnabled(ip, node))
@@ -178,7 +178,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, u
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
 {
     const uint32_t result = (uint32_t) x - (uint32_t) y;
     if (!overflowIsEnabled(ip, node))
@@ -190,7 +190,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, 
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
 {
     const uint64_t result = (uint64_t) x - (uint64_t) y;
     if (!overflowIsEnabled(ip, node))
@@ -202,7 +202,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, 
     return false;
 }
 
-inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, uint64_t y)
+inline bool subWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint64_t x, uint64_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -213,7 +213,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, 
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, int8_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int8_t x, int8_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -225,7 +225,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, in
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, int16_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int16_t x, int16_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -237,7 +237,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, i
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, int32_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int32_t x, int32_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -249,7 +249,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, i
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, int64_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, int64_t x, int64_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -263,7 +263,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, i
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -275,7 +275,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, u
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -287,7 +287,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, 
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
@@ -299,7 +299,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, 
     return false;
 }
 
-inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, uint64_t y)
+inline bool mulWillOverflow(const ByteCodeInstruction* ip, AstNode* node, uint64_t x, uint64_t y)
 {
     if (!overflowIsEnabled(ip, node))
     {
