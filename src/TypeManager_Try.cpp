@@ -154,8 +154,8 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
 bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
-    toType   = TypeManager::concretePtrRef(toType);
-    fromType = TypeManager::concretePtrRef(fromType);
+    toType   = concretePtrRef(toType);
+    fromType = concretePtrRef(fromType);
 
     auto structType = fromType;
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))

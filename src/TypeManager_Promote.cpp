@@ -15,10 +15,10 @@ TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
 
 void TypeManager::promoteUntypedInteger(AstNode* left, const AstNode* right)
 {
-    TypeInfo* leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+    TypeInfo* leftTypeInfo = concreteType(left->typeInfo);
     SWAG_ASSERT(leftTypeInfo->isUntypedInteger());
 
-    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    TypeInfo* rightTypeInfo = concreteType(right->typeInfo);
     if (!rightTypeInfo->isNativeInteger())
         return;
 
@@ -51,7 +51,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, const AstNode* right)
 
 bool TypeManager::promote32(SemanticContext* context, AstNode* left)
 {
-    const TypeInfo* typeInfo = TypeManager::concreteType(left->typeInfo);
+    const TypeInfo* typeInfo = concreteType(left->typeInfo);
     if (!typeInfo->isNative())
         return true;
 
@@ -93,8 +93,8 @@ bool TypeManager::promote(SemanticContext* context, AstNode* left, AstNode* righ
 
 bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    TypeInfo* leftTypeInfo  = concreteType(left->typeInfo);
+    TypeInfo* rightTypeInfo = concreteType(right->typeInfo);
 
     // Promotion only for native types
     if (!leftTypeInfo->isNativeInteger() && !leftTypeInfo->isNativeFloat())

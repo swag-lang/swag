@@ -824,7 +824,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
 
     const auto other = CastTypeInfo<TypeInfoFuncAttr>(to, to->kind);
     SWAG_ASSERT(to->isFuncAttr() || to->isLambdaClosure());
-    if (!TypeInfoFuncAttr::isSame(other, castFlags))
+    if (!isSame(other, castFlags))
         return false;
 
     if ((castFlags & CASTFLAG_EXACT) || (to->isLambdaClosure()))

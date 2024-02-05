@@ -93,9 +93,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                         const auto constSegment = Semantic::getConstantSegFromContext(exprList);
                         exprList->allocateComputedValue();
                         exprList->computedValue->storageSegment = constSegment;
-                        SWAG_CHECK(
-                            Semantic::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo
-                                , exprList));
+                        SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo, exprList));
                     }
                 }
             }
@@ -134,33 +132,33 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         castFlags |= CASTFLAG_NO_IMPLICIT;
 
     if (toType->isFuncAttr())
-        toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
+        toType = concreteType(toType, CONCRETE_FUNC);
     if (fromType->isFuncAttr())
-        fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
+        fromType = concreteType(fromType, CONCRETE_FUNC);
     if (!toType->isLambdaClosure() && fromType->isLambdaClosure())
-        fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
+        fromType = concreteType(fromType, CONCRETE_FUNC);
 
     // Transform typealias to related type
     if (toType->isAlias())
-        toType = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+        toType = concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
     if (fromType->isAlias())
-        fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+        fromType = concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
     // Transform enum to underlying type
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->flags & TYPEINFO_INCOMPLETE || fromType->flags & TYPEINFO_INCOMPLETE)
     {
-        toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
-        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+        toType   = concreteType(toType, CONCRETE_ENUM);
+        fromType = concreteType(fromType, CONCRETE_ENUM);
     }
 
     if ((castFlags & CASTFLAG_INDEX) && (fromType->flags & TYPEINFO_ENUM_INDEX))
     {
-        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+        fromType = concreteType(fromType, CONCRETE_ENUM);
     }
 
     // Transform typealias to related type
-    fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
-    toType   = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+    fromType = concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+    toType   = concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
     if (fromType->isListTuple() || fromType->isListArray())
     {

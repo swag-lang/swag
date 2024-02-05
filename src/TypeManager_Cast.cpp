@@ -19,7 +19,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     if (!(castFlags & CASTFLAG_AUTO_BOOL) && !(castFlags & CASTFLAG_EXPLICIT))
         return castError(context, g_TypeMgr->typeInfoBool, fromType, fromNode, castFlags);
 
-    fromType = TypeManager::concreteType(fromType);
+    fromType = concreteType(fromType);
 
     if (fromType->isPointer() ||
         fromType->isLambdaClosure() ||
@@ -137,6 +137,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             return true;
+
         case NativeTypeKind::F64:
             if (fromNode)
             {
@@ -174,6 +175,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             return true;
+
         default:
             break;
         }
@@ -264,6 +266,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                 }
             }
             break;
+
         default:
             break;
         }
@@ -341,6 +344,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                         return false;
                 }
             }
+            [[fallthrough]];
 
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -506,6 +510,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                         return false;
                 }
             }
+            [[fallthrough]];
 
         case NativeTypeKind::U8:
         case NativeTypeKind::U32:
@@ -671,6 +676,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                         return false;
                 }
             }
+            [[fallthrough]];
 
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
@@ -895,7 +901,8 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoU64;
                 return true;
             }
-            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
+
+            if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 return true;
             }
@@ -986,6 +993,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                     return false;
                 }
             }
+            [[fallthrough]];
 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1075,7 +1083,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                     fromNode->typeInfo = g_TypeMgr->typeInfoS8;
                 return true;
             }
-            else if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
+
+            if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 return true;
             }
@@ -1158,6 +1167,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                     return false;
                 }
             }
+            [[fallthrough]];
 
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
@@ -1246,7 +1256,8 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoS16;
                 return true;
             }
-            else if (fromType->isUntypedInteger())
+
+            if (fromType->isUntypedInteger())
             {
                 return true;
             }
@@ -1331,6 +1342,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                     return false;
                 }
             }
+            [[fallthrough]];
 
         case NativeTypeKind::S64:
             if (fromNode && fromNode->hasComputedValue())
@@ -1363,7 +1375,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
                     return false;
                 }
-                else if (fromNode->computedValue->reg.f32 >= (float) INT32_MAX + 0.5f)
+
+                if (fromNode->computedValue->reg.f32 >= (float) INT32_MAX + 0.5f)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
@@ -1381,7 +1394,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
                     return false;
                 }
-                else if (fromNode->computedValue->reg.f64 >= (double) INT32_MAX + 0.5)
+
+                if (fromNode->computedValue->reg.f64 >= (double) INT32_MAX + 0.5)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
@@ -1402,6 +1416,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U32:
             if (fromType->isUntypedBinHex())
                 return true;
+            [[fallthrough]];
 
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
@@ -1412,7 +1427,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                     fromNode->typeInfo = g_TypeMgr->typeInfoS32;
                 return true;
             }
-            else if (fromType->isUntypedInteger())
+
+            if (fromType->isUntypedInteger())
             {
                 return true;
             }
@@ -1535,6 +1551,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U32:
             if (fromType->isUntypedBinHex())
                 return true;
+            [[fallthrough]];
 
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
@@ -2012,7 +2029,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (child)
         {
-            const auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+            const auto childType = concreteType(child->typeInfo, CONCRETE_FUNC);
             newSizeof += childType->sizeOf;
             if (!(child->flags & AST_CONST_EXPR))
                 fromNode->flags &= ~AST_CONST_EXPR;
@@ -2166,7 +2183,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     }
     else if (fromType->isAny())
     {
-        const auto toRealType = TypeManager::concretePtrRef(toType);
+        const auto toRealType = concretePtrRef(toType);
 
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
@@ -2626,7 +2643,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
     if (castFlags & CASTFLAG_UFCS)
-        fromType = TypeManager::concretePtrRef(fromType);
+        fromType = concretePtrRef(fromType);
 
     // To "cstring"
     if (toType->isCString())
@@ -2882,7 +2899,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     {
         if (toTypeArray->finalType->isSame(fromType, castFlags | CASTFLAG_CAST))
         {
-            const auto finalType = TypeManager::concreteType(toTypeArray->finalType, CONCRETE_ENUM | CONCRETE_ALIAS);
+            const auto finalType = concreteType(toTypeArray->finalType, CONCRETE_ENUM | CONCRETE_ALIAS);
             if (finalType->isString() ||
                 finalType->isNativeFloat() ||
                 finalType->isNativeIntegerOrRune() ||
@@ -2953,8 +2970,8 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, castFlags | CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
-            const int s = toTypeSlice->pointedType->sizeOf;
-            const int d = fromTypeArray->sizeOf;
+            const auto s = toTypeSlice->pointedType->sizeOf;
+            const auto d = fromTypeArray->sizeOf;
             SWAG_ASSERT(s != 0 || toTypeSlice->pointedType->isGeneric());
 
             const bool match = s == 0 || (d / s) * s == d;
@@ -2968,8 +2985,8 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 
                 return true;
             }
-            else
-                castErrorType = CastErrorType::SliceArray;
+
+            castErrorType = CastErrorType::SliceArray;
         }
     }
     else if (fromType->isString())
