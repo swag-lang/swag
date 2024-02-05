@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "Ast.h"
 #include "AstFlags.h"
 #include "GenDoc.h"
@@ -116,8 +119,8 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     }
 
     VectorNative<AstNode*> symbols;
-    for (auto& c : symbolsMap)
-        symbols.append(c.second);
+    for (auto& val : symbolsMap | views::values)
+        symbols.append(val);
     sort(symbols.begin(), symbols.end(), [](AstNode* a, AstNode* b)
     {
         const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);

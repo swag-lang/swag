@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "ByteCodeDebugger.h"
+
+#include <ranges>
+
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "Module.h"
@@ -132,8 +135,8 @@ ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
 VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
 {
     VectorNative<Module*> modules;
-    for (auto m : g_Workspace->mapModulesNames)
-        modules.push_back(m.second);
+    for (auto val : g_Workspace->mapModulesNames | views::values)
+        modules.push_back(val);
     modules.push_back(g_Workspace->bootstrapModule);
     modules.push_back(g_Workspace->runtimeModule);
 

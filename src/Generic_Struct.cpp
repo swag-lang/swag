@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "Ast.h"
 #include "AstFlags.h"
 #include "Diagnostic.h"
@@ -148,9 +151,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // :GenericConcreteAlias
     // Make all types concrete in case of simple aliases
-    for (auto& p : cloneContext.replaceTypes)
+    for (auto& val : cloneContext.replaceTypes | views::values)
     {
-        p.second.typeInfoReplace = TypeManager::concreteType(p.second.typeInfoReplace, CONCRETE_ALIAS);
+        val.typeInfoReplace = TypeManager::concreteType(val.typeInfoReplace, CONCRETE_ALIAS);
     }
 
     const auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);

@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "Ast.h"
 #include "AstFlags.h"
 #include "LanguageSpec.h"
@@ -245,11 +248,11 @@ bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
     return true;
 }
 
-void Semantic::waitForGenericParameters(SemanticContext* context, OneMatch& match)
+void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch& match)
 {
-    for (const auto& it : match.genericReplaceTypes)
+    for (const auto& val : match.genericReplaceTypes | views::values)
     {
-        const auto typeInfo = it.second.typeInfoReplace;
+        const auto typeInfo = val.typeInfoReplace;
         const auto declNode = typeInfo->declNode;
         if (!declNode)
             continue;

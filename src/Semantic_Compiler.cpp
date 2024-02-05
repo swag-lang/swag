@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "AstFlags.h"
 #include "Backend.h"
 #include "ByteCode.h"
@@ -834,21 +837,21 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         if (locNode->ownerFct && locNode->ownerFct->typeInfo && locNode->ownerFct->requestedGeneric)
         {
             const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            for (const auto& it : typeFunc->replaceTypes)
+            for (const auto& val : typeFunc->replaceTypes | views::values)
             {
                 bool fromGen = false;
-                if (it.second.typeInfoReplace == locNode->typeInfo)
+                if (val.typeInfoReplace == locNode->typeInfo)
                     fromGen = true;
-                else if (locNode->typeInfo->isPointer() && it.second.typeInfoReplace == ((TypeInfoPointer*) locNode->typeInfo)->pointedType)
+                else if (locNode->typeInfo->isPointer() && val.typeInfoReplace == ((TypeInfoPointer*) locNode->typeInfo)->pointedType)
                     fromGen = true;
-                else if (locNode->typeInfo->isSlice() && it.second.typeInfoReplace == ((TypeInfoSlice*) locNode->typeInfo)->pointedType)
+                else if (locNode->typeInfo->isSlice() && val.typeInfoReplace == ((TypeInfoSlice*) locNode->typeInfo)->pointedType)
                     fromGen = true;
-                else if (locNode->typeInfo->isArray() && it.second.typeInfoReplace == ((TypeInfoArray*) locNode->typeInfo)->finalType)
+                else if (locNode->typeInfo->isArray() && val.typeInfoReplace == ((TypeInfoArray*) locNode->typeInfo)->finalType)
                     fromGen = true;
 
-                if (fromGen && it.second.fromNode)
+                if (fromGen && val.fromNode)
                 {
-                    locNode = it.second.fromNode;
+                    locNode = val.fromNode;
                     done    = true;
                     continue;
                 }

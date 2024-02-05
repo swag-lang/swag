@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "Ast.h"
 #include "AstFlags.h"
 #include "BackendParameters.h"
@@ -82,9 +85,9 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 auto       errNode = context->node;
 
                 TypeInfo* errType = nullptr;
-                for (const auto& v : match.genericReplaceTypes)
+                for (const auto& val : match.genericReplaceTypes | views::values)
                 {
-                    const auto fromNode = v.second.fromNode;
+                    const auto fromNode = val.fromNode;
                     if (!fromNode)
                         continue;
 

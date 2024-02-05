@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "TypeGen.h"
+
+#include <ranges>
+
 #include "Crc32.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
@@ -597,17 +600,17 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
         setup(name);
 
     mapPerSegment[0]->exportedTypes = other->mapPerSegment[0]->exportedTypes;
-    for (auto& it : mapPerSegment[0]->exportedTypes)
+    for (auto& val : mapPerSegment[0]->exportedTypes | views::values)
     {
-        it.second.exportedType                                         = (ExportedTypeInfo*) module->constantSegment.address(it.second.storageOffset);
-        mapPerSegment[0]->exportedTypesReverse[it.second.exportedType] = it.second.realType;
+        val.exportedType                                         = (ExportedTypeInfo*) module->constantSegment.address(val.storageOffset);
+        mapPerSegment[0]->exportedTypesReverse[val.exportedType] = val.realType;
     }
 
     mapPerSegment[1]->exportedTypes = other->mapPerSegment[1]->exportedTypes;
-    for (auto& it : mapPerSegment[1]->exportedTypes)
+    for (auto& val : mapPerSegment[1]->exportedTypes | views::values)
     {
-        it.second.exportedType                                         = (ExportedTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
-        mapPerSegment[1]->exportedTypesReverse[it.second.exportedType] = it.second.realType;
+        val.exportedType                                         = (ExportedTypeInfo*) module->compilerSegment.address(val.storageOffset);
+        mapPerSegment[1]->exportedTypesReverse[val.exportedType] = val.realType;
     }
 }
 
@@ -629,7 +632,7 @@ void TypeGen::release()
     }
 }
 
-TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
+TypeGen::MapPerSeg& TypeGen::getMapPerSeg(const DataSegment* segment)
 {
     if (segment->kind != SegmentKind::Compiler)
         return *mapPerSegment[0];
@@ -638,13 +641,13 @@ TypeGen::MapPerSeg& TypeGen::getMapPerSeg(DataSegment* segment)
     return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
-bool TypeGen::genExportedStruct(JobContext*       context,
-                               const Utf8&       typeName,
-                               ExportedTypeInfo* exportedTypeInfoValue,
-                               TypeInfo*         typeInfo,
-                               DataSegment*      storageSegment,
-                               uint32_t          storageOffset,
-                               uint32_t          cflags)
+bool TypeGen::genExportedStruct(const JobContext* context,
+                                const Utf8&       typeName,
+                                ExportedTypeInfo* exportedTypeInfoValue,
+                                TypeInfo*         typeInfo,
+                                DataSegment*      storageSegment,
+                                uint32_t          storageOffset,
+                                uint32_t          cflags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
     if (context->baseJob->waitingKind == JobWaitKind::GenExportedType && context->result != ContextResult::Done)
@@ -671,7 +674,7 @@ bool TypeGen::genExportedStruct(JobContext*       context,
 
 #ifdef SWAG_STATS
     if (storageSegment->kind != SegmentKind::Compiler)
-        g_Stats.totalConcreteStructTypes++;
+        ++g_Stats.totalConcreteStructTypes;
 #endif
 
     if (cflags & GEN_EXPORTED_TYPE_SHOULD_WAIT)

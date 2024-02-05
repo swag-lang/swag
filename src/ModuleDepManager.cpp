@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "ModuleDepManager.h"
+
+#include <ranges>
+
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "FetchModuleFileSystemJob.h"
@@ -457,9 +460,9 @@ bool ModuleDepManager::execute()
         // We want each script with the same set of dependencies to have the same
         // cache folder. So we compute a CRC that will be used in the workspace name.
         Utf8 strCrc;
-        for (auto mod : allModules)
+        for (auto val : allModules | views::values)
         {
-            for (auto dep : mod.second->moduleDependencies)
+            for (auto dep : val->moduleDependencies)
             {
                 strCrc += dep->name;
                 strCrc += FMT("%d.%d.%d", dep->verNum, dep->revNum, dep->buildNum);
@@ -491,9 +494,9 @@ bool ModuleDepManager::execute()
     while (ok)
     {
         pendingCfgModules.clear();
-        for (auto m : allModules)
+        for (auto val : allModules | views::values)
         {
-            auto parentModule = m.second;
+            auto parentModule = val;
 
             // Do not treat dependencies of a module without a remote location.
             // The remote location will be initialized when known, starting with
@@ -556,9 +559,9 @@ bool ModuleDepManager::execute()
 
     // Compare versions
     //////////////////////////////////////////////////
-    for (auto m : allModules)
+    for (auto val : allModules | views::values)
     {
-        auto module = m.second;
+        auto module = val;
         auto dep    = module->fetchDep;
         if (!dep)
             continue;
@@ -600,9 +603,9 @@ bool ModuleDepManager::execute()
     //////////////////////////////////////////////////
     if (g_CommandLine.listDepCmd)
     {
-        for (auto m : allModules)
+        for (auto val : allModules | views::values)
         {
-            auto module = m.second;
+            auto module = val;
             Utf8 msg;
             if (module->fetchDep)
                 msg += FMT("%d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
@@ -626,15 +629,15 @@ bool ModuleDepManager::execute()
     //////////////////////////////////////////////////
     if (g_CommandLine.fetchDep)
     {
-        for (auto m : allModules)
+        for (auto val : allModules | views::values)
         {
-            if (!m.second->fetchDep)
+            if (!val->fetchDep)
                 continue;
-            if (!m.second->mustFetchDep)
+            if (!val->mustFetchDep)
                 continue;
 
             Job* fetchJob = nullptr;
-            switch (m.second->fetchDep->fetchKind)
+            switch (val->fetchDep->fetchKind)
             {
             // Copy from the disk, elsewhere
             case DependencyFetchKind::Disk:
@@ -649,7 +652,7 @@ bool ModuleDepManager::execute()
             {
                 error_code err;
                 auto       pathSrc = g_Workspace->dependenciesPath;
-                pathSrc.append(m.second->name.c_str());
+                pathSrc.append(val->name.c_str());
                 if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
                 {
                     Report::errorOS(FMT(Err(Err0100), pathSrc.string().c_str()));
@@ -662,7 +665,7 @@ bool ModuleDepManager::execute()
                 FILE* f = nullptr;
                 if (!fopen_s(&f, pathSrc.string().c_str(), "wt"))
                 {
-                    auto pathDst = m.second->fetchDep->resolvedLocation;
+                    auto pathDst = val->fetchDep->resolvedLocation;
                     fwrite(pathDst.string().c_str(), pathDst.string().length(), 1, f);
                     fflush(f);
                     fclose(f);
@@ -678,7 +681,7 @@ bool ModuleDepManager::execute()
             }
 
             SWAG_ASSERT(fetchJob);
-            fetchJob->module = m.second;
+            fetchJob->module = val;
             g_ThreadMgr.addJob(fetchJob);
         }
 
@@ -687,12 +690,12 @@ bool ModuleDepManager::execute()
     }
 
     // For each modules, flatten all dependencies
-    for (auto m : allModules)
+    for (auto val : allModules | views::values)
     {
         SetUtf8                          depNames;
-        VectorNative<ModuleDependency*>& dep = m.second->moduleDependencies;
+        VectorNative<ModuleDependency*>& dep = val->moduleDependencies;
 
-        for (auto d : m.second->moduleDependencies)
+        for (auto d : val->moduleDependencies)
             depNames.insert(d->module->name);
 
         for (int i = 0; i < (int) dep.size(); i++)

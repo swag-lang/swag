@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "Ast.h"
 #include "AstFlags.h"
 #include "ByteCodeGen.h"
@@ -1952,16 +1955,16 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         {
             PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
             const auto     id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
-            for (auto& r : cloneContext.replaceNames)
+            for (auto& val : cloneContext.replaceNames | views::values)
             {
-                auto it = cloneContext.usedReplaceNames.find(r.second);
+                auto it = cloneContext.usedReplaceNames.find(val);
                 if (it == cloneContext.usedReplaceNames.end())
                 {
                     if (id->identifierExtension)
                     {
                         for (auto& alias : id->identifierExtension->aliasNames)
                         {
-                            if (alias.text == r.second)
+                            if (alias.text == val)
                             {
                                 const Diagnostic diag{id, alias, FMT(Err(Err0746), alias.ctext())};
                                 return context->report(diag);
@@ -1971,7 +1974,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
                     for (auto& alias : id->callParameters->aliasNames)
                     {
-                        if (alias.text == r.second)
+                        if (alias.text == val)
                         {
                             const Diagnostic diag{id, alias, FMT(Err(Err0746), alias.ctext())};
                             return context->report(diag);

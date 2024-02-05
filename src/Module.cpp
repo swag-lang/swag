@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "AstFlags.h"
 #include "Module.h"
+
+#include <ranges>
+
 #include "ByteCode.h"
 #include "Context.h"
 #include "LanguageSpec.h"
@@ -386,10 +389,10 @@ void Module::buildTypesSlice()
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
-    for (const auto& t : mapTypes)
+    for (const auto& val : mapTypes | views::values)
     {
-        *(ExportedTypeInfo**) resultPtr = t.second.exportedType;
-        constantSegment.addInitPtr(offset, t.second.storageOffset);
+        *(ExportedTypeInfo**) resultPtr = val.exportedType;
+        constantSegment.addInitPtr(offset, val.storageOffset);
 
         resultPtr += sizeof(ExportedTypeInfo*);
         offset += sizeof(ExportedTypeInfo*);

@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "Ast.h"
 #include "AstFlags.h"
 #include "Diagnostic.h"
@@ -76,11 +79,11 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // If we instantiate with a tuple list (literal), then we must convert that to a proper struct decl and make
     // a reference to it.
     const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
-    for (const auto& v : match.genericReplaceTypes)
+    for (const auto& val : match.genericReplaceTypes | views::values)
     {
-        if (v.second.typeInfoReplace->isListTuple())
+        if (val.typeInfoReplace->isListTuple())
         {
-            const auto tpt = CastTypeInfo<TypeInfoList>(v.second.typeInfoReplace, TypeInfoKind::TypeListTuple);
+            const auto tpt = CastTypeInfo<TypeInfoList>(val.typeInfoReplace, TypeInfoKind::TypeListTuple);
             int        idx = 0;
             for (const auto p : match.parameters)
             {
@@ -134,9 +137,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // :GenericConcreteAlias
     // Make all types concrete in case of simple aliases
-    for (auto& p : cloneContext.replaceTypes)
+    for (auto& val : cloneContext.replaceTypes | views::values)
     {
-        p.second.typeInfoReplace = TypeManager::concreteType(p.second.typeInfoReplace, CONCRETE_ALIAS);
+        val.typeInfoReplace = TypeManager::concreteType(val.typeInfoReplace, CONCRETE_ALIAS);
     }
 
     // Clone original node

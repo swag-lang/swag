@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include <ranges>
+
 #include "ByteCode.h"
 #include "Module.h"
 #include "Workspace.h"
@@ -146,8 +149,8 @@ void profiler()
     // FFI
     //////////////////////////////////////////
 
-    for (auto& it : ffi)
-        linFFi.push_back(it.second);
+    for (auto& val : ffi | views::values)
+        linFFi.push_back(val);
     sort(linFFi.begin(), linFFi.end(), [](const FFIStat& a, const FFIStat& b)
     {
         return b.cum < a.cum;
