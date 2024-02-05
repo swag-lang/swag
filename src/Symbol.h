@@ -82,7 +82,7 @@ struct SymbolName
 {
     void            decreaseOverloadNoLock();
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
-    SymbolOverload* findOverload(TypeInfo* typeInfo);
+    SymbolOverload* findOverload(const TypeInfo* typeInfo);
     void            addDependentJob(Job* job);
     void            addDependentJobNoLock(Job* job);
     Utf8            getFullName() const;

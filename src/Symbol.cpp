@@ -70,7 +70,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
     return overload;
 }
 
-SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
+SymbolOverload* SymbolName::findOverload(const TypeInfo* typeInfo)
 {
     for (const auto it : overloads)
     {

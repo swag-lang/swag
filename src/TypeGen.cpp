@@ -139,8 +139,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     const uint32_t    storageOffset = storageSegment->reserve(typeStruct->sizeOf, (uint8_t**) &exportedTypeInfoValue);
 
     SWAG_ASSERT(!typeName.empty());
-    SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(exportedTypeInfoValue->fullName)));
-    SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(exportedTypeInfoValue->name)));
+    SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSET_OF(exportedTypeInfoValue->fullName)));
+    SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSET_OF(exportedTypeInfoValue->name)));
     exportedTypeInfoValue->crc32 = Crc32::compute((const uint8_t*) exportedTypeInfoValue->fullName.buffer, (uint32_t) exportedTypeInfoValue->fullName.count);
 
     if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
@@ -369,7 +369,7 @@ bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
 
     uint32_t tmpStorageOffset;
     SWAG_CHECK(genExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, &tmpStorageOffset, cflags));
-    storageSegment->addInitPtr(OFFSETOFR(result), tmpStorageOffset);
+    storageSegment->addInitPtr(OFFSET_OF_R(result), tmpStorageOffset);
 
     return true;
 }
@@ -405,7 +405,7 @@ void* TypeGen::genExportedSlice(JobContext*  context,
     *result = addrDst;
 
     // Offset for native
-    storageSegment->addInitPtr(OFFSETOFR(result), storageArray);
+    storageSegment->addInitPtr(OFFSET_OF_R(result), storageArray);
     return addrDst;
 }
 
@@ -451,7 +451,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
 
     concreteType->offsetOf = realType->offset;
 
-    SWAG_CHECK(genExportedString(context, &concreteType->name, realType->name, storageSegment, OFFSETOF(concreteType->name)));
+    SWAG_CHECK(genExportedString(context, &concreteType->name, realType->name, storageSegment, OFFSET_OF(concreteType->name)));
     concreteType->crc32 = Crc32::compute((const uint8_t*) concreteType->name.buffer, (uint32_t) concreteType->name.count);
     SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, cflags));
     SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
@@ -463,13 +463,13 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
         {
             SWAG_ASSERT(realType->value);
             concreteType->value = realType->value->getStorageAddr();
-            storageSegment->addInitPtr(OFFSETOF(concreteType->value), realType->value->storageOffset, SegmentKind::Constant);
+            storageSegment->addInitPtr(OFFSET_OF(concreteType->value), realType->value->storageOffset, SegmentKind::Constant);
         }
         else
         {
             SWAG_ASSERT(realType->value);
             const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, realType->typeInfo, *realType->value, (uint8_t**) &concreteType->value);
-            storageSegment->addInitPtr(OFFSETOF(concreteType->value), storageOffsetValue);
+            storageSegment->addInitPtr(OFFSET_OF(concreteType->value), storageOffsetValue);
         }
     }
 

@@ -41,7 +41,7 @@ bool TypeGenStructJob::computeStruct()
         {
             realType->opUserInitFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opInit, realType->opUserInitFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opInit), realType->opUserInitFct->fullnameForeign);
         }
         else if (realType->opInit)
         {
@@ -49,14 +49,14 @@ bool TypeGenStructJob::computeStruct()
             realType->opInit->isUsed    = true;
             realType->opInit->isInSeg   = true;
             realType->opInit->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallNameFromDecl());
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opInit), realType->opInit->getCallNameFromDecl());
         }
 
         if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
         {
             realType->opUserDropFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opDrop, realType->opUserDropFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign);
         }
         else if (realType->opDrop)
         {
@@ -64,14 +64,14 @@ bool TypeGenStructJob::computeStruct()
             realType->opDrop->isUsed    = true;
             realType->opDrop->isInSeg   = true;
             realType->opDrop->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallNameFromDecl());
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opDrop), realType->opDrop->getCallNameFromDecl());
         }
 
         if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
         {
             realType->opUserPostCopyFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opPostCopy, realType->opUserPostCopyFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign);
         }
         else if (realType->opPostCopy)
         {
@@ -79,14 +79,14 @@ bool TypeGenStructJob::computeStruct()
             realType->opPostCopy->isUsed    = true;
             realType->opPostCopy->isInSeg   = true;
             realType->opPostCopy->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallNameFromDecl());
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostCopy), realType->opPostCopy->getCallNameFromDecl());
         }
 
         if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
         {
             realType->opUserPostMoveFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opPostMove, realType->opUserPostMoveFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign);
         }
         else if (realType->opPostMove)
         {
@@ -94,7 +94,7 @@ bool TypeGenStructJob::computeStruct()
             realType->opPostMove->isUsed    = true;
             realType->opPostMove->isInSeg   = true;
             realType->opPostMove->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallNameFromDecl());
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostMove), realType->opPostMove->getCallNameFromDecl());
         }
     }
 
@@ -102,7 +102,7 @@ bool TypeGenStructJob::computeStruct()
     ScopedLock lk(mapPerSeg.mutex);
 
     // Simple structure name, without generics
-    SWAG_CHECK(typeGen->genExportedString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSETOF(concreteType->structName)));
+    SWAG_CHECK(typeGen->genExportedString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSET_OF(concreteType->structName)));
 
     // Struct attributes
     SWAG_CHECK(typeGen->genExportedAttributes(baseContext, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));

@@ -21,13 +21,13 @@ void SymTable::release()
     allSymbols.clear();
 }
 
-SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
+SymbolName* SymTable::find(const Utf8& name, uint32_t crc) const
 {
     SharedLock lk(mutex);
     return findNoLock(name, crc);
 }
 
-SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
+SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc) const
 {
     const auto symbol = mapNames.find(name, crc);
     if (symbol && symbol->cptOverloadsInit == 0)
@@ -35,7 +35,7 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
     return symbol;
 }
 
-SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
+SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, const Utf8* aliasName)
 {
     ScopedLock lk(mutex);
     occupied          = true;
@@ -44,7 +44,7 @@ SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, S
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
+SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, const Utf8* aliasName)
 {
     if (!aliasName)
         aliasName = &node->token.text;
@@ -300,7 +300,7 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     }
 }
 
-bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol) const
+bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* node, SymbolKind kind, const SymbolName* symbol) const
 {
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
@@ -323,7 +323,7 @@ bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, AstNode* node, Sym
     return false;
 }
 
-bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags)
+bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags) const
 {
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)
@@ -378,7 +378,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     return true;
 }
 
-bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload)
+bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload)
 {
     ScopedLock lkn(symbol->mutex);
     SharedLock lkn1(otherSymbol->mutex);

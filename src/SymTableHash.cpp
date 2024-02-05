@@ -2,7 +2,7 @@
 #include "SymTableHash.h"
 #include "Symbol.h"
 
-void SymTableHash::clone(SymTableHash* from)
+void SymTableHash::clone(const SymTableHash* from)
 {
     if (!from->allocated)
         return;
