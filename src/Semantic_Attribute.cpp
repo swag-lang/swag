@@ -11,28 +11,37 @@
 #include "SourceFile.h"
 #include "TypeManager.h"
 
-#define INHERIT_ATTR(__c, __f)          \
-    if (!(__c->attributeFlags & (__f))) \
-        __c->attributeFlags |= attributeFlags & (__f);
+#define INHERIT_ATTR(__c, __f)                           \
+    do                                                   \
+    {                                                    \
+        if (!((__c)->attributeFlags & (__f)))            \
+        (__c)->attributeFlags |= attributeFlags & (__f); \
+    } while(0)
 
-#define INHERIT_SAFETY(__c, __f)                               \
-    if (!(__c->safetyOn & (__f)) && !(__c->safetyOff & (__f))) \
-    {                                                          \
-        __c->safetyOn |= safetyOn & (__f);                     \
-        __c->safetyOff |= safetyOff & (__f);                   \
-    }
+#define INHERIT_SAFETY(__c, __f)                                       \
+    do                                                                 \
+    {                                                                  \
+        if (!((__c)->safetyOn & (__f)) && !((__c)->safetyOff & (__f))) \
+        {                                                              \
+            (__c)->safetyOn |= safetyOn & (__f);                       \
+            (__c)->safetyOff |= safetyOff & (__f);                     \
+        }                                                              \
+    } while(0)
 
-#define CHECK_SAFETY_NAME(__name, __flag) \
-    if (w == g_LangSpec->__name)          \
-    {                                     \
-        done = true;                      \
-        forNode->safetyOn &= ~__flag;     \
-        forNode->safetyOff &= ~__flag;    \
-        if (attrValue->reg.b)             \
-            forNode->safetyOn |= __flag;  \
-        else                              \
-            forNode->safetyOff |= __flag; \
-    }
+#define CHECK_SAFETY_NAME(__name, __flag)       \
+    do                                          \
+    {                                           \
+        if (w == g_LangSpec->__name)            \
+        {                                       \
+            done = true;                        \
+            forNode->safetyOn &= ~(__flag);     \
+            forNode->safetyOff &= ~(__flag);    \
+            if (attrValue->reg.b)               \
+                forNode->safetyOn |= (__flag);  \
+            else                                \
+                forNode->safetyOff |= (__flag); \
+        }                                       \
+    } while(0)
 
 bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
@@ -64,7 +73,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
-    if (typeInfo->attributeUsage & AttributeUsage::All)
+    if (typeInfo->attributeUsage & All)
         return true;
 
     const bool  isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
@@ -119,57 +128,59 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (!specificMsg)
     {
-        if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
+        if ((typeInfo->attributeUsage & Function) && (kind == AstNodeKind::FuncDecl))
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
+        if ((typeInfo->attributeUsage & Struct) && (kind == AstNodeKind::StructDecl))
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
+        if ((typeInfo->attributeUsage & Enum) && (kind == AstNodeKind::EnumDecl))
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
+        if ((typeInfo->attributeUsage & EnumValue) && (kind == AstNodeKind::EnumValue))
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::Variable) && (kind == AstNodeKind::VarDecl))
+        if ((typeInfo->attributeUsage & Variable) && (kind == AstNodeKind::VarDecl))
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::Constant) && (kind == AstNodeKind::ConstDecl))
+        if ((typeInfo->attributeUsage & Constant) && (kind == AstNodeKind::ConstDecl))
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && isStructVar)
+        if ((typeInfo->attributeUsage & StructVariable) && isStructVar)
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && isGlobalVar)
+        if ((typeInfo->attributeUsage & GlobalVariable) && isGlobalVar)
             return true;
-        if ((typeInfo->attributeUsage & AttributeUsage::FunctionParameter) && isFuncParam)
+        if ((typeInfo->attributeUsage & FunctionParameter) && isFuncParam)
             return true;
     }
 
-    switch (typeInfo->attributeUsage & AttributeUsage::MaskType)
+    switch (typeInfo->attributeUsage & MaskType)
     {
-    case AttributeUsage::Enum:
+    case Enum:
         specificMsg = "an enum";
         break;
-    case AttributeUsage::EnumValue:
+    case EnumValue:
         specificMsg = "an enum value";
         break;
-    case AttributeUsage::StructVariable:
+    case StructVariable:
         specificMsg = "a struct variable";
         break;
-    case AttributeUsage::GlobalVariable:
+    case GlobalVariable:
         specificMsg = "a global variable";
         break;
-    case AttributeUsage::Variable:
+    case Variable:
         specificMsg = "a variable";
         break;
-    case AttributeUsage::Struct:
+    case Struct:
         specificMsg = "a struct";
         break;
-    case AttributeUsage::Function:
+    case Function:
         specificMsg = "a function";
         break;
-    case AttributeUsage::FunctionParameter:
+    case FunctionParameter:
         specificMsg = "a function parameter";
         break;
-    case AttributeUsage::File:
+    case File:
         specificMsg = "a file";
         break;
-    case AttributeUsage::Constant:
+    case Constant:
         specificMsg = "a constant";
+        break;
+    default:
         break;
     }
 
@@ -180,22 +191,18 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0024), nakedName.c_str()));
         return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
-    else
+
+    const auto nakedName = Naming::aKindName(checkNode);
+    if (nakedName == "<node>")
     {
-        const auto nakedName = Naming::aKindName(checkNode);
-        if (nakedName == "<node>")
-        {
-            const Diagnostic diag{oneAttribute, FMT(Err(Err0495), oneAttribute->token.ctext())};
-            return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
-        }
-        else
-        {
-            const auto       nakedName1 = Naming::kindName(checkNode);
-            const Diagnostic diag{oneAttribute, FMT(Err(Err0492), oneAttribute->token.ctext(), nakedName.c_str())};
-            const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0063), nakedName1.c_str()));
-            return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
-        }
+        const Diagnostic diag{oneAttribute, FMT(Err(Err0495), oneAttribute->token.ctext())};
+        return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
+
+    const auto       nakedName1 = Naming::kindName(checkNode);
+    const Diagnostic diag{oneAttribute, FMT(Err(Err0492), oneAttribute->token.ctext(), nakedName.c_str())};
+    const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0063), nakedName1.c_str()));
+    return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
 }
 
 void Semantic::inheritAttributesFromParent(AstNode* child)
@@ -312,24 +319,24 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     typeAttr->attributeUsage = value->reg.u32;
 
                 if (curAttr->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
-                    typeAttr->attributeUsage |= AttributeUsage::Multi;
+                    typeAttr->attributeUsage |= Multi;
 
                 // Some checks
-                if (typeAttr->attributeUsage & AttributeUsage::Gen)
+                if (typeAttr->attributeUsage & Gen)
                 {
                     auto what = typeAttr->attributeUsage;
-                    if (!(what & (AttributeUsage::Struct | AttributeUsage::Enum)))
+                    if (!(what & (Struct | Enum)))
                         return context->report({child, Err(Err0221)});
 
-                    what &= ~AttributeUsage::Struct;
-                    what &= ~AttributeUsage::Enum;
-                    what &= ~AttributeUsage::Gen;
+                    what &= ~Struct;
+                    what &= ~Enum;
+                    what &= ~Gen;
                     if (typeAttr->attributeUsage & what)
                         return context->report({child, Err(Err0221)});
                 }
             }
 
-            if (typeInfo->attributeUsage & AttributeUsage::Gen)
+            if (typeInfo->attributeUsage & Gen)
             {
                 flags |= ATTRIBUTE_GEN;
             }
@@ -348,17 +355,17 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, Err(Err0326)}));
                 }
 
-#define EXLUSIVE(__a, __b) ((*it == __a && (flags & __b)) || (*it == __b && (flags & __a)))
+#define EXCLUSIVE(__a, __b) ((*it == (__a) && (flags & (__b))) || (*it == (__b) && (flags & (__a))))
 
-                if (EXLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
+                if (EXCLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
                     return context->report({child, Err(Err0048)});
-                if (EXLUSIVE(ATTRIBUTE_INLINE, ATTRIBUTE_NO_INLINE))
+                if (EXCLUSIVE(ATTRIBUTE_INLINE, ATTRIBUTE_NO_INLINE))
                     return context->report({child, Err(Err0049)});
-                if (EXLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_INLINE))
+                if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_INLINE))
                     return context->report({child, Err(Err0050)});
-                if (EXLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_MIXIN))
+                if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_MIXIN))
                     return context->report({child, Err(Err0051)});
-                if (EXLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_INLINE))
+                if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_INLINE))
                     return context->report({child, Err(Err0052)});
             }
 
@@ -691,7 +698,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         if (node->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
         {
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (!(typeInfo->attributeUsage & AttributeUsage::File))
+            if (!(typeInfo->attributeUsage & File))
             {
                 Diagnostic diag{identifier, identifier->token, FMT(Err(Err0493), resolvedName->name.c_str())};
                 context->report(diag, Diagnostic::hereIs(resolved));

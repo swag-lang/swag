@@ -203,6 +203,7 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
     const auto node                  = CastAst<AstFor>(context->node, AstNodeKind::For);
@@ -210,6 +211,7 @@ bool Semantic::resolveForBefore(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
     const auto node                  = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
@@ -969,7 +971,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    Ast::visit(context, node->block, [&](ErrorContext* context, AstNode* x)
+    Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x)
     {
         if (!x->ownerBreakable)
             x->ownerBreakable = loopNode;
@@ -1026,6 +1028,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
     const auto node = CastAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
@@ -1109,6 +1112,7 @@ bool Semantic::resolveContinue(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
     const auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);

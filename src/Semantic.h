@@ -75,7 +75,7 @@ namespace Semantic
     bool checkCanThrow(SemanticContext* context);
     bool checkCanCatch(SemanticContext* context);
     bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
-    bool checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right);
+    bool checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right);
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count);
@@ -133,7 +133,7 @@ namespace Semantic
     void          inheritAttributesFromOwnerFunc(AstNode* child);
     bool          setupIdentifierRef(SemanticContext* context, AstNode* node);
     bool          derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
-    bool          derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
+    bool          derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment);
     uint32_t      getMaxStackSize(AstNode* node);
     void          setOwnerMaxStackSize(AstNode* node, uint32_t size);
     bool          makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);

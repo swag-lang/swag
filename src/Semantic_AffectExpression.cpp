@@ -72,7 +72,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     return true;
 }
 
-bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right)
 {
     if (left->childs.back()->semFlags & SEMFLAG_IS_CONST_ASSIGN)
     {
@@ -483,7 +483,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     {
         if (forStruct)
         {
-            const char* op = "&=";
+            auto op = "&=";
             if (tokenId == TokenId::SymVerticalEqual)
                 op = "|=";
             else if (tokenId == TokenId::SymCircumflexEqual)

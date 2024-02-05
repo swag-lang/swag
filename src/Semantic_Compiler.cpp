@@ -922,12 +922,15 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
+        
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = (uint64_t) g_CommandLine.target.arch;
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetArch;
         SWAG_ASSERT(node->typeInfo);
         return true;
+
+        
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
         node->computedValue->text = Semantic::getCompilerFunctionString(node, node->tokenId);

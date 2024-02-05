@@ -168,6 +168,8 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
     case 8:
         *(uint64_t*) ptrDest = value->reg.u64;
         break;
+    default:
+        break;
     }
 
     return true;
@@ -744,7 +746,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     return true;
 }
 
-bool Semantic::derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment)
+bool Semantic::derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment)
 {
     const auto node = context->node;
     ptr += overload->computedValue.storageOffset;

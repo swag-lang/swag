@@ -221,7 +221,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
     {
         node->typeInfo = leftTypeInfo;
 
-        // Substract two pointers
+        // Subtract two pointers
         if (rightTypeInfo->isPointer())
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
@@ -1346,7 +1346,7 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
     else
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-    node->typeInfo    = g_TypeMgr->promoteUntyped(left->typeInfo);
+    node->typeInfo    = TypeManager::promoteUntyped(left->typeInfo);
     node->byteCodeFct = ByteCodeGen::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
