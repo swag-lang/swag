@@ -70,6 +70,22 @@ impl HashTable
         table = newTable
     }
 
+    #[Overload]
+    mtd const opIndex(key: K)->const &V
+    {
+        let it = find(key)
+        if it do return &it.value
+        return null
+    }
+
+    #[Overload]
+    mtd opIndex(key: K)->&V
+    {
+        let it = find(key)
+        if it do return &it.value
+        return null
+    }
+
     mtd opIndexAffect(key: K, val: V)
     {
         let it = find(key)
@@ -77,13 +93,6 @@ impl HashTable
             it.value = val
         else do
             add(key, val)
-    }
-
-    mtd opIndex(key: K)->const &V
-    {
-        let it = find(key)
-        if it do return &it.value
-        return null
     }
 
     // alias0 is the key, and alias1 is the value
