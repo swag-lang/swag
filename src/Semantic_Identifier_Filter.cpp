@@ -6,15 +6,18 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
-static void cleanMatches(VectorNative<OneMatch*>& matches)
+namespace
 {
-    for (size_t i = 0; i < matches.size(); i++)
+    void cleanMatches(VectorNative<OneMatch*>& matches)
     {
-        if (matches[i]->remove)
+        for (size_t i = 0; i < matches.size(); i++)
         {
-            matches[i] = matches.back();
-            matches.pop_back();
-            i--;
+            if (matches[i]->remove)
+            {
+                matches[i] = matches.back();
+                matches.pop_back();
+                i--;
+            }
         }
     }
 }
@@ -81,7 +84,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
     return true;
 }
 
-bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMatch*>& matches)
+bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     const auto countMatches = matches.size();
     if (countMatches <= 1)
@@ -453,41 +456,44 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
     return true;
 }
 
-static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneMatch& match)
+namespace
 {
-    if (typeInfo->kind != TypeInfoKind::FuncAttr)
-        return false;
-
-    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-    if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
-        return false;
-
-    for (auto rt : match.genericReplaceTypes)
+    bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, const OneMatch& match)
     {
-        auto it = typeFunc->replaceTypes.find(rt.first);
-        if (it == typeFunc->replaceTypes.end())
+        if (typeInfo->kind != TypeInfoKind::FuncAttr)
             return false;
-        if (rt.second.typeInfoReplace != it->second.typeInfoReplace)
+
+        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+        if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
             return false;
+
+        for (const auto& rt : match.genericReplaceTypes)
+        {
+            auto it = typeFunc->replaceTypes.find(rt.first);
+            if (it == typeFunc->replaceTypes.end())
+                return false;
+            if (rt.second.typeInfoReplace != it->second.typeInfoReplace)
+                return false;
+        }
+
+        return true;
     }
 
-    return true;
-}
-
-static int scopeCost(Scope* from, Scope* to)
-{
-    // Not sure this is really correct, because we do not take care of 'using'
-    int cost = 0;
-    while (from && from != to)
+    int scopeCost(const Scope* from, const Scope* to)
     {
-        cost += 1;
-        from = from->parentScope;
-    }
+        // Not sure this is really correct, because we do not take care of 'using'
+        int cost = 0;
+        while (from && from != to)
+        {
+            cost += 1;
+            from = from->parentScope;
+        }
 
-    return cost;
+        return cost;
+    }
 }
 
-bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches)
+bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches)
 {
     // We have a match and more than one generic match
     // We need to be sure than instantiated another generic match will not be better than keeping
@@ -699,7 +705,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         if (p.remove)
             continue;
 
-        // A variable inside a scopefile has priority
+        // A variable inside a scope file has priority
         if (p.asFlags & ALTSCOPE_FILE_PRIVATE)
         {
             for (auto& p1 : dependentSymbols)

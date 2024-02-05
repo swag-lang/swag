@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "ModuleDepManager.h"
-
-#include <ranges>
-
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "FetchModuleFileSystemJob.h"

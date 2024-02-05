@@ -67,6 +67,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 {
     const auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
@@ -83,6 +84,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIdentifierRef(SemanticContext* context)
 {
     const auto node      = static_cast<AstIdentifierRef*>(context->node);
@@ -240,7 +242,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
+bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol)
 {
     const AstIdentifier* id = nullptr;
     if (node && node->kind == AstNodeKind::Identifier)
@@ -292,7 +294,7 @@ bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, Sy
     return false;
 }
 
-TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
+TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext*, TypeInfo* typeInfo)
 {
     while (true)
     {
@@ -333,7 +335,7 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext* context, TypeInfo
 }
 
 bool Semantic::findEnumTypeInContext(SemanticContext*                                  context,
-                                     AstNode*                                          node,
+                                     const AstNode*                                    node,
                                      VectorNative<TypeInfoEnum*>&                      result,
                                      VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has,
                                      VectorNative<SymbolOverload*>&                    testedOver)
@@ -542,7 +544,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     return true;
 }
 
-bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
+bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* node, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
 {
     auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
 
@@ -752,11 +754,11 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
     return true;
 }
 
-bool Semantic::fillMatchContextCallParameters(SemanticContext*    context,
-                                              SymbolMatchContext& symMatchContext,
-                                              AstIdentifier*      identifier,
-                                              SymbolOverload*     overload,
-                                              AstNode*            ufcsFirstParam)
+bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
+                                              SymbolMatchContext&   symMatchContext,
+                                              AstIdentifier*        identifier,
+                                              const SymbolOverload* overload,
+                                              AstNode*              ufcsFirstParam)
 {
     const auto symbol         = overload->symbol;
     const auto symbolKind     = symbol->kind;
@@ -856,7 +858,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*    context,
     return true;
 }
 
-bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
+bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload)
 {
     const auto genericParameters = node->genericParameters;
 
@@ -1096,7 +1098,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (dependentSymbols.empty())
         return context->report({identifier, FMT(Err(Err0730), identifier->token.ctext())});
 
-    // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwhise it
+    // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwise it
     // can lead to ambiguities, or even worse, take the wrong one.
     if (dependentSymbols.size() > 1)
     {

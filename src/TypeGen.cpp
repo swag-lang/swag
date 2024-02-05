@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "TypeGen.h"
-
-#include <ranges>
-
 #include "Crc32.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"

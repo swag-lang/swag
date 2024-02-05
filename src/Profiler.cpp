@@ -1,7 +1,4 @@
 #include "pch.h"
-
-#include <ranges>
-
 #include "ByteCode.h"
 #include "Module.h"
 #include "Workspace.h"
