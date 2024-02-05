@@ -22,7 +22,6 @@ struct TypeInfo;
 struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
-enum class Intrisic;
 
 constexpr int COMPUTE_NAME               = 0;
 constexpr int COMPUTE_SCOPED_NAME        = 1;
@@ -30,7 +29,7 @@ constexpr int COMPUTE_SCOPED_NAME_EXPORT = 2;
 constexpr int COMPUTE_DISPLAY_NAME       = 3;
 
 constexpr uint64_t TYPEINFO_SELF                     = 0x00000000'00000001;
-constexpr uint64_t TYPEINFO_UNTYPED_BINHEXA          = 0x00000000'00000002;
+constexpr uint64_t TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr uint64_t TYPEINFO_INTEGER                  = 0x00000000'00000004;
 constexpr uint64_t TYPEINFO_FLOAT                    = 0x00000000'00000008;
 constexpr uint64_t TYPEINFO_UNSIGNED                 = 0x00000000'00000010;
@@ -72,16 +71,16 @@ constexpr uint64_t TYPEINFO_INCOMPLETE               = 0x00000080'00000000;
 constexpr uint64_t TYPEINFO_STRUCT_IS_ITABLE         = 0x00000100'00000000;
 constexpr uint64_t TYPEINFO_CAN_PROMOTE_816          = 0x00000200'00000000;
 constexpr uint64_t TYPEINFO_POINTER_ARITHMETIC       = 0x00000400'00000000;
-constexpr uint64_t TYPEINFO_LISTARRAY_ARRAY          = 0x00000800'00000000;
+constexpr uint64_t TYPEINFO_LIST_ARRAY_ARRAY         = 0x00000800'00000000;
 constexpr uint64_t TYPEINFO_POINTER_REF              = 0x00001000'00000000;
 constexpr uint64_t TYPEINFO_POINTER_AUTO_REF         = 0x00002000'00000000;
 constexpr uint64_t TYPEINFO_STRUCT_NO_INIT           = 0x00004000'00000000;
-constexpr uint64_t TYPEINFO_SPECOP_GENERATED         = 0x00008000'00000000;
+constexpr uint64_t TYPEINFO_SPEC_OP_GENERATED        = 0x00008000'00000000;
 constexpr uint64_t TYPEINFO_STRUCT_EMPTY             = 0x00010000'00000000;
 constexpr uint64_t TYPEINFO_CHARACTER                = 0x00020000'00000000;
 constexpr uint64_t TYPEINFO_ENUM_HAS_USING           = 0x00040000'00000000;
 constexpr uint64_t TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000;
-constexpr uint64_t TYPEINFO_GENERATED_OPEQUALS       = 0x00100000'00000000;
+constexpr uint64_t TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
 
 constexpr uint8_t TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr uint8_t TYPEINFOPARAM_HAS_USING        = 0x00000002;
@@ -100,19 +99,20 @@ struct TypeInfo
 
     bool isPointerTo(NativeTypeKind pointerKind);
     bool isPointerTo(TypeInfoKind pointerKind);
-    bool isPointerTo(TypeInfo* finalType);
+    bool isPointerTo(const TypeInfo* finalType);
     bool isPointerNull() const;
     bool isPointerVoid();
     bool isPointerConstVoid();
-    bool isPointerToTypeInfo();
+    bool isPointerToTypeInfo() const;
     bool isInitializerList() const;
-    bool isArrayOfStruct();
-    bool isArrayOfEnum();
-    bool isMethod();
+    bool isArrayOfStruct() const;
+    bool isArrayOfEnum() const;
+    bool isMethod() const;
 
     TypeInfo*       getFinalType();
     TypeInfoStruct* getStructOrPointedStruct();
     TypeInfo*       getConstAlias();
+    const TypeInfo* getConstAlias() const;
     TypeInfo*       getConcreteAlias();
 
     // clang-format off
@@ -162,19 +162,19 @@ struct TypeInfo
     bool isSelf() const                        { return (flags & TYPEINFO_SELF); }
     bool isUntypedInteger() const              { return (flags & TYPEINFO_UNTYPED_INTEGER); }
     bool isUntypedFloat() const                { return (flags & TYPEINFO_UNTYPED_FLOAT); }
-    bool isUntypedBinHex() const               { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
+    bool isUntypedBinHex() const               { return (flags & TYPEINFO_UNTYPED_BIN_HEX); }
     bool isConstAlias() const                  { return (flags & TYPEINFO_CONST_ALIAS); }
     bool isCharacter() const                   { return (flags & TYPEINFO_CHARACTER); }
     // clang-format on
 
     virtual bool      isSame(TypeInfo* from, uint64_t castFlags);
     virtual TypeInfo* clone() = 0;
-    virtual int       numRegisters();
+    virtual uint32_t  numRegisters();
     virtual Utf8      getDisplayName();
     virtual void      computeWhateverName(Utf8& resName, uint32_t nameType);
 
     const char* getDisplayNameC();
-    void        copyFrom(TypeInfo* from);
+    void        copyFrom(const TypeInfo* from);
     void        setConst();
 
     // clang-format off
@@ -213,7 +213,7 @@ struct TypeInfo
 struct TypeInfoParam
 {
     int            numRegisters() const;
-    bool           isSame(TypeInfoParam* to, uint64_t castFlags) const;
+    bool           isSame(const TypeInfoParam* to, uint64_t castFlags) const;
     TypeInfoParam* clone() const;
     void           allocateComputedValue();
 
@@ -297,7 +297,7 @@ struct TypeInfoFuncAttr : TypeInfo
     {
     }
 
-    int numRegisters() override
+    uint32_t numRegisters() override
     {
         return 1;
     }
@@ -309,8 +309,8 @@ struct TypeInfoFuncAttr : TypeInfo
     bool            isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
     bool            isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
     TypeInfo*       concreteReturnType() const;
-    bool            isVariadic();
-    bool            isCVariadic();
+    bool            isVariadic() const;
+    bool            isCVariadic() const;
     uint32_t        registerIdxToParamIdx(uint32_t argIdx);
     TypeInfo*       registerIdxToType(int argIdx);
     int             numParamsRegisters();
@@ -355,7 +355,7 @@ struct TypeInfoArray : TypeInfo
     {
     }
 
-    int numRegisters() override
+    uint32_t numRegisters() override
     {
         return 1;
     }
@@ -393,7 +393,7 @@ struct TypeInfoList : TypeInfo
     {
     }
 
-    int numRegisters() override
+    uint32_t numRegisters() override
     {
         return 1;
     }
@@ -442,7 +442,7 @@ struct TypeInfoStruct : TypeInfo
     {
     }
 
-    int numRegisters() override
+    uint32_t numRegisters() override
     {
         if (kind == TypeInfoKind::Interface)
             return 2;
@@ -510,7 +510,7 @@ struct TypeInfoAlias : TypeInfo
     bool      isSame(TypeInfo* to, uint64_t castFlags) override;
     TypeInfo* clone() override;
 
-    int numRegisters() override
+    uint32_t numRegisters() override
     {
         return rawType->numRegisters();
     }
@@ -532,7 +532,7 @@ struct TypeInfoCode : TypeInfo
 };
 
 template<typename T>
-inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
+T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
     T* casted = static_cast<T*>(ptr->getConstAlias());
@@ -541,10 +541,28 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 }
 
 template<typename T>
-inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
+T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
     T* casted = static_cast<T*>(ptr->getConstAlias());
+    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
+    return casted;
+}
+
+template<typename T>
+const T* CastTypeInfo(const TypeInfo* ptr, TypeInfoKind kind)
+{
+    SWAG_ASSERT(ptr);
+    const T* casted = static_cast<const T*>(ptr->getConstAlias());
+    SWAG_ASSERT(casted->kind == kind);
+    return casted;
+}
+
+template<typename T>
+const T* CastTypeInfo(const TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
+{
+    SWAG_ASSERT(ptr);
+    const T* casted = static_cast<const T*>(ptr->getConstAlias());
     SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
     return casted;
 }

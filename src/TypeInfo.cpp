@@ -155,6 +155,13 @@ TypeInfo* TypeInfo::getConstAlias()
     return ((TypeInfoAlias*) this)->rawType;
 }
 
+const TypeInfo* TypeInfo::getConstAlias() const
+{
+    if (!(flags & TYPEINFO_CONST_ALIAS))
+        return this;
+    return ((const TypeInfoAlias*) this)->rawType;
+}
+
 TypeInfo* TypeInfo::getConcreteAlias()
 {
     return TypeManager::concreteType(this, CONCRETE_FORCEALIAS);
@@ -226,7 +233,7 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
     return ptr->pointedType->getConcreteAlias()->kind == pointerKind;
 }
 
-bool TypeInfo::isPointerTo(TypeInfo* finalType)
+bool TypeInfo::isPointerTo(const TypeInfo* finalType)
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
@@ -236,7 +243,7 @@ bool TypeInfo::isPointerTo(TypeInfo* finalType)
     return ptr->pointedType->getConcreteAlias() == finalType;
 }
 
-bool TypeInfo::isPointerToTypeInfo()
+bool TypeInfo::isPointerToTypeInfo() const
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
@@ -258,7 +265,7 @@ bool TypeInfo::isInitializerList() const
     return true;
 }
 
-bool TypeInfo::isArrayOfStruct()
+bool TypeInfo::isArrayOfStruct() const
 {
     if (kind != TypeInfoKind::Array)
         return false;
@@ -266,7 +273,7 @@ bool TypeInfo::isArrayOfStruct()
     return ptr->finalType->getConcreteAlias()->isStruct();
 }
 
-bool TypeInfo::isArrayOfEnum()
+bool TypeInfo::isArrayOfEnum() const
 {
     if (kind != TypeInfoKind::Array)
         return false;
@@ -274,7 +281,7 @@ bool TypeInfo::isArrayOfEnum()
     return ptr->finalType->getConcreteAlias()->isEnum();
 }
 
-bool TypeInfo::isMethod()
+bool TypeInfo::isMethod() const
 {
     if (kind != TypeInfoKind::FuncAttr)
         return false;
@@ -324,16 +331,16 @@ void TypeInfo::setConst()
     name = "const " + name;
 }
 
-int TypeInfo::numRegisters()
+uint32_t TypeInfo::numRegisters()
 {
     if (sizeOf == 0)
         return 0;
-    const int result = max(sizeOf, sizeof(void*)) / sizeof(void*);
+    const uint32_t result = max(sizeOf, sizeof(void*)) / sizeof(void*);
     SWAG_ASSERT(result <= 2);
     return result;
 }
 
-void TypeInfo::copyFrom(TypeInfo* from)
+void TypeInfo::copyFrom(const TypeInfo* from)
 {
     name       = from->name;
     declNode   = from->declNode;
@@ -377,7 +384,7 @@ TypeInfoParam* TypeInfoParam::clone() const
     return newType;
 }
 
-bool TypeInfoParam::isSame(TypeInfoParam* to, uint64_t castFlags) const
+bool TypeInfoParam::isSame(const TypeInfoParam* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;

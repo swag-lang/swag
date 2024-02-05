@@ -91,7 +91,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
     ScopedLock lk(typeInfoStruct->mutexGen);
     const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
-    if (typeInfoStruct->flags & TYPEINFO_SPECOP_GENERATED)
+    if (typeInfoStruct->flags & TYPEINFO_SPEC_OP_GENERATED)
         return;
 
     // Type of those functions
@@ -409,7 +409,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
         }
     }
 
-    typeInfoStruct->flags |= TYPEINFO_SPECOP_GENERATED;
+    typeInfoStruct->flags |= TYPEINFO_SPEC_OP_GENERATED;
 
     ScopedLock lk1(structNode->mutex);
     structNode->semFlags |= SEMFLAG_STRUCT_OP_ALLOCATED;
@@ -579,7 +579,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
         generateStruct_opInit(context, typeStructVar);
         YIELD();
     }
@@ -859,7 +859,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
         generateStruct_opDrop(context, typeStructVar);
         YIELD();
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
@@ -972,7 +972,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
         generateStruct_opPostCopy(context, typeStructVar);
         YIELD();
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
@@ -1083,7 +1083,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
+        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
         generateStruct_opPostMove(context, typeStructVar);
         YIELD();
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)

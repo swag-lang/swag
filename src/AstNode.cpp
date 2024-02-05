@@ -1251,7 +1251,7 @@ AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) c
     return find;
 }
 
-AstNode* AstNode::findChild(AstNodeKind childKind)
+AstNode* AstNode::findChild(AstNodeKind childKind) const
 {
     for (const auto c : childs)
     {
@@ -1262,7 +1262,7 @@ AstNode* AstNode::findChild(AstNodeKind childKind)
     return nullptr;
 }
 
-AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild)
+AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild) const
 {
     if (!ref)
         return nullptr;
@@ -1275,7 +1275,7 @@ AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild)
     return nullptr;
 }
 
-AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild)
+AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild) const
 {
     if (!ref)
         return nullptr;

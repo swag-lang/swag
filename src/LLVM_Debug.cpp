@@ -354,7 +354,7 @@ llvm::DISubroutineType* LLVM_Debug::getFunctionType(TypeInfoFuncAttr* typeFunc, 
         }
         else
         {
-            for (int r = 0; r < one->typeInfo->numRegisters(); r++)
+            for (uint32_t r = 0; r < one->typeInfo->numRegisters(); r++)
             {
                 params.push_back(getType(g_TypeMgr->typeInfoU64, file));
             }

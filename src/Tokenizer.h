@@ -4,7 +4,6 @@
 struct SourceFile;
 struct TypeInfo;
 struct ErrorContext;
-enum class Intrisic;
 
 enum class TokenId : uint16_t
 {

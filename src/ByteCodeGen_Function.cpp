@@ -272,7 +272,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             {
                 SWAG_ASSERT(node->childs.size() == 1);
                 const auto child = node->childs.front();
-                SWAG_ASSERT(child->resultRegisterRc.size() >= returnType->numRegisters());
+                SWAG_ASSERT(child->resultRegisterRc.size() >= (size_t) returnType->numRegisters());
                 const auto numRetReg = returnType->numRegisters();
                 SWAG_ASSERT(numRetReg <= 2);
                 if (numRetReg == 1)
@@ -1768,7 +1768,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                     }
 
-                    if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
+                    if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LIST_ARRAY_ARRAY)
                         truncRegisterRC(context, param->resultRegisterRc, 1);
 
                     for (int r = param->resultRegisterRc.size() - 1; r >= 0; r--)
@@ -1865,7 +1865,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             if (!param->typeInfo)
                 continue;
 
-            if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
+            if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LIST_ARRAY_ARRAY)
                 truncRegisterRC(context, param->resultRegisterRc, 1);
 
             if (!param->typeInfo->isVariadic() &&

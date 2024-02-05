@@ -786,7 +786,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         }
         else
         {
-            SWAG_ASSERT(exprNode->resultRegisterRc.size() == typeInfo->numRegisters());
+            SWAG_ASSERT(exprNode->resultRegisterRc.size() == (size_t) typeInfo->numRegisters());
             node->resultRegisterRc = exprNode->resultRegisterRc;
         }
 

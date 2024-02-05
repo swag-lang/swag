@@ -322,8 +322,8 @@ TypeInfo* TypeInfoList::clone()
     newType->subTypes.reserve(size);
     for (int i = 0; i < size; i++)
     {
-        auto param = static_cast<TypeInfoParam*>(subTypes[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = subTypes[i];
+        param      = param->clone();
         newType->subTypes.push_back(param);
     }
 
@@ -467,7 +467,7 @@ TypeInfo* TypeInfoEnum::clone()
     for (const auto& value : values)
     {
         auto param = static_cast<TypeInfoParam*>(value);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        param      = param->clone();
         newType->values.push_back(param);
     }
 
@@ -721,7 +721,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
             const auto typeOtherFunc = CastTypeInfo<TypeInfoFuncAttr>(otherFunc->typeInfo, TypeInfoKind::FuncAttr);
             if (typeMyFunc->replaceTypes.size() != typeOtherFunc->replaceTypes.size())
                 return false;
-            for (auto r : typeMyFunc->replaceTypes)
+            for (const auto& r : typeMyFunc->replaceTypes)
             {
                 auto it = typeOtherFunc->replaceTypes.find(r.first);
                 if (it == typeOtherFunc->replaceTypes.end())
@@ -837,21 +837,21 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
     return true;
 }
 
-bool TypeInfoFuncAttr::isVariadic()
+bool TypeInfoFuncAttr::isVariadic() const
 {
     if (parameters.empty())
         return false;
-    const auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
+    const auto typeParam = parameters.back()->typeInfo;
     if (typeParam->isVariadic() || typeParam->isTypedVariadic())
         return true;
     return false;
 }
 
-bool TypeInfoFuncAttr::isCVariadic()
+bool TypeInfoFuncAttr::isCVariadic() const
 {
     if (parameters.empty())
         return false;
-    const auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
+    const auto typeParam = parameters.back()->typeInfo;
     if (typeParam->isCVariadic())
         return true;
     return false;
@@ -874,7 +874,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
         argIdx -= 2;
     }
 
-    size_t argNo = 0;
+    uint32_t argNo = 0;
     while (true)
     {
         if (argNo >= parameters.size())
@@ -886,7 +886,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
         const auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
         const auto n         = typeParam->numRegisters();
         if (argIdx < n)
-            return (uint32_t) argNo;
+            return argNo;
         argIdx -= n;
         argNo++;
     }
@@ -1189,7 +1189,7 @@ Utf8 TypeInfoStruct::getDisplayName()
 {
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
         return FMT("interface %s", name.c_str());
-    if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->specFlags & AstStruct::SPECFLAG_UNION)
+    if (declNode && declNode->kind == AstNodeKind::StructDecl && declNode->specFlags & AstStruct::SPECFLAG_UNION)
         return FMT("union %s", name.c_str());
 
     Utf8 str;

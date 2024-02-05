@@ -32,7 +32,7 @@ void TypeManager::setup()
     typeInfoAny            = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
     typeInfoUndefined      = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
     typeInfoUntypedInt     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER);
-    typeInfoUntypedBinHexa = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BINHEXA);
+    typeInfoUntypedBinHexa = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BIN_HEX);
     typeInfoUntypedFloat   = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
     typeInfoCharacter      = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER | TYPEINFO_CHARACTER);
 

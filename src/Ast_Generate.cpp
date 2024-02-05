@@ -25,13 +25,13 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     // Be sure another thread does not do the same thing
     {
         ScopedLock lk(typeLeft->mutex);
-        if (typeLeft->flags & TYPEINFO_GENERATED_OPEQUALS)
+        if (typeLeft->flags & TYPEINFO_GENERATED_OP_EQUALS)
         {
             context->result = ContextResult::NewChilds;
             return true;
         }
 
-        typeLeft->flags |= TYPEINFO_GENERATED_OPEQUALS;
+        typeLeft->flags |= TYPEINFO_GENERATED_OP_EQUALS;
     }
 
     Utf8 content;

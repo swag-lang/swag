@@ -307,11 +307,11 @@ struct AstNode
     bool isSilentCall() const;
     bool isPublic() const;
 
-    AstNode* findChildRef(const AstNode* ref, AstNode* fromChild);
-    AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild);
+    AstNode* findChildRef(const AstNode* ref, AstNode* fromChild) const;
+    AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild) const;
     AstNode* findParent(AstNodeKind parentKind) const;
     AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) const;
-    AstNode* findChild(AstNodeKind childKind);
+    AstNode* findChild(AstNodeKind childKind) const;
     AstNode* findParentAttrUse(const Utf8& name) const;
     AstNode* findParent(TokenId tkn) const;
 

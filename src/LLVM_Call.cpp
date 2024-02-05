@@ -784,7 +784,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
-        for (int j = 0; j < typeParam->numRegisters(); j++)
+        for (uint32_t j = 0; j < typeParam->numRegisters(); j++)
         {
             const auto index = pushRAParams[popRAidx--];
 

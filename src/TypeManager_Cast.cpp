@@ -2872,7 +2872,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            fromType->flags |= TYPEINFO_LISTARRAY_ARRAY;
+            fromType->flags |= TYPEINFO_LIST_ARRAY_ARRAY;
         }
 
         return true;
