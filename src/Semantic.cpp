@@ -95,7 +95,7 @@ bool Semantic::valueEqualsTo(const ComputedValue* value, AstNode* node)
     return valueEqualsTo(value, node->computedValue, node->typeInfo, node->flags);
 }
 
-bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags)
+bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, uint64_t flags)
 {
     if (!value1 || !value2)
         return true;
@@ -147,7 +147,7 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
     return *value1 == *value2;
 }
 
-bool Semantic::isCompilerContext(AstNode* node)
+bool Semantic::isCompilerContext(const AstNode* node)
 {
     if (node->flags & AST_NO_BACKEND)
         return true;
@@ -158,7 +158,7 @@ bool Semantic::isCompilerContext(AstNode* node)
     return false;
 }
 
-DataSegment* Semantic::getConstantSegFromContext(AstNode* node, bool forceCompiler)
+DataSegment* Semantic::getConstantSegFromContext(const AstNode* node, bool forceCompiler)
 {
     const auto module = node->sourceFile->module;
     if (forceCompiler || isCompilerContext(node))

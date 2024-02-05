@@ -5,15 +5,15 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-void DataSegment::setup(SegmentKind _kind, Module* _module)
+void DataSegment::setup(SegmentKind myKind, Module* myModule)
 {
-    kind   = _kind;
-    module = _module;
+    kind   = myKind;
+    module = myModule;
 
     // :DefaultSizeBuckets
-    if (_module->kind == ModuleKind::BootStrap)
+    if (myModule->kind == ModuleKind::BootStrap)
         granularity = 4 * 1024;
-    else if (_module->kind == ModuleKind::Runtime)
+    else if (myModule->kind == ModuleKind::Runtime)
         granularity = 16 * 1024;
     else
         granularity = 4 * 1024;
@@ -174,7 +174,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     return result;
 }
 
-uint32_t DataSegment::tryOffset(uint8_t* location)
+uint32_t DataSegment::tryOffset(const uint8_t* location)
 {
     SharedLock lock(mutex);
 
@@ -194,7 +194,7 @@ uint32_t DataSegment::tryOffset(uint8_t* location)
     return UINT32_MAX;
 }
 
-uint32_t DataSegment::offset(uint8_t* location)
+uint32_t DataSegment::offset(const uint8_t* location)
 {
     const auto offset = tryOffset(location);
     if (offset != UINT32_MAX)
@@ -226,7 +226,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
-uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
+uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
 {
     SWAG_ASSERT(typeInfo->isNative());
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
@@ -279,6 +279,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         }
         break;
     }
+
     case 8:
     {
         const auto it = storedValues64.find(computedValue.reg.u64);
@@ -289,6 +290,9 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         }
         break;
     }
+
+    default:
+        break;
     }
 
     uint8_t*   addr;
@@ -312,6 +316,8 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
     case 8:
         *(uint64_t*) addr = computedValue.reg.u64;
         storedValues64[computedValue.reg.u64] = {storageOffset, addr};
+        break;
+    default:
         break;
     }
 
@@ -410,7 +416,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
         return;
 
 #ifdef SWAG_STATS
-    g_Stats.numInitPtr++;
+    ++g_Stats.numInitPtr;
 #endif
 
     InitPtrRef ref;
@@ -425,9 +431,9 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     // have a weird memory overwrite
     // Note: can happen, because of structs, that a pointer is patched twice, so offset of 0 is fine
     // (even if no optimal)
-    for (size_t i = 0; i < initPtr.size(); i++)
+    for (const auto ptr : initPtr)
     {
-        const auto diff = abs((int) initPtr[i].patchOffset - (int) patchOffset);
+        const auto diff = abs((int) ptr.patchOffset - (int) patchOffset);
         SWAG_ASSERT(diff == 0 || diff >= 8);
     }
 #endif
@@ -441,7 +447,7 @@ void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
         return;
 
 #ifdef SWAG_STATS
-    g_Stats.numInitFuncPtr++;
+    ++g_Stats.numInitFuncPtr;
 #endif
 
     ScopedLock lk(mutexPtr);
@@ -581,7 +587,6 @@ void DataSegment::makeLinear()
         return;
 
     Bucket h;
-
     h.count  = (uint32_t) Allocator::alignSize(totalCount);
     h.size   = h.count;
     h.buffer = (uint8_t*) Allocator::alloc(h.count);

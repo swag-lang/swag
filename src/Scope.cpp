@@ -83,7 +83,7 @@ void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
     }
 }
 
-void Scope::collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result)
+void Scope::collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result)
 {
     result.clear();
     while (true)
@@ -130,7 +130,7 @@ void Scope::addPublicNode(AstNode* node)
     publicSet->publicNodes.insert(node);
 }
 
-bool Scope::isParentOf(Scope* child)
+bool Scope::isParentOf(const Scope* child)
 {
     SharedLock lk(mutex);
     while (child)
@@ -152,7 +152,7 @@ void Scope::removeChildNoLock(Scope* child)
     childScopes.count--;
 }
 
-bool Scope::isSameOrParentOf(Scope* child)
+bool Scope::isSameOrParentOf(const Scope* child) const
 {
     while (child)
     {

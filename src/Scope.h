@@ -53,12 +53,12 @@ struct Scope
     static void makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8& getFullName();
     Utf8        getDisplayFullName();
-    static void collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
+    static void collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
     Scope*      getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
     void        addChildNoLock(Scope* child);
     void        removeChildNoLock(Scope* child);
-    bool        isParentOf(Scope* child);
-    bool        isSameOrParentOf(Scope* child);
+    bool        isParentOf(const Scope* child);
+    bool        isSameOrParentOf(const Scope* child) const;
     bool        isGlobal() const;
     bool        isTopLevel() const;
     bool        isGlobalOrImpl() const;

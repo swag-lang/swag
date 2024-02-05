@@ -57,7 +57,7 @@ namespace Semantic
     void waitForGenericParameters(SemanticContext* context, OneMatch& match);
 
     bool valueEqualsTo(const ComputedValue* value, AstNode* node);
-    bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);
+    bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, uint64_t flags);
 
     bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
@@ -109,14 +109,14 @@ namespace Semantic
     bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
-    bool     canInheritAccess(AstNode* node);
+    bool     canInheritAccess(const AstNode* node);
     uint64_t attributeToAccess(uint64_t attribute);
-    void     doInheritAccess(AstNode* forNode, AstNode* node);
-    void     inheritAccess(AstNode* node);
+    void     doInheritAccess(AstNode* forNode, const AstNode* node);
+    void     inheritAccess(const AstNode* node);
     void     setNodeAccess(AstNode* node);
     void     setDefaultAccess(AstNode* node);
-    bool     canHaveGlobalAccess(AstNode* node);
-    bool     canHaveAccess(AstNode* node);
+    bool     canHaveGlobalAccess(const AstNode* node);
+    bool     canHaveAccess(const AstNode* node);
     void     computeAccess(AstNode* node);
     void     computeAccessRec(AstNode* node);
     bool     checkAccess(JobContext* context, AstNode* node);
@@ -125,8 +125,8 @@ namespace Semantic
     void          decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     void          decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
     uint32_t      alignOf(AstVarDecl* node);
-    bool          isCompilerContext(AstNode* node);
-    DataSegment*  getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
+    bool          isCompilerContext(const AstNode* node);
+    DataSegment*  getConstantSegFromContext(const AstNode* node, bool forceCompiler = false);
     bool          setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
     void          inheritAttributesFromParent(AstNode* child);
     void          inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);

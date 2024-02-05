@@ -1,13 +1,13 @@
 #pragma once
 #include "RaceCondition.h"
 
-struct SourceFile;
-struct Module;
-struct TypeInfo;
-struct ComputedValue;
-struct Utf8;
 struct AstFuncDecl;
+struct ComputedValue;
 struct JobContext;
+struct Module;
+struct SourceFile;
+struct TypeInfo;
+struct Utf8;
 
 enum class SegmentKind
 {
@@ -68,7 +68,7 @@ struct DataSegment
         uint32_t size;
     };
 
-    void setup(SegmentKind kind, Module* module);
+    void setup(SegmentKind myKind, Module* myModule);
     void initFrom(DataSegment* other);
     void release();
 
@@ -78,12 +78,12 @@ struct DataSegment
     uint32_t reserve(uint32_t size, uint8_t** resultPtr = nullptr, uint32_t alignOf = 1);
     uint32_t reserveNoLock(uint32_t size, uint32_t alignOf, uint8_t** resultPtr = nullptr);
     uint32_t reserveNoLock(uint32_t size, uint8_t** resultPtr = nullptr);
-    uint32_t tryOffset(uint8_t* location);
-    uint32_t offset(uint8_t* location);
+    uint32_t tryOffset(const uint8_t* location);
+    uint32_t offset(const uint8_t* location);
     uint8_t* address(uint32_t location);
     uint8_t* addressNoLock(uint32_t location);
 
-    uint32_t addComputedValue(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr);
+    uint32_t addComputedValue(SourceFile* sourceFile, const TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr);
     uint32_t addString(const Utf8& str, uint8_t** resultPtr = nullptr);
     uint32_t addStringNoLock(const Utf8& str, uint8_t** resultPtr = nullptr);
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);

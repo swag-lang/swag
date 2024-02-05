@@ -8,7 +8,7 @@
 #include "Semantic.h"
 #include "SourceFile.h"
 
-bool Semantic::canHaveGlobalAccess(AstNode* node)
+bool Semantic::canHaveGlobalAccess(const AstNode* node)
 {
     switch (node->kind)
     {
@@ -27,7 +27,7 @@ bool Semantic::canHaveGlobalAccess(AstNode* node)
     }
 }
 
-bool Semantic::canHaveAccess(AstNode* node)
+bool Semantic::canHaveAccess(const AstNode* node)
 {
     if (!canHaveGlobalAccess(node))
         return false;
@@ -42,7 +42,7 @@ bool Semantic::canHaveAccess(AstNode* node)
     return true;
 }
 
-bool Semantic::canInheritAccess(AstNode* node)
+bool Semantic::canInheritAccess(const AstNode* node)
 {
     if (!node->parent)
         return false;
@@ -89,7 +89,7 @@ void Semantic::setNodeAccess(AstNode* node)
     node->semFlags |= overload->node->semFlags & SEMFLAG_ACCESS_MASK;
 }
 
-void Semantic::doInheritAccess(AstNode* forNode, AstNode* node)
+void Semantic::doInheritAccess(AstNode* forNode, const AstNode* node)
 {
     if (node->semFlags & SEMFLAG_ACCESS_PRIVATE)
     {
@@ -107,7 +107,7 @@ void Semantic::doInheritAccess(AstNode* forNode, AstNode* node)
     }
 }
 
-void Semantic::inheritAccess(AstNode* node)
+void Semantic::inheritAccess(const AstNode* node)
 {
     doInheritAccess(node->parent, node);
     if (node->typeInfo)
@@ -204,62 +204,65 @@ void Semantic::setDefaultAccess(AstNode* node)
         node->semFlags |= attributeToAccess(ATTRIBUTE_INTERNAL);
 }
 
-static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
+namespace
 {
-    if (!n)
-        return nullptr;
-    if (!Semantic::canInheritAccess(n))
-        return nullptr;
-
-    if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
+    AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
     {
-        if (n->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
-        {
-            return n;
-        }
-    }
+        if (!n)
+            return nullptr;
+        if (!Semantic::canInheritAccess(n))
+            return nullptr;
 
-    if (n->kind == AstNodeKind::Identifier ||
-        n->kind == AstNodeKind::FuncDeclType ||
-        n->kind == AstNodeKind::VarDecl)
-    {
-        if (n->typeInfo)
+        if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
         {
-            const auto retType = n->typeInfo->getFinalType();
-            if (retType->declNode)
+            if (n->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
             {
-                const auto res = getErrorCulprit(retType->declNode, onNode);
-                if (res)
-                {
-                    if (*onNode == nullptr)
-                        *onNode = n;
-                    return res;
-                }
+                return n;
+            }
+        }
 
-                if (retType->declNode && retType->declNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+        if (n->kind == AstNodeKind::Identifier ||
+            n->kind == AstNodeKind::FuncDeclType ||
+            n->kind == AstNodeKind::VarDecl)
+        {
+            if (n->typeInfo)
+            {
+                const auto retType = n->typeInfo->getFinalType();
+                if (retType->declNode)
                 {
-                    if (n->kind == AstNodeKind::ConstDecl || n->kind == AstNodeKind::VarDecl)
+                    const auto res = getErrorCulprit(retType->declNode, onNode);
+                    if (res)
                     {
-                        const auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
-                        if (varDecl->type)
-                            *onNode = varDecl->type;
+                        if (*onNode == nullptr)
+                            *onNode = n;
+                        return res;
                     }
-                    if (!*onNode)
-                        *onNode = n;
-                    return retType->declNode;
+
+                    if (retType->declNode && retType->declNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+                    {
+                        if (n->kind == AstNodeKind::ConstDecl || n->kind == AstNodeKind::VarDecl)
+                        {
+                            const auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
+                            if (varDecl->type)
+                                *onNode = varDecl->type;
+                        }
+                        if (!*onNode)
+                            *onNode = n;
+                        return retType->declNode;
+                    }
                 }
             }
         }
-    }
 
-    for (const auto c : n->childs)
-    {
-        const auto res = getErrorCulprit(c, onNode);
-        if (res)
-            return res;
-    }
+        for (const auto c : n->childs)
+        {
+            const auto res = getErrorCulprit(c, onNode);
+            if (res)
+                return res;
+        }
 
-    return nullptr;
+        return nullptr;
+    }
 }
 
 bool Semantic::checkAccess(JobContext* context, AstNode* node)

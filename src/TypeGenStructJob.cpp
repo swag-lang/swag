@@ -139,7 +139,7 @@ bool TypeGenStructJob::computeStruct()
     {
         const uint32_t count = (uint32_t) concreteType->generics.count;
         uint32_t       storageArray;
-        const auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext,
+        const auto     addrArray = (ExportedTypeValue*) TypeGen::genExportedSlice(baseContext,
                                                                               count * sizeof(ExportedTypeValue),
                                                                               exportedTypeInfoValue,
                                                                               storageSegment,
@@ -163,7 +163,7 @@ bool TypeGenStructJob::computeStruct()
         {
             const uint32_t count = (uint32_t) concreteType->fields.count;
             uint32_t       storageArray;
-            const auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext,
+            const auto     addrArray = (ExportedTypeValue*) TypeGen::genExportedSlice(baseContext,
                                                                                   count * sizeof(ExportedTypeValue),
                                                                                   exportedTypeInfoValue,
                                                                                   storageSegment,
@@ -190,7 +190,7 @@ bool TypeGenStructJob::computeStruct()
             {
                 const uint32_t count = (uint32_t) concreteType->methods.count;
                 uint32_t       storageArray;
-                const auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext,
+                const auto     addrArray = (ExportedTypeValue*) TypeGen::genExportedSlice(baseContext,
                                                                                       count * sizeof(ExportedTypeValue),
                                                                                       exportedTypeInfoValue,
                                                                                       storageSegment,
@@ -223,7 +223,7 @@ bool TypeGenStructJob::computeStruct()
         {
             const uint32_t count = (uint32_t) concreteType->interfaces.count;
             uint32_t       storageArray;
-            const auto     addrArray = (ExportedTypeValue*) typeGen->genExportedSlice(baseContext,
+            const auto     addrArray = (ExportedTypeValue*) TypeGen::genExportedSlice(baseContext,
                                                                                   count * sizeof(ExportedTypeValue),
                                                                                   exportedTypeInfoValue,
                                                                                   storageSegment,
