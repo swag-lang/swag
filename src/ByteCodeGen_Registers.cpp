@@ -18,20 +18,20 @@ void ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& r
     }
 }
 
-void ByteCodeGen::sortRegistersRC(ByteCodeGenContext* context)
+void ByteCodeGen::sortRegistersRC(const ByteCodeGenContext* context)
 {
     if (!context->bc->isDirtyRegistersRC)
         return;
     context->bc->isDirtyRegistersRC = false;
     if (context->bc->availableRegistersRC.size() <= 1)
         return;
-    sort(context->bc->availableRegistersRC.begin(), context->bc->availableRegistersRC.end(), [](uint32_t a, uint32_t b)
+    ranges::sort(context->bc->availableRegistersRC, [](const uint32_t a, const uint32_t b)
     {
         return a > b;
     });
 }
 
-void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
+void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, uint32_t rc)
 {
 #ifdef SWAG_DEV_MODE
     for (const auto& r : context->bc->availableRegistersRC)
@@ -42,7 +42,7 @@ void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
     context->bc->isDirtyRegistersRC = true;
 }
 
-uint32_t ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, const SymbolOverload* overload)
+uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, const SymbolOverload* overload)
 {
     if (!context->bc->availableRegistersRC.empty())
     {

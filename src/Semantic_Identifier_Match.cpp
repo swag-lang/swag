@@ -21,7 +21,7 @@ void Semantic::sortParameters(AstNode* allParams)
     if (allParams->childs.size() <= 1)
         return;
 
-    sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2)
+    ranges::sort(allParams->childs, [](AstNode* n1, AstNode* n2)
     {
         const AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
         const AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
@@ -31,7 +31,7 @@ void Semantic::sortParameters(AstNode* allParams)
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
 
-void Semantic::dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier)
+void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier)
 {
     const auto module = context->sourceFile->module;
 
@@ -54,7 +54,7 @@ void Semantic::dealWithIntrinsic(SemanticContext* context, AstIdentifier* identi
     }
 }
 
-void Semantic::resolvePendingLambdaTyping(SemanticContext* context, AstNode* funcNode, TypeInfo* resolvedType, int i)
+void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType, int i)
 {
     const auto funcDecl = CastAst<AstFuncDecl>(funcNode, AstNodeKind::FuncDecl);
     SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));

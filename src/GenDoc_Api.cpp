@@ -118,7 +118,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
     VectorNative<AstNode*> symbols;
     for (auto& val : symbolsMap | views::values)
         symbols.append(val);
-    sort(symbols.begin(), symbols.end(), [](AstNode* a, AstNode* b)
+    ranges::sort(symbols, [](const AstNode* a, const AstNode* b)
     {
         const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
         const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
@@ -441,7 +441,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
         collectInvert[n->fullName] = n->fullName;
     }
 
-    sort(pendingNodes.begin(), pendingNodes.end(), [](OneRef* a, OneRef* b)
+    ranges::sort(pendingNodes, [](const OneRef* a, const OneRef* b)
     {
         return strcmp(a->tocName.c_str(), b->tocName.c_str()) < 0;
     });
@@ -486,7 +486,7 @@ void GenDoc::generateTocSection(AstNodeKind kind, const char* sectionName)
 
 void GenDoc::generateToc()
 {
-    sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
+    ranges::sort(allNodes, [](OneRef& a, OneRef& b)
     {
         const int s0 = sortOrder(a.nodes[0]->kind);
         const int s1 = sortOrder(b.nodes[0]->kind);
@@ -514,7 +514,7 @@ void GenDoc::generateContent()
     computeUserComments(moduleComment, module->docComment, false);
     outputUserComment(moduleComment);
 
-    sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
+    ranges::sort(allNodes, [](OneRef& a, OneRef& b)
     {
         if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
             return true;
@@ -954,7 +954,7 @@ bool GenDoc::generateApi()
             oneRef.displayName += tkn[tkn.size() - 1];
         }
 
-        sort(oneRef.nodes.begin(), oneRef.nodes.end(), [](AstNode* a, AstNode* b)
+        ranges::sort(oneRef.nodes, [](const AstNode* a, const AstNode* b)
         {
             const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
             const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);

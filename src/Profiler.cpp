@@ -109,7 +109,7 @@ void profiler()
     // BC
     //////////////////////////////////////////
 
-    sort(bcs.begin(), bcs.end(), [](ByteCode* a, ByteCode* b)
+    ranges::sort(bcs, [](const ByteCode* a, const ByteCode* b)
     {
         return b->profileCumTime < a->profileCumTime;
     });
@@ -148,7 +148,7 @@ void profiler()
 
     for (auto& val : ffi | views::values)
         linFFi.push_back(val);
-    sort(linFFi.begin(), linFFi.end(), [](const FFIStat& a, const FFIStat& b)
+    ranges::sort(linFFi, [](const FFIStat& a, const FFIStat& b)
     {
         return b.cum < a.cum;
     });

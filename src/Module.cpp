@@ -858,7 +858,7 @@ bool Module::waitForDependenciesDone(Job* job)
 void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const
 {
     result = moduleDependencies;
-    sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2)
+    ranges::sort(result, [](const ModuleDependency* n1, const ModuleDependency* n2)
     {
         return n2->module->hasDependencyTo(n1->module);
     });
@@ -1175,7 +1175,7 @@ bool Module::filterFunctionsToEmit()
         byteCodeFuncToGen.push_back(bc);
     }
 
-    sort(byteCodeFuncToGen.begin(), byteCodeFuncToGen.end(), [](ByteCode* bc1, ByteCode* bc2)
+    ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2)
     {
         return (size_t) bc1->sourceFile < (size_t) bc2->sourceFile;
     });

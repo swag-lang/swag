@@ -135,7 +135,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
         {
             return strcmp(a->name.c_str(), b->name.c_str()) == -1;
         });

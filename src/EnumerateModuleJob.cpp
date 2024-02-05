@@ -111,7 +111,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
         {
             return strcmp(a->name.c_str(), b->name.c_str()) == -1;
         });
@@ -221,7 +221,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
     {
-        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+        ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
         {
             return strcmp(a->name.c_str(), b->name.c_str()) == -1;
         });
@@ -328,7 +328,7 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
     // Sort modules, and register them in a constant order
     if (!allModules.empty())
     {
-        sort(allModules.begin(), allModules.end());
+        ranges::sort(allModules);
         for (auto m : allModules)
         {
             auto toAdd = path;
@@ -432,7 +432,7 @@ JobResult EnumerateModuleJob::execute()
         // Sort files, and register them in a constant order
         if (!allFiles.empty())
         {
-            sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+            ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
             {
                 return strcmp(a->name.c_str(), b->name.c_str()) == -1;
             });

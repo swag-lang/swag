@@ -558,7 +558,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     /////////////////////////////////
     if (scope->childScopes.size() > 1)
     {
-        sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2)
+        ranges::sort(scope->childScopes, [](const Scope* n1, const Scope* n2)
         {
             return n1->backendStart < n2->backendStart;
         });

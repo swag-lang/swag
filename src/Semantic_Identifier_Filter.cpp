@@ -437,7 +437,7 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
         }
     }
 
-    sort(matches.begin(), matches.end(), [](OneMatch* x, OneMatch* y)
+    ranges::sort(matches, [](const OneMatch* x, const OneMatch* y)
     {
         return x->prio < y->prio;
     });
