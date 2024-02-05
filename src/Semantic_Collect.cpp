@@ -26,8 +26,8 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             uint8_t*   resultPtr;
             const auto offset = constSeg->addString(value->text, &resultPtr);
             storageSegment->addInitPtr(storageOffset, offset, constSeg->kind);
-            *(const char**) ptrDest                = (const char*) resultPtr;
-            *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
+            *reinterpret_cast<const char**>(ptrDest)              = (const char*) resultPtr;
+            *reinterpret_cast<uint64_t*>(ptrDest + sizeof(void*)) = value->text.length();
         }
 
         return true;
@@ -35,7 +35,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 
     if (typeInfo->isAny())
     {
-        SwagAny* ptrAny = (SwagAny*) ptrDest;
+        const auto ptrAny = reinterpret_cast<SwagAny*>(ptrDest);
         if (assignment && !assignment->castedTypeInfo)
         {
             const auto valueAny           = (SwagAny*) value->getStorageAddr();
@@ -67,7 +67,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             SWAG_ASSERT(assignment->hasExtMisc());
             SWAG_ASSERT(assignment->extMisc()->anyTypeSegment);
             constSegment = assignment->extMisc()->anyTypeSegment;
-            ptrAny->type = (ExportedTypeInfo*) constSegment->address(assignment->extMisc()->anyTypeOffset);
+            ptrAny->type = reinterpret_cast<ExportedTypeInfo*>(constSegment->address(assignment->extMisc()->anyTypeOffset));
             storageSegment->addInitPtr(storageOffset + 8, assignment->extMisc()->anyTypeOffset, constSegment->kind);
         }
 
@@ -76,7 +76,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 
     if (typeInfo->isSlice())
     {
-        SwagSlice* ptrSlice   = (SwagSlice*) ptrDest;
+        SwagSlice* ptrSlice   = reinterpret_cast<SwagSlice*>(ptrDest);
         const auto assignType = assignment ? TypeManager::concreteType(assignment->typeInfo) : nullptr;
 
         if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())
@@ -141,8 +141,8 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 
     if (typeInfo->isLambdaClosure())
     {
-        *(uint64_t*) ptrDest = 0;
-        const auto funcDecl  = castAst<AstFuncDecl>(typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+        *reinterpret_cast<uint64_t*>(ptrDest) = 0;
+        const auto funcDecl                   = castAst<AstFuncDecl>(typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
         storageSegment->addPatchMethod(funcDecl, storageOffset);
         return true;
     }
@@ -150,23 +150,23 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
     if (typeInfo->isPointerToTypeInfo())
     {
         storageSegment->addInitPtr(storageOffset, value->storageOffset, value->storageSegment->kind);
-        *(void**) ptrDest = value->getStorageAddr();
+        *reinterpret_cast<void**>(ptrDest) = value->getStorageAddr();
         return true;
     }
 
     switch (typeInfo->sizeOf)
     {
     case 1:
-        *(uint8_t*) ptrDest = value->reg.u8;
+        *ptrDest = value->reg.u8;
         break;
     case 2:
-        *(uint16_t*) ptrDest = value->reg.u16;
+        *reinterpret_cast<uint16_t*>(ptrDest) = value->reg.u16;
         break;
     case 4:
-        *(uint32_t*) ptrDest = value->reg.u32;
+        *reinterpret_cast<uint32_t*>(ptrDest) = value->reg.u32;
         break;
     case 8:
-        *(uint64_t*) ptrDest = value->reg.u64;
+        *reinterpret_cast<uint64_t*>(ptrDest) = value->reg.u64;
         break;
     default:
         break;
@@ -193,10 +193,10 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
             if (typeInfo->isString())
             {
                 SWAG_ASSERT(value);
-                Register* storedV       = (Register*) ptrDest;
+                const auto storedV      = reinterpret_cast<Register*>(ptrDest);
                 storedV[0].pointer      = (uint8_t*) value->text.buffer;
                 storedV[1].u64          = value->text.length();
-                const auto constSegment = Semantic::getConstantSegFromContext(varDecl->assignment, storageSegment->kind == SegmentKind::Compiler);
+                const auto constSegment = getConstantSegFromContext(varDecl->assignment, storageSegment->kind == SegmentKind::Compiler);
                 const auto strOffset    = constSegment->addString(value->text);
                 storageSegment->addInitPtr(offsetStruct + field->offset, strOffset, constSegment->kind);
             }
@@ -205,16 +205,16 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
                 switch (typeInfo->sizeOf)
                 {
                 case 1:
-                    *(uint8_t*) ptrDest = value ? value->reg.u8 : 0;
+                    *reinterpret_cast<uint8_t*>(ptrDest) = value ? value->reg.u8 : 0;
                     break;
                 case 2:
-                    *(uint16_t*) ptrDest = value ? value->reg.u16 : 0;
+                    *reinterpret_cast<uint16_t*>(ptrDest) = value ? value->reg.u16 : 0;
                     break;
                 case 4:
-                    *(uint32_t*) ptrDest = value ? value->reg.u32 : 0;
+                    *reinterpret_cast<uint32_t*>(ptrDest) = value ? value->reg.u32 : 0;
                     break;
                 case 8:
-                    *(uint64_t*) ptrDest = value ? value->reg.u64 : 0;
+                    *reinterpret_cast<uint64_t*>(ptrDest) = value ? value->reg.u64 : 0;
                     break;
                 default:
                     return Report::internalError(context->node, "collectStructLiterals, invalid native type sizeof");
@@ -351,16 +351,16 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
                     switch (typeArr->finalType->sizeOf)
                     {
                     case 1:
-                        *(uint8_t*) addrDst = node->assignment->computedValue->reg.u8;
+                        *addrDst = node->assignment->computedValue->reg.u8;
                         break;
                     case 2:
-                        *(uint16_t*) addrDst = node->assignment->computedValue->reg.u16;
+                        *reinterpret_cast<uint16_t*>(addrDst) = node->assignment->computedValue->reg.u16;
                         break;
                     case 4:
-                        *(uint32_t*) addrDst = node->assignment->computedValue->reg.u32;
+                        *reinterpret_cast<uint32_t*>(addrDst) = node->assignment->computedValue->reg.u32;
                         break;
                     case 8:
-                        *(uint64_t*) addrDst = node->assignment->computedValue->reg.u64;
+                        *reinterpret_cast<uint64_t*>(addrDst) = node->assignment->computedValue->reg.u64;
                         break;
                     default:
                         return Report::internalError(node->assignment, "invalid size constant collectAssignment");
@@ -585,14 +585,14 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     if (typeInfo->isPointerToTypeInfo())
     {
         node->setFlagsValueIsComputed();
-        if (*(uint8_t**) ptr == nullptr)
+        if (*reinterpret_cast<uint8_t**>(ptr) == nullptr)
         {
             node->typeInfo = g_TypeMgr->typeInfoNull;
         }
         else
         {
             // :BackPtrOffset
-            node->computedValue->storageOffset  = storageSegment->offset(*(uint8_t**) ptr);
+            node->computedValue->storageOffset  = storageSegment->offset(*reinterpret_cast<uint8_t**>(ptr));
             node->computedValue->storageSegment = storageSegment;
             setupIdentifierRef(context, node);
             node->flags |= AST_VALUE_IS_GEN_TYPEINFO;
@@ -619,13 +619,13 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     {
         // Convert slice to a static constant array
         const auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        const auto ptrSlice  = (SwagSlice*) ptr;
+        const auto ptrSlice  = reinterpret_cast<SwagSlice*>(ptr);
         node->setFlagsValueIsComputed();
         node->computedValue->storageOffset  = ptrSlice->buffer ? storageSegment->offset((uint8_t*) ptrSlice->buffer) : UINT32_MAX;
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->reg.u64        = ptrSlice->count;
         const auto typeArray                = makeType<TypeInfoArray>();
-        typeArray->count                    = (uint32_t) ((SwagSlice*) ptr)->count;
+        typeArray->count                    = (uint32_t) (reinterpret_cast<SwagSlice*>(ptr))->count;
         typeArray->totalCount               = typeArray->count;
         typeArray->pointedType              = typeSlice->pointedType;
         typeArray->finalType                = typeSlice->pointedType;
@@ -652,7 +652,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     {
     case NativeTypeKind::String:
     {
-        const auto slice = (SwagSlice*) ptr;
+        const auto slice = reinterpret_cast<SwagSlice*>(ptr);
         node->setFlagsValueIsComputed();
         node->computedValue->text = Utf8{(const char*) slice->buffer, (uint32_t) slice->count};
         if (!node->typeInfo)
@@ -670,73 +670,73 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS8;
-        node->computedValue->reg.s8 = *(int8_t*) ptr;
+        node->computedValue->reg.s8 = *reinterpret_cast<int8_t*>(ptr);
         break;
     case NativeTypeKind::U8:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU8;
-        node->computedValue->reg.u8 = *(uint8_t*) ptr;
+        node->computedValue->reg.u8 = *ptr;
         break;
     case NativeTypeKind::S16:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS16;
-        node->computedValue->reg.s16 = *(int16_t*) ptr;
+        node->computedValue->reg.s16 = *reinterpret_cast<int16_t*>(ptr);
         break;
     case NativeTypeKind::U16:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU16;
-        node->computedValue->reg.u16 = *(uint16_t*) ptr;
+        node->computedValue->reg.u16 = *reinterpret_cast<uint16_t*>(ptr);
         break;
     case NativeTypeKind::S32:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS32;
-        node->computedValue->reg.s32 = *(int32_t*) ptr;
+        node->computedValue->reg.s32 = *reinterpret_cast<int32_t*>(ptr);
         break;
     case NativeTypeKind::U32:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU32;
-        node->computedValue->reg.u32 = *(uint32_t*) ptr;
+        node->computedValue->reg.u32 = *reinterpret_cast<uint32_t*>(ptr);
         break;
     case NativeTypeKind::F32:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoF32;
-        node->computedValue->reg.f32 = *(float*) ptr;
+        node->computedValue->reg.f32 = *reinterpret_cast<float*>(ptr);
         break;
     case NativeTypeKind::Rune:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoRune;
-        node->computedValue->reg.ch = *(uint32_t*) ptr;
+        node->computedValue->reg.ch = *reinterpret_cast<uint32_t*>(ptr);
         break;
     case NativeTypeKind::S64:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS64;
-        node->computedValue->reg.s64 = *(int64_t*) ptr;
+        node->computedValue->reg.s64 = *reinterpret_cast<int64_t*>(ptr);
         break;
     case NativeTypeKind::U64:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU64;
-        node->computedValue->reg.u64 = *(uint64_t*) ptr;
+        node->computedValue->reg.u64 = *reinterpret_cast<uint64_t*>(ptr);
         break;
     case NativeTypeKind::F64:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoF64;
-        node->computedValue->reg.f64 = *(double*) ptr;
+        node->computedValue->reg.f64 = *reinterpret_cast<double*>(ptr);
         break;
     case NativeTypeKind::Bool:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoBool;
-        node->computedValue->reg.b = *(bool*) ptr;
+        node->computedValue->reg.b = *reinterpret_cast<bool*>(ptr);
         break;
 
     default:

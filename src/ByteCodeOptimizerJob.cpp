@@ -31,7 +31,7 @@ JobResult ByteCodeOptimizerJob::execute()
 
     // Restart everything if something has been done during this pass
     if (restart)
-        module->optimNeedRestart++;
+        ++module->optimNeedRestart;
 
     return JobResult::ReleaseJob;
 }

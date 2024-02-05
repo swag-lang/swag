@@ -590,7 +590,7 @@ void Module::addCompilerFunc(ByteCode* bc)
         {
             ScopedLock lk(byteCodeCompilerMutex[i]);
             SWAG_ASSERT(numCompilerFunctions > 0);
-            numCompilerFunctions--;
+            --numCompilerFunctions;
             byteCodeCompiler[i].push_back(bc);
         }
     }

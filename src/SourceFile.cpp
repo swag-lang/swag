@@ -76,7 +76,7 @@ bool SourceFile::load()
     if (fopen_s(&handle, path.string().c_str(), "rbN"))
     {
         numErrors++;
-        module->numErrors++;
+        ++module->numErrors;
         Report::errorOS(FMT(Err(Err0095), path.string().c_str()));
         return false;
     }
@@ -100,7 +100,7 @@ bool SourceFile::load()
     if (result != bufferSize)
     {
         numErrors++;
-        module->numErrors++;
+        ++module->numErrors;
         Allocator::free(buffer, allocBufferSize);
         buffer = nullptr;
 

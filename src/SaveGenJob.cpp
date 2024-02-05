@@ -22,7 +22,7 @@ bool SaveGenJob::flush(Module* module)
         FILE* h = nullptr;
         if (fopen_s(&h, publicPath.string().c_str(), "wN"))
         {
-            module->numErrors++;
+            ++module->numErrors;
             Report::errorOS(FMT(Err(Err0096), publicPath.string().c_str()));
             return false;
         }

@@ -132,12 +132,12 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     if (job->flags & JOB_IS_OPT)
     {
         SWAG_ASSERT(jobsOptInThreads);
-        jobsOptInThreads--;
+        --jobsOptInThreads;
     }
     else
     {
         SWAG_ASSERT(jobsInThreads);
-        jobsInThreads--;
+        --jobsInThreads;
     }
 
     job->wakeUpBy = nullptr;
@@ -180,7 +180,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     if (job->flags & JOB_IS_IO)
     {
         SWAG_ASSERT(currentJobsIO);
-        currentJobsIO--;
+        --currentJobsIO;
     }
 
     // Do we need to wakeup my parent job ?
@@ -357,9 +357,9 @@ void ThreadManager::eatJob(Job* job)
     job->jobThread = nullptr;
 
     if (job->flags & JOB_IS_OPT)
-        jobsOptInThreads++;
+        ++jobsOptInThreads;
     else
-        jobsInThreads++;
+        ++jobsInThreads;
 }
 
 Job* ThreadManager::getJob(JobQueue& queue)
@@ -435,7 +435,7 @@ Job* ThreadManager::getJob()
         job = getJob(queueJobsIO);
         if (job)
         {
-            currentJobsIO++;
+            ++currentJobsIO;
             return job;
         }
     }
@@ -454,7 +454,7 @@ Job* ThreadManager::getJob()
     job = getJob(queueJobsIO);
     if (job)
     {
-        currentJobsIO++;
+        ++currentJobsIO;
         return job;
     }
 

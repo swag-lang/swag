@@ -19,7 +19,7 @@ struct JobGroup
 
     void doneJob()
     {
-        runningJobs--;
+        --runningJobs;
     }
 
     void moveFrom(JobGroup& grp)

@@ -400,7 +400,7 @@ bool Parser::generateAst()
 
     // First do the setup that does not need the source file to be loaded
 #ifdef SWAG_STATS
-    g_Stats.numFiles++;
+    ++g_Stats.numFiles;
 #endif
 
     // Setup root ast for file

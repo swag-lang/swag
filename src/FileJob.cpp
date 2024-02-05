@@ -21,14 +21,14 @@ JobResult CopyFileJob::execute()
     FILE* fdest = nullptr;
     if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
     {
-        module->numErrors++;
+        ++module->numErrors;
         Report::errorOS(FMT(Err(Err0095), sourcePath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 
     if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
     {
-        module->numErrors++;
+        ++module->numErrors;
         fclose(fsrc);
         Report::errorOS(FMT(Err(Err0095), destPath.string().c_str()));
         return JobResult::ReleaseJob;

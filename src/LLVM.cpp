@@ -255,7 +255,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (pp.pass == BackendPreCompilePass::End)
     {
         if (g_Workspace->bootstrapModule->numErrors || g_Workspace->runtimeModule->numErrors)
-            module->numErrors++;
+            ++module->numErrors;
         if (module->numErrors)
             return JobResult::ReleaseJob;
         if (stage == 1)

@@ -167,7 +167,7 @@ void AstNode::releaseChilds()
 void AstNode::release()
 {
 #ifdef SWAG_STATS
-    g_Stats.releaseNodes++;
+    ++g_Stats.releaseNodes;
 #endif
 
     if (flags & AST_NEED_SCOPE)

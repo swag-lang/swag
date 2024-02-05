@@ -500,14 +500,14 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     switch (diag.errorLevel)
     {
     case DiagnosticLevel::Exception:
-        sourceFile->module->criticalErrors++;
+        ++sourceFile->module->criticalErrors;
         diag.errorLevel = DiagnosticLevel::Panic;
         break;
 
     case DiagnosticLevel::Error:
     case DiagnosticLevel::Panic:
         sourceFile->numErrors++;
-        sourceFile->module->numErrors++;
+        ++sourceFile->module->numErrors;
 
     // Do not raise an error if we are waiting for one, during tests
         if (sourceFile->shouldHaveError)
@@ -542,12 +542,12 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             }
         }
 
-        g_Workspace->numErrors++;
+        ++g_Workspace->numErrors;
         break;
 
     case DiagnosticLevel::Warning:
         sourceFile->numWarnings++;
-        sourceFile->module->numWarnings++;
+        ++sourceFile->module->numWarnings;
 
     // Do not raise a warning if we are waiting for one, during tests
         if (sourceFile->shouldHaveWarning)
@@ -582,7 +582,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             }
         }
 
-        g_Workspace->numWarnings++;
+        ++g_Workspace->numWarnings;
         break;
 
     default:
@@ -712,8 +712,8 @@ bool Report::error(Module* module, const Utf8& msg)
     g_Log.print(Diagnostic::oneLiner(msg));
     g_Log.eol();
     g_Log.setDefaultColor();
-    g_Workspace->numErrors++;
-    module->numErrors++;
+    ++g_Workspace->numErrors;
+    ++module->numErrors;
     g_Log.unlock();
     return false;
 }
@@ -763,8 +763,8 @@ bool Report::internalError(Module* module, const char* msg)
     g_Log.print(msg);
     g_Log.eol();
     g_Log.setDefaultColor();
-    g_Workspace->numErrors++;
-    module->numErrors++;
+    ++g_Workspace->numErrors;
+    ++module->numErrors;
     g_Log.unlock();
     return false;
 }

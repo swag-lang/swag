@@ -14,7 +14,7 @@ JobResult ModuleGenOutputJob::execute()
     module->backend->generateOutput(buildParameters);
 
 #ifdef SWAG_STATS
-    g_Stats.numGenModules++;
+    ++g_Stats.numGenModules;
 #endif
 
     // Notify we are done

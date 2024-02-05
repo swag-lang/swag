@@ -14,7 +14,7 @@ Job* JobGroup::pickJob()
     const auto job = jobs.back();
     jobs.pop_back();
     job->jobGroup = this;
-    runningJobs++;
+    ++runningJobs;
     mutex.unlock();
     return job;
 }

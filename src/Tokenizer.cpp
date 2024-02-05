@@ -110,7 +110,7 @@ void Tokenizer::processChar(uint32_t c, unsigned offset)
     if (c == '\n')
     {
 #ifdef SWAG_STATS
-        g_Stats.numLines++;
+        ++g_Stats.numLines;
 #endif
         location.column = 0;
         location.line++;
@@ -157,7 +157,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 {
 #ifdef SWAG_STATS
     Timer timer(&g_Stats.tokenizerTime);
-    g_Stats.numTokens++;
+    ++g_Stats.numTokens;
 #endif
 
     token.literalType   = LiteralType::TT_MAX;

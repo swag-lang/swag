@@ -50,7 +50,7 @@ struct VectorMap : Vector<pair<K, V>>
     using IT = typename Vector<pair<K, V>>::iterator;
     IT find(const K& key)
     {
-        for (auto it = this->begin(); it != this->end(); it++)
+        for (auto it = this->begin(); it != this->end(); ++it)
         {
             if (it->first == key)
                 return it;

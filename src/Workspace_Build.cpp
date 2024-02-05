@@ -120,7 +120,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
     }
 
 #ifdef SWAG_STATS
-    g_Stats.numModules++;
+    ++g_Stats.numModules;
 #endif
 
     return module;

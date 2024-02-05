@@ -83,7 +83,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         if (context && g_CommandLine.verboseConcreteTypes)
             g_Log.messageVerbose(FMT("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
 #ifdef SWAG_STATS
-        g_Stats.totalConcreteTypes++;
+        ++g_Stats.totalConcreteTypes;
 #endif
     }
 

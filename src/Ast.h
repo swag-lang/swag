@@ -83,7 +83,7 @@ namespace Ast
         auto node = Allocator::allocRaw<T>();
         constructNode<T>(node);
 #ifdef SWAG_STATS
-        g_Stats.numNodes++;
+        ++g_Stats.numNodes;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));
 #ifdef SWAG_DEV_MODE
         node->rankId = g_Stats.numNodes;
@@ -99,7 +99,7 @@ namespace Ast
         constructNode<T>(node);
         initNewNode(node, job, kind, sourceFile, parent);
 #ifdef SWAG_STATS
-        g_Stats.numNodes++;
+        ++g_Stats.numNodes;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));
 #ifdef SWAG_DEV_MODE
         node->rankId = g_Stats.numNodes;
