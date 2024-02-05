@@ -39,7 +39,7 @@ bool Parser::testIsValidUserName(const AstNode* node) const
     return true;
 }
 
-bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
+bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
 {
     // An identifier that starts with '__' is reserved for internal usage !
     if (!testIsValidUserName(node))
@@ -58,15 +58,14 @@ bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
     return true;
 }
 
-bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg)
+bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg) const
 {
     if (!testIsSingleIdentifier(node))
         return error(node, FMT(Err(Err0246), msg));
-
     return true;
 }
 
-bool Parser::checkIsIdentifier(TokenParse& tokenParse, const char* msg)
+bool Parser::checkIsIdentifier(const TokenParse& tokenParse, const char* msg) const
 {
     if (tokenParse.id == TokenId::Identifier)
         return true;
@@ -419,7 +418,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
 bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
-    node->kwdLoc      = token;
+    node->kwdLoc      = static_cast<Token>(token);
     node->semanticFct = Semantic::resolveUsing;
 
     *result = node;
@@ -447,7 +446,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
-    node->kwdLoc      = token;
+    node->kwdLoc      = static_cast<Token>(token);
     node->semanticFct = Semantic::resolveUsing;
 
     *result = node;

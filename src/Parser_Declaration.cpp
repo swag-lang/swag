@@ -214,7 +214,7 @@ bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool
     return doNamespaceOnName(parent, result, forGlobal, forUsing);
 }
 
-bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName)
+bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privName)
 {
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
@@ -531,8 +531,8 @@ void Parser::registerSubDecl(AstNode* subDecl)
     if (subDecl->parent->kind == AstNodeKind::AttrUse)
         subDecl = subDecl->parent;
 
-        // Else if we are in an attruse block, we need to duplicate each of them, in order
-        // for the subdecl to have its own attruse
+        // Else if we are in an attr-use block, we need to duplicate each of them, in order
+        // for the sub-decl to have its own attr-use
     else if (subDecl->parent->kind == AstNodeKind::Statement)
     {
         auto testParent  = subDecl->parent;

@@ -26,7 +26,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0552)));
     SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0266), token.ctext())));
     enumNode->inheritTokenName(token);
-    enumNode->tokenName = token;
+    enumNode->tokenName = static_cast<Token>(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
     // Add enum type and scope
@@ -39,12 +39,12 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 const auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                const Diagnostic diag{implNode->identifier,
-                                      FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
-                const auto note  = Diagnostic::hereIs(enumNode);
-                const auto note1 = Diagnostic::note(FMT(Nte(Nte0043), implNode->token.ctext()));
+                const Diagnostic diag{implNode->identifier, FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
+                const auto       note  = Diagnostic::hereIs(enumNode);
+                const auto       note1 = Diagnostic::note(FMT(Nte(Nte0043), implNode->token.ctext()));
                 return context->report(diag, note, note1);
             }
+
             const Utf8       asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
             const Diagnostic diag{enumNode->sourceFile, token, FMT(Err(Err0626), "enum", enumNode->token.ctext(), asA.c_str())};
             const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));

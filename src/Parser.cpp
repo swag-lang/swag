@@ -44,7 +44,7 @@ bool Parser::error(const SourceLocation& startLocation, const SourceLocation& en
     return context->report(diag, note);
 }
 
-bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
+bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 {
     switch (token.id)
     {
@@ -148,7 +148,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     return error(token, msg, note.empty() ? nullptr : note.c_str());
 }
 
-bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg) const
+bool Parser::invalidIdentifierError(const TokenParse& tokenParse, const char* msg) const
 {
     const Diagnostic* note = nullptr;
 
@@ -452,7 +452,7 @@ bool Parser::generateAst()
     // One scope per file. We do NOT register the scope in the list of childs
     // of the module scope, to avoid contention in // (and this is useless). That way,
     // no need to lock the module scope each time a file is encountered.
-    Utf8 scopeName = "__" + Path(sourceFile->name).replace_extension().string();
+    const Utf8 scopeName = "__" + Path(sourceFile->name).replace_extension().string();
     Ast::normalizeIdentifierName(scopeName);
     sourceFile->scopeFile              = Ast::newScope(sourceFile->astRoot, scopeName, ScopeKind::File, nullptr);
     sourceFile->scopeFile->parentScope = parentScope;

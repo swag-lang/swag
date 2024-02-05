@@ -8,7 +8,7 @@
 #include "Scoped.h"
 #include "Semantic.h"
 
-bool Parser::checkIsValidVarName(AstNode* node)
+bool Parser::checkIsValidVarName(AstNode* node) const
 {
     if (!checkIsValidUserName(node))
         return false;

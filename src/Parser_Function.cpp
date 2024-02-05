@@ -15,8 +15,8 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     const auto callParams = Ast::newFuncCallGenParams(sourceFile, parent, this);
     *result               = callParams;
 
-    bool       multi    = false;
-    const auto startLoc = token.startLocation;
+    bool        multi    = false;
+    const auto& startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftParen)
     {
         multi = true;
@@ -26,7 +26,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     while (token.id != TokenId::SymRightParen)
     {
         const auto param = Ast::newFuncCallParam(sourceFile, callParams, this);
-        param->token     = token;
+        param->token     = static_cast<Token>(token);
         switch (token.id)
         {
         case TokenId::Identifier:
@@ -127,7 +127,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         {
             const auto param   = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
             param->semanticFct = Semantic::resolveFuncCallParam;
-            param->token       = token;
+            param->token       = static_cast<Token>(token);
             AstNode* paramExpression;
 
             SWAG_CHECK(doExpression(param, EXPR_FLAG_PARAMETER | EXPR_FLAG_IN_CALL | EXPR_FLAG_NAMED_PARAM, &paramExpression));
@@ -735,7 +735,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.ctext())));
         }
 
-        funcNode->tokenName = token;
+        funcNode->tokenName = static_cast<Token>(token);
         funcNode->inheritTokenName(token);
         SWAG_CHECK(checkIsValidUserName(funcNode, &token));
 
@@ -1183,7 +1183,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         else
         {
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-            funcNode->content->token = token;
+            funcNode->content->token = static_cast<Token>(token);
         }
 
         funcNode->content->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);

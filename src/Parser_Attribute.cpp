@@ -20,7 +20,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0219), token.ctext())));
 
     attrNode->inheritTokenName(token);
-    attrNode->tokenName = token;
+    attrNode->tokenName = static_cast<Token>(token);
 
     const auto typeInfo = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode  = attrNode;

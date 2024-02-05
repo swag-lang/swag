@@ -3,27 +3,27 @@
 #include "Scope.h"
 #include "Tokenizer.h"
 
-struct SourceFile;
-struct AstVarDecl;
-struct AstNode;
+struct AstAttrUse;
 struct AstBreakable;
+struct AstCompilerIfBlock;
+struct AstFuncCallParams;
+struct AstFuncDecl;
 struct AstIdentifier;
 struct AstIdentifierRef;
-struct Scope;
-struct Utf8;
-struct AstFuncDecl;
-struct AstStruct;
-struct AstCompilerIfBlock;
-struct AstTryCatchAssume;
-struct Parser;
-struct AstAttrUse;
 struct AstInline;
-struct AstFuncCallParams;
-struct AstWith;
-struct AstTypeLambda;
-struct Module;
-struct JobContext;
+struct AstNode;
+struct AstStruct;
+struct AstTryCatchAssume;
 struct AstTypeExpression;
+struct AstTypeLambda;
+struct AstVarDecl;
+struct AstWith;
+struct JobContext;
+struct Module;
+struct Parser;
+struct Scope;
+struct SourceFile;
+struct Utf8;
 
 enum class AstNodeKind : uint8_t;
 
@@ -82,8 +82,8 @@ struct Parser
     bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr) const;
-    bool invalidTokenError(InvalidTokenError kind, AstNode* parent = nullptr);
-    bool invalidIdentifierError(TokenParse& tokenParse, const char* msg = nullptr) const;
+    bool invalidTokenError(InvalidTokenError kind, const AstNode* parent = nullptr);
+    bool invalidIdentifierError(const TokenParse& tokenParse, const char* msg = nullptr) const;
 
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
@@ -93,61 +93,54 @@ struct Parser
     bool eatSemiCol(const char* msg);
 
     static bool testIsSingleIdentifier(AstNode* node);
-    bool        checkIsSingleIdentifier(AstNode* node, const char* msg);
-    bool        checkIsIdentifier(TokenParse& token, const char* msg);
+    bool        checkIsSingleIdentifier(AstNode* node, const char* msg) const;
+    bool        checkIsIdentifier(const TokenParse& token, const char* msg) const;
     bool        testIsValidUserName(const AstNode* node) const;
-    bool        checkIsValidUserName(AstNode* node, Token* loc = nullptr);
-    bool        checkIsValidVarName(AstNode* node);
+    bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
+    bool        checkIsValidVarName(AstNode* node) const;
     bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
     void        registerSubDecl(AstNode* subDecl);
     static void isForceTakeAddress(AstNode* node);
 
-    bool doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion);
-    bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
-    bool doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
-    bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
-    bool doIntrinsicTag(AstNode* parent, AstNode** result);
-    bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
-    bool doCompilerIf(AstNode* parent, AstNode** result);
-    bool doCompilerMacro(AstNode* parent, AstNode** result);
-    bool doCompilerMixin(AstNode* parent, AstNode** result);
-    bool doCompilerAssert(AstNode* parent, AstNode** result);
-    bool doCompilerPrint(AstNode* parent, AstNode** result);
-    bool doCompilerError(AstNode* parent, AstNode** result);
-    bool doCompilerWarning(AstNode* parent, AstNode** result);
-    bool doCompilerAst(AstNode* parent, AstNode** result);
-    bool doCompilerValidIf(AstNode* parent, AstNode** result);
-    bool doCompilerRunTopLevel(AstNode* parent, AstNode** result);
-    bool doCompilerRunEmbedded(AstNode* parent, AstNode** result);
-    bool doCompilerForeignLib(AstNode* parent, AstNode** result);
-    bool doCompilerGlobal(AstNode* parent, AstNode** result);
-    bool doCompilerSpecialValue(AstNode* parent, AstNode** result);
-    bool doIntrinsicDefined(AstNode* parent, AstNode** result);
-    bool doIntrinsicLocation(AstNode* parent, AstNode** result);
-    bool doCompilerDependencies(AstNode* parent);
-    bool doCompilerInclude(AstNode* parent, AstNode** result);
-    bool doCompilerLoad(AstNode* parent);
-    bool doCompilerImport(AstNode* parent);
-    bool doCompilerPlaceHolder(AstNode* parent);
-    bool doTopLevelInstruction(AstNode* parent, AstNode** result);
-    bool doVarDecl(AstNode* parent, AstNode** result);
-    bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false, bool forLet = false);
-    bool doTypeAlias(AstNode* parent, AstNode** result);
-    bool doNameAlias(AstNode* parent, AstNode** result);
-    bool doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
-    bool doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
-    bool doDefer(AstNode* parent, AstNode** result);
-    bool doVarDeclExpression(AstNode*          parent,
-                             AstNode*          leftNode,
-                             AstNode*          type,
-                             AstNode*          assign,
-                             const TokenParse& assignToken,
-                             AstNodeKind       kind,
-                             AstNode**         result,
-                             bool              forLet = false);
+    bool        doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion);
+    bool        doCompilerScopeBreakable(AstNode* parent, AstNode** result);
+    bool        doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result);
+    bool        doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
+    bool        doIntrinsicTag(AstNode* parent, AstNode** result);
+    bool        doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
+    bool        doCompilerIf(AstNode* parent, AstNode** result);
+    bool        doCompilerMacro(AstNode* parent, AstNode** result);
+    bool        doCompilerMixin(AstNode* parent, AstNode** result);
+    bool        doCompilerAssert(AstNode* parent, AstNode** result);
+    bool        doCompilerPrint(AstNode* parent, AstNode** result);
+    bool        doCompilerError(AstNode* parent, AstNode** result);
+    bool        doCompilerWarning(AstNode* parent, AstNode** result);
+    bool        doCompilerAst(AstNode* parent, AstNode** result);
+    bool        doCompilerValidIf(AstNode* parent, AstNode** result);
+    bool        doCompilerRunTopLevel(AstNode* parent, AstNode** result);
+    bool        doCompilerRunEmbedded(AstNode* parent, AstNode** result);
+    bool        doCompilerForeignLib(AstNode* parent, AstNode** result);
+    bool        doCompilerGlobal(AstNode* parent, AstNode** result);
+    bool        doCompilerSpecialValue(AstNode* parent, AstNode** result);
+    bool        doIntrinsicDefined(AstNode* parent, AstNode** result);
+    bool        doIntrinsicLocation(AstNode* parent, AstNode** result);
+    bool        doCompilerDependencies(AstNode* parent);
+    bool        doCompilerInclude(AstNode* parent, AstNode** result);
+    bool        doCompilerLoad(AstNode* parent);
+    bool        doCompilerImport(AstNode* parent);
+    bool        doCompilerPlaceHolder(AstNode* parent);
+    bool        doTopLevelInstruction(AstNode* parent, AstNode** result);
+    bool        doVarDecl(AstNode* parent, AstNode** result);
+    bool        doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool forStruct = false, bool forLet = false);
+    bool        doTypeAlias(AstNode* parent, AstNode** result);
+    bool        doNameAlias(AstNode* parent, AstNode** result);
+    bool        doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl = false);
+    bool        doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
+    bool        doDefer(AstNode* parent, AstNode** result);
+    bool        doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
     bool        doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
     bool        doTopLevelIdentifier(AstNode* parent, AstNode** result);
     bool        doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
@@ -158,7 +151,7 @@ struct Parser
     bool        doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal);
     bool        doNamespace(AstNode* parent, AstNode** result);
     bool        doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
-    bool        doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName = nullptr);
+    bool        doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privName = nullptr);
     bool        doEnumContent(AstNode* parent, AstNode** result);
     bool        doSubEnumValue(AstNode* parent, AstNode** result);
     bool        doEnumValue(AstNode* parent, AstNode** result);
@@ -192,45 +185,39 @@ struct Parser
     bool        doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool        doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
     bool        doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
-    bool        doFuncDeclParameters(AstNode* parent,
-                              AstNode**       result,
-                              bool            acceptMissingType = false,
-                              bool*           hasMissingType    = nullptr,
-                              bool            isMethod          = false,
-                              bool            isConstMethod     = false,
-                              bool            isItfMethod       = false);
-    bool doAttrDecl(AstNode* parent, AstNode** result);
-    bool doAttrUse(AstNode* parent, AstNode** result, bool single = false);
-    bool doEmbeddedInstruction(AstNode* parent, AstNode** result);
-    bool doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo = true);
-    bool doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind);
-    bool doStatement(AstNode* parent, AstNode** result);
-    bool doGlobalCurlyStatement(AstNode* parent, AstNode** result);
-    bool doCurlyStatement(AstNode* parent, AstNode** result);
-    bool doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind = ScopeKind::Statement);
-    bool doReturn(AstNode* parent, AstNode** result);
-    bool doWith(AstNode* parent, AstNode** result);
-    bool doPrivate(AstNode* parent, AstNode** result);
-    bool doUsing(AstNode* parent, AstNode** result);
-    bool doCast(AstNode* parent, AstNode** result);
-    bool doAutoCast(AstNode* parent, AstNode** result);
-    bool doIf(AstNode* parent, AstNode** result);
-    bool doWhile(AstNode* parent, AstNode** result);
-    bool doFor(AstNode* parent, AstNode** result);
-    bool doLoop(AstNode* parent, AstNode** result);
-    bool doVisit(AstNode* parent, AstNode** result);
-    bool doSwitch(AstNode* parent, AstNode** result);
-    bool doBreak(AstNode* parent, AstNode** result);
-    bool doFallThrough(AstNode* parent, AstNode** result);
-    bool doUnreachable(AstNode* parent, AstNode** result);
-    bool doContinue(AstNode* parent, AstNode** result);
-    bool doArrayPointerIndex(AstNode** exprNode);
-    bool doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
-    bool doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, AstWith* withNode = nullptr);
-    bool doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
-    bool doInit(AstNode* parent, AstNode** result);
-    bool doDropCopyMove(AstNode* parent, AstNode** result);
-    bool doRange(AstNode* parent, AstNode* expression, AstNode** result);
+    bool        doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr, bool isMethod = false, bool isConstMethod = false, bool isItfMethod = false);
+    bool        doAttrDecl(AstNode* parent, AstNode** result);
+    bool        doAttrUse(AstNode* parent, AstNode** result, bool single = false);
+    bool        doEmbeddedInstruction(AstNode* parent, AstNode** result);
+    bool        doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo = true);
+    bool        doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind);
+    bool        doStatement(AstNode* parent, AstNode** result);
+    bool        doGlobalCurlyStatement(AstNode* parent, AstNode** result);
+    bool        doCurlyStatement(AstNode* parent, AstNode** result);
+    bool        doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind = ScopeKind::Statement);
+    bool        doReturn(AstNode* parent, AstNode** result);
+    bool        doWith(AstNode* parent, AstNode** result);
+    bool        doPrivate(AstNode* parent, AstNode** result);
+    bool        doUsing(AstNode* parent, AstNode** result);
+    bool        doCast(AstNode* parent, AstNode** result);
+    bool        doAutoCast(AstNode* parent, AstNode** result);
+    bool        doIf(AstNode* parent, AstNode** result);
+    bool        doWhile(AstNode* parent, AstNode** result);
+    bool        doFor(AstNode* parent, AstNode** result);
+    bool        doLoop(AstNode* parent, AstNode** result);
+    bool        doVisit(AstNode* parent, AstNode** result);
+    bool        doSwitch(AstNode* parent, AstNode** result);
+    bool        doBreak(AstNode* parent, AstNode** result);
+    bool        doFallThrough(AstNode* parent, AstNode** result);
+    bool        doUnreachable(AstNode* parent, AstNode** result);
+    bool        doContinue(AstNode* parent, AstNode** result);
+    bool        doArrayPointerIndex(AstNode** exprNode);
+    bool        doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool        doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, AstWith* withNode = nullptr);
+    bool        doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool        doInit(AstNode* parent, AstNode** result);
+    bool        doDropCopyMove(AstNode* parent, AstNode** result);
+    bool        doRange(AstNode* parent, AstNode* expression, AstNode** result);
 
     ErrorContext* context    = nullptr;
     SourceFile*   sourceFile = nullptr;

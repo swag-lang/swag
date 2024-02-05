@@ -543,19 +543,14 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));
         }
     }
-
-    // Force ref pointer
     else if (token.id == TokenId::KwdRef)
     {
         SWAG_CHECK(doKeepRef(parent, &exprNode));
     }
-
-    // Moveref
     else if (token.id == TokenId::KwdMoveRef)
     {
         SWAG_CHECK(doMoveRef(parent, &exprNode));
     }
-
     else
     {
         SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));
@@ -582,7 +577,7 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
         const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::SingleOp, sourceFile, parent);
         *result           = node;
         node->semanticFct = Semantic::resolveUnaryOp;
-        node->token       = token;
+        node->token       = static_cast<Token>(token);
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id != prevToken.id, error(token, FMT(Err(Err0071), token.ctext())));
         SWAG_VERIFY(token.id != TokenId::KwdDeRef, error(token, FMT(Err(Err0282), prevToken.ctext(), token.ctext(), prevToken.ctext())));
@@ -750,66 +745,69 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, As
     return true;
 }
 
-static int getPrecedence(TokenId id)
+namespace
 {
-    switch (id)
+    int getPrecedence(TokenId id)
     {
-    case TokenId::SymTilde:
-        return 0;
-    case TokenId::SymAsterisk:
-    case TokenId::SymSlash:
-    case TokenId::SymPercent:
-        return 1;
-    case TokenId::SymPlus:
-    case TokenId::SymMinus:
-        return 2;
-    case TokenId::SymGreaterGreater:
-    case TokenId::SymLowerLower:
-        return 3;
-    case TokenId::SymAmpersand:
-        return 4;
-    case TokenId::SymVertical:
-        return 5;
-    case TokenId::SymCircumflex:
-        return 6;
-    case TokenId::SymLowerEqualGreater:
-        return 7;
-    case TokenId::SymEqualEqual:
-    case TokenId::SymExclamEqual:
-        return 8;
-    case TokenId::SymLower:
-    case TokenId::SymLowerEqual:
-    case TokenId::SymGreater:
-    case TokenId::SymGreaterEqual:
-        return 9;
-    case TokenId::KwdAnd:
-        return 10;
-    case TokenId::KwdOr:
-        return 11;
-    default:
-        break;
+        switch (id)
+        {
+        case TokenId::SymTilde:
+            return 0;
+        case TokenId::SymAsterisk:
+        case TokenId::SymSlash:
+        case TokenId::SymPercent:
+            return 1;
+        case TokenId::SymPlus:
+        case TokenId::SymMinus:
+            return 2;
+        case TokenId::SymGreaterGreater:
+        case TokenId::SymLowerLower:
+            return 3;
+        case TokenId::SymAmpersand:
+            return 4;
+        case TokenId::SymVertical:
+            return 5;
+        case TokenId::SymCircumflex:
+            return 6;
+        case TokenId::SymLowerEqualGreater:
+            return 7;
+        case TokenId::SymEqualEqual:
+        case TokenId::SymExclamEqual:
+            return 8;
+        case TokenId::SymLower:
+        case TokenId::SymLowerEqual:
+        case TokenId::SymGreater:
+        case TokenId::SymGreaterEqual:
+            return 9;
+        case TokenId::KwdAnd:
+            return 10;
+        case TokenId::KwdOr:
+            return 11;
+        default:
+            break;
+        }
+
+        return -1;
     }
 
-    return -1;
-}
-
-static bool isAssociative(TokenId id)
-{
-    switch (id)
+    bool isAssociative(TokenId id)
     {
-    case TokenId::SymPlus:
-    case TokenId::SymAsterisk:
-    case TokenId::SymVertical:
-    case TokenId::SymCircumflex:
-    case TokenId::SymPlusPlus:
-    case TokenId::KwdAnd:
-    case TokenId::KwdOr:
-        return true;
-    default:
-        break;
-    }
+        switch (id)
+        {
+        case TokenId::SymPlus:
+        case TokenId::SymAsterisk:
+        case TokenId::SymVertical:
+        case TokenId::SymCircumflex:
+        case TokenId::SymPlusPlus:
+        case TokenId::KwdAnd:
+        case TokenId::KwdOr:
+            return true;
+        default:
+            break;
+        }
 
-    return false;
+        return false;
+    }
 }
 
 bool Parser::doOperatorPrecedence(AstNode** result)
@@ -906,7 +904,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
             binaryNode->semanticFct = Semantic::resolveShiftExpression;
         else
             binaryNode->semanticFct = Semantic::resolveFactorExpression;
-        binaryNode->token = token;
+        binaryNode->token = static_cast<Token>(token);
         SWAG_CHECK(eatToken());
 
         // Modifiers
@@ -939,7 +937,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
     {
         auto binaryNode         = (AstNode*) Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr);
         binaryNode->semanticFct = Semantic::resolveCompareExpression;
-        binaryNode->token       = token;
+        binaryNode->token       = static_cast<Token>(token);
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
@@ -989,7 +987,7 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     {
         const auto binaryNode   = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
         binaryNode->semanticFct = Semantic::resolveBoolExpression;
-        binaryNode->token       = token;
+        binaryNode->token       = static_cast<Token>(token);
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
@@ -1016,7 +1014,7 @@ bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent,
     uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(forToken, tokenId, mdfFlags));
 
-    // nodrop left
+    // no drop left
     if (mdfFlags & MODIFIER_NO_LEFT_DROP)
     {
         const auto exprNode   = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
@@ -1037,7 +1035,7 @@ bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent,
         parent = exprNode;
         result = &dummyResult;
 
-        // nodrop right
+        // no drop right
         if (mdfFlags & MODIFIER_NO_RIGHT_DROP)
         {
             exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
@@ -1468,7 +1466,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             const auto parentNode    = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
             *result                  = parentNode;
 
-            // Generate an expression of the form "var firstVar = assignment", and "secondvar = firstvar" for the rest
+            // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
             // This will avoid to do the right expression multiple times (if this is a function call for example).
             //
             // If this is not the '=' operator, then we have to duplicate the affectation for each variable
@@ -1484,7 +1482,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             {
                 const auto child      = leftNode->childs.front();
                 const auto affectNode = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                affectNode->token     = savedtoken;
+                affectNode->token     = static_cast<Token>(savedtoken);
                 affectNode->tokenId   = savedtoken.id;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -1582,7 +1580,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
         {
             const auto affectNode = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
             affectNode->tokenId   = savedtoken.id;
-            affectNode->token     = std::move(savedtoken);
+            affectNode->token     = static_cast<Token>(std::move(savedtoken));
 
             Ast::addChildBack(affectNode, leftNode);
             isForceTakeAddress(leftNode);

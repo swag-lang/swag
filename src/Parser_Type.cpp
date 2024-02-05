@@ -120,7 +120,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             if (token.id == TokenId::KwdConst)
             {
                 curIsAlone = false;
-                constToken = token;
+                constToken = static_cast<Token>(token);
                 isConst    = true;
                 SWAG_CHECK(eatToken());
             }
@@ -147,7 +147,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     SWAG_VERIFY(!isConst, error(constToken, Err(Err0662)));
 
                     namedParam        = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
-                    namedParam->token = tokenName;
+                    namedParam->token = static_cast<Token>(tokenName);
                     SWAG_CHECK(eatToken());
                     curIsAlone  = false;
                     thisIsAType = false;
