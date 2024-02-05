@@ -1,7 +1,7 @@
 #pragma once
 #include "AstNode.h"
-#include "ErrorIds.h"
 #include "Tokenizer.h"
+
 struct SourceFile;
 struct TypeInfo;
 struct SyntaxColorContext;
@@ -143,13 +143,13 @@ struct Diagnostic
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
-    void printSourceCode();
+    void printSourceCode() const;
     void printSourceLine() const;
     void printErrorLevel();
     void printMarginLineNo(int lineNo) const;
     void printMargin(bool eol = false, bool printLineNo = false, int lineNo = 0) const;
-    void printPreRemarks();
-    void printRemarks();
+    void printPreRemarks() const;
+    void printRemarks() const;
     void setColorRanges(DiagnosticLevel level) const;
     int  alignRangeColumn(int curColumn, int where, bool withCode = true) const;
     int  printRangesVerticalBars(size_t maxMarks);
@@ -164,9 +164,9 @@ struct Diagnostic
     static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(SymbolOverload* overload);
-    static Utf8        isType(AstNode* node);
+    static Utf8        isType(const AstNode* node);
     static Diagnostic* hereIs(AstNode* node);
-    static Diagnostic* hereIs(SymbolOverload* overload);
+    static Diagnostic* hereIs(const SymbolOverload* overload);
 
     struct RangeHint
     {

@@ -2,6 +2,7 @@
 #include "TypeGen.h"
 #include "Crc32.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "ThreadManager.h"
 #include "TypeGenStructJob.h"

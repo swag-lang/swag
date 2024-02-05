@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "Report.h"
 #include "Scope.h"

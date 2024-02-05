@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Parser.h"
 #include "SemanticJob.h"
 #include "SourceFile.h"

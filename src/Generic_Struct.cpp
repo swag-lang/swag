@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "AstFlags.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Generic.h"
 #include "SemanticJob.h"
 #include "Symbol.h"

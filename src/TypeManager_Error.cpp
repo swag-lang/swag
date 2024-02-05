@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "Semantic.h"
 #include "TypeManager.h"

@@ -2,6 +2,7 @@
 #include "SemanticError.h"
 #include "Ast.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Naming.h"
 #include "Semantic.h"
 

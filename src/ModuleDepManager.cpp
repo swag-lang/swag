@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ModuleDepManager.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "FetchModuleFileSystemJob.h"
 #include "LanguageSpec.h"
 #include "ModuleBuildJob.h"

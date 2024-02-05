@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ErrorContext.h"
+#include "ErrorIds.h"
 #include "Diagnostic.h"
 #include "Report.h"
 #include "Scope.h"

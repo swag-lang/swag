@@ -3,7 +3,7 @@
 #include <DbgHelp.h>
 #include "ByteCodeDebugger.h"
 #include "Context.h"
-#include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Report.h"
 #include "SCBE.h"
 #include "SCBE_Coff.h"

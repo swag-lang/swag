@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CommandLine.h"
-#include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Os.h"
 #include "Report.h"
 #include "Workspace.h"

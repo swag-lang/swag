@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "ModuleBuildJob.h"
 #include "Report.h"
 #include "ThreadManager.h"

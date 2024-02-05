@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "ModuleBuildJob.h"
 #include "Report.h"

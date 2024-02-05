@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CommandLine.h"
 #include "Backend.h"
-#include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Report.h"
 
 CommandLine g_CommandLine;

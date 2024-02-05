@@ -2,6 +2,7 @@
 #include "Diagnostic.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Log.h"
 #include "Naming.h"
@@ -180,11 +181,11 @@ void Diagnostic::printErrorLevel()
     }
 }
 
-void Diagnostic::printPreRemarks()
+void Diagnostic::printPreRemarks() const
 {
     if (!preRemarks.empty())
     {
-        for (auto r : preRemarks)
+        for (const auto& r : preRemarks)
         {
             if (r.empty())
                 continue;
@@ -207,11 +208,11 @@ void Diagnostic::printPreRemarks()
     }
 }
 
-void Diagnostic::printRemarks()
+void Diagnostic::printRemarks() const
 {
     if (!autoRemarks.empty())
     {
-        for (auto r : autoRemarks)
+        for (const auto& r : autoRemarks)
         {
             if (r.empty())
                 continue;
@@ -226,7 +227,7 @@ void Diagnostic::printRemarks()
 
     if (!remarks.empty())
     {
-        for (auto r : remarks)
+        for (const auto& r : remarks)
         {
             if (r.empty())
                 continue;
@@ -240,39 +241,42 @@ void Diagnostic::printRemarks()
     }
 }
 
-static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& range, char c1, char c2)
+namespace
 {
-    if (range == 1)
-        return;
+    void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& range, char c1, char c2)
+    {
+        if (range == 1)
+            return;
 
-    const int decal = (int) startLocation.column;
-    int       cpt   = 0;
+        const int decal = (int) startLocation.column;
+        int       cpt   = 0;
 
-    for (int i = decal; i < (int) lineCode.length() && i < decal + range; i++)
-    {
-        if (lineCode[i] == c1)
-            cpt++;
-        else if (lineCode[i] == c2)
-            cpt--;
-    }
+        for (int i = decal; i < (int) lineCode.length() && i < decal + range; i++)
+        {
+            if (lineCode[i] == c1)
+                cpt++;
+            else if (lineCode[i] == c2)
+                cpt--;
+        }
 
-    if (cpt > 0 && ((decal + range) < (int) lineCode.length()) && lineCode[decal + range] == c2)
-    {
-        range++;
-    }
-    else if (cpt > 0 && (decal < (int) lineCode.length()) && lineCode[decal] == c1)
-    {
-        startLocation.column++;
-        range--;
-    }
-    else if (cpt < 0 && decal && ((decal - 1) < (int) lineCode.length()) && lineCode[decal - 1] == c1)
-    {
-        startLocation.column--;
-        range++;
-    }
-    else if (cpt < 0 && ((decal + range - 1) < (int) lineCode.length()) && lineCode[decal + range - 1] == c2)
-    {
-        range--;
+        if (cpt > 0 && ((decal + range) < (int) lineCode.length()) && lineCode[decal + range] == c2)
+        {
+            range++;
+        }
+        else if (cpt > 0 && (decal < (int) lineCode.length()) && lineCode[decal] == c1)
+        {
+            startLocation.column++;
+            range--;
+        }
+        else if (cpt < 0 && decal && ((decal - 1) < (int) lineCode.length()) && lineCode[decal - 1] == c1)
+        {
+            startLocation.column--;
+            range++;
+        }
+        else if (cpt < 0 && ((decal + range - 1) < (int) lineCode.length()) && lineCode[decal + range - 1] == c2)
+        {
+            range--;
+        }
     }
 }
 
@@ -407,7 +411,7 @@ void Diagnostic::collectSourceCode()
     }
 }
 
-void Diagnostic::printSourceCode()
+void Diagnostic::printSourceCode() const
 {
     if (lineCode.empty())
         return;
@@ -544,7 +548,7 @@ void Diagnostic::printRanges()
     if (!ranges.empty())
     {
         const auto& r        = ranges.back();
-        const auto  unformat = g_Log.removeFormat(r.hint.c_str());
+        const auto  unformat = Log::removeFormat(r.hint.c_str());
         if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
             g_Log.print(" ");
@@ -556,7 +560,7 @@ void Diagnostic::printRanges()
     while (!ranges.empty())
     {
         auto&      r        = ranges.back();
-        auto       unformat = g_Log.removeFormat(r.hint.c_str());
+        auto       unformat = Log::removeFormat(r.hint.c_str());
         const auto mid      = r.mid - minBlanks;
 
         curColumn = printRangesVerticalBars(ranges.size() - 1);
@@ -711,14 +715,14 @@ Utf8 Diagnostic::isType(SymbolOverload* overload)
     return FMT(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
-Utf8 Diagnostic::isType(AstNode* node)
+Utf8 Diagnostic::isType(const AstNode* node)
 {
     if (node->resolvedSymbolOverload)
         return isType(node->resolvedSymbolOverload);
     return isType(node->typeInfo);
 }
 
-Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
+Diagnostic* Diagnostic::hereIs(const SymbolOverload* overload)
 {
     if (!overload)
         return nullptr;

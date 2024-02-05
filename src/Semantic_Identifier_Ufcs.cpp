@@ -3,6 +3,7 @@
 #include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Naming.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"

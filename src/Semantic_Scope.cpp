@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "AstFlags.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Scope.h"

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "EnumerateModuleJob.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LoadSourceFileJob.h"
 #include "Module.h"
 #include "ModuleDepManager.h"
