@@ -165,7 +165,7 @@ struct SCBE_CPU
     CPUSymbol*      getOrCreateGlobalString(const Utf8& str);
     void            addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
-    static uint32_t getParamStackOffset(const CPUFunction* cpuFct, int paramIdx);
+    static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
 
     Utf8   filename;
     Concat concat;

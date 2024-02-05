@@ -98,13 +98,13 @@ CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
-uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, int paramIdx)
+uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx)
 {
     const auto& cc = cpuFct->typeFunc->getCallConv();
 
     // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
     // instead of value from the stack
-    if (paramIdx < (int) cc.paramByRegisterCount)
+    if (paramIdx < cc.paramByRegisterCount)
         return REG_OFFSET(paramIdx) + cpuFct->offsetLocalStackParams;
 
     // Value from the caller stack

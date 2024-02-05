@@ -2002,7 +2002,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32              = (uint32_t) offset * sizeof(Register);
-        context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
+        context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary
@@ -2042,7 +2042,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32              = (uint32_t) offset * sizeof(Register);
-        context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
+        context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary

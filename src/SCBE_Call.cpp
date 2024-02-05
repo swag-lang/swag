@@ -4,12 +4,12 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
+void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
-    const auto  typeFunc   = cpuFct->typeFunc;
-    const auto& cc         = typeFunc->getCallConv();
-    const int   paramStack = pp.getParamStackOffset(cpuFct, paramIdx);
-    auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
+    const auto     typeFunc   = cpuFct->typeFunc;
+    const auto&    cc         = typeFunc->getCallConv();
+    const uint32_t paramStack = SCBE_X64::getParamStackOffset(cpuFct, paramIdx);
+    auto           typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
 
@@ -39,6 +39,8 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t par
             pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
         return;
+    default:
+        break;
     }
 
     SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
@@ -196,13 +198,13 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, ui
     uint32_t stackOffset = typeFuncBc->numReturnRegisters() * sizeof(Register);
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
-        static constexpr CPURegister idxToReg[4] = {RDX, R8, R9};
+        static constexpr CPURegister IDX_TO_REG[4] = {RDX, R8, R9};
 
         // Pass by value
         stackOffset += sizeof(Register);
         if (idxReg <= 2)
         {
-            pp.emit_Load64_Indirect(REG_OFFSET(pushRAParams[idxParam]), idxToReg[idxReg]);
+            pp.emit_Load64_Indirect(REG_OFFSET(pushRAParams[idxParam]), IDX_TO_REG[idxReg]);
         }
         else
         {

@@ -311,7 +311,7 @@ struct TypeInfoFuncAttr : TypeInfo
     TypeInfo*       concreteReturnType() const;
     bool            isVariadic();
     bool            isCVariadic();
-    uint32_t        registerIdxToParamIdx(int argIdx);
+    uint32_t        registerIdxToParamIdx(uint32_t argIdx);
     TypeInfo*       registerIdxToType(int argIdx);
     int             numParamsRegisters();
     int             numReturnRegisters() const;

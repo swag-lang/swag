@@ -143,8 +143,8 @@ struct ByteCode
     static bool isPushParam(const ByteCodeInstruction* inst)      { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_PUSH_PARAM; }
     static bool isCall(const ByteCodeInstruction* inst)           { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_CALL; }
     static bool isJump(const ByteCodeInstruction* inst)           { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
-    static bool isJumpDyn(const ByteCodeInstruction* inst)        { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_JUMPDYN; }
-    static bool isJumpOrDyn(const ByteCodeInstruction* inst)      { return (g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_IS_JUMP| OPFLAG_IS_JUMPDYN)); }
+    static bool isJumpDyn(const ByteCodeInstruction* inst)        { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMPDYN; }
+    static bool isJumpOrDyn(const ByteCodeInstruction* inst)      { return g_ByteCodeOpDesc[(int) inst->op].flags & (OPFLAG_IS_JUMP| OPFLAG_IS_JUMPDYN); }
     static bool isRet(const ByteCodeInstruction* inst)            { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRBtoRRRet; }
 
     inline static bool hasRefToRegA(ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !(inst->flags & BCI_IMM_A) && g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_A | OPFLAG_WRITE_A); }
@@ -219,13 +219,8 @@ struct ByteCode
     bool              isDoingNothing() const;
     void              makeRoomForInstructions(uint32_t room = 1);
 
-    static bool areSame(ByteCodeInstruction*       start0,
-                        const ByteCodeInstruction* end0,
-                        const ByteCodeInstruction* start1,
-                        const ByteCodeInstruction* end1,
-                        bool                       specialJump,
-                        bool                       specialCall);
-    uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
+    static bool areSame(ByteCodeInstruction* start0, const ByteCodeInstruction* end0, const ByteCodeInstruction* start1, const ByteCodeInstruction* end1, bool specialJump, bool specialCall);
+    uint32_t    computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
 
     VectorNative<uint32_t>            availableRegistersRC;
     VectorNative<pair<void*, size_t>> autoFree;
@@ -259,7 +254,7 @@ struct ByteCode
     uint32_t maxInstructions       = 0;
     int32_t  maxCallResults        = 0;
     uint32_t maxCallParams         = 0;
-    uint32_t maxSPVaargs           = 0;
+    uint32_t maxSpVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
     uint32_t staticRegs            = 0;

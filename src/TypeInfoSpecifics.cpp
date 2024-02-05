@@ -865,7 +865,7 @@ TypeInfo* TypeInfoFuncAttr::concreteReturnType() const
 }
 
 // argIdx is the argument index of a function, starting after the return arguments
-uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
+uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
 {
     if (flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {

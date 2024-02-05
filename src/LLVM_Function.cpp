@@ -62,9 +62,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
     // To store variadics
     llvm::AllocaInst* allocVA = nullptr;
-    if (bc->maxSPVaargs)
+    if (bc->maxSpVaargs)
     {
-        allocVA = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSPVaargs));
+        allocVA = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSpVaargs));
         allocVA->setAlignment(llvm::Align{16});
     }
 
@@ -5071,7 +5071,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 int idxParam = (int) pushRAParams.size() - (sizeB / sizeof(Register)) - 1;
                 while (idxParam >= 0)
                 {
-                    SWAG_ASSERT((uint32_t) idx < bc->maxSPVaargs);
+                    SWAG_ASSERT((uint32_t) idx < bc->maxSpVaargs);
                     auto r0 = GEP64(allocVA, idx);
                     auto r1 = GEP64(allocR, pushRAParams[idxParam]);
                     builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
