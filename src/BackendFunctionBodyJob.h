@@ -1,6 +1,5 @@
 #pragma once
 #include "BackendParameters.h"
-#include "Concat.h"
 #include "Job.h"
 struct Module;
 struct Backend;

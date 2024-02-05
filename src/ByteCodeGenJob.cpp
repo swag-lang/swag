@@ -4,7 +4,6 @@
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "Module.h"
-#include "Semantic.h"
 
 void ByteCodeGenJob::release()
 {

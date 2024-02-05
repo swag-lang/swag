@@ -2,7 +2,6 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
-#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "TypeInfo.h"

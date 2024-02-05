@@ -2,6 +2,7 @@
 #include "FetchModuleFileSystemJob.h"
 #include "ErrorIds.h"
 #include "FileJob.h"
+#include "Log.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"

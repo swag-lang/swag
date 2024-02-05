@@ -3,7 +3,6 @@
 #include "Ast.h"
 #include "AstNode.h"
 #include "Module.h"
-#include "SourceFile.h"
 
 Scope::Scope()
 {

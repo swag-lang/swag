@@ -3,6 +3,7 @@
 #include "Crc32.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Log.h"
 #include "Module.h"
 #include "ThreadManager.h"
 #include "TypeGenStructJob.h"

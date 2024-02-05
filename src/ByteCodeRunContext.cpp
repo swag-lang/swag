@@ -3,7 +3,6 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 #include "ByteCodeStack.h"
-#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Statistics.h"

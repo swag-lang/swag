@@ -1,4 +1,5 @@
 #pragma once
+#include "Mutex.h"
 
 struct AstNode;
 struct AttributeList;

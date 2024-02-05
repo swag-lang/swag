@@ -1,6 +1,5 @@
 #pragma once
 #include "Job.h"
-#include "Log.h"
 #include "Register.h"
 #include "SourceFile.h"
 struct SemanticContext;

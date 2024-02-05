@@ -3,12 +3,12 @@
 #include "Ast.h"
 #include "AstFlags.h"
 #include "ErrorIds.h"
-#include "LanguageSpec.h"
 #include "Log.h"
 #include "Naming.h"
 #include "SourceFile.h"
 #include "Symbol.h"
 #include "SyntaxColor.h"
+#include "TypeInfo.h"
 
 void Diagnostic::setupColors()
 {

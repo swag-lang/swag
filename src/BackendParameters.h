@@ -1,6 +1,7 @@
 #pragma once
 #include "Runtime.h"
 
+struct AstNode;
 struct BuildCfg;
 struct Module;
 

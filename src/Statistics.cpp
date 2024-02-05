@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Statistics.h"
+#include "Log.h"
 #include "Module.h"
 #include "Os.h"
 #include "ThreadManager.h"

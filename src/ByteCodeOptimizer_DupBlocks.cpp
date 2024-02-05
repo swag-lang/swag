@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "Log.h"
 
 bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
 {

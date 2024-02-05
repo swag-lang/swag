@@ -3,7 +3,6 @@
 #include "Context.h"
 #include "LanguageSpec.h"
 #include "Module.h"
-#include "Report.h"
 #include "SCBE.h"
 #include "TypeManager.h"
 

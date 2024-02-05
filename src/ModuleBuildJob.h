@@ -2,7 +2,6 @@
 #include "Job.h"
 #include "Module.h"
 #include "Statistics.h"
-#include "Timer.h"
 struct ModuleDependency;
 
 struct ModuleBuildJob : Job

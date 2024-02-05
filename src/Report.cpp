@@ -5,9 +5,11 @@
 #include "Context.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
+#include "Log.h"
 #include "Module.h"
 #include "SaveGenJob.h"
 #include "Scope.h"
+#include "TypeInfo.h"
 #include "Workspace.h"
 
 thread_local int  g_SilentError = 0;

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CommandLineParser.h"
-#include "Os.h"
+#include "Log.h"
 #include "Version.h"
 
 namespace

@@ -2,6 +2,7 @@
 #include "CommandLine.h"
 #include "CommandLineParser.h"
 #include "ErrorIds.h"
+#include "Log.h"
 #include "Os.h"
 #include "Report.h"
 #include "Version.h"

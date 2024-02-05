@@ -1,6 +1,5 @@
 #pragma once
 #include "Parser.h"
-#include "Scope.h"
 struct Parser;
 struct AstFuncDecl;
 struct AstCompilerIfBlock;

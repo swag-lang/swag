@@ -5,6 +5,7 @@
 #include "Context.h"
 #include "LanguageSpec.h"
 #include "LLVM.h"
+#include "Log.h"
 #include "ModuleManager.h"
 #include "Parser.h"
 #include "Report.h"

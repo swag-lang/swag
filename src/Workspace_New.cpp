@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CommandLine.h"
 #include "ErrorIds.h"
+#include "Log.h"
 #include "Os.h"
 #include "Report.h"
 #include "Workspace.h"

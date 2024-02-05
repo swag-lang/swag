@@ -4,7 +4,6 @@
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
-#include "LanguageSpec.h"
 #include "Semantic.h"
 #include "Symbol.h"
 #include "TypeManager.h"

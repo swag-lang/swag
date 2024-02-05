@@ -5,6 +5,7 @@
 #include "LanguageSpec.h"
 #include "LLVM_Debug.h"
 #include "LLVM_Macros.h"
+#include "Log.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"

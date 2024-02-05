@@ -1,5 +1,4 @@
 #pragma once
-#include "Log.h"
 
 struct BuildParameters;
 struct Module;

@@ -6,6 +6,7 @@
 #include "Context.h"
 #include "FileJob.h"
 #include "LanguageSpec.h"
+#include "Log.h"
 #include "Module.h"
 #include "Parser.h"
 #include "Report.h"

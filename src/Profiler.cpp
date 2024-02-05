@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "ByteCode.h"
+#include "Log.h"
 #include "Module.h"
 #include "Workspace.h"
+
 #ifdef SWAG_STATS
 
 constexpr int COL1 = 12;

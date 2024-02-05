@@ -1,11 +1,9 @@
 #include "pch.h"
-
-#include <ranges>
-
 #include "Backend.h"
 #include "ByteCodeOptimizer.h"
 #include "EnumerateModuleJob.h"
 #include "LanguageSpec.h"
+#include "Log.h"
 #include "ModuleBuildJob.h"
 #include "ModuleDepManager.h"
 #include "ModuleManager.h"
@@ -14,7 +12,9 @@
 #include "Report.h"
 #include "SyntaxJob.h"
 #include "ThreadManager.h"
+#include "Timer.h"
 #include "TypeGenStructJob.h"
+#include "TypeInfo.h"
 #include "Workspace.h"
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)

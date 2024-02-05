@@ -4,10 +4,12 @@
 #include "ErrorIds.h"
 #include "FetchModuleFileSystemJob.h"
 #include "LanguageSpec.h"
+#include "Log.h"
 #include "ModuleBuildJob.h"
 #include "Report.h"
 #include "SyntaxJob.h"
 #include "ThreadManager.h"
+#include "Timer.h"
 #include "Workspace.h"
 
 ModuleDepManager* g_ModuleCfgMgr = nullptr;

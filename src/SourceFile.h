@@ -1,6 +1,7 @@
 #pragma once
 #include "CommandLine.h"
 #include "Mutex.h"
+#include "Tokenizer.h"
 
 struct Module;
 struct AstNode;

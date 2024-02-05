@@ -1,5 +1,4 @@
 #pragma once
-#include "Mutex.h"
 
 struct Path;
 struct SwagSlice;

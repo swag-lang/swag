@@ -1,5 +1,4 @@
 #pragma once
-#include "Attribute.h"
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG

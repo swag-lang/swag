@@ -3,6 +3,7 @@
 #include "Backend.h"
 #include "Context.h"
 #include "LanguageSpec.h"
+#include "TypeInfo.h"
 #include "Module.h"
 #include "Workspace.h"
 
