@@ -5,7 +5,7 @@
 #include "AstNode.h"
 #include "TypeInfo.h"
 
-Utf8 Naming::kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
+Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
 {
     if (typeInfo->isTuple())
     {
@@ -110,13 +110,13 @@ Utf8 Naming::kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uin
     return kindName(symbol->kind, article);
 }
 
-Utf8 Naming::kindName(SymbolOverload* overload)
+Utf8 Naming::kindName(const SymbolOverload* overload)
 {
     Utf8 article;
     return kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
 }
 
-Utf8 Naming::aKindName(SymbolOverload* overload)
+Utf8 Naming::aKindName(const SymbolOverload* overload)
 {
     Utf8       article;
     const auto result = kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
@@ -188,7 +188,7 @@ Utf8 Naming::aKindName(SymbolKind kind)
     return article;
 }
 
-Utf8 Naming::kindName(TypeInfo* typeInfo, Utf8& article)
+Utf8 Naming::kindName(const TypeInfo* typeInfo, Utf8& article)
 {
     switch (typeInfo->kind)
     {
@@ -266,13 +266,13 @@ Utf8 Naming::kindName(TypeInfo* typeInfo, Utf8& article)
     return "type";
 }
 
-Utf8 Naming::kindName(TypeInfo* typeInfo)
+Utf8 Naming::kindName(const TypeInfo* typeInfo)
 {
     Utf8 article;
     return kindName(typeInfo, article);
 }
 
-Utf8 Naming::aKindName(TypeInfo* typeInfo)
+Utf8 Naming::aKindName(const TypeInfo* typeInfo)
 {
     Utf8       article;
     const auto result = kindName(typeInfo, article);
@@ -526,4 +526,42 @@ Utf8 Naming::tokenToName(TokenId id)
     }
 
     return "???";
+}
+
+Utf8 Naming::funcToName(const AstFuncDecl* node)
+{
+    if (node->attributeFlags & ATTRIBUTE_AST_FUNC)
+        return "[[#ast]] block";
+    if (node->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
+        return "[[#run]] block";
+    if (node->attributeFlags & ATTRIBUTE_MATCH_VALIDIF_FUNC)
+        return "[[#validif]] block";
+    if (node->attributeFlags & ATTRIBUTE_MATCH_VALIDIFX_FUNC)
+        return "[[#validifx]] block";
+
+    if (node->attributeFlags& ATTRIBUTE_TEST_FUNC && node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        return "[[#test]] block";
+    if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+        return "[[#main]] block";
+    if (node->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        return "[[#message]] block";
+    if (node->attributeFlags & ATTRIBUTE_INIT_FUNC)
+        return "[[#init]] block";
+    if (node->attributeFlags & ATTRIBUTE_DROP_FUNC)
+        return "[[#drop]] block";
+    if (node->attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
+        return "[[#premain]] block";
+
+    if (node->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION)
+        return "lambda";
+
+    if (node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        return FMT("[[%s]] block", node->token.ctext());
+
+    if (node->attributeFlags & ATTRIBUTE_MIXIN)
+        return FMT("[[%s]] mixin", node->token.ctext());
+    if (node->attributeFlags & ATTRIBUTE_MACRO)
+        return FMT("[[%s]] macro", node->token.ctext());
+
+    return FMT("[[%s]] function", node->token.ctext());
 }

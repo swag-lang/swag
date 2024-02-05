@@ -536,7 +536,7 @@ struct AstFuncDecl : AstNode
 
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);
-    bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
+    bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeign(bool forExport);
     Utf8        getDisplayName() const;
     const char* getDisplayNameC() const;

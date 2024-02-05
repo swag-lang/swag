@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "Naming.h"
 #include "Scope.h"
 #include "Semantic.h"
 #include "TypeManager.h"
@@ -215,40 +216,7 @@ const char* AstFuncDecl::getDisplayNameC() const
 
 Utf8 AstFuncDecl::getDisplayName() const
 {
-    if (attributeFlags & ATTRIBUTE_AST_FUNC)
-        return "[[#ast]] block";
-    if (attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
-        return "[[#run]] block";
-    if (attributeFlags & ATTRIBUTE_MATCH_VALIDIF_FUNC)
-        return "[[#validif]] block";
-    if (attributeFlags & ATTRIBUTE_MATCH_VALIDIFX_FUNC)
-        return "[[#validifx]] block";
-
-    if (attributeFlags & ATTRIBUTE_TEST_FUNC && attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        return "[[#test]] block";
-    if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
-        return "[[#main]] block";
-    if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        return "[[#message]] block";
-    if (attributeFlags & ATTRIBUTE_INIT_FUNC)
-        return "[[#init]] block";
-    if (attributeFlags & ATTRIBUTE_DROP_FUNC)
-        return "[[#drop]] block";
-    if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
-        return "[[#premain]] block";
-
-    if (specFlags & SPECFLAG_IS_LAMBDA_EXPRESSION)
-        return "lambda";
-
-    if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        return FMT("[[%s]] block", token.ctext());
-
-    if (attributeFlags & ATTRIBUTE_MIXIN)
-        return FMT("[[%s]] mixin", token.ctext());
-    if (attributeFlags & ATTRIBUTE_MACRO)
-        return FMT("[[%s]] macro", token.ctext());
-
-    return FMT("[[%s]] function", token.ctext());
+    return Naming::funcToName(this);
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
@@ -325,7 +293,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     fullnameForeign.count = (uint32_t) (pzd - fullnameForeign.buffer) - 1;
 }
 
-bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
+bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)

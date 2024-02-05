@@ -1,26 +1,27 @@
 #pragma once
 #include "Scope.h"
 
-struct SymbolName;
+struct AstFuncDecl;
 struct AstNode;
-struct TypeInfo;
+struct SymbolName;
 struct SymbolOverload;
+struct TypeInfo;
 enum class SymbolKind : uint8_t;
 enum class TokenId : uint16_t;
 
 namespace Naming
 {
-    Utf8 kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
-    Utf8 kindName(SymbolOverload* overload);
-    Utf8 aKindName(SymbolOverload* overload);
+    Utf8 kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
+    Utf8 kindName(const SymbolOverload* overload);
+    Utf8 aKindName(const SymbolOverload* overload);
 
     Utf8 kindName(SymbolKind kind, Utf8& article);
     Utf8 kindName(SymbolKind kind);
     Utf8 aKindName(SymbolKind kind);
 
-    Utf8 kindName(TypeInfo* typeInfo, Utf8& article);
-    Utf8 kindName(TypeInfo* typeInfo);
-    Utf8 aKindName(TypeInfo* typeInfo);
+    Utf8 kindName(const TypeInfo* typeInfo, Utf8& article);
+    Utf8 kindName(const TypeInfo* typeInfo);
+    Utf8 aKindName(const TypeInfo* typeInfo);
 
     Utf8 kindName(AstNode* node, Utf8& article);
     Utf8 kindName(AstNode* node);
@@ -34,4 +35,5 @@ namespace Naming
     Utf8 niceParameterRank(size_t idx);
 
     Utf8 tokenToName(TokenId id);
+    Utf8 funcToName(const AstFuncDecl* node);
 } // namespace Naming
