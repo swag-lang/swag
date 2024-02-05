@@ -117,7 +117,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "script")
     {
-        g_Workspace->scriptCommand();
+        Workspace::scriptCommand();
     }
     else if (command == "clean")
     {

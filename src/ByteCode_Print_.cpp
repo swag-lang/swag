@@ -12,8 +12,8 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
 
     // Print source code
     const bool forDbg = options.curIp != nullptr;
-    const auto loc    = ByteCode::getLocation(this, ip, true);
-    const auto loc1   = ByteCode::getLocation(this, ip);
+    const auto loc    = getLocation(this, ip, true);
+    const auto loc1   = getLocation(this, ip);
 
     if (!loc.location)
         return;
@@ -282,7 +282,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     line.pretty = getPrettyInstruction(ip);
     line.pretty += " ";
 
-    if (ByteCode::isJump(ip))
+    if (isJump(ip))
         line.pretty += FMT("%08d ", ip->b.s32 + i + 1);
 
     switch (ip->op)
@@ -403,80 +403,83 @@ enum class RankStr
 #endif
 };
 
-static void align(Vector<ByteCode::PrintInstructionLine>& lines, RankStr what, bool alignLeft, uint32_t defaultLen = 0)
+namespace
 {
-    uint32_t len = 0;
-    for (auto& line : lines)
+    void align(Vector<ByteCode::PrintInstructionLine>& lines, RankStr what, bool alignLeft, uint32_t defaultLen = 0)
     {
-        switch (what)
+        uint32_t len = 0;
+        for (auto& line : lines)
         {
-        case RankStr::Rank:
-            len = max(len, line.rank.length());
-            break;
-        case RankStr::Name:
-            len = max(len, line.name.length());
-            break;
-        case RankStr::InstRef:
-            len = max(len, line.instRef.length());
-            break;
-        case RankStr::Flags:
-            len = max(len, line.flags.length());
-            break;
-        case RankStr::Pretty:
-            len = max(len, line.pretty.length());
-            break;
+            switch (what)
+            {
+            case RankStr::Rank:
+                len = max(len, line.rank.length());
+                break;
+            case RankStr::Name:
+                len = max(len, line.name.length());
+                break;
+            case RankStr::InstRef:
+                len = max(len, line.instRef.length());
+                break;
+            case RankStr::Flags:
+                len = max(len, line.flags.length());
+                break;
+            case RankStr::Pretty:
+                len = max(len, line.pretty.length());
+                break;
 #ifdef SWAG_DEV_MODE
-        case RankStr::DevMode:
-            len = max(len, line.devMode.length());
-            break;
+            case RankStr::DevMode:
+                len = max(len, line.devMode.length());
+                break;
 #endif
+            }
         }
-    }
 
-    len = max(len, defaultLen);
+        len = max(len, defaultLen);
 
-    for (auto& line : lines)
-    {
-        Utf8* str = nullptr;
-        switch (what)
+        for (auto& line : lines)
         {
-        case RankStr::Rank:
-            str = &line.rank;
-            break;
-        case RankStr::Name:
-            str = &line.name;
-            break;
-        case RankStr::InstRef:
-            str = &line.instRef;
-            break;
-        case RankStr::Flags:
-            str = &line.flags;
-            break;
-        case RankStr::Pretty:
-            str = &line.pretty;
-            break;
+            Utf8* str = nullptr;
+            switch (what)
+            {
+            case RankStr::Rank:
+                str = &line.rank;
+                break;
+            case RankStr::Name:
+                str = &line.name;
+                break;
+            case RankStr::InstRef:
+                str = &line.instRef;
+                break;
+            case RankStr::Flags:
+                str = &line.flags;
+                break;
+            case RankStr::Pretty:
+                str = &line.pretty;
+                break;
 #ifdef SWAG_DEV_MODE
-        case RankStr::DevMode:
-            str = &line.devMode;
-            break;
+            case RankStr::DevMode:
+                str = &line.devMode;
+                break;
 #endif
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
 
-        if (alignLeft)
-        {
-            while (str->length() < len)
-                *str = " " + *str;
-        }
-        else
-        {
-            while (str->length() < len)
-                *str += " ";
-        }
+            if (alignLeft)
+            {
+                while (str->length() < len)
+                    *str = " " + *str;
+            }
+            else
+            {
+                while (str->length() < len)
+                    *str += " ";
+            }
 
-        *str += "  ";
+            *str += "  ";
+        }
     }
 }
 

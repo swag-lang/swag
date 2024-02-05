@@ -389,9 +389,7 @@ struct TypeInfoSlice : TypeInfo
 
 struct TypeInfoList : TypeInfo
 {
-    TypeInfoList()
-    {
-    }
+    TypeInfoList() = default;
 
     uint32_t numRegisters() const override
     {

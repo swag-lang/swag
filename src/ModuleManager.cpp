@@ -71,7 +71,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     // Should initialize the module the first time
     // Note that the allocator function of the default context is not set, so the module
     // will initialize it with its internal function
-    const auto callName = name;
+    const auto& callName = name;
     Ast::normalizeIdentifierName(callName);
     const Utf8 funcName = FMT(g_LangSpec->name_globalInit, callName.c_str());
     const auto ptr      = OS::getProcAddress(h, funcName.c_str());

@@ -98,8 +98,8 @@ struct SCBE_X64 : SCBE_CPU
     void emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
 
     void emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits);
-    void emit_OpF32(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits srcBits = CPUBits::B32);
-    void emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits srcBits = CPUBits::B32);
+    void emit_OpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits = CPUBits::B32);
+    void emit_OpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits = CPUBits::B32);
 
     void emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits);
     void emit_OpF32(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op);

@@ -326,7 +326,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             Utf8::tokenize(arg->param, '|', tokens);
 
             int index = 0;
-            for (auto one : tokens)
+            for (const auto& one : tokens)
             {
                 if (one == argument)
                 {
@@ -352,7 +352,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             Utf8::tokenize(arg->param, '|', tokens);
 
             int index = 0;
-            for (auto one : tokens)
+            for (const auto& one : tokens)
             {
                 if (one == argument)
                 {

@@ -17,46 +17,43 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-#define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
-#define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
+#define IMMA_U8(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u8 : registersRC[(ip)->a.u32].u8)
+#define IMMA_U16(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u16 : registersRC[(ip)->a.u32].u16)
+#define IMMA_U32(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u32 : registersRC[(ip)->a.u32].u32)
+#define IMMA_U64(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u64 : registersRC[(ip)->a.u32].u64)
+#define IMMA_S8(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s8 : registersRC[(ip)->a.u32].s8)
+#define IMMA_S16(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s16 : registersRC[(ip)->a.u32].s16)
+#define IMMA_S32(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s32 : registersRC[(ip)->a.u32].s32)
+#define IMMA_S64(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s64 : registersRC[(ip)->a.u32].s64)
+#define IMMA_F32(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.f32 : registersRC[(ip)->a.u32].f32)
+#define IMMA_F64(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.f64 : registersRC[(ip)->a.u32].f64)
 
-#define IMMA_U8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u8 : registersRC[ip->a.u32].u8)
-#define IMMA_U16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u16 : registersRC[ip->a.u32].u16)
-#define IMMA_U32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u32 : registersRC[ip->a.u32].u32)
-#define IMMA_U64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u64 : registersRC[ip->a.u32].u64)
-#define IMMA_S8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s8 : registersRC[ip->a.u32].s8)
-#define IMMA_S16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s16 : registersRC[ip->a.u32].s16)
-#define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
-#define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
-#define IMMA_F32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f32 : registersRC[ip->a.u32].f32)
-#define IMMA_F64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f64 : registersRC[ip->a.u32].f64)
+#define IMMB_U8(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u8 : registersRC[(ip)->b.u32].u8)
+#define IMMB_U16(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u16 : registersRC[(ip)->b.u32].u16)
+#define IMMB_U32(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u32 : registersRC[(ip)->b.u32].u32)
+#define IMMB_U64(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u64 : registersRC[(ip)->b.u32].u64)
+#define IMMB_S8(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s8 : registersRC[(ip)->b.u32].s8)
+#define IMMB_S16(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s16 : registersRC[(ip)->b.u32].s16)
+#define IMMB_S32(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s32 : registersRC[(ip)->b.u32].s32)
+#define IMMB_S64(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s64 : registersRC[(ip)->b.u32].s64)
+#define IMMB_F32(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.f32 : registersRC[(ip)->b.u32].f32)
+#define IMMB_F64(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.f64 : registersRC[(ip)->b.u32].f64)
 
-#define IMMB_U8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u8 : registersRC[ip->b.u32].u8)
-#define IMMB_U16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u16 : registersRC[ip->b.u32].u16)
-#define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
-#define IMMB_U64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u64 : registersRC[ip->b.u32].u64)
-#define IMMB_S8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s8 : registersRC[ip->b.u32].s8)
-#define IMMB_S16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s16 : registersRC[ip->b.u32].s16)
-#define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
-#define IMMB_S64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
-#define IMMB_F32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f32 : registersRC[ip->b.u32].f32)
-#define IMMB_F64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f64 : registersRC[ip->b.u32].f64)
+#define IMMC_U8(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u8 : registersRC[(ip)->c.u32].u8)
+#define IMMC_U16(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u16 : registersRC[(ip)->c.u32].u16)
+#define IMMC_U32(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u32 : registersRC[(ip)->c.u32].u32)
+#define IMMC_U64(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u64 : registersRC[(ip)->c.u32].u64)
+#define IMMC_S8(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s8 : registersRC[(ip)->c.u32].s8)
+#define IMMC_S16(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s16 : registersRC[(ip)->c.u32].s16)
+#define IMMC_S32(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s32 : registersRC[(ip)->c.u32].s32)
+#define IMMC_S64(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s64 : registersRC[(ip)->c.u32].s64)
+#define IMMC_F32(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.f32 : registersRC[(ip)->c.u32].f32)
+#define IMMC_F64(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.f64 : registersRC[(ip)->c.u32].f64)
 
-#define IMMC_U8(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u8 : registersRC[ip->c.u32].u8)
-#define IMMC_U16(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u16 : registersRC[ip->c.u32].u16)
-#define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
-#define IMMC_U64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u64 : registersRC[ip->c.u32].u64)
-#define IMMC_S8(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s8 : registersRC[ip->c.u32].s8)
-#define IMMC_S16(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s16 : registersRC[ip->c.u32].s16)
-#define IMMC_S32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s32 : registersRC[ip->c.u32].s32)
-#define IMMC_S64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s64 : registersRC[ip->c.u32].s64)
-#define IMMC_F32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.f32 : registersRC[ip->c.u32].f32)
-#define IMMC_F64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.f64 : registersRC[ip->c.u32].f64)
-
-#define IMMD_U8(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u8 : registersRC[ip->d.u32].u8)
-#define IMMD_U16(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u16 : registersRC[ip->d.u32].u16)
-#define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
-#define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
+#define IMMD_U8(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u8 : registersRC[(ip)->d.u32].u8)
+#define IMMD_U16(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u16 : registersRC[(ip)->d.u32].u16)
+#define IMMD_U32(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
+#define IMMD_U64(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
 
 SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
@@ -4182,152 +4179,155 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     return true;
 }
 
-static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
+namespace
 {
-    // @breakpoint()
-    if (runContext->debugRaiseStart)
-        return SWAG_EXCEPTION_EXECUTE_HANDLER;
-
-    // Exception already processed. Need to pass the hand to the previous handle
-    // This happens when bytecode executed foreign code, which executes bytecode again.
-    if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
-        return SWAG_EXCEPTION_EXECUTE_HANDLER;
-
-    Diagnostic*                   diag = nullptr;
-    Vector<const Diagnostic*>     notes;
-    const SwagSourceCodeLocation* location = nullptr;
-    SwagSourceCodeLocation        tmpLoc;
-    DiagnosticLevel               level = DiagnosticLevel::Error;
-    Utf8                          userMsg;
-    int                           returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
-
-    if (runContext->ip != runContext->bc->out)
-        runContext->ip--;
-    const auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
-    if (runContext->ip != runContext->bc->out)
-        runContext->ip++;
-
-    tmpLoc.fileName.buffer = (void*) _strdup(loc.file->path.string().c_str());
-    tmpLoc.fileName.count  = loc.file->path.string().length();
-    tmpLoc.lineStart       = tmpLoc.lineEnd = loc.location->line;
-    tmpLoc.colStart        = tmpLoc.colEnd  = loc.location->column;
-    location               = &tmpLoc;
-
-    // Exception 666 raised during bytecode execution
-    /////////////////////////////////////////////////
-    if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
+    int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
     {
-        // Source code location
-        if (args->ExceptionRecord->ExceptionInformation[0])
-            location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
+        // @breakpoint()
+        if (runContext->debugRaiseStart)
+            return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
-        // User messsage
-        const auto txt = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
+        // Exception already processed. Need to pass the hand to the previous handle
+        // This happens when bytecode executed foreign code, which executes bytecode again.
+        if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
+            return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
-        // Kind of exception
-        const auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
-        switch (exceptionKind)
+        Diagnostic*                   diag = nullptr;
+        Vector<const Diagnostic*>     notes;
+        const SwagSourceCodeLocation* location = nullptr;
+        SwagSourceCodeLocation        tmpLoc;
+        DiagnosticLevel               level = DiagnosticLevel::Error;
+        Utf8                          userMsg;
+        int                           returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
+
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip--;
+        const auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip++;
+
+        tmpLoc.fileName.buffer = (void*) _strdup(loc.file->path.string().c_str());
+        tmpLoc.fileName.count  = loc.file->path.string().length();
+        tmpLoc.lineStart       = tmpLoc.lineEnd = loc.location->line;
+        tmpLoc.colStart        = tmpLoc.colEnd  = loc.location->column;
+        location               = &tmpLoc;
+
+        // Exception 666 raised during bytecode execution
+        /////////////////////////////////////////////////
+        if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_COMPILER_HANDLER)
         {
-        case SwagExceptionKind::Error:
-        default:
-            level = DiagnosticLevel::Error;
-            if (!Diagnostic::hastErrorId(txt))
-                userMsg = FMT(Err(Err0002), txt.c_str());
-            else
-                userMsg = txt;
-            break;
-        case SwagExceptionKind::Warning:
-            level = DiagnosticLevel::Warning;
-            if (!Diagnostic::hastErrorId(txt))
-                userMsg = FMT(Err(Wrn0001), txt.c_str());
-            else
-                userMsg = txt;
-            break;
-        case SwagExceptionKind::Panic:
-            level = DiagnosticLevel::Panic;
-            if (!Diagnostic::hastErrorId(txt))
-                userMsg = FMT(Err(Err0003), txt.c_str());
-            else
-                userMsg = txt;
+            // Source code location
+            if (args->ExceptionRecord->ExceptionInformation[0])
+                location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
 
-        // Additional panic infos
-            if (runContext->internalPanicSymbol)
+            // User messsage
+            const auto txt = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
+
+            // Kind of exception
+            const auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
+            switch (exceptionKind)
             {
-                notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
-                if (!runContext->internalPanicHint.empty())
-                    notes.push_back(Diagnostic::note(runContext->internalPanicHint));
+            case SwagExceptionKind::Error:
+            default:
+                level = DiagnosticLevel::Error;
+                if (!Diagnostic::hastErrorId(txt))
+                    userMsg = FMT(Err(Err0002), txt.c_str());
+                else
+                    userMsg = txt;
+                break;
+            case SwagExceptionKind::Warning:
+                level = DiagnosticLevel::Warning;
+                if (!Diagnostic::hastErrorId(txt))
+                    userMsg = FMT(Err(Wrn0001), txt.c_str());
+                else
+                    userMsg = txt;
+                break;
+            case SwagExceptionKind::Panic:
+                level = DiagnosticLevel::Panic;
+                if (!Diagnostic::hastErrorId(txt))
+                    userMsg = FMT(Err(Err0003), txt.c_str());
+                else
+                    userMsg = txt;
+
+                // Additional panic infos
+                if (runContext->internalPanicSymbol)
+                {
+                    notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
+                    if (!runContext->internalPanicHint.empty())
+                        notes.push_back(Diagnostic::note(runContext->internalPanicHint));
+                }
+
+                break;
             }
-
-            break;
         }
-    }
 
-    // Hardware exception
-    /////////////////////
-    else
-    {
+        // Hardware exception
+        /////////////////////
+        else
+        {
 #ifdef SWAG_DEV_MODE
-        returnValue = SWAG_EXCEPTION_CONTINUE_EXECUTION;
+            returnValue = SWAG_EXCEPTION_CONTINUE_EXECUTION;
 #endif
 
-        level   = DiagnosticLevel::Exception;
-        userMsg = Err(Err0082);
-        notes.push_back(Diagnostic::note(Nte(Nte0105)));
-        notes.push_back(Diagnostic::note(Nte(Nte0193)));
-    }
+            level   = DiagnosticLevel::Exception;
+            userMsg = Err(Err0082);
+            notes.push_back(Diagnostic::note(Nte(Nte0105)));
+            notes.push_back(Diagnostic::note(Nte(Nte0193)));
+        }
 
-    // Message
-    /////////////////////
+        // Message
+        /////////////////////
 
-    if (runContext->forDebugger)
-    {
-        g_SilentErrorMsg = userMsg;
-        return SWAG_EXCEPTION_EXECUTE_HANDLER;
-    }
+        if (runContext->forDebugger)
+        {
+            g_SilentErrorMsg = userMsg;
+            return SWAG_EXCEPTION_EXECUTE_HANDLER;
+        }
 
-    SourceFile dummyFile;
-    dummyFile.path = Utf8{location->fileName};
+        SourceFile dummyFile;
+        dummyFile.path = Utf8{location->fileName};
 
-    SourceLocation startLocation, endLocation;
-    startLocation.line   = location->lineStart;
-    startLocation.column = location->colStart;
-    endLocation.line     = location->lineEnd;
-    endLocation.column   = location->colEnd;
+        SourceLocation startLocation, endLocation;
+        startLocation.line   = location->lineStart;
+        startLocation.column = location->colStart;
+        endLocation.line     = location->lineEnd;
+        endLocation.column   = location->colEnd;
 
-    diag = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
+        diag = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
 
-    // Get the correct source file to raise the error in the correct context
-    //
-    // If we have an expansion, and the first expansion requests test error, then raise
-    // in its context to dismiss the error (like an error during a #validif for example)
-    if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
-        diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-    else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
-        diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+        // Get the correct source file to raise the error in the correct context
+        //
+        // If we have an expansion, and the first expansion requests test error, then raise
+        // in its context to dismiss the error (like an error during a #validif for example)
+        if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
+            diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+        else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
+            diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
         // Otherwise get the source file from the top of the bytecode stack if possible
-    else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
-        diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
-    else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
-        diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
+        else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
+            diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
+        else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
+            diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
         // Otherwise take the current bytecode source file
-    else
-        diag->contextFile = runContext->bc->sourceFile;
+        else
+            diag->contextFile = runContext->bc->sourceFile;
 
-    // Get error context
-    runContext->callerContext->extract(*diag, notes);
+        // Get error context
+        runContext->callerContext->extract(*diag, notes);
 
-    if (runContext->ip != runContext->bc->out)
-        runContext->ip--;
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip--;
 
-    if (!g_CommandLine.dbgCallStack)
-        notes.push_back(Diagnostic::note(Nte(Nte0192)));
+        if (!g_CommandLine.dbgCallStack)
+            notes.push_back(Diagnostic::note(Nte(Nte0192)));
 
-    Report::report(*diag, notes, runContext);
+        Report::report(*diag, notes, runContext);
 
-    if (runContext->ip != runContext->bc->out)
-        runContext->ip++;
+        if (runContext->ip != runContext->bc->out)
+            runContext->ip++;
 
-    return returnValue;
+        return returnValue;
+    }
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)

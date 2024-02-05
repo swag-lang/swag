@@ -8,9 +8,7 @@ struct VectorNative
     static_assert(is_trivially_destructible<T>());
     static_assert(is_trivially_copyable<T>());
 
-    VectorNative()
-    {
-    }
+    VectorNative() = default;
 
     VectorNative(const VectorNative& other)
     {

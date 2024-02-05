@@ -127,7 +127,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     Vector<SourceFile*> allFiles;
 
     auto path = basePath;
-    path      = g_ModuleCfgMgr->getAliasPath(path);
+    path      = ModuleDepManager::getAliasPath(path);
     path.append(SWAG_SRC_FOLDER);
 
     if (!dealWithFileToLoads(theModule))
@@ -211,7 +211,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     if (cfgModule)
     {
         auto cfgFile = theModule->path;
-        cfgFile      = g_ModuleCfgMgr->getAliasPath(cfgFile);
+        cfgFile      = ModuleDepManager::getAliasPath(cfgFile);
         cfgFile.append(SWAG_CFG_FILE);
         const auto writeTime = OS::getFileWriteTime(cfgFile.string().c_str());
         const auto file      = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
@@ -238,7 +238,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                      {
                          auto path = basePath;
                          path.append(cFileName);
-                         path = g_ModuleCfgMgr->getAliasPath(path);
+                         path = ModuleDepManager::getAliasPath(path);
                          path.append(SWAG_SRC_FOLDER);
 
                          const auto module                           = Allocator::alloc<Module>();
@@ -295,7 +295,7 @@ Module* EnumerateModuleJob::addModule(const Path& path)
     ModuleKind kind;
 
     // Get infos about module, depending on where it is located
-    g_Workspace->computeModuleName(path, moduleName, moduleFolder, kind);
+    Workspace::computeModuleName(path, moduleName, moduleFolder, kind);
 
     // Create theModule
     const auto theModule = g_Workspace->createOrUseModule(moduleName, moduleFolder, kind);
@@ -329,7 +329,7 @@ void EnumerateModuleJob::enumerateModules(const Path& path)
     if (!allModules.empty())
     {
         ranges::sort(allModules);
-        for (auto m : allModules)
+        for (const auto& m : allModules)
         {
             auto toAdd = path;
             toAdd.append(m);

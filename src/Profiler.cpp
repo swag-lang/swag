@@ -102,7 +102,7 @@ void profiler()
             bc->profilePerCall = OS::timerToSeconds(bc->profileCumTime) / bc->profileCallCount;
             bcs.push_back(bc);
 
-            for (auto it : bc->ffiProfile)
+            for (const auto& it : bc->ffiProfile)
             {
                 ffi[it.first].name = it.first;
                 ffi[it.first].count += it.second.count;

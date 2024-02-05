@@ -3,10 +3,6 @@
 #include "Runtime.h"
 #include "Statistics.h"
 
-Utf8::Utf8()
-{
-}
-
 Utf8::~Utf8()
 {
     freeBuffer();

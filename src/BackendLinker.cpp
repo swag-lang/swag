@@ -100,7 +100,7 @@ namespace BackendLinker
         Vector<Path> libPaths;
 
         // User defined library paths
-        for (auto p : g_CommandLine.libPaths)
+        for (const auto& p : g_CommandLine.libPaths)
             libPaths.push_back(p);
 
         // Modules

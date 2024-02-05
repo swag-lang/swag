@@ -7,8 +7,8 @@
 #include "Module.h"
 #include "Statistics.h"
 
-static Mutex g_FreeStackMutex;
-static void* g_FirstFreeStack = nullptr;
+Mutex g_FreeStackMutex;
+void* g_FirstFreeStack = nullptr;
 
 ByteCodeRunContext::~ByteCodeRunContext()
 {
@@ -29,7 +29,7 @@ void ByteCodeRunContext::releaseStack()
     }
 }
 
-void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
+void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
 {
 #ifdef SWAG_DEV_MODE
     memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
@@ -59,7 +59,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     bp    = stack + g_CommandLine.limitStackBC;
     sp    = bp;
     spAlt = stack;
-    bc    = nodebc;
+    bc    = nodeBC;
     ip    = bc->out;
     SWAG_ASSERT(ip);
 

@@ -21,7 +21,7 @@ struct Utf8
     uint32_t count     = 0;
     uint32_t allocated = 0;
 
-    Utf8();
+    Utf8() = default;
     Utf8(const char* from);
     Utf8(const SwagSlice& slice);
     Utf8(const char* from, uint32_t len);

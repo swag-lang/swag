@@ -10,9 +10,12 @@
 #include "Version.h"
 #include "Workspace.h"
 
-static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
+namespace
 {
-    return llvm::DILocation::get(Scope->getContext(), Line, Col, const_cast<llvm::MDNode*>(Scope), const_cast<llvm::MDNode*>(InlinedAt), ImplicitCode);
+    llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
+    {
+        return llvm::DILocation::get(Scope->getContext(), Line, Col, const_cast<llvm::MDNode*>(Scope), const_cast<llvm::MDNode*>(InlinedAt), ImplicitCode);
+    }
 }
 
 void LLVM_Debug::setup(LLVM* m, llvm::Module* modu)

@@ -228,52 +228,55 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         condVarDone.notify_all();
 }
 
+namespace
+{
 #if !defined(SWAG_DEV_MODE)
-static void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
-{
-    g_Log.lock();
-    g_Log.setColor(LogColor::Red);
-    g_Log.print("fatal error: hardware exception during job execution !\n");
-
-    g_Log.setColor(LogColor::White);
-    g_Log.messageHeaderDot("exception code", FMT("0x%08X\n", args->ExceptionRecord->ExceptionCode), LogColor::White, LogColor::White, " ");
-    if (job->baseContext && job->baseContext->sourceFile)
+    void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
     {
-        g_Log.printHeaderDot("current source file", job->baseContext->sourceFile->name, LogColor::White, LogColor::White, " ");
-        g_Log.printHeaderDot("current module", job->baseContext->sourceFile->module->name, LogColor::White, LogColor::White, " ");
+        g_Log.lock();
+        g_Log.setColor(LogColor::Red);
+        g_Log.print("fatal error: hardware exception during job execution !\n");
+
+        g_Log.setColor(LogColor::White);
+        g_Log.messageHeaderDot("exception code", FMT("0x%08X\n", args->ExceptionRecord->ExceptionCode), LogColor::White, LogColor::White, " ");
+        if (job->baseContext && job->baseContext->sourceFile)
+        {
+            g_Log.printHeaderDot("current source file", job->baseContext->sourceFile->name, LogColor::White, LogColor::White, " ");
+            g_Log.printHeaderDot("current module", job->baseContext->sourceFile->module->name, LogColor::White, LogColor::White, " ");
+        }
+
+        if (job->nodes.size())
+        {
+            const auto node = job->nodes.back();
+            g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");
+            if (node->sourceFile)
+                g_Log.printHeaderDot("current location", FMT("%s:%d:%d", node->sourceFile->path.string().c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
+        }
+
+        g_Log.setDefaultColor();
+        g_Log.unlock();
     }
 
-    if (job->nodes.size())
+    int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
     {
-        const auto node = job->nodes.back();
-        g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");
-        if (node->sourceFile)
-            g_Log.printHeaderDot("current location", FMT("%s:%d:%d", node->sourceFile->path.string().c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
+        if (OS::isDebuggerAttached() || g_CommandLine.dbgDevMode)
+        {
+            OS::errorBox("[Developer Mode]", "Hardware exception raised !");
+            return EXCEPTION_CONTINUE_EXECUTION;
+        }
+
+        exceptionMessage(job, args);
+        return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
 
-    g_Log.setDefaultColor();
-    g_Log.unlock();
-}
-
-static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
-{
-    if (OS::isDebuggerAttached() || g_CommandLine.dbgDevMode)
+#else
+    int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
     {
         OS::errorBox("[Developer Mode]", "Hardware exception raised !");
         return EXCEPTION_CONTINUE_EXECUTION;
     }
-
-    exceptionMessage(job, args);
-    return SWAG_EXCEPTION_EXECUTE_HANDLER;
-}
-
-#else
-static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
-{
-    OS::errorBox("[Developer Mode]", "Hardware exception raised !");
-    return EXCEPTION_CONTINUE_EXECUTION;
-}
 #endif
+}
 
 void ThreadManager::executeOneJob(Job* job)
 {

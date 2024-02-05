@@ -456,9 +456,9 @@ namespace
             {
                 const auto myFunc     = castAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
                 const auto typeMyFunc = castTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
-                if (!(typeMyFunc->replaceTypes.empty()))
+                if (!typeMyFunc->replaceTypes.empty())
                 {
-                    for (auto one : context.genericReplaceTypes)
+                    for (const auto& one : context.genericReplaceTypes)
                     {
                         auto it = typeMyFunc->replaceTypes.find(one.first);
                         if (it == typeMyFunc->replaceTypes.end() || it->second.typeInfoReplace != one.second.typeInfoReplace)

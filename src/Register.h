@@ -39,9 +39,7 @@ struct RegisterList
     uint8_t  countResults          = 0;
     bool     cannotFree            = false;
 
-    RegisterList()
-    {
-    }
+    RegisterList() = default;
 
     RegisterList(uint32_t r)
     {

@@ -308,14 +308,13 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     }
 
     // Params ?
-    auto module = sourceFile->module;
     if (params && !params->callParams.empty())
     {
         for (auto r : params->callParams)
             g_RunContext->push(r);
 
         if (!foreignCall)
-            module->runner.localCallNoTrace(g_RunContext, bc, (uint32_t) params->callParams.size());
+            ByteCodeRun::localCallNoTrace(g_RunContext, bc, (uint32_t) params->callParams.size());
     }
     else if (!foreignCall)
     {
@@ -346,11 +345,11 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     if (foreignCall)
     {
-        module->runner.ffiCall(g_RunContext, &bc->out[0]);
+        ByteCodeRun::ffiCall(g_RunContext, &bc->out[0]);
     }
     else
     {
-        result = module->runner.run(g_RunContext);
+        result = ByteCodeRun::run(g_RunContext);
     }
 
     g_ByteCodeStackTrace->clear();

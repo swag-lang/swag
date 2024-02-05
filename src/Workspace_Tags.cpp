@@ -10,23 +10,26 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-static void helpUserTags()
+namespace
 {
-    g_Log.eol();
-    g_Log.print("Syntax is:\n");
-    g_Log.eol();
-    g_Log.print("--tag:\"<TagName>\"\n");
-    g_Log.print("--tag:\"<TagName> = <literal>\"\n");
-    g_Log.print("--tag:\"<TagName>: <type> = <literal>\"\n");
-    g_Log.eol();
-    g_Log.print("Examples:\n");
-    g_Log.eol();
-    g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack\"\n");
-    g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack = false\"\n");
-    g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack: bool = true\"\n");
-    g_Log.print("--tag:\"Swag.ScratchAllocator.capacity: u64 = 4000_0000\"\n");
-    g_Log.eol();
-    g_Log.print("");
+    void helpUserTags()
+    {
+        g_Log.eol();
+        g_Log.print("Syntax is:\n");
+        g_Log.eol();
+        g_Log.print("--tag:\"<TagName>\"\n");
+        g_Log.print("--tag:\"<TagName> = <literal>\"\n");
+        g_Log.print("--tag:\"<TagName>: <type> = <literal>\"\n");
+        g_Log.eol();
+        g_Log.print("Examples:\n");
+        g_Log.eol();
+        g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack\"\n");
+        g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack = false\"\n");
+        g_Log.print("--tag:\"Swag.DebugAllocator.captureAllocStack: bool = true\"\n");
+        g_Log.print("--tag:\"Swag.ScratchAllocator.capacity: u64 = 4000_0000\"\n");
+        g_Log.eol();
+        g_Log.print("");
+    }
 }
 
 void Workspace::setupUserTags()

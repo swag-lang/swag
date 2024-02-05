@@ -14,26 +14,29 @@
 
 namespace OS
 {
-    static BackendTarget      nativeTarget;
-    static HANDLE             consoleHandle     = nullptr;
-    static WORD               defaultAttributes = 0;
-    static thread_local void* exceptionParams[4];
-    static Path               winSdkFolder;
+    namespace
+    {
+        BackendTarget      g_NativeTarget;
+        HANDLE             g_ConsoleHandle     = nullptr;
+        WORD               g_DefaultAttributes = 0;
+        thread_local void* g_ExceptionParams[4];
+        Path               g_WinSdkFolder;
+    }
 
     bool getWinSdk()
     {
         static Mutex mt;
         ScopedLock   lk(mt);
 
-        if (winSdkFolder == "<error>")
+        if (g_WinSdkFolder == "<error>")
             return false;
-        if (!winSdkFolder.empty())
+        if (!g_WinSdkFolder.empty())
             return true;
 
-        winSdkFolder = "<error";
+        g_WinSdkFolder = "<error";
 
         HKEY hKey;
-        auto rc = RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots", 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY | KEY_ENUMERATE_SUB_KEYS, &hKey);
+        auto rc = RegOpenKeyExA(HKEY_LOCAL_MACHINE, R"(SOFTWARE\Microsoft\Windows Kits\Installed Roots)", 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY | KEY_ENUMERATE_SUB_KEYS, &hKey);
         if (rc != S_OK)
             return false;
 
@@ -51,16 +54,16 @@ namespace OS
 
         // Convert to UTF8
         const std::wstring wstr{value};
-        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), nullptr, 0, nullptr, nullptr);
+        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), (int) wstr.size(), nullptr, 0, nullptr, nullptr);
         std::string        str(sizeNeeded, 0);
-        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &str[0], sizeNeeded, nullptr, nullptr);
+        WideCharToMultiByte(CP_UTF8, 0, wstr.data(), (int) wstr.size(), str.data(), sizeNeeded, nullptr, nullptr);
 
-        winSdkFolder = str.c_str();
-        winSdkFolder.append("Lib");
+        g_WinSdkFolder = str.c_str();
+        g_WinSdkFolder.append("Lib");
 
         int                                                         bestVersion[4] = {0};
         Utf8                                                        bestName;
-        visitFolders(winSdkFolder.string().c_str(), [&](const char* cFileName)
+        visitFolders(g_WinSdkFolder.string().c_str(), [&](const char* cFileName)
         {
             int        i0, i1, i2, i3;
             const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
@@ -95,9 +98,9 @@ namespace OS
         if (bestVersion[0] == 0)
             return false;
 
-        winSdkFolder.append(bestName.c_str());
+        g_WinSdkFolder.append(bestName.c_str());
         if (g_CommandLine.verbosePath)
-            g_Log.messageVerbose(FMT("winsdk path is [[%s]]", winSdkFolder.string().c_str()));
+            g_Log.messageVerbose(FMT("winsdk path is [[%s]]", g_WinSdkFolder.string().c_str()));
 
         return true;
     }
@@ -121,21 +124,21 @@ namespace OS
 
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
 
-        Path p0 = winSdkFolder;
+        Path p0 = g_WinSdkFolder;
         p0.append("um\\x64");
-        g_CommandLine.libPaths.push_back(winSdkFolder);
-        Path p1 = winSdkFolder;
+        g_CommandLine.libPaths.push_back(g_WinSdkFolder);
+        Path p1 = g_WinSdkFolder;
         p1.append("uctr\\x64");
-        g_CommandLine.libPaths.push_back(winSdkFolder);
+        g_CommandLine.libPaths.push_back(g_WinSdkFolder);
         return true;
     }
 
     void setup()
     {
         // Current target
-        nativeTarget.os   = SwagTargetOs::Windows;
-        nativeTarget.arch = SwagTargetArch::X86_64;
-        nativeTarget.cpu  = llvm::sys::getHostCPUName().str().c_str();
+        g_NativeTarget.os   = SwagTargetOs::Windows;
+        g_NativeTarget.arch = SwagTargetArch::X86_64;
+        g_NativeTarget.cpu  = llvm::sys::getHostCPUName().str().c_str();
 
         // We do not want assert, but just reports of the CRT
         if (!IsDebuggerPresent())
@@ -145,21 +148,21 @@ namespace OS
         }
 
         // Log
-        consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        g_ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleOutputCP(65001);
 
         DWORD dwMode = 0;
-        GetConsoleMode(consoleHandle, &dwMode);
-        SetConsoleMode(consoleHandle, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+        GetConsoleMode(g_ConsoleHandle, &dwMode);
+        SetConsoleMode(g_ConsoleHandle, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 
         CONSOLE_SCREEN_BUFFER_INFO info;
-        GetConsoleScreenBufferInfo(consoleHandle, &info);
-        defaultAttributes = info.wAttributes;
+        GetConsoleScreenBufferInfo(g_ConsoleHandle, &info);
+        g_DefaultAttributes = info.wAttributes;
     }
 
     const BackendTarget& getNativeTarget()
     {
-        return nativeTarget;
+        return g_NativeTarget;
     }
 
     bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors)
@@ -617,11 +620,11 @@ namespace OS
     void raiseException(int code, const char* msg)
     {
         msg                = msg ? _strdup(msg) : nullptr;
-        exceptionParams[0] = nullptr;
-        exceptionParams[1] = (void*) msg;
-        exceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
-        exceptionParams[3] = (void*) SwagExceptionKind::Panic;
-        RaiseException(code, 0, 4, (ULONG_PTR*) &exceptionParams[0]);
+        g_ExceptionParams[0] = nullptr;
+        g_ExceptionParams[1] = (void*) msg;
+        g_ExceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
+        g_ExceptionParams[3] = (void*) SwagExceptionKind::Panic;
+        RaiseException(code, 0, 4, (ULONG_PTR*) &g_ExceptionParams[0]);
     }
 
     void assertBox(const char* expr, const char* file, int line)

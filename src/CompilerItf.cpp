@@ -23,11 +23,14 @@ void compileString(Module* module, const char* str, uint32_t count)
 
 using cb = void* (*)(Module*);
 
-static cb itable[] = {
-    (cb) getMessage,
-    (cb) getBuildCfg,
-    (cb) compileString,
-};
+namespace
+{
+    cb itable[] = {
+        (cb) getMessage,
+        (cb) getBuildCfg,
+        (cb) compileString,
+    };
+}
 
 void* getCompilerItf(Module* module)
 {

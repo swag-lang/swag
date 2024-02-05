@@ -7,11 +7,14 @@
 #include "Version.h"
 #include "Workspace.h"
 
-static const char* START_NOTE      = "> NOTE:";
-static const char* START_TIP       = "> TIP:";
-static const char* START_WARNING   = "> WARNING:";
-static const char* START_ATTENTION = "> ATTENTION:";
-static const char* START_EXAMPLE   = "> EXAMPLE:";
+namespace
+{
+    const char* START_NOTE      = "> NOTE:";
+    const char* START_TIP       = "> TIP:";
+    const char* START_WARNING   = "> WARNING:";
+    const char* START_ATTENTION = "> ATTENTION:";
+    const char* START_EXAMPLE   = "> EXAMPLE:";
+}
 
 void GenDoc::outputStyles()
 {
@@ -1420,9 +1423,9 @@ void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
     helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
-Utf8 GenDoc::getFileExtension(const Module* mdl)
+Utf8 GenDoc::getFileExtension(const Module* module)
 {
-    Utf8 extName{mdl->buildCfg.genDoc.outputExtension};
+    Utf8 extName{module->buildCfg.genDoc.outputExtension};
     if (!g_CommandLine.docExtension.empty())
         extName = g_CommandLine.docExtension;
     if (extName.empty())

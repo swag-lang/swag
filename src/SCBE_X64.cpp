@@ -3,66 +3,69 @@
 #include "Math.h"
 #include "TypeManager.h"
 
-static uint8_t getREX(bool w, bool r, bool x, bool b)
+namespace
 {
-    uint8_t REX = 0x40;
-    if (w) // 64 bits
-        REX |= 8;
-    if (r) // extended MODRM.reg
-        REX |= 4;
-    if (x) // extended SIB.index
-        REX |= 2;
-    if (b) // extended MODRM.rm
-        REX |= 1;
-    return REX;
-}
-
-static uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
-{
-    return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
-}
-
-static void emit_REX(Concat& concat, CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX)
-{
-    if (numBits == CPUBits::B16)
-        concat.addU8(0x66);
-    if (numBits == CPUBits::B64 || reg1 >= R8 || reg2 >= R8)
-        concat.addU8(getREX(numBits == CPUBits::B64, reg1 >= R8, false, reg2 >= R8));
-}
-
-static void emit_ModRM(Concat& concat, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1)
-{
-    if (stackOffset == 0 && (memReg < R8 || memReg == R12))
+    uint8_t getREX(bool w, bool r, bool x, bool b)
     {
-        // mov al, byte ptr [rdi]
-        concat.addU8(getModRM(0, reg, memReg) | (op - 1));
-        if (memReg == RSP || memReg == R12)
-            concat.addU8(0x24);
+        uint8_t REX = 0x40;
+        if (w) // 64 bits
+            REX |= 8;
+        if (r) // extended MODRM.reg
+            REX |= 4;
+        if (x) // extended SIB.index
+            REX |= 2;
+        if (b) // extended MODRM.rm
+            REX |= 1;
+        return REX;
     }
-    else if (stackOffset <= 0x7F)
-    {
-        // mov al, byte ptr [rdi + ??]
-        concat.addU8(getModRM(DISP8, reg, memReg) | (op - 1));
-        if (memReg == RSP || memReg == R12)
-            concat.addU8(0x24);
-        concat.addU8((uint8_t) stackOffset);
-    }
-    else
-    {
-        // mov al, byte ptr [rdi + ????????]
-        concat.addU8(getModRM(DISP32, reg, memReg) | (op - 1));
-        if (memReg == RSP || memReg == R12)
-            concat.addU8(0x24);
-        concat.addU32(stackOffset);
-    }
-}
 
-static void emit_Spec8(Concat& concat, uint8_t value, CPUBits numBits)
-{
-    if (numBits == CPUBits::B8)
-        concat.addU8(value & ~1);
-    else
-        concat.addU8(value);
+    uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
+    {
+        return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
+    }
+
+    void emit_REX(Concat& concat, CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX)
+    {
+        if (numBits == CPUBits::B16)
+            concat.addU8(0x66);
+        if (numBits == CPUBits::B64 || reg1 >= R8 || reg2 >= R8)
+            concat.addU8(getREX(numBits == CPUBits::B64, reg1 >= R8, false, reg2 >= R8));
+    }
+
+    void emit_ModRM(Concat& concat, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1)
+    {
+        if (stackOffset == 0 && (memReg < R8 || memReg == R12))
+        {
+            // mov al, byte ptr [rdi]
+            concat.addU8(getModRM(0, reg, memReg) | (op - 1));
+            if (memReg == RSP || memReg == R12)
+                concat.addU8(0x24);
+        }
+        else if (stackOffset <= 0x7F)
+        {
+            // mov al, byte ptr [rdi + ??]
+            concat.addU8(getModRM(DISP8, reg, memReg) | (op - 1));
+            if (memReg == RSP || memReg == R12)
+                concat.addU8(0x24);
+            concat.addU8((uint8_t) stackOffset);
+        }
+        else
+        {
+            // mov al, byte ptr [rdi + ????????]
+            concat.addU8(getModRM(DISP32, reg, memReg) | (op - 1));
+            if (memReg == RSP || memReg == R12)
+                concat.addU8(0x24);
+            concat.addU32(stackOffset);
+        }
+    }
+
+    void emit_Spec8(Concat& concat, uint8_t value, CPUBits numBits)
+    {
+        if (numBits == CPUBits::B8)
+            concat.addU8(value & ~1);
+        else
+            concat.addU8(value);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -772,13 +775,13 @@ void SCBE_X64::emit_CmpF32(CPURegister regSrc, CPURegister regDst)
     concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
-void SCBE_X64::emit_CmpF64(CPURegister reg1, CPURegister reg2)
+void SCBE_X64::emit_CmpF64(CPURegister regSrc, CPURegister regDst)
 {
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+    SWAG_ASSERT(regSrc < R8 && regDst < R8);
     concat.addU8(0x66);
     concat.addU8(0x0F);
     concat.addU8(0x2F);
-    concat.addU8(getModRM(REGREG, reg1, reg2));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void SCBE_X64::emit_CmpN_Immediate(CPURegister reg, uint64_t value, CPUBits numBits)

@@ -181,7 +181,7 @@ void Module::computePublicPath()
         }
     }
 
-    publicPath.append(g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
+    publicPath.append(Workspace::getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target).c_str());
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {

@@ -1,164 +1,161 @@
 #include "pch.h"
 #include "SCBE_Coff.h"
-#include "BackendLinker.h"
-#include "ErrorIds.h"
 #include "Module.h"
-#include "Os.h"
-#include "Report.h"
 #include "SCBE.h"
 #include "SCBE_CodeView.h"
-#include "SCBE_SaveObjJob.h"
-#include "Workspace.h"
 
-static bool emitXData(const BuildParameters& buildParameters, SCBE_CPU& pp)
+namespace
 {
-    auto& concat = pp.concat;
-
-    concat.align(16);
-    *pp.patchXDOffset = concat.totalCount();
-
-    // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
-    uint32_t offset = 0;
-    for (auto& f : pp.functions)
+    bool emitXData(const BuildParameters& buildParameters, SCBE_CPU& pp)
     {
-        f.xdataOffset = offset;
-        SCBE_Coff::emitUnwind(pp.concat, offset, f.sizeProlog, f.unwind);
-    }
+        auto& concat = pp.concat;
 
-    *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;
-    return true;
-}
+        concat.align(16);
+        *pp.patchXDOffset = concat.totalCount();
 
-static bool emitPData(const BuildParameters& buildParameters, SCBE_CPU& pp)
-{
-    auto& concat = pp.concat;
+        // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
+        uint32_t offset = 0;
+        for (auto& f : pp.functions)
+        {
+            f.xdataOffset = offset;
+            SCBE_Coff::emitUnwind(pp.concat, offset, f.sizeProlog, f.unwind);
+        }
 
-    concat.align(16);
-    *pp.patchPDOffset = concat.totalCount();
-
-    uint32_t offset = 0;
-    for (const auto& f : pp.functions)
-    {
-        SWAG_ASSERT(f.symbolIndex < pp.allSymbols.size());
-        SWAG_ASSERT(f.endAddress > f.startAddress);
-
-        CPURelocation reloc;
-        reloc.type = IMAGE_REL_AMD64_ADDR32NB;
-
-        reloc.virtualAddress = offset;
-        reloc.symbolIndex    = f.symbolIndex;
-        pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32(0);
-
-        reloc.virtualAddress = offset + 4;
-        reloc.symbolIndex    = f.symbolIndex;
-        pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32(f.endAddress - f.startAddress);
-
-        reloc.virtualAddress = offset + 8;
-        reloc.symbolIndex    = pp.symXDIndex;
-        pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32(f.xdataOffset);
-        SWAG_ASSERT(f.xdataOffset < *pp.patchXDCount);
-
-        offset += 12;
-    }
-
-    *pp.patchPDCount = concat.totalCount() - *pp.patchPDOffset;
-    return true;
-}
-
-static bool emitDirectives(const BuildParameters& buildParameters, SCBE_CPU& pp)
-{
-    auto& concat = pp.concat;
-
-    if (pp.directives.empty())
+        *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;
         return true;
-    *pp.patchDROffset = concat.totalCount();
-    *pp.patchDRCount  = pp.directives.length();
-    concat.addString(pp.directives);
-    return true;
-}
+    }
 
-static bool emitSymbolTable(const BuildParameters& buildParameters, SCBE_CPU& pp)
-{
-    auto& concat = pp.concat;
-
-    *pp.patchSymbolTableOffset = concat.totalCount();
-    SWAG_ASSERT(pp.allSymbols.size() <= UINT32_MAX);
-    *pp.patchSymbolTableCount = (uint32_t) pp.allSymbols.size();
-
-    pp.stringTableOffset = 4;
-    for (auto& symbol : pp.allSymbols)
+    bool emitPData(const BuildParameters& buildParameters, SCBE_CPU& pp)
     {
-        // .Name
-        if (symbol.name.length() <= 8)
+        auto& concat = pp.concat;
+
+        concat.align(16);
+        *pp.patchPDOffset = concat.totalCount();
+
+        uint32_t offset = 0;
+        for (const auto& f : pp.functions)
         {
-            // Be sure it's stuffed with 0 after the name, or we can have weird things
-            // in the compiler
-            concat.addU64(0);
-            const auto ptr = concat.getSeekPtr() - 8;
-            memcpy(ptr, symbol.name.buffer, symbol.name.length());
-        }
-        else
-        {
+            SWAG_ASSERT(f.symbolIndex < pp.allSymbols.size());
+            SWAG_ASSERT(f.endAddress > f.startAddress);
+
+            CPURelocation reloc;
+            reloc.type = IMAGE_REL_AMD64_ADDR32NB;
+
+            reloc.virtualAddress = offset;
+            reloc.symbolIndex    = f.symbolIndex;
+            pp.relocTablePDSection.table.push_back(reloc);
             concat.addU32(0);
-            concat.addU32(pp.stringTableOffset);
-            pp.stringTable.push_back(&symbol.name);
-            pp.stringTableOffset += symbol.name.length() + 1;
+
+            reloc.virtualAddress = offset + 4;
+            reloc.symbolIndex    = f.symbolIndex;
+            pp.relocTablePDSection.table.push_back(reloc);
+            concat.addU32(f.endAddress - f.startAddress);
+
+            reloc.virtualAddress = offset + 8;
+            reloc.symbolIndex    = pp.symXDIndex;
+            pp.relocTablePDSection.table.push_back(reloc);
+            concat.addU32(f.xdataOffset);
+            SWAG_ASSERT(f.xdataOffset < *pp.patchXDCount);
+
+            offset += 12;
         }
 
-        concat.addU32(symbol.value); // .Value
-        switch (symbol.kind)
-        {
-        case CPUSymbolKind::Function:
-            concat.addU16(pp.sectionIndexText);           // .SectionNumber
-            concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
-            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
-            concat.addU8(0);                              // .NumberOfAuxSymbols
-            break;
-        case CPUSymbolKind::Extern:
-            concat.addU16(0);                       // .SectionNumber
-            concat.addU16(0);                       // .Type
-            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-            concat.addU8(0);                        // .NumberOfAuxSymbols
-            break;
-        case CPUSymbolKind::Custom:
-            concat.addU16(symbol.sectionIdx);       // .SectionNumber
-            concat.addU16(0);                       // .Type
-            concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-            concat.addU8(0);                        // .NumberOfAuxSymbols
-            break;
-        case CPUSymbolKind::GlobalString:
-            concat.addU16(pp.sectionIndexSS);     // .SectionNumber
-            concat.addU16(0);                     // .Type
-            concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
-            concat.addU8(0);                      // .NumberOfAuxSymbols
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        *pp.patchPDCount = concat.totalCount() - *pp.patchPDOffset;
+        return true;
     }
 
-    return true;
-}
-
-static bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp)
-{
-    auto& concat = pp.concat;
-
-    concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
-    SWAG_IF_ASSERT(uint32_t subTotal = 4);
-    for (const auto str : pp.stringTable)
+    bool emitDirectives(const BuildParameters& buildParameters, SCBE_CPU& pp)
     {
-        concat.addString(str->buffer, str->count);
-        concat.addU8(0);
-        SWAG_IF_ASSERT(subTotal += str->count + 1);
+        auto& concat = pp.concat;
+
+        if (pp.directives.empty())
+            return true;
+        *pp.patchDROffset = concat.totalCount();
+        *pp.patchDRCount  = pp.directives.length();
+        concat.addString(pp.directives);
+        return true;
     }
 
-    SWAG_ASSERT(subTotal == pp.stringTableOffset);
-    return true;
+    bool emitSymbolTable(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    {
+        auto& concat = pp.concat;
+
+        *pp.patchSymbolTableOffset = concat.totalCount();
+        SWAG_ASSERT(pp.allSymbols.size() <= UINT32_MAX);
+        *pp.patchSymbolTableCount = (uint32_t) pp.allSymbols.size();
+
+        pp.stringTableOffset = 4;
+        for (auto& symbol : pp.allSymbols)
+        {
+            // .Name
+            if (symbol.name.length() <= 8)
+            {
+                // Be sure it's stuffed with 0 after the name, or we can have weird things
+                // in the compiler
+                concat.addU64(0);
+                const auto ptr = concat.getSeekPtr() - 8;
+                memcpy(ptr, symbol.name.buffer, symbol.name.length());
+            }
+            else
+            {
+                concat.addU32(0);
+                concat.addU32(pp.stringTableOffset);
+                pp.stringTable.push_back(&symbol.name);
+                pp.stringTableOffset += symbol.name.length() + 1;
+            }
+
+            concat.addU32(symbol.value); // .Value
+            switch (symbol.kind)
+            {
+            case CPUSymbolKind::Function:
+                concat.addU16(pp.sectionIndexText);           // .SectionNumber
+                concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
+                concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
+                concat.addU8(0);                              // .NumberOfAuxSymbols
+                break;
+            case CPUSymbolKind::Extern:
+                concat.addU16(0);                       // .SectionNumber
+                concat.addU16(0);                       // .Type
+                concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+                concat.addU8(0);                        // .NumberOfAuxSymbols
+                break;
+            case CPUSymbolKind::Custom:
+                concat.addU16(symbol.sectionIdx);       // .SectionNumber
+                concat.addU16(0);                       // .Type
+                concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+                concat.addU8(0);                        // .NumberOfAuxSymbols
+                break;
+            case CPUSymbolKind::GlobalString:
+                concat.addU16(pp.sectionIndexSS);     // .SectionNumber
+                concat.addU16(0);                     // .Type
+                concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
+                concat.addU8(0);                      // .NumberOfAuxSymbols
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    {
+        auto& concat = pp.concat;
+
+        concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
+        SWAG_IF_ASSERT(uint32_t subTotal = 4);
+        for (const auto str : pp.stringTable)
+        {
+            concat.addString(str->buffer, str->count);
+            concat.addU8(0);
+            SWAG_IF_ASSERT(subTotal += str->count + 1);
+        }
+
+        SWAG_ASSERT(subTotal == pp.stringTableOffset);
+        return true;
+    }
 }
 
 bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)

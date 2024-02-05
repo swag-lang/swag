@@ -264,7 +264,7 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
         }
 
         ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
-        if (!node->parent.size())
+        if (node->parent.empty())
             return;
 
         bool canRemove = false;

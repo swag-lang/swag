@@ -5,97 +5,100 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 
-static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, const ByteCodeInstruction* ip, uint32_t orgOffset)
+namespace
 {
-    // We start before the function call, because we can have opDrop in try/catch blocks
-    auto ipe = ipOrg + 1;
-    while (ipe->op != ByteCodeOp::End)
+    void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, const ByteCodeInstruction* ip, uint32_t orgOffset)
     {
-        if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
+        // We start before the function call, because we can have opDrop in try/catch blocks
+        auto ipe = ipOrg + 1;
+        while (ipe->op != ByteCodeOp::End)
         {
-            if (ipe[1].op == ByteCodeOp::PushRAParam &&
-                (ipe[2].op == ByteCodeOp::LocalCall || ipe[2].op == ByteCodeOp::ForeignCall) &&
-                ipe[3].op == ByteCodeOp::IncSPPostCall)
+            if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
             {
-                if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                if (ipe[1].op == ByteCodeOp::PushRAParam &&
+                    (ipe[2].op == ByteCodeOp::LocalCall || ipe[2].op == ByteCodeOp::ForeignCall) &&
+                    ipe[3].op == ByteCodeOp::IncSPPostCall)
                 {
-                    ByteCodeOptimizer::setNop(context, ipe);
-                    ByteCodeOptimizer::setNop(context, ipe + 1);
-                    ByteCodeOptimizer::setNop(context, ipe + 2);
-                    ByteCodeOptimizer::setNop(context, ipe + 3);
+                    if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                    {
+                        ByteCodeOptimizer::setNop(context, ipe);
+                        ByteCodeOptimizer::setNop(context, ipe + 1);
+                        ByteCodeOptimizer::setNop(context, ipe + 2);
+                        ByteCodeOptimizer::setNop(context, ipe + 3);
+                    }
+                }
+                else if (ipe[1].op == ByteCodeOp::PushRAParam &&
+                         (ipe[2].op == ByteCodeOp::LocalCallPop || ipe[2].op == ByteCodeOp::ForeignCallPop))
+                {
+                    if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                    {
+                        ByteCodeOptimizer::setNop(context, ipe);
+                        ByteCodeOptimizer::setNop(context, ipe + 1);
+                        ByteCodeOptimizer::setNop(context, ipe + 2);
+                    }
+                }
+                else if (ipe[1].op == ByteCodeOp::LocalCallPopParam)
+                {
+                    if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                    {
+                        ByteCodeOptimizer::setNop(context, ipe);
+                        ByteCodeOptimizer::setNop(context, ipe + 1);
+                    }
                 }
             }
-            else if (ipe[1].op == ByteCodeOp::PushRAParam &&
-                     (ipe[2].op == ByteCodeOp::LocalCallPop || ipe[2].op == ByteCodeOp::ForeignCallPop))
-            {
-                if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
-                {
-                    ByteCodeOptimizer::setNop(context, ipe);
-                    ByteCodeOptimizer::setNop(context, ipe + 1);
-                    ByteCodeOptimizer::setNop(context, ipe + 2);
-                }
-            }
-            else if (ipe[1].op == ByteCodeOp::LocalCallPopParam)
-            {
-                if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
-                {
-                    ByteCodeOptimizer::setNop(context, ipe);
-                    ByteCodeOptimizer::setNop(context, ipe + 1);
-                }
-            }
+
+            ipe++;
+        }
+    }
+
+    void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip)
+    {
+        bool sameStackOffset = false;
+
+        SWAG_ASSERT(ipOrg->op == ByteCodeOp::MakeStackPointer);
+        const auto orgOffset = ipOrg->b.u32;
+
+        // If the second MakeStackPointer is the same as the first one (the parameter), then the
+        // return copy is totally useless, se we must not simulate a drop, because there's in fact
+        // only one variable, and not one variable copied to the other
+        // This happens when inlining a function that returns a struct
+        if (ip->op == ByteCodeOp::MakeStackPointer)
+        {
+            sameStackOffset = ipOrg->b.u32 == ip->b.u32;
+
+            // Change the original stack pointer offset to reference the variable instead of the temporary
+            // copy
+            SWAG_ASSERT(ipOrg->op != ByteCodeOp::CopyRRtoRA);
+            ipOrg->b.u32 = ip->b.u32;
+        }
+        else
+        {
+            SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRA);
+            SET_OP(ipOrg, ByteCodeOp::CopyRRtoRA);
+            ipOrg->b.u64 = ip->b.u64;
         }
 
-        ipe++;
+        // Is there a corresponding drop in the scope ?
+        const bool hasDrop = !sameStackOffset && ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
+
+        // Remove opDrop to the old variable that is no more affected.
+        // Make a nop, and detect all drops of that variable to remove them also.
+        // Not sure this will work in all situations
+        if (hasDrop)
+            removeOpDrop(context, ipOrg, ip, orgOffset);
+
+        // Remove the MakeStackPointer
+        // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRA
+        // ByteCodeOptimizer::setNop(context, ip);
+
+        // Remove the memcpy
+        ByteCodeOptimizer::setNop(context, ip + 1);
+
+        // We need to remove every instructions related to the post move
+        ip += 2;
+        while (ip->flags & BCI_POST_COPYMOVE)
+            ByteCodeOptimizer::setNop(context, ip++);
     }
-}
-
-static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip)
-{
-    bool sameStackOffset = false;
-
-    SWAG_ASSERT(ipOrg->op == ByteCodeOp::MakeStackPointer);
-    const auto orgOffset = ipOrg->b.u32;
-
-    // If the second MakeStackPointer is the same as the first one (the parameter), then the
-    // return copy is totally useless, se we must not simulate a drop, because there's in fact
-    // only one variable, and not one variable copied to the other
-    // This happens when inlining a function that returns a struct
-    if (ip->op == ByteCodeOp::MakeStackPointer)
-    {
-        sameStackOffset = ipOrg->b.u32 == ip->b.u32;
-
-        // Change the original stack pointer offset to reference the variable instead of the temporary
-        // copy
-        SWAG_ASSERT(ipOrg->op != ByteCodeOp::CopyRRtoRA);
-        ipOrg->b.u32 = ip->b.u32;
-    }
-    else
-    {
-        SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRA);
-        SET_OP(ipOrg, ByteCodeOp::CopyRRtoRA);
-        ipOrg->b.u64 = ip->b.u64;
-    }
-
-    // Is there a corresponding drop in the scope ?
-    const bool hasDrop = !sameStackOffset && ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
-
-    // Remove opDrop to the old variable that is no more affected.
-    // Make a nop, and detect all drops of that variable to remove them also.
-    // Not sure this will work in all situations
-    if (hasDrop)
-        removeOpDrop(context, ipOrg, ip, orgOffset);
-
-    // Remove the MakeStackPointer
-    // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRA
-    // ByteCodeOptimizer::setNop(context, ip);
-
-    // Remove the memcpy
-    ByteCodeOptimizer::setNop(context, ip + 1);
-
-    // We need to remove every instructions related to the post move
-    ip += 2;
-    while (ip->flags & BCI_POST_COPYMOVE)
-        ByteCodeOptimizer::setNop(context, ip++);
 }
 
 void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, const ByteCodeInstruction* ip)

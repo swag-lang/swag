@@ -37,14 +37,17 @@ Utf8 ByteCodeStack::getStepName(const AstNode* node, const ByteCodeInstruction* 
     return "";
 }
 
-static Utf8 sourceLine(SourceFile* sourceFile, int line)
+namespace
 {
-    auto code = sourceFile->getLine(line);
-    code.trim();
-    SyntaxColorContext cxt;
-    code = syntaxColor(code, cxt);
-    code = "      " + code;
-    return code;
+    Utf8 sourceLine(SourceFile* sourceFile, int line)
+    {
+        auto code = sourceFile->getLine(line);
+        code.trim();
+        SyntaxColorContext cxt;
+        code = syntaxColor(code, cxt);
+        code = "      " + code;
+        return code;
+    }
 }
 
 Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)

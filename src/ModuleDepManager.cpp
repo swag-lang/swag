@@ -47,7 +47,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
         moduleFolder = parentFolder;
     }
     else
-        g_Workspace->computeModuleName(parentFolder, moduleName, moduleFolder, kind);
+        Workspace::computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
     const auto cfgModule    = Allocator::alloc<Module>();
     cfgModule->kind         = ModuleKind::Config;

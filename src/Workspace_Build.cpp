@@ -565,9 +565,8 @@ bool Workspace::buildRTModule(Module* module)
     g_ThreadMgr.waitEndJobs();
     checkPendingJobs();
 
-    ByteCodeOptimizer opt;
-    bool              done;
-    opt.optimize(nullptr, module, done);
+    bool done;
+    ByteCodeOptimizer::optimize(nullptr, module, done);
     g_ThreadMgr.waitEndJobs();
 
     // Errors !!!

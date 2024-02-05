@@ -35,7 +35,7 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
         const int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
         {
-            compilerMessages[pass][i] = std::move(compilerMessages[pass].back());
+            compilerMessages[pass][i] = compilerMessages[pass].back();
             compilerMessages[pass].pop_back();
             i--;
             continue;

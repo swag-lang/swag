@@ -42,8 +42,8 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
     const auto searchName1 = searchName;
     for (const auto& i : searchList)
     {
-        auto       searchName2 = i;
-        const auto score       = Utf8::fuzzyCompare(searchName1, searchName2);
+        const auto& searchName2 = i;
+        const auto  score       = Utf8::fuzzyCompare(searchName1, searchName2);
 
         // If number of changes is too big considering the size of the text, cancel
         if (searchName.count > 1 && score > (uint32_t) searchName.count / 2)
