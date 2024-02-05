@@ -154,7 +154,7 @@ struct TypeManager
 
     static bool      compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2);
     static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
-    static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
+    static TypeInfo* concreteType(const TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
 

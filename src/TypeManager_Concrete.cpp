@@ -27,15 +27,15 @@ bool TypeManager::compareConcreteType(const ExportedTypeInfo* type1, const Expor
     return !memcmp(type1->fullName.buffer, type2->fullName.buffer, type1->fullName.count);
 }
 
-TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
+TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
 {
     if (!typeInfo)
-        return typeInfo;
+        return nullptr;
 
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:
-        return typeInfo;
+        return const_cast<TypeInfo*>(typeInfo);
 
     case TypeInfoKind::FuncAttr:
         if (flags & CONCRETE_FUNC)
@@ -57,7 +57,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
         {
             const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
             if (typeAlias->isStrict() && !(flags & CONCRETE_FORCEALIAS))
-                return typeAlias;
+                return const_cast<TypeInfo*>(static_cast<const TypeInfo*>(typeAlias));
             return concreteType(typeAlias->rawType, flags);
         }
         break;
@@ -67,7 +67,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
         {
             const auto typeGeneric = CastTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
             if (!typeGeneric->rawType)
-                return typeGeneric;
+                return const_cast<TypeInfo*>(static_cast<const TypeInfo*>(typeGeneric));
             return concreteType(typeGeneric->rawType, flags);
         }
         break;
@@ -76,7 +76,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
         break;
     }
 
-    return typeInfo;
+    return const_cast<TypeInfo*>(typeInfo);
 }
 
 TypeInfo* TypeManager::concretePtrRefType(TypeInfo* typeInfo, uint32_t flags)

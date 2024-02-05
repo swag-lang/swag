@@ -59,7 +59,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         flags |= AST_FROM_GENERIC;
 
     // This should not be copied. It will be recomputed if necessary.
-    // This can cause some problems with inline functions and autocast, as inline functions are evaluated
+    // This can cause some problems with inline functions and auto cast, as inline functions are evaluated
     // as functions, and also each time they are inline.
     if (context.cloneFlags & CLONE_RAW)
     {
@@ -529,7 +529,7 @@ AstNode* AstNode::clone(CloneContext& context)
             auto cloneContext        = context;
             cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
 
-            // We need to register subdecls
+            // We need to register sub-decls
             // All of this is a hack, not cool
             if (cloneContext.forceFlags & AST_IN_MIXIN)
                 cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
@@ -706,7 +706,7 @@ void AstNode::setFlagsValueIsComputed()
     flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
 }
 
-void AstNode::inheritComputedValue(AstNode* from)
+void AstNode::inheritComputedValue(const AstNode* from)
 {
     if (!from)
         return;

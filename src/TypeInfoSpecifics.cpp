@@ -11,7 +11,7 @@ TypeInfo* TypeInfoNative::clone()
     return newType;
 }
 
-bool TypeInfoNative::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoNative::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -30,7 +30,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint64_t castFlags)
     if (to->kind != TypeInfoKind::Native)
         return false;
 
-    const auto other = static_cast<TypeInfoNative*>(to);
+    const auto other = CastTypeInfo<TypeInfoNative>(to, to->kind);
     if (nativeType != other->nativeType)
         return false;
 
@@ -52,7 +52,7 @@ TypeInfo* TypeInfoCode::clone()
     return newType;
 }
 
-bool TypeInfoCode::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoCode::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -85,7 +85,7 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
     }
 }
 
-bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoAlias::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -100,7 +100,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (to->isAlias())
     {
-        const auto other = static_cast<TypeInfoAlias*>(to);
+        const auto other = CastTypeInfo<TypeInfoAlias>(to, to->kind);
         return rawType->isSame(other->rawType, castFlags);
     }
 
@@ -159,7 +159,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
     resName += pointedType->computeWhateverName(nameType);
 }
 
-bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -184,7 +184,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
             return true;
     }
 
-    const auto other = static_cast<TypeInfoPointer*>(to);
+    const auto other = CastTypeInfo<TypeInfoPointer>(to, to->kind);
 
     // Anonymous pointers
     if (castFlags & CASTFLAG_CAST)
@@ -212,7 +212,7 @@ TypeInfo* TypeInfoArray::clone()
     return newType;
 }
 
-bool TypeInfoArray::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoArray::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -221,7 +221,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint64_t castFlags)
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    const auto other = static_cast<TypeInfoArray*>(to);
+    const auto other = CastTypeInfo<TypeInfoArray>(to, to->kind);
     if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
     {
         if (count != other->count)
@@ -285,13 +285,13 @@ TypeInfo* TypeInfoSlice::clone()
     return newType;
 }
 
-bool TypeInfoSlice::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoSlice::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto castedFrom = static_cast<TypeInfoSlice*>(to);
+    const auto castedFrom = CastTypeInfo<TypeInfoSlice>(to, to->kind);
     return pointedType->isSame(castedFrom->pointedType, castFlags);
 }
 
@@ -332,12 +332,12 @@ TypeInfo* TypeInfoList::clone()
     return newType;
 }
 
-bool TypeInfoList::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoList::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
 
-    // Can cast from typelist tuple to struct
+    // Can cast from type list tuple to struct
     // The real check will be done later
     if (castFlags & CASTFLAG_CAST)
     {
@@ -347,7 +347,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto other = static_cast<TypeInfoList*>(to);
+    const auto other = CastTypeInfo<TypeInfoList>(to, to->kind);
     if (subTypes.size() != other->subTypes.size())
         return false;
 
@@ -387,11 +387,11 @@ void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
     resName += "...";
 }
 
-bool TypeInfoVariadic::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoVariadic::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto other = static_cast<TypeInfoVariadic*>(to);
+    const auto other = CastTypeInfo<TypeInfoVariadic>(to, to->kind);
     if (rawType && !other->rawType)
         return false;
     if (!rawType && other->rawType)
@@ -409,7 +409,7 @@ TypeInfo* TypeInfoGeneric::clone()
     return newType;
 }
 
-bool TypeInfoGeneric::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoGeneric::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -475,7 +475,7 @@ TypeInfo* TypeInfoEnum::clone()
     return newType;
 }
 
-bool TypeInfoEnum::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoEnum::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -492,7 +492,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint64_t castFlags)
     if (name != to->name)
         return false;
 
-    const auto other = static_cast<TypeInfoEnum*>(to);
+    const auto other = CastTypeInfo<TypeInfoEnum>(to, to->kind);
     if (!rawType->isSame(other->rawType, castFlags))
         return false;
     if (values.size() != other->values.size())
@@ -542,43 +542,46 @@ TypeInfo* TypeInfoFuncAttr::clone()
     return newType;
 }
 
-static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericParameters, Utf8& resName, uint32_t nameType)
+namespace
 {
-    if (genericParameters.empty())
-        return;
-
-    if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
-        resName += "'(";
-    else
-        resName += "'";
-
-    for (size_t i = 0; i < genericParameters.size(); i++)
+    void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericParameters, Utf8& resName, uint32_t nameType)
     {
-        if (i)
-            resName += ", ";
+        if (genericParameters.empty())
+            return;
 
-        const auto genParam = genericParameters[i];
-        if (genParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
-        {
-            SWAG_ASSERT(genParam->typeInfo);
-            SWAG_ASSERT(genParam->value);
-            const auto str = Ast::literalToString(genParam->typeInfo, *genParam->value);
-            if (genParam->typeInfo->isString())
-                resName += "\"";
-            resName += str;
-            if (genParam->typeInfo->isString())
-                resName += "\"";
-        }
-        else if (genParam->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
-            resName += genParam->name;
-        else if (genParam->typeInfo)
-            resName += genParam->typeInfo->computeWhateverName(nameType);
+        if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
+            resName += "'(";
         else
-            resName += genParam->name;
-    }
+            resName += "'";
 
-    if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
-        resName += ")";
+        for (size_t i = 0; i < genericParameters.size(); i++)
+        {
+            if (i)
+                resName += ", ";
+
+            const auto genParam = genericParameters[i];
+            if (genParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
+            {
+                SWAG_ASSERT(genParam->typeInfo);
+                SWAG_ASSERT(genParam->value);
+                const auto str = Ast::literalToString(genParam->typeInfo, *genParam->value);
+                if (genParam->typeInfo->isString())
+                    resName += "\"";
+                resName += str;
+                if (genParam->typeInfo->isString())
+                    resName += "\"";
+            }
+            else if (genParam->flags & TYPEINFOPARAM_GENERIC_CONSTANT)
+                resName += genParam->name;
+            else if (genParam->typeInfo)
+                resName += genParam->typeInfo->computeWhateverName(nameType);
+            else
+                resName += genParam->name;
+        }
+
+        if (nameType != COMPUTE_DISPLAY_NAME || genericParameters.size() > 1)
+            resName += ")";
+    }
 }
 
 void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
@@ -635,13 +638,13 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += " throw";
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags)
+bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags) const
 {
     BadSignatureInfos bi;
     return isSame(other, castFlags, bi);
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi)
+bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi) const
 {
     // Cannot convert a closure to a lambda
     if (isClosure() && !other->isClosure())
@@ -805,7 +808,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
     return true;
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
@@ -819,9 +822,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    const auto other = static_cast<TypeInfoFuncAttr*>(to);
+    const auto other = CastTypeInfo<TypeInfoFuncAttr>(to, to->kind);
     SWAG_ASSERT(to->isFuncAttr() || to->isLambdaClosure());
-    if (!isSame(other, castFlags))
+    if (!TypeInfoFuncAttr::isSame(other, castFlags))
         return false;
 
     if ((castFlags & CASTFLAG_EXACT) || (to->isLambdaClosure()))
@@ -929,20 +932,23 @@ const CallConv& TypeInfoFuncAttr::getCallConv() const
     return g_CallConv[callConv];
 }
 
-static void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
+namespace
 {
-    if (!(param->flags & TYPEINFOPARAM_HAS_USING) || param->typeInfo->kind != TypeInfoKind::Struct)
+    void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
     {
-        result.push_back(param);
-        return;
-    }
+        if (!(param->flags & TYPEINFOPARAM_HAS_USING) || param->typeInfo->kind != TypeInfoKind::Struct)
+        {
+            result.push_back(param);
+            return;
+        }
 
-    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
-    for (const auto p : typeStruct->fields)
-        flatten(result, p);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
+        for (const auto p : typeStruct->fields)
+            flatten(result, p);
+    }
 }
 
-TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
+TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName) const
 {
     for (const auto child : fields)
     {
@@ -953,13 +959,13 @@ TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
     return nullptr;
 }
 
-TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
+TypeInfoParam* TypeInfoStruct::hasInterface(const TypeInfoStruct* itf) const
 {
     SharedLock lk(mutex);
     return hasInterfaceNoLock(itf);
 }
 
-TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
+TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(const TypeInfoStruct* itf) const
 {
     for (const auto child : interfaces)
     {
@@ -1040,13 +1046,13 @@ TypeInfo* TypeInfoStruct::clone()
     return newType;
 }
 
-bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
+bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 {
     if (this == to)
         return true;
 
     if (to->flags & TYPEINFO_CONST_ALIAS)
-        to = static_cast<TypeInfoAlias*>(to)->rawType;
+        to = CastTypeInfo<TypeInfoAlias>(to, to->kind);
 
     if (castFlags & CASTFLAG_CAST)
     {
@@ -1105,10 +1111,9 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
                 if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
                 {
                     SemanticContext cxt;
-                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr,
-                                                      castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE) &&
-                        !TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr,
-                                                      castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                    const auto      castCom = castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE;
+                    if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, castCom) &&
+                        !TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, castCom))
                         return false;
 
                     if (!Semantic::valueEqualsTo(myGenParam->value, otherGenParam->value, myGenParam->typeInfo, 0))
@@ -1180,7 +1185,7 @@ bool TypeInfoStruct::canRawCopy() const
     return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct;
 }
 
-bool TypeInfoStruct::isPlainOldData()
+bool TypeInfoStruct::isPlainOldData() const
 {
     return canRawCopy() && !opDrop && !opUserDropFct;
 }
@@ -1236,7 +1241,7 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (isTuple() && nameType != COMPUTE_NAME)
     {
-        resName = TypeInfoStruct::computeTupleDisplayName(fields, nameType);
+        resName = computeTupleDisplayName(fields, nameType);
         return;
     }
 

@@ -286,7 +286,7 @@ struct AstNode
 
     void              allocateComputedValue();
     void              setFlagsValueIsComputed();
-    void              inheritComputedValue(AstNode* from);
+    void              inheritComputedValue(const AstNode* from);
     bool              hasComputedValue() const;
     bool              isConstantGenTypeInfo() const;
     ExportedTypeInfo* getConstantGenTypeInfo() const;
@@ -410,7 +410,7 @@ struct AstNode
     TokenId             tokenId;
     atomic<uint16_t>    specFlags;
 
-    SharedMutex            mutex;
+    mutable SharedMutex    mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
     ComputedValue*         computedValue;

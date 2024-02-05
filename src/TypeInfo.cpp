@@ -75,7 +75,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
             SWAG_RACE_CONDITION_WRITE(raceName);
             name = std::move(str);
         }
-
         return name;
 
     case COMPUTE_DISPLAY_NAME:
@@ -85,7 +84,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
             SWAG_RACE_CONDITION_WRITE(raceName);
             displayName = std::move(str);
         }
-
         return displayName;
 
     case COMPUTE_SCOPED_NAME:
@@ -95,7 +93,6 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
             SWAG_RACE_CONDITION_WRITE(raceName);
             scopedName = std::move(str);
         }
-
         return scopedName;
 
     case COMPUTE_SCOPED_NAME_EXPORT:
@@ -105,8 +102,10 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
             SWAG_RACE_CONDITION_WRITE(raceName);
             scopedNameExport = std::move(str);
         }
-
         return scopedNameExport;
+        
+    default:
+        break;
     }
 
     SWAG_ASSERT(false);
@@ -298,7 +297,7 @@ bool TypeInfo::isMethod() const
     return true;
 }
 
-bool TypeInfo::isSame(TypeInfo* from, uint64_t castFlags)
+bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
 {
     if (this == from)
         return true;
@@ -331,7 +330,7 @@ void TypeInfo::setConst()
     name = "const " + name;
 }
 
-uint32_t TypeInfo::numRegisters()
+uint32_t TypeInfo::numRegisters() const
 {
     if (sizeOf == 0)
         return 0;
