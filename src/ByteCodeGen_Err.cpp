@@ -66,9 +66,9 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
 
     TypeInfo* returnType = nullptr;
     if (node->ownerInline)
-        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCEALIAS);
+        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
-        returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_FORCEALIAS);
+        returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
 
     // Set default value
     if (!returnType->isVoid())

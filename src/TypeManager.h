@@ -3,30 +3,30 @@
 #include "TypeInfo.h"
 
 struct AstNode;
+struct SemanticContext;
 struct SourceFile;
+struct Token;
 struct TypeInfo;
 struct TypeInfoNative;
 struct TypeInfoVariadic;
-struct SemanticContext;
 enum class LiteralType : uint8_t;
-struct Token;
 
 constexpr uint64_t CASTFLAG_DEFAULT            = 0x0000000000000000;
 constexpr uint64_t CASTFLAG_INTERFACE          = 0x0000000000000001;
 constexpr uint64_t CASTFLAG_EXPLICIT           = 0x0000000000000002;
 constexpr uint64_t CASTFLAG_CONCRETE_ENUM      = 0x0000000000000004;
 constexpr uint64_t CASTFLAG_JUST_CHECK         = 0x0000000000000008;
-constexpr uint64_t CASTFLAG_UNCONST            = 0x0000000000000010;
+constexpr uint64_t CASTFLAG_UN_CONST           = 0x0000000000000010;
 constexpr uint64_t CASTFLAG_AUTO_BOOL          = 0x0000000000000020;
 constexpr uint64_t CASTFLAG_NO_COLLECT         = 0x0000000000000040;
 constexpr uint64_t CASTFLAG_COMMUTATIVE        = 0x0000000000000080;
 constexpr uint64_t CASTFLAG_INDEX              = 0x0000000000000100;
-constexpr uint64_t CASTFLAG_FORCE_UNCONST      = 0x0000000000000200;
+constexpr uint64_t CASTFLAG_FORCE_UN_CONST     = 0x0000000000000200;
 constexpr uint64_t CASTFLAG_FOR_COMPARE        = 0x0000000000000400;
 constexpr uint64_t CASTFLAG_UFCS               = 0x0000000000000800;
 constexpr uint64_t CASTFLAG_COERCE             = 0x0000000000001000;
 constexpr uint64_t CASTFLAG_TRY_COERCE         = 0x0000000000002000;
-constexpr uint64_t CASTFLAG_AUTO_OPCAST        = 0x0000000000004000;
+constexpr uint64_t CASTFLAG_AUTO_OP_CAST       = 0x0000000000004000;
 constexpr uint64_t CASTFLAG_STRICT             = 0x0000000000008000;
 constexpr uint64_t CASTFLAG_CAST               = 0x0000000000010000;
 constexpr uint64_t CASTFLAG_FOR_AFFECT         = 0x0000000000020000;
@@ -45,23 +45,23 @@ constexpr uint64_t CASTFLAG_CAN_OVERFLOW       = 0x0000000020000000;
 constexpr uint64_t CASTFLAG_EXACT_TUPLE_STRUCT = 0x0000000040000000;
 
 // Stored in SymbolMatchContext.flags
-constexpr uint32_t CASTFLAG_RESULT_STRUCT_CONVERT     = 0x00000001;
-constexpr uint32_t CASTFLAG_RESULT_AUTO_OPCAST        = 0x00000002;
-constexpr uint32_t CASTFLAG_RESULT_AUTO_OPAFFECT      = 0x00000004;
-constexpr uint32_t CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT = 0x00000008;
-constexpr uint32_t CASTFLAG_RESULT_GUESS_MOVE         = 0x00000010;
-constexpr uint32_t CASTFLAG_RESULT_FORCE_REF          = 0x00000020;
-constexpr uint32_t CASTFLAG_RESULT_UNTYPED_CONVERT    = 0x00000040;
-constexpr uint32_t CASTFLAG_RESULT_COERCE             = 0x00000080;
-constexpr uint32_t CASTFLAG_RESULT_GEN_AUTO_OPCAST    = 0x00000100;
-constexpr uint32_t CASTFLAG_RESULT_FROM_REF           = 0x00000200;
+constexpr uint32_t CASTFLAG_RESULT_STRUCT_CONVERT      = 0x00000001;
+constexpr uint32_t CASTFLAG_RESULT_AUTO_OP_CAST        = 0x00000002;
+constexpr uint32_t CASTFLAG_RESULT_AUTO_OP_AFFECT      = 0x00000004;
+constexpr uint32_t CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT = 0x00000008;
+constexpr uint32_t CASTFLAG_RESULT_GUESS_MOVE          = 0x00000010;
+constexpr uint32_t CASTFLAG_RESULT_FORCE_REF           = 0x00000020;
+constexpr uint32_t CASTFLAG_RESULT_UNTYPED_CONVERT     = 0x00000040;
+constexpr uint32_t CASTFLAG_RESULT_COERCE              = 0x00000080;
+constexpr uint32_t CASTFLAG_RESULT_GEN_AUTO_OP_CAST    = 0x00000100;
+constexpr uint32_t CASTFLAG_RESULT_FROM_REF            = 0x00000200;
 
-constexpr uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
-constexpr uint32_t CONCRETE_ENUM       = 0x00000001;
-constexpr uint32_t CONCRETE_FUNC       = 0x00000002;
-constexpr uint32_t CONCRETE_GENERIC    = 0x00000004;
-constexpr uint32_t CONCRETE_ALIAS      = 0x00000008;
-constexpr uint32_t CONCRETE_FORCEALIAS = 0x00000010;
+constexpr uint32_t CONCRETE_ALL         = 0xFFFFFFFF;
+constexpr uint32_t CONCRETE_ENUM        = 0x00000001;
+constexpr uint32_t CONCRETE_FUNC        = 0x00000002;
+constexpr uint32_t CONCRETE_GENERIC     = 0x00000004;
+constexpr uint32_t CONCRETE_ALIAS       = 0x00000008;
+constexpr uint32_t CONCRETE_FORCE_ALIAS = 0x00000010;
 
 struct InterfaceRef
 {
@@ -77,21 +77,8 @@ struct TypeManager
     static bool isOverflowEnabled(SemanticContext* context, AstNode* fromNode, uint64_t castFlags);
     static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
     static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-    static void getCastErrorMsg(Utf8&         msg,
-                                Utf8&         hint,
-                                Vector<Utf8>& remarks,
-                                TypeInfo*     toType,
-                                TypeInfo*     fromType,
-                                AstNode*      fromNpde,
-                                uint64_t      castFlags,
-                                CastErrorType castError = CastErrorType::Zero,
-                                bool          forNote   = false);
-    static bool castError(SemanticContext* context,
-                          TypeInfo*        requestedType,
-                          TypeInfo*        fromType,
-                          AstNode*         fromNode,
-                          uint64_t         castFlags,
-                          CastErrorType    castErrorType = CastErrorType::Zero);
+    static void getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
+    static bool castError(SemanticContext* context, TypeInfo* requestedType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType = CastErrorType::Zero);
 
     static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
@@ -116,14 +103,7 @@ struct TypeManager
     static bool castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags);
     static bool castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-    static bool castStructToStruct(SemanticContext* context,
-                                   TypeInfoStruct*  toStruct,
-                                   TypeInfoStruct*  fromStruct,
-                                   TypeInfo*        toType,
-                                   TypeInfo*        fromType,
-                                   AstNode*         fromNode,
-                                   uint64_t         castFlags,
-                                   bool&            ok);
+    static bool castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, bool& ok);
     static bool castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
@@ -196,20 +176,20 @@ struct TypeManager
     TypeInfoPointer* typeInfoNull    = nullptr;
     TypeInfoPointer* typeInfoCString = nullptr;
 
-    TypeInfoPointer*  typeInfoTypeType       = nullptr;
-    TypeInfoVariadic* typeInfoVariadic       = nullptr;
-    TypeInfoVariadic* typeInfoCVariadic      = nullptr;
-    TypeInfoNative*   typeInfoUntypedInt     = nullptr;
-    TypeInfoNative*   typeInfoUntypedBinHexa = nullptr;
-    TypeInfoNative*   typeInfoUntypedFloat   = nullptr;
-    TypeInfoFuncAttr* typeInfoOpCall         = nullptr;
-    TypeInfoFuncAttr* typeInfoModuleCall     = nullptr;
-    TypeInfoFuncAttr* typeInfoOpCall2        = nullptr;
-    TypeInfoCode*     typeInfoCode           = nullptr;
-    TypeInfoSlice*    typeInfoSliceRunes     = nullptr;
-    TypeInfoNative*   typeInfoCharacter      = nullptr;
+    TypeInfoPointer*  typeInfoTypeType      = nullptr;
+    TypeInfoVariadic* typeInfoVariadic      = nullptr;
+    TypeInfoVariadic* typeInfoCVariadic     = nullptr;
+    TypeInfoNative*   typeInfoUntypedInt    = nullptr;
+    TypeInfoNative*   typeInfoUntypedBinHex = nullptr;
+    TypeInfoNative*   typeInfoUntypedFloat  = nullptr;
+    TypeInfoFuncAttr* typeInfoOpCall        = nullptr;
+    TypeInfoFuncAttr* typeInfoModuleCall    = nullptr;
+    TypeInfoFuncAttr* typeInfoOpCall2       = nullptr;
+    TypeInfoCode*     typeInfoCode          = nullptr;
+    TypeInfoSlice*    typeInfoSliceRunes    = nullptr;
+    TypeInfoNative*   typeInfoCharacter     = nullptr;
 
-    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
+    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{nullptr}};
 };
 
 extern TypeManager* g_TypeMgr;

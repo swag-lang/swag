@@ -121,11 +121,11 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         }
 
         // Priority to a 'moveref' call
-        if (curMatch->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT)
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT))
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT))
                 {
                     matches[j]->remove = true;
                 }
@@ -158,11 +158,11 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         }
 
         // Priority to a match without an auto cast
-        if (curMatch->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST)
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OP_CAST)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST))
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OP_CAST))
                 {
                     curMatch->remove = true;
                     break;

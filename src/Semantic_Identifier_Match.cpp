@@ -169,7 +169,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             YIELD();
         }
 
-        uint64_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
+        uint64_t castFlags = CASTFLAG_AUTO_OP_CAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
         if (oneMatch.oneOverload && !(oneMatch.oneOverload->overload->node->attributeFlags & ATTRIBUTE_OVERLOAD))
@@ -261,7 +261,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
         // If passing a closure
         // :FctCallParamClosure
-        const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+        const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCE_ALIAS);
         auto       makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
 
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
@@ -807,7 +807,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     auto symbolKind = symbol->kind;
     if (symbol->kind == SymbolKind::TypeAlias)
     {
-        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_FORCEALIAS);
+        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_FORCE_ALIAS);
         if (typeAlias->isStruct())
             symbolKind = SymbolKind::Struct;
         else if (typeAlias->isInterface())
@@ -912,7 +912,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 size_t idx      = nodeCall->indexParam;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
                 {
-                    uint64_t castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST | CASTFLAG_PTR_REF;
+                    uint64_t castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UN_CONST | CASTFLAG_PTR_REF;
                     if (canOptimAffect)
                         castFlags |= CASTFLAG_NO_TUPLE_TO_STRUCT;
                     SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
@@ -1043,7 +1043,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (typeInfo->isLambdaClosure() && identifier->callParameters)
         {
             auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
-            typeInfoRet      = TypeManager::concreteType(typeInfoRet, CONCRETE_FORCEALIAS);
+            typeInfoRet      = TypeManager::concreteType(typeInfoRet, CONCRETE_FORCE_ALIAS);
 
             // Check return value
             if (!typeInfoRet->isVoid())
@@ -1453,7 +1453,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         TypeInfo* typeWasForced = nullptr;
         if (node && node->parent && node->parent->inSimpleReturn())
         {
-            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCEALIAS);
+            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
             if (rawTypeInfo->isStruct())
             {
                 auto fctTypeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -1479,7 +1479,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         // parameters on the source symbol
         if (rawTypeInfo->isAlias())
         {
-            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCEALIAS);
+            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
             if (rawTypeInfo->isStruct())
             {
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
@@ -1726,7 +1726,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     // to create an instance with the exact type.
     // We only test the first match here, because the filtering of matches would have remove it if some other instances
     // without autoOpCast are present.
-    if (!matches.empty() && (matches[0]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
+    if (!matches.empty() && (matches[0]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
     {
         prevMatchesCount = 0;
         matches.clear();

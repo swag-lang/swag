@@ -111,7 +111,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
         for (int i = left->childs.count - 1; i >= 0; i--)
         {
             const auto child     = left->childs[i];
-            const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
+            const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCE_ALIAS);
             if (!typeChild)
                 continue;
 
@@ -337,7 +337,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
         {
             Semantic::waitAllStructInterfaces(context->baseJob, rightTypeInfo);
             YIELD();
-            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST));
         }
     }
 
@@ -418,7 +418,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 }
                 else if (rightTypeInfo->isInitializerList())
                 {
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST | CASTFLAG_ACCEPT_PENDING));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST | CASTFLAG_ACCEPT_PENDING));
                     YIELD();
                 }
                 else
@@ -442,7 +442,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->isStruct() ||
             leftTypeInfo->isArray() ||
             leftTypeInfo->isClosure())
-            castFlags |= CASTFLAG_UNCONST;
+            castFlags |= CASTFLAG_UN_CONST;
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
         YIELD();

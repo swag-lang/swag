@@ -167,7 +167,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     if (scopeType->isLambdaClosure())
     {
         const auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
-        scopeType           = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCEALIAS);
+        scopeType           = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCE_ALIAS);
     }
 
     if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
@@ -296,7 +296,7 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext* context, TypeInfo
 {
     while (true)
     {
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
         if (!typeInfo)
             return nullptr;
 
@@ -383,7 +383,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
 
             for (auto& overload : symbol->overloads)
             {
-                const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
+                const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
                 if (!concrete->isFuncAttr() && !concrete->isLambdaClosure())
                     continue;
                 if (concrete->isGeneric() || concrete->isFromGeneric())
@@ -428,7 +428,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
 
                     for (const auto p : typeFunc->parameters)
                     {
-                        const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCEALIAS);
+                        const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCE_ALIAS);
                         if (concreteP->isEnum())
                         {
                             if (!enumIdx)
@@ -456,7 +456,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
             const auto funcNode = getFunctionForReturn(fctReturn);
             if (funcNode->returnType)
             {
-                const auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+                const auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
                 if (typeInfo->isEnum())
                 {
                     auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -762,13 +762,13 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*    context,
     const auto symbolKind     = symbol->kind;
     const auto callParameters = identifier->callParameters;
 
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
 
     if (identifier->isSilentCall())
     {
         SWAG_ASSERT(typeRef->isArray());
         const auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
-        typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
+        typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
     }
 
     // :ClosureForceFirstParam
@@ -797,7 +797,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*    context,
             symbolKind != SymbolKind::TypeAlias &&
             !identifier->isSilentCall() &&
             !symbol->overloads[0]->typeInfo->isKindGeneric() &&
-            !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCEALIAS)->isLambdaClosure())
+            !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCE_ALIAS)->isLambdaClosure())
         {
             if (symbolKind == SymbolKind::Variable)
             {

@@ -7,8 +7,8 @@
 #include "Workspace.h"
 
 TypeManager* g_TypeMgr = nullptr;
+TypeInfo*    g_LiteralTypeToType[(int) LiteralType::TT_MAX];
 
-static TypeInfo*                            g_LiteralTypeToType[(int) LiteralType::TT_MAX];
 thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesI;
 thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesB;
 thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesF;
@@ -32,7 +32,7 @@ void TypeManager::setup()
     typeInfoAny            = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
     typeInfoUndefined      = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
     typeInfoUntypedInt     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER);
-    typeInfoUntypedBinHexa = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BIN_HEX);
+    typeInfoUntypedBinHex = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BIN_HEX);
     typeInfoUntypedFloat   = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
     typeInfoCharacter      = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER | TYPEINFO_CHARACTER);
 
@@ -115,14 +115,17 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_ANY]                     = typeInfoAny;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]             = typeInfoUntypedInt;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]           = typeInfoUntypedFloat;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA]         = typeInfoUntypedBinHexa;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA]         = typeInfoUntypedBinHex;
     g_LiteralTypeToType[(int) LiteralType::TT_CSTRING]                 = typeInfoCString;
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE]                    = nullptr; // will be done with registerTypeType
 
     // Promotion matrix
-#define PR(__a, __b, __c)                                                      \
-    promoteMatrix[(int) NativeTypeKind::__a][(int) NativeTypeKind::__b] = __c; \
-    promoteMatrix[(int) NativeTypeKind::__b][(int) NativeTypeKind::__a] = __c;
+#define PR(__a, __b, __c)                                                          \
+    do                                                                             \
+    {                                                                              \
+        promoteMatrix[(int) NativeTypeKind::__a][(int) NativeTypeKind::__b] = __c; \
+        promoteMatrix[(int) NativeTypeKind::__b][(int) NativeTypeKind::__a] = __c; \
+    } while(0)
 
     PR(U8, U8, typeInfoU8);
     PR(U8, U16, typeInfoU16);

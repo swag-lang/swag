@@ -115,7 +115,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
         if (context.matchFlags & SymbolMatchContext::MATCH_UNCONST)
-            castFlags |= CASTFLAG_UNCONST;
+            castFlags |= CASTFLAG_UN_CONST;
         if (context.matchFlags & SymbolMatchContext::MATCH_UFCS && i == 0)
             castFlags |= CASTFLAG_UFCS;
         if (callParameter->semFlags & SEMFLAG_LITERAL_SUFFIX)
@@ -159,7 +159,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
         else if (wantedTypeInfo->isGeneric())
         {
-            Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, (int) i, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
+            Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, (int) i, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
             if (context.semContext->result != ContextResult::Done)
                 return;
         }
@@ -251,7 +251,7 @@ static void matchNamedParameter(SymbolMatchContext&           context,
             }
             else if (wantedTypeInfo->isGeneric())
             {
-                Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, (int) j, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
+                Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, (int) j, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
             }
 
             context.solvedParameters[j]                  = wantedParameter;
@@ -631,7 +631,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     // Very special case because of automatic cast and generics.
     // We match in priority without an implicit automatic cast. If this does not match, then we
     // try with an implicit cast.
-    context.castFlagsResult &= ~CASTFLAG_RESULT_GEN_AUTO_OPCAST;
+    context.castFlagsResult &= ~CASTFLAG_RESULT_GEN_AUTO_OP_CAST;
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
         const auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
@@ -643,14 +643,14 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
                 return;
             if (cpyContext.result == MatchResult::BadSignature)
             {
-                matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OPCAST);
+                matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OP_CAST);
                 if (context.semContext->result != ContextResult::Done)
                     return;
 
                 // We have a match with an automatic cast (opAffect or opCast).
                 if (context.result == MatchResult::Ok)
                 {
-                    context.castFlagsResult |= CASTFLAG_RESULT_GEN_AUTO_OPCAST;
+                    context.castFlagsResult |= CASTFLAG_RESULT_GEN_AUTO_OP_CAST;
                 }
             }
             else
@@ -660,12 +660,12 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         }
         else
         {
-            matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OPCAST);
+            matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OP_CAST);
         }
     }
     else
     {
-        matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_TRY_COERCE | CASTFLAG_AUTO_OPCAST);
+        matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_TRY_COERCE | CASTFLAG_AUTO_OP_CAST);
     }
 
     int cptDone = 0;
@@ -717,11 +717,11 @@ void Match::match(TypeInfoStruct* typeStruct, SymbolMatchContext& context)
         return;
 
     typeStruct->flattenUsingFields();
-    matchParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
+    matchParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UN_CONST);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchNamedParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
+    matchNamedParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UN_CONST);
     if (context.result != MatchResult::Ok)
         return;
 

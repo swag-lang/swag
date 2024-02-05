@@ -972,7 +972,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
     // named retval for "var result: retval{xx, xxx}" syntax
-    const auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCEALIAS);
+    const auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     if (returnType->isStruct())
     {
         Utf8              retVal = g_LangSpec->name_retval;
@@ -1410,7 +1410,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        constexpr uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT;
+        constexpr uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT;
         if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
         {
             const Diagnostic diag{child, FMT(Err(Err0621), funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
@@ -1534,7 +1534,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             YIELD();
         }
 
-        constexpr uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF | CASTFLAG_ACCEPT_PENDING;
+        constexpr uint64_t castFlags = CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF | CASTFLAG_ACCEPT_PENDING;
 
         if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
         {

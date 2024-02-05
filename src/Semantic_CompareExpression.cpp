@@ -527,7 +527,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
         SWAG_CHECK(
-            TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE | CASTFLAG_ACCEPT_PENDING
+            TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UN_CONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE | CASTFLAG_ACCEPT_PENDING
             ));
         YIELD();
     }

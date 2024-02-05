@@ -53,10 +53,10 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
         break;
 
     case TypeInfoKind::Alias:
-        if (flags & (CONCRETE_ALIAS | CONCRETE_FORCEALIAS))
+        if (flags & (CONCRETE_ALIAS | CONCRETE_FORCE_ALIAS))
         {
             const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-            if (typeAlias->isStrict() && !(flags & CONCRETE_FORCEALIAS))
+            if (typeAlias->isStrict() && !(flags & CONCRETE_FORCE_ALIAS))
                 return const_cast<TypeInfo*>(static_cast<const TypeInfo*>(typeAlias));
             return concreteType(typeAlias->rawType, flags);
         }

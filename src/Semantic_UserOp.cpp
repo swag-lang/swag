@@ -699,7 +699,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {
             auto     toType    = oneMatch->solvedParameters[i]->typeInfo;
-            uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
+            uint64_t castFlags = CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
             if (!(oneMatch->solvedParameters[i]->flags & TYPEINFOPARAM_FROM_GENERIC))
                 castFlags |= CASTFLAG_TRY_COERCE;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));

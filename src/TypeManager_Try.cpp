@@ -34,7 +34,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         isMoveRef          = true;
     }
 
-    if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST)))
         return false;
     const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
     if (!typeStruct->declNode)
@@ -88,9 +88,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
                 fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
             }
 
-            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
+            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_AFFECT;
             if (isMoveRef)
-                context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT;
+                context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT;
             return true;
         }
     }
@@ -146,9 +146,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         fromNode->extMisc()->resolvedUserOpSymbolOverload = toAffect[0];
     }
 
-    context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPAFFECT;
+    context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_AFFECT;
     if (isMoveRef)
-        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT;
+        context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT;
     return true;
 }
 
@@ -164,7 +164,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         structType         = typePtr->pointedType;
     }
 
-    if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST)))
         return false;
     const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
     if (!typeStruct->declNode)
@@ -188,7 +188,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromNode->semFlags |= SEMFLAG_USER_CAST;
             }
 
-            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
+            context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_CAST;
             return true;
         }
     }
@@ -253,6 +253,6 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         fromNode->semFlags |= SEMFLAG_USER_CAST;
     }
 
-    context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OPCAST;
+    context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_CAST;
     return true;
 }

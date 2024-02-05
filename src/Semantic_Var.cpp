@@ -627,7 +627,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->assignment)
         symbolFlags |= OVERLOAD_VAR_HAS_ASSIGN;
 
-    auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCEALIAS) : nullptr;
+    auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCE_ALIAS) : nullptr;
 
     // Register public global constant
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
@@ -885,7 +885,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 YIELD();
             }
 
-            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT |
+            auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT |
                              CASTFLAG_ACCEPT_PENDING;
             if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
@@ -964,7 +964,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             uint32_t castFlags = 0;
             if (!isCompilerConstant)
-                castFlags = CASTFLAG_FORCE_UNCONST;
+                castFlags = CASTFLAG_FORCE_UN_CONST;
             SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags, castFlags));
         }
 

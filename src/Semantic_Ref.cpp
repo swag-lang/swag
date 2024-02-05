@@ -605,7 +605,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     arrayNode->flags |= AST_R_VALUE;
 
     const auto baseType  = arrayNode->array->typeInfo;
-    const auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCEALIAS | CONCRETE_FUNC);
+    const auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCE_ALIAS | CONCRETE_FUNC);
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)

@@ -72,9 +72,9 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
     if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
-        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCEALIAS);
+        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
-        returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCEALIAS);
+        returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
 
     // Copy result to RR0... registers
     if (!(node->semFlags & SEMFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
@@ -1191,12 +1191,12 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     const auto allParams                  = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
 
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
 
     if (node->isSilentCall())
     {
         const auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
-        typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
+        typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
     }
 
     // A closure is the pointer to the variable, not the function address
@@ -1601,18 +1601,18 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     {
         // :SilentCall
         auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
-        auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
+        auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
     else if (varNode->typeInfo->isPointerRef())
     {
-        auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_FORCEALIAS);
+        auto typeVar = TypeManager::concretePtrRefType(varNode->typeInfo, CONCRETE_FORCE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
     }
     else
     {
-        auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_FORCEALIAS);
+        auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_FORCE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
 

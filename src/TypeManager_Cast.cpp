@@ -3168,9 +3168,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     // Transform typealias to related type
     if (toType->isAlias())
-        toType = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
+        toType = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
     if (fromType->isAlias())
-        fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
+        fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
     // Transform enum to underlying type
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->flags & TYPEINFO_INCOMPLETE || fromType->flags & TYPEINFO_INCOMPLETE)
@@ -3185,8 +3185,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Transform typealias to related type
-    fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
-    toType   = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCEALIAS : CONCRETE_ALIAS);
+    fromType = TypeManager::concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+    toType   = TypeManager::concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
     if (fromType->isListTuple() || fromType->isListArray())
     {
@@ -3244,12 +3244,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         const auto fromTypeRef = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         if (fromTypeRef == toType)
         {
-            castFlags |= CASTFLAG_FORCE_UNCONST;
+            castFlags |= CASTFLAG_FORCE_UN_CONST;
             result = true;
         }
         else if (fromTypeRef->isSame(toType, castFlags | CASTFLAG_CAST))
         {
-            castFlags |= CASTFLAG_FORCE_UNCONST;
+            castFlags |= CASTFLAG_FORCE_UN_CONST;
             result = true;
         }
     }
@@ -3338,7 +3338,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Const mismatch
-    if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !(castFlags & CASTFLAG_FORCE_UNCONST))
+    if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !(castFlags & CASTFLAG_FORCE_UN_CONST))
     {
         if (!(castFlags & CASTFLAG_PARAMS) || !toType->isStruct())
         {
@@ -3357,7 +3357,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                     diff = !toConst && fromConst;
                 if (diff)
                 {
-                    if (!(castFlags & CASTFLAG_UNCONST))
+                    if (!(castFlags & CASTFLAG_UN_CONST))
                         return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 
                     // We can affect a const to an unconst if type is by copy, and we are in an affectation
