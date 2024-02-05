@@ -19,7 +19,7 @@ bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
     return true;
 }
 
-Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
+Utf8 Semantic::getSpecialOpSignature(const AstFuncDecl* node)
 {
     Utf8 result = "the signature should be ";
 
@@ -65,7 +65,7 @@ Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
     return result;
 }
 
-bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
+bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, const AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
 {
     const auto numCur = parameters->childs.size();
     if (exact && (numCur != numWanted))
@@ -185,8 +185,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         const auto firstType = firstGen->typeInfo;
         SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, FMT(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
         const auto firstTypePtr = castTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
-        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, CASTFLAG_CAST),
-                    context->report({firstGen, FMT(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
+        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, CASTFLAG_CAST), context->report({firstGen, FMT(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
     }
 
     // Generic operator must have one generic parameter of type string
@@ -199,10 +198,8 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), FMT(Err(Err0559), name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childs.size() <= 2, context->report({node->genericParameters, FMT(Err(Err0633), name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT,
-                    context->report({firstGen, FMT(Err(Err0306), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, CASTFLAG_CAST),
-                    context->report({firstGen, FMT(Err(Err0392), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT, context->report({firstGen, FMT(Err(Err0306), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, CASTFLAG_CAST), context->report({firstGen, FMT(Err(Err0392), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
     }
     else if (isOpVisit)
     {
@@ -210,15 +207,11 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_VERIFY(node->genericParameters->childs.size() >= 2, context->report({node->genericParameters, FMT(Err(Err0594), name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childs.size() <= 3, context->report({node->genericParameters, FMT(Err(Err0633), name.c_str())}));
         auto firstGen = node->genericParameters->childs[0];
-        SWAG_VERIFY(firstGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT,
-                    context->report({firstGen, FMT(Err(Err0306), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST),
-                    context->report({firstGen, FMT(Err(Err0391), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT, context->report({firstGen, FMT(Err(Err0306), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST), context->report({firstGen, FMT(Err(Err0391), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
         auto secondGen = node->genericParameters->childs[1];
-        SWAG_VERIFY(secondGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT,
-                    context->report({secondGen, FMT(Err(Err0306), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST),
-                    context->report({secondGen, FMT(Err(Err0391), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(secondGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT, context->report({secondGen, FMT(Err(Err0306), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST), context->report({secondGen, FMT(Err(Err0391), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, Err(Err0542)}));
     }
     else if (name == g_LangSpec->name_opCast)
@@ -227,8 +220,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     }
     else
     {
-        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.size() == 1,
-                    context->report({node->genericParameters, FMT(Err(Err0632), name.c_str(), node->genericParameters->childs.size())}));
+        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.size() == 1, context->report({node->genericParameters, FMT(Err(Err0632), name.c_str(), node->genericParameters->childs.size())}));
     }
 
     // Check each function

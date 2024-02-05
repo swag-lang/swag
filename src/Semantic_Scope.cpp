@@ -11,7 +11,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
+void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asFlags)
 {
     for (const auto& ds : symbols)
     {
@@ -22,7 +22,7 @@ void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolN
     OneSymbolMatch osm;
     osm.symbol  = symName;
     osm.scope   = scope;
-    osm.asFlags = asflags;
+    osm.asFlags = asFlags;
     symbols.push_back(osm);
 }
 
@@ -303,7 +303,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     return true;
 }
 
-void Semantic::collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes)
+void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<AlternativeScope>& scopes)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
@@ -344,7 +344,7 @@ void Semantic::collectAlternativeScopes(AstNode* startNode, VectorNative<Alterna
     }
 }
 
-void Semantic::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
+void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
@@ -403,7 +403,7 @@ void Semantic::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, S
     addAlternativeScope(scopes, scope, flags);
 }
 
-bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
+bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const Scope* scope)
 {
     for (const auto& as : scopes)
     {

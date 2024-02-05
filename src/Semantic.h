@@ -51,7 +51,7 @@ namespace Semantic
     void waitAllStructMethods(Job* job, TypeInfo* typeInfo);
     void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
     void waitStructGenerated(Job* job, TypeInfo* typeInfo);
-    void waitOverloadCompleted(Job* job, SymbolOverload* overload);
+    void waitOverloadCompleted(Job* job, const SymbolOverload* overload);
     void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
     void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
     void waitForGenericParameters(const SemanticContext* context, OneMatch& match);
@@ -62,7 +62,7 @@ namespace Semantic
     bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
-    bool checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
+    bool checkFuncPrototypeOpNumParams(SemanticContext* context, const AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
     bool checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
     bool checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted);
     bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
@@ -71,10 +71,10 @@ namespace Semantic
     bool checkCanTakeAddress(SemanticContext* context, AstNode* node);
     bool checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly = false);
     bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
-    Utf8 checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied);
+    Utf8 checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, const Register& literalValue, TypeInfo* typeSuffix, bool negApplied);
     bool checkCanThrow(SemanticContext* context);
     bool checkCanCatch(SemanticContext* context);
-    bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
+    bool checkImplScopes(SemanticContext* context, AstImpl* node, const Scope* scopeImpl, const Scope* scope);
     bool checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right);
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
@@ -87,11 +87,11 @@ namespace Semantic
 
     void addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
     void addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
-    bool hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope);
+    bool hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const Scope* scope);
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
-    void collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes);
-    void collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
+    void collectAlternativeScopes(const AstNode* startNode, VectorNative<AlternativeScope>& scopes);
+    void collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
     void collectAlternativeScopeHierarchy(SemanticContext*                   context,
                                           VectorNative<AlternativeScope>&    scopes,
                                           VectorNative<AlternativeScopeVar>& scopesVars,
@@ -123,7 +123,7 @@ namespace Semantic
 
     void          decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
     void          decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
-    void          decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
+    void          decreaseMethodCount(const AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
     uint32_t      alignOf(AstVarDecl* node);
     bool          isCompilerContext(const AstNode* node);
     DataSegment*  getConstantSegFromContext(const AstNode* node, bool forceCompiler = false);
@@ -143,7 +143,7 @@ namespace Semantic
     bool          setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     bool          setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
     void          resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcDecl, const TypeInfo* resolvedType, int i);
-    void          allocateOnStack(AstNode* node, TypeInfo* typeInfo);
+    void          allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
     bool          setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     Diagnostic*   computeNonConstExprNote(AstNode* node);
     bool          executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
@@ -165,23 +165,23 @@ namespace Semantic
     void          propagateReturn(AstNode* node);
     bool          resolveMakePointer(SemanticContext* context);
     bool          resolveMakePointerLambda(SemanticContext* context);
-    bool          boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
+    bool          boundCheck(SemanticContext* context, const TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
     bool          getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
     void          forceConstType(SemanticContext* context, AstTypeExpression* node);
     void          setVarDeclResolve(AstVarDecl* varNode);
     bool          convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
     DataSegment*  getSegmentForVar(SemanticContext* context, AstVarDecl* node);
-    bool          getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pz, int& result, const char* errMsg);
+    bool          getDigitHex(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pz, int& result, const char* errMsg);
     bool          processLiteralString(SemanticContext* context);
     bool          computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     bool          getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* node, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
     bool          canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
-    bool          getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
+    bool          getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
     bool          appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
     bool          fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload, AstNode* ufcsFirstParam);
     bool          fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
-    bool          needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
-    bool          needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol);
+    bool          needToCompleteSymbol(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
+    bool          needToWaitForSymbol(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);
     bool          resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
     TypeInfoEnum* findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     bool          findEnumTypeInContext(SemanticContext*                         context,
@@ -189,11 +189,11 @@ namespace Semantic
                                VectorNative<TypeInfoEnum*>&                      result,
                                VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has,
                                VectorNative<SymbolOverload*>&                    testedOver);
-    void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
+    void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asFlags);
     bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     bool           filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
     bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
-    bool           solveValidIf(SemanticContext* context, AstStruct* structDecl);
+    bool           solveValidIf(SemanticContext* context, const AstStruct* structDecl);
     bool           solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
     bool           filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           filterMatchesCompare(const SemanticContext* context, VectorNative<OneMatch*>& matches);
@@ -206,7 +206,7 @@ namespace Semantic
     void           launchResolveSubDecl(const JobContext* context, AstNode* node);
     bool           registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
     void           resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
-    Utf8           getSpecialOpSignature(AstFuncDecl* node);
+    Utf8           getSpecialOpSignature(const AstFuncDecl* node);
     TypeInfo*      getDeducedLambdaType(SemanticContext* context, AstMakePointer* node);
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
     AstFuncDecl*   getFunctionForReturn(AstNode* node);

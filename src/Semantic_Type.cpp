@@ -759,7 +759,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
         node->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
     }
 
-    // Revert the implicit cast informations
+    // Revert the implicit cast information
     // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode
     // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)
     if (exprNode->castedTypeInfo)
@@ -779,6 +779,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
@@ -795,6 +796,7 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveTypeList(SemanticContext* context)
 {
     const auto node = context->node;
@@ -818,9 +820,7 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     node->allocateComputedValue();
     node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
     node->computedValue->storageSegment = getConstantSegFromContext(node);
-    SWAG_CHECK(
-        typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags,
-            resultTypeInfo));
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags, resultTypeInfo));
     YIELD();
     node->setFlagsValueIsComputed();
     node->flags |= AST_VALUE_IS_GEN_TYPEINFO;

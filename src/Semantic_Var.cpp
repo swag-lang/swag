@@ -303,7 +303,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     // If there's an assignment, but no type, then we need to deduce/generate the type with
-    // the assignment, then do the semmantic on that type
+    // the assignment, then do the semantic on that type
     if (!varDecl->type)
     {
         SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));

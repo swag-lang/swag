@@ -11,7 +11,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool Semantic::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
+bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
     if (!arrayAccess->hasComputedValue())
         return true;

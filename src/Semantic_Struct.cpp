@@ -546,7 +546,7 @@ void Semantic::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-void Semantic::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct)
+void Semantic::decreaseMethodCount(const AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutex);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
@@ -561,7 +561,7 @@ void Semantic::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeIn
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
+bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Scope* scopeImpl, const Scope* scope)
 {
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
@@ -611,6 +611,7 @@ bool Semantic::resolveImpl(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 {
     const auto structNode = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);
@@ -771,7 +772,7 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
     }
 }
 
-bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
+bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
@@ -1073,7 +1074,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 }
             }
 
-            // Compute struct alignement
+            // Compute struct alignment
             auto alignOf      = TypeManager::alignOf(child->typeInfo);
             typeInfo->alignOf = max(typeInfo->alignOf, alignOf);
 
@@ -1170,7 +1171,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     typeInfo->alignOf = max(1, typeInfo->alignOf);
 
     // An opaque struct will be exported as an array of bytes.
-    // We need to be sure that alignement will be respected, so we force "Swag.Align" attribute
+    // We need to be sure that alignment will be respected, so we force "Swag.Align" attribute
     // if not already present.
     if (!userAlignOf && typeInfo->attributes.hasAttribute(g_LangSpec->name_Swag_Opaque))
     {

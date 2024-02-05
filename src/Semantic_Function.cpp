@@ -12,7 +12,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
-void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
+void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 {
     node->allocateComputedValue();
     node->computedValue->storageOffset = node->ownerScope->startStackSize;

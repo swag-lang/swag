@@ -162,7 +162,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     }
 }
 
-void Semantic::waitOverloadCompleted(Job* job, SymbolOverload* overload)
+void Semantic::waitOverloadCompleted(Job* job, const SymbolOverload* overload)
 {
     SWAG_ASSERT(overload);
 
@@ -279,7 +279,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
     }
 }
 
-bool Semantic::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
+bool Semantic::needToCompleteSymbol(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
 {
     if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
         return true;
@@ -324,7 +324,7 @@ bool Semantic::needToCompleteSymbol(SemanticContext* context, AstIdentifier* ide
     return true;
 }
 
-bool Semantic::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
+bool Semantic::needToWaitForSymbol(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol)
 {
     if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
         return false;

@@ -368,7 +368,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 Ast::removeFromParent(newParam);
                 Ast::insertChild(identifier->callParameters, newParam, (uint32_t) i);
 
-                // If the match is against a 'moveref', then we should have a 'moveref' node and a makepointer.
+                // If the match is against a 'moveref', then we should have a 'moveref' node and a make pointer.
                 if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())
                 {
                     const auto moveRefNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::MoveRef, sourceFile, newParam);
@@ -490,7 +490,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     }
                 }
 
-                // Need to test sizeof because assignement can be {}. In that case, we just reference
+                // Need to test sizeof because assignment can be {}. In that case, we just reference
                 // the temporary variable
                 if (funcParam->assignment->typeInfo->sizeOf && !funcParam->assignment->typeInfo->isPointerNull())
                 {
@@ -526,36 +526,39 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
     return true;
 }
 
-static bool isStatementIdentifier(AstIdentifier* identifier)
+namespace
 {
-    if (identifier->isSilentCall())
+    bool isStatementIdentifier(const AstIdentifier* identifier)
+    {
+        if (identifier->isSilentCall())
+            return false;
+
+        auto checkParent = identifier->identifierRef()->parent;
+        if (checkParent->kind == AstNodeKind::Try ||
+            checkParent->kind == AstNodeKind::Catch ||
+            checkParent->kind == AstNodeKind::TryCatch ||
+            checkParent->kind == AstNodeKind::Assume)
+        {
+            checkParent = checkParent->parent;
+        }
+
+        if (checkParent->kind == AstNodeKind::Statement ||
+            checkParent->kind == AstNodeKind::StatementNoScope ||
+            checkParent->kind == AstNodeKind::Defer ||
+            checkParent->kind == AstNodeKind::SwitchCaseBlock)
+        {
+            // If this is the last identifier
+            if (identifier == identifier->identifierRef()->childs.back())
+                return true;
+
+            // If this is not the last identifier, and it's not a function call
+            const auto back = identifier->identifierRef()->childs.back();
+            if (back->kind == AstNodeKind::Identifier && !((AstIdentifier*) back)->callParameters)
+                return true;
+        }
+
         return false;
-
-    auto checkParent = identifier->identifierRef()->parent;
-    if (checkParent->kind == AstNodeKind::Try ||
-        checkParent->kind == AstNodeKind::Catch ||
-        checkParent->kind == AstNodeKind::TryCatch ||
-        checkParent->kind == AstNodeKind::Assume)
-    {
-        checkParent = checkParent->parent;
     }
-
-    if (checkParent->kind == AstNodeKind::Statement ||
-        checkParent->kind == AstNodeKind::StatementNoScope ||
-        checkParent->kind == AstNodeKind::Defer ||
-        checkParent->kind == AstNodeKind::SwitchCaseBlock)
-    {
-        // If this is the last identifier
-        if (identifier == identifier->identifierRef()->childs.back())
-            return true;
-
-        // If this is not the last identifier, and it's not a function call
-        const auto back = identifier->identifierRef()->childs.back();
-        if (back->kind == AstNodeKind::Identifier && !((AstIdentifier*) back)->callParameters)
-            return true;
-    }
-
-    return false;
 }
 
 bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
@@ -1294,7 +1297,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     YIELD();
 
                     // First pass, we inline the function.
-                    // The identifier for the function call will be reresolved later when the content
+                    // The identifier for the function call will be re-resolved later when the content
                     // of the inline os done.
                     if (!(identifier->flags & AST_INLINED))
                     {
@@ -1364,7 +1367,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         SWAG_CHECK(setupIdentifierRef(context, identifier));
 
         // For a return by copy, need to reserve room on the stack for the return result
-        // Order is important, because otherwhise this could call isPlainOldData, which could be not resolved
+        // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
         if (CallConv::returnNeedsStack(typeFunc))
         {
             identifier->flags |= AST_TRANSIENT;

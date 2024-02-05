@@ -14,7 +14,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
         return false;
 
     // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
-    // This can happen if we have already changed the ast, but the nodes are reavaluated later
+    // This can happen if we have already changed the ast, but the nodes are reevaluated later
     // (because of an inline for example)
     if (ufcsNode->flags & AST_NO_BYTECODE)
         return false;
@@ -40,7 +40,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
     return true;
 }
 
-bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
+bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
 {
     const auto symbol = overload->symbol;
 

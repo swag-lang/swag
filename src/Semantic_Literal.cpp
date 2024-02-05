@@ -12,17 +12,17 @@
 #include "TypeManager.h"
 #include "Version.h"
 
-bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
+bool Semantic::getDigitHex(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pzr, int& result, const char* errMsg)
 {
     const auto node = context->node;
-    const auto pz   = *_pz;
+    const auto pz   = *pzr;
     const auto c    = *pz;
-    (*_pz)++;
+    (*pzr)++;
 
     if (!SWAG_IS_HEX(c))
     {
         auto endLoc = startLoc;
-        endLoc.column += (uint32_t) (*_pz - pzs);
+        endLoc.column += (uint32_t) (*pzr - pzs);
         return context->report({node->sourceFile, startLoc, endLoc, errMsg});
     }
 
@@ -113,8 +113,8 @@ bool Semantic::processLiteralString(SemanticContext* context)
             int        c1, c2;
             auto       msg = Err(Err0278);
             const auto pzs = pz;
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
             const char32_t cw = (c1 << 4) + c2;
             result.append((char) cw);
             loc.column += 2;
@@ -125,10 +125,10 @@ bool Semantic::processLiteralString(SemanticContext* context)
             int        c1, c2, c3, c4;
             auto       msg = Err(Err0277);
             const auto pzs = pz;
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c3, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c4, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c3, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c4, msg));
             const char32_t cw = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
             result.append(cw);
             loc.column += 4;
@@ -139,14 +139,14 @@ bool Semantic::processLiteralString(SemanticContext* context)
             int        c1, c2, c3, c4, c5, c6, c7, c8;
             auto       msg = Err(Err0276);
             const auto pzs = pz;
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c3, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c4, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c5, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c6, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c7, msg));
-            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c8, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c3, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c4, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c5, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c6, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c7, msg));
+            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c8, msg));
             const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
             if (cw > Utf8::MAX_ENCODED_UNICODE)
                 return context->report({node->sourceFile, loc, FMT(Err(Err0405), cw)});
@@ -154,6 +154,8 @@ bool Semantic::processLiteralString(SemanticContext* context)
             loc.column += 8;
             continue;
         }
+        default:
+            break;
         }
 
         return context->report({node->sourceFile, loc, FMT(Err(Err0275), c)});
@@ -163,7 +165,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
     return true;
 }
 
-Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied)
+Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, const Register& literalValue, TypeInfo* typeSuffix, bool negApplied)
 {
     if (negApplied)
     {
