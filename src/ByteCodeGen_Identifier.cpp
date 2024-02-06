@@ -560,6 +560,8 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             case 8:
                 inst = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRc);
                 break;
+            default:
+                break;
             }
 
             inst->b.u64 = resolved->computedValue.storageOffset;

@@ -217,6 +217,9 @@ bool ByteCode::isDoingNothing() const
         }
 
         break;
+        
+    default:
+        break;
     }
 
     return false;

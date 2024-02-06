@@ -164,6 +164,8 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                     if (!resolved->typeInfo->isNativeFloat())
                         EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0xFFFFFFFF;
                     break;
+                default:
+                    break;
                 }
             }
 
