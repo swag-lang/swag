@@ -426,7 +426,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     const auto node       = context->node;
     const auto sourceFile = identifier->sourceFile;
     auto       callP      = identifier->callParameters;
-    identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
+    identifier->flags |= AST_R_VALUE | AST_NO_BYTECODE;
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
@@ -481,6 +481,9 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // And make a reference to that variable
     const auto identifierRef = identifier->identifierRef();
+
+    identifierRef->allocateExtension(ExtensionKind::Misc);
+    identifierRef->extMisc()->exportNode = identifier;
 
     identifierRef->allocateExtension(ExtensionKind::Owner);
     for (auto c : identifierRef->childs)

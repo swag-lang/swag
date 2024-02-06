@@ -680,6 +680,9 @@
     <ClCompile Include="..\src\Semantic_Identifier_Match.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\TypeManager_MakeCompatible.cpp">
+      <Filter>Semantic\Type</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
