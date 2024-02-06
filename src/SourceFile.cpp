@@ -5,7 +5,9 @@
 #include "Module.h"
 #include "Report.h"
 #include "Scope.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
+#endif
 
 void SourceFile::release() const
 {

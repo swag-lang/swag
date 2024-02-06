@@ -3,7 +3,9 @@
 #include "ByteCodeOptimizer.h"
 #include "Module.h"
 #include "Statistics.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
+#endif
 
 JobResult ByteCodeOptimizerJob::execute()
 {

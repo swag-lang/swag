@@ -3,7 +3,9 @@
 #include "Module.h"
 #include "ModulePrepOutputJob.h"
 #include "SCBE.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
+#endif
 
 JobResult SCBE_SaveObjJob::execute()
 {

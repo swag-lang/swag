@@ -3,12 +3,10 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
-#include "SCBE.h"
 #include "SCBE_CodeView.h"
 #include "SCBE_CPU.h"
 #include "Scope.h"
 #include "TypeManager.h"
-#include "Version.h"
 #include "Workspace.h"
 
 SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value)

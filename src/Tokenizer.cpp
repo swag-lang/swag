@@ -3,11 +3,11 @@
 #include "Diagnostic.h"
 #include "ErrorContext.h"
 #include "ErrorIds.h"
-#include "LanguageSpec.h"
-#include "Report.h"
 #include "SourceFile.h"
 #include "Statistics.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
+#endif
 
 const char* g_TokenNames[] =
 {

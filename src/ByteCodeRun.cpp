@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "ByteCodeRun.h"
+#ifdef SWAG_HAS_ASSERT
 #include "AstFlags.h"
+#endif
+#include "ByteCodeRun.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "ByteCodeGen.h"
@@ -13,7 +15,6 @@
 #include "Math.h"
 #include "Module.h"
 #include "Report.h"
-#include "Semantic.h"
 #include "TypeManager.h"
 #include "Workspace.h"
 

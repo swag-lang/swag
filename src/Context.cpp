@@ -4,8 +4,10 @@
 #include "ByteCodeStack.h"
 #include "Diagnostic.h"
 #include "Module.h"
-#include "ModuleManager.h"
 #include "TypeInfo.h"
+#ifdef SWAG_DEV_MODE
+#include "ModuleManager.h"
+#endif
 
 SwagContext                      g_DefaultContext;
 SwagProcessInfos                 g_ProcessInfos;
@@ -18,7 +20,7 @@ thread_local ByteCodeRunContext* g_RunContext = &g_RunContextVal;
 static Mutex                     g_MakeCallbackMutex;
 static uint32_t                  g_MakeCallbackCount = 0;
 
-static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
+static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
 {
 #ifdef SWAG_DEV_MODE
     SWAG_ASSERT((uint64_t) byteCodePtr != SWAG_PATCH_MARKER);
@@ -32,7 +34,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
-        auto r = va_arg(valist, Register*);
+        auto r = va_arg(vaList, Register*);
         returnRegisters.push_back(r);
     }
 
@@ -64,7 +66,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     {
         fakeRegisters.count++;
         auto& r = fakeRegisters.back();
-        r.u64   = va_arg(valist, uint64_t);
+        r.u64   = va_arg(vaList, uint64_t);
         paramRegisters.push_back(&fakeRegisters.back());
     }
 

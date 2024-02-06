@@ -3,6 +3,7 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "ByteCodeGenContext.h"
 #include "Module.h"
 #include "Report.h"
 #include "Scope.h"

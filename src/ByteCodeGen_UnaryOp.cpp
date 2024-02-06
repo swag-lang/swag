@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AstFlags.h"
 #include "ByteCodeGen.h"
+#include "ByteCodeGenContext.h"
 #include "ByteCodeOp.h"
 #include "Report.h"
 #include "TypeManager.h"

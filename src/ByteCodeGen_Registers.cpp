@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "ByteCodeGenContext.h"
 #include "Symbol.h"
 
 void ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)

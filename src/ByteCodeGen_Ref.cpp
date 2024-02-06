@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
+#include "ByteCodeGenContext.h"
 #include "ByteCodeGen.h"
 #include "Report.h"
 #include "Symbol.h"

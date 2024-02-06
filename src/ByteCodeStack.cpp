@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "ByteCodeStack.h"
-#include "Ast.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "ByteCodeRunContext.h"
-#include "Diagnostic.h"
-#include "ErrorIds.h"
 #include "SyntaxColor.h"
 
 thread_local ByteCodeStack  g_ByteCodeStackTraceVal;

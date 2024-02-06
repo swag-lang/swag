@@ -6,8 +6,9 @@
 #include "Module.h"
 #include "Report.h"
 #include "Statistics.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
-#include "Workspace.h"
+#endif
 
 JobResult ModulePrepOutputStage1Job::execute()
 {

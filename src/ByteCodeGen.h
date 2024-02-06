@@ -1,32 +1,32 @@
 #pragma once
 #include "AstNode.h"
-#include "ByteCodeGenContext.h"
 #include "DependentJobs.h"
 #include "Job.h"
 #include "TypeInfo.h"
 
-struct SourceFile;
-struct SemanticContext;
-struct ByteCode;
+struct AstArrayPointerSlicing;
+struct AstFuncCallParam;
+struct AstFuncDecl;
 struct AstNode;
+struct AstNode;
+struct AstVarDecl;
+struct ByteCode;
 struct ByteCodeInstruction;
-struct TypeInfo;
+struct ByteCodeGenContext;
+struct DataSegment;
 struct Module;
 struct RegisterList;
-struct AstFuncDecl;
-struct AstVarDecl;
-struct TypeInfoStruct;
 struct Scope;
+struct SemanticContext;
+struct SourceFile;
+struct SourceLocation;
 struct SymbolName;
 struct SymbolOverload;
-struct SourceLocation;
+struct TypeInfo;
 struct TypeInfoArray;
-struct AstNode;
-struct AstFuncCallParam;
-struct AstArrayPointerSlicing;
-struct TypeInfoPointer;
 struct TypeInfoFuncAttr;
-struct DataSegment;
+struct TypeInfoPointer;
+struct TypeInfoStruct;
 enum class ByteCodeOp : uint16_t;
 enum class TokenId : uint16_t;
 
