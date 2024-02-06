@@ -3,6 +3,7 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "Diagnostic.h"
 #include "Module.h"
 #include "Report.h"
 #include "TypeManager.h"

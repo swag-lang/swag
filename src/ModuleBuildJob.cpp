@@ -3,6 +3,7 @@
 #include "Backend.h"
 #include "ByteCodeOptimizer.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "FileJob.h"
 #include "LanguageSpec.h"
 #include "Module.h"

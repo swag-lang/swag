@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "ByteCode.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "ModuleManager.h"

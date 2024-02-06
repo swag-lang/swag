@@ -2,6 +2,7 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "LLVM.h"
 #include "LLVM_Debug.h"

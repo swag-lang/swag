@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeGenJob.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "ModuleManager.h"

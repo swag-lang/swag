@@ -4,8 +4,6 @@
 #include "ByteCodeInstruction.h"
 #include "ByteCodeOp.h"
 #include "ByteCodeRunContext.h"
-#include "ByteCodeStack.h"
-#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Mutex.h"
 #include "OS.h"

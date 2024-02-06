@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "FileJob.h"
 #include "LanguageSpec.h"
 #include "Log.h"

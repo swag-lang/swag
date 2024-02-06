@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Context.h"
 #include "ByteCode.h"
+#include "ByteCodeStack.h"
+#include "Diagnostic.h"
 #include "Module.h"
 #include "ModuleManager.h"
 #include "TypeInfo.h"

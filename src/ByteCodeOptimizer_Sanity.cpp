@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "AstFlags.h"
 #include "ByteCodeOptimizer.h"
+#include "Diagnostic.h"
 #include "Math.h"
 #include "Naming.h"
 #include "Report.h"

@@ -1,9 +1,7 @@
 #include "pch.h"
-#include "ByteCode.h"
 #include "ByteCodeDebugger.h"
-#include "Module.h"
 
-void ByteCodeDebugger::printSet(ByteCodeRunContext* context)
+void ByteCodeDebugger::printSet(ByteCodeRunContext*)
 {
     g_Log.messageHeaderDot("stop on @breakpoint()", !g_CommandLine.dbgOff ? "on" : "off", COLOR_NAME, LogColor::White, " ");
     g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.debugPrintStruct ? "on" : "off", COLOR_NAME, LogColor::White, " ");

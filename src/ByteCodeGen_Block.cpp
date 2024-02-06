@@ -3,6 +3,7 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Scope.h"
 #include "Semantic.h"

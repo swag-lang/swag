@@ -2,6 +2,7 @@
 #include "ByteCodeDebugger.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
+#include "ByteCodeStack.h"
 #include "Module.h"
 #include "Scope.h"
 #include "Semantic.h"

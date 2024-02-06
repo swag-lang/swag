@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Naming.h"

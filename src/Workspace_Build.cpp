@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend.h"
 #include "ByteCodeOptimizer.h"
+#include "Diagnostic.h"
 #include "EnumerateModuleJob.h"
 #include "LanguageSpec.h"
 #include "Log.h"

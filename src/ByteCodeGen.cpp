@@ -5,6 +5,7 @@
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"

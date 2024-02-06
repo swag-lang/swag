@@ -2,7 +2,9 @@
 #include "BackendFunctionBodyJob.h"
 #include "Backend.h"
 #include "ByteCode.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
+#endif
 
 JobResult BackendFunctionBodyJob::execute()
 {
