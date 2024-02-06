@@ -3,8 +3,8 @@
 #include "Backend.h"
 #include "Context.h"
 #include "LanguageSpec.h"
-#include "TypeInfo.h"
 #include "Module.h"
+#include "TypeInfo.h"
 #include "Workspace.h"
 
 ModuleManager* g_ModuleMgr = nullptr;

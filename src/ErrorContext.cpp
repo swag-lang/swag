@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ErrorContext.h"
-#include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Report.h"
 #include "Scope.h"
 #include "SourceFile.h"
@@ -80,7 +80,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             if (exp.hide)
                 continue;
 
-            constexpr DiagnosticLevel level = DiagnosticLevel::Note;
+            constexpr auto level = DiagnosticLevel::Note;
 
             Utf8 msg;
             if (exp.err)

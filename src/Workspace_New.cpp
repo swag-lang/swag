@@ -15,7 +15,7 @@ void newScriptFile()
         OS::exit(-1);
     }
 
-    const char* content = R"(
+    auto content = R"(
 // Swag script file
 #dependencies
 {
@@ -66,7 +66,7 @@ void Workspace::newModule(const Utf8& moduleName) const
         OS::exit(-1);
     }
 
-    const char* oneCfg = R"(
+    auto oneCfg = R"(
 // Swag module configuration file
 #dependencies
 {
@@ -95,14 +95,14 @@ void Workspace::newModule(const Utf8& moduleName) const
         OS::exit(-1);
     }
 
-    const char* contentMain = R"(
+    auto contentMain = R"(
 #main
 {
 	@print("Hello world!\n")
 }
 )";
 
-    const char* contentTest = R"(
+    auto contentTest = R"(
 #test
 {
 	const X = (2 * 5) + 3

@@ -192,8 +192,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::JumpDyn8:
     {
-        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
-        auto     val   = (uint64_t) (registersRC[ip->a.u32].s8 - (ip->b.s8 - 1));
+        auto table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto val   = (uint64_t) (registersRC[ip->a.u32].s8 - (ip->b.s8 - 1));
         if (val >= ip->c.u64)
             context->ip += table[0];
         else
@@ -203,8 +203,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::JumpDyn16:
     {
-        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
-        auto     val   = (uint64_t) (registersRC[ip->a.u32].s16 - (ip->b.s16 - 1));
+        auto table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto val   = (uint64_t) (registersRC[ip->a.u32].s16 - (ip->b.s16 - 1));
         if (val >= ip->c.u64)
             context->ip += table[0];
         else
@@ -214,8 +214,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::JumpDyn32:
     {
-        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
-        auto     val   = (uint64_t) (registersRC[ip->a.u32].s32 - (ip->b.s32 - 1));
+        auto table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto val   = (uint64_t) (registersRC[ip->a.u32].s32 - (ip->b.s32 - 1));
         if (val >= ip->c.u64)
             context->ip += table[0];
         else
@@ -225,8 +225,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::JumpDyn64:
     {
-        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
-        auto     val   = (uint64_t) (registersRC[ip->a.u32].s64 - (ip->b.s64 - 1));
+        auto table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto val   = (uint64_t) (registersRC[ip->a.u32].s64 - (ip->b.s64 - 1));
         if (val >= ip->c.u64)
             context->ip += table[0];
         else
@@ -640,8 +640,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     case ByteCodeOp::DeRefStringSlice:
     {
-        auto       ptr                 = registersRC[ip->a.u32].pointer + ip->c.s64;
-        uint64_t** ptrptr              = (uint64_t**) ptr;
+        auto ptr                       = registersRC[ip->a.u32].pointer + ip->c.s64;
+        auto ptrptr                    = (uint64_t**) ptr;
         registersRC[ip->a.u32].pointer = (uint8_t*) ptrptr[0];
         registersRC[ip->b.u32].u64     = (uint64_t) ptrptr[1];
         break;
@@ -735,8 +735,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::IntrinsicMemCpy:
     {
-        void*  dst  = (void*) registersRC[ip->a.u32].pointer;
-        void*  src  = (void*) registersRC[ip->b.u32].pointer;
+        auto   dst  = (void*) registersRC[ip->a.u32].pointer;
+        auto   src  = (void*) registersRC[ip->b.u32].pointer;
         size_t size = IMMC_U64(ip);
         memcpy(dst, src, size);
         break;
@@ -744,8 +744,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::IntrinsicMemMove:
     {
-        void*  dst  = (void*) registersRC[ip->a.u32].pointer;
-        void*  src  = (void*) registersRC[ip->b.u32].pointer;
+        auto   dst  = (void*) registersRC[ip->a.u32].pointer;
+        auto   src  = (void*) registersRC[ip->b.u32].pointer;
         size_t size = IMMC_U64(ip);
         memmove(dst, src, size);
         break;
@@ -753,7 +753,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::IntrinsicMemSet:
     {
-        void*    dst   = (void*) registersRC[ip->a.u32].pointer;
+        auto     dst   = (void*) registersRC[ip->a.u32].pointer;
         uint32_t value = IMMB_U8(ip);
         size_t   size  = IMMC_U64(ip);
         memset(dst, value, size);
@@ -762,8 +762,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::IntrinsicMemCmp:
     {
-        void*  dst                 = (void*) registersRC[ip->b.u32].pointer;
-        void*  src                 = (void*) registersRC[ip->c.u32].pointer;
+        auto   dst                 = (void*) registersRC[ip->b.u32].pointer;
+        auto   src                 = (void*) registersRC[ip->c.u32].pointer;
         size_t size                = IMMD_U64(ip);
         registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
         break;
@@ -1414,7 +1414,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             auto ptr = module->mutableSegment.address(ip->b.u32);
             if (module->saveMutableValues && ip->c.pointer)
             {
-                SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                auto over = (SymbolOverload*) ip->c.pointer;
                 module->mutableSegment.saveValue((void*) ptr, over->typeInfo->sizeOf, false);
             }
 
@@ -1428,7 +1428,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
                 if (module->saveMutableValues && ip->c.pointer)
                 {
-                    SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                    auto over = (SymbolOverload*) ip->c.pointer;
                     module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, false);
                 }
             }
@@ -1449,12 +1449,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             {
                 if (module->saveBssValues)
                 {
-                    SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                    auto over = (SymbolOverload*) ip->c.pointer;
                     module->mutableSegment.saveValue((void*) ptr, over->typeInfo->sizeOf, true);
                 }
                 else if (module->bssCannotChange)
                 {
-                    SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
+                    auto over                    = (SymbolOverload*) ip->c.pointer;
                     context->internalPanicSymbol = over;
                     context->internalPanicHint   = Nte(Nte0081);
                     callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
@@ -1472,12 +1472,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 {
                     if (module->saveBssValues)
                     {
-                        SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
+                        auto over = (SymbolOverload*) ip->c.pointer;
                         module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, true);
                     }
                     else if (module->bssCannotChange)
                     {
-                        SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
+                        auto over                    = (SymbolOverload*) ip->c.pointer;
                         context->internalPanicSymbol = over;
                         context->internalPanicHint   = Nte(Nte0081);
                         callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
@@ -2792,7 +2792,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::CloneString:
     {
-        char*    ptr   = (char*) registersRC[ip->a.u32].pointer;
+        auto     ptr   = (char*) registersRC[ip->a.u32].pointer;
         uint32_t count = registersRC[ip->b.u32].u32;
         if (!count)
             break;
@@ -4197,7 +4197,7 @@ namespace
         Vector<const Diagnostic*>     notes;
         const SwagSourceCodeLocation* location = nullptr;
         SwagSourceCodeLocation        tmpLoc;
-        DiagnosticLevel               level = DiagnosticLevel::Error;
+        auto                          level = DiagnosticLevel::Error;
         Utf8                          userMsg;
         int                           returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
 

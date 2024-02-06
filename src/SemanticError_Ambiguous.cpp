@@ -34,8 +34,8 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
     if (flags & MIP_FOR_GHOSTING)
     {
-        AstNode*   otherNode = nullptr;
-        SymbolKind otherKind = SymbolKind::Invalid;
+        AstNode* otherNode = nullptr;
+        auto     otherKind = SymbolKind::Invalid;
         for (const auto match : matches)
         {
             if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))

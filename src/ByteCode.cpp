@@ -371,7 +371,7 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
                         ip->op == ByteCodeOp::LocalCallPopParam ||
                         ip->op == ByteCodeOp::LocalCallPopRC))
     {
-        ByteCode* bc = (ByteCode*) ip->a.u64;
+        auto bc = (ByteCode*) ip->a.u64;
         if (bc && bc->alias)
             oldCrc = Crc32::compute8((const uint8_t*) &bc->alias, oldCrc);
         else

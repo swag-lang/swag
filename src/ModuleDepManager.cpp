@@ -36,9 +36,9 @@ void ModuleDepManager::parseCfgFile(Module* cfgModule)
 
 void ModuleDepManager::registerCfgFile(SourceFile* file)
 {
-    Utf8       moduleName;
-    Path       moduleFolder;
-    ModuleKind kind = ModuleKind::Module;
+    Utf8 moduleName;
+    Path moduleFolder;
+    auto kind = ModuleKind::Module;
 
     const auto parentFolder = file->path.parent_path();
     if (file->isScriptFile)

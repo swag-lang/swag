@@ -927,7 +927,7 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
     const unsigned int s1Len = str1.length();
     const unsigned int s2Len = str2.length();
 
-    unsigned int* column = new unsigned int[s1Len + 1];
+    auto column = new unsigned int[s1Len + 1];
     for (y        = 1; y <= s1Len; y++)
         column[y] = y;
     for (unsigned int x = 1; x <= s2Len; x++)

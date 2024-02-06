@@ -53,7 +53,7 @@ void Workspace::setupUserTags()
             tokens[1].trim();
 
             // Get the type
-            LiteralType  literalType = LiteralType::TT_MAX;
+            auto         literalType = LiteralType::TT_MAX;
             Vector<Utf8> tokens1;
             Utf8::tokenize(tokens[0], ':', tokens1);
             if (tokens1.size() == 2)

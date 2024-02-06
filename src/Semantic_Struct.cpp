@@ -698,7 +698,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     }
 
     // Register symbol with its type
-    SymbolKind symbolKind = SymbolKind::Struct;
+    auto symbolKind = SymbolKind::Struct;
     switch (node->kind)
     {
     case AstNodeKind::StructDecl:

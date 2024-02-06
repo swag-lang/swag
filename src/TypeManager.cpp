@@ -315,7 +315,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        TypeInfoNative* newType    = (TypeInfoNative*) typeInfo->clone();
+        auto newType               = (TypeInfoNative*) typeInfo->clone();
         newType->valueInteger      = *(int32_t*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesI[value] = newType;
@@ -330,7 +330,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        TypeInfoNative* newType    = (TypeInfoNative*) typeInfo->clone();
+        auto newType               = (TypeInfoNative*) typeInfo->clone();
         newType->valueInteger      = *(int32_t*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesB[value] = newType;
@@ -345,7 +345,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        TypeInfoNative* newType    = (TypeInfoNative*) typeInfo->clone();
+        auto newType               = (TypeInfoNative*) typeInfo->clone();
         newType->valueFloat        = *(float*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesF[value] = newType;

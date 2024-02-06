@@ -912,7 +912,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         auto child1                             = callParams->childs[1];
         auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::F32:
@@ -942,7 +942,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         auto child                              = callParams->childs[0];
         auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U8:
@@ -977,7 +977,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         auto child1                             = callParams->childs[1];
         auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U8:
@@ -1011,7 +1011,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         auto child                              = callParams->childs[0];
         auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U16:
@@ -1040,7 +1040,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRc          = node->resultRegisterRc;
         auto typeInfo                           = TypeManager::concreteType(callParams->childs[0]->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::F32:
@@ -1070,7 +1070,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         auto child1                             = callParams->childs[1];
         auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -1141,7 +1141,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         auto child                              = callParams->childs[0];
         auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
         SWAG_ASSERT(typeInfo->isNative());
-        ByteCodeOp op = ByteCodeOp::End;
+        auto op = ByteCodeOp::End;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:

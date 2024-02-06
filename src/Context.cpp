@@ -25,7 +25,7 @@ static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
 #ifdef SWAG_DEV_MODE
     SWAG_ASSERT((uint64_t) byteCodePtr != SWAG_PATCH_MARKER);
 #endif
-    ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
+    auto              bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
     TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
     VectorNative<Register*> returnRegisters;

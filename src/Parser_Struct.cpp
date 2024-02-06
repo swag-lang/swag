@@ -200,7 +200,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     }
 
     // Special case
-    SyntaxStructType structType = SyntaxStructType::Struct;
+    auto structType = SyntaxStructType::Struct;
     if (token.id == TokenId::KwdInterface)
     {
         structType              = SyntaxStructType::Interface;
@@ -293,7 +293,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         typeInfo->structName = structNode->token.text;
         typeInfo->scope      = newScope;
 
-        SymbolKind symbolKind = SymbolKind::Struct;
+        auto symbolKind = SymbolKind::Struct;
         switch (structType)
         {
         case SyntaxStructType::Interface:

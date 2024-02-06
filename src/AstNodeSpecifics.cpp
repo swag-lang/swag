@@ -322,7 +322,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         if (context)
             sym = subFuncScope->symTable.find(subDecl->token.text);
 
-        SymbolKind symKind = SymbolKind::Invalid;
+        auto symKind = SymbolKind::Invalid;
         switch (subDecl->kind)
         {
         case AstNodeKind::FuncDecl:

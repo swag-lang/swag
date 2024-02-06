@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Parser.h"
 #include "Ast.h"
 #include "AstFlags.h"
 #include "Diagnostic.h"
@@ -6,7 +7,6 @@
 #include "JobThread.h"
 #include "Module.h"
 #include "Naming.h"
-#include "Parser.h"
 #include "Scoped.h"
 #include "TypeManager.h"
 #ifdef SWAG_STATS

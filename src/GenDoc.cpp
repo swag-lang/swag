@@ -281,7 +281,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
     int start = 0;
     while (start < (int) lines.size())
     {
-        UserBlock* blk = new UserBlock;
+        auto blk = new UserBlock;
 
         // Start of a block
         for (; start < (int) lines.size(); start++)
@@ -1262,7 +1262,7 @@ void GenDoc::constructPage()
     helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
     // User start of the <head> section
-    const Utf8 startHead = Utf8{module->buildCfg.genDoc.startHead};
+    const auto startHead = Utf8{module->buildCfg.genDoc.startHead};
     helpOutput += startHead;
 
     // Page title
@@ -1270,7 +1270,7 @@ void GenDoc::constructPage()
         helpOutput += FMT("<title>%s</title>\n", titleContent.c_str());
 
     // User icon
-    const Utf8 icon = Utf8{module->buildCfg.genDoc.icon};
+    const auto icon = Utf8{module->buildCfg.genDoc.icon};
     if (!icon.empty())
         helpOutput += FMT("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
 
@@ -1288,7 +1288,7 @@ void GenDoc::constructPage()
         outputStyles();
 
     // User end of the <head> section
-    const Utf8 endHead = Utf8{module->buildCfg.genDoc.endHead};
+    const auto endHead = Utf8{module->buildCfg.genDoc.endHead};
     helpOutput += endHead;
 
     helpOutput += "\n</head>\n";
@@ -1299,7 +1299,7 @@ void GenDoc::constructPage()
     helpOutput += "<body>\n";
 
     // User start of the <body> section
-    const Utf8 startBody = Utf8{module->buildCfg.genDoc.startBody};
+    const auto startBody = Utf8{module->buildCfg.genDoc.startBody};
     helpOutput += startBody;
 
     helpOutput += "\n<div class=\"container\">\n";
@@ -1366,7 +1366,7 @@ void GenDoc::constructPage()
     </script>\n)";
 
     // User end of the <body> section
-    const Utf8 endBody = Utf8{module->buildCfg.genDoc.endBody};
+    const auto endBody = Utf8{module->buildCfg.genDoc.endBody};
     helpOutput += endBody;
 
     helpOutput += "</body>\n";

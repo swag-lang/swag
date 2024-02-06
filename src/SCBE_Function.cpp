@@ -2293,7 +2293,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::JumpDyn32:
         case ByteCodeOp::JumpDyn64:
         {
-            int32_t* tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
+            auto tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
 
             if (ip->op == ByteCodeOp::JumpDyn8)
                 pp.emit_LoadS8S64_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
@@ -2330,7 +2330,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 
-            int32_t*        tableConstant = (int32_t*) addrConstant;
+            auto            tableConstant = (int32_t*) addrConstant;
             CPULabelToSolve label;
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
@@ -3714,7 +3714,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            ByteCode* callBc = (ByteCode*) ip->a.pointer;
+            auto callBc = (ByteCode*) ip->a.pointer;
             emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
             pushRAParams.clear();
             pushRVParams.clear();
@@ -3742,7 +3742,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
         {
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
             // Test if it's a bytecode lambda
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), R10);

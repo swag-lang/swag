@@ -782,7 +782,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         // Command
         /////////////////////////////////////////
-        BcDbgCommandResult result = BcDbgCommandResult::Invalid;
+        auto result = BcDbgCommandResult::Invalid;
 
         if (!arg.cmd.empty())
         {

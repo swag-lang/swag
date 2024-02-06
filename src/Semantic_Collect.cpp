@@ -76,7 +76,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 
     if (typeInfo->isSlice())
     {
-        SwagSlice* ptrSlice   = reinterpret_cast<SwagSlice*>(ptrDest);
+        auto       ptrSlice   = reinterpret_cast<SwagSlice*>(ptrDest);
         const auto assignType = assignment ? TypeManager::concreteType(assignment->typeInfo) : nullptr;
 
         if (assignment && assignment->castedTypeInfo && assignment->castedTypeInfo->isPointerNull())

@@ -131,8 +131,8 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
     {
         if (isExternal && !fileForSourceLocation)
         {
-            const char* pz = (const char*) buffer;
-            Utf8        line;
+            auto pz = (const char*) buffer;
+            Utf8 line;
             while (*pz)
             {
                 while (*pz && *pz != '\n')

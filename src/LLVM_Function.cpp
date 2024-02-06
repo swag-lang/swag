@@ -32,8 +32,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Function prototype
-    auto            funcType = getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
-    llvm::Function* func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
+    auto funcType = getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
+    auto func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
     setFuncAttributes(buildParameters, moduleToGen, bcFuncNode, bc, func);
 
     // Content
@@ -3410,7 +3410,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::JumpDyn64:
         case ByteCodeOp::JumpDyn32:
         {
-            int32_t* tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
+            auto tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
 
             VectorNative<llvm::BasicBlock*> falseBlocks;
             VectorNative<llvm::BasicBlock*> trueBlocks;
@@ -5140,9 +5140,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto              callBc       = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
-            resultFuncCall                 = emitCall(buildParameters, moduleToGen, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+            auto callBc       = (ByteCode*) ip->a.pointer;
+            auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+            resultFuncCall    = emitCall(buildParameters, moduleToGen, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
             if (ip->op == ByteCodeOp::LocalCallPopRC)
                 storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
@@ -5155,8 +5155,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::ForeignCall:
         case ByteCodeOp::ForeignCallPop:
         {
-            auto              funcNode     = (AstFuncDecl*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto funcNode     = (AstFuncDecl*) ip->a.pointer;
+            auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
             funcNode->computeFullNameForeign(false);
             resultFuncCall = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();
@@ -5167,7 +5167,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
         {
-            TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
 
             llvm::BasicBlock* blockLambdaBC     = llvm::BasicBlock::Create(context, "", func);
             llvm::BasicBlock* blockLambdaNative = llvm::BasicBlock::Create(context, "", func);

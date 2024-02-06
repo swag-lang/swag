@@ -2367,7 +2367,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         return true;
 
     Context cxt;
-    State*  state = new State;
+    auto    state = new State;
 
     cxt.bc      = context->bc;
     state->ip   = nullptr;

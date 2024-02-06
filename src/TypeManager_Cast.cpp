@@ -2955,7 +2955,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
 
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
-    CastErrorType  castErrorType = CastErrorType::Zero;
+    auto           castErrorType = CastErrorType::Zero;
     TypeInfoSlice* toTypeSlice   = castTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
 
     if (fromType->isListArray())

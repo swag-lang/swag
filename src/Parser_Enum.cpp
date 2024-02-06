@@ -54,8 +54,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
         enumNode->scope = newScope;
 
         // If an 'impl' came first, then typeinfo has already been defined
-        ScopedLock    lk1(newScope->owner->mutex);
-        TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
+        ScopedLock lk1(newScope->owner->mutex);
+        auto       typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
         if (!typeInfo)
         {
             typeInfo                  = makeType<TypeInfoEnum>();
