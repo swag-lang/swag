@@ -87,9 +87,7 @@ enum class JobWaitKind
 struct Job
 {
     virtual JobResult execute() = 0;
-    virtual void      release()
-    {
-    };
+    virtual void      release(){};
 
     void addDependentJob(Job* job);
     void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
@@ -123,8 +121,9 @@ struct Job
     uint32_t affinity        = UINT32_MAX;
 };
 
-#define YIELD() \
-    do { \
+#define YIELD()                                     \
+    do                                              \
+    {                                               \
         if (context->result != ContextResult::Done) \
-            return true; \
-    } while(0)
+            return true;                            \
+    } while (0)

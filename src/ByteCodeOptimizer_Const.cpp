@@ -4,93 +4,104 @@
 #include "Math.h"
 #include "TypeManager.h"
 
-#define OK() \
-    do { \
+#define OK()                                  \
+    do                                        \
+    {                                         \
         context->passHasDoneSomething = true; \
-        ip->flags &= ~BCI_IMM_A; \
-    } while(0)
+        ip->flags &= ~BCI_IMM_A;              \
+    } while (0)
 
 #define CMP3(__a, __b) __a < (__b) ? -1 : ((__a) > (__b) ? 1 : 0)
 
-#define BINOP_S8(__op) \
-    do { \
+#define BINOP_S8(__op)                          \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.s32 = ip->a.s8 __op ip->b.s8; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.s32 = ip->a.s8 __op ip->b.s8;     \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_S16(__op) \
-    do { \
+#define BINOP_S16(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.s32 = ip->a.s16 __op ip->b.s16; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.s32 = ip->a.s16 __op ip->b.s16;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_S32(__op) \
-    do { \
+#define BINOP_S32(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.s32 = ip->a.s32 __op ip->b.s32; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.s32 = ip->a.s32 __op ip->b.s32;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_S64(__op) \
-    do { \
+#define BINOP_S64(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate64); \
-        ip->b.s64 = ip->a.s64 __op ip->b.s64; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.s64 = ip->a.s64 __op ip->b.s64;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_U8(__op) \
-    do { \
+#define BINOP_U8(__op)                          \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.u64 = ip->a.u8 __op ip->b.u8; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.u64 = ip->a.u8 __op ip->b.u8;     \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_U16(__op) \
-    do { \
+#define BINOP_U16(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.u64 = ip->a.u16 __op ip->b.u16; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.u64 = ip->a.u16 __op ip->b.u16;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_U32(__op) \
-    do { \
+#define BINOP_U32(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.u64 = ip->a.u32 __op ip->b.u32; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.u64 = ip->a.u32 __op ip->b.u32;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_U64(__op) \
-    do { \
+#define BINOP_U64(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate64); \
-        ip->b.u64 = ip->a.u64 __op ip->b.u64; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.u64 = ip->a.u64 __op ip->b.u64;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_F32(__op) \
-    do { \
+#define BINOP_F32(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate32); \
-        ip->b.f32 = ip->a.f32 __op ip->b.f32; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.f32 = ip->a.f32 __op ip->b.f32;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
-#define BINOP_F64(__op) \
-    do { \
+#define BINOP_F64(__op)                         \
+    do                                          \
+    {                                           \
         SET_OP(ip, ByteCodeOp::SetImmediate64); \
-        ip->b.f64 = ip->a.f64 __op ip->b.f64; \
-        ip->a.u32 = ip->c.u32; \
-        OK(); \
-    } while(0)
+        ip->b.f64 = ip->a.f64 __op ip->b.f64;   \
+        ip->a.u32 = ip->c.u32;                  \
+        OK();                                   \
+    } while (0)
 
 // Make constant folding. If an instruction is purely constant, then compute the result and replace the instruction
 // with that result
