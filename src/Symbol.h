@@ -54,7 +54,7 @@ struct SymbolOverload
     uint32_t flags        = 0;
 
     void from(const SymbolOverload* other);
-    void setRegisters(const RegisterList& reg, uint32_t flags);
+    void setRegisters(const RegisterList& reg, uint32_t fl);
 };
 
 enum class SymbolKind : uint8_t

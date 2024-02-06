@@ -30,7 +30,7 @@ namespace Generic
                                   AstNode*                      callGenericParameters,
                                   OneMatch&                     match);
     TypeInfo* replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& replaceTypes, TypeInfo* typeInfo);
-    Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, const VectorMap<Utf8, GenericReplaceType>& replaceTypes);
+    Job*      end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, const VectorMap<Utf8, GenericReplaceType>& replaceTypes);
     void      deduceSubType(SymbolMatchContext&      context,
                             TypeInfo*                wantedTypeInfo,
                             TypeInfo*&               callTypeInfo,

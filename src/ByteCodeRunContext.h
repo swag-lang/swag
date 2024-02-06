@@ -24,7 +24,7 @@ struct ByteCodeRunContext
 {
     ~ByteCodeRunContext();
 
-    void        setup(SourceFile* sf, AstNode* node, ByteCode* nodeBC);
+    void        setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC);
     void        releaseStack();
     static void stackOverflow();
     int         getRegCount(int cur);

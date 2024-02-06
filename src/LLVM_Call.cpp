@@ -279,7 +279,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                         const BuildParameters& buildParameters,
                         const llvm::Function*  func,
                         TypeInfoFuncAttr*      typeFunc,
-                        uint32_t               rdest,
+                        uint32_t               rDest,
                         uint32_t               paramIdx,
                         llvm::AllocaInst*      allocR,
                         int                    sizeOf,
@@ -329,7 +329,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                     }
                 }
 
-                const auto r0 = GEP64(allocR, rdest);
+                const auto r0 = GEP64(allocR, rDest);
                 builder.CreateStore(ra, r0);
             }
 
@@ -340,7 +340,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                 allocR1->setAlignment(llvm::Align(8));
                 builder.CreateStore(ra, allocR1);
                 ra            = GEP8(allocR1, toAdd);
-                const auto r0 = GEP64(allocR, rdest);
+                const auto r0 = GEP64(allocR, rDest);
                 builder.CreateStore(ra, r0);
             }
 
@@ -377,12 +377,12 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                 break;
             }
 
-            const auto r0 = GEP64(allocR, rdest);
+            const auto r0 = GEP64(allocR, rDest);
             builder.CreateStore(ra, r0);
         }
         else
         {
-            const auto r0 = GEP64_PTR_PTR_I8(allocR, rdest);
+            const auto r0 = GEP64_PTR_PTR_I8(allocR, rDest);
             builder.CreateStore(ra, r0);
         }
     }
@@ -391,13 +391,13 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
         // By convention, all remaining bits should be zero
         if (param->isNativeIntegerSigned() && param->sizeOf < sizeof(void*))
         {
-            const auto r0 = GEP64(allocR, rdest);
+            const auto r0 = GEP64(allocR, rDest);
             const auto ra = builder.CreateIntCast(arg, I64_TY(), true);
             builder.CreateStore(ra, r0);
         }
         else if (param->isNativeIntegerUnsigned() && param->sizeOf < sizeof(void*))
         {
-            const auto r0 = GEP64(allocR, rdest);
+            const auto r0 = GEP64(allocR, rDest);
             const auto ra = builder.CreateIntCast(arg, I64_TY(), false);
             builder.CreateStore(ra, r0);
         }
@@ -411,14 +411,14 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
 
             const auto ra = builder.CreateIntCast(arg, I64_TY(), false);
             builder.CreateStore(ra, allocR1);
-            const auto r0 = GEP64_PTR_PTR_I64(allocR, rdest);
+            const auto r0 = GEP64_PTR_PTR_I64(allocR, rDest);
             builder.CreateStore(allocR1, r0);
         }
 
         // This can be casted to an integer
         else if (sizeOf)
         {
-            auto r0 = GEP64(allocR, rdest);
+            auto r0 = GEP64(allocR, rDest);
             if (sizeOf == sizeof(void*))
             {
                 builder.CreateStore(arg, r0);
@@ -440,7 +440,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
         else
         {
             const auto ty = swagTypeToLLVMType(buildParameters, module, param);
-            auto       r0 = GEP64(allocR, rdest);
+            auto       r0 = GEP64(allocR, rDest);
             r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
         }
@@ -449,13 +449,13 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
     {
         if (arg->getType()->isPointerTy())
         {
-            auto r0 = GEP64(allocR, rdest);
+            auto r0 = GEP64(allocR, rDest);
             r0      = builder.CreatePointerCast(r0, arg->getType()->getPointerTo());
             builder.CreateStore(arg, r0);
         }
         else
         {
-            const auto r0 = GEP64(allocR, rdest);
+            const auto r0 = GEP64(allocR, rDest);
             builder.CreateStore(arg, r0);
         }
     }

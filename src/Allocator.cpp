@@ -12,7 +12,7 @@ void* operator new(size_t t)
     t = Allocator::alignSize((int) t + 2 * sizeof(uint64_t));
 
     const auto p = (uint64_t*) Allocator::alloc(t, 2 * sizeof(uint64_t));
-    *p           = (uint64_t) t;
+    *p           = t;
 
 #ifdef SWAG_STATS
     g_Stats.memNew += t;

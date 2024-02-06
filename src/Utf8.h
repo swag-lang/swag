@@ -83,7 +83,7 @@ struct Utf8
     friend bool operator!=(const Utf8& str1, const char* str2);
     friend bool operator==(const Utf8& str1, const Utf8& str2);
     friend bool operator!=(const Utf8& str1, const Utf8& str2);
-    void        operator=(Utf8&& from);
+    void        operator=(Utf8&& other);
     void        operator=(uint32_t c);
     void        operator+=(uint32_t c);
     void        operator+=(char c);
@@ -93,7 +93,7 @@ struct Utf8
     bool toChar32(uint32_t& ch) const;
     void replace(const char* src, const char* dst);
 
-    static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
+    static const char* decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset);
     static Utf8        format(const char* format, ...);
     static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
     static void        wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength);

@@ -43,7 +43,7 @@ namespace OS
 
     Path getExePath();
     Utf8 getLastErrorAsString();
-    void errorBox(const char* expr, const char* title);
+    void errorBox(const char* title, const char* expr);
     void assertBox(const char* expr, const char* file, int line);
 
     void visitFiles(const char* folder, const function<void(const char*)>& user);
@@ -78,10 +78,10 @@ namespace OS
     int16_t atomicXor(int16_t* addr, int16_t value);
     int32_t atomicXor(int32_t* addr, int32_t value);
     int64_t atomicXor(int64_t* addr, int64_t value);
-    int8_t  atomicXchg(int8_t* addr, int8_t value);
-    int16_t atomicXchg(int16_t* addr, int16_t value);
-    int32_t atomicXchg(int32_t* addr, int32_t value);
-    int64_t atomicXchg(int64_t* addr, int64_t value);
+    int8_t  atomicXchg(int8_t* addr, int8_t replaceWith);
+    int16_t atomicXchg(int16_t* addr, int16_t replaceWith);
+    int32_t atomicXchg(int32_t* addr, int32_t replaceWith);
+    int64_t atomicXchg(int64_t* addr, int64_t replaceWith);
     int8_t  atomicCmpXchg(int8_t* addr, int8_t compareTo, int8_t replaceWith);
     int16_t atomicCmpXchg(int16_t* addr, int16_t compareTo, int16_t replaceWith);
     int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith);

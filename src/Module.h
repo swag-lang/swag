@@ -144,7 +144,7 @@ struct Module
     void        buildTypesSlice();
     void        initProcessInfos();
     void        callPreMain();
-    Utf8        getGlobalPrivFct(const Utf8& name) const;
+    Utf8        getGlobalPrivFct(const Utf8& nameFct) const;
     void        inheritCfgFrom(const Module* from);
 
     void        addExportSourceFile(SourceFile* file);

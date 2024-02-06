@@ -201,7 +201,7 @@ bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* typeInfo)
+bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::Bool))
     {

@@ -26,10 +26,10 @@ struct ByteCodeRun
     static bool  executeIsConstExprSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip);
     static void  executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip);
 
-    static void localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
-    static void localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
-    static void callInternalCompilerError(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);
-    static void        callInternalPanic(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);
+    static void  localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
+    static void  localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
+    static void  callInternalCompilerError(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);
+    static void  callInternalPanic(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);
     static void* makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc);
     static void  executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned);
     static void  executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned);

@@ -94,7 +94,7 @@ struct Parser
 
     static bool testIsSingleIdentifier(AstNode* node);
     bool        checkIsSingleIdentifier(AstNode* node, const char* msg) const;
-    bool        checkIsIdentifier(const TokenParse& token, const char* msg) const;
+    bool        checkIsIdentifier(const TokenParse& tokenParse, const char* msg) const;
     bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
     bool        checkIsValidVarName(AstNode* node) const;

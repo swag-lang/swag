@@ -41,8 +41,8 @@ struct AstOutput
     static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo);
     static bool outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node);
     static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
-    static bool outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* node, bool isSelf);
-    static bool outputVar(OutputContext& context, Concat& concat, const AstVarDecl* node);
+    static bool outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf);
+    static bool outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode);
     static bool outputStruct(OutputContext& context, Concat& concat, AstStruct* node);
     static bool outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo* typeInfo);
     static bool outputType(OutputContext& context, Concat& concat, AstTypeExpression* node);

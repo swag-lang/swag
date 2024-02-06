@@ -8,7 +8,7 @@ struct DataSegment;
 
 struct ModuleManager
 {
-    bool  loadModule(const Utf8& moduleName, bool canBeSystem = true);
+    bool  loadModule(const Utf8& name, bool canBeSystem = true);
     bool  isModuleLoaded(const Utf8& moduleName);
     bool  isModuleFailedLoaded(const Utf8& moduleName);
     void  resetFailedModule(const Utf8& moduleName);

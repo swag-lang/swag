@@ -786,7 +786,7 @@ namespace OS
 
     int32_t atomicXchg(int32_t* addr, int32_t replaceWith)
     {
-        return InterlockedExchange((LONG*) addr, (LONG) replaceWith);
+        return InterlockedExchange((LONG*) addr, replaceWith);
     }
 
     int64_t atomicXchg(int64_t* addr, int64_t replaceWith)

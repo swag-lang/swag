@@ -113,7 +113,7 @@ void Concat::addBool(bool v)
 void Concat::addU8(uint8_t v)
 {
     ensureSpace(sizeof(uint8_t));
-    *(uint8_t*) currentSP = v;
+    *currentSP = v;
     currentSP += sizeof(uint8_t);
 }
 
@@ -214,7 +214,7 @@ void Concat::addString(const Utf8& v)
 void Concat::addString1(const char* v)
 {
     ensureSpace(1);
-    *(uint8_t*) currentSP = *(uint8_t*) v;
+    *currentSP = *(uint8_t*) v;
     currentSP += 1;
 }
 

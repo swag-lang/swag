@@ -88,7 +88,7 @@ namespace ByteCodeGen
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node);
     void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
-    bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
+    bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
 
     void getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep);
     void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
@@ -213,7 +213,7 @@ namespace ByteCodeGen
     bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
     bool emitSafetyUnreachable(ByteCodeGenContext* context);
     bool emitSafetySwitchDefault(ByteCodeGenContext* context);
-    bool emitSafetyValue(ByteCodeGenContext* context, int r0, TypeInfo* typeInfo);
+    bool emitSafetyValue(ByteCodeGenContext* context, int r, const TypeInfo* typeInfo);
     bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
     bool emitIndex(ByteCodeGenContext* context);
     bool emitLoop(ByteCodeGenContext* context);
@@ -311,12 +311,12 @@ namespace ByteCodeGen
     void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node);
 
     void generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
-    bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
+    bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     void emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset);
     void emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind);
-    bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
+    bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     bool emitCopyStruct(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     void     transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC);

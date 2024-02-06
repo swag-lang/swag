@@ -18,7 +18,7 @@ struct EnumerateModuleJob : Job
                                        Module*              imported,
                                        bool                 markDown);
     static bool    dealWithFileToLoads(Module* theModule);
-    static void    enumerateFilesInModule(const Path& basePath, Module* module);
+    static void    enumerateFilesInModule(const Path& basePath, Module* theModule);
     static void    loadFilesInModules(const Path& basePath);
     static Module* addModule(const Path& path);
     static void    enumerateModules(const Path& path);

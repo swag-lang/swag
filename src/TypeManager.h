@@ -115,8 +115,8 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
 
     static void            convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
-    static TypeInfoArray*  convertTypeListToArray(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
-    static TypeInfoStruct* convertTypeListToStruct(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
+    static TypeInfoArray*  convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant);
+    static TypeInfoStruct* convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant);
 
     static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, const TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
     static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
@@ -128,7 +128,7 @@ struct TypeManager
 
     static bool      promote(SemanticContext* context, AstNode* left, AstNode* right);
     static bool      promoteLeft(SemanticContext* context, AstNode* left, AstNode* right);
-    static bool      promote32(SemanticContext* context, AstNode* right);
+    static bool      promote32(SemanticContext* context, AstNode* left);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, const AstNode* right);
 

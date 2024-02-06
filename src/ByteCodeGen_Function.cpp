@@ -2302,7 +2302,7 @@ bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
 
 bool ByteCodeGen::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
-    SWAG_CHECK(Semantic::makeInline((JobContext*) context, funcDecl, identifier));
+    SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
     context->baseJob->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);

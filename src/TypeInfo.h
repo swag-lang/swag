@@ -186,7 +186,7 @@ struct TypeInfo
     void        removeGenericFlag();
     void        clearName();
     void        forceComputeName();
-    void        getScopedName(Utf8& name) const;
+    void        getScopedName(Utf8& newName) const;
     Utf8        getName();
     Utf8        getTypeName(bool forceNoScope);
     const Utf8& computeWhateverName(uint32_t nameType);
@@ -307,7 +307,7 @@ struct TypeInfoFuncAttr : TypeInfo
     bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
 
     bool            isSame(const TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi) const;
-    bool            isSame(const TypeInfoFuncAttr* from, uint64_t castFlags) const;
+    bool            isSame(const TypeInfoFuncAttr* other, uint64_t castFlags) const;
     TypeInfo*       concreteReturnType() const;
     bool            isVariadic() const;
     bool            isCVariadic() const;

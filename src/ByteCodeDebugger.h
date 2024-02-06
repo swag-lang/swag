@@ -112,7 +112,7 @@ struct ByteCodeDebugger
         }
     }
 
-    bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false) const;
+    bool evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent = false) const;
     bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent = false) const;
 
     static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
@@ -192,7 +192,7 @@ struct ByteCodeDebugger
     bool                           mustBreak(ByteCodeRunContext* context);
     bool                           step(ByteCodeRunContext* context);
     static ByteCode*               findCmdBc(const Utf8& name);
-    static VectorNative<ByteCode*> findBc(const char* name);
+    static VectorNative<ByteCode*> findBc(const char* bcName);
     static bool                    testNameFilter(const Utf8& name, const Utf8& filter);
 
     static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
