@@ -13,7 +13,7 @@ OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
     return nullptr;
 }
 
-void AttributeList::getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName)
+void AttributeList::getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName) const
 {
     SWAG_RACE_CONDITION_READ(raceCond);
 
@@ -51,7 +51,7 @@ const ComputedValue* OneAttribute::getValue(const Utf8& paramName) const
     return nullptr;
 }
 
-const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Utf8& parameter)
+const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Utf8& parameter) const
 {
     SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)
@@ -73,7 +73,7 @@ const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Ut
     return nullptr;
 }
 
-const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& parameter)
+const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& parameter) const
 {
     SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)
@@ -95,7 +95,7 @@ const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& p
     return nullptr;
 }
 
-bool AttributeList::hasAttribute(const Utf8& fullName)
+bool AttributeList::hasAttribute(const Utf8& fullName) const
 {
     SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)

@@ -145,7 +145,7 @@ T* castAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNodeKind kind3
 template<typename T>
 const T* castAst(const AstNode* ptr, AstNodeKind kind)
 {
-    T* casted = static_cast<T*>(ptr);
+    const T* casted = static_cast<T*>(ptr);
     SWAG_ASSERT(casted && casted->kind == kind);
     return casted;
 }
@@ -153,7 +153,7 @@ const T* castAst(const AstNode* ptr, AstNodeKind kind)
 template<typename T>
 const T* castAst(const AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2)
 {
-    T* casted = static_cast<T*>(ptr);
+    const T* casted = static_cast<T*>(ptr);
     SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
     return casted;
 }
@@ -161,7 +161,7 @@ const T* castAst(const AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2)
 template<typename T>
 const T* castAst(const AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNodeKind kind3)
 {
-    T* casted = static_cast<T*>(ptr);
+    const T* casted = static_cast<T*>(ptr);
     SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3));
     return casted;
 }
@@ -169,7 +169,7 @@ const T* castAst(const AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNo
 template<typename T>
 const T* castAst(const AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNodeKind kind3, AstNodeKind kind4)
 {
-    T* casted = static_cast<T*>(ptr);
+    const T* casted = static_cast<T*>(ptr);
     SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2 || casted->kind == kind3 || casted->kind == kind4));
     return casted;
 }

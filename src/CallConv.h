@@ -55,13 +55,13 @@ struct CallConv
     bool structReturnByRegister = true;
 
     // The register used to return an integer
-    CPURegister returnByRegisterInteger = CPURegister::RAX;
+    CPURegister returnByRegisterInteger = RAX;
 
     // The register used to return a float
-    CPURegister returnByRegisterFloat = CPURegister::XMM0;
+    CPURegister returnByRegisterFloat = XMM0;
 
     // Scratch registers used to optimized generation (x64 backend)
-    CPURegister firstScratchRegister = CPURegister::R12;
+    CPURegister firstScratchRegister = R12;
     uint32_t    numScratchRegisters  = 4;
 
     static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
@@ -72,5 +72,5 @@ struct CallConv
     static bool returnStructByValue(const TypeInfoFuncAttr* typeFunc);
 };
 
-extern CallConv g_CallConv[CallConvKind::Max];
+extern CallConv g_CallConv[Max];
 extern void     initCallConvKinds();

@@ -590,13 +590,6 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
                 }
 
                 dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
-
-                // Create a 'this' variable for the debugger
-                if (typeParam->isSelf() && child->token.text == "self")
-                {
-                    var = dbgBuilder->createParameterVariable(scope, "this", idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
-                    // dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
-                }
             }
 
             idxParam += typeParam->numRegisters();

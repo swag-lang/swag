@@ -140,7 +140,7 @@ namespace BackendLinker
             // Be sure that the library exists. Some modules rely on external libraries, and do not have their
             // own one
             error_code err;
-            if (filesystem::exists(fullName, err))
+            if (exists(fullName, err))
                 arguments.push_back(libName);
         }
 
@@ -158,7 +158,7 @@ namespace BackendLinker
             // Be sure that the library exits. Some modules rely on external libraries, and do not have their
             // own one
             error_code err;
-            if (filesystem::exists(fullName, err))
+            if (exists(fullName, err))
                 arguments.push_back(libName);
         }
 

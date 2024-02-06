@@ -150,7 +150,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         ScopedLock lk1(node->identifier->resolvedSymbolName->mutex);
         if (node->identifier->resolvedSymbolName->cptOverloads)
         {
-            Semantic::waitSymbolNoLock(job, node->identifier->resolvedSymbolName);
+            waitSymbolNoLock(job, node->identifier->resolvedSymbolName);
             return true;
         }
     }
@@ -225,7 +225,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             ScopedLock lk(symbolName->mutex);
             if (symbolName->cptOverloads)
             {
-                Semantic::waitSymbolNoLock(job, symbolName);
+                waitSymbolNoLock(job, symbolName);
                 return true;
             }
         }
@@ -871,7 +871,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        Semantic::waitTypeCompleted(job, child->typeInfo);
+        waitTypeCompleted(job, child->typeInfo);
         if (context->result != ContextResult::Done)
         {
             job->waitingHintNode = child;

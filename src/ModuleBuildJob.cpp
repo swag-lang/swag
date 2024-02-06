@@ -74,7 +74,7 @@ void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
     Path publishPath = moduleToPublish->path;
     publishPath.append(SWAG_PUBLISH_FOLDER);
     error_code err;
-    if (!filesystem::exists(publishPath, err))
+    if (!exists(publishPath, err))
         return;
 
     // Everything at the root of the /publish folder will be copied "as is" in the output directory, whatever the
@@ -97,7 +97,7 @@ void ModuleBuildJob::publishFilesToTarget(const Module* moduleToPublish)
     osArchPath.append(Backend::getOsName(g_CommandLine.target));
     osArchPath += "-";
     osArchPath += Backend::getArchName(g_CommandLine.target);
-    if (filesystem::exists(osArchPath, err))
+    if (exists(osArchPath, err))
     {
         OS::visitFiles(osArchPath.string().c_str(),
                        [&](const char* cFileName)
@@ -827,7 +827,7 @@ JobResult ModuleBuildJob::execute()
             job->module                         = module;
             job->buildParameters                = module->buildParameters;
             job->buildParameters.outputFileName = module->name;
-            job->buildParameters.compileType    = BackendCompileType::Test;
+            job->buildParameters.compileType    = Test;
             jobsToAdd.push_back(job);
         }
 
@@ -840,7 +840,7 @@ JobResult ModuleBuildJob::execute()
             auto job                         = Allocator::alloc<ModuleRunJob>();
             job->module                      = module;
             job->buildParameters             = module->buildParameters;
-            job->buildParameters.compileType = BackendCompileType::Normal;
+            job->buildParameters.compileType = Normal;
             jobsToAdd.push_back(job);
         }
     }

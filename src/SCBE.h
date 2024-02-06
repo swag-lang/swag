@@ -59,5 +59,5 @@ struct SCBE : Backend
     void        computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind) const;
     static void initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
 
-    SCBE_X64* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    SCBE_X64* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 };

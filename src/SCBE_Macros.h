@@ -1,3 +1,4 @@
+#pragma once
 #define MK_IMMA_8(__reg)                                          \
     {                                                             \
         if (ip->flags & BCI_IMM_A)                                \

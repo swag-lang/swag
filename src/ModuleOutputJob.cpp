@@ -70,7 +70,7 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
+                preCompileJob->buildParameters.compileType     = Test;
                 jobsToAdd.push_back(preCompileJob);
             }
 
@@ -83,11 +83,11 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
                 if (module->kind == ModuleKind::Test)
-                    preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                    preCompileJob->buildParameters.compileType = Test;
                 else if (module->kind == ModuleKind::Example)
-                    preCompileJob->buildParameters.compileType = BackendCompileType::Example;
+                    preCompileJob->buildParameters.compileType = Example;
                 else
-                    preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
+                    preCompileJob->buildParameters.compileType = Normal;
                 jobsToAdd.push_back(preCompileJob);
             }
         }
@@ -112,7 +112,7 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
+                preCompileJob->buildParameters.compileType     = Test;
                 jobsToAdd.push_back(preCompileJob);
             }
 
@@ -125,11 +125,11 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
                 if (module->kind == ModuleKind::Test)
-                    preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                    preCompileJob->buildParameters.compileType = Test;
                 else if (module->kind == ModuleKind::Example)
-                    preCompileJob->buildParameters.compileType = BackendCompileType::Example;
+                    preCompileJob->buildParameters.compileType = Example;
                 else
-                    preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
+                    preCompileJob->buildParameters.compileType = Normal;
                 jobsToAdd.push_back(preCompileJob);
             }
         }
@@ -167,7 +167,7 @@ JobResult ModuleOutputJob::execute()
             compileJob->dependentJob                   = this;
             compileJob->buildParameters                = module->buildParameters;
             compileJob->buildParameters.outputFileName = module->name;
-            compileJob->buildParameters.compileType    = BackendCompileType::Test;
+            compileJob->buildParameters.compileType    = Test;
             jobsToAdd.push_back(compileJob);
         }
 
@@ -181,11 +181,11 @@ JobResult ModuleOutputJob::execute()
             compileJob->buildParameters = module->buildParameters;
 
             if (module->kind == ModuleKind::Test)
-                compileJob->buildParameters.compileType = BackendCompileType::Test;
+                compileJob->buildParameters.compileType = Test;
             else if (module->kind == ModuleKind::Example)
-                compileJob->buildParameters.compileType = BackendCompileType::Example;
+                compileJob->buildParameters.compileType = Example;
             else
-                compileJob->buildParameters.compileType = BackendCompileType::Normal;
+                compileJob->buildParameters.compileType = Normal;
             compileJob->buildParameters.outputFileName = module->name;
             jobsToAdd.push_back(compileJob);
         }

@@ -99,7 +99,7 @@ Path ModuleDepManager::getAliasPath(const Path& srcPath)
     auto p = srcPath;
     p.append(SWAG_ALIAS_FILENAME);
     error_code err;
-    if (filesystem::exists(p, err))
+    if (exists(p, err))
     {
         FILE* f = nullptr;
         if (!fopen_s(&f, p.string().c_str(), "rt"))
@@ -130,7 +130,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
 
                          // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
                          error_code err;
-                         if (filesystem::exists(cfgName, err))
+                         if (exists(cfgName, err))
                              newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
                      });
 
@@ -153,7 +153,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
 
     // No cfg file, we are done, we need one !
     error_code err;
-    if (!filesystem::exists(remotePath, err))
+    if (!exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0093), SWAG_CFG_FILE, remotePath.string().c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
@@ -204,12 +204,12 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath.append(SWAG_MODULES_FOLDER);
     remotePath.append(dep->name.c_str());
 
-    remotePath = filesystem::absolute(remotePath);
+    remotePath = absolute(remotePath);
     error_code err;
-    const auto remotePath1 = filesystem::canonical(remotePath, err);
+    const auto remotePath1 = canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
-    if (!filesystem::exists(remotePath, err))
+    if (!exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0255), remotePath.string().c_str())});
     if (!fetch)
         return true;
@@ -223,12 +223,12 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath.append(SWAG_MODULES_FOLDER);
     remotePath.append(dep->name.c_str());
 
-    remotePath = filesystem::absolute(remotePath);
+    remotePath = absolute(remotePath);
     error_code err;
-    const auto remotePath1 = filesystem::canonical(remotePath, err);
+    const auto remotePath1 = canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
-    if (!filesystem::exists(remotePath, err))
+    if (!exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0255), remotePath.string().c_str())});
     if (!fetch)
         return true;
@@ -652,7 +652,7 @@ bool ModuleDepManager::execute()
                 error_code err;
                 auto       pathSrc = g_Workspace->dependenciesPath;
                 pathSrc.append(val->name.c_str());
-                if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
+                if (!exists(pathSrc, err) && !create_directories(pathSrc, err))
                 {
                     Report::errorOS(FMT(Err(Err0100), pathSrc.string().c_str()));
                     ok = false;

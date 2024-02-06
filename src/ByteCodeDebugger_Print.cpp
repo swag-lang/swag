@@ -74,9 +74,9 @@ void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, c
     while (len++ < 25)
         g_Log.print(".");
     g_Log.print(" ");
-    g_Log.print(name.c_str(), ByteCodeDebugger::COLOR_NAME);
+    g_Log.print(name.c_str(), COLOR_NAME);
     g_Log.print(" ");
-    g_Log.print(type.c_str(), ByteCodeDebugger::COLOR_TYPE);
+    g_Log.print(type.c_str(), COLOR_TYPE);
     g_Log.eol();
 }
 
@@ -250,18 +250,18 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         // Current line
         if (currentLine)
         {
-            oneLine += ByteCodeDebugger::COLOR_VTS_CUR_INSTRUCTION;
+            oneLine += COLOR_VTS_CUR_INSTRUCTION;
             oneLine += "-> ";
         }
         else
         {
-            oneLine += ByteCodeDebugger::COLOR_VTS_INDEX;
+            oneLine += COLOR_VTS_INDEX;
             oneLine += "   ";
         }
 
         // Line
         oneLine += FMT("%-5u ", startLine + lineIdx + 1);
-        oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
+        oneLine += COLOR_VTS_DEFAULT;
 
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
@@ -290,9 +290,9 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
+                oneLine += COLOR_VTS_DEFAULT;
             else
-                oneLine += ByteCodeDebugger::COLOR_VTS_BREAKPOINT;
+                oneLine += COLOR_VTS_BREAKPOINT;
             oneLine += Utf8("\xe2\x96\xa0");
         }
         else
@@ -302,7 +302,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         // Code
         if (currentLine)
         {
-            oneLine += ByteCodeDebugger::COLOR_VTS_CUR_INSTRUCTION;
+            oneLine += COLOR_VTS_CUR_INSTRUCTION;
             oneLine += l;
         }
         else if (g_CommandLine.logColors)
@@ -311,7 +311,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         }
         else
         {
-            oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
+            oneLine += COLOR_VTS_DEFAULT;
             oneLine += l;
         }
 
@@ -361,7 +361,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     // Print format
     ValueFormat fmt;
     size_t      startIdx = 0;
-    if (!exprCmds.empty() && ByteCodeDebugger::getValueFormat(exprCmds[0], fmt))
+    if (!exprCmds.empty() && getValueFormat(exprCmds[0], fmt))
         startIdx++;
     fmt.print0x = false;
 
@@ -441,7 +441,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         for (int i = 0; i < min(count, perLine); i++)
         {
             Utf8 str;
-            ByteCodeDebugger::appendLiteralValue(context, str, fmt, addrB);
+            appendLiteralValue(context, str, fmt, addrB);
             g_Log.print(str);
             addrB += fmt.bitCount / 8;
         }
@@ -516,7 +516,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (arg.split.size() > 1)
     {
         const auto name = arg.split[1];
-        toLogBc         = ByteCodeDebugger::findCmdBc(name);
+        toLogBc         = findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
         toLogIp = toLogBc->out;
@@ -580,7 +580,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.split.size() > 1)
     {
         const auto name = arg.split[1];
-        toLogBc         = ByteCodeDebugger::findCmdBc(name);
+        toLogBc         = findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
         toLogIp = toLogBc->out;

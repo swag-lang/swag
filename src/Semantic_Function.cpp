@@ -17,7 +17,7 @@ void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
     node->allocateComputedValue();
     node->computedValue->storageOffset = node->ownerScope->startStackSize;
     node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-    Semantic::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+    setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
 }
 
 bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics)
@@ -366,7 +366,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
                     ScopedLock lk1(forId->resolvedSymbolName->mutex);
                     if (forId->resolvedSymbolName->cptOverloads)
                     {
-                        Semantic::waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName);
+                        waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName);
                         return true;
                     }
                 }
@@ -1249,7 +1249,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
     // :WaitForPOD
     if (typeFct->returnType->isStruct())
     {
-        Semantic::waitStructGenerated(context->baseJob, typeFct->returnType);
+        waitStructGenerated(context->baseJob, typeFct->returnType);
         YIELD();
     }
 
@@ -1516,7 +1516,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // :WaitForPOD
     if (returnType && returnType->isStruct())
     {
-        Semantic::waitAllStructSpecialMethods(context->baseJob, returnType);
+        waitAllStructSpecialMethods(context->baseJob, returnType);
         YIELD();
     }
 
@@ -1530,7 +1530,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         // If we are returning an interface, be sure they are defined before casting
         if (returnType->isInterface())
         {
-            Semantic::waitAllStructInterfaces(context->baseJob, child->typeInfo);
+            waitAllStructInterfaces(context->baseJob, child->typeInfo);
             YIELD();
         }
 

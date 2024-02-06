@@ -195,7 +195,7 @@ TypeInfo* TypeInfo::getFinalType()
     return this;
 }
 
-TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
+TypeInfoStruct* TypeInfo::getStructOrPointedStruct() const
 {
     const auto self = getConcreteAlias();
     if (self->kind == TypeInfoKind::Struct)

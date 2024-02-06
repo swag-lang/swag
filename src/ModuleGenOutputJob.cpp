@@ -25,7 +25,7 @@ JobResult ModuleGenOutputJob::execute()
     }
 
     // The module is built, so notify (we notify before the test)
-    if (buildParameters.compileType != BackendCompileType::Test)
+    if (buildParameters.compileType != Test)
         module->setHasBeenBuilt(BUILDRES_COMPILER);
 
     return JobResult::ReleaseJob;

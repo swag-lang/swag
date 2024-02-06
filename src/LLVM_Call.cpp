@@ -297,10 +297,6 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
 
     const auto arg = func->getArg(paramIdx);
 
-    // First two parameters are occupied by the variadic slice
-    if (typeFunc->isVariadic())
-        paramIdx += 2;
-
     if (toAdd || deRefSize)
     {
         if (CallConv::structParamByValue(typeFunc, param))
@@ -376,6 +372,8 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                 break;
             case 8:
                 ra = builder.CreateLoad(I64_TY(), ra);
+                break;
+            default:
                 break;
             }
 
@@ -520,7 +518,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
             params.push_back(values[idxParam + 1]);
             if (typeParam->numRegisters() > 1)
             {
-                index = pushParams[idxParam--];
+                idxParam--;
                 params.push_back(values[idxParam + 1]);
             }
         }

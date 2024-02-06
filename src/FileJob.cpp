@@ -9,7 +9,7 @@ JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
     error_code err;
-    if (filesystem::exists(destPath, err))
+    if (exists(destPath, err))
     {
         const auto tsrc  = OS::getFileWriteTime(sourcePath.string().c_str());
         const auto tdest = OS::getFileWriteTime(destPath.string().c_str());

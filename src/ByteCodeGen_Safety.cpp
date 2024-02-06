@@ -196,7 +196,7 @@ bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
         return true;
     }
 
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::SwitchComplete);
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::SwitchComplete);
     return true;
 }
 
@@ -208,14 +208,13 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* 
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
-        typeInfo = typeInfo->getConcreteAlias();
 
         const auto r0   = reserveRegisterRC(context);
         const auto inst = EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd8, r, 0, r0);
         inst->b.u32     = 0xFE;
         inst->flags |= BCI_IMM_B;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::InvalidBool);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::InvalidBool);
         freeRegisterRC(context, r0);
         return true;
     }
@@ -226,12 +225,11 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* 
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
-        typeInfo = typeInfo->getConcreteAlias();
 
         const auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::InvalidFloat);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::InvalidFloat);
         freeRegisterRC(context, r0);
         return true;
     }
@@ -242,12 +240,11 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* 
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
-        typeInfo = typeInfo->getConcreteAlias();
 
         const auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::InvalidFloat);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::InvalidFloat);
         freeRegisterRC(context, r0);
         return true;
     }
@@ -380,9 +377,9 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
     emitMakeSegPointer(context, exprNode->extMisc()->anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0);
 
     const auto rflags = reserveRegisterRC(context);
-    auto       inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+    const auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
     inst->b.u64       = SWAG_COMPARE_CAST_ANY;
-    inst              = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRc[1], rflags, r1);
+    EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRc[1], rflags, r1);
     freeRegisterRC(context, rflags);
     emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, toType));
 

@@ -6,7 +6,7 @@
 
 namespace
 {
-    bool emitXData(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    bool emitXData(const BuildParameters&, SCBE_CPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -25,7 +25,7 @@ namespace
         return true;
     }
 
-    bool emitPData(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    bool emitPData(const BuildParameters&, SCBE_CPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -64,7 +64,7 @@ namespace
         return true;
     }
 
-    bool emitDirectives(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    bool emitDirectives(const BuildParameters&, SCBE_CPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -76,7 +76,7 @@ namespace
         return true;
     }
 
-    bool emitSymbolTable(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    bool emitSymbolTable(const BuildParameters&, SCBE_CPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -140,7 +140,7 @@ namespace
         return true;
     }
 
-    bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp)
+    bool emitStringTable(const BuildParameters&, SCBE_CPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -197,9 +197,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchTextSectionSize             = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchTextSectionOffset           = concat.addU32Addr(0); // .PointerToRawData
     pp.patchTextSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-    concat.addU32(0);                                           // .PointerToLinenumbers
+    concat.addU32(0);                                           // .PointerToLineNumbers
     pp.patchTextSectionRelocTableCount = concat.addU16Addr(0);  // .PointerToRelocations
-    concat.addU16(0);                                           // .NumberOfLinenumbers
+    concat.addU16(0);                                           // .NumberOfLineNumbers
     pp.patchTextSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
 
     // global strings sections
@@ -211,9 +211,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchSSCount  = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchSSOffset = concat.addU32Addr(0); // .PointerToRawData
     concat.addU32(0);                        // .PointerToRelocations
-    concat.addU32(0);                        // .PointerToLinenumbers
+    concat.addU32(0);                        // .PointerToLineNumbers
     concat.addU16(0);                        // .NumberOfRelocations
-    concat.addU16(0);                        // .NumberOfLinenumbers
+    concat.addU16(0);                        // .NumberOfLineNumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
 
     // directive section (to register dll exported symbols)
@@ -224,9 +224,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchDRCount  = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchDROffset = concat.addU32Addr(0); // .PointerToRawData
     concat.addU32(0);                        // .PointerToRelocations
-    concat.addU32(0);                        // .PointerToLinenumbers
+    concat.addU32(0);                        // .PointerToLineNumbers
     concat.addU16(0);                        // .NumberOfRelocations
-    concat.addU16(0);                        // .NumberOfLinenumbers
+    concat.addU16(0);                        // .NumberOfLineNumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES | IMAGE_SCN_LNK_INFO);
 
     // .pdata section (to register functions)
@@ -237,9 +237,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchPDCount                   = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchPDOffset                  = concat.addU32Addr(0); // .PointerToRawData
     pp.patchPDSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-    concat.addU32(0);                                         // .PointerToLinenumbers
+    concat.addU32(0);                                         // .PointerToLineNumbers
     pp.patchPDSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-    concat.addU16(0);                                         // .NumberOfLinenumbers
+    concat.addU16(0);                                         // .NumberOfLineNumbers
     pp.patchPDSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
     // .xdata section (for unwind infos)
@@ -250,9 +250,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchXDCount  = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchXDOffset = concat.addU32Addr(0); // .PointerToRawData
     concat.addU32(0);                        // .PointerToRelocations
-    concat.addU32(0);                        // .PointerToLinenumbers
+    concat.addU32(0);                        // .PointerToLineNumbers
     concat.addU16(0);                        // .NumberOfRelocations
-    concat.addU16(0);                        // .NumberOfLinenumbers
+    concat.addU16(0);                        // .NumberOfLineNumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
     // .debug$S section
@@ -263,9 +263,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchDBGSCount                   = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchDBGSOffset                  = concat.addU32Addr(0); // .PointerToRawData
     pp.patchDBGSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-    concat.addU32(0);                                           // .PointerToLinenumbers
+    concat.addU32(0);                                           // .PointerToLineNumbers
     pp.patchDBGSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-    concat.addU16(0);                                           // .NumberOfLinenumbers
+    concat.addU16(0);                                           // .NumberOfLineNumbers
     pp.patchDBGSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
     // .debug$T section
@@ -276,9 +276,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     pp.patchDBGTCount  = concat.addU32Addr(0); // .SizeOfRawData
     pp.patchDBGTOffset = concat.addU32Addr(0); // .PointerToRawData
     concat.addU32(0);                          // .PointerToRelocations
-    concat.addU32(0);                          // .PointerToLinenumbers
+    concat.addU32(0);                          // .PointerToLineNumbers
     concat.addU16(0);                          // .NumberOfRelocations
-    concat.addU16(0);                          // .NumberOfLinenumbers
+    concat.addU16(0);                          // .NumberOfLineNumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
     if (precompileIndex == 0)
@@ -293,9 +293,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         pp.patchCSCount                   = concat.addU32Addr(0); // .SizeOfRawData
         pp.patchCSOffset                  = concat.addU32Addr(0); // .PointerToRawData
         pp.patchCSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-        concat.addU32(0);                                         // .PointerToLinenumbers
+        concat.addU32(0);                                         // .PointerToLineNumbers
         pp.patchCSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-        concat.addU16(0);                                         // .NumberOfLinenumbers
+        concat.addU16(0);                                         // .NumberOfLineNumbers
         pp.patchCSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // bss section
@@ -307,9 +307,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         concat.addU32(module->bssSegment.totalCount); // .SizeOfRawData
         concat.addU32(0);                             // .PointerToRawData
         concat.addU32(0);                             // .PointerToRelocations
-        concat.addU32(0);                             // .PointerToLinenumbers
+        concat.addU32(0);                             // .PointerToLineNumbers
         concat.addU16(0);                             // .NumberOfRelocations
-        concat.addU16(0);                             // .NumberOfLinenumbers
+        concat.addU16(0);                             // .NumberOfLineNumbers
         concat.addU32(IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // global section
@@ -321,9 +321,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         pp.patchGSCount  = concat.addU32Addr(0); // .SizeOfRawData
         pp.patchGSOffset = concat.addU32Addr(0); // .PointerToRawData
         concat.addU32(0);                        // .PointerToRelocations
-        concat.addU32(0);                        // .PointerToLinenumbers
+        concat.addU32(0);                        // .PointerToLineNumbers
         concat.addU16(0);                        // .NumberOfRelocations
-        concat.addU16(0);                        // .NumberOfLinenumbers
+        concat.addU16(0);                        // .NumberOfLineNumbers
         concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // mutable section
@@ -335,9 +335,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         pp.patchMSCount                   = concat.addU32Addr(0); // .SizeOfRawData
         pp.patchMSOffset                  = concat.addU32Addr(0); // .PointerToRawData
         pp.patchMSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-        concat.addU32(0);                                         // .PointerToLinenumbers
+        concat.addU32(0);                                         // .PointerToLineNumbers
         pp.patchMSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-        concat.addU16(0);                                         // .NumberOfLinenumbers
+        concat.addU16(0);                                         // .NumberOfLineNumbers
         pp.patchMSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // tls section
@@ -349,9 +349,9 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         pp.patchTLSCount                   = concat.addU32Addr(0); // .SizeOfRawData
         pp.patchTLSOffset                  = concat.addU32Addr(0); // .PointerToRawData
         pp.patchTLSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
-        concat.addU32(0);                                          // .PointerToLinenumbers
+        concat.addU32(0);                                          // .PointerToLineNumbers
         pp.patchTLSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
-        concat.addU16(0);                                          // .NumberOfLinenumbers
+        concat.addU16(0);                                          // .NumberOfLineNumbers
         pp.patchTLSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
     }
 
@@ -386,10 +386,10 @@ void SCBE_Coff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog
     }
 }
 
-bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
+bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& coffTable, uint32_t* sectionFlags, uint16_t* count)
 {
-    SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
-    const auto tableSize = (uint32_t) cofftable.table.size();
+    SWAG_ASSERT(coffTable.table.size() < UINT32_MAX);
+    const auto tableSize = (uint32_t) coffTable.table.size();
     if (tableSize > 0xFFFF)
     {
         *count = 0xFFFF;
@@ -404,7 +404,7 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& co
         *count = (uint16_t) tableSize;
     }
 
-    for (const auto& reloc : cofftable.table)
+    for (const auto& reloc : coffTable.table)
     {
         concat.ensureSpace(4 + 4 + 2);
         concat.addU32(reloc.virtualAddress);

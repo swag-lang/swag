@@ -110,7 +110,7 @@ struct TypeInfo
     bool isMethod() const;
 
     TypeInfo*       getFinalType();
-    TypeInfoStruct* getStructOrPointedStruct();
+    TypeInfoStruct* getStructOrPointedStruct() const;
     TypeInfo*       getConstAlias();
     const TypeInfo* getConstAlias() const;
     TypeInfo*       getConcreteAlias() const;

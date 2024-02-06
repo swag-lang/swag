@@ -175,7 +175,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         startTokenName      = curBuffer;
         token.startLocation = location;
 
-        auto c = readChar();
+        const auto c = readChar();
 
         // End of file
         ///////////////////////////////////////////
@@ -192,7 +192,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         if (SWAG_IS_EOL(c))
         {
             while (SWAG_IS_EOL(curBuffer[0]))
-                c = readChar();
+                readChar();
             token.flags |= TOKENPARSE_LAST_EOL;
             hasEol = true;
             comment.clear();
@@ -204,7 +204,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         if (SWAG_IS_BLANK(c))
         {
             while (SWAG_IS_BLANK(curBuffer[0]))
-                c = readChar();
+                readChar();
             token.flags |= TOKENPARSE_LAST_BLANK;
             continue;
         }

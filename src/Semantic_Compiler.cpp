@@ -121,7 +121,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
             // It is possible to convert a complex struct to a constant static array of values if the struct
             // implements 'opCount' and 'opSlice'
-            Semantic::waitAllStructMethods(context->baseJob, realType);
+            waitAllStructMethods(context->baseJob, realType);
             YIELD();
 
             if (node->hasSpecialFuncCall())
@@ -734,16 +734,16 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         Path fullFileName = node->sourceFile->path.parent_path();
         fullFileName.append(filename.c_str());
         error_code err;
-        if (!filesystem::exists(fullFileName, err))
+        if (!exists(fullFileName, err))
         {
             // Search relative to the module path
             fullFileName = node->sourceFile->module->path;
             fullFileName.append(filename.c_str());
-            if (!filesystem::exists(fullFileName, err))
+            if (!exists(fullFileName, err))
             {
                 // Search the file itself, without any special path
                 fullFileName = filename;
-                if (!filesystem::exists(fullFileName, err))
+                if (!exists(fullFileName, err))
                     return context->report({back, FMT(Err(Err0710), filename.c_str())});
             }
         }
@@ -934,7 +934,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = Semantic::getCompilerFunctionString(node, node->tokenId);
+        node->computedValue->text = getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
@@ -947,7 +947,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = Semantic::getCompilerFunctionString(node, node->tokenId);
+        node->computedValue->text = getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 

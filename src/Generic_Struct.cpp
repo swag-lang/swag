@@ -98,7 +98,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     if (newType->isTuple())
     {
         for (const auto param : newType->fields)
-            param->typeInfo = Generic::replaceGenericTypes(match.genericReplaceTypes, param->typeInfo);
+            param->typeInfo = replaceGenericTypes(match.genericReplaceTypes, param->typeInfo);
     }
 
     newType->forceComputeName();

@@ -87,15 +87,15 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
         // Is this a simple file ?
         auto       filePath = orgFilePath;
         error_code err;
-        if (!filesystem::exists(filePath, err))
+        if (!exists(filePath, err))
         {
             filePath = theModule->path;
             filePath.append(orgFilePath.string());
-            filePath             = filesystem::absolute(filePath);
-            const auto filePath1 = filesystem::canonical(filePath, err);
+            filePath             = absolute(filePath);
+            const auto filePath1 = canonical(filePath, err);
             if (!err)
                 filePath = filePath1;
-            if (!filesystem::exists(filePath, err))
+            if (!exists(filePath, err))
             {
                 const Diagnostic diag{n->sourceFile, n->token, FMT(Err(Err0709), n->token.ctext())};
                 Report::report(diag);

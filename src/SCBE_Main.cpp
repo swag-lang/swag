@@ -86,7 +86,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters) const
     const auto             beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
+    computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -140,7 +140,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters) const
     emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pp.pushParams);
 
     // Setup runtime
-    const auto rtFlags = Backend::getRuntimeFlags(module);
+    const auto rtFlags = getRuntimeFlags(module);
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
     emitInternalCallExt(pp, module, g_LangSpec->name__setupRuntime, pp.pushParams);
@@ -153,7 +153,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters) const
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
-        nameLib += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
+        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
 
         pp.pushParams.clear();
         pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) nameLib.c_str()});
@@ -194,7 +194,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters) const
     emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to test functions
-    if (buildParameters.compileType == BackendCompileType::Test)
+    if (buildParameters.compileType == Test)
     {
         for (const auto bc : module->byteCodeTestFunc)
         {
@@ -262,7 +262,7 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto             beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
+    computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Symbol_RelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
@@ -297,7 +297,7 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     pp.emit_Push(RDI);
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    SCBE::computeUnwind({}, {}, 48, sizeProlog, unwind);
+    computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -352,7 +352,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     pp.emit_Push(RDI);
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    SCBE::computeUnwind({}, {}, 48, sizeProlog, unwind);
+    computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -431,7 +431,7 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     const auto             beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
+    computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Call to #drop functions
     for (const auto bc : module->byteCodeDropFunc)

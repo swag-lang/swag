@@ -112,7 +112,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     {
         const auto outFileFame = getOutputFileName(module->buildParameters);
         error_code err;
-        if (!filesystem::exists(outFileFame, err))
+        if (!exists(outFileFame, err))
             return false;
         const auto timeOut = OS::getFileWriteTime(outFileFame.string().c_str());
         if (!invert && (timeOut < moreRecentSourceFile))

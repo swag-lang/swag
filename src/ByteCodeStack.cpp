@@ -179,7 +179,7 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, const B
     }
 }
 
-Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext)
+Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext) const
 {
     // Add one step for the current context if necessary
     VectorNative<ByteCodeStackStep> copySteps;

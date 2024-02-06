@@ -730,7 +730,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     const auto exprTypeInfo = exprNode->typeInfo;
     if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
     {
-        Semantic::waitAllStructInterfaces(context->baseJob, exprTypeInfo);
+        waitAllStructInterfaces(context->baseJob, exprTypeInfo);
         YIELD();
     }
 

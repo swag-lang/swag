@@ -121,7 +121,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
     if (typeUndefinedFct->returnType->isGeneric())
         funcDecl->resolvedSymbolOverload->flags |= OVERLOAD_INCOMPLETE;
-    Semantic::waitSymbolNoLock(context->baseJob, funcDecl->resolvedSymbolOverload->symbol);
+    waitSymbolNoLock(context->baseJob, funcDecl->resolvedSymbolOverload->symbol);
     context->baseJob->jobsToAdd.push_back(funcDecl->pendingLambdaJob);
 }
 
@@ -373,10 +373,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 {
                     const auto moveRefNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::MoveRef, sourceFile, newParam);
                     moveRefNode->flags |= AST_GENERATED;
-                    moveRefNode->semanticFct = Semantic::resolveMoveRef;
+                    moveRefNode->semanticFct = resolveMoveRef;
                     const auto mkPtrNode     = Ast::newNode<AstMakePointer>(nullptr, AstNodeKind::MakePointer, sourceFile, moveRefNode);
                     mkPtrNode->flags |= AST_GENERATED;
-                    mkPtrNode->semanticFct = Semantic::resolveMakePointer;
+                    mkPtrNode->semanticFct = resolveMakePointer;
                     Ast::newIdentifierRef(sourceFile, varNode->token.text, mkPtrNode);
                 }
                 else
@@ -974,7 +974,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto parentStructNode = identifier->identifierRef()->startScope->owner;
             if (parentStructNode->resolvedSymbolOverload)
             {
-                Semantic::waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload);
+                waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload);
                 YIELD();
             }
         }
@@ -1159,7 +1159,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
-        Semantic::waitOverloadCompleted(context->baseJob, overload);
+        waitOverloadCompleted(context->baseJob, overload);
         YIELD();
 
         if (identifier->token.text == g_LangSpec->name_opInit)
@@ -1293,7 +1293,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
                 {
                     // Need to wait for function full semantic resolve
-                    Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
+                    waitFuncDeclFullResolve(context->baseJob, funcDecl);
                     YIELD();
 
                     // First pass, we inline the function.
@@ -1444,7 +1444,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 ScopedLock ls(symbol->mutex);
                 if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
                 {
-                    Semantic::waitSymbolNoLock(job, symbol);
+                    waitSymbolNoLock(job, symbol);
                     return true;
                 }
             }

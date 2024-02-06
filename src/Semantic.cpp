@@ -16,7 +16,7 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
 
     // Sub functions attributes inheritance
     if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
-        Semantic::inheritAttributesFromOwnerFunc(originalNode);
+        inheritAttributesFromOwnerFunc(originalNode);
 
     // In configuration pass1, we only treat the #dependencies block
     if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)

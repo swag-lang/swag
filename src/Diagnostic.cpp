@@ -387,9 +387,7 @@ void Diagnostic::reportCompact()
 void Diagnostic::collectSourceCode()
 {
     auto location0 = startLocation;
-    auto location1 = endLocation;
     location0.line -= sourceFile->offsetGetLine;
-    location1.line -= sourceFile->offsetGetLine;
 
     lineCode    = sourceFile->getLine(location0.line);
     lineCodeNum = location0.line + 1;
@@ -502,7 +500,7 @@ void Diagnostic::printLastRangeHint(int curColumn)
         if (i != tokens.size() - 1)
         {
             curColumn = printRangesVerticalBars(ranges.size() - 1);
-            curColumn = alignRangeColumn(curColumn, leftColumn, false);
+            alignRangeColumn(curColumn, leftColumn, false);
         }
     }
 }
@@ -572,7 +570,7 @@ void Diagnostic::printRanges()
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
-            curColumn = alignRangeColumn(curColumn, r.mid - 2 - (int) unformat.length());
+            alignRangeColumn(curColumn, r.mid - 2 - (int) unformat.length());
             g_Log.print(r.hint);
             g_Log.print(" ");
             g_Log.print(LogSymbol::HorizontalLine);
@@ -585,7 +583,7 @@ void Diagnostic::printRanges()
         {
             if (!ranges.back().hasBar)
             {
-                curColumn = alignRangeColumn(curColumn, r.mid);
+                alignRangeColumn(curColumn, r.mid);
                 g_Log.print(LogSymbol::VerticalLineUp);
                 g_Log.eol();
                 printMargin(false, true);
@@ -741,7 +739,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node)
         return nullptr;
 
     const auto msg = FMT(Nte(Nte0062), Naming::kindName(node).c_str(), node->token.ctext());
-    return Diagnostic::note(node, node->getTokenName(), msg);
+    return note(node, node->getTokenName(), msg);
 }
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)

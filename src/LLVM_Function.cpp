@@ -13,7 +13,7 @@
 bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
+    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != Test))
         return true;
 
     int   ct              = buildParameters.compileType;

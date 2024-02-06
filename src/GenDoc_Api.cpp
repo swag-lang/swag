@@ -856,27 +856,27 @@ void GenDoc::generateContent()
 
                 helpContent += "<div class=\"api-additional-infos\">";
                 helpContent += "<b>Usage</b>: ";
-                if (typeInfo->attributeUsage & AttributeUsage::All)
+                if (typeInfo->attributeUsage & All)
                     helpContent += "all ";
-                if (typeInfo->attributeUsage & AttributeUsage::Function)
+                if (typeInfo->attributeUsage & Function)
                     helpContent += "function ";
-                if (typeInfo->attributeUsage & AttributeUsage::FunctionParameter)
+                if (typeInfo->attributeUsage & FunctionParameter)
                     helpContent += "func-param ";
-                if (typeInfo->attributeUsage & AttributeUsage::Enum)
+                if (typeInfo->attributeUsage & Enum)
                     helpContent += "enum ";
-                if (typeInfo->attributeUsage & AttributeUsage::EnumValue)
+                if (typeInfo->attributeUsage & EnumValue)
                     helpContent += "enum-value ";
-                if (typeInfo->attributeUsage & AttributeUsage::Struct)
+                if (typeInfo->attributeUsage & Struct)
                     helpContent += "struct ";
-                if (typeInfo->attributeUsage & AttributeUsage::StructVariable)
+                if (typeInfo->attributeUsage & StructVariable)
                     helpContent += "struct-var ";
-                if (typeInfo->attributeUsage & AttributeUsage::Variable)
+                if (typeInfo->attributeUsage & Variable)
                     helpContent += "var ";
-                if (typeInfo->attributeUsage & AttributeUsage::GlobalVariable)
+                if (typeInfo->attributeUsage & GlobalVariable)
                     helpContent += "global-var ";
-                if (typeInfo->attributeUsage & AttributeUsage::Constant)
+                if (typeInfo->attributeUsage & Constant)
                     helpContent += "const ";
-                if (typeInfo->attributeUsage & AttributeUsage::Multi)
+                if (typeInfo->attributeUsage & Multi)
                     helpContent += "multi ";
                 helpContent += "\n";
                 helpContent += "</div>\n";

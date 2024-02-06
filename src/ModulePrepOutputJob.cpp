@@ -18,7 +18,7 @@ JobResult ModulePrepOutputStage1Job::execute()
     // Be sure we have a #main in case of an executable
     if (module->backend->mustCompile &&
         module->buildCfg.backendKind == BuildCfgBackendKind::Executable &&
-        buildParameters.compileType != BackendCompileType::Test)
+        buildParameters.compileType != Test)
     {
         if (!module->mainIsDefined)
         {

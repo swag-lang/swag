@@ -94,7 +94,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             if (!(node->semFlags & SEMFLAG_VAR_DECL_REF_CALL))
             {
-                RegisterList r0 = reserveRegisterRC(context);
+                const RegisterList r0 = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
                 node->type->resultRegisterRc = r0;
                 node->semFlags |= SEMFLAG_VAR_DECL_REF_CALL;

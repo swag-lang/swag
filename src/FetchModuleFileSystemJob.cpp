@@ -109,7 +109,7 @@ JobResult FetchModuleFileSystemJob::execute()
 
         auto       folder = destFileName.parent_path();
         error_code err;
-        if (!filesystem::exists(folder, err) && !filesystem::create_directories(folder, err))
+        if (!exists(folder, err) && !create_directories(folder, err))
         {
             Report::errorOS(FMT(Err(Err0100), folder.string().c_str()));
             return JobResult::ReleaseJob;

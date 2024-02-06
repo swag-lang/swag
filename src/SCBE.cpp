@@ -120,7 +120,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
 {
     const int  ct              = buildParameters.compileType;
     const int  precompileIndex = buildParameters.precompileIndex;
-    const auto objFileType     = Backend::getObjType(g_CommandLine.target);
+    const auto objFileType     = getObjType(g_CommandLine.target);
 
     SWAG_ASSERT(module == buildParameters.module);
 
@@ -141,7 +141,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (pp.pass == BackendPreCompilePass::Init)
     {
         pp.filename = FMT("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
-        pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
+        pp.filename += getObjectFileExtension(g_CommandLine.target);
 
         switch (objFileType)
         {
@@ -242,7 +242,7 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
     const int precompileIndex = buildParameters.precompileIndex;
     auto&     pp              = *perThread[ct][precompileIndex];
 
-    auto path = Backend::getCacheFolder(buildParameters);
+    auto path = getCacheFolder(buildParameters);
     path.append(pp.filename.c_str());
     const auto filename = path;
 
@@ -253,7 +253,7 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
         return false;
     }
 
-    const auto objFileType = Backend::getObjType(g_CommandLine.target);
+    const auto objFileType = getObjType(g_CommandLine.target);
     switch (objFileType)
     {
     case BackendObjType::Coff:

@@ -419,7 +419,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             }
             else
             {
-                node->computedValue->storageSegment = Semantic::getConstantSegFromContext(node);
+                node->computedValue->storageSegment = getConstantSegFromContext(node);
                 node->computedValue->storageOffset  = node->computedValue->storageSegment->addString(expression->computedValue->text);
             }
         }
@@ -636,7 +636,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     }
 
     // :SliceLiteral
-    const auto storageSegment           = Semantic::getConstantSegFromContext(context->node);
+    const auto storageSegment           = getConstantSegFromContext(context->node);
     node->computedValue->storageSegment = storageSegment;
 
     SwagSlice* slice;

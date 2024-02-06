@@ -507,7 +507,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
     printInstruction(options, ip, lines[0]);
 }
 
-void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count)
+void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const
 {
     uint32_t                     lastLine = UINT32_MAX;
     SourceFile*                  lastFile = nullptr;

@@ -78,7 +78,7 @@ struct BuildParameters
     Module*                module          = nullptr;
     BuildCfg*              buildCfg        = nullptr;
     int                    precompileIndex = 0;
-    BackendCompileType     compileType     = BackendCompileType::Normal;
+    BackendCompileType     compileType     = Normal;
 
     bool isDebug() const
     {

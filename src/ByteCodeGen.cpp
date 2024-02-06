@@ -110,7 +110,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
 bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node)
 {
     // Inform dependencies that everything is done
-    ByteCodeGen::releaseByteCodeJob(node);
+    releaseByteCodeJob(node);
 
     if (!context->bc)
         return true;

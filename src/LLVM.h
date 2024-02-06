@@ -187,5 +187,5 @@ struct LLVM : Backend
                           const Vector<uint32_t>&     regs,
                           const Vector<llvm::Value*>& values);
 
-    LLVMPerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    LLVMPerThread* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 };

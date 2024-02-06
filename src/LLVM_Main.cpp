@@ -176,7 +176,7 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
 
     // __setupRuntime
     {
-        auto rtFlags = builder.getInt64(Backend::getRuntimeFlags(module));
+        auto rtFlags = builder.getInt64(getRuntimeFlags(module));
         emitCall(buildParameters, module, g_LangSpec->name__setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
     }
 
@@ -188,7 +188,7 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
-        nameLib += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
+        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
         auto ptrStr = builder.CreateGlobalStringPtr(nameLib.c_str());
         emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }
@@ -231,7 +231,7 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
     auto funcTypeVoid = llvm::FunctionType::get(VOID_TY(), false);
 
     // Call to test functions
-    if (buildParameters.compileType == BackendCompileType::Test)
+    if (buildParameters.compileType == Test)
     {
         for (auto bc : module->byteCodeTestFunc)
         {

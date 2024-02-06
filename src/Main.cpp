@@ -65,7 +65,7 @@ int main(int argc, const char* argv[])
     }
 
     // Retrieve the compiler executable path
-    g_CommandLine.exePath = filesystem::absolute(OS::getExePath());
+    g_CommandLine.exePath = absolute(OS::getExePath());
 
     // Process all arguments
     if (!cmdParser.process(command, argc - 2, argv + 2))

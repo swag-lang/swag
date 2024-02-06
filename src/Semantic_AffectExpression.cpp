@@ -335,7 +335,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     {
         if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
         {
-            Semantic::waitAllStructInterfaces(context->baseJob, rightTypeInfo);
+            waitAllStructInterfaces(context->baseJob, rightTypeInfo);
             YIELD();
             SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST));
         }

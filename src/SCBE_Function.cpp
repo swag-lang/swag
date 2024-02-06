@@ -16,7 +16,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          uint32_t                         offsetSubRSP,
                          VectorNative<uint16_t>&          unwind) const
 {
-    const auto objFileType = Backend::getObjType(g_CommandLine.target);
+    const auto objFileType = getObjType(g_CommandLine.target);
     switch (objFileType)
     {
     case BackendObjType::Coff:
@@ -31,7 +31,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
 bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
+    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != Test))
         return true;
 
     int         ct              = buildParameters.compileType;

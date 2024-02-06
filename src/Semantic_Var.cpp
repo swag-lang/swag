@@ -89,19 +89,19 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 void Semantic::setVarDeclResolve(AstVarDecl* varNode)
 {
     varNode->allocateExtension(ExtensionKind::Semantic);
-    varNode->extSemantic()->semanticBeforeFct = Semantic::resolveVarDeclBefore;
-    varNode->extSemantic()->semanticAfterFct  = Semantic::resolveVarDeclAfter;
+    varNode->extSemantic()->semanticBeforeFct = resolveVarDeclBefore;
+    varNode->extSemantic()->semanticAfterFct  = resolveVarDeclAfter;
 
     if (varNode->assignment)
     {
         varNode->assignment->allocateExtension(ExtensionKind::Semantic);
-        varNode->assignment->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterAssign;
+        varNode->assignment->extSemantic()->semanticAfterFct = resolveVarDeclAfterAssign;
     }
 
     if (varNode->assignment && varNode->type)
     {
         varNode->type->allocateExtension(ExtensionKind::Semantic);
-        varNode->type->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
+        varNode->type->extSemantic()->semanticAfterFct = resolveVarDeclAfterType;
     }
 }
 
@@ -197,7 +197,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         SWAG_ASSERT(node->computedValue->storageSegment);
         SWAG_ASSERT(node->computedValue->storageOffset != UINT32_MAX);
 
-        const auto wantStorageSegment = Semantic::getConstantSegFromContext(node);
+        const auto wantStorageSegment = getConstantSegFromContext(node);
 
         // Copy value from compiler segment to real requested segment
         if (node->computedValue->storageSegment != wantStorageSegment)
@@ -881,7 +881,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             // Cast from struct to interface : need to wait for all interfaces to be registered
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
-                Semantic::waitAllStructInterfaces(context->baseJob, rightConcreteType);
+                waitAllStructInterfaces(context->baseJob, rightConcreteType);
                 YIELD();
             }
 
@@ -1088,7 +1088,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
         {
-            Semantic::waitTypeCompleted(context->baseJob, typeInfo);
+            waitTypeCompleted(context->baseJob, typeInfo);
             YIELD();
         }
     }
@@ -1129,7 +1129,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             auto typeNode = node->typeInfo;
             if (typeNode->isStruct() || typeNode->isArrayOfStruct())
             {
-                Semantic::waitStructGeneratedAlloc(context->baseJob, typeNode);
+                waitStructGeneratedAlloc(context->baseJob, typeNode);
                 YIELD();
                 if (typeNode->isArrayOfStruct())
                     typeNode = ((TypeInfoArray*) typeNode)->finalType;
@@ -1216,7 +1216,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 auto ownerFct   = getFunctionForReturn(node);
                 auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
-                Semantic::waitStructGenerated(context->baseJob, returnType);
+                waitStructGenerated(context->baseJob, returnType);
                 YIELD();
 
                 if (!CallConv::returnStructByValue(typeFunc))
@@ -1269,7 +1269,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
                 storageOffset                    = node->ownerScope->startStackSize;
                 node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-                Semantic::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+                setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
             }
         }
 

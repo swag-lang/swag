@@ -6,17 +6,17 @@ struct Path : filesystem::path
     Path() = default;
 
     Path(const char* other)
-        : filesystem::path{other}
+        : path{other}
     {
     }
 
     Path(const Utf8& other)
-        : filesystem::path{other.c_str()}
+        : path{other.c_str()}
     {
     }
 
-    Path(const filesystem::path& other)
-        : filesystem::path{other}
+    Path(const path& other)
+        : path{other}
     {
     }
 };

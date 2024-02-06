@@ -371,7 +371,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
             ScopedLock ls(symbol->mutex);
             if (symbol->cptOverloads)
             {
-                Semantic::waitSymbolNoLock(context->baseJob, symbol);
+                waitSymbolNoLock(context->baseJob, symbol);
                 return true;
             }
         }
@@ -835,7 +835,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
 
             if (typeStruct)
             {
-                Semantic::waitAllStructInterfacesReg(context->baseJob, oneParam->typeInfo);
+                waitAllStructInterfacesReg(context->baseJob, oneParam->typeInfo);
                 YIELD();
             }
 
@@ -979,7 +979,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         SWAG_ASSERT(!sem->semanticAfterFct ||
             sem->semanticAfterFct == Semantic::resolveFuncDeclAfterSI ||
             sem->semanticAfterFct == Semantic::resolveScopedStmtAfter);
-        sem->semanticAfterFct = Semantic::resolveFuncDeclAfterSI;
+        sem->semanticAfterFct = resolveFuncDeclAfterSI;
 
         g_ThreadMgr.addJob(job);
     }
@@ -1140,7 +1140,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             // Can we make a partial match ?
             if (needToCompleteSymbol(context, identifier, symbol, true))
             {
-                Semantic::waitSymbolNoLock(job, symbol);
+                waitSymbolNoLock(job, symbol);
                 return true;
             }
 
@@ -1148,7 +1148,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             SWAG_ASSERT(symbol->overloads.size() == 1);
             if (!(symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
             {
-                Semantic::waitSymbolNoLock(job, symbol);
+                waitSymbolNoLock(job, symbol);
                 return true;
             }
         }

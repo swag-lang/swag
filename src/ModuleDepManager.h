@@ -24,8 +24,8 @@ struct ModuleDepManager
     void                        enumerateCfgFiles(const Path& path);
     static bool                 fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
     static bool                 fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);
-    bool                        fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);
-    bool                        fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);
+    static bool                 fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);
+    static bool                 fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch);
     bool                        resolveModuleDependency(const Module* srcModule, ModuleDependency* dep);
     static CompareVersionResult compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum);
     static void                 parseCfgFile(Module* cfgModule);

@@ -179,7 +179,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     bool hasFormat = false;
     if (arg.split.size() > 1)
     {
-        if (ByteCodeDebugger::getValueFormat(arg.split[1], fmt))
+        if (getValueFormat(arg.split[1], fmt))
         {
             hasFormat = true;
             expr.clear();
@@ -210,7 +210,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
         if (!res.addr && res.value)
             res.addr = &res.value->reg;
-        ByteCodeDebugger::appendLiteralValue(context, str, fmt, res.addr);
+        appendLiteralValue(context, str, fmt, res.addr);
     }
     else
     {
@@ -223,6 +223,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     g_Log.setColor(COLOR_DEFAULT);
     g_Log.print(" = ");
 
-    ByteCodeDebugger::printLong(str);
+    printLong(str);
     return BcDbgCommandResult::Continue;
 }

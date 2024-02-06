@@ -308,12 +308,12 @@ namespace
         const auto l = (WarnLevel) level->reg.u8;
         if (whatVal.empty())
         {
-            if (l == WarnLevel::Disable)
+            if (l == Disable)
                 retResult = false;
             else
             {
                 retResult = true;
-                if (l == WarnLevel::Error)
+                if (l == Error)
                     diag.errorLevel = DiagnosticLevel::Error;
             }
 
@@ -329,14 +329,14 @@ namespace
                 tk.makeLower();
                 if (tk == warnMsg)
                 {
-                    if (l == WarnLevel::Disable)
+                    if (l == Disable)
                     {
                         retResult = false;
                     }
                     else
                     {
                         retResult = true;
-                        if (l == WarnLevel::Error)
+                        if (l == Error)
                             diag.errorLevel = DiagnosticLevel::Error;
                     }
 

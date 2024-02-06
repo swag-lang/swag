@@ -24,7 +24,7 @@ struct ByteCodeRun
     static bool  getVariadicSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip, Register* regPtr, Register* regCount);
     static void* executeLocationSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip);
     static bool  executeIsConstExprSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip);
-    void         executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip);
+    static void  executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip);
 
     static void localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
     static void localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);

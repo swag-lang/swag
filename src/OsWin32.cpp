@@ -398,7 +398,7 @@ namespace OS
         while (!writeTime)
         {
             this_thread::yield();
-            writeTime = OS::getFileWriteTime(fileName);
+            writeTime = getFileWriteTime(fileName);
         }
     }
 
@@ -652,7 +652,7 @@ namespace OS
         switch (result)
         {
         case IDCANCEL:
-            OS::exit(-1);
+            exit(-1);
             break;
         case IDTRYAGAIN:
             DebugBreak();
@@ -1052,37 +1052,37 @@ namespace OS
                 switch (evt.Event.KeyEvent.wVirtualKeyCode)
                 {
                 case VK_RETURN:
-                    return OS::Key::Return;
+                    return Key::Return;
                 case VK_LEFT:
-                    return OS::Key::Left;
+                    return Key::Left;
                 case VK_RIGHT:
-                    return OS::Key::Right;
+                    return Key::Right;
                 case VK_UP:
-                    return OS::Key::Up;
+                    return Key::Up;
                 case VK_DOWN:
-                    return OS::Key::Down;
+                    return Key::Down;
                 case VK_HOME:
-                    return OS::Key::Home;
+                    return Key::Home;
                 case VK_END:
-                    return OS::Key::End;
+                    return Key::End;
                 case VK_DELETE:
-                    return OS::Key::Delete;
+                    return Key::Delete;
                 case VK_BACK:
-                    return OS::Key::Back;
+                    return Key::Back;
                 case VK_TAB:
-                    return OS::Key::Tab;
+                    return Key::Tab;
                 case VK_ESCAPE:
-                    return OS::Key::Escape;
+                    return Key::Escape;
                 case VK_CONTROL:
                     continue;
 
                 default:
                     if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
-                        return OS::Key::PasteFromClipboard;
+                        return Key::PasteFromClipboard;
 
                     c = evt.Event.KeyEvent.uChar.AsciiChar;
                     if (c >= ' ' && c <= 127)
-                        return OS::Key::Ascii;
+                        return Key::Ascii;
 
                     continue;
                 }

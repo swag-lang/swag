@@ -358,11 +358,11 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                     setNop(context, ipOrg);
 
                     // Remove the memcpy
-                    ByteCodeOptimizer::setNop(context, ip);
+                    setNop(context, ip);
                     // We need to remove every instructions related to the post move
                     ip += 1;
                     while (ip->flags & BCI_POST_COPYMOVE)
-                        ByteCodeOptimizer::setNop(context, ip++);
+                        setNop(context, ip++);
                 }
             }
             else

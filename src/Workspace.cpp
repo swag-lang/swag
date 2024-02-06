@@ -26,14 +26,14 @@ void Workspace::setup()
     }
 
     error_code err;
-    if (!filesystem::exists(workspacePath, err))
+    if (!exists(workspacePath, err))
     {
         Report::error(FMT(Err(Fat0035), workspacePath.string().c_str()));
         g_Log.messageInfo(Nte(Nte0190));
         OS::exit(-1);
     }
 
-    if (!g_CommandLine.scriptCommand && !filesystem::exists(modulesPath, err) && !filesystem::exists(testsPath, err))
+    if (!g_CommandLine.scriptCommand && !exists(modulesPath, err) && !exists(testsPath, err))
     {
         Report::error(FMT(Err(Fat0027), workspacePath.string().c_str()));
         g_Log.messageInfo(Nte(Nte0190));
@@ -51,7 +51,7 @@ void Workspace::setup()
 
 void Workspace::setupPaths()
 {
-    workspacePath = filesystem::absolute(g_CommandLine.workspacePath);
+    workspacePath = absolute(g_CommandLine.workspacePath);
     if (workspacePath.empty())
         workspacePath = filesystem::current_path();
 

@@ -196,7 +196,7 @@ void Workspace::setupTarget()
         g_Log.messageVerbose(FMT("target path is [[%s]]", targetPath.string().c_str()));
 
     error_code err;
-    if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
+    if (!exists(targetPath, err) && !create_directories(targetPath, err))
     {
         Report::errorOS(FMT(Err(Fat0021), targetPath.string().c_str()));
         OS::exit(-1);
@@ -204,14 +204,14 @@ void Workspace::setupTarget()
 
     // Cache directory
     setupCachePath();
-    if (!filesystem::exists(cachePath, err))
+    if (!exists(cachePath, err))
     {
         Report::errorOS(FMT(Err(Fat0010), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
-    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
+    if (!exists(cachePath, err) && !create_directories(cachePath, err))
     {
         Report::errorOS(FMT(Err(Fat0016), cachePath.string().c_str()));
         OS::exit(-1);
@@ -219,7 +219,7 @@ void Workspace::setupTarget()
 
     const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
-    if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
+    if (!exists(cachePath, err) && !create_directories(cachePath, err))
     {
         Report::errorOS(FMT(Err(Fat0016), cachePath.string().c_str()));
         OS::exit(-1);
@@ -271,8 +271,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
-        msg      = FMT(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
-        prevNode = prevJob->waitingType->declNode;
+        msg = FMT(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
     }
     else if (prevJob->waitingType)
     {

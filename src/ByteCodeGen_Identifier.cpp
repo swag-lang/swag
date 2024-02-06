@@ -47,7 +47,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->flags & OVERLOAD_RETVAL)
     {
-        RegisterList r0 = reserveRegisterRC(context);
+        const RegisterList r0 = reserveRegisterRC(context);
         emitRetValRef(context, resolved, r0, true, 0);
         identifier->resultRegisterRc                  = r0;
         identifier->identifierRef()->resultRegisterRc = identifier->resultRegisterRc;

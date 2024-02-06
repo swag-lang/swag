@@ -271,7 +271,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
                 continue;
         }
 
-        Semantic::waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload);
+        waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload);
         if (context->result == ContextResult::Pending)
             return;
 

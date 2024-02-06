@@ -98,14 +98,12 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
     for (int oneTry = 0; oneTry < 2 && !forceEnd; oneTry++)
     {
-        auto startScope = identifierRef->startScope;
+        const auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
         {
             constexpr uint32_t collectFlags = COLLECT_ALL;
             const auto         scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
             auto               scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
-
-            startScope = node->ownerScope;
 
             // :AutoScope
             // Auto scoping depending on the context
@@ -268,14 +266,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             // If we dereference something, be sure the owner has been completed
             if (identifierRef->startScope)
             {
-                Semantic::waitTypeCompleted(job, identifierRef->startScope->owner->typeInfo);
+                waitTypeCompleted(job, identifierRef->startScope->owner->typeInfo);
                 YIELD();
             }
 
             // Same if dereference is implied by a using var
             for (const auto& sv : scopeHierarchyVars)
             {
-                Semantic::waitTypeCompleted(job, sv.scope->owner->typeInfo);
+                waitTypeCompleted(job, sv.scope->owner->typeInfo);
                 YIELD();
             }
 

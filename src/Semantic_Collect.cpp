@@ -53,7 +53,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         else if (assignment)
         {
             // Store value in constant storageSegment
-            auto     constSegment = Semantic::getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
+            auto     constSegment = getConstantSegFromContext(context->node, storageSegment->kind == SegmentKind::Compiler);
             uint32_t storageOffsetValue;
             SWAG_CHECK(reserveAndStoreToSegment(context, constSegment, storageOffsetValue, value, assignment->castedTypeInfo, assignment));
 
@@ -344,7 +344,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             if (!value->storageSegment)
             {
                 uint8_t* addrDst;
-                storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, Semantic::alignOf(node));
+                storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
 
                 for (uint32_t i = 0; i < typeArr->totalCount; i++)
                 {
@@ -377,7 +377,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             else
             {
                 uint8_t* addrDst;
-                storageOffset      = storageSegment->reserve(typeInfo->sizeOf, &addrDst, Semantic::alignOf(node));
+                storageOffset      = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
                 const auto addrSrc = value->getStorageAddr();
                 memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             }
@@ -421,7 +421,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             // Copy from a constant
             SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
             uint8_t* addrDst;
-            storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, Semantic::alignOf(node));
+            storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
             SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
             const auto addrSrc = overload->computedValue.getStorageAddr();
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);

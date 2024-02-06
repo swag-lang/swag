@@ -24,7 +24,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeI
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
     field.kind          = LF_MEMBER;
-    field.type          = (SCBE_DebugTypeIndex) (SimpleTypeKind::UInt64);
+    field.type          = (SCBE_DebugTypeIndex) (UInt64);
     field.value.reg.u32 = sizeof(void*);
     field.name.setView(g_LangSpec->name_count);
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
@@ -72,7 +72,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
 
     // Simple type
     auto simpleType = getSimpleType(typeInfo);
-    if (simpleType != SimpleTypeKind::None)
+    if (simpleType != None)
         return simpleType;
 
     // Pointer
@@ -121,7 +121,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         auto tr                  = addTypeRecord(pp);
         tr->kind                 = LF_ARRAY;
         tr->LF_Array.elementType = getOrCreateType(pp, typeArr->pointedType, true);
-        tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
+        tr->LF_Array.indexType   = UInt64;
         tr->LF_Array.sizeOf      = typeArr->sizeOf;
         iter.first->second       = tr->index;
         return tr->index;
@@ -135,14 +135,14 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         SCBE_DebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = (SCBE_DebugTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (SCBE_DebugTypeIndex) (UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
-        field.type          = (SCBE_DebugTypeIndex) (SimpleTypeKind::UInt64);
+        field.type          = (SCBE_DebugTypeIndex) (UInt64);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_sizeof);
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
@@ -166,7 +166,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         SCBE_DebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = (SCBE_DebugTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (SCBE_DebugTypeIndex) (UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
@@ -197,7 +197,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         SCBE_DebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = (SCBE_DebugTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = (SCBE_DebugTypeIndex) (UnsignedCharacter | (NearPointer64 << 8));
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_ptrvalue);
         tr0->LF_FieldList.fields.reserve(2);
@@ -225,7 +225,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     if (typeInfo->isStruct())
     {
         TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto            sname      = SCBE_Debug::getScopedName(typeStruct->declNode);
+        auto            sname      = getScopedName(typeStruct->declNode);
 
         if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
         {
@@ -253,7 +253,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
             SCBE_DebugTypeField field;
             field.kind = LF_ONEMETHOD;
             field.type = getOrCreateType(pp, p->typeInfo);
-            field.name = SCBE_Debug::getScopedName(p->typeInfo->declNode);
+            field.name = getScopedName(p->typeInfo->declNode);
             tr0->LF_FieldList.fields.emplace_back(std::move(field));
         }
 
@@ -274,7 +274,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     if (typeInfo->isEnum())
     {
         TypeInfoEnum* typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        auto          sname        = SCBE_Debug::getScopedName(typeInfoEnum->declNode);
+        auto          sname        = getScopedName(typeInfoEnum->declNode);
 
         // List of values
         if (typeInfoEnum->rawType->isNativeInteger())
@@ -391,13 +391,13 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     switch (typeInfo->sizeOf)
     {
     case 1:
-        return (SCBE_DebugTypeIndex) SimpleTypeKind::UnsignedCharacter;
+        return (SCBE_DebugTypeIndex) UnsignedCharacter;
     case 2:
-        return (SCBE_DebugTypeIndex) SimpleTypeKind::UInt16;
+        return (SCBE_DebugTypeIndex) UInt16;
     case 4:
-        return (SCBE_DebugTypeIndex) SimpleTypeKind::UInt32;
+        return (SCBE_DebugTypeIndex) UInt32;
     default:
-        return (SCBE_DebugTypeIndex) SimpleTypeKind::UInt64;
+        return (SCBE_DebugTypeIndex) UInt64;
     }
 }
 
@@ -408,43 +408,43 @@ SCBE_DebugTypeIndex SCBE_Debug::getSimpleType(const TypeInfo* typeInfo)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Void:
-            return SimpleTypeKind::Void;
+            return Void;
         case NativeTypeKind::Bool:
-            return SimpleTypeKind::Boolean8;
+            return Boolean8;
         case NativeTypeKind::S8:
-            return SimpleTypeKind::SByte;
+            return SByte;
         case NativeTypeKind::S16:
-            return SimpleTypeKind::Int16;
+            return Int16;
         case NativeTypeKind::S32:
-            return SimpleTypeKind::Int32;
+            return Int32;
         case NativeTypeKind::S64:
-            return SimpleTypeKind::Int64;
+            return Int64;
         case NativeTypeKind::U8:
-            return SimpleTypeKind::Byte;
+            return Byte;
         case NativeTypeKind::U16:
-            return SimpleTypeKind::UInt16;
+            return UInt16;
         case NativeTypeKind::U32:
-            return SimpleTypeKind::UInt32;
+            return UInt32;
         case NativeTypeKind::U64:
-            return SimpleTypeKind::UInt64;
+            return UInt64;
         case NativeTypeKind::F32:
-            return SimpleTypeKind::Float32;
+            return Float32;
         case NativeTypeKind::F64:
-            return SimpleTypeKind::Float64;
+            return Float64;
         case NativeTypeKind::Rune:
-            return SimpleTypeKind::Character32;
+            return Character32;
         default:
             break;
         }
     }
 
-    return SimpleTypeKind::None;
+    return None;
 }
 
 SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef)
 {
     const auto simpleType = getSimpleType(typeInfo);
-    if (simpleType != SimpleTypeKind::None)
+    if (simpleType != None)
         return (SCBE_DebugTypeIndex) (simpleType | (NearPointer64 << 8));
 
     // Pointer to something complex

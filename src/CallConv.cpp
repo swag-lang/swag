@@ -3,11 +3,11 @@
 #include "Ast.h"
 #include "TypeInfo.h"
 
-CallConv g_CallConv[CallConvKind::Max];
+CallConv g_CallConv[Max];
 
 void initCallConvKinds()
 {
-    auto& ccSwag                = g_CallConv[CallConvKind::Swag];
+    auto& ccSwag                = g_CallConv[Swag];
     ccSwag.paramByRegisterCount = 4;
     ccSwag.paramByRegisterInteger.push_back(RCX);
     ccSwag.paramByRegisterInteger.push_back(RDX);
@@ -17,8 +17,8 @@ void initCallConvKinds()
     ccSwag.paramByRegisterFloat.push_back(XMM1);
     ccSwag.paramByRegisterFloat.push_back(XMM2);
     ccSwag.paramByRegisterFloat.push_back(XMM3);
-    ccSwag.returnByRegisterInteger = CPURegister::RAX;
-    ccSwag.returnByRegisterFloat   = CPURegister::XMM0;
+    ccSwag.returnByRegisterInteger = RAX;
+    ccSwag.returnByRegisterFloat   = XMM0;
     ccSwag.useRegisterFloat        = true;
     ccSwag.structParamByRegister   = true;
     ccSwag.structReturnByRegister  = true;
@@ -44,7 +44,7 @@ bool CallConv::returnByAddress(TypeInfoFuncAttr* typeFunc)
         return true;
     }
 
-    return CallConv::returnByStackAddress(typeFunc);
+    return returnByStackAddress(typeFunc);
 }
 
 bool CallConv::returnByStackAddress(TypeInfoFuncAttr* typeFunc)
@@ -82,7 +82,7 @@ bool CallConv::returnByValue(TypeInfoFuncAttr* typeFunc)
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;
 
-    return !CallConv::returnByAddress(typeFunc);
+    return !returnByAddress(typeFunc);
 }
 
 bool CallConv::returnStructByValue(const TypeInfoFuncAttr* typeFunc)
