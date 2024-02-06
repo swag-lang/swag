@@ -106,7 +106,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
         // :GetCfgFileParams
         module->buildCfg                     = cfgModule->buildCfg;
         module->buildParameters.foreignLibs  = cfgModule->buildParameters.foreignLibs;
-        module->buildParameters.globalUsings = cfgModule->buildParameters.globalUsings;
+        module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;
         module->moduleDependencies           = cfgModule->moduleDependencies;
         module->compilerLoads                = cfgModule->compilerLoads;
         module->docComment                   = std::move(cfgModule->docComment);

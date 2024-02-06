@@ -2,8 +2,8 @@
 #include "Statistics.h"
 
 #define MK_ALIGN16(__s) \
-    if (__s % 16)       \
-        __s += 16 - (__s % 16);
+    if ((__s) % 16)     \
+        (__s) += 16 - ((__s) % 16)
 
 struct Allocator
 {

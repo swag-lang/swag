@@ -405,7 +405,7 @@ JobResult EnumerateModuleJob::execute()
                     continue;
                 const auto newFile            = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
                 newFile->isEmbedded           = true;
-                newFile->globalUsingsEmbedded = mod->buildParameters.globalUsings;
+                newFile->globalUsingsEmbedded = mod->buildParameters.globalUsing;
             }
 
             // Add the dependencies of the embedded module too

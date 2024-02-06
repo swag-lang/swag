@@ -63,8 +63,6 @@ inline bool isArchArm(SwagTargetArch arch)
     {
     case SwagTargetArch::X86_64:
         return false;
-    default:
-        break;
     }
 
     return true;
@@ -73,7 +71,7 @@ inline bool isArchArm(SwagTargetArch arch)
 struct BuildParameters
 {
     SetUtf8                foreignLibs;
-    VectorNative<AstNode*> globalUsings;
+    VectorNative<AstNode*> globalUsing;
     Utf8                   outputFileName;
     Module*                module          = nullptr;
     BuildCfg*              buildCfg        = nullptr;

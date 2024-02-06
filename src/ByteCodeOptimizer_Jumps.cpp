@@ -1978,8 +1978,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // First element is always the "default" one
         uint8_t*   addrCompiler        = nullptr;
         const auto offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
-
-        const auto patchCompiler = (int32_t*) addrCompiler;
+        const auto patchCompiler       = reinterpret_cast<int32_t*>(addrCompiler);
 
         // Set table to default jump
         for (uint32_t i      = 0; i < range + 1; i++)

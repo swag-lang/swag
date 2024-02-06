@@ -982,7 +982,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.f32 = UINT16_MAX + 0.5;;
+            inst->b.f32 = UINT16_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
         }

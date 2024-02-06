@@ -555,7 +555,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(doUsing(parent, &dummyResult));
         while (prevCount != parent->childs.count)
         {
-            sourceFile->module->buildParameters.globalUsings.push_back(parent->childs[prevCount]);
+            sourceFile->module->buildParameters.globalUsing.push_back(parent->childs[prevCount]);
             prevCount++;
         }
     }

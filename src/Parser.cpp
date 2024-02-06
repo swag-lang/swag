@@ -468,7 +468,7 @@ bool Parser::generateAst()
     // Make a copy of all #global using of the config file
     if (!sourceFile->isCfgFile && !sourceFile->imported && !sourceFile->isEmbedded)
     {
-        for (const auto s : module->buildParameters.globalUsings)
+        for (const auto s : module->buildParameters.globalUsing)
         {
             CloneContext cxt;
             cxt.parent       = sourceFile->astRoot;

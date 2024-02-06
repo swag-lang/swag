@@ -1065,14 +1065,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                     case 0:
                         helpContent += FMT("<th style=\"text-align: left;\">");
                         break;
-                        break;
                     case 1:
                         helpContent += FMT("<th style=\"text-align: center;\">");
-                        break;
                         break;
                     case 2:
                         helpContent += FMT("<th style=\"text-align: right;\">");
                         break;
+                    default:
                         break;
                     }
 
@@ -1137,14 +1136,13 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                     case 0:
                         helpContent += FMT("<td style=\"text-align: left;\">");
                         break;
-                        break;
                     case 1:
                         helpContent += FMT("<td style=\"text-align: center;\">");
-                        break;
                         break;
                     case 2:
                         helpContent += FMT("<td style=\"text-align: right;\">");
                         break;
+                    default:
                         break;
                     }
                 }

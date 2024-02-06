@@ -329,8 +329,6 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext*, TypeInfo* typeIn
 
         return nullptr;
     }
-
-    return nullptr;
 }
 
 bool Semantic::findEnumTypeInContext(SemanticContext*                                  context,

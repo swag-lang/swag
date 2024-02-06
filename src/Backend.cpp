@@ -196,9 +196,12 @@ BackendObjType Backend::getObjType(const BackendTarget& target)
         return BackendObjType::Coff;
     case SwagTargetOs::MacOSX:
         return BackendObjType::MachO;
-    default:
+    case SwagTargetOs::Linux:
         return BackendObjType::Elf;
     }
+
+    SWAG_ASSERT(false);
+    return BackendObjType::Coff;
 }
 
 const char* Backend::getArchName(const BackendTarget& target)
@@ -207,9 +210,10 @@ const char* Backend::getArchName(const BackendTarget& target)
     {
     case SwagTargetArch::X86_64:
         return "x86_64";
-    default:
-        return "?";
     }
+
+    SWAG_ASSERT(false);
+    return "?";
 }
 
 const char* Backend::getOsName(const BackendTarget& target)
@@ -222,9 +226,10 @@ const char* Backend::getOsName(const BackendTarget& target)
         return "linux";
     case SwagTargetOs::MacOSX:
         return "osx";
-    default:
-        return "?";
     }
+
+    SWAG_ASSERT(false);
+    return "?";
 }
 
 uint64_t Backend::getRuntimeFlags(Module* module)

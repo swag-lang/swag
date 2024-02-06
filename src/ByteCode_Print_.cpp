@@ -297,7 +297,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
     case ByteCodeOp::MakeLambda:
     {
-        const auto funcNode = (AstFuncDecl*) ip->b.pointer;
+        const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
         SWAG_ASSERT(funcNode);
         line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
         line.pretty += "/";
@@ -309,7 +309,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     case ByteCodeOp::ForeignCall:
     case ByteCodeOp::ForeignCallPop:
     {
-        const auto funcNode = castAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
         line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
         line.pretty += " ";
         break;
@@ -320,7 +320,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     case ByteCodeOp::LocalCallPopParam:
     case ByteCodeOp::LocalCallPopRC:
     {
-        const auto bc = (ByteCode*) ip->a.pointer;
+        const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
         SWAG_ASSERT(bc);
         line.pretty += bc->name;
         if (bc->node && bc->node->typeInfo)

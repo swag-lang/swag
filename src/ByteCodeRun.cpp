@@ -4144,7 +4144,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     default:
         SWAG_ASSERT(false);
         SWAG_UNREACHABLE;
-        break;
     }
 
     return true;

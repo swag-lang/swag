@@ -36,7 +36,7 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
         }
         else if (ByteCode::isJumpDyn(ip))
         {
-            const int32_t* table = (int32_t*) context->module->compilerSegment.address(ip->d.u32);
+            const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(ip->d.u32));
             for (uint32_t i = 0; i < ip->c.u32; i++)
             {
                 ADD_TODO(ip + table[i] + 1);

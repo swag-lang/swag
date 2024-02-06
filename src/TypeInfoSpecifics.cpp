@@ -893,8 +893,6 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
         argIdx -= n;
         argNo++;
     }
-
-    return UINT32_MAX;
 }
 
 TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)

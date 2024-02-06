@@ -667,7 +667,7 @@ void Utf8::replace(const char* src, const char* dst)
         remove(pos, len);
         insert(pos, dst);
         pos += lenins;
-    };
+    }
 }
 
 uint32_t Utf8::hash() const
