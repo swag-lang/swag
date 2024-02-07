@@ -462,7 +462,7 @@ void initErrors()
     SWAG_ERROR(Err0339, "invalid opaque struct                             $ a struct marked with [[#[Swag.Opaque]]] requires a [[public]] access");
     SWAG_ERROR(Err0340, "invalid opaque struct                             $ the struct can't be marked with [[#[Swag.Opaque]]] because the whole file is exported with [[#global export]]");
     SWAG_ERROR(Err0341, "invalid operation                                 $ can't affect by index a type [[%s]] to [[%s]] because no corresponding [[opIndexAffect]] can be found");
-    SWAG_ERROR(Err0342, "invalid operation                                 $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectSuffix]] can be found");
+    SWAG_ERROR(Err0342, "invalid operation                                 $ can't initialize a type [[%s]] with [[%s]] because no corresponding [[opAffectLiteral]] can be found");
     SWAG_ERROR(Err0343, "invalid operation                                 $ missing special function [[%s]] in [[%s]] when solving operator [[%s]]");
     SWAG_ERROR(Err0344, "invalid operation                                 $ missing special function [[%s]] in [[%s]]");
     SWAG_ERROR(Err0345, "invalid operation                                 $ the bit inversion operation [[~]] is not allowed on type [[%s]]");
@@ -608,9 +608,9 @@ void initErrors()
     SWAG_ERROR(Err0485, "misplaced attribute                               $ incorrect attribute usage");
     SWAG_ERROR(Err0486, "misplaced attribute                               $ the %s can't have the [[#[Swag.Implicit]]] attribute because it is generic");
     SWAG_ERROR(Err0487, "misplaced attribute                               $ the [[#[Swag.CalleeReturn]]] attribute can't be applied to function [[%s]] $ [[#[Swag.CalledReturn]]] can only be applied to a macro ([[#[Swag.Macro]]]) or a mixin ([[#[Swag.Mixin]]])");
-    SWAG_ERROR(Err0488, "misplaced attribute                               $ the [[#[Swag.Complete]]] attribute can't be applied to function [[%s]] $ #[Swag.Complete] can only be applied to [[opAffect]] and [[opAffectSuffix]]");
+    SWAG_ERROR(Err0488, "misplaced attribute                               $ the [[#[Swag.Complete]]] attribute can't be applied to function [[%s]] $ #[Swag.Complete] can only be applied to [[opAffect]] and [[opAffectLiteral]]");
     SWAG_ERROR(Err0489, "misplaced attribute                               $ the [[#[Swag.Discardable]]] attribute can only be applied to lambda variables, got [[%s]]");
-    SWAG_ERROR(Err0490, "misplaced attribute                               $ the [[#[Swag.Implicit]]] attribute can't be applied to function [[%s]] $ #[Swag.Implicit] can only be applied to [[opAffect]], [[opAffectSuffix]] and [[opCast]]");
+    SWAG_ERROR(Err0490, "misplaced attribute                               $ the [[#[Swag.Implicit]]] attribute can't be applied to function [[%s]] $ #[Swag.Implicit] can only be applied to [[opAffect]], [[opAffectLiteral]] and [[opCast]]");
     SWAG_ERROR(Err0491, "misplaced attribute                               $ the attribute [[%s]] can only be applied to %s");
     SWAG_ERROR(Err0492, "misplaced attribute                               $ the attribute [[%s]] can't be associated with %s");
     SWAG_ERROR(Err0493, "misplaced attribute                               $ the attribute [[%s]] can't be used in a [[#global]] statement $ the attribute does not have the [[Swag.AttributeUsage.File]] usage");

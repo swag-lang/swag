@@ -753,7 +753,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     // Store specific symbols for fast retrieve
     if (funcNode->token.text == g_LangSpec->name_opAffect)
         currentScope->symbolOpAffect = funcNode->resolvedSymbolName;
-    else if (funcNode->token.text == g_LangSpec->name_opAffectSuffix)
+    else if (funcNode->token.text == g_LangSpec->name_opAffectLiteral)
         currentScope->symbolOpAffectSuffix = funcNode->resolvedSymbolName;
     else if (funcNode->token.text == g_LangSpec->name_opCast)
         currentScope->symbolOpCast = funcNode->resolvedSymbolName;

@@ -91,7 +91,7 @@ void LanguageSpec::setupNames()
     name_opCount        = "opCount";
     name_opData         = "opData";
     name_opAffect       = "opAffect";
-    name_opAffectSuffix = "opAffectSuffix";
+    name_opAffectLiteral = "opAffectLiteral";
     name_opSlice        = "opSlice";
     name_opIndex        = "opIndex";
     name_opIndexAffect  = "opIndexAffect";
@@ -104,7 +104,7 @@ void LanguageSpec::setupNames()
     name_opPostMoveCrc     = name_opPostMove.hash();
     name_opCastCrc         = name_opCast.hash();
     name_opAffectCrc       = name_opAffect.hash();
-    name_opAffectSuffixCrc = name_opAffectSuffix.hash();
+    name_opAffectLiteralCrc = name_opAffectLiteral.hash();
 
     name_TypeInfo          = "TypeInfo";
     name_TypeInfoNative    = "TypeInfoNative";

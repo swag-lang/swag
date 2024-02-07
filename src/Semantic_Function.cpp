@@ -603,7 +603,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     if ((funcNode->attributeFlags & ATTRIBUTE_COMPLETE) &&
         funcNode->token.text != g_LangSpec->name_opAffect &&
-        funcNode->token.text != g_LangSpec->name_opAffectSuffix)
+        funcNode->token.text != g_LangSpec->name_opAffectLiteral)
     {
         Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0488), funcNode->token.ctext())};
         auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
@@ -613,7 +613,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     if ((funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) &&
         funcNode->token.text != g_LangSpec->name_opAffect &&
-        funcNode->token.text != g_LangSpec->name_opAffectSuffix &&
+        funcNode->token.text != g_LangSpec->name_opAffectLiteral &&
         funcNode->token.text != g_LangSpec->name_opCast)
     {
         Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0490), funcNode->token.ctext())};
@@ -635,7 +635,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
     {
         bool ok = false;
-        if (funcNode->token.text == g_LangSpec->name_opAffectSuffix && funcNode->genericParameters->childs.size() <= 1)
+        if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->childs.size() <= 1)
             ok = true;
         if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
             ok = true;
@@ -1590,7 +1590,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
     {
         const auto overload = child->extMisc()->resolvedUserOpSymbolOverload;
-        if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
+        if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectLiteral)
         {
             SWAG_ASSERT(child->castedTypeInfo);
             child->extMisc()->resolvedUserOpSymbolOverload = nullptr;

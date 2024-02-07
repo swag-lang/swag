@@ -111,7 +111,7 @@ struct LanguageSpec
     Utf8 name_opCount;
     Utf8 name_opData;
     Utf8 name_opAffect;
-    Utf8 name_opAffectSuffix;
+    Utf8 name_opAffectLiteral;
     Utf8 name_opSlice;
     Utf8 name_opIndex;
     Utf8 name_opIndexAffect;
@@ -124,7 +124,7 @@ struct LanguageSpec
     uint32_t name_opPostMoveCrc;
     uint32_t name_opCastCrc;
     uint32_t name_opAffectCrc;
-    uint32_t name_opAffectSuffixCrc;
+    uint32_t name_opAffectLiteralCrc;
 
     Utf8 name_TypeInfo;
     Utf8 name_TypeInfoNative;

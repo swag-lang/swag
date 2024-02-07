@@ -334,7 +334,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         if (nodeCall->hasExtMisc() && nodeCall->extMisc()->resolvedUserOpSymbolOverload)
         {
             const auto overload = nodeCall->extMisc()->resolvedUserOpSymbolOverload;
-            if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
+            if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectLiteral)
             {
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
                 nodeCall->extMisc()->resolvedUserOpSymbolOverload = nullptr;

@@ -45,8 +45,8 @@ Utf8 Semantic::getSpecialOpSignature(const AstFuncDecl* node)
         result += "[[func opCmp(self, value: WhateverType) -> s32]]";
     else if (node->token.text == g_LangSpec->name_opAffect)
         result += "[[func opAffect(self, value: WhateverType)]]";
-    else if (node->token.text == g_LangSpec->name_opAffectSuffix)
-        result += "[[func(suffix: string) opAffectSuffix(self, value: WhateverType)]]";
+    else if (node->token.text == g_LangSpec->name_opAffectLiteral)
+        result += "[[func(suffix: string) opAffectLiteral(self, value: WhateverType)]]";
     else if (node->token.text == g_LangSpec->name_opIndexAffect)
         result += "[[func opIndexAffect(self, index: WhateverType, value: WhateverType)]]";
     else if (node->token.text == g_LangSpec->name_opBinary)
@@ -193,7 +193,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         name == g_LangSpec->name_opUnary ||
         name == g_LangSpec->name_opAssign ||
         name == g_LangSpec->name_opIndexAssign ||
-        name == g_LangSpec->name_opAffectSuffix)
+        name == g_LangSpec->name_opAffectLiteral)
     {
         SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), FMT(Err(Err0559), name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childs.size() <= 2, context->report({node->genericParameters, FMT(Err(Err0633), name.c_str())}));
@@ -282,7 +282,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         const auto second = TypeManager::concretePtrRef(parameters->childs[1]->typeInfo);
         SWAG_VERIFY(!second->isSame(typeStruct, CASTFLAG_EXACT), context->report({parameters->childs[1], FMT(Err(Err0390), name.c_str(), typeStruct->name.c_str())}));
     }
-    else if (name == g_LangSpec->name_opAffectSuffix)
+    else if (name == g_LangSpec->name_opAffectLiteral)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
@@ -335,7 +335,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         searchList.push_back(g_LangSpec->name_opCount);
         searchList.push_back(g_LangSpec->name_opData);
         searchList.push_back(g_LangSpec->name_opAffect);
-        searchList.push_back(g_LangSpec->name_opAffectSuffix);
+        searchList.push_back(g_LangSpec->name_opAffectLiteral);
         searchList.push_back(g_LangSpec->name_opSlice);
         searchList.push_back(g_LangSpec->name_opIndex);
         searchList.push_back(g_LangSpec->name_opIndexAffect);
@@ -499,7 +499,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             varDecl->token = varDecl->assignToken;
     }
 
-    // opAffectSuffix
+    // opAffectLiteral
     if (right->semFlags & SEMFLAG_LITERAL_SUFFIX)
     {
         Utf8 suffix;
@@ -511,7 +511,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             suffix = right->childs.front()->childs.front()->token.text;
 
         SymbolName* symbol = nullptr;
-        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectSuffix, left, &symbol));
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectLiteral, left, &symbol));
         if (!symbol)
         {
             YIELD();
@@ -519,12 +519,12 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             Diagnostic diag{context->node, context->node->token, FMT(Err(Err0342), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             const auto note0 = Diagnostic::note(right->childs.front(), FMT(Nte(Nte0166), suffix.c_str()));
             const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode);
-            diag.hint        = FMT(Nte(Nte0144), g_LangSpec->name_opAffectSuffix.c_str());
+            diag.hint        = FMT(Nte(Nte0144), g_LangSpec->name_opAffectLiteral.c_str());
             diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
         }
 
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectLiteral, suffix, nullptr, left, right));
         if (varDecl)
             varDecl->token = savedToken;
         YIELD();
