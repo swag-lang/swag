@@ -9,14 +9,14 @@ void Concat::init(int size)
     if (bucketSize)
     {
         lastBucket      = firstBucket;
-        currentSP       = lastBucket->datas;
+        currentSP       = lastBucket->data;
         totalCountBytes = 0;
         return;
     }
 
     bucketSize            = size;
     firstBucket           = Allocator::alloc<ConcatBucket>();
-    firstBucket->datas    = bucketSize ? (uint8_t*) Allocator::alloc(bucketSize) : nullptr;
+    firstBucket->data    = bucketSize ? (uint8_t*) Allocator::alloc(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
 #ifdef SWAG_STATS
@@ -25,14 +25,14 @@ void Concat::init(int size)
 #endif
 
     lastBucket = firstBucket;
-    currentSP  = lastBucket->datas;
+    currentSP  = lastBucket->data;
 }
 
 void Concat::clear()
 {
     totalCountBytes += bucketCount(lastBucket);
     lastBucket             = firstBucket;
-    currentSP              = lastBucket->datas;
+    currentSP              = lastBucket->data;
     lastBucket->countBytes = 0;
 }
 
@@ -41,7 +41,7 @@ void Concat::release()
     auto p = firstBucket;
     while (p)
     {
-        Allocator::free(p->datas, p->capacity);
+        Allocator::free(p->data, p->capacity);
         const auto n = p->nextBucket;
         Allocator::free(p, sizeof(ConcatBucket));
         p = n;
@@ -61,13 +61,13 @@ void Concat::align(uint32_t align)
 
 bool Concat::hasEnoughSpace(uint32_t numBytes) const
 {
-    const auto count = (int) (currentSP - lastBucket->datas);
+    const auto count = (int) (currentSP - lastBucket->data);
     return lastBucket->capacity - count >= (int) numBytes;
 }
 
 void Concat::ensureSpace(int numBytes)
 {
-    const auto count = (int) (currentSP - lastBucket->datas);
+    const auto count = (int) (currentSP - lastBucket->data);
     if (count + numBytes <= lastBucket->capacity)
         return;
 
@@ -79,7 +79,7 @@ void Concat::ensureSpace(int numBytes)
     if (lastBucket->nextBucket)
     {
         lastBucket             = lastBucket->nextBucket;
-        currentSP              = lastBucket->datas;
+        currentSP              = lastBucket->data;
         lastBucket->countBytes = 0;
         SWAG_ASSERT(numBytes <= lastBucket->capacity);
         return;
@@ -93,14 +93,14 @@ void Concat::ensureSpace(int numBytes)
 
     lastBucket->capacity = max(numBytes, bucketSize);
     lastBucket->capacity = (int) Allocator::alignSize(lastBucket->capacity);
-    lastBucket->datas    = (uint8_t*) Allocator::alloc(lastBucket->capacity);
+    lastBucket->data    = (uint8_t*) Allocator::alloc(lastBucket->capacity);
 
 #ifdef SWAG_STATS
     g_Stats.memConcat += sizeof(ConcatBucket);
     g_Stats.memConcat += lastBucket->capacity;
 #endif
 
-    currentSP = lastBucket->datas;
+    currentSP = lastBucket->data;
 }
 
 void Concat::addBool(bool v)
@@ -285,7 +285,7 @@ void Concat::addIndent(int num)
 void Concat::addEolIndent(int num)
 {
     auto p = currentSP;
-    while (p != lastBucket->datas)
+    while (p != lastBucket->data)
     {
         p--;
         if (SWAG_IS_BLANK(*p))
@@ -351,7 +351,7 @@ bool Concat::flushToFile(const Path& path)
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        fwrite(bucket->datas, 1, bucketCount(bucket), f);
+        fwrite(bucket->data, 1, bucketCount(bucket), f);
         bucket = bucket->nextBucket;
     }
 

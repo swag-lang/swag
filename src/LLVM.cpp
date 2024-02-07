@@ -138,7 +138,7 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
     // mainContext
     if (precompileIndex == 0)
     {
-        pp.mainContext = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
+        pp.mainContext       = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
         pp.defaultAllocTable = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::WeakAnyLinkage,
                                                         llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
         pp.processInfos = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy),
@@ -286,7 +286,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
-bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
+void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -335,11 +335,8 @@ bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
     modu.setTargetTriple(targetTriple.c_str());
     std::string error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
-    if (!target)
-    {
-        Report::error(FMT(Err(Err0422), targetTriple.c_str()));
-        return false;
-    }
+    if(!target)
+        Report::internalError(buildParameters.module, FMT("the LLVM backend failed to create the target [[%s]]", targetTriple.c_str()));
 
     // Create target machine
     Utf8 cpu = "generic";
@@ -488,7 +485,6 @@ bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
     }
 
     delete targetMachine;
-    return true;
 }
 
 bool LLVM::generateOutput(const BuildParameters& buildParameters)

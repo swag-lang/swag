@@ -83,7 +83,7 @@ namespace BackendLinker
             pos += len;
         }
 
-        uint64_t current_pos() const override
+        [[nodiscard]] uint64_t current_pos() const override
         {
             return pos;
         }

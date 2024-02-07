@@ -6,7 +6,7 @@
 #include "LLVM_Macros.h"
 #include "Module.h"
 
-bool LLVM::emitOS(const BuildParameters& buildParameters) const
+void LLVM::emitOS(const BuildParameters& buildParameters) const
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
@@ -65,11 +65,9 @@ bool LLVM::emitOS(const BuildParameters& buildParameters) const
         // int _fltused = 0;
         new llvm::GlobalVariable(modu, I32_TY(), false, llvm::GlobalValue::ExternalLinkage, builder.getInt32(0), "_fltused");
     }
-
-    return true;
 }
 
-bool LLVM::emitMain(const BuildParameters& buildParameters)
+void LLVM::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -78,7 +76,7 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 
-    SWAG_CHECK(emitOS(buildParameters));
+    emitOS(buildParameters);
 
     const char* entryPoint = nullptr;
     switch (g_CommandLine.target.os)
@@ -271,10 +269,9 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
     emitCall(buildParameters, module, g_LangSpec->name__closeRuntime, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
-    return true;
 }
 
-bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
+void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -295,11 +292,9 @@ bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
 
     const auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->typesSliceOffset));
     builder.CreateRet(TO_PTR_I8(r1));
-
-    return true;
 }
 
-bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
+void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -337,10 +332,9 @@ bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     }
 
     builder.CreateRetVoid();
-    return true;
 }
 
-bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
+void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -416,10 +410,9 @@ bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     }
 
     builder.CreateRetVoid();
-    return true;
 }
 
-bool LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
+void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -454,5 +447,4 @@ bool LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     }
 
     builder.CreateRetVoid();
-    return true;
 }

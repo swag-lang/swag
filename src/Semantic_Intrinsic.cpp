@@ -577,7 +577,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
         const auto               typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
         AstOutput::outputNode(outputContext, concat, typeCode->content);
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
-            node->computedValue->text.append((const char*) b->datas, concat.bucketCount(b));
+            node->computedValue->text.append((const char*) b->data, concat.bucketCount(b));
     }
     else if (expr->resolvedSymbolName)
         node->computedValue->text = expr->resolvedSymbolName->getFullName();

@@ -1,3 +1,4 @@
+// ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Allocator.h"
 #include "Assert.h"
@@ -20,7 +21,7 @@ struct VectorNative
         memcpy(buffer, other.buffer, count * sizeof(T));
     }
 
-    VectorNative(VectorNative&& other)
+    VectorNative(VectorNative&& other) noexcept
     {
         buffer          = other.buffer;
         count           = other.count;
@@ -51,15 +52,15 @@ struct VectorNative
         allocated = 0;
     }
 
-    void reserve(uint32_t newcapacity, bool copy = true)
+    void reserve(uint32_t newCapacity, bool copy = true)
     {
-        if (newcapacity <= allocated)
+        if (newCapacity <= allocated)
             return;
 
         const auto oldAllocated = allocated;
         allocated *= 2;
         allocated = max(allocated, 4);
-        allocated = max(allocated, newcapacity);
+        allocated = max(allocated, newCapacity);
         T* newPtr = (T*) Allocator::alloc(Allocator::alignSize(allocated * sizeof(T)));
         SWAG_ASSERT(newPtr);
         if (copy && count)
@@ -128,7 +129,7 @@ struct VectorNative
         count--;
     }
 
-    T get_pop_back()
+    [[nodiscard]] T get_pop_back()
     {
         SWAG_ASSERT(count);
         count--;
@@ -158,49 +159,49 @@ struct VectorNative
         count = (uint32_t) num;
     }
 
-    T* begin()
+    void clear()
+    {
+        count = 0;
+    }    
+
+    [[nodiscard]] T* begin()
     {
         return buffer;
     }
 
-    T* end()
+    [[nodiscard]] T* end()
     {
         return buffer + count;
     }
 
-    const T* begin() const
+    [[nodiscard]] const T* begin() const
     {
         return buffer;
     }
 
-    const T* end() const
+    [[nodiscard]] const T* end() const
     {
         return buffer + count;
     }
 
-    bool empty() const
+    [[nodiscard]] bool empty() const
     {
         return count == 0;
     }
 
-    void clear()
-    {
-        count = 0;
-    }
-
-    const T& back() const
+    [[nodiscard]] T& back()
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
-    T& back()
+    [[nodiscard]] const T& back() const
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
-    }
+    }    
 
-    const T& front() const
+    [[nodiscard]] const T& front() const
     {
         return buffer[0];
     }
@@ -219,7 +220,7 @@ struct VectorNative
         count--;
     }
 
-    void erase_ordered_byval(const T& val)
+    void erase_ordered_by_val(const T& val)
     {
         for (uint32_t i = 0; i < count; i++)
         {
@@ -231,7 +232,7 @@ struct VectorNative
         }
     }
 
-    void erase_unordered_byval(const T& val)
+    void erase_unordered_by_val(const T& val)
     {
         for (uint32_t i = 0; i < count; i++)
         {
@@ -276,33 +277,38 @@ struct VectorNative
         return false;
     }
 
-    size_t capacity() const
+    [[nodiscard]] size_t capacity() const
     {
         return allocated;
     }
 
-    size_t size() const
+    [[nodiscard]] size_t size() const
     {
         return count;
     }
 
-    void operator=(const Vector<T>& other)
+    VectorNative& operator=(const Vector<T>& other)
     {
         count = (int) other.size();
         if (allocated < count)
             reserve(count, false);
         memcpy(buffer, &other[0], count * sizeof(T));
+        return *this;
     }
 
-    void operator=(const VectorNative& other)
+    VectorNative& operator=(const VectorNative& other)
     {
+        if(&other == this)
+            return *this;
+        
         count = (int) other.size();
         if (allocated < count)
             reserve(count, false);
         memcpy(buffer, other.buffer, count * sizeof(T));
+        return *this;
     }
 
-    void operator=(VectorNative&& other)
+    VectorNative& operator=(VectorNative&& other) noexcept
     {
         count     = other.count;
         allocated = other.allocated;
@@ -310,6 +316,7 @@ struct VectorNative
 
         other.count  = other.allocated = 0;
         other.buffer = nullptr;
+        return *this;
     }
 
     const T& operator[](size_t index) const

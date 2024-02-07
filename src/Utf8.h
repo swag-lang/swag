@@ -3,14 +3,14 @@
 struct Path;
 struct SwagSlice;
 
-#define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
-#define SWAG_IS_ALPHA_HEX(__c) ((__c >= 'a' && __c <= 'f') || (__c >= 'A' && __c <= 'F'))
+#define SWAG_IS_DIGIT(__c) ((__c) >= '0' && (__c) <= '9')
+#define SWAG_IS_ALPHA_HEX(__c) (((__c) >= 'a' && (__c) <= 'f') || ((__c) >= 'A' && (__c) <= 'F'))
 #define SWAG_IS_HEX(__c) (SWAG_IS_ALPHA_HEX(__c) || SWAG_IS_DIGIT(__c))
-#define SWAG_IS_ALPHA(__c) ((__c >= 'a' && __c <= 'z') || (__c >= 'A' && __c <= 'Z'))
-#define SWAG_IS_NUM_SEP(__c) (__c == '_')
-#define SWAG_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
-#define SWAG_IS_EOL(__c) (__c == '\n')
-#define SWAG_IS_WIN_EOL(__c) (__c == '\r')
+#define SWAG_IS_ALPHA(__c) (((__c) >= 'a' && (__c) <= 'z') || ((__c) >= 'A' && (__c) <= 'Z'))
+#define SWAG_IS_NUM_SEP(__c) ((__c) == '_')
+#define SWAG_IS_BLANK(__c) ((__c) == ' ' || (__c) == '\t' || (__c) == '\v' || (__c) == '\f' || (__c) == '\r')
+#define SWAG_IS_EOL(__c) ((__c) == '\n')
+#define SWAG_IS_WIN_EOL(__c) ((__c) == '\r')
 #define SWAG_IS_AL_NUM(__c) (SWAG_IS_ALPHA(__c) || SWAG_IS_DIGIT(__c))
 
 struct Utf8
@@ -23,68 +23,70 @@ struct Utf8
 
     Utf8() = default;
     Utf8(const char* from);
-    Utf8(const SwagSlice& slice);
-    Utf8(const char* from, uint32_t len);
-    Utf8(const string& from);
     Utf8(const Utf8& from);
-    Utf8(const Utf8& from, uint32_t capacity);
-    Utf8(Utf8&& from);
+    Utf8(const string& from);
+    explicit Utf8(const SwagSlice& slice);
+    explicit Utf8(const char* from, uint32_t len);
+    explicit Utf8(const Utf8& from, uint32_t capacity);
+    explicit Utf8(Utf8&& from) noexcept;
     ~Utf8();
 
     void setView(const char* txt, uint32_t len);
     void setView(const Utf8& other);
 
-    uint32_t    hash() const;
-    void        freeBuffer() const;
-    void        release();
-    void        reserve(uint32_t newSize);
-    void        resize(uint32_t newSize);
-    bool        empty() const;
-    uint32_t    length() const;
-    Utf8        toZeroTerminated() const;
-    const char* c_str() const;
-    void        clear();
-    uint32_t    capacity() const;
-    void        makeLocal();
-    void        append(const char* txt, uint32_t len);
-    void        append(const char* txt);
-    void        append(const Utf8& txt);
-    void        append(char c);
-    void        append(uint32_t utf);
-    const char* begin() const;
-    const char* end() const;
-    char        back() const;
-    void        makeUpper();
-    void        makeLower();
-    void        replaceAll(char src, char dst);
-    void        trimLeft();
-    void        trimRight();
-    void        trim();
-    void        removeBack();
-    bool        containsNoCase(const Utf8& str) const;
-    int         find(const Utf8& str, uint32_t startPos = 0) const;
-    void        remove(uint32_t index, uint32_t len);
-    void        insert(uint32_t index, const char* str);
-    void        insert(uint32_t index, char c);
-    bool        compareNoCase(const Utf8& txt1) const;
-    bool        startsWith(const char* pz) const;
-    int         countOf(char c) const;
+    void freeBuffer() const;
+    void release();
+    void reserve(uint32_t newSize);
+    void resize(uint32_t newSize);
+
+    [[nodiscard]] uint32_t    hash() const;
+    [[nodiscard]] bool        empty() const;
+    [[nodiscard]] uint32_t    length() const;
+    [[nodiscard]] Utf8        toZeroTerminated() const;
+    [[nodiscard]] const char* c_str() const;
+    [[nodiscard]] uint32_t    capacity() const;
+    [[nodiscard]] const char* begin() const;
+    [[nodiscard]] const char* end() const;
+    [[nodiscard]] char        back() const;
+    [[nodiscard]] bool        containsNoCase(const Utf8& str) const;
+    [[nodiscard]] int         find(const Utf8& str, uint32_t startPos = 0) const;
+    [[nodiscard]] bool        compareNoCase(const Utf8& txt1) const;
+    [[nodiscard]] int         countOf(char c) const;
+
+    void clear();
+    void makeLocal();
+    void append(const char* txt, uint32_t len);
+    void append(const char* txt);
+    void append(const Utf8& txt);
+    void append(char c);
+    void append(uint32_t utf);
+    void makeUpper();
+    void makeLower();
+    void replaceAll(char src, char dst);
+    void trimLeft();
+    void trimRight();
+    void trim();
+    void removeBack();
+    void remove(uint32_t index, uint32_t len);
+    void insert(uint32_t index, const char* str);
+    void insert(uint32_t index, char c);
+    bool startsWith(const char* pz) const;
 
     operator const char*() const;
-    void        operator=(const char* txt);
-    friend bool operator<(const Utf8& txt1, const Utf8& txt2);
-    void        operator+=(const Utf8& txt);
-    void        operator+=(const char* txt);
-    void        operator=(const Utf8& other);
     char        operator[](uint32_t index) const;
+    Utf8&       operator=(const char* txt);
+    Utf8&       operator=(const Utf8& other);
+    Utf8&       operator=(Utf8&& other) noexcept;
+    Utf8&       operator=(uint32_t c);
+    friend bool operator<(const Utf8& txt1, const Utf8& txt2);
     friend Utf8 operator+(const Utf8& str1, const char* str2);
     friend bool operator==(const Utf8& str1, char c);
     friend bool operator==(const Utf8& str1, const char* str2);
-    friend bool operator!=(const Utf8& str1, const char* str2);
     friend bool operator==(const Utf8& str1, const Utf8& str2);
+    friend bool operator!=(const Utf8& str1, const char* str2);
     friend bool operator!=(const Utf8& str1, const Utf8& str2);
-    void        operator=(Utf8&& other);
-    void        operator=(uint32_t c);
+    void        operator+=(const Utf8& txt);
+    void        operator+=(const char* txt);
     void        operator+=(uint32_t c);
     void        operator+=(char c);
 

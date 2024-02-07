@@ -3,7 +3,7 @@
 namespace Crc32
 {
     // clang-format off
-    static constexpr uint32_t table[256] =
+    static constexpr uint32_t TABLE[256] =
     {
         0x00000000U, 0x77073096U, 0xEE0E612CU, 0x990951BAU, 0x076DC419U,
         0x706AF48FU, 0xE963A535U, 0x9E6495A3U, 0x0EDB8832U, 0x79DCB8A4U,
@@ -65,7 +65,7 @@ namespace Crc32
         crc = crc ^ 0xFFFFFFFFU;
         for (uint32_t i = 0; i < len; i++)
         {
-            crc = table[*data ^ (crc & 0xFF)] ^ (crc >> 8);
+            crc = TABLE[*data ^ (crc & 0xFF)] ^ (crc >> 8);
             data++;
         }
         crc = crc ^ 0xFFFFFFFFU;
@@ -75,8 +75,8 @@ namespace Crc32
     constexpr uint32_t compute2(const uint8_t* data, uint32_t crc = 0)
     {
         crc = crc ^ 0xFFFFFFFFU;
-        crc = table[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[1] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[1] ^ (crc & 0xFF)] ^ (crc >> 8);
         crc = crc ^ 0xFFFFFFFFU;
         return crc;
     }
@@ -84,15 +84,15 @@ namespace Crc32
     constexpr uint32_t compute8(const uint8_t* data, uint32_t crc = 0)
     {
         crc = crc ^ 0xFFFFFFFFU;
-        crc = table[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[1] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[2] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[3] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[4] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[5] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[6] ^ (crc & 0xFF)] ^ (crc >> 8);
-        crc = table[data[7] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[1] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[2] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[3] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[4] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[5] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[6] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = TABLE[data[7] ^ (crc & 0xFF)] ^ (crc >> 8);
         crc = crc ^ 0xFFFFFFFFU;
         return crc;
     }
-} // namespace Crc32
+}

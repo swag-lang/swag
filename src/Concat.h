@@ -5,7 +5,7 @@ struct Path;
 
 struct ConcatBucket
 {
-    uint8_t*      datas      = nullptr;
+    uint8_t*      data       = nullptr;
     ConcatBucket* nextBucket = nullptr;
     int           countBytes = 0;
     int           capacity   = 0;
@@ -16,10 +16,11 @@ struct Concat
     void init(int size = 32 * 1024);
     void clear();
     void release();
-    bool hasEnoughSpace(uint32_t numBytes) const;
     void ensureSpace(int numBytes);
     void align(uint32_t align);
-    bool flushToFile(const Path& path);
+
+    [[nodiscard]] bool hasEnoughSpace(uint32_t numBytes) const;
+    bool               flushToFile(const Path& path);
 
     void      addU8(uint8_t v);
     void      addU16(uint16_t v);
@@ -61,19 +62,19 @@ struct Concat
         return result;
     }
 
-    uint8_t* getSeekPtr() const
+    [[nodiscard]] uint8_t* getSeekPtr() const
     {
         return currentSP;
     }
 
-    uint32_t totalCount() const
+    [[nodiscard]] uint32_t totalCount() const
     {
         if (!lastBucket)
             return 0;
-        return totalCountBytes + (int) (currentSP - lastBucket->datas);
+        return totalCountBytes + (int) (currentSP - lastBucket->data);
     }
 
-    uint8_t* getPtr(int seek) const
+    [[nodiscard]] uint8_t* getPtr(int seek) const
     {
         SWAG_ASSERT(firstBucket);
         auto ptr = firstBucket;
@@ -81,12 +82,12 @@ struct Concat
         {
             if (ptr == lastBucket)
             {
-                SWAG_ASSERT(seek < (int) (currentSP - lastBucket->datas));
-                return lastBucket->datas + seek;
+                SWAG_ASSERT(seek < (int) (currentSP - lastBucket->data));
+                return lastBucket->data + seek;
             }
 
             if (seek < ptr->countBytes)
-                return ptr->datas + seek;
+                return ptr->data + seek;
             seek -= ptr->countBytes;
             ptr = ptr->nextBucket;
         }
@@ -96,7 +97,7 @@ struct Concat
     {
         if (b != lastBucket)
             return b->countBytes;
-        const auto count = (int) (currentSP - lastBucket->datas);
+        const auto count = (int) (currentSP - lastBucket->data);
         SWAG_ASSERT(count <= bucketSize);
         return count;
     }
@@ -114,23 +115,23 @@ struct Concat
     do                                                                       \
     {                                                                        \
         static constexpr int __len = (int) char_traits<char>::length(__str); \
-        __concat.addString(__str, __len);                                    \
-    } while (false)
+        (__concat).addString(__str, __len);                                  \
+    } while (0)
 
 #define CONCAT_STR_1(__concat, __before, __int, __after) \
     do                                                   \
     {                                                    \
         CONCAT_FIXED_STR(__concat, __before);            \
-        __concat.addU32Str(__int);                       \
+        (__concat).addU32Str(__int);                     \
         CONCAT_FIXED_STR(__concat, __after);             \
-    } while (false)
+    } while (0)
 
 #define CONCAT_STR_2(__concat, __before, __int1, __middle, __int2, __after) \
     do                                                                      \
     {                                                                       \
         CONCAT_FIXED_STR(__concat, __before);                               \
-        __concat.addU32Str(__int1);                                         \
+        (__concat).addU32Str(__int1);                                       \
         CONCAT_FIXED_STR(__concat, __middle);                               \
-        __concat.addU32Str(__int2);                                         \
+        (__concat).addU32Str(__int2);                                       \
         CONCAT_FIXED_STR(__concat, __after);                                \
-    } while (false)
+    } while (0)

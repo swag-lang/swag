@@ -670,7 +670,7 @@ bool Module::addFileToLoad(AstNode* includeNode)
 bool Module::removeFileToLoad(AstNode* includeNode)
 {
     ScopedLock lk(mutexDependency);
-    compilerLoads.erase_unordered_byval(includeNode);
+    compilerLoads.erase_unordered_by_val(includeNode);
     return true;
 }
 

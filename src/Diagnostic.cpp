@@ -452,7 +452,7 @@ void Diagnostic::setColorRanges(DiagnosticLevel level) const
     }
 }
 
-int Diagnostic::alignRangeColumn(int curColumn, int where, bool withCode) const
+void Diagnostic::alignRangeColumn(int &curColumn, int where, bool withCode) const
 {
     while (curColumn < where)
     {
@@ -462,7 +462,6 @@ int Diagnostic::alignRangeColumn(int curColumn, int where, bool withCode) const
             g_Log.print(" ");
         curColumn++;
     }
-    return curColumn;
 }
 
 int Diagnostic::printRangesVerticalBars(size_t maxMarks)
@@ -475,7 +474,7 @@ int Diagnostic::printRangesVerticalBars(size_t maxMarks)
         auto& rr  = ranges[ii];
         rr.hasBar = true;
         g_Log.setColor(rangeNoteColor);
-        curColumn = alignRangeColumn(curColumn, rr.mid);
+        alignRangeColumn(curColumn, rr.mid);
         g_Log.print(LogSymbol::VerticalLine);
         curColumn++;
     }
@@ -518,7 +517,7 @@ void Diagnostic::printRanges()
     {
         const auto& r = ranges[i];
         setColorRanges(r.errorLevel);
-        curColumn = alignRangeColumn(curColumn, r.startLocation.column);
+        alignRangeColumn(curColumn, r.startLocation.column);
 
         if (i != ranges.size() - 1 && r.mergeNext)
             setColorRanges(ranges[i + 1].errorLevel);
@@ -591,13 +590,13 @@ void Diagnostic::printRanges()
             }
 
             if (mid - 2 - (int) unformat.length() > -4)
-                curColumn = alignRangeColumn(curColumn, curColumn + 4);
+                alignRangeColumn(curColumn, curColumn + 4);
 
             printLastRangeHint(curColumn);
         }
         else
         {
-            curColumn = alignRangeColumn(curColumn, r.mid);
+            alignRangeColumn(curColumn, r.mid);
             g_Log.print(LogSymbol::DownRight);
             g_Log.print(LogSymbol::HorizontalLine);
             g_Log.print(" ");

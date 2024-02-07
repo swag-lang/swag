@@ -194,13 +194,13 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 void AstOutput::removeLastBlankLine(Concat& concat)
 {
     auto p = concat.currentSP;
-    if (p == concat.lastBucket->datas)
+    if (p == concat.lastBucket->data)
         return;
     p--;
     if (*p != '\n')
         return;
 
-    while (p != concat.lastBucket->datas)
+    while (p != concat.lastBucket->data)
     {
         p--;
         if (SWAG_IS_BLANK(*p))

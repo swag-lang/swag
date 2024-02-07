@@ -46,7 +46,7 @@ constexpr uint64_t ATTRIBUTE_IMPLICIT            = 0x0000002000000000;
 constexpr uint64_t ATTRIBUTE_DISCARDABLE         = 0x0000004000000000;
 constexpr uint64_t ATTRIBUTE_DEPRECATED          = 0x0000008000000000;
 constexpr uint64_t ATTRIBUTE_EXPORT_TYPE_METHODS = 0x0000010000000000;
-constexpr uint64_t ATTRIBUTE_EXPORT_TYPE_NOZERO  = 0x0000020000000000;
+constexpr uint64_t ATTRIBUTE_EXPORT_TYPE_NO_ZERO = 0x0000020000000000;
 constexpr uint64_t ATTRIBUTE_RUN_GENERATED_FUNC  = 0x0000040000000000;
 constexpr uint64_t ATTRIBUTE_RUN_GENERATED_EXP   = 0x0000080000000000;
 constexpr uint64_t ATTRIBUTE_INCOMPLETE          = 0x0000100000000000;
@@ -77,8 +77,8 @@ struct AttributeParameter
 
 struct OneAttribute
 {
-    const AttributeParameter* getParam(const Utf8& paramName) const;
-    const ComputedValue*      getValue(const Utf8& paramName) const;
+    [[nodiscard]] const AttributeParameter* getParam(const Utf8& paramName) const;
+    [[nodiscard]] const ComputedValue*      getValue(const Utf8& paramName) const;
 
     Utf8                       name;
     Vector<AttributeParameter> parameters;
@@ -102,21 +102,22 @@ struct AttributeList
         allAttributes.clear();
     }
 
-    bool empty() const
+    [[nodiscard]] bool empty() const
     {
         return allAttributes.empty();
     }
 
-    uint32_t size() const
+    [[nodiscard]] uint32_t size() const
     {
         return (uint32_t) allAttributes.size();
     }
 
-    void operator=(const AttributeList& other)
+    AttributeList& operator=(const AttributeList& other)
     {
         SWAG_RACE_CONDITION_WRITE(raceCond);
         SWAG_RACE_CONDITION_READ1(other.raceCond);
         allAttributes = other.allAttributes;
+        return *this;
     }
 
     Vector<OneAttribute> allAttributes;

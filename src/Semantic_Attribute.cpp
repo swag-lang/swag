@@ -427,7 +427,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     if (w == g_LangSpec->name_methods)
                         flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
                     else if (w == g_LangSpec->name_nozero)
-                        flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
+                        flags |= ATTRIBUTE_EXPORT_TYPE_NO_ZERO;
                     else
                     {
                         return context->report({child, attrParam->token, FMT(Err(Err0280), w.c_str())});

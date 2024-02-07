@@ -6,7 +6,7 @@
 #include "SCBE.h"
 #include "TypeManager.h"
 
-bool SCBE::emitOS(const BuildParameters& buildParameters) const
+void SCBE::emitOS(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -46,16 +46,14 @@ bool SCBE::emitOS(const BuildParameters& buildParameters) const
         pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
         pp.emit_Load64_Immediate(RAX, 1);
         pp.emit_Ret();
-        return true;
     }
     else
     {
         SWAG_ASSERT(false);
-        return false;
     }
 }
 
-bool SCBE::emitMain(const BuildParameters& buildParameters) const
+void SCBE::emitMain(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -76,7 +74,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters) const
         break;
     default:
         SWAG_ASSERT(false);
-        return false;
+        return;
     }
 
     const auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
@@ -234,13 +232,12 @@ bool SCBE::emitMain(const BuildParameters& buildParameters) const
 
     const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
-    return true;
 }
 
-bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
+void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 {
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::DynamicLib)
-        return true;
+        return;
 
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -270,11 +267,9 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 
     const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
-
-    return true;
 }
 
-bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
+void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -326,10 +321,9 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 
     const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
-    return true;
 }
 
-bool SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
+void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -407,10 +401,9 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 
     const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
-    return true;
 }
 
-bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
+void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -450,5 +443,4 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 
     const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
-    return true;
 }

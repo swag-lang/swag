@@ -133,7 +133,7 @@ namespace
                 SWAG_ASSERT(false);
             }
 
-            auto n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
+            auto n = Utf8{(const char*) concat.firstBucket->data, concat.bucketCount(concat.firstBucket)};
             if (n.back() == '\n')
                 n.count--;
             if (n.back() == ';')

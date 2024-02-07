@@ -21,7 +21,7 @@ SCBE::SCBE()
     memset(perThread, 0, sizeof(perThread));
 }
 
-bool SCBE::createRuntime(const BuildParameters& buildParameters) const
+void SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -112,8 +112,6 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters) const
         pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CPUSymbolKind::Extern)->index;
         pp.symCst_U64F64        = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Extern)->index;
     }
-
-    return true;
 }
 
 JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
@@ -236,7 +234,7 @@ void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAdd
     fct->unwind       = std::move(unwind);
 }
 
-bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
+void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -250,7 +248,7 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
     if (fopen_s(&f, filename.string().c_str(), "wb"))
     {
         Report::errorOS(FMT(Err(Err0096), filename.string().c_str()));
-        return false;
+        return;
     }
 
     const auto objFileType = getObjType(g_CommandLine.target);
@@ -288,8 +286,6 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters) const
     pp.dbgTypeRecords.release();
     pp.dbgMapTypes.release();
     pp.dbgMapTypesNames.release();
-
-    return true;
 }
 
 bool SCBE::generateOutput(const BuildParameters& buildParameters)

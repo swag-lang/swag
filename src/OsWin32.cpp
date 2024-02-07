@@ -941,8 +941,8 @@ namespace OS
             auto& concat = gen.concat;
             concat.init(0);
             concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
-            concat.firstBucket->datas    = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-            concat.currentSP             = gen.concat.firstBucket->datas;
+            concat.firstBucket->data    = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            concat.currentSP             = gen.concat.firstBucket->data;
 
             // We need to generate unwind stuff to get a correct callstack, and in case the runtime caises an exception
             // with 'RaiseException' (panic, error, etc.)
@@ -965,15 +965,15 @@ namespace OS
             rtFunc->EndAddress        = JIT_SIZE_BUFFER;
             rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
             uint32_t offset           = 0;
-            concat.currentSP          = gen.concat.firstBucket->datas + JIT_SIZE_BUFFER;
+            concat.currentSP          = gen.concat.firstBucket->data + JIT_SIZE_BUFFER;
             SCBE_Coff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
-            RtlAddFunctionTable(rtFunc, 1, (DWORD64) gen.concat.firstBucket->datas);
+            RtlAddFunctionTable(rtFunc, 1, (DWORD64) gen.concat.firstBucket->data);
 
             // Restore back the start of the buffer
-            concat.currentSP = gen.concat.firstBucket->datas;
+            concat.currentSP = gen.concat.firstBucket->data;
         }
 
-        const auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->datas;
+        const auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
         SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
         gen.emit_Push(RDI);
@@ -995,7 +995,7 @@ namespace OS
 
         // The real deal : make the call
         typedef void (*funcPtr)();
-        const auto     ptr = (funcPtr) (gen.concat.firstBucket->datas + startOffset);
+        const auto     ptr = (funcPtr) (gen.concat.firstBucket->data + startOffset);
         ptr();
 
         gen.concat.currentSP = (uint8_t*) ptr;

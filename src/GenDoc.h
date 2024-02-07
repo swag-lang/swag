@@ -54,7 +54,7 @@ struct GenDoc
 
     void               constructPage();
     static Utf8        toRef(Utf8 str);
-    Utf8               getTocTitleRef() const;
+    [[nodiscard]] Utf8 getTocTitleRef() const;
     void               addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
     static Utf8        getFileExtension(const Module* module);
     bool               generate(Module* mdl, BuildCfgDocKind kind);

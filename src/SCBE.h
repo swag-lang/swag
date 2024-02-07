@@ -19,18 +19,18 @@ struct SCBE : Backend
 
     void release();
 
-    bool      createRuntime(const BuildParameters& buildParameters) const;
+    void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      generateOutput(const BuildParameters& buildParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
-    bool saveObjFile(const BuildParameters& buildParameters) const;
-    bool emitGetTypeTable(const BuildParameters& buildParameters) const;
-    bool emitGlobalPreMain(const BuildParameters& buildParameters) const;
-    bool emitGlobalInit(const BuildParameters& buildParameters) const;
-    bool emitGlobalDrop(const BuildParameters& buildParameters) const;
-    bool emitOS(const BuildParameters& buildParameters) const;
-    bool emitMain(const BuildParameters& buildParameters) const;
+    void saveObjFile(const BuildParameters& buildParameters) const;
+    void emitGetTypeTable(const BuildParameters& buildParameters) const;
+    void emitGlobalPreMain(const BuildParameters& buildParameters) const;
+    void emitGlobalInit(const BuildParameters& buildParameters) const;
+    void emitGlobalDrop(const BuildParameters& buildParameters) const;
+    void emitOS(const BuildParameters& buildParameters) const;
+    void emitMain(const BuildParameters& buildParameters) const;
 
     void        emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const;
     void        emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const;

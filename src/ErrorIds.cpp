@@ -542,7 +542,7 @@ void initErrors()
     SWAG_ERROR(Err0419, "invalid visit                                     $ can't find the [[%s]] visit specialization in [[%s]]");
     SWAG_ERROR(Err0420, "invalid visit                                     $ the type [[%s]] can't be visited with [[visit]]");
     SWAG_ERROR(Err0421, "invalid void dereference                          $ dereferencing a pointer to [[void]] is not valid $ [[void]] does not have a valid size");
-    SWAG_ERROR(Err0422, "linker error                                      $ the LLVM backend failed to create the target [[%s]]");
+    SWAG_ERROR(Err0422, nullptr);
     SWAG_ERROR(Err0423, "literal overflow                                  $ can't negate number [[%I64d]] because [[%I64u]] is too large for type [[s64]]");
     SWAG_ERROR(Err0424, "literal overflow                                  $ can't negate number [[%d]] because [[%u]] is too large for type [[s8]]");
     SWAG_ERROR(Err0425, "literal overflow                                  $ the number [[%I64u]] is too large for type [[%s]]");

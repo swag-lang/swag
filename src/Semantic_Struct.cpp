@@ -952,7 +952,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             // Var is a struct
             if (varTypeInfo->isStruct())
             {
-                if (varTypeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
+                if (varTypeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NO_ZERO)
                     structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
 

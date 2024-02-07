@@ -106,7 +106,7 @@ Utf8::Utf8(const Utf8& from, uint32_t capacity)
     count = len;
 }
 
-Utf8::Utf8(Utf8&& from)
+Utf8::Utf8(Utf8&& from) noexcept
 {
     count          = from.count;
     allocated      = from.allocated;
@@ -202,16 +202,17 @@ const char* Utf8::end() const
     return buffer + count;
 }
 
-void Utf8::operator=(const char* txt)
+Utf8& Utf8::operator=(const char* txt)
 {
     clear();
     append(txt);
+    return *this;
 }
 
-void Utf8::operator=(Utf8&& other)
+Utf8& Utf8::operator=(Utf8&& other) noexcept
 {
     if (&other == this)
-        return;
+        return *this;
 
     release();
     count           = other.count;
@@ -220,12 +221,13 @@ void Utf8::operator=(Utf8&& other)
     other.count     = 0;
     other.allocated = 0;
     other.buffer    = nullptr;
+    return *this;
 }
 
-void Utf8::operator=(const Utf8& other)
+Utf8& Utf8::operator=(const Utf8& other)
 {
     if (&other == this)
-        return;
+        return *this;
 
     // View
     if (!other.allocated && other.buffer)
@@ -234,17 +236,21 @@ void Utf8::operator=(const Utf8& other)
         count     = other.count;
         allocated = other.allocated;
         buffer    = other.buffer;
-        return;
     }
-
-    clear();
-    append(other);
+    else
+    {
+        clear();
+        append(other);
+    }
+    
+    return *this;
 }
 
-void Utf8::operator=(uint32_t c)
+Utf8& Utf8::operator=(uint32_t c)
 {
     clear();
     append(c);
+    return *this;
 }
 
 Utf8 operator+(const Utf8& str1, const char* str2)

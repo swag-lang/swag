@@ -868,11 +868,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        content += FMT("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->datas);
+        content += FMT("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->data);
         firstAliasVar = 0;
         content += "let ";
         content += alias0Name;
-        content += FMT(" = %s[#index]; ", (const char*) concat.firstBucket->datas);
+        content += FMT(" = %s[#index]; ", (const char*) concat.firstBucket->data);
 
         content += "let ";
         content += alias1Name;
@@ -890,7 +890,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += FMT("{ let __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += FMT("{ let __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->data);
         content += FMT("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
         content += "let ";
@@ -978,9 +978,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
         else if (x->ownerBreakable->isParentOf(loopNode))
         {
             if (x->tokenId == TokenId::KwdBreak)
-                x->ownerBreakable->breakList.erase_unordered_byval((AstBreakContinue*) x);
+                x->ownerBreakable->breakList.erase_unordered_by_val((AstBreakContinue*) x);
             else if (x->tokenId == TokenId::KwdContinue)
-                x->ownerBreakable->continueList.erase_unordered_byval((AstBreakContinue*) x);
+                x->ownerBreakable->continueList.erase_unordered_by_val((AstBreakContinue*) x);
             x->ownerBreakable = loopNode;
         }
         if (x->kind == AstNodeKind::Visit)

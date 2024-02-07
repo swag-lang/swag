@@ -531,7 +531,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
     while (bucket != pp.concat.lastBucket->nextBucket)
     {
         const auto count = pp.concat.bucketCount(bucket);
-        fwrite(bucket->datas, count, 1, f);
+        fwrite(bucket->data, count, 1, f);
         SWAG_IF_ASSERT(totalCount += count);
         bucket = bucket->nextBucket;
     }
@@ -604,7 +604,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         while (bucket != pp.postConcat.lastBucket->nextBucket)
         {
             const auto count = pp.postConcat.bucketCount(bucket);
-            fwrite(bucket->datas, count, 1, f);
+            fwrite(bucket->data, count, 1, f);
             bucket = bucket->nextBucket;
         }
     }

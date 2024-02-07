@@ -125,17 +125,17 @@ struct LLVM : Backend
     bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult) const;
     llvm::Value* emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const Utf8& funcName, TypeInfoFuncAttr* typeFunc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
 
-    bool generateObjFile(const BuildParameters& buildParameters) const;
+    void generateObjFile(const BuildParameters& buildParameters) const;
 
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;
     bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const;
 
-    bool emitGetTypeTable(const BuildParameters& buildParameters) const;
-    bool emitGlobalPreMain(const BuildParameters& buildParameters) const;
-    bool emitGlobalInit(const BuildParameters& buildParameters);
-    bool emitGlobalDrop(const BuildParameters& buildParameters);
-    bool emitOS(const BuildParameters& buildParameters) const;
-    bool emitMain(const BuildParameters& buildParameters);
+    void emitGetTypeTable(const BuildParameters& buildParameters) const;
+    void emitGlobalPreMain(const BuildParameters& buildParameters) const;
+    void emitGlobalInit(const BuildParameters& buildParameters);
+    void emitGlobalDrop(const BuildParameters& buildParameters);
+    void emitOS(const BuildParameters& buildParameters) const;
+    void emitMain(const BuildParameters& buildParameters);
 
     static llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
     bool                     emitGetParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, const llvm::Function* func, TypeInfoFuncAttr* typeFunc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
