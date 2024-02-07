@@ -4,17 +4,6 @@
 
 Log g_Log;
 
-Log::Log()
-{
-    colorVTSCurInstruction = colorToVTS(LogColor::CurInstruction);
-    colorVTSName           = colorToVTS(LogColor::Name);
-    colorVTSType           = colorToVTS(LogColor::Type);
-    colorVTSLocation       = colorToVTS(LogColor::Location);
-    colorVTSIndex          = colorToVTS(LogColor::Index);
-    colorVTSDefault        = colorToVTS(LogColor::Default);
-    colorVTSBreakpoint     = colorToVTS(LogColor::Breakpoint);
-}
-
 void Log::lock()
 {
     mutexAccess.lock();

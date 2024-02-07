@@ -216,7 +216,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
     else
     {
-        str = FMT("(%s%s%s) ", g_Log.colorVTSType.c_str(), res.type->getDisplayNameC(), g_Log.colorVTSDefault.c_str());
+        str = FMT("(%s%s%s) ", Log::colorToVTS(LogColor::Type).c_str(), res.type->getDisplayNameC(), Log::colorToVTS(LogColor::Default).c_str());
         g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 

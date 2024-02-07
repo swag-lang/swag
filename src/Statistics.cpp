@@ -98,7 +98,7 @@ void Stats::printFreq()
             g_Log.print(FMT("%5d ", countOpFreq[bestI][bestJ].load()));
             g_Log.setColor(LogColor::Name);
             g_Log.print(FMT("%s ", g_ByteCodeOpDesc[bestI].name));
-            g_Log.setColor(LogColor::Name);
+            g_Log.setColor(LogColor::Location);
             g_Log.print(FMT("%s\n", g_ByteCodeOpDesc[bestJ].name));
             countOpFreq[bestI][bestJ] = 0;
         }

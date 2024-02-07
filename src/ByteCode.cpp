@@ -50,14 +50,14 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
 
 Utf8 ByteCode::getPrintRefName()
 {
-    Utf8 str = g_Log.colorVTSName;
+    Utf8 str = Log::colorToVTS(LogColor::Name);
     str += getPrintName();
 
     const auto type = getCallType();
     if (type)
     {
         str += " ";
-        str += g_Log.colorVTSType;
+        str += Log::colorToVTS(LogColor::Type);
         str += type->getDisplayName();
     }
 
@@ -70,13 +70,13 @@ Utf8 ByteCode::getPrintRefName()
 
     if (loc.file)
     {
-        str += g_Log.colorVTSLocation;
+        str += Log::colorToVTS(LogColor::Location);
         str += loc.file->path.string().c_str();
     }
 
     if (loc.location)
     {
-        str += g_Log.colorVTSLocation;
+        str += Log::colorToVTS(LogColor::Location);
         str += FMT(":%d", loc.location->line - 1);
     }
 

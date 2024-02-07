@@ -67,7 +67,6 @@ struct Log
     void        setColor(LogColor color);
     void        setDefaultColor();
 
-    Log();
     void lock();
     void unlock();
 
@@ -88,14 +87,6 @@ struct Log
     void messageVerbose(const Utf8& message);
 
     void setStoreMode(bool mode);
-
-    Utf8 colorVTSCurInstruction;
-    Utf8 colorVTSName;
-    Utf8 colorVTSType;
-    Utf8 colorVTSLocation;
-    Utf8 colorVTSIndex;
-    Utf8 colorVTSDefault;
-    Utf8 colorVTSBreakpoint;
 
     Mutex        mutexAccess;
     Vector<Utf8> store;

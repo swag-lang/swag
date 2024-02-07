@@ -251,18 +251,18 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         // Current line
         if (currentLine)
         {
-            oneLine += g_Log.colorVTSCurInstruction;
+            oneLine += Log::colorToVTS(LogColor::CurInstruction);
             oneLine += "-> ";
         }
         else
         {
-            oneLine += g_Log.colorVTSIndex;
+            oneLine += Log::colorToVTS(LogColor::Index);
             oneLine += "   ";
         }
 
         // Line
         oneLine += FMT("%-5u ", startLine + lineIdx + 1);
-        oneLine += g_Log.colorVTSDefault;
+        oneLine += Log::colorToVTS(LogColor::Default);
 
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
@@ -291,9 +291,9 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                oneLine += g_Log.colorVTSDefault;
+                oneLine += Log::colorToVTS(LogColor::Default);
             else
-                oneLine += g_Log.colorVTSBreakpoint;
+                oneLine += Log::colorToVTS(LogColor::Breakpoint);
             oneLine += Utf8("\xe2\x96\xa0");
         }
         else
@@ -303,7 +303,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         // Code
         if (currentLine)
         {
-            oneLine += g_Log.colorVTSCurInstruction;
+            oneLine += Log::colorToVTS(LogColor::CurInstruction);
             oneLine += l;
         }
         else if (g_CommandLine.logColors)
@@ -312,7 +312,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         }
         else
         {
-            oneLine += g_Log.colorVTSDefault;
+            oneLine += Log::colorToVTS(LogColor::Default);
             oneLine += l;
         }
 
