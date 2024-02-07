@@ -11,7 +11,7 @@ JobResult SCBE_SaveObjJob::execute()
 {
 #ifdef SWAG_STATS
     Timer timer0{&g_Stats.prepOutputStage1TimeJob};
-    Timer timer1{&g_Stats.prepOutputTimeJob_SaveObj};
+    Timer timer1{&g_Stats.prepOutputTimeJobSaveObj};
 #endif
 
     ((SCBE*) module->backend)->saveObjFile(prepJob->buildParameters);

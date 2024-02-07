@@ -137,9 +137,9 @@ void Stats::print() const
     g_Log.eol();
 
     g_Log.messageHeaderDot("instructions", FMT("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
-    const float pc1 = ((float) totalOptimsBC.load() * 100.0f) / (numInstructions.load());
-    g_Log.messageHeaderDot("kicked", FMT("%d %.1f%%", totalOptimsBC.load(), pc1), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("total", FMT("%u", numInstructions.load() - totalOptimsBC.load()), LogColor::Header, LogColor::Value);
+    const float pc1 = ((float) totalOptimBC.load() * 100.0f) / ((float) numInstructions.load());
+    g_Log.messageHeaderDot("kicked", FMT("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("total", FMT("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
     g_Log.eol();
 
     g_Log.messageHeaderDot("concrete types", FMT("%u", totalConcreteTypes.load()), LogColor::Header, LogColor::Value);
@@ -156,8 +156,8 @@ void Stats::print() const
     g_Log.messageHeaderDot("semantic time", FMT("%.3fs", OS::timerToSeconds(semanticTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("run time", FMT("%.3fs", OS::timerToSeconds(runTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("run test time", FMT("%.3fs", OS::timerToSeconds(runTestTime.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("prep out 1 time", FMT("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load())), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("prep out 2 time", FMT("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("prep out 1 time", FMT("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobGenFunc.load())), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("prep out 2 time", FMT("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJobSaveObj.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("gen out time", FMT("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("optim bc time", FMT("%.3fs", OS::timerToSeconds(optimBCTime.load())), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total time", FMT("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())), LogColor::Header, LogColor::Value);

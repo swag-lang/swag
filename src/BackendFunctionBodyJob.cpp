@@ -10,7 +10,7 @@ JobResult BackendFunctionBodyJob::execute()
 {
 #ifdef SWAG_STATS
     Timer timer0{&g_Stats.prepOutputStage1TimeJob};
-    Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
+    Timer timer1{&g_Stats.prepOutputTimeJobGenFunc};
 #endif
 
     for (const auto one : byteCodeFunc)

@@ -307,7 +307,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::Nop)
         {
 #ifdef SWAG_STATS
-            ++g_Stats.totalOptimsBC;
+            ++g_Stats.totalOptimBC;
 #endif
             ip++;
             continue;

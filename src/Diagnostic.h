@@ -19,8 +19,8 @@ enum class DiagnosticLevel
 
 struct Diagnostic
 {
-    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , startLocation{start}
         , endLocation{end}
@@ -31,8 +31,8 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(SourceFile* file, const SourceLocation& start, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(SourceFile* file, const SourceLocation& start, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , startLocation{start}
         , endLocation{start}
@@ -43,8 +43,8 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(SourceFile* file, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(SourceFile* file, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , startLocation{token.startLocation}
         , endLocation{token.endLocation}
@@ -55,8 +55,8 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(AstNode* node, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(AstNode* node, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , startLocation{token.startLocation}
         , endLocation{token.endLocation}
@@ -68,12 +68,12 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(AstNode* node, const Token& token, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(AstNode* node, const Token& token, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , startLocation{token.startLocation}
         , endLocation{token.endLocation}
-        , hint{hint}
+        , hint{std::move(hint)}
         , sourceFile{node->sourceFile}
         , sourceNode{node}
         , showSourceCode{true}
@@ -82,8 +82,8 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(AstNode* node, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , sourceFile{node->sourceFile}
         , sourceNode{node}
@@ -94,10 +94,10 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(AstNode* node, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(AstNode* node, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
-        , hint{hint}
+        , hint{std::move(hint)}
         , sourceFile{node->sourceFile}
         , sourceNode{node}
         , showSourceCode{true}
@@ -107,16 +107,16 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(SourceFile* file, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(SourceFile* file, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
         , sourceFile{file}
     {
         setup();
     }
 
-    Diagnostic(const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{msg}
+    Diagnostic(Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : textMsg{std::move(msg)}
         , errorLevel{level}
     {
         setup();

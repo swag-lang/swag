@@ -10,7 +10,7 @@ struct Stats
     atomic<int> testFunctions            = 0;
     atomic<int> runFunctions             = 0;
     atomic<int> numInstructions          = 0;
-    atomic<int> totalOptimsBC            = 0;
+    atomic<int> totalOptimBC             = 0;
     atomic<int> totalConcreteTypes       = 0;
     atomic<int> totalConcreteStructTypes = 0;
     atomic<int> numInitPtr               = 0;
@@ -19,22 +19,22 @@ struct Stats
     atomic<int> releaseNodes             = 0;
     atomic<int> numTokens                = 0;
 
-    atomic<uint64_t> readFilesTime             = 0;
-    atomic<uint64_t> cfgTime                   = 0;
-    atomic<uint64_t> tokenizerTime             = 0;
-    atomic<uint64_t> syntaxTime                = 0;
-    atomic<uint64_t> semanticTime              = 0;
-    atomic<uint64_t> runTime                   = 0;
-    atomic<uint64_t> runTestTime               = 0;
-    atomic<uint64_t> prepOutputStage1TimeJob   = 0;
-    atomic<uint64_t> prepOutputStage2TimeJob   = 0;
-    atomic<uint64_t> prepOutputTimeJob_GenFunc = 0;
-    atomic<uint64_t> prepOutputTimeJob_SaveObj = 0;
-    atomic<uint64_t> genOutputTimeJob          = 0;
-    atomic<uint64_t> optimBCTime               = 0;
-    atomic<uint64_t> bootstrapTime             = 0;
-    atomic<uint64_t> runtimeTime               = 0;
-    atomic<uint64_t> outputDbgTime             = 0;
+    atomic<uint64_t> readFilesTime            = 0;
+    atomic<uint64_t> cfgTime                  = 0;
+    atomic<uint64_t> tokenizerTime            = 0;
+    atomic<uint64_t> syntaxTime               = 0;
+    atomic<uint64_t> semanticTime             = 0;
+    atomic<uint64_t> runTime                  = 0;
+    atomic<uint64_t> runTestTime              = 0;
+    atomic<uint64_t> prepOutputStage1TimeJob  = 0;
+    atomic<uint64_t> prepOutputStage2TimeJob  = 0;
+    atomic<uint64_t> prepOutputTimeJobGenFunc = 0;
+    atomic<uint64_t> prepOutputTimeJobSaveObj = 0;
+    atomic<uint64_t> genOutputTimeJob         = 0;
+    atomic<uint64_t> optimBCTime              = 0;
+    atomic<uint64_t> bootstrapTime            = 0;
+    atomic<uint64_t> runtimeTime              = 0;
+    atomic<uint64_t> outputDbgTime            = 0;
 
     atomic<size_t> allocatedMemory    = 0;
     atomic<size_t> maxAllocatedMemory = 0;
