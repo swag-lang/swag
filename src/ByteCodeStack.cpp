@@ -2,8 +2,8 @@
 #include "ByteCodeStack.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
-#include "ByteCodeDebugger.h"
 #include "ByteCodeRunContext.h"
+#include "Log.h"
 #include "SyntaxColor.h"
 
 thread_local ByteCodeStack  g_ByteCodeStackTraceVal;
@@ -53,22 +53,22 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     auto ip = step.ip;
 
     Utf8 header;
-    header += ByteCodeDebugger::COLOR_VTS_INDEX;
+    header += g_Log.COLOR_VTS_INDEX;
     if (current)
         header += FMT("[%03u] ", level);
     else
         header += FMT("-%03u- ", level);
-    header += ByteCodeDebugger::COLOR_VTS_NAME;
+    header += g_Log.COLOR_VTS_NAME;
 
     Utf8 inl;
-    inl += ByteCodeDebugger::COLOR_VTS_INDEX;
+    inl += g_Log.COLOR_VTS_INDEX;
     inl += "----- ";
-    inl += ByteCodeDebugger::COLOR_VTS_NAME;
+    inl += g_Log.COLOR_VTS_NAME;
 
     if (!ip)
     {
         auto str = header;
-        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+        str += g_Log.COLOR_VTS_LOCATION;
         str += "<foreign code>";
         str += "\n";
         return str;
@@ -88,7 +88,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     str += name;
     str += "\n";
     str += "      ";
-    str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+    str += g_Log.COLOR_VTS_LOCATION;
     if (sourceFile)
         str += FMT(" %s:%d:%d", sourceFile->path.string().c_str(), location->line + 1, location->column + 1);
     str += "\n";
@@ -104,14 +104,14 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         if (owner)
         {
             str += owner->ownerInline ? inl.c_str() : header.c_str();
-            str += ByteCodeDebugger::COLOR_VTS_NAME;
+            str += g_Log.COLOR_VTS_NAME;
             str += getStepName(owner, ip);
 
             if (owner->sourceFile)
             {
                 str += "\n";
                 str += "      ";
-                str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+                str += g_Log.COLOR_VTS_LOCATION;
                 str += FMT(" %s:%d:%d:%d:%d",
                            owner->sourceFile->path.string().c_str(),
                            owner->token.startLocation.line + 1,
@@ -131,14 +131,14 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     while (parent && parent->ownerFct == ip->node->ownerFct)
     {
         str += parent->ownerInline ? inl.c_str() : header.c_str();
-        str += ByteCodeDebugger::COLOR_VTS_NAME;
+        str += g_Log.COLOR_VTS_NAME;
         str += getStepName(parent, ip);
 
         if (parent->sourceFile)
         {
             str += "\n";
             str += "      ";
-            str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+            str += g_Log.COLOR_VTS_LOCATION;
             str += FMT(" %s:%d:%d:%d:%d",
                        parent->sourceFile->path.string().c_str(),
                        parent->token.startLocation.line + 1,

@@ -601,11 +601,11 @@ namespace OS
 
                 if (hasSymbol)
                 {
-                    str += ByteCodeDebugger::COLOR_VTS_NAME;
+                    str += g_Log.COLOR_VTS_NAME;
                     str += psym->Name;
                     if (hasLine)
                     {
-                        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+                        str += g_Log.COLOR_VTS_LOCATION;
                         str += FMT(" %s:%d", line.FileName, line.LineNumber);
                     }
 

@@ -230,9 +230,9 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += " ";
             Utf8 str1;
             str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
-            str += COLOR_VTS_TYPE;
+            str += g_Log.COLOR_VTS_TYPE;
             str += str1;
-            str += COLOR_VTS_DEFAULT;
+            str += g_Log.COLOR_VTS_DEFAULT;
         }
 
         return;
@@ -260,12 +260,12 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 str += "(bytecode) ";
                 auto bc = (ByteCode*) ByteCode::undoByteCodeLambda(ptr);
-                str += COLOR_VTS_NAME;
+                str += g_Log.COLOR_VTS_NAME;
                 str += bc->name.c_str();
                 str += " ";
-                str += COLOR_VTS_TYPE;
+                str += g_Log.COLOR_VTS_TYPE;
                 str += bc->getCallType()->getDisplayNameC();
-                str += COLOR_VTS_DEFAULT;
+                str += g_Log.COLOR_VTS_DEFAULT;
             }
             else
             {
@@ -292,8 +292,13 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 for (int i = 0; i < indent + 1; i++)
                     str += "   ";
-                str += FMT("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE.c_str(), p->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str(), COLOR_VTS_NAME.c_str(), p->name.c_str(),
-                           COLOR_VTS_DEFAULT.c_str());
+                str += FMT("(%s%s%s) %s%s%s = ",
+                           g_Log.COLOR_VTS_TYPE.c_str(),
+                           p->typeInfo->getDisplayNameC(),
+                           g_Log.COLOR_VTS_DEFAULT.c_str(),
+                           g_Log.COLOR_VTS_NAME.c_str(),
+                           p->name.c_str(),
+                           g_Log.COLOR_VTS_DEFAULT.c_str());
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
                 res1.addr = ((uint8_t*) addr) + p->offset;
@@ -504,8 +509,13 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8&
     if (!testNameFilter(over->symbol->name, filter))
         return;
 
-    Utf8 str = FMT("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE.c_str(), over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str(), COLOR_VTS_NAME.c_str(), over->symbol->name.c_str(),
-                   COLOR_VTS_DEFAULT.c_str());
+    Utf8 str = FMT("(%s%s%s) %s%s%s = ",
+                   g_Log.COLOR_VTS_TYPE.c_str(),
+                   over->typeInfo->getDisplayNameC(),
+                   g_Log.COLOR_VTS_DEFAULT.c_str(),
+                   g_Log.COLOR_VTS_NAME.c_str(),
+                   over->symbol->name.c_str(),
+                   g_Log.COLOR_VTS_DEFAULT.c_str());
 
     EvaluateResult res;
     res.type = over->typeInfo;

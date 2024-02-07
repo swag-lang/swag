@@ -18,7 +18,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 {
     PushSilentError se;
 
-    g_Log.setColor(COLOR_DEFAULT);
+    g_Log.setColor(g_Log.COLOR_DEFAULT);
 
     auto expr = inExpr;
     g_ByteCodeDebugger.commandSubstitution(context, expr);
@@ -216,13 +216,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
     else
     {
-        str = FMT("(%s%s%s) ", COLOR_VTS_TYPE.c_str(), res.type->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str());
+        str = FMT("(%s%s%s) ", g_Log.COLOR_VTS_TYPE.c_str(), res.type->getDisplayNameC(), g_Log.COLOR_VTS_DEFAULT.c_str());
         g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 
-    g_Log.setColor(COLOR_NAME);
+    g_Log.setColor(g_Log.COLOR_NAME);
     g_Log.print(expr);
-    g_Log.setColor(COLOR_DEFAULT);
+    g_Log.setColor(g_Log.COLOR_DEFAULT);
     g_Log.print(" = ");
 
     printLong(str);

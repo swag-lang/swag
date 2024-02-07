@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "ByteCodeDebugger.h"
+
 #ifdef SWAG_STATS
 #include "ByteCode.h"
 #include "Log.h"
@@ -16,26 +18,29 @@ namespace
     Utf8 getProfileBc(ByteCode* bc, int level)
     {
         Utf8 line;
+        line += Log::colorToVTS(g_Log.COLOR_COUNT);
         line += FMT("%d", bc->profileCallCount);
 
-        while (line.count < COL1)
+        line += Log::colorToVTS(g_Log.COLOR_VALUE);
+        while (Log::removeFormat(line).count < COL1)
             line += " ";
         line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
 
-        while (line.count < COL2)
+        while (Log::removeFormat(line).count < COL2)
             line += " ";
         line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
 
-        while (line.count < COL3)
+        while (Log::removeFormat(line).count < COL3)
             line += " ";
         line += FMT("%0.6f", bc->profilePerCall);
 
-        while (line.count < COL4)
+        while (Log::removeFormat(line).count < COL4)
             line += " ";
 
         while (level--)
             line += "    ";
 
+        line += Log::colorToVTS(g_Log.COLOR_LOCATION);
         if (bc->sourceFile)
         {
             line += bc->sourceFile->name;
@@ -43,22 +48,30 @@ namespace
         }
 
         line += bc->getCallName();
+
+        line += Log::colorToVTS(g_Log.COLOR_DEFAULT);
         return line;
     }
 
     Utf8 getProfileFFI(const FFIStat& ffi, int level)
     {
         Utf8 line;
+        line += Log::colorToVTS(g_Log.COLOR_COUNT);
         line += FMT("%d", ffi.count);
 
-        while (line.count < COL1)
+        while (Log::removeFormat(line).count < COL1)
             line += " ";
+        
+        line += Log::colorToVTS(g_Log.COLOR_VALUE);
         line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
 
-        while (line.count < COL2)
+        while (Log::removeFormat(line).count < COL2)
             line += " ";
-
+        
+        line += Log::colorToVTS(g_Log.COLOR_LOCATION);
         line += ffi.name;
+
+        line += Log::colorToVTS(g_Log.COLOR_DEFAULT);
         return line;
     }
 

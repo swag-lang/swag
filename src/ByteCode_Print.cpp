@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 #include "Module.h"
 #include "TypeInfo.h"
 
@@ -47,7 +48,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
             g_Log.print("         ");
             if (forDbg)
                 g_Log.print("   ");
-            g_Log.setColor(ByteCodeDebugger::COLOR_LOCATION);
+            g_Log.setColor(g_Log.COLOR_LOCATION);
             g_Log.print(FMT("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
             g_Log.eol();
         }
@@ -354,17 +355,17 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     const bool forDbg = options.curIp != nullptr;
 
     if (forDbg && ip == options.curIp)
-        g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);
+        g_Log.setColor(g_Log.COLOR_CUR_INSTRUCTION);
     else
-        g_Log.setColor(ByteCodeDebugger::COLOR_INDEX);
+        g_Log.setColor(g_Log.COLOR_INDEX);
 
     // Instruction rank
     g_Log.print(line.rank);
 
     if (forDbg && ip == options.curIp)
-        g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);
+        g_Log.setColor(g_Log.COLOR_CUR_INSTRUCTION);
     else if (forDbg)
-        g_Log.setColor(ByteCodeDebugger::COLOR_DEFAULT);
+        g_Log.setColor(g_Log.COLOR_DEFAULT);
     else
         g_Log.setColor(LogColor::White);
 

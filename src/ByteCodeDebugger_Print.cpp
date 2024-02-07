@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 #include "SyntaxColor.h"
 #include "TypeInfo.h"
 #include "Workspace.h"
@@ -74,9 +75,9 @@ void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, c
     while (len++ < 25)
         g_Log.print(".");
     g_Log.print(" ");
-    g_Log.print(name.c_str(), COLOR_NAME);
+    g_Log.print(name.c_str(), g_Log.COLOR_NAME);
     g_Log.print(" ");
-    g_Log.print(type.c_str(), COLOR_TYPE);
+    g_Log.print(type.c_str(), g_Log.COLOR_TYPE);
     g_Log.eol();
 }
 
@@ -250,18 +251,18 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         // Current line
         if (currentLine)
         {
-            oneLine += COLOR_VTS_CUR_INSTRUCTION;
+            oneLine += g_Log.COLOR_VTS_CUR_INSTRUCTION;
             oneLine += "-> ";
         }
         else
         {
-            oneLine += COLOR_VTS_INDEX;
+            oneLine += g_Log.COLOR_VTS_INDEX;
             oneLine += "   ";
         }
 
         // Line
         oneLine += FMT("%-5u ", startLine + lineIdx + 1);
-        oneLine += COLOR_VTS_DEFAULT;
+        oneLine += g_Log.COLOR_VTS_DEFAULT;
 
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
@@ -290,9 +291,9 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                oneLine += COLOR_VTS_DEFAULT;
+                oneLine += g_Log.COLOR_VTS_DEFAULT;
             else
-                oneLine += COLOR_VTS_BREAKPOINT;
+                oneLine += g_Log.COLOR_VTS_BREAKPOINT;
             oneLine += Utf8("\xe2\x96\xa0");
         }
         else
@@ -302,7 +303,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         // Code
         if (currentLine)
         {
-            oneLine += COLOR_VTS_CUR_INSTRUCTION;
+            oneLine += g_Log.COLOR_VTS_CUR_INSTRUCTION;
             oneLine += l;
         }
         else if (g_CommandLine.logColors)
@@ -311,7 +312,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         }
         else
         {
-            oneLine += COLOR_VTS_DEFAULT;
+            oneLine += g_Log.COLOR_VTS_DEFAULT;
             oneLine += l;
         }
 

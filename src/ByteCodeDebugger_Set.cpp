@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 
 void ByteCodeDebugger::printSet(ByteCodeRunContext*)
 {
-    g_Log.messageHeaderDot("stop on @breakpoint()", !g_CommandLine.dbgOff ? "on" : "off", COLOR_NAME, LogColor::White, " ");
-    g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.debugPrintStruct ? "on" : "off", COLOR_NAME, LogColor::White, " ");
-    g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.debugPrintArray ? "on" : "off", COLOR_NAME, LogColor::White, " ");
+    g_Log.messageHeaderDot("stop on @breakpoint()", !g_CommandLine.dbgOff ? "on" : "off", g_Log.COLOR_NAME, LogColor::White, " ");
+    g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.debugPrintStruct ? "on" : "off", g_Log.COLOR_NAME, LogColor::White, " ");
+    g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.debugPrintArray ? "on" : "off", g_Log.COLOR_NAME, LogColor::White, " ");
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
