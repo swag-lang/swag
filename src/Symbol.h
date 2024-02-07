@@ -4,11 +4,11 @@
 #include "Mutex.h"
 #include "Register.h"
 
-struct TypeInfo;
-struct Job;
 struct AstNode;
+struct Job;
 struct SymTable;
 struct SymbolName;
+struct TypeInfo;
 
 constexpr uint32_t OVERLOAD_VAR_BSS          = 0x00000001;
 constexpr uint32_t OVERLOAD_VAR_CAPTURE      = 0x00000002;
@@ -42,6 +42,9 @@ constexpr uint32_t OVERLOAD_UNDEFINED        = 0x10000000;
 
 struct SymbolOverload
 {
+    void from(const SymbolOverload* other);
+    void setRegisters(const RegisterList& reg, uint32_t fl);
+
     ComputedValue computedValue;
     RegisterList  symRegisters;
 
@@ -52,9 +55,6 @@ struct SymbolOverload
 
     uint32_t storageIndex = 0;
     uint32_t flags        = 0;
-
-    void from(const SymbolOverload* other);
-    void setRegisters(const RegisterList& reg, uint32_t fl);
 };
 
 enum class SymbolKind : uint8_t
@@ -80,13 +80,14 @@ constexpr uint16_t SYMBOL_USED          = 0x0002;
 
 struct SymbolName
 {
-    void               decreaseOverloadNoLock();
-    SymbolOverload*    addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
-    SymbolOverload*    findOverload(const TypeInfo* typeInfo);
-    void               addDependentJob(Job* job);
-    void               addDependentJobNoLock(Job* job);
-    [[nodiscard]] Utf8 getFullName() const;
-    void               unregisterNode(const AstNode* node);
+    [[nodiscard]] SymbolOverload* findOverload(const TypeInfo* typeInfo);
+    [[nodiscard]] Utf8            getFullName() const;
+
+    SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
+    void            decreaseOverloadNoLock();
+    void            addDependentJob(Job* job);
+    void            addDependentJobNoLock(Job* job);
+    void            unregisterNode(const AstNode* node);
 
     SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;

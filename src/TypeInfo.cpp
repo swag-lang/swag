@@ -18,7 +18,7 @@ void TypeInfo::forceComputeName()
     computeWhateverName(COMPUTE_NAME);
 }
 
-void TypeInfo::getScopedName(Utf8& newName) const
+void TypeInfo::computeScopedName(Utf8& newName) const
 {
     if (declNode && declNode->ownerScope && declNode->ownerScope->kind != ScopeKind::Function)
     {
@@ -103,7 +103,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
             scopedNameExport = std::move(str);
         }
         return scopedNameExport;
-        
+
     default:
         break;
     }
@@ -123,8 +123,11 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
 
     case COMPUTE_SCOPED_NAME:
     case COMPUTE_SCOPED_NAME_EXPORT:
-        getScopedName(resName);
+        computeScopedName(resName);
         resName += name;
+        break;
+        
+    default:
         break;
     }
 }

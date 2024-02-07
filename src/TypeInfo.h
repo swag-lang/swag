@@ -186,7 +186,7 @@ struct TypeInfo
     void        removeGenericFlag();
     void        clearName();
     void        forceComputeName();
-    void        getScopedName(Utf8& newName) const;
+    void        computeScopedName(Utf8& newName) const;
     Utf8        getName();
     Utf8        getTypeName(bool forceNoScope);
     const Utf8& computeWhateverName(uint32_t nameType);

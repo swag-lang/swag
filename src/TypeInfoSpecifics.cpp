@@ -591,7 +591,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     {
         if (nameType == COMPUTE_SCOPED_NAME || nameType == COMPUTE_SCOPED_NAME_EXPORT)
         {
-            getScopedName(resName);
+            computeScopedName(resName);
             SWAG_ASSERT(declNode);
             resName += declNode->token.text;
             addedName = true;
@@ -1199,8 +1199,7 @@ Utf8 TypeInfoStruct::getDisplayName()
     computeWhateverName(str, COMPUTE_DISPLAY_NAME);
     if (isTuple())
         return FMT("%s", str.c_str());
-    else
-        return FMT("struct %s", str.c_str());
+    return FMT("struct %s", str.c_str());
 }
 
 Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType)
@@ -1244,7 +1243,7 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
     }
 
     if (nameType != COMPUTE_NAME && nameType != COMPUTE_DISPLAY_NAME)
-        getScopedName(resName);
+        computeScopedName(resName);
     resName += structName;
     computeNameGenericParameters(genericParameters, resName, nameType);
 }

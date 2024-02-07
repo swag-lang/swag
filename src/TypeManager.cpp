@@ -15,26 +15,26 @@ thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesF;
 
 void TypeManager::setup()
 {
-    typeInfoS8             = new TypeInfoNative(NativeTypeKind::S8, "s8", 1, TYPEINFO_INTEGER | TYPEINFO_CAN_PROMOTE_816);
-    typeInfoS16            = new TypeInfoNative(NativeTypeKind::S16, "s16", 2, TYPEINFO_INTEGER | TYPEINFO_CAN_PROMOTE_816);
-    typeInfoS32            = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER);
-    typeInfoS64            = new TypeInfoNative(NativeTypeKind::S64, "s64", 8, TYPEINFO_INTEGER);
-    typeInfoU8             = new TypeInfoNative(NativeTypeKind::U8, "u8", 1, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_CAN_PROMOTE_816);
-    typeInfoU16            = new TypeInfoNative(NativeTypeKind::U16, "u16", 2, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_CAN_PROMOTE_816);
-    typeInfoU32            = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoU64            = new TypeInfoNative(NativeTypeKind::U64, "u64", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
-    typeInfoBool           = new TypeInfoNative(NativeTypeKind::Bool, "bool", 1, 0);
-    typeInfoF32            = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT);
-    typeInfoF64            = new TypeInfoNative(NativeTypeKind::F64, "f64", 8, TYPEINFO_FLOAT);
-    typeInfoRune           = new TypeInfoNative(NativeTypeKind::Rune, "rune", 4, 0);
-    typeInfoVoid           = new TypeInfoNative(NativeTypeKind::Void, "void", 0, 0);
-    typeInfoString         = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
-    typeInfoAny            = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
-    typeInfoUndefined      = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
-    typeInfoUntypedInt     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER);
+    typeInfoS8            = new TypeInfoNative(NativeTypeKind::S8, "s8", 1, TYPEINFO_INTEGER | TYPEINFO_CAN_PROMOTE_816);
+    typeInfoS16           = new TypeInfoNative(NativeTypeKind::S16, "s16", 2, TYPEINFO_INTEGER | TYPEINFO_CAN_PROMOTE_816);
+    typeInfoS32           = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER);
+    typeInfoS64           = new TypeInfoNative(NativeTypeKind::S64, "s64", 8, TYPEINFO_INTEGER);
+    typeInfoU8            = new TypeInfoNative(NativeTypeKind::U8, "u8", 1, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_CAN_PROMOTE_816);
+    typeInfoU16           = new TypeInfoNative(NativeTypeKind::U16, "u16", 2, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_CAN_PROMOTE_816);
+    typeInfoU32           = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU64           = new TypeInfoNative(NativeTypeKind::U64, "u64", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoBool          = new TypeInfoNative(NativeTypeKind::Bool, "bool", 1, 0);
+    typeInfoF32           = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT);
+    typeInfoF64           = new TypeInfoNative(NativeTypeKind::F64, "f64", 8, TYPEINFO_FLOAT);
+    typeInfoRune          = new TypeInfoNative(NativeTypeKind::Rune, "rune", 4, 0);
+    typeInfoVoid          = new TypeInfoNative(NativeTypeKind::Void, "void", 0, 0);
+    typeInfoString        = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
+    typeInfoAny           = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
+    typeInfoUndefined     = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
+    typeInfoUntypedInt    = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER);
     typeInfoUntypedBinHex = new TypeInfoNative(NativeTypeKind::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED | TYPEINFO_UNTYPED_BIN_HEX);
-    typeInfoUntypedFloat   = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
-    typeInfoCharacter      = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER | TYPEINFO_CHARACTER);
+    typeInfoUntypedFloat  = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT | TYPEINFO_UNTYPED_FLOAT);
+    typeInfoCharacter     = new TypeInfoNative(NativeTypeKind::S32, "s32", 4, TYPEINFO_INTEGER | TYPEINFO_UNTYPED_INTEGER | TYPEINFO_CHARACTER);
 
     typeInfoVariadic = new TypeInfoVariadic();
     typeInfoVariadic->name.setView("...", 3);
@@ -330,7 +330,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        auto newType               = (TypeInfoNative*) typeInfo->clone();
+        const auto newType         = (TypeInfoNative*) typeInfo->clone();
         newType->valueInteger      = *(int32_t*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesB[value] = newType;

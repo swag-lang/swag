@@ -438,7 +438,7 @@ namespace
                             context.result = MatchResult::NotEnoughGenericParameters;
                             return;
                         }
-                        else if (myTypeInfo->isGeneric())
+                        if (myTypeInfo->isGeneric())
                         {
                             context.result = MatchResult::NotEnoughGenericParameters;
                             return;

@@ -3,13 +3,13 @@
 #include "Symbol.h"
 #include "SymTableHash.h"
 
+struct AstNode;
+struct ComputedValue;
+struct ErrorContext;
 struct Scope;
 struct TypeInfo;
-struct Utf8;
-struct AstNode;
-struct ErrorContext;
-struct ComputedValue;
 struct TypeInfoStruct;
+struct Utf8;
 
 struct AddSymbolTypeInfo
 {

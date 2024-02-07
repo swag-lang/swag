@@ -22,7 +22,7 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc) const
     const uint32_t a = (str[0] | 0x20) - 'a';
     if (a < 32 && !(fastReject & (1 << a)))
         return nullptr;
-    if ((uint32_t) str.length() > maxLength)
+    if (str.length() > maxLength)
         return nullptr;
 
     if (!crc)

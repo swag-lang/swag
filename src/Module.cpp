@@ -1076,12 +1076,12 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
 
-    const auto it = mapRuntimeFcts.find(fctName);
-    if (it != mapRuntimeFcts.end())
+    const auto it = mapRuntimeFct.find(fctName);
+    if (it != mapRuntimeFct.end())
         return it->second->typeInfoFunc;
 
-    const auto it1 = mapRuntimeFctsTypes.find(fctName);
-    if (it1 != mapRuntimeFctsTypes.end())
+    const auto it1 = mapRuntimeFctTypes.find(fctName);
+    if (it1 != mapRuntimeFctTypes.end())
         return it1->second;
     return nullptr;
 }
@@ -1090,8 +1090,8 @@ ByteCode* Module::getRuntimeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
 
-    const auto it = mapRuntimeFcts.find(fctName);
-    SWAG_ASSERT(it != mapRuntimeFcts.end());
+    const auto it = mapRuntimeFct.find(fctName);
+    SWAG_ASSERT(it != mapRuntimeFct.end());
     return it->second;
 }
 

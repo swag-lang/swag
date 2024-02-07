@@ -263,8 +263,8 @@ struct Module
     VectorNative<AstNode*>                           globalVarsConstant;
     Vector<CompilerMessage>                          compilerMessages[2];
     Set<SourceFile*>                                 exportSourceFiles;
-    MapUtf8<TypeInfoFuncAttr*>                       mapRuntimeFctsTypes;
-    MapUtf8<ByteCode*>                               mapRuntimeFcts;
+    MapUtf8<TypeInfoFuncAttr*>                       mapRuntimeFctTypes;
+    MapUtf8<ByteCode*>                               mapRuntimeFct;
     MapUtf8<ForToSolve>                              implForToSolve;
     Map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
     JobGroup                                         syntaxGroup;

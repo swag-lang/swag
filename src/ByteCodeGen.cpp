@@ -138,7 +138,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
     if (context->sourceFile->isRuntimeFile)
     {
         ScopedLock lk(context->sourceFile->module->mutexFile);
-        context->sourceFile->module->mapRuntimeFcts[context->bc->getCallName()] = context->bc;
+        context->sourceFile->module->mapRuntimeFct[context->bc->getCallName()] = context->bc;
     }
 
     if (context->bc->node &&

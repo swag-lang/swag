@@ -867,7 +867,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->sourceFile && funcNode->sourceFile->isRuntimeFile && funcNode->isEmptyFct())
     {
         ScopedLock lk(funcNode->sourceFile->module->mutexFile);
-        funcNode->sourceFile->module->mapRuntimeFctsTypes[funcNode->token.text] = typeInfo;
+        funcNode->sourceFile->module->mapRuntimeFctTypes[funcNode->token.text] = typeInfo;
     }
 
     // We should never reference an empty function
