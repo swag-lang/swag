@@ -7,11 +7,11 @@
 #include "Runtime.h"
 #include "TypeMatch.h"
 
-struct ComputedValue;
 struct AstFuncDecl;
 struct AstNode;
 struct BadSignatureInfos;
 struct ByteCode;
+struct ComputedValue;
 struct Job;
 struct JobContext;
 struct Scope;

@@ -1,19 +1,17 @@
 #pragma once
-#include "AstNode.h"
-#include "DependentJobs.h"
-#include "Job.h"
-#include "TypeInfo.h"
 
 struct AstArrayPointerSlicing;
 struct AstFuncCallParam;
 struct AstFuncDecl;
 struct AstNode;
-struct AstNode;
+struct AstRange;
 struct AstVarDecl;
 struct ByteCode;
 struct ByteCodeInstruction;
 struct ByteCodeGenContext;
 struct DataSegment;
+struct Job;
+struct JobContext;
 struct Module;
 struct RegisterList;
 struct Scope;
@@ -29,6 +27,7 @@ struct TypeInfoPointer;
 struct TypeInfoStruct;
 enum class ByteCodeOp : uint16_t;
 enum class TokenId : uint16_t;
+enum class TypeInfoKind : uint8_t;
 
 #define SAFETY_ZERO_EPSILON 0.00001f
 
@@ -143,14 +142,7 @@ namespace ByteCodeGen
     bool emitCall(ByteCodeGenContext* context);
     void emitPushRAParams(const ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic);
     bool emitReturnByCopyAddress(const ByteCodeGenContext* context, AstNode* node, const TypeInfoFuncAttr* typeInfoFunc);
-    bool emitCall(ByteCodeGenContext* context,
-                  AstNode*            allParams,
-                  AstFuncDecl*        funcNode,
-                  AstVarDecl*         varNode,
-                  RegisterList&       varNodeRegisters,
-                  bool                foreign,
-                  bool                lambda,
-                  bool                freeRegistersParams);
+    bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams);
     bool emitLambdaCall(ByteCodeGenContext* context);
     bool emitForeignCall(ByteCodeGenContext* context);
     bool emitIntrinsicCVaStart(ByteCodeGenContext* context);
@@ -329,7 +321,7 @@ namespace ByteCodeGen
     void     truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int count);
     void     sortRegistersRC(const ByteCodeGenContext* context);
     void     ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterList& r0);
-}; // namespace ByteCodeGen
+}
 
 #define EMIT_INST0(__cxt, __op) ByteCodeGen::emitInstruction(__cxt, __op, 0, 0, 0, 0, __FILE__, __LINE__)
 #define EMIT_INST1(__cxt, __op, __r0) ByteCodeGen::emitInstruction(__cxt, __op, __r0, 0, 0, 0, __FILE__, __LINE__)
