@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ByteCode.h"
+#include "ByteCode_Math.h"
 #include "LanguageSpec.h"
-#include "Math.h"
 #include "SCBE.h"
 
 void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
@@ -231,7 +231,7 @@ void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, 
     else if (op == CPUOp::MUL &&
              !(ip->flags & BCI_IMM_A) &&
              (ip->flags & BCI_IMM_B) &&
-             isPowerOfTwo(ip->b.u64) &&
+             Math::isPowerOfTwo(ip->b.u64) &&
              (ip->b.u64 < (uint64_t) numBits))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);

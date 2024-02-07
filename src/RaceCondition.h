@@ -31,9 +31,9 @@ struct RaceCondition
 #define SWAG_RACE_CONDITION_INSTANCE(__x) RaceCondition::Instance __x
 
 #else
-#define SWAG_RACE_CONDITION_WRITE(__x)
-#define SWAG_RACE_CONDITION_WRITE1(__x)
-#define SWAG_RACE_CONDITION_READ(__x)
-#define SWAG_RACE_CONDITION_READ1(__x)
+#define SWAG_RACE_CONDITION_WRITE(__x) do {} while(0)
+#define SWAG_RACE_CONDITION_WRITE1(__x) do {} while(0)
+#define SWAG_RACE_CONDITION_READ(__x) do {} while(0)
+#define SWAG_RACE_CONDITION_READ1(__x) do {} while(0)
 #define SWAG_RACE_CONDITION_INSTANCE(__x)
 #endif

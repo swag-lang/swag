@@ -1296,7 +1296,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
                 concat.addU8(0xD1);
                 concat.addU8(0xE0 | reg); // shl rax, 1
             }
-            else if (isPowerOfTwo(value))
+            else if (Math::isPowerOfTwo(value))
             {
                 concat.addU8(0xC1);
                 concat.addU8(0xE0 | reg); // shl rax, ??

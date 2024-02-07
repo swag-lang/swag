@@ -1,9 +1,7 @@
 #include "pch.h"
-#ifdef SWAG_HAS_ASSERT
-#include "AstFlags.h"
-#endif
-#include "ByteCodeRun.h"
 #include "ByteCode.h"
+#include "ByteCode_Math.h"
+#include "ByteCodeRun.h"
 #include "ByteCodeDebugger.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeStack.h"
@@ -12,7 +10,6 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "Math.h"
 #include "Module.h"
 #include "Report.h"
 #include "TypeManager.h"

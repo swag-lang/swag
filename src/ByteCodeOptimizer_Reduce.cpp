@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "Math.h"
+#include "ByteCode_Math.h"
 
 void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
@@ -21,7 +21,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u8))
+        if (Math::isPowerOfTwo(ip->b.u8))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS8);
             ip->b.u32 = (uint32_t) log2(ip->b.u8);
@@ -39,7 +39,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u16))
+        if (Math::isPowerOfTwo(ip->b.u16))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS16);
             ip->b.u32 = (uint32_t) log2(ip->b.u16);
@@ -57,7 +57,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
@@ -75,7 +75,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u64))
+        if (Math::isPowerOfTwo(ip->b.u64))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
@@ -93,7 +93,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u8))
+        if (Math::isPowerOfTwo(ip->b.u8))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU8);
             ip->b.u32 = (uint32_t) log2(ip->b.u8);
@@ -111,7 +111,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u16))
+        if (Math::isPowerOfTwo(ip->b.u16))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU16);
             ip->b.u32 = (uint32_t) log2(ip->b.u16);
@@ -129,7 +129,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
@@ -147,7 +147,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u64))
+        if (Math::isPowerOfTwo(ip->b.u64))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
@@ -157,7 +157,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         break;
 
     case ByteCodeOp::BinOpModuloU32:
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpBitmaskAnd32);
             ip->b.u32 -= 1;
@@ -166,7 +166,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         break;
 
     case ByteCodeOp::BinOpModuloU64:
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpBitmaskAnd64);
             ip->b.u64 -= 1;
@@ -184,7 +184,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftU32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
@@ -202,7 +202,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftU64);
             ip->b.u64 = (uint32_t) log2(ip->b.u64);
@@ -220,7 +220,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftS32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
@@ -238,7 +238,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             break;
         }
 
-        if (isPowerOfTwo(ip->b.u32))
+        if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftS64);
             ip->b.u64 = (uint32_t) log2(ip->b.u64);

@@ -222,6 +222,7 @@
     <ClInclude Include="../src/Backend.h" />
     <ClInclude Include="..\src\AstOutput.h" />
     <ClInclude Include="..\src\BackendFunctionBodyJob.h" />
+    <ClInclude Include="..\src\ByteCode_Math.h" />
     <ClInclude Include="..\src\LLVM_Debug.h" />
     <ClInclude Include="..\src\LLVM_Macros.h" />
     <ClInclude Include="../src/BackendLinker.h" />
@@ -545,7 +546,7 @@
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp" />
     <ClCompile Include="../src/SourceFile.cpp" />
-    <ClCompile Include="..\src\ByteCode_Print_.cpp" />
+    <ClCompile Include="..\src\ByteCode_Print.cpp" />
     <ClCompile Include="..\src\Help.cpp" />
     <ClCompile Include="..\src\Main.cpp" />
     <ClCompile Include="../src/ThreadManager.cpp" />

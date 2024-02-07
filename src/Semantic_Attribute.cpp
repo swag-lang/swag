@@ -590,7 +590,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, FMT(Err(Err0354), attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, FMT(Err(Err0354), attrValue->reg.u8)}));
             }
 
             //////
@@ -599,7 +599,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, FMT(Err(Err0190), attrValue->reg.u8)}));
+                SWAG_VERIFY(Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, FMT(Err(Err0190), attrValue->reg.u8)}));
             }
 
             //////

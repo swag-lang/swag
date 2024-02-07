@@ -229,8 +229,15 @@ struct ByteCode
     VectorNative<AstNode*> localVars;
     VectorNative<AstNode*> dependentCalls;
     SetUtf8                hasForeignFunctionCallsModules;
+
 #ifdef SWAG_STATS
     MapUtf8<FFIStat> ffiProfile;
+    uint64_t         profileStart     = 0;
+    uint64_t         profileCumTime   = 0;
+    uint64_t         profileFFI       = 0;
+    uint32_t         profileCallCount = 0;
+    double           profilePerCall   = 0;
+    Set<ByteCode*>   profileChilds;
 #endif
 
     ByteCodeInstruction* out          = nullptr;
@@ -238,13 +245,6 @@ struct ByteCode
     TypeInfoFuncAttr*    typeInfoFunc = nullptr;
     AstNode*             node         = nullptr;
     ByteCode*            alias        = nullptr;
-
-    uint64_t       profileStart     = 0;
-    uint64_t       profileCumTime   = 0;
-    uint64_t       profileFFI       = 0;
-    uint32_t       profileCallCount = 0;
-    double         profilePerCall   = 0;
-    Set<ByteCode*> profileChilds;
 
     uint32_t stackSize             = 0;
     uint32_t dynStackSize          = 0;

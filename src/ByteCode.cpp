@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ByteCode.h"
 #include "Ast.h"
 #include "AstFlags.h"
+#include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "Crc32.h"
 #include "Module.h"
@@ -217,7 +217,7 @@ bool ByteCode::isDoingNothing() const
         }
 
         break;
-        
+
     default:
         break;
     }
@@ -374,7 +374,7 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
                         ip->op == ByteCodeOp::LocalCallPopParam ||
                         ip->op == ByteCodeOp::LocalCallPopRC))
     {
-        auto bc = (ByteCode*) ip->a.u64;
+        const auto bc = reinterpret_cast<ByteCode*>(ip->a.u64);
         if (bc && bc->alias)
             oldCrc = Crc32::compute8((const uint8_t*) &bc->alias, oldCrc);
         else

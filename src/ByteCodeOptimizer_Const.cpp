@@ -1,8 +1,8 @@
 #include "pch.h"
+#include "ByteCode_Math.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeOptimizer.h"
 #include "Diagnostic.h"
-#include "Math.h"
 #include "TypeManager.h"
 
 #define OK()                                  \

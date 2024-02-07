@@ -191,9 +191,6 @@
     <ClCompile Include="../src/ByteCodeGenJob.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCode_Print_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_Math.cpp">
       <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
@@ -683,6 +680,9 @@
     <ClCompile Include="..\src\TypeManager_MakeCompatible.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCode_Print.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1045,6 +1045,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Naming.h">
       <Filter>Syntax</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ByteCode_Math.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
