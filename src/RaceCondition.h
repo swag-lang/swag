@@ -2,7 +2,7 @@
 #include "Mutex.h"
 
 #ifdef SWAG_HAS_ASSERT
-struct RaceCondition
+struct RaceCondition  // NOLINT(cppcoreguidelines-special-member-functions)
 {
     struct Instance
     {
@@ -16,6 +16,7 @@ struct RaceCondition
     RaceCondition() = default;
     RaceCondition(Instance* inst, bool read);
     ~RaceCondition();
+
     void lock(Instance* inst, bool read);
     void unlock() const;
 

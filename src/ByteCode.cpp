@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "ByteCode.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "Crc32.h"
 #include "Module.h"
@@ -358,9 +358,8 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
 
 uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
 {
-    oldCrc = Crc32::compute2((const uint8_t*) &ip->op, oldCrc);
-
     const uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+    oldCrc               = Crc32::compute2((const uint8_t*) &ip->op, oldCrc);
     oldCrc               = Crc32::compute2((const uint8_t*) &flags, oldCrc);
 
     if (hasSomethingInC(ip))
@@ -414,7 +413,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     {
         const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.
-        maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
+        maxInstructions = (int) ((float) funcDecl->nodeCounts * 0.8f);
     }
 
     maxInstructions            = max(maxInstructions, 8);

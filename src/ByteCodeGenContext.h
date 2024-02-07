@@ -6,8 +6,11 @@ static constexpr uint32_t BCC_FLAG_NO_LOCATION  = 0x00000001;
 static constexpr uint32_t BCC_FLAG_NO_SAFETY    = 0x00000002;
 static constexpr uint32_t BCC_FLAG_FOR_DEBUGGER = 0x00000004;
 
-struct ByteCodeGenContext : JobContext
+struct ByteCodeGenContext : JobContext  // NOLINT(cppcoreguidelines-special-member-functions)
 {
+    ByteCodeGenContext() = default;
+    ByteCodeGenContext(const ByteCodeGenContext& other) = default;
+    
     void release() const;
     void allocateTempCallParams();
 

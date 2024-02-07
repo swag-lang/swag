@@ -593,7 +593,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     SWAG_ASSERT(typeInfoStruct->opInit);
     sourceFile->module->addByteCodeFunc(opInit);
 
-    ByteCodeGenContext cxt{static_cast<JobContext>(*context)};
+    ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
     if (cxt.bc->node)
         cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
