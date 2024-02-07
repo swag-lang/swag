@@ -122,16 +122,16 @@ void profiler()
         bcs.pop_back();
 
     Utf8 line;
-    line += "#bccalls";
+    line += "#bc_calls";
     while (line.count < COL1)
         line += " ";
-    line += "cumtime";
+    line += "cum_time";
     while (line.count < COL2)
         line += " ";
-    line += "FFI";
+    line += "ffi";
     while (line.count < COL3)
         line += " ";
-    line += "percall";
+    line += "per_call";
     while (line.count < COL4)
         line += " ";
     line += "name";
@@ -162,10 +162,10 @@ void profiler()
 
     g_Log.eol();
     line.clear();
-    line += "#fficalls";
+    line += "#ffi_calls";
     while (line.count < COL1)
         line += " ";
-    line += "cumtime";
+    line += "cum_time";
     while (line.count < COL2)
         line += " ";
     line += "name";
@@ -178,6 +178,8 @@ void profiler()
         g_Log.print(line);
         g_Log.eol();
     }
+
+    g_Log.setDefaultColor();
 }
 
 #endif // SWAG_STATS
