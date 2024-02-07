@@ -91,10 +91,10 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
 void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-
     if (typeInfoStruct->flags & TYPEINFO_SPEC_OP_GENERATED)
         return;
+
+    const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     // Type of those functions
     const auto typeInfoFunc               = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();

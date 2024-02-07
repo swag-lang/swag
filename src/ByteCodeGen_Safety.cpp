@@ -5,7 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
+thread_local Utf8 g_TypedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 
 const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
 {
@@ -13,125 +13,125 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
     const int i = toType ? (int) toType->nativeType : 0;
     const int j = fromType ? (int) fromType->nativeType : 0;
 
-    if (typedMsg[m][i][j].empty())
+    if (g_TypedMsg[m][i][j].empty())
     {
         switch (msg)
         {
         case SafetyMsg::CastAnyNull:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0002), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0002), toType->name.c_str());
             break;
         case SafetyMsg::CastAny:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0001), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0001), toType->name.c_str());
             break;
         case SafetyMsg::NullCheck:
-            typedMsg[m][0][0] = Err(Saf0017);
+            g_TypedMsg[m][0][0] = Err(Saf0017);
             break;
         case SafetyMsg::ErrCheck:
-            typedMsg[m][0][0] = Err(Saf0018);
+            g_TypedMsg[m][0][0] = Err(Saf0018);
             break;
         case SafetyMsg::InvalidBool:
-            typedMsg[m][0][0] = Err(Saf0003);
+            g_TypedMsg[m][0][0] = Err(Saf0003);
             break;
         case SafetyMsg::InvalidFloat:
-            typedMsg[m][0][0] = Err(Saf0016);
+            g_TypedMsg[m][0][0] = Err(Saf0016);
             break;
         case SafetyMsg::NotZero:
-            typedMsg[m][0][0] = Err(Saf0015);
+            g_TypedMsg[m][0][0] = Err(Saf0015);
             break;
         case SafetyMsg::BadSlicingDown:
-            typedMsg[m][0][0] = Err(Saf0006);
+            g_TypedMsg[m][0][0] = Err(Saf0006);
             break;
         case SafetyMsg::BadSlicingUp:
-            typedMsg[m][0][0] = Err(Saf0007);
+            g_TypedMsg[m][0][0] = Err(Saf0007);
             break;
         case SafetyMsg::BadRangeDown:
-            typedMsg[m][0][0] = Err(Saf0005);
+            g_TypedMsg[m][0][0] = Err(Saf0005);
             break;
         case SafetyMsg::IndexRange:
-            typedMsg[m][0][0] = Err(Saf0004);
+            g_TypedMsg[m][0][0] = Err(Saf0004);
             break;
         case SafetyMsg::SwitchComplete:
-            typedMsg[m][0][0] = Err(Saf0028);
+            g_TypedMsg[m][0][0] = Err(Saf0028);
             break;
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = FMT(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::CastNeg:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = FMT(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::Plus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "+", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "+", toType->name.c_str());
             break;
         case SafetyMsg::Minus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
             break;
         case SafetyMsg::Mul:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "*", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "*", toType->name.c_str());
             break;
         case SafetyMsg::PlusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "+=", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "+=", toType->name.c_str());
             break;
         case SafetyMsg::MinusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "-=", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-=", toType->name.c_str());
             break;
         case SafetyMsg::MulEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "*=", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "*=", toType->name.c_str());
             break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicAbs:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0008), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0008), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicSqrt:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0014), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0014), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicLog:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0011), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0011), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicLog2:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0013), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0013), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicLog10:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0012), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0012), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicASin:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0010), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0010), toType->name.c_str());
             break;
         case SafetyMsg::IntrinsicACos:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = FMT(Err(Saf0009), toType->name.c_str());
+            g_TypedMsg[m][i][j] = FMT(Err(Saf0009), toType->name.c_str());
             break;
         default:
             break;
         }
     }
 
-    return typedMsg[m][i][j].c_str();
+    return g_TypedMsg[m][i][j].c_str();
 }
 
-void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
+void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* message)
 {
     PushICFlags ic(context, BCI_SAFETY);
     EMIT_INST1(context, ByteCodeOp::JumpIfTrue, reg)->b.s32   = 1;
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) message);
 }
 
 bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, uint16_t what)
@@ -156,7 +156,7 @@ void ByteCodeGen::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uin
         EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r)->b.s32 = 1;
     else
         SWAG_ASSERT(false);
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) message);
 }
 
 void ByteCodeGen::emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r)
@@ -199,7 +199,7 @@ bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
         return true;
     }
 
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::SwitchComplete);
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::SwitchComplete));
     return true;
 }
 
@@ -217,7 +217,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         inst->b.u32     = 0xFE;
         inst->flags |= BCI_IMM_B;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::InvalidBool);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidBool));
         freeRegisterRC(context, r0);
         return true;
     }
@@ -232,7 +232,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         const auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::InvalidFloat);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidFloat));
         freeRegisterRC(context, r0);
         return true;
     }
@@ -247,7 +247,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         const auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) safetyMsg(SafetyMsg::InvalidFloat);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidFloat));
         freeRegisterRC(context, r0);
         return true;
     }
