@@ -71,7 +71,7 @@ uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, const
     return context->bc->maxReservedRegisterRC++;
 }
 
-void ByteCodeGen::reserveLinearRegisterRC2(ByteCodeGenContext* context, RegisterList& rc)
+void ByteCodeGen::reserveLinearRegisterRC2(const ByteCodeGenContext* context, RegisterList& rc)
 {
     freeRegisterRC(context, rc);
 
@@ -95,7 +95,7 @@ void ByteCodeGen::reserveLinearRegisterRC2(ByteCodeGenContext* context, Register
     rc += context->bc->maxReservedRegisterRC++;
 }
 
-void ByteCodeGen::transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC)
+void ByteCodeGen::transformResultToLinear2(const ByteCodeGenContext* context, RegisterList& resultRegisterRC)
 {
     bool onlyOne = false;
     if (resultRegisterRC.size() == 1)
@@ -148,7 +148,7 @@ void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, RegisterList
     rc.cannotFree = false;
 }
 
-void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
+void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, AstNode* node)
 {
     if (!node)
         return;

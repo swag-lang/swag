@@ -619,7 +619,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGen::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
+void ByteCodeGen::emitSetZeroAtPointer(const ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
 {
     switch (sizeOf)
     {
@@ -641,7 +641,7 @@ void ByteCodeGen::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t siz
     }
 }
 
-void ByteCodeGen::emitSetZeroStack(ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf)
+void ByteCodeGen::emitSetZeroStack(const ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf)
 {
     switch (sizeOf)
     {
@@ -663,7 +663,7 @@ void ByteCodeGen::emitSetZeroStack(ByteCodeGenContext* context, uint32_t offset,
     }
 }
 
-void ByteCodeGen::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf)
+void ByteCodeGen::emitMemCpy(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf)
 {
     switch (sizeOf)
     {

@@ -41,6 +41,7 @@ void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
     emitDebugLine(context);
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context)
 {
     if (context->sourceFile->module->buildCfg.backendDebugInformations &&
@@ -60,7 +61,7 @@ bool ByteCodeGen::emitDebugNop(ByteCodeGenContext* context)
     return true;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
+ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0)
 {
     SWAG_ASSERT(storageSegment);
     switch (storageSegment->kind)
@@ -80,7 +81,7 @@ ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(ByteCodeGenContext* context
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits)
+ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits)
 {
     SWAG_ASSERT(storageSegment);
 

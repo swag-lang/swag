@@ -13,7 +13,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     switch (kind)
     {
@@ -418,7 +418,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
     structNode->dependentJobs.setRunning();
 }
 
-void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
+void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
 {
     SWAG_ASSERT(typeVar->isArrayOfStruct());
     const auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
@@ -1219,7 +1219,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
             }
         }
 
-        // Reinit source struct, except if AST_NO_RIGHT_DROP, because if we do not drop the
+        // Re-init source struct, except if AST_NO_RIGHT_DROP, because if we do not drop the
         // right expression, then this is not necessary to reinitialize it
         // Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
         if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !(from->flags & AST_NO_RIGHT_DROP))
@@ -1364,6 +1364,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
     }
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);

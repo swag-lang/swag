@@ -10,6 +10,7 @@
 #include "Symbol.h"
 #include "TypeManager.h"
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
@@ -164,8 +165,8 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             ensureCanBeChangedRC(context, node->resultRegisterRc);
 
             // :UfcsItfInlined
-            // Very specific case where an inlined call returns an interface, and we directly call a lamba of that interface.
-            // In that case we want to take the resigter that defined the vtable, not the object.
+            // Very specific case where an inlined call returns an interface, and we directly call a lambda of that interface.
+            // In that case we want to take the register that defined the vtable, not the object.
             if (identifier != identifier->parent->childs.front())
             {
                 const auto idIdx = identifier->childParentIdx();

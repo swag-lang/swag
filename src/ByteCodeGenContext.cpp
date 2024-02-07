@@ -43,10 +43,10 @@ void ByteCodeGenContext::popLocation()
         forceLocation = nullptr;
 }
 
-void ByteCodeGenContext::pushNode(AstNode* pnode)
+void ByteCodeGenContext::pushNode(AstNode* node)
 {
-    stackForceNode.push_back(pnode);
-    forceNode = pnode;
+    stackForceNode.push_back(node);
+    forceNode = node;
 }
 
 void ByteCodeGenContext::popNode()

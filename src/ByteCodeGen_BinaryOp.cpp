@@ -9,7 +9,7 @@
 #include "Symbol.h"
 #include "TypeManager.h"
 
-bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -87,12 +87,12 @@ bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, const TypeInfo* 
     return Report::internalError(context->node, "emitBinaryOpPlus, invalid native");
 }
 
-bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpMinus(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode*   node     = context->node;
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
-    // This is the substract of two pointers if we have a s64 on the left, and a pointer on the right
+    // This is the difference of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::S64))
     {
         const auto rightTypeInfo = TypeManager::concretePtrRefType(node->childs[1]->typeInfo);
@@ -169,7 +169,7 @@ bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, const TypeInfo*
     return Report::internalError(context->node, "emitBinaryOpMinus, invalid native");
 }
 
-bool ByteCodeGen::emitBinaryOpMul(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpMul(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     // 'mul' will be done by the parent 'add' (mulAdd)
     if (context->node->specFlags & AstOp::SPECFLAG_FMA)
@@ -320,7 +320,7 @@ bool ByteCodeGen::emitBinaryOpModulo(ByteCodeGenContext* context, const TypeInfo
     }
 }
 
-bool ByteCodeGen::emitBitmaskAnd(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBitmaskAnd(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -352,7 +352,7 @@ bool ByteCodeGen::emitBitmaskAnd(ByteCodeGenContext* context, const TypeInfo* ty
     }
 }
 
-bool ByteCodeGen::emitBitmaskOr(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBitmaskOr(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -384,7 +384,7 @@ bool ByteCodeGen::emitBitmaskOr(ByteCodeGenContext* context, const TypeInfo* typ
     }
 }
 
-bool ByteCodeGen::emitShiftLeft(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitShiftLeft(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -426,7 +426,7 @@ bool ByteCodeGen::emitShiftLeft(ByteCodeGenContext* context, const TypeInfo* typ
     }
 }
 
-bool ByteCodeGen::emitShiftRight(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitShiftRight(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -466,7 +466,7 @@ bool ByteCodeGen::emitShiftRight(ByteCodeGenContext* context, const TypeInfo* ty
     }
 }
 
-bool ByteCodeGen::emitXor(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitXor(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -552,7 +552,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
 
@@ -616,7 +616,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitLogicalOr(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)

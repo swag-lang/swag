@@ -9,7 +9,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
+bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, const RegisterList& dstReg, const RegisterList& srcReg, AstNode* from)
 {
     const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
     const auto finalType = TypeManager::concreteType(typeArray->finalType);
@@ -108,7 +108,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
     return true;
 }
 
-bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
+bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
     AstNode*        node         = context->node;
     auto            typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
@@ -304,7 +304,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0,
     }
 }
 
-bool ByteCodeGen::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectPlusEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -365,7 +365,7 @@ bool ByteCodeGen::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, 
     return Report::internalError(context->node, "emitAffectPlusEqual, type invalid");
 }
 
-bool ByteCodeGen::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectMinusEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -426,7 +426,7 @@ bool ByteCodeGen::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0,
     return Report::internalError(context->node, "emitAffectMinusEqual, type invalid");
 }
 
-bool ByteCodeGen::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectMulEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -476,7 +476,7 @@ bool ByteCodeGen::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
-bool ByteCodeGen::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectAndEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -513,7 +513,7 @@ bool ByteCodeGen::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
-bool ByteCodeGen::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectOrEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -550,7 +550,7 @@ bool ByteCodeGen::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, ui
     }
 }
 
-bool ByteCodeGen::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectXorEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -587,7 +587,7 @@ bool ByteCodeGen::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
-bool ByteCodeGen::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectShiftLeftEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 
@@ -631,7 +631,7 @@ bool ByteCodeGen::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t
     }
 }
 
-bool ByteCodeGen::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectShiftRightEqual(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     const AstNode* node = context->node;
 

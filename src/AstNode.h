@@ -622,15 +622,15 @@ struct AstBinaryOpNode : AstNode
 
     AstNode* clone(CloneContext& context);
 
-    int seekJumpExpression;
+    uint32_t seekJumpExpression;
 };
 
 struct AstConditionalOpNode : AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    int seekJumpIfFalse;
-    int seekJumpAfterIfFalse;
+    uint32_t seekJumpIfFalse;
+    uint32_t seekJumpAfterIfFalse;
 };
 
 struct AstIf : AstNode
@@ -643,8 +643,8 @@ struct AstIf : AstNode
     AstCompilerIfBlock* ifBlock;
     AstCompilerIfBlock* elseBlock;
 
-    int seekJumpExpression;
-    int seekJumpAfterIf;
+    uint32_t seekJumpExpression;
+    uint32_t seekJumpAfterIf;
 };
 
 struct AstBreakContinue : AstNode
@@ -678,10 +678,10 @@ struct AstBreakable : AstNode
     uint32_t registerIndex;
     uint32_t breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
 
-    int seekJumpBeforeContinue;
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
+    uint32_t seekJumpBeforeContinue;
+    uint32_t seekJumpBeforeExpression;
+    uint32_t seekJumpExpression;
+    uint32_t seekJumpAfterBlock;
 };
 
 struct AstScopeBreakable : AstBreakable
@@ -714,7 +714,7 @@ struct AstFor : AstBreakable
     AstNode* postExpression;
     AstNode* block;
 
-    int seekJumpToExpression = 0;
+    uint32_t seekJumpToExpression = 0;
 };
 
 struct AstLoop : AstBreakable
@@ -782,8 +782,8 @@ struct AstSwitchCaseBlock : AstNode
 
     AstSwitchCase* ownerCase;
 
-    int seekStart;
-    int seekJumpNextCase;
+    uint32_t seekStart;
+    uint32_t seekJumpNextCase;
 };
 
 struct AstType : AstNode
@@ -951,7 +951,7 @@ struct AstReturn : AstNode
 
     AstFuncDecl* resolvedFuncDecl;
 
-    int seekJump;
+    uint32_t seekJump;
 };
 
 struct AstCompilerMacro : AstNode
@@ -1030,7 +1030,7 @@ struct AstTryCatchAssume : AstReturn
 
     RegisterList regInit;
 
-    int seekInsideJump;
+    uint32_t seekInsideJump;
 };
 
 struct AstAlias : AstNode

@@ -7,7 +7,7 @@ struct ByteCodeGenJob : Job
     virtual ~ByteCodeGenJob() = default;
     void    release() override;
 
-    static JobResult              leaveJob(AstNode* node);
+    static JobResult       leaveJob(AstNode* node);
     JobResult              execute() override;
     JobResult              waitForDependenciesGenerated();
     static ByteCodeGenJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root);

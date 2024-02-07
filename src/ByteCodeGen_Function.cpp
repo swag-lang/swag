@@ -1212,7 +1212,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
         inst->c.u64     = 8;
         inst->d.pointer = (uint8_t*) context->node->resolvedSymbolOverload;
 
-        // If 0, keep it 0, otherwhise get the capture context by adding that offset to the address of the closure storage
+        // If 0, keep it 0, otherwise get the capture context by adding that offset to the address of the closure storage
         inst        = EMIT_INST2(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
         inst->c.u64 = 16;
 
@@ -1229,6 +1229,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 void ByteCodeGen::emitPostCallUfcs(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
@@ -1405,7 +1406,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
     return true;
 }
 
-void ByteCodeGen::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic)
+void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic)
 {
     const auto node = context->node;
 
@@ -1495,7 +1496,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     return true;
 }
 
-bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, const TypeInfoFuncAttr* typeInfoFunc)
+bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, AstNode* node, const TypeInfoFuncAttr* typeInfoFunc)
 {
     node->resultRegisterRc = reserveRegisterRC(context);
 
@@ -1994,7 +1995,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     else if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
     {
         // The array of any has been pushed first, so we need to offset all pushed parameters to point to it
-        // This is the main difference with typedvariadic, which directly point to the pushed variadic parameters
+        // This is the main difference with typed variadic, which directly point to the pushed variadic parameters
         auto offset = numPushParams;
 
         RegisterList r0;
@@ -2145,7 +2146,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         }
     }
 
-    // Save the maximum number of pushraparams in that bytecode
+    // Save the maximum number of push params in that bytecode
     context->bc->maxCallParams = max(context->bc->maxCallParams, maxCallParams);
 
     // Restore stack as it was before the call, before the parameters
@@ -2188,6 +2189,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
 {
     const auto node     = context->node;

@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, const RegisterList& r2)
+bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r2)
 {
     const auto rangeNode  = castAst<AstRange>(right, AstNodeKind::Range);
     auto       low        = rangeNode->expressionLow;
@@ -112,7 +112,7 @@ bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode*
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, TokenId op)
+bool ByteCodeGen::emitCompareOpPostSpecialFunc(const ByteCodeGenContext* context, TokenId op)
 {
     const auto node = context->node;
     auto       r2   = node->resultRegisterRc;
@@ -257,7 +257,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
 
     if (leftTypeInfo->isPointer())
     {
-        // Special case for typeinfos, as this is not safe to just compare pointers.
+        // Special case for typeinfo, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
         // to make a compare by name too
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
@@ -414,7 +414,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
 
     if (leftTypeInfo->isPointer())
     {
-        // Special case for typeinfos, as this is not safe to just compare pointers.
+        // Special case for typeinfo, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
         // to make a compare by name too
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
@@ -490,7 +490,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
     return Report::internalError(context->node, "emitCompareOpNotEqual, invalid type");
 }
 
-bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -499,7 +499,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& 
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -508,7 +508,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, RegisterLis
     return true;
 }
 
-bool ByteCodeGen::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode*   node     = context->node;
     const auto typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
@@ -555,7 +555,7 @@ bool ByteCodeGen::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0, ui
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -609,7 +609,7 @@ bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, const AstNode*
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -618,7 +618,7 @@ bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, u
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -672,7 +672,7 @@ bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, const AstNod
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -681,7 +681,7 @@ bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t r0,
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -735,7 +735,7 @@ bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, const AstNod
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -744,7 +744,7 @@ bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0,
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -798,7 +798,7 @@ bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, const AstN
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -837,7 +837,7 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
         auto& r0 = node->childs[0]->resultRegisterRc;
         auto& r1 = node->childs[1]->resultRegisterRc;
 
-        RegisterList r2        = reserveRegisterRC(context);
+        const RegisterList r2  = reserveRegisterRC(context);
         node->resultRegisterRc = r2;
 
         switch (node->tokenId)

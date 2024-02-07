@@ -180,7 +180,7 @@ JobResult ByteCodeGenJob::execute()
 
                     break;
                 }
-            // passthrough
+                [[fallthrough]];
 
             case AstNodeResolveState::ProcessingChilds:
                 if (node->flags & AST_NO_BYTECODE)
@@ -206,7 +206,7 @@ JobResult ByteCodeGenJob::execute()
                 }
 
                 node->bytecodeState = AstNodeResolveState::PostChilds;
-            // passthrough
+                [[fallthrough]];
 
             case AstNodeResolveState::PostChilds:
                 if (node->flags & AST_NO_BYTECODE)

@@ -174,4 +174,18 @@ const T* castAst(const AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2, AstNo
     return casted;
 }
 
+template<typename T>
+T* castAst(AstNode* ptr)
+{
+    T* casted = static_cast<T*>(ptr);
+    return casted;
+}
+
+template<typename T>
+const T* castAst(const AstNode* ptr)
+{
+    const T* casted = static_cast<T*>(ptr);
+    return casted;
+}
+
 extern atomic<int> g_UniqueID;

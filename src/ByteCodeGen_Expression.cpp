@@ -133,6 +133,7 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitExpressionListBefore(ByteCodeGenContext* context)
 {
     const auto node = context->node;
@@ -211,7 +212,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             canDrop = false;
         }
 
-        // If initializating a variable, then push the variable storage directly if possible.
+        // If initializing a variable, then push the variable storage directly if possible.
         // That way can avoid one affectation.
         else if (listNode->parent->kind == AstNodeKind::VarDecl)
         {

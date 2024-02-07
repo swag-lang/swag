@@ -20,6 +20,7 @@ bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
     const auto node    = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -100,6 +101,7 @@ bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstNode>(context->node, AstNodeKind::IntrinsicLocation);
@@ -116,6 +118,7 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

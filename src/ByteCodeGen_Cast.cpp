@@ -122,7 +122,7 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeBool(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     const auto r0 = reserveRegisterRC(context);
 
@@ -180,7 +180,7 @@ bool ByteCodeGen::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exp
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU8(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -212,7 +212,7 @@ bool ByteCodeGen::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* exprN
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU16(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -249,7 +249,7 @@ bool ByteCodeGen::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU32(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -290,7 +290,7 @@ bool ByteCodeGen::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU64(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (typeInfo->isPointer())
         return true;
@@ -337,7 +337,7 @@ bool ByteCodeGen::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* expr
 
     return true;
 }
-bool ByteCodeGen::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS8(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -369,7 +369,7 @@ bool ByteCodeGen::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* exprN
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS16(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -406,7 +406,7 @@ bool ByteCodeGen::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS32(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -447,7 +447,7 @@ bool ByteCodeGen::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS64(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -493,7 +493,7 @@ bool ByteCodeGen::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeF32(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -539,7 +539,7 @@ bool ByteCodeGen::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeF64(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -787,7 +787,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         }
         else
         {
-            SWAG_ASSERT(exprNode->resultRegisterRc.size() == (size_t) typeInfo->numRegisters());
+            SWAG_ASSERT(exprNode->resultRegisterRc.size() == (int) typeInfo->numRegisters());
             node->resultRegisterRc = exprNode->resultRegisterRc;
         }
 

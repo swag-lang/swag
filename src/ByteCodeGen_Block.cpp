@@ -274,7 +274,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
             }
             else
             {
-                // Transfert registers to release to the parent scope owner
+                // Transfers registers to release to the parent scope owner
                 node->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
                 for (auto r : node->extMisc()->registersToRelease)
                     node->ownerScope->owner->extMisc()->registersToRelease.push_back(r);
@@ -412,6 +412,7 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoopBeforeBlock(ByteCodeGenContext* context)
 {
     const auto node         = context->node;
@@ -596,10 +597,11 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     }
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLabelBeforeBlock(ByteCodeGenContext* context)
 {
     const auto node                  = context->node;
-    const auto loopNode              = static_cast<AstBreakable*>(node->parent);
+    const auto loopNode              = castAst<AstBreakable>(node->parent);
     loopNode->seekJumpBeforeContinue = context->bc->numInstructions;
     return true;
 }
@@ -612,7 +614,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
     YIELD();
 
-    const auto loopNode = static_cast<AstBreakable*>(node->parent);
+    const auto loopNode = castAst<AstBreakable>(node->parent);
 
     if (node->parent->kind != AstNodeKind::ScopeBreakable)
     {
@@ -642,6 +644,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitWhileBeforeExpr(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -677,6 +680,7 @@ bool ByteCodeGen::emitWhileAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
@@ -690,6 +694,7 @@ bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
@@ -701,6 +706,7 @@ bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
@@ -728,6 +734,7 @@ bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 {
     const auto node       = context->node;
@@ -766,6 +773,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
 {
     const auto node       = context->node;
@@ -780,6 +788,7 @@ bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 {
     const auto node       = context->node;
@@ -988,6 +997,7 @@ bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
 {
     const auto node        = context->node;
@@ -1001,7 +1011,7 @@ bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
+bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
 {
     if (!scope)
         return true;
@@ -1111,7 +1121,7 @@ bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* sco
             if (forError && node->deferKind == DeferKind::NoError)
                 continue;
 
-            // We duplicate because when we emit a node, some stuff will be reseted (like the cast).
+            // We duplicate because when we emit a node, some stuff will be reset (like the cast).
             // Se wo want to be sure to emit the same node multiple times without side effects from the previous defer usage.
             // We also do not want to change the number of childs of "node", that's why we fill "parent" of the
             // clone without registering the node in the list of childs.

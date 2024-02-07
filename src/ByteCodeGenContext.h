@@ -15,7 +15,7 @@ struct ByteCodeGenContext : JobContext
     void restoreNoLocation();
     void pushLocation(SourceLocation* loc);
     void popLocation();
-    void pushNode(AstNode* pnode);
+    void pushNode(AstNode* node);
     void popNode();
 
     VectorNative<AstNode*>        collectChilds;
