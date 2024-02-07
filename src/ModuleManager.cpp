@@ -119,7 +119,7 @@ void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, A
     // Apply patch now, because module is already loaded
     if (isModuleLoaded(moduleName))
     {
-        const auto fnPtr = getFnPointer(moduleName, func->fullnameForeign);
+        const auto fnPtr = getFnPointer(moduleName, func->getFullNameForeignImport());
         SWAG_ASSERT(fnPtr);
         *patchAddress = fnPtr;
     }
@@ -159,7 +159,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
         SWAG_ASSERT(*(uint64_t*) one.patchAddress == SWAG_PATCH_MARKER);
 #endif
 
-        auto       foreign = one.funcDecl->fullnameForeign.toZeroTerminated();
+        auto       foreign = one.funcDecl->getFullNameForeignImport().toZeroTerminated();
         const auto fnPtr   = OS::getProcAddress(moduleHandle, foreign.c_str());
         if (!fnPtr)
         {

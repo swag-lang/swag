@@ -336,8 +336,7 @@ void Module::buildGlobalVarsToDropSlice()
         // opDrop function
         if (g.type->opUserDropFct && g.type->opUserDropFct->isForeign())
         {
-            g.type->opUserDropFct->computeFullNameForeign(false);
-            mutableSegment.addInitPtrFunc(offset + sizeof(void*), g.type->opUserDropFct->fullnameForeign);
+            mutableSegment.addInitPtrFunc(offset + sizeof(void*), g.type->opUserDropFct->getFullNameForeignImport());
         }
         else
         {

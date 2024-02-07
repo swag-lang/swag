@@ -39,9 +39,8 @@ bool TypeGenStructJob::computeStruct()
         Utf8 callName;
         if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
         {
-            realType->opUserInitFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opInit, realType->opUserInitFct);
-            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opInit), realType->opUserInitFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opInit), realType->opUserInitFct->getFullNameForeignImport());
         }
         else if (realType->opInit)
         {
@@ -54,9 +53,8 @@ bool TypeGenStructJob::computeStruct()
 
         if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
         {
-            realType->opUserDropFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opDrop, realType->opUserDropFct);
-            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opDrop), realType->opUserDropFct->getFullNameForeignImport());
         }
         else if (realType->opDrop)
         {
@@ -69,9 +67,8 @@ bool TypeGenStructJob::computeStruct()
 
         if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
         {
-            realType->opUserPostCopyFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opPostCopy, realType->opUserPostCopyFct);
-            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostCopy), realType->opUserPostCopyFct->getFullNameForeignImport());
         }
         else if (realType->opPostCopy)
         {
@@ -84,9 +81,8 @@ bool TypeGenStructJob::computeStruct()
 
         if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
         {
-            realType->opUserPostMoveFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opPostMove, realType->opUserPostMoveFct);
-            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign);
+            storageSegment->addInitPtrFunc(OFFSET_OF(concreteType->opPostMove), realType->opUserPostMoveFct->getFullNameForeignImport());
         }
         else if (realType->opPostMove)
         {

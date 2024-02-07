@@ -3731,9 +3731,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::ForeignCall:
         case ByteCodeOp::ForeignCallPop:
         {
-            auto funcNode = (AstFuncDecl*) ip->a.pointer;
-            funcNode->computeFullNameForeign(false);
-            emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, funcNode->fullnameForeign, pushRAParams, offsetRT, false);
+            auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
+            emitCall(pp, reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer), funcNode->getFullNameForeignImport(), pushRAParams, offsetRT, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;

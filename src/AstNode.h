@@ -537,7 +537,8 @@ struct AstFuncDecl : AstNode
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
-    void        computeFullNameForeign(bool forExport);
+    void        computeFullNameForeignExport();
+    const Utf8& getFullNameForeignImport() const;
     Utf8        getDisplayName() const;
     const char* getDisplayNameC() const;
     Utf8        getNameForUserCompiler();
@@ -547,7 +548,7 @@ struct AstFuncDecl : AstNode
     Utf8        getCallName();
 
     DependentJobs          dependentJobs;
-    Utf8                   fullnameForeign;
+    Utf8                   fullnameForeignExport;
     VectorNative<AstNode*> subDecls;
     VectorNative<AstNode*> localGlobalVars;
     VectorNative<AstNode*> localConstants;

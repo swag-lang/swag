@@ -389,9 +389,8 @@ void DataSegment::doPatchMethods(JobContext* context)
         ByteCode*  bc        = nullptr;
         if (funcNode->isForeign())
         {
-            funcNode->computeFullNameForeign(false);
             lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
-            addInitPtrFunc(it.second, funcNode->fullnameForeign);
+            addInitPtrFunc(it.second, funcNode->getFullNameForeignImport());
         }
         else if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
         {

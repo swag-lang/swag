@@ -5157,8 +5157,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto funcNode     = (AstFuncDecl*) ip->a.pointer;
             auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
-            funcNode->computeFullNameForeign(false);
-            resultFuncCall = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
+            resultFuncCall = emitCall(buildParameters, moduleToGen, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;

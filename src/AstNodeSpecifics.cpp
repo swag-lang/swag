@@ -186,8 +186,8 @@ Utf8 AstFuncDecl::getCallName()
     {
         if (!(attributeFlags & ATTRIBUTE_SHARP_FUNC))
         {
-            computeFullNameForeign(true);
-            return fullnameForeign;
+            computeFullNameForeignExport();
+            return fullnameForeignExport;
         }
     }
 
@@ -220,25 +220,44 @@ Utf8 AstFuncDecl::getDisplayName() const
     return Naming::funcToName(this);
 }
 
-void AstFuncDecl::computeFullNameForeign(bool forExport)
+namespace
+{
+    void normalizeForeignName(Utf8& dest, const Utf8& nameForeign)
+    {
+        dest = nameForeign;
+
+        const auto len = nameForeign.length();
+        auto       pz  = nameForeign.buffer;
+        auto       pzd = dest.buffer;
+        for (uint32_t i = 0; i < len; i++)
+        {
+            if (*pz == ' ')
+            {
+                pz++;
+            }
+            else if (*pz == ',' || *pz == '\'' || *pz == '-' || *pz == '>' || *pz == '\"')
+            {
+                *pzd++ = '@';
+                pz++;
+            }
+            else
+                *pzd++ = *pz++;
+        }
+
+        *pzd++ = 0;
+
+        dest.count = (uint32_t) (pzd - dest.buffer) - 1;
+    }
+}
+
+void AstFuncDecl::computeFullNameForeignExport()
 {
     ScopedLock lk(mutex);
-    if (!fullnameForeign.empty())
-        return;
 
-    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-    if (!forExport)
-    {
-        const auto value = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
-        if (value && !value->text.empty())
-            fullnameForeign = value->text;
-        else
-            fullnameForeign = token.text;
+    if (!fullnameForeignExport.empty())
         return;
-    }
 
     SWAG_ASSERT(ownerScope);
-
     auto nameForeign = getScopedName();
 
     // If the symbol has overloads, i.e. more than one definition, then we
@@ -261,6 +280,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         if (countNoEmpty > 1)
         {
             nameForeign += "@@";
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
             typeFunc->computeScopedName();
             const auto pz = strstr(typeFunc->scopedName.c_str(), "(");
             SWAG_ASSERT(pz);
@@ -268,30 +288,18 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         }
     }
 
-    fullnameForeign = nameForeign;
+    normalizeForeignName(fullnameForeignExport, nameForeign);
+}
 
-    // Normalize token.text
-    const auto len = nameForeign.length();
-    auto       pz  = nameForeign.buffer;
-    auto       pzd = fullnameForeign.buffer;
-    for (uint32_t i = 0; i < len; i++)
-    {
-        if (*pz == ' ')
-        {
-            pz++;
-        }
-        else if (*pz == ',' || *pz == '\'' || *pz == '-' || *pz == '>' || *pz == '\"')
-        {
-            *pzd++ = '@';
-            pz++;
-        }
-        else
-            *pzd++ = *pz++;
-    }
+const Utf8& AstFuncDecl::getFullNameForeignImport() const
+{
+    SharedLock lk(mutex);
 
-    *pzd++ = 0;
-
-    fullnameForeign.count = (uint32_t) (pzd - fullnameForeign.buffer) - 1;
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+    const auto value    = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
+    if (value && !value->text.empty())
+        return value->text;
+    return token.text;
 }
 
 bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
@@ -1166,7 +1174,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // We also want to replace the name of the function (and the reference to it) in case
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
-        const int  id      = g_UniqueID.fetch_add(1);
+        const int id = g_UniqueID.fetch_add(1);
         // ReSharper disable once StringLiteralTypo
         const Utf8 newName = "__cmpfunc" + to_string(id);
 

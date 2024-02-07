@@ -348,8 +348,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         const auto funcChild = mapItIdxToFunc[i];
         if (funcChild->isForeign())
         {
-            funcChild->computeFullNameForeign(true);
-            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign);
+            funcChild->computeFullNameForeignExport();
+            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeignExport);
 
             // This will be filled when the module will be loaded, with the real function address
             *ptrITable = nullptr;

@@ -2095,9 +2095,9 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
                 continue;
 
             // Remap special functions to their generated equivalent
-            node->computeFullNameForeign(true);
+            node->computeFullNameForeignExport();
             concat.addIndent(context.indent);
-            concat.addStringFormat(R"(#[Foreign("%s", "%s")])", moduleToGen->name.c_str(), node->fullnameForeign.c_str());
+            concat.addStringFormat(R"(#[Foreign("%s", "%s")])", moduleToGen->name.c_str(), node->fullnameForeignExport.c_str());
             concat.addEol();
             SWAG_CHECK(outputAttributes(context, concat, node, node->typeInfo));
 
