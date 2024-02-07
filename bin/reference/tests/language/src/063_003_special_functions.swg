@@ -74,9 +74,9 @@ impl Struct
     // Generic function, can be overloaded
     // Called by '='
     #[Swag.Overload]
-    func(suffix: string) opAffectSuffix(using self, value: OneType) {}
+    func(suffix: string) opAffectLiteral(using self, value: OneType) {}
     #[Swag.Overload]
-    func(suffix: string) opAffectSuffix(using self, value: AnotherType) {}
+    func(suffix: string) opAffectLiteral(using self, value: AnotherType) {}
 
     // Affect struct with another value at a given index
     // Can be overloaded

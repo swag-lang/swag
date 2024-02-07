@@ -6,7 +6,7 @@ struct Duration
 impl Duration
 {
     //#[Swag.Implicit]
-    mtd(op: string) opAffectSuffix(v: f32)
+    mtd(op: string) opAffectLiteral(v: f32)
     {
         @assert(v == 5.0 or v == 6.0)
         #assert op == "s" or op == "ms"

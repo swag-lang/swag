@@ -17,7 +17,7 @@ impl Duration
     }
 
     #[ConstExpr, Implicit, Inline]
-    mtd(suffix: string) opAffectSuffix(value: s32)
+    mtd(suffix: string) opAffectLiteral(value: s32)
     {
         #if suffix == "s" #do
             timeInSeconds = value

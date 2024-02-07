@@ -13,7 +13,7 @@ impl Angle
     }
 
     #[ConstExpr, Implicit, Inline]
-    mtd(suffix: string) opAffectSuffix(value: s32)
+    mtd(suffix: string) opAffectLiteral(value: s32)
     {
         rad = value * 2
     }

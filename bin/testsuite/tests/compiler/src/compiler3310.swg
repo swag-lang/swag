@@ -9,7 +9,7 @@ var G = 0
 
 impl Duration
 {
-    mtd(suffix: string, T) opAffectSuffix(v: T)
+    mtd(suffix: string, T) opAffectLiteral(v: T)
     {
         #assert suffix == "s"
         #assert T == s32

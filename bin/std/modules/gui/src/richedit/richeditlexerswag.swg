@@ -262,7 +262,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("opDrop", State.FunctionSpecOp)
         mapWords.add("opCount", State.FunctionSpecOp)
         mapWords.add("opAffect", State.FunctionSpecOp)
-        mapWords.add("opAffectSuffix", State.FunctionSpecOp)
+        mapWords.add("opAffectLiteral", State.FunctionSpecOp)
         mapWords.add("opIndex", State.FunctionSpecOp)
         mapWords.add("opIndexAssign", State.FunctionSpecOp)
 

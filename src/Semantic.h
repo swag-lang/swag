@@ -83,7 +83,7 @@ namespace Semantic
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result);
-    bool waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result);
+    bool waitUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result);
 
     void addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
     void addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);

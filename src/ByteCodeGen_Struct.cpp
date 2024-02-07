@@ -593,7 +593,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     SWAG_ASSERT(typeInfoStruct->opInit);
     sourceFile->module->addByteCodeFunc(opInit);
 
-    ByteCodeGenContext cxt{*context};
+    ByteCodeGenContext cxt{static_cast<JobContext>(*context)};
     cxt.bc = opInit;
     if (cxt.bc->node)
         cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
@@ -1255,12 +1255,12 @@ void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverloa
     {
         const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
         SWAG_ASSERT(stackOffset != UINT32_MAX);
-        inst->b.s32     = stackOffset;
+        inst->b.u32     = stackOffset;
         inst->c.pointer = (uint8_t*) resolved;
     }
 }
 
-bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
+bool ByteCodeGen::emitStructInit(const ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
     const auto node     = context->node;
     const auto resolved = node->resolvedSymbolOverload;
@@ -1306,7 +1306,7 @@ bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, const TypeInfoStru
 
 void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal)
 {
-    PushContextFlags cf(context, BCC_FLAG_NOSAFETY);
+    PushContextFlags cf(context, BCC_FLAG_NO_SAFETY);
     const auto       node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
     const auto       resolved = node->resolvedSymbolOverload;
 

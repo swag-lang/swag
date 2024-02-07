@@ -472,7 +472,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, const AstNo
     return hasUserOp(context, name, leftStruct, result);
 }
 
-bool Semantic::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
+bool Semantic::waitUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result)
 {
     SWAG_CHECK(hasUserOp(context, name, left, result));
     if (!*result)
@@ -496,7 +496,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
         varDecl    = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
         savedToken = varDecl->token;
         if (varDecl->assignToken.id != TokenId::Invalid)
-            varDecl->token = varDecl->assignToken;
+            varDecl->token = static_cast<Token>(varDecl->assignToken);
     }
 
     // opAffectLiteral

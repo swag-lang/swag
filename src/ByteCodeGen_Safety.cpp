@@ -136,7 +136,7 @@ void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const ch
 
 bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, uint16_t what)
 {
-    if (context->contextFlags & BCC_FLAG_NOSAFETY)
+    if (context->contextFlags & BCC_FLAG_NO_SAFETY)
         return false;
     if (!context->sourceFile->module->mustEmitSafety(context->node, what))
         return false;
@@ -176,7 +176,7 @@ void ByteCodeGen::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 {
-    if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
+    if ((context->contextFlags & BCC_FLAG_NO_SAFETY) ||
         !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_UNREACHABLE))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
@@ -192,7 +192,7 @@ bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
-    if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
+    if ((context->contextFlags & BCC_FLAG_NO_SAFETY) ||
         !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);

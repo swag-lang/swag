@@ -2,8 +2,8 @@
 #include "AstNode.h"
 #include "Job.h"
 
-static constexpr uint32_t BCC_FLAG_NOLOCATION   = 0x00000001;
-static constexpr uint32_t BCC_FLAG_NOSAFETY     = 0x00000002;
+static constexpr uint32_t BCC_FLAG_NO_LOCATION  = 0x00000001;
+static constexpr uint32_t BCC_FLAG_NO_SAFETY    = 0x00000002;
 static constexpr uint32_t BCC_FLAG_FOR_DEBUGGER = 0x00000004;
 
 struct ByteCodeGenContext : JobContext
@@ -15,7 +15,7 @@ struct ByteCodeGenContext : JobContext
     void restoreNoLocation();
     void pushLocation(SourceLocation* loc);
     void popLocation();
-    void pushNode(AstNode* node);
+    void pushNode(AstNode* myNode);
     void popNode();
 
     VectorNative<AstNode*>        collectChilds;
@@ -36,7 +36,7 @@ struct ByteCodeGenContext : JobContext
     bool     noLocation        = false;
 };
 
-struct PushLocation
+struct PushLocation // NOLINT(cppcoreguidelines-special-member-functions)
 {
     PushLocation(ByteCodeGenContext* bc, SourceLocation* loc)
     {
@@ -61,12 +61,12 @@ struct PushLocation
     ByteCodeGenContext* savedBc = nullptr;
 };
 
-struct PushNode
+struct PushNode // NOLINT(cppcoreguidelines-special-member-functions)
 {
-    PushNode(ByteCodeGenContext* bc, AstNode* pnode)
+    PushNode(ByteCodeGenContext* bc, AstNode* node)
     {
         savedBc = bc;
-        bc->pushNode(pnode);
+        bc->pushNode(node);
     }
 
     ~PushNode()
@@ -77,7 +77,7 @@ struct PushNode
     ByteCodeGenContext* savedBc;
 };
 
-struct PushContextFlags
+struct PushContextFlags // NOLINT(cppcoreguidelines-special-member-functions)
 {
     PushContextFlags(ByteCodeGenContext* bc, uint32_t flags)
     {
@@ -95,7 +95,7 @@ struct PushContextFlags
     uint32_t            savedFlags;
 };
 
-struct PushICFlags
+struct PushICFlags // NOLINT(cppcoreguidelines-special-member-functions)
 {
     PushICFlags(ByteCodeGenContext* bc, uint16_t flags)
     {

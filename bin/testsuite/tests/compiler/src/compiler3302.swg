@@ -6,7 +6,7 @@ struct Duration
 
 impl Duration
 {
-    /*mtd(op: string) opAffectSuffix(v: f32)
+    /*mtd(op: string) opAffectLiteral(v: f32)
     {
         #if op == "s"
             val = v * 1000

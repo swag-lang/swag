@@ -16,7 +16,7 @@ impl Angle
     }
 
     #[ConstExpr, Implicit, Inline]
-    mtd(suffix: string) opAffectSuffix(value: f32)
+    mtd(suffix: string) opAffectLiteral(value: f32)
     {
         #if suffix == "rad" #do
             rad = value
