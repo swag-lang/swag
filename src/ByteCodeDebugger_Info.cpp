@@ -152,13 +152,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
         Utf8  str;
         appendLiteralValue(context, str, fmt, &regP);
         str.trim();
-        g_Log.print(FMT("%s$r%d%s = ", g_Log.COLOR_VTS_NAME.c_str(), i, g_Log.COLOR_VTS_DEFAULT.c_str()));
+        g_Log.print(FMT("%s$r%d%s = ", g_Log.colorVTSName.c_str(), i, g_Log.colorVTSDefault.c_str()));
         g_Log.print(str);
         g_Log.eol();
     }
 
-    g_Log.print(FMT("%s$sp%s = 0x%016llx\n", g_Log.COLOR_VTS_NAME.c_str(), g_Log.COLOR_VTS_DEFAULT.c_str(), context->sp));
-    g_Log.print(FMT("%s$bp%s = 0x%016llx\n", g_Log.COLOR_VTS_NAME.c_str(), g_Log.COLOR_VTS_DEFAULT.c_str(), context->bp));
+    g_Log.print(FMT("%s$sp%s = 0x%016llx\n", g_Log.colorVTSName.c_str(), g_Log.colorVTSDefault.c_str(), context->sp));
+    g_Log.print(FMT("%s$bp%s = 0x%016llx\n", g_Log.colorVTSName.c_str(), g_Log.colorVTSDefault.c_str(), context->bp));
 
     return BcDbgCommandResult::Continue;
 }

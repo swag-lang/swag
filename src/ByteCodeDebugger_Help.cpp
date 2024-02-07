@@ -51,7 +51,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
             if (arg.split[1] == c.name || arg.split[1] == c.shortname)
             {
                 g_Log.setColor(LogColor::Gray);
-                g_Log.print(FMT("command:     %s%s %s%s\n", g_Log.COLOR_VTS_NAME.c_str(), c.name, g_Log.COLOR_VTS_TYPE.c_str(), c.args));
+                g_Log.print(FMT("command:     %s%s %s%s\n", g_Log.colorVTSName.c_str(), c.name, g_Log.colorVTSType.c_str(), c.args));
                 g_Log.setColor(LogColor::Gray);
                 g_Log.print(FMT("short name:  %s\n", c.shortname));
                 g_Log.print(FMT("description: %s\n", c.help));

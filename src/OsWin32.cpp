@@ -601,11 +601,11 @@ namespace OS
 
                 if (hasSymbol)
                 {
-                    str += g_Log.COLOR_VTS_NAME;
+                    str += g_Log.colorVTSName;
                     str += psym->Name;
                     if (hasLine)
                     {
-                        str += g_Log.COLOR_VTS_LOCATION;
+                        str += g_Log.colorVTSLocation;
                         str += FMT(" %s:%d", line.FileName, line.LineNumber);
                     }
 

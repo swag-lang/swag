@@ -18,10 +18,10 @@ namespace
     Utf8 getProfileBc(ByteCode* bc, int level)
     {
         Utf8 line;
-        line += Log::colorToVTS(g_Log.COLOR_COUNT);
+        line += Log::colorToVTS(LogColor::Index);
         line += FMT("%d", bc->profileCallCount);
 
-        line += Log::colorToVTS(g_Log.COLOR_VALUE);
+        line += Log::colorToVTS(LogColor::Value);
         while (Log::removeFormat(line).count < COL1)
             line += " ";
         line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
@@ -40,7 +40,7 @@ namespace
         while (level--)
             line += "    ";
 
-        line += Log::colorToVTS(g_Log.COLOR_LOCATION);
+        line += Log::colorToVTS(LogColor::Location);
         if (bc->sourceFile)
         {
             line += bc->sourceFile->name;
@@ -49,29 +49,29 @@ namespace
 
         line += bc->getCallName();
 
-        line += Log::colorToVTS(g_Log.COLOR_DEFAULT);
+        line += Log::colorToVTS(LogColor::Default);
         return line;
     }
 
     Utf8 getProfileFFI(const FFIStat& ffi, int level)
     {
         Utf8 line;
-        line += Log::colorToVTS(g_Log.COLOR_COUNT);
+        line += Log::colorToVTS(LogColor::Index);
         line += FMT("%d", ffi.count);
 
         while (Log::removeFormat(line).count < COL1)
             line += " ";
         
-        line += Log::colorToVTS(g_Log.COLOR_VALUE);
+        line += Log::colorToVTS(LogColor::Value);
         line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
 
         while (Log::removeFormat(line).count < COL2)
             line += " ";
         
-        line += Log::colorToVTS(g_Log.COLOR_LOCATION);
+        line += Log::colorToVTS(LogColor::Location);
         line += ffi.name;
 
-        line += Log::colorToVTS(g_Log.COLOR_DEFAULT);
+        line += Log::colorToVTS(LogColor::Default);
         return line;
     }
 

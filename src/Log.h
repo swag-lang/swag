@@ -19,11 +19,21 @@ enum class LogColor
     DarkCyan,
     DarkYellow,
     DarkMagenta,
-    Default,
+    //
     Bold,
     UnBold,
     Underline,
     UnUnderline,
+    //
+    Header         = DarkCyan,
+    Value          = DarkYellow,
+    Breakpoint     = Red,
+    CurInstruction = Red,
+    Name           = DarkYellow,
+    Type           = DarkCyan,
+    Location       = DarkMagenta,
+    Index          = Cyan,
+    Default        = Gray,
 };
 
 enum class LogSymbol
@@ -79,24 +89,13 @@ struct Log
 
     void setStoreMode(bool mode);
 
-    static constexpr LogColor COLOR_COUNT           = LogColor::DarkCyan;
-    static constexpr LogColor COLOR_HEADER          = LogColor::DarkCyan;
-    static constexpr LogColor COLOR_VALUE           = LogColor::DarkYellow;
-    static constexpr LogColor COLOR_BREAKPOINT      = LogColor::Red;
-    static constexpr LogColor COLOR_CUR_INSTRUCTION = LogColor::Red;
-    static constexpr LogColor COLOR_NAME            = LogColor::DarkYellow;
-    static constexpr LogColor COLOR_TYPE            = LogColor::DarkCyan;
-    static constexpr LogColor COLOR_LOCATION        = LogColor::DarkMagenta;
-    static constexpr LogColor COLOR_INDEX           = LogColor::Cyan;
-    static constexpr LogColor COLOR_DEFAULT         = LogColor::Gray;
-
-    Utf8 COLOR_VTS_CUR_INSTRUCTION;
-    Utf8 COLOR_VTS_NAME;
-    Utf8 COLOR_VTS_TYPE;
-    Utf8 COLOR_VTS_LOCATION;
-    Utf8 COLOR_VTS_INDEX;
-    Utf8 COLOR_VTS_DEFAULT;
-    Utf8 COLOR_VTS_BREAKPOINT;
+    Utf8 colorVTSCurInstruction;
+    Utf8 colorVTSName;
+    Utf8 colorVTSType;
+    Utf8 colorVTSLocation;
+    Utf8 colorVTSIndex;
+    Utf8 colorVTSDefault;
+    Utf8 colorVTSBreakpoint;
 
     Mutex        mutexAccess;
     Vector<Utf8> store;

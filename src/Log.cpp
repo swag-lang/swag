@@ -6,13 +6,13 @@ Log g_Log;
 
 Log::Log()
 {
-    COLOR_VTS_CUR_INSTRUCTION = colorToVTS(COLOR_CUR_INSTRUCTION);
-    COLOR_VTS_NAME            = colorToVTS(COLOR_NAME);
-    COLOR_VTS_TYPE            = colorToVTS(COLOR_TYPE);
-    COLOR_VTS_LOCATION        = colorToVTS(COLOR_LOCATION);
-    COLOR_VTS_INDEX           = colorToVTS(COLOR_INDEX);
-    COLOR_VTS_DEFAULT         = colorToVTS(COLOR_DEFAULT);
-    COLOR_VTS_BREAKPOINT      = colorToVTS(COLOR_BREAKPOINT);
+    colorVTSCurInstruction = colorToVTS(LogColor::CurInstruction);
+    colorVTSName           = colorToVTS(LogColor::Name);
+    colorVTSType           = colorToVTS(LogColor::Type);
+    colorVTSLocation       = colorToVTS(LogColor::Location);
+    colorVTSIndex          = colorToVTS(LogColor::Index);
+    colorVTSDefault        = colorToVTS(LogColor::Default);
+    colorVTSBreakpoint     = colorToVTS(LogColor::Breakpoint);
 }
 
 void Log::lock()

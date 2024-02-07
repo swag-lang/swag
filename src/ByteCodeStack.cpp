@@ -53,22 +53,22 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     auto ip = step.ip;
 
     Utf8 header;
-    header += g_Log.COLOR_VTS_INDEX;
+    header += g_Log.colorVTSIndex;
     if (current)
         header += FMT("[%03u] ", level);
     else
         header += FMT("-%03u- ", level);
-    header += g_Log.COLOR_VTS_NAME;
+    header += g_Log.colorVTSName;
 
     Utf8 inl;
-    inl += g_Log.COLOR_VTS_INDEX;
+    inl += g_Log.colorVTSIndex;
     inl += "----- ";
-    inl += g_Log.COLOR_VTS_NAME;
+    inl += g_Log.colorVTSName;
 
     if (!ip)
     {
         auto str = header;
-        str += g_Log.COLOR_VTS_LOCATION;
+        str += g_Log.colorVTSLocation;
         str += "<foreign code>";
         str += "\n";
         return str;
@@ -88,7 +88,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     str += name;
     str += "\n";
     str += "      ";
-    str += g_Log.COLOR_VTS_LOCATION;
+    str += g_Log.colorVTSLocation;
     if (sourceFile)
         str += FMT(" %s:%d:%d", sourceFile->path.string().c_str(), location->line + 1, location->column + 1);
     str += "\n";
@@ -104,14 +104,14 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         if (owner)
         {
             str += owner->ownerInline ? inl.c_str() : header.c_str();
-            str += g_Log.COLOR_VTS_NAME;
+            str += g_Log.colorVTSName;
             str += getStepName(owner, ip);
 
             if (owner->sourceFile)
             {
                 str += "\n";
                 str += "      ";
-                str += g_Log.COLOR_VTS_LOCATION;
+                str += g_Log.colorVTSLocation;
                 str += FMT(" %s:%d:%d:%d:%d",
                            owner->sourceFile->path.string().c_str(),
                            owner->token.startLocation.line + 1,
@@ -131,14 +131,14 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     while (parent && parent->ownerFct == ip->node->ownerFct)
     {
         str += parent->ownerInline ? inl.c_str() : header.c_str();
-        str += g_Log.COLOR_VTS_NAME;
+        str += g_Log.colorVTSName;
         str += getStepName(parent, ip);
 
         if (parent->sourceFile)
         {
             str += "\n";
             str += "      ";
-            str += g_Log.COLOR_VTS_LOCATION;
+            str += g_Log.colorVTSLocation;
             str += FMT(" %s:%d:%d:%d:%d",
                        parent->sourceFile->path.string().c_str(),
                        parent->token.startLocation.line + 1,
