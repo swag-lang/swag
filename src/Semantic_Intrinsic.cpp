@@ -393,7 +393,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
 bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concretePtrRefType(expression->typeInfo);
-
+    
     if (typeInfo->isListArray())
     {
         const auto typeList  = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
@@ -405,7 +405,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     if (typeInfo->isString())
     {
         // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
         if (expression->hasComputedValue())
@@ -431,7 +431,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     else if (typeInfo->isSlice())
     {
         // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         const auto ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
@@ -462,7 +462,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     else if (typeInfo->isArray())
     {
         // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         const auto ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
@@ -488,7 +488,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     else if (typeInfo->isAny())
     {
         // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         if (expression->hasComputedValue())
@@ -524,6 +524,9 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     }
     else if (typeInfo->isInterface())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
+        
         node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
     }
