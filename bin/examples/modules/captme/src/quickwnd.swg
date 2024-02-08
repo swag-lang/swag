@@ -144,10 +144,9 @@ impl QuickWnd
 
     mtd defaultQuickStyleArrow()
     {
-        #[Swag.Macro]
-        func add(startSize, borderSize, endSize: f32, color: Color)
+        mtd add(startSize, borderSize, endSize: f32, color: Color)
         {
-            var form = Memory.new'FormArrow()
+            let form = Memory.new'FormArrow()
             form.borderSize = borderSize
             form.startSize = startSize
             form.endSize = endSize
@@ -156,9 +155,9 @@ impl QuickWnd
             if endSize != 0 do
                 form.endCap = .ArrowAnchor
             form.borderColor = color
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsArrow.forms.add(it)
+            qsArrow.forms.add(it)
         }
 
         const BorderSize = 25.0
@@ -180,10 +179,10 @@ impl QuickWnd
         #[Swag.Macro]
         func add(borderSize: f32, color: Color)
         {
-            var form = Memory.new'FormLine()
+            let form = Memory.new'FormLine()
             form.borderSize = borderSize
             form.borderColor = color
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
             #up qsLine.forms.add(it)
         }
@@ -201,17 +200,16 @@ impl QuickWnd
 
     mtd defaultQuickStyleShape()
     {
-        #[Swag.Macro]
-        func add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color)
+        mtd add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color)
         {
-            var form = Memory.new'FormShape()
+            let form = Memory.new'FormShape()
             form.borderSize = borderSize
             form.borderColor = color
             form.backColor = backColor
             form.kind = kind
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsShape.forms.add(it)
+            qsShape.forms.add(it)
         }
 
         const BorderSize = 5.0
@@ -230,19 +228,18 @@ impl QuickWnd
 
     mtd defaultQuickStyleImage()
     {
-        #[Swag.Macro]
-        func add(borderSize: f32, kind: FormImageKind, color: Color)
+        mtd add(borderSize: f32, kind: FormImageKind, color: Color)
         {
-            var form = Memory.new'FormImage()
+            let form = Memory.new'FormImage()
             form.borderSize = borderSize
             form.borderColor = color
             form.backColor = Argb.Gray
             form.kind = kind
             if borderSize == 0 do
                 form.paintShadow = false
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsImage.forms.add(it)
+            qsImage.forms.add(it)
         }
 
         add(2, .Image, Argb.White)
@@ -254,16 +251,15 @@ impl QuickWnd
 
     mtd defaultQuickStyleStep()
     {
-        #[Swag.Macro]
-        func add(kind: FormStepKind, color: Color, backColor: Color)
+        mtd add(kind: FormStepKind, color: Color, backColor: Color)
         {
-            var form = Memory.new'FormStep()
+            let form = Memory.new'FormStep()
             form.borderColor = color
             form.backColor = backColor
             form.kind = kind
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsStep.forms.add(it)
+            qsStep.forms.add(it)
         }
 
         add(.Ellipse, Argb.White, Argb.Red)
@@ -278,16 +274,15 @@ impl QuickWnd
 
     mtd defaultQuickStylePolygon()
     {
-        #[Swag.Macro]
-        func add(borderSize: f32, color: Color)
+        mtd add(borderSize: f32, color: Color)
         {
-            var form = Memory.new'FormPolygon()
+            let form = Memory.new'FormPolygon()
             form.borderSize = borderSize
             form.borderColor = color
             form.backColor = 0
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsPolygon.forms.add(it)
+            qsPolygon.forms.add(it)
         }
 
         const BorderSize = 5.0
@@ -302,18 +297,17 @@ impl QuickWnd
 
     mtd defaultQuickStyleText()
     {
-        #[Swag.Macro]
-        func add(borderSize, fontSize: f32, bdColor, bkColor: Color)
+        mtd add(borderSize, fontSize: f32, bdColor, bkColor: Color)
         {
-            var form = Memory.new'FormText()
+            let form = Memory.new'FormText()
             form.borderSize = borderSize
             form.borderColor = bdColor
             form.backColor = bkColor
             form.fontSize = fontSize
             form.text = "A"
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsText.forms.add(it)
+            qsText.forms.add(it)
         }
 
         add(3, 48, Argb.White, Argb.Red)
@@ -331,15 +325,14 @@ impl QuickWnd
 
     mtd defaultQuickStyleDraw()
     {
-        #[Swag.Macro]
-        func add(borderSize: f32, color: Color)
+        mtd add(borderSize: f32, color: Color)
         {
-            var form = Memory.new'FormDraw()
+            let form = Memory.new'FormDraw()
             form.borderSize = borderSize
             form.borderColor = color
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsDraw.forms.add(it)
+            qsDraw.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -355,46 +348,43 @@ impl QuickWnd
 
     mtd defaultQuickStyleHighlight()
     {
-        #[Swag.Macro]
-        func addDraw(borderSize: f32, color: Color)
+        mtd addDraw(borderSize: f32, color: Color)
         {
-            var form = Memory.new'FormDraw()
+            let form = Memory.new'FormDraw()
             form.borderSize = borderSize
             form.borderColor = color
             form.alpha = 30
             form.subKind = .Highlight
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsHighlight.forms.add(it)
+            qsHighlight.forms.add(it)
         }
 
-        #[Swag.Macro]
-        func addShape(kind: FormShapeKind, backColor: Color)
+        mtd addShape(kind: FormShapeKind, backColor: Color)
         {
-            var form = Memory.new'FormShape()
+            let form = Memory.new'FormShape()
             form.borderSize = 0
             form.borderColor = Argb.Zero
             form.backColor = backColor
             form.alpha = 30
             form.kind = kind
             form.subKind = .Highlight
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsHighlight.forms.add(it)
+            qsHighlight.forms.add(it)
         }
 
-        #[Swag.Macro]
-        func addPoly(backColor: Color)
+        mtd addPoly(backColor: Color)
         {
-            var form = Memory.new'FormPolygon()
+            let form = Memory.new'FormPolygon()
             form.borderSize = 0
             form.borderColor = Argb.Zero
             form.backColor = backColor
             form.alpha = 30
             form.subKind = .Highlight
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsHighlight.forms.add(it)
+            qsHighlight.forms.add(it)
         }
 
         addShape(.Rectangle, Argb.Red)
@@ -416,38 +406,35 @@ impl QuickWnd
 
     mtd defaultQuickStylePixSel()
     {
-        #[Swag.Macro]
-        func addDraw()
+        mtd addDraw()
         {
-            var form = Memory.new'FormDraw()
+            let form = Memory.new'FormDraw()
             form.subKind = .PixSel
             form.paintShadow = false
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsPixSel.forms.add(it)
+            qsPixSel.forms.add(it)
         }
 
-        #[Swag.Macro]
-        func addShape(kind: FormShapeKind)
+        mtd addShape(kind: FormShapeKind)
         {
-            var form = Memory.new'FormShape()
+            let form = Memory.new'FormShape()
             form.kind = kind
             form.subKind = .PixSel
             form.paintShadow = false
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsPixSel.forms.add(it)
+            qsPixSel.forms.add(it)
         }
 
-        #[Swag.Macro]
-        func addPoly()
+        mtd addPoly()
         {
-            var form = Memory.new'FormPolygon()
+            let form = Memory.new'FormPolygon()
             form.subKind = .PixSel
             form.paintShadow = false
-            var it = cast(IForm) form
+            let it = cast(IForm) form
             it.setup(null)
-            #up qsPixSel.forms.add(it)
+            qsPixSel.forms.add(it)
         }
 
         addShape(.Rectangle)
