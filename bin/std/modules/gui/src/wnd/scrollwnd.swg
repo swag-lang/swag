@@ -426,6 +426,9 @@ impl ScrollWnd
 
             posBoxV = view.scrollPos.y / sy
             posBoxV *= vh1
+
+            if view.scrollPos.y > scrollSize.y - clientRect.height do
+                view.scrollPos.y = Math.max(scrollSize.y - clientRect.height, 0)
         }
 
         if showBarH
@@ -442,6 +445,9 @@ impl ScrollWnd
 
             posBoxH = view.scrollPos.x / sx
             posBoxH *= vh1
+
+            if view.scrollPos.x > scrollSize.x - clientRect.width do
+                view.scrollPos.x = Math.max(scrollSize.x - clientRect.width, 0)
         }
 
         invalidate()
