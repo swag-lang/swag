@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeGenContext.h"
@@ -45,6 +46,7 @@ bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
     const auto node   = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

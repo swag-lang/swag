@@ -697,11 +697,19 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
             YIELD();
 
-            // :ConcreteRef
-            if (params[i]->typeInfo->isPointerRef() && !toType->isPointerRef())
-                setUnRef(params[i]);
-
             auto makePtrL = params[i];
+
+            // :ConcreteRef
+            if (makePtrL->typeInfo->isPointerRef() && !toType->isPointerRef())
+            {
+                setUnRef(makePtrL);
+                if(makePtrL->castedTypeInfo)
+                {
+                    const auto fromCast = TypeManager::concreteType(makePtrL->castedTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+                    if(fromCast->isPointerRef())
+                        makePtrL->castedTypeInfo = fromCast->getFinalType();
+                }
+            }
 
             // If passing a closure
             // :FctCallParamClosure
