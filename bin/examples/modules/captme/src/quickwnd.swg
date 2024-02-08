@@ -176,15 +176,14 @@ impl QuickWnd
 
     mtd defaultQuickStyleLine()
     {
-        #[Swag.Macro]
-        func add(borderSize: f32, color: Color)
+        mtd add(borderSize: f32, color: Color)
         {
             let form = Memory.new'FormLine()
             form.borderSize = borderSize
             form.borderColor = color
             let it = cast(IForm) form
             it.setup(null)
-            #up qsLine.forms.add(it)
+            qsLine.forms.add(it)
         }
 
         const BorderSize = 25.0

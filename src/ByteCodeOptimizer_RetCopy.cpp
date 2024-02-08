@@ -377,65 +377,6 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
     return true;
 }
 
-// Same, but we make the detection before and after a function that has been inlined
-bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
-{
-    if (!(context->contextBcFlags & OCF_HAS_INLINE))
-        return true;
-
-    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
-    {
-        bool             startOk     = false;
-        const AstInline* inlineBlock = nullptr;
-
-        if (ip->op == ByteCodeOp::MakeStackPointer &&
-            ip[1].node->ownerInline != ip[0].node->ownerInline)
-        {
-            inlineBlock = ip[1].node->ownerInline;
-            startOk     = true;
-        }
-
-        if (ip->op == ByteCodeOp::MakeStackPointer &&
-            ip[1].op == ByteCodeOp::IncPointer64 &&
-            ip[2].node->ownerInline != ip[0].node->ownerInline)
-        {
-            inlineBlock = ip[2].node->ownerInline;
-            startOk     = true;
-        }
-
-        // Detect pushing pointer to the stack for a return value
-        if (startOk)
-        {
-            const auto ipOrg = ip;
-
-            // Go to the end of the inline block
-            ip++;
-            while (ip->op != ByteCodeOp::End && ip->node->ownerInline != ipOrg->node->ownerInline)
-                ip++;
-            if (ip->op == ByteCodeOp::PopRR)
-                ip++;
-            while (ip->flags & BCI_TRYCATCH)
-                ip++;
-
-            // This will copy the result in the real variable
-            bool canOptim = false;
-            if (ip->op == ByteCodeOp::MakeStackPointer && ByteCode::isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
-                canOptim = true;
-
-            // For now, disable optimization for a struct.
-            if (canOptim && inlineBlock && TypeManager::concreteType(inlineBlock->func->typeInfo)->isStruct())
-                canOptim = false;
-
-            if (canOptim)
-                optimRetCopy(context, ipOrg, ip);
-            else
-                ip = ipOrg;
-        }
-    }
-
-    return true;
-}
-
 // Optimize the return value when this is a struct
 // If we affect the result to a local variable, then remove on unecessary copy
 bool ByteCodeOptimizer::optimizePassRetCopyStructVal(ByteCodeOptContext* context)

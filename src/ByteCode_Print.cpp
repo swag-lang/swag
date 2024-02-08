@@ -366,6 +366,8 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         g_Log.setColor(LogColor::CurInstruction);
     else if (forDbg)
         g_Log.setColor(LogColor::Default);
+    else if (ip->node && ip->node->ownerInline)
+        g_Log.setColor(LogColor::Gray);
     else
         g_Log.setColor(LogColor::White);
 
