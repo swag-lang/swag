@@ -23,9 +23,9 @@ void ByteCodeRunContext::releaseStack()
     {
         // To avoid wasting memory, we recycle bytecode stacks
         ScopedLock lk(g_FreeStackMutex);
-        *(void**) stack  = g_FirstFreeStack;
-        g_FirstFreeStack = stack;
-        stack            = nullptr;
+        *reinterpret_cast<void**>(stack) = g_FirstFreeStack;
+        g_FirstFreeStack                 = stack;
+        stack                            = nullptr;
     }
 }
 

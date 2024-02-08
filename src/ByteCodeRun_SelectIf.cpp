@@ -79,7 +79,7 @@ void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, const By
 
 bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
-    const auto solved = (SymbolOverload*) ip->d.pointer;
+    const auto solved = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
 
     // Variadic
     /////////////////////////////////////////
@@ -116,7 +116,7 @@ bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const 
 void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
     // Is this constexpr ?
-    const auto solved = (SymbolOverload*) ip->d.pointer;
+    const auto solved = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
     if (!executeIsConstExprSI(context, ip))
     {
         callInternalCompilerError(context, ip, FMT(Err(Err0031), solved->symbol->name.c_str()));

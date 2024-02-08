@@ -2,18 +2,18 @@
 #include "ByteCode.h"
 #include "ByteCodeRun.h"
 
-void ByteCodeRun::executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
+void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned)
 {
-    const auto shift = rright.u32;
+    const auto shift = regRight.u32;
     if (shift >= numBits)
-        rdest->u64 = 0;
+        regDest->u64 = 0;
     else
-        rdest->u64 = rleft.u64 << shift;
+        regDest->u64 = regLeft.u64 << shift;
 }
 
-void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
+void ByteCodeRun::executeRightShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned)
 {
-    const auto shift = rright.u32;
+    const auto shift = regRight.u32;
     if (shift >= numBits)
     {
         if (isSigned)
@@ -21,22 +21,24 @@ void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, cons
             switch (numBits)
             {
             case 8:
-                rdest->s64 = rleft.s8 < 0 ? -1 : 0;
+                regDest->s64 = regLeft.s8 < 0 ? -1 : 0;
                 break;
             case 16:
-                rdest->s64 = rleft.s16 < 0 ? -1 : 0;
+                regDest->s64 = regLeft.s16 < 0 ? -1 : 0;
                 break;
             case 32:
-                rdest->s64 = rleft.s32 < 0 ? -1 : 0;
+                regDest->s64 = regLeft.s32 < 0 ? -1 : 0;
                 break;
             case 64:
-                rdest->s64 = rleft.s64 < 0 ? -1 : 0;
+                regDest->s64 = regLeft.s64 < 0 ? -1 : 0;
+                break;
+            default:
                 break;
             }
         }
         else
         {
-            rdest->u64 = 0;
+            regDest->u64 = 0;
         }
     }
     else if (isSigned)
@@ -44,16 +46,18 @@ void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, cons
         switch (numBits)
         {
         case 8:
-            rdest->s64 = rleft.s8 >> shift;
+            regDest->s64 = regLeft.s8 >> shift;
             break;
         case 16:
-            rdest->s64 = rleft.s16 >> shift;
+            regDest->s64 = regLeft.s16 >> shift;
             break;
         case 32:
-            rdest->s64 = rleft.s32 >> shift;
+            regDest->s64 = regLeft.s32 >> shift;
             break;
         case 64:
-            rdest->s64 = rleft.s64 >> shift;
+            regDest->s64 = regLeft.s64 >> shift;
+            break;
+        default:
             break;
         }
     }
@@ -62,16 +66,18 @@ void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, cons
         switch (numBits)
         {
         case 8:
-            rdest->u64 = rleft.u8 >> shift;
+            regDest->u64 = regLeft.u8 >> shift;
             break;
         case 16:
-            rdest->u64 = rleft.u16 >> shift;
+            regDest->u64 = regLeft.u16 >> shift;
             break;
         case 32:
-            rdest->u64 = rleft.u32 >> shift;
+            regDest->u64 = regLeft.u32 >> shift;
             break;
         case 64:
-            rdest->u64 = rleft.u64 >> shift;
+            regDest->u64 = regLeft.u64 >> shift;
+            break;
+        default:
             break;
         }
     }

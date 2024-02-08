@@ -91,7 +91,7 @@ struct ByteCodeRunContext
         return registers.buffer + registersRC[cur];
     }
 
-    // Keep 'ip' first to derefence it in the runner without an offset
+    // Keep 'ip' first to dereference it in the runner without an offset
     ByteCodeInstruction* ip                        = nullptr;
     Register*            curRegistersRC            = nullptr;
     static constexpr int MAX_ALLOC_RR              = 2;
