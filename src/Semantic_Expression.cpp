@@ -183,7 +183,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
 
 bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node)
 {
-    if ((node->hasAstFlag(AST_CONST_EXPR)) &&
+    if (node->hasAstFlag(AST_CONST_EXPR) &&
         !node->typeInfo->isListArray() &&
         !node->typeInfo->isListTuple() &&
         !node->typeInfo->isSlice())

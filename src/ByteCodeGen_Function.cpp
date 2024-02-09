@@ -101,7 +101,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         //
         // RETVAL
         //
-        if ((node->hasSemFlag(SEMFLAG_RETVAL)) ||
+        if (node->hasSemFlag(SEMFLAG_RETVAL) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
         {
             const auto child = node->childs.front();

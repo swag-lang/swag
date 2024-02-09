@@ -267,7 +267,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
         {
             // Happens when the mixin is in a constexpr expression, inside a scope which is the real non constexpr code.
             // In that case we need to release our registers, because it's a compile time execution done.
-            if ((node->parent->hasAstFlag(AST_CONST_EXPR)) != (node->ownerScope->owner->hasAstFlag(AST_CONST_EXPR)))
+            if (node->parent->hasAstFlag(AST_CONST_EXPR) != node->ownerScope->owner->hasAstFlag(AST_CONST_EXPR))
             {
                 for (const auto r : node->extMisc()->registersToRelease)
                     freeRegisterRC(context, r);
@@ -1150,7 +1150,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
 
     // Leave all scopes
     const Scope* topScope;
-    if (node->ownerInline && ((node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)) || node->kind != AstNodeKind::Return))
+    if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the

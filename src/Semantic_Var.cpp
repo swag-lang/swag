@@ -750,7 +750,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Evaluate type constraint
-    if ((node->hasAstFlag(AST_FROM_GENERIC)) && node->typeConstraint)
+    if (node->hasAstFlag(AST_FROM_GENERIC) && node->typeConstraint)
     {
         SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_TYPE));
 
@@ -793,7 +793,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         !isGeneric)
     {
         // A generic identifier without a type but with a default value is a generic type
-        if ((node->hasAstFlag(AST_IS_GENERIC)) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+        if (node->hasAstFlag(AST_IS_GENERIC) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
         {
             thisIsAGenericType = true;
         }
@@ -802,7 +802,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             YIELD();
 
-            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->hasAstFlag(AST_CONST_EXPR)))
+            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || node->assignment->hasAstFlag(AST_CONST_EXPR))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
                 YIELD();
@@ -866,7 +866,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Types and assignements are specified
+    // Types and assignment are specified
     if (node->type && node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
         SWAG_ASSERT(node->type->typeInfo);
