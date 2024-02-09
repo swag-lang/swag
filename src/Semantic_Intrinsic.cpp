@@ -393,7 +393,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
 bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concretePtrRefType(expression->typeInfo);
-    
+
     if (typeInfo->isListArray())
     {
         const auto typeList  = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
@@ -526,7 +526,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     {
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
-        
+
         node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
     }

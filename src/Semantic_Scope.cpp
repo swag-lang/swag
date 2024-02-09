@@ -146,9 +146,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (!hasEnum.empty())
                         {
-                            const Diagnostic diag{identifierRef, FMT(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            const Diagnostic          diag{identifierRef, FMT(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            const auto closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                            const auto                closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 notes.push_back(Diagnostic::note(closest));
                             if (hasEnum[0].first)

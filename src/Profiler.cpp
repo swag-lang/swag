@@ -61,13 +61,13 @@ namespace
 
         while (Log::removeFormat(line).count < COL1)
             line += " ";
-        
+
         line += Log::colorToVTS(LogColor::Value);
         line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
 
         while (Log::removeFormat(line).count < COL2)
             line += " ";
-        
+
         line += Log::colorToVTS(LogColor::Location);
         line += ffi.name;
 

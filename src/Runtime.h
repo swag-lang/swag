@@ -53,13 +53,13 @@ enum class ContextFlags : uint64_t
     PostCopyResetAllocator = 0x00000000'00000004,
 };
 
-typedef struct SwagInterface
+using SwagInterface = struct SwagInterface
 {
     void* data   = nullptr;
     void* itable = nullptr;
-}         SwagInterface;
+};
 
-typedef struct SwagScratchAllocator
+using SwagTempAllocator = struct SwagScratchAllocator
 {
     SwagInterface allocator;
     void*         data      = nullptr;
@@ -69,13 +69,13 @@ typedef struct SwagScratchAllocator
     void*         firstLeak = nullptr;
     uint64_t      totalLeak = 0;
     uint64_t      maxLeak   = 0;
-}                 SwagTempAllocator;
+};
 
-typedef struct SwagSlice
+using SwagSlice = struct SwagSlice
 {
     void*    buffer = nullptr;
     uint64_t count  = 0;
-}            SwagSlice;
+};
 
 struct SwagAny
 {
@@ -119,14 +119,14 @@ enum class SwagExceptionKind
 constexpr auto SWAG_MAX_ERRORS = 32;
 constexpr auto SWAG_MAX_TRACES = 32;
 
-typedef struct SwagErrorValue
+using SwagError = struct SwagErrorValue
 {
     SwagAny  value;
     uint32_t pushUsedAlloc;
     uint32_t pushTraceIndex;
-}            SwagError;
+};
 
-typedef struct SwagContext
+using SwagContext = struct SwagContext
 {
     SwagInterface           allocator;
     uint64_t                flags;
@@ -147,13 +147,13 @@ typedef struct SwagContext
     uint32_t                errorIndex;
     uint32_t                traceIndex;
     uint32_t                hasError;
-}                           SwagContext;
+};
 
 using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*);
 
-typedef void (*  SwagBytecodeRun)(void*, ...);
-typedef void (*  SwagThreadRun)(void*);
-typedef FuncCB (*SwagMakeCallback)(void*);
+using SwagBytecodeRun = void(*)(void*, ...);
+using SwagThreadRun = void(*)(void*);
+using SwagMakeCallback = FuncCB(*)(void*);
 
 enum class SwagBackendGenType : uint32_t
 {
@@ -180,7 +180,7 @@ enum class SwagRuntimeFlags : uint64_t
     FromCompiler = 0x00000000'00000001,
 };
 
-typedef struct SwagProcessInfos
+using SwagProcessInfos = struct SwagProcessInfos
 {
     SwagSlice          modules        = {nullptr};
     SwagSlice          args           = {nullptr};
@@ -189,7 +189,7 @@ typedef struct SwagProcessInfos
     SwagBytecodeRun    byteCodeRun    = nullptr;
     SwagMakeCallback   makeCallback   = nullptr;
     SwagBackendGenType backendKind    = SwagBackendGenType::SCBE;
-}                      SwagProcessInfos;
+};
 
 struct BuildCfgLLVM
 {

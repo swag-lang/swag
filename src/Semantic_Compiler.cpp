@@ -17,7 +17,8 @@
 
 Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
 {
-    VectorNative<AstNode*>        childs;
+    VectorNative<AstNode*> childs;
+
     Ast::visit(node, [&](AstNode* n)
     {
         childs.push_back(n);
@@ -924,7 +925,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
-        
+
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = (uint64_t) g_CommandLine.target.arch;
@@ -932,7 +933,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         SWAG_ASSERT(node->typeInfo);
         return true;
 
-        
+
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
         node->computedValue->text = getCompilerFunctionString(node, node->tokenId);

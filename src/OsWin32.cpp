@@ -61,8 +61,8 @@ namespace OS
         g_WinSdkFolder = str.c_str();
         g_WinSdkFolder.append("Lib");
 
-        int                                                         bestVersion[4] = {0};
-        Utf8                                                        bestName;
+        int                                                           bestVersion[4] = {0};
+        Utf8                                                          bestName;
         visitFolders(g_WinSdkFolder.string().c_str(), [&](const char* cFileName)
         {
             int        i0, i1, i2, i3;
@@ -343,7 +343,7 @@ namespace OS
                                                     MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
                                                     (LPSTR) &messageBuffer,
                                                     0,
-        nullptr);
+                                                    nullptr);
 
         // Remove unwanted characters
         char* pz = messageBuffer;
@@ -506,13 +506,13 @@ namespace OS
     constexpr DWORD MS_VC_EXCEPTION = 0x406D1388;
 
 #pragma pack(push, 8)
-    typedef struct tagTHREADNAME_INFO
+    using THREADNAME_INFO = struct tagTHREADNAME_INFO
     {
         DWORD  dwType;     // Must be 0x1000.
         LPCSTR szName;     // Pointer to name (in user addr space).
         DWORD  dwThreadID; // Thread ID (-1=caller thread).
         DWORD  dwFlags;    // Reserved for future use, must be zero.
-    }          THREADNAME_INFO;
+    };
 #pragma pack(pop)
 
     void setThreadName(uint32_t dwThreadID, const char* threadName)
@@ -619,7 +619,7 @@ namespace OS
 
     void raiseException(int code, const char* msg)
     {
-        msg                = msg ? _strdup(msg) : nullptr;
+        msg                  = msg ? _strdup(msg) : nullptr;
         g_ExceptionParams[0] = nullptr;
         g_ExceptionParams[1] = (void*) msg;
         g_ExceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
@@ -941,7 +941,7 @@ namespace OS
             auto& concat = gen.concat;
             concat.init(0);
             concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
-            concat.firstBucket->data    = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            concat.firstBucket->data     = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
             concat.currentSP             = gen.concat.firstBucket->data;
 
             // We need to generate unwind stuff to get a correct callstack, and in case the runtime caises an exception
@@ -994,8 +994,8 @@ namespace OS
         gen.emit_Ret();
 
         // The real deal : make the call
-        typedef void (*funcPtr)();
-        const auto     ptr = (funcPtr) (gen.concat.firstBucket->data + startOffset);
+        using funcPtr = void(*)();
+        const auto ptr = (funcPtr) (gen.concat.firstBucket->data + startOffset);
         ptr();
 
         gen.concat.currentSP = (uint8_t*) ptr;

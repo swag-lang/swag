@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "ByteCode_Math.h"
 #include "ByteCodeOptimizer.h"
+#include "ByteCode_Math.h"
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "Report.h"
@@ -626,7 +626,7 @@ namespace
             case ByteCodeOp::ClearRRX:
                 break;
 
-                // Fake 1 value
+            // Fake 1 value
             case ByteCodeOp::InternalGetTlsPtr:
             case ByteCodeOp::IntrinsicGetContext:
             case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -785,7 +785,7 @@ namespace
                 rd->kind = ValueKind::Unknown;
                 break;
 
-                // Fake 2 values
+            // Fake 2 values
             case ByteCodeOp::IntrinsicGvtd:
             case ByteCodeOp::IntrinsicGetErr:
             case ByteCodeOp::IntrinsicModules:

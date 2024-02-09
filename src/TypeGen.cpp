@@ -256,7 +256,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             const uint32_t count = (uint32_t) concreteType->generics.count;
             uint32_t       storageArray;
             const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
-                                                                             &concreteType->generics.buffer, storageArray);
+                                                                         &concreteType->generics.buffer, storageArray);
             for (size_t param = 0; param < concreteType->generics.count; param++)
             {
                 SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
@@ -281,7 +281,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             const uint32_t count = (uint32_t) realType->parameters.size();
             uint32_t       storageArray;
             const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
-                                                                             &concreteType->parameters.buffer, storageArray);
+                                                                         &concreteType->parameters.buffer, storageArray);
             for (size_t param = firstParam; param < realType->parameters.size(); param++)
             {
                 SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], cflags));
@@ -307,7 +307,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             const uint32_t count = (uint32_t) realType->values.size();
             uint32_t       storageArray;
             const auto     addrArray = (ExportedTypeValue*) genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
-                                                                             &concreteType->values.buffer, storageArray);
+                                                                         &concreteType->values.buffer, storageArray);
             for (size_t param = 0; param < concreteType->values.count; param++)
             {
                 SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], cflags));
@@ -496,7 +496,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
     uint32_t count = (uint32_t) result->count;
     uint32_t storageOffsetAttributes;
     auto     ptrStorageAttributes = (uint8_t*) genExportedSlice(context, count * sizeof(ExportedAttribute), exportedTypeInfoValue, storageSegment, storageOffset, &result->buffer,
-                                                                storageOffsetAttributes);
+                                                            storageOffsetAttributes);
 
     uint32_t curOffsetAttributes = storageOffsetAttributes;
     for (auto& one : attributes.allAttributes)
@@ -520,7 +520,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
             count = (uint32_t) one.parameters.size();
             uint32_t storageOffsetParams;
             auto     ptrStorageAllParams = (uint8_t*) genExportedSlice(context, count * sizeof(ExportedAttributeParameter), storageSegment, curOffsetAttributes,
-                                                                       &ptrParamsAttribute->buffer, storageOffsetParams);
+                                                                   &ptrParamsAttribute->buffer, storageOffsetParams);
 
             uint32_t curOffsetParams = storageOffsetParams;
             uint32_t cptParam        = 0;

@@ -87,7 +87,9 @@ enum class JobWaitKind
 struct Job
 {
     virtual JobResult execute() = 0;
-    virtual void      release(){};
+    virtual void      release()
+    {
+    };
 
     void addDependentJob(Job* job);
     void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);

@@ -35,9 +35,9 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 
-typedef bool (*SemanticFct)(SemanticContext* context);
-typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
-typedef bool (*ByteCodeNotifyFct)(ByteCodeGenContext* context);
+using SemanticFct = bool(*)(SemanticContext* context);
+using ByteCodeFct = bool(*)(ByteCodeGenContext* context);
+using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
 
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;

@@ -1,6 +1,6 @@
 #pragma once
-#include "AstNode.h"
 #include "AstFlags.h"
+#include "AstNode.h"
 #include "ByteCodeInstruction.h"
 #include "Math.h"
 #include "Module.h"

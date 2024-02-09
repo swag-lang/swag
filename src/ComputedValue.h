@@ -10,6 +10,6 @@ struct ComputedValue
     DataSegment* storageSegment = nullptr;
     uint32_t     storageOffset  = UINT32_MAX;
 
-    bool operator==(const ComputedValue& from) const;
+    bool                operator==(const ComputedValue& from) const;
     [[nodiscard]] void* getStorageAddr() const;
 };

@@ -168,7 +168,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
     const auto node         = context->node;
     const auto leftTypeInfo = left->typeInfo;
 
-#define CMP3(__a, __b) __a < (__b) ? -1 : ((__a) > (__b) ? 1 : 0)
+#define CMP3(__a, __b) ((__a) < (__b) ? -1 : ((__a) > (__b) ? 1 : 0))
 
     if (left->hasComputedValue() && right->hasComputedValue())
     {

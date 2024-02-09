@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ByteCode.h"
-#include "ByteCode_Math.h"
 #include "ByteCodeRun.h"
+#include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeStack.h"
+#include "ByteCode_Math.h"
 #include "CompilerItf.h"
 #include "Context.h"
 #include "Diagnostic.h"
@@ -4246,7 +4246,7 @@ namespace
                 else
                     userMsg = txt;
 
-                // Additional panic infos
+            // Additional panic infos
                 if (runContext->internalPanicSymbol)
                 {
                     notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
@@ -4300,12 +4300,12 @@ namespace
             diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
         else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
             diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-        // Otherwise get the source file from the top of the bytecode stack if possible
+            // Otherwise get the source file from the top of the bytecode stack if possible
         else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
             diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
         else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
             diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
-        // Otherwise take the current bytecode source file
+            // Otherwise take the current bytecode source file
         else
             diag->contextFile = runContext->bc->sourceFile;
 

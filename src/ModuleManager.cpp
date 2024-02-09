@@ -77,7 +77,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     const auto ptr      = OS::getProcAddress(h, funcName.c_str());
     if (ptr)
     {
-        typedef void (*funcCall)(void*);
+        using funcCall = void(*)(void*);
         ((funcCall) ptr)(&g_ProcessInfos);
     }
 

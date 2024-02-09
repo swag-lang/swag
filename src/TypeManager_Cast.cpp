@@ -431,7 +431,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                     fromNode->typeInfo = g_TypeMgr->typeInfoU8;
                 return true;
             }
-            
+
             if (fromType->isUntypedInteger() || fromType->isUntypedBinHex())
             {
                 return true;

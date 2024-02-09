@@ -1,591 +1,591 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseDevMode|x64">
-      <Configuration>ReleaseDevMode</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseStats|x64">
-      <Configuration>ReleaseStats</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Swag</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
-    <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
-    <TargetName>swag_debug</TargetName>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
-    <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
-    <TargetName>swag</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
-    <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
-    <TargetName>swag_stats</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\</OutDir>
-    <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
-    <TargetName>swag_devmode</TargetName>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_DEBUG;SWAG_DEV_MODE;SWAG_STATS</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <AdditionalOptions>/MP6 %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/debug/lib;../bin</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
-      <AdditionalOptions>/MP6 %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_STATS</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_DEV_MODE;SWAG_STATS</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
-      <AdditionalOptions>/MP6 %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Profile>false</Profile>
-      <AdditionalLibraryDirectories>../llvm/build/release/lib;../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="../src/Allocator.h" />
-    <ClInclude Include="../src/Assert.h" />
-    <ClInclude Include="../src/Ast.h" />
-    <ClInclude Include="..\src\AstFlags.h" />
-    <ClInclude Include="../src/AstNode.h" />
-    <ClInclude Include="../src/Attribute.h" />
-    <ClInclude Include="../src/Backend.h" />
-    <ClInclude Include="..\src\AstOutput.h" />
-    <ClInclude Include="..\src\BackendFunctionBodyJob.h" />
-    <ClInclude Include="..\src\ByteCode_Math.h" />
-    <ClInclude Include="..\src\LLVM_Debug.h" />
-    <ClInclude Include="..\src\LLVM_Macros.h" />
-    <ClInclude Include="../src/BackendLinker.h" />
-    <ClInclude Include="..\src\LLVM.h" />
-    <ClInclude Include="..\src\SCBE.h" />
-    <ClInclude Include="..\src\SCBE_Coff.h" />
-    <ClInclude Include="..\src\SCBE_Debug.h" />
-    <ClInclude Include="..\src\SCBE_Macros.h" />
-    <ClInclude Include="..\src\SCBE_SaveObjJob.h" />
-    <ClInclude Include="..\src\BackendParameters.h" />
-    <ClInclude Include="../src/ByteCode.h" />
-    <ClInclude Include="../src/ByteCodeGenJob.h" />
-    <ClInclude Include="../src/ByteCodeOptContext.h" />
-    <ClInclude Include="../src/ByteCodeOptimizer.h" />
-    <ClInclude Include="../src/ByteCodeOptimizerJob.h" />
-    <ClInclude Include="../src/CompilerItf.h" />
-    <ClInclude Include="..\src\LLVM_Setup.h" />
-    <ClInclude Include="../src/ModuleManager.h" />
-    <ClInclude Include="../src/ByteCodeOp.h" />
-    <ClInclude Include="../src/ByteCodeOpList.h" />
-    <ClInclude Include="../src/ByteCodeRun.h" />
-    <ClInclude Include="../src/ByteCodeRunContext.h" />
-    <ClInclude Include="../src/CommandLine.h" />
-    <ClInclude Include="../src/CommandLineParser.h" />
-    <ClInclude Include="../src/Concat.h" />
-    <ClInclude Include="../src/Context.h" />
-    <ClInclude Include="../src/DataSegment.h" />
-    <ClInclude Include="../src/DependentJobs.h" />
-    <ClInclude Include="../src/Diagnostic.h" />
-    <ClInclude Include="../src/ByteCodeStack.h" />
-    <ClInclude Include="../src/EnumerateModuleJob.h" />
-    <ClInclude Include="../src/Generic.h" />
-    <ClInclude Include="../src/ModuleBuildJob.h" />
-    <ClInclude Include="../src/ModuleExportJob.h" />
-    <ClInclude Include="../src/ModulePrepOutputJob.h" />
-    <ClInclude Include="../src/ModuleRunJob.h" />
-    <ClInclude Include="../src/ModuleSaveExportJob.h" />
-    <ClInclude Include="../src/Os.h" />
-    <ClInclude Include="../src/ModuleGenOutputJob.h" />
-    <ClInclude Include="../src/ModuleOutputJob.h" />
-    <ClInclude Include="..\src\ByteCodeDebugger.h" />
-    <ClInclude Include="..\src\ByteCodeGen.h" />
-    <ClInclude Include="..\src\ByteCodeGenContext.h" />
-    <ClInclude Include="..\src\ByteCodeInstruction.h" />
-    <ClInclude Include="..\src\CallConv.h" />
-    <ClInclude Include="..\src\ComputedValue.h" />
-    <ClInclude Include="..\src\SCBE_CodeView.h" />
-    <ClInclude Include="..\src\SCBE_CPU.h" />
-    <ClInclude Include="..\src\ErrorContext.h" />
-    <ClInclude Include="..\src\ErrorList.h" />
-    <ClInclude Include="..\src\Crc32.h" />
-    <ClInclude Include="..\src\GenDoc.h" />
-    <ClInclude Include="..\src\JobGroup.h" />
-    <ClInclude Include="..\src\LoadSourceFileJob.h" />
-    <ClInclude Include="..\src\Map.h" />
-    <ClInclude Include="..\src\MapRegTo.h" />
-    <ClInclude Include="..\src\ModuleGenDocJob.h" />
-    <ClInclude Include="..\src\Naming.h" />
-    <ClInclude Include="../src/Runtime.h" />
-    <ClInclude Include="../src/Scope.h" />
-    <ClInclude Include="../src/Scoped.h" />
-    <ClInclude Include="..\src\ScopeSwag.h" />
-    <ClInclude Include="../src/Timer.h" />
-    <ClInclude Include="../src/TokenIds.h" />
-    <ClInclude Include="../src/TypeInfo.h" />
-    <ClInclude Include="../src/Module.h" />
-    <ClInclude Include="../src/ModuleSemanticJob.h" />
-    <ClInclude Include="../src/Register.h" />
-    <ClInclude Include="../src/Job.h" />
-    <ClInclude Include="../src/JobThread.h" />
-    <ClInclude Include="../src/LanguageSpec.h" />
-    <ClInclude Include="../src/Log.h" />
-    <ClInclude Include="../src/pch.h" />
-    <ClInclude Include="../src/SemanticJob.h" />
-    <ClInclude Include="../src/SymTable.h" />
-    <ClInclude Include="../src/SyntaxJob.h" />
-    <ClInclude Include="../src/SourceFile.h" />
-    <ClInclude Include="..\src\Semantic.h" />
-    <ClInclude Include="..\src\SemanticContext.h" />
-    <ClInclude Include="..\src\SemanticError.h" />
-    <ClInclude Include="..\src\Statistics.h" />
-    <ClInclude Include="../src/ThreadManager.h" />
-    <ClInclude Include="../src/Tokenizer.h" />
-    <ClInclude Include="../src/TypeManager.h" />
-    <ClInclude Include="..\src\Parser.h" />
-    <ClInclude Include="..\src\Path.h" />
-    <ClInclude Include="..\src\Set.h" />
-    <ClInclude Include="..\src\Symbol.h" />
-    <ClInclude Include="..\src\SymTableHash.h" />
-    <ClInclude Include="..\src\SyntaxColor.h" />
-    <ClInclude Include="..\src\TypeGen.h" />
-    <ClInclude Include="..\src\TypeGenStructJob.h" />
-    <ClInclude Include="../src/Utf8.h" />
-    <ClInclude Include="../src/VectorNative.h" />
-    <ClInclude Include="../src/Version.h" />
-    <ClInclude Include="../src/Workspace.h" />
-    <ClInclude Include="..\src\ErrorIds.h" />
-    <ClInclude Include="..\src\LangHashTable.h" />
-    <ClInclude Include="..\src\LLVM_Inc.h" />
-    <ClInclude Include="..\src\Math.h" />
-    <ClInclude Include="..\src\ModuleDepManager.h" />
-    <ClInclude Include="..\src\FetchModuleFileSystemJob.h" />
-    <ClInclude Include="..\src\PrepCompilerMsgJob.h" />
-    <ClInclude Include="..\src\Profiler.h" />
-    <ClInclude Include="..\src\RaceCondition.h" />
-    <ClInclude Include="..\src\Mutex.h" />
-    <ClInclude Include="..\src\TypeMatch.h" />
-    <ClInclude Include="..\src\Vector.h" />
-    <ClInclude Include="..\src\Report.h" />
-    <ClInclude Include="..\src\SaveGenJob.h" />
-    <ClInclude Include="..\src\SCBE_X64.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="../src/Allocator.cpp" />
-    <ClCompile Include="../src/Assert.cpp" />
-    <ClCompile Include="../src/Ast.cpp" />
-    <ClCompile Include="../src/AstNode.cpp" />
-    <ClCompile Include="../src/AstOutput.cpp" />
-    <ClCompile Include="../src/Attribute.cpp" />
-    <ClCompile Include="../src/Backend.cpp" />
-    <ClCompile Include="..\src\AstNodeSpecifics.cpp" />
-    <ClCompile Include="..\src\Ast_Convert.cpp" />
-    <ClCompile Include="..\src\Ast_Generate.cpp" />
-    <ClCompile Include="..\src\Ast_New.cpp" />
-    <ClCompile Include="..\src\LLVM_Call.cpp" />
-    <ClCompile Include="..\src\LLVM_Data.cpp" />
-    <ClCompile Include="..\src\LLVM_Debug.cpp" />
-    <ClCompile Include="..\src\LLVM_Emit.cpp" />
-    <ClCompile Include="..\src\LLVM_Function.cpp" />
-    <ClCompile Include="..\src\LLVM_Main.cpp" />
-    <ClCompile Include="../src/BackendLinker.cpp" />
-    <ClCompile Include="..\src\LLVM.cpp" />
-    <ClCompile Include="..\src\SCBE.cpp" />
-    <ClCompile Include="..\src\SCBE_Call.cpp" />
-    <ClCompile Include="..\src\SCBE_Coff.cpp" />
-    <ClCompile Include="..\src\SCBE_Data.cpp" />
-    <ClCompile Include="..\src\SCBE_Debug.cpp" />
-    <ClCompile Include="..\src\BackendFunctionBodyJob.cpp" />
-    <ClCompile Include="..\src\SCBE_Emit.cpp" />
-    <ClCompile Include="..\src\SCBE_Function.cpp" />
-    <ClCompile Include="..\src\SCBE_SaveObjJob.cpp" />
-    <ClCompile Include="..\src\SCBE_Main.cpp" />
-    <ClCompile Include="../src/ByteCode.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Break.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Display.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Frame.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Print.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Set.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Trace.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp" />
-    <ClCompile Include="../src/ByteCodeGenJob.cpp" />
-    <ClCompile Include="../src/ByteCodeOptimizer.cpp" />
-    <ClCompile Include="../src/ByteCodeOptimizerJob.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenContext.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_AffectOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_BinaryOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Block.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Cast.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_CompareOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Emit.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Err.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Expression.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Function.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Identifier.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Property.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Ref.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Registers.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Safety.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Struct.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_UnaryOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGen_Var.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_ReduceX2.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Const.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_DeadCode.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_DeadStore.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Dup.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Imm.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Jumps.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Reduce.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp" />
-    <ClCompile Include="../src/CompilerItf.cpp" />
-    <ClCompile Include="..\src\LLVM_Setup.cpp" />
-    <ClCompile Include="../src/ModuleManager.cpp" />
-    <ClCompile Include="../src/ByteCodeRun.cpp" />
-    <ClCompile Include="../src/ByteCodeRunContext.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp" />
-    <ClCompile Include="..\src\ByteCodeRun_FFI.cpp" />
-    <ClCompile Include="../src/DependentJobs.cpp" />
-    <ClCompile Include="../src/CommandLine.cpp" />
-    <ClCompile Include="../src/CommandLineParser.cpp" />
-    <ClCompile Include="../src/Concat.cpp">
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">false</ShowIncludes>
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">false</ShowIncludes>
-    </ClCompile>
-    <ClCompile Include="../src/ByteCodeStack.cpp" />
-    <ClCompile Include="../src/EnumerateModuleJob.cpp" />
-    <ClCompile Include="../src/Job.cpp" />
-    <ClCompile Include="../src/Context.cpp" />
-    <ClCompile Include="../src/DataSegment.cpp" />
-    <ClCompile Include="../src/Diagnostic.cpp" />
-    <ClCompile Include="../src/Generic.cpp" />
-    <ClCompile Include="../src/JobThread.cpp" />
-    <ClCompile Include="../src/LanguageSpec.cpp" />
-    <ClCompile Include="../src/Module.cpp" />
-    <ClCompile Include="../src/ModuleBuildJob.cpp" />
-    <ClCompile Include="../src/ModuleGenOutputJob.cpp" />
-    <ClCompile Include="../src/ModuleExportJob.cpp" />
-    <ClCompile Include="../src/ModuleOutputJob.cpp" />
-    <ClCompile Include="../src/ModulePrepOutputJob.cpp" />
-    <ClCompile Include="../src/ModuleSaveExportJob.cpp" />
-    <ClCompile Include="../src/ModuleSemanticJob.cpp" />
-    <ClCompile Include="../src/ModuleRunJob.cpp" />
-    <ClCompile Include="../src/OsWin32.cpp" />
-    <ClCompile Include="..\src\ByteCodeRun_Math.cpp" />
-    <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
-    <ClCompile Include="..\src\CallConv.cpp" />
-    <ClCompile Include="..\src\ComputedValue.cpp" />
-    <ClCompile Include="..\src\SCBE_CodeView.cpp" />
-    <ClCompile Include="..\src\SCBE_CPU.cpp" />
-    <ClCompile Include="..\src\ErrorContext.cpp" />
-    <ClCompile Include="..\src\ErrorIds.cpp" />
-    <ClCompile Include="..\src\GenDoc.cpp" />
-    <ClCompile Include="..\src\GenDoc_Api.cpp" />
-    <ClCompile Include="..\src\GenDoc_Examples.cpp" />
-    <ClCompile Include="..\src\GenDoc_Pages.cpp" />
-    <ClCompile Include="..\src\Generic_Deduce.cpp" />
-    <ClCompile Include="..\src\Generic_Function.cpp" />
-    <ClCompile Include="..\src\Generic_Replace.cpp" />
-    <ClCompile Include="..\src\Generic_Struct.cpp" />
-    <ClCompile Include="..\src\JobGroup.cpp" />
-    <ClCompile Include="..\src\LoadSourceFileJob.cpp" />
-    <ClCompile Include="..\src\mimalloc\static.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\src\ModuleGenDocJob.cpp" />
-    <ClCompile Include="..\src\Module_CompilerMsg.cpp" />
-    <ClCompile Include="..\src\Module_Run.cpp" />
-    <ClCompile Include="..\src\Naming.cpp" />
-    <ClCompile Include="../src/Scope.cpp" />
-    <ClCompile Include="..\src\Parser.cpp" />
-    <ClCompile Include="..\src\Parser_Attribute.cpp" />
-    <ClCompile Include="..\src\Parser_Block.cpp" />
-    <ClCompile Include="..\src\Parser_Compiler.cpp" />
-    <ClCompile Include="..\src\Parser_Declaration.cpp" />
-    <ClCompile Include="..\src\Parser_Enum.cpp" />
-    <ClCompile Include="..\src\Parser_Expression.cpp" />
-    <ClCompile Include="..\src\Parser_Function.cpp" />
-    <ClCompile Include="..\src\Parser_Identifier.cpp" />
-    <ClCompile Include="..\src\Parser_Struct.cpp" />
-    <ClCompile Include="..\src\Parser_Type.cpp" />
-    <ClCompile Include="..\src\Parser_Var.cpp" />
-    <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />
-    <ClCompile Include="..\src\Profiler.cpp" />
-    <ClCompile Include="..\src\Report.cpp" />
-    <ClCompile Include="..\src\SaveGenJob.cpp" />
-    <ClCompile Include="../src/SemanticJob.cpp" />
-    <ClCompile Include="..\src\Semantic.cpp" />
-    <ClCompile Include="..\src\SemanticContext.cpp" />
-    <ClCompile Include="..\src\SemanticError.cpp" />
-    <ClCompile Include="..\src\SemanticError_Ambiguous.cpp" />
-    <ClCompile Include="..\src\SemanticError_Match.cpp" />
-    <ClCompile Include="..\src\SemanticError_Diag.cpp" />
-    <ClCompile Include="..\src\SemanticError_Find.cpp" />
-    <ClCompile Include="..\src\SemanticError_Unknown.cpp" />
-    <ClCompile Include="..\src\Semantic_Access.cpp" />
-    <ClCompile Include="..\src\Semantic_AffectExpression.cpp" />
-    <ClCompile Include="..\src\Semantic_Attribute.cpp" />
-    <ClCompile Include="..\src\Semantic_BinaryExpression.cpp" />
-    <ClCompile Include="..\src\Semantic_Block.cpp" />
-    <ClCompile Include="..\src\Semantic_Collect.cpp" />
-    <ClCompile Include="..\src\Semantic_CompareExpression.cpp" />
-    <ClCompile Include="..\src\Semantic_Compiler.cpp" />
-    <ClCompile Include="..\src\Semantic_Declaration.cpp" />
-    <ClCompile Include="..\src\Semantic_Enum.cpp" />
-    <ClCompile Include="..\src\Semantic_Expression.cpp" />
-    <ClCompile Include="..\src\Semantic_Function.cpp" />
-    <ClCompile Include="..\src\Semantic_Identifier.cpp" />
-    <ClCompile Include="..\src\Semantic_Identifier_Filter.cpp" />
-    <ClCompile Include="..\src\Semantic_Identifier_Match.cpp" />
-    <ClCompile Include="..\src\Semantic_Identifier_Ufcs.cpp" />
-    <ClCompile Include="..\src\Semantic_Intrinsic.cpp" />
-    <ClCompile Include="..\src\Semantic_Literal.cpp" />
-    <ClCompile Include="..\src\Semantic_UserOp.cpp" />
-    <ClCompile Include="..\src\Semantic_Ref.cpp" />
-    <ClCompile Include="..\src\Semantic_Scope.cpp" />
-    <ClCompile Include="..\src\Semantic_Struct.cpp" />
-    <ClCompile Include="..\src\Semantic_TryCatch.cpp" />
-    <ClCompile Include="..\src\Semantic_Type.cpp" />
-    <ClCompile Include="..\src\Semantic_UnaryExpression.cpp" />
-    <ClCompile Include="..\src\Semantic_Var.cpp" />
-    <ClCompile Include="..\src\Semantic_Wait.cpp" />
-    <ClCompile Include="..\src\SemanticError_Warn.cpp" />
-    <ClCompile Include="..\src\Statistics.cpp" />
-    <ClCompile Include="..\src\ScopeSwag.cpp" />
-    <ClCompile Include="../src/SymTable.cpp" />
-    <ClCompile Include="..\src\Symbol.cpp" />
-    <ClCompile Include="..\src\SymTableHash.cpp" />
-    <ClCompile Include="..\src\SyntaxColor.cpp" />
-    <ClCompile Include="..\src\Tokenizer_Comment.cpp" />
-    <ClCompile Include="..\src\Tokenizer_Identifier.cpp" />
-    <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp" />
-    <ClCompile Include="../src/Log.cpp" />
-    <ClCompile Include="../src/pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="../src/SyntaxJob.cpp" />
-    <ClCompile Include="../src/SourceFile.cpp" />
-    <ClCompile Include="..\src\ByteCode_Print.cpp" />
-    <ClCompile Include="..\src\Help.cpp" />
-    <ClCompile Include="..\src\Main.cpp" />
-    <ClCompile Include="../src/ThreadManager.cpp" />
-    <ClCompile Include="../src/Tokenizer.cpp" />
-    <ClCompile Include="..\src\Tokenizer_StringLiteral.cpp" />
-    <ClCompile Include="..\src\Tokenizer_Symbol.cpp" />
-    <ClCompile Include="../src/TypeInfo.cpp" />
-    <ClCompile Include="..\src\TypeInfoSpecifics.cpp" />
-    <ClCompile Include="../src/TypeManager.cpp" />
-    <ClCompile Include="..\src\TypeManager_Cast.cpp" />
-    <ClCompile Include="..\src\TypeGen.cpp" />
-    <ClCompile Include="..\src\TypeGenStructJob.cpp" />
-    <ClCompile Include="../src/Utf8.cpp" />
-    <ClCompile Include="../src/Workspace.cpp" />
-    <ClCompile Include="..\src\ByteCodeDebugger.cpp" />
-    <ClCompile Include="..\src\ModuleDepManager.cpp" />
-    <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp" />
-    <ClCompile Include="..\src\RaceCondition.cpp" />
-    <ClCompile Include="..\src\TypeManager_Concrete.cpp" />
-    <ClCompile Include="..\src\TypeManager_Error.cpp" />
-    <ClCompile Include="..\src\TypeManager_MakeCompatible.cpp" />
-    <ClCompile Include="..\src\TypeManager_Promote.cpp" />
-    <ClCompile Include="..\src\TypeManager_Try.cpp" />
-    <ClCompile Include="..\src\TypeMatch.cpp" />
-    <ClCompile Include="..\src\Workspace_Build.cpp" />
-    <ClCompile Include="..\src\Workspace_Clean.cpp" />
-    <ClCompile Include="..\src\Workspace_New.cpp" />
-    <ClCompile Include="..\src\Workspace_Script.cpp" />
-    <ClCompile Include="..\src\Workspace_Tags.cpp" />
-    <ClCompile Include="..\src\SCBE_X64.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\FileJob.cpp" />
-    <ClInclude Include="..\src\FileJob.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="swag.natvis" />
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+    <ItemGroup Label="ProjectConfigurations">
+        <ProjectConfiguration Include="Debug|x64">
+            <Configuration>Debug</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="ReleaseDevMode|x64">
+            <Configuration>ReleaseDevMode</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="ReleaseStats|x64">
+            <Configuration>ReleaseStats</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|x64">
+            <Configuration>Release</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+    </ItemGroup>
+    <PropertyGroup Label="Globals">
+        <VCProjectVersion>15.0</VCProjectVersion>
+        <ProjectGuid>{6A603E27-6A0D-4A7F-9E77-EA7912DE76B2}</ProjectGuid>
+        <Keyword>Win32Proj</Keyword>
+        <RootNamespace>Swag</RootNamespace>
+        <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+        <ConfigurationType>Application</ConfigurationType>
+        <UseDebugLibraries>true</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+        <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+        <ConfigurationType>Application</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+        <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'" Label="Configuration">
+        <ConfigurationType>Application</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>ClangCL</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+        <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'" Label="Configuration">
+        <ConfigurationType>Application</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+        <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+    <ImportGroup Label="ExtensionSettings">
+    </ImportGroup>
+    <ImportGroup Label="Shared">
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'" Label="PropertySheets">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'" Label="PropertySheets">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <PropertyGroup Label="UserMacros"/>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <LinkIncremental>true</LinkIncremental>
+        <OutDir>..\bin\</OutDir>
+        <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
+        <TargetName>swag_debug</TargetName>
+        <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <LinkIncremental>false</LinkIncremental>
+        <OutDir>..\bin\</OutDir>
+        <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
+        <TargetName>swag</TargetName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">
+        <LinkIncremental>false</LinkIncremental>
+        <OutDir>..\bin\</OutDir>
+        <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
+        <TargetName>swag_stats</TargetName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">
+        <LinkIncremental>false</LinkIncremental>
+        <OutDir>..\bin\</OutDir>
+        <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
+        <TargetName>swag_devmode</TargetName>
+    </PropertyGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <ClCompile>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <WarningLevel>Level4</WarningLevel>
+            <Optimization>Disabled</Optimization>
+            <SDLCheck>false</SDLCheck>
+            <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_DEBUG;SWAG_DEV_MODE;SWAG_STATS</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+            <MultiProcessorCompilation>true</MultiProcessorCompilation>
+            <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+            <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
+            <SupportJustMyCode>false</SupportJustMyCode>
+            <AdditionalOptions>/MP6 %(AdditionalOptions)</AdditionalOptions>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <Profile>false</Profile>
+            <AdditionalLibraryDirectories>../llvm/build/debug/lib;../bin</AdditionalLibraryDirectories>
+            <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <ClCompile>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <WarningLevel>Level4</WarningLevel>
+            <Optimization>MaxSpeed</Optimization>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>false</SDLCheck>
+            <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+            <MultiProcessorCompilation>true</MultiProcessorCompilation>
+            <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+            <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
+            <AdditionalOptions>/MP6 %(AdditionalOptions)</AdditionalOptions>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <EnableCOMDATFolding>false</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <Profile>false</Profile>
+            <AdditionalLibraryDirectories>../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
+            <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">
+        <ClCompile>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <WarningLevel>Level4</WarningLevel>
+            <Optimization>MaxSpeed</Optimization>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>false</SDLCheck>
+            <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_STATS</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+            <MultiProcessorCompilation>true</MultiProcessorCompilation>
+            <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+            <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <EnableCOMDATFolding>false</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <Profile>false</Profile>
+            <AdditionalLibraryDirectories>../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
+            <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">
+        <ClCompile>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <WarningLevel>Level4</WarningLevel>
+            <Optimization>MaxSpeed</Optimization>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>false</SDLCheck>
+            <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SWAG_DEV_MODE;SWAG_STATS</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+            <MultiProcessorCompilation>false</MultiProcessorCompilation>
+            <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+            <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;../llvm/llvm/include;../llvm/build/include;../llvm/lld/include</AdditionalIncludeDirectories>
+            <AdditionalOptions>/MP6 %(AdditionalOptions)</AdditionalOptions>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <EnableCOMDATFolding>false</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <Profile>false</Profile>
+            <AdditionalLibraryDirectories>../llvm/build/release/lib;../llvm/build/release/lib;../bin</AdditionalLibraryDirectories>
+            <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemGroup>
+        <ClInclude Include="../src/Allocator.h"/>
+        <ClInclude Include="../src/Assert.h"/>
+        <ClInclude Include="../src/Ast.h"/>
+        <ClInclude Include="..\src\AstFlags.h"/>
+        <ClInclude Include="../src/AstNode.h"/>
+        <ClInclude Include="../src/Attribute.h"/>
+        <ClInclude Include="../src/Backend.h"/>
+        <ClInclude Include="..\src\AstOutput.h"/>
+        <ClInclude Include="..\src\BackendFunctionBodyJob.h"/>
+        <ClInclude Include="..\src\ByteCode_Math.h"/>
+        <ClInclude Include="..\src\LLVM_Debug.h"/>
+        <ClInclude Include="..\src\LLVM_Macros.h"/>
+        <ClInclude Include="../src/BackendLinker.h"/>
+        <ClInclude Include="..\src\LLVM.h"/>
+        <ClInclude Include="..\src\SCBE.h"/>
+        <ClInclude Include="..\src\SCBE_Coff.h"/>
+        <ClInclude Include="..\src\SCBE_Debug.h"/>
+        <ClInclude Include="..\src\SCBE_Macros.h"/>
+        <ClInclude Include="..\src\SCBE_SaveObjJob.h"/>
+        <ClInclude Include="..\src\BackendParameters.h"/>
+        <ClInclude Include="../src/ByteCode.h"/>
+        <ClInclude Include="../src/ByteCodeGenJob.h"/>
+        <ClInclude Include="../src/ByteCodeOptContext.h"/>
+        <ClInclude Include="../src/ByteCodeOptimizer.h"/>
+        <ClInclude Include="../src/ByteCodeOptimizerJob.h"/>
+        <ClInclude Include="../src/CompilerItf.h"/>
+        <ClInclude Include="..\src\LLVM_Setup.h"/>
+        <ClInclude Include="../src/ModuleManager.h"/>
+        <ClInclude Include="../src/ByteCodeOp.h"/>
+        <ClInclude Include="../src/ByteCodeOpList.h"/>
+        <ClInclude Include="../src/ByteCodeRun.h"/>
+        <ClInclude Include="../src/ByteCodeRunContext.h"/>
+        <ClInclude Include="../src/CommandLine.h"/>
+        <ClInclude Include="../src/CommandLineParser.h"/>
+        <ClInclude Include="../src/Concat.h"/>
+        <ClInclude Include="../src/Context.h"/>
+        <ClInclude Include="../src/DataSegment.h"/>
+        <ClInclude Include="../src/DependentJobs.h"/>
+        <ClInclude Include="../src/Diagnostic.h"/>
+        <ClInclude Include="../src/ByteCodeStack.h"/>
+        <ClInclude Include="../src/EnumerateModuleJob.h"/>
+        <ClInclude Include="../src/Generic.h"/>
+        <ClInclude Include="../src/ModuleBuildJob.h"/>
+        <ClInclude Include="../src/ModuleExportJob.h"/>
+        <ClInclude Include="../src/ModulePrepOutputJob.h"/>
+        <ClInclude Include="../src/ModuleRunJob.h"/>
+        <ClInclude Include="../src/ModuleSaveExportJob.h"/>
+        <ClInclude Include="../src/Os.h"/>
+        <ClInclude Include="../src/ModuleGenOutputJob.h"/>
+        <ClInclude Include="../src/ModuleOutputJob.h"/>
+        <ClInclude Include="..\src\ByteCodeDebugger.h"/>
+        <ClInclude Include="..\src\ByteCodeGen.h"/>
+        <ClInclude Include="..\src\ByteCodeGenContext.h"/>
+        <ClInclude Include="..\src\ByteCodeInstruction.h"/>
+        <ClInclude Include="..\src\CallConv.h"/>
+        <ClInclude Include="..\src\ComputedValue.h"/>
+        <ClInclude Include="..\src\SCBE_CodeView.h"/>
+        <ClInclude Include="..\src\SCBE_CPU.h"/>
+        <ClInclude Include="..\src\ErrorContext.h"/>
+        <ClInclude Include="..\src\ErrorList.h"/>
+        <ClInclude Include="..\src\Crc32.h"/>
+        <ClInclude Include="..\src\GenDoc.h"/>
+        <ClInclude Include="..\src\JobGroup.h"/>
+        <ClInclude Include="..\src\LoadSourceFileJob.h"/>
+        <ClInclude Include="..\src\Map.h"/>
+        <ClInclude Include="..\src\MapRegTo.h"/>
+        <ClInclude Include="..\src\ModuleGenDocJob.h"/>
+        <ClInclude Include="..\src\Naming.h"/>
+        <ClInclude Include="../src/Runtime.h"/>
+        <ClInclude Include="../src/Scope.h"/>
+        <ClInclude Include="../src/Scoped.h"/>
+        <ClInclude Include="..\src\ScopeSwag.h"/>
+        <ClInclude Include="../src/Timer.h"/>
+        <ClInclude Include="../src/TokenIds.h"/>
+        <ClInclude Include="../src/TypeInfo.h"/>
+        <ClInclude Include="../src/Module.h"/>
+        <ClInclude Include="../src/ModuleSemanticJob.h"/>
+        <ClInclude Include="../src/Register.h"/>
+        <ClInclude Include="../src/Job.h"/>
+        <ClInclude Include="../src/JobThread.h"/>
+        <ClInclude Include="../src/LanguageSpec.h"/>
+        <ClInclude Include="../src/Log.h"/>
+        <ClInclude Include="../src/pch.h"/>
+        <ClInclude Include="../src/SemanticJob.h"/>
+        <ClInclude Include="../src/SymTable.h"/>
+        <ClInclude Include="../src/SyntaxJob.h"/>
+        <ClInclude Include="../src/SourceFile.h"/>
+        <ClInclude Include="..\src\Semantic.h"/>
+        <ClInclude Include="..\src\SemanticContext.h"/>
+        <ClInclude Include="..\src\SemanticError.h"/>
+        <ClInclude Include="..\src\Statistics.h"/>
+        <ClInclude Include="../src/ThreadManager.h"/>
+        <ClInclude Include="../src/Tokenizer.h"/>
+        <ClInclude Include="../src/TypeManager.h"/>
+        <ClInclude Include="..\src\Parser.h"/>
+        <ClInclude Include="..\src\Path.h"/>
+        <ClInclude Include="..\src\Set.h"/>
+        <ClInclude Include="..\src\Symbol.h"/>
+        <ClInclude Include="..\src\SymTableHash.h"/>
+        <ClInclude Include="..\src\SyntaxColor.h"/>
+        <ClInclude Include="..\src\TypeGen.h"/>
+        <ClInclude Include="..\src\TypeGenStructJob.h"/>
+        <ClInclude Include="../src/Utf8.h"/>
+        <ClInclude Include="../src/VectorNative.h"/>
+        <ClInclude Include="../src/Version.h"/>
+        <ClInclude Include="../src/Workspace.h"/>
+        <ClInclude Include="..\src\ErrorIds.h"/>
+        <ClInclude Include="..\src\LangHashTable.h"/>
+        <ClInclude Include="..\src\LLVM_Inc.h"/>
+        <ClInclude Include="..\src\Math.h"/>
+        <ClInclude Include="..\src\ModuleDepManager.h"/>
+        <ClInclude Include="..\src\FetchModuleFileSystemJob.h"/>
+        <ClInclude Include="..\src\PrepCompilerMsgJob.h"/>
+        <ClInclude Include="..\src\Profiler.h"/>
+        <ClInclude Include="..\src\RaceCondition.h"/>
+        <ClInclude Include="..\src\Mutex.h"/>
+        <ClInclude Include="..\src\TypeMatch.h"/>
+        <ClInclude Include="..\src\Vector.h"/>
+        <ClInclude Include="..\src\Report.h"/>
+        <ClInclude Include="..\src\SaveGenJob.h"/>
+        <ClInclude Include="..\src\SCBE_X64.h"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="../src/Allocator.cpp"/>
+        <ClCompile Include="../src/Assert.cpp"/>
+        <ClCompile Include="../src/Ast.cpp"/>
+        <ClCompile Include="../src/AstNode.cpp"/>
+        <ClCompile Include="../src/AstOutput.cpp"/>
+        <ClCompile Include="../src/Attribute.cpp"/>
+        <ClCompile Include="../src/Backend.cpp"/>
+        <ClCompile Include="..\src\AstNodeSpecifics.cpp"/>
+        <ClCompile Include="..\src\Ast_Convert.cpp"/>
+        <ClCompile Include="..\src\Ast_Generate.cpp"/>
+        <ClCompile Include="..\src\Ast_New.cpp"/>
+        <ClCompile Include="..\src\LLVM_Call.cpp"/>
+        <ClCompile Include="..\src\LLVM_Data.cpp"/>
+        <ClCompile Include="..\src\LLVM_Debug.cpp"/>
+        <ClCompile Include="..\src\LLVM_Emit.cpp"/>
+        <ClCompile Include="..\src\LLVM_Function.cpp"/>
+        <ClCompile Include="..\src\LLVM_Main.cpp"/>
+        <ClCompile Include="../src/BackendLinker.cpp"/>
+        <ClCompile Include="..\src\LLVM.cpp"/>
+        <ClCompile Include="..\src\SCBE.cpp"/>
+        <ClCompile Include="..\src\SCBE_Call.cpp"/>
+        <ClCompile Include="..\src\SCBE_Coff.cpp"/>
+        <ClCompile Include="..\src\SCBE_Data.cpp"/>
+        <ClCompile Include="..\src\SCBE_Debug.cpp"/>
+        <ClCompile Include="..\src\BackendFunctionBodyJob.cpp"/>
+        <ClCompile Include="..\src\SCBE_Emit.cpp"/>
+        <ClCompile Include="..\src\SCBE_Function.cpp"/>
+        <ClCompile Include="..\src\SCBE_SaveObjJob.cpp"/>
+        <ClCompile Include="..\src\SCBE_Main.cpp"/>
+        <ClCompile Include="../src/ByteCode.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Break.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Display.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Frame.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Print.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Set.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Trace.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp"/>
+        <ClCompile Include="../src/ByteCodeGenJob.cpp"/>
+        <ClCompile Include="../src/ByteCodeOptimizer.cpp"/>
+        <ClCompile Include="../src/ByteCodeOptimizerJob.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGenContext.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_AffectOp.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_BinaryOp.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Block.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Cast.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_CompareOp.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Emit.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Err.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Expression.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Function.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Identifier.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Property.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Ref.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Registers.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Safety.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Struct.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_UnaryOp.cpp"/>
+        <ClCompile Include="..\src\ByteCodeGen_Var.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_ReduceX2.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Const.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_DeadCode.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_DeadStore.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Dup.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Imm.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Jumps.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Reduce.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp"/>
+        <ClCompile Include="../src/CompilerItf.cpp"/>
+        <ClCompile Include="..\src\LLVM_Setup.cpp"/>
+        <ClCompile Include="../src/ModuleManager.cpp"/>
+        <ClCompile Include="../src/ByteCodeRun.cpp"/>
+        <ClCompile Include="../src/ByteCodeRunContext.cpp"/>
+        <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp"/>
+        <ClCompile Include="..\src\ByteCodeRun_FFI.cpp"/>
+        <ClCompile Include="../src/DependentJobs.cpp"/>
+        <ClCompile Include="../src/CommandLine.cpp"/>
+        <ClCompile Include="../src/CommandLineParser.cpp"/>
+        <ClCompile Include="../src/Concat.cpp">
+            <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
+            <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">false</ShowIncludes>
+            <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">false</ShowIncludes>
+        </ClCompile>
+        <ClCompile Include="../src/ByteCodeStack.cpp"/>
+        <ClCompile Include="../src/EnumerateModuleJob.cpp"/>
+        <ClCompile Include="../src/Job.cpp"/>
+        <ClCompile Include="../src/Context.cpp"/>
+        <ClCompile Include="../src/DataSegment.cpp"/>
+        <ClCompile Include="../src/Diagnostic.cpp"/>
+        <ClCompile Include="../src/Generic.cpp"/>
+        <ClCompile Include="../src/JobThread.cpp"/>
+        <ClCompile Include="../src/LanguageSpec.cpp"/>
+        <ClCompile Include="../src/Module.cpp"/>
+        <ClCompile Include="../src/ModuleBuildJob.cpp"/>
+        <ClCompile Include="../src/ModuleGenOutputJob.cpp"/>
+        <ClCompile Include="../src/ModuleExportJob.cpp"/>
+        <ClCompile Include="../src/ModuleOutputJob.cpp"/>
+        <ClCompile Include="../src/ModulePrepOutputJob.cpp"/>
+        <ClCompile Include="../src/ModuleSaveExportJob.cpp"/>
+        <ClCompile Include="../src/ModuleSemanticJob.cpp"/>
+        <ClCompile Include="../src/ModuleRunJob.cpp"/>
+        <ClCompile Include="../src/OsWin32.cpp"/>
+        <ClCompile Include="..\src\ByteCodeRun_Math.cpp"/>
+        <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp"/>
+        <ClCompile Include="..\src\CallConv.cpp"/>
+        <ClCompile Include="..\src\ComputedValue.cpp"/>
+        <ClCompile Include="..\src\SCBE_CodeView.cpp"/>
+        <ClCompile Include="..\src\SCBE_CPU.cpp"/>
+        <ClCompile Include="..\src\ErrorContext.cpp"/>
+        <ClCompile Include="..\src\ErrorIds.cpp"/>
+        <ClCompile Include="..\src\GenDoc.cpp"/>
+        <ClCompile Include="..\src\GenDoc_Api.cpp"/>
+        <ClCompile Include="..\src\GenDoc_Examples.cpp"/>
+        <ClCompile Include="..\src\GenDoc_Pages.cpp"/>
+        <ClCompile Include="..\src\Generic_Deduce.cpp"/>
+        <ClCompile Include="..\src\Generic_Function.cpp"/>
+        <ClCompile Include="..\src\Generic_Replace.cpp"/>
+        <ClCompile Include="..\src\Generic_Struct.cpp"/>
+        <ClCompile Include="..\src\JobGroup.cpp"/>
+        <ClCompile Include="..\src\LoadSourceFileJob.cpp"/>
+        <ClCompile Include="..\src\mimalloc\static.c">
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">NotUsing</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">NotUsing</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+        </ClCompile>
+        <ClCompile Include="..\src\ModuleGenDocJob.cpp"/>
+        <ClCompile Include="..\src\Module_CompilerMsg.cpp"/>
+        <ClCompile Include="..\src\Module_Run.cpp"/>
+        <ClCompile Include="..\src\Naming.cpp"/>
+        <ClCompile Include="../src/Scope.cpp"/>
+        <ClCompile Include="..\src\Parser.cpp"/>
+        <ClCompile Include="..\src\Parser_Attribute.cpp"/>
+        <ClCompile Include="..\src\Parser_Block.cpp"/>
+        <ClCompile Include="..\src\Parser_Compiler.cpp"/>
+        <ClCompile Include="..\src\Parser_Declaration.cpp"/>
+        <ClCompile Include="..\src\Parser_Enum.cpp"/>
+        <ClCompile Include="..\src\Parser_Expression.cpp"/>
+        <ClCompile Include="..\src\Parser_Function.cpp"/>
+        <ClCompile Include="..\src\Parser_Identifier.cpp"/>
+        <ClCompile Include="..\src\Parser_Struct.cpp"/>
+        <ClCompile Include="..\src\Parser_Type.cpp"/>
+        <ClCompile Include="..\src\Parser_Var.cpp"/>
+        <ClCompile Include="..\src\PrepCompilerMsgJob.cpp"/>
+        <ClCompile Include="..\src\Profiler.cpp"/>
+        <ClCompile Include="..\src\Report.cpp"/>
+        <ClCompile Include="..\src\SaveGenJob.cpp"/>
+        <ClCompile Include="../src/SemanticJob.cpp"/>
+        <ClCompile Include="..\src\Semantic.cpp"/>
+        <ClCompile Include="..\src\SemanticContext.cpp"/>
+        <ClCompile Include="..\src\SemanticError.cpp"/>
+        <ClCompile Include="..\src\SemanticError_Ambiguous.cpp"/>
+        <ClCompile Include="..\src\SemanticError_Match.cpp"/>
+        <ClCompile Include="..\src\SemanticError_Diag.cpp"/>
+        <ClCompile Include="..\src\SemanticError_Find.cpp"/>
+        <ClCompile Include="..\src\SemanticError_Unknown.cpp"/>
+        <ClCompile Include="..\src\Semantic_Access.cpp"/>
+        <ClCompile Include="..\src\Semantic_AffectExpression.cpp"/>
+        <ClCompile Include="..\src\Semantic_Attribute.cpp"/>
+        <ClCompile Include="..\src\Semantic_BinaryExpression.cpp"/>
+        <ClCompile Include="..\src\Semantic_Block.cpp"/>
+        <ClCompile Include="..\src\Semantic_Collect.cpp"/>
+        <ClCompile Include="..\src\Semantic_CompareExpression.cpp"/>
+        <ClCompile Include="..\src\Semantic_Compiler.cpp"/>
+        <ClCompile Include="..\src\Semantic_Declaration.cpp"/>
+        <ClCompile Include="..\src\Semantic_Enum.cpp"/>
+        <ClCompile Include="..\src\Semantic_Expression.cpp"/>
+        <ClCompile Include="..\src\Semantic_Function.cpp"/>
+        <ClCompile Include="..\src\Semantic_Identifier.cpp"/>
+        <ClCompile Include="..\src\Semantic_Identifier_Filter.cpp"/>
+        <ClCompile Include="..\src\Semantic_Identifier_Match.cpp"/>
+        <ClCompile Include="..\src\Semantic_Identifier_Ufcs.cpp"/>
+        <ClCompile Include="..\src\Semantic_Intrinsic.cpp"/>
+        <ClCompile Include="..\src\Semantic_Literal.cpp"/>
+        <ClCompile Include="..\src\Semantic_UserOp.cpp"/>
+        <ClCompile Include="..\src\Semantic_Ref.cpp"/>
+        <ClCompile Include="..\src\Semantic_Scope.cpp"/>
+        <ClCompile Include="..\src\Semantic_Struct.cpp"/>
+        <ClCompile Include="..\src\Semantic_TryCatch.cpp"/>
+        <ClCompile Include="..\src\Semantic_Type.cpp"/>
+        <ClCompile Include="..\src\Semantic_UnaryExpression.cpp"/>
+        <ClCompile Include="..\src\Semantic_Var.cpp"/>
+        <ClCompile Include="..\src\Semantic_Wait.cpp"/>
+        <ClCompile Include="..\src\SemanticError_Warn.cpp"/>
+        <ClCompile Include="..\src\Statistics.cpp"/>
+        <ClCompile Include="..\src\ScopeSwag.cpp"/>
+        <ClCompile Include="../src/SymTable.cpp"/>
+        <ClCompile Include="..\src\Symbol.cpp"/>
+        <ClCompile Include="..\src\SymTableHash.cpp"/>
+        <ClCompile Include="..\src\SyntaxColor.cpp"/>
+        <ClCompile Include="..\src\Tokenizer_Comment.cpp"/>
+        <ClCompile Include="..\src\Tokenizer_Identifier.cpp"/>
+        <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp"/>
+        <ClCompile Include="../src/Log.cpp"/>
+        <ClCompile Include="../src/pch.cpp">
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">Create</PrecompiledHeader>
+            <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">Create</PrecompiledHeader>
+        </ClCompile>
+        <ClCompile Include="../src/SyntaxJob.cpp"/>
+        <ClCompile Include="../src/SourceFile.cpp"/>
+        <ClCompile Include="..\src\ByteCode_Print.cpp"/>
+        <ClCompile Include="..\src\Help.cpp"/>
+        <ClCompile Include="..\src\Main.cpp"/>
+        <ClCompile Include="../src/ThreadManager.cpp"/>
+        <ClCompile Include="../src/Tokenizer.cpp"/>
+        <ClCompile Include="..\src\Tokenizer_StringLiteral.cpp"/>
+        <ClCompile Include="..\src\Tokenizer_Symbol.cpp"/>
+        <ClCompile Include="../src/TypeInfo.cpp"/>
+        <ClCompile Include="..\src\TypeInfoSpecifics.cpp"/>
+        <ClCompile Include="../src/TypeManager.cpp"/>
+        <ClCompile Include="..\src\TypeManager_Cast.cpp"/>
+        <ClCompile Include="..\src\TypeGen.cpp"/>
+        <ClCompile Include="..\src\TypeGenStructJob.cpp"/>
+        <ClCompile Include="../src/Utf8.cpp"/>
+        <ClCompile Include="../src/Workspace.cpp"/>
+        <ClCompile Include="..\src\ByteCodeDebugger.cpp"/>
+        <ClCompile Include="..\src\ModuleDepManager.cpp"/>
+        <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp"/>
+        <ClCompile Include="..\src\RaceCondition.cpp"/>
+        <ClCompile Include="..\src\TypeManager_Concrete.cpp"/>
+        <ClCompile Include="..\src\TypeManager_Error.cpp"/>
+        <ClCompile Include="..\src\TypeManager_MakeCompatible.cpp"/>
+        <ClCompile Include="..\src\TypeManager_Promote.cpp"/>
+        <ClCompile Include="..\src\TypeManager_Try.cpp"/>
+        <ClCompile Include="..\src\TypeMatch.cpp"/>
+        <ClCompile Include="..\src\Workspace_Build.cpp"/>
+        <ClCompile Include="..\src\Workspace_Clean.cpp"/>
+        <ClCompile Include="..\src\Workspace_New.cpp"/>
+        <ClCompile Include="..\src\Workspace_Script.cpp"/>
+        <ClCompile Include="..\src\Workspace_Tags.cpp"/>
+        <ClCompile Include="..\src\SCBE_X64.cpp"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ClCompile Include="..\src\FileJob.cpp"/>
+        <ClInclude Include="..\src\FileJob.h"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Natvis Include="swag.natvis"/>
+    </ItemGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+    <ImportGroup Label="ExtensionTargets">
+    </ImportGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ByteCode_Math.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeOptimizer.h"
+#include "ByteCode_Math.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
 

@@ -242,7 +242,7 @@ Utf8& Utf8::operator=(const Utf8& other)
         clear();
         append(other);
     }
-    
+
     return *this;
 }
 

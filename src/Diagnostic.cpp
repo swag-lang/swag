@@ -452,7 +452,7 @@ void Diagnostic::setColorRanges(DiagnosticLevel level) const
     }
 }
 
-void Diagnostic::alignRangeColumn(int &curColumn, int where, bool withCode) const
+void Diagnostic::alignRangeColumn(int& curColumn, int where, bool withCode) const
 {
     while (curColumn < where)
     {

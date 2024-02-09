@@ -104,12 +104,12 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
     if (cfgModule)
     {
         // :GetCfgFileParams
-        module->buildCfg                     = cfgModule->buildCfg;
-        module->buildParameters.foreignLibs  = cfgModule->buildParameters.foreignLibs;
+        module->buildCfg                    = cfgModule->buildCfg;
+        module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
         module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;
-        module->moduleDependencies           = cfgModule->moduleDependencies;
-        module->compilerLoads                = cfgModule->compilerLoads;
-        module->docComment                   = std::move(cfgModule->docComment);
+        module->moduleDependencies          = cfgModule->moduleDependencies;
+        module->compilerLoads               = cfgModule->compilerLoads;
+        module->docComment                  = std::move(cfgModule->docComment);
     }
 
     // Is this the module we want to build ?

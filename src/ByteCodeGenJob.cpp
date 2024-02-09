@@ -57,7 +57,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
                 SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
                 if (node->extByteCode()->bc->hasForeignFunctionCalls)
                     context.bc->hasForeignFunctionCalls = true;
-                for (auto const& fmn : node->extByteCode()->bc->hasForeignFunctionCallsModules)
+                for (const auto& fmn : node->extByteCode()->bc->hasForeignFunctionCallsModules)
                     context.bc->hasForeignFunctionCallsModules.insert(fmn);
             }
         }

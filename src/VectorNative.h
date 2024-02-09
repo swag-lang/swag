@@ -162,7 +162,7 @@ struct VectorNative
     void clear()
     {
         count = 0;
-    }    
+    }
 
     [[nodiscard]] T* begin()
     {
@@ -199,7 +199,7 @@ struct VectorNative
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
-    }    
+    }
 
     [[nodiscard]] const T& front() const
     {
@@ -298,9 +298,9 @@ struct VectorNative
 
     VectorNative& operator=(const VectorNative& other)
     {
-        if(&other == this)
+        if (&other == this)
             return *this;
-        
+
         count = (int) other.size();
         if (allocated < count)
             reserve(count, false);

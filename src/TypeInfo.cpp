@@ -126,7 +126,7 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
         computeScopedName(resName);
         resName += name;
         break;
-        
+
     default:
         break;
     }

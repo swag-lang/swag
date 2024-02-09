@@ -149,7 +149,7 @@ namespace
 
         default:
             // Should never happen, but it's better to not assert
-                concat.addU16(LF_UQUADWORD);
+            concat.addU16(LF_UQUADWORD);
             concat.addU64(val.reg.u64);
             break;
         }
@@ -174,7 +174,7 @@ namespace
                     concat.addU32(arg);
                 break;
 
-                // lfProc
+            // lfProc
             case LF_PROCEDURE:
                 concat.addU32(f->LF_Procedure.returnType);
                 concat.addU8(0);                         // calling convention
@@ -183,7 +183,7 @@ namespace
                 concat.addU32(f->LF_Procedure.argsType); // @argstype
                 break;
 
-                // lfMFunc
+            // lfMFunc
             case LF_MFUNCTION:
                 concat.addU32(f->LF_MFunction.returnType);
                 concat.addU32(f->LF_MFunction.structType);
@@ -195,14 +195,14 @@ namespace
                 concat.addU32(0);                        // thisAdjust
                 break;
 
-                // lfFuncId
+            // lfFuncId
             case LF_FUNC_ID:
                 concat.addU32(0);                 // ParentScope
                 concat.addU32(f->LF_FuncId.type); // @type
                 emitTruncatedString(pp, f->node->token.text);
                 break;
 
-                // lfMFuncId
+            // lfMFuncId
             case LF_MFUNC_ID:
                 concat.addU32(f->LF_MFuncId.parentType);
                 concat.addU32(f->LF_MFuncId.type);
@@ -246,7 +246,7 @@ namespace
                 }
                 break;
 
-                // https://llvm.org/docs/PDB/CodeViewTypes.html#lf-pointer-0x1002
+            // https://llvm.org/docs/PDB/CodeViewTypes.html#lf-pointer-0x1002
             case LF_POINTER:
             {
                 concat.addU32(f->LF_Pointer.pointeeType);
@@ -385,9 +385,9 @@ namespace
     }
 
     uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
-                                    Vector<uint32_t>&  arrFileNames,
-                                    Utf8&              stringTable,
-                                    SourceFile*        sourceFile)
+                             Vector<uint32_t>&  arrFileNames,
+                             Utf8&              stringTable,
+                             SourceFile*        sourceFile)
     {
         auto checkSymIndex = 0;
 
@@ -410,12 +410,12 @@ namespace
     }
 
     bool emitLines(SCBE_CPU&          pp,
-                          MapPath<uint32_t>& mapFileNames,
-                          Vector<uint32_t>&  arrFileNames,
-                          Utf8&              stringTable,
-                          Concat&            concat,
-                          const CPUFunction& f,
-                          size_t             idxDbgLines)
+                   MapPath<uint32_t>& mapFileNames,
+                   Vector<uint32_t>&  arrFileNames,
+                   Utf8&              stringTable,
+                   Concat&            concat,
+                   const CPUFunction& f,
+                   size_t             idxDbgLines)
     {
         const auto& dbgLines   = f.dbgLines[idxDbgLines];
         const auto  sourceFile = dbgLines.sourceFile;

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Module.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "Context.h"
@@ -6,7 +7,6 @@
 #include "LanguageSpec.h"
 #include "LLVM.h"
 #include "Log.h"
-#include "Module.h"
 #include "ModuleManager.h"
 #include "Parser.h"
 #include "Report.h"
@@ -409,8 +409,8 @@ void Module::buildTypesSlice()
         }
         else
         {
-            typedef uint8_t* (*funcCall)();
-            const auto         valPtr = ((funcCall) ptr)();
+            using funcCall = uint8_t* (*)();
+            const auto valPtr = ((funcCall) ptr)();
 
             moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
             moduleSlice[i].types.count  = *(uint64_t*) valPtr;
@@ -1155,7 +1155,7 @@ void Module::callPreMain()
         const auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
         if (!ptr)
             continue;
-        typedef void (*funcCall)(SwagProcessInfos*);
+        using funcCall = void(*)(SwagProcessInfos*);
         ((funcCall) ptr)(&processInfos);
     }
 }

@@ -335,7 +335,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     modu.setTargetTriple(targetTriple.c_str());
     std::string error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
-    if(!target)
+    if (!target)
         Report::internalError(buildParameters.module, FMT("the LLVM backend failed to create the target [[%s]]", targetTriple.c_str()));
 
     // Create target machine

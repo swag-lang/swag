@@ -193,10 +193,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             else if (oneMatch.solvedCastFlags[i] & CASTFLAG_RESULT_FROM_REF)
             {
                 setUnRef(nodeCall);
-                if(nodeCall->castedTypeInfo)
+                if (nodeCall->castedTypeInfo)
                 {
                     const auto fromCast = TypeManager::concreteType(nodeCall->castedTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-                    if(fromCast->isPointerRef())
+                    if (fromCast->isPointerRef())
                         nodeCall->castedTypeInfo = fromCast->getFinalType();
                 }
             }
@@ -237,7 +237,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     context->result = ContextResult::NewChilds;
                     return true;
                 }
-                
+
                 // We have a value, and we need a reference.
                 // Force to keep the address
                 if (front->kind == AstNodeKind::IdentifierRef)

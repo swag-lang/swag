@@ -722,8 +722,8 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         case AstNodeKind::CompilerIf:
                         case AstNodeKind::While:
                         {
-                            const Diagnostic diag{node, node->token,
-                                                  FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
+                            const auto       msg = FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext());
+                            const Diagnostic diag{node, node->token, msg};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
                         default:
@@ -952,9 +952,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // still running
         const auto job     = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
         const auto baseJob = (SemanticJob*) context->baseJob;
-        job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(),
-                                        baseJob->context.errCxtSteps.begin(),
-                                        baseJob->context.errCxtSteps.end());
+        job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(), baseJob->context.errCxtSteps.begin(), baseJob->context.errCxtSteps.end());
 
         // This comes from a generic instantiation. Add context
         if (oneMatch->oneOverload->overload->typeInfo->isFromGeneric())
@@ -974,9 +972,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // we will reevaluate it with a semanticAfterFct trick
         funcDecl->content->allocateExtension(ExtensionKind::Semantic);
         const auto sem = funcDecl->content->extSemantic();
-        SWAG_ASSERT(!sem->semanticAfterFct ||
-            sem->semanticAfterFct == Semantic::resolveFuncDeclAfterSI ||
-            sem->semanticAfterFct == Semantic::resolveScopedStmtAfter);
+        SWAG_ASSERT(!sem->semanticAfterFct || sem->semanticAfterFct == Semantic::resolveFuncDeclAfterSI || sem->semanticAfterFct == Semantic::resolveScopedStmtAfter);
         sem->semanticAfterFct = resolveFuncDeclAfterSI;
 
         g_ThreadMgr.addJob(job);

@@ -8,9 +8,9 @@ static constexpr uint32_t BCC_FLAG_FOR_DEBUGGER = 0x00000004;
 
 struct ByteCodeGenContext : JobContext  // NOLINT(cppcoreguidelines-special-member-functions)
 {
-    ByteCodeGenContext() = default;
+    ByteCodeGenContext()                                = default;
     ByteCodeGenContext(const ByteCodeGenContext& other) = default;
-    
+
     void release() const;
     void allocateTempCallParams();
 

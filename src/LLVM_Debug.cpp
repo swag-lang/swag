@@ -60,27 +60,27 @@ void LLVM_Debug::setup(LLVM* m, llvm::Module* modu)
 
     // string
     {
-        auto                    v1 = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
-        auto                    v2 = dbgBuilder->createMemberType(mainFile->getScope(), "sizeof", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, u64Ty);
+        auto                    v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto                    v2      = dbgBuilder->createMemberType(mainFile->getScope(), "sizeof", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, u64Ty);
         const llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
-        stringTy = dbgBuilder->createStructType(mainFile->getScope(), "string", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        stringTy                        = dbgBuilder->createStructType(mainFile->getScope(), "string", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 
     // interface
     {
-        auto                    v1 = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
-        auto                    v2 = dbgBuilder->createMemberType(mainFile->getScope(), "itable", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto                    v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto                    v2      = dbgBuilder->createMemberType(mainFile->getScope(), "itable", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         const llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
-        interfaceTy = dbgBuilder->createStructType(mainFile->getScope(), "interface", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        interfaceTy                     = dbgBuilder->createStructType(mainFile->getScope(), "interface", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 
     // any
     {
         const auto              ptrType = getPointerToType(g_Workspace->swagScope.regTypeInfo, mainFile);
-        auto                    v1 = dbgBuilder->createMemberType(mainFile->getScope(), "ptrvalue", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
-        auto                    v2 = dbgBuilder->createMemberType(mainFile->getScope(), "typeinfo", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrType);
+        auto                    v1      = dbgBuilder->createMemberType(mainFile->getScope(), "ptrvalue", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto                    v2      = dbgBuilder->createMemberType(mainFile->getScope(), "typeinfo", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrType);
         const llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
-        anyTy = dbgBuilder->createStructType(mainFile->getScope(), "any", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        anyTy                           = dbgBuilder->createStructType(mainFile->getScope(), "any", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 }
 

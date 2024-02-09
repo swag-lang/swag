@@ -124,7 +124,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         if (typeInfo->numRegisters() == 2)
         {
             transformResultToLinear2(context, node->resultRegisterRc);
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc[1], node->resultRegisterRc[0])->c.u64            = resolved->computedValue.storageOffset + 8;
+            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc[1], node->resultRegisterRc[0])->c.u64 = resolved->computedValue.storageOffset + 8;
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc[0], node->resultRegisterRc[0])->c.u64 = resolved->computedValue.storageOffset;
 
             identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;

@@ -261,7 +261,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             {
                 const Diagnostic diag{childFct, childFct->getTokenName(), FMT(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
                 const auto       note = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2],
-                                                         FMT(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                                                   FMT(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
                 const auto note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
                                                     FMT(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                 return context->report(diag, note, note1);
