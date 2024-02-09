@@ -377,7 +377,7 @@ void GenDoc::collectScopes(Scope* root)
 
     // If something is exported inside a namespace, then force the namespace to be exported too
     if (collect.size() != count && root->kind == ScopeKind::Namespace && !(root->owner->hasAttribute(ATTRIBUTE_PUBLIC)))
-        root->owner->attributeFlags |= ATTRIBUTE_PUBLIC;
+        root->owner->addAttribute(ATTRIBUTE_PUBLIC);
 
     if (!(root->flags & SCOPE_AUTO_GENERATED))
         collectNode(root->owner);

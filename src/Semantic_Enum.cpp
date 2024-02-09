@@ -127,7 +127,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     if (context->sourceFile->isBootstrapFile)
     {
         if (enumNode->token.text == g_LangSpec->name_AttributeUsage)
-            enumNode->attributeFlags |= ATTRIBUTE_ENUM_FLAGS;
+            enumNode->addAttribute(ATTRIBUTE_ENUM_FLAGS);
     }
 
     // By default, raw type is s32, except for flags and index

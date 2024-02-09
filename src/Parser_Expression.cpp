@@ -913,7 +913,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         if (mdfFlags & MODIFIER_OVERFLOW)
         {
             binaryNode->addSpecFlag(AstOp::SPECFLAG_OVERFLOW);
-            binaryNode->attributeFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
+            binaryNode->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
         }
 
         if (mdfFlags & MODIFIER_UP)
@@ -1074,7 +1074,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 
             AstNode* funcNode;
             SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
-            funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
+            funcNode->addAttribute(ATTRIBUTE_COMPILER);
 
             const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
             idRef->token.startLocation      = node->token.startLocation;

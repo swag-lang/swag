@@ -1021,7 +1021,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
         // Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
-            (arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL)) == (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL)))
+            arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL) == arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL))
         {
             arrayNode->typeInfo = arrayType;
             break;
@@ -1032,10 +1032,10 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->structFlatParams.clear();
         arrayNode->structFlatParams.push_back(arrayNode->access);
 
-        const uint16_t serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL);
-        AstNode*       child  = arrayNode->array;
+        const auto serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL);
+        AstNode*   child  = arrayNode->array;
         while (child->kind == AstNodeKind::ArrayPointerIndex &&
-               (child->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL)) == serial)
+               child->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL) == serial)
         {
             const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
             arrayNode->structFlatParams.push_front(arrayChild->access);

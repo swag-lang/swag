@@ -843,7 +843,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // Be default, a tuple is 'constexpr'
     // If one of the childs is not, then the attribute will be removed
     if (typeInfo->isTuple())
-        node->attributeFlags |= ATTRIBUTE_CONSTEXPR;
+        node->addAttribute(ATTRIBUTE_CONSTEXPR);
 
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;
@@ -947,7 +947,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
             // Remove attribute constexpr if necessary
             if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR)))
-                node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
+                node->removeAttribute(ATTRIBUTE_CONSTEXPR);
 
             // Var is a struct
             if (varTypeInfo->isStruct())

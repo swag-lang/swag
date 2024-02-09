@@ -210,8 +210,8 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
     if (!child->parent)
         return;
 
-    child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_MATCH_MASK;
-    child->attributeFlags |= child->parent->attributeFlags & ATTRIBUTE_OVERFLOW_MASK;
+    child->addAttribute(child->parent->attributeFlags & ATTRIBUTE_MATCH_MASK);
+    child->addAttribute(child->parent->attributeFlags & ATTRIBUTE_OVERFLOW_MASK);
     child->safetyOn |= child->parent->safetyOn;
     child->safetyOff |= child->parent->safetyOff;
 }
@@ -246,8 +246,8 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
     const auto safetyOn       = child->ownerFct->safetyOn;
     const auto safetyOff      = child->ownerFct->safetyOff;
 
-    child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
-    child->attributeFlags |= attributeFlags &ATTRIBUTE_PRINT_GEN_BC;
+    child->addAttribute(attributeFlags & ATTRIBUTE_PRINT_BC);
+    child->addAttribute(attributeFlags &ATTRIBUTE_PRINT_GEN_BC);
     inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
@@ -284,7 +284,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
         auto safetyOff      = curAttr->safetyOff;
 
         // Inherit all simple flags
-        forNode->attributeFlags |= attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_ACCESS_MASK);
+        forNode->addAttribute(attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_ACCESS_MASK));
 
         // Inherit some attributes and safety
         inheritAttributesFrom(forNode, attributeFlags, safetyOn, safetyOff);

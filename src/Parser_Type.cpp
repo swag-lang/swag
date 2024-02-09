@@ -668,7 +668,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     if (mdfFlags & MODIFIER_OVERFLOW)
     {
         node->addSpecFlag(AstCast::SPECFLAG_OVERFLOW);
-        node->attributeFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
+        node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
     }
 
     if (mdfFlags & MODIFIER_BIT)

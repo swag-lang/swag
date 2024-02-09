@@ -237,7 +237,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             *result = namespaceNode;
         if (forGlobal)
             namespaceNode->flags |= AST_GLOBAL_NODE;
-        namespaceNode->attributeFlags |= sourceFile->globalAttr;
+        namespaceNode->addAttribute(sourceFile->globalAttr);
         first = false;
 
         switch (token.id)

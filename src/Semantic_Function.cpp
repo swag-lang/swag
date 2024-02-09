@@ -548,7 +548,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
         funcNode->flags |= AST_CONST_EXPR;
     if (funcNode->ownerFct)
-        funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
+        funcNode->addAttribute(funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER);
 
     if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR)))
     {
@@ -556,15 +556,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR);
 
         if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
-        {
-            funcNode->attributeFlags |= ATTRIBUTE_INLINE;
-        }
-
+            funcNode->addAttribute(ATTRIBUTE_INLINE);
         if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
-        {
-            funcNode->attributeFlags |= ATTRIBUTE_INLINE;
-            funcNode->attributeFlags |= ATTRIBUTE_MACRO;
-        }
+            funcNode->addAttribute(ATTRIBUTE_INLINE | ATTRIBUTE_MACRO);
 
         if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {

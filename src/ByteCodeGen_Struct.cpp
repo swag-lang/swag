@@ -347,9 +347,9 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opInitGenerated;
                 if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-                    funcNode->attributeFlags |= funcNode->attributeFlags & ATTRIBUTE_PUBLIC;
+                    funcNode->addAttribute(funcNode->attributeFlags & ATTRIBUTE_PUBLIC);
                 if (typeInfoStruct->opUserInitFct)
-                    typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                    typeInfoStruct->opUserInitFct->removeAttribute(ATTRIBUTE_PUBLIC);
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
                 funcNode->extByteCode()->bc = opInit;
                 opInit->node                = funcNode;
@@ -364,9 +364,9 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opDropGenerated;
-                funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+                funcNode->addAttribute(ATTRIBUTE_PUBLIC);
                 if (typeInfoStruct->opUserDropFct)
-                    typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                    typeInfoStruct->opUserDropFct->removeAttribute(ATTRIBUTE_PUBLIC);
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
                 funcNode->extByteCode()->bc = opInit;
                 opInit->node                = funcNode;
@@ -381,9 +381,9 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
-                funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+                funcNode->addAttribute(ATTRIBUTE_PUBLIC);
                 if (typeInfoStruct->opUserPostCopyFct)
-                    typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                    typeInfoStruct->opUserPostCopyFct->removeAttribute(ATTRIBUTE_PUBLIC);
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
                 funcNode->extByteCode()->bc = opInit;
                 opInit->node                = funcNode;
@@ -398,9 +398,9 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
-                funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+                funcNode->addAttribute(ATTRIBUTE_PUBLIC);
                 if (typeInfoStruct->opUserPostMoveFct)
-                    typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
+                    typeInfoStruct->opUserPostMoveFct->removeAttribute(ATTRIBUTE_PUBLIC);
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
                 funcNode->extByteCode()->bc = opInit;
                 opInit->node                = funcNode;
