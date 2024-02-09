@@ -130,7 +130,7 @@ void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, A
         newPatch.patchAddress = patchAddress;
         newPatch.funcDecl     = func;
 #ifdef SWAG_DEV_MODE
-        *(uint64_t*) patchAddress = SWAG_PATCH_MARKER;
+        *reinterpret_cast<uint64_t*>(patchAddress) = SWAG_PATCH_MARKER;
 #endif
 
         const auto it = patchOffsets.find(moduleName);
@@ -156,7 +156,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
             continue;
 
 #ifdef SWAG_DEV_MODE
-        SWAG_ASSERT(*(uint64_t*) one.patchAddress == SWAG_PATCH_MARKER);
+        SWAG_ASSERT(*reinterpret_cast<uint64_t*>(one.patchAddress) == SWAG_PATCH_MARKER);
 #endif
 
         auto       foreign = one.funcDecl->getFullNameForeignImport().toZeroTerminated();

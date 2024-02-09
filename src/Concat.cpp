@@ -120,28 +120,28 @@ void Concat::addU8(uint8_t v)
 void Concat::addU16(uint16_t v)
 {
     ensureSpace(sizeof(uint16_t));
-    *(uint16_t*) currentSP = v;
+    *reinterpret_cast<uint16_t*>(currentSP) = v;
     currentSP += sizeof(uint16_t);
 }
 
 void Concat::addU32(uint32_t v)
 {
     ensureSpace(sizeof(uint32_t));
-    *(uint32_t*) currentSP = v;
+    *reinterpret_cast<uint32_t*>(currentSP) = v;
     currentSP += sizeof(uint32_t);
 }
 
 void Concat::addU64(uint64_t v)
 {
     ensureSpace(sizeof(uint64_t));
-    *(uint64_t*) currentSP = v;
+    *reinterpret_cast<uint64_t*>(currentSP) = v;
     currentSP += sizeof(uint64_t);
 }
 
 uint32_t* Concat::addU32Addr(uint32_t v)
 {
     ensureSpace(sizeof(uint32_t));
-    *(uint32_t*) currentSP = v;
+    *reinterpret_cast<uint32_t*>(currentSP) = v;
     currentSP += sizeof(uint32_t);
     return (uint32_t*) (currentSP - sizeof(uint32_t));
 }
@@ -149,7 +149,7 @@ uint32_t* Concat::addU32Addr(uint32_t v)
 uint16_t* Concat::addU16Addr(uint16_t v)
 {
     ensureSpace(sizeof(uint16_t));
-    *(uint16_t*) currentSP = v;
+    *reinterpret_cast<uint16_t*>(currentSP) = v;
     currentSP += sizeof(uint16_t);
     return (uint16_t*) (currentSP - sizeof(uint16_t));
 }
@@ -214,21 +214,21 @@ void Concat::addString(const Utf8& v)
 void Concat::addString1(const char* v)
 {
     ensureSpace(1);
-    *currentSP = *(uint8_t*) v;
+    *currentSP = *reinterpret_cast<const uint8_t*>(v);
     currentSP += 1;
 }
 
 void Concat::addString2(const char* v)
 {
     ensureSpace(2);
-    *(uint16_t*) currentSP = *(uint16_t*) v;
+    *reinterpret_cast<uint16_t*>(currentSP) = *reinterpret_cast<const uint16_t*>(v);
     currentSP += 2;
 }
 
 void Concat::addString3(const char* v)
 {
     ensureSpace(3);
-    *(uint16_t*) currentSP = *(uint16_t*) v;
+    *reinterpret_cast<uint16_t*>(currentSP) = *reinterpret_cast<const uint16_t*>(v);
     currentSP[2]           = v[2];
     currentSP += 3;
 }
@@ -236,14 +236,14 @@ void Concat::addString3(const char* v)
 void Concat::addString4(const char* v)
 {
     ensureSpace(4);
-    *(uint32_t*) currentSP = *(uint32_t*) v;
+    *reinterpret_cast<uint32_t*>(currentSP) = *reinterpret_cast<const uint32_t*>(v);
     currentSP += 4;
 }
 
 void Concat::addString5(const char* v)
 {
     ensureSpace(5);
-    *(uint32_t*) currentSP = *(uint32_t*) v;
+    *reinterpret_cast<uint32_t*>(currentSP) = *reinterpret_cast<const uint32_t*>(v);
     currentSP[4]           = v[4];
     currentSP += 5;
 }

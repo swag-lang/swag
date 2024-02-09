@@ -275,18 +275,18 @@ void Module::buildModulesSlice()
     uint8_t* str;
     auto     offsetStr = constantSegment.addString(name, &str);
     constantSegment.addInitPtr(offset, offsetStr);
-    *(uint8_t**) resultPtr = str;
+    *reinterpret_cast<uint8_t**>(resultPtr) = str;
     resultPtr += sizeof(void*);
     offset += sizeof(void*);
-    *(uint64_t*) resultPtr = name.length();
+    *reinterpret_cast<uint64_t*>(resultPtr) = name.length();
     resultPtr += sizeof(void*);
     offset += sizeof(void*);
 
     // Slice of types
-    *(uint8_t**) resultPtr = nullptr;
+    *reinterpret_cast<uint8_t**>(resultPtr) = nullptr;
     resultPtr += sizeof(void*);
     offset += sizeof(void*);
-    *(uint64_t*) resultPtr = 0;
+    *reinterpret_cast<uint64_t*>(resultPtr) = 0;
     resultPtr += sizeof(void*);
     offset += sizeof(void*);
 
@@ -295,18 +295,18 @@ void Module::buildModulesSlice()
         // Module name
         offsetStr = constantSegment.addString(dep->module->name, &str);
         constantSegment.addInitPtr(offset, offsetStr);
-        *(uint8_t**) resultPtr = str;
+        *reinterpret_cast<uint8_t**>(resultPtr) = str;
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
-        *(uint64_t*) resultPtr = dep->module->name.length();
+        *reinterpret_cast<uint64_t*>(resultPtr) = dep->module->name.length();
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
 
         // Slice of types
-        *(uint8_t**) resultPtr = nullptr;
+        *reinterpret_cast<uint8_t**>(resultPtr) = nullptr;
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
-        *(uint64_t*) resultPtr = 0;
+        *reinterpret_cast<uint64_t*>(resultPtr) = 0;
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
     }
@@ -377,7 +377,7 @@ void Module::buildTypesSlice()
     auto offset      = typesSliceOffset;
 
     // First store the number of types in the table
-    *(uint64_t*) resultPtr = numTypes;
+    *reinterpret_cast<uint64_t*>(resultPtr) = numTypes;
     resultPtr += sizeof(uint64_t);
     offset += sizeof(uint64_t);
 
@@ -413,7 +413,7 @@ void Module::buildTypesSlice()
             const auto valPtr = ((funcCall) ptr)();
 
             moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
-            moduleSlice[i].types.count  = *(uint64_t*) valPtr;
+            moduleSlice[i].types.count  = *reinterpret_cast<uint64_t*>(valPtr);
         }
 
         i += 1;

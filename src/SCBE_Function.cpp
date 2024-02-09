@@ -4768,8 +4768,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         auto it = pp.labels.find(toSolve.ipDest);
         SWAG_ASSERT(it != pp.labels.end());
 
-        auto relOffset             = it->second - toSolve.currentOffset;
-        *(uint32_t*) toSolve.patch = relOffset;
+        auto relOffset                              = it->second - toSolve.currentOffset;
+        *reinterpret_cast<uint32_t*>(toSolve.patch) = relOffset;
     }
 
     uint32_t endAddress = concat.totalCount();

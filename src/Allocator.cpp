@@ -71,9 +71,9 @@ void Allocator::free(void* ptr, size_t size)
 uint8_t* Allocator::markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker)
 {
     memset(blockAddr + 2 * sizeof(uint64_t), marker & 0xFF, userSize);
-    *(uint64_t*) blockAddr = marker;
+    *reinterpret_cast<uint64_t*>(blockAddr) = marker;
     blockAddr += sizeof(uint64_t);
-    *(uint64_t*) blockAddr = userSize;
+    *reinterpret_cast<uint64_t*>(blockAddr) = userSize;
     blockAddr += sizeof(uint64_t);
     *(uint64_t*) (blockAddr + userSize) = marker;
     return blockAddr;
@@ -83,9 +83,9 @@ uint8_t* Allocator::checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_
 {
     userAddr -= 2 * sizeof(uint64_t);
     const auto blockAddr = userAddr;
-    SWAG_ASSERT(*(uint64_t*) userAddr == marker);
+    SWAG_ASSERT(*reinterpret_cast<uint64_t*>(userAddr) == marker);
     userAddr += sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) userAddr == userSize);
+    SWAG_ASSERT(*reinterpret_cast<uint64_t*>(userAddr) == userSize);
     userAddr += sizeof(uint64_t);
     SWAG_ASSERT(*(uint64_t*) (userAddr + userSize) == marker);
     return blockAddr;

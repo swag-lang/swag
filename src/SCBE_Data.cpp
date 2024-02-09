@@ -42,7 +42,7 @@ bool SCBE::buildRelocationSegment(const BuildParameters& buildParameters, DataSe
             break;
         }
 
-        *(uint64_t*) dataSegment->address(k.patchOffset) = k.fromOffset;
+        *reinterpret_cast<uint64_t*>(dataSegment->address(k.patchOffset)) = k.fromOffset;
 
         reloc.virtualAddress = k.patchOffset;
         reloc.symbolIndex    = sym;

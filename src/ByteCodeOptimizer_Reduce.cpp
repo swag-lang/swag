@@ -699,7 +699,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer8);
             ip[2].a.u64 = ip[1].b.u64;
-            ip[2].b.u64 = *(uint8_t*) ptr;
+            ip[2].b.u64 = *reinterpret_cast<uint8_t*>(ptr);
             ip[2].flags |= BCI_IMM_B;
             break;
         }
@@ -708,7 +708,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer16);
             ip[2].a.u64 = ip[1].b.u64;
-            ip[2].b.u64 = *(uint16_t*) ptr;
+            ip[2].b.u64 = *reinterpret_cast<uint16_t*>(ptr);
             ip[2].flags |= BCI_IMM_B;
             break;
         }
@@ -717,7 +717,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer32);
             ip[2].a.u64 = ip[1].b.u64;
-            ip[2].b.u64 = *(uint32_t*) ptr;
+            ip[2].b.u64 = *reinterpret_cast<uint32_t*>(ptr);
             ip[2].flags |= BCI_IMM_B;
             break;
         }
@@ -726,7 +726,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer64);
             ip[2].a.u64 = ip[1].b.u64;
-            ip[2].b.u64 = *(uint64_t*) ptr;
+            ip[2].b.u64 = *reinterpret_cast<uint64_t*>(ptr);
             ip[2].flags |= BCI_IMM_B;
             break;
         }

@@ -286,25 +286,25 @@ namespace
             SET_OP(ip, ByteCodeOp::SetAtStackPointer8);
             ip->flags |= BCI_IMM_B;
             ip->a.u32 = offset;
-            ip->b.u64 = *(uint8_t*) value;
+            ip->b.u64 = *reinterpret_cast<uint8_t*>(value);
             break;
         case 2:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
             ip->flags |= BCI_IMM_B;
             ip->a.u32 = offset;
-            ip->b.u64 = *(uint16_t*) value;
+            ip->b.u64 = *reinterpret_cast<uint16_t*>(value);
             break;
         case 4:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
             ip->flags |= BCI_IMM_B;
             ip->a.u32 = offset;
-            ip->b.u64 = *(uint32_t*) value;
+            ip->b.u64 = *reinterpret_cast<uint32_t*>(value);
             break;
         case 8:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
             ip->flags |= BCI_IMM_B;
             ip->a.u32 = offset;
-            ip->b.u64 = *(uint64_t*) value;
+            ip->b.u64 = *reinterpret_cast<uint64_t*>(value);
             break;
         default:
             break;
@@ -1000,29 +1000,29 @@ namespace
                 break;
             case ByteCodeOp::SetZeroStack8:
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32, 1));
-                *(uint8_t*) addr = 0;
+                *reinterpret_cast<uint8_t*>(addr) = 0;
                 setStackValue(cxt, addr, 1, ValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack16:
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32, 2));
-                *(uint16_t*) addr = 0;
+                *reinterpret_cast<uint16_t*>(addr) = 0;
                 setStackValue(cxt, addr, 2, ValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack32:
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32, 4));
-                *(uint32_t*) addr = 0;
+                *reinterpret_cast<uint32_t*>(addr) = 0;
                 setStackValue(cxt, addr, 4, ValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack64:
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32, 8));
-                *(uint64_t*) addr = 0;
+                *reinterpret_cast<uint64_t*>(addr) = 0;
                 setStackValue(cxt, addr, 8, ValueKind::Constant);
                 break;
 
             case ByteCodeOp::SetAtStackPointer64:
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32, 8));
                 SWAG_CHECK(getImmediateB(vb, cxt, ip));
-                *(uint64_t*) addr = vb.reg.u64;
+                *reinterpret_cast<uint64_t*>(addr) = vb.reg.u64;
                 setStackValue(cxt, addr, 8, vb.kind);
                 break;
 
@@ -1056,7 +1056,7 @@ namespace
                 if (ra->kind == ValueKind::StackAddr)
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->b.u32, 1));
-                    *(uint8_t*) addr = 0;
+                    *reinterpret_cast<uint8_t*>(addr) = 0;
                     setStackValue(cxt, addr, 1, ValueKind::Constant);
                 }
                 break;
@@ -1066,7 +1066,7 @@ namespace
                 if (ra->kind == ValueKind::StackAddr)
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->b.u32, 2));
-                    *(uint16_t*) addr = 0;
+                    *reinterpret_cast<uint16_t*>(addr) = 0;
                     setStackValue(cxt, addr, 2, ValueKind::Constant);
                 }
                 break;
@@ -1076,7 +1076,7 @@ namespace
                 if (ra->kind == ValueKind::StackAddr)
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->b.u32, 4));
-                    *(uint32_t*) addr = 0;
+                    *reinterpret_cast<uint32_t*>(addr) = 0;
                     setStackValue(cxt, addr, 4, ValueKind::Constant);
                 }
                 break;
@@ -1086,7 +1086,7 @@ namespace
                 if (ra->kind == ValueKind::StackAddr)
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->b.u32, 8));
-                    *(uint64_t*) addr = 0;
+                    *reinterpret_cast<uint64_t*>(addr) = 0;
                     setStackValue(cxt, addr, 8, ValueKind::Constant);
                 }
                 break;
@@ -1098,7 +1098,7 @@ namespace
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32, 1));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
-                    *(uint8_t*) addr = vb.reg.u8;
+                    *reinterpret_cast<uint8_t*>(addr) = vb.reg.u8;
                     setStackValue(cxt, addr, 1, vb.kind);
                 }
                 break;
@@ -1109,7 +1109,7 @@ namespace
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32, 2));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
-                    *(uint16_t*) addr = vb.reg.u16;
+                    *reinterpret_cast<uint16_t*>(addr) = vb.reg.u16;
                     setStackValue(cxt, addr, 2, vb.kind);
                 }
                 break;
@@ -1120,7 +1120,7 @@ namespace
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32, 4));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
-                    *(uint32_t*) addr = vb.reg.u32;
+                    *reinterpret_cast<uint32_t*>(addr) = vb.reg.u32;
                     setStackValue(cxt, addr, 4, vb.kind);
                 }
                 break;
@@ -1131,7 +1131,7 @@ namespace
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32, 8));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
-                    *(uint64_t*) addr = vb.reg.u64;
+                    *reinterpret_cast<uint64_t*>(addr) = vb.reg.u64;
                     setStackValue(cxt, addr, 8, vb.kind);
                 }
                 break;
@@ -1178,32 +1178,32 @@ namespace
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 1));
                 SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
                 SWAG_CHECK(checkStackInitialized(cxt, addr, 1, ra->overload));
-                ra->reg.u64 = *(uint8_t*) addr;
-                setConstant(cxt, ra->kind, ip, *(uint8_t*) addr, ConstantKind::SetImmediateA);
+                ra->reg.u64 = *reinterpret_cast<uint8_t*>(addr);
+                setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint8_t*>(addr), ConstantKind::SetImmediateA);
                 break;
             case ByteCodeOp::GetFromStack16:
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 2));
                 SWAG_CHECK(getStackValue(*ra, cxt, addr, 2));
                 SWAG_CHECK(checkStackInitialized(cxt, addr, 2, ra->overload));
-                ra->reg.u64 = *(uint16_t*) addr;
-                setConstant(cxt, ra->kind, ip, *(uint16_t*) addr, ConstantKind::SetImmediateA);
+                ra->reg.u64 = *reinterpret_cast<uint16_t*>(addr);
+                setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint16_t*>(addr), ConstantKind::SetImmediateA);
                 break;
             case ByteCodeOp::GetFromStack32:
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 4));
                 SWAG_CHECK(getStackValue(*ra, cxt, addr, 4));
                 SWAG_CHECK(checkStackInitialized(cxt, addr, 4, ra->overload));
-                ra->reg.u64 = *(uint32_t*) addr;
-                setConstant(cxt, ra->kind, ip, *(uint32_t*) addr, ConstantKind::SetImmediateA);
+                ra->reg.u64 = *reinterpret_cast<uint32_t*>(addr);
+                setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint32_t*>(addr), ConstantKind::SetImmediateA);
                 break;
             case ByteCodeOp::GetFromStack64:
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 8));
                 SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
                 SWAG_CHECK(checkStackInitialized(cxt, addr, 8, ra->overload));
-                ra->reg.u64 = *(uint64_t*) addr;
-                setConstant(cxt, ra->kind, ip, *(uint64_t*) addr, ConstantKind::SetImmediateA);
+                ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
+                setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint64_t*>(addr), ConstantKind::SetImmediateA);
                 break;
 
             case ByteCodeOp::IncPointer64:
@@ -1271,7 +1271,7 @@ namespace
                     SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64, 1));
                     SWAG_CHECK(checkStackInitialized(cxt, addr, 1));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
-                    ra->reg.u64 = *(uint8_t*) addr;
+                    ra->reg.u64 = *reinterpret_cast<uint8_t*>(addr);
                     break;
                 }
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1286,7 +1286,7 @@ namespace
                     SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64, 2));
                     SWAG_CHECK(checkStackInitialized(cxt, addr, 2));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 2));
-                    ra->reg.u64 = *(uint16_t*) addr;
+                    ra->reg.u64 = *reinterpret_cast<uint16_t*>(addr);
                     break;
                 }
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1301,7 +1301,7 @@ namespace
                     SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64, 4));
                     SWAG_CHECK(checkStackInitialized(cxt, addr, 4));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 4));
-                    ra->reg.u64 = *(uint32_t*) addr;
+                    ra->reg.u64 = *reinterpret_cast<uint32_t*>(addr);
                     break;
                 }
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1316,7 +1316,7 @@ namespace
                     SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64, 8));
                     SWAG_CHECK(checkStackInitialized(cxt, addr, 8));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
-                    ra->reg.u64 = *(uint64_t*) addr;
+                    ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
                     if (ip->d.pointer)
                         ra->overload = (SymbolOverload*) ip->d.pointer;
                     break;

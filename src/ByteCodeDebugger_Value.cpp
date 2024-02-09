@@ -460,17 +460,17 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             return;
 
         case NativeTypeKind::U8:
-            str += FMT("%u (0x%x)", *(uint8_t*) addr, *(uint8_t*) addr);
+            str += FMT("%u (0x%x)", *reinterpret_cast<uint8_t*>(addr), *reinterpret_cast<uint8_t*>(addr));
             return;
         case NativeTypeKind::U16:
-            str += FMT("%u (0x%x)", *(uint16_t*) addr, *(uint16_t*) addr);
+            str += FMT("%u (0x%x)", *reinterpret_cast<uint16_t*>(addr), *reinterpret_cast<uint16_t*>(addr));
             return;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            str += FMT("%u (0x%x)", *(uint32_t*) addr, *(uint32_t*) addr);
+            str += FMT("%u (0x%x)", *reinterpret_cast<uint32_t*>(addr), *reinterpret_cast<uint32_t*>(addr));
             return;
         case NativeTypeKind::U64:
-            str += FMT("%llu (0x%llx)", *(uint64_t*) addr, *(uint64_t*) addr);
+            str += FMT("%llu (0x%llx)", *reinterpret_cast<uint64_t*>(addr), *reinterpret_cast<uint64_t*>(addr));
             return;
 
         case NativeTypeKind::F32:

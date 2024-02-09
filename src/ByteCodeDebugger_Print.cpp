@@ -408,7 +408,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         addrVal  = (uint64_t) res.addr;
     }
     else if (res.type->isPointer())
-        addrVal = *(uint64_t*) res.addr;
+        addrVal = *static_cast<uint64_t*>(res.addr);
     else
         addrVal = (uint64_t) res.addr;
 
