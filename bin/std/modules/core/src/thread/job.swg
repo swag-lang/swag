@@ -233,8 +233,8 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     }
 
     // Force synchrone execution if range is too small
-    var wh = @countof(range) / offset
-    var numWorkers = Math.min(getNumWorkers(), cast(u32) wh)
+    let wh = @countof(range) / offset
+    let numWorkers = Math.min(getNumWorkers(), cast(u32) wh)
     if isSynchrone() or numWorkers <= 1
     {
         visitSlice(range, offset, userData)
@@ -302,7 +302,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     }
 
     // Force synchrone execution if range is too small
-    var numWorkers = Math.min(getNumWorkers(), count)
+    let numWorkers = Math.min(getNumWorkers(), count)
     if isSynchrone() or numWorkers <= 1
     {
         visitFor(0, count - 1, userData)
@@ -310,8 +310,8 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     }
 
     // Compute size of each chunk (and size of the last one)
-    var splitSize = count / numWorkers
-    var lastSplitSize = splitSize + (count - (splitSize * numWorkers))
+    let splitSize = count / numWorkers
+    let lastSplitSize = splitSize + (count - (splitSize * numWorkers))
 
     // Launch jobs
     var sliceJobs: Array'ForJob

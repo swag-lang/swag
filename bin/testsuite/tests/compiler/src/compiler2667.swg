@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto()
 {
-    var a = 0
+    let a = 0
     switch a
     {
     case 0:

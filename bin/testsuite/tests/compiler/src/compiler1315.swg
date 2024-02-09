@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto()
 {
-    var cpt = 6
+    let cpt = 6
 
     #macro
     {

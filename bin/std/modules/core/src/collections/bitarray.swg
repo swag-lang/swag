@@ -99,7 +99,7 @@ public impl BitArray
 
         if !count do
             return
-        var remainingBits = count
+        let remainingBits = count
         var countBits = 0'u64
 
         #scope Up

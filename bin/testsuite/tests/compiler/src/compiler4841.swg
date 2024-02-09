@@ -2,8 +2,8 @@
 #[Swag.Macro]
 func Visit(str: const [..] u8)
 {
-    var ptr = @dataof(str)
-    var count = @countof(str)
+    let ptr = @dataof(str)
+    let count = @countof(str)
     @assert(ptr[0] == 97)
     @assert(count == 3)
 }

@@ -1,8 +1,8 @@
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    var #alias0: s64 = 555
-    var #alias1: s64 = 666
+    let #alias0: s64 = 555
+    let #alias1: s64 = 666
     #mixin stmt
 }
 

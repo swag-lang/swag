@@ -3,7 +3,7 @@
 #[Swag.Macro]
 func toto(stmt: code)
 {
-    var a = 10
+    let a = 10
     #mixin stmt
     #mixin stmt
     #mixin stmt

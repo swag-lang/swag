@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func pushContext(cxt: Swag.Context, stmt: code)
 {
-    var prev = @getcontext()
+    let prev = @getcontext()
     defer @setcontext(prev)
 
     @setcontext(cxt)
@@ -15,7 +15,7 @@ func pushContext(cxt: Swag.Context, stmt: code)
 
 #test
 {
-    var cxt = dref @getcontext()
+    let cxt = dref @getcontext()
     pushContext(cxt)
     {
         @assert(@getcontext().hasError == 666)

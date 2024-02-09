@@ -162,8 +162,8 @@ In a macro, you can use special variables named `#alias<num>`. Note that this is
     #[Swag.Macro]
     func call(v: s32, stmt: code)
     {
-        var #alias0 = v
-        var #alias1 = v * 2
+        let #alias0 = v
+        let #alias1 = v * 2
         #mixin stmt
     }
 

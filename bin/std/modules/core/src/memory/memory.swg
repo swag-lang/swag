@@ -64,7 +64,7 @@ func freeTemp()
 #[Swag.Macro]
 func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 {
-    var prev = @getcontext()
+    let prev = @getcontext()
     defer @setcontext(prev)
 
     var cxt = dref prev
@@ -81,7 +81,7 @@ func pushAllocator(allocator: Swag.IAllocator, stmt: code)
 #[Swag.Macro]
 func pushTempAllocator(stmt: code)
 {
-    var prev = @getcontext()
+    let prev = @getcontext()
     defer @setcontext(prev)
 
     var cxt = dref prev

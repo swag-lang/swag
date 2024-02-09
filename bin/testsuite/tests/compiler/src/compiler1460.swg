@@ -9,7 +9,7 @@ impl S
     #[Swag.Macro, Swag.CalleeReturn]
     func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
-        var x = down
+        let x = down
         @assert(x == 10)
     }
 }

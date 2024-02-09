@@ -188,11 +188,10 @@ impl MainWnd
             }
         }
 
-        #[Swag.Macro]
         func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
         {
-            var btn = CheckButton.create(dlg, " ", pos)
-            btn.checked = #up g_ResizeMode == id ? .Undefined : .UnChecked
+            let btn = CheckButton.create(dlg, " ", pos)
+            btn.checked = g_ResizeMode == id ? .Undefined : .UnChecked
             btn.userData = cast(*void) id
             btn.sigChanged += func(btn) {
                 visit c: btn.parent.childs
