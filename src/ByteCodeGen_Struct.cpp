@@ -65,7 +65,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
         EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
     }
 
-    if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (funcDecl && !bc && funcDecl->hasAttribute(ATTRIBUTE_FOREIGN))
     {
         const auto inst = EMIT_INST0(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
@@ -145,7 +145,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 }
             }
 
-            if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
+            if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->hasAttribute(ATTRIBUTE_FOREIGN))
                 continue;
             resOp   = &typeInfoStruct->opInit;
             addName = ".opInit";
@@ -182,7 +182,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 }
             }
 
-            if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN)
+            if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->hasAttribute(ATTRIBUTE_FOREIGN))
                 continue;
             if (typeInfoStruct->opUserDropFct)
                 needDrop = true;
@@ -223,7 +223,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 }
             }
 
-            if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN)
+            if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->hasAttribute(ATTRIBUTE_FOREIGN))
                 continue;
             if (typeInfoStruct->opUserPostCopyFct)
                 needPostCopy = true;
@@ -262,7 +262,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 }
             }
 
-            if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN)
+            if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->hasAttribute(ATTRIBUTE_FOREIGN))
                 continue;
             if (typeInfoStruct->opUserPostMoveFct)
                 needPostMove = true;
@@ -347,7 +347,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opInitGenerated;
                 if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-                    funcNode->attributeFlags |= structNode->attributeFlags & ATTRIBUTE_PUBLIC;
+                    funcNode->attributeFlags |= funcNode->attributeFlags & ATTRIBUTE_PUBLIC;
                 if (typeInfoStruct->opUserInitFct)
                     typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
@@ -358,7 +358,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
         case EmitOpUserKind::Drop:
             // Export generated function if necessary
-            if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
+            if ((structNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(structNode->flags & AST_FROM_GENERIC))
             {
                 const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
@@ -375,7 +375,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
         case EmitOpUserKind::PostCopy:
             // Export generated function if necessary
-            if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
+            if ((structNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(structNode->flags & AST_FROM_GENERIC))
             {
                 const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
@@ -392,7 +392,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
         case EmitOpUserKind::PostMove:
             // Export generated function if necessary
-            if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
+            if ((structNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(structNode->flags & AST_FROM_GENERIC))
             {
                 const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
@@ -557,7 +557,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     }
 
     // If user function is foreign, then this is the generated version with everything already done
-    if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->hasAttribute(ATTRIBUTE_FOREIGN))
         return true;
 
     // Need to wait for user function full semantic resolve
@@ -603,13 +603,13 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     {
         EMIT_INST0(&cxt, ByteCodeOp::Ret);
         EMIT_INST0(&cxt, ByteCodeOp::End);
-        if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC))
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
 
-        if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+        if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
         {
             ByteCodePrintOptions opt;
             cxt.bc->print(opt);
@@ -625,13 +625,13 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         EMIT_INST0(&cxt, ByteCodeOp::Ret);
         EMIT_INST0(&cxt, ByteCodeOp::End);
-        if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC))
         {
             ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
 
-        if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+        if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
         {
             ByteCodePrintOptions opt;
             cxt.bc->print(opt);
@@ -781,13 +781,13 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     EMIT_INST0(&cxt, ByteCodeOp::Ret);
     EMIT_INST0(&cxt, ByteCodeOp::End);
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC))
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
         ByteCodePrintOptions opt;
         cxt.bc->print(opt);
@@ -835,7 +835,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     }
 
     // If user function is foreign, then this is the generated version with everything already done
-    if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->hasAttribute(ATTRIBUTE_FOREIGN))
         return true;
 
     // Need to wait for user function full semantic resolve
@@ -892,13 +892,13 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     EMIT_INST0(&cxt, ByteCodeOp::Ret);
     EMIT_INST0(&cxt, ByteCodeOp::End);
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC))
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
@@ -948,7 +948,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     }
 
     // If user function is foreign, then this is the generated version with everything already done
-    if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->hasAttribute(ATTRIBUTE_FOREIGN))
         return true;
 
     // Need to wait for function full semantic resolve
@@ -1005,13 +1005,13 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     EMIT_INST0(&cxt, ByteCodeOp::Ret);
     EMIT_INST0(&cxt, ByteCodeOp::End);
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC))
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
@@ -1059,7 +1059,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     }
 
     // If user function is foreign, then this is the generated version with everything already done
-    if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->hasAttribute(ATTRIBUTE_FOREIGN))
         return true;
 
     // Need to wait for function full semantic resolve
@@ -1116,13 +1116,13 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     EMIT_INST0(&cxt, ByteCodeOp::Ret);
     EMIT_INST0(&cxt, ByteCodeOp::End);
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC))
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);

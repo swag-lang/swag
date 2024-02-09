@@ -484,7 +484,7 @@ namespace
             const SymbolOverload* overload = localVar->resolvedSymbolOverload;
             const auto            typeInfo = overload->typeInfo;
 
-            SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
+            SWAG_ASSERT(localVar->hasAttribute(ATTRIBUTE_GLOBAL));
 
             emitStartRecord(pp, S_LDATA32);
             concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
@@ -647,7 +647,7 @@ namespace
 
                 // Capture parameters
                 /////////////////////////////////
-                if (decl->captureParameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+                if (decl->captureParameters && !(decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC)))
                 {
                     const auto countParams = decl->captureParameters->childs.size();
                     for (size_t i = 0; i < countParams; i++)
@@ -691,7 +691,7 @@ namespace
 
                 // Parameters
                 /////////////////////////////////
-                if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+                if (decl->parameters && !(decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC)))
                 {
                     const auto countParams = decl->parameters->childs.size();
                     int        regCounter  = 0;

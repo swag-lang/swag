@@ -32,7 +32,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
 bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != Test))
+    if (bc->node && (bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC)) && (buildParameters.compileType != Test))
         return true;
 
     int         ct              = buildParameters.compileType;
@@ -58,7 +58,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Export symbol
-    if (bcFuncNode && bcFuncNode->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (bcFuncNode && bcFuncNode->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             pp.directives += FMT("/EXPORT:%s ", funcName.c_str());

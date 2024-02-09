@@ -21,7 +21,7 @@ JobResult ByteCodeOptimizerJob::execute()
         const auto bc = module->byteCodeFunc[i];
         if (!ByteCodeOptimizer::optimize(optContext, bc, restart))
         {
-            if (bc->node && bc->node->attributeFlags & ATTRIBUTE_PRINT_BC)
+            if (bc->node && bc->node->hasAttribute(ATTRIBUTE_PRINT_BC))
             {
                 constexpr ByteCodePrintOptions opt;
                 bc->print(opt);

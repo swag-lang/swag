@@ -115,7 +115,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         for (auto over : symbol->overloads)
         {
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+            if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
             if (typeFunc->parameters.size() <= 1)
                 continue;
@@ -228,7 +228,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
                 continue;
-            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+            if (!(typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT)) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
             if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
                 toCast.push_back(over);

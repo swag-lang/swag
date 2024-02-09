@@ -274,7 +274,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
 
-    if ((node->attributeFlags & ATTRIBUTE_COMPLETE) && !node->expression)
+    if (node->hasAttribute(ATTRIBUTE_COMPLETE) && !node->expression)
     {
         const Diagnostic diag{node, node->token, Err(Err0483)};
         const auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
@@ -356,14 +356,14 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     valDef.push_back(expr);
                 }
             }
-            else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
+            else if (node->hasAttribute(ATTRIBUTE_COMPLETE))
             {
                 return checkIsConstExpr(context, expr->hasComputedValue(), expr, Err(Err0035));
             }
         }
     }
 
-    if (node->attributeFlags & ATTRIBUTE_COMPLETE)
+    if (node->hasAttribute(ATTRIBUTE_COMPLETE))
     {
         // No default for a complete switch
         auto back = node->cases.back();

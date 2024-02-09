@@ -330,6 +330,10 @@ struct AstNode
     uint32_t     childParentIdx() const;
     void         printLoc() const;
 
+    // clang-format off
+    bool hasAttribute(uint64_t attr) const  { return attributeFlags & attr; }
+    // clang-format on
+
     struct NodeExtensionByteCode
     {
         ByteCodeNotifyFct      byteCodeBeforeFct = nullptr;

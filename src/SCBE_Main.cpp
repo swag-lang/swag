@@ -197,7 +197,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         for (const auto bc : module->byteCodeTestFunc)
         {
             const auto node = bc->node;
-            if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
                 continue;
 
             pp.emit_Call(bc->getCallName());
@@ -310,7 +310,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     for (const auto bc : module->byteCodePreMainFunc)
     {
         const auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
         pp.emit_Call(bc->getCallName());
     }
@@ -390,7 +390,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     for (const auto bc : module->byteCodeInitFunc)
     {
         const auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
         pp.emit_Call(bc->getCallName());
     }
@@ -430,7 +430,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     for (const auto bc : module->byteCodeDropFunc)
     {
         const auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
         pp.emit_Call(bc->getCallName());
     }

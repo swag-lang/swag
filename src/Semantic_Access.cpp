@@ -61,7 +61,7 @@ bool Semantic::canInheritAccess(const AstNode* node)
     // Content of a struct will propagate if struct is not opaque
     if (node->kind == AstNodeKind::StructContent)
     {
-        if (node->ownerStructScope->owner->attributeFlags & ATTRIBUTE_OPAQUE)
+        if (node->ownerStructScope->owner->hasAttribute(ATTRIBUTE_OPAQUE))
             return false;
     }
 
@@ -80,7 +80,7 @@ void Semantic::setNodeAccess(AstNode* node)
     if (overload->symbol->kind == SymbolKind::Namespace)
         return;
 
-    if (overload->node->attributeFlags & ATTRIBUTE_ACCESS_MASK)
+    if (overload->node->hasAttribute(ATTRIBUTE_ACCESS_MASK))
     {
         node->semFlags |= attributeToAccess(overload->node->attributeFlags);
         return;
@@ -156,7 +156,7 @@ void Semantic::setDefaultAccess(AstNode* node)
 {
     if (!canHaveGlobalAccess(node))
         return;
-    if (node->attributeFlags & ATTRIBUTE_ACCESS_MASK)
+    if (node->hasAttribute(ATTRIBUTE_ACCESS_MASK))
         return;
     if (node->sourceFile && node->sourceFile->isBootstrapFile)
         return;
@@ -268,7 +268,7 @@ namespace
 bool Semantic::checkAccess(JobContext* context, AstNode* node)
 {
     computeAccess(node);
-    if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
+    if (!node->hasAttribute(ATTRIBUTE_PUBLIC))
         return true;
     if (!(node->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
         return true;

@@ -70,7 +70,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         if (!node->hasExtMisc() ||
             !node->extMisc()->resolvedUserOpSymbolOverload ||
             node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
-            !(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
+            !(node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_COMPLETE)))
         {
             if (!(node->semFlags & SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
             {

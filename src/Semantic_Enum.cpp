@@ -48,7 +48,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // Be sure we don't have duplicated values
-    if (node->attributeFlags & ATTRIBUTE_NO_DUPLICATE)
+    if (node->hasAttribute(ATTRIBUTE_NO_DUPLICATE))
     {
         const auto rawType = TypeManager::concreteType(typeInfo->rawType);
         if (!rawType->isNative() && !rawType->isString())
@@ -105,7 +105,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
     }
 
     // Check public
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_FROM_GENERIC))
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC) && !(node->flags & AST_FROM_GENERIC))
         node->ownerScope->addPublicNode(node);
 
     // We are parsing the swag module
@@ -138,7 +138,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     typeInfo->rawType = rawTypeInfo;
     typeInfo->sizeOf  = rawTypeInfo->sizeOf;
 
-    if (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
+    if (enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS))
     {
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
@@ -146,7 +146,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
             return context->report({typeNode->childs.front(), FMT(Err(Err0267), rawTypeInfo->getDisplayNameC())});
     }
 
-    if (enumNode->attributeFlags & ATTRIBUTE_ENUM_INDEX)
+    if (enumNode->hasAttribute(ATTRIBUTE_ENUM_INDEX))
     {
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
@@ -154,7 +154,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
             return context->report({typeNode->childs.front(), FMT(Err(Err0268), rawTypeInfo->getDisplayNameC())});
     }
 
-    if (enumNode->attributeFlags & ATTRIBUTE_INCOMPLETE)
+    if (enumNode->hasAttribute(ATTRIBUTE_INCOMPLETE))
         typeInfo->flags |= TYPEINFO_INCOMPLETE;
 
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
@@ -356,7 +356,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         SWAG_ASSERT(firstEnumValue);
 
         // Compute automatic value from previous
-        const bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS);
+        const bool isFlags = enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS);
         if (!assignNode && (isFlags || (valNode != firstEnumValue)))
         {
             // Compute next value

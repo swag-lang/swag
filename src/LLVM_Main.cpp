@@ -234,7 +234,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         for (auto bc : module->byteCodeTestFunc)
         {
             auto node = bc->node;
-            if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
                 continue;
 
             auto fcc = modu.getOrInsertFunction(bc->getCallName().c_str(), funcTypeVoid);
@@ -325,7 +325,7 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     for (const auto bc : module->byteCodePreMainFunc)
     {
         const auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
         const auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType1);
         builder.CreateCall(func);
@@ -403,7 +403,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     for (const auto bc : module->byteCodeInitFunc)
     {
         const auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
         const auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), initFctType);
         builder.CreateCall(func);
@@ -435,7 +435,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     for (const auto bc : module->byteCodeDropFunc)
     {
         const auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
         const auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
         builder.CreateCall(func);

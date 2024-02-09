@@ -151,9 +151,9 @@ bool Semantic::isCompilerContext(const AstNode* node)
 {
     if (node->flags & AST_NO_BACKEND)
         return true;
-    if (node->attributeFlags & ATTRIBUTE_COMPILER)
+    if (node->hasAttribute(ATTRIBUTE_COMPILER))
         return true;
-    if (node->ownerFct && node->ownerFct->attributeFlags & ATTRIBUTE_COMPILER)
+    if (node->ownerFct && node->ownerFct->hasAttribute(ATTRIBUTE_COMPILER))
         return true;
     return false;
 }

@@ -22,7 +22,7 @@ void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 
 bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
-    if (!parameters || (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+    if (!parameters || funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
         return true;
 
     bool   defaultValueDone = false;
@@ -119,21 +119,21 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         // Variadic must be the last one
         if (paramType->isVariadic())
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
                 return context->report({nodeParam, Err(Err0513)});
         }
         else if (paramType->isTypedVariadic())
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
                 return context->report({nodeParam, Err(Err0513)});
         }
         else if (paramType->isCVariadic())
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
             typeInfo->flags |= TYPEINFO_C_VARIADIC;
             if (index != parameters->childs.size())
                 return context->report({nodeParam, Err(Err0513)});
@@ -209,7 +209,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
         return true;
     if (!context->node->ownerScope->isGlobalOrImpl())
         return true;
-    if (context->node->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
+    if (context->node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
         return true;
     if (context->node->flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
         return true;
@@ -256,7 +256,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     const auto typeInfo   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     // Only one main per module !
-    if (funcNode->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+    if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
     {
         ScopedLock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
@@ -272,7 +272,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     // No semantic on a generic function, or a macro
     if (funcNode->flags & AST_IS_GENERIC)
     {
-        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED))
+        if ((funcNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(funcNode->flags & AST_GENERATED))
             funcNode->ownerScope->addPublicNode(funcNode);
         return true;
     }
@@ -290,16 +290,16 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         }
     }
 
-    if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+    if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
     {
-        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED) && !(funcNode->flags & AST_FROM_GENERIC))
+        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED) && !(funcNode->flags & AST_FROM_GENERIC))
             funcNode->ownerScope->addPublicNode(funcNode);
         SWAG_CHECK(setFullResolve(context, funcNode));
         return true;
     }
 
     // An inline function will not have bytecode, so need to register public by hand now
-    if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && (funcNode->attributeFlags & ATTRIBUTE_INLINE) && !(funcNode->flags & AST_FROM_GENERIC))
+    if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !(funcNode->flags & AST_FROM_GENERIC))
         funcNode->ownerScope->addPublicNode(funcNode);
 
     funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
@@ -313,9 +313,9 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         return context->report({funcNode, funcNode->getTokenName(), Err(Err0682)}, note);
     }
 
-    if (!(funcNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+    if (!funcNode->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
     {
-        if (funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC)
+        if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC))
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, Err(Err0448)}));
         }
@@ -399,7 +399,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Ask for bytecode
     bool genByteCode = true;
-    if ((funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+    if ((funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC)) && !g_CommandLine.test)
         genByteCode = false;
     if (funcNode->token.text[0] == '@' && !(funcNode->flags & AST_DEFINED_INTRINSIC))
         genByteCode = false;
@@ -407,7 +407,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (funcNode->flags & AST_IS_GENERIC)
         genByteCode = false;
-    if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+    if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
         genByteCode = false;
     if (!funcNode->content)
         genByteCode = false;
@@ -496,7 +496,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     }
 
     // If this is a #message function, we must have a flag mask as parameters
-    if ((funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
+    if ((funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC)) && funcNode->parameters)
     {
         auto parameters = funcNode->parameters;
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
@@ -545,7 +545,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
 
     // Check attributes
-    if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+    if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
         funcNode->flags |= AST_CONST_EXPR;
     if (funcNode->ownerFct)
         funcNode->attributeFlags |= funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER;
@@ -555,44 +555,44 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         // Can be called multiple times in case of a mixin/macro inside another inlined function
         funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_CHECK_ATTR);
 
-        if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+        if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
         {
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
-        if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+        if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
         {
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
 
-        if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {
-            if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+            if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0224), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
-            if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+            if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0225), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
-            if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+            if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0223), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
-            if (funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC)
+            if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0226), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
-            if (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN)
+            if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0222), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
@@ -601,7 +601,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    if ((funcNode->attributeFlags & ATTRIBUTE_COMPLETE) &&
+    if ((funcNode->hasAttribute(ATTRIBUTE_COMPLETE)) &&
         funcNode->token.text != g_LangSpec->name_opAffect &&
         funcNode->token.text != g_LangSpec->name_opAffectLiteral)
     {
@@ -611,7 +611,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         return context->report(diag, note);
     }
 
-    if ((funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) &&
+    if ((funcNode->hasAttribute(ATTRIBUTE_IMPLICIT)) &&
         funcNode->token.text != g_LangSpec->name_opAffect &&
         funcNode->token.text != g_LangSpec->name_opAffectLiteral &&
         funcNode->token.text != g_LangSpec->name_opCast)
@@ -622,7 +622,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         context->report(diag, note);
     }
 
-    if ((funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)))
+    if ((funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN)) && !(funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)))
     {
         Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0487), funcNode->token.ctext())};
         auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
@@ -632,7 +632,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
-    if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
+    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
     {
         bool ok = false;
         if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->childs.size() <= 1)
@@ -651,9 +651,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         // Determine if function is generic
-        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC) && !(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC))
+        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC) && !(funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC)))
             funcNode->flags |= AST_IS_GENERIC;
-        if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC) && !(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC))
+        if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC) && !(funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC)))
             funcNode->flags |= AST_IS_GENERIC;
 
         if (funcNode->parameters)
@@ -661,7 +661,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            if (funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC)
+            if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
@@ -675,7 +675,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->flags & AST_IS_GENERIC)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
-        if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
+        if ((funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC)) && funcNode->flags & AST_IS_GENERIC)
         {
             auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
             auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
@@ -721,7 +721,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // :RunGeneratedExp
     bool mustDeduceReturnType = false;
-    if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+    if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
         mustDeduceReturnType = true;
 
     // No semantic on content if function is generic
@@ -732,7 +732,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     }
 
     // Macro will not evaluate its content before being inline
-    if ((funcNode->attributeFlags & ATTRIBUTE_MACRO) && !shortLambda)
+    if ((funcNode->hasAttribute(ATTRIBUTE_MACRO)) && !shortLambda)
         funcNode->content->flags |= AST_NO_SEMANTIC;
 
     // Register symbol
@@ -775,7 +775,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR),
+            SWAG_VERIFY(!(typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR)),
                         context->report({funcNode, funcNode->tokenName, FMT(Err(Err0102), typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
@@ -913,7 +913,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
         // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
-        if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
+        if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN)))
         {
             const auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
             const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
@@ -922,7 +922,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         }
 
         // The function returns nothing but has the 'Swag.Discardable' attribute
-        if (funcNode->returnType->typeInfo->isVoid() && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
+        if (funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_DISCARDABLE))
         {
             const auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
             const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
@@ -948,7 +948,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
-        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !(funcNode->attributeFlags & ATTRIBUTE_OVERLOAD))
+        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !(funcNode->hasAttribute(ATTRIBUTE_OVERLOAD)))
         {
             AstFuncDecl* other = nullptr;
             for (const auto n : funcNode->resolvedSymbolName->nodes)
@@ -1013,7 +1013,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
         funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
-        !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
+        !(funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC)) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
         funcNode->ownerStructScope->owner->typeInfo->isStruct())
     {
@@ -1360,7 +1360,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))
     {
-        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
+        if (!(node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN)) && !(node->flags & AST_IN_MIXIN))
         {
             if (node->kind == AstNodeKind::Return)
                 node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
@@ -1422,7 +1422,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // Nothing to return
     if (funcNode->returnType->typeInfo->isVoid() && node->childs.empty())
     {
-        if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+        if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
         {
             funcNode->returnType->typeInfo  = g_TypeMgr->typeInfoVoid;
             funcNode->returnTypeDeducedNode = node;
@@ -1442,7 +1442,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             bool tryDeduce = false;
             if ((funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED))
                 tryDeduce = true;
-            if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+            if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
                 tryDeduce = true;
             if (tryDeduce)
             {
@@ -1495,7 +1495,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
                                         ATTRIBUTE_PREMAIN_FUNC |
                                         ATTRIBUTE_TEST_FUNC))
         {
-            if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+            if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
                 return context->report({child, FMT(Err(Err0696), funcNode->getDisplayNameC())});
         }
     }
@@ -1536,7 +1536,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
         constexpr uint64_t castFlags = CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF | CASTFLAG_ACCEPT_PENDING;
 
-        if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
+        if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
         {
             PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, []()
                               {
@@ -1546,7 +1546,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }
-        else if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        else if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {
             PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType]()
                               {
@@ -1817,7 +1817,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
     // A mixin behave exactly like if it is in the caller scope, so do not create a sub-scope for them
     Scope* newScope = identifier->ownerScope;
-    if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
+    if (!(funcDecl->hasAttribute(ATTRIBUTE_MIXIN)))
     {
         newScope          = Ast::newScope(inlineNode, FMT("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
         inlineNode->scope = newScope;
@@ -1901,13 +1901,13 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     if (newContent->hasExtByteCode())
     {
         newContent->extByteCode()->byteCodeBeforeFct = nullptr;
-        if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
+        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
             newContent->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     }
 
     if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
     {
-        if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN && newContent->childs.front()->extension)
+        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->childs.front()->extension)
         {
             const auto front = newContent->childs.front();
             if (front->hasExtByteCode())

@@ -496,7 +496,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     }
 
     // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
@@ -664,7 +664,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
-    if (node->attributeFlags & ATTRIBUTE_NO_COPY)
+    if (node->hasAttribute(ATTRIBUTE_NO_COPY))
         typeInfo->flags |= TYPEINFO_STRUCT_NO_COPY;
 
     typeInfo->declNode = node;
@@ -713,7 +713,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
         break;
     }
 
-    if (node->attributeFlags & ATTRIBUTE_GEN)
+    if (node->hasAttribute(ATTRIBUTE_GEN))
         node->resolvedSymbolName->flags |= SYMBOL_ATTRIBUTE_GEN;
 
     AddSymbolTypeInfo toAdd;
@@ -833,7 +833,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // Check 'opaque' attribute
     if (!sourceFile->isGenerated)
     {
-        if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+        if (node->hasAttribute(ATTRIBUTE_OPAQUE))
         {
             SWAG_VERIFY(!sourceFile->forceExport, context->report({node, node->token, Err(Err0340)}));
             SWAG_VERIFY(node->isPublic(), context->report({node, node->token, Err(Err0339)}));
@@ -946,13 +946,13 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 structFlags |= TYPEINFO_STRUCT_NO_COPY;
 
             // Remove attribute constexpr if necessary
-            if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+            if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR)))
                 node->attributeFlags &= ~ATTRIBUTE_CONSTEXPR;
 
             // Var is a struct
             if (varTypeInfo->isStruct())
             {
-                if (varTypeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NO_ZERO)
+                if (varTypeInfo->declNode->hasAttribute(ATTRIBUTE_EXPORT_TYPE_NO_ZERO))
                     structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
 
@@ -1191,7 +1191,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);
 
     // Check public
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !typeInfo->isTuple())
+    if ((node->hasAttribute(ATTRIBUTE_PUBLIC)) && !typeInfo->isTuple())
     {
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
@@ -1242,7 +1242,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         extension->byteCodeJob = ByteCodeGenJob::newJob(context->baseJob->dependentJob, sourceFile, node);
         node->byteCodeFct      = ByteCodeGen::emitStruct;
 
-        if (node->attributeFlags & ATTRIBUTE_GEN)
+        if (node->hasAttribute(ATTRIBUTE_GEN))
             node->resolvedSymbolName->addDependentJob(extension->byteCodeJob);
         else
             g_ThreadMgr.addJob(extension->byteCodeJob);

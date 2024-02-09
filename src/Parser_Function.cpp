@@ -797,7 +797,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     // #message has an expression has parameters
-    else if (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+    else if (funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
@@ -810,7 +810,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     else if (token.id == TokenId::SymLeftParen)
     {
         Utf8 note;
-        if (funcNode->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+        if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
             note = Nte(Nte0184);
         return error(token, FMT(Err(Err0695), funcNode->getDisplayNameC()), note.c_str());
     }

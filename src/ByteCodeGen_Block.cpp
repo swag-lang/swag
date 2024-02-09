@@ -258,7 +258,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     // case, the inline node does not own the scope)
     if (node->hasExtMisc() && !node->extMisc()->registersToRelease.empty())
     {
-        if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
+        if (!(node->hasAttribute(ATTRIBUTE_MIXIN)))
         {
             for (const auto r : node->extMisc()->registersToRelease)
                 freeRegisterRC(context, r);
@@ -1155,7 +1155,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the
         // scopes until that one (excluded)
-        if (node->ownerInline->func->attributeFlags & ATTRIBUTE_MIXIN)
+        if (node->ownerInline->func->hasAttribute(ATTRIBUTE_MIXIN))
         {
             topScope   = node->ownerInline->scope;
             auto scope = node->ownerScope;

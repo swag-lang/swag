@@ -172,7 +172,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         uint64_t castFlags = CASTFLAG_AUTO_OP_CAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
-        if (oneMatch.oneOverload && !(oneMatch.oneOverload->overload->node->attributeFlags & ATTRIBUTE_OVERLOAD))
+        if (oneMatch.oneOverload && !oneMatch.oneOverload->overload->node->hasAttribute(ATTRIBUTE_OVERLOAD))
             castFlags |= CASTFLAG_TRY_COERCE;
 
         TypeInfo* toType = nullptr;
@@ -993,7 +993,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (ownerFct)
         {
             auto fctAttributes = ownerFct->attributeFlags;
-            if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_IN_RUN_BLOCK))
+            if (!(fctAttributes & ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_IN_RUN_BLOCK))
             {
                 Diagnostic diag{identifier, FMT(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
                 auto       note = Diagnostic::note(overload->node, overload->node->token, FMT(Nte(Nte0147), Naming::kindName(overload->node).c_str()));
@@ -1060,7 +1060,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 if (isStatementIdentifier(identifier))
                 {
-                    if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
+                    if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
                         Diagnostic diag(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.ctext()));
                         return context->report(diag, Diagnostic::hereIs(overload));
@@ -1207,7 +1207,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 auto fctAttributes = ownerFct->attributeFlags;
 
-                if (!(fctAttributes & ATTRIBUTE_COMPILER) && (funcDecl->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_IN_RUN_BLOCK))
+                if (!(fctAttributes & ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !(identifier->flags & AST_IN_RUN_BLOCK))
                 {
                     Diagnostic diag{identifier, identifier->token, FMT(Err(Err0176), funcDecl->token.ctext(), ownerFct->token.ctext())};
                     auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0156));
@@ -1269,7 +1269,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             if (isStatementIdentifier(identifier))
             {
-                if (!(funcDecl->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
+                if (!(funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE)) && !(identifier->flags & AST_DISCARD))
                 {
                     Diagnostic diag(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.ctext()));
                     return context->report(diag, Diagnostic::hereIs(overload));

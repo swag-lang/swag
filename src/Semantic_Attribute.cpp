@@ -247,7 +247,7 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
     const auto safetyOff      = child->ownerFct->safetyOff;
 
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
-    child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_GEN_BC;
+    child->attributeFlags |= attributeFlags &ATTRIBUTE_PRINT_GEN_BC;
     inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
@@ -655,7 +655,7 @@ bool Semantic::resolveAttrDecl(SemanticContext* context)
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         node->ownerScope->addPublicAttribute(node);
     return true;
 }

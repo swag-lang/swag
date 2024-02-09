@@ -265,7 +265,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
         // :SpecFuncConstExpr
         if (op->hasSpecialFuncCall() && (op->flags & AST_CONST_EXPR))
         {
-            if (!(typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+            if (!typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
                 op->flags &= ~AST_CONST_EXPR;
         }
 

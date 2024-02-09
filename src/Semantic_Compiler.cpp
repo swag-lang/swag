@@ -35,7 +35,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
             {
                 if (c->resolvedSymbolOverload)
                 {
-                    if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    if (!c->resolvedSymbolOverload->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         const auto result = Diagnostic::note(c, c->token, FMT(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
                         result->hint      = Nte(Nte0079);
@@ -112,7 +112,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     if (!(node->semFlags & SEMFLAG_EXEC_RET_STACK))
     {
         auto realType = TypeManager::concreteType(node->typeInfo);
-        if (realType && realType->isStruct() && !(realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+        if (realType && realType->isStruct() && !realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
         {
             if (realType->isTuple())
             {
@@ -205,7 +205,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                         typeSliceContent->isNativeIntegerOrRune() ||
                         typeSliceContent->isNativeFloat())
                         ok = true;
-                    if (typeSliceContent->isStruct() && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    if (typeSliceContent->isStruct() && typeSliceContent->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
                         ok = true;
                     if (!ok)
                     {
@@ -284,7 +284,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     }
 
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
+    if (node->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
     {
         ByteCodePrintOptions opt;
         node->extByteCode()->bc->print(opt);
@@ -453,7 +453,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
     node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
 
     // Be sure #macro is used inside a macro
-    if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
+    if (!node->ownerInline || (node->ownerInline->hasAttribute(ATTRIBUTE_MIXIN)) || !(node->ownerInline->hasAttribute(ATTRIBUTE_MACRO)))
         return context->report({node, Err(Err0444)});
 
     return true;

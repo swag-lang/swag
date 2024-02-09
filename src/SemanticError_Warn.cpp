@@ -13,7 +13,7 @@
 bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {
     const auto node = identifier->resolvedSymbolOverload->node;
-    if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
+    if (!node->hasAttribute(ATTRIBUTE_DEPRECATED))
         return true;
 
     const auto           symbol = identifier->resolvedSymbolOverload->symbol;

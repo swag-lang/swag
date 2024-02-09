@@ -14,7 +14,7 @@
 bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != Test))
+    if (bc->node && (bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC)) && (buildParameters.compileType != Test))
         return true;
 
     int   ct              = buildParameters.compileType;
@@ -5917,12 +5917,12 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const Modul
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
     }
 
-    if (funcNode && funcNode->attributeFlags & ATTRIBUTE_NO_INLINE)
+    if (funcNode && funcNode->hasAttribute(ATTRIBUTE_NO_INLINE))
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);
 
     // Export public symbol in case of a dll
     if (funcNode &&
-        funcNode->attributeFlags & ATTRIBUTE_PUBLIC &&
+        funcNode->hasAttribute(ATTRIBUTE_PUBLIC) &&
         buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
     {
         func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -5933,7 +5933,7 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const Modul
              !funcNode->sourceFile->isRuntimeFile &&
              !funcNode->sourceFile->isBootstrapFile &&
              !bc->isInSeg &&
-             !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
+             !(funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC)) &&
              numPreCompileBuffers == 2) // :SegZeroIsData
     {
         func->setLinkage(llvm::GlobalValue::InternalLinkage);

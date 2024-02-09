@@ -48,7 +48,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         // Take care of #validif/#validifx
         if (overSym->kind == SymbolKind::Function &&
             !(context->node->flags & AST_IN_VALIDIF) &&
-            !(context->node->attributeFlags & ATTRIBUTE_MATCH_VALIDIF_OFF))
+            !context->node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
             const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->validif)
@@ -62,7 +62,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
         // Do not match "self"
         if (overSym->kind == SymbolKind::Function &&
-            context->node->attributeFlags & ATTRIBUTE_MATCH_SELF_OFF)
+            context->node->hasAttribute(ATTRIBUTE_MATCH_SELF_OFF))
         {
             if (node->ownerInline)
             {

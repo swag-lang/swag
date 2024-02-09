@@ -761,7 +761,7 @@ bool AstNode::isEmptyFct()
 
 bool AstNode::isForeign() const
 {
-    return attributeFlags & ATTRIBUTE_FOREIGN;
+    return hasAttribute(ATTRIBUTE_FOREIGN);
 }
 
 bool AstNode::isSilentCall() const
@@ -771,7 +771,7 @@ bool AstNode::isSilentCall() const
 
 bool AstNode::isPublic() const
 {
-    if (attributeFlags & ATTRIBUTE_PUBLIC)
+    if (hasAttribute(ATTRIBUTE_PUBLIC))
         return true;
     if (semFlags & SEMFLAG_ACCESS_PUBLIC)
         return true;

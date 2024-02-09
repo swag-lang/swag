@@ -89,19 +89,19 @@ Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeI
         return "field";
     }
 
-    if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_MACRO)
+    if (node->kind == AstNodeKind::FuncDecl && node->hasAttribute(ATTRIBUTE_MACRO))
     {
         article = "a";
         return "macro";
     }
 
-    if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_MIXIN)
+    if (node->kind == AstNodeKind::FuncDecl && node->hasAttribute(ATTRIBUTE_MIXIN))
     {
         article = "a";
         return "mixin";
     }
 
-    if (node->kind == AstNodeKind::FuncDecl && node->attributeFlags & ATTRIBUTE_INLINE)
+    if (node->kind == AstNodeKind::FuncDecl && node->hasAttribute(ATTRIBUTE_INLINE))
     {
         article = "an";
         return "inlined function";
@@ -530,37 +530,37 @@ Utf8 Naming::tokenToName(TokenId id)
 
 Utf8 Naming::funcToName(const AstFuncDecl* node)
 {
-    if (node->attributeFlags & ATTRIBUTE_AST_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_AST_FUNC))
         return "[[#ast]] block";
     if (node->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
         return "[[#run]] block";
-    if (node->attributeFlags & ATTRIBUTE_MATCH_VALIDIF_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_FUNC))
         return "[[#validif]] block";
-    if (node->attributeFlags & ATTRIBUTE_MATCH_VALIDIFX_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC))
         return "[[#validifx]] block";
 
-    if (node->attributeFlags& ATTRIBUTE_TEST_FUNC && node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    if (node->attributeFlags& ATTRIBUTE_TEST_FUNC && node->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return "[[#test]] block";
-    if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_MAIN_FUNC))
         return "[[#main]] block";
-    if (node->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
         return "[[#message]] block";
-    if (node->attributeFlags & ATTRIBUTE_INIT_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_INIT_FUNC))
         return "[[#init]] block";
-    if (node->attributeFlags & ATTRIBUTE_DROP_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_DROP_FUNC))
         return "[[#drop]] block";
-    if (node->attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
         return "[[#premain]] block";
 
     if (node->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION)
         return "lambda";
 
-    if (node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return FMT("[[%s]] block", node->token.ctext());
 
-    if (node->attributeFlags & ATTRIBUTE_MIXIN)
+    if (node->hasAttribute(ATTRIBUTE_MIXIN))
         return FMT("[[%s]] mixin", node->token.ctext());
-    if (node->attributeFlags & ATTRIBUTE_MACRO)
+    if (node->hasAttribute(ATTRIBUTE_MACRO))
         return FMT("[[%s]] macro", node->token.ctext());
 
     return FMT("[[%s]] function", node->token.ctext());

@@ -152,7 +152,7 @@ bool AstFuncDecl::mustAutoInline() const
         return false;
     if (sourceFile->module->buildCfg.byteCodeAutoInline == false)
         return false;
-    if (attributeFlags & ATTRIBUTE_NO_INLINE)
+    if (hasAttribute(ATTRIBUTE_NO_INLINE))
         return false;
 
     // All short functions
@@ -170,7 +170,7 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
         return true;
     if (sourceFile->module->buildCfg.byteCodeInline == false && !forExport)
         return false;
-    if (attributeFlags & ATTRIBUTE_INLINE)
+    if (hasAttribute(ATTRIBUTE_INLINE))
         return true;
     return false;
 }
@@ -184,7 +184,7 @@ Utf8 AstFuncDecl::getCallName()
 {
     if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))
     {
-        if (!(attributeFlags & ATTRIBUTE_SHARP_FUNC))
+        if (!hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {
             computeFullNameForeignExport();
             return fullnameForeignExport;
@@ -197,10 +197,10 @@ Utf8 AstFuncDecl::getCallName()
 
 Utf8 AstFuncDecl::getNameForUserCompiler()
 {
-    if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    if (hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         auto fct = parent;
-        while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
+        while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->hasAttribute(ATTRIBUTE_SHARP_FUNC)))
             fct = fct->parent;
         if (fct)
             return fct->getScopedName();

@@ -28,7 +28,7 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
     Vector<const Diagnostic*> notes;
 
     notes.push_back(Diagnostic::hereIs(overload));
-    if (context->node->ownerFct && context->node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
+    if (context->node->ownerFct && context->node->ownerFct->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
         notes.push_back(Diagnostic::note(FMT(Nte(Nte0194), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str())));
     if (overload->fromInlineParam)
         notes.push_back(Diagnostic::note(overload->fromInlineParam, FMT(Nte(Nte0077), overload->symbol->name.c_str())));

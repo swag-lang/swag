@@ -15,7 +15,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     // For a try/throw inside an inline block, take the original function, except if it is flagged with 'Swag.CalleeReturn'
     if (node->ownerInline)
     {
-        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
+        if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
             node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
     }
 
@@ -24,7 +24,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     if (parentFct->isSpecialFunctionName())
         return context->report({node, node->token, FMT(Err(Err0451), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
-    if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
+    if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return context->report({node, node->token, FMT(Err(Err0450), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     return true;

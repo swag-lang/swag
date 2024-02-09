@@ -277,7 +277,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     line.flags += ip->flags & BCI_IMM_D ? "D" : ".";
     line.flags += ip->flags & BCI_START_STMT ? "S" : ".";
     line.flags += ip->flags & BCI_UNPURE ? "U" : ".";
-    line.flags += ip->flags & BCI_CAN_OVERFLOW || (ip->node && ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) ? "O" : ".";
+    line.flags += ip->flags & BCI_CAN_OVERFLOW || (ip->node && ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) ? "O" : ".";
 
     // Pretty
     line.pretty = getPrettyInstruction(ip);

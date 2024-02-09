@@ -780,7 +780,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 {
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
-    if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+    if (node->hasAttribute(ATTRIBUTE_OPAQUE))
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
@@ -826,7 +826,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     }
 
     // Opaque export. Just simulate structure with the correct size.
-    if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+    if (node->hasAttribute(ATTRIBUTE_OPAQUE))
     {
         concat.addChar('{');
         concat.addEol();
@@ -2091,7 +2091,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
             AstFuncDecl* node = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
 
             // Can be removed in case of special functions
-            if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
+            if (!(node->hasAttribute(ATTRIBUTE_PUBLIC)))
                 continue;
 
             // Remap special functions to their generated equivalent

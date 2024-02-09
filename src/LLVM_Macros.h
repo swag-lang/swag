@@ -215,7 +215,7 @@
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                             \
     do                                                                                                                     \
     {                                                                                                                      \
-        bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true; \
+        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true; \
         if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))                            \
         {                                                                                                                  \
             auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, builder.CreateLoad(__type, r1), r2);          \
@@ -244,7 +244,7 @@
 #define OP_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                               \
     do                                                                                                                     \
     {                                                                                                                      \
-        bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true; \
+        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true; \
         if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))                            \
         {                                                                                                                  \
             auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, r1, r2);                                      \

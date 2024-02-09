@@ -44,17 +44,17 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
     Utf8 msg;
     Utf8 msg1;
 
-    if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+    if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
     {
         msg  = Err(Err0183);
         msg1 = Nte(Nte0121);
     }
-    else if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+    else if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
     {
         msg  = Err(Err0184);
         msg1 = Nte(Nte0122);
     }
-    else if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+    else if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
     {
         msg  = Err(Err0186);
         msg1 = Nte(Nte0120);

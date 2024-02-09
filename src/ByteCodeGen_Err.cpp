@@ -236,7 +236,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
 
     // In a top level function, 'throw' is like a failed 'assume'
     const auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
-    if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    if (parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         if (context->sourceFile->module->buildCfg.errorStackTrace)
         {
@@ -278,7 +278,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
         parentFct = node->ownerInline->func;
     else
         parentFct = node->ownerFct;
-    if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    if (parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return emitAssume(context);
 
     if (!(node->semFlags & SEMFLAG_TRY_1))

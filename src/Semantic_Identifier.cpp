@@ -61,7 +61,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     }
 
     SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         node->ownerScope->addPublicNode(node);
     return true;
 }

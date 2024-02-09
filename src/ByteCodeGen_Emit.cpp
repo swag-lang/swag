@@ -174,7 +174,7 @@ ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* cont
 
     if (context->tryCatchScope)
         ins.flags |= BCI_TRYCATCH;
-    if (ins.node && ins.node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON)
+    if (ins.node && ins.node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON))
         ins.flags |= BCI_CAN_OVERFLOW;
 
 #if defined SWAG_DEV_MODE

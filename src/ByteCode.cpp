@@ -254,11 +254,11 @@ bool ByteCode::canEmit() const
     const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Do we need to generate that function ?
-    if (funcNode->attributeFlags & ATTRIBUTE_COMPILER)
+    if (funcNode->hasAttribute(ATTRIBUTE_COMPILER))
         return false;
-    if ((funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+    if ((funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC)) && !g_CommandLine.test)
         return false;
-    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (funcNode->hasAttribute(ATTRIBUTE_FOREIGN))
         return false;
     if (!funcNode->content && !funcNode->isSpecialFunctionGenerated())
         return false;

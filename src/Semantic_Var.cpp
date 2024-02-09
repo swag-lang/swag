@@ -383,7 +383,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
     const auto module   = varNode->sourceFile->module;
     const auto typeInfo = TypeManager::concreteType(varNode->typeInfo);
 
-    if (varNode->attributeFlags & ATTRIBUTE_TLS)
+    if (varNode->hasAttribute(ATTRIBUTE_TLS))
         return &module->tlsSegment;
 
     if (isCompilerContext(varNode))
@@ -394,7 +394,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
     if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
         return &module->constantSegment;
 
-    if (varNode->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
+    if (varNode->hasAttribute(AST_EXPLICITLY_NOT_INITIALIZED))
         return &module->mutableSegment;
 
     // An array of struct with default values should go to the mutable segment
@@ -549,7 +549,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         auto ownerFct = node->ownerFct;
         while (ownerFct)
         {
-            if (ownerFct->attributeFlags & ATTRIBUTE_MIXIN)
+            if (ownerFct->hasAttribute(ATTRIBUTE_MIXIN))
                 break;
             ownerFct = ownerFct->ownerFct;
         }
@@ -610,7 +610,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_CONSTANT;
     if (node->kind == AstNodeKind::FuncDeclParam)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
-    else if (node->ownerScope->isGlobal() || (node->attributeFlags & ATTRIBUTE_GLOBAL))
+    else if (node->ownerScope->isGlobal() || node->hasAttribute(ATTRIBUTE_GLOBAL))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (node->ownerScope->isGlobalOrImpl() && (node->flags & AST_IN_IMPL) && !(node->flags & AST_STRUCT_MEMBER))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
@@ -622,7 +622,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         isLocalConstant = true;
     if (node->specFlags & AstVarDecl::SPECFLAG_CONST_ASSIGN)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
-    if (node->attributeFlags & ATTRIBUTE_TLS)
+    if (node->hasAttribute(ATTRIBUTE_TLS))
         symbolFlags |= OVERLOAD_VAR_TLS;
     if (node->assignment)
         symbolFlags |= OVERLOAD_VAR_HAS_ASSIGN;
@@ -630,13 +630,13 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCE_ALIAS) : nullptr;
 
     // Register public global constant
-    if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
+    if (isCompilerConstant && node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         if (node->ownerScope->isGlobalOrImpl() && (node->type || node->assignment))
             node->ownerScope->addPublicNode(node);
     }
 
-    if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && !concreteNodeType->isLambdaClosure())
+    if (node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !concreteNodeType->isLambdaClosure())
     {
         Diagnostic diag{node, node->token, FMT(Err(Err0489), concreteNodeType->getDisplayNameC())};
         auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
@@ -909,7 +909,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 {
                     symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
                     SWAG_ASSERT(node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload);
-                    if (!(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                    if (!node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic diag{node->assignment, Err(Err0040)};
                         diag.hint = FMT(Nte(Nte0178), leftConcreteType->getDisplayNameC());
@@ -1139,7 +1139,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
         }
 
-        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         {
             Diagnostic diag{node, node->getTokenName(), Err(Err0479)};
             auto       note = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
@@ -1173,7 +1173,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // Register global variable
         if (!(symbolFlags & OVERLOAD_VAR_COMPILER))
         {
-            if (node->attributeFlags & ATTRIBUTE_GLOBAL)
+            if (node->hasAttribute(ATTRIBUTE_GLOBAL))
             {
                 if (node->ownerFct)
                     node->ownerFct->localGlobalVars.push_back(context->node);

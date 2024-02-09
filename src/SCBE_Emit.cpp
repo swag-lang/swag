@@ -114,7 +114,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
 
 void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const
 {
-    const bool nw = !(ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->flags & BCI_CAN_OVERFLOW);
+    const bool nw = !(ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) && !(ip->flags & BCI_CAN_OVERFLOW);
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
     {
         pp.emit_LongJumpOp(JNO);
@@ -128,7 +128,7 @@ void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const
 
 void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const
 {
-    const bool nw = !(ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->flags & BCI_CAN_OVERFLOW);
+    const bool nw = !(ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) && !(ip->flags & BCI_CAN_OVERFLOW);
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
     {
         pp.emit_LongJumpOp(JAE);

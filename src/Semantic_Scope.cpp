@@ -54,7 +54,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     {
         SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0447)}));
         AstNode* parent = node;
-        while ((parent->ownerFct->attributeFlags & ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
+        while (parent->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
             parent = parent->ownerFct->parent;
         SWAG_VERIFY(parent, context->report({parent, Err(Err0447)}));
 
@@ -511,9 +511,9 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     else if (startNode->kind == AstNodeKind::Inline)
     {
         const auto inlineBlock = castAst<AstInline>(startNode, AstNodeKind::Inline);
-        if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MIXIN))
+        if (!inlineBlock->func->hasAttribute(ATTRIBUTE_MIXIN))
         {
-            if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MACRO))
+            if (!inlineBlock->func->hasAttribute(ATTRIBUTE_MACRO))
                 return;
 
             if (scopeUpMode == IdentifierScopeUpMode::None)

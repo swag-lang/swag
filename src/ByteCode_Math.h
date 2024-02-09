@@ -10,7 +10,7 @@ inline bool overflowIsEnabled(const ByteCodeInstruction* ip, AstNode* node)
 {
     if (ip && ip->flags & BCI_CAN_OVERFLOW)
         return true;
-    if (node && node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON)
+    if (node && node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON))
         return true;
     if (!node->sourceFile->module->mustEmitSafetyOverflow(node))
         return true;

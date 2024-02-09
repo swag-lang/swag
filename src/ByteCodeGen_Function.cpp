@@ -231,7 +231,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             else if (returnType->isString())
             {
                 const auto child = node->childs.front();
-                if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
+                if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
                     EMIT_INST2(context, ByteCodeOp::CloneString, child->resultRegisterRc[0], child->resultRegisterRc[1]);
                 EMIT_INST2(context, ByteCodeOp::CopyRARBtoRR2, child->resultRegisterRc[0], child->resultRegisterRc[1]);
                 freeRegisterRC(context, child->resultRegisterRc);
@@ -1504,7 +1504,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     if (testReturn->kind == AstNodeKind::Identifier || testReturn->kind == AstNodeKind::FuncCall)
     {
         // We need a copy in #ast functions
-        if (!node->ownerFct || !(node->ownerFct->attributeFlags & ATTRIBUTE_AST_FUNC))
+        if (!node->ownerFct || !(node->ownerFct->hasAttribute(ATTRIBUTE_AST_FUNC)))
             testReturn = testReturn->parent;
     }
 
@@ -2244,7 +2244,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->specFlags & AstFuncDecl::SPECFLAG_REG_GET_CONTEXT ||
         funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW ||
         funcNode->specFlags & AstFuncDecl::SPECFLAG_ASSUME ||
-        funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+        funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
         funcNode->registerGetContext = reserveRegisterRC(context);
@@ -2267,7 +2267,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     }
 
     // Clear stack trace when entering a #<function>
-    if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC &&
+    if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
         context->sourceFile->module->buildCfg.errorStackTrace)
     {
         SWAG_ASSERT(funcNode->registerGetContext != UINT32_MAX);

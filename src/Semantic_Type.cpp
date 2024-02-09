@@ -100,7 +100,7 @@ bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
     msg.node                 = node;
     SWAG_CHECK(module->postCompilerMessage(context, msg));
 
-    if (node->attributeFlags & ATTRIBUTE_GEN)
+    if (node->hasAttribute(ATTRIBUTE_GEN))
     {
         msg.concrete.kind = CompilerMsgKind::AttributeGen;
         SWAG_CHECK(module->postCompilerMessage(context, msg));
@@ -600,7 +600,7 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
     const auto typeInfo = makeType<TypeInfoAlias>();
     typeInfo->declNode  = node;
     typeInfo->name      = node->token.text;
-    if (node->attributeFlags & ATTRIBUTE_STRICT)
+    if (node->hasAttribute(ATTRIBUTE_STRICT))
         typeInfo->flags |= TYPEINFO_STRICT;
     node->typeInfo = typeInfo;
 
@@ -616,7 +616,7 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
 
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         node->ownerScope->addPublicNode(node);
     return true;
 }

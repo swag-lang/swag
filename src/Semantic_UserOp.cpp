@@ -147,7 +147,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(diag);
     }
 
-    if ((node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+    if (node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0427), node->token.ctext())};
         const auto       note  = Diagnostic::note(Nte(Nte0106));
@@ -155,7 +155,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(diag, note, note1);
     }
 
-    if (!(node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_PUBLIC))
+    if (!node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0428), node->token.ctext())};
         const auto       note  = Diagnostic::note(Nte(Nte0087));
@@ -212,7 +212,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         auto secondGen = node->genericParameters->childs[1];
         SWAG_VERIFY(secondGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT, context->report({secondGen, FMT(Err(Err0306), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CASTFLAG_CAST), context->report({secondGen, FMT(Err(Err0391), name.c_str(), secondGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, Err(Err0542)}));
+        SWAG_VERIFY(node->hasAttribute(ATTRIBUTE_MACRO), context->report({node, node->token, Err(Err0542)}));
     }
     else if (name == g_LangSpec->name_opCast)
     {

@@ -63,13 +63,13 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
 #endif
 
             // Print resulting bytecode
-            if (node->attributeFlags & ATTRIBUTE_PRINT_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+            if (node->hasAttribute(ATTRIBUTE_PRINT_BC) && !(node->hasAttribute(ATTRIBUTE_GENERATED_FUNC)))
             {
                 ScopedLock lk(context->sourceFile->module->mutexByteCode);
                 context->sourceFile->module->byteCodePrintBC.push_back(context->bc);
             }
 
-            if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+            if (node->hasAttribute(ATTRIBUTE_PRINT_GEN_BC) && !(node->hasAttribute(ATTRIBUTE_GENERATED_FUNC)))
             {
                 constexpr ByteCodePrintOptions opt;
                 context->bc->print(opt);
@@ -117,16 +117,16 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
         return true;
 
     // Register function in compiler list, now that we are done
-    if (node->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+    if (node->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
         context->sourceFile->module->addCompilerFunc(context->bc);
 
     // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
     if (!g_ThreadMgr.debuggerMode)
     {
-        if (node->attributeFlags & ATTRIBUTE_PRINT_BC || (node->ownerFct && node->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
+        if (node->hasAttribute(ATTRIBUTE_PRINT_BC) || (node->ownerFct && node->ownerFct->hasAttribute(ATTRIBUTE_PRINT_BC)))
         {
-            if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC || node->kind != AstNodeKind::FuncDecl)
+            if (node->hasAttribute(ATTRIBUTE_GENERATED_FUNC) || node->kind != AstNodeKind::FuncDecl)
             {
                 constexpr ByteCodePrintOptions opt;
                 context->bc->print(opt);
@@ -151,7 +151,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
             if (context->bc->maxReservedRegisterRC > context->bc->availableRegistersRC.size() + context->bc->staticRegs)
             {
                 Report::internalError(funcNode, FMT("function [[%s]] does not release all registers !", funcNode->token.ctext()));
-                if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
+                if (node->hasAttribute(ATTRIBUTE_PRINT_BC))
                 {
                     constexpr ByteCodePrintOptions opt;
                     context->bc->print(opt);
@@ -160,7 +160,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
             else if (context->bc->maxReservedRegisterRC < context->bc->availableRegistersRC.size())
             {
                 Report::internalError(funcNode, FMT("function [[%s]] releases too many registers !", funcNode->token.ctext()));
-                if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
+                if (node->hasAttribute(ATTRIBUTE_PRINT_BC))
                 {
                     constexpr ByteCodePrintOptions opt;
                     context->bc->print(opt);

@@ -46,7 +46,7 @@ namespace
             return false;
         if (node->flags & AST_GENERATED)
             return false;
-        if (node->attributeFlags & ATTRIBUTE_NO_DOC)
+        if (node->hasAttribute(ATTRIBUTE_NO_DOC))
             return false;
         if (!node->sourceFile)
             return false;
@@ -70,7 +70,7 @@ namespace
             return true;
         if (node->sourceFile->isBootstrapFile)
             return true;
-        if (!node->sourceFile->forceExport && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
+        if (!node->sourceFile->forceExport && !(node->hasAttribute(ATTRIBUTE_PUBLIC)))
             return false;
 
         return true;
@@ -376,7 +376,7 @@ void GenDoc::collectScopes(Scope* root)
     }
 
     // If something is exported inside a namespace, then force the namespace to be exported too
-    if (collect.size() != count && root->kind == ScopeKind::Namespace && !(root->owner->attributeFlags & ATTRIBUTE_PUBLIC))
+    if (collect.size() != count && root->kind == ScopeKind::Namespace && !(root->owner->hasAttribute(ATTRIBUTE_PUBLIC)))
         root->owner->attributeFlags |= ATTRIBUTE_PUBLIC;
 
     if (!(root->flags & SCOPE_AUTO_GENERATED))
@@ -673,7 +673,7 @@ void GenDoc::generateContent()
             }
 
             // Fields
-            if (!(structNode->attributeFlags & ATTRIBUTE_OPAQUE))
+            if (!(structNode->hasAttribute(ATTRIBUTE_OPAQUE)))
             {
                 bool first = true;
                 for (auto structVal : structNode->scope->symTable.allSymbols)
@@ -784,9 +784,9 @@ void GenDoc::generateContent()
 
                 auto funcNode = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
 
-                if (n->attributeFlags & ATTRIBUTE_MACRO)
+                if (n->hasAttribute(ATTRIBUTE_MACRO))
                     code += "#[Swag.Macro]\n";
-                else if (n->attributeFlags & ATTRIBUTE_MIXIN)
+                else if (n->hasAttribute(ATTRIBUTE_MIXIN))
                     code += "#[Swag.Mixin]\n";
 
                 code += "func";
