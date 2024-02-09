@@ -79,15 +79,15 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 
         // Constant stuff needed to convert U64 to F64 (code from clang)
         {
-            offset                   = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
-            pp.symCst_U64F64         = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-            const auto addr          = pp.globalSegment.address(offset);
-            *(uint32_t*) (addr + 0)  = 0x43300000;
-            *(uint32_t*) (addr + 4)  = 0x45300000;
-            *(uint32_t*) (addr + 8)  = 0x00000000;
-            *(uint32_t*) (addr + 12) = 0x00000000;
-            *(uint64_t*) (addr + 16) = 0x4330000000000000;
-            *(uint64_t*) (addr + 24) = 0x4530000000000000;
+            offset                                  = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
+            pp.symCst_U64F64                        = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+            const auto addr                         = pp.globalSegment.address(offset);
+            *reinterpret_cast<uint32_t*>(addr + 0)  = 0x43300000;
+            *reinterpret_cast<uint32_t*>(addr + 4)  = 0x45300000;
+            *reinterpret_cast<uint32_t*>(addr + 8)  = 0x00000000;
+            *reinterpret_cast<uint32_t*>(addr + 12) = 0x00000000;
+            *reinterpret_cast<uint64_t*>(addr + 16) = 0x4330000000000000;
+            *reinterpret_cast<uint64_t*>(addr + 24) = 0x4530000000000000;
         }
     }
     else

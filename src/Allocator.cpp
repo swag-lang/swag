@@ -75,7 +75,7 @@ uint8_t* Allocator::markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64
     blockAddr += sizeof(uint64_t);
     *reinterpret_cast<uint64_t*>(blockAddr) = userSize;
     blockAddr += sizeof(uint64_t);
-    *(uint64_t*) (blockAddr + userSize) = marker;
+    *reinterpret_cast<uint64_t*>(blockAddr + userSize) = marker;
     return blockAddr;
 }
 
@@ -87,7 +87,7 @@ uint8_t* Allocator::checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_
     userAddr += sizeof(uint64_t);
     SWAG_ASSERT(*reinterpret_cast<uint64_t*>(userAddr) == userSize);
     userAddr += sizeof(uint64_t);
-    SWAG_ASSERT(*(uint64_t*) (userAddr + userSize) == marker);
+    SWAG_ASSERT(*reinterpret_cast<uint64_t*>(userAddr + userSize) == marker);
     return blockAddr;
 }
 #endif
