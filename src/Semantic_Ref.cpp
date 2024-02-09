@@ -74,7 +74,7 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
     SWAG_ASSERT(node->kind == AstNodeKind::IdentifierRef || node->kind == AstNodeKind::ArrayPointerIndex);
-    if (!(node->hasAstFlag(AST_L_VALUE)))
+    if (!node->hasAstFlag(AST_L_VALUE))
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         {

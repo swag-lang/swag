@@ -1029,7 +1029,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         return true;
     if (node->hasExtMisc() && node->extMisc()->exportNode)
         node = node->extMisc()->exportNode;
-    if (node->hasAstFlag(AST_GENERATED) && !(node->hasAstFlag(AST_GENERATED_USER)))
+    if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
         return true;
 
     // Prepend some stuff

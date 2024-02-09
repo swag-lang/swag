@@ -506,7 +506,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
 bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 {
     const auto node = context->node;
-    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+    if (!node->hasAstFlag(AST_FROM_GENERIC))
     {
         if (!node->ownerFct || !(node->ownerFct->hasAstFlag(AST_FROM_GENERIC)))
         {

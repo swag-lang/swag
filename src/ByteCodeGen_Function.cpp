@@ -2114,7 +2114,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         // Need to do that even if discard, not sure why
         context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
 
-        if (!(node->hasAstFlag(AST_DISCARD)))
+        if (!node->hasAstFlag(AST_DISCARD))
         {
             reserveRegisterRC(context, node->resultRegisterRc, numRegs);
             if (numRegs == 1)

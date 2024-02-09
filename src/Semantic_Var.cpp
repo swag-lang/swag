@@ -562,7 +562,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Check #alias
-    if (!(node->hasAstFlag(AST_GENERATED)) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atalias) == 0)
+    if (!node->hasAstFlag(AST_GENERATED) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atalias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -612,7 +612,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
     else if (node->ownerScope->isGlobal() || node->hasAttribute(ATTRIBUTE_GLOBAL))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
-    else if (node->ownerScope->isGlobalOrImpl() && (node->hasAstFlag(AST_IN_IMPL)) && !(node->hasAstFlag(AST_STRUCT_MEMBER)))
+    else if (node->ownerScope->isGlobalOrImpl() && (node->hasAstFlag(AST_IN_IMPL)) && !node->hasAstFlag(AST_STRUCT_MEMBER))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (node->ownerScope->kind == ScopeKind::Struct)
         symbolFlags |= OVERLOAD_VAR_STRUCT;
@@ -664,14 +664,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (concreteNodeType &&
             concreteNodeType->isPointerRef() &&
             node->kind != AstNodeKind::FuncDeclParam &&
-            !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
+            !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
             return context->report({node, Err(Err0563)});
 
         // Check an enum variable without initialization
         if (concreteNodeType &&
             concreteNodeType->isEnum() &&
             node->kind != AstNodeKind::FuncDeclParam &&
-            !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
+            !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
         {
             auto                        concreteTypeEnum = castTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
             VectorNative<TypeInfoEnum*> collect;
@@ -793,11 +793,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         !isGeneric)
     {
         // A generic identifier without a type but with a default value is a generic type
-        if ((node->hasAstFlag(AST_IS_GENERIC)) && !node->type && !(node->hasAstFlag(AST_R_VALUE)) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+        if ((node->hasAstFlag(AST_IS_GENERIC)) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
         {
             thisIsAGenericType = true;
         }
-        else if (!(node->hasAstFlag(AST_FROM_GENERIC)) || !node->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
+        else if (!node->hasAstFlag(AST_FROM_GENERIC) || !node->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             YIELD();
@@ -815,7 +815,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // A global variable or a constant must have its value computed at that point
-    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+    if (!node->hasAstFlag(AST_FROM_GENERIC))
     {
         if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
@@ -867,7 +867,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Types and assignements are specified
-    if (node->type && node->assignment && !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
+    if (node->type && node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
         SWAG_ASSERT(node->type->typeInfo);
 
@@ -928,7 +928,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Only assignement is specified, need to deduce type
-    else if (node->assignment && !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
+    else if (node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
@@ -1066,7 +1066,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
     // and has an address
-    if (isCompilerConstant && !(node->hasAstFlag(AST_FROM_GENERIC)))
+    if (isCompilerConstant && !node->hasAstFlag(AST_FROM_GENERIC))
     {
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
         {
@@ -1084,7 +1084,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // In case of a struct (or array of structs), be sure struct is now completed before
     // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
     // problems.
-    if (!isCompilerConstant || !(node->hasAstFlag(AST_FROM_GENERIC)))
+    if (!isCompilerConstant || !node->hasAstFlag(AST_FROM_GENERIC))
     {
         if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
         {

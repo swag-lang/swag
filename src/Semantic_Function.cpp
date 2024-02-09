@@ -1199,7 +1199,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     if (node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
-    if (checkForConcrete & !(node->hasAstFlag(AST_OP_AFFECT_CAST)))
+    if (checkForConcrete & !node->hasAstFlag(AST_OP_AFFECT_CAST))
     {
         SWAG_CHECK(evaluateConstExpression(context, node));
         YIELD();
@@ -1354,7 +1354,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))
     {
-        if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !(node->hasAstFlag(AST_IN_MIXIN)))
+        if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !node->hasAstFlag(AST_IN_MIXIN))
         {
             if (node->kind == AstNodeKind::Return)
                 node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);

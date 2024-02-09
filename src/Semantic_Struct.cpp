@@ -28,7 +28,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 
     if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
     {
-        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+        if (!node->hasAstFlag(AST_FROM_GENERIC))
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
             node->sourceFile->module->decImplForToSolve(typeStruct);
@@ -411,7 +411,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         const auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
         TypeInfoParam* typeParam = nullptr;
-        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+        if (!node->hasAstFlag(AST_FROM_GENERIC))
         {
             typeParam           = TypeManager::makeParam();
             typeParam->name     = child->token.text;
@@ -441,7 +441,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
-        if (!(node->hasAstFlag(AST_IS_GENERIC)))
+        if (!node->hasAstFlag(AST_IS_GENERIC))
         {
             SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, FMT(Err(Err0731), node->token.ctext(), child->typeInfo->getDisplayNameC())}));
         }
@@ -479,7 +479,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable
-    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+    if (!node->hasAstFlag(AST_FROM_GENERIC))
     {
         auto typeParam      = TypeManager::makeParam();
         typeParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
@@ -498,7 +498,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     // Check public
     if (node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+        if (!node->hasAstFlag(AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
     }
 
@@ -672,7 +672,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 
     // Add generic parameters
     uint32_t symbolFlags = 0;
-    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+    if (!node->hasAstFlag(AST_FROM_GENERIC))
     {
         if (node->genericParameters)
         {
@@ -896,7 +896,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 return context->report({child, FMT(Err(Err0475), child->typeInfo->getDisplayNameC())});
 
             TypeInfoParam* typeParam = nullptr;
-            if (!(node->hasAstFlag(AST_FROM_GENERIC)) || !(child->hasAstFlag(AST_REGISTERED_IN_STRUCT)))
+            if (!node->hasAstFlag(AST_FROM_GENERIC) || !(child->hasAstFlag(AST_REGISTERED_IN_STRUCT)))
             {
                 typeParam           = TypeManager::makeParam();
                 typeParam->name     = child->token.text;
@@ -1027,7 +1027,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             }
 
             // If the struct is not generic, be sure that a field is not generic either
-            if (!(node->hasAstFlag(AST_IS_GENERIC)))
+            if (!node->hasAstFlag(AST_IS_GENERIC))
             {
                 if (varTypeInfo->isGeneric())
                 {
@@ -1120,7 +1120,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 }
 
                 // User cannot name its variables itemX
-                if (!(node->hasAstFlag(AST_GENERATED)) && hasItemName)
+                if (!node->hasAstFlag(AST_GENERATED) && hasItemName)
                 {
                     return context->report({child, child->token, FMT(Err(Err0619), child->token.ctext())});
                 }
@@ -1193,7 +1193,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // Check public
     if ((node->hasAttribute(ATTRIBUTE_PUBLIC)) && !typeInfo->isTuple())
     {
-        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
+        if (!node->hasAstFlag(AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
     }
 

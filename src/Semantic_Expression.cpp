@@ -125,7 +125,7 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
     // Otherwise the tuple will come from the constant segment.
-    if (!(node->hasAstFlag(AST_CONST_EXPR)) && node->ownerScope && node->ownerFct && node->typeInfo)
+    if (!node->hasAstFlag(AST_CONST_EXPR) && node->ownerScope && node->ownerFct && node->typeInfo)
     {
         allocateOnStack(node, node->typeInfo);
     }
@@ -173,7 +173,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     // stack in order to store it.
     // Otherwise the array will come from the constant segment.
     // :ExprListArrayStorage
-    if (!(node->hasAstFlag(AST_CONST_EXPR)) && node->ownerScope && node->ownerFct)
+    if (!node->hasAstFlag(AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
         allocateOnStack(node, node->typeInfo);
     }
