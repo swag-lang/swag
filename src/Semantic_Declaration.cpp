@@ -70,7 +70,7 @@ bool Semantic::resolveWith(SemanticContext* context)
     bool       fromVar      = false;
     if (front->kind == AstNodeKind::IdentifierRef)
     {
-        front->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        front->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
         SWAG_ASSERT(front->resolvedSymbolName && front->resolvedSymbolOverload);
         typeResolved = front->resolvedSymbolOverload->typeInfo;
         fromVar      = front->resolvedSymbolName->kind == SymbolKind::Variable;
@@ -116,7 +116,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
 {
     auto       node  = context->node;
     const auto idref = castAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
-    node->addFlag(AST_NO_BYTECODE);
+    node->addAstFlag(AST_NO_BYTECODE);
 
     SWAG_ASSERT(idref->resolvedSymbolName);
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
@@ -194,7 +194,7 @@ bool Semantic::resolveSubDeclRef(SemanticContext* context)
     ScopedLock lk(node->refSubDecl->mutex);
     if (node->refSubDecl->flags & AST_SPEC_SEMANTIC3)
     {
-        node->refSubDecl->removeFlag(AST_SPEC_SEMANTIC3);
+        node->refSubDecl->removeAstFlag(AST_SPEC_SEMANTIC3);
         launchResolveSubDecl(context, node->refSubDecl);
     }
 

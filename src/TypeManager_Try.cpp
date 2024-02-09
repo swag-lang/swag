@@ -81,7 +81,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->addFlag(AST_OP_AFFECT_CAST);
+                fromNode->addAstFlag(AST_OP_AFFECT_CAST);
                 fromNode->castedTypeInfo = fromType;
                 fromNode->typeInfo       = toType;
                 fromNode->allocateExtension(ExtensionKind::Misc);
@@ -139,7 +139,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     // :opAffectParam
     if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
     {
-        fromNode->addFlag(AST_OP_AFFECT_CAST);
+        fromNode->addAstFlag(AST_OP_AFFECT_CAST);
         fromNode->castedTypeInfo = fromType;
         fromNode->typeInfo       = toType;
         fromNode->allocateExtension(ExtensionKind::Misc);

@@ -157,7 +157,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->inheritTokenLocation(node);
     fctCallParam->byteCodeFct = ByteCodeGen::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
-    fctCallParam->addFlag(AST_TO_UFCS | AST_GENERATED);
+    fctCallParam->addAstFlag(AST_TO_UFCS | AST_GENERATED);
     fctCallParam->inheritOrFlag(node, AST_IN_MIXIN);
 
     // If this is a closure, then parameter index 0 is for the embedded struct.
@@ -177,10 +177,10 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // Function that returns an interface, used as an ufcs.
             // Ex: var cfg = @compiler().getBuildCfg()
             // :SpecUfcsNode
-            identifierRef->previousResolvedNode->addFlag(AST_TO_UFCS);
+            identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
             const auto id              = Ast::newIdentifier(node->sourceFile, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
-            id->addFlag(AST_NO_BYTECODE);
+            id->addAstFlag(AST_NO_BYTECODE);
         }
         else
         {
@@ -196,13 +196,13 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 if (!identifierRef->startScope ||
                     identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
                 {
-                    child->addFlag(AST_NO_BYTECODE);
-                    copyChild->addFlag(AST_UFCS_FCT);
+                    child->addAstFlag(AST_NO_BYTECODE);
+                    copyChild->addAstFlag(AST_UFCS_FCT);
                 }
 
                 if (child == identifierRef->previousResolvedNode)
                 {
-                    copyChild->addFlag(AST_TO_UFCS);
+                    copyChild->addAstFlag(AST_TO_UFCS);
                     break;
                 }
             }
@@ -210,7 +210,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     }
     else
     {
-        identifierRef->previousResolvedNode->addFlag(AST_UFCS_FCT);
+        identifierRef->previousResolvedNode->addAstFlag(AST_UFCS_FCT);
 
         // If ufcs comes from a using var, then we must make a reference to the using var in
         // the first call parameter
@@ -254,7 +254,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 }
 
                 copyChild->byteCodeFct = ByteCodeGen::emitIdentifier;
-                copyChild->addFlag(AST_TO_UFCS | AST_L_VALUE | AST_UFCS_FCT);
+                copyChild->addAstFlag(AST_TO_UFCS | AST_L_VALUE | AST_UFCS_FCT);
             }
         }
         else
@@ -265,11 +265,11 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             for (const auto child : identifierRef->childs)
             {
                 const auto copyChild = Ast::cloneRaw(child, idRef);
-                child->addFlag(AST_NO_BYTECODE);
+                child->addAstFlag(AST_NO_BYTECODE);
                 if (child == identifierRef->previousResolvedNode)
                 {
-                    copyChild->addFlag(AST_TO_UFCS);
-                    copyChild->addFlag(AST_UFCS_FCT);
+                    copyChild->addAstFlag(AST_TO_UFCS);
+                    copyChild->addAstFlag(AST_UFCS_FCT);
                     break;
                 }
             }
@@ -279,6 +279,6 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     idRef->inheritAndFlag1(AST_CONST_EXPR);
     fctCallParam->inheritAndFlag1(AST_CONST_EXPR);
 
-    identifierRef->previousResolvedNode->addFlag(AST_FROM_UFCS);
+    identifierRef->previousResolvedNode->addAstFlag(AST_FROM_UFCS);
     return true;
 }

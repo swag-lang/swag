@@ -505,7 +505,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         YIELD();
-        funcNode->parameters->addFlag(AST_NO_BYTECODE);
+        funcNode->parameters->addAstFlag(AST_NO_BYTECODE);
     }
 
     // Return type
@@ -546,7 +546,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // Check attributes
     if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
-        funcNode->addFlag(AST_CONST_EXPR);
+        funcNode->addAstFlag(AST_CONST_EXPR);
     if (funcNode->ownerFct)
         funcNode->addAttribute(funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER);
 
@@ -646,9 +646,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     {
         // Determine if function is generic
         if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-            funcNode->addFlag(AST_IS_GENERIC);
+            funcNode->addAstFlag(AST_IS_GENERIC);
         if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-            funcNode->addFlag(AST_IS_GENERIC);
+            funcNode->addAstFlag(AST_IS_GENERIC);
 
         if (funcNode->parameters)
             funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
@@ -663,7 +663,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
                 return context->report(diag, note);
             }
 
-            funcNode->addFlag(AST_IS_GENERIC);
+            funcNode->addAstFlag(AST_IS_GENERIC);
         }
 
         if (funcNode->flags & AST_IS_GENERIC)
@@ -722,12 +722,12 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->flags & AST_IS_GENERIC)
     {
         shortLambda = false;
-        funcNode->content->addFlag(AST_NO_SEMANTIC);
+        funcNode->content->addAstFlag(AST_NO_SEMANTIC);
     }
 
     // Macro will not evaluate its content before being inline
     if (funcNode->hasAttribute(ATTRIBUTE_MACRO) && !shortLambda)
-        funcNode->content->addFlag(AST_NO_SEMANTIC);
+        funcNode->content->addAstFlag(AST_NO_SEMANTIC);
 
     // Register symbol
     typeInfo->returnType = typeNode->typeInfo;
@@ -1026,7 +1026,7 @@ void Semantic::launchResolveSubDecl(const JobContext* context, AstNode* node)
     // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
     // If SEMFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
     // file job will trigger the resolve itself
-    node->removeFlag(AST_NO_SEMANTIC);
+    node->removeAstFlag(AST_NO_SEMANTIC);
     if (node->semFlags & SEMFLAG_FILE_JOB_PASS)
     {
         SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, node, true);
@@ -1113,7 +1113,7 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
     ScopedLock lk(mpl->lambda->mutex);
     if (mpl->lambda->flags & AST_SPEC_SEMANTIC1)
     {
-        mpl->lambda->removeFlag(AST_SPEC_SEMANTIC1);
+        mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC1);
         launchResolveSubDecl(context, mpl->lambda);
     }
 
@@ -1187,7 +1187,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
         SWAG_CHECK(checkIsConcreteOrType(context, child));
         YIELD();
         node->typeInfo = child->typeInfo;
-        node->addFlag(AST_R_VALUE);
+        node->addAstFlag(AST_R_VALUE);
     }
 
     node->inheritComputedValue(child);
@@ -1220,7 +1220,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     {
         if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
         {
-            node->addFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
+            node->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
             node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
         }
     }
@@ -1566,7 +1566,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
     if (child->kind == AstNodeKind::ExpressionList)
     {
-        child->addFlag(AST_TRANSIENT);
+        child->addAstFlag(AST_TRANSIENT);
     }
 
     const auto childType = TypeManager::concreteType(child->typeInfo);
@@ -1595,7 +1595,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
             const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode);
             typeExpr->typeInfo  = child->typeInfo;
-            typeExpr->addFlag(AST_NO_SEMANTIC);
+            typeExpr->addAstFlag(AST_NO_SEMANTIC);
             varNode->type = typeExpr;
 
             CloneContext cloneContext;
@@ -1625,13 +1625,13 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // If we are returning a local variable, we can do a move
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
     {
-        child->addFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
+        child->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
     {
-        child->addFlag(AST_NO_BYTECODE);
+        child->addAstFlag(AST_NO_BYTECODE);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 
@@ -1838,9 +1838,9 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // do not want to change the stackSize of the original function because of local variables.
     if (!cloneContext.ownerFct)
     {
-        identifier->addFlag(AST_SPEC_STACK_SIZE);
+        identifier->addAstFlag(AST_SPEC_STACK_SIZE);
         if (identifier->kind == AstNodeKind::Identifier)
-            identifier->parent->addFlag(AST_SPEC_STACK_SIZE);
+            identifier->parent->addAstFlag(AST_SPEC_STACK_SIZE);
         cloneContext.forceFlags |= AST_SPEC_STACK_SIZE;
     }
 
@@ -1911,7 +1911,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         }
     }
 
-    newContent->removeFlag(AST_NO_SEMANTIC);
+    newContent->removeAstFlag(AST_NO_SEMANTIC);
 
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecls.empty())
@@ -1934,7 +1934,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         // Do not reevaluate function parameters
         const auto castId = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
         if (castId->callParameters)
-            castId->callParameters->addFlag(AST_NO_SEMANTIC);
+            castId->callParameters->addAstFlag(AST_NO_SEMANTIC);
 
         identifier->semanticState = AstNodeResolveState::Enter;
         identifier->bytecodeState = AstNodeResolveState::Enter;

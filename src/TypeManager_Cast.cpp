@@ -2024,7 +2024,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
     // Compute if expression is constexpr
     if (fromNode)
-        fromNode->addFlag(AST_CONST_EXPR);
+        fromNode->addAstFlag(AST_CONST_EXPR);
 
     for (size_t i = 0; i < fromSize; i++)
     {
@@ -2043,7 +2043,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             const auto childType = concreteType(child->typeInfo, CONCRETE_FUNC);
             newSizeof += childType->sizeOf;
             if (!(child->flags & AST_CONST_EXPR))
-                fromNode->removeFlag(AST_CONST_EXPR);
+                fromNode->removeAstFlag(AST_CONST_EXPR);
         }
     }
 
@@ -2216,9 +2216,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->removeFlag(AST_VALUE_COMPUTED);
-                    fromNode->removeFlag(AST_CONST_EXPR);
-                    fromNode->removeFlag(AST_NO_BYTECODE_CHILDS);
+                    fromNode->removeAstFlag(AST_VALUE_COMPUTED);
+                    fromNode->removeAstFlag(AST_CONST_EXPR);
+                    fromNode->removeAstFlag(AST_NO_BYTECODE_CHILDS);
                     fromNode->computedValue = nullptr;
                 }
             }

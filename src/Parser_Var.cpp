@@ -116,7 +116,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->token       = identifier->token;
             varNode->tokenId     = identifier->tokenId;
             varNode->assignToken = assignToken;
-            varNode->addFlag(AST_R_VALUE);
+            varNode->addAstFlag(AST_R_VALUE);
             varNode->addSpecFlag(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
 
             if (!firstDone)
@@ -168,15 +168,15 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         orgVarNode->addSpecFlag(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
 
         // This will avoid to initialize the tuple before the affectation
-        orgVarNode->addFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
-        orgVarNode->addFlag(AST_R_VALUE);
+        orgVarNode->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
+        orgVarNode->addAstFlag(AST_R_VALUE);
 
         Ast::addChildBack(orgVarNode, type);
         orgVarNode->type = type;
         Ast::addChildBack(orgVarNode, assign);
         orgVarNode->assignment = assign;
         if (orgVarNode->assignment)
-            orgVarNode->assignment->addFlag(AST_NO_LEFT_DROP);
+            orgVarNode->assignment->addAstFlag(AST_NO_LEFT_DROP);
         Semantic::setVarDeclResolve(orgVarNode);
 
         // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
@@ -202,7 +202,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             {
                 Ast::removeFromParent(child);
                 Ast::addChildBack(parentNode, child);
-                child->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
+                child->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
                 i--;
                 idx++;
                 continue;
@@ -221,7 +221,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
-            varNode->addFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
+            varNode->addAstFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
             varNode->addSpecFlag(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
             varNode->addSpecFlag(AstVarDecl::SPECFLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())
@@ -229,7 +229,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             identifier          = Ast::newMultiIdentifierRef(sourceFile, FMT("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             Semantic::setVarDeclResolve(varNode);
-            varNode->assignment->addFlag(AST_TUPLE_UNPACK);
+            varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
         }
 
         orgVarNode->publicName += ")";
@@ -253,7 +253,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         Ast::addChildBack(varNode, assign);
         varNode->assignment = assign;
         Semantic::setVarDeclResolve(varNode);
-        varNode->addFlag(AST_R_VALUE);
+        varNode->addAstFlag(AST_R_VALUE);
 
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
@@ -363,8 +363,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                     const auto identifier = castAst<AstIdentifier>(back, AstNodeKind::Identifier);
                     if (identifier->callParameters)
                     {
-                        typeExpression->removeFlag(AST_NO_BYTECODE_CHILDS);
-                        type->removeFlag(AST_NO_BYTECODE_CHILDS);
+                        typeExpression->removeAstFlag(AST_NO_BYTECODE_CHILDS);
+                        type->removeAstFlag(AST_NO_BYTECODE_CHILDS);
                         typeExpression->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
                         type->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
                     }

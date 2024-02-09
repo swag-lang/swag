@@ -72,7 +72,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     Scoped     scoped(this, newScope);
     const auto attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     *result            = attrUse;
-    attrUse->addFlag(AST_GENERATED);
+    attrUse->addAstFlag(AST_GENERATED);
     attrUse->attributeFlags = attr;
     SWAG_CHECK(eatToken());
 
@@ -85,9 +85,9 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     }
     else
     {
-        attrUse->addFlag(AST_GLOBAL_NODE);
+        attrUse->addAstFlag(AST_GLOBAL_NODE);
         topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, attrUse);
-        topStmt->addFlag(AST_GLOBAL_NODE);
+        topStmt->addAstFlag(AST_GLOBAL_NODE);
         while (token.id != TokenId::EndOfFile)
             SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
     }
@@ -109,7 +109,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     auto       privName = token;
     const auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     *result             = attrUse;
-    attrUse->addFlag(AST_GENERATED);
+    attrUse->addAstFlag(AST_GENERATED);
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
     SWAG_CHECK(eatToken());
 
@@ -120,7 +120,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     privName.text = FMT("__private%d", sourceFile->privateId);
     AstNode* namespc;
     SWAG_CHECK(doNamespaceOnName(attrUse, &namespc, false, true, &privName));
-    namespc->addFlag(AST_GENERATED);
+    namespc->addAstFlag(AST_GENERATED);
 
     attrUse->content = namespc;
     attrUse->content->setOwnerAttrUse(attrUse);
@@ -236,7 +236,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         if (first)
             *result = namespaceNode;
         if (forGlobal)
-            namespaceNode->addFlag(AST_GLOBAL_NODE);
+            namespaceNode->addAstFlag(AST_GLOBAL_NODE);
         namespaceNode->addAttribute(sourceFile->globalAttr);
         first = false;
 
@@ -402,7 +402,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     *result = statement;
 
     newScope->owner = statement;
-    statement->addFlag(AST_NEED_SCOPE);
+    statement->addAstFlag(AST_NEED_SCOPE);
     statement->byteCodeFct = ByteCodeGen::emitDebugNop;
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
@@ -449,7 +449,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
         statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-        statement->addFlag(AST_NEED_SCOPE);
+        statement->addAstFlag(AST_NEED_SCOPE);
         newScope->owner = statement;
         SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     }
@@ -523,7 +523,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     SWAG_ASSERT(subDecl->ownerFct);
     const auto orgSubDecl = subDecl;
     subDecl->ownerFct->subDecls.push_back(subDecl);
-    subDecl->addFlag(AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL);
+    subDecl->addAstFlag(AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL);
 
     AstAttrUse* newAttrUse = nullptr;
 
@@ -606,9 +606,9 @@ void Parser::registerSubDecl(AstNode* subDecl)
     {
         const auto solver   = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
         solver->semanticFct = Semantic::resolveSubDeclRef;
-        solver->addFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        solver->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
         solver->refSubDecl = orgSubDecl;
-        orgSubDecl->addFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
+        orgSubDecl->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
     }
 }
 

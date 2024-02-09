@@ -56,8 +56,8 @@ bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const 
 bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 {
     const auto node = context->node;
-    node->parent->addFlag(AST_EXPLICITLY_NOT_INITIALIZED);
-    node->addFlag(AST_CONST_EXPR);
+    node->parent->addAstFlag(AST_EXPLICITLY_NOT_INITIALIZED);
+    node->addAstFlag(AST_CONST_EXPR);
     node->typeInfo = g_TypeMgr->typeInfoVoid;
     return true;
 }
@@ -75,7 +75,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
     typeInfo->sizeOf    = 0;
     typeInfo->declNode  = node;
 
-    node->addFlag(AST_CONST_EXPR | AST_R_VALUE);
+    node->addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
     for (const auto child : node->childs)
     {
         if (!typeInfo->subTypes.empty())
@@ -103,9 +103,9 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
         if (!(child->flags & AST_CONST_EXPR))
-            node->removeFlag(AST_CONST_EXPR);
+            node->removeAstFlag(AST_CONST_EXPR);
         if (!(child->flags & AST_R_VALUE))
-            node->removeFlag(AST_R_VALUE);
+            node->removeAstFlag(AST_R_VALUE);
     }
 
     typeInfo->name += "}";
@@ -147,7 +147,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     SWAG_ASSERT(!node->childs.empty());
     typeInfo->declNode = node;
 
-    node->addFlag(AST_CONST_EXPR | AST_R_VALUE);
+    node->addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
     for (const auto child : node->childs)
     {
         auto       typeParam = TypeManager::makeParam();
@@ -156,9 +156,9 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += childType->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
-            node->removeFlag(AST_CONST_EXPR);
+            node->removeAstFlag(AST_CONST_EXPR);
         if (!(child->flags & AST_R_VALUE))
-            node->removeFlag(AST_R_VALUE);
+            node->removeAstFlag(AST_R_VALUE);
     }
 
     if (node->flags & AST_CONST_EXPR)
@@ -364,13 +364,13 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         {
             node->inheritComputedValue(expression);
             node->typeInfo = expression->typeInfo;
-            ifZero->addFlag(AST_NO_BYTECODE);
+            ifZero->addAstFlag(AST_NO_BYTECODE);
         }
         else
         {
             node->inheritComputedValue(ifZero);
             node->typeInfo = ifZero->typeInfo;
-            expression->addFlag(AST_NO_BYTECODE);
+            expression->addAstFlag(AST_NO_BYTECODE);
         }
     }
     else
@@ -396,7 +396,7 @@ bool Semantic::resolveDefer(SemanticContext* context)
 
     SWAG_ASSERT(node->childs.size() == 1);
     const auto expr = node->childs.front();
-    expr->addFlag(AST_NO_BYTECODE);
+    expr->addAstFlag(AST_NO_BYTECODE);
 
     return true;
 }

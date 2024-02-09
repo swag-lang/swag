@@ -373,7 +373,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             else if (child->token.text == g_LangSpec->name_Using)
             {
                 auto id = castAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
-                id->addFlag(AST_NO_SEMANTIC);
+                id->addAstFlag(AST_NO_SEMANTIC);
 
                 SWAG_VERIFY(id->callParameters && !id->callParameters->childs.empty(), context->report({id, Err(Err0541)}));
                 for (auto c : id->callParameters->childs)

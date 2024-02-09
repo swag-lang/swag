@@ -61,7 +61,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (parent->ownerScope->kind == ScopeKind::Struct || parent->ownerScope->kind == ScopeKind::Enum)
         {
             parent = parent->ownerScope->owner;
-            node->addFlag(AST_CAN_MATCH_INCOMPLETE);
+            node->addAstFlag(AST_CAN_MATCH_INCOMPLETE);
         }
         else
         {
@@ -78,7 +78,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     identifierRef->startScope = node->ownerInline->parametersScope;
                 else
                     identifierRef->startScope = node->ownerFct->scope;
-                node->addFlag(AST_NO_BYTECODE);
+                node->addAstFlag(AST_NO_BYTECODE);
                 return true;
             }
         }
@@ -172,7 +172,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
                     {
                         const auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
-                        id->addFlag(AST_GENERATED);
+                        id->addAstFlag(AST_GENERATED);
                         id->addSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
                         id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;

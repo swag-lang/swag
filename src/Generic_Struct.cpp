@@ -24,7 +24,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                 if (!identifier->genericParameters)
                 {
                     identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
-                    identifier->genericParameters->addFlag(AST_NO_BYTECODE);
+                    identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
 
                     CloneContext cloneContext;
                     for (const auto p : nodeStruct->genericParameters->childs)
@@ -41,10 +41,10 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         param->assignment->clone(cloneContext);
                     }
 
-                    idRef->removeFlag(AST_IS_GENERIC);
-                    identifier->removeFlag(AST_IS_GENERIC);
-                    node->removeFlag(AST_IS_GENERIC);
-                    node->type->removeFlag(AST_IS_GENERIC);
+                    idRef->removeAstFlag(AST_IS_GENERIC);
+                    identifier->removeAstFlag(AST_IS_GENERIC);
+                    node->removeAstFlag(AST_IS_GENERIC);
+                    node->type->removeAstFlag(AST_IS_GENERIC);
 
                     // Force the reevaluation of the variable and its childs
                     context->result     = ContextResult::NewChilds;
@@ -154,8 +154,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     const auto structNode = castAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
-    structNode->addFlag(AST_FROM_GENERIC);
-    structNode->content->removeFlag(AST_NO_SEMANTIC);
+    structNode->addAstFlag(AST_FROM_GENERIC);
+    structNode->content->removeAstFlag(AST_NO_SEMANTIC);
     Ast::addChildBack(sourceNode->parent, structNode);
 
     newType->scope              = structNode->scope;
@@ -202,7 +202,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         SWAG_ASSERT(itf->declNode);
         auto newItf       = itf->declNode->clone(cloneContext);
         typeItf->declNode = newItf;
-        newItf->addFlag(AST_FROM_GENERIC);
+        newItf->addAstFlag(AST_FROM_GENERIC);
         structNode->extOwner()->nodesToFree.push_back(newItf);
 
         const auto implJob = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, newItf, false);

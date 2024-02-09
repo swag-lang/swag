@@ -23,7 +23,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
             {
                 if (!node->assignment)
                 {
-                    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+                    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
                     return true;
                 }
 
@@ -134,7 +134,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             YIELD();
 
             if (!mustDropLeft)
-                node->assignment->addFlag(AST_NO_LEFT_DROP);
+                node->assignment->addAstFlag(AST_NO_LEFT_DROP);
 
             bool isLet = node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET);
             if (!node->typeInfo->isNativeIntegerOrRune() &&

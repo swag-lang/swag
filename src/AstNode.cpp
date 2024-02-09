@@ -56,7 +56,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // Replace a type by another one during generic instantiation
     typeInfo = Generic::replaceGenericTypes(context.replaceTypes, from->typeInfo);
     if (typeInfo != from->typeInfo)
-        addFlag(AST_FROM_GENERIC);
+        addAstFlag(AST_FROM_GENERIC);
 
     // This should not be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and auto cast, as inline functions are evaluated
@@ -136,7 +136,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         if ((from->flags & AST_IS_GENERIC) && (from->semFlags & SEMFLAG_ON_CLONE))
         {
             for (const auto one : childs)
-                one->removeFlag(AST_NO_SEMANTIC);
+                one->removeAstFlag(AST_NO_SEMANTIC);
         }
     }
 }
@@ -703,7 +703,7 @@ void AstNode::allocateComputedValue()
 void AstNode::setFlagsValueIsComputed()
 {
     allocateComputedValue();
-    addFlag(AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE);
+    addAstFlag(AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE);
 }
 
 void AstNode::inheritComputedValue(const AstNode* from)
@@ -713,7 +713,7 @@ void AstNode::inheritComputedValue(const AstNode* from)
     inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
     if (flags & AST_VALUE_COMPUTED)
     {
-        addFlag(AST_CONST_EXPR | AST_R_VALUE);
+        addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
         SWAG_ASSERT(from->computedValue);
         computedValue = from->computedValue;
     }

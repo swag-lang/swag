@@ -240,7 +240,7 @@ bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
     SWAG_VERIFY(thirdTypeInfo->isInterface(), context->report({third, FMT(Err(Err0207), thirdTypeInfo->getDisplayNameC())}));
 
     node->typeInfo = third->typeInfo;
-    third->addFlag(AST_NO_BYTECODE);
+    third->addAstFlag(AST_NO_BYTECODE);
 
     node->byteCodeFct = ByteCodeGen::emitIntrinsicMakeInterface;
     return true;
@@ -726,7 +726,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
             const auto any                     = (SwagAny*) expr->computedValue->getStorageAddr();
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
-            node->addFlag(AST_VALUE_IS_GEN_TYPEINFO);
+            node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
             node->typeInfo = g_TypeMgr->typeInfoTypeType;
             SWAG_CHECK(setupIdentifierRef(context, node));
         }
@@ -739,7 +739,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
                     ->typeInfo));
             YIELD();
             node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
-            node->addFlag(AST_R_VALUE);
+            node->addAstFlag(AST_R_VALUE);
             SWAG_CHECK(setupIdentifierRef(context, node));
         }
 
@@ -757,7 +757,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
                 typeInfo));
         YIELD();
         node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
-        node->addFlag(AST_R_VALUE);
+        node->addAstFlag(AST_R_VALUE);
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
     }
@@ -812,7 +812,7 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
         YIELD();
     }
 
-    expr->addFlag(AST_NO_BYTECODE);
+    expr->addAstFlag(AST_NO_BYTECODE);
 
     // @mktype on a typeinfo will give back the original compiler type
     if (typeInfo->isPointerToTypeInfo() &&
@@ -846,7 +846,7 @@ bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
 
     SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, Err(Err0396)}));
 
-    expr->addFlag(AST_NO_BYTECODE);
+    expr->addAstFlag(AST_NO_BYTECODE);
 
     SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
     YIELD();
@@ -869,7 +869,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
     {
         const auto expr = node->childs.front();
         node->typeInfo  = g_TypeMgr->typeInfoBool;
-        expr->addFlag(AST_NO_BYTECODE);
+        expr->addAstFlag(AST_NO_BYTECODE);
 
         // Special case for a function parameter in a validif block, should be done at runtime
         if (expr->isValidIfParam(expr->resolvedSymbolOverload))

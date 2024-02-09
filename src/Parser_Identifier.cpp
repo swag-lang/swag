@@ -157,7 +157,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doGenericFuncCallParameters(identifier, &identifier->genericParameters));
-            identifier->genericParameters->addFlag(AST_NO_BYTECODE);
+            identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
         }
     }
 
@@ -313,7 +313,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     *result = idRef;
 
     // For export
-    idRef->addFlag(AST_DISCARD);
+    idRef->addAstFlag(AST_DISCARD);
 
     // Mark the identifier with AST_DISCARD
     while (idRef && idRef->kind != AstNodeKind::IdentifierRef)
@@ -325,7 +325,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     {
         if (c->kind != AstNodeKind::Identifier)
             break;
-        c->addFlag(AST_DISCARD);
+        c->addAstFlag(AST_DISCARD);
     }
 
     return true;

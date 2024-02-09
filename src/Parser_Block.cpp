@@ -31,7 +31,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         SWAG_VERIFY(varDecl->childs.size() == 1, error(varDecl->childs.back()->token, Err(Err0406)));
 
         node->boolExpression = Ast::newIdentifierRef(sourceFile, varDecl->token.text, node, this);
-        node->boolExpression->addFlag(AST_GENERATED);
+        node->boolExpression->addAstFlag(AST_GENERATED);
         node->boolExpression->inheritTokenLocation(varDecl);
 
         SWAG_CHECK(doScopedStatement(node, node->token, (AstNode**) &node->ifBlock));
@@ -296,7 +296,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
     // We do not want semantic on the block part, as this has to be solved when the block
     // is inlined
-    node->block->addFlag(AST_NO_SEMANTIC);
+    node->block->addAstFlag(AST_NO_SEMANTIC);
 
     return true;
 }

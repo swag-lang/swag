@@ -179,10 +179,10 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         const auto overload = node->resolvedSymbolOverload;
         SWAG_ASSERT(overload->flags & OVERLOAD_INCOMPLETE);
 
-        node->removeFlag(AST_NO_BYTECODE);
-        node->removeFlag(AST_VALUE_COMPUTED);
-        node->assignment->removeFlag(AST_NO_BYTECODE);
-        node->addFlag(AST_CONST_EXPR);
+        node->removeAstFlag(AST_NO_BYTECODE);
+        node->removeAstFlag(AST_VALUE_COMPUTED);
+        node->assignment->removeAstFlag(AST_NO_BYTECODE);
+        node->addAstFlag(AST_CONST_EXPR);
         node->semFlags |= SEMFLAG_EXEC_RET_STACK;
 
         node->byteCodeFct                     = ByteCodeGen::emitLocalVarDecl;
@@ -191,8 +191,8 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, node));
         YIELD();
 
-        node->addFlag(AST_NO_BYTECODE);
-        node->assignment->addFlag(AST_NO_BYTECODE);
+        node->addAstFlag(AST_NO_BYTECODE);
+        node->assignment->addAstFlag(AST_NO_BYTECODE);
 
         SWAG_ASSERT(node->computedValue->storageSegment);
         SWAG_ASSERT(node->computedValue->storageOffset != UINT32_MAX);
@@ -273,11 +273,11 @@ bool Semantic::resolveVarDeclBefore(SemanticContext* context)
         if (isGeneric)
         {
             node->assignment->typeInfo = g_TypeMgr->typeInfoS32;
-            node->assignment->addFlag(AST_NO_SEMANTIC);
+            node->assignment->addAstFlag(AST_NO_SEMANTIC);
         }
         else
         {
-            node->assignment->removeFlag(AST_NO_SEMANTIC);
+            node->assignment->removeAstFlag(AST_NO_SEMANTIC);
         }
     }
 
@@ -307,7 +307,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     if (!varDecl->type)
     {
         SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));
-        varDecl->addFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
+        varDecl->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
         context->result = ContextResult::Done;
         job->nodes.pop_back();
         job->nodes.push_back(varDecl->type);
@@ -344,10 +344,10 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     identifier->callParameters->inheritTokenLocation(varDecl->assignment);
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
-    identifier->addFlag(AST_IN_TYPE_VAR_DECLARATION);
-    typeExpression->removeFlag(AST_NO_BYTECODE);
-    typeExpression->removeFlag(AST_NO_BYTECODE_CHILDS);
-    typeExpression->removeFlag(AST_VALUE_COMPUTED);
+    identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+    typeExpression->removeAstFlag(AST_NO_BYTECODE);
+    typeExpression->removeAstFlag(AST_NO_BYTECODE_CHILDS);
+    typeExpression->removeAstFlag(AST_VALUE_COMPUTED);
     typeExpression->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
 
     Ast::removeFromParent(varDecl->assignment);
@@ -807,7 +807,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
                 YIELD();
                 if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-                    node->assignment->addFlag(AST_NO_BYTECODE);
+                    node->assignment->addAstFlag(AST_NO_BYTECODE);
             }
 
             node->semFlags |= SEMFLAG_ASSIGN_COMPUTED;
@@ -1060,7 +1060,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             typeStruct->flattenUsingFields();
             if (identifier->callParameters->childs.size() == typeStruct->flattenFields.size())
-                node->addFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
+                node->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
         }
     }
 
@@ -1097,7 +1097,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     DataSegment* storageSegment = nullptr;
     if (isCompilerConstant)
     {
-        node->addFlag(AST_NO_BYTECODE | AST_R_VALUE);
+        node->addAstFlag(AST_NO_BYTECODE | AST_R_VALUE);
         if (!isGeneric)
         {
             SWAG_CHECK(collectConstantAssignment(context, &storageSegment, &storageOffset, symbolFlags));
@@ -1146,7 +1146,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        node->addFlag(AST_R_VALUE);
+        node->addAstFlag(AST_R_VALUE);
         storageSegment = getSegmentForVar(context, node);
         switch (storageSegment->kind)
         {
@@ -1228,7 +1228,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // inside the tuple, so we do not have to generate bytecode !
         if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
         {
-            node->addFlag(AST_NO_BYTECODE_CHILDS);
+            node->addAstFlag(AST_NO_BYTECODE_CHILDS);
             SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
             symbolFlags |= OVERLOAD_TUPLE_UNPACK;
             storageOffset = 0;
@@ -1275,11 +1275,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         node->setBcNotifyBefore(ByteCodeGen::emitLocalVarDeclBefore);
         node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
-        node->addFlag(AST_R_VALUE);
+        node->addAstFlag(AST_R_VALUE);
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
-        node->addFlag(AST_R_VALUE);
+        node->addAstFlag(AST_R_VALUE);
         TypeManager::convertStructParamToRef(node, typeInfo);
     }
 

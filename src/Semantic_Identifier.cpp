@@ -20,7 +20,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     SWAG_ASSERT(back->resolvedSymbolName);
 
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    node->addFlag(AST_NO_BYTECODE);
+    node->addAstFlag(AST_NO_BYTECODE);
 
     // Constraints with alias on a variable
     if (back->resolvedSymbolName->kind == SymbolKind::Variable)
@@ -101,17 +101,17 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitIdentifierRef;
 
     // Flag inheritance
-    node->addFlag(AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE);
+    node->addAstFlag(AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE);
     for (const auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
-            node->removeFlag(AST_CONST_EXPR);
+            node->removeAstFlag(AST_CONST_EXPR);
         if (!(child->flags & AST_FROM_GENERIC_REPLACE))
-            node->removeFlag(AST_FROM_GENERIC_REPLACE);
+            node->removeAstFlag(AST_FROM_GENERIC_REPLACE);
         if (child->flags & AST_IS_GENERIC)
-            node->addFlag(AST_IS_GENERIC);
+            node->addAstFlag(AST_IS_GENERIC);
         if (child->flags & AST_IS_CONST)
-            node->addFlag(AST_IS_CONST);
+            node->addAstFlag(AST_IS_CONST);
     }
 
     if (childBack->hasComputedValue())
@@ -128,11 +128,11 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
             *node->computedValue = node->resolvedSymbolOverload->computedValue;
         }
 
-        node->addFlag(AST_NO_BYTECODE_CHILDS);
+        node->addAstFlag(AST_NO_BYTECODE_CHILDS);
 
         // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
         if (!node->computedValue->storageSegment || node->computedValue->storageOffset == 0xFFFFFFFF)
-            node->removeFlag(AST_L_VALUE);
+            node->removeAstFlag(AST_L_VALUE);
     }
 
     return true;
@@ -142,7 +142,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 {
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
-        node->addFlag(AST_IS_CONST);
+        node->addAstFlag(AST_IS_CONST);
     const auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
@@ -732,13 +732,13 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
 
                         const auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
                         const auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-                        codeNode->addFlag(AST_NO_BYTECODE);
+                        codeNode->addAstFlag(AST_NO_BYTECODE);
 
                         Ast::removeFromParent(brother);
                         Ast::addChildBack(codeNode, brother);
                         const auto typeCode = makeType<TypeInfoCode>();
                         typeCode->content   = brother;
-                        brother->addFlag(AST_NO_SEMANTIC);
+                        brother->addAstFlag(AST_NO_SEMANTIC);
                         fctCallParam->semFlags |= SEMFLAG_AUTO_CODE_PARAM;
                         fctCallParam->typeInfo = typeCode;
                         codeNode->typeInfo     = typeCode;
@@ -912,7 +912,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // #validif is evaluated once, so keep it.
     if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
-        expr->removeFlag(AST_VALUE_COMPUTED);
+        expr->removeAstFlag(AST_VALUE_COMPUTED);
 
     if (!expr->hasComputedValue())
     {
@@ -943,7 +943,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 
     if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
     {
-        funcDecl->content->removeFlag(AST_NO_SEMANTIC);
+        funcDecl->content->removeAstFlag(AST_NO_SEMANTIC);
 
         // Need to restart semantic on instantiated function and on its content,
         // because the #validif has passed

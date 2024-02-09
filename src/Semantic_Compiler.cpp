@@ -319,7 +319,7 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
 
     context->node->inheritComputedValue(expression);
     if (context->node->hasComputedValue())
-        context->node->removeFlag(AST_NO_BYTECODE);
+        context->node->removeAstFlag(AST_NO_BYTECODE);
 
     context->node->typeInfo = expression->typeInfo;
     return true;
@@ -402,7 +402,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.ctext())));
-    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     const Diagnostic diag{node, node->token, FMT(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
     return context->report(diag);
@@ -418,7 +418,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.ctext())));
-    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     const Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
     return context->report(diag);
@@ -437,7 +437,7 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
     YIELD();
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
-    node->addFlag(AST_NO_BYTECODE);
+    node->addAstFlag(AST_NO_BYTECODE);
 
     if (!expr->computedValue->reg.b)
         return context->report({node, node->token, Err(Err0045)});
@@ -476,7 +476,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
 
     node->setBcNotifyBefore(ByteCodeGen::emitDebugNop);
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
-    expr->addFlag(AST_NO_BYTECODE);
+    expr->addAstFlag(AST_NO_BYTECODE);
 
     const auto typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
     SWAG_ASSERT(typeCode->content);
@@ -494,7 +494,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     cloneContent->allocateExtension(ExtensionKind::Misc);
     cloneContent->extMisc()->alternativeNode = typeCode->content->parent;
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
-    cloneContent->removeFlag(AST_NO_SEMANTIC);
+    cloneContent->removeAstFlag(AST_NO_SEMANTIC);
     node->typeInfo = cloneContent->typeInfo;
     context->baseJob->nodes.push_back(cloneContent);
     context->result = ContextResult::NewChilds;
@@ -520,7 +520,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
                 {
                     if (parent->kind == AstNodeKind::StructDecl)
                     {
-                        node->addFlag(AST_IS_GENERIC);
+                        node->addAstFlag(AST_IS_GENERIC);
                         break;
                     }
 
@@ -532,14 +532,14 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 
             // Same for a function
             if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
-                node->addFlag(AST_IS_GENERIC);
+                node->addAstFlag(AST_IS_GENERIC);
         }
     }
 
     if (node->flags & AST_IS_GENERIC)
     {
         for (const auto& c : node->childs)
-            c->addFlag(AST_NO_SEMANTIC);
+            c->addAstFlag(AST_NO_SEMANTIC);
         node->semFlags |= SEMFLAG_ON_CLONE;
     }
 
@@ -618,8 +618,8 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
 
 void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block)
 {
-    block->addFlag(AST_NO_BYTECODE);
-    block->addFlag(AST_NO_SEMANTIC);
+    block->addAstFlag(AST_NO_BYTECODE);
+    block->addAstFlag(AST_NO_SEMANTIC);
 
     // Revert test errors in case #global testerror is inside a disabled #if branch
     const auto sourceFile = context->sourceFile;
@@ -629,7 +629,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     {
         ScopedLock lk(it.second->mutex);
         ScopedLock lk1(it.first->mutex);
-        it.first->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
+        it.first->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
         it.first->semFlags |= SEMFLAG_DISABLED;
         SymTable::disabledIfBlockOverloadNoLock(it.first, it.second);
     }
@@ -690,7 +690,7 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
     SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
     YIELD();
 
-    node->boolExpression->addFlag(AST_NO_BYTECODE);
+    node->boolExpression->addAstFlag(AST_NO_BYTECODE);
     AstCompilerIfBlock* validatedNode;
     if (node->boolExpression->computedValue->reg.b)
     {
@@ -793,8 +793,8 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
     if (locNode->isValidIfParam(locNode->resolvedSymbolOverload))
     {
-        node->removeFlag(AST_NO_BYTECODE);
-        locNode->addFlag(AST_NO_BYTECODE);
+        node->removeAstFlag(AST_NO_BYTECODE);
+        locNode->addAstFlag(AST_NO_BYTECODE);
         node->byteCodeFct = ByteCodeGen::emitIntrinsicLocationSI;
         return true;
     }

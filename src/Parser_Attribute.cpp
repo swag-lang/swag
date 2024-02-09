@@ -78,7 +78,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
         {
             AstNode* params;
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
-            params->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+            params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
             SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, FMT(Err(Err0220), token.ctext())));
 

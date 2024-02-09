@@ -102,7 +102,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
-    node->addFlag(AST_R_VALUE);
+    node->addAstFlag(AST_R_VALUE);
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
@@ -193,7 +193,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
-    node->addFlag(AST_R_VALUE);
+    node->addAstFlag(AST_R_VALUE);
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
     node->byteCodeFct            = ByteCodeGen::emitMakePointer;
@@ -602,7 +602,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
-    arrayNode->addFlag(AST_R_VALUE);
+    arrayNode->addAstFlag(AST_R_VALUE);
 
     const auto baseType  = arrayNode->array->typeInfo;
     const auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCE_ALIAS | CONCRETE_FUNC);
@@ -622,7 +622,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     {
         // If array is const, inform the make pointer that it need to make a const pointer
         if (baseType->isConst())
-            arrayNode->parent->parent->addFlag(AST_IS_CONST);
+            arrayNode->parent->parent->addAstFlag(AST_IS_CONST);
     }
 
     const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
@@ -656,8 +656,8 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         }
 
         arrayNode->typeInfo = typePtr->pointedType;
-        arrayNode->addFlag(AST_ARRAY_POINTER_REF);
-        arrayNode->array->addFlag(AST_ARRAY_POINTER_REF);
+        arrayNode->addAstFlag(AST_ARRAY_POINTER_REF);
+        arrayNode->array->addAstFlag(AST_ARRAY_POINTER_REF);
         arrayNode->byteCodeFct = ByteCodeGen::emitPointerRef;
         break;
     }
@@ -669,7 +669,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         {
             arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
             arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
-            arrayNode->addFlag(AST_IS_CONST);
+            arrayNode->addAstFlag(AST_IS_CONST);
         }
         else
         {
@@ -858,7 +858,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         }
     }
 
-    arrayNode->addFlag(AST_R_VALUE);
+    arrayNode->addAstFlag(AST_R_VALUE);
 
     const auto accessType = getConcreteTypeUnRef(arrayNode->access, CONCRETE_ALL);
     if (!arrayType->isStruct())

@@ -649,7 +649,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
             n->inheritOwners(structNode);
             n->ownerStructScope = structNode->scope;
             n->ownerScope       = structNode->scope;
-            n->addFlag(AST_IS_GENERIC);
+            n->addAstFlag(AST_IS_GENERIC);
         });
     }
 
@@ -689,7 +689,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
 
-            node->addFlag(AST_IS_GENERIC);
+            node->addAstFlag(AST_IS_GENERIC);
             typeInfo->flags |= TYPEINFO_GENERIC;
             symbolFlags |= OVERLOAD_GENERIC;
         }
@@ -911,7 +911,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     typeInfo->consts.push_back(typeParam);
             }
 
-            child->addFlag(AST_REGISTERED_IN_STRUCT);
+            child->addAstFlag(AST_REGISTERED_IN_STRUCT);
             if (child->kind == AstNodeKind::VarDecl)
                 typeParam = typeInfo->fields[storageIndexField];
             else
@@ -1233,8 +1233,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // Generate all functions associated with a struct
     if (!typeInfo->isGeneric())
     {
-        node->removeFlag(AST_NO_BYTECODE);
-        node->addFlag(AST_NO_BYTECODE_CHILDS);
+        node->removeAstFlag(AST_NO_BYTECODE);
+        node->addAstFlag(AST_NO_BYTECODE_CHILDS);
         SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
 
         node->allocateExtension(ExtensionKind::ByteCode);

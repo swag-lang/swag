@@ -733,7 +733,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         Ast::removeFromParent(makePtrL);
 
                         auto nodeCall = Ast::newFuncCallParam(makePtrL->sourceFile, oldParent);
-                        nodeCall->addFlag(AST_REVERSE_SEMANTIC);
+                        nodeCall->addAstFlag(AST_REVERSE_SEMANTIC);
                         Ast::removeFromParent(nodeCall);
                         Ast::insertChild(oldParent, nodeCall, oldIdx);
                         Ast::addChildBack(nodeCall, makePtrL);
@@ -749,8 +749,8 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         }
                         else if (makePtrL->typeInfo->isPointerNull())
                         {
-                            nodeCall->removeFlag(AST_VALUE_COMPUTED);
-                            makePtrL->addFlag(AST_NO_BYTECODE);
+                            nodeCall->removeAstFlag(AST_VALUE_COMPUTED);
+                            makePtrL->addAstFlag(AST_NO_BYTECODE);
                             Ast::removeFromParent(makePtrL);
                             varNode->allocateExtension(ExtensionKind::Owner);
                             varNode->extOwner()->nodesToFree.push_back(makePtrL);
@@ -765,7 +765,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
                         varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
                         varNode->type->typeInfo = toType;
-                        varNode->type->addFlag(AST_NO_SEMANTIC);
+                        varNode->type->addAstFlag(AST_NO_SEMANTIC);
 
                         auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
                         idRef->allocateExtension(ExtensionKind::Misc);

@@ -228,7 +228,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
 
     op->inheritOrFlag(child, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     SWAG_CHECK(checkIsConcrete(context, child));
-    op->addFlag(AST_R_VALUE);
+    op->addAstFlag(AST_R_VALUE);
 
     // Special case for enum : nothing is possible, except for flags
     auto typeInfo = child->typeInfo->getConcreteAlias();
@@ -260,13 +260,13 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
         }
 
         op->typeInfo = typeInfo;
-        op->addFlag(AST_TRANSIENT);
+        op->addAstFlag(AST_TRANSIENT);
 
         // :SpecFuncConstExpr
         if (op->hasSpecialFuncCall() && (op->flags & AST_CONST_EXPR))
         {
             if (!typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
-                op->removeFlag(AST_CONST_EXPR);
+                op->removeAstFlag(AST_CONST_EXPR);
         }
 
         return true;

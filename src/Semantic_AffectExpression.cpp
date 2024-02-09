@@ -67,7 +67,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     }
 
     ScopedLock lk(mpl->lambda->mutex);
-    mpl->lambda->removeFlag(AST_SPEC_SEMANTIC2);
+    mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC2);
     launchResolveSubDecl(context, mpl->lambda);
     return true;
 }
@@ -78,7 +78,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
         {
-            left->addFlag(AST_IS_CONST);
+            left->addAstFlag(AST_IS_CONST);
         }
     }
 

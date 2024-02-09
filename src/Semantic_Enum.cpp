@@ -16,7 +16,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
     const auto typeInfo = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
 
     // An enum can be in a function, so do not generate bytecode for it !
-    node->addFlag(AST_NO_BYTECODE);
+    node->addAstFlag(AST_NO_BYTECODE);
 
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
