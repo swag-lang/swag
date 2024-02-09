@@ -152,14 +152,14 @@ bool TypeInfo::isPointerConstVoid()
 
 TypeInfo* TypeInfo::getConstAlias()
 {
-    if (!(flags & TYPEINFO_CONST_ALIAS))
+    if (!hasFlag(TYPEINFO_CONST_ALIAS))
         return this;
     return ((TypeInfoAlias*) this)->rawType;
 }
 
 const TypeInfo* TypeInfo::getConstAlias() const
 {
-    if (!(flags & TYPEINFO_CONST_ALIAS))
+    if (!hasFlag(TYPEINFO_CONST_ALIAS))
         return this;
     return ((const TypeInfoAlias*) this)->rawType;
 }
@@ -310,13 +310,13 @@ bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
 
     if (castFlags & CASTFLAG_EXACT)
     {
-        if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
+        if (hasFlag(TYPEINFO_CONST) != from->hasFlag(TYPEINFO_CONST))
             return false;
-        if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
+        if (hasFlag(TYPEINFO_GENERIC) != from->hasFlag(TYPEINFO_GENERIC))
             return false;
-        if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
+        if (hasFlag(TYPEINFO_AUTO_CAST) != from->hasFlag(TYPEINFO_AUTO_CAST))
             return false;
-        if ((flags & TYPEINFO_POINTER_MOVE_REF) != (from->flags & TYPEINFO_POINTER_MOVE_REF))
+        if (hasFlag(TYPEINFO_POINTER_MOVE_REF) != from->hasFlag(TYPEINFO_POINTER_MOVE_REF))
             return false;
         if (isClosure() != from->isClosure())
             return false;
@@ -327,9 +327,9 @@ bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
 
 void TypeInfo::setConst()
 {
-    if (flags & TYPEINFO_CONST)
+    if (hasFlag(TYPEINFO_CONST))
         return;
-    flags |= TYPEINFO_CONST;
+    addFlag(TYPEINFO_CONST);
     name = "const " + name;
 }
 
@@ -354,10 +354,10 @@ void TypeInfo::copyFrom(const TypeInfo* from)
 
 void TypeInfo::removeGenericFlag()
 {
-    if (flags & TYPEINFO_GENERIC)
+    if (hasFlag(TYPEINFO_GENERIC))
     {
-        flags &= ~TYPEINFO_GENERIC;
-        flags |= TYPEINFO_FROM_GENERIC;
+        removeFlag(TYPEINFO_GENERIC);
+        addFlag(TYPEINFO_FROM_GENERIC);
     }
 }
 

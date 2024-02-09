@@ -75,7 +75,7 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (nameType == COMPUTE_DISPLAY_NAME && flags & TYPEINFO_CONST_ALIAS)
     {
-        if (flags & TYPEINFO_CONST)
+        if (hasFlag(TYPEINFO_CONST))
             resName += "const ";
         resName += rawType->computeWhateverName(nameType);
     }
@@ -118,7 +118,7 @@ TypeInfo* TypeInfoPointer::clone()
 
 Utf8 TypeInfoPointer::getDisplayName()
 {
-    if (flags & TYPEINFO_POINTER_AUTO_REF)
+    if (hasFlag(TYPEINFO_POINTER_AUTO_REF))
         return pointedType->getDisplayName();
 
     Utf8 str;
@@ -128,7 +128,7 @@ Utf8 TypeInfoPointer::getDisplayName()
 
 void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    if (flags & TYPEINFO_C_STRING)
+    if (hasFlag(TYPEINFO_C_STRING))
     {
         resName = "cstring";
         return;
@@ -140,17 +140,17 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         return;
     }
 
-    if (!(flags & TYPEINFO_POINTER_AUTO_REF) || (nameType != COMPUTE_DISPLAY_NAME && nameType != COMPUTE_SCOPED_NAME_EXPORT))
+    if (!hasFlag(TYPEINFO_POINTER_AUTO_REF) || (nameType != COMPUTE_DISPLAY_NAME && nameType != COMPUTE_SCOPED_NAME_EXPORT))
     {
-        if (flags & TYPEINFO_CONST)
+        if (hasFlag(TYPEINFO_CONST))
             resName += "const ";
-        if (flags & TYPEINFO_POINTER_REF && (flags & TYPEINFO_POINTER_MOVE_REF))
+        if (hasFlag(TYPEINFO_POINTER_REF) && hasFlag(TYPEINFO_POINTER_MOVE_REF))
             resName += "&&";
-        else if (flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF)
+        else if (hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF))
             resName += "&&";
-        else if (flags & TYPEINFO_POINTER_REF)
+        else if (hasFlag(TYPEINFO_POINTER_REF))
             resName += "&";
-        else if (flags & TYPEINFO_POINTER_ARITHMETIC)
+        else if (hasFlag(TYPEINFO_POINTER_ARITHMETIC))
             resName += "^";
         else
             resName += "*";
@@ -167,7 +167,7 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
     to = TypeManager::concreteType(to);
     if (castFlags & CASTFLAG_CAST)
     {
-        if (to->isKindGeneric() && !(flags & TYPEINFO_POINTER_MOVE_REF))
+        if (to->isKindGeneric() && !hasFlag(TYPEINFO_POINTER_MOVE_REF))
             return true;
         if (this->isPointerNull() && to->isLambdaClosure())
             return true;
@@ -191,9 +191,9 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
     {
         if (other->pointedType->isVoid() && !(castFlags & CASTFLAG_FOR_GENERIC))
             return true;
-        if ((to->hasFlag(TYPEINFO_POINTER_ARITHMETIC)) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
+        if (to->hasFlag(TYPEINFO_POINTER_ARITHMETIC) && !hasFlag(TYPEINFO_POINTER_ARITHMETIC))
             return false;
-        if ((to->hasFlag(TYPEINFO_POINTER_REF)) || (flags & TYPEINFO_POINTER_REF))
+        if (to->hasFlag(TYPEINFO_POINTER_REF) || hasFlag(TYPEINFO_POINTER_REF))
             return false;
     }
 
@@ -222,7 +222,7 @@ bool TypeInfoArray::isSame(const TypeInfo* to, uint64_t castFlags) const
         return false;
 
     const auto other = castTypeInfo<TypeInfoArray>(to, to->kind);
-    if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
+    if (hasFlag(TYPEINFO_GENERIC) == other->hasFlag(TYPEINFO_GENERIC))
     {
         if (count != other->count)
             return false;
@@ -271,7 +271,7 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    if (flags & TYPEINFO_CONST)
+    if (hasFlag(TYPEINFO_CONST))
         resName += "const ";
     resName += "[..] ";
     resName += pointedType->computeWhateverName(nameType);
@@ -299,7 +299,7 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (kind == TypeInfoKind::TypeListArray)
     {
-        if (flags & TYPEINFO_CONST)
+        if (hasFlag(TYPEINFO_CONST))
             resName += "const ";
         resName += FMT("[%u] ", subTypes.size());
         if (!subTypes.empty())
@@ -634,7 +634,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += returnType->computeWhateverName(nameType);
     }
 
-    if (flags & TYPEINFO_CAN_THROW)
+    if (hasFlag(TYPEINFO_CAN_THROW))
         resName += " throw";
 }
 
@@ -870,7 +870,7 @@ TypeInfo* TypeInfoFuncAttr::concreteReturnType() const
 // argIdx is the argument index of a function, starting after the return arguments
 uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
 {
-    if (flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+    if (hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         if (argIdx < 2)
             return (uint32_t) parameters.size() - 1;
@@ -1089,9 +1089,9 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
         return false;
 
     // Compare generic parameters
-    if (!(flags & TYPEINFO_GENERATED_TUPLE) && !other->hasFlag(TYPEINFO_GENERATED_TUPLE))
+    if (!hasFlag(TYPEINFO_GENERATED_TUPLE) && !other->hasFlag(TYPEINFO_GENERATED_TUPLE))
     {
-        if ((flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)) && (other->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)))
+        if (hasFlag(TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC) && other->hasFlag(TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC))
         {
             const auto numGenParams = genericParameters.size();
             if (numGenParams != other->genericParameters.size())
@@ -1129,7 +1129,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
     bool compareFields = false;
     if (!hasTuple && !(castFlags & CASTFLAG_CAST))
     {
-        if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+        if (hasFlag(TYPEINFO_GENERIC) != other->hasFlag(TYPEINFO_GENERIC))
             return false;
         if (scope != other->scope)
             return false;
@@ -1138,9 +1138,9 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
     }
     else if (hasTuple && !sameName)
     {
-        if (!(flags & TYPEINFO_GENERATED_TUPLE) && !other->hasFlag(TYPEINFO_GENERATED_TUPLE))
+        if (!hasFlag(TYPEINFO_GENERATED_TUPLE) && !other->hasFlag(TYPEINFO_GENERATED_TUPLE))
         {
-            if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+            if (hasFlag(TYPEINFO_GENERIC) != other->hasFlag(TYPEINFO_GENERIC))
                 return false;
         }
 
