@@ -128,7 +128,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         castFlags |= CASTFLAG_EXPLICIT;
     if (toType->isGeneric())
         castFlags |= CASTFLAG_NO_IMPLICIT;
-    if (toType->hasFlag(TYPEINFO_FROM_GENERIC))
+    if (toType->isFromGeneric())
         castFlags |= CASTFLAG_NO_IMPLICIT;
 
     if (toType->isFuncAttr())
@@ -226,9 +226,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    if (toType->hasFlag(TYPEINFO_FROM_GENERIC))
+    if (toType->isFromGeneric())
         castFlags |= CASTFLAG_EXACT_TUPLE_STRUCT;
-    if (fromType->hasFlag(TYPEINFO_FROM_GENERIC))
+    if (fromType->isFromGeneric())
         castFlags |= CASTFLAG_EXACT_TUPLE_STRUCT;
 
     if (toNode && toNode->hasSemFlag(SEMFLAG_FROM_REF) && toType->isPointerRef())
@@ -314,9 +314,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (!(castFlags & CASTFLAG_PARAMS) || !toType->isStruct())
         {
-            if ((!toType->isPointerNull()) &&
-                (!toType->isString()) &&
-                (!toType->isInterface()) &&
+            if (!toType->isPointerNull() &&
+                !toType->isString() &&
+                !toType->isInterface() &&
                 (!toType->isBool() || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
                 (!toType->isNative(NativeTypeKind::U64) || !fromType->isPointer()))
             {
@@ -332,7 +332,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                     if (!(castFlags & CASTFLAG_UN_CONST))
                         return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 
-                    // We can affect a const to an unconst if type is by copy, and we are in an affectation
+                    // We can affect a const to an un-const if type is by copy, and we are in an affectation
                     if (!fromType->isStruct() &&
                         !toType->isStruct() &&
                         !fromType->isArray() &&

@@ -1008,7 +1008,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
 
     if (typeInfo->isSelf())
     {
-        if (typeInfo->hasFlag(TYPEINFO_CONST))
+        if (typeInfo->isConst())
             CONCAT_FIXED_STR(concat, "const self");
         else
             CONCAT_FIXED_STR(concat, "self");

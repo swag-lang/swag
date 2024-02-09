@@ -171,7 +171,7 @@ void Semantic::setDefaultAccess(AstNode* node)
 
     // If identifier comes from a generic, then access is the same as the source original
     // generic function or struct
-    if (node->typeInfo && node->typeInfo->hasFlag(TYPEINFO_FROM_GENERIC))
+    if (node->typeInfo && node->typeInfo->isFromGeneric())
     {
         if (node->kind == AstNodeKind::StructDecl)
         {

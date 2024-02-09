@@ -622,7 +622,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     // For a lambda
     if (context.matchFlags & SymbolMatchContext::MATCH_FOR_LAMBDA)
     {
-        if (!typeFunc->hasFlag(TYPEINFO_GENERIC))
+        if (!typeFunc->isGeneric())
             matchGenericParameters(context, typeFunc, typeFunc->genericParameters);
         return;
     }

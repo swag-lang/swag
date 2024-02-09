@@ -2125,7 +2125,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 if (node->hasSemFlag(SEMFLAG_FROM_REF) && !node->isForceTakeAddress())
                 {
                     auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
-                    SWAG_ASSERT(ptrPointer->hasFlag(TYPEINFO_POINTER_REF));
+                    SWAG_ASSERT(ptrPointer->isPointerRef());
                     SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, ptrPointer->pointedType));
                 }
 

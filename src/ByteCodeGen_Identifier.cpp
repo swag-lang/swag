@@ -196,7 +196,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         {
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
             const auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeField, TypeInfoKind::Pointer);
-            SWAG_ASSERT(ptrPointer->hasFlag(TYPEINFO_POINTER_REF));
+            SWAG_ASSERT(ptrPointer->isPointerRef());
             typeField = ptrPointer->pointedType;
         }
 
@@ -258,7 +258,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             if (!node->isForceTakeAddress())
             {
                 const auto ptrPointer = castTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
-                SWAG_ASSERT(ptrPointer->hasFlag(TYPEINFO_POINTER_REF));
+                SWAG_ASSERT(ptrPointer->isPointerRef());
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, ptrPointer->pointedType));
             }
         }

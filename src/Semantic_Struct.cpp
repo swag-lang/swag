@@ -231,7 +231,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             }
         }
 
-        if (typeInfo->hasFlag(TYPEINFO_GENERIC))
+        if (typeInfo->isGeneric())
             continue;
 
         // We need to be have a bytecode pointer to be able to reference it in the itable

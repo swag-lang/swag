@@ -2551,7 +2551,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     if (fromType->isPointer())
     {
         // Convert from pointer to ref : only if authorized
-        if (!fromType->hasFlag(TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
+        if (!fromType->isPointerRef() && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
 
         // When affecting a ref, const must be the same

@@ -161,7 +161,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                             continue;
                         if (!firstParam)
                             parameters += ", ";
-                        if (varNode->typeInfo && varNode->typeInfo->hasFlag(TYPEINFO_SELF))
+                        if (varNode->typeInfo && varNode->typeInfo->isSelf())
                             parameters += "self";
                         else if (varNode->typeInfo)
                             parameters += varNode->typeInfo->name;

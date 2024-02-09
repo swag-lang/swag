@@ -310,9 +310,9 @@ bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
 
     if (castFlags & CASTFLAG_EXACT)
     {
-        if (hasFlag(TYPEINFO_CONST) != from->hasFlag(TYPEINFO_CONST))
+        if (isConst() != from->isConst())
             return false;
-        if (hasFlag(TYPEINFO_GENERIC) != from->hasFlag(TYPEINFO_GENERIC))
+        if (isGeneric() != from->isGeneric())
             return false;
         if (hasFlag(TYPEINFO_AUTO_CAST) != from->hasFlag(TYPEINFO_AUTO_CAST))
             return false;
@@ -327,7 +327,7 @@ bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
 
 void TypeInfo::setConst()
 {
-    if (hasFlag(TYPEINFO_CONST))
+    if (isConst())
         return;
     addFlag(TYPEINFO_CONST);
     name = "const " + name;
@@ -354,7 +354,7 @@ void TypeInfo::copyFrom(const TypeInfo* from)
 
 void TypeInfo::removeGenericFlag()
 {
-    if (hasFlag(TYPEINFO_GENERIC))
+    if (isGeneric())
     {
         removeFlag(TYPEINFO_GENERIC);
         addFlag(TYPEINFO_FROM_GENERIC);

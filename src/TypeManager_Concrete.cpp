@@ -96,7 +96,7 @@ TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return nullptr;
-    if (typeInfo->hasFlag(TYPEINFO_POINTER_REF))
+    if (typeInfo->isPointerRef())
         return castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer)->pointedType;
     return typeInfo;
 }

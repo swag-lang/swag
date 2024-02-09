@@ -58,7 +58,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         const auto  overload = match->symbolOverload;
         Diagnostic* note;
 
-        if (overload->typeInfo->isFuncAttr() && overload->typeInfo->hasFlag(TYPEINFO_FROM_GENERIC))
+        if (overload->typeInfo->isFuncAttr() && overload->typeInfo->isFromGeneric())
         {
             auto couldBe = FMT(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
             note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
