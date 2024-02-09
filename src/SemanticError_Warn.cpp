@@ -113,7 +113,8 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         return true;
     if (scope->kind == ScopeKind::Struct)
         return true;
-    if (scope->owner != node && !node->isParentOf(scope->owner))
+
+    if (scope->kind != ScopeKind::Inline && scope->owner != node && !node->isParentOf(scope->owner))
         return true;
 
     const auto& table = scope->symTable;
@@ -181,8 +182,8 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 
         if (overload->flags & OVERLOAD_VAR_LOCAL)
         {
-            Diagnostic diag{front, front->token, FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
-                            DiagnosticLevel::Warning};
+            const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
+            Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
@@ -199,31 +200,31 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 
             if (front->isGeneratedSelf())
             {
-                Diagnostic diag{front->ownerFct, front->ownerFct->token,
-                                FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
+                const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
+                Diagnostic diag{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
                 diag.hint       = Nte(Nte0145);
                 const auto note = Diagnostic::note(Nte(Nte0039));
                 isOk            = isOk && context->report(diag, note);
             }
             else
             {
-                Diagnostic diag{front, front->token, FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
-                                DiagnosticLevel::Warning};
+                const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
+                Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
                 const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
                 isOk            = isOk && context->report(diag, note);
             }
         }
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
-            Diagnostic diag{front, front->token, FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
-                            DiagnosticLevel::Warning};
+            const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
+            Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {
-            Diagnostic diag{front, front->token, FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()),
-                            DiagnosticLevel::Warning};
+            const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
+            Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
