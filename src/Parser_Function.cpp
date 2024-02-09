@@ -836,7 +836,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         {
             SWAG_CHECK(eatToken());
             funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_THROW);
-            funcNode->typeInfo->flags |= TYPEINFO_CAN_THROW;
+            funcNode->typeInfo->addFlag(TYPEINFO_CAN_THROW);
         }
         else if (token.id == TokenId::KwdAssume)
         {
@@ -1115,7 +1115,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         }
 
         SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, FMT(Err(Err0529), token.ctext())));
-        typeInfo->flags |= TYPEINFO_CLOSURE;
+        typeInfo->addFlag(TYPEINFO_CLOSURE);
     }
     else
     {

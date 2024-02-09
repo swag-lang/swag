@@ -392,7 +392,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     typeInfo->name       = structNode->token.text;
     typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
-    typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
+    typeInfo->addFlag(TYPEINFO_STRUCT_IS_TUPLE);
     structNode->typeInfo   = typeInfo;
     structNode->ownerScope = rootScope;
     rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);

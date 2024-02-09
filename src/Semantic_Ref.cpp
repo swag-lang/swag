@@ -475,7 +475,7 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
     }
 
     typeInfo = typeInfo->clone();
-    typeInfo->flags |= TYPEINFO_POINTER_REF | TYPEINFO_POINTER_ACCEPT_MOVE_REF;
+    typeInfo->addFlag(TYPEINFO_POINTER_REF | TYPEINFO_POINTER_ACCEPT_MOVE_REF);
     typeInfo->forceComputeName();
 
     node->typeInfo    = typeInfo;
@@ -516,7 +516,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
     if (!typeInfo->isPointerRef())
     {
         typeInfo = typeInfo->clone();
-        typeInfo->flags |= TYPEINFO_POINTER_REF;
+        typeInfo->addFlag(TYPEINFO_POINTER_REF);
         if (node->hasAstFlag(AST_IS_CONST))
             typeInfo->setConst();
         typeInfo->forceComputeName();

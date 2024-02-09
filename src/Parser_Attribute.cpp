@@ -25,7 +25,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     const auto typeInfo = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode  = attrNode;
     attrNode->typeInfo  = typeInfo;
-    typeInfo->flags |= TYPEINFO_FUNC_IS_ATTR;
+    typeInfo->addFlag(TYPEINFO_FUNC_IS_ATTR);
 
     // Register attribute
     Scope* newScope = nullptr;

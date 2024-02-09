@@ -55,7 +55,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     if (fromNode->castedTypeInfo && fromNode->castedTypeInfo->flags & TYPEINFO_SPREAD)
     {
         fromNode->typeInfo = fromNode->typeInfo->clone();
-        fromNode->typeInfo->flags |= TYPEINFO_SPREAD;
+        fromNode->typeInfo->addFlag(TYPEINFO_SPREAD);
     }
 
     // auto cast

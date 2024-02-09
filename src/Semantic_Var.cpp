@@ -469,7 +469,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
                 const auto tryType = makeType<TypeInfoFuncAttr>();
                 tryType->kind      = TypeInfoKind::LambdaClosure;
                 if (nodeParam->ownerFct->captureParameters)
-                    tryType->flags |= TYPEINFO_CLOSURE;
+                    tryType->addFlag(TYPEINFO_CLOSURE);
 
                 for (size_t i = 0; i < nodeParam->ownerFct->parameters->childs.size(); i++)
                 {

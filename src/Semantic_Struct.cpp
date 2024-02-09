@@ -665,7 +665,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
     if (node->hasAttribute(ATTRIBUTE_NO_COPY))
-        typeInfo->flags |= TYPEINFO_STRUCT_NO_COPY;
+        typeInfo->addFlag(TYPEINFO_STRUCT_NO_COPY);
 
     typeInfo->declNode = node;
     node->scope->owner = node;
@@ -690,7 +690,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
             }
 
             node->addAstFlag(AST_IS_GENERIC);
-            typeInfo->flags |= TYPEINFO_GENERIC;
+            typeInfo->addFlag(TYPEINFO_GENERIC);
             symbolFlags |= OVERLOAD_GENERIC;
         }
 
@@ -1205,10 +1205,10 @@ bool Semantic::resolveStruct(SemanticContext* context)
         typeInfo->flags &= ~TYPEINFO_STRUCT_EMPTY;
     }
 
-    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
-    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_EMPTY);
-    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
-    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_NO_COPY);
+    typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
+    typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_EMPTY);
+    typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
+    typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_NO_COPY);
 
     // Register symbol with its type
     node->typeInfo = typeInfo;

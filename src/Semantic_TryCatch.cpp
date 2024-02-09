@@ -63,7 +63,7 @@ bool Semantic::resolveTry(SemanticContext* context)
     SWAG_CHECK(checkCanCatch(context));
 
     node->typeInfo = lastChild->typeInfo;
-    node->flags |= identifierRef->flags;
+    node->addAstFlag(identifierRef->flags);
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
@@ -84,7 +84,7 @@ bool Semantic::resolveTryCatch(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
-    node->flags |= identifierRef->flags;
+    node->addAstFlag(identifierRef->flags);
     node->inheritComputedValue(identifierRef);
 
     return true;
@@ -105,7 +105,7 @@ bool Semantic::resolveCatch(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
-    node->flags |= identifierRef->flags;
+    node->addAstFlag(identifierRef->flags);
     node->removeAstFlag(AST_DISCARD);
     node->inheritComputedValue(identifierRef);
 
@@ -130,7 +130,7 @@ bool Semantic::resolveAssume(SemanticContext* context)
     node->allocateExtension(ExtensionKind::ByteCode);
     node->setBcNotifyBefore(ByteCodeGen::emitInitStackTrace);
     node->typeInfo = lastChild->typeInfo;
-    node->flags |= identifierRef->flags;
+    node->addAstFlag(identifierRef->flags);
     node->inheritComputedValue(identifierRef);
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
 

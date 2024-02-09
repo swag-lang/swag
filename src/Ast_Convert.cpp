@@ -187,7 +187,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     // Create type
     const auto typeInfo  = makeType<TypeInfoStruct>();
     structNode->typeInfo = typeInfo;
-    typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERATED_TUPLE;
+    typeInfo->addFlag(TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERATED_TUPLE);
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->token.text;
     typeInfo->structName = structNode->token.text;
@@ -347,7 +347,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
     typeInfo->name       = structNode->token.text;
     typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
-    typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
+    typeInfo->addFlag(TYPEINFO_STRUCT_IS_TUPLE);
     structNode->typeInfo = typeInfo;
     structNode->scope    = newScope;
     visit(structNode->content, [&](AstNode* n)

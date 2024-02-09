@@ -965,8 +965,8 @@ AstNode* AstImpl::clone(CloneContext& context)
                 // Be sure we keep a generic typeinfo
                 SWAG_ASSERT(newFunc->typeInfo);
                 newFunc->typeInfo = newFunc->typeInfo->clone();
-                newFunc->typeInfo->flags &= ~TYPEINFO_FROM_GENERIC;
-                newFunc->typeInfo->flags |= TYPEINFO_GENERIC;
+                newFunc->typeInfo->removeFlag(TYPEINFO_FROM_GENERIC);
+                newFunc->typeInfo->addFlag(TYPEINFO_GENERIC);
                 newFunc->typeInfo->declNode = newFunc;
                 newFunc->typeInfo->forceComputeName();
             }

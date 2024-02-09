@@ -63,7 +63,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     {
         typeInfo->genericParameters.clear();
         typeInfo->genericParameters.reserve((int) parameters->childs.size());
-        typeInfo->flags |= TYPEINFO_GENERIC;
+        typeInfo->addFlag(TYPEINFO_GENERIC);
     }
     else
     {
@@ -120,21 +120,21 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         if (paramType->isVariadic())
         {
             SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
-            typeInfo->flags |= TYPEINFO_VARIADIC;
+            typeInfo->addFlag(TYPEINFO_VARIADIC);
             if (index != parameters->childs.size())
                 return context->report({nodeParam, Err(Err0513)});
         }
         else if (paramType->isTypedVariadic())
         {
             SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
-            typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
+            typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
             if (index != parameters->childs.size())
                 return context->report({nodeParam, Err(Err0513)});
         }
         else if (paramType->isCVariadic())
         {
             SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
-            typeInfo->flags |= TYPEINFO_C_VARIADIC;
+            typeInfo->addFlag(TYPEINFO_C_VARIADIC);
             if (index != parameters->childs.size())
                 return context->report({nodeParam, Err(Err0513)});
         }
@@ -667,7 +667,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
 
         if (funcNode->hasAstFlag(AST_IS_GENERIC))
-            typeInfo->flags |= TYPEINFO_GENERIC;
+            typeInfo->addFlag(TYPEINFO_GENERIC);
 
         if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_IS_GENERIC))
         {

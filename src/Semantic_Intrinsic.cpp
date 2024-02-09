@@ -704,7 +704,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
     typeVar->rawType   = node->typeInfo;
     typeVar->computeName();
     node->typeInfo = typeVar;
-    node->typeInfo->flags |= TYPEINFO_SPREAD;
+    node->typeInfo->addFlag(TYPEINFO_SPREAD);
 
     return true;
 }

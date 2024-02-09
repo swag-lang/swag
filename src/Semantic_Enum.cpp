@@ -140,7 +140,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
     if (enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS))
     {
-        typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
+        typeInfo->addFlag(TYPEINFO_ENUM_FLAGS);
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!concreteType->isNativeInteger() || concreteType->isNativeIntegerSigned())
             return context->report({typeNode->childs.front(), FMT(Err(Err0267), rawTypeInfo->getDisplayNameC())});
@@ -148,14 +148,14 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
     if (enumNode->hasAttribute(ATTRIBUTE_ENUM_INDEX))
     {
-        typeInfo->flags |= TYPEINFO_ENUM_INDEX;
+        typeInfo->addFlag(TYPEINFO_ENUM_INDEX);
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!concreteType->isNativeInteger())
             return context->report({typeNode->childs.front(), FMT(Err(Err0268), rawTypeInfo->getDisplayNameC())});
     }
 
     if (enumNode->hasAttribute(ATTRIBUTE_INCOMPLETE))
-        typeInfo->flags |= TYPEINFO_INCOMPLETE;
+        typeInfo->addFlag(TYPEINFO_INCOMPLETE);
 
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
     switch (rawTypeInfo->kind)
@@ -258,7 +258,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     typeParam->declNode  = node;
     SWAG_CHECK(collectAttributes(context, node, &typeParam->attributes));
     typeEnum->values.push_back(typeParam);
-    typeEnum->flags |= TYPEINFO_ENUM_HAS_USING;
+    typeEnum->addFlag(TYPEINFO_ENUM_HAS_USING);
 
     return true;
 }

@@ -89,7 +89,7 @@ bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
         return true;
     if (node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
         return true;
-    if (node->typeInfo->flags & (TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERIC))
+    if (node->typeInfo->isTuple() || node->typeInfo->isGeneric())
         return true;
 
     CompilerMessage msg;
@@ -211,13 +211,13 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
     typeInfo->declNode  = node;
 
     if (node->hasSpecFlag(AstTypeLambda::SPECFLAG_CAN_THROW))
-        typeInfo->flags |= TYPEINFO_CAN_THROW;
+        typeInfo->addFlag(TYPEINFO_CAN_THROW);
 
     if (node->returnType)
     {
         typeInfo->returnType = node->returnType->typeInfo;
         if (typeInfo->returnType->isGeneric())
-            typeInfo->flags |= TYPEINFO_GENERIC;
+            typeInfo->addFlag(TYPEINFO_GENERIC);
     }
     else
     {
@@ -237,24 +237,24 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
                 typeParam->name = param->extMisc()->isNamed->token.text;
 
             if (typeParam->typeInfo->isGeneric())
-                typeInfo->flags |= TYPEINFO_GENERIC;
+                typeInfo->addFlag(TYPEINFO_GENERIC);
 
             // Variadic must be the last one
             if (typeParam->typeInfo->isVariadic())
             {
-                typeInfo->flags |= TYPEINFO_VARIADIC;
+                typeInfo->addFlag(TYPEINFO_VARIADIC);
                 if (index != node->parameters->childs.size() - 1)
                     return context->report({param, Err(Err0513)});
             }
             else if (typeParam->typeInfo->isTypedVariadic())
             {
-                typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
+                typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
                 if (index != node->parameters->childs.size() - 1)
                     return context->report({param, Err(Err0513)});
             }
             else if (typeParam->typeInfo->isCVariadic())
             {
-                typeInfo->flags |= TYPEINFO_C_VARIADIC;
+                typeInfo->addFlag(TYPEINFO_C_VARIADIC);
                 if (index != node->parameters->childs.size() - 1)
                     return context->report({param, Err(Err0513)});
             }
@@ -272,7 +272,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
     if (node->kind == AstNodeKind::TypeClosure)
     {
         typeInfo->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-        typeInfo->flags |= TYPEINFO_CLOSURE;
+        typeInfo->addFlag(TYPEINFO_CLOSURE);
     }
     else
     {
@@ -383,7 +383,7 @@ bool Semantic::resolveType(SemanticContext* context)
             const auto typeVariadic = (TypeInfoVariadic*) typeNode->typeInfo->clone();
             typeVariadic->kind      = TypeInfoKind::TypedVariadic;
             typeVariadic->rawType   = typeNode->childs.front()->typeInfo;
-            typeVariadic->flags |= (typeVariadic->rawType->flags & TYPEINFO_GENERIC);
+            typeVariadic->addFlag(typeVariadic->rawType->flags & TYPEINFO_GENERIC);
             typeVariadic->forceComputeName();
             typeNode->typeFromLiteral = typeVariadic;
             typeNode->typeInfo        = typeVariadic;
@@ -601,7 +601,7 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
     typeInfo->declNode  = node;
     typeInfo->name      = node->token.text;
     if (node->hasAttribute(ATTRIBUTE_STRICT))
-        typeInfo->flags |= TYPEINFO_STRICT;
+        typeInfo->addFlag(TYPEINFO_STRICT);
     node->typeInfo = typeInfo;
 
     uint32_t symbolFlags = OVERLOAD_INCOMPLETE;
@@ -627,8 +627,8 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
     const auto typeInfo = castTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
     typeInfo->rawType   = node->childs.front()->typeInfo;
     typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
-    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
+    typeInfo->addFlag(typeInfo->rawType->flags & TYPEINFO_GENERIC);
+    typeInfo->addFlag(typeInfo->rawType->flags & TYPEINFO_CONST);
     typeInfo->computeName();
     uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
     if (typeInfo->isGeneric())
