@@ -16,7 +16,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     if (node->ownerInline)
     {
         if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
-            node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
+            node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);
     }
 
     const auto parentFct = (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)) ? node->ownerInline->func : node->ownerFct;

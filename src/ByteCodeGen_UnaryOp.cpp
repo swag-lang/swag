@@ -80,7 +80,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
         {
             SWAG_CHECK(emitUserOp(context));
             YIELD();
-            node->semFlags |= SEMFLAG_EMIT_OP;
+            node->addSemFlag(SEMFLAG_EMIT_OP);
         }
         else
         {
@@ -110,7 +110,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
                 return Report::internalError(context->node, "emitUnaryOp, invalid token op");
             }
 
-            node->semFlags |= SEMFLAG_EMIT_OP;
+            node->addSemFlag(SEMFLAG_EMIT_OP);
         }
     }
 
@@ -118,7 +118,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
         YIELD();
-        node->semFlags |= SEMFLAG_CAST1;
+        node->addSemFlag(SEMFLAG_CAST1);
     }
 
     return true;

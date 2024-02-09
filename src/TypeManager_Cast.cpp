@@ -2317,8 +2317,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 
                 // We will have to dereference the pointer to get the real thing
                 if (it.field && it.field->typeInfo->isPointer())
-                    fromNode->semFlags |= SEMFLAG_DEREF_USING;
-                fromNode->semFlags |= SEMFLAG_USING;
+                    fromNode->addSemFlag(SEMFLAG_DEREF_USING);
+                fromNode->addSemFlag(SEMFLAG_USING);
 
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->castOffset = it.offset;

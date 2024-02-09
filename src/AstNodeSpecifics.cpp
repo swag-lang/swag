@@ -403,7 +403,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         subDecl->typeInfo->removeGenericFlag();
         subDecl->typeInfo->declNode = subDecl;
 
-        subDecl->semFlags |= SEMFLAG_FILE_JOB_PASS;
+        subDecl->addSemFlag(SEMFLAG_FILE_JOB_PASS);
         newFctNode->subDecls.push_back(subDecl);
 
         // We need to add the parent scope of the inline function (the global one), in order for

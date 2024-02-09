@@ -115,7 +115,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     SWAG_ASSERT(funcDecl->pendingLambdaJob);
     SWAG_ASSERT(context->node->kind == AstNodeKind::Identifier);
 
-    context->node->semFlags |= SEMFLAG_PENDING_LAMBDA_TYPING;
+    context->node->addSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
     funcDecl->semFlags &= ~SEMFLAG_PENDING_LAMBDA_TYPING;
 
     ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
@@ -242,7 +242,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // Force to keep the address
                 if (front->kind == AstNodeKind::IdentifierRef)
                 {
-                    front->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+                    front->childs.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
                 }
                 else
                     return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
@@ -255,7 +255,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // Force to keep the address
                 if (front->kind == AstNodeKind::IdentifierRef)
                 {
-                    front->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+                    front->childs.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
                 }
             }
         }
@@ -305,7 +305,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 }
                 else
                 {
-                    makePtrL->semFlags |= SEMFLAG_ONCE;
+                    makePtrL->addSemFlag(SEMFLAG_ONCE);
                     Ast::removeFromParent(makePtrL);
                     Ast::addChildBack(varNode, makePtrL);
                     varNode->assignment = makePtrL;
@@ -326,7 +326,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
-                varNode->semFlags |= SEMFLAG_ONCE;
+                varNode->addSemFlag(SEMFLAG_ONCE);
 
                 context->result = ContextResult::NewChilds;
             }
@@ -404,7 +404,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // If call is inline, then the identifier will be reevaluated, so the new variable, which is a child of
                 // that identifier, will be reevaluated too (so twice because of the push above).
                 // So we set a special flag to not reevaluate it twice.
-                varNode->semFlags |= SEMFLAG_ONCE;
+                varNode->addSemFlag(SEMFLAG_ONCE);
 
                 context->result = ContextResult::NewChilds;
             }
@@ -523,7 +523,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
-                varNode->semFlags |= SEMFLAG_ONCE;
+                varNode->addSemFlag(SEMFLAG_ONCE);
 
                 context->result = ContextResult::NewChilds;
             }
@@ -945,7 +945,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             varNode->assignment = nullptr;
             typeNode->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
             typeNode->addSpecFlag(AstTypeExpression::SPECFLAG_DONE_GEN);
-            identifier->semFlags |= SEMFLAG_ONCE;
+            identifier->addSemFlag(SEMFLAG_ONCE);
             Ast::removeFromParent(identifier->parent);
             Ast::addChildBack(typeNode, identifier->parent);
             typeNode->identifier = identifier->parent;
@@ -1367,8 +1367,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // Setup parent if necessary
         if (returnType->isStruct())
         {
-            identifier->semFlags |= SEMFLAG_IS_CONST_ASSIGN_INHERIT;
-            identifier->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
+            identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
+            identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
         }
 
         SWAG_CHECK(setupIdentifierRef(context, identifier));

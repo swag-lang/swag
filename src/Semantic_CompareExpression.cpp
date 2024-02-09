@@ -536,7 +536,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     else if (!leftTypeInfo->isStruct())
     {
         swap(left, right);
-        node->semFlags |= SEMFLAG_INVERSE_PARAMS;
+        node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
     }
 
     node->byteCodeFct = ByteCodeGen::emitCompareOp;

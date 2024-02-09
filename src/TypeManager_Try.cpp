@@ -185,7 +185,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromNode->typeInfo       = toType;
                 fromNode->allocateExtension(ExtensionKind::Misc);
                 fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
-                fromNode->semFlags |= SEMFLAG_USER_CAST;
+                fromNode->addSemFlag(SEMFLAG_USER_CAST);
             }
 
             context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_CAST;
@@ -250,7 +250,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         fromNode->typeInfo       = toType;
         fromNode->allocateExtension(ExtensionKind::Misc);
         fromNode->extMisc()->resolvedUserOpSymbolOverload = toCast[0];
-        fromNode->semFlags |= SEMFLAG_USER_CAST;
+        fromNode->addSemFlag(SEMFLAG_USER_CAST);
     }
 
     context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_CAST;

@@ -44,7 +44,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 
         if (!nodeParam->type)
         {
-            nodeParam->semFlags |= SEMFLAG_TUPLE_CONVERT;
+            nodeParam->addSemFlag(SEMFLAG_TUPLE_CONVERT);
             SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
             SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
             context->result = ContextResult::NewChilds;
@@ -1051,7 +1051,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
             // Disabled by #if block
             if (f->hasSemFlag(SEMFLAG_DISABLED))
                 continue;
-            f->semFlags |= SEMFLAG_DISABLED; // To avoid multiple resolutions
+            f->addSemFlag(SEMFLAG_DISABLED); // To avoid multiple resolutions
 
             if (f->hasExtOwner() && f->extOwner()->ownerCompilerIfBlock && f->extOwner()->ownerCompilerIfBlock->ownerFct == funcNode)
             {
@@ -1193,7 +1193,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
     if (node->childs.front()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-        node->semFlags |= SEMFLAG_LITERAL_SUFFIX;
+        node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
     if (node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
@@ -1307,7 +1307,7 @@ void Semantic::propagateReturn(AstNode* node)
     {
         if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !(scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN)))
             break;
-        scanNode->semFlags |= SEMFLAG_SCOPE_HAS_RETURN;
+        scanNode->addSemFlag(SEMFLAG_SCOPE_HAS_RETURN);
         if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
         {
             const auto ifNode = castAst<AstIf>(scanNode->parent, AstNodeKind::If);
@@ -1320,7 +1320,7 @@ void Semantic::propagateReturn(AstNode* node)
         {
             const auto sc = castAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
             if (sc->hasSpecFlag(AstSwitchCase::SPECFLAG_IS_DEFAULT))
-                sc->ownerSwitch->semFlags |= SEMFLAG_SCOPE_FORCE_HAS_RETURN;
+                sc->ownerSwitch->addSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN);
         }
         else if (scanNode->kind == AstNodeKind::Switch)
         {
@@ -1342,7 +1342,7 @@ void Semantic::propagateReturn(AstNode* node)
     {
         if (scanNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
             break;
-        scanNode->semFlags |= SEMFLAG_FCT_HAS_RETURN;
+        scanNode->addSemFlag(SEMFLAG_FCT_HAS_RETURN);
         scanNode = scanNode->parent;
     }
 }
@@ -1357,7 +1357,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
         if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
         {
             if (node->kind == AstNodeKind::Return)
-                node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
+                node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);
             funcNode = node->ownerInline->func;
         }
     }
@@ -1616,7 +1616,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
             context->baseJob->nodes.push_back(node->childs.front());
             context->baseJob->nodes.push_back(varNode);
-            varNode->semFlags |= SEMFLAG_ONCE;
+            varNode->addSemFlag(SEMFLAG_ONCE);
             context->result = ContextResult::NewChilds;
             return true;
         }

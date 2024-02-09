@@ -86,7 +86,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 }
 
                 emitStructParameters(context, UINT32_MAX, retVal);
-                node->semFlags |= SEMFLAG_VAR_DECL_STRUCT_PARAMETERS;
+                node->addSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS);
             }
         }
 
@@ -98,7 +98,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 const RegisterList r0 = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
                 node->type->resultRegisterRc = r0;
-                node->semFlags |= SEMFLAG_VAR_DECL_REF_CALL;
+                node->addSemFlag(SEMFLAG_VAR_DECL_REF_CALL);
             }
 
             SWAG_CHECK(emitUserOp(context, nullptr, node));
@@ -127,7 +127,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, node->extMisc()->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
                 node->resultRegisterRc = node->assignment->resultRegisterRc;
-                node->semFlags |= SEMFLAG_PRE_CAST;
+                node->addSemFlag(SEMFLAG_PRE_CAST);
             }
 
             SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));

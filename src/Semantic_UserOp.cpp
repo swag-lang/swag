@@ -390,7 +390,7 @@ bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& na
         YIELD();
         if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
         {
-            node->semFlags |= SEMFLAG_INVERSE_PARAMS;
+            node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
             return true;
         }
     }
@@ -757,7 +757,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         }
                         else
                         {
-                            makePtrL->semFlags |= SEMFLAG_ONCE;
+                            makePtrL->addSemFlag(SEMFLAG_ONCE);
                             Ast::removeFromParent(makePtrL);
                             Ast::addChildBack(varNode, makePtrL);
                             varNode->assignment = makePtrL;

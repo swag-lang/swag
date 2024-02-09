@@ -35,7 +35,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
     if (typeVar->isListTuple() && !varDecl->type)
     {
-        varDecl->semFlags |= SEMFLAG_TUPLE_CONVERT;
+        varDecl->addSemFlag(SEMFLAG_TUPLE_CONVERT);
         SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
         context->result = ContextResult::NewChilds;
         context->baseJob->nodes.push_back(varDecl->type);
@@ -183,7 +183,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         node->removeAstFlag(AST_VALUE_COMPUTED);
         node->assignment->removeAstFlag(AST_NO_BYTECODE);
         node->addAstFlag(AST_CONST_EXPR);
-        node->semFlags |= SEMFLAG_EXEC_RET_STACK;
+        node->addSemFlag(SEMFLAG_EXEC_RET_STACK);
 
         node->byteCodeFct                     = ByteCodeGen::emitLocalVarDecl;
         overload->computedValue.storageOffset = 0;
@@ -337,7 +337,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
         const auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
-        child->semFlags |= SEMFLAG_TYPE_SOLVED;
+        child->addSemFlag(SEMFLAG_TYPE_SOLVED);
         param->inheritTokenLocation(child);
     }
 
@@ -810,7 +810,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     node->assignment->addAstFlag(AST_NO_BYTECODE);
             }
 
-            node->semFlags |= SEMFLAG_ASSIGN_COMPUTED;
+            node->addSemFlag(SEMFLAG_ASSIGN_COMPUTED);
         }
     }
 
@@ -1021,7 +1021,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
             // until types are known
             if (node->ownerFct && node->ownerScope->kind != ScopeKind::Struct)
-                node->ownerFct->semFlags |= SEMFLAG_PENDING_LAMBDA_TYPING;
+                node->ownerFct->addSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
         }
     }
 

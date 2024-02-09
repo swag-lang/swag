@@ -92,7 +92,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
             YIELD();
-            returnExpression->semFlags |= SEMFLAG_CAST1;
+            returnExpression->addSemFlag(SEMFLAG_CAST1);
         }
 
         Semantic::waitStructGenerated(context->baseJob, exprType);
@@ -286,7 +286,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         }
     }
 
-    node->semFlags |= SEMFLAG_EMIT_DEFERRED;
+    node->addSemFlag(SEMFLAG_EMIT_DEFERRED);
 
     // Leave all scopes
     SWAG_CHECK(emitLeaveScopeReturn(context, &node->forceNoDrop, false));
@@ -1530,7 +1530,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            parentReturn->semFlags |= SEMFLAG_RETVAL;
+            parentReturn->addSemFlag(SEMFLAG_RETVAL);
             return true;
         }
     }
@@ -1560,7 +1560,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
         EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-        testReturn->parent->semFlags |= SEMFLAG_FIELD_STRUCT;
+        testReturn->parent->addSemFlag(SEMFLAG_FIELD_STRUCT);
         return true;
     }
 

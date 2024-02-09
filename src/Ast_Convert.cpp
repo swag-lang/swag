@@ -153,7 +153,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
     const auto structNode = newStructDecl(sourceFile, fromNode, nullptr);
     structNode->addAstFlag(AST_INTERNAL | AST_GENERATED);
-    structNode->semFlags |= SEMFLAG_FILE_JOB_PASS;
+    structNode->addSemFlag(SEMFLAG_FILE_JOB_PASS);
     removeFromParent(structNode);
     addChildBack(newParent, structNode);
     structNode->originalParent = newParent;

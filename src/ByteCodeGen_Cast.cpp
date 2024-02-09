@@ -18,7 +18,7 @@ bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* expr
         transformResultToLinear2(context, exprNode->resultRegisterRc);
         node->resultRegisterRc = exprNode->resultRegisterRc;
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRc[1]);
-        exprNode->semFlags |= SEMFLAG_TYPE_IS_NULL;
+        exprNode->addSemFlag(SEMFLAG_TYPE_IS_NULL);
         return true;
     }
 
@@ -81,7 +81,7 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
     const auto node = context->node;
     if (fromTypeInfo->isPointerNull())
     {
-        node->semFlags |= SEMFLAG_FROM_NULL;
+        node->addSemFlag(SEMFLAG_FROM_NULL);
         node->resultRegisterRc = exprNode->resultRegisterRc;
         return true;
     }
@@ -600,7 +600,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
         node->resultRegisterRc = exprNode->resultRegisterRc;
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRc[0]);
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRc[1]);
-        exprNode->semFlags |= SEMFLAG_TYPE_IS_NULL;
+        exprNode->addSemFlag(SEMFLAG_TYPE_IS_NULL);
         return true;
     }
 
@@ -726,7 +726,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
         if (!(exprNode->hasSemFlag(SEMFLAG_FLAT_PARAMS)))
         {
-            exprNode->semFlags |= SEMFLAG_FLAT_PARAMS;
+            exprNode->addSemFlag(SEMFLAG_FLAT_PARAMS);
             context->allocateTempCallParams();
             context->allParamsTmp->childs.push_back(exprNode);
             context->allParamsTmp->allocateExtension(ExtensionKind::Misc);

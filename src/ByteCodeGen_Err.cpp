@@ -30,7 +30,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     if (!(context->node->hasSemFlag(SEMFLAG_STACK_TRACE)))
     {
         EMIT_INST0(context, ByteCodeOp::InternalPushErr);
-        context->node->semFlags |= SEMFLAG_STACK_TRACE;
+        context->node->addSemFlag(SEMFLAG_STACK_TRACE);
         context->tryCatchScope++;
     }
 
@@ -63,7 +63,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             freeRegisterRC(context, r0);
         }
 
-        context->node->semFlags |= SEMFLAG_STACK_TRACE1;
+        context->node->addSemFlag(SEMFLAG_STACK_TRACE1);
     }
 
     TypeInfo* returnType = nullptr;
@@ -83,7 +83,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             {
                 reserveRegisterRC(context, node->regInit, 1);
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
-                context->node->semFlags |= SEMFLAG_TRY_2;
+                context->node->addSemFlag(SEMFLAG_TRY_2);
             }
 
             TypeInfoPointer pt;
@@ -120,7 +120,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
                         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRc);
                     else
                         EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
-                    context->node->semFlags |= SEMFLAG_TRY_2;
+                    context->node->addSemFlag(SEMFLAG_TRY_2);
                 }
 
                 TypeInfoPointer pt;
@@ -223,14 +223,14 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
         YIELD();
-        node->semFlags |= SEMFLAG_CAST1;
+        node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->hasSemFlag(SEMFLAG_TRY_1))
     {
         emitSafetyErrCheck(context, expr->resultRegisterRc[1]);
         EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRc[0], expr->resultRegisterRc[1]);
-        node->semFlags |= SEMFLAG_TRY_1;
+        node->addSemFlag(SEMFLAG_TRY_1);
         EMIT_INST0(context, ByteCodeOp::PopRR);
     }
 
@@ -289,7 +289,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
         tryNode->seekInsideJump = context->bc->numInstructions;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
-        node->semFlags |= SEMFLAG_TRY_1;
+        node->addSemFlag(SEMFLAG_TRY_1);
     }
 
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
@@ -313,7 +313,7 @@ bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
         tryNode->seekInsideJump = context->bc->numInstructions;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
-        node->semFlags |= SEMFLAG_TRY_1;
+        node->addSemFlag(SEMFLAG_TRY_1);
         EMIT_INST0(context, ByteCodeOp::InternalCatchErr);
     }
 

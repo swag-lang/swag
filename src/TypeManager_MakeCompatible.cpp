@@ -85,7 +85,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 const auto exprList = castAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
                 if (exprList && !(exprList->hasSemFlag(SEMFLAG_EXPR_LIST_CST)))
                 {
-                    exprList->semFlags |= SEMFLAG_EXPR_LIST_CST;
+                    exprList->addSemFlag(SEMFLAG_EXPR_LIST_CST);
 
                     // Test sizeof because {} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)

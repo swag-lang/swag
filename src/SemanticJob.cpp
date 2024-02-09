@@ -73,7 +73,7 @@ bool SemanticJob::spawnJob()
                 g_ThreadMgr.addJob(job);
             }
 
-            node->semFlags |= SEMFLAG_FILE_JOB_PASS;
+            node->addSemFlag(SEMFLAG_FILE_JOB_PASS);
             nodes.pop_back();
             return true;
         }

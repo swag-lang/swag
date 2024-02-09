@@ -506,7 +506,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
     YIELD();
-    binNode->semFlags |= SEMFLAG_CAST1;
+    binNode->addSemFlag(SEMFLAG_CAST1);
 
     left->allocateExtension(ExtensionKind::Misc);
 
@@ -576,7 +576,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
     YIELD();
-    binNode->semFlags |= SEMFLAG_CAST1;
+    binNode->addSemFlag(SEMFLAG_CAST1);
 
     // See the 'and' version for comments
     left->allocateExtension(ExtensionKind::Misc);
@@ -634,14 +634,14 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
         YIELD();
-        node->semFlags |= SEMFLAG_CAST1;
+        node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         YIELD();
-        node->semFlags |= SEMFLAG_CAST2;
+        node->addSemFlag(SEMFLAG_CAST2);
     }
 
     if (!node->hasSemFlag(SEMFLAG_EMIT_OP))
@@ -651,7 +651,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         {
             SWAG_CHECK(emitUserOp(context));
             YIELD();
-            node->semFlags |= SEMFLAG_EMIT_OP;
+            node->addSemFlag(SEMFLAG_EMIT_OP);
         }
         else if (node->tokenId == TokenId::SymPlus && node->hasSpecFlag(AstOp::SPECFLAG_FMA))
         {
@@ -676,11 +676,11 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             freeRegisterRC(context, front->childs[0]->resultRegisterRc);
             freeRegisterRC(context, front->childs[1]->resultRegisterRc);
             freeRegisterRC(context, node->childs[1]->resultRegisterRc);
-            node->semFlags |= SEMFLAG_EMIT_OP;
+            node->addSemFlag(SEMFLAG_EMIT_OP);
         }
         else if (node->tokenId == TokenId::SymAsterisk && node->hasSpecFlag(AstOp::SPECFLAG_FMA))
         {
-            node->semFlags |= SEMFLAG_EMIT_OP;
+            node->addSemFlag(SEMFLAG_EMIT_OP);
         }
         else
         {
@@ -751,7 +751,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 
             freeRegisterRC(context, r0);
             freeRegisterRC(context, r1);
-            node->semFlags |= SEMFLAG_EMIT_OP;
+            node->addSemFlag(SEMFLAG_EMIT_OP);
         }
     }
 
@@ -759,7 +759,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
         YIELD();
-        node->semFlags |= SEMFLAG_CAST3;
+        node->addSemFlag(SEMFLAG_CAST3);
     }
 
     return true;
@@ -795,7 +795,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
 
             if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
             {
-                node->semFlags |= SEMFLAG_RESOLVE_INLINED;
+                node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
                 const auto back = node->childs.back();
                 SWAG_ASSERT(back->kind == AstNodeKind::Inline);
                 context->baseJob->nodes.push_back(back);

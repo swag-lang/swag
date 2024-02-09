@@ -22,7 +22,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
         YIELD();
-        child0->semFlags |= SEMFLAG_CAST1;
+        child0->addSemFlag(SEMFLAG_CAST1);
     }
 
     // User special function
@@ -79,7 +79,7 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
     YIELD();
-    binNode->semFlags |= SEMFLAG_CAST1;
+    binNode->addSemFlag(SEMFLAG_CAST1);
 
     // Jump to ifFalse child
     binNode->seekJumpIfFalse = context->bc->numInstructions;
@@ -208,7 +208,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            parentReturn->semFlags |= SEMFLAG_RETVAL;
+            parentReturn->addSemFlag(SEMFLAG_RETVAL);
             canDrop = false;
         }
 
@@ -292,7 +292,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // did not take place (when passing to a varargs for example).
         if (!node->hasSemFlag(SEMFLAG_EXPR_LIST_CST))
         {
-            node->semFlags |= SEMFLAG_EXPR_LIST_CST;
+            node->addSemFlag(SEMFLAG_EXPR_LIST_CST);
             node->allocateComputedValue();
             node->computedValue->storageSegment = Semantic::getConstantSegFromContext(node);
             SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, node->computedValue->storageSegment, node->computedValue->storageOffset, nullptr, typeList, node));

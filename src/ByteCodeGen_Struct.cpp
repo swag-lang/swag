@@ -414,7 +414,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
     typeInfoStruct->flags |= TYPEINFO_SPEC_OP_GENERATED;
 
     ScopedLock lk1(structNode->mutex);
-    structNode->semFlags |= SEMFLAG_STRUCT_OP_ALLOCATED;
+    structNode->addSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED);
     structNode->dependentJobs.setRunning();
 }
 
@@ -596,7 +596,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
+        cxt.bc->node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
 
     // All fields are explicitly not initialized, so we are done, function is empty
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
@@ -881,7 +881,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
+        cxt.bc->node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
 
     // Call user function if defined
     emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
@@ -994,7 +994,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
+        cxt.bc->node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
 
     // Call for each field
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostCopy);
@@ -1105,7 +1105,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
     if (cxt.bc->node)
-        cxt.bc->node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
+        cxt.bc->node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
 
     // Call for each field
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostMove);
@@ -1151,7 +1151,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
 
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
-    structNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
+    structNode->addSemFlag(SEMFLAG_BYTECODE_GENERATED);
     node->dependentJobs.setRunning();
     return true;
 }
@@ -1398,7 +1398,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         YIELD();
-        node->count->semFlags |= SEMFLAG_CAST1;
+        node->count->addSemFlag(SEMFLAG_CAST1);
     }
 
     TypeInfo* pointedType = nullptr;
@@ -1663,7 +1663,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         YIELD();
-        node->count->semFlags |= SEMFLAG_CAST1;
+        node->count->addSemFlag(SEMFLAG_CAST1);
     }
 
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);

@@ -102,7 +102,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
     ScopedLock lk(node->mutex);
     getDependantCalls(node, node->extByteCode()->dependentNodes);
     context->dependentNodesTmp = node->extByteCode()->dependentNodes;
-    node->semFlags |= SEMFLAG_BYTECODE_GENERATED;
+    node->addSemFlag(SEMFLAG_BYTECODE_GENERATED);
     context->baseJob->dependentJobs.setRunning();
 
     return true;
@@ -218,7 +218,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
             }
 
             ScopedLock lk(node->mutex);
-            node->semFlags |= SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED;
+            node->addSemFlag(SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED);
             return;
         }
     }
@@ -319,7 +319,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
 void ByteCodeGen::releaseByteCodeJob(AstNode* node)
 {
     ScopedLock lk(node->mutex);
-    node->semFlags |= SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED;
+    node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
     SWAG_ASSERT(node->hasExtByteCode());
     node->extByteCode()->byteCodeJob = nullptr;
 }

@@ -1081,7 +1081,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         case TokenId::SymAsterisk:
             swap(left, right);
             swap(leftTypeInfo, rightTypeInfo);
-            node->semFlags |= SEMFLAG_INVERSE_PARAMS;
+            node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
             break;
         default:
             break;

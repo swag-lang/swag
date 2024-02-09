@@ -82,7 +82,7 @@ void Semantic::setNodeAccess(AstNode* node)
 
     if (overload->node->hasAttribute(ATTRIBUTE_ACCESS_MASK))
     {
-        node->semFlags |= attributeToAccess(overload->node->attributeFlags);
+        node->addSemFlag(attributeToAccess(overload->node->attributeFlags));
         return;
     }
 
@@ -94,16 +94,16 @@ void Semantic::doInheritAccess(AstNode* forNode, const AstNode* node)
     if (node->hasSemFlag(SEMFLAG_ACCESS_PRIVATE))
     {
         forNode->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
-        forNode->semFlags |= SEMFLAG_ACCESS_PRIVATE;
+        forNode->addSemFlag(SEMFLAG_ACCESS_PRIVATE);
     }
     else if (node->hasSemFlag(SEMFLAG_ACCESS_INTERNAL) && !forNode->hasSemFlag(SEMFLAG_ACCESS_PRIVATE))
     {
         forNode->semFlags &= ~SEMFLAG_ACCESS_PUBLIC;
-        forNode->semFlags |= SEMFLAG_ACCESS_INTERNAL;
+        forNode->addSemFlag(SEMFLAG_ACCESS_INTERNAL);
     }
     else if (node->hasSemFlag(SEMFLAG_ACCESS_PUBLIC) && !(forNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
     {
-        forNode->semFlags |= SEMFLAG_ACCESS_PUBLIC;
+        forNode->addSemFlag(SEMFLAG_ACCESS_PUBLIC);
     }
 }
 
@@ -124,7 +124,7 @@ void Semantic::computeAccess(AstNode* node)
         return;
     if (node->hasSemFlag(SEMFLAG_ACCESS_COMPUTED))
         return;
-    node->semFlags |= SEMFLAG_ACCESS_COMPUTED;
+    node->addSemFlag(SEMFLAG_ACCESS_COMPUTED);
     computeAccessRec(node);
 }
 
@@ -191,17 +191,17 @@ void Semantic::setDefaultAccess(AstNode* node)
     }
 
     if (node->sourceFile && node->sourceFile->globalAttr & ATTRIBUTE_ACCESS_MASK)
-        node->semFlags |= attributeToAccess(node->sourceFile->globalAttr);
+        node->addSemFlag(attributeToAccess(node->sourceFile->globalAttr));
     else if (node->ownerStructScope && !(node->flags & AST_IN_IMPL))
-        node->semFlags |= attributeToAccess(node->ownerStructScope->owner->attributeFlags);
+        node->addSemFlag(attributeToAccess(node->ownerStructScope->owner->attributeFlags));
     else if (node->sourceFile && node->sourceFile->fromTests)
-        node->semFlags |= attributeToAccess(ATTRIBUTE_PRIVATE);
+        node->addSemFlag(attributeToAccess(ATTRIBUTE_PRIVATE));
     else if (node->sourceFile && node->sourceFile->forceExport)
-        node->semFlags |= attributeToAccess(ATTRIBUTE_PUBLIC);
+        node->addSemFlag(attributeToAccess(ATTRIBUTE_PUBLIC));
     else if (node->sourceFile && node->sourceFile->imported)
-        node->semFlags |= attributeToAccess(ATTRIBUTE_PUBLIC);
+        node->addSemFlag(attributeToAccess(ATTRIBUTE_PUBLIC));
     else
-        node->semFlags |= attributeToAccess(ATTRIBUTE_INTERNAL);
+        node->addSemFlag(attributeToAccess(ATTRIBUTE_INTERNAL));
 }
 
 namespace

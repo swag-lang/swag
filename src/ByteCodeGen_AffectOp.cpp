@@ -798,7 +798,7 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         YIELD();
-        node->semFlags |= SEMFLAG_CAST1;
+        node->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (leftNode->typeInfo->isAny())

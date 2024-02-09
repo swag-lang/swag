@@ -397,7 +397,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
             return true;
 
         SWAG_ASSERT(node->parent->parent && node->parent->parent->kind == AstNodeKind::Literal);
-        node->parent->parent->semFlags |= SEMFLAG_LITERAL_SUFFIX;
+        node->parent->parent->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
         return true;
     }
 
@@ -534,7 +534,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
-            node->semFlags |= SEMFLAG_NEG_EATEN;
+            node->addSemFlag(SEMFLAG_NEG_EATEN);
             negApplied = true;
             break;
         default:

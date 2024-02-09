@@ -208,8 +208,8 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         forceConst = typeInfo->isConst();
         typeInfo   = TypeManager::concretePtrRef(typeInfo);
-        child->semFlags |= SEMFLAG_FORCE_NO_TAKE_ADDRESS;
-        child->childs.back()->semFlags |= SEMFLAG_FORCE_NO_TAKE_ADDRESS;
+        child->addSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS);
+        child->childs.back()->addSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS);
         node->byteCodeFct = ByteCodeGen::emitPassThrough;
     }
 
@@ -331,7 +331,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        node->upperBound->semFlags |= SEMFLAG_ASSIGN_COMPUTED;
+        node->upperBound->addSemFlag(SEMFLAG_ASSIGN_COMPUTED);
         node->upperBound->computedValue->reg.u64 -= 1;
     }
 
@@ -553,7 +553,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
         {
             // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
             if (node->childs[0]->kind != AstNodeKind::ArrayPointerIndex)
-                node->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+                node->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 
             // In order to resolve what's next, we need to fill the startScope of the identifier ref
             auto typeReturn = node->array->typeInfo;
@@ -567,7 +567,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             {
                 const auto returnType = castTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
                 if (returnType->isPointer())
-                    node->semFlags |= SEMFLAG_FROM_PTR_REF;
+                    node->addSemFlag(SEMFLAG_FROM_PTR_REF);
             }
 
             typeReturn = TypeManager::concretePtrRefType(typeReturn);
@@ -1127,7 +1127,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, FMT(Err(Err0199), node->token.ctext())}));
         SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, FMT(Err(Err0057), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
         const auto back = node->expression->childs.back();
-        back->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+        back->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
         back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
     }
     else

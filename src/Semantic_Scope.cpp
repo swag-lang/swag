@@ -71,7 +71,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             // Force scope
             if (!node->callParameters && node != identifierRef->childs.back())
             {
-                node->semFlags |= SEMFLAG_FORCE_SCOPE;
+                node->addSemFlag(SEMFLAG_FORCE_SCOPE);
                 node->typeInfo                      = g_TypeMgr->typeInfoVoid;
                 identifierRef->previousResolvedNode = node;
                 if (node->ownerInline)
@@ -295,7 +295,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             return false;
         }
 
-        node->semFlags |= SEMFLAG_FORCE_UFCS;
+        node->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
 
     return true;

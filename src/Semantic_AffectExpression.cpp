@@ -317,7 +317,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     leftNode = castAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_back(right);
                 arrayNode->structFlatParams.push_front(leftNode->array);
-                node->semFlags |= SEMFLAG_FLAT_PARAMS;
+                node->addSemFlag(SEMFLAG_FLAT_PARAMS);
             }
         }
     }

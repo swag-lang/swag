@@ -143,7 +143,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 // Force evaluation by a #run
                 if (node->flags & AST_IN_RUN_BLOCK)
                 {
-                    node->semFlags |= SEMFLAG_FORCE_CONST_EXPR;
+                    node->addSemFlag(SEMFLAG_FORCE_CONST_EXPR);
                 }
                 else
                 {
@@ -469,7 +469,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
         return true;
     }
 
-    node->semFlags |= SEMFLAG_COMPILER_INSERT;
+    node->addSemFlag(SEMFLAG_COMPILER_INSERT);
 
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, FMT(Err(Err0193), expr->typeInfo->getDisplayNameC())}));
@@ -540,7 +540,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
     {
         for (const auto& c : node->childs)
             c->addAstFlag(AST_NO_SEMANTIC);
-        node->semFlags |= SEMFLAG_ON_CLONE;
+        node->addSemFlag(SEMFLAG_ON_CLONE);
     }
 
     return true;
@@ -630,7 +630,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
         ScopedLock lk(it.second->mutex);
         ScopedLock lk1(it.first->mutex);
         it.first->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
-        it.first->semFlags |= SEMFLAG_DISABLED;
+        it.first->addSemFlag(SEMFLAG_DISABLED);
         SymTable::disabledIfBlockOverloadNoLock(it.first, it.second);
     }
 
@@ -727,7 +727,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
 
     if (!node->hasSemFlag(SEMFLAG_LOAD))
     {
-        node->semFlags |= SEMFLAG_LOAD;
+        node->addSemFlag(SEMFLAG_LOAD);
 
         const auto filename = back->computedValue->text;
 

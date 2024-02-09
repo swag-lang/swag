@@ -39,7 +39,7 @@ bool Semantic::setUnRef(AstNode* node)
     if (node->kind == AstNodeKind::Cast)
         return false;
 
-    node->semFlags |= SEMFLAG_FROM_REF;
+    node->addSemFlag(SEMFLAG_FROM_REF);
 
     switch (node->kind)
     {

@@ -145,7 +145,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
         node->addAstFlag(AST_IS_CONST);
     const auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
-        node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
+        node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
@@ -156,8 +156,8 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     // this one either
     if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT)))
     {
-        node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
-        node->semFlags |= SEMFLAG_IS_CONST_ASSIGN_INHERIT;
+        node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
+        node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
     }
 
     identifierRef->previousResolvedNode = node;
@@ -693,7 +693,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
 {
     if (!node->hasSemFlag(SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {
-        node->semFlags |= SEMFLAG_LAST_PARAM_CODE;
+        node->addSemFlag(SEMFLAG_LAST_PARAM_CODE);
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
@@ -739,7 +739,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         const auto typeCode = makeType<TypeInfoCode>();
                         typeCode->content   = brother;
                         brother->addAstFlag(AST_NO_SEMANTIC);
-                        fctCallParam->semFlags |= SEMFLAG_AUTO_CODE_PARAM;
+                        fctCallParam->addSemFlag(SEMFLAG_AUTO_CODE_PARAM);
                         fctCallParam->typeInfo = typeCode;
                         codeNode->typeInfo     = typeCode;
                     }

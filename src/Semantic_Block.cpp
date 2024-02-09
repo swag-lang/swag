@@ -96,7 +96,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 
     if (node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
         return true;
-    node->semFlags |= SEMFLAG_RESOLVE_INLINED;
+    node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
 
     const auto func         = node->func;
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);

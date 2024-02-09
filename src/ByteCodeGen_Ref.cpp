@@ -16,7 +16,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
-        node->access->semFlags |= SEMFLAG_CAST1;
+        node->access->addSemFlag(SEMFLAG_CAST1);
     }
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
@@ -48,7 +48,7 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
-        node->access->semFlags |= SEMFLAG_CAST1;
+        node->access->addSemFlag(SEMFLAG_CAST1);
     }
 
     emitSafetyBoundCheckString(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
@@ -71,7 +71,7 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
-        node->access->semFlags |= SEMFLAG_CAST1;
+        node->access->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->access->hasComputedValue())
@@ -101,7 +101,7 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
-        node->access->semFlags |= SEMFLAG_CAST1;
+        node->access->addSemFlag(SEMFLAG_CAST1);
     }
 
     // Slice is already dereferenced ? (from function parameter)
@@ -262,7 +262,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
-        node->access->semFlags |= SEMFLAG_CAST3;
+        node->access->addSemFlag(SEMFLAG_CAST3);
     }
 
     // Dereference of a string constant
@@ -324,7 +324,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             if (context->result != ContextResult::Done)
             {
-                node->semFlags |= SEMFLAG_FORCE_CAST_PTR_STRUCT;
+                node->addSemFlag(SEMFLAG_FORCE_CAST_PTR_STRUCT);
                 return true;
             }
 
@@ -542,14 +542,14 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
         YIELD();
-        node->lowerBound->semFlags |= SEMFLAG_CAST1;
+        node->lowerBound->addSemFlag(SEMFLAG_CAST1);
     }
 
     if (!node->upperBound->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
         YIELD();
-        node->upperBound->semFlags |= SEMFLAG_CAST1;
+        node->upperBound->addSemFlag(SEMFLAG_CAST1);
     }
 
     // Exclude upper bound limit
