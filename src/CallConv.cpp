@@ -61,7 +61,7 @@ bool CallConv::returnByStackAddress(TypeInfoFuncAttr* typeFunc)
 
     if (returnStructByValue(typeFunc))
         return false;
-    else if (type->isStruct())
+     if (type->isStruct())
         return true;
 
     return false;

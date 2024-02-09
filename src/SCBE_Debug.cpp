@@ -311,10 +311,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
             return tr1->index;
         }
 
-        else
-        {
-            return getOrCreateType(pp, typeInfoEnum->rawType);
-        }
+        return getOrCreateType(pp, typeInfoEnum->rawType);
     }
 
     // Function

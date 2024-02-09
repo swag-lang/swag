@@ -640,7 +640,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
         }
 
         // For a macro scope, jump right to the inline
-        else if (scope->kind == ScopeKind::Macro)
+        if (scope->kind == ScopeKind::Macro)
         {
             const auto orgScope = scope;
             if (scope->hieScope)

@@ -41,7 +41,8 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
         context->baseJob->nodes.push_back(varDecl->type);
         return true;
     }
-    else if (varDecl->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
+    
+    if (varDecl->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
     {
         SWAG_ASSERT(varDecl->resolvedSymbolOverload);
         varDecl->typeInfo                         = varDecl->type->typeInfo;
@@ -773,15 +774,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()));
                 return context->report(diag, note);
             }
-            else if (node->genTypeComesFrom)
+            
+            if (node->genTypeComesFrom)
             {
                 auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0140), node->typeInfo->getDisplayNameC()));
                 return context->report(diag, note);
             }
-            else
-            {
-                return context->report(diag);
-            }
+
+            return context->report(diag);
         }
     }
 
@@ -927,7 +927,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
     }
 
-    // Only assignement is specified, need to deduce type
+    // Only assignment is specified, need to deduce type
     else if (node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);

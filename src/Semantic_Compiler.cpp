@@ -84,10 +84,8 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
         PushErrCxtStep ec(context, node, ErrCxtStepKind::CompileTime, nullptr);
         return doExecuteCompilerNode(context, node, onlyConstExpr);
     }
-    else
-    {
-        return doExecuteCompilerNode(context, node, onlyConstExpr);
-    }
+
+    return doExecuteCompilerNode(context, node, onlyConstExpr);
 }
 
 bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)

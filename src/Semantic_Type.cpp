@@ -60,12 +60,10 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
-    else
-    {
-        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
-        return context->report(diag);
-    }
+
+    Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+    diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+    return context->report(diag);
 }
 
 bool Semantic::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)

@@ -77,7 +77,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         return true;
 
     const bool  isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
-    const bool  isStructVar = kind == AstNodeKind::VarDecl && (checkNode->hasAstFlag(AST_STRUCT_MEMBER));
+    const bool  isStructVar = kind == AstNodeKind::VarDecl && checkNode->hasAstFlag(AST_STRUCT_MEMBER);
     const bool  isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
     const bool  isFuncParam = kind == AstNodeKind::FuncDeclParam;
     const char* specificMsg = nullptr;

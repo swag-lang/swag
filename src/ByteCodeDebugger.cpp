@@ -787,9 +787,9 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         if (result == BcDbgCommandResult::Break)
             break;
-        else if (result == BcDbgCommandResult::Return)
+        if (result == BcDbgCommandResult::Return)
             return false;
-        else if (result == BcDbgCommandResult::BadArguments)
+        if (result == BcDbgCommandResult::BadArguments)
             printCmdError(FMT("bad [[%s]] arguments", arg.cmd.c_str()));
         else if (result == BcDbgCommandResult::Invalid)
             printCmdError(FMT("unknown debugger command [[%s]]", arg.cmd.c_str()));

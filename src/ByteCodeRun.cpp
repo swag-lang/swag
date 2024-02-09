@@ -114,11 +114,9 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
 
         return funcPtr;
     }
-    else
-    {
-        SWAG_ASSERT(bc);
-        return ByteCode::doByteCodeLambda(bc);
-    }
+
+    SWAG_ASSERT(bc);
+    return ByteCode::doByteCodeLambda(bc);
 }
 
 SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)

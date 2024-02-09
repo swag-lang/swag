@@ -479,24 +479,22 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
             return true;
         }
-        else
+
+        EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
+
+        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+        loopNode->seekJumpExpression = context->bc->numInstructions;
+
+        const auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRc);
+        if (loopNode->expression->hasComputedValue())
         {
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
-
-            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-            EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
-            loopNode->seekJumpExpression = context->bc->numInstructions;
-
-            const auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRc);
-            if (loopNode->expression->hasComputedValue())
-            {
-                inst->c.u64 = loopNode->expression->computedValue->reg.u64;
-                inst->flags |= BCI_IMM_C;
-            }
-
-            return true;
+            inst->c.u64 = loopNode->expression->computedValue->reg.u64;
+            inst->flags |= BCI_IMM_C;
         }
+
+        return true;
     }
 
     // Static range
@@ -535,24 +533,22 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             inst->flags |= BCI_IMM_C;
             return true;
         }
-        else
-        {
-            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
-            inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
 
-            loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-            loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+        auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
+        inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
 
-            EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
-            loopNode->seekJumpExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
 
-            inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-            inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
-            if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
-                inst->c.u64++;
-            inst->flags |= BCI_IMM_C;
-            return true;
-        }
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+        loopNode->seekJumpExpression = context->bc->numInstructions;
+
+        inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
+        inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
+        if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
+            inst->c.u64++;
+        inst->flags |= BCI_IMM_C;
+        return true;
     }
 
     SWAG_CHECK(emitCast(context, rangeNode->expressionLow, rangeNode->expressionLow->typeInfo, rangeNode->expressionLow->castedTypeInfo));
@@ -578,23 +574,21 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionLow->resultRegisterRc[0]);
         return true;
     }
-    else
-    {
-        if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
-            EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRc[0]);
 
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRc[0]);
-        EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
+    if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
+        EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRc[0]);
 
-        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRc[0]);
+    EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
 
-        EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
-        loopNode->seekJumpExpression = context->bc->numInstructions;
+    loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
 
-        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRc[0]);
-        return true;
-    }
+    EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+    loopNode->seekJumpExpression = context->bc->numInstructions;
+
+    EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRc[0]);
+    return true;
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef

@@ -543,16 +543,14 @@ bool ByteCodeGen::emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t 
             return Report::internalError(context->node, "emitCompareOp3Way, type not supported");
         }
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOp3Way64, r0, r1, r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOp3Way, type not native");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOp3Way, type not native");
 }
 
 bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -597,16 +595,14 @@ bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const As
             return Report::internalError(context->node, "emitCompareOpLower, type not supported");
         }
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOpLower, type not native");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOpLower, type not native");
 }
 
 bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -660,16 +656,14 @@ bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, const 
             return Report::internalError(context->node, "emitCompareOpLowerEq, type not supported");
         }
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOpLowerEq, type not native");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOpLowerEq, type not native");
 }
 
 bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -723,16 +717,14 @@ bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, const 
             return Report::internalError(context->node, "emitCompareOpGreater, type not supported");
         }
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOpGreater, type not native");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOpGreater, type not native");
 }
 
 bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -786,16 +778,14 @@ bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, cons
             return Report::internalError(context->node, "emitCompareOpGreaterEq, type not supported");
         }
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOpEqGreater, type not native");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOpEqGreater, type not native");
 }
 
 bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)

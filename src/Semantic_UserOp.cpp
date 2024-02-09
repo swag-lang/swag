@@ -350,12 +350,10 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
             const auto note = Diagnostic::note(Nte(Nte0058));
             return context->report(diag, note);
         }
-        else
-        {
-            const auto note  = Diagnostic::note(node, node->getTokenName(), appendMsg);
-            const auto note1 = Diagnostic::note(Nte(Nte0058));
-            return context->report(diag, note, note1);
-        }
+
+        const auto note  = Diagnostic::note(node, node->getTokenName(), appendMsg);
+        const auto note1 = Diagnostic::note(Nte(Nte0058));
+        return context->report(diag, note, note1);
     }
 
     return true;
@@ -587,13 +585,11 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
             diag.addRange(left, Diagnostic::isType(leftType));
             return context->report(diag, note);
         }
-        else
-        {
-            Diagnostic diag{left->parent->sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
-            diag.hint = FMT(Nte(Nte0144), name.c_str());
-            diag.addRange(left, Diagnostic::isType(leftType));
-            return context->report(diag, note);
-        }
+
+        Diagnostic diag{left->parent->sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
+        diag.hint = FMT(Nte(Nte0144), name.c_str());
+        diag.addRange(left, Diagnostic::isType(leftType));
+        return context->report(diag, note);
     }
 
     auto node       = context->node;

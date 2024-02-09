@@ -653,13 +653,11 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
                 const auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
             }
-            else
-            {
-                const Diagnostic diag{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
-                const auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
-                const auto       note1 = Diagnostic::note(Nte(Nte0034));
-                return context->report(diag, note, note1);
-            }
+
+            const Diagnostic diag{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+            const auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
+            const auto       note1 = Diagnostic::note(Nte(Nte0034));
+            return context->report(diag, note, note1);
         }
 
         dependentVar     = dep.node;
