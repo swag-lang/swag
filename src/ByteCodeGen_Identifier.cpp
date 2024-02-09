@@ -109,7 +109,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-        if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        if (typeInfo->isInterface() && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             // Get the ITable pointer
             if (node->hasAstFlag(AST_FROM_UFCS))
@@ -288,7 +288,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 return context->report(diag);
             }
         }
-        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
@@ -298,7 +298,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             else // Get the structure pointer
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         }
-        else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        else if (typeInfo->isInterface() && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             // Get the ITable pointer
             if (node->hasAstFlag(AST_FROM_UFCS))
@@ -388,7 +388,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             if (node->parent->hasAstFlag(AST_ARRAY_POINTER_REF))
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         }
-        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             emitGetFromSeg(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRc, 64);
             if (node->hasAstFlag(AST_FROM_UFCS)) // Get the ITable pointer
@@ -396,7 +396,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             else if (node->hasAstFlag(AST_TO_UFCS)) // Get the struct pointer
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         }
-        else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        else if (typeInfo->isInterface() && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRc);
             if (node->hasAstFlag(AST_FROM_UFCS)) // Get the ITable pointer
@@ -483,7 +483,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                     EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
             }
         }
-        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             node->resultRegisterRc = reserveRegisterRC(context);
 
@@ -497,7 +497,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             else if (node->hasAstFlag(AST_TO_UFCS)) // Get the structure pointer
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         }
-        else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !node->hasAstFlag(AST_UFCS_FCT))
+        else if (typeInfo->isInterface() && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))
         {
             if (persistentReg)
             {

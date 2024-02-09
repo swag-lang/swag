@@ -139,7 +139,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             }
         }
 
-        if (left->kind == AstNodeKind::Identifier && left->specFlags & (AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
+        if (left->kind == AstNodeKind::Identifier && left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
         {
             const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint              = "this is equivalent to [[";

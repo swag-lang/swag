@@ -432,7 +432,7 @@ namespace
         if (badParamIdx &&
             callParameters &&
             !callParameters->childs.empty() &&
-            callParameters->childs.front()->flags & (AST_FROM_UFCS | AST_TO_UFCS) &&
+            callParameters->childs.front()->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) &&
             !callParameters->childs.front()->hasAstFlag(AST_UFCS_FCT))
         {
             badParamIdx--;

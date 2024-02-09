@@ -211,7 +211,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
         return true;
     if (context->node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
         return true;
-    if (context->node->flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
+    if (context->node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
         return true;
 
     const auto funcNode = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
@@ -626,7 +626,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
-    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
+    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
     {
         bool ok = false;
         if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->childs.size() <= 1)
@@ -1019,7 +1019,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
 
 void Semantic::launchResolveSubDecl(const JobContext* context, AstNode* node)
 {
-    if (node->flags & (AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
+    if (node->hasAstFlag(AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
         return;
 
     // If SEMFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
@@ -1196,7 +1196,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
         node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if (node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
+    if (node->hasAstFlag(AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
     if (checkForConcrete & !node->hasAstFlag(AST_OP_AFFECT_CAST))

@@ -87,7 +87,7 @@ bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
         return true;
     if (!node->ownerScope->isGlobalOrImpl())
         return true;
-    if (node->flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
+    if (node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
         return true;
     if (node->typeInfo->flags & (TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERIC))
         return true;
@@ -762,7 +762,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)
     if (exprNode->castedTypeInfo)
     {
-        if (!(node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST)))
+        if (!node->hasAstFlag(AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
         {
             exprNode->typeInfo       = exprNode->castedTypeInfo;
             exprNode->castedTypeInfo = nullptr;

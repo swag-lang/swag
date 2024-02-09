@@ -107,7 +107,7 @@ bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const 
 
     // The rest : flags
     /////////////////////////////////////////
-    if (child->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR))
+    if (child->hasAstFlag(AST_VALUE_COMPUTED | AST_CONST_EXPR))
         return true;
 
     return false;

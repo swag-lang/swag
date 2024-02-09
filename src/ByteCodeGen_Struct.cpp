@@ -1176,7 +1176,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
 
     // A copy
-    const bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
+    const bool mustCopy = !from->hasAstFlag(AST_TRANSIENT | AST_FORCE_MOVE);
     if (mustCopy)
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)

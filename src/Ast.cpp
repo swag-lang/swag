@@ -31,7 +31,7 @@ void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, Sou
             parent->ownerFct->nodeCounts++;
 
         // Some flags are inherited from the parent, whatever...
-        node->flags |= parent->flags & (AST_NO_BACKEND | AST_IN_RUN_BLOCK | AST_IN_MIXIN);
+        node->addAstFlag(parent->flags & (AST_NO_BACKEND | AST_IN_RUN_BLOCK | AST_IN_MIXIN));
 
         ScopedLock lk(parent->mutex);
         parent->childs.push_back(node);
