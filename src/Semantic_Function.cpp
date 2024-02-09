@@ -92,7 +92,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 
         // Code is only valid for a macro or mixin
         if (paramType->isCode())
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0456)}));
+            SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0456)}));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
@@ -278,7 +278,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     }
 
     // Check that there is no 'hole' in alias names
-    if (funcNode->aliasMask && (funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
+    if (funcNode->aliasMask && funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
     {
         auto       mask = funcNode->aliasMask;
         const auto maxN = OS::bitcountlz(funcNode->aliasMask);
@@ -1487,13 +1487,13 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // No return value in a #run block
     if (!concreteType->isVoid())
     {
-        if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC |
-                                        ATTRIBUTE_RUN_GENERATED_FUNC |
-                                        ATTRIBUTE_MAIN_FUNC |
-                                        ATTRIBUTE_INIT_FUNC |
-                                        ATTRIBUTE_DROP_FUNC |
-                                        ATTRIBUTE_PREMAIN_FUNC |
-                                        ATTRIBUTE_TEST_FUNC))
+        if (funcNode->hasAttribute(ATTRIBUTE_RUN_FUNC |
+                                   ATTRIBUTE_RUN_GENERATED_FUNC |
+                                   ATTRIBUTE_MAIN_FUNC |
+                                   ATTRIBUTE_INIT_FUNC |
+                                   ATTRIBUTE_DROP_FUNC |
+                                   ATTRIBUTE_PREMAIN_FUNC |
+                                   ATTRIBUTE_TEST_FUNC))
         {
             if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
                 return context->report({child, FMT(Err(Err0696), funcNode->getDisplayNameC())});

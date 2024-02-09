@@ -87,8 +87,8 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
         return true;
     if (funcDecl->flags & (AST_IS_GENERIC | AST_GENERATED | AST_FROM_GENERIC))
         return true;
-    if (funcDecl->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_INLINE | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_MAIN_FUNC |
-                                    ATTRIBUTE_COMPILER))
+    if (funcDecl->hasAttribute(ATTRIBUTE_PUBLIC | ATTRIBUTE_INLINE | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_MAIN_FUNC |
+                               ATTRIBUTE_COMPILER))
         return true;
 
     if (one->node->resolvedSymbolName->flags & SYMBOL_USED || one->isUsed)

@@ -567,7 +567,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         auto ownerFct = node->ownerFct;
         while (ownerFct)
         {
-            if (ownerFct->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+            if (ownerFct->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
                 break;
             ownerFct = ownerFct->ownerFct;
         }

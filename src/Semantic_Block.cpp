@@ -186,7 +186,7 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
 
     // No need to check missing return for inline only, because the function has already been
     // checked as a separated function
-    if (fct->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+    if (fct->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
     {
         if (fct->returnType && !fct->returnType->typeInfo->isVoid())
         {

@@ -1155,7 +1155,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // Capture syntax
         if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
         {
-            if (!(overload->node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
+            if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
             {
                 auto       cp = identifier->callParameters;
                 Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.ctext())};
@@ -1290,7 +1290,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             // Mixin and macros must be inlined here, because no call is possible
             bool forceInline = false;
-            if (funcDecl->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+            if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
                 forceInline = true;
 
             if (!(identifier->specFlags & AstIdentifier::SPECFLAG_NO_INLINE) || forceInline)

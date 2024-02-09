@@ -20,7 +20,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     if (newNode->attrUse)
         newNode->attrUse->content = newNode;
 
-    newNode->type             = (AstTypeExpression*) findChildRef(type, newNode);
+    newNode->type             = reinterpret_cast<AstTypeExpression*>(findChildRef(type, newNode));
     newNode->assignment       = findChildRef(assignment, newNode);
     newNode->genTypeComesFrom = genTypeComesFrom;
 
@@ -166,7 +166,7 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
 {
     if (!content)
         return false;
-    if (attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+    if (hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
         return true;
     if (sourceFile->module->buildCfg.byteCodeInline == false && !forExport)
         return false;
@@ -182,7 +182,7 @@ bool AstFuncDecl::mustInline() const
 
 Utf8 AstFuncDecl::getCallName()
 {
-    if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))
+    if (hasAttribute(ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))
     {
         if (!hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {

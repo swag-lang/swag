@@ -131,7 +131,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     }
 
     // By default, raw type is s32, except for flags and index
-    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & (ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX)) ? g_TypeMgr->typeInfoU32 : g_TypeMgr->typeInfoS32;
+    TypeInfo* rawTypeInfo = (enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX)) ? g_TypeMgr->typeInfoU32 : g_TypeMgr->typeInfoS32;
     if (!typeNode->childs.empty())
         rawTypeInfo = typeNode->childs[0]->typeInfo;
 
