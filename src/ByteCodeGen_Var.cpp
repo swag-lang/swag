@@ -191,9 +191,9 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         const auto finalType = typeArray->finalType;
-        if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
+        if (finalType->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES) || node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         {
-            if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
+            if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) || node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
                 if (typeArray->totalCount == 1)
                 {

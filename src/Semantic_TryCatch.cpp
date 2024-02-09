@@ -24,7 +24,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     if (parentFct->isSpecialFunctionName())
         return context->report({node, node->token, FMT(Err(Err0451), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
-    if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
+    if (!parentFct->typeInfo->hasFlag(TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return context->report({node, node->token, FMT(Err(Err0450), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     return true;

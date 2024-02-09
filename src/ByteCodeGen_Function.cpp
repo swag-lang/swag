@@ -183,7 +183,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 // :ReturnStructByValue
                 if (CallConv::returnStructByValue(typeFunc))
                 {
-                    if (!(typeFunc->returnType->flags & TYPEINFO_STRUCT_EMPTY))
+                    if (!(typeFunc->returnType->hasFlag(TYPEINFO_STRUCT_EMPTY)))
                     {
                         switch (typeFunc->returnType->sizeOf)
                         {
@@ -1461,7 +1461,7 @@ void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNati
 
 bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc)
 {
-    const bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
+    const bool raiseErrors = typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW);
     if (raiseErrors && (!callNode->hasExtOwner() || !callNode->extOwner()->ownerTryCatchAssume))
     {
         if (!srcNode)
@@ -1628,7 +1628,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // For a untyped variadic, we need to store all parameters as 'any'
     // So we must generate one type per parameter
     Vector<uint32_t> storageOffsetsVariadicTypes;
-    if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
+    if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         auto  numFuncParams  = (int) typeInfoFunc->parameters.size();
         auto  module         = context->sourceFile->module;
@@ -1696,7 +1696,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // For a untyped variadic, we need to store all parameters as 'any'
     int                    precallStack = 0;
     VectorNative<uint32_t> toFree;
-    if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
+    if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         auto numFuncParams  = (int) typeInfoFunc->parameters.size();
         auto numVariadic    = (uint32_t) (numCallParams - numFuncParams) + 1;
@@ -1771,7 +1771,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                     }
 
-                    if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LIST_ARRAY_ARRAY)
+                    if (param->typeInfo->isArray() || param->typeInfo->hasFlag(TYPEINFO_LIST_ARRAY_ARRAY))
                         truncRegisterRC(context, param->resultRegisterRc, 1);
 
                     for (int r = param->resultRegisterRc.size() - 1; r >= 0; r--)
@@ -1868,12 +1868,12 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             if (!param->typeInfo)
                 continue;
 
-            if (param->typeInfo->isArray() || param->typeInfo->flags & TYPEINFO_LIST_ARRAY_ARRAY)
+            if (param->typeInfo->isArray() || param->typeInfo->hasFlag(TYPEINFO_LIST_ARRAY_ARRAY))
                 truncRegisterRC(context, param->resultRegisterRc, 1);
 
             if (!param->typeInfo->isVariadic() &&
                 !param->typeInfo->isTypedVariadic() &&
-                !(param->typeInfo->flags & TYPEINFO_SPREAD))
+                !param->typeInfo->hasFlag(TYPEINFO_SPREAD))
             {
                 bool done = false;
 
@@ -1958,7 +1958,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
     // Pass a variadic parameter to another function
     auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
-    if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
+    if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
         SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, FMT(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
     auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
@@ -1983,7 +1983,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // If last parameter is a spread, then no need to deal with variadic slice : already done
-    else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->flags & TYPEINFO_SPREAD)
+    else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->hasFlag(TYPEINFO_SPREAD))
     {
         EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRc[1], lastParam->resultRegisterRc[0]);
         maxCallParams += 2;
@@ -1992,7 +1992,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Variadic parameter is on top of stack
-    else if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
+    else if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         // The array of any has been pushed first, so we need to offset all pushed parameters to point to it
         // This is the main difference with typed variadic, which directly point to the pushed variadic parameters
@@ -2033,7 +2033,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
         precallStack += 2 * sizeof(Register);
     }
-    else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
+    else if (typeInfoFunc->hasFlag(TYPEINFO_TYPED_VARIADIC))
     {
         auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
         auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters());
@@ -2125,7 +2125,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 if (node->hasSemFlag(SEMFLAG_FROM_REF) && !node->isForceTakeAddress())
                 {
                     auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
-                    SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
+                    SWAG_ASSERT(ptrPointer->hasFlag(TYPEINFO_POINTER_REF));
                     SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, ptrPointer->pointedType));
                 }
 

@@ -110,7 +110,7 @@ llvm::DIType* LLVM_Debug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
         VectorNative<llvm::Metadata*> subscripts;
         VectorNative<TypeInfoEnum*>   collect;
         typeInfoEnum->collectEnums(collect);
-        const bool isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
+        const bool isUnsigned = typeInfoEnum->rawType->hasFlag(TYPEINFO_UNSIGNED);
         for (const auto typeEnum : collect)
         {
             for (const auto& value : typeEnum->values)
@@ -459,7 +459,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
             idxParam += 2;
             countParams--;
         }
-        else if (typeFunc->flags & TYPEINFO_C_VARIADIC)
+        else if (typeFunc->hasFlag(TYPEINFO_C_VARIADIC))
         {
             countParams--;
         }

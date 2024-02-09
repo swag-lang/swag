@@ -103,7 +103,7 @@ bool Semantic::resolveImplForType(SemanticContext* context)
 
     const auto constSegment = back->computedValue->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
-    auto itable = (void**) constSegment->address(typeParamItf->offset);
+    auto itable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset));
 
     // :itableHeader
     // Move back to concrete type, and initialize it
@@ -231,7 +231,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             }
         }
 
-        if (typeInfo->flags & TYPEINFO_GENERIC)
+        if (typeInfo->hasFlag(TYPEINFO_GENERIC))
             continue;
 
         // We need to be have a bytecode pointer to be able to reference it in the itable
@@ -353,7 +353,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
             // This will be filled when the module will be loaded, with the real function address
             *ptrITable = nullptr;
-            g_ModuleMgr->addPatchFuncAddress(constSegment, (void**) constSegment->address(offset), funcChild);
+            g_ModuleMgr->addPatchFuncAddress(constSegment, reinterpret_cast<void**>(constSegment->address(offset)), funcChild);
         }
         else
         {
@@ -942,7 +942,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             }
 
             // Inherit flags
-            if (varTypeInfo->flags & TYPEINFO_STRUCT_NO_COPY)
+            if (varTypeInfo->hasFlag(TYPEINFO_STRUCT_NO_COPY))
                 structFlags |= TYPEINFO_STRUCT_NO_COPY;
 
             // Remove attribute constexpr if necessary
@@ -956,9 +956,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
 
-                if (!(varTypeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                if (!(varTypeInfo->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED)))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-                if (!(varTypeInfo->flags & TYPEINFO_STRUCT_EMPTY))
+                if (!(varTypeInfo->hasFlag(TYPEINFO_STRUCT_EMPTY)))
                     structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
                 if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
@@ -989,9 +989,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (varTypeArray->pointedType->isStruct())
                 {
                     structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                    if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                    if (!(varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED)))
                         structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-                    if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_EMPTY))
+                    if (!(varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_EMPTY)))
                         structFlags &= ~TYPEINFO_STRUCT_EMPTY;
                 }
             }

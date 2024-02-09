@@ -4209,7 +4209,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             {
                 auto r1        = GEP64(allocT, 0);
                 auto numParams = typeFunc->parameters.size();
-                if (typeFunc->flags & TYPEINFO_C_VARIADIC)
+                if (typeFunc->hasFlag(TYPEINFO_C_VARIADIC))
                     numParams--;
                 for (int iparam = 0; iparam < numParams; iparam++)
                 {

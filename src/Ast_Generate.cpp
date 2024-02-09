@@ -25,7 +25,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     // Be sure another thread does not do the same thing
     {
         ScopedLock lk(typeLeft->mutex);
-        if (typeLeft->flags & TYPEINFO_GENERATED_OP_EQUALS)
+        if (typeLeft->hasFlag(TYPEINFO_GENERATED_OP_EQUALS))
         {
             context->result = ContextResult::NewChilds;
             return true;

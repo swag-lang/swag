@@ -116,7 +116,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
-    if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
+    if (typeInfoStruct->hasFlag(TYPEINFO_GHOST_TUPLE))
         return;
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
@@ -147,7 +147,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     const auto typeInfoStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
-    if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
+    if (typeInfoStruct->hasFlag(TYPEINFO_GHOST_TUPLE))
         return;
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
@@ -207,7 +207,7 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         return;
     if (!typeInfo->declNode)
         return;
-    if (typeInfo->flags & TYPEINFO_GHOST_TUPLE)
+    if (typeInfo->hasFlag(TYPEINFO_GHOST_TUPLE))
         return;
 
     //  :BecauseOfThat

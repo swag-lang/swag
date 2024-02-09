@@ -191,9 +191,9 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
     {
         if (other->pointedType->isVoid() && !(castFlags & CASTFLAG_FOR_GENERIC))
             return true;
-        if ((to->flags & TYPEINFO_POINTER_ARITHMETIC) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
+        if ((to->hasFlag(TYPEINFO_POINTER_ARITHMETIC)) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
             return false;
-        if ((to->flags & TYPEINFO_POINTER_REF) || (flags & TYPEINFO_POINTER_REF))
+        if ((to->hasFlag(TYPEINFO_POINTER_REF)) || (flags & TYPEINFO_POINTER_REF))
             return false;
     }
 
@@ -678,7 +678,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         // This is necessary for lambdas. Perhaps that test is not enough !
         if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC) &&
             !(flags & TYPEINFO_UNDEFINED) &&
-            !(other->flags & TYPEINFO_UNDEFINED))
+            !other->hasFlag(TYPEINFO_UNDEFINED))
             return false;
     }
 
@@ -776,7 +776,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         if (type1->isUndefined() || type2->isUndefined())
             continue;
 
-        if ((type1->flags & TYPEINFO_POINTER_MOVE_REF) != (type2->flags & TYPEINFO_POINTER_MOVE_REF))
+        if (type1->hasFlag(TYPEINFO_POINTER_MOVE_REF) != type2->hasFlag(TYPEINFO_POINTER_MOVE_REF))
         {
             bi.matchResult      = MatchResult::BadSignature;
             bi.badSignatureNum1 = (int) i;
@@ -1049,7 +1049,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
     if (this == to)
         return true;
 
-    if (to->flags & TYPEINFO_CONST_ALIAS)
+    if (to->hasFlag(TYPEINFO_CONST_ALIAS))
         to = castTypeInfo<TypeInfoAlias>(to, to->kind);
 
     if (castFlags & CASTFLAG_CAST)
@@ -1089,7 +1089,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
         return false;
 
     // Compare generic parameters
-    if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
+    if (!(flags & TYPEINFO_GENERATED_TUPLE) && !other->hasFlag(TYPEINFO_GENERATED_TUPLE))
     {
         if ((flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)) && (other->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)))
         {
@@ -1138,7 +1138,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
     }
     else if (hasTuple && !sameName)
     {
-        if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
+        if (!(flags & TYPEINFO_GENERATED_TUPLE) && !other->hasFlag(TYPEINFO_GENERATED_TUPLE))
         {
             if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
                 return false;

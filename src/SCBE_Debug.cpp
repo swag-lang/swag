@@ -225,7 +225,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto            sname      = getScopedName(typeStruct->declNode);
 
-        if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
+        if (typeStruct->hasFlag(TYPEINFO_FROM_GENERIC))
         {
             auto pz = strchr(typeStruct->name.c_str(), '\'');
             if (pz)

@@ -784,7 +784,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
-        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+        if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             CONCAT_FIXED_STR(concat, "#[ExportType(\"nozero\")]");
             concat.addEolIndent(context.indent);
@@ -835,9 +835,9 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         SWAG_ASSERT(typeStruct);
 
         // Everything in the structure is not initialized
-        if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+        if (typeStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
-            SWAG_ASSERT(!(typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES));
+            SWAG_ASSERT(!typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES));
             concat.addIndent(context.indent + 1);
             concat.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
             concat.addEol();
@@ -1008,7 +1008,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
 
     if (typeInfo->isSelf())
     {
-        if (typeInfo->flags & TYPEINFO_CONST)
+        if (typeInfo->hasFlag(TYPEINFO_CONST))
             CONCAT_FIXED_STR(concat, "const self");
         else
             CONCAT_FIXED_STR(concat, "self");

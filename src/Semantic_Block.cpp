@@ -112,7 +112,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     node->scope->startStackSize = node->ownerScope->startStackSize;
 
     // If we inline a throwable function, be sure the top level function is informed
-    if (typeInfoFunc->flags & TYPEINFO_CAN_THROW)
+    if (typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW))
         node->ownerFct->addSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     // Register all function parameters as inline symbols

@@ -18,7 +18,7 @@ bool TypeGenStructJob::computeStruct()
     // Flags
     if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
     {
-        if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
+        if (realType->hasFlag(TYPEINFO_STRUCT_NO_COPY))
             exportedTypeInfoValue->flags &= ~(uint16_t) ExportedTypeInfoFlags::CanCopy;
         if (realType->opPostCopy || realType->opUserPostCopyFct)
             exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::HasPostCopy;
@@ -152,7 +152,7 @@ bool TypeGenStructJob::computeStruct()
     // Fields
     concreteType->fields.buffer = nullptr;
     concreteType->fields.count  = 0;
-    if ((attributes & ATTRIBUTE_EXPORT_TYPE_METHODS) || !(realType->flags & TYPEINFO_STRUCT_IS_ITABLE))
+    if ((attributes & ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE))
     {
         concreteType->fields.count = realType->fields.size();
         if (concreteType->fields.count)

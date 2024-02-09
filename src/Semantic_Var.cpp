@@ -10,7 +10,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-uint32_t Semantic::alignOf(AstVarDecl* node)
+uint32_t Semantic::alignOf(const AstVarDecl* node)
 {
     const auto value = node->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
     if (value)
@@ -401,7 +401,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
     if (varNode->typeInfo->isArrayOfStruct())
     {
         const auto typeArr = castTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
-        if (typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+        if (typeArr->finalType->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
             return &module->mutableSegment;
     }
 
@@ -413,7 +413,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
         (!varNode->type || !varNode->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)) &&
         !varNode->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS) &&
         (varNode->typeInfo->isStruct() || varNode->typeInfo->isInterface()) &&
-        !(varNode->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+        !varNode->typeInfo->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         return &module->bssSegment;
 
     return &module->mutableSegment;

@@ -147,7 +147,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
         }
 
         // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
-        if (wantedArray->isGeneric() && wantedArray->flags & TYPEINFO_GENERIC_COUNT)
+        if (wantedArray->isGeneric() && wantedArray->hasFlag(TYPEINFO_GENERIC_COUNT))
         {
             SWAG_ASSERT(wantedArray->sizeNode);
             SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName);

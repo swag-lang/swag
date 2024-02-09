@@ -234,7 +234,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
     auto typeInfo = child->typeInfo->getConcreteAlias();
     if (typeInfo->isEnum())
     {
-        if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
+        if (!typeInfo->hasFlag(TYPEINFO_ENUM_FLAGS))
             return SemanticError::notAllowedError(context, op, typeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]");
     }
 

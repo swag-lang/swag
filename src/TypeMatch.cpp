@@ -66,7 +66,7 @@ namespace
 
             if (wantedTypeInfo->isVariadic())
             {
-                if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD)))
+                if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic() && !(callTypeInfo->hasFlag(TYPEINFO_SPREAD))))
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
                     context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
@@ -100,13 +100,13 @@ namespace
             // For a typed variadic, cast against the underlying type
             else if (wantedTypeInfo->isTypedVariadic())
             {
-                if (!callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD))
+                if (!callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD))
                     wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
                 isAfterVariadic = true;
             }
 
             // If we pass a @spread, must be match to a TypedVariadic !
-            else if (callTypeInfo->flags & TYPEINFO_SPREAD)
+            else if (callTypeInfo->hasFlag(TYPEINFO_SPREAD))
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
                 context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
@@ -219,12 +219,12 @@ namespace
                 // In case of a spread, match the underlying type too
                 if (wantedTypeInfo->isTypedVariadic())
                 {
-                    if (!callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD))
+                    if (!callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD))
                         wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
                 }
 
                 // If we pass a @spread, must be match to a TypedVariadic !
-                else if (callTypeInfo->flags & TYPEINFO_SPREAD)
+                else if (callTypeInfo->hasFlag(TYPEINFO_SPREAD))
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
                     context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
@@ -622,7 +622,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     // For a lambda
     if (context.matchFlags & SymbolMatchContext::MATCH_FOR_LAMBDA)
     {
-        if (!(typeFunc->flags & TYPEINFO_GENERIC))
+        if (!typeFunc->hasFlag(TYPEINFO_GENERIC))
             matchGenericParameters(context, typeFunc, typeFunc->genericParameters);
         return;
     }

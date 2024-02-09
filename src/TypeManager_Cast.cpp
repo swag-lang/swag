@@ -1901,7 +1901,7 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
                 return true;
             }
 
-            if (!(toEnum->flags & TYPEINFO_ENUM_HAS_USING))
+            if (!(toEnum->hasFlag(TYPEINFO_ENUM_HAS_USING)))
                 continue;
 
             for (const auto value : toEnum->values)
@@ -2329,7 +2329,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
         }
 
         // No using ! We're done
-        if ((castFlags & CASTFLAG_FOR_GENERIC) && !(it.typeStruct->flags & TYPEINFO_STRUCT_TYPEINFO))
+        if ((castFlags & CASTFLAG_FOR_GENERIC) && !it.typeStruct->hasFlag(TYPEINFO_STRUCT_TYPEINFO))
             return true;
 
         const auto structNode = castAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
@@ -2551,7 +2551,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     if (fromType->isPointer())
     {
         // Convert from pointer to ref : only if authorized
-        if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
+        if (!fromType->hasFlag(TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
 
         // When affecting a ref, const must be the same

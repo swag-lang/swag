@@ -144,7 +144,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSET_OF(exportedTypeInfoValue->name)));
     exportedTypeInfoValue->crc32 = Crc32::compute((const uint8_t*) exportedTypeInfoValue->fullName.buffer, (uint32_t) exportedTypeInfoValue->fullName.count);
 
-    if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
+    if (typeInfo->hasFlag(TYPEINFO_FUNC_IS_ATTR))
         exportedTypeInfoValue->kind = TypeInfoKind::Attribute;
     else
         exportedTypeInfoValue->kind = typeInfo->kind;
@@ -535,7 +535,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                 auto typeValue = oneParam.typeInfo;
 
                 // This is a typed variadic
-                if (one.typeFunc && one.typeFunc->flags & TYPEINFO_TYPED_VARIADIC && cptParam >= one.typeFunc->parameters.size() - 1)
+                if (one.typeFunc && one.typeFunc->hasFlag(TYPEINFO_TYPED_VARIADIC) && cptParam >= one.typeFunc->parameters.size() - 1)
                 {
                     const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(one.typeFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
                     typeValue               = typeVariadic->rawType;

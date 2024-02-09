@@ -116,6 +116,7 @@ struct TypeInfo
     TypeInfo*       getConcreteAlias() const;
 
     // clang-format off
+    bool hasFlag(uint64_t fl) const            { return flags & fl; }
     void addFlag(uint64_t fl)                  { flags |= fl; }
     void removeFlag(uint64_t fl)               { flags &= ~fl; }
     // clang-format on

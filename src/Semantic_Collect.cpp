@@ -388,7 +388,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
         // Array of struct
         if (!node->assignment)
         {
-            if (typeArr->finalType->isStruct() && typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            if (typeArr->finalType->isStruct() && typeArr->finalType->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr);
 

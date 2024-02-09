@@ -91,7 +91,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
 void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & TYPEINFO_SPEC_OP_GENERATED)
+    if (typeInfoStruct->hasFlag(TYPEINFO_SPEC_OP_GENERATED))
         return;
 
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -194,7 +194,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
         {
             if (typeInfoStruct->opPostCopy)
                 continue;
-            if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
+            if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
                 continue;
 
             // Need to be sure that function has been solved
@@ -346,7 +346,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opInitGenerated;
-                if (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+                if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
                     funcNode->addAttribute(funcNode->attributeFlags & ATTRIBUTE_PUBLIC);
                 if (typeInfoStruct->opUserInitFct)
                     typeInfoStruct->opUserInitFct->removeAttribute(ATTRIBUTE_PUBLIC);
@@ -523,7 +523,7 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
 bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_INIT)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_INIT))
         return true;
 
     auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -581,7 +581,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
+        SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
         generateStruct_opInit(context, typeStructVar);
         YIELD();
     }
@@ -599,7 +599,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         cxt.bc->node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
 
     // All fields are explicitly not initialized, so we are done, function is empty
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
     {
         EMIT_INST0(&cxt, ByteCodeOp::Ret);
         EMIT_INST0(&cxt, ByteCodeOp::End);
@@ -618,7 +618,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     }
 
     // No special value, so we can just clear the struct
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+    if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         auto inst          = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
         inst->b.u64u32.low = 24;
@@ -760,12 +760,12 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         {
             auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
             auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
-            if (typeVarStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            if (typeVarStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
                 emitOpCallUserArrayOfStruct(&cxt, typeVar, EmitOpUserKind::Init, false, 0);
             else
                 emitSetZeroAtPointer(&cxt, typeVar->sizeOf, 0);
         }
-        else if (typeVar->isStruct() && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+        else if (typeVar->isStruct() && typeVar->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
@@ -799,7 +799,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_DROP))
         return true;
 
     SWAG_ASSERT(typeInfoStruct->declNode);
@@ -861,7 +861,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
+        SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
         generateStruct_opDrop(context, typeStructVar);
         YIELD();
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
@@ -911,9 +911,9 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_COPY)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_POST_COPY))
         return true;
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
         return true;
 
     const auto sourceFile = context->sourceFile;
@@ -974,7 +974,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
+        SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
         generateStruct_opPostCopy(context, typeStructVar);
         YIELD();
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
@@ -1024,7 +1024,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_POST_MOVE))
         return true;
 
     const auto sourceFile = context->sourceFile;
@@ -1085,7 +1085,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         const auto typeStructVar = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
-        SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPEC_OP_GENERATED);
+        SWAG_ASSERT(typeStructVar->hasFlag(TYPEINFO_SPEC_OP_GENERATED));
         generateStruct_opPostMove(context, typeStructVar);
         YIELD();
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
@@ -1172,14 +1172,14 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
     }
 
     // Shallow copy
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_EMPTY))
+    if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_EMPTY))
         emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
 
     // A copy
     const bool mustCopy = !from->hasAstFlag(AST_TRANSIENT | AST_FORCE_MOVE);
     if (mustCopy)
     {
-        if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
+        if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
         {
             const Diagnostic diag{from, FMT(Err(Err0113), typeInfo->getDisplayNameC())};
             return context->report(diag);
@@ -1224,7 +1224,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         // Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
         if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !(from->hasAstFlag(AST_NO_RIGHT_DROP)))
         {
-            if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+            if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES)))
             {
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
@@ -1266,11 +1266,11 @@ bool ByteCodeGen::emitStructInit(const ByteCodeGenContext* context, const TypeIn
     const auto resolved = node->resolvedSymbolOverload;
 
     // All fields are explicitly not initialized, so we are done
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+    if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         return true;
 
     // Just clear the content of the structure
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+    if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         if (retVal)
         {
@@ -1460,7 +1460,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
         typeStruct = castTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStruct);
         YIELD();
-        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+        if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
             justClear = false;
     }
 
@@ -1484,7 +1484,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
     else if (!parameters || parameters->childs.empty())
     {
         SWAG_ASSERT(typeStruct);
-        if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+        if (!typeStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
             generateStructAlloc(context, typeStruct);

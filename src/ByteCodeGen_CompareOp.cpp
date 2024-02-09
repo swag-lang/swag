@@ -271,7 +271,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
         }
 
         // CString compare
-        if (leftTypeInfo->flags & TYPEINFO_C_STRING)
+        if (leftTypeInfo->hasFlag(TYPEINFO_C_STRING))
         {
             EMIT_INST3(context, ByteCodeOp::IntrinsicStrCmp, r2, r0, r1);
             EMIT_INST1(context, ByteCodeOp::ZeroToTrue, r2);

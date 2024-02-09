@@ -354,7 +354,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, FMT(Err(Err0152), typeInfo->getDisplayNameC())}));
         if (expression->hasComputedValue())
         {
-            if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
+            if (!typeInfo->hasFlag(TYPEINFO_UNSIGNED))
             {
                 switch (typeInfo->nativeType)
                 {
@@ -827,7 +827,7 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
     }
 
     // Should be a lambda
-    if (typeInfo->isFuncAttr() && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
+    if (typeInfo->isFuncAttr() && !typeInfo->hasFlag(TYPEINFO_FUNC_IS_ATTR))
     {
         typeInfo         = typeInfo->clone();
         typeInfo->kind   = TypeInfoKind::LambdaClosure;

@@ -1086,7 +1086,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             // Try/Assume
             if (identifier->hasExtOwner() &&
                 identifier->extOwner()->ownerTryCatchAssume &&
-                (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
+                identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
             {
                 switch (identifier->extOwner()->ownerTryCatchAssume->kind)
                 {
@@ -1343,7 +1343,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // Try/Assume
         if (identifier->hasExtOwner() &&
             identifier->extOwner()->ownerTryCatchAssume &&
-            (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
+            identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
         {
             switch (identifier->extOwner()->ownerTryCatchAssume->kind)
             {

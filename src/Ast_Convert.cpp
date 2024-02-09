@@ -518,7 +518,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
         const auto typeLambda       = castTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
         const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
         typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
-        if (childType->flags & TYPEINFO_CAN_THROW)
+        if (childType->hasFlag(TYPEINFO_CAN_THROW))
             typeExprLambda->addSpecFlag(AstTypeLambda::SPECFLAG_CAN_THROW);
 
         // Parameters

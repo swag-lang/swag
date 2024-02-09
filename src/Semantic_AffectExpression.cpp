@@ -259,7 +259,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     node->tokenId != TokenId::SymAmpersandEqual &&
                     node->tokenId != TokenId::SymCircumflexEqual)
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
-                if (!(leftTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS))
+                if (!leftTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS) || !rightTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS))
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]", left);
                 forEnumFlags = true;
             }

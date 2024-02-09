@@ -252,7 +252,7 @@ bool TypeInfo::isPointerToTypeInfo() const
     const auto ptr = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
     if (!ptr->pointedType)
         return false;
-    return ptr->pointedType->getConcreteAlias()->flags & TYPEINFO_STRUCT_TYPEINFO;
+    return ptr->pointedType->getConcreteAlias()->hasFlag(TYPEINFO_STRUCT_TYPEINFO);
 }
 
 bool TypeInfo::isPointerNull() const
@@ -295,7 +295,7 @@ bool TypeInfo::isMethod() const
         return false;
     if (!param->typeInfo->isSelf())
         return false;
-    if (!(param->typeInfo->flags & TYPEINFO_HAS_USING))
+    if (!param->typeInfo->hasFlag(TYPEINFO_HAS_USING))
         return false;
     return true;
 }

@@ -156,7 +156,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
                     note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
-                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
+                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING)))
                     note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Nte0027));
                 else
                     note = Diagnostic::note(Nte(Nte0045));
@@ -324,7 +324,7 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeNode->typeInfo->isUndefined())
     {
         // Count is generic, need to reevaluate
-        if (typeNode->typeInfo->flags & TYPEINFO_GENERIC_COUNT)
+        if (typeNode->typeInfo->hasFlag(TYPEINFO_GENERIC_COUNT))
         {
             SWAG_ASSERT(typeNode->typeInfo->isArray());
             typeNode->typeInfo = nullptr;
@@ -354,7 +354,7 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // cvarargs
-    if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->flags & TYPEINFO_C_VARIADIC)
+    if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->hasFlag(TYPEINFO_C_VARIADIC))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, FMT(Err(Err0512), "cvarargs")}));
@@ -443,7 +443,7 @@ bool Semantic::resolveType(SemanticContext* context)
     // In fact, this is a pointer
     if (typeNode->typeFlags & TYPEFLAG_IS_PTR)
     {
-        auto ptrFlags = (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
+        auto ptrFlags = typeNode->typeInfo->flags & TYPEINFO_GENERIC;
         if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
             ptrFlags |= TYPEINFO_SELF;
         if (typeNode->typeFlags & TYPEFLAG_HAS_USING)
@@ -468,7 +468,7 @@ bool Semantic::resolveType(SemanticContext* context)
         ptrSlice->pointedType = typeNode->typeInfo;
         if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
             ptrSlice->flags |= TYPEINFO_CONST;
-        ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
+        ptrSlice->flags |= ptrSlice->pointedType->flags & TYPEINFO_GENERIC;
         typeNode->typeInfo = ptrSlice;
         ptrSlice->computeName();
         return true;
@@ -480,7 +480,7 @@ bool Semantic::resolveType(SemanticContext* context)
         auto ptrFlags = TYPEINFO_POINTER_REF;
         if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
             ptrFlags |= TYPEINFO_CONST;
-        ptrFlags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
+        ptrFlags |= typeNode->typeInfo->flags & TYPEINFO_GENERIC;
 
         if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
         {
@@ -509,7 +509,7 @@ bool Semantic::resolveType(SemanticContext* context)
             ptrArray->finalType   = typeNode->typeInfo;
             if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
                 ptrArray->flags |= TYPEINFO_CONST;
-            ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
+            ptrArray->flags |= ptrArray->finalType->flags & TYPEINFO_GENERIC;
             ptrArray->sizeOf = 0;
             ptrArray->computeName();
             typeNode->typeInfo = ptrArray;
@@ -561,7 +561,7 @@ bool Semantic::resolveType(SemanticContext* context)
             ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
             if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
                 ptrArray->flags |= TYPEINFO_CONST;
-            ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
+            ptrArray->flags |= ptrArray->finalType->flags & TYPEINFO_GENERIC;
 
             if (genericCount)
             {

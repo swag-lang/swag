@@ -33,7 +33,7 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
 
     // Try to deal with @spread
     auto child = callParams->childs[paramIdx];
-    if (!(child->typeInfo->flags & TYPEINFO_SPREAD))
+    if (!child->typeInfo->hasFlag(TYPEINFO_SPREAD))
         return true;
 
     child = child->childs.front();

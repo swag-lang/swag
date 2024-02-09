@@ -91,7 +91,7 @@ bool CallConv::returnStructByValue(const TypeInfoFuncAttr* typeFunc)
         return false;
     if (!typeFunc->declNode)
         return false;
-    if (typeFunc->flags & TYPEINFO_CAN_THROW)
+    if (typeFunc->hasFlag(TYPEINFO_CAN_THROW))
         return false;
 
     if (typeFunc->declNode->kind == AstNodeKind::FuncDecl)

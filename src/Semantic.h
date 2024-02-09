@@ -112,7 +112,7 @@ namespace Semantic
     void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
     void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     void           decreaseMethodCount(const AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
-    uint32_t       alignOf(AstVarDecl* node);
+    uint32_t       alignOf(const AstVarDecl* node);
     bool           isCompilerContext(const AstNode* node);
     DataSegment*   getConstantSegFromContext(const AstNode* node, bool forceCompiler = false);
     bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);

@@ -1009,12 +1009,12 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
             node->tokenId != TokenId::SymCircumflex)
             return SemanticError::notAllowedError(context, node, leftTypeInfo);
 
-        if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
+        if (leftTypeInfo->isEnum() && !leftTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
             return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]");
 
-        if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+        if (leftTypeInfo->isEnum() && !leftTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS))
             return context->report({node, FMT(Err(Err0348), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
-        if (rightTypeInfo->isEnum() && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+        if (rightTypeInfo->isEnum() && !rightTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS))
             return context->report({node, FMT(Err(Err0349), node->token.ctext(), rightTypeInfo->getDisplayNameC())});
     }
 

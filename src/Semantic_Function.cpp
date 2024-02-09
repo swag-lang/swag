@@ -778,7 +778,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0103), typeStruct->name.c_str())}));
+            SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0103), typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
         {
@@ -1742,7 +1742,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // Try/Assume
     if (inlineNode->hasExtOwner() &&
         inlineNode->extOwner()->ownerTryCatchAssume &&
-        (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
+        inlineNode->func->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
     {
         switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
         {

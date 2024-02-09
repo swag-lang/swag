@@ -52,14 +52,14 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         return true;
 
     // Be sure to keep the TYPEINFO_SPREAD flag from the original type
-    if (fromNode->castedTypeInfo && fromNode->castedTypeInfo->flags & TYPEINFO_SPREAD)
+    if (fromNode->castedTypeInfo && fromNode->castedTypeInfo->hasFlag(TYPEINFO_SPREAD))
     {
         fromNode->typeInfo = fromNode->typeInfo->clone();
         fromNode->typeInfo->addFlag(TYPEINFO_SPREAD);
     }
 
     // auto cast
-    if ((fromNode->typeInfo->flags & TYPEINFO_AUTO_CAST) && !fromNode->castedTypeInfo)
+    if (fromNode->typeInfo->hasFlag(TYPEINFO_AUTO_CAST) && !fromNode->castedTypeInfo)
     {
         if (!(castFlags & CASTFLAG_JUST_CHECK))
         {
@@ -124,11 +124,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     SWAG_ASSERT(toType && fromType);
 
-    if (fromType->flags & TYPEINFO_AUTO_CAST)
+    if (fromType->hasFlag(TYPEINFO_AUTO_CAST))
         castFlags |= CASTFLAG_EXPLICIT;
     if (toType->isGeneric())
         castFlags |= CASTFLAG_NO_IMPLICIT;
-    if (toType->flags & TYPEINFO_FROM_GENERIC)
+    if (toType->hasFlag(TYPEINFO_FROM_GENERIC))
         castFlags |= CASTFLAG_NO_IMPLICIT;
 
     if (toType->isFuncAttr())
@@ -145,13 +145,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         fromType = concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
     // Transform enum to underlying type
-    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->flags & TYPEINFO_INCOMPLETE || fromType->flags & TYPEINFO_INCOMPLETE)
+    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->hasFlag(TYPEINFO_INCOMPLETE) || fromType->hasFlag(TYPEINFO_INCOMPLETE))
     {
         toType   = concreteType(toType, CONCRETE_ENUM);
         fromType = concreteType(fromType, CONCRETE_ENUM);
     }
 
-    if ((castFlags & CASTFLAG_INDEX) && (fromType->flags & TYPEINFO_ENUM_INDEX))
+    if ((castFlags & CASTFLAG_INDEX) && fromType->hasFlag(TYPEINFO_ENUM_INDEX))
     {
         fromType = concreteType(fromType, CONCRETE_ENUM);
     }
@@ -199,12 +199,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     bool result = false;
 
     // To/From a moveref
-    if (!(fromType->flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF) && (toType->flags & TYPEINFO_POINTER_MOVE_REF))
+    if (!fromType->hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF) && toType->hasFlag(TYPEINFO_POINTER_MOVE_REF))
     {
         if ((castFlags & CASTFLAG_PARAMS) && !(castFlags & CASTFLAG_ACCEPT_MOVE_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
     }
-    else if ((fromType->flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF) && !(toType->flags & TYPEINFO_POINTER_MOVE_REF))
+    else if (fromType->hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF) && !toType->hasFlag(TYPEINFO_POINTER_MOVE_REF))
     {
         return castError(context, toType, fromType, fromNode, castFlags);
     }
@@ -226,9 +226,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    if (toType->flags & TYPEINFO_FROM_GENERIC)
+    if (toType->hasFlag(TYPEINFO_FROM_GENERIC))
         castFlags |= CASTFLAG_EXACT_TUPLE_STRUCT;
-    if (fromType->flags & TYPEINFO_FROM_GENERIC)
+    if (fromType->hasFlag(TYPEINFO_FROM_GENERIC))
         castFlags |= CASTFLAG_EXACT_TUPLE_STRUCT;
 
     if (toNode && toNode->hasSemFlag(SEMFLAG_FROM_REF) && toType->isPointerRef())
