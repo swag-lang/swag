@@ -289,7 +289,7 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
         article = "a";
         if (node->ownerScope && node->ownerScope->isGlobal())
             return "global variable";
-        if (node->flags & AST_STRUCT_MEMBER)
+        if (node->hasAstFlag(AST_STRUCT_MEMBER))
             return "struct member";
         if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             return "function parameter";

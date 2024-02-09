@@ -170,7 +170,7 @@ void AstNode::release()
     ++g_Stats.releaseNodes;
 #endif
 
-    if (flags & AST_NEED_SCOPE)
+    if (hasAstFlag(AST_NEED_SCOPE))
         ownerScope->release();
 
     if (hasExtByteCode())
@@ -524,7 +524,7 @@ AstNode* AstNode::clone(CloneContext& context)
     default:
     {
         const auto newNode = Ast::newNode<AstNode>();
-        if (flags & AST_NEED_SCOPE)
+        if (hasAstFlag(AST_NEED_SCOPE))
         {
             auto cloneContext        = context;
             cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
@@ -711,7 +711,7 @@ void AstNode::inheritComputedValue(const AstNode* from)
     if (!from)
         return;
     inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
-    if (flags & AST_VALUE_COMPUTED)
+    if (hasAstFlag(AST_VALUE_COMPUTED))
     {
         addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
         SWAG_ASSERT(from->computedValue);
@@ -721,12 +721,12 @@ void AstNode::inheritComputedValue(const AstNode* from)
 
 bool AstNode::hasComputedValue() const
 {
-    return flags & AST_VALUE_COMPUTED;
+    return hasAstFlag(AST_VALUE_COMPUTED);
 }
 
 bool AstNode::isConstantGenTypeInfo() const
 {
-    return flags & AST_VALUE_IS_GEN_TYPEINFO;
+    return hasAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
 }
 
 ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
@@ -738,12 +738,12 @@ ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 
 bool AstNode::isConstantTrue() const
 {
-    return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;
+    return hasAstFlag(AST_VALUE_COMPUTED) && computedValue->reg.b;
 }
 
 bool AstNode::isConstantFalse() const
 {
-    return (flags & AST_VALUE_COMPUTED) && !computedValue->reg.b;
+    return hasAstFlag(AST_VALUE_COMPUTED) && !computedValue->reg.b;
 }
 
 bool AstNode::isGeneratedSelf() const
@@ -791,7 +791,7 @@ bool AstNode::isFunctionCall()
 
 bool AstNode::isForceTakeAddress() const
 {
-    if ((flags & AST_TAKE_ADDRESS) && !(hasSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS)))
+    if (hasAstFlag(AST_TAKE_ADDRESS) && !hasSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS))
         return true;
     if (hasSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS))
         return true;
@@ -949,7 +949,7 @@ bool AstNode::isConstant0() const
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
         return false;
-    if (!(flags & AST_VALUE_COMPUTED))
+    if (!hasAstFlag(AST_VALUE_COMPUTED))
         return false;
 
     switch (typeInfo->sizeOf)
@@ -974,7 +974,7 @@ bool AstNode::isConstant1() const
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
         return false;
-    if (!(flags & AST_VALUE_COMPUTED))
+    if (!hasAstFlag(AST_VALUE_COMPUTED))
         return false;
 
     switch (typeInfo->nativeType)
@@ -1072,7 +1072,7 @@ bool AstNode::isParentOf(const AstNode* child) const
 
 bool AstNode::isValidIfParam(const SymbolOverload* overload) const
 {
-    if (!(flags & AST_IN_VALIDIF))
+    if (!hasAstFlag(AST_IN_VALIDIF))
         return false;
     if (!overload)
         return false;
@@ -1097,7 +1097,7 @@ bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
         return true;
 
     const auto nodeVar = overload->node;
-    if ((flags & AST_IN_RUN_BLOCK) != (nodeVar->flags & AST_IN_RUN_BLOCK))
+    if (hasAstFlag(AST_IN_RUN_BLOCK) != nodeVar->hasAstFlag(AST_IN_RUN_BLOCK))
         return false;
     if (ownerFct != nodeVar->ownerFct)
         return false;
@@ -1170,7 +1170,7 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
             break;
         if (p->kind == AstNodeKind::Inline)
             break;
-        if (p->flags & AST_GENERATED)
+        if (p->hasAstFlag(AST_GENERATED))
             continue;
         if (p->kind == AstNodeKind::FuncDeclType && p->childs.empty())
             continue;

@@ -1113,7 +1113,7 @@ bool Module::waitImplForToSolve(Job* job, const TypeInfoStruct* typeStruct)
 {
     ScopedLock lk(mutexFile);
 
-    if (typeStruct->declNode && typeStruct->declNode->flags & AST_FROM_GENERIC)
+    if (typeStruct->declNode && typeStruct->declNode->hasAstFlag(AST_FROM_GENERIC))
         return false;
     const auto it = implForToSolve.find(typeStruct->structName);
     if (it == implForToSolve.end())

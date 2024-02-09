@@ -270,9 +270,9 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     }
 
     // No semantic on a generic function, or a macro
-    if (funcNode->flags & AST_IS_GENERIC)
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
     {
-        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED))
+        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED))
             funcNode->ownerScope->addPublicNode(funcNode);
         return true;
     }
@@ -292,14 +292,14 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
     {
-        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED) && !(funcNode->flags & AST_FROM_GENERIC))
+        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
             funcNode->ownerScope->addPublicNode(funcNode);
         SWAG_CHECK(setFullResolve(context, funcNode));
         return true;
     }
 
     // An inline function will not have bytecode, so need to register public by hand now
-    if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !(funcNode->flags & AST_FROM_GENERIC))
+    if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
         funcNode->ownerScope->addPublicNode(funcNode);
 
     funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
@@ -328,9 +328,9 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     // Do we have a return value
     if (funcNode->content && funcNode->returnType && !funcNode->returnType->typeInfo->isVoid())
     {
-        if (!(funcNode->content->flags & AST_NO_SEMANTIC))
+        if (!funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
         {
-            if (!(funcNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN)))
+            if (!funcNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (funcNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
                     return context->report({funcNode->returnType, FMT(Err(Err0578), funcNode->getDisplayNameC())});
@@ -341,7 +341,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Content semantic can have been disabled (#validif). In that case, we're not done yet, so
     // do not set the FULL_RESOLVE flag and do not generate bytecode
-    if (funcNode->content && (funcNode->content->flags & AST_NO_SEMANTIC))
+    if (funcNode->content && funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
     {
         ScopedLock lk(funcNode->funcMutex);
         funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE);
@@ -401,11 +401,11 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = true;
     if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (funcNode->token.text[0] == '@' && !(funcNode->flags & AST_DEFINED_INTRINSIC))
+    if (funcNode->token.text[0] == '@' && !funcNode->hasAstFlag(AST_DEFINED_INTRINSIC))
         genByteCode = false;
     if (funcNode->isForeign())
         genByteCode = false;
-    if (funcNode->flags & AST_IS_GENERIC)
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
         genByteCode = false;
     if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
         genByteCode = false;
@@ -550,7 +550,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->ownerFct)
         funcNode->addAttribute(funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER);
 
-    if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR)))
+    if (!funcNode->hasAstFlag(AST_FROM_GENERIC) && !funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR))
     {
         // Can be called multiple times in case of a mixin/macro inside another inlined function
         funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR);
@@ -642,12 +642,12 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    if (!(funcNode->flags & AST_FROM_GENERIC))
+    if (!(funcNode->hasAstFlag(AST_FROM_GENERIC)))
     {
         // Determine if function is generic
-        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             funcNode->addAstFlag(AST_IS_GENERIC);
-        if (funcNode->ownerFct && (funcNode->ownerFct->flags & AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+        if (funcNode->ownerFct && (funcNode->ownerFct->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             funcNode->addAstFlag(AST_IS_GENERIC);
 
         if (funcNode->parameters)
@@ -666,10 +666,10 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             funcNode->addAstFlag(AST_IS_GENERIC);
         }
 
-        if (funcNode->flags & AST_IS_GENERIC)
+        if (funcNode->hasAstFlag(AST_IS_GENERIC))
             typeInfo->flags |= TYPEINFO_GENERIC;
 
-        if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
+        if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_IS_GENERIC))
         {
             auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
             auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
@@ -696,7 +696,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // If a lambda function will wait for a match, then no need to deduce the return type
     // It will be done in the same way as parameters
     bool shortLambdaPendingTyping = false;
-    if (!(funcNode->flags & AST_IS_GENERIC))
+    if (!(funcNode->hasAstFlag(AST_IS_GENERIC)))
     {
         if ((funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING)) && typeNode->typeInfo->isVoid())
         {
@@ -719,7 +719,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         mustDeduceReturnType = true;
 
     // No semantic on content if function is generic
-    if (funcNode->flags & AST_IS_GENERIC)
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
     {
         shortLambda = false;
         funcNode->content->addAstFlag(AST_NO_SEMANTIC);
@@ -793,7 +793,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
     if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
     {
-        if (!(funcNode->flags & AST_IS_GENERIC))
+        if (!(funcNode->hasAstFlag(AST_IS_GENERIC)))
         {
             funcNode->pendingLambdaJob = context->baseJob;
             context->baseJob->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
@@ -925,7 +925,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         }
     }
 
-    if (funcNode->flags & AST_IS_GENERIC)
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
         symbolFlags |= OVERLOAD_GENERIC;
 
     AddSymbolTypeInfo toAdd;
@@ -939,7 +939,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     // Be sure an overloaded function has the attribute
-    if (!(funcNode->flags & AST_FROM_GENERIC))
+    if (!(funcNode->hasAstFlag(AST_FROM_GENERIC)))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
         if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
@@ -949,7 +949,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
             {
                 if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
                 {
-                    if (!(n->flags & AST_FROM_GENERIC))
+                    if (!(n->hasAstFlag(AST_FROM_GENERIC)))
                     {
                         other = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
                     }
@@ -1006,7 +1006,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
         funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
         funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
-        !(funcNode->flags & AST_FROM_GENERIC) &&
+        !(funcNode->hasAstFlag(AST_FROM_GENERIC)) &&
         !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
         funcNode->ownerStructScope->owner->typeInfo->isStruct())
@@ -1042,7 +1042,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
     // Because for a generic function, the sub declarations will be cloned and solved after instantiation.
     // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instantiation
     // at the same time.
-    if (!(funcNode->flags & AST_IS_GENERIC) && funcNode->content && !(funcNode->content->flags & AST_NO_SEMANTIC))
+    if (!(funcNode->hasAstFlag(AST_IS_GENERIC)) && funcNode->content && !(funcNode->content->hasAstFlag(AST_NO_SEMANTIC)))
     {
         for (auto f : funcNode->subDecls)
         {
@@ -1111,7 +1111,7 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
     SWAG_ASSERT(mpl->lambda);
 
     ScopedLock lk(mpl->lambda->mutex);
-    if (mpl->lambda->flags & AST_SPEC_SEMANTIC1)
+    if (mpl->lambda->hasAstFlag(AST_SPEC_SEMANTIC1))
     {
         mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC1);
         launchResolveSubDecl(context, mpl->lambda);
@@ -1126,7 +1126,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
     node->inheritOrFlag(AST_IS_GENERIC);
     node->inheritAndFlag1(AST_CONST_EXPR);
 
-    if (node->flags & AST_IS_GENERIC)
+    if (node->hasAstFlag(AST_IS_GENERIC))
         return true;
 
     for (auto c : node->childs)
@@ -1180,7 +1180,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done
     bool checkForConcrete = true;
-    if (node->parent->flags & AST_NO_BYTECODE)
+    if (node->parent->hasAstFlag(AST_NO_BYTECODE))
         checkForConcrete = false;
     if (checkForConcrete)
     {
@@ -1199,7 +1199,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     if (node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
-    if (checkForConcrete & !(node->flags & AST_OP_AFFECT_CAST))
+    if (checkForConcrete & !(node->hasAstFlag(AST_OP_AFFECT_CAST)))
     {
         SWAG_CHECK(evaluateConstExpression(context, node));
         YIELD();
@@ -1354,7 +1354,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
     auto funcNode = node->ownerFct;
     if (node->ownerInline && node->ownerInline->isParentOf(node))
     {
-        if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
+        if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !(node->hasAstFlag(AST_IN_MIXIN)))
         {
             if (node->kind == AstNodeKind::Return)
                 node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);
@@ -1654,7 +1654,7 @@ uint32_t Semantic::getMaxStackSize(AstNode* node)
 {
     auto decSP = node->ownerScope->startStackSize;
 
-    if (node->flags & AST_SPEC_STACK_SIZE)
+    if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1676,7 +1676,7 @@ void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
     size = max(size, 1);
     size = (uint32_t) TypeManager::align(size, sizeof(void*));
 
-    if (node->flags & AST_SPEC_STACK_SIZE)
+    if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)

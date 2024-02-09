@@ -58,7 +58,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     if (checkNode->kind == AstNodeKind::AttrUse)
     {
         const auto attrUse = castAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
-        if (checkNode->flags & AST_GENERATED && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->flags & AST_GENERATED)
+        if (checkNode->hasAstFlag(AST_GENERATED) && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->hasAstFlag(AST_GENERATED))
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->childs.front()));
         else
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
@@ -77,7 +77,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         return true;
 
     const bool  isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
-    const bool  isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
+    const bool  isStructVar = kind == AstNodeKind::VarDecl && (checkNode->hasAstFlag(AST_STRUCT_MEMBER));
     const bool  isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
     const bool  isFuncParam = kind == AstNodeKind::FuncDeclParam;
     const char* specificMsg = nullptr;
@@ -233,7 +233,7 @@ void Semantic::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, ui
     INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
 
-    if (!(child->flags & AST_INTERNAL))
+    if (!(child->hasAstFlag(AST_INTERNAL)))
         INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
 }
 

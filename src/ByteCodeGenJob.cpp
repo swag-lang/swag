@@ -163,13 +163,13 @@ JobResult ByteCodeGenJob::execute()
 
                 node->bytecodeState = AstNodeResolveState::ProcessingChilds;
 
-                if (node->flags & AST_NO_BYTECODE)
+                if (node->hasAstFlag(AST_NO_BYTECODE))
                 {
                     nodes.pop_back();
                     break;
                 }
 
-                if (!node->hasComputedValue() && !(node->flags & AST_NO_BYTECODE_CHILDS))
+                if (!node->hasComputedValue() && !(node->hasAstFlag(AST_NO_BYTECODE_CHILDS)))
                 {
                     for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                     {
@@ -183,7 +183,7 @@ JobResult ByteCodeGenJob::execute()
                 [[fallthrough]];
 
             case AstNodeResolveState::ProcessingChilds:
-                if (node->flags & AST_NO_BYTECODE)
+                if (node->hasAstFlag(AST_NO_BYTECODE))
                 {
                     nodes.pop_back();
                     break;
@@ -209,7 +209,7 @@ JobResult ByteCodeGenJob::execute()
                 [[fallthrough]];
 
             case AstNodeResolveState::PostChilds:
-                if (node->flags & AST_NO_BYTECODE)
+                if (node->hasAstFlag(AST_NO_BYTECODE))
                 {
                     nodes.pop_back();
                     break;

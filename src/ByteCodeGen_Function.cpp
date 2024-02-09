@@ -356,7 +356,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 
     // If the intrinsic is defined in runtime, then need to wait for the function bytecode
     // to be generated
-    if (node->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
+    if (node->resolvedSymbolOverload->node->hasAstFlag(AST_DEFINED_INTRINSIC))
     {
         askForByteCode(context->baseJob, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
@@ -1176,7 +1176,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         return Report::internalError(context->node, "emitIntrinsic, unknown intrinsic");
     }
 
-    if (node->flags & AST_DISCARD)
+    if (node->hasAstFlag(AST_DISCARD))
         freeRegisterRC(context, node->resultRegisterRc);
 
     return true;
@@ -1238,7 +1238,7 @@ void ByteCodeGen::emitPostCallUfcs(ByteCodeGenContext* context)
     // Specific case. The function returns an interface, so it returns two registers.
     // But we want that interface to be also an ufcs parameter.
     // Ex: var cfg = @compiler().getBuildCfg()
-    if (node->typeInfo->isInterface() && node->flags & AST_TO_UFCS)
+    if (node->typeInfo->isInterface() && node->hasAstFlag(AST_TO_UFCS))
     {
         const auto r = reserveRegisterRC(context);
 
@@ -1578,7 +1578,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     if (context->bc->node->isParentOf(node->ownerScope->owner))
         node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
 
-    if (node->flags & AST_DISCARD)
+    if (node->hasAstFlag(AST_DISCARD))
         freeRegisterRC(context, node->resultRegisterRc);
 
     return true;
@@ -1658,7 +1658,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // So we need to be sure that no defer statement will change them, to keep the return
     // values intact
     bool RRsaved = false;
-    if (node->ownerFct && node->flags & AST_IN_DEFER)
+    if (node->ownerFct && node->hasAstFlag(AST_IN_DEFER))
     {
         auto ownerTypeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
@@ -1678,7 +1678,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     uint32_t maxCallParams = typeInfoFunc->numReturnRegisters();
 
     // Sort childs by parameter index
-    if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
+    if (allParams && (allParams->hasAstFlag(AST_MUST_SORT_CHILDS)))
     {
         ranges::sort(allParams->childs, [](AstNode* n1, AstNode* n2)
         {
@@ -2114,7 +2114,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         // Need to do that even if discard, not sure why
         context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
 
-        if (!(node->flags & AST_DISCARD))
+        if (!(node->hasAstFlag(AST_DISCARD)))
         {
             reserveRegisterRC(context, node->resultRegisterRc, numRegs);
             if (numRegs == 1)

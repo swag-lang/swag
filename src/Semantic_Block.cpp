@@ -597,7 +597,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     if (!typeInfo->isEnum())
         SWAG_CHECK(checkIsConcrete(context, node->expression));
     if (typeInfo->isListArray())
-        typeInfo = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeInfo, node->expression->flags & AST_CONST_EXPR);
+        typeInfo = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeInfo, node->expression->hasAstFlag(AST_CONST_EXPR));
 
     // Be sure that aliases are not defined elsewhere
     for (const auto& c : node->aliasNames)

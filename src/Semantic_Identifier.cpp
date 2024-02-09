@@ -104,13 +104,13 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     node->addAstFlag(AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE);
     for (const auto child : node->childs)
     {
-        if (!(child->flags & AST_CONST_EXPR))
+        if (!child->hasAstFlag(AST_CONST_EXPR))
             node->removeAstFlag(AST_CONST_EXPR);
-        if (!(child->flags & AST_FROM_GENERIC_REPLACE))
+        if (!child->hasAstFlag(AST_FROM_GENERIC_REPLACE))
             node->removeAstFlag(AST_FROM_GENERIC_REPLACE);
-        if (child->flags & AST_IS_GENERIC)
+        if (child->hasAstFlag(AST_IS_GENERIC))
             node->addAstFlag(AST_IS_GENERIC);
-        if (child->flags & AST_IS_CONST)
+        if (child->hasAstFlag(AST_IS_CONST))
             node->addAstFlag(AST_IS_CONST);
     }
 
@@ -941,7 +941,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         return true;
     }
 
-    if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
+    if (funcDecl->content && funcDecl->content->hasAstFlag(AST_NO_SEMANTIC))
     {
         funcDecl->content->removeAstFlag(AST_NO_SEMANTIC);
 
@@ -1038,7 +1038,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // Already solved
-    if ((identifier->flags & AST_FROM_GENERIC) &&
+    if ((identifier->hasAstFlag(AST_FROM_GENERIC)) &&
         identifier->typeInfo &&
         !identifier->typeInfo->isUndefined())
     {
@@ -1085,7 +1085,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         if (dependentSymbols.empty())
         {
-            SWAG_ASSERT(identifierRef->flags & AST_SILENT_CHECK);
+            SWAG_ASSERT(identifierRef->hasAstFlag(AST_SILENT_CHECK));
             return true;
         }
     }
@@ -1169,7 +1169,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     // In case of a reevaluation, ufcsFirstParam will be null, but we still want to cast for ufcs
     bool hasForcedUfcs = false;
-    if (identifier->callParameters && !identifier->callParameters->childs.empty() && identifier->callParameters->childs.front()->flags & AST_TO_UFCS)
+    if (identifier->callParameters && !identifier->callParameters->childs.empty() && identifier->callParameters->childs.front()->hasAstFlag(AST_TO_UFCS))
         hasForcedUfcs = true;
 
     while (true)
@@ -1198,7 +1198,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         // Can happen if a symbol is inside a disabled #if for example
         if (toSolveOverload.empty())
         {
-            if (identifierRef->flags & AST_SILENT_CHECK)
+            if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
             return context->report({identifier, FMT(Err(Err0730), identifier->token.ctext())});
         }
@@ -1224,7 +1224,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
             // The ufcs parameter has already been set in we are evaluating an identifier for the second time
             // (when we inline a function call)
-            if (!identifier->callParameters || identifier->callParameters->childs.empty() || !(identifier->callParameters->childs.front()->flags & AST_TO_UFCS))
+            if (!identifier->callParameters || identifier->callParameters->childs.empty() || !(identifier->callParameters->childs.front()->hasAstFlag(AST_TO_UFCS)))
             {
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 YIELD();
@@ -1316,7 +1316,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         // We want to force the ufcs
         if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
         {
-            if (identifierRef->flags & AST_SILENT_CHECK)
+            if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
             SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
             return false;
@@ -1342,7 +1342,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
-        if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
+        if (!identifier->ownerFct || !(identifier->ownerFct->hasAstFlag(AST_IS_GENERIC)))
         {
             if (match->dependentVar && !identifierRef->previousResolvedNode)
             {

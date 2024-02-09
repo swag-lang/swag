@@ -47,7 +47,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
         // Take care of #validif/#validifx
         if (overSym->kind == SymbolKind::Function &&
-            !(context->node->flags & AST_IN_VALIDIF) &&
+            !(context->node->hasAstFlag(AST_IN_VALIDIF)) &&
             !context->node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
             const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
@@ -247,11 +247,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         }
 
         // Priority to a user generic parameters, instead of a copy one
-        if (over->node->flags & AST_GENERATED_GENERIC_PARAM)
+        if (over->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM))
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+                if (!(matches[j]->symbolOverload->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM)))
                 {
                     curMatch->remove = true;
                     break;

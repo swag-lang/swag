@@ -49,7 +49,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
 bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {
-    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression, errMsg, errParam);
+    return checkIsConstExpr(context, expression->hasAstFlag(AST_CONST_EXPR), expression, errMsg, errParam);
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
@@ -102,9 +102,9 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         typeInfo->name += typeParam->typeInfo->name;
         typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
-        if (!(child->flags & AST_CONST_EXPR))
+        if (!(child->hasAstFlag(AST_CONST_EXPR)))
             node->removeAstFlag(AST_CONST_EXPR);
-        if (!(child->flags & AST_R_VALUE))
+        if (!(child->hasAstFlag(AST_R_VALUE)))
             node->removeAstFlag(AST_R_VALUE);
     }
 
@@ -125,7 +125,7 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
     // Otherwise the tuple will come from the constant segment.
-    if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct && node->typeInfo)
+    if (!(node->hasAstFlag(AST_CONST_EXPR)) && node->ownerScope && node->ownerFct && node->typeInfo)
     {
         allocateOnStack(node, node->typeInfo);
     }
@@ -155,13 +155,13 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
         typeParam->typeInfo  = childType;
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += childType->sizeOf;
-        if (!(child->flags & AST_CONST_EXPR))
+        if (!(child->hasAstFlag(AST_CONST_EXPR)))
             node->removeAstFlag(AST_CONST_EXPR);
-        if (!(child->flags & AST_R_VALUE))
+        if (!(child->hasAstFlag(AST_R_VALUE)))
             node->removeAstFlag(AST_R_VALUE);
     }
 
-    if (node->flags & AST_CONST_EXPR)
+    if (node->hasAstFlag(AST_CONST_EXPR))
         typeInfo->setConst();
 
     typeInfo->forceComputeName();
@@ -173,7 +173,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     // stack in order to store it.
     // Otherwise the array will come from the constant segment.
     // :ExprListArrayStorage
-    if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
+    if (!(node->hasAstFlag(AST_CONST_EXPR)) && node->ownerScope && node->ownerFct)
     {
         allocateOnStack(node, node->typeInfo);
     }
@@ -183,7 +183,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
 
 bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node)
 {
-    if ((node->flags & AST_CONST_EXPR) &&
+    if ((node->hasAstFlag(AST_CONST_EXPR)) &&
         !node->typeInfo->isListArray() &&
         !node->typeInfo->isListTuple() &&
         !node->typeInfo->isSlice())

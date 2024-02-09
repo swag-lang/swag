@@ -263,7 +263,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
         op->addAstFlag(AST_TRANSIENT);
 
         // :SpecFuncConstExpr
-        if (op->hasSpecialFuncCall() && (op->flags & AST_CONST_EXPR))
+        if (op->hasSpecialFuncCall() && op->hasAstFlag(AST_CONST_EXPR))
         {
             if (!typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
                 op->removeAstFlag(AST_CONST_EXPR);

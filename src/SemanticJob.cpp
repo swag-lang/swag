@@ -65,7 +65,7 @@ bool SemanticJob::spawnJob()
 
             // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in
             // registerFuncSymbol by another thread
-            if (!(node->flags & AST_NO_SEMANTIC) && !node->hasSemFlag(SEMFLAG_FILE_JOB_PASS))
+            if (!node->hasAstFlag(AST_NO_SEMANTIC) && !node->hasSemFlag(SEMFLAG_FILE_JOB_PASS))
             {
                 SWAG_ASSERT(sourceFile->module == module);
                 const auto job           = newJob(dependentJob, sourceFile, node, false);
@@ -136,7 +136,7 @@ JobResult SemanticJob::execute()
                 SWAG_ASSERT(context.result != ContextResult::NewChilds);
             }
 
-            if (node->flags & AST_NO_SEMANTIC)
+            if (node->hasAstFlag(AST_NO_SEMANTIC))
             {
                 if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
                     return JobResult::ReleaseJob;
@@ -147,7 +147,7 @@ JobResult SemanticJob::execute()
                 return JobResult::ReleaseJob;
 
             context.tmpNodes = node->childs;
-            if (node->flags & AST_REVERSE_SEMANTIC)
+            if (node->hasAstFlag(AST_REVERSE_SEMANTIC))
                 context.tmpNodes.reverse();
             for (int i = (int) context.tmpNodes.count - 1; i >= 0; i--)
             {
@@ -155,7 +155,7 @@ JobResult SemanticJob::execute()
 
                 // If the child has the AST_NO_SEMANTIC flag, do not push it.
                 // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
-                if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
+                if ((child->hasAstFlag(AST_NO_SEMANTIC)) && !(child->hasAstFlag(AST_SUB_DECL)))
                     continue;
                 if ((child->hasSemFlag(SEMFLAG_ONCE)) && child->semanticState != AstNodeResolveState::Enter)
                     continue;
@@ -169,7 +169,7 @@ JobResult SemanticJob::execute()
 
         case AstNodeResolveState::ProcessingChilds:
 
-            if (node->flags & AST_NO_SEMANTIC)
+            if (node->hasAstFlag(AST_NO_SEMANTIC))
             {
                 if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
                     return JobResult::ReleaseJob;

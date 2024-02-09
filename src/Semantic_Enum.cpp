@@ -105,7 +105,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
     }
 
     // Check public
-    if (node->hasAttribute(ATTRIBUTE_PUBLIC) && !(node->flags & AST_FROM_GENERIC))
+    if (node->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAstFlag(AST_FROM_GENERIC))
         node->ownerScope->addPublicNode(node);
 
     // We are parsing the swag module

@@ -27,7 +27,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
                     return true;
                 }
 
-                if (node->assignment->hasComputedValue() || !(node->assignment->flags & AST_SIDE_EFFECTS))
+                if (node->assignment->hasComputedValue() || !(node->assignment->hasAstFlag(AST_SIDE_EFFECTS)))
                 {
                     SWAG_CHECK(skipNodes(context, node));
                     return true;
@@ -47,7 +47,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     context->bc->localVars.push_back(context->node);
 
     // If this variable comes from a tuple unpacking, then we have nothing to generate
-    if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
+    if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
         return true;
 
     const auto resolved = node->resolvedSymbolOverload;
@@ -75,7 +75,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!node->hasSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
             {
                 mustDropLeft = true;
-                if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                if (!(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)) && !(node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS)))
                 {
                     // No need to initialize the variable if we are doing a struct to struct copy
                     // No need to drop the left side either
@@ -109,7 +109,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     }
 
     // User specific initialization with a right side
-    if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+    if (node->assignment && !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
     {
         // :DirectInlineLocalVar
         // The local variable is using the storage from the inline call.
@@ -193,11 +193,11 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         const auto finalType = typeArray->finalType;
         if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
         {
-            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
+            if (!(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
             {
                 if (typeArray->totalCount == 1)
                 {
-                    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                    if (!(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)) && !(node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS)))
                         emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
                     emitStructParameters(context, UINT32_MAX, retVal);
                 }
@@ -210,7 +210,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                     EMIT_INST1(context, ByteCodeOp::ClearRA, r0[1]);
                     const auto seekJump = context->bc->numInstructions;
 
-                    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                    if (!(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)) && !(node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS)))
                         emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
                     emitStructParameters(context, r0[1], retVal);
 
@@ -229,7 +229,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         }
     }
 
-    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+    if (!(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
     {
         if (retVal)
         {

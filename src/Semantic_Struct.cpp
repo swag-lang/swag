@@ -28,7 +28,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 
     if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
     {
-        if (!(node->flags & AST_FROM_GENERIC))
+        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
             node->sourceFile->module->decImplForToSolve(typeStruct);
@@ -389,8 +389,8 @@ bool Semantic::resolveInterface(SemanticContext* context)
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
 
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? context->tmpNodes : node->content->childs;
-    if (node->flags & AST_STRUCT_COMPOUND)
+    VectorNative<AstNode*>& childs = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->childs;
+    if (node->hasAstFlag(AST_STRUCT_COMPOUND))
     {
         context->tmpNodes.clear();
         flattenStructChilds(context, node->content, context->tmpNodes);
@@ -411,7 +411,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         const auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
         TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC))
+        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
         {
             typeParam           = TypeManager::makeParam();
             typeParam->name     = child->token.text;
@@ -441,7 +441,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
-        if (!(node->flags & AST_IS_GENERIC))
+        if (!(node->hasAstFlag(AST_IS_GENERIC)))
         {
             SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, FMT(Err(Err0731), node->token.ctext(), child->typeInfo->getDisplayNameC())}));
         }
@@ -479,7 +479,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable
-    if (!(node->flags & AST_FROM_GENERIC))
+    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
     {
         auto typeParam      = TypeManager::makeParam();
         typeParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
@@ -498,7 +498,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     // Check public
     if (node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        if (!(node->flags & AST_FROM_GENERIC))
+        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
             node->ownerScope->addPublicNode(node);
     }
 
@@ -672,7 +672,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 
     // Add generic parameters
     uint32_t symbolFlags = 0;
-    if (!(node->flags & AST_FROM_GENERIC))
+    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
     {
         if (node->genericParameters)
         {
@@ -749,7 +749,7 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
         case AstNodeKind::CompilerIf:
         {
             const AstIf* compilerIf = castAst<AstIf>(child, AstNodeKind::CompilerIf);
-            if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
+            if (!(compilerIf->ifBlock->hasAstFlag(AST_NO_SEMANTIC)))
                 flattenStructChilds(context, compilerIf->ifBlock, result);
             else if (compilerIf->elseBlock)
                 flattenStructChilds(context, compilerIf->elseBlock, result);
@@ -851,8 +851,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
     uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
     // No need to flatten structure if it's not a compound (optim)
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? context->tmpNodes : node->content->childs;
-    if (node->flags & AST_STRUCT_COMPOUND)
+    VectorNative<AstNode*>& childs = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->childs;
+    if (node->hasAstFlag(AST_STRUCT_COMPOUND))
     {
         context->tmpNodes.clear();
         flattenStructChilds(context, node->content, context->tmpNodes);
@@ -890,19 +890,19 @@ bool Semantic::resolveStruct(SemanticContext* context)
             auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
             // Using can only be used on a structure
-            if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
+            if (child->hasAstFlag(AST_DECL_USING) && child->kind == AstNodeKind::ConstDecl)
                 return context->report({child, Err(Err0473)});
-            if (child->flags & AST_DECL_USING && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
+            if (child->hasAstFlag(AST_DECL_USING) && !child->typeInfo->isStruct() && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
                 return context->report({child, FMT(Err(Err0475), child->typeInfo->getDisplayNameC())});
 
             TypeInfoParam* typeParam = nullptr;
-            if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_REGISTERED_IN_STRUCT))
+            if (!(node->hasAstFlag(AST_FROM_GENERIC)) || !(child->hasAstFlag(AST_REGISTERED_IN_STRUCT)))
             {
                 typeParam           = TypeManager::makeParam();
                 typeParam->name     = child->token.text;
                 typeParam->typeInfo = child->typeInfo;
                 typeParam->offset   = storageOffset;
-                if (varDecl->flags & AST_DECL_USING)
+                if (varDecl->hasAstFlag(AST_DECL_USING))
                     typeParam->flags |= TYPEINFOPARAM_HAS_USING;
                 SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
                 if (child->kind == AstNodeKind::VarDecl)
@@ -933,7 +933,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
             // If variable is initialized, struct is too.
-            if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            if (!(varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
             {
                 if (varDecl->assignment || varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -997,9 +997,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
             }
 
             // Var has an initialization
-            else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            else if (varDecl->assignment && !(varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
             {
-                SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->flags & AST_CONST_EXPR, varDecl->assignment, Err(Err0041)));
+                SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->hasAstFlag(AST_CONST_EXPR), varDecl->assignment, Err(Err0041)));
 
                 auto typeInfoAssignment = varDecl->assignment->typeInfo->getConcreteAlias();
                 typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
@@ -1027,7 +1027,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             }
 
             // If the struct is not generic, be sure that a field is not generic either
-            if (!(node->flags & AST_IS_GENERIC))
+            if (!(node->hasAstFlag(AST_IS_GENERIC)))
             {
                 if (varTypeInfo->isGeneric())
                 {
@@ -1120,7 +1120,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 }
 
                 // User cannot name its variables itemX
-                if (!(node->flags & AST_GENERATED) && hasItemName)
+                if (!(node->hasAstFlag(AST_GENERATED)) && hasItemName)
                 {
                     return context->report({child, child->token, FMT(Err(Err0619), child->token.ctext())});
                 }
@@ -1193,12 +1193,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // Check public
     if ((node->hasAttribute(ATTRIBUTE_PUBLIC)) && !typeInfo->isTuple())
     {
-        if (!(node->flags & AST_FROM_GENERIC))
+        if (!(node->hasAstFlag(AST_FROM_GENERIC)))
             node->ownerScope->addPublicNode(node);
     }
 
     // Need to recompute it if it's from generic
-    if (node->flags & AST_FROM_GENERIC)
+    if (node->hasAstFlag(AST_FROM_GENERIC))
     {
         typeInfo->flags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         typeInfo->flags &= ~TYPEINFO_STRUCT_HAS_INIT_VALUES;

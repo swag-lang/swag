@@ -267,7 +267,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
                 continue;
 
             // If a field in a struct has generic parameters with the struct itself, we authorize to wait
-            if (context->node->flags & AST_STRUCT_MEMBER && typeInfo == context->node->ownerStructScope->owner->typeInfo)
+            if (context->node->hasAstFlag(AST_STRUCT_MEMBER) && typeInfo == context->node->ownerStructScope->owner->typeInfo)
                 continue;
         }
 
@@ -292,18 +292,18 @@ bool Semantic::needToCompleteSymbol(SemanticContext* context, const AstIdentifie
             return true;
         // If this is a generic type, and it's from an instance, we must wait, because we will
         // have to instantiate that symbol too
-        if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+        if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->hasAstFlag(AST_FROM_GENERIC)) && symbol->overloads[0]->typeInfo->isGeneric())
             return true;
-        if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+        if (identifier->ownerFct && (identifier->ownerFct->hasAstFlag(AST_FROM_GENERIC)) && symbol->overloads[0]->typeInfo->isGeneric())
             return true;
     }
 
     // If a structure is referencing itself, we will match the incomplete symbol for now
-    if (identifier->flags & AST_STRUCT_MEMBER)
+    if (identifier->hasAstFlag(AST_STRUCT_MEMBER))
         return false;
 
     // We can also do an incomplete match with the identifier of an Impl block
-    if (identifier->flags & AST_CAN_MATCH_INCOMPLETE)
+    if (identifier->hasAstFlag(AST_CAN_MATCH_INCOMPLETE))
         return false;
 
     // If identifier is in a pointer type expression, can incomplete resolve

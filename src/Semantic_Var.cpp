@@ -263,11 +263,11 @@ bool Semantic::resolveVarDeclBefore(SemanticContext* context)
     if (node->assignment && node->kind == AstNodeKind::ConstDecl)
     {
         bool isGeneric = false;
-        if (node->flags & AST_STRUCT_MEMBER)
+        if (node->hasAstFlag(AST_STRUCT_MEMBER))
         {
             const auto parent = node->findParent(AstNodeKind::StructDecl);
             if (parent)
-                isGeneric = parent->flags & AST_IS_GENERIC;
+                isGeneric = parent->hasAstFlag(AST_IS_GENERIC);
         }
 
         if (isGeneric)
@@ -411,7 +411,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
         return &module->bssSegment;
     if (!varNode->assignment &&
         (!varNode->type || !varNode->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)) &&
-        !(varNode->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
+        !varNode->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS) &&
         (varNode->typeInfo->isStruct() || varNode->typeInfo->isInterface()) &&
         !(varNode->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         return &module->bssSegment;
@@ -544,7 +544,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     bool isLocalConstant    = false;
 
     // Check #mixin
-    if (!(node->flags & AST_GENERATED) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atmixin) == 0)
+    if (!node->hasAstFlag(AST_GENERATED) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atmixin) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -562,7 +562,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Check #alias
-    if (!(node->flags & AST_GENERATED) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atalias) == 0)
+    if (!(node->hasAstFlag(AST_GENERATED)) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atalias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -612,7 +612,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
     else if (node->ownerScope->isGlobal() || node->hasAttribute(ATTRIBUTE_GLOBAL))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
-    else if (node->ownerScope->isGlobalOrImpl() && (node->flags & AST_IN_IMPL) && !(node->flags & AST_STRUCT_MEMBER))
+    else if (node->ownerScope->isGlobalOrImpl() && (node->hasAstFlag(AST_IN_IMPL)) && !(node->hasAstFlag(AST_STRUCT_MEMBER)))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (node->ownerScope->kind == ScopeKind::Struct)
         symbolFlags |= OVERLOAD_VAR_STRUCT;
@@ -664,14 +664,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (concreteNodeType &&
             concreteNodeType->isPointerRef() &&
             node->kind != AstNodeKind::FuncDeclParam &&
-            !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
             return context->report({node, Err(Err0563)});
 
         // Check an enum variable without initialization
         if (concreteNodeType &&
             concreteNodeType->isEnum() &&
             node->kind != AstNodeKind::FuncDeclParam &&
-            !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
         {
             auto                        concreteTypeEnum = castTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
             VectorNative<TypeInfoEnum*> collect;
@@ -742,15 +742,15 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     bool thisIsAGenericType = !node->type && !node->assignment;
     bool isGeneric          = false;
-    if (node->flags & AST_STRUCT_MEMBER)
+    if (node->hasAstFlag(AST_STRUCT_MEMBER))
     {
         auto p = node->findParent(AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
         SWAG_ASSERT(p);
-        isGeneric = p->flags & AST_IS_GENERIC;
+        isGeneric = p->hasAstFlag(AST_IS_GENERIC);
     }
 
     // Evaluate type constraint
-    if ((node->flags & AST_FROM_GENERIC) && node->typeConstraint)
+    if ((node->hasAstFlag(AST_FROM_GENERIC)) && node->typeConstraint)
     {
         SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_TYPE));
 
@@ -789,20 +789,20 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->assignment &&
         node->assignment->kind != AstNodeKind::ExpressionList &&
         node->assignment->kind != AstNodeKind::ExplicitNoInit &&
-        (!node->assignment->typeInfo->isStruct() || !(node->assignment->flags & AST_IN_FUNC_DECL_PARAMS)) &&
+        (!node->assignment->typeInfo->isStruct() || !(node->assignment->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))) &&
         !isGeneric)
     {
         // A generic identifier without a type but with a default value is a generic type
-        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+        if ((node->hasAstFlag(AST_IS_GENERIC)) && !node->type && !(node->hasAstFlag(AST_R_VALUE)) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
         {
             thisIsAGenericType = true;
         }
-        else if (!(node->flags & AST_FROM_GENERIC) || !node->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
+        else if (!(node->hasAstFlag(AST_FROM_GENERIC)) || !node->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             YIELD();
 
-            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
+            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->hasAstFlag(AST_CONST_EXPR)))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
                 YIELD();
@@ -815,7 +815,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // A global variable or a constant must have its value computed at that point
-    if (!(node->flags & AST_FROM_GENERIC))
+    if (!(node->hasAstFlag(AST_FROM_GENERIC)))
     {
         if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
@@ -827,7 +827,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else
             {
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->flags & AST_CONST_EXPR, node->assignment, Err(Err0041)));
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, Err(Err0041)));
             }
         }
     }
@@ -849,7 +849,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
+    if (node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
         symbolFlags |= OVERLOAD_NOT_INITIALIZED;
 
@@ -867,7 +867,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Types and assignements are specified
-    if (node->type && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+    if (node->type && node->assignment && !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
     {
         SWAG_ASSERT(node->type->typeInfo);
 
@@ -887,7 +887,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
             auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT |
                              CASTFLAG_ACCEPT_PENDING;
-            if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
+            if (node->type->hasAstFlag(AST_FROM_GENERIC_REPLACE) || (node->type->childs.count && node->type->childs.back()->hasAstFlag(AST_FROM_GENERIC_REPLACE)))
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             else
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
@@ -928,7 +928,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Only assignement is specified, need to deduce type
-    else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+    else if (node->assignment && !(node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
@@ -984,7 +984,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     if (node->type)
         node->inheritOrFlag(node->type, AST_IS_GENERIC);
-    if (node->flags & AST_IS_GENERIC)
+    if (node->hasAstFlag(AST_IS_GENERIC))
     {
         symbolFlags |= OVERLOAD_GENERIC;
         if (thisIsAGenericType && node->assignment)
@@ -1066,7 +1066,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,
     // and has an address
-    if (isCompilerConstant && !(node->flags & AST_FROM_GENERIC))
+    if (isCompilerConstant && !(node->hasAstFlag(AST_FROM_GENERIC)))
     {
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
         {
@@ -1084,7 +1084,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     // In case of a struct (or array of structs), be sure struct is now completed before
     // Otherwise there's a chance, for example, that 'sizeof' is 0, which can lead to various
     // problems.
-    if (!isCompilerConstant || !(node->flags & AST_FROM_GENERIC))
+    if (!isCompilerConstant || !(node->hasAstFlag(AST_FROM_GENERIC)))
     {
         if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
         {
@@ -1226,7 +1226,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         // If this is a tuple unpacking, then we just compute the stack offset of the item
         // inside the tuple, so we do not have to generate bytecode !
-        if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
+        if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
         {
             node->addAstFlag(AST_NO_BYTECODE_CHILDS);
             SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
@@ -1252,7 +1252,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 !assignment->childs.back()->childs.empty() &&
                 assignment->typeInfo == node->typeInfo &&
                 assignment->childs.back()->childs.back()->kind == AstNodeKind::Inline &&
-                assignment->childs.back()->childs.back()->flags & AST_TRANSIENT)
+                assignment->childs.back()->childs.back()->hasAstFlag(AST_TRANSIENT))
             {
                 SWAG_ASSERT(assignment->childs.back()->childs.back()->computedValue);
                 storageOffset = assignment->childs.back()->childs.back()->computedValue->storageOffset;
@@ -1284,7 +1284,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // A using on a variable
-    if (node->flags & AST_DECL_USING)
+    if (node->hasAstFlag(AST_DECL_USING))
     {
         SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
     }

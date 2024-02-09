@@ -203,7 +203,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
     if (node->kind == AstNodeKind::FuncDecl)
     {
         funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        if (funcDecl->content && (funcDecl->content->flags & AST_NO_SEMANTIC))
+        if (funcDecl->content && (funcDecl->content->hasAstFlag(AST_NO_SEMANTIC)))
             return;
 
         if (funcDecl->isForeign())
@@ -272,7 +272,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
             }
 
             extension->bc->typeInfoFunc = funcDecl ? (TypeInfoFuncAttr*) funcDecl->typeInfo : nullptr;
-            if (node->flags & AST_DEFINED_INTRINSIC)
+            if (node->hasAstFlag(AST_DEFINED_INTRINSIC))
                 extension->bc->name = node->token.text;
             else if (node->sourceFile->isRuntimeFile)
                 extension->bc->name = node->token.text;

@@ -33,7 +33,7 @@ bool Semantic::canHaveAccess(const AstNode* node)
         return false;
     if (!node->ownerScope || !node->ownerScope->isGlobalOrImpl())
         return false;
-    if (node->flags & AST_FROM_GENERIC)
+    if (node->hasAstFlag(AST_FROM_GENERIC))
         return false;
     if (node->sourceFile->forceExport || node->sourceFile->imported)
         return false;
@@ -54,7 +54,7 @@ bool Semantic::canInheritAccess(const AstNode* node)
     // Content of the function will propagate only if the function is inlined or generic
     if (node->ownerScope && node->ownerScope->kind == ScopeKind::FunctionBody)
     {
-        if (!(node->ownerFct->flags & AST_IS_GENERIC) && !node->ownerFct->mustUserInline(true))
+        if (!node->ownerFct->hasAstFlag(AST_IS_GENERIC) && !node->ownerFct->mustUserInline(true))
             return false;
     }
 
@@ -75,7 +75,7 @@ void Semantic::setNodeAccess(AstNode* node)
         return;
     if (!overload->node)
         return;
-    if (overload->node->flags & AST_GENERATED)
+    if (overload->node->hasAstFlag(AST_GENERATED))
         return;
     if (overload->symbol->kind == SymbolKind::Namespace)
         return;
@@ -162,9 +162,9 @@ void Semantic::setDefaultAccess(AstNode* node)
         return;
     if (node->sourceFile && node->sourceFile->isRuntimeFile)
         return;
-    if (node->flags & AST_STRUCT_MEMBER)
+    if (node->hasAstFlag(AST_STRUCT_MEMBER))
         return;
-    if (node->flags & AST_GENERATED)
+    if (node->hasAstFlag(AST_GENERATED))
         return;
     if (!node->ownerScope || !node->ownerScope->isGlobalOrImpl())
         return;
@@ -192,7 +192,7 @@ void Semantic::setDefaultAccess(AstNode* node)
 
     if (node->sourceFile && node->sourceFile->globalAttr & ATTRIBUTE_ACCESS_MASK)
         node->addSemFlag(attributeToAccess(node->sourceFile->globalAttr));
-    else if (node->ownerStructScope && !(node->flags & AST_IN_IMPL))
+    else if (node->ownerStructScope && !node->hasAstFlag(AST_IN_IMPL))
         node->addSemFlag(attributeToAccess(node->ownerStructScope->owner->attributeFlags));
     else if (node->sourceFile && node->sourceFile->fromTests)
         node->addSemFlag(attributeToAccess(ATTRIBUTE_PRIVATE));

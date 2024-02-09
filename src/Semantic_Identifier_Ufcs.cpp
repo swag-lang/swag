@@ -16,7 +16,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
     // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
     // This can happen if we have already changed the ast, but the nodes are reevaluated later
     // (because of an inline for example)
-    if (ufcsNode->flags & AST_NO_BYTECODE)
+    if (ufcsNode->hasAstFlag(AST_NO_BYTECODE))
         return false;
 
     // If we have an explicit node, then we can try. Anyway we will also try without...
@@ -106,7 +106,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-            identifierRef->previousResolvedNode->flags & AST_INLINED)
+            identifierRef->previousResolvedNode->hasAstFlag(AST_INLINED))
         {
             fine = true;
         }

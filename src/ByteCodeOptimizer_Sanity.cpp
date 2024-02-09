@@ -1254,7 +1254,7 @@ namespace
                 if (ra->kind == ValueKind::StackAddr)
                 {
                     // Legit in #run block, as we will make a copy
-                    if (context->bc->node && context->bc->node->flags & AST_IN_RUN_BLOCK)
+                    if (context->bc->node && context->bc->node->hasAstFlag(AST_IN_RUN_BLOCK))
                         break;
 
                     return checkEscapeFrame(cxt, ra->reg.u32, ra->overload);

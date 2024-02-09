@@ -419,7 +419,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             }
 
             // Copy from a constant
-            SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
+            SWAG_ASSERT(assign->hasAstFlag(AST_CONST_EXPR));
             uint8_t* addrDst;
             storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
             SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
@@ -435,7 +435,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 
                 // First collect values from the structure default initialization, except if the parameters cover
                 // all the fields (in that case no need to initialize the struct twice)
-                if (!(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                if (!node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
                     SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, value, typeInfo, nullptr));
                 else
                     storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr, TypeManager::alignOf(typeInfo));

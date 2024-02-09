@@ -149,7 +149,7 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
 
 bool Semantic::isCompilerContext(const AstNode* node)
 {
-    if (node->flags & AST_NO_BACKEND)
+    if (node->hasAstFlag(AST_NO_BACKEND))
         return true;
     if (node->hasAttribute(ATTRIBUTE_COMPILER))
         return true;

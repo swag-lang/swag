@@ -821,7 +821,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
     auto right = factor->childs[1];
     SWAG_CHECK(doOperatorPrecedence(&right));
 
-    if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !(right->flags & AST_IN_ATOMIC_EXPR))
+    if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
     {
         const auto myPrecedence    = getPrecedence(factor->tokenId);
         const auto rightPrecedence = getPrecedence(right->tokenId);
@@ -850,7 +850,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
             //   *   C
             //  / \
             // A   B
-            const auto atom = factor->flags & AST_IN_ATOMIC_EXPR;
+            const auto atom = factor->hasAstFlag(AST_IN_ATOMIC_EXPR);
             factor->removeAstFlag(AST_IN_ATOMIC_EXPR);
 
             const auto leftRight = right->childs[0];

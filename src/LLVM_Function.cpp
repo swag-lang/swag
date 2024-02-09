@@ -96,7 +96,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     llvm::Value*                           resultFuncCall = nullptr;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
-        if (ip->node->flags & AST_NO_BACKEND)
+        if (ip->node->hasAstFlag(AST_NO_BACKEND))
             continue;
         if (ip->flags & BCI_NO_BACKEND)
             continue;

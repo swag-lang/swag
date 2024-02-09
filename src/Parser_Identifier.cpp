@@ -24,9 +24,9 @@ bool Parser::testIsSingleIdentifier(AstNode* node)
 
 bool Parser::testIsValidUserName(const AstNode* node) const
 {
-    if (node->parent && (node->parent->flags & AST_GENERATED))
+    if (node->parent && node->parent->hasAstFlag(AST_GENERATED))
         return true;
-    if (node->flags & AST_GENERATED)
+    if (node->hasAstFlag(AST_GENERATED))
         return true;
 
     // An identifier that starts with '__' is reserved for internal usage !
@@ -134,7 +134,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         identifier->identifierExtension->scopeUpValue = scopeUpValue;
     }
 
-    if (identifier->flags & AST_IN_FUNC_DECL_PARAMS)
+    if (identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
         identifier->addSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE);
 
     SWAG_CHECK(eatToken());

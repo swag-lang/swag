@@ -140,7 +140,7 @@ bool ByteCodeGen::emitExpressionListBefore(ByteCodeGenContext* context)
 
     // Do not generate bytecode for childs in case of a constant expression, because
     // the full content of the expression is in the constant segment
-    if (node->flags & AST_CONST_EXPR)
+    if (node->hasAstFlag(AST_CONST_EXPR))
         node->addAstFlag(AST_NO_BYTECODE_CHILDS);
 
     return true;
@@ -163,7 +163,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
     const auto typeList = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     // A non const expression list will be collected by the top ExpressionList
-    if (!(node->flags & AST_CONST_EXPR))
+    if (!(node->hasAstFlag(AST_CONST_EXPR)))
     {
         if (node->parent->kind == AstNodeKind::ExpressionList)
             return true;
@@ -174,7 +174,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
     else
         reserveLinearRegisterRC2(context, node->resultRegisterRc);
 
-    if (!(node->flags & AST_CONST_EXPR))
+    if (!(node->hasAstFlag(AST_CONST_EXPR)))
     {
         context->collectChilds.clear();
         collectLiteralsChilds(node, &context->collectChilds);

@@ -12,7 +12,7 @@ atomic<int> g_UniqueID;
 
 bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {
-    if (fromNode->flags & AST_STRUCT_CONVERT)
+    if (fromNode->hasAstFlag(AST_STRUCT_CONVERT))
         return true;
     fromNode->addAstFlag(AST_STRUCT_CONVERT);
 
@@ -145,7 +145,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
     // :SubDeclParent
     auto newParent = fromNode->parent;
-    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
     {
         newParent = newParent->parent;
         SWAG_ASSERT(newParent);

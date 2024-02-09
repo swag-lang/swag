@@ -184,7 +184,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
 bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
 {
     auto node = context->node;
-    if (!(node->flags & AST_IN_DEFER))
+    if (!(node->hasAstFlag(AST_IN_DEFER)))
         return true;
 
     const auto parent = node->findParent(AstNodeKind::Defer);

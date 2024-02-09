@@ -42,9 +42,9 @@ namespace
     {
         if (node->token.text.length() > 2 && node->token.text[0] == '_' && node->token.text[1] == '_')
             return false;
-        if (node->flags & AST_FROM_GENERIC)
+        if (node->hasAstFlag(AST_FROM_GENERIC))
             return false;
-        if (node->flags & AST_GENERATED)
+        if (node->hasAstFlag(AST_GENERATED))
             return false;
         if (node->hasAttribute(ATTRIBUTE_NO_DOC))
             return false;
@@ -681,7 +681,7 @@ void GenDoc::generateContent()
                     auto n1 = structVal->nodes[0];
                     if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
                         continue;
-                    if (!(n1->flags & AST_STRUCT_MEMBER))
+                    if (!(n1->hasAstFlag(AST_STRUCT_MEMBER)))
                         continue;
                     if (structVal->name.find("item") == 0)
                         continue;
@@ -698,7 +698,7 @@ void GenDoc::generateContent()
 
                     helpContent += "<td>";
                     Utf8 n2;
-                    if (varDecl->flags & AST_DECL_USING)
+                    if (varDecl->hasAstFlag(AST_DECL_USING))
                         n2 += "using ";
                     n2 += structVal->name;
                     helpContent += n2;

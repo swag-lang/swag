@@ -206,7 +206,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
-        if (ip->node->flags & AST_NO_BACKEND)
+        if (ip->node->hasAstFlag(AST_NO_BACKEND))
             continue;
         if (ip->flags & BCI_NO_BACKEND)
             continue;

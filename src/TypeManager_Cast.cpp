@@ -2042,7 +2042,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         {
             const auto childType = concreteType(child->typeInfo, CONCRETE_FUNC);
             newSizeof += childType->sizeOf;
-            if (!(child->flags & AST_CONST_EXPR))
+            if (!(child->hasAstFlag(AST_CONST_EXPR)))
                 fromNode->removeAstFlag(AST_CONST_EXPR);
         }
     }
@@ -2057,7 +2057,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         fromNode->typeInfo   = fromTypeList;
 
         // :ExprListArrayStorage
-        if (!(fromNode->flags & AST_CONST_EXPR) && fromNode->ownerScope && fromNode->ownerFct)
+        if (!(fromNode->hasAstFlag(AST_CONST_EXPR)) && fromNode->ownerScope && fromNode->ownerFct)
         {
             SWAG_ASSERT(fromNode->computedValue);
             fromNode->ownerScope->startStackSize -= oldSizeof;

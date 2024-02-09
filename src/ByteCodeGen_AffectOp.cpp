@@ -70,7 +70,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
         return context->report(diag);
     }
 
-    if ((from->flags & AST_NO_LEFT_DROP) || (!typeStruct->opDrop && !typeStruct->opUserDropFct))
+    if ((from->hasAstFlag(AST_NO_LEFT_DROP)) || (!typeStruct->opDrop && !typeStruct->opUserDropFct))
     {
         if (typeStruct->canRawCopy())
         {

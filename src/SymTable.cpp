@@ -367,8 +367,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
         if (!node->isEmptyFct() &&
             !overload->node->isEmptyFct() &&
             !(overload->flags & OVERLOAD_UNDEFINED) &&
-            !(node->flags & AST_HAS_SELECT_IF) &&
-            !(overload->node->flags & AST_HAS_SELECT_IF))
+            !node->hasAstFlag(AST_HAS_SELECT_IF) &&
+            !overload->node->hasAstFlag(AST_HAS_SELECT_IF))
         {
             const auto firstOverload = overload;
             return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);

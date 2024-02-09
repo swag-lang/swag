@@ -346,7 +346,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
     // :SubDeclParent
     auto newParent = parent;
-    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
     {
         newParent = newParent->parent;
         SWAG_ASSERT(newParent);

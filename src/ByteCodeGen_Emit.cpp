@@ -13,7 +13,7 @@ bool ByteCodeGen::emitPassThrough(ByteCodeGenContext* context)
         return true;
 
     const auto child = node->childs.back();
-    if (node->flags & AST_DISCARD)
+    if (node->hasAstFlag(AST_DISCARD))
         freeRegisterRC(context, child);
     else
     {

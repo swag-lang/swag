@@ -224,7 +224,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     // Emit generic parameter, except if the function is an instance
     if (node->genericParameters)
     {
-        if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_IS_GENERIC))
+        if (!node->hasAstFlag(AST_FROM_GENERIC) || node->hasAstFlag(AST_IS_GENERIC))
             SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
     }
 
@@ -493,7 +493,7 @@ bool AstOutput::outputAttributesGlobalUsing(const OutputContext& context, Concat
     // Global using
     bool one         = false;
     bool outputUsing = true;
-    if (node->flags & AST_STRUCT_MEMBER)
+    if (node->hasAstFlag(AST_STRUCT_MEMBER))
         outputUsing = false;
     if (outputUsing)
     {
@@ -661,7 +661,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
         bool first = true;
         for (const auto p : funcDecl->parameters->childs)
         {
-            if ((p->flags & AST_GENERATED) && !(p->flags & AST_GENERATED_USER))
+            if ((p->hasAstFlag(AST_GENERATED)) && !(p->hasAstFlag(AST_GENERATED_USER)))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -717,7 +717,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
 
     if (varNode->type)
     {
-        if (!(varNode->type->flags & AST_GENERATED) || (varNode->type->flags & AST_GENERATED_USER))
+        if (!(varNode->type->hasAstFlag(AST_GENERATED)) || (varNode->type->hasAstFlag(AST_GENERATED_USER)))
         {
             if (!isSelf)
             {
@@ -751,14 +751,14 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
 
 bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDecl* varNode)
 {
-    if (varNode->flags & AST_DECL_USING)
+    if (varNode->hasAstFlag(AST_DECL_USING))
         CONCAT_FIXED_STR(concat, "using ");
 
     if (varNode->kind == AstNodeKind::ConstDecl)
     {
         CONCAT_FIXED_STR(concat, "const ");
     }
-    else if (varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->flags & AST_STRUCT_MEMBER))
+    else if (varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->hasAstFlag(AST_STRUCT_MEMBER)))
     {
         if (varNode->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
             CONCAT_FIXED_STR(concat, "let ");
@@ -895,7 +895,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
                 const auto id = castAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
                 if (id->callParameters)
                 {
-                    if (id->flags & AST_GENERATED)
+                    if (id->hasAstFlag(AST_GENERATED))
                     {
                         CONCAT_FIXED_STR(concat, " = {");
                         SWAG_CHECK(outputNode(context, concat, id->callParameters));
@@ -1029,7 +1029,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         return true;
     if (node->hasExtMisc() && node->extMisc()->exportNode)
         node = node->extMisc()->exportNode;
-    if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
+    if (node->hasAstFlag(AST_GENERATED) && !(node->hasAstFlag(AST_GENERATED_USER)))
         return true;
 
     // Prepend some stuff
@@ -1092,7 +1092,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         }
         else
         {
-            if (node->flags & AST_DISCARD)
+            if (node->hasAstFlag(AST_DISCARD))
                 CONCAT_FIXED_STR(concat, "discard ");
             concat.addString(node->token.text);
             concat.addChar(' ');
@@ -1103,7 +1103,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Catch:
     case AstNodeKind::TryCatch:
-        if (node->flags & AST_DISCARD)
+        if (node->hasAstFlag(AST_DISCARD))
             CONCAT_FIXED_STR(concat, "discard ");
         concat.addString(node->token.text);
         concat.addChar(' ');
@@ -1126,7 +1126,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         {
             if (c->hasExtMisc() && c->extMisc()->exportNode)
                 c = c->extMisc()->exportNode;
-            if ((c->flags & AST_GENERATED) && !(c->flags & AST_GENERATED_USER))
+            if ((c->hasAstFlag(AST_GENERATED)) && !(c->hasAstFlag(AST_GENERATED_USER)))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -1335,7 +1335,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         int idx = 0;
         for (const auto child : exprNode->childs)
         {
-            if (child->flags & AST_GENERATED)
+            if (child->hasAstFlag(AST_GENERATED))
                 continue;
             if (idx++)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -1734,7 +1734,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::IdentifierRef:
     {
-        if (node->flags & AST_DISCARD)
+        if (node->hasAstFlag(AST_DISCARD))
             CONCAT_FIXED_STR(concat, "discard ");
         if (node->hasSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE))
             CONCAT_FIXED_STR(concat, ".");
@@ -1839,7 +1839,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         for (const auto child : node->childs)
         {
-            if (child->flags & AST_GENERATED)
+            if (child->hasAstFlag(AST_GENERATED))
                 continue;
             context.indent++;
             SWAG_CHECK(outputNode(context, concat, child));
@@ -1898,7 +1898,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         first = true;
         for (const auto child : funcCallParams->childs)
         {
-            if (child->flags & AST_GENERATED)
+            if (child->hasAstFlag(AST_GENERATED))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");

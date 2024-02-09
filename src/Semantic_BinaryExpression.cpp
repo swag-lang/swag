@@ -1146,7 +1146,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     }
 
     // :SpecFuncConstExpr
-    if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
+    if (node->hasSpecialFuncCall() && node->hasAstFlag(AST_CONST_EXPR))
     {
         if (leftTypeInfo->isStruct() && !leftTypeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
             node->removeAstFlag(AST_CONST_EXPR);
@@ -1364,7 +1364,7 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
     }
 
     // :SpecFuncConstExpr
-    if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
+    if (node->hasSpecialFuncCall() && (node->hasAstFlag(AST_CONST_EXPR)))
     {
         if (leftTypeInfo->isStruct() && !leftTypeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
             node->removeAstFlag(AST_CONST_EXPR);

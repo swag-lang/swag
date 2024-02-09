@@ -289,7 +289,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         // from the previous symbol
         if (oneTry || forceEnd || !identifierRef->startScope || !identifierRef->previousResolvedNode)
         {
-            if (identifierRef->flags & AST_SILENT_CHECK)
+            if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
             SemanticError::unknownIdentifierError(context, identifierRef, node);
             return false;

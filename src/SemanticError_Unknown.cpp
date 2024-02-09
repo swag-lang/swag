@@ -49,7 +49,7 @@ namespace
 
         const auto varDecl = node->findParent(AstNodeKind::VarDecl);
         const auto idRef   = node->identifierRef();
-        if (idRef && (idRef->flags & AST_TUPLE_UNPACK) && varDecl)
+        if (idRef && idRef->hasAstFlag(AST_TUPLE_UNPACK) && varDecl)
         {
             diag = new Diagnostic{node, FMT(Err(Err0719), varDecl->token.ctext(), displayName.c_str())};
         }
@@ -91,7 +91,7 @@ namespace
         if (prevIdentifier &&
             prevIdentifier->resolvedSymbolName &&
             prevIdentifier->resolvedSymbolName->kind == SymbolKind::Variable &&
-            !(prevIdentifier->flags & AST_GENERATED))
+            !prevIdentifier->hasAstFlag(AST_GENERATED))
         {
             diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
         }

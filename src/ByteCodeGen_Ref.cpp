@@ -137,21 +137,21 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
 
     ensureCanBeChangedRC(context, node->resultRegisterRc);
 
-    if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+    if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->hasAstFlag(AST_UFCS_FCT)))
     {
-        if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+        if (node->hasAstFlag(AST_FROM_UFCS)) // Get the ITable pointer
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = sizeof(void*);
-        else if (node->flags & AST_TO_UFCS) // Get the structure pointer
+        else if (node->hasAstFlag(AST_TO_UFCS)) // Get the structure pointer
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         return true;
     }
 
-    if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+    if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->hasAstFlag(AST_UFCS_FCT)))
     {
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-        if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+        if (node->hasAstFlag(AST_FROM_UFCS)) // Get the ITable pointer
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = sizeof(void*);
-        else if (node->flags & AST_TO_UFCS) // Get the structure pointer
+        else if (node->hasAstFlag(AST_TO_UFCS)) // Get the structure pointer
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         return true;
     }

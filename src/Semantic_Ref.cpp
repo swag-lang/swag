@@ -74,7 +74,7 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
     SWAG_ASSERT(node->kind == AstNodeKind::IdentifierRef || node->kind == AstNodeKind::ArrayPointerIndex);
-    if (!(node->flags & AST_L_VALUE))
+    if (!(node->hasAstFlag(AST_L_VALUE)))
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         {
@@ -236,7 +236,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     }
 
     // Taking the address of a const is const
-    if (child->flags & AST_IS_CONST || forceConst)
+    if (child->hasAstFlag(AST_IS_CONST) || forceConst)
     {
         ptrFlags |= TYPEINFO_CONST;
     }
@@ -257,7 +257,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         {
             ptrFlags |= TYPEINFO_CONST;
         }
-        else if (node->flags & AST_IS_CONST)
+        else if (node->hasAstFlag(AST_IS_CONST))
         {
             ptrFlags |= TYPEINFO_CONST;
         }
@@ -517,11 +517,11 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
     {
         typeInfo = typeInfo->clone();
         typeInfo->flags |= TYPEINFO_POINTER_REF;
-        if (node->flags & AST_IS_CONST)
+        if (node->hasAstFlag(AST_IS_CONST))
             typeInfo->setConst();
         typeInfo->forceComputeName();
     }
-    else if (node->flags & AST_IS_CONST)
+    else if (node->hasAstFlag(AST_IS_CONST))
     {
         typeInfo = g_TypeMgr->makeConst(typeInfo);
     }

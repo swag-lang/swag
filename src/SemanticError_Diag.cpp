@@ -405,7 +405,7 @@ namespace
             SWAG_ASSERT(errorParam.destFuncDecl);
             errorParam.addNote(Diagnostic::hereIs(errorParam.destFuncDecl));
         }
-        else if (destParamNode && (destParamNode->flags & AST_GENERATED))
+        else if (destParamNode && destParamNode->hasAstFlag(AST_GENERATED))
         {
             const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, Nte(Nte0065));
             errorParam.addNote(note);
@@ -433,7 +433,7 @@ namespace
             callParameters &&
             !callParameters->childs.empty() &&
             callParameters->childs.front()->flags & (AST_FROM_UFCS | AST_TO_UFCS) &&
-            !(callParameters->childs.front()->flags & AST_UFCS_FCT))
+            !callParameters->childs.front()->hasAstFlag(AST_UFCS_FCT))
         {
             badParamIdx--;
         }

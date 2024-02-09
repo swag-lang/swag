@@ -22,7 +22,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     if (right->resolvedSymbolOverload)
         right->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
 
-    if (node->flags & AST_FORCE_MOVE)
+    if (node->hasAstFlag(AST_FORCE_MOVE))
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
@@ -84,9 +84,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     // Check that left type is mutable
     bool isConst = false;
-    if ((left->flags & AST_CONST_EXPR) ||
-        (left->flags & AST_IS_CONST) ||
-        !(left->flags & AST_L_VALUE) ||
+    if (left->hasAstFlag(AST_CONST_EXPR) ||
+        left->hasAstFlag(AST_IS_CONST) ||
+        !left->hasAstFlag(AST_L_VALUE) ||
         (left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
     {
@@ -197,7 +197,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         return context->report(diag, note);
     }
 
-    if (left->flags & AST_L_VALUE)
+    if (left->hasAstFlag(AST_L_VALUE))
     {
         Diagnostic diag{node, node->token, Err(Err0104)};
         if (hint.empty())
@@ -279,13 +279,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
         });
 
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
-        if (right->flags & AST_NO_LEFT_DROP)
+        if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
                     context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
-        if (right->flags & AST_NO_RIGHT_DROP)
+        if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
                     context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
-        if (right->flags & AST_FORCE_MOVE)
+        if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
                     context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }

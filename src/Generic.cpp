@@ -68,7 +68,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
 
     // If we are inside a generic function (not instantiated), then we are done, we
     // cannot instantiate (can occure when evaluating function body of an incomplete short lambda)
-    if (node->ownerFct && node->ownerFct->flags & AST_IS_GENERIC)
+    if (node->ownerFct && node->ownerFct->hasAstFlag(AST_IS_GENERIC))
         return true;
 
     checkCanInstantiateGenericSymbol(context, firstMatch);
@@ -100,7 +100,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         }
 
         // We can instantiate the struct because it's no more generic, and we have generic parameters to replace
-        if (!(node->flags & AST_IS_GENERIC) && genericParameters)
+        if (!node->hasAstFlag(AST_IS_GENERIC) && genericParameters)
         {
             bool alias = false;
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
@@ -116,7 +116,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         // It happens each time we reference a generic struct without generic parameters, like impl 'Array', @typeof(Array), self* Array or even
         // a variable type (in that case we will try later to instantiate it with default generic parameters).
         // So we match a generic struct as a normal match without instantiation (for now).
-        else if (!(node->flags & AST_IS_GENERIC))
+        else if (!node->hasAstFlag(AST_IS_GENERIC))
         {
             const auto oneMatch      = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;

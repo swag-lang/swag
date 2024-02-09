@@ -348,7 +348,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             symKind = SymbolKind::Function;
 
             // Sub decl reference
-            if (subDecl->flags & AST_SPEC_SEMANTIC_HAS3)
+            if (subDecl->hasAstFlag(AST_SPEC_SEMANTIC_HAS3))
                 nodeFunc->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
 
             // Function is supposed to start semantic when captured parameters have been evaluated

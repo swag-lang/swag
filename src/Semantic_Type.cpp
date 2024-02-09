@@ -113,20 +113,20 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     if (!node)
         return true;
-    if (node->flags & AST_R_VALUE)
+    if (node->hasAstFlag(AST_R_VALUE))
         return true;
-    if (node->hasComputedValue() && !(node->flags & AST_NO_BYTECODE))
+    if (node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE))
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
         return context->report({node, Err(Err0284)});
-    if (node->flags & AST_FROM_GENERIC_REPLACE)
+    if (node->hasAstFlag(AST_FROM_GENERIC_REPLACE))
         return context->report({node, Err(Err0284)});
 
     if (!node->resolvedSymbolName)
         return true;
 
-    // If this is an identifierref, then we need to be check concrete from left to right,
+    // If this is an identifier ref, then we need to be check concrete from left to right,
     // to raise an error on the first problem, and not only the result
     if (node->kind == AstNodeKind::IdentifierRef)
     {
@@ -178,12 +178,12 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 
 bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly)
 {
-    if (node->flags & AST_R_VALUE)
+    if (node->hasAstFlag(AST_R_VALUE))
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression ||
         node->kind == AstNodeKind::TypeLambda ||
-        (node->kind == AstNodeKind::IdentifierRef && (node->flags & AST_FROM_GENERIC_REPLACE)) ||
+        (node->kind == AstNodeKind::IdentifierRef && node->hasAstFlag(AST_FROM_GENERIC_REPLACE)) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::TypeAlias) ||
         (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Interface) ||
@@ -263,7 +263,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
             index++;
         }
 
-        if (node->parameters->flags & AST_IN_TYPE_VAR_DECLARATION)
+        if (node->parameters->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION))
             SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
     }
 
@@ -319,7 +319,7 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // Already solved
-    if ((typeNode->flags & AST_FROM_GENERIC) &&
+    if (typeNode->hasAstFlag(AST_FROM_GENERIC) &&
         typeNode->typeInfo &&
         !typeNode->typeInfo->isUndefined())
     {
@@ -528,7 +528,7 @@ bool Semantic::resolveType(SemanticContext* context)
             bool     genericCount = false;
 
             if (child->kind == AstNodeKind::IdentifierRef &&
-                !(child->flags & AST_CONST_EXPR) &&
+                !child->hasAstFlag(AST_CONST_EXPR) &&
                 typeNode->ownerStructScope &&
                 typeNode->ownerStructScope->owner->typeInfo->isGeneric())
             {

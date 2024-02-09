@@ -109,7 +109,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         return true;
     if (node->isEmptyFct())
         return true;
-    if (node->flags & AST_IS_GENERIC)
+    if (node->hasAstFlag(AST_IS_GENERIC))
         return true;
     if (scope->kind == ScopeKind::Struct)
         return true;
@@ -144,7 +144,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         // Remove generated symbol, except when unpacking a tuple.
         if (front->kind != AstNodeKind::VarDecl || !front->hasSpecFlag(AstVarDecl::SPECFLAG_TUPLE_AFFECT))
         {
-            if (front->flags & AST_GENERATED)
+            if (front->hasAstFlag(AST_GENERATED))
                 continue;
         }
 

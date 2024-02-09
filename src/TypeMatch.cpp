@@ -122,7 +122,7 @@ namespace
                 castFlags |= CASTFLAG_UFCS;
             if (callParameter->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
                 castFlags |= CASTFLAG_LITERAL_SUFFIX;
-            if (callParameter->flags & AST_TRANSIENT && wantedTypeInfo->isPointerMoveRef())
+            if (callParameter->hasAstFlag(AST_TRANSIENT) && wantedTypeInfo->isPointerMoveRef())
                 castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
             if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
                 castFlags |= CASTFLAG_TRY_COERCE;
@@ -262,7 +262,7 @@ namespace
             }
 
             // Search inside a sub structure marked with 'using'
-            if (parameters[j]->typeInfo->isStruct() && parameters[j]->declNode->flags & AST_DECL_USING)
+            if (parameters[j]->typeInfo->isStruct() && parameters[j]->declNode->hasAstFlag(AST_DECL_USING))
             {
                 const auto subStruct = castTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
                 matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields, forceCastFlags);
@@ -634,7 +634,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
         const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-        if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
+        if (funcNode->parameters && (funcNode->parameters->hasAstFlag(AST_IS_GENERIC)))
         {
             SymbolMatchContext cpyContext = context;
             matchParametersAndNamed(cpyContext, typeFunc->parameters, CASTFLAG_DEFAULT);
