@@ -14,7 +14,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 {
     if (fromNode->flags & AST_STRUCT_CONVERT)
         return true;
-    fromNode->flags |= AST_STRUCT_CONVERT;
+    fromNode->addFlag(AST_STRUCT_CONVERT);
 
     const auto sourceFile = context->sourceFile;
     const auto typeStruct = castTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
@@ -38,10 +38,10 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure this will always work.
     // :ReverseLiteralStruct
-    fromNode->parent->flags |= AST_REVERSE_SEMANTIC;
+    fromNode->parent->addFlag(AST_REVERSE_SEMANTIC);
 
     varNode->inheritTokenLocation(fromNode);
-    varNode->flags |= AST_GENERATED;
+    varNode->addFlag(AST_GENERATED);
 
     const auto typeNode = newTypeExpression(sourceFile, varNode);
     typeNode->inheritTokenLocation(fromNode);
@@ -52,12 +52,12 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     varNode->addAlternativeScope(typeStruct->declNode->ownerScope);
     typeNode->identifier = newIdentifierRef(sourceFile, typeStruct->declNode->token.text, typeNode);
 
-    typeNode->identifier->flags |= AST_GENERATED;
+    typeNode->identifier->addFlag(AST_GENERATED);
     typeNode->identifier->inheritTokenLocation(fromNode);
 
     const auto back = typeNode->identifier->childs.back();
-    back->flags &= ~AST_NO_BYTECODE;
-    back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+    back->removeFlag(AST_NO_BYTECODE);
+    back->addFlag(AST_IN_TYPE_VAR_DECLARATION);
 
     // If this is in a return expression, then force the identifier type to be retval
     if (fromNode->inSimpleReturn())
@@ -243,7 +243,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             structNode->resolvedSymbolName = newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable);
 
             typeNode->typeInfo = typeField;
-            typeNode->flags |= AST_NO_SEMANTIC;
+            typeNode->addFlag(AST_NO_SEMANTIC);
         }
     }
 
@@ -260,7 +260,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
     const auto sourceFile = context->sourceFile;
     AstStruct* structNode = newStructDecl(sourceFile, nullptr);
     *result               = structNode;
-    structNode->flags |= AST_GENERATED;
+    structNode->addFlag(AST_GENERATED);
 
     // A capture block is packed
     if (assignment->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_CAPTURE))
@@ -326,7 +326,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
         // This can avoid some initialization before assignment, because everything will be covered
         // as this is a tuple
-        paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+        paramNode->addFlag(AST_EXPLICITLY_NOT_INITIALIZED);
 
         if (!paramNode->type)
             return false;
@@ -386,7 +386,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     structDecl->allocateExtension(ExtensionKind::Misc);
     structDecl->extMisc()->exportNode = typeStruct->declNode;
     typeStruct->declNode              = structDecl;
-    typeStruct->declNode->flags |= AST_GENERATED;
+    typeStruct->declNode->addFlag(AST_GENERATED);
     typeStruct->declNode->typeInfo   = typeStruct;
     typeStruct->declNode->ownerScope = context->sourceFile->scopeFile;
     typeStruct->scope                = newScope(typeStruct->declNode, "", ScopeKind::Struct, context->sourceFile->scopeFile);
@@ -399,7 +399,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     {
         f->declNode           = newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
         f->declNode->typeInfo = f->typeInfo;
-        f->declNode->flags |= AST_GENERATED;
+        f->declNode->addFlag(AST_GENERATED);
 
         AddSymbolTypeInfo toAdd;
         toAdd.kind                          = SymbolKind::Variable;
@@ -455,24 +455,24 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     const auto typeNode = newTypeExpression(sourceFile, varNode);
     typeNode->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
     typeNode->addSpecFlag(AstType::SPECFLAG_CREATED_STRUCT_PARAMETERS);
-    varNode->flags |= AST_GENERATED;
+    varNode->addFlag(AST_GENERATED);
     varNode->type = typeNode;
     CloneContext cloneContext;
     cloneContext.parent     = typeNode;
     cloneContext.cloneFlags = CLONE_RAW;
     typeNode->identifier    = identifier->identifierRef()->clone(cloneContext);
     const auto back         = castAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
-    back->flags &= ~AST_NO_BYTECODE;
-    back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+    back->removeFlag(AST_NO_BYTECODE);
+    back->addFlag(AST_IN_TYPE_VAR_DECLARATION);
 
     // :StructParamsNoSem
     // Call parameters have already been evaluated, so do not reevaluate them again
-    back->callParameters->flags |= AST_NO_SEMANTIC;
+    back->callParameters->addFlag(AST_NO_SEMANTIC);
     back->callParameters->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
 
     // :DupGen :StructParamsNoSem
     // Type has already been evaluated
-    typeNode->identifier->flags |= AST_NO_SEMANTIC;
+    typeNode->identifier->addFlag(AST_NO_SEMANTIC);
     typeNode->identifier->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
 
     // If this is in a return expression, then force the identifier type to be retval
@@ -497,7 +497,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure this will always work.
-    varParent->flags |= AST_REVERSE_SEMANTIC;
+    varParent->addFlag(AST_REVERSE_SEMANTIC);
 
     // Add the 2 nodes to the semantic
     context->baseJob->nodes.pop_back();
@@ -543,7 +543,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
     }
 
     const auto typeExpression = newTypeExpression(sourceFile, parent);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+    typeExpression->addFlag(AST_NO_BYTECODE_CHILDS);
     if (childType->isConst())
         typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
 
@@ -557,6 +557,6 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
     }
 
     typeExpression->typeInfo = childType;
-    typeExpression->flags |= AST_NO_SEMANTIC;
+    typeExpression->addFlag(AST_NO_SEMANTIC);
     return typeExpression;
 }

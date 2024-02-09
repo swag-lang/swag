@@ -72,7 +72,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     Scoped     scoped(this, newScope);
     const auto attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     *result            = attrUse;
-    attrUse->flags |= AST_GENERATED;
+    attrUse->addFlag(AST_GENERATED);
     attrUse->attributeFlags = attr;
     SWAG_CHECK(eatToken());
 
@@ -85,9 +85,9 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     }
     else
     {
-        attrUse->flags |= AST_GLOBAL_NODE;
+        attrUse->addFlag(AST_GLOBAL_NODE);
         topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, attrUse);
-        topStmt->flags |= AST_GLOBAL_NODE;
+        topStmt->addFlag(AST_GLOBAL_NODE);
         while (token.id != TokenId::EndOfFile)
             SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
     }
@@ -109,7 +109,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     auto       privName = token;
     const auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     *result             = attrUse;
-    attrUse->flags |= AST_GENERATED;
+    attrUse->addFlag(AST_GENERATED);
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
     SWAG_CHECK(eatToken());
 
@@ -120,7 +120,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     privName.text = FMT("__private%d", sourceFile->privateId);
     AstNode* namespc;
     SWAG_CHECK(doNamespaceOnName(attrUse, &namespc, false, true, &privName));
-    namespc->flags |= AST_GENERATED;
+    namespc->addFlag(AST_GENERATED);
 
     attrUse->content = namespc;
     attrUse->content->setOwnerAttrUse(attrUse);
@@ -236,7 +236,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         if (first)
             *result = namespaceNode;
         if (forGlobal)
-            namespaceNode->flags |= AST_GLOBAL_NODE;
+            namespaceNode->addFlag(AST_GLOBAL_NODE);
         namespaceNode->addAttribute(sourceFile->globalAttr);
         first = false;
 
@@ -402,7 +402,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     *result = statement;
 
     newScope->owner = statement;
-    statement->flags |= AST_NEED_SCOPE;
+    statement->addFlag(AST_NEED_SCOPE);
     statement->byteCodeFct = ByteCodeGen::emitDebugNop;
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
@@ -449,7 +449,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
         statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-        statement->flags |= AST_NEED_SCOPE;
+        statement->addFlag(AST_NEED_SCOPE);
         newScope->owner = statement;
         SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     }

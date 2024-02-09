@@ -331,11 +331,15 @@ struct AstNode
     void         printLoc() const;
 
     // clang-format off
+    bool hasFlag(uint64_t fl) const         { return flags & fl; }
+    void addFlag(uint64_t fl)               { flags |= fl; }
+    void removeFlag(uint64_t fl)            { flags &= ~fl; }
     bool hasAttribute(uint64_t attr) const  { return attributeFlags & attr; }
     void addAttribute(uint64_t attr)        { attributeFlags |= attr; }
     void removeAttribute(uint64_t attr)     { attributeFlags &= ~attr; }
     bool hasSpecFlag(uint16_t fl) const     { return specFlags & fl; }
     void addSpecFlag(uint16_t fl)           { specFlags |= fl; }
+    void setSpecFlags(uint16_t fl)           { specFlags = fl; }
     void removeSpecFlag(uint16_t fl)        { specFlags &= ~fl; }
     // clang-format on
 

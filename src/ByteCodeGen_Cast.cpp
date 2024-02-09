@@ -734,7 +734,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             context->allParamsTmp->inheritOwners(exprNode);
             context->allParamsTmp->inheritTokenLocation(exprNode);
             context->allParamsTmp->semFlags = 0;
-            context->allParamsTmp->flags &= ~AST_INLINED;
+            context->allParamsTmp->removeFlag(AST_INLINED);
         }
 
         SWAG_CHECK(emitUserOp(context, nullptr, context->allParamsTmp));

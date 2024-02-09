@@ -61,7 +61,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         const auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, nullptr);
         firstExpr          = literal;
         firstExpr->allocateComputedValue();
-        firstExpr->flags |= AST_GENERATED;
+        firstExpr->addFlag(AST_GENERATED);
         firstExpr->computedValue->reg.u64 = 0;
         firstExpr->semanticFct            = Semantic::resolveLiteral;
         literal->literalType              = LiteralType::TT_U64;
@@ -102,7 +102,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             arrayNode->array->allocateExtension(ExtensionKind::Semantic);
             SWAG_ASSERT(!arrayNode->array->extSemantic()->semanticAfterFct);
             arrayNode->array->extSemantic()->semanticAfterFct = Semantic::resolveArrayPointerSlicingUpperBound;
-            arrayNode->upperBound->flags |= AST_GENERATED;
+            arrayNode->upperBound->addFlag(AST_GENERATED);
         }
 
         *exprNode = arrayNode;
@@ -243,7 +243,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         AstNode* expr;
         SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         *result = expr;
-        expr->flags |= AST_IN_ATOMIC_EXPR;
+        expr->addFlag(AST_IN_ATOMIC_EXPR);
         if (parent)
             SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, FMT("to end the [[%s]] expression", parent->token.ctext())));
         else
@@ -514,7 +514,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             SWAG_CHECK(doArrayPointerIndex(&identifierRef));
 
         Ast::addChildBack(exprNode, identifierRef);
-        identifierRef->flags |= AST_TAKE_ADDRESS;
+        identifierRef->addFlag(AST_TAKE_ADDRESS);
         if (parent)
             Ast::addChildBack(parent, exprNode);
     }
@@ -534,7 +534,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         if (token.id == TokenId::KwdRef)
         {
             SWAG_CHECK(doKeepRef(parent, &exprNode));
-            exprNode->flags |= AST_IS_CONST;
+            exprNode->addFlag(AST_IS_CONST);
             exprNode->token.startLocation = startLoc;
         }
         else
@@ -851,7 +851,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
             //  / \
             // A   B
             const auto atom = factor->flags & AST_IN_ATOMIC_EXPR;
-            factor->flags &= ~AST_IN_ATOMIC_EXPR;
+            factor->removeFlag(AST_IN_ATOMIC_EXPR);
 
             const auto leftRight = right->childs[0];
             Ast::removeFromParent(right);
@@ -870,7 +870,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
             factor = right; // new root
 
             if (atom)
-                factor->flags |= AST_IN_ATOMIC_EXPR;
+                factor->addFlag(AST_IN_ATOMIC_EXPR);
         }
     }
 
@@ -1020,7 +1020,7 @@ bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent,
         const auto exprNode   = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
         *result               = exprNode;
         exprNode->semanticFct = Semantic::resolveMove;
-        exprNode->flags |= AST_NO_LEFT_DROP;
+        exprNode->addFlag(AST_NO_LEFT_DROP);
         parent = exprNode;
         result = &dummyResult;
     }
@@ -1031,7 +1031,7 @@ bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent,
         auto exprNode         = Ast::newNode<AstNode>(this, AstNodeKind::Move, sourceFile, parent);
         *result               = exprNode;
         exprNode->semanticFct = Semantic::resolveMove;
-        exprNode->flags |= AST_FORCE_MOVE;
+        exprNode->addFlag(AST_FORCE_MOVE);
         parent = exprNode;
         result = &dummyResult;
 
@@ -1041,7 +1041,7 @@ bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent,
             exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
             *result               = exprNode;
             exprNode->semanticFct = Semantic::resolveMove;
-            exprNode->flags |= AST_NO_RIGHT_DROP;
+            exprNode->addFlag(AST_NO_RIGHT_DROP);
             parent = exprNode;
             result = &dummyResult;
         }
@@ -1109,9 +1109,9 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
             SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
         const auto typeCode = makeType<TypeInfoCode>();
         typeCode->content   = node->childs.front();
-        typeCode->content->flags |= AST_NO_SEMANTIC;
+        typeCode->content->addFlag(AST_NO_SEMANTIC);
         node->typeInfo = typeCode;
-        node->flags |= AST_NO_BYTECODE;
+        node->addFlag(AST_NO_BYTECODE);
         boolExpression = node;
         break;
     }
@@ -1263,7 +1263,7 @@ bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, u
         *result           = node;
         node->semanticFct = Semantic::resolveExplicitNoInit;
         if (parent)
-            parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+            parent->addFlag(AST_EXPLICITLY_NOT_INITIALIZED);
         SWAG_CHECK(eatToken());
         return true;
     }
@@ -1273,7 +1273,7 @@ bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, u
 
 void Parser::isForceTakeAddress(AstNode* node)
 {
-    node->flags |= AST_TAKE_ADDRESS;
+    node->addFlag(AST_TAKE_ADDRESS);
     switch (node->kind)
     {
     case AstNodeKind::IdentifierRef:
@@ -1339,7 +1339,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
                 for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
                 {
                     const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) exprNode, exprNode, this);
-                    id->flags |= AST_GENERATED;
+                    id->addFlag(AST_GENERATED);
                     id->addSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH);
                     id->allocateIdentifierExtension();
                     id->identifierExtension->fromAlternateVar = withNode->childs.front();
@@ -1412,7 +1412,7 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* 
         AstNode* id;
         SWAG_CHECK(doDeRef(parent, &id));
         *result = id;
-        id->flags |= AST_L_VALUE;
+        id->addFlag(AST_L_VALUE);
         return true;
     }
 
@@ -1537,7 +1537,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             Ast::addChildBack(varNode, assignment);
             assignment->inheritOwners(varNode);
             varNode->assignment = assignment;
-            varNode->assignment->flags |= AST_NO_LEFT_DROP;
+            varNode->assignment->addFlag(AST_NO_LEFT_DROP);
 
             varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
             varNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
@@ -1569,7 +1569,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 const auto idRef = Ast::newMultiIdentifierRef(sourceFile, FMT("%s.item%u", tmpVarName.c_str(), idx++), affectNode, this);
 
                 // Force a move between the generated temporary variable and the real var
-                idRef->flags |= AST_FORCE_MOVE;
+                idRef->addFlag(AST_FORCE_MOVE);
             }
 
             leftNode->release();

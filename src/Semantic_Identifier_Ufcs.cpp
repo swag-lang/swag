@@ -177,10 +177,10 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // Function that returns an interface, used as an ufcs.
             // Ex: var cfg = @compiler().getBuildCfg()
             // :SpecUfcsNode
-            identifierRef->previousResolvedNode->flags |= AST_TO_UFCS;
+            identifierRef->previousResolvedNode->addFlag(AST_TO_UFCS);
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
             const auto id              = Ast::newIdentifier(node->sourceFile, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
-            id->flags |= AST_NO_BYTECODE;
+            id->addFlag(AST_NO_BYTECODE);
         }
         else
         {
@@ -196,13 +196,13 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 if (!identifierRef->startScope ||
                     identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
                 {
-                    child->flags |= AST_NO_BYTECODE;
-                    copyChild->flags |= AST_UFCS_FCT;
+                    child->addFlag(AST_NO_BYTECODE);
+                    copyChild->addFlag(AST_UFCS_FCT);
                 }
 
                 if (child == identifierRef->previousResolvedNode)
                 {
-                    copyChild->flags |= AST_TO_UFCS;
+                    copyChild->addFlag(AST_TO_UFCS);
                     break;
                 }
             }
@@ -210,7 +210,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     }
     else
     {
-        identifierRef->previousResolvedNode->flags |= AST_UFCS_FCT;
+        identifierRef->previousResolvedNode->addFlag(AST_UFCS_FCT);
 
         // If ufcs comes from a using var, then we must make a reference to the using var in
         // the first call parameter
@@ -255,7 +255,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 
                 copyChild->byteCodeFct = ByteCodeGen::emitIdentifier;
                 copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
-                copyChild->flags |= AST_UFCS_FCT;
+                copyChild->addFlag(AST_UFCS_FCT);
             }
         }
         else
@@ -266,11 +266,11 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             for (const auto child : identifierRef->childs)
             {
                 const auto copyChild = Ast::cloneRaw(child, idRef);
-                child->flags |= AST_NO_BYTECODE;
+                child->addFlag(AST_NO_BYTECODE);
                 if (child == identifierRef->previousResolvedNode)
                 {
-                    copyChild->flags |= AST_TO_UFCS;
-                    copyChild->flags |= AST_UFCS_FCT;
+                    copyChild->addFlag(AST_TO_UFCS);
+                    copyChild->addFlag(AST_UFCS_FCT);
                     break;
                 }
             }
@@ -280,6 +280,6 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     idRef->inheritAndFlag1(AST_CONST_EXPR);
     fctCallParam->inheritAndFlag1(AST_CONST_EXPR);
 
-    identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
+    identifierRef->previousResolvedNode->addFlag(AST_FROM_UFCS);
     return true;
 }

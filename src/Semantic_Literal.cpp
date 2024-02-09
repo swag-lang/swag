@@ -389,7 +389,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
         // We do not want error. If identifier is not known, then we consider it as a 'user' suffix
-        identifier->identifierRef()->flags |= AST_SILENT_CHECK;
+        identifier->identifierRef()->addFlag(AST_SILENT_CHECK);
 
         const auto res = resolveIdentifier(context, identifier, RI_ZERO);
         YIELD();
@@ -464,7 +464,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     node->setFlagsValueIsComputed();
     node->computedValue->reg  = node->literalValue;
     node->computedValue->text = node->token.text;
-    node->flags |= AST_R_VALUE;
+    node->addFlag(AST_R_VALUE);
 
     SWAG_CHECK(processLiteralString(context));
 

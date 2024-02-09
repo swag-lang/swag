@@ -116,14 +116,14 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             if (returnType->isStruct())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                returnExpression->flags |= AST_NO_LEFT_DROP;
+                returnExpression->addFlag(AST_NO_LEFT_DROP);
                 SWAG_CHECK(emitCopyStruct(context, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc, exprType, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
             else if (returnType->isArray())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                returnExpression->flags |= AST_NO_LEFT_DROP;
+                returnExpression->addFlag(AST_NO_LEFT_DROP);
                 SWAG_CHECK(emitCopyArray(context, returnType, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
@@ -210,7 +210,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 else
                 {
                     // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                    returnExpression->flags |= AST_NO_LEFT_DROP;
+                    returnExpression->addFlag(AST_NO_LEFT_DROP);
                     RegisterList r0 = reserveRegisterRC(context);
                     EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);
                     SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRc, returnType, returnExpression));
@@ -221,7 +221,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             else if (returnType->isArray())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                returnExpression->flags |= AST_NO_LEFT_DROP;
+                returnExpression->addFlag(AST_NO_LEFT_DROP);
                 RegisterList r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);
                 SWAG_CHECK(emitCopyArray(context, returnType, r0, returnExpression->resultRegisterRc, returnExpression));

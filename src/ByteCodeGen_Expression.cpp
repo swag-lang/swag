@@ -141,7 +141,7 @@ bool ByteCodeGen::emitExpressionListBefore(ByteCodeGenContext* context)
     // Do not generate bytecode for childs in case of a constant expression, because
     // the full content of the expression is in the constant segment
     if (node->flags & AST_CONST_EXPR)
-        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->addFlag(AST_NO_BYTECODE_CHILDS);
 
     return true;
 }
@@ -246,7 +246,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         reserveRegisterRC(context, r0, 1);
         for (const auto child : context->collectChilds)
         {
-            child->flags |= AST_NO_LEFT_DROP;
+            child->addFlag(AST_NO_LEFT_DROP);
 
             const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRc, 0, r0);
             SWAG_ASSERT(totalOffset != 0xFFFFFFFF);

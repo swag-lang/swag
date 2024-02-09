@@ -382,7 +382,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     const auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
     *result          = idRef;
 
-    idRef->childs.back()->flags |= AST_GENERATED;
+    idRef->childs.back()->addFlag(AST_GENERATED);
     Ast::removeFromParent(structNode);
     Ast::addChildBack(newParent, structNode);
     structNode->inheritOwners(newParent);
@@ -430,7 +430,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
         if (inTypeVarDecl)
-            node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            node->identifier->childs.back()->addFlag(AST_IN_TYPE_VAR_DECLARATION);
         node->token.endLocation = node->identifier->token.endLocation;
         return true;
     }
@@ -489,7 +489,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
     const auto node = Ast::newTypeExpression(sourceFile, parent, this);
     *result         = node;
-    node->flags |= AST_NO_BYTECODE_CHILDS;
+    node->addFlag(AST_NO_BYTECODE_CHILDS);
 
     // Const keyword
     if (token.id == TokenId::KwdConst)
@@ -608,7 +608,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     {
         const auto node = Ast::newTypeExpression(sourceFile, parent, this);
         *result         = node;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->addFlag(AST_NO_BYTECODE_CHILDS);
         node->typeInfo = g_TypeMgr->typeInfoCode;
         node->typeFlags |= TYPEFLAG_IS_CODE;
         SWAG_CHECK(eatToken());
@@ -621,7 +621,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         const auto node   = Ast::newTypeExpression(sourceFile, parent, this);
         *result           = node;
         node->semanticFct = Semantic::resolveRetVal;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->addFlag(AST_NO_BYTECODE_CHILDS);
         node->typeFlags |= TYPEFLAG_IS_RETVAL;
 
         // retval type can be followed by structure initializer, like a normal struct
@@ -636,7 +636,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
             const auto id    = castAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
-            id->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            id->addFlag(AST_IN_TYPE_VAR_DECLARATION);
             id->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
         }
 

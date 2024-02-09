@@ -1347,7 +1347,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
                 if (regOffset != UINT32_MAX)
                     EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
-                child->flags |= AST_NO_LEFT_DROP;
+                child->addFlag(AST_NO_LEFT_DROP);
 
                 // When generating parameters for a closure call, keep the reference if we want one !
                 auto noRef = child->typeInfo;

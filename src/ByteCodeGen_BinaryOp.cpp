@@ -788,7 +788,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
             YIELD();
             if (!(node->flags & AST_INLINED))
             {
-                node->flags |= AST_INLINED;
+                node->addFlag(AST_INLINED);
                 SWAG_CHECK(makeInline(context, funcDecl, node));
                 return true;
             }

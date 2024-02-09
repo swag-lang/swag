@@ -31,7 +31,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         SWAG_VERIFY(varDecl->childs.size() == 1, error(varDecl->childs.back()->token, Err(Err0406)));
 
         node->boolExpression = Ast::newIdentifierRef(sourceFile, varDecl->token.text, node, this);
-        node->boolExpression->flags |= AST_GENERATED;
+        node->boolExpression->addFlag(AST_GENERATED);
         node->boolExpression->inheritTokenLocation(varDecl);
 
         SWAG_CHECK(doScopedStatement(node, node->token, (AstNode**) &node->ifBlock));
@@ -116,8 +116,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             hasDefault = true;
 
         // One case
-        auto caseNode            = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
-        caseNode->specFlags      = isDefault ? AstSwitchCase::SPECFLAG_IS_DEFAULT : 0;
+        auto caseNode = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
+        caseNode->setSpecFlags(isDefault ? AstSwitchCase::SPECFLAG_IS_DEFAULT : 0);
         caseNode->ownerSwitch    = switchNode;
         caseNode->semanticFct    = Semantic::resolveCase;
         const auto previousToken = token;
@@ -257,7 +257,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymAmpersand)
     {
         node->wantPointerToken = static_cast<Token>(token);
-        node->specFlags        = AstVisit::SPECFLAG_WANT_POINTER;
+        node->setSpecFlags(AstVisit::SPECFLAG_WANT_POINTER);
         SWAG_CHECK(eatToken());
     }
 
@@ -296,7 +296,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
     // We do not want semantic on the block part, as this has to be solved when the block
     // is inlined
-    node->block->flags |= AST_NO_SEMANTIC;
+    node->block->addFlag(AST_NO_SEMANTIC);
 
     return true;
 }

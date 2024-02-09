@@ -116,7 +116,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
 {
     auto       node  = context->node;
     const auto idref = castAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
-    node->flags |= AST_NO_BYTECODE;
+    node->addFlag(AST_NO_BYTECODE);
 
     SWAG_ASSERT(idref->resolvedSymbolName);
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
@@ -194,7 +194,7 @@ bool Semantic::resolveSubDeclRef(SemanticContext* context)
     ScopedLock lk(node->refSubDecl->mutex);
     if (node->refSubDecl->flags & AST_SPEC_SEMANTIC3)
     {
-        node->refSubDecl->flags &= ~AST_SPEC_SEMANTIC3;
+        node->refSubDecl->removeFlag(AST_SPEC_SEMANTIC3);
         launchResolveSubDecl(context, node->refSubDecl);
     }
 

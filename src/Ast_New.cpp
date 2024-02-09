@@ -35,7 +35,7 @@ AstNode* Ast::newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser*
 {
     const auto node   = Ast::newNode<AstNode>(parser, AstNodeKind::FuncDeclParams, sourceFile, parent);
     node->semanticFct = Semantic::resolveFuncDeclParams;
-    node->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
+    node->addFlag(AST_NO_BYTECODE_CHILDS); // We do not want default assignations to generate bytecode
     return node;
 }
 

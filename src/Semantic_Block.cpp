@@ -25,15 +25,15 @@ bool Semantic::resolveIf(SemanticContext* context)
     // Do not generate backend if 'if' is constant, and has already been evaluated
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
     {
-        node->boolExpression->flags |= AST_NO_BYTECODE;
+        node->boolExpression->addFlag(AST_NO_BYTECODE);
         if (node->boolExpression->computedValue->reg.b)
         {
             if (node->elseBlock)
-                node->elseBlock->flags |= AST_NO_BYTECODE;
+                node->elseBlock->addFlag(AST_NO_BYTECODE);
         }
         else
         {
-            node->ifBlock->flags |= AST_NO_BYTECODE;
+            node->ifBlock->addFlag(AST_NO_BYTECODE);
         }
 
         return true;
@@ -61,8 +61,8 @@ bool Semantic::resolveWhile(SemanticContext* context)
     {
         if (!node->boolExpression->computedValue->reg.b)
         {
-            node->boolExpression->flags |= AST_NO_BYTECODE;
-            node->block->flags |= AST_NO_BYTECODE;
+            node->boolExpression->addFlag(AST_NO_BYTECODE);
+            node->block->addFlag(AST_NO_BYTECODE);
             return true;
         }
     }
@@ -105,7 +105,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     // For a return by copy, need to reserve room on the stack for the return result
     if (CallConv::returnNeedsStack(typeInfoFunc))
     {
-        node->flags |= AST_TRANSIENT;
+        node->addFlag(AST_TRANSIENT);
         allocateOnStack(node, func->returnType->typeInfo);
     }
 
@@ -415,7 +415,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
         // Add a safety test in a switch default to catch runtime invalid values
         const auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
-        caseNode->flags |= AST_GENERATED;
+        caseNode->addFlag(AST_GENERATED);
         caseNode->specFlags   = AstSwitchCase::SPECFLAG_IS_DEFAULT;
         caseNode->ownerSwitch = node;
         node->cases.push_back(caseNode);
@@ -496,7 +496,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                     else
                         node->addSpecFlag(AstSwitchCase::SPECFLAG_IS_FALSE);
                     Allocator::free<ComputedValue>(node->computedValue);
-                    node->flags &= ~AST_VALUE_COMPUTED;
+                    node->removeFlag(AST_VALUE_COMPUTED);
                     node->computedValue = nullptr;
                 }
             }
@@ -554,8 +554,8 @@ bool Semantic::resolveLoop(SemanticContext* context)
             {
                 if (!node->expression->computedValue->reg.u64)
                 {
-                    node->flags |= AST_NO_BYTECODE;
-                    node->flags |= AST_NO_BYTECODE_CHILDS;
+                    node->addFlag(AST_NO_BYTECODE);
+                    node->addFlag(AST_NO_BYTECODE_CHILDS);
                     return true;
                 }
             }
@@ -621,7 +621,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         if (node->expression->kind != AstNodeKind::IdentifierRef)
         {
             varNode = Ast::newVarDecl(sourceFile, FMT("__9tmp_%d", g_UniqueID.fetch_add(1)), node);
-            varNode->flags |= AST_GENERATED;
+            varNode->addFlag(AST_GENERATED);
             newExpression       = Ast::clone(node->expression, varNode);
             varNode->assignment = newExpression;
 
@@ -642,26 +642,26 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         // Generic parameters
         callVisit->genericParameters = Ast::newFuncCallGenParams(sourceFile, callVisit);
-        callVisit->genericParameters->flags |= AST_NO_BYTECODE;
+        callVisit->genericParameters->addFlag(AST_NO_BYTECODE);
 
         auto child0      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child0->typeInfo = g_TypeMgr->typeInfoBool;
         child0->setFlagsValueIsComputed();
         child0->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER);
-        child0->flags |= AST_NO_SEMANTIC;
+        child0->addFlag(AST_NO_SEMANTIC);
 
         auto child1      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child1->typeInfo = g_TypeMgr->typeInfoBool;
         child1->setFlagsValueIsComputed();
         child1->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPECFLAG_BACK);
-        child1->flags |= AST_NO_SEMANTIC;
+        child1->addFlag(AST_NO_SEMANTIC);
 
         // Call with arguments
         callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit);
 
         Ast::removeFromParent(node->block);
         Ast::addChildBack(node, node->block);
-        node->expression->flags |= AST_NO_BYTECODE;
+        node->expression->addFlag(AST_NO_BYTECODE);
 
         job->nodes.pop_back();
         job->nodes.push_back(newExpression);
@@ -718,7 +718,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
-        varDecl->assignment->childs.front()->flags |= AST_NO_SEMANTIC;
+        varDecl->assignment->childs.front()->addFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
 
         firstAliasVar = 2;
@@ -759,7 +759,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         Ast::clone(node->expression, varDecl->assignment);
-        varDecl->assignment->childs.front()->flags |= AST_NO_SEMANTIC;
+        varDecl->assignment->childs.front()->addFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
 
         firstAliasVar = 1;
@@ -987,7 +987,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return Ast::VisitResult::Stop;
         return Ast::VisitResult::Continue;
     });
-    node->block->flags &= ~AST_NO_SEMANTIC;
+    node->block->removeFlag(AST_NO_SEMANTIC);
     loopNode->block->token.endLocation = node->block->token.endLocation;
 
     // Re-root the parent scope of the user block so that it points to the scope of the loop block

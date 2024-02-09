@@ -121,7 +121,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             const auto oneMatch      = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
-            node->flags |= AST_IS_GENERIC;
+            node->addFlag(AST_IS_GENERIC);
         }
 
         // The new struct is still generic and we have generic parameters
@@ -131,7 +131,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             const auto oneMatch      = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
-            node->flags |= AST_IS_GENERIC;
+            node->addFlag(AST_IS_GENERIC);
 
             // :DupGen
             // We generate a new struct with the wanted generic parameters to have those names for replacement.

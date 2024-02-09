@@ -18,17 +18,17 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     AstFuncDecl* newFunc = castAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     if (newFunc->genericParameters)
     {
-        newFunc->flags |= AST_IS_GENERIC;
-        newFunc->content->flags |= AST_NO_SEMANTIC;
+        newFunc->addFlag(AST_IS_GENERIC);
+        newFunc->content->addFlag(AST_NO_SEMANTIC);
     }
     else
     {
-        newFunc->flags |= AST_FROM_GENERIC;
-        newFunc->content->flags &= ~AST_NO_SEMANTIC;
+        newFunc->addFlag(AST_FROM_GENERIC);
+        newFunc->content->removeFlag(AST_NO_SEMANTIC);
     }
 
     if (newFunc->validif)
-        newFunc->content->flags |= AST_NO_SEMANTIC;
+        newFunc->content->addFlag(AST_NO_SEMANTIC);
 
     newFunc->originalGeneric = funcNode;
     Ast::addChildBack(funcNode->parent, newFunc);
@@ -155,16 +155,16 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newFuncNode = newFuncNode->childs.back();
 
     AstFuncDecl* newFunc = castAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
-    newFunc->flags |= AST_FROM_GENERIC;
+    newFunc->addFlag(AST_FROM_GENERIC);
     newFunc->originalGeneric  = funcNode;
     newFunc->requestedGeneric = node;
 
     // If this is for testing a #validif match, we must not evaluate the function content until the
     // #validif has passed
     if (validif)
-        newFunc->content->flags |= AST_NO_SEMANTIC;
+        newFunc->content->addFlag(AST_NO_SEMANTIC);
     else
-        newFunc->content->flags &= ~AST_NO_SEMANTIC;
+        newFunc->content->removeFlag(AST_NO_SEMANTIC);
 
     auto p = funcNode->parent;
     while (p && p->kind == AstNodeKind::AttrUse)
@@ -246,7 +246,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
             {
                 identifier->typeInfo          = nullptr;
                 identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
-                identifier->genericParameters->flags |= AST_NO_BYTECODE;
+                identifier->genericParameters->addFlag(AST_NO_BYTECODE);
                 Ast::removeFromParent(identifier->genericParameters);
                 Ast::addChildFront(identifier, identifier->genericParameters);
 
@@ -265,8 +265,8 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     param->assignment->clone(cloneContext);
                 }
 
-                identifier->identifierRef()->flags &= ~AST_IS_GENERIC;
-                identifier->flags &= ~AST_IS_GENERIC;
+                identifier->identifierRef()->removeFlag(AST_IS_GENERIC);
+                identifier->removeFlag(AST_IS_GENERIC);
 
                 // Force the reevaluation of the identifier and its childs
                 context->result     = ContextResult::NewChilds1;

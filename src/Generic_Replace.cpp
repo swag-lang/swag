@@ -124,7 +124,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
             const auto nodeParam = nodeGenericParameters[i];
             nodeParam->setFlagsValueIsComputed();
             nodeParam->kind = AstNodeKind::ConstDecl;
-            nodeParam->flags |= AST_FROM_GENERIC;
+            nodeParam->addFlag(AST_FROM_GENERIC);
             if (param->value)
             {
                 nodeParam->allocateComputedValue();

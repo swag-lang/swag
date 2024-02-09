@@ -45,7 +45,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
             SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
             const auto param = identifier->callParameters->childs.front();
             if (param->hasComputedValue() && param->computedValue->reg.b)
-                identifier->flags |= AST_NO_BYTECODE;
+                identifier->addFlag(AST_NO_BYTECODE);
         }
         break;
     }
@@ -143,12 +143,12 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         fcp->setFlagsValueIsComputed();
         fcp->computedValue->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
-        fcp->flags |= AST_GENERATED;
+        fcp->addFlag(AST_GENERATED);
         identifier->addSpecFlag(AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM);
 
         const auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
         node->setFlagsValueIsComputed();
-        node->flags |= AST_GENERATED;
+        node->addFlag(AST_GENERATED);
         node->typeInfo = g_TypeMgr->typeInfoNull;
     }
 
@@ -213,7 +213,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 {
                     const auto varNode = Ast::newVarDecl(sourceFile, FMT("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
                     varNode->inheritTokenLocation(nodeCall);
-                    varNode->flags |= AST_GENERATED;
+                    varNode->addFlag(AST_GENERATED);
                     Ast::removeFromParent(front);
                     Ast::addChildBack(varNode, front);
                     varNode->assignment = front;
@@ -221,18 +221,18 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     const auto toPtr        = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
                     varNode->type           = Ast::newIdentifierRef(sourceFile, "dummy", varNode);
                     varNode->type->typeInfo = toPtr->pointedType;
-                    varNode->type->flags |= AST_NO_SEMANTIC;
+                    varNode->type->addFlag(AST_NO_SEMANTIC);
                     nodeCall->typeInfo = toPtr->pointedType;
 
                     const auto idNode = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
                     idNode->inheritTokenLocation(nodeCall);
-                    idNode->flags |= AST_GENERATED;
+                    idNode->addFlag(AST_GENERATED);
                     Ast::removeFromParent(idNode);
                     Ast::addChildFront(nodeCall, idNode);
 
                     context->baseJob->nodes.push_back(idNode);
                     context->baseJob->nodes.push_back(varNode);
-                    nodeCall->flags &= ~AST_VALUE_COMPUTED;
+                    nodeCall->removeFlag(AST_VALUE_COMPUTED);
 
                     context->result = ContextResult::NewChilds;
                     return true;
@@ -297,8 +297,8 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 }
                 else if (makePtrL->typeInfo->isPointerNull())
                 {
-                    nodeCall->flags &= ~AST_VALUE_COMPUTED;
-                    makePtrL->flags |= AST_NO_BYTECODE;
+                    nodeCall->removeFlag(AST_VALUE_COMPUTED);
+                    makePtrL->addFlag(AST_NO_BYTECODE);
                     Ast::removeFromParent(makePtrL);
                     varNode->allocateExtension(ExtensionKind::Owner);
                     varNode->extOwner()->nodesToFree.push_back(makePtrL);
@@ -313,7 +313,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
                 varNode->type->typeInfo = toType;
-                varNode->type->flags |= AST_NO_SEMANTIC;
+                varNode->type->addFlag(AST_NO_SEMANTIC);
 
                 const auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
                 idRef->allocateExtension(ExtensionKind::Misc);
@@ -356,7 +356,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 const auto typeExpr = Ast::newTypeExpression(sourceFile, varNode);
                 typeExpr->typeInfo  = nodeCall->typeInfo;
-                typeExpr->flags |= AST_NO_SEMANTIC;
+                typeExpr->addFlag(AST_NO_SEMANTIC);
                 varNode->type = typeExpr;
 
                 auto assign = nodeCall->childs.front();
@@ -379,10 +379,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())
                 {
                     const auto moveRefNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::MoveRef, sourceFile, newParam);
-                    moveRefNode->flags |= AST_GENERATED;
+                    moveRefNode->addFlag(AST_GENERATED);
                     moveRefNode->semanticFct = resolveMoveRef;
                     const auto mkPtrNode     = Ast::newNode<AstMakePointer>(nullptr, AstNodeKind::MakePointer, sourceFile, moveRefNode);
-                    mkPtrNode->flags |= AST_GENERATED;
+                    mkPtrNode->addFlag(AST_GENERATED);
                     mkPtrNode->semanticFct = resolveMakePointer;
                     Ast::newIdentifierRef(sourceFile, varNode->token.text, mkPtrNode);
                 }
@@ -513,7 +513,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 newParam->extMisc()->isNamed = funcParam;
 
                 newParam->indexParam = i;
-                newParam->flags |= AST_GENERATED;
+                newParam->addFlag(AST_GENERATED);
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
                 // Add the 2 nodes to the semantic
@@ -671,7 +671,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
     if (prevNode && symbol->kind == SymbolKind::Variable)
     {
-        identifier->flags |= AST_L_VALUE;
+        identifier->addFlag(AST_L_VALUE);
 
         // Direct reference to a constexpr typeinfo
         if (prevNode->hasComputedValue())
@@ -681,7 +681,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
                 if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
                 {
-                    prevNode->flags |= AST_NO_BYTECODE;
+                    prevNode->addFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
                     identifier->resolvedSymbolName      = overload->symbol;
                     identifier->resolvedSymbolOverload  = overload;
@@ -702,7 +702,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
                 if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
                 {
-                    prevNode->flags |= AST_NO_BYTECODE;
+                    prevNode->addFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
                     identifier->resolvedSymbolName      = overload->symbol;
                     identifier->resolvedSymbolOverload  = overload;
@@ -742,9 +742,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     identifier->resolvedSymbolOverload = overload;
 
     if (identifier->typeInfo->isGeneric())
-        identifier->flags |= AST_IS_GENERIC;
+        identifier->addFlag(AST_IS_GENERIC);
     else if (overload->flags & OVERLOAD_GENERIC && !(identifier->flags & AST_FROM_GENERIC))
-        identifier->flags |= AST_IS_GENERIC;
+        identifier->addFlag(AST_IS_GENERIC);
 
     // Symbol is linked to a using var : insert the variable name before the symbol
     // Except if symbol is a constant !
@@ -846,12 +846,12 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
     case SymbolKind::Namespace:
         identifierRef->startScope = castTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
-        identifier->flags |= AST_CONST_EXPR;
+        identifier->addFlag(AST_CONST_EXPR);
         break;
 
     case SymbolKind::Enum:
         SWAG_CHECK(setupIdentifierRef(context, identifier));
-        identifier->flags |= AST_CONST_EXPR;
+        identifier->addFlag(AST_CONST_EXPR);
         break;
 
     case SymbolKind::EnumValue:
@@ -866,7 +866,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifier->setFlagsValueIsComputed();
-        identifier->flags |= AST_R_VALUE;
+        identifier->addFlag(AST_R_VALUE);
         *identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
         break;
 
@@ -878,7 +878,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
 
         if (!identifier->callParameters)
-            identifier->flags |= AST_CONST_EXPR;
+            identifier->addFlag(AST_CONST_EXPR);
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters &&
@@ -1005,7 +1005,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
             if (overload->node->isConstantGenTypeInfo())
-                identifier->flags |= AST_VALUE_IS_GEN_TYPEINFO;
+                identifier->addFlag(AST_VALUE_IS_GEN_TYPEINFO);
             identifier->setFlagsValueIsComputed();
             *identifier->computedValue = overload->computedValue;
 
@@ -1034,7 +1034,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     brother->resolvedSymbolOverload &&
                     brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
                 {
-                    brother->flags |= AST_NO_BYTECODE;
+                    brother->addFlag(AST_NO_BYTECODE);
                 }
             }
         }
@@ -1047,7 +1047,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
         // for it, as this is not really a variable
         if (typeInfo->isCode())
-            identifier->flags |= AST_NO_BYTECODE;
+            identifier->addFlag(AST_NO_BYTECODE);
 
         // Lambda call
         if (typeInfo->isLambdaClosure() && identifier->callParameters)
@@ -1067,7 +1067,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     }
                     else
                     {
-                        identifier->flags |= AST_DISCARD;
+                        identifier->addFlag(AST_DISCARD);
                     }
                 }
             }
@@ -1113,7 +1113,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             // For a return by copy, need to reserve room on the stack for the return result
             if (CallConv::returnNeedsStack(funcType))
             {
-                identifier->flags |= AST_TRANSIENT;
+                identifier->addFlag(AST_TRANSIENT);
                 allocateOnStack(identifier, funcType->concreteReturnType());
             }
         }
@@ -1146,7 +1146,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
         }
 
-        identifier->flags |= AST_SIDE_EFFECTS;
+        identifier->addFlag(AST_SIDE_EFFECTS);
 
         // Be sure it's () and not {}
         if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
@@ -1224,7 +1224,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 if (!identifier->callParameters)
                 {
                     // The makePointer will deal with the real make lambda thing
-                    identifier->flags |= AST_NO_BYTECODE;
+                    identifier->addFlag(AST_NO_BYTECODE);
                     break;
                 }
             }
@@ -1237,7 +1237,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (identifier->callParameters)
                 identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
             else
-                identifier->flags |= AST_CONST_EXPR;
+                identifier->addFlag(AST_CONST_EXPR);
 
             // Be sure that the return type is compatible with a compile time execution.
             // Otherwise, we do not want the AST_CONST_EXPR_FLAG
@@ -1257,7 +1257,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     !returnType->isClosure() && // Treated later (as errors)
                     !(identifier->semFlags & SEMFLAG_EXEC_RET_STACK))
                 {
-                    identifier->flags &= ~AST_CONST_EXPR;
+                    identifier->removeFlag(AST_CONST_EXPR);
                 }
             }
         }
@@ -1276,7 +1276,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 }
                 else
                 {
-                    identifier->flags |= AST_DISCARD;
+                    identifier->addFlag(AST_DISCARD);
                 }
             }
         }
@@ -1308,7 +1308,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     // of the inline os done.
                     if (!(identifier->flags & AST_INLINED))
                     {
-                        identifier->flags |= AST_INLINED;
+                        identifier->addFlag(AST_INLINED);
 
                         // In case of an inline call inside an inline function, the identifier kind has been changed to
                         // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
@@ -1377,7 +1377,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
         if (CallConv::returnNeedsStack(typeFunc))
         {
-            identifier->flags |= AST_TRANSIENT;
+            identifier->addFlag(AST_TRANSIENT);
             allocateOnStack(identifier, returnType);
         }
 

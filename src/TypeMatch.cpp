@@ -280,7 +280,7 @@ namespace
             return;
 
         auto callParameter = context.parameters[0];
-        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
+        callParameter->parent->addFlag(AST_MUST_SORT_CHILDS);
 
         AstFuncCallParam fakeParam;
         Ast::constructNode(&fakeParam);

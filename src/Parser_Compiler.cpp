@@ -207,8 +207,8 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
     node->semanticFct                      = Semantic::resolveCompilerValidIfExpression;
     SWAG_CHECK(eatToken());
-    parent->flags |= AST_HAS_SELECT_IF;
-    node->flags |= AST_NO_BYTECODE_CHILDS;
+    parent->addFlag(AST_HAS_SELECT_IF);
+    node->addFlag(AST_NO_BYTECODE_CHILDS);
 
     // Not for the 3 special special functions
     if (parent->token.text == g_LangSpec->name_opDrop ||
@@ -389,7 +389,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     {
         const auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
         *result         = node;
-        node->flags |= AST_GLOBAL_NODE;
+        node->addFlag(AST_GLOBAL_NODE);
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
@@ -400,7 +400,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->ifBlock    = block;
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
             node->extOwner()->ownerCompilerIfBlock->blocks.push_back(block);
-        block->flags |= AST_GLOBAL_NODE;
+        block->addFlag(AST_GLOBAL_NODE);
 
         ScopedCompilerIfBlock scopedIf(this, block);
         SWAG_CHECK(eatSemiCol("[[#global if]]"));
@@ -541,7 +541,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         attrUse->addSpecFlag(AstAttrUse::SPECFLAG_GLOBAL);
         attrUse->allocateExtension(ExtensionKind::Owner);
         attrUse->extOwner()->ownerAttrUse = sourceFile->astAttrUse;
-        attrUse->flags |= AST_GLOBAL_NODE;
+        attrUse->addFlag(AST_GLOBAL_NODE);
         sourceFile->astAttrUse = attrUse;
         SWAG_CHECK(eatSemiCol("[[#global attribute]]"));
     }
@@ -582,7 +582,7 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicLocation, sourceFile, parent);
     *result             = exprNode;
-    exprNode->flags |= AST_NO_BYTECODE;
+    exprNode->addFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());
 
     const auto startLoc = token.startLocation;
@@ -600,7 +600,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicDefined, sourceFile, parent);
     *result             = exprNode;
-    exprNode->flags |= AST_NO_BYTECODE;
+    exprNode->addFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());
 
     const auto startLoc = token.startLocation;
@@ -626,7 +626,7 @@ bool Parser::doCompilerDependencies(AstNode* parent)
 
     if (sourceFile->module->kind != ModuleKind::Config)
     {
-        node->flags |= AST_NO_SEMANTIC;
+        node->addFlag(AST_NO_SEMANTIC);
         node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     }
 
@@ -637,7 +637,7 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 {
     const auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
     *result             = exprNode;
-    exprNode->flags |= AST_NO_BYTECODE;
+    exprNode->addFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());
 
     ScopedFlags sc(this, AST_SILENT_CHECK);

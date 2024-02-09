@@ -56,8 +56,8 @@ bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const 
 bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 {
     const auto node = context->node;
-    node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
-    node->flags |= AST_CONST_EXPR;
+    node->parent->addFlag(AST_EXPLICITLY_NOT_INITIALIZED);
+    node->addFlag(AST_CONST_EXPR);
     node->typeInfo = g_TypeMgr->typeInfoVoid;
     return true;
 }
@@ -103,9 +103,9 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
         if (!(child->flags & AST_CONST_EXPR))
-            node->flags &= ~AST_CONST_EXPR;
+            node->removeFlag(AST_CONST_EXPR);
         if (!(child->flags & AST_R_VALUE))
-            node->flags &= ~AST_R_VALUE;
+            node->removeFlag(AST_R_VALUE);
     }
 
     typeInfo->name += "}";
@@ -156,9 +156,9 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += childType->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
-            node->flags &= ~AST_CONST_EXPR;
+            node->removeFlag(AST_CONST_EXPR);
         if (!(child->flags & AST_R_VALUE))
-            node->flags &= ~AST_R_VALUE;
+            node->removeFlag(AST_R_VALUE);
     }
 
     if (node->flags & AST_CONST_EXPR)
@@ -364,13 +364,13 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         {
             node->inheritComputedValue(expression);
             node->typeInfo = expression->typeInfo;
-            ifZero->flags |= AST_NO_BYTECODE;
+            ifZero->addFlag(AST_NO_BYTECODE);
         }
         else
         {
             node->inheritComputedValue(ifZero);
             node->typeInfo = ifZero->typeInfo;
-            expression->flags |= AST_NO_BYTECODE;
+            expression->addFlag(AST_NO_BYTECODE);
         }
     }
     else
@@ -396,7 +396,7 @@ bool Semantic::resolveDefer(SemanticContext* context)
 
     SWAG_ASSERT(node->childs.size() == 1);
     const auto expr = node->childs.front();
-    expr->flags |= AST_NO_BYTECODE;
+    expr->addFlag(AST_NO_BYTECODE);
 
     return true;
 }

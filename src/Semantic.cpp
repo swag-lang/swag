@@ -25,7 +25,7 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
         {
             if (c->kind != AstNodeKind::CompilerDependencies)
             {
-                c->flags |= AST_NO_SEMANTIC; // :FirstPassCfgNoSem
+                c->addFlag(AST_NO_SEMANTIC); // :FirstPassCfgNoSem
                 c->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
             }
         }
@@ -76,8 +76,8 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
     if (!context->tmpIdRef)
     {
         context->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, name, nullptr, nullptr);
-        context->tmpIdRef->childs.back()->flags |= AST_SILENT_CHECK;
-        context->tmpIdRef->flags |= AST_SILENT_CHECK;
+        context->tmpIdRef->childs.back()->addFlag(AST_SILENT_CHECK);
+        context->tmpIdRef->addFlag(AST_SILENT_CHECK);
     }
 
     context->tmpIdRef->parent = node;

@@ -106,7 +106,7 @@ bool Semantic::resolveCatch(SemanticContext* context)
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
-    node->flags &= ~AST_DISCARD;
+    node->removeFlag(AST_DISCARD);
     node->inheritComputedValue(identifierRef);
 
     return true;

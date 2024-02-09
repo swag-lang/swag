@@ -1070,7 +1070,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 
     // Must do move and not copy
     if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
-        node->flags |= AST_TRANSIENT;
+        node->addFlag(AST_TRANSIENT);
 
     // Must invert if commutative operation
     if (!leftTypeInfo->isStruct() && rightTypeInfo->isStruct())
@@ -1149,7 +1149,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
     {
         if (leftTypeInfo->isStruct() && !leftTypeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
-            node->flags &= ~AST_CONST_EXPR;
+            node->removeFlag(AST_CONST_EXPR);
     }
 
     return true;
@@ -1367,7 +1367,7 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
     if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
     {
         if (leftTypeInfo->isStruct() && !leftTypeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
-            node->flags &= ~AST_CONST_EXPR;
+            node->removeFlag(AST_CONST_EXPR);
     }
 
     return true;

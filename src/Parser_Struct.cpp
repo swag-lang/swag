@@ -34,7 +34,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         ScopedFlags scopedFlags(this, AST_CAN_MATCH_INCOMPLETE);
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier, IDENTIFIER_NO_PARAMS));
-        implNode->flags |= AST_NO_BYTECODE;
+        implNode->addFlag(AST_NO_BYTECODE);
     }
 
     // impl TITI for TOTO syntax (interface implementation for a given struct)
@@ -247,7 +247,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     // If name starts with "__", then this is generated, as a user identifier cannot start with those
     // two characters
     if (structNode->token.text.length() > 2 && structNode->token.text[0] == '_' && structNode->token.text[1] == '_')
-        structNode->flags |= AST_GENERATED;
+        structNode->addFlag(AST_GENERATED);
 
     // Add struct type and scope
     Scope* newScope = nullptr;
@@ -313,7 +313,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         {
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
-            n->flags |= AST_IS_GENERIC;
+            n->addFlag(AST_IS_GENERIC);
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
                 const auto param = castAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
@@ -365,7 +365,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         return true;
     }
 
@@ -373,31 +373,31 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     {
     case TokenId::CompilerAssert:
         SWAG_CHECK(doCompilerAssert(parent, result));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
     case TokenId::CompilerRun:
         SWAG_CHECK(doCompilerRunEmbedded(parent, result));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
     case TokenId::CompilerPrint:
         SWAG_CHECK(doCompilerPrint(parent, result));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
     case TokenId::CompilerError:
         SWAG_CHECK(doCompilerError(parent, result));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
     case TokenId::CompilerWarning:
         SWAG_CHECK(doCompilerWarning(parent, result));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
     case TokenId::CompilerAst:
         SWAG_CHECK(doCompilerAst(parent, result));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIfFor(parent, result, structType == SyntaxStructType::Interface ? AstNodeKind::InterfaceDecl : AstNodeKind::StructDecl));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         break;
 
     case TokenId::SymLeftCurly:
@@ -409,7 +409,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         AstAttrUse* attrUse;
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
         SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
-        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->addFlag(AST_STRUCT_COMPOUND);
         if (attrUse->content)
             attrUse->content->setOwnerAttrUse(attrUse);
         break;
@@ -443,7 +443,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         structNode->addSpecFlag(AstStruct::SPECFLAG_HAS_USING);
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
-        varDecl->flags |= AST_DECL_USING;
+        varDecl->addFlag(AST_DECL_USING);
         *result = varDecl;
         break;
     }
@@ -499,7 +499,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         const auto  varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
         varNode->inheritTokenLocation(funcNode->token);
         Semantic::setVarDeclResolve(varNode);
-        varNode->flags |= AST_R_VALUE;
+        varNode->addFlag(AST_R_VALUE);
 
         const auto typeNode   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
         typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
@@ -509,7 +509,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         Ast::addChildFront(typeNode, funcNode->parameters);
         typeNode->parameters = funcNode->parameters;
         if (typeNode->parameters)
-            typeNode->parameters->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            typeNode->parameters->addFlag(AST_IN_TYPE_VAR_DECLARATION);
 
         if (token.id == TokenId::SymMinusGreat)
         {

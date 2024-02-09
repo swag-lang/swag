@@ -286,7 +286,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 
     // Be sure this is done only once
     // :EmitInlineOnce
-    node->flags |= AST_NO_BYTECODE_CHILDS;
+    node->addFlag(AST_NO_BYTECODE_CHILDS);
     return true;
 }
 
@@ -1134,7 +1134,7 @@ bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* sco
             auto child           = node->childs.front()->clone(cloneContext);
             child->parent        = node;
             child->bytecodeState = AstNodeResolveState::Enter;
-            child->flags &= ~AST_NO_BYTECODE;
+            child->removeFlag(AST_NO_BYTECODE);
             node->extOwner()->nodesToFree.push_back(child);
             job->nodes.push_back(child);
         }

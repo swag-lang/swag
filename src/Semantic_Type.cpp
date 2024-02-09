@@ -21,7 +21,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     {
         const auto any                     = (SwagAny*) node->computedValue->getStorageAddr();
         node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
-        node->flags |= AST_VALUE_IS_GEN_TYPEINFO;
+        node->addFlag(AST_VALUE_IS_GEN_TYPEINFO);
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
     }
     else if (typeInfo->isAny() || typeInfo->isInterface())
@@ -195,7 +195,7 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
         SWAG_CHECK(resolveTypeAsExpression(context, node, &result));
         YIELD();
         node->typeInfo = result;
-        node->flags &= ~AST_NO_BYTECODE;
+        node->removeFlag(AST_NO_BYTECODE);
         return true;
     }
 
@@ -314,7 +314,7 @@ bool Semantic::resolveType(SemanticContext* context)
             SWAG_CHECK(evaluateConstExpression(context, child));
             YIELD();
             if (child->hasComputedValue())
-                child->flags |= AST_NO_BYTECODE;
+                child->addFlag(AST_NO_BYTECODE);
         }
     }
 
@@ -453,7 +453,7 @@ bool Semantic::resolveType(SemanticContext* context)
         if (typeNode->typeFlags & TYPEFLAG_IS_PTR_ARITHMETIC)
             ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
         if (ptrFlags & TYPEINFO_GENERIC)
-            typeNode->flags |= AST_IS_GENERIC;
+            typeNode->addFlag(AST_IS_GENERIC);
         typeNode->typeInfo = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
         return true;
     }
@@ -821,6 +821,6 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags, resultTypeInfo));
     YIELD();
     node->setFlagsValueIsComputed();
-    node->flags |= AST_VALUE_IS_GEN_TYPEINFO;
+    node->addFlag(AST_VALUE_IS_GEN_TYPEINFO);
     return true;
 }

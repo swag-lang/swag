@@ -26,7 +26,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 
     newNode->typeConstraint = findChildRef(typeConstraint, newNode);
     if (newNode->typeConstraint)
-        newNode->typeConstraint->flags &= ~AST_NO_SEMANTIC;
+        newNode->typeConstraint->removeFlag(AST_NO_SEMANTIC);
 
     // Is there an alias ?
     const auto it = context.replaceNames.find(newNode->token.text);
@@ -342,7 +342,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
                 return context->report(diag);
             }
 
-            nodeFunc->content->flags &= ~AST_NO_SEMANTIC;
+            nodeFunc->content->removeFlag(AST_NO_SEMANTIC);
             if (cloneContext.alternativeScope)
                 nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
             symKind = SymbolKind::Function;
@@ -540,7 +540,7 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
 
     // :ReverseLiteralStruct
     // Order of childs is correct, so remove flag
-    newNode->flags &= ~AST_REVERSE_SEMANTIC;
+    newNode->removeFlag(AST_REVERSE_SEMANTIC);
 
     newNode->resolvedParameter = resolvedParameter;
     newNode->indexParam        = indexParam;
@@ -786,10 +786,10 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
         if (context.cloneFlags & CLONE_FORCE_OWNER_FCT)
         {
             SWAG_ASSERT(newNode->identifier);
-            newNode->identifier->flags &= ~AST_NO_SEMANTIC;
+            newNode->identifier->removeFlag(AST_NO_SEMANTIC);
             const auto back = castAst<AstIdentifier>(newNode->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_ASSERT(back->callParameters);
-            back->callParameters->flags &= ~AST_NO_SEMANTIC;
+            back->callParameters->removeFlag(AST_NO_SEMANTIC);
         }
     }
 
@@ -864,8 +864,8 @@ AstNode* AstStruct::clone(CloneContext& context)
     newNode->tokenName         = tokenName;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
     newNode->validif           = validif ? validif->clone(cloneContext) : nullptr;
-    newNode->flags |= AST_FROM_GENERIC;
-    newNode->content->flags &= ~AST_NO_SEMANTIC;
+    newNode->addFlag(AST_FROM_GENERIC);
+    newNode->content->removeFlag(AST_NO_SEMANTIC);
 
     if (newNode->typeInfo)
     {
@@ -941,7 +941,7 @@ AstNode* AstImpl::clone(CloneContext& context)
             {
                 // The function inside the implementation was generic, so be sure we can now solve
                 // its content
-                newFunc->content->flags &= ~AST_NO_SEMANTIC;
+                newFunc->content->removeFlag(AST_NO_SEMANTIC);
 
                 // Be sure we have a specific no generic typeinfo
                 SWAG_ASSERT(newFunc->typeInfo);
@@ -954,12 +954,12 @@ AstNode* AstImpl::clone(CloneContext& context)
             {
                 // If function inside the impl block has specific generic parameters, then we
                 // consider it to be generic
-                newFunc->flags &= ~AST_FROM_GENERIC;
-                newFunc->flags |= AST_IS_GENERIC;
+                newFunc->removeFlag(AST_FROM_GENERIC);
+                newFunc->addFlag(AST_IS_GENERIC);
                 for (const auto g : newFunc->genericParameters->childs)
                 {
-                    g->flags &= ~AST_FROM_GENERIC;
-                    g->flags |= AST_IS_GENERIC;
+                    g->removeFlag(AST_FROM_GENERIC);
+                    g->addFlag(AST_IS_GENERIC);
                 }
 
                 // Be sure we keep a generic typeinfo
@@ -1098,7 +1098,7 @@ AstNode* AstInline::clone(CloneContext& context)
     // for example), then we do not want to copy the AST_NO_BYTECODE_CHILDS (because we want the inline block to be
     // generated).
     // :EmitInlineOnce
-    newNode->flags &= ~AST_NO_BYTECODE_CHILDS;
+    newNode->removeFlag(AST_NO_BYTECODE_CHILDS);
 
     newNode->func = func;
 
@@ -1164,7 +1164,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
             cloneContext.removeFlags = context.removeFlags;
         }
 
-        p->clone(cloneContext)->flags &= ~AST_NO_SEMANTIC;
+        p->clone(cloneContext)->removeFlag(AST_NO_SEMANTIC);
     }
 
     // If the compiler block has an embedded function, we need to restore the semantic pass on that function
@@ -1180,9 +1180,9 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 
         const auto func  = castAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
         func->token.text = newName;
-        func->flags &= ~AST_NO_SEMANTIC;
-        func->content->flags &= ~AST_NO_SEMANTIC;
-        func->flags |= AST_FROM_GENERIC;
+        func->removeFlag(AST_NO_SEMANTIC);
+        func->content->removeFlag(AST_NO_SEMANTIC);
+        func->addFlag(AST_FROM_GENERIC);
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
