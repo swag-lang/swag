@@ -157,7 +157,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->inheritTokenLocation(node);
     fctCallParam->byteCodeFct = ByteCodeGen::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
-    fctCallParam->flags |= AST_TO_UFCS | AST_GENERATED;
+    fctCallParam->addFlag(AST_TO_UFCS | AST_GENERATED);
     fctCallParam->inheritOrFlag(node, AST_IN_MIXIN);
 
     // If this is a closure, then parameter index 0 is for the embedded struct.
@@ -254,8 +254,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 }
 
                 copyChild->byteCodeFct = ByteCodeGen::emitIdentifier;
-                copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
-                copyChild->addFlag(AST_UFCS_FCT);
+                copyChild->addFlag(AST_TO_UFCS | AST_L_VALUE | AST_UFCS_FCT);
             }
         }
         else

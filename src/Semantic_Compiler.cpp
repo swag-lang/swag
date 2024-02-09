@@ -402,7 +402,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.ctext())));
-    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     const Diagnostic diag{node, node->token, FMT(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
     return context->report(diag);
@@ -418,7 +418,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.ctext())));
-    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     const Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
     return context->report(diag);
@@ -629,7 +629,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     {
         ScopedLock lk(it.second->mutex);
         ScopedLock lk1(it.first->mutex);
-        it.first->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
+        it.first->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
         it.first->semFlags |= SEMFLAG_DISABLED;
         SymTable::disabledIfBlockOverloadNoLock(it.first, it.second);
     }

@@ -47,7 +47,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         node->parameters         = params;
         firstAddedType           = Ast::newTypeExpression(sourceFile, params);
         firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-        firstAddedType->flags |= AST_NO_SEMANTIC | AST_GENERATED;
+        firstAddedType->addFlag(AST_NO_SEMANTIC | AST_GENERATED);
         break;
 
     case TokenId::KwdFunc:
@@ -81,7 +81,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         param->allocateExtension(ExtensionKind::Misc);
         param->extMisc()->exportNode = firstAddedType;
 
-        param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        param->addFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
         Ast::removeFromParent(firstAddedType);
         Ast::addChildBack(param, firstAddedType);
@@ -244,7 +244,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->exportNode = typeExpr;
-                param->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+                param->addFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
                 Ast::removeFromParent(typeExpr);
                 Ast::addChildBack(param, typeExpr);
@@ -324,7 +324,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion)
 {
     const auto structNode = Ast::newStructDecl(sourceFile, parent, this);
-    structNode->flags |= AST_INTERNAL | AST_GENERATED;
+    structNode->addFlag(AST_INTERNAL | AST_GENERATED);
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;

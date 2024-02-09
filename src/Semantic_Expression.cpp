@@ -75,7 +75,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
     typeInfo->sizeOf    = 0;
     typeInfo->declNode  = node;
 
-    node->flags |= AST_CONST_EXPR | AST_R_VALUE;
+    node->addFlag(AST_CONST_EXPR | AST_R_VALUE);
     for (const auto child : node->childs)
     {
         if (!typeInfo->subTypes.empty())
@@ -147,7 +147,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     SWAG_ASSERT(!node->childs.empty());
     typeInfo->declNode = node;
 
-    node->flags |= AST_CONST_EXPR | AST_R_VALUE;
+    node->addFlag(AST_CONST_EXPR | AST_R_VALUE);
     for (const auto child : node->childs)
     {
         auto       typeParam = TypeManager::makeParam();

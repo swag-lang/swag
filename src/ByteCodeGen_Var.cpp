@@ -23,7 +23,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
             {
                 if (!node->assignment)
                 {
-                    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+                    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
                     return true;
                 }
 

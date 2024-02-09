@@ -1097,7 +1097,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     DataSegment* storageSegment = nullptr;
     if (isCompilerConstant)
     {
-        node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
+        node->addFlag(AST_NO_BYTECODE | AST_R_VALUE);
         if (!isGeneric)
         {
             SWAG_CHECK(collectConstantAssignment(context, &storageSegment, &storageOffset, symbolFlags));

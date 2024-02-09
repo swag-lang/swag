@@ -202,7 +202,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             {
                 Ast::removeFromParent(child);
                 Ast::addChildBack(parentNode, child);
-                child->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
+                child->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
                 i--;
                 idx++;
                 continue;
@@ -221,7 +221,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
-            varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
+            varNode->addFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
             varNode->addSpecFlag(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
             varNode->addSpecFlag(AstVarDecl::SPECFLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())

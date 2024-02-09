@@ -1068,7 +1068,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
         {
             *result = node;
 
-            node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+            node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
             node->allocateExtension(ExtensionKind::Semantic);
             node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 
@@ -1533,7 +1533,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             // Generate an expression of the form "var __tmp_0 = assignment"
             const auto  tmpVarName = FMT("__4tmp_%d", g_UniqueID.fetch_add(1));
             AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-            varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
+            varNode->addFlag(AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
             Ast::addChildBack(varNode, assignment);
             assignment->inheritOwners(varNode);
             varNode->assignment = assignment;
@@ -1556,7 +1556,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                     idx++;
                     Ast::removeFromParent(child);
                     Ast::addChildBack(parentNode, child);
-                    child->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
+                    child->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
                     continue;
                 }
 

@@ -65,7 +65,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
     // And make a reference to that variable
     const auto identifierRef = newIdentifierRef(sourceFile, varNode->token.text, parentForRef);
-    identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_GENERATED;
+    identifierRef->addFlag(AST_R_VALUE | AST_TRANSIENT | AST_GENERATED);
 
     // Make parameters
     const auto identifier = castAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
@@ -84,7 +84,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         cloneContext.parent = oneParam;
         oneParam->inheritTokenLocation(oneChild);
         oneChild->clone(cloneContext);
-        oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
+        oneChild->addFlag(AST_NO_BYTECODE | AST_NO_SEMANTIC);
         if (oneChild->kind == AstNodeKind::Identifier)
             oneChild->addSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE);
 
@@ -152,7 +152,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     }
 
     const auto structNode = newStructDecl(sourceFile, fromNode, nullptr);
-    structNode->flags |= AST_INTERNAL | AST_GENERATED;
+    structNode->addFlag(AST_INTERNAL | AST_GENERATED);
     structNode->semFlags |= SEMFLAG_FILE_JOB_PASS;
     removeFromParent(structNode);
     addChildBack(newParent, structNode);
@@ -237,7 +237,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
             const auto varNode  = newVarDecl(sourceFile, nameVar, contentNode);
             const auto typeNode = newTypeExpression(sourceFile, varNode);
-            varNode->flags |= AST_GENERATED | AST_STRUCT_MEMBER;
+            varNode->addFlag(AST_GENERATED | AST_STRUCT_MEMBER);
             varNode->type                  = typeNode;
             varNode->ownerScope            = newScope;
             structNode->resolvedSymbolName = newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable);
@@ -371,7 +371,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, 
 
     // Reference to that generated structure
     const auto typeExpression = newTypeExpression(sourceFile, parent);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
+    typeExpression->addFlag(AST_NO_BYTECODE_CHILDS | AST_GENERATED);
     typeExpression->identifier = newIdentifierRef(sourceFile, structNode->token.text, typeExpression);
     *result                    = typeExpression;
     return true;
@@ -426,7 +426,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     const auto node       = context->node;
     const auto sourceFile = identifier->sourceFile;
     auto       callP      = identifier->callParameters;
-    identifier->flags |= AST_R_VALUE | AST_NO_BYTECODE;
+    identifier->addFlag(AST_R_VALUE | AST_NO_BYTECODE);
 
     // Be sure it's the NAME{} syntax
     if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
@@ -490,7 +490,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
         identifierRef->extOwner()->nodesToFree.push_back(c);
     identifierRef->childs.clear();
     const auto idNode = newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
-    idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
+    idNode->addFlag(AST_R_VALUE | AST_TRANSIENT);
 
     // Reset parsing
     identifierRef->startScope = nullptr;

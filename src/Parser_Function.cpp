@@ -1255,11 +1255,11 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         // To solve captured parameters
         const auto cp = castAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
         Ast::addChildBack(exprNode, cp);
-        cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        cp->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
         // We want the lambda to be evaluated only once the captured block has been typed
         // See resolveCaptureFuncCallParams
-        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1;
+        lambdaDecl->addFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1);
 
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
@@ -1304,7 +1304,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     {
         exprNode->addSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE);
         lambdaDecl->makePointerLambda = exprNode;
-        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2;
+        lambdaDecl->addFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2);
     }
 
     *result = exprNode;

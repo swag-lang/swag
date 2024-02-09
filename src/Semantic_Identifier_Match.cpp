@@ -720,7 +720,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (identifierRef->previousResolvedNode)
             {
                 if (identifierRef->previousResolvedNode->flags & AST_R_VALUE)
-                    identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+                    identifier->addFlag(AST_L_VALUE | AST_R_VALUE);
                 else
                     identifier->flags |= (identifierRef->previousResolvedNode->flags & AST_L_VALUE);
             }
@@ -728,7 +728,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     }
     else if (symbol->kind == SymbolKind::Variable)
     {
-        identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+        identifier->addFlag(AST_L_VALUE | AST_R_VALUE);
     }
 
     // Do not register a sub impl scope, for ufcs to use the real variable
@@ -1186,11 +1186,11 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         }
 
         if (identifier->callParameters)
-            identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+            identifier->addFlag(AST_L_VALUE | AST_R_VALUE);
         else if (identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
-            identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+            identifier->addFlag(AST_L_VALUE | AST_R_VALUE);
         else if (identifier->parent->parent->kind == AstNodeKind::MakePointer)
-            identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+            identifier->addFlag(AST_L_VALUE | AST_R_VALUE);
 
         // Need to make all types compatible, in case a cast is necessary
         if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))

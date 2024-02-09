@@ -174,7 +174,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
 
 bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
-    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
     const auto res = Ast::visit(context, node, [](ErrorContext* cxt, const AstNode* n)
     {
         if (n->kind != AstNodeKind::Literal)

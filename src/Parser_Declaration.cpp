@@ -523,11 +523,11 @@ void Parser::registerSubDecl(AstNode* subDecl)
     SWAG_ASSERT(subDecl->ownerFct);
     const auto orgSubDecl = subDecl;
     subDecl->ownerFct->subDecls.push_back(subDecl);
-    subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL;
+    subDecl->addFlag(AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL);
 
     AstAttrUse* newAttrUse = nullptr;
 
-    // If parent is an attribute, then we will move it with the subdecl
+    // If parent is an attribute, then we will move it with the sub-decl
     if (subDecl->parent->kind == AstNodeKind::AttrUse)
         subDecl = subDecl->parent;
 
@@ -606,9 +606,9 @@ void Parser::registerSubDecl(AstNode* subDecl)
     {
         const auto solver   = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
         solver->semanticFct = Semantic::resolveSubDeclRef;
-        solver->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        solver->addFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
         solver->refSubDecl = orgSubDecl;
-        orgSubDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3;
+        orgSubDecl->addFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
     }
 }
 

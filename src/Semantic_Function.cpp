@@ -1220,7 +1220,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     {
         if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
         {
-            node->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
+            node->addFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
             node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
         }
     }
@@ -1625,7 +1625,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // If we are returning a local variable, we can do a move
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
     {
-        child->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
+        child->addFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 

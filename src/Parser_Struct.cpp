@@ -218,7 +218,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(doGenericDeclParameters(structNode, &structNode->genericParameters));
-        structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
+        structNode->addFlag(AST_IS_GENERIC | AST_NO_BYTECODE);
     }
 
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
@@ -228,7 +228,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
         if (parentStruct->genericParameters)
         {
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
-            structNode->flags |= AST_IS_GENERIC | AST_NO_BYTECODE;
+            structNode->addFlag(AST_IS_GENERIC | AST_NO_BYTECODE);
         }
     }
 

@@ -70,7 +70,7 @@ bool Semantic::resolveWith(SemanticContext* context)
     bool       fromVar      = false;
     if (front->kind == AstNodeKind::IdentifierRef)
     {
-        front->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        front->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
         SWAG_ASSERT(front->resolvedSymbolName && front->resolvedSymbolOverload);
         typeResolved = front->resolvedSymbolOverload->typeInfo;
         fromVar      = front->resolvedSymbolName->kind == SymbolKind::Variable;

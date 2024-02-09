@@ -101,7 +101,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitIdentifierRef;
 
     // Flag inheritance
-    node->flags |= AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE;
+    node->addFlag(AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE);
     for (const auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))

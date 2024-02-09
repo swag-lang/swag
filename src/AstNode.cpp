@@ -703,7 +703,7 @@ void AstNode::allocateComputedValue()
 void AstNode::setFlagsValueIsComputed()
 {
     allocateComputedValue();
-    flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
+    addFlag(AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE);
 }
 
 void AstNode::inheritComputedValue(const AstNode* from)
@@ -713,7 +713,7 @@ void AstNode::inheritComputedValue(const AstNode* from)
     inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
     if (flags & AST_VALUE_COMPUTED)
     {
-        flags |= AST_CONST_EXPR | AST_R_VALUE;
+        addFlag(AST_CONST_EXPR | AST_R_VALUE);
         SWAG_ASSERT(from->computedValue);
         computedValue = from->computedValue;
     }

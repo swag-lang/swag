@@ -140,7 +140,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
             newNode->resolvedSymbolOverload = newNode->typeInfo->declNode->resolvedSymbolOverload;
         }
 
-        newNode->flags |= AST_FROM_GENERIC | AST_FROM_GENERIC_REPLACE;
+        newNode->addFlag(AST_FROM_GENERIC | AST_FROM_GENERIC_REPLACE);
     }
 
     return newNode;
@@ -349,12 +349,12 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 
             // Sub decl reference
             if (subDecl->flags & AST_SPEC_SEMANTIC_HAS3)
-                nodeFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3;
+                nodeFunc->addFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
 
             // Function is supposed to start semantic when captured parameters have been evaluated
             // So no semantic on it now
             if (nodeFunc->captureParameters)
-                nodeFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1;
+                nodeFunc->addFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1);
 
             // If function is linked to a makePointerLambda, then we make a unique name for the function, and change the
             // corresponding reference.

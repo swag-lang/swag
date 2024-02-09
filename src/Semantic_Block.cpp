@@ -929,7 +929,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         return context->report({node->expression, FMT(Err(Err0418), typeInfo->getDisplayNameC())});
     }
 
-    node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->expression->addFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     Parser parser;
     parser.setup(context, context->sourceFile->module, context->sourceFile);
@@ -1034,9 +1034,9 @@ bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
     const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
     if (node->ownerBreakable == node->altSubstBreakable)
-        node->defaultSubst->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        node->defaultSubst->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
     else
-        node->altSubst->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        node->altSubst->addFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     return true;
 }
