@@ -137,7 +137,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     }
 
     // Reference to a static struct member
-    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
+    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
         const Diagnostic  diag{node, FMT(Err(Err0590), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str())};
         const Diagnostic* note = nullptr;
@@ -389,7 +389,7 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // This is a generic type, not yet known
-    if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+    if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
     {
         typeNode->resolvedSymbolName     = typeNode->identifier->resolvedSymbolName;
         typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
@@ -534,7 +534,7 @@ bool Semantic::resolveType(SemanticContext* context)
             }
             else if (!child->hasComputedValue() &&
                      child->resolvedSymbolOverload &&
-                     (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+                     (child->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC)))
             {
                 genericCount = true;
             }

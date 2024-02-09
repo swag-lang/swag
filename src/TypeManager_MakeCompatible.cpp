@@ -83,7 +83,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
                 const auto exprList = castAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
-                if (exprList && !(exprList->hasSemFlag(SEMFLAG_EXPR_LIST_CST)))
+                if (exprList && !exprList->hasSemFlag(SEMFLAG_EXPR_LIST_CST))
                 {
                     exprList->addSemFlag(SEMFLAG_EXPR_LIST_CST);
 

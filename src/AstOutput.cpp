@@ -607,7 +607,7 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
         concat.addString(str);
         break;
     default:
-        if (!(typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
+        if (!typeInfo->hasFlag(TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT))
         {
             str += '\'';
             str += typeInfo->name;
@@ -661,7 +661,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
         bool first = true;
         for (const auto p : funcDecl->parameters->childs)
         {
-            if ((p->hasAstFlag(AST_GENERATED)) && !(p->hasAstFlag(AST_GENERATED_USER)))
+            if (p->hasAstFlag(AST_GENERATED) && !p->hasAstFlag(AST_GENERATED_USER))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -707,7 +707,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
 
 bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf)
 {
-    if (!(varNode->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME)))
+    if (!varNode->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME))
     {
         if (!varNode->publicName.empty())
             concat.addString(varNode->publicName);
@@ -717,11 +717,11 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
 
     if (varNode->type)
     {
-        if (!(varNode->type->hasAstFlag(AST_GENERATED)) || (varNode->type->hasAstFlag(AST_GENERATED_USER)))
+        if (!varNode->type->hasAstFlag(AST_GENERATED) || varNode->type->hasAstFlag(AST_GENERATED_USER))
         {
             if (!isSelf)
             {
-                if (!(varNode->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME)))
+                if (!varNode->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME))
                     CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(outputNode(context, concat, varNode->type));
             }
@@ -758,7 +758,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     {
         CONCAT_FIXED_STR(concat, "const ");
     }
-    else if (varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->hasAstFlag(AST_STRUCT_MEMBER)))
+    else if (varNode->kind != AstNodeKind::FuncDeclParam && !varNode->hasAstFlag(AST_STRUCT_MEMBER))
     {
         if (varNode->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
             CONCAT_FIXED_STR(concat, "let ");
@@ -808,7 +808,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     if (node->genericParameters)
         SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
 
-    if (!(node->hasSpecFlag(AstStruct::SPECFLAG_ANONYMOUS)))
+    if (!node->hasSpecFlag(AstStruct::SPECFLAG_ANONYMOUS))
     {
         CONCAT_FIXED_STR(concat, " ");
         concat.addString(node->token.text);
@@ -1126,7 +1126,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         {
             if (c->hasExtMisc() && c->extMisc()->exportNode)
                 c = c->extMisc()->exportNode;
-            if ((c->hasAstFlag(AST_GENERATED)) && !(c->hasAstFlag(AST_GENERATED_USER)))
+            if (c->hasAstFlag(AST_GENERATED) && !c->hasAstFlag(AST_GENERATED_USER))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -2091,7 +2091,7 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
             AstFuncDecl* node = castAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
 
             // Can be removed in case of special functions
-            if (!(node->hasAttribute(ATTRIBUTE_PUBLIC)))
+            if (!node->hasAttribute(ATTRIBUTE_PUBLIC))
                 continue;
 
             // Remap special functions to their generated equivalent

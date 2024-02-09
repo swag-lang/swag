@@ -27,7 +27,7 @@ bool Semantic::resolveMove(SemanticContext* context)
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
             const Diagnostic diag{right, FMT(Err(Err0327), right->typeInfo->getDisplayNameC())};
-            if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+            if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
             {
                 const auto note = Diagnostic::note(Nte(Nte0059));
                 return context->report(diag, note);
@@ -157,14 +157,14 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
                 hint += "]] because of a [[with]]";
 
             SWAG_ASSERT(left->resolvedSymbolOverload);
-            if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
+            if (left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
                 note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076));
-            else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
+            else if (!(left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM)))
                 note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076), Diagnostic::isType(left->typeInfo));
         }
     }
 
-    if (left->typeInfo->isConst() && left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+    if (left->typeInfo->isConst() && left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
     {
         if (left == left->parent->childs.back())
         {
@@ -188,7 +188,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     }
 
     if (left->resolvedSymbolOverload &&
-        left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET &&
+        left->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET) &&
         (!left->resolvedSymbolOverload->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
     {
         Diagnostic diag{node, node->token, Err(Err0104)};
@@ -206,7 +206,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         return context->report(diag, note);
     }
 
-    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
         Diagnostic diag{node, node->token, Err(Err0104)};
         if (hint.empty())

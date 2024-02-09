@@ -149,7 +149,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         child->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
     }
 
-    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET))
     {
         if (child->kind != AstNodeKind::IdentifierRef || child->childs.back()->kind != AstNodeKind::ArrayPointerIndex)
         {
@@ -244,7 +244,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         const auto typeResolved = child->resolvedSymbolOverload->typeInfo->getConcreteAlias();
 
-        if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
+        if ((child->resolvedSymbolOverload->hasFlag(OVERLOAD_CONST_ASSIGN)) &&
             !typeResolved->isPointerArithmetic() &&
             !typeResolved->isArray() &&
             !typeResolved->isSlice())
@@ -321,7 +321,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Exclude upper bound if constant
     if (node->upperBound->hasComputedValue() &&
         node->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP) &&
-        !(node->upperBound->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED)))
+        !node->upperBound->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
     {
         if (!node->upperBound->computedValue->reg.u64)
         {
@@ -625,7 +625,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!arrayType->isStruct())
     {
-        if (!accessType->isNativeInteger() && !(accessType->hasFlag(TYPEINFO_ENUM_INDEX)))
+        if (!accessType->isNativeInteger() && !accessType->hasFlag(TYPEINFO_ENUM_INDEX))
         {
             const Diagnostic diag{arrayNode->access, FMT(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
             return context->report(diag);
@@ -636,7 +636,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!arrayType->isPointerArithmetic() && !(arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF)))
+        if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
         {
             const Diagnostic diag{arrayNode->array, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
             return context->report(diag);
@@ -803,7 +803,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
         if (isConstAccess)
         {
             const auto overload = subArray->array->resolvedSymbolOverload;
-            if (overload && (overload->flags & OVERLOAD_COMPUTED_VALUE))
+            if (overload && (overload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(overload->computedValue.storageSegment);
@@ -872,7 +872,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         if (arrayNode->access->hasComputedValue())
         {
-            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
             {
                 arrayNode->setFlagsValueIsComputed();
                 const auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
@@ -890,7 +890,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        if (!arrayType->isPointerArithmetic() && !(arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF)))
+        if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
         {
             Diagnostic diag{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
             diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
@@ -979,7 +979,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         // Try to dereference as a constant if we can
         if (arrayNode->access->hasComputedValue())
         {
-            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
             {
                 const auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
                 const auto  slice         = (SwagSlice*) computedValue.getStorageAddr();

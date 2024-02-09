@@ -48,7 +48,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     SWAG_VERIFY(!typeInfo->isKindGeneric(), Report::internalError(context->node, "emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
-    if (resolved->flags & OVERLOAD_RETVAL)
+    if (resolved->hasFlag(OVERLOAD_RETVAL))
     {
         const RegisterList r0 = reserveRegisterRC(context);
         emitRetValRef(context, resolved, r0, true, 0);
@@ -66,7 +66,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // A captured variable
-    if (resolved->flags & OVERLOAD_VAR_CAPTURE)
+    if (resolved->hasFlag(OVERLOAD_VAR_CAPTURE))
     {
         node->resultRegisterRc                        = reserveRegisterRC(context);
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
@@ -141,7 +141,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
     // Variable from the tls segment
     bool forStruct = false;
-    if (resolved->flags & OVERLOAD_VAR_TLS)
+    if (resolved->hasFlag(OVERLOAD_VAR_TLS))
     {
         node->resultRegisterRc = reserveRegisterRC(context);
         EMIT_INST1(context, ByteCodeOp::InternalGetTlsPtr, node->resultRegisterRc);
@@ -149,7 +149,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Variable from a struct
-    else if (resolved->flags & OVERLOAD_VAR_STRUCT)
+    else if (resolved->hasFlag(OVERLOAD_VAR_STRUCT))
     {
         node->resultRegisterRc = identifier->identifierRef()->resultRegisterRc;
         SWAG_VERIFY(node->resultRegisterRc.size() > 0,
@@ -159,7 +159,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
     if (forStruct)
     {
-        SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
+        SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_VAR_INLINE)));
         if (resolved->computedValue.storageOffset > 0)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRc);
@@ -206,7 +206,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
 
         // :SilentCall
-        if ((resolved->flags & OVERLOAD_VAR_TLS) && node->isSilentCall())
+        if ((resolved->hasFlag(OVERLOAD_VAR_TLS)) && node->isSilentCall())
             freeRegisterRC(context, node->parent);
 
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
@@ -215,7 +215,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Function parameter : it's a register on the stack
-    if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
+    if (resolved->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
     {
         node->resultRegisterRc = reserveRegisterRC(context, resolved);
         resolved->setRegisters(node->resultRegisterRc, OVERLOAD_HINT_REG);
@@ -346,7 +346,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Variable from the data segment
-    if (resolved->flags & OVERLOAD_VAR_GLOBAL)
+    if (resolved->hasFlag(OVERLOAD_VAR_GLOBAL))
     {
         node->resultRegisterRc = reserveRegisterRC(context);
 
@@ -427,14 +427,14 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Variable from the stack
-    if (resolved->flags & OVERLOAD_VAR_LOCAL)
+    if (resolved->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
-        const auto persistentReg = (resolved->flags & OVERLOAD_PERSISTENT_REG) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
+        const auto persistentReg = (resolved->hasFlag(OVERLOAD_PERSISTENT_REG)) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
 
         if (node->isSilentCall())
         {
-            SWAG_ASSERT(!(resolved->flags & OVERLOAD_PERSISTENT_REG));
+            SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)));
             node->resultRegisterRc = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->parent->resultRegisterRc);
             freeRegisterRC(context, node->parent);
@@ -460,7 +460,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
-            SWAG_ASSERT(!(resolved->flags & OVERLOAD_PERSISTENT_REG));
+            SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)));
             node->resultRegisterRc = reserveRegisterRC(context);
             const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64            = resolved->computedValue.storageOffset;
@@ -521,7 +521,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isClosure())
         {
-            SWAG_ASSERT(!(resolved->flags & OVERLOAD_PERSISTENT_REG));
+            SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)));
             node->resultRegisterRc = reserveRegisterRC(context);
             const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64            = resolved->computedValue.storageOffset;
@@ -575,7 +575,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Reference to an inline parameter : the registers are directly stored in the overload symbol
-    if (resolved->flags & OVERLOAD_VAR_INLINE)
+    if (resolved->hasFlag(OVERLOAD_VAR_INLINE))
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
 
@@ -583,7 +583,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->symRegisters.size() > 0,
                     Report::internalError(context->node, FMT("emitIdentifier, identifier not generated [[%s]]", identifier->token.ctext()).c_str()));
-        SWAG_ASSERT(resolved->flags & OVERLOAD_INLINE_REG);
+        SWAG_ASSERT(resolved->hasFlag(OVERLOAD_INLINE_REG));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 
         for (int i = 0; i < node->resultRegisterRc.size(); i++)

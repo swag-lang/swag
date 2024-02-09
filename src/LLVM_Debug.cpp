@@ -405,7 +405,7 @@ llvm::DISubprogram* LLVM_Debug::startFunction(const ByteCode* bc, AstFuncDecl** 
     llvm::DISubprogram::DISPFlags spFlags = llvm::DISubprogram::SPFlagDefinition;
     if (isOptimized)
         spFlags |= llvm::DISubprogram::SPFlagOptimized;
-    if (!decl || !(decl->hasAttribute(ATTRIBUTE_PUBLIC)))
+    if (!decl || !decl->hasAttribute(ATTRIBUTE_PUBLIC))
         spFlags |= llvm::DISubprogram::SPFlagLocalToUnit;
 
     constexpr llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
@@ -448,7 +448,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
     const bool                      isDebug        = buildParameters.isDebug();
 
     // Allocate some temporary variables linked to parameters
-    if (decl && decl->parameters && !(decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC)))
+    if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
     {
         countParams = decl->parameters->childs.size();
         allocaParams.reserve((uint32_t) countParams);
@@ -501,7 +501,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
             if (overload->node->hasAstFlag(AST_GENERATED))
                 continue;
 
-            if (overload->flags & OVERLOAD_RETVAL)
+            if (overload->hasFlag(OVERLOAD_RETVAL))
             {
                 auto allocA = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
                 allocA->setAlignment(llvm::Align{16});
@@ -510,7 +510,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
         }
     }
 
-    if (decl && decl->parameters && !(decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC)))
+    if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
     {
         // Variadic. Pass as first parameters, but get type at the end
         if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
@@ -607,7 +607,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
         const auto  typeInfo = overload->typeInfo;
         const auto& loc      = localVar->token.startLocation;
 
-        if (overload->flags & OVERLOAD_RETVAL && idxRetVal < allocaRetval.size())
+        if (overload->hasFlag(OVERLOAD_RETVAL) && idxRetVal < allocaRetval.size())
         {
             llvm::DIType*          type   = getPointerToType(typeInfo, file);
             const auto             scope  = getOrCreateScope(file, localVar->ownerScope);

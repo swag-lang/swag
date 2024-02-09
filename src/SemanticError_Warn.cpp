@@ -91,7 +91,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
                                ATTRIBUTE_COMPILER))
         return true;
 
-    if (one->node->resolvedSymbolName->flags & SYMBOL_USED || one->isUsed)
+    if (one->node->resolvedSymbolName->hasFlag(SYMBOL_USED) || one->isUsed)
         return true;
     if (funcDecl->token.text[0] == '_')
         return true;
@@ -149,20 +149,20 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         }
 
         const auto overload = sym->overloads.front();
-        if (overload->flags & OVERLOAD_RETVAL)
+        if (overload->hasFlag(OVERLOAD_RETVAL))
             continue;
 
         // Check that variable has been changed
-        if ((sym->flags & SYMBOL_USED) &&
-            !(overload->flags & OVERLOAD_IS_LET) &&
-            !(overload->flags & OVERLOAD_HAS_AFFECT) &&
-            !(overload->flags & OVERLOAD_HAS_MAKE_POINTER) &&
-            !(overload->flags & OVERLOAD_NOT_INITIALIZED) &&
-            (overload->flags & OVERLOAD_VAR_LOCAL))
+        if (sym->hasFlag(SYMBOL_USED) &&
+            !(overload->hasFlag(OVERLOAD_IS_LET)) &&
+            !(overload->hasFlag(OVERLOAD_HAS_AFFECT)) &&
+            !(overload->hasFlag(OVERLOAD_HAS_MAKE_POINTER)) &&
+            !(overload->hasFlag(OVERLOAD_NOT_INITIALIZED)) &&
+            (overload->hasFlag(OVERLOAD_VAR_LOCAL)))
         {
             if (!overload->typeInfo->isStruct() && !overload->typeInfo->isArray())
             {
-                if (!(overload->flags & OVERLOAD_VAR_HAS_ASSIGN))
+                if (!(overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN)))
                 {
                     Diagnostic diag{front, front->token, FMT(Err(Wrn0004), sym->name.c_str()), DiagnosticLevel::Warning};
                     isOk = isOk && context->report(diag);
@@ -175,19 +175,19 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
             }
         }
 
-        if (sym->flags & SYMBOL_USED)
+        if (sym->hasFlag(SYMBOL_USED))
             continue;
         if (overload->typeInfo->isCVariadic())
             continue;
 
-        if (overload->flags & OVERLOAD_VAR_LOCAL)
+        if (overload->hasFlag(OVERLOAD_VAR_LOCAL))
         {
             const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
-        else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        else if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
         {
             const auto funcDecl = castAst<AstFuncDecl>(front->findParent(AstNodeKind::FuncDecl), AstNodeKind::FuncDecl);
 
@@ -214,14 +214,14 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
                 isOk            = isOk && context->report(diag, note);
             }
         }
-        else if (overload->flags & OVERLOAD_VAR_CAPTURE)
+        else if (overload->hasFlag(OVERLOAD_VAR_CAPTURE))
         {
             const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
             const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
-        else if (overload->flags & OVERLOAD_CONSTANT)
+        else if (overload->hasFlag(OVERLOAD_CONSTANT))
         {
             const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};

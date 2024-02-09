@@ -490,7 +490,7 @@ namespace
             concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
 
             CPURelocation reloc;
-            const auto    segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
+            const auto    segSymIndex = overload->hasFlag(OVERLOAD_VAR_BSS) ? pp.symBSIndex : pp.symMSIndex;
 
             // symbol index relocation inside segment
             reloc.type           = IMAGE_REL_AMD64_SECREL;
@@ -533,7 +533,7 @@ namespace
 
             //////////
             emitStartRecord(pp, S_LOCAL);
-            if (overload->flags & OVERLOAD_RETVAL)
+            if (overload->hasFlag(OVERLOAD_RETVAL))
                 concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
             else
                 concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
@@ -545,7 +545,7 @@ namespace
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
             concat.addU16(R_RDI);                  // Register
             concat.addU16(0);                      // Flags
-            if (overload->flags & OVERLOAD_RETVAL) // Offset to register
+            if (overload->hasFlag(OVERLOAD_RETVAL)) // Offset to register
                 concat.addU32(SCBE_CPU::getParamStackOffset(&f, typeFunc->numParamsRegisters()));
             else
                 concat.addU32(overload->computedValue.storageOffset + f.offsetStack);

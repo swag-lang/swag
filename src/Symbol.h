@@ -45,6 +45,10 @@ struct SymbolOverload
     void from(const SymbolOverload* other);
     void setRegisters(const RegisterList& reg, uint32_t fl);
 
+    // clang-format off
+    bool hasFlag(uint32_t fl) const     { return flags & fl; }
+    // clang-format on
+
     ComputedValue computedValue;
     RegisterList  symRegisters;
 
@@ -88,6 +92,10 @@ struct SymbolName
     void            addDependentJob(Job* job);
     void            addDependentJobNoLock(Job* job);
     void            unregisterNode(const AstNode* node);
+
+    // clang-format off
+    bool hasFlag(uint32_t fl) const     { return flags & fl; }
+    // clang-format on    
 
     SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;

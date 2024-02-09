@@ -230,11 +230,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 
         // If we are referencing an interface name, then interface can come from the interface definition and
         // from the sub scope inside a struct (OVERLOAD_IMPL_IN_STRUCT).
-        if (over->flags & OVERLOAD_IMPL_IN_STRUCT)
+        if (over->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL_IN_STRUCT))
+                if (!(matches[j]->symbolOverload->hasFlag(OVERLOAD_IMPL_IN_STRUCT)))
                 {
                     // If interface name is alone, then we take in priority the interface definition, not the impl block
                     if (node == node->parent->childs.front())
@@ -339,7 +339,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             {
                 if (i == j)
                     continue;
-                if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && (matches[j]->symbolOverload->flags & OVERLOAD_VAR_CAPTURE))
+                if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && (matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_CAPTURE)))
                 {
                     if (curMatch->symbolOverload->node->ownerScope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
                     {
@@ -761,7 +761,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->kind != SymbolKind::GenericType &&
             oneSymbol->kind != SymbolKind::Struct &&
             oneSymbol->kind != SymbolKind::Enum &&
-            (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE)) &&
+            (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE))) &&
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)
         {

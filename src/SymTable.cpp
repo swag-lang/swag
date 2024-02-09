@@ -147,7 +147,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         {
             if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
             {
-                if ((resolved->flags & OVERLOAD_INCOMPLETE) && resolved->typeInfo == toAdd.typeInfo)
+                if ((resolved->hasFlag(OVERLOAD_INCOMPLETE)) && resolved->typeInfo == toAdd.typeInfo)
                 {
                     overload = resolved;
                     overload->flags &= ~OVERLOAD_INCOMPLETE;
@@ -156,7 +156,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
             }
             else
             {
-                if ((resolved->flags & OVERLOAD_UNDEFINED) && resolved->typeInfo->isSame(toAdd.typeInfo, CASTFLAG_CAST))
+                if ((resolved->hasFlag(OVERLOAD_UNDEFINED)) && resolved->typeInfo->isSame(toAdd.typeInfo, CASTFLAG_CAST))
                 {
                     overload = resolved;
                     overload->flags &= ~OVERLOAD_UNDEFINED;
@@ -228,7 +228,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
 {
     if (scope->kind == ScopeKind::Struct)
         return;
-    if (overload && overload->flags & OVERLOAD_RETVAL)
+    if (overload && overload->hasFlag(OVERLOAD_RETVAL))
         return;
 
     StructToDrop st;
@@ -366,7 +366,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
         // This is fine to define an empty function multiple times, if the signatures are the same
         if (!node->isEmptyFct() &&
             !overload->node->isEmptyFct() &&
-            !(overload->flags & OVERLOAD_UNDEFINED) &&
+            !overload->hasFlag(OVERLOAD_UNDEFINED) &&
             !node->hasAstFlag(AST_HAS_SELECT_IF) &&
             !overload->node->hasAstFlag(AST_HAS_SELECT_IF))
         {

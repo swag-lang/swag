@@ -37,13 +37,13 @@ Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeI
         return "captured parameter";
     }
 
-    if (overFlags & OVERLOAD_VAR_FUNC_PARAM && node->ownerFct && node->ownerFct->typeInfo->isLambda())
+    if ((overFlags & OVERLOAD_VAR_FUNC_PARAM) && node->ownerFct && node->ownerFct->typeInfo->isLambda())
     {
         article = "a";
         return "lambda parameter";
     }
 
-    if (overFlags & OVERLOAD_VAR_FUNC_PARAM && node->ownerFct && node->ownerFct->typeInfo->isClosure())
+    if ((overFlags & OVERLOAD_VAR_FUNC_PARAM) && node->ownerFct && node->ownerFct->typeInfo->isClosure())
     {
         article = "a";
         return "closure parameter";
@@ -291,7 +291,7 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
             return "global variable";
         if (node->hasAstFlag(AST_STRUCT_MEMBER))
             return "struct member";
-        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
             return "function parameter";
         return "local variable";
 

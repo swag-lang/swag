@@ -66,7 +66,7 @@ namespace
 
             if (wantedTypeInfo->isVariadic())
             {
-                if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic() && !(callTypeInfo->hasFlag(TYPEINFO_SPREAD))))
+                if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD)))
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
                     context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;

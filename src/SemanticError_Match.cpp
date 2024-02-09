@@ -313,7 +313,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         for (auto oneMatch : tryMatches)
         {
             const auto& one = *oneMatch;
-            if (!(one.overload->flags & OVERLOAD_GENERIC))
+            if (!(one.overload->hasFlag(OVERLOAD_GENERIC)))
                 n.push_back(oneMatch);
         }
         if (!n.empty())
@@ -327,7 +327,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         for (auto oneMatch : tryMatches)
         {
             const auto& one = *oneMatch;
-            if (one.overload->flags & OVERLOAD_GENERIC)
+            if (one.overload->hasFlag(OVERLOAD_GENERIC))
                 n.push_back(oneMatch);
         }
         if (!n.empty())

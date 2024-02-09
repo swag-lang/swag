@@ -70,7 +70,7 @@ namespace
             return true;
         if (node->sourceFile->isBootstrapFile)
             return true;
-        if (!node->sourceFile->forceExport && !(node->hasAttribute(ATTRIBUTE_PUBLIC)))
+        if (!node->sourceFile->forceExport && !node->hasAttribute(ATTRIBUTE_PUBLIC))
             return false;
 
         return true;
@@ -376,7 +376,7 @@ void GenDoc::collectScopes(Scope* root)
     }
 
     // If something is exported inside a namespace, then force the namespace to be exported too
-    if (collect.size() != count && root->kind == ScopeKind::Namespace && !(root->owner->hasAttribute(ATTRIBUTE_PUBLIC)))
+    if (collect.size() != count && root->kind == ScopeKind::Namespace && !root->owner->hasAttribute(ATTRIBUTE_PUBLIC))
         root->owner->addAttribute(ATTRIBUTE_PUBLIC);
 
     if (!(root->flags & SCOPE_AUTO_GENERATED))
@@ -673,7 +673,7 @@ void GenDoc::generateContent()
             }
 
             // Fields
-            if (!(structNode->hasAttribute(ATTRIBUTE_OPAQUE)))
+            if (!structNode->hasAttribute(ATTRIBUTE_OPAQUE))
             {
                 bool first = true;
                 for (auto structVal : structNode->scope->symTable.allSymbols)
@@ -681,7 +681,7 @@ void GenDoc::generateContent()
                     auto n1 = structVal->nodes[0];
                     if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
                         continue;
-                    if (!(n1->hasAstFlag(AST_STRUCT_MEMBER)))
+                    if (!n1->hasAstFlag(AST_STRUCT_MEMBER))
                         continue;
                     if (structVal->name.find("item") == 0)
                         continue;

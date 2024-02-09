@@ -234,7 +234,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             else
             {
                 const AstFuncDecl* decl = castAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
-                if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->flags & OVERLOAD_UNDEFINED)
+                if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
                 {
                     const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
                     Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);

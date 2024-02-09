@@ -1076,7 +1076,7 @@ bool AstNode::isValidIfParam(const SymbolOverload* overload) const
         return false;
     if (!overload)
         return false;
-    if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM))
+    if (!overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
         return false;
     if (isSameStackFrame(overload))
         return false;
@@ -1087,13 +1087,13 @@ bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
 {
     if (overload->symbol->kind != SymbolKind::Variable)
         return true;
-    if (overload->flags & OVERLOAD_COMPUTED_VALUE)
+    if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
         return true;
-    if (overload->flags & OVERLOAD_VAR_INLINE && !ownerInline)
+    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !ownerInline)
         return false;
-    if (overload->flags & OVERLOAD_VAR_INLINE && ownerInline->ownerFct != ownerFct)
+    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && ownerInline->ownerFct != ownerFct)
         return false;
-    if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM) && !(overload->flags & OVERLOAD_VAR_LOCAL))
+    if (!overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && !overload->hasFlag(OVERLOAD_VAR_LOCAL))
         return true;
 
     const auto nodeVar = overload->node;

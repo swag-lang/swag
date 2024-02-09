@@ -67,7 +67,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
     ScopedLock lk(symbol->mutex);
 
     // If we are inside a generic function (not instantiated), then we are done, we
-    // cannot instantiate (can occure when evaluating function body of an incomplete short lambda)
+    // cannot instantiate (can occur when evaluating function body of an incomplete short lambda)
     if (node->ownerFct && node->ownerFct->hasAstFlag(AST_IS_GENERIC))
         return true;
 
@@ -207,7 +207,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
             // We have a new type replacement, so we must be sure that every other types registered in the
             // context.genericReplaceTypes are up to date too.
             // For example if type T is now s32, we must be sure that a potential *T or [..] T in the map will
-            // be updated correspondinly.
+            // be updated correspondingly.
             if (context.genericReplaceTypes.size() > 1)
             {
                 m.clear();

@@ -120,7 +120,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload &&
-        (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+        (node->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
     {
         if (!node->hasComputedValue())
         {
@@ -144,7 +144,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->addAstFlag(AST_IS_CONST);
     const auto overload = node->resolvedSymbolOverload;
-    if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
+    if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
@@ -549,7 +549,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         return true;
 
     // Not for a global symbol
-    if (overload->flags & OVERLOAD_VAR_GLOBAL)
+    if (overload->hasFlag(OVERLOAD_VAR_GLOBAL))
         return true;
 
     const auto kind = overload->symbol->kind;
@@ -1138,7 +1138,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
             // Be sure that we have at least a registered incomplete symbol
             SWAG_ASSERT(symbol->overloads.size() == 1);
-            if (!(symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
+            if (!(symbol->overloads[0]->hasFlag(OVERLOAD_INCOMPLETE)))
             {
                 waitSymbolNoLock(job, symbol);
                 return true;

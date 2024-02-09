@@ -695,7 +695,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             auto arrayNode = castAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             auto arrayOver = arrayNode->array->resolvedSymbolOverload;
-            if (arrayOver && (arrayOver->flags & OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasComputedValue())
+            if (arrayOver && (arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE)) && arrayNode->access->hasComputedValue())
             {
                 auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                 auto ptr     = (uint8_t*) arrayOver->computedValue.getStorageAddr();
@@ -713,7 +713,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     }
 
     // If this a L or R value
-    if (overload->flags & OVERLOAD_VAR_STRUCT)
+    if (overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
         if (symbol->kind != SymbolKind::GenericType)
         {
@@ -732,7 +732,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     }
 
     // Do not register a sub impl scope, for ufcs to use the real variable
-    if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
+    if (!(overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT)))
     {
         identifierRef->resolvedSymbolName     = symbol;
         identifierRef->resolvedSymbolOverload = overload;
@@ -743,12 +743,12 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
     if (identifier->typeInfo->isGeneric())
         identifier->addAstFlag(AST_IS_GENERIC);
-    else if (overload->flags & OVERLOAD_GENERIC && !(identifier->hasAstFlag(AST_FROM_GENERIC)))
+    else if (overload->hasFlag(OVERLOAD_GENERIC) && !(identifier->hasAstFlag(AST_FROM_GENERIC)))
         identifier->addAstFlag(AST_IS_GENERIC);
 
     // Symbol is linked to a using var : insert the variable name before the symbol
     // Except if symbol is a constant !
-    if (!(overload->flags & OVERLOAD_COMPUTED_VALUE))
+    if (!(overload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
     {
         if (dependentVar && identifierRef->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
         {
@@ -873,7 +873,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     case SymbolKind::Struct:
     case SymbolKind::Interface:
     {
-        if (!(overload->flags & OVERLOAD_IMPL_IN_STRUCT))
+        if (!(overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT)))
             SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
 
@@ -976,7 +976,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // wait for the struct container to be solved. We do not want the semantic to continue with
         // an unsolved struct, because that means that storageOffset has not been computed yet
         // (and in some cases we can go to the bytecode generation with the struct not solved).
-        if (overload->flags & OVERLOAD_VAR_STRUCT && identifier->identifierRef()->startScope)
+        if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->startScope)
         {
             auto parentStructNode = identifier->identifierRef()->startScope->owner;
             if (parentStructNode->resolvedSymbolOverload)
@@ -1002,7 +1002,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         }
 
         // Transform the variable to a constant node
-        if (overload->flags & OVERLOAD_COMPUTED_VALUE)
+        if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
         {
             if (overload->node->isConstantGenTypeInfo())
                 identifier->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
@@ -1593,7 +1593,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
         if (oneOverload.symMatchContext.result == MatchResult::Ok)
         {
-            if (overload->flags & OVERLOAD_GENERIC)
+            if (overload->hasFlag(OVERLOAD_GENERIC))
             {
                 // Be sure that we would like to instantiate in case we do not have user generic parameters.
                 bool asMatch = false;

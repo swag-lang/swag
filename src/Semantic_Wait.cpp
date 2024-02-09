@@ -124,7 +124,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
-    if (!(structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED)))
+    if (!structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED))
     {
         structNode->dependentJobs.add(job);
         job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName, structNode, nullptr);
@@ -155,7 +155,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
-    if (!(structNode->hasSemFlag(SEMFLAG_BYTECODE_GENERATED)))
+    if (!structNode->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(job);
         job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName, structNode, nullptr);
@@ -168,13 +168,13 @@ void Semantic::waitOverloadCompleted(Job* job, const SymbolOverload* overload)
 
     {
         SharedLock lk(overload->symbol->mutex);
-        if (!(overload->flags & OVERLOAD_INCOMPLETE))
+        if (!overload->hasFlag(OVERLOAD_INCOMPLETE))
             return;
     }
 
     {
         ScopedLock lk(overload->symbol->mutex);
-        if (overload->flags & OVERLOAD_INCOMPLETE)
+        if (overload->hasFlag(OVERLOAD_INCOMPLETE))
         {
             waitSymbolNoLock(job, overload->symbol);
             return;
@@ -326,7 +326,7 @@ bool Semantic::needToCompleteSymbol(SemanticContext* context, const AstIdentifie
 
 bool Semantic::needToWaitForSymbol(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol)
 {
-    if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
+    if (!symbol->cptOverloads && !symbol->hasFlag(SYMBOL_ATTRIBUTE_GEN))
         return false;
 
     // For a name alias, we wait everything to be done...

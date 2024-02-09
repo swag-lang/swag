@@ -149,7 +149,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                 SWAG_ASSERT(symbol);
                 for (auto overload : symbol->overloads)
                 {
-                    if (overload->flags & OVERLOAD_VAR_INLINE)
+                    if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                     {
                         overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_INLINE_REG);
                         SWAG_ASSERT(overload->symRegisters.countResults > 0);
@@ -187,7 +187,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                         SWAG_ASSERT(symbol);
                         for (auto overload : symbol->overloads)
                         {
-                            if (overload->flags & OVERLOAD_VAR_INLINE)
+                            if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                             {
                                 overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_INLINE_REG);
                                 if (!overload->symRegisters.cannotFree)
@@ -217,7 +217,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                     SWAG_ASSERT(symbol);
                     for (auto overload : symbol->overloads)
                     {
-                        if (overload->flags & OVERLOAD_VAR_INLINE)
+                        if (overload->hasFlag(OVERLOAD_VAR_INLINE))
                         {
                             RegisterList rl;
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, rl));
@@ -1041,7 +1041,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
             continue;
 
         // Need to be sure that the variable is not emitted later, after the leave scope
-        if (one.overload && !(one.overload->flags & OVERLOAD_EMITTED))
+        if (one.overload && !(one.overload->hasFlag(OVERLOAD_EMITTED)))
             continue;
 
         if (one.typeInfo->isArray())

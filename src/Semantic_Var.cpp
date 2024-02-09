@@ -165,7 +165,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     // We simulate a reference to the local variable, in the same context, to raise an error
     // if ambiguous. That way we have a direct error at the declaration, even if the variable
     // is not used later
-    if (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL)
+    if (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         const auto id = createTmpId(context, node, node->token.text);
         SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_GHOSTING));
@@ -174,11 +174,11 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 
     // :opAffectConstExpr
     if (node->resolvedSymbolOverload &&
-        node->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
+        node->resolvedSymbolOverload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
         node->resolvedSymbolOverload->flags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
     {
         const auto overload = node->resolvedSymbolOverload;
-        SWAG_ASSERT(overload->flags & OVERLOAD_INCOMPLETE);
+        SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
 
         node->removeAstFlag(AST_NO_BYTECODE);
         node->removeAstFlag(AST_VALUE_COMPUTED);
@@ -224,7 +224,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     }
 
     // Compiler #message
-    if (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_GLOBAL)
+    if (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_GLOBAL))
     {
         sendCompilerMsgGlobalVar(context);
     }
@@ -392,7 +392,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
 
     if (varNode->isConstDecl())
         return &module->constantSegment;
-    if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT))
+    if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT)))
         return &module->constantSegment;
 
     if (varNode->hasAttribute(AST_EXPLICITLY_NOT_INITIALIZED))
@@ -789,7 +789,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->assignment &&
         node->assignment->kind != AstNodeKind::ExpressionList &&
         node->assignment->kind != AstNodeKind::ExplicitNoInit &&
-        (!node->assignment->typeInfo->isStruct() || !(node->assignment->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))) &&
+        (!node->assignment->typeInfo->isStruct() || !node->assignment->hasAstFlag(AST_IN_FUNC_DECL_PARAMS)) &&
         !isGeneric)
     {
         // A generic identifier without a type but with a default value is a generic type
@@ -1180,7 +1180,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else
             {
-                module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
+                module->addGlobalVar(node, (symbolFlags & OVERLOAD_VAR_BSS) ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
             }
 
             // Register global variable in the list of global variables to drop if the variable is

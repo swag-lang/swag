@@ -716,7 +716,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
             // :opAffectConstExpr
             else if (typeVar->isStruct() &&
                      varDecl->resolvedSymbolOverload &&
-                     varDecl->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
+                     varDecl->resolvedSymbolOverload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
                      varDecl->computedValue &&
                      varDecl->computedValue->storageSegment)
             {

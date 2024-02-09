@@ -470,7 +470,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 
         // We were not a short lambda, so just wakup our dependencies
-        if (!(funcNode->resolvedSymbolOverload->flags & OVERLOAD_UNDEFINED))
+        if (!(funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED)))
         {
             funcNode->resolvedSymbolName->dependentJobs.setRunning();
         }
@@ -1218,7 +1218,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     // instead of a copy, in case the parameter to the tuple init is a local variable
     if (node->autoTupleReturn)
     {
-        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
+        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
         {
             node->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
             node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
@@ -1515,7 +1515,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
-    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL))
     {
         node->typeInfo = child->typeInfo;
     }
@@ -1623,13 +1623,13 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // If we are returning a local variable, we can do a move
-    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
+    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
     {
         child->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 
-    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
+    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL)))
     {
         child->addAstFlag(AST_NO_BYTECODE);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);

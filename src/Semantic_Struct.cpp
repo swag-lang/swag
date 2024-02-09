@@ -26,7 +26,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 
     const auto structDecl = castAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 
-    if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+    if (id->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
     {
         if (!node->hasAstFlag(AST_FROM_GENERIC))
         {
@@ -749,7 +749,7 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
         case AstNodeKind::CompilerIf:
         {
             const AstIf* compilerIf = castAst<AstIf>(child, AstNodeKind::CompilerIf);
-            if (!(compilerIf->ifBlock->hasAstFlag(AST_NO_SEMANTIC)))
+            if (!compilerIf->ifBlock->hasAstFlag(AST_NO_SEMANTIC))
                 flattenStructChilds(context, compilerIf->ifBlock, result);
             else if (compilerIf->elseBlock)
                 flattenStructChilds(context, compilerIf->elseBlock, result);
@@ -997,7 +997,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             }
 
             // Var has an initialization
-            else if (varDecl->assignment && !(varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
+            else if (varDecl->assignment && !varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
             {
                 SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->hasAstFlag(AST_CONST_EXPR), varDecl->assignment, Err(Err0041)));
 

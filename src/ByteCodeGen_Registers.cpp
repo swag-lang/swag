@@ -52,7 +52,7 @@ uint32_t ByteCodeGen::reserveRegisterRC(const ByteCodeGenContext* context, const
         if (overload)
         {
             SharedLock lk(overload->symbol->mutex);
-            if (overload->flags & OVERLOAD_HINT_REG)
+            if (overload->hasFlag(OVERLOAD_HINT_REG))
             {
                 const auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
                 if (it != -1)

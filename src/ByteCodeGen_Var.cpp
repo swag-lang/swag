@@ -15,7 +15,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
     // No need to generate a local variable if it is never used
     if (context->sourceFile->module->mustOptimizeBytecode(node))
     {
-        if (node->resolvedSymbolOverload && !(node->resolvedSymbolOverload->flags & OVERLOAD_USED))
+        if (node->resolvedSymbolOverload && !(node->resolvedSymbolOverload->hasFlag(OVERLOAD_USED)))
         {
             // Keep structs, because of opDrop
             const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
@@ -54,7 +54,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     resolved->flags |= OVERLOAD_EMITTED;
 
     const auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCE_ALIAS);
-    const bool retVal   = resolved->flags & OVERLOAD_RETVAL;
+    const bool retVal   = resolved->hasFlag(OVERLOAD_RETVAL);
 
     Semantic::waitStructGenerated(context->baseJob, typeInfo);
     YIELD();
@@ -146,7 +146,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             // Keep the value in a persistent register, as it cannot be changed
-            if (isLet && !(resolved->flags & OVERLOAD_PERSISTENT_REG))
+            if (isLet && !(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)))
             {
                 context->bc->staticRegs += node->resultRegisterRc.size();
                 node->resultRegisterRc.cannotFree = true;
@@ -170,7 +170,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             // Store value to stack
-            if (!isLet || (resolved->flags & OVERLOAD_HAS_MAKE_POINTER) || (context->sourceFile->module->buildCfg.byteCodeOptimizeLevel != 2))
+            if (!isLet || (resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER)) || (context->sourceFile->module->buildCfg.byteCodeOptimizeLevel != 2))
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRc, node->typeInfo, node->assignment);

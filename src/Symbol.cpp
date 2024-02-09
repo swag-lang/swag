@@ -20,21 +20,21 @@ void SymbolOverload::setRegisters(const RegisterList& reg, uint32_t fl)
     ScopedLock lk(symbol->mutex);
     if (fl == OVERLOAD_HINT_REG)
     {
-        if (flags & OVERLOAD_INLINE_REG)
+        if (hasFlag(OVERLOAD_INLINE_REG))
             return;
-        if (flags & OVERLOAD_PERSISTENT_REG)
+        if (hasFlag(OVERLOAD_PERSISTENT_REG))
             return;
     }
     else if (fl & OVERLOAD_INLINE_REG)
     {
-        SWAG_ASSERT(!(flags & OVERLOAD_INLINE_REG) || symRegisters == reg);
-        SWAG_ASSERT(!(flags & OVERLOAD_PERSISTENT_REG));
+        SWAG_ASSERT(!hasFlag(OVERLOAD_INLINE_REG) || symRegisters == reg);
+        SWAG_ASSERT(!hasFlag(OVERLOAD_PERSISTENT_REG));
         flags &= ~OVERLOAD_HINT_REG;
     }
     else
     {
-        SWAG_ASSERT(!(flags & OVERLOAD_PERSISTENT_REG) || symRegisters == reg);
-        SWAG_ASSERT(!(flags & OVERLOAD_INLINE_REG));
+        SWAG_ASSERT(!hasFlag(OVERLOAD_PERSISTENT_REG) || symRegisters == reg);
+        SWAG_ASSERT(!hasFlag(OVERLOAD_INLINE_REG));
         flags &= ~OVERLOAD_HINT_REG;
     }
 
