@@ -528,7 +528,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
         if (varDecl)
             varDecl->token = savedToken;
         YIELD();
-        right->semFlags &= ~SEMFLAG_LITERAL_SUFFIX;
+        right->removeSemFlag(SEMFLAG_LITERAL_SUFFIX);
     }
 
     // opAffect

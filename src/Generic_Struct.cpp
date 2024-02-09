@@ -51,7 +51,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                     node->semanticState = AstNodeResolveState::Enter;
                     Ast::visit(node, [](AstNode* n)
                     {
-                        n->semFlags &= ~SEMFLAG_ONCE;
+                        n->removeSemFlag(SEMFLAG_ONCE);
                     });
                     return true;
                 }

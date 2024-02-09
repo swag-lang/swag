@@ -93,15 +93,15 @@ void Semantic::doInheritAccess(AstNode* forNode, const AstNode* node)
 {
     if (node->hasSemFlag(SEMFLAG_ACCESS_PRIVATE))
     {
-        forNode->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
+        forNode->removeSemFlag(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
         forNode->addSemFlag(SEMFLAG_ACCESS_PRIVATE);
     }
     else if (node->hasSemFlag(SEMFLAG_ACCESS_INTERNAL) && !forNode->hasSemFlag(SEMFLAG_ACCESS_PRIVATE))
     {
-        forNode->semFlags &= ~SEMFLAG_ACCESS_PUBLIC;
+        forNode->removeSemFlag(SEMFLAG_ACCESS_PUBLIC);
         forNode->addSemFlag(SEMFLAG_ACCESS_INTERNAL);
     }
-    else if (node->hasSemFlag(SEMFLAG_ACCESS_PUBLIC) && !(forNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
+    else if (node->hasSemFlag(SEMFLAG_ACCESS_PUBLIC) && !forNode->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
     {
         forNode->addSemFlag(SEMFLAG_ACCESS_PUBLIC);
     }
@@ -215,7 +215,7 @@ namespace
 
         if (n->kind == AstNodeKind::Identifier || n->kind == AstNodeKind::FuncCall)
         {
-            if (n->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+            if (n->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
             {
                 return n;
             }
@@ -238,7 +238,7 @@ namespace
                         return res;
                     }
 
-                    if (retType->declNode && retType->declNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
+                    if (retType->declNode && retType->declNode->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
                     {
                         if (n->kind == AstNodeKind::ConstDecl || n->kind == AstNodeKind::VarDecl)
                         {
@@ -270,7 +270,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     computeAccess(node);
     if (!node->hasAttribute(ATTRIBUTE_PUBLIC))
         return true;
-    if (!(node->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
+    if (!node->hasSemFlag(SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE))
         return true;
 
     AstNode*   onNode  = nullptr;

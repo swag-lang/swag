@@ -116,7 +116,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     SWAG_ASSERT(context->node->kind == AstNodeKind::Identifier);
 
     context->node->addSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
-    funcDecl->semFlags &= ~SEMFLAG_PENDING_LAMBDA_TYPING;
+    funcDecl->removeSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
 
     ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
     if (typeUndefinedFct->returnType->isGeneric())
