@@ -332,6 +332,8 @@ struct AstNode
 
     // clang-format off
     bool hasAttribute(uint64_t attr) const  { return attributeFlags & attr; }
+    void addSpecFlags(uint16_t fl)          { specFlags |= fl; }
+    void removeSpecFlags(uint16_t fl)       { specFlags &= ~fl; }
     // clang-format on
 
     struct NodeExtensionByteCode
@@ -392,8 +394,6 @@ struct AstNode
     void allocateExtensionNoLock(ExtensionKind extensionKind);
     void setBcNotifyBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
-    void addSpecFlags(uint16_t fl);
-    void removeSpecFlags(uint16_t fl);
     void addAlternativeScopes(NodeExtensionMisc* ext);
 
     // clang-format off
