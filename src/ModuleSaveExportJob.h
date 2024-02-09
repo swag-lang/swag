@@ -6,7 +6,7 @@ struct ModuleSaveExportJob : Job
 {
     ModuleSaveExportJob()
     {
-        flags |= JOB_IS_IO;
+        addFlag(JOB_IS_IO);
     }
 
     JobResult execute() override;

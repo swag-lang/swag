@@ -28,7 +28,7 @@ void JobGroup::complete(Job* parentJob)
     {
         j->dependentJob = parentJob;
         j->jobGroup     = nullptr;
-        j->flags &= ~JOB_IS_OPT;
+        j->removeFlag(JOB_IS_OPT);
         parentJob->jobsToAdd.push_back(j);
     }
 

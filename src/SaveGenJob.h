@@ -9,7 +9,7 @@ struct SaveGenJob : Job
 
     SaveGenJob()
     {
-        flags |= JOB_IS_IO;
+        addFlag(JOB_IS_IO);
     }
 
     void release() override

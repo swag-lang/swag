@@ -414,7 +414,7 @@ JobResult ModuleBuildJob::execute()
 
         module->buildModulesSlice();
         pass = ModuleBuildPass::BeforeCompilerMessagesPass0;
-        flags |= JOB_PENDING_PLACE_HOLDER; // We can now be relaunched if necessary
+        addFlag(JOB_PENDING_PLACE_HOLDER); // We can now be relaunched if necessary
 
         auto semanticJob          = Allocator::alloc<ModuleSemanticJob>();
         semanticJob->module       = module;
@@ -496,7 +496,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::KeepJobAlive;
 
         pass = ModuleBuildPass::OptimizeBc;
-        flags &= ~JOB_PENDING_PLACE_HOLDER; // We can't be relaunched anymore
+        removeFlag(JOB_PENDING_PLACE_HOLDER); // We can't be relaunched anymore
 
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 

@@ -9,7 +9,7 @@ struct LoadSourceFileJob : Job
 
     LoadSourceFileJob()
     {
-        flags |= JOB_IS_IO;
+        addFlag(JOB_IS_IO);
     }
 
     void release() override

@@ -13,7 +13,7 @@ void ThreadManager::init()
 {
     initDefaultContext();
 
-    numWorkers = g_CommandLine.numCores == 0 ? (uint32_t) std::thread::hardware_concurrency() : g_CommandLine.numCores;
+    numWorkers = g_CommandLine.numCores == 0 ? std::thread::hardware_concurrency() : g_CommandLine.numCores;
     numWorkers = max(1, numWorkers);
 
     queueJobs.affinity.resize(g_ThreadMgr.numWorkers);
@@ -39,32 +39,32 @@ void ThreadManager::addJob(Job* job)
 void ThreadManager::addJobNoLock(Job* job)
 {
     if (debuggerMode)
-        job->flags |= JOB_IS_DEBUGGER;
+        job->addFlag(JOB_IS_DEBUGGER);
 
-    if (job->flags & JOB_IS_IN_THREAD)
+    if (job->hasFlag(JOB_IS_IN_THREAD))
     {
         SWAG_ASSERT(job->waitOnJobs == 0);
-        job->flags |= JOB_IS_PENDING_RUN;
+        job->addFlag(JOB_IS_PENDING_RUN);
         return;
     }
 
     // This should not happen... but this can happen
     // A thread is added, but should not run because a dependency is still running
-    // So, yes, this is an anti bug...
-    if (job->waitOnJobs != 0 && !(job->flags & JOB_ACCEPT_PENDING_COUNT))
+    // So, yes, this is a hack...
+    if (job->waitOnJobs != 0 && !job->hasFlag(JOB_ACCEPT_PENDING_COUNT))
         return;
 
-    SWAG_ASSERT(!(job->flags & JOB_IS_IN_QUEUE));
-    job->flags |= JOB_IS_IN_QUEUE;
+    SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_QUEUE));
+    job->addFlag(JOB_IS_IN_QUEUE);
 
     // We are a new dependency job (child of another job that depends on us)
     if (job->dependentJob)
     {
-        if (!(job->flags & JOB_IS_PENDING))
+        if (!job->hasFlag(JOB_IS_PENDING))
         {
-            job->flags |= JOB_IS_PENDING;
+            job->addFlag(JOB_IS_PENDING);
             job->dependentJob->waitOnJobs++;
-            job->dependentJob->flags &= ~JOB_IS_PENDING_RUN;
+            job->dependentJob->removeFlag(JOB_IS_PENDING_RUN);
         }
     }
 
@@ -77,10 +77,10 @@ void ThreadManager::addJobNoLock(Job* job)
         job->waitingJobIndex = -1;
     }
 
-    SWAG_ASSERT(job->waitOnJobs == 0 || (job->flags & JOB_ACCEPT_PENDING_COUNT));
-    job->flags &= ~JOB_ACCEPT_PENDING_COUNT;
+    SWAG_ASSERT(job->waitOnJobs == 0 || (job->hasFlag(JOB_ACCEPT_PENDING_COUNT)));
+    job->removeFlag(JOB_ACCEPT_PENDING_COUNT);
 
-    if (job->flags & JOB_IS_OPT)
+    if (job->hasFlag(JOB_IS_OPT))
     {
         if (job->affinity != UINT32_MAX)
         {
@@ -90,7 +90,7 @@ void ThreadManager::addJobNoLock(Job* job)
         else
             queueJobsOpt.jobs.push_back(job);
     }
-    else if (job->flags & JOB_IS_IO)
+    else if (job->hasFlag(JOB_IS_IO))
     {
         if (job->affinity != UINT32_MAX)
         {
@@ -128,9 +128,9 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     ScopedLock lk(mutexAdd);
     ScopedLock lk1(mutexDone);
 
-    SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
-    job->flags &= ~JOB_IS_IN_THREAD;
-    if (job->flags & JOB_IS_OPT)
+    SWAG_ASSERT(job->hasFlag(JOB_IS_IN_THREAD));
+    job->removeFlag(JOB_IS_IN_THREAD);
+    if (job->hasFlag(JOB_IS_OPT))
     {
         SWAG_ASSERT(jobsOptInThreads);
         --jobsOptInThreads;
@@ -154,9 +154,9 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 
     // A request has been made to run the job, and the job was not ended
     // So we rerun it immediately
-    if (job->flags & JOB_IS_PENDING_RUN)
+    if (job->hasFlag(JOB_IS_PENDING_RUN))
     {
-        job->flags &= ~JOB_IS_PENDING_RUN;
+        job->removeFlag(JOB_IS_PENDING_RUN);
         if (result != JobResult::ReleaseJob)
         {
             addJobNoLock(job);
@@ -178,7 +178,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     }
 
     // If i am an IO job, then decrease counter
-    if (job->flags & JOB_IS_IO)
+    if (job->hasFlag(JOB_IS_IO))
     {
         SWAG_ASSERT(currentJobsIO);
         --currentJobsIO;
@@ -204,7 +204,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     {
         SWAG_ASSERT(job->dependentJob->waitOnJobs);
         job->dependentJob->waitOnJobs--;
-        job->flags &= ~JOB_IS_PENDING;
+        job->removeFlag(JOB_IS_PENDING);
         if (!job->dependentJob->waitOnJobs)
         {
             job->dependentJob->wakeUpBy = job;
@@ -354,13 +354,13 @@ void ThreadManager::waitEndJobs()
 
 void ThreadManager::eatJob(Job* job)
 {
-    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
-    job->flags |= JOB_IS_IN_THREAD;
+    SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
+    job->addFlag(JOB_IS_IN_THREAD);
 
     job->setPendingInfos(JobWaitKind::None);
     job->jobThread = nullptr;
 
-    if (job->flags & JOB_IS_OPT)
+    if (job->hasFlag(JOB_IS_OPT))
         ++jobsOptInThreads;
     else
         ++jobsInThreads;
@@ -385,7 +385,7 @@ Job* ThreadManager::getJob(JobQueue& queue)
     if (!queue.affinity[g_ThreadIndex].empty())
     {
         job = queue.affinity[g_ThreadIndex].back();
-        if (debuggerMode && !(job->flags & JOB_IS_DEBUGGER))
+        if (debuggerMode && !job->hasFlag(JOB_IS_DEBUGGER))
             return nullptr;
         queue.affinity[g_ThreadIndex].pop_back();
         SWAG_ASSERT(queue.affinityCount);
@@ -399,7 +399,7 @@ Job* ThreadManager::getJob(JobQueue& queue)
             if (!queue.affinity[i].empty())
             {
                 job = queue.affinity[i].back();
-                if (debuggerMode && !(job->flags & JOB_IS_DEBUGGER))
+                if (debuggerMode && !job->hasFlag(JOB_IS_DEBUGGER))
                     return nullptr;
                 queue.affinity[i].pop_back();
                 SWAG_ASSERT(queue.affinityCount);
@@ -416,14 +416,14 @@ Job* ThreadManager::getJob(JobQueue& queue)
             jobPickIndex = rand() % queue.jobs.count;
 #endif
         job = queue.jobs[jobPickIndex];
-        if (debuggerMode && !(job->flags & JOB_IS_DEBUGGER))
+        if (debuggerMode && !job->hasFlag(JOB_IS_DEBUGGER))
             return nullptr;
         queue.jobs.erase(jobPickIndex);
     }
 
     SWAG_ASSERT(job);
-    SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
-    job->flags &= ~JOB_IS_IN_QUEUE;
+    SWAG_ASSERT(job->hasFlag(JOB_IS_IN_QUEUE));
+    job->removeFlag(JOB_IS_IN_QUEUE);
     eatJob(job);
 
     return job;
@@ -471,7 +471,7 @@ Job* ThreadManager::getJob()
         job = p->syntaxGroup.pickJob();
         if (job)
         {
-            SWAG_ASSERT(job->flags & JOB_IS_OPT);
+            SWAG_ASSERT(job->hasFlag(JOB_IS_OPT));
             eatJob(job);
             return job;
         }

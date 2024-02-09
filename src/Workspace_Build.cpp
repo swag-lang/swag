@@ -711,10 +711,10 @@ bool Workspace::buildTarget()
         for (size_t i = 0; i < waitingJobs.size(); i++)
         {
             const auto job = waitingJobs[i];
-            if (job->flags & JOB_PENDING_PLACE_HOLDER)
+            if (job->hasFlag(JOB_PENDING_PLACE_HOLDER))
             {
-                SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
-                job->flags |= JOB_ACCEPT_PENDING_COUNT;
+                SWAG_ASSERT(!(job->hasFlag(JOB_IS_IN_THREAD)));
+                job->addFlag(JOB_ACCEPT_PENDING_COUNT);
                 waitingJobs.erase_unordered(i);
                 i--;
                 restart = true;

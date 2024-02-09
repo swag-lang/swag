@@ -3,16 +3,16 @@
 #include "ErrorContext.h"
 #include "Mutex.h"
 
-struct JobThread;
+struct AstFuncDecl;
 struct AstNode;
+struct Diagnostic;
+struct JobGroup;
+struct JobThread;
+struct Module;
+struct SourceFile;
 struct SymbolName;
 struct SymbolOverload;
-struct SourceFile;
-struct Module;
-struct Diagnostic;
 struct TypeInfo;
-struct AstFuncDecl;
-struct JobGroup;
 
 constexpr uint32_t JOB_IS_IN_QUEUE          = 0x00000001;
 constexpr uint32_t JOB_IS_IN_THREAD         = 0x00000002;
@@ -87,13 +87,20 @@ enum class JobWaitKind
 struct Job
 {
     virtual JobResult execute() = 0;
-    virtual void      release()
+
+    virtual void release()
     {
-    };
+    }
 
     void addDependentJob(Job* job);
     void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
     void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
+
+    // clang-format off
+    bool hasFlag(uint32_t fl) const     { return flags & fl; }
+    void addFlag(uint32_t fl)           { flags |= fl; }
+    void removeFlag(uint32_t fl)        { flags &= ~fl; }
+    // clang-format on
 
     SharedMutex            executeMutex;
     SharedMutex            mutexDependent;

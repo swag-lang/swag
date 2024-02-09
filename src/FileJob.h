@@ -8,7 +8,7 @@ struct CopyFileJob : Job
 
     CopyFileJob()
     {
-        flags |= JOB_IS_IO;
+        addFlag(JOB_IS_IO);
     }
 
     void release() override
@@ -26,7 +26,7 @@ struct LoadFileJob : Job
 {
     LoadFileJob()
     {
-        flags |= JOB_IS_IO;
+        addFlag(JOB_IS_IO);
     }
 
     JobResult execute() override;

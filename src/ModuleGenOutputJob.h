@@ -7,7 +7,7 @@ struct ModuleGenOutputJob : Job
 {
     ModuleGenOutputJob()
     {
-        flags |= JOB_IS_IO;
+        addFlag(JOB_IS_IO);
     }
 
     JobResult execute() override;
