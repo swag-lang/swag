@@ -6550,7 +6550,7 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
     const auto fl0 = g_ByteCodeOpDesc[(int) ip->op].flags;
     const auto fl1 = g_ByteCodeOpDesc[(int) ipn->op].flags;
 
-    if (fl0 & OPFLAG_IS_8B && !(fl1 & (OPFLAG_IS_8B)))
+    if (fl0 & OPFLAG_IS_8B && !(fl1 & OPFLAG_IS_8B))
         return;
     if (fl0 & OPFLAG_IS_16B && !(fl1 & (OPFLAG_IS_8B | OPFLAG_IS_16B)))
         return;

@@ -429,11 +429,9 @@ bool Semantic::resolveType(SemanticContext* context)
                             const auto note1 = Diagnostic::note(FMT(Nte(Nte0182), symName->name.c_str(), symName->name.c_str()));
                             return context->report(diag, note1, note);
                         }
-                        else
-                        {
-                            diag.hint = Nte(Nte0160);
-                            return context->report(diag, note);
-                        }
+
+                        diag.hint = Nte(Nte0160);
+                        return context->report(diag, note);
                     }
 
                     return context->report(diag, note);
@@ -521,7 +519,7 @@ bool Semantic::resolveType(SemanticContext* context)
         const auto rawType = typeNode->typeInfo;
         SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->childs.back(), Err(Err0736)}));
 
-        auto totalCount = 1;
+        uint32_t totalCount = 1;
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
         {
             auto child = typeNode->childs[i];
@@ -545,7 +543,7 @@ bool Semantic::resolveType(SemanticContext* context)
             else
             {
                 SWAG_CHECK(checkIsConstExpr(context, child->hasComputedValue(), child, Err(Err0036)));
-                count = (uint32_t) child->computedValue->reg.u32;
+                count = child->computedValue->reg.u32;
             }
 
             const auto childType = TypeManager::concreteType(child->typeInfo);

@@ -142,7 +142,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     {
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
-        if (!(concreteType->isNativeInteger()) || concreteType->isNativeIntegerSigned())
+        if (!concreteType->isNativeInteger() || concreteType->isNativeIntegerSigned())
             return context->report({typeNode->childs.front(), FMT(Err(Err0267), rawTypeInfo->getDisplayNameC())});
     }
 
@@ -150,7 +150,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     {
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         const auto concreteType = TypeManager::concreteType(rawTypeInfo);
-        if (!(concreteType->isNativeInteger()))
+        if (!concreteType->isNativeInteger())
             return context->report({typeNode->childs.front(), FMT(Err(Err0268), rawTypeInfo->getDisplayNameC())});
     }
 

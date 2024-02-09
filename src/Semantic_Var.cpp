@@ -413,14 +413,14 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
         (!varNode->type || !(varNode->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)) &&
         !(varNode->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
         (varNode->typeInfo->isStruct() || varNode->typeInfo->isInterface()) &&
-        !(varNode->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
+        !(varNode->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         return &module->bssSegment;
 
     return &module->mutableSegment;
 }
 
 // :DeduceLambdaType
-TypeInfo* Semantic::getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node)
+TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer* node)
 {
     SWAG_ASSERT(node->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE);
 
@@ -544,7 +544,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     bool isLocalConstant    = false;
 
     // Check #mixin
-    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text.find(g_LangSpec->name_atmixin) == 0)
+    if (!(node->flags & AST_GENERATED) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atmixin) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -562,7 +562,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // Check #alias
-    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text.find(g_LangSpec->name_atalias) == 0)
+    if (!(node->flags & AST_GENERATED) && !node->ownerInline && node->token.text.find(g_LangSpec->name_atalias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)

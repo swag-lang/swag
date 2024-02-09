@@ -382,7 +382,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         const auto typeFunc1 = castTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->isSelf()))
+                        if (!typeFunc1->parameters.empty() && typeFunc1->parameters[0]->typeInfo->isSelf())
                         {
                             curMatch->remove = true;
                             break;

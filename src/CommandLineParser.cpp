@@ -427,7 +427,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         case CommandLineType::Int:
         {
             pz               = argument.c_str();
-            bool thisIsAnInt = !(argument.empty());
+            bool thisIsAnInt = !argument.empty();
 
             while (*pz)
             {

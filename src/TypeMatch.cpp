@@ -512,7 +512,7 @@ namespace
                         firstChild->resolvedSymbolOverload->node->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT)
                         isValue = true;
 
-                    if ((symbolParameter->typeInfo->isKindGeneric()) && isValue)
+                    if (symbolParameter->typeInfo->isKindGeneric() && isValue)
                     {
                         context.badSignatureInfos.badSignatureParameterIdx  = i;
                         context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
@@ -579,7 +579,7 @@ namespace
                      symbolParameter->typeInfo->isStruct() ||
                      callParameter->typeInfo->isAlias() ||
                      !(symbolParameter->flags & TYPEINFOPARAM_DEFINED_VALUE) ||
-                     (Semantic::valueEqualsTo(symbolParameter->value, callParameter)))
+                     Semantic::valueEqualsTo(symbolParameter->value, callParameter))
             {
                 auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
                 if (it == context.genericReplaceTypes.end())

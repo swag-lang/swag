@@ -306,7 +306,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     typeInfo->stackSize   = funcNode->stackSize;
 
     // Check attributes
-    if ((funcNode->isForeign()) && funcNode->content)
+    if (funcNode->isForeign() && funcNode->content)
     {
         const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Foreign);
         const auto note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
@@ -1015,7 +1015,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         !(funcNode->flags & AST_FROM_GENERIC) &&
         !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
-        (funcNode->ownerStructScope->owner->typeInfo->isStruct()))
+        funcNode->ownerStructScope->owner->typeInfo->isStruct())
     {
         return true;
     }
@@ -1292,7 +1292,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::While)
         {
             const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
-            if ((whileNode->boolExpression->hasComputedValue()) && (whileNode->boolExpression->computedValue->reg.b))
+            if (whileNode->boolExpression->hasComputedValue() && (whileNode->boolExpression->computedValue->reg.b))
                 whileNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
             break;
         }
@@ -1300,7 +1300,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::For)
         {
             const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
-            if ((forNode->boolExpression->hasComputedValue()) && (forNode->boolExpression->computedValue->reg.b))
+            if (forNode->boolExpression->hasComputedValue() && (forNode->boolExpression->computedValue->reg.b))
                 forNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
             break;
         }

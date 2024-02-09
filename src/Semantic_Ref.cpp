@@ -628,7 +628,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!arrayType->isStruct())
     {
-        if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+        if (!accessType->isNativeInteger() && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         {
             const Diagnostic diag{arrayNode->access, FMT(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
             return context->report(diag);
@@ -863,7 +863,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     const auto accessType = getConcreteTypeUnRef(arrayNode->access, CONCRETE_ALL);
     if (!arrayType->isStruct())
     {
-        if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+        if (!accessType->isNativeInteger() && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         {
             const Diagnostic diag{arrayNode->access, FMT(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
             return context->report(diag);

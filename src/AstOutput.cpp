@@ -732,7 +732,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
             const auto typeExpr = castAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
             SWAG_ASSERT(!varNode->assignment);
             SWAG_ASSERT(typeExpr->identifier);
-            SWAG_ASSERT(varNode->type->typeInfo && (varNode->type->typeInfo->isTuple()));
+            SWAG_ASSERT(varNode->type->typeInfo && varNode->type->typeInfo->isTuple());
             const auto id = castAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
             concat.addChar('{');
             SWAG_CHECK(outputNode(context, concat, id->callParameters));

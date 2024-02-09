@@ -95,12 +95,12 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         }
 
         // If this is for a return, remember it, in order to make a move or a copy
-        if ((typeStruct->isTuple()) && fromNode->parent->kind == AstNodeKind::Return)
+        if (typeStruct->isTuple() && fromNode->parent->kind == AstNodeKind::Return)
             oneParam->autoTupleReturn = castAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
 
     // For a tuple initialization, every parameters must be covered
-    if (!fromType && (typeStruct->isTuple()))
+    if (!fromType && typeStruct->isTuple())
     {
         const int maxCount = (int) typeStruct->fields.size();
         if (countParams > maxCount)

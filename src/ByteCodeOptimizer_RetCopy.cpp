@@ -321,7 +321,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                         const auto it2 = context->mapRegReg.find(it1);
                         if (!it2)
                             continue;
-                        if ((*it2) == UINT32_MAX || (*it) == UINT32_MAX || *it2 == *it)
+                        if (*it2 == UINT32_MAX || *it == UINT32_MAX || *it2 == *it)
                         {
                             ok = false;
                             ip = ipOrg;

@@ -293,7 +293,7 @@ bool TypeInfo::isMethod() const
     const auto param = ptr->parameters[0];
     if (!param->typeInfo->isPointer())
         return false;
-    if (!(param->typeInfo->isSelf()))
+    if (!param->typeInfo->isSelf())
         return false;
     if (!(param->typeInfo->flags & TYPEINFO_HAS_USING))
         return false;
@@ -318,7 +318,7 @@ bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
             return false;
         if ((flags & TYPEINFO_POINTER_MOVE_REF) != (from->flags & TYPEINFO_POINTER_MOVE_REF))
             return false;
-        if ((isClosure()) != (from->isClosure()))
+        if (isClosure() != from->isClosure())
             return false;
     }
 

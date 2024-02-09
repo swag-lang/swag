@@ -507,7 +507,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
                     if (text.empty())
                     {
-                        flags &= ~(ATTRIBUTE_OPTIM_MASK);
+                        flags &= ~ATTRIBUTE_OPTIM_MASK;
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     }

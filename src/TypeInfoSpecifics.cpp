@@ -827,7 +827,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
     if (!isSame(other, castFlags))
         return false;
 
-    if ((castFlags & CASTFLAG_EXACT) || (to->isLambdaClosure()))
+    if ((castFlags & CASTFLAG_EXACT) || to->isLambdaClosure())
     {
         if (returnType && !returnType->isVoid() && !other->returnType)
             return false;

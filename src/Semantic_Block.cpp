@@ -612,7 +612,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({node->expression, Err(Err0171)}));
+        SWAG_VERIFY(!typeInfo->isTuple(), context->report({node->expression, Err(Err0171)}));
 
         AstIdentifierRef* identifierRef = nullptr;
         AstIdentifier*    callVisit     = nullptr;

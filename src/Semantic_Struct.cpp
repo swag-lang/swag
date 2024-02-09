@@ -1191,7 +1191,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);
 
     // Check public
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->isTuple()))
+    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !typeInfo->isTuple())
     {
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);

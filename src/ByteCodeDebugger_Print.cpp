@@ -172,7 +172,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     // Print source line
     else if (loc.location && loc.file)
     {
-        if ((force) ||
+        if (force ||
             (debugStepLastFile != loc.file) ||
             (debugStepLastLocation && debugStepLastLocation->line != loc.location->line))
         {

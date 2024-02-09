@@ -456,7 +456,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 !typeParam->isListArray() &&
                 !typeParam->isAny() &&
                 !typeParam->isClosure() &&
-                (funcParam->assignment->hasComputedValue()))
+                funcParam->assignment->hasComputedValue())
                 continue;
 
             bool covered = false;
@@ -1030,7 +1030,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             for (uint32_t i = 0; i < childIdx; i++)
             {
                 auto brother = checkParent->childs[i];
-                if (!(brother->hasComputedValue()) &&
+                if (!brother->hasComputedValue() &&
                     brother->resolvedSymbolOverload &&
                     brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
                 {

@@ -1878,7 +1878,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 bool done = false;
 
                 // If this is a variadic parameter of a cvarargs, we need to promote the value
-                if ((typeInfoFunc->isCVariadic()) &&
+                if (typeInfoFunc->isCVariadic() &&
                     i >= numTypeParams - 1 &&
                     param->typeInfo->isNative() &&
                     param->typeInfo->sizeOf < sizeof(Register))

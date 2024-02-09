@@ -153,7 +153,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     {
         msg = FMT(ErrNte(Err0646, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
-    else if (toType->isInterface() && ((fromType->isStruct()) || (fromType->isPointerTo(TypeInfoKind::Struct))))
+    else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
         if (fromType->isPointerTo(TypeInfoKind::Struct))
         {
