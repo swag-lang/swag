@@ -154,7 +154,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
                     note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
-                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING)))
+                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
                     note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Nte0027));
                 else
                     note = Diagnostic::note(Nte(Nte0045));

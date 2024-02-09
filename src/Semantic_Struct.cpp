@@ -896,7 +896,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 return context->report({child, FMT(Err(Err0475), child->typeInfo->getDisplayNameC())});
 
             TypeInfoParam* typeParam = nullptr;
-            if (!node->hasAstFlag(AST_FROM_GENERIC) || !(child->hasAstFlag(AST_REGISTERED_IN_STRUCT)))
+            if (!node->hasAstFlag(AST_FROM_GENERIC) || !child->hasAstFlag(AST_REGISTERED_IN_STRUCT))
             {
                 typeParam           = TypeManager::makeParam();
                 typeParam->name     = child->token.text;

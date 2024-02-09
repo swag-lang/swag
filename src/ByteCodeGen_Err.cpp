@@ -27,7 +27,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     const auto node = castAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
-    if (!(context->node->hasSemFlag(SEMFLAG_STACK_TRACE)))
+    if (!context->node->hasSemFlag(SEMFLAG_STACK_TRACE))
     {
         EMIT_INST0(context, ByteCodeOp::InternalPushErr);
         context->node->addSemFlag(SEMFLAG_STACK_TRACE);

@@ -5933,7 +5933,7 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const Modul
              !funcNode->sourceFile->isRuntimeFile &&
              !funcNode->sourceFile->isBootstrapFile &&
              !bc->isInSeg &&
-             !(funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC)) &&
+             !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
              numPreCompileBuffers == 2) // :SegZeroIsData
     {
         func->setLinkage(llvm::GlobalValue::InternalLinkage);

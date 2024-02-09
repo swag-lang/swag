@@ -647,7 +647,7 @@ namespace
 
                 // Capture parameters
                 /////////////////////////////////
-                if (decl->captureParameters && !(decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC)))
+                if (decl->captureParameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
                 {
                     const auto countParams = decl->captureParameters->childs.size();
                     for (size_t i = 0; i < countParams; i++)

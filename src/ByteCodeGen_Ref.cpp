@@ -20,7 +20,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
     }
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
-    if (!(node->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF)))
+    if (!node->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
     {
         const auto sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)

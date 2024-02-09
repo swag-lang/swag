@@ -154,15 +154,15 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 
         // Check that variable has been changed
         if (sym->hasFlag(SYMBOL_USED) &&
-            !(overload->hasFlag(OVERLOAD_IS_LET)) &&
-            !(overload->hasFlag(OVERLOAD_HAS_AFFECT)) &&
-            !(overload->hasFlag(OVERLOAD_HAS_MAKE_POINTER)) &&
-            !(overload->hasFlag(OVERLOAD_NOT_INITIALIZED)) &&
-            (overload->hasFlag(OVERLOAD_VAR_LOCAL)))
+            !overload->hasFlag(OVERLOAD_IS_LET) &&
+            !overload->hasFlag(OVERLOAD_HAS_AFFECT) &&
+            !overload->hasFlag(OVERLOAD_HAS_MAKE_POINTER) &&
+            !overload->hasFlag(OVERLOAD_NOT_INITIALIZED) &&
+            overload->hasFlag(OVERLOAD_VAR_LOCAL))
         {
             if (!overload->typeInfo->isStruct() && !overload->typeInfo->isArray())
             {
-                if (!(overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN)))
+                if (!overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN))
                 {
                     Diagnostic diag{front, front->token, FMT(Err(Wrn0004), sym->name.c_str()), DiagnosticLevel::Warning};
                     isOk = isOk && context->report(diag);

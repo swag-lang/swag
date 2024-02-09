@@ -47,7 +47,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
         // Take care of #validif/#validifx
         if (overSym->kind == SymbolKind::Function &&
-            !(context->node->hasAstFlag(AST_IN_VALIDIF)) &&
+            !context->node->hasAstFlag(AST_IN_VALIDIF) &&
             !context->node->hasAttribute(ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
             const auto funcDecl = castAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);

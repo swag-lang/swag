@@ -228,7 +228,7 @@ Utf8 Ast::literalToString(const TypeInfo* typeInfo, const ComputedValue& value)
         {
             if (c < 32)
                 result += FMT("\\x%02x", c);
-            else if (c > 127)
+            else if ((uint8_t) c > 127)
                 result += FMT("\\x%02x", c);
             else
                 result += c;
@@ -335,16 +335,16 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
     return newScope;
 }
 
-void Ast::visit(AstNode* root, const function<void(AstNode*)>& fctor)
+void Ast::visit(AstNode* root, const function<void(AstNode*)>& fct)
 {
-    fctor(root);
+    fct(root);
     for (const auto child : root->childs)
-        visit(child, fctor);
+        visit(child, fct);
 }
 
-Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fctor)
+Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fct)
 {
-    auto result = fctor(context, root);
+    auto result = fct(context, root);
     if (result == Stop)
         return Stop;
     if (result == NoChilds)
@@ -352,7 +352,7 @@ Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function
 
     for (const auto child : root->childs)
     {
-        result = visit(context, child, fctor);
+        result = visit(context, child, fct);
         if (result == Stop)
             return Stop;
     }
@@ -419,27 +419,4 @@ void Ast::normalizeIdentifierName(const Utf8& name)
 
         pz++;
     }
-}
-
-Utf8 Ast::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params)
-{
-    if (params.empty())
-        return "";
-
-    Utf8 result;
-    for (const auto param : params)
-    {
-        if (param->name == param->typeInfo->name)
-            continue;
-
-        if (result.empty())
-            result = "with ";
-        else
-            result += ", ";
-        result += param->name;
-        result += " = ";
-        result += param->typeInfo->name;
-    }
-
-    return result;
 }

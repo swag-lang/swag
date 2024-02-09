@@ -102,9 +102,9 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         typeInfo->name += typeParam->typeInfo->name;
         typeInfo->sizeOf += typeParam->typeInfo->sizeOf;
 
-        if (!(child->hasAstFlag(AST_CONST_EXPR)))
+        if (!child->hasAstFlag(AST_CONST_EXPR))
             node->removeAstFlag(AST_CONST_EXPR);
-        if (!(child->hasAstFlag(AST_R_VALUE)))
+        if (!child->hasAstFlag(AST_R_VALUE))
             node->removeAstFlag(AST_R_VALUE);
     }
 

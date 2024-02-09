@@ -110,8 +110,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     {
         if (v->typeInfo->name == newType->name)
         {
-            auto t0 = (TypeInfoStruct*) v->typeInfo;
-            auto t1 = (TypeInfoStruct*) newType;
+            const auto t0 = (TypeInfoStruct*) v->typeInfo;
+            const auto t1 = (TypeInfoStruct*) newType;
 
             bool same = true;
             for (size_t i = 0; i < t0->genericParameters.size(); i++)

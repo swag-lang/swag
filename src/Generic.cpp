@@ -177,9 +177,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         return;
     }
 
-    GenericReplaceType                  st;
     VectorMap<Utf8, GenericReplaceType> m;
-
     for (int i = 0; i < numGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
@@ -189,6 +187,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
         if (!context.genericParametersCallTypes[i].typeInfoReplace)
         {
+            GenericReplaceType st;
             st.typeInfoGeneric = genType;
             st.typeInfoReplace = genNode->typeInfo;
             st.fromNode        = genNode;
@@ -375,6 +374,29 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
 
     if (!remark.empty())
         result.push_back(remark);
+
+    return result;
+}
+
+Utf8 Generic::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params)
+{
+    if (params.empty())
+        return "";
+
+    Utf8 result;
+    for (const auto param : params)
+    {
+        if (param->name == param->typeInfo->name)
+            continue;
+
+        if (result.empty())
+            result = "with ";
+        else
+            result += ", ";
+        result += param->name;
+        result += " = ";
+        result += param->typeInfo->name;
+    }
 
     return result;
 }

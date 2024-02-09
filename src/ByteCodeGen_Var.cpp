@@ -15,7 +15,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
     // No need to generate a local variable if it is never used
     if (context->sourceFile->module->mustOptimizeBytecode(node))
     {
-        if (node->resolvedSymbolOverload && !(node->resolvedSymbolOverload->hasFlag(OVERLOAD_USED)))
+        if (node->resolvedSymbolOverload && !node->resolvedSymbolOverload->hasFlag(OVERLOAD_USED))
         {
             // Keep structs, because of opDrop
             const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
@@ -27,7 +27,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
                     return true;
                 }
 
-                if (node->assignment->hasComputedValue() || !(node->assignment->hasAstFlag(AST_SIDE_EFFECTS)))
+                if (node->assignment->hasComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
                 {
                     SWAG_CHECK(skipNodes(context, node));
                     return true;

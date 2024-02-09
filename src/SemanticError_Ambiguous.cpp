@@ -6,9 +6,9 @@
 #include "SemanticError.h"
 #include "TypeManager.h"
 
-bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& genericMatches)
+bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& genericMatches)
 {
-    const auto symbol = overloads[0]->overload->symbol;
+    const auto symbol = tryMatches[0]->overload->symbol;
     if (!node)
         node = context->node;
 
@@ -26,9 +26,9 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     return context->report(diag, notes);
 }
 
-bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& matches, uint32_t flags)
+bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, uint32_t flags)
 {
-    const auto symbol = overloads[0]->overload->symbol;
+    const auto symbol = tryMatches[0]->overload->symbol;
     if (!node)
         node = context->node;
 
@@ -87,12 +87,12 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
     return context->report(diag, notes);
 }
 
-bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols)
+bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches)
 {
     const Diagnostic diag{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
 
     Vector<const Diagnostic*> notes;
-    for (const auto& p1 : dependentSymbols)
+    for (const auto& p1 : matches)
     {
         auto       couldBe = FMT(Nte(Nte0047), Naming::aKindName(p1.symbol->kind).c_str());
         const auto note    = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->getTokenName(), couldBe);
