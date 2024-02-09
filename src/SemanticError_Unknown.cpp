@@ -93,7 +93,7 @@ namespace
             prevIdentifier->resolvedSymbolName->kind == SymbolKind::Variable &&
             !prevIdentifier->hasAstFlag(AST_GENERATED))
         {
-            diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
+            diag->addNote(prevIdentifier, Diagnostic::isType(prevIdentifier));
         }
 
         switch (identifierRef->startScope->owner->kind)

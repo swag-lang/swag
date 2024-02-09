@@ -36,7 +36,7 @@ void Diagnostic::setup()
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
 }
 
-void Diagnostic::addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
+void Diagnostic::addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
 {
     for (const auto& r : ranges)
     {
@@ -49,21 +49,24 @@ void Diagnostic::addRange(const SourceLocation& start, const SourceLocation& end
         }
     }
 
-    ranges.push_back({start, end, h, DiagnosticLevel::Note});
+    const auto note = Diagnostic::note(sourceFile, start, end, h);
+    notes.push_back(note);
 }
 
-void Diagnostic::addRange(const Token& token, const Utf8& h)
+void Diagnostic::addNote(const Token& token, const Utf8& h)
 {
-    addRange(token.startLocation, token.endLocation, h);
+    addNote(token.startLocation, token.endLocation, h);
 }
 
-void Diagnostic::addRange(AstNode* node, const Utf8& h)
+void Diagnostic::addNote(AstNode* node, const Utf8& h)
 {
     if (!node)
         return;
+
     SourceLocation start, end;
     node->computeLocation(start, end);
-    addRange(start, end, h);
+    const auto note = Diagnostic::note(node->sourceFile, start, end, h);
+    notes.push_back(note);
 }
 
 void Diagnostic::printSourceLine() const

@@ -29,21 +29,21 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
     case NativeTypeKind::U64:
     {
         Diagnostic diag{node, node->token, FMT(Err(Err0331), typeInfo->getDisplayNameC())};
-        diag.addRange(child, Diagnostic::isType(typeInfo));
+        diag.addNote(child, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
 
     case NativeTypeKind::Any:
     {
         Diagnostic diag{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
-        diag.addRange(child, Nte(Nte0032));
+        diag.addNote(child, Nte(Nte0032));
         return context->report(diag);
     }
 
     default:
     {
         Diagnostic diag{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
-        diag.addRange(child, Diagnostic::isType(typeInfo));
+        diag.addNote(child, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
     }
@@ -170,14 +170,14 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     case NativeTypeKind::Any:
     {
         Diagnostic diag{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
-        diag.addRange(child, Nte(Nte0032));
+        diag.addNote(child, Nte(Nte0032));
         return context->report(diag);
     }
 
     default:
     {
         Diagnostic diag{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
-        diag.addRange(child, Diagnostic::isType(child));
+        diag.addNote(child, Diagnostic::isType(child));
         return context->report(diag);
     }
     }

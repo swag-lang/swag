@@ -126,7 +126,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
                 Diagnostic diag{subNode, subNode->token,
                                 FMT(Err(Err0317), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
-                diag.addRange(node->token, Nte(Nte0159));
+                diag.addNote(node->token, Nte(Nte0159));
                 return context->report(diag);
             }
         }

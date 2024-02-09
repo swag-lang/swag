@@ -174,7 +174,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             if (defaultValueDone)
             {
                 Diagnostic diag{nodeParam, FMT(Err(Err0547), Naming::niceParameterRank((int) index).c_str())};
-                diag.addRange(firstParamWithDef, Nte(Nte0170));
+                diag.addNote(firstParamWithDef, Nte(Nte0170));
                 return context->report(diag);
             }
         }

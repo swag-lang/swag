@@ -54,9 +54,9 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic diag{varDecl, varDecl->token, FMT(Err(Err0384), typeVar->getDisplayNameC())};
         if (varDecl->assignment)
-            diag.addRange(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
+            diag.addNote(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
         else if (varDecl->type)
-            diag.addRange(varDecl->type, Diagnostic::isType(TypeManager::concreteType(varDecl->type->typeInfo)));
+            diag.addNote(varDecl->type, Diagnostic::isType(TypeManager::concreteType(varDecl->type->typeInfo)));
         return context->report(diag);
     }
 
@@ -72,7 +72,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     if (numUnpack < typeStruct->fields.size())
     {
         Diagnostic diag{varDecl, varDecl->token, FMT(Err(Err0728), numUnpack, typeStruct->fields.size())};
-        diag.addRange(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
+        diag.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
         const auto note = Diagnostic::note(Nte(Nte0038));
         return context->report(diag, note);
     }
@@ -80,7 +80,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     if (numUnpack > typeStruct->fields.size())
     {
         Diagnostic diag{varDecl, varDecl->token, FMT(Err(Err0729), typeStruct->fields.size(), numUnpack)};
-        diag.addRange(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
+        diag.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
         return context->report(diag);
     }
 
@@ -324,7 +324,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     if (identifier->callParameters)
     {
         Diagnostic diag{assign, Err(Err0063)};
-        diag.addRange(identifier->callParameters, Nte(Nte0164));
+        diag.addNote(identifier->callParameters, Nte(Nte0164));
         return context->report(diag);
     }
 
@@ -913,7 +913,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     {
                         Diagnostic diag{node->assignment, Err(Err0040)};
                         diag.hint = FMT(Nte(Nte0178), leftConcreteType->getDisplayNameC());
-                        diag.addRange(node->assignToken, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
+                        diag.addNote(node->assignToken, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
                         return context->report(diag);
                     }
                 }

@@ -135,9 +135,9 @@ struct Diagnostic
     // clang-format on
 
     void setup();
-    void addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
-    void addRange(AstNode* node, const Utf8& h);
-    void addRange(const Token& token, const Utf8& h);
+    void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void addNote(AstNode* node, const Utf8& h);
+    void addNote(const Token& token, const Utf8& h);
 
     void setupColors();
     void collectSourceCode();
@@ -186,25 +186,26 @@ struct Diagnostic
     Vector<Utf8>    autoRemarks;
     DiagnosticLevel errorLevel;
 
-    Vector<RangeHint> ranges;
-    Utf8              lineCode;
-    int               lineCodeNum       = 0;
-    int               lineCodeNumDigits = 0;
-    int               lineCodeMaxDigits = 0;
-    int               minBlanks         = 0;
-    LogColor          errorColor;
-    LogColor          hintColor;
-    LogColor          marginBorderColor;
-    LogColor          rangeNoteColor;
-    LogColor          warningColor;
-    LogColor          noteTitleColor;
-    LogColor          noteColor;
-    LogColor          stackColor;
-    LogColor          preRemarkColor;
-    LogColor          autoRemarkColor;
-    LogColor          remarkColor;
-    LogColor          sourceFileColor;
-    LogColor          codeLineNoColor;
+    Vector<const Diagnostic*> notes;
+    Vector<RangeHint>         ranges;
+    Utf8                      lineCode;
+    int                       lineCodeNum       = 0;
+    int                       lineCodeNumDigits = 0;
+    int                       lineCodeMaxDigits = 0;
+    int                       minBlanks         = 0;
+    LogColor                  errorColor;
+    LogColor                  hintColor;
+    LogColor                  marginBorderColor;
+    LogColor                  rangeNoteColor;
+    LogColor                  warningColor;
+    LogColor                  noteTitleColor;
+    LogColor                  noteColor;
+    LogColor                  stackColor;
+    LogColor                  preRemarkColor;
+    LogColor                  autoRemarkColor;
+    LogColor                  remarkColor;
+    LogColor                  sourceFileColor;
+    LogColor                  codeLineNoColor;
 
     SourceLocation startLocation;
     SourceLocation endLocation;

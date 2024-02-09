@@ -116,7 +116,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         default:
         {
             Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            diag.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
         }
@@ -228,7 +228,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
             default:
             {
                 Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                diag.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
             }
@@ -299,7 +299,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
             default:
             {
                 Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                diag.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
             }
@@ -369,7 +369,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
             default:
             {
                 Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                diag.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
             }
@@ -429,7 +429,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !leftTypeInfo->isInterface())
     {
         Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0242), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        diag.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     else if (!rightTypeInfo->isNative() &&
@@ -438,7 +438,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !rightTypeInfo->isInterface())
     {
         Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0243), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+        diag.addNote(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 
@@ -449,9 +449,9 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         {
             Diagnostic diag{node->sourceFile, node->token, Err(Err0241)};
             if (leftTypeInfo->isTuple())
-                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+                diag.addNote(left, Diagnostic::isType(leftTypeInfo));
             else
-                diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+                diag.addNote(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
     }
@@ -463,8 +463,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isSlice())
         {
             Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0238), rightTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+            diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+            diag.addNote(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
 
@@ -472,8 +472,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isInterface() && !rightTypeInfo->isInterface() && !rightTypeInfo->isPointerToTypeInfo())
         {
             Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0240), rightTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+            diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+            diag.addNote(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
 
@@ -481,8 +481,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isAny() && !rightTypeInfo->isPointerToTypeInfo())
         {
             Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0239), rightTypeInfo->getDisplayNameC())};
-            diag.addRange(left, leftTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(leftTypeInfo));
-            diag.addRange(right, rightTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(rightTypeInfo));
+            diag.addNote(left, leftTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(leftTypeInfo));
+            diag.addNote(right, rightTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
     }
@@ -493,14 +493,14 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
         {
             Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            diag.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
 
         if (leftTypeInfo->isAny())
         {
             Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Nte(Nte0032));
+            diag.addNote(left, Nte(Nte0032));
             return context->report(diag);
         }
     }

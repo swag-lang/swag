@@ -148,7 +148,7 @@ namespace
                 diag->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->childs[si]->token.ctext(),
                                             errorParam.destParameters->childs[si]->typeInfo->getDisplayNameC()));
             if (note && !errorParam.destParameters->childs[si]->isGeneratedSelf())
-                note->addRange(errorParam.destParameters->childs[si], "missing");
+                note->addNote(errorParam.destParameters->childs[si], "missing");
         }
     }
 

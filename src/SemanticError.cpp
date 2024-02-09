@@ -67,7 +67,7 @@ bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeIn
 
     Diagnostic diag{node, node->token, text};
     if (hintType)
-        diag.addRange(hintType, Diagnostic::isType(typeInfo));
+        diag.addNote(hintType, Diagnostic::isType(typeInfo));
     return context->report(diag);
 }
 

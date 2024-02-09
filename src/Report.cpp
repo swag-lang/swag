@@ -491,6 +491,8 @@ namespace
 
         const auto copyDiag  = new Diagnostic{inDiag};
         auto       copyNotes = inNotes;
+        for (auto note : inDiag.notes)
+            copyNotes.push_back(note);
 
         if (!dealWithWarning(*copyDiag, copyNotes))
             return true;

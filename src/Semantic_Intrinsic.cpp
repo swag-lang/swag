@@ -198,7 +198,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CASTFLAG_JUST_CHECK))
         {
             Diagnostic diag{first, FMT(Err(Err0006), first->typeInfo->getDisplayNameC(), realType->getDisplayNameC())};
-            diag.addRange(second->token, Diagnostic::isType(realType));
+            diag.addNote(second->token, Diagnostic::isType(realType));
             return context->report(diag);
         }
     }

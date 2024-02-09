@@ -675,7 +675,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     if (!node->extraNameToken.text.empty())
     {
         Diagnostic diag{node, node->extraNameToken, FMT(Err(Err0704), typeInfo->getDisplayNameC())};
-        diag.addRange(node->expression, Diagnostic::isType(typeInfo));
+        diag.addNote(node->expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
 

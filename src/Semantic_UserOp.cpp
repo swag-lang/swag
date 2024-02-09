@@ -518,7 +518,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             const auto note0 = Diagnostic::note(right->childs.front(), FMT(Nte(Nte0166), suffix.c_str()));
             const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode);
             diag.hint        = FMT(Nte(Nte0144), g_LangSpec->name_opAffectLiteral.c_str());
-            diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
+            diag.addNote(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
         }
 
@@ -540,7 +540,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
 
             Diagnostic diag{right, FMT(Err(Err0642), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             diag.hint = Diagnostic::isType(rightTypeInfo);
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            diag.addNote(left, Diagnostic::isType(leftTypeInfo));
             const auto note  = Diagnostic::note(context->node, context->node->token, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
             const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
             return context->report(diag, note, note1);
@@ -582,13 +582,13 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, FMT(Err(Err0344), name.c_str(), leftType->getDisplayNameC())};
             diag.hint = FMT(Nte(Nte0144), name.c_str());
-            diag.addRange(left, Diagnostic::isType(leftType));
+            diag.addNote(left, Diagnostic::isType(leftType));
             return context->report(diag, note);
         }
 
         Diagnostic diag{left->parent->sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
         diag.hint = FMT(Nte(Nte0144), name.c_str());
-        diag.addRange(left, Diagnostic::isType(leftType));
+        diag.addNote(left, Diagnostic::isType(leftType));
         return context->report(diag, note);
     }
 
