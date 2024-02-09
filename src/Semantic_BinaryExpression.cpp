@@ -1052,8 +1052,8 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     }
 
     node->byteCodeFct = ByteCodeGen::emitBinaryOp;
-    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
-    node->inheritOrFlag(AST_SIDE_EFFECTS);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
     // Determine if we must promote.
     if (node->tokenId != TokenId::SymVertical &&
@@ -1348,8 +1348,8 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
 
     node->typeInfo    = TypeManager::promoteUntyped(left->typeInfo);
     node->byteCodeFct = ByteCodeGen::emitBinaryOp;
-    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
-    node->inheritOrFlag(AST_SIDE_EFFECTS);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
     switch (node->tokenId)
     {
@@ -1424,8 +1424,8 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
         break;
     }
 
-    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
-    node->inheritOrFlag(AST_SIDE_EFFECTS);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
     if (left->hasComputedValue() && right->hasComputedValue())
     {

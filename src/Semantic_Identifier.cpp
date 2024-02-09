@@ -116,7 +116,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
     if (childBack->hasComputedValue())
         node->inheritComputedValue(childBack);
-    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GEN_TYPEINFO | AST_SIDE_EFFECTS);
+    node->inheritAstFlagsOr(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GEN_TYPEINFO | AST_SIDE_EFFECTS);
 
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload &&
@@ -865,7 +865,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         const auto symbol     = overload->symbol;
         const auto symbolKind = symbol->kind;
 
-        node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
+        node->inheritAstFlagsOr(genericParameters, AST_IS_GENERIC);
         if (symbolKind != SymbolKind::Function &&
             symbolKind != SymbolKind::Struct &&
             symbolKind != SymbolKind::Interface &&

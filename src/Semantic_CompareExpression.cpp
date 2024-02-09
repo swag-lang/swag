@@ -540,8 +540,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     }
 
     node->byteCodeFct = ByteCodeGen::emitCompareOp;
-    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
-    node->inheritOrFlag(AST_SIDE_EFFECTS);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
     switch (node->tokenId)
     {

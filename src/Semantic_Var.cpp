@@ -342,7 +342,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     }
 
     identifier->callParameters->inheritTokenLocation(varDecl->assignment);
-    identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
+    identifier->callParameters->inheritAstFlagsOr(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
     identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
     typeExpression->removeAstFlag(AST_NO_BYTECODE);
@@ -983,7 +983,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     if (node->type)
-        node->inheritOrFlag(node->type, AST_IS_GENERIC);
+        node->inheritAstFlagsOr(node->type, AST_IS_GENERIC);
     if (node->hasAstFlag(AST_IS_GENERIC))
     {
         symbolFlags |= OVERLOAD_GENERIC;

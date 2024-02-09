@@ -759,7 +759,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     auto child  = dependentVar->childs[i];
                     auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
-                    idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
+                    idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                     idNode->inheritTokenLocation(idRef);
                     idNode->allocateIdentifierExtension();
                     idNode->identifierExtension->fromAlternateVar = child;
@@ -777,7 +777,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             else
             {
                 auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
-                idNode->inheritOrFlag(idRef, AST_IN_MIXIN);
+                idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 idNode->inheritTokenLocation(identifier);
 
                 // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
@@ -1235,7 +1235,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (identifier->resolvedSymbolOverload->node->hasAstFlag(AST_CONST_EXPR))
         {
             if (identifier->callParameters)
-                identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
+                identifier->inheritAstFlagsAnd(identifier->callParameters, AST_CONST_EXPR);
             else
                 identifier->addAstFlag(AST_CONST_EXPR);
 

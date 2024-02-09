@@ -270,14 +270,14 @@ struct AstNode
     void     cloneChilds(CloneContext& context, AstNode* from);
     void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
 
-    void inheritOrFlag(uint64_t flag);
-    void inheritOrFlag(const AstNode* op, uint64_t flag);
-    void inheritAndFlag1(uint64_t flag);
-    void inheritAndFlag2(uint64_t flag1, uint64_t flag2);
-    void inheritAndFlag3(uint64_t flag1, uint64_t flag2, uint64_t flag3);
-    void inheritAndFlag1(AstNode* who, uint64_t flag);
-    void inheritAndFlag2(AstNode* who, uint64_t flag1, uint64_t flag2);
-    void inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3);
+    void inheritAstFlagsOr(uint64_t flag);
+    void inheritAstFlagsOr(const AstNode* op, uint64_t flag);
+    void inheritAstFlagsAnd(uint64_t flag);
+    void inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2);
+    void inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2, uint64_t flag3);
+    void inheritAstFlagsAnd(AstNode* who, uint64_t flag);
+    void inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2);
+    void inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3);
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
     void inheritTokenLocation(const AstNode* node);

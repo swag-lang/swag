@@ -450,7 +450,7 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
 {
     const auto node  = context->node;
     const auto front = node->childs.front();
-    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
 
@@ -487,7 +487,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 {
     const auto node  = context->node;
     const auto front = node->childs.front();
-    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
     if (!typeInfo->isPointerRef() && !typeInfo->isPointer())
@@ -542,7 +542,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
     YIELD();
 
     if (!node->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
-        node->inheritAndFlag1(AST_CONST_EXPR);
+        node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
     // we must take the address and not dereference that identifier
@@ -598,7 +598,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     const auto arrayNode              = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
-    arrayNode->inheritOrFlag(arrayNode->array, AST_L_VALUE);
+    arrayNode->inheritAstFlagsOr(arrayNode->array, AST_L_VALUE);
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));

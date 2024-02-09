@@ -16,7 +16,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     const auto node  = context->node;
     const auto right = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, right));
-    node->inheritOrFlag(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
+    node->inheritAstFlagsOr(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
     node->typeInfo    = right->typeInfo;
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
     if (right->resolvedSymbolOverload)

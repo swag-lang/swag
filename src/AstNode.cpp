@@ -544,35 +544,35 @@ AstNode* AstNode::clone(CloneContext& context)
     }
 }
 
-void AstNode::inheritOrFlag(uint64_t flag)
+void AstNode::inheritAstFlagsOr(uint64_t flag)
 {
     for (const auto child : childs)
         flags |= child->flags & flag;
 }
 
-void AstNode::inheritOrFlag(const AstNode* op, uint64_t flag)
+void AstNode::inheritAstFlagsOr(const AstNode* op, uint64_t flag)
 {
     if (!op)
         return;
     flags |= op->flags & flag;
 }
 
-void AstNode::inheritAndFlag1(uint64_t flag)
+void AstNode::inheritAstFlagsAnd(uint64_t flag)
 {
-    inheritAndFlag1(this, flag);
+    inheritAstFlagsAnd(this, flag);
 }
 
-void AstNode::inheritAndFlag2(uint64_t flag1, uint64_t flag2)
+void AstNode::inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2)
 {
-    inheritAndFlag2(this, flag1, flag2);
+    inheritAstFlagsAnd(this, flag1, flag2);
 }
 
-void AstNode::inheritAndFlag3(uint64_t flag1, uint64_t flag2, uint64_t flag3)
+void AstNode::inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2, uint64_t flag3)
 {
-    inheritAndFlag3(this, flag1, flag2, flag3);
+    inheritAstFlagsAnd(this, flag1, flag2, flag3);
 }
 
-void AstNode::inheritAndFlag1(AstNode* who, uint64_t flag)
+void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag)
 {
     for (const auto child : who->childs)
     {
@@ -583,7 +583,7 @@ void AstNode::inheritAndFlag1(AstNode* who, uint64_t flag)
     flags |= flag;
 }
 
-void AstNode::inheritAndFlag2(AstNode* who, uint64_t flag1, uint64_t flag2)
+void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2)
 {
     flags |= flag1;
     flags |= flag2;
@@ -599,7 +599,7 @@ void AstNode::inheritAndFlag2(AstNode* who, uint64_t flag1, uint64_t flag2)
     }
 }
 
-void AstNode::inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3)
+void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3)
 {
     flags |= flag1;
     flags |= flag2;
@@ -710,7 +710,7 @@ void AstNode::inheritComputedValue(const AstNode* from)
 {
     if (!from)
         return;
-    inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
+    inheritAstFlagsOr(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
     if (hasAstFlag(AST_VALUE_COMPUTED))
     {
         addAstFlag(AST_CONST_EXPR | AST_R_VALUE);

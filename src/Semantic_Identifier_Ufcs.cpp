@@ -158,7 +158,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->byteCodeFct = ByteCodeGen::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
     fctCallParam->addAstFlag(AST_TO_UFCS | AST_GENERATED);
-    fctCallParam->inheritOrFlag(node, AST_IN_MIXIN);
+    fctCallParam->inheritAstFlagsOr(node, AST_IN_MIXIN);
 
     // If this is a closure, then parameter index 0 is for the embedded struct.
     // So ufcs will have index 1.
@@ -220,7 +220,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             {
                 const auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
                 copyChild->inheritOwners(fctCallParam);
-                copyChild->inheritOrFlag(idRef, AST_IN_MIXIN);
+                copyChild->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 if (!child->resolvedSymbolOverload)
                 {
                     copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
@@ -276,8 +276,8 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
         }
     }
 
-    idRef->inheritAndFlag1(AST_CONST_EXPR);
-    fctCallParam->inheritAndFlag1(AST_CONST_EXPR);
+    idRef->inheritAstFlagsAnd(AST_CONST_EXPR);
+    fctCallParam->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     identifierRef->previousResolvedNode->addAstFlag(AST_FROM_UFCS);
     return true;

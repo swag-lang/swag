@@ -226,7 +226,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
     op->typeInfo    = child->typeInfo;
     op->byteCodeFct = ByteCodeGen::emitUnaryOp;
 
-    op->inheritOrFlag(child, AST_CONST_EXPR | AST_SIDE_EFFECTS);
+    op->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     SWAG_CHECK(checkIsConcrete(context, child));
     op->addAstFlag(AST_R_VALUE);
 

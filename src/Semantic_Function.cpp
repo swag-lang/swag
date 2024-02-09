@@ -114,7 +114,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             }
         }
 
-        parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
+        parameters->inheritAstFlagsOr(nodeParam->type, AST_IS_GENERIC);
 
         // Variadic must be the last one
         if (paramType->isVariadic())
@@ -192,7 +192,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
     const auto node = context->node;
-    node->inheritOrFlag(AST_IS_GENERIC);
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
     node->byteCodeFct = ByteCodeGen::emitFuncDeclParams;
     return true;
 }
@@ -651,7 +651,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             funcNode->addAstFlag(AST_IS_GENERIC);
 
         if (funcNode->parameters)
-            funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
+            funcNode->inheritAstFlagsOr(funcNode->parameters, AST_IS_GENERIC);
 
         if (funcNode->genericParameters)
         {
@@ -1067,8 +1067,8 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
 bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 {
     const auto node = castAst<AstFuncCallParams>(context->node, AstNodeKind::FuncCallParams);
-    node->inheritOrFlag(AST_IS_GENERIC);
-    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     // Check capture types
     for (auto c : node->childs)
@@ -1123,8 +1123,8 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 {
     const auto node = context->node;
-    node->inheritOrFlag(AST_IS_GENERIC);
-    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
     if (node->hasAstFlag(AST_IS_GENERIC))
         return true;
@@ -1153,8 +1153,8 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
     const auto node = context->node;
-    node->inheritOrFlag(AST_IS_GENERIC);
-    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
     return true;
 }
 
@@ -1191,7 +1191,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
+    node->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
     if (node->childs.front()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 

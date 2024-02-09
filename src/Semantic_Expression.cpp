@@ -420,6 +420,6 @@ bool Semantic::resolveRange(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 
     node->typeInfo = node->expressionLow->typeInfo;
-    node->inheritAndFlag1(AST_CONST_EXPR);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
     return true;
 }
