@@ -323,7 +323,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Exclude upper bound if constant
     if (node->upperBound->hasComputedValue() &&
         node->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP) &&
-        !(node->upperBound->semFlags & SEMFLAG_ASSIGN_COMPUTED))
+        !(node->upperBound->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED)))
     {
         if (!node->upperBound->computedValue->reg.u64)
         {
@@ -563,7 +563,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
                 typeReturn = TypeManager::concreteType(node->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
 
             // Unref
-            if (typeReturn->isPointerRef() && !(node->semFlags & SEMFLAG_FROM_REF))
+            if (typeReturn->isPointerRef() && !node->hasSemFlag(SEMFLAG_FROM_REF))
             {
                 const auto returnType = castTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
                 if (returnType->isPointer())

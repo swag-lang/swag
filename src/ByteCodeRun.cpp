@@ -55,7 +55,7 @@
 
 SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
-    SWAG_ASSERT(!bc->node || bc->node->semFlags & SEMFLAG_BYTECODE_GENERATED);
+    SWAG_ASSERT(!bc->node || bc->node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));
 
     context->push(context->bp);
     context->push(context->bc);

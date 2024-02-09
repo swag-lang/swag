@@ -86,22 +86,22 @@ void Semantic::setNodeAccess(AstNode* node)
         return;
     }
 
-    node->semFlags |= overload->node->semFlags & SEMFLAG_ACCESS_MASK;
+    node->addSemFlag(overload->node->semFlags & SEMFLAG_ACCESS_MASK);
 }
 
 void Semantic::doInheritAccess(AstNode* forNode, const AstNode* node)
 {
-    if (node->semFlags & SEMFLAG_ACCESS_PRIVATE)
+    if (node->hasSemFlag(SEMFLAG_ACCESS_PRIVATE))
     {
         forNode->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
         forNode->semFlags |= SEMFLAG_ACCESS_PRIVATE;
     }
-    else if (node->semFlags & SEMFLAG_ACCESS_INTERNAL && !(forNode->semFlags & SEMFLAG_ACCESS_PRIVATE))
+    else if (node->hasSemFlag(SEMFLAG_ACCESS_INTERNAL) && !forNode->hasSemFlag(SEMFLAG_ACCESS_PRIVATE))
     {
         forNode->semFlags &= ~SEMFLAG_ACCESS_PUBLIC;
         forNode->semFlags |= SEMFLAG_ACCESS_INTERNAL;
     }
-    else if (node->semFlags & SEMFLAG_ACCESS_PUBLIC && !(forNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
+    else if (node->hasSemFlag(SEMFLAG_ACCESS_PUBLIC) && !(forNode->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
     {
         forNode->semFlags |= SEMFLAG_ACCESS_PUBLIC;
     }
@@ -122,7 +122,7 @@ void Semantic::computeAccess(AstNode* node)
 {
     if (!canHaveAccess(node))
         return;
-    if (node->semFlags & SEMFLAG_ACCESS_COMPUTED)
+    if (node->hasSemFlag(SEMFLAG_ACCESS_COMPUTED))
         return;
     node->semFlags |= SEMFLAG_ACCESS_COMPUTED;
     computeAccessRec(node);
@@ -177,14 +177,14 @@ void Semantic::setDefaultAccess(AstNode* node)
         {
             const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
             SWAG_ASSERT(structNode->originalGeneric);
-            node->semFlags |= structNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK;
+            node->addSemFlag(structNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK);
         }
 
         if (node->kind == AstNodeKind::FuncDecl)
         {
             const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode->originalGeneric);
-            node->semFlags |= funcNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK;
+            node->addSemFlag(funcNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK);
         }
 
         return;
@@ -280,7 +280,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     if (!onNode)
         onNode = culprit;
 
-    const auto       accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
+    const auto       accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
     const Diagnostic diag{node,
                           node->getTokenName(),
                           FMT(Err(Err0426),

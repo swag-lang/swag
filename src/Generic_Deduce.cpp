@@ -312,7 +312,7 @@ void Generic::deduceType(SymbolMatchContext&      context,
 
     // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
     // yet the type of parameters)
-    if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
+    if (callTypeInfo->declNode && callTypeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
         canReg = false;
     else if (wantedTypeInfo->isPointer())
         canReg = false;

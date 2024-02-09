@@ -41,7 +41,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
         context->baseJob->nodes.push_back(varDecl->type);
         return true;
     }
-    else if (varDecl->semFlags & SEMFLAG_TUPLE_CONVERT)
+    else if (varDecl->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
     {
         SWAG_ASSERT(varDecl->resolvedSymbolOverload);
         varDecl->typeInfo                         = varDecl->type->typeInfo;
@@ -579,7 +579,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    if (node->assignment && node->assignment->semFlags & SEMFLAG_LITERAL_SUFFIX)
+    if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
     {
         if (!node->type || !node->type->typeInfo->isStruct())
             return context->report({node->assignment->childs.front(), FMT(Err(Err0403), node->assignment->childs.front()->token.ctext())});
@@ -797,7 +797,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             thisIsAGenericType = true;
         }
-        else if (!(node->flags & AST_FROM_GENERIC) || !(node->semFlags & SEMFLAG_ASSIGN_COMPUTED))
+        else if (!(node->flags & AST_FROM_GENERIC) || !node->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             YIELD();

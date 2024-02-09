@@ -177,7 +177,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                     auto callParam = castAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == (int) i)
                     {
-                        if (callParam->semFlags & SEMFLAG_AUTO_CODE_PARAM)
+                        if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
                         {
                             covered = true;
                             break;
@@ -248,7 +248,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
         context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
 
     // If the inlined function returns a reference, and we want a value, we need to unref
-    if (node->parent->semFlags & SEMFLAG_FROM_REF && !node->parent->isForceTakeAddress())
+    if (node->parent->hasSemFlag(SEMFLAG_FROM_REF) && !node->parent->isForceTakeAddress())
     {
         SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, node->typeInfo));
         node->parent->resultRegisterRc = node->resultRegisterRc;
@@ -1150,7 +1150,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
 
     // Leave all scopes
     const Scope* topScope;
-    if (node->ownerInline && ((node->semFlags & SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
+    if (node->ownerInline && ((node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)) || node->kind != AstNodeKind::Return))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the

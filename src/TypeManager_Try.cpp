@@ -44,7 +44,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     SymbolName* symbol;
 
     bool isSuffix = false;
-    if ((fromNode && fromNode->semFlags & SEMFLAG_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
+    if ((fromNode && fromNode->hasSemFlag(SEMFLAG_LITERAL_SUFFIX)) || castFlags & CASTFLAG_LITERAL_SUFFIX)
         isSuffix = true;
 
     if (isSuffix)

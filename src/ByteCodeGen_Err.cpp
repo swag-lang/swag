@@ -27,7 +27,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     const auto node = castAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
-    if (!(context->node->semFlags & SEMFLAG_STACK_TRACE))
+    if (!(context->node->hasSemFlag(SEMFLAG_STACK_TRACE)))
     {
         EMIT_INST0(context, ByteCodeOp::InternalPushErr);
         context->node->semFlags |= SEMFLAG_STACK_TRACE;
@@ -39,7 +39,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     YIELD();
 
     // Restore the error context, and keep error trace of current call
-    if (!(context->node->semFlags & SEMFLAG_STACK_TRACE1))
+    if (!(context->node->hasSemFlag(SEMFLAG_STACK_TRACE1)))
     {
         SWAG_ASSERT(context->tryCatchScope);
         context->tryCatchScope--;
@@ -79,7 +79,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         {
             if (node->ownerInline)
                 node->regInit = node->ownerInline->resultRegisterRc;
-            else if (!(context->node->semFlags & SEMFLAG_TRY_2))
+            else if (!(context->node->hasSemFlag(SEMFLAG_TRY_2)))
             {
                 reserveRegisterRC(context, node->regInit, 1);
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
@@ -113,7 +113,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             }
             else
             {
-                if (!(context->node->semFlags & SEMFLAG_TRY_2))
+                if (!(context->node->hasSemFlag(SEMFLAG_TRY_2)))
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)
@@ -219,14 +219,14 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
     const auto  node = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     const auto  expr = node->childs.front();
 
-    if (!(node->semFlags & SEMFLAG_CAST1))
+    if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
         YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->semFlags & SEMFLAG_TRY_1))
+    if (!node->hasSemFlag(SEMFLAG_TRY_1))
     {
         emitSafetyErrCheck(context, expr->resultRegisterRc[1]);
         EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRc[0], expr->resultRegisterRc[1]);
@@ -235,7 +235,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
     }
 
     // In a top level function, 'throw' is like a failed 'assume'
-    const auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+    const auto parentFct = (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)) ? node->ownerInline->func : node->ownerFct;
     if (parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         if (context->sourceFile->module->buildCfg.errorStackTrace)
@@ -274,14 +274,14 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 
     // try in a top level function is equivalent to assume
     const AstFuncDecl* parentFct = nullptr;
-    if (node->ownerInline && (tryNode->semFlags & SEMFLAG_EMBEDDED_RETURN))
+    if (node->ownerInline && (tryNode->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
         parentFct = node->ownerInline->func;
     else
         parentFct = node->ownerFct;
     if (parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return emitAssume(context);
 
-    if (!(node->semFlags & SEMFLAG_TRY_1))
+    if (!node->hasSemFlag(SEMFLAG_TRY_1))
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         const auto r0 = reserveRegisterRC(context);
@@ -305,7 +305,7 @@ bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
     const auto node    = context->node;
     const auto tryNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
 
-    if (!(node->semFlags & SEMFLAG_TRY_1))
+    if (!node->hasSemFlag(SEMFLAG_TRY_1))
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         const auto r0 = reserveRegisterRC(context);

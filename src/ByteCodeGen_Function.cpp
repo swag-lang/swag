@@ -73,13 +73,13 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     TypeInfo*  returnType = nullptr;
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
-    if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
+    if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
         returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
 
     // Copy result to RR0... registers
-    if (!(node->semFlags & SEMFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
+    if (!node->hasSemFlag(SEMFLAG_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isVoid())
     {
         const auto returnExpression = node->childs.front();
         auto       backExpression   = node->childs.back();
@@ -88,7 +88,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         const auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
         // Implicit cast
-        if (!(returnExpression->semFlags & SEMFLAG_CAST1))
+        if (!(returnExpression->hasSemFlag(SEMFLAG_CAST1)))
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
             YIELD();
@@ -101,7 +101,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         //
         // RETVAL
         //
-        if ((node->semFlags & SEMFLAG_RETVAL) ||
+        if ((node->hasSemFlag(SEMFLAG_RETVAL)) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
         {
             const auto child = node->childs.front();
@@ -111,7 +111,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         //
         // INLINE
         //
-        else if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
+        else if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
         {
             if (returnType->isStruct())
             {
@@ -293,7 +293,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     YIELD();
 
     // A return inside an inline function is just a jump to the end of the block
-    if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
+    if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
     {
         node->seekJump = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
@@ -1687,7 +1687,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             return p1->indexParam < p2->indexParam;
         });
     }
-    else if (allParams && (allParams->semFlags & SEMFLAG_INVERSE_PARAMS))
+    else if (allParams && (allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS)))
     {
         SWAG_ASSERT(allParams->childs.size() == 2);
         allParams->swap2Childs();
@@ -2122,7 +2122,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 auto returnType = typeInfoFunc->concreteReturnType();
                 EMIT_INST1(context, ByteCodeOp::CopyRTtoRA, node->resultRegisterRc[0]);
 
-                if (node->semFlags & SEMFLAG_FROM_REF && !node->isForceTakeAddress())
+                if (node->hasSemFlag(SEMFLAG_FROM_REF) && !node->isForceTakeAddress())
                 {
                     auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
                     SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);

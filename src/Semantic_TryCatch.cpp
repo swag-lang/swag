@@ -19,7 +19,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
             node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
     }
 
-    const auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+    const auto parentFct = (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
         return context->report({node, node->token, FMT(Err(Err0451), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});

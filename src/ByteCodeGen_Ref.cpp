@@ -12,7 +12,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (!(node->access->semFlags & SEMFLAG_CAST1))
+    if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
@@ -44,7 +44,7 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (!(node->access->semFlags & SEMFLAG_CAST1))
+    if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
@@ -67,7 +67,7 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
     const auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCE_ALIAS);
     const auto typeInfoArray = castTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
-    if (!(node->access->semFlags & SEMFLAG_CAST1))
+    if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
@@ -97,7 +97,7 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (!(node->access->semFlags & SEMFLAG_CAST1))
+    if (!node->access->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
@@ -258,7 +258,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     const auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
     const auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
-    if (!(node->access->semFlags & SEMFLAG_CAST3))
+    if (!node->access->hasSemFlag(SEMFLAG_CAST3))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
@@ -314,7 +314,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a struct
     else if (typeInfo->isStruct() ||
              (typeInfo->isPointerTo(TypeInfoKind::Struct) && castInfo && castInfo->isStruct()) ||
-             node->semFlags & SEMFLAG_FORCE_CAST_PTR_STRUCT)
+             node->hasSemFlag(SEMFLAG_FORCE_CAST_PTR_STRUCT))
     {
         // User special function
         if (node->hasSpecialFuncCall())
@@ -328,7 +328,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
                 return true;
             }
 
-            if ((node->semFlags & SEMFLAG_FROM_PTR_REF) && !(node->semFlags & SEMFLAG_FROM_REF))
+            if (node->hasSemFlag(SEMFLAG_FROM_PTR_REF) && !node->hasSemFlag(SEMFLAG_FROM_REF))
             {
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
             }
@@ -538,14 +538,14 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     const auto node    = castAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     const auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
 
-    if (!(node->lowerBound->semFlags & SEMFLAG_CAST1))
+    if (!node->lowerBound->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
         YIELD();
         node->lowerBound->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->upperBound->semFlags & SEMFLAG_CAST1))
+    if (!node->upperBound->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
         YIELD();

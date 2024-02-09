@@ -720,11 +720,11 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     fromTypeInfo = TypeManager::concreteType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCE_ALIAS);
 
     // opCast
-    if (exprNode->semFlags & SEMFLAG_USER_CAST)
+    if (exprNode->hasSemFlag(SEMFLAG_USER_CAST))
     {
         SWAG_ASSERT(exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
 
-        if (!(exprNode->semFlags & SEMFLAG_FLAT_PARAMS))
+        if (!(exprNode->hasSemFlag(SEMFLAG_FLAT_PARAMS)))
         {
             exprNode->semFlags |= SEMFLAG_FLAT_PARAMS;
             context->allocateTempCallParams();
@@ -798,7 +798,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
     // Cast to a pointer with an offset
     // When casting from one struct to another, with a 'using' on a field
-    if (exprNode->semFlags & SEMFLAG_USING)
+    if (exprNode->hasSemFlag(SEMFLAG_USING))
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRc);
 
@@ -814,7 +814,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         }
 
         // The field is a pointer : need to dereference it
-        if (exprNode->semFlags & SEMFLAG_DEREF_USING)
+        if (exprNode->hasSemFlag(SEMFLAG_DEREF_USING))
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
 
         return true;

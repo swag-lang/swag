@@ -48,9 +48,9 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
     }
     }
 
-    if (child->hasComputedValue() && !(child->semFlags & SEMFLAG_NEG_EATEN))
+    if (child->hasComputedValue() && !(child->hasSemFlag(SEMFLAG_NEG_EATEN)))
     {
-        context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
+        context->node->addSemFlag(child->semFlags & SEMFLAG_LITERAL_SUFFIX);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -119,7 +119,7 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 
     if (child->hasComputedValue())
     {
-        context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
+        context->node->addSemFlag(child->semFlags & SEMFLAG_LITERAL_SUFFIX);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
@@ -184,7 +184,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
     if (child->hasComputedValue())
     {
-        context->node->semFlags |= child->semFlags & SEMFLAG_LITERAL_SUFFIX;
+        context->node->addSemFlag(child->semFlags & SEMFLAG_LITERAL_SUFFIX);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:

@@ -116,7 +116,7 @@ bool ByteCodeGen::emitCompareOpPostSpecialFunc(const ByteCodeGenContext* context
 {
     const auto node = context->node;
     auto       r2   = node->resultRegisterRc;
-    if (node->semFlags & SEMFLAG_INVERSE_PARAMS)
+    if (node->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
     {
         switch (op)
         {
@@ -220,7 +220,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
             return true;
 
         case NativeTypeKind::String:
-            if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
+            if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
                 return true;
@@ -231,7 +231,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
             return true;
 
         case NativeTypeKind::Any:
-            if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
+            if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
                 return true;
@@ -298,7 +298,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
 
     if (leftTypeInfo->isInterface())
     {
-        if (rightTypeInfo->isPointerNull() || right->semFlags & SEMFLAG_FROM_NULL)
+        if (rightTypeInfo->isPointerNull() || right->hasSemFlag(SEMFLAG_FROM_NULL))
         {
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
             return true;
@@ -369,7 +369,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
             return true;
 
         case NativeTypeKind::String:
-            if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
+            if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
                 return true;
@@ -385,7 +385,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
             }
 
         case NativeTypeKind::Any:
-            if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
+            if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
                 return true;
@@ -450,7 +450,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
 
     if (leftTypeInfo->isInterface())
     {
-        if (rightTypeInfo->isPointerNull() || right->semFlags & SEMFLAG_FROM_NULL)
+        if (rightTypeInfo->isPointerNull() || right->hasSemFlag(SEMFLAG_FROM_NULL))
         {
             EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
             return true;
@@ -811,14 +811,14 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    if (!(node->semFlags & SEMFLAG_CAST1))
+    if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
         YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->semFlags & SEMFLAG_CAST2))
+    if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         YIELD();

@@ -336,7 +336,7 @@ bool Semantic::resolveType(SemanticContext* context)
         }
     }
 
-    if ((typeNode->semFlags & SEMFLAG_TYPE_SOLVED) &&
+    if ((typeNode->hasSemFlag(SEMFLAG_TYPE_SOLVED)) &&
         typeNode->typeInfo &&
         !typeNode->typeInfo->isUndefined())
     {

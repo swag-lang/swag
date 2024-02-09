@@ -179,7 +179,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
     {
         if (n->kind != AstNodeKind::Literal)
             return Ast::VisitResult::Continue;
-        if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
+        if (n->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         {
             cxt->report({n->childs.front(), FMT(Err(Err0403), n->childs.front()->token.ctext())});
             return Ast::VisitResult::Stop;
@@ -245,7 +245,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
     ScopedLock lk(node->mutex);
 
     // Need to generate bytecode, if not already done or running
-    if (!(node->semFlags & SEMFLAG_BYTECODE_GENERATED))
+    if (!node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
     {
         if (flags & ASKBC_WAIT_DONE)
         {
@@ -303,7 +303,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
     if (flags & ASKBC_WAIT_RESOLVED)
     {
         SWAG_ASSERT(job);
-        if (!(node->semFlags & SEMFLAG_BYTECODE_RESOLVED))
+        if (!node->hasSemFlag(SEMFLAG_BYTECODE_RESOLVED))
         {
             const auto extension = node->extByteCode();
             SWAG_ASSERT(extension && extension->byteCodeJob);

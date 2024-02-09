@@ -92,7 +92,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-        if (node->semFlags & SEMFLAG_FROM_REF)
+        if (node->hasSemFlag(SEMFLAG_FROM_REF))
         {
             if (resolved->computedValue.storageOffset)
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->resultRegisterRc[0])->b.u64 = resolved->computedValue.storageOffset;
@@ -192,7 +192,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         }
 
         auto typeField = node->typeInfo;
-        if (node->semFlags & SEMFLAG_FROM_REF)
+        if (node->hasSemFlag(SEMFLAG_FROM_REF))
         {
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
             const auto ptrPointer = castTypeInfo<TypeInfoPointer>(typeField, TypeInfoKind::Pointer);
@@ -250,7 +250,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->parent->resultRegisterRc);
             freeRegisterRC(context, node->parent);
         }
-        else if (node->semFlags & SEMFLAG_FROM_REF)
+        else if (node->hasSemFlag(SEMFLAG_FROM_REF))
         {
             const auto inst     = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
@@ -368,7 +368,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 freeRegisterRC(context, node->parent);
             }
         }
-        else if (node->semFlags & SEMFLAG_FROM_REF)
+        else if (node->hasSemFlag(SEMFLAG_FROM_REF))
         {
             return Report::internalError(context->node, "unsupported identifier reference type");
         }
@@ -439,7 +439,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->parent->resultRegisterRc);
             freeRegisterRC(context, node->parent);
         }
-        else if (node->semFlags & SEMFLAG_FROM_REF)
+        else if (node->hasSemFlag(SEMFLAG_FROM_REF))
         {
             node->resultRegisterRc = reserveRegisterRC(context);
             if (persistentReg)

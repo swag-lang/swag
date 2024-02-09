@@ -41,7 +41,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             // Wait for the node if not generated
             {
                 ScopedLock lk(node->mutex);
-                if (!(node->semFlags & SEMFLAG_BYTECODE_GENERATED))
+                if (!node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
                 {
                     waitingKind = JobWaitKind::SemByteCodeGenerated;
                     waitingNode = node;
@@ -73,13 +73,13 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             // been flatten
             {
                 SharedLock lk(node->mutex);
-                if (node->semFlags & SEMFLAG_BYTECODE_RESOLVED)
+                if (node->hasSemFlag(SEMFLAG_BYTECODE_RESOLVED))
                 {
                     SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
                     SWAG_ASSERT(originalNode->hasExtByteCode());
                     for (auto dep : node->extByteCode()->dependentNodes)
                     {
-                        SWAG_ASSERT(dep->semFlags & SEMFLAG_BYTECODE_GENERATED);
+                        SWAG_ASSERT(dep->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));
                         originalNode->extByteCode()->dependentNodes.push_back_once(dep);
                     }
 

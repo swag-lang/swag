@@ -73,7 +73,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 
     // When duplicating an identifier ref, and solve it again, we need to be sure that all that
     // stuff is reset
-    if (!(node->semFlags & SEMFLAG_TYPE_SOLVED))
+    if (!node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
     {
         node->typeInfo             = nullptr;
         node->previousResolvedNode = nullptr;
@@ -90,7 +90,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     const auto childBack = node->childs.back();
 
     // Keep resolution
-    if (!node->typeInfo || !(node->semFlags & SEMFLAG_TYPE_SOLVED))
+    if (!node->typeInfo || !node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
     {
         node->resolvedSymbolName     = childBack->resolvedSymbolName;
         node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
@@ -154,7 +154,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
-    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->semFlags & SEMFLAG_IS_CONST_ASSIGN_INHERIT))
+    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT)))
     {
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN_INHERIT;
@@ -171,7 +171,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
         scopeType           = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCE_ALIAS);
     }
 
-    if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
+    if (!(identifierRef->hasSemFlag(SEMFLAG_TYPE_SOLVED)))
         identifierRef->typeInfo = typeInfo;
 
     // Deref
@@ -691,7 +691,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
 bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload)
 {
-    if (!(node->semFlags & SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
+    if (!node->hasSemFlag(SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {
         node->semFlags |= SEMFLAG_LAST_PARAM_CODE;
 
@@ -1020,7 +1020,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     // We have updated one of the call parameters.
     // So we must update the types.
-    if (identifier->callParameters && identifier->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING)
+    if (identifier->callParameters && identifier->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
     {
         for (auto c : identifier->callParameters->childs)
         {
@@ -1080,7 +1080,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         }
 
         // Because of #self
-        if (identifier->semFlags & SEMFLAG_FORCE_SCOPE)
+        if (identifier->hasSemFlag(SEMFLAG_FORCE_SCOPE))
             return true;
 
         if (dependentSymbols.empty())
@@ -1228,7 +1228,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             {
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 YIELD();
-                if ((identifier->semFlags & SEMFLAG_FORCE_UFCS) && !ufcsFirstParam)
+                if ((identifier->hasSemFlag(SEMFLAG_FORCE_UFCS)) && !ufcsFirstParam)
                     continue;
             }
 
@@ -1267,7 +1267,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
                 if (!ufcsFirstParam)
                     break;
-                if (identifier->semFlags & SEMFLAG_FORCE_UFCS)
+                if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
                     break;
                 ufcsFirstParam = nullptr;
             }
@@ -1314,7 +1314,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (context->cacheMatches.empty())
     {
         // We want to force the ufcs
-        if (identifier->semFlags & SEMFLAG_FORCE_UFCS)
+        if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;

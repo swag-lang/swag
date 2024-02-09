@@ -73,7 +73,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
     node->resultRegisterRc = front->resultRegisterRc;
     ensureCanBeChangedRC(context, node->resultRegisterRc);
 
-    if (!(node->semFlags & SEMFLAG_EMIT_OP))
+    if (!node->hasSemFlag(SEMFLAG_EMIT_OP))
     {
         // User special function
         if (node->hasSpecialFuncCall())
@@ -114,7 +114,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
         }
     }
 
-    if (!(node->semFlags & SEMFLAG_CAST1))
+    if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
         YIELD();

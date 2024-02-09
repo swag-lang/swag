@@ -65,7 +65,7 @@ bool SemanticJob::spawnJob()
 
             // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in
             // registerFuncSymbol by another thread
-            if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
+            if (!(node->flags & AST_NO_SEMANTIC) && !node->hasSemFlag(SEMFLAG_FILE_JOB_PASS))
             {
                 SWAG_ASSERT(sourceFile->module == module);
                 const auto job           = newJob(dependentJob, sourceFile, node, false);
@@ -157,7 +157,7 @@ JobResult SemanticJob::execute()
                 // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
                 if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
                     continue;
-                if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
+                if ((child->hasSemFlag(SEMFLAG_ONCE)) && child->semanticState != AstNodeResolveState::Enter)
                     continue;
 
                 if (!Semantic::setState(&context, child, AstNodeResolveState::Enter))

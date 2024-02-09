@@ -51,7 +51,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             context->baseJob->nodes.push_back(nodeParam->type);
             return true;
         }
-        else if (nodeParam->semFlags & SEMFLAG_TUPLE_CONVERT)
+        else if (nodeParam->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
         {
             SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
             nodeParam->typeInfo                         = nodeParam->type->typeInfo;
@@ -330,9 +330,9 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     {
         if (!(funcNode->content->flags & AST_NO_SEMANTIC))
         {
-            if (!(funcNode->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
+            if (!(funcNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN)))
             {
-                if (funcNode->semFlags & SEMFLAG_FCT_HAS_RETURN)
+                if (funcNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
                     return context->report({funcNode->returnType, FMT(Err(Err0578), funcNode->getDisplayNameC())});
                 return context->report({funcNode->returnType, FMT(Err(Err0579), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
             }
@@ -698,7 +698,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     bool shortLambdaPendingTyping = false;
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
+        if ((funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING)) && typeNode->typeInfo->isVoid())
         {
             shortLambdaPendingTyping = funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
             typeNode->typeInfo       = g_TypeMgr->typeInfoUndefined;
@@ -791,7 +791,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // If this is a lambda waiting for a match to know the types of its parameters, need to wait
     // Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
-    if (funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING)
+    if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
     {
         if (!(funcNode->flags & AST_IS_GENERIC))
         {
@@ -1027,7 +1027,7 @@ void Semantic::launchResolveSubDecl(const JobContext* context, AstNode* node)
     // If SEMFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
     // file job will trigger the resolve itself
     node->removeAstFlag(AST_NO_SEMANTIC);
-    if (node->semFlags & SEMFLAG_FILE_JOB_PASS)
+    if (node->hasSemFlag(SEMFLAG_FILE_JOB_PASS))
     {
         SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, node, true);
     }
@@ -1049,7 +1049,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
             ScopedLock lk(f->mutex);
 
             // Disabled by #if block
-            if (f->semFlags & SEMFLAG_DISABLED)
+            if (f->hasSemFlag(SEMFLAG_DISABLED))
                 continue;
             f->semFlags |= SEMFLAG_DISABLED; // To avoid multiple resolutions
 
@@ -1192,7 +1192,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
 
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
-    if (node->childs.front()->semFlags & SEMFLAG_LITERAL_SUFFIX)
+    if (node->childs.front()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         node->semFlags |= SEMFLAG_LITERAL_SUFFIX;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
@@ -1265,7 +1265,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
 void Semantic::propagateReturn(AstNode* node)
 {
     auto stopFct = node->ownerFct ? node->ownerFct->parent : nullptr;
-    if (node->semFlags & SEMFLAG_EMBEDDED_RETURN)
+    if (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         stopFct = node->ownerInline->parent;
     SWAG_ASSERT(stopFct);
 
@@ -1305,7 +1305,7 @@ void Semantic::propagateReturn(AstNode* node)
     // Propagate the return in the corresponding scope
     while (scanNode && scanNode != stopFct)
     {
-        if (scanNode->semFlags & SEMFLAG_SCOPE_HAS_RETURN && !(scanNode->semFlags & SEMFLAG_SCOPE_FORCE_HAS_RETURN))
+        if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !(scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN)))
             break;
         scanNode->semFlags |= SEMFLAG_SCOPE_HAS_RETURN;
         if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
@@ -1313,7 +1313,7 @@ void Semantic::propagateReturn(AstNode* node)
             const auto ifNode = castAst<AstIf>(scanNode->parent, AstNodeKind::If);
             if (ifNode->elseBlock != scanNode)
                 break;
-            if (!(ifNode->ifBlock->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
+            if (!(ifNode->ifBlock->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN)))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::SwitchCase)
@@ -1324,7 +1324,7 @@ void Semantic::propagateReturn(AstNode* node)
         }
         else if (scanNode->kind == AstNodeKind::Switch)
         {
-            if (!(scanNode->semFlags & SEMFLAG_SCOPE_FORCE_HAS_RETURN))
+            if (!(scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN)))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::While ||
@@ -1340,7 +1340,7 @@ void Semantic::propagateReturn(AstNode* node)
     // To tell that the function as at least one return (this will change the error message)
     while (scanNode && scanNode != stopFct)
     {
-        if (scanNode->semFlags & SEMFLAG_FCT_HAS_RETURN)
+        if (scanNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
             break;
         scanNode->semFlags |= SEMFLAG_FCT_HAS_RETURN;
         scanNode = scanNode->parent;
@@ -1501,7 +1501,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         const Diagnostic  diag{child, FMT(Err(Err0623), concreteType->getDisplayNameC(), funcNode->token.ctext(), concreteType->name.c_str())};
         const Diagnostic* note = nullptr;
 
-        if (node->ownerInline && !(node->semFlags & SEMFLAG_EMBEDDED_RETURN))
+        if (node->ownerInline && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
             note = Diagnostic::note(funcNode, funcNode->getTokenName(), FMT(Nte(Nte0118), node->ownerInline->func->token.ctext(), funcNode->token.ctext()));
 
         return context->report(diag, note);

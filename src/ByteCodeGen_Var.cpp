@@ -72,7 +72,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
             !(node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_COMPLETE)))
         {
-            if (!(node->semFlags & SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
+            if (!node->hasSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
             {
                 mustDropLeft = true;
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
@@ -93,7 +93,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!(node->semFlags & SEMFLAG_VAR_DECL_REF_CALL))
+            if (!node->hasSemFlag(SEMFLAG_VAR_DECL_REF_CALL))
             {
                 const RegisterList r0 = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
@@ -121,7 +121,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         // :ForceNoAffect
         else if (node->assignment->resultRegisterRc.size())
         {
-            if (!(node->semFlags & SEMFLAG_PRE_CAST))
+            if (!node->hasSemFlag(SEMFLAG_PRE_CAST))
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);

@@ -63,9 +63,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // as functions, and also each time they are inline.
     if (context.cloneFlags & CLONE_RAW)
     {
-        semFlags |= from->semFlags & SEMFLAG_USER_CAST;
-        semFlags |= from->semFlags & SEMFLAG_FROM_REF;
-        semFlags |= from->semFlags & SEMFLAG_FROM_PTR_REF;
+        addSemFlag(from->semFlags & SEMFLAG_USER_CAST);
+        addSemFlag(from->semFlags & SEMFLAG_FROM_REF);
+        addSemFlag(from->semFlags & SEMFLAG_FROM_PTR_REF);
         castedTypeInfo = from->castedTypeInfo;
     }
 
@@ -133,7 +133,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         cloneChilds(context, from);
 
         // Force semantic on specific nodes on generic instantiation
-        if ((from->flags & AST_IS_GENERIC) && (from->semFlags & SEMFLAG_ON_CLONE))
+        if (from->hasAstFlag(AST_IS_GENERIC) && from->hasSemFlag(SEMFLAG_ON_CLONE))
         {
             for (const auto one : childs)
                 one->removeAstFlag(AST_NO_SEMANTIC);
@@ -773,7 +773,7 @@ bool AstNode::isPublic() const
 {
     if (hasAttribute(ATTRIBUTE_PUBLIC))
         return true;
-    if (semFlags & SEMFLAG_ACCESS_PUBLIC)
+    if (hasSemFlag(SEMFLAG_ACCESS_PUBLIC))
         return true;
     return false;
 }
@@ -791,9 +791,9 @@ bool AstNode::isFunctionCall()
 
 bool AstNode::isForceTakeAddress() const
 {
-    if ((flags & AST_TAKE_ADDRESS) && !(semFlags & SEMFLAG_FORCE_NO_TAKE_ADDRESS))
+    if ((flags & AST_TAKE_ADDRESS) && !(hasSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS)))
         return true;
-    if (semFlags & SEMFLAG_FORCE_TAKE_ADDRESS)
+    if (hasSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS))
         return true;
     return false;
 }

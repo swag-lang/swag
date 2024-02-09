@@ -1049,7 +1049,7 @@ AstNode* AstReturn::clone(CloneContext& context)
 
     // If return in an inline block has already been solved, we need this flag !
     if (context.cloneFlags & CLONE_RAW)
-        newNode->semFlags |= semFlags & SEMFLAG_EMBEDDED_RETURN;
+        newNode->addSemFlag(semFlags &  SEMFLAG_EMBEDDED_RETURN);
 
     return newNode;
 }

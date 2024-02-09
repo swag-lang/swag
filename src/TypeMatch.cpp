@@ -48,7 +48,7 @@ namespace
                 return;
             }
 
-            if (callParameter->semFlags & SEMFLAG_AUTO_CODE_PARAM)
+            if (callParameter->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
             {
                 context.cptResolved                             = (int) context.parameters.size();
                 const auto param                                = castAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
@@ -120,7 +120,7 @@ namespace
                 castFlags |= CASTFLAG_UN_CONST;
             if (context.matchFlags & SymbolMatchContext::MATCH_UFCS && i == 0)
                 castFlags |= CASTFLAG_UFCS;
-            if (callParameter->semFlags & SEMFLAG_LITERAL_SUFFIX)
+            if (callParameter->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
                 castFlags |= CASTFLAG_LITERAL_SUFFIX;
             if (callParameter->flags & AST_TRANSIENT && wantedTypeInfo->isPointerMoveRef())
                 castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
@@ -302,7 +302,7 @@ namespace
 
             // If this is a code parameter added by the semantic, force to match the last parameter
             // of the function
-            if (param->semFlags & SEMFLAG_AUTO_CODE_PARAM)
+            if (param->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
             {
                 context.cptResolved                             = (int) context.parameters.size();
                 param->resolvedParameter                        = parameters.back();

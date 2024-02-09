@@ -74,7 +74,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
 
 bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right)
 {
-    if (left->childs.back()->semFlags & SEMFLAG_IS_CONST_ASSIGN)
+    if (left->childs.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
     {
         if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
         {
@@ -238,7 +238,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // :ConcreteRef
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
     TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
-    if (right->semFlags & SEMFLAG_FROM_REF)
+    if (right->hasSemFlag(SEMFLAG_FROM_REF))
         leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
     else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
         leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
@@ -310,7 +310,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
         // Add self and value in list of parameters
         if (arrayNode)
         {
-            if (!(node->semFlags & SEMFLAG_FLAT_PARAMS))
+            if (!node->hasSemFlag(SEMFLAG_FLAT_PARAMS))
             {
                 auto leftNode = arrayNode;
                 while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)

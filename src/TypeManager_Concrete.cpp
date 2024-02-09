@@ -103,7 +103,7 @@ TypeInfo* TypeManager::concretePtrRef(TypeInfo* typeInfo)
 
 TypeInfo* TypeManager::concretePtrRefCond(TypeInfo* typeInfo, const AstNode* node)
 {
-    if (node->semFlags & SEMFLAG_FROM_REF)
+    if (node->hasSemFlag(SEMFLAG_FROM_REF))
         return concretePtrRef(typeInfo);
     return typeInfo;
 }

@@ -474,7 +474,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
         // If there's a suffix without a type, then this should be a 'user' suffix
         // Literal must have been flagged
-        SWAG_ASSERT(!suffix || node->semFlags & SEMFLAG_LITERAL_SUFFIX);
+        SWAG_ASSERT(!suffix || node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX));
 
         // Convert to unsigned int for a character without suffix
         if (node->tokenId == TokenId::LiteralCharacter)

@@ -94,7 +94,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     expNode.type = ErrCxtStepKind::Inline;
     context->errCxtSteps.push_back(expNode);
 
-    if (node->semFlags & SEMFLAG_RESOLVE_INLINED)
+    if (node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
         return true;
     node->semFlags |= SEMFLAG_RESOLVE_INLINED;
 
@@ -190,9 +190,9 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
     {
         if (fct->returnType && !fct->returnType->typeInfo->isVoid())
         {
-            if (!(node->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
+            if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
-                if (node->semFlags & SEMFLAG_FCT_HAS_RETURN)
+                if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
                     return context->report({fct->returnType, FMT(Err(Err0578), fct->getDisplayNameC())});
                 return context->report({fct->returnType, FMT(Err(Err0579), fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
             }

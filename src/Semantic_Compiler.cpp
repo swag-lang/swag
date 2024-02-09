@@ -109,7 +109,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     ExecuteNodeParams execParams;
     execParams.forConstExpr = onlyConstExpr;
 
-    if (!(node->semFlags & SEMFLAG_EXEC_RET_STACK))
+    if (!node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
         auto realType = TypeManager::concreteType(node->typeInfo);
         if (realType && realType->isStruct() && !realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
@@ -463,7 +463,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
 
-    if (node->semFlags & SEMFLAG_COMPILER_INSERT)
+    if (node->hasSemFlag(SEMFLAG_COMPILER_INSERT))
     {
         node->typeInfo = node->childs.back()->typeInfo;
         return true;
@@ -725,7 +725,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, FMT(Err(Err0192), back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
-    if (!(node->semFlags & SEMFLAG_LOAD))
+    if (!node->hasSemFlag(SEMFLAG_LOAD))
     {
         node->semFlags |= SEMFLAG_LOAD;
 

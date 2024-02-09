@@ -83,7 +83,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
                 const auto exprList = castAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
-                if (exprList && !(exprList->semFlags & SEMFLAG_EXPR_LIST_CST))
+                if (exprList && !(exprList->hasSemFlag(SEMFLAG_EXPR_LIST_CST)))
                 {
                     exprList->semFlags |= SEMFLAG_EXPR_LIST_CST;
 
@@ -231,9 +231,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->flags & TYPEINFO_FROM_GENERIC)
         castFlags |= CASTFLAG_EXACT_TUPLE_STRUCT;
 
-    if (toNode && toNode->semFlags & SEMFLAG_FROM_REF && toType->isPointerRef())
+    if (toNode && toNode->hasSemFlag(SEMFLAG_FROM_REF) && toType->isPointerRef())
         toType = concretePtrRef(toType);
-    if (fromNode && fromNode->semFlags & SEMFLAG_FROM_REF && fromType->isPointerRef())
+    if (fromNode && fromNode->hasSemFlag(SEMFLAG_FROM_REF) && fromType->isPointerRef())
         fromType = concretePtrRef(fromType);
 
     // If not already ok, call 'same'

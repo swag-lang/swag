@@ -630,21 +630,21 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    if (!(node->semFlags & SEMFLAG_CAST1))
+    if (!node->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
         YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 
-    if (!(node->semFlags & SEMFLAG_CAST2))
+    if (!node->hasSemFlag(SEMFLAG_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
         YIELD();
         node->semFlags |= SEMFLAG_CAST2;
     }
 
-    if (!(node->semFlags & SEMFLAG_EMIT_OP))
+    if (!node->hasSemFlag(SEMFLAG_EMIT_OP))
     {
         // User special function
         if (node->hasSpecialFuncCall())
@@ -755,7 +755,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         }
     }
 
-    if (!(node->semFlags & SEMFLAG_CAST3))
+    if (!node->hasSemFlag(SEMFLAG_CAST3))
     {
         SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
         YIELD();
@@ -774,7 +774,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     const auto funcDecl = castAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
     // Note: Do not inline a call when evaluation compile time affectation (SEMFLAG_EXEC_RET_STACK)
-    if (funcDecl->mustInline() && !(node->semFlags & SEMFLAG_EXEC_RET_STACK))
+    if (funcDecl->mustInline() && !node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
         // The expansion will be done at the lowest level possible
@@ -793,7 +793,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
                 return true;
             }
 
-            if (!(node->semFlags & SEMFLAG_RESOLVE_INLINED))
+            if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
             {
                 node->semFlags |= SEMFLAG_RESOLVE_INLINED;
                 const auto back = node->childs.back();

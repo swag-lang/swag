@@ -163,7 +163,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-        if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
+        if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING)))
         {
             resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, (uint32_t) i);
             YIELD();
@@ -1255,7 +1255,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     !returnType->isStruct() &&  // Treated later (as errors)
                     !returnType->isArray() &&   // Treated later (as errors)
                     !returnType->isClosure() && // Treated later (as errors)
-                    !(identifier->semFlags & SEMFLAG_EXEC_RET_STACK))
+                    !(identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK)))
                 {
                     identifier->removeAstFlag(AST_CONST_EXPR);
                 }

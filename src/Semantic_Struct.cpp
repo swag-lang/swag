@@ -977,7 +977,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 // Collect has already been simulated with an opAffect
                 else if (varDecl->assignment)
                 {
-                    SWAG_ASSERT(varDecl->semFlags & SEMFLAG_EXEC_RET_STACK);
+                    SWAG_ASSERT(varDecl->hasSemFlag(SEMFLAG_EXEC_RET_STACK));
                     structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 }
             }

@@ -1325,7 +1325,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
             for (const auto child : identifier->callParameters->childs)
             {
                 // Already set by something else, as a direct reference, so no need to copy
-                if (child->semFlags & SEMFLAG_FIELD_STRUCT)
+                if (child->hasSemFlag(SEMFLAG_FIELD_STRUCT))
                 {
                     freeRegisterRC(context, child);
                     continue;
@@ -1394,7 +1394,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
         numToInit = 1;
     else if (node->count->hasComputedValue())
         numToInit = node->count->computedValue->reg.u64;
-    else if (!(node->count->semFlags & SEMFLAG_CAST1))
+    else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         YIELD();
@@ -1659,7 +1659,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         numToDo = 1;
     else if (node->count->hasComputedValue())
         numToDo = node->count->computedValue->reg.u64;
-    else if (!(node->count->semFlags & SEMFLAG_CAST1))
+    else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
         YIELD();

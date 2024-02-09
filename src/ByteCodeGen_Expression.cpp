@@ -18,7 +18,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
     const auto child1   = node->childs[1];
     const auto typeInfo = TypeManager::concreteType(child0->typeInfo);
 
-    if (!(child0->semFlags & SEMFLAG_CAST1))
+    if (!(child0->hasSemFlag(SEMFLAG_CAST1)))
     {
         SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
         YIELD();
@@ -290,7 +290,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // Be sure it has been collected to the constant segment. Usually, this is done after casting, because
         // we could need to change the values before the collect. If it's not done yet, that means that the cast
         // did not take place (when passing to a varargs for example).
-        if (!(node->semFlags & SEMFLAG_EXPR_LIST_CST))
+        if (!node->hasSemFlag(SEMFLAG_EXPR_LIST_CST))
         {
             node->semFlags |= SEMFLAG_EXPR_LIST_CST;
             node->allocateComputedValue();
@@ -309,7 +309,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
     const auto node = context->node;
-    if (node->semFlags & SEMFLAG_LITERAL_SUFFIX)
+    if (node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         return context->report({node->childs.front(), FMT(Err(Err0403), node->childs.front()->token.ctext())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRc));
     return true;

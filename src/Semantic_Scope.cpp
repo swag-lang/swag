@@ -210,7 +210,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             {
                 // Only deal with previous scope if the previous node wants to
                 bool addAlternative = true;
-                if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->semFlags & SEMFLAG_FORCE_SCOPE)
+                if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
                     addAlternative = false;
 
                 if (addAlternative)

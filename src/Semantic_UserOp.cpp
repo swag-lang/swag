@@ -500,7 +500,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
     }
 
     // opAffectLiteral
-    if (right->semFlags & SEMFLAG_LITERAL_SUFFIX)
+    if (right->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
     {
         Utf8 suffix;
 

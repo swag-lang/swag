@@ -24,7 +24,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // :CheckConstExprFuncReturnType
     // :opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
-    if (node->semFlags & SEMFLAG_EXEC_RET_STACK)
+    if (node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
         const auto storageSegment = &sourceFile->module->compilerSegment;
         uint8_t*   addrDst;
@@ -93,7 +93,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (realType->isStruct())
     {
         // If struct is marked as constexpr, then we can raw copy the struct content
-        if ((realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR)) || (node->semFlags & SEMFLAG_FORCE_CONST_EXPR))
+        if ((realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR)) || (node->hasSemFlag(SEMFLAG_FORCE_CONST_EXPR)))
         {
             const auto storageSegment           = Semantic::getConstantSegFromContext(node);
             uint8_t*   addrDst                  = nullptr;
@@ -253,8 +253,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     if (node->sourceFile->module->numErrors)
         return false;
 
-    SWAG_ASSERT(node->semFlags & SEMFLAG_BYTECODE_GENERATED);
-    SWAG_ASSERT(node->semFlags & SEMFLAG_BYTECODE_RESOLVED);
+    SWAG_ASSERT(node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));
+    SWAG_ASSERT(node->hasSemFlag(SEMFLAG_BYTECODE_RESOLVED));
 
     ByteCode*           bc = nullptr;
     ByteCode            bcTmp;
@@ -336,7 +336,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
             // :opAffectConstExpr
             // Reserve room on the stack to store the result
-            if (node->semFlags & SEMFLAG_EXEC_RET_STACK)
+            if (node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
                 g_RunContext->decSP(node->typeInfo->sizeOf);
 
             g_RunContext->bp = g_RunContext->sp;
