@@ -1545,7 +1545,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     if (testReturn->parent->kind == AstNodeKind::FuncCallParam &&
         testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
         testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
-        testReturn->parent->parent->parent->parent->parent->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS &&
+        testReturn->parent->parent->parent->parent->parent->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS) &&
         testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl &&
         testReturn->parent->parent->parent->typeInfo &&
         testReturn->parent->parent->parent->typeInfo->isStruct())
@@ -2241,9 +2241,9 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     PushNode pn(context, funcNode->content);
 
     // Store the context in a persistent register
-    if (funcNode->specFlags & AstFuncDecl::SPECFLAG_REG_GET_CONTEXT ||
-        funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW ||
-        funcNode->specFlags & AstFuncDecl::SPECFLAG_ASSUME ||
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT) ||
+        funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_THROW) ||
+        funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_ASSUME) ||
         funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);

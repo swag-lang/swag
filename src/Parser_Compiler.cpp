@@ -538,7 +538,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         const auto attrUse = (AstAttrUse*) resultNode;
-        attrUse->addSpecFlags(AstAttrUse::SPECFLAG_GLOBAL);
+        attrUse->addSpecFlag(AstAttrUse::SPECFLAG_GLOBAL);
         attrUse->allocateExtension(ExtensionKind::Owner);
         attrUse->extOwner()->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;

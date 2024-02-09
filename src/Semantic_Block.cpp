@@ -113,7 +113,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 
     // If we inline a throwable function, be sure the top level function is informed
     if (typeInfoFunc->flags & TYPEINFO_CAN_THROW)
-        node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+        node->ownerFct->addSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     // Register all function parameters as inline symbols
     if (func->parameters)
@@ -492,9 +492,9 @@ bool Semantic::resolveCase(SemanticContext* context)
                 {
                     SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
                     if (node->computedValue->reg.b)
-                        node->addSpecFlags(AstSwitchCase::SPECFLAG_IS_TRUE);
+                        node->addSpecFlag(AstSwitchCase::SPECFLAG_IS_TRUE);
                     else
-                        node->addSpecFlags(AstSwitchCase::SPECFLAG_IS_FALSE);
+                        node->addSpecFlag(AstSwitchCase::SPECFLAG_IS_FALSE);
                     Allocator::free<ComputedValue>(node->computedValue);
                     node->flags &= ~AST_VALUE_COMPUTED;
                     node->computedValue = nullptr;
@@ -647,13 +647,13 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto child0      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child0->typeInfo = g_TypeMgr->typeInfoBool;
         child0->setFlagsValueIsComputed();
-        child0->computedValue->reg.b = node->specFlags & AstVisit::SPECFLAG_WANT_POINTER;
+        child0->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER);
         child0->flags |= AST_NO_SEMANTIC;
 
         auto child1      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child1->typeInfo = g_TypeMgr->typeInfoBool;
         child1->setFlagsValueIsComputed();
-        child1->computedValue->reg.b = node->specFlags & AstVisit::SPECFLAG_BACK;
+        child1->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPECFLAG_BACK);
         child1->flags |= AST_NO_SEMANTIC;
 
         // Call with arguments
@@ -702,7 +702,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     int      id            = g_UniqueID.fetch_add(1);
 
     Utf8 visitBack;
-    if (node->specFlags & AstVisit::SPECFLAG_BACK)
+    if (node->hasSpecFlag(AstVisit::SPECFLAG_BACK))
     {
         visitBack += ",";
         visitBack += g_LangSpec->name_back;
@@ -715,7 +715,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto pointedType = typeArray->finalType;
 
         auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->childs.front()->flags |= AST_NO_SEMANTIC;
@@ -725,7 +725,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += FMT("let __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
         content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
-        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
         {
             content += "let ";
             content += alias0Name;
@@ -757,7 +757,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
-        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->childs.front()->flags |= AST_NO_SEMANTIC;
         newVar = varDecl;
@@ -765,7 +765,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
-        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
         {
             content += "let ";
             content += alias0Name;
@@ -796,7 +796,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto pointedType = typeSlice->pointedType;
 
         auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
@@ -804,7 +804,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
         content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
-        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
         {
             content += "let ";
             content += alias0Name;
@@ -832,7 +832,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     else if (typeInfo->isString())
     {
         auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
+        varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
@@ -840,7 +840,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         content += "{ ";
         content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
         content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
-        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
         {
             content += "let ";
             content += alias0Name;
@@ -861,7 +861,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
-        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
         {
             Diagnostic diag{node, node->wantPointerToken, Err(Err0416)};
             auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
@@ -882,7 +882,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Enum
     else if (typeInfo->isEnum())
     {
-        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
         {
             Diagnostic diag{node, node->wantPointerToken, Err(Err0417)};
             auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));

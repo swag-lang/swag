@@ -172,7 +172,7 @@ bool ByteCodeGen::emitBinaryOpMinus(const ByteCodeGenContext* context, const Typ
 bool ByteCodeGen::emitBinaryOpMul(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     // 'mul' will be done by the parent 'add' (mulAdd)
-    if (context->node->specFlags & AstOp::SPECFLAG_FMA)
+    if (context->node->hasSpecFlag(AstOp::SPECFLAG_FMA))
         return true;
 
     const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
@@ -653,7 +653,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             YIELD();
             node->semFlags |= SEMFLAG_EMIT_OP;
         }
-        else if (node->tokenId == TokenId::SymPlus && node->specFlags & AstOp::SPECFLAG_FMA)
+        else if (node->tokenId == TokenId::SymPlus && node->hasSpecFlag(AstOp::SPECFLAG_FMA))
         {
             const auto front       = node->childs[0];
             const auto typeInfo    = TypeManager::concreteType(front->typeInfo);
@@ -678,7 +678,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             freeRegisterRC(context, node->childs[1]->resultRegisterRc);
             node->semFlags |= SEMFLAG_EMIT_OP;
         }
-        else if (node->tokenId == TokenId::SymAsterisk && node->specFlags & AstOp::SPECFLAG_FMA)
+        else if (node->tokenId == TokenId::SymAsterisk && node->hasSpecFlag(AstOp::SPECFLAG_FMA))
         {
             node->semFlags |= SEMFLAG_EMIT_OP;
         }

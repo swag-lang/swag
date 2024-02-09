@@ -148,7 +148,7 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     const auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
-    enumValue->addSpecFlags(AstEnumValue::SPECFLAG_HAS_USING);
+    enumValue->addSpecFlag(AstEnumValue::SPECFLAG_HAS_USING);
     enumValue->semanticFct = Semantic::resolveSubEnumValue;
     *result                = enumValue;
 

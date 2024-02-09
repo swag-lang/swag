@@ -456,7 +456,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     // Normal loop
     if (loopNode->expression->kind != AstNodeKind::Range)
     {
-        if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
+        if (loopNode->hasSpecFlag(AstLoop::SPECFLAG_BACK))
         {
             if (loopNode->expression->hasComputedValue())
             {
@@ -517,11 +517,11 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             return context->report(diag);
         }
 
-        if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
+        if (loopNode->hasSpecFlag(AstLoop::SPECFLAG_BACK))
         {
             auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
             inst->b.u64 = rangeNode->expressionUp->computedValue->reg.u64 + 1;
-            if (rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
+            if (rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP))
                 inst->b.u64--;
 
             loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
@@ -548,7 +548,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
             inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
-            if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
+            if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
                 inst->c.u64++;
             inst->flags |= BCI_IMM_C;
             return true;
@@ -562,12 +562,12 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
     emitSafetyRange(context, rangeNode);
 
-    if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
+    if (loopNode->hasSpecFlag(AstLoop::SPECFLAG_BACK))
     {
         EMIT_INST1(context, ByteCodeOp::DecrementRA64, rangeNode->expressionLow->resultRegisterRc[0]);
 
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionUp->resultRegisterRc[0]);
-        if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
+        if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
             EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
 
         loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
@@ -580,7 +580,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     }
     else
     {
-        if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
+        if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
             EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRc[0]);
 
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRc[0]);
@@ -860,13 +860,13 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                     else
                         r0 = node->resultRegisterRc;
                 }
-                else if (caseNode->specFlags & AstSwitchCase::SPECFLAG_IS_TRUE)
+                else if (caseNode->hasSpecFlag(AstSwitchCase::SPECFLAG_IS_TRUE))
                 {
                     r0              = reserveRegisterRC(context);
                     const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
                     inst->b.u64     = 1;
                 }
-                else if (caseNode->specFlags & AstSwitchCase::SPECFLAG_IS_FALSE)
+                else if (caseNode->hasSpecFlag(AstSwitchCase::SPECFLAG_IS_FALSE))
                 {
                     r0 = reserveRegisterRC(context);
                     EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
@@ -928,7 +928,7 @@ bool ByteCodeGen::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     const auto blockNode = castAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
 
     // For the default case, do nothing, fallback to the end of the switch
-    if (blockNode->ownerCase->specFlags & AstSwitchCase::SPECFLAG_IS_DEFAULT)
+    if (blockNode->ownerCase->hasSpecFlag(AstSwitchCase::SPECFLAG_IS_DEFAULT))
         return true;
 
     // Jump to exit the switch

@@ -161,7 +161,7 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         searchFor = IdentifierSearchFor::Type;
     else if (node->parent->parent && node->parent->parent->kind == AstNodeKind::AttrUse && node->parent->childs.back() == node)
         searchFor = IdentifierSearchFor::Attribute;
-    else if (node->callParameters && (node->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
+    else if (node->callParameters && node->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         searchFor = IdentifierSearchFor::Struct;
     else if (node->callParameters)
         searchFor = IdentifierSearchFor::Function;

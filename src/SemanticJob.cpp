@@ -36,8 +36,9 @@ bool SemanticJob::spawnJob()
         switch (node->kind)
         {
         case AstNodeKind::AttrUse:
-            if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
+            if (!node->ownerScope->isGlobalOrImpl() || node->hasSpecFlag(AstAttrUse::SPECFLAG_GLOBAL))
                 break;
+            [[fallthrough]];
 
         case AstNodeKind::FuncDecl:
         case AstNodeKind::StructDecl:

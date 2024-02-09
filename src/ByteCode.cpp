@@ -267,7 +267,7 @@ bool ByteCode::canEmit() const
         return true;
     if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
         return true;
-    if (funcNode->specFlags & AstFuncDecl::SPECFLAG_PATCH)
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_PATCH))
         return true;
 
     if (!isUsed)

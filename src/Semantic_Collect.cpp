@@ -229,7 +229,7 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
             SWAG_CHECK(collectStructLiterals(context, storageSegment, offsetStruct + field->offset, typeSub->declNode));
         }
 
-        if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
+        if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         {
             const auto varType = varDecl->type;
             const auto srcAddr = varType->computedValue->getStorageAddr();
@@ -411,7 +411,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             // Do not initialize variable with type arguments, then again with an initialization
             const auto assign   = node->assignment;
             const auto overload = assign->resolvedSymbolOverload;
-            if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+            if (node->type && node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
                 Diagnostic diag{assign, Err(Err0063)};
                 diag.addRange(node->type, Nte(Nte0164));
@@ -428,7 +428,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
         }
         else
         {
-            if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+            if (node->type && node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
                 const auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
                 const auto identifier     = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);

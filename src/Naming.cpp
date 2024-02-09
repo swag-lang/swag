@@ -552,7 +552,7 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
     if (node->hasAttribute(ATTRIBUTE_PREMAIN_FUNC))
         return "[[#premain]] block";
 
-    if (node->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION)
+    if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
         return "lambda";
 
     if (node->hasAttribute(ATTRIBUTE_SHARP_FUNC))

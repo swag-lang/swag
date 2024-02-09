@@ -81,7 +81,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         Ast::addChildBack(arrayNode, firstExpr);
         arrayNode->lowerBound = firstExpr;
         if (token.id == TokenId::SymDotDotLess)
-            arrayNode->addSpecFlags(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP);
+            arrayNode->addSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP);
         SWAG_CHECK(eatToken());
 
         if (token.id != TokenId::SymRightSquare)
@@ -92,7 +92,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         // To the end...
         else
         {
-            if (arrayNode->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP)
+            if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP))
             {
                 const Diagnostic diag{sourceFile, token, Err(Err0580)};
                 return context->report(diag);
@@ -282,7 +282,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         AstNode* idref;
         SWAG_CHECK(doIdentifierRef(parent, &idref));
         *result = idref;
-        castAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
+        castAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
         break;
     }
 
@@ -382,7 +382,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
             return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         eatToken();
         SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-        (*result)->addSpecFlags(AstType::SPECFLAG_FORCE_TYPE);
+        (*result)->addSpecFlag(AstType::SPECFLAG_FORCE_TYPE);
         break;
     }
 
@@ -508,7 +508,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         isForceTakeAddress(identifierRef);
 
         if (hasDot)
-            identifierRef->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
+            identifierRef->addSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
 
         if (token.id == TokenId::SymLeftSquare)
             SWAG_CHECK(doArrayPointerIndex(&identifierRef));
@@ -912,13 +912,13 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->tokenId, mdfFlags));
         if (mdfFlags & MODIFIER_OVERFLOW)
         {
-            binaryNode->addSpecFlags(AstOp::SPECFLAG_OVERFLOW);
+            binaryNode->addSpecFlag(AstOp::SPECFLAG_OVERFLOW);
             binaryNode->attributeFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
         }
 
         if (mdfFlags & MODIFIER_UP)
         {
-            binaryNode->addSpecFlags(AstOp::SPECFLAG_UP);
+            binaryNode->addSpecFlag(AstOp::SPECFLAG_UP);
         }
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -1173,7 +1173,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
     const auto initNode   = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
     *result               = initNode;
     initNode->semanticFct = Semantic::resolveExpressionListTuple;
-    initNode->addSpecFlags(AstExpressionList::SPECFLAG_FOR_TUPLE);
+    initNode->addSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE);
     const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken());
 
@@ -1340,7 +1340,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
                 {
                     const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) exprNode, exprNode, this);
                     id->flags |= AST_GENERATED;
-                    id->addSpecFlags(AstIdentifier::SPECFLAG_FROM_WITH);
+                    id->addSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH);
                     id->allocateIdentifierExtension();
                     id->identifierExtension->fromAlternateVar = withNode->childs.front();
                     id->inheritTokenLocation(exprNode);
@@ -1592,7 +1592,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
 
             // :DeduceLambdaType
             const auto back = affectNode->childs.back();
-            if (back->kind == AstNodeKind::MakePointerLambda && (back->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
+            if (back->kind == AstNodeKind::MakePointerLambda && back->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE))
             {
                 const auto front = affectNode->childs.front();
                 front->allocateExtension(ExtensionKind::Semantic);
@@ -1689,7 +1689,7 @@ bool Parser::doRange(AstNode* parent, AstNode* expression, AstNode** result)
     rangeNode->expressionLow = expression;
 
     if (token.id == TokenId::KwdUntil)
-        rangeNode->addSpecFlags(AstRange::SPECFLAG_EXCLUDE_UP);
+        rangeNode->addSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP);
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(rangeNode, EXPR_FLAG_SIMPLE, &rangeNode->expressionUp));

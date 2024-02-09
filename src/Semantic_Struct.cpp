@@ -198,7 +198,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
 
         // Must be an 'impl' function
-        if (!(childFct->specFlags & AstFuncDecl::SPECFLAG_IMPL))
+        if (!childFct->hasSpecFlag(AstFuncDecl::SPECFLAG_IMPL))
         {
             // Cannot have the same name as a function of the interface
             if (itfSymbol)
@@ -681,9 +681,9 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
                 auto funcParam      = TypeManager::makeParam();
                 funcParam->name     = param->token.text;
                 funcParam->typeInfo = param->typeInfo;
-                if (param->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE)
+                if (param->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_TYPE))
                     funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
-                else if (param->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT)
+                else if (param->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
                     funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
@@ -821,7 +821,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     }
 
     // Structure packing
-    if (node->specFlags & AstStruct::SPECFLAG_UNION)
+    if (node->hasSpecFlag(AstStruct::SPECFLAG_UNION))
         node->packing = 0;
     else
     {
@@ -935,7 +935,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             // If variable is initialized, struct is too.
             if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             {
-                if (varDecl->assignment || varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
+                if (varDecl->assignment || varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
                 else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -961,7 +961,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (!(varTypeInfo->flags & TYPEINFO_STRUCT_EMPTY))
                     structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
-                if (varDecl->type && varDecl->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)
+                if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
                 {
                     structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                     if (!varDecl->type->hasComputedValue())
@@ -1104,7 +1104,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 storageOffset += childType->sizeOf;
 
             // Create a generic alias
-            if (!(child->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
+            if (!(child->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME)))
             {
                 // Special field name starts with 'item' followed by a number
                 bool hasItemName = false;

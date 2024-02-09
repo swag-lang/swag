@@ -108,7 +108,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if ((identifierRef->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE) && !(identifierRef->specFlags & AstIdentifierRef::SPECFLAG_WITH_SCOPE))
+            if (identifierRef->hasSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPECFLAG_WITH_SCOPE))
             {
                 VectorNative<TypeInfoEnum*>                      typeEnum;
                 VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
@@ -173,14 +173,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         const auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
-                        id->addSpecFlags(AstIdentifier::SPECFLAG_FROM_WITH);
+                        id->addSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
                         id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
                         id->identifierExtension->fromAlternateVar = withNode->childs.front();
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);
-                        identifierRef->addSpecFlags(AstIdentifierRef::SPECFLAG_WITH_SCOPE);
+                        identifierRef->addSpecFlag(AstIdentifierRef::SPECFLAG_WITH_SCOPE);
                         context->baseJob->nodes.push_back(id);
                     }
 

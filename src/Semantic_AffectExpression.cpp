@@ -54,7 +54,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     if (!findMpl)
         return true;
     const auto mpl = castAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
-    if (!(mpl->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
+    if (!mpl->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE))
         return true;
 
     // Cannot cast from closure to lambda
@@ -151,7 +151,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
                 hint += c->token.text;
             }
 
-            if (left->specFlags & AstIdentifier::SPECFLAG_FROM_USING)
+            if (left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING))
                 hint += "]] because of a [[using]]";
             else
                 hint += "]] because of a [[with]]";

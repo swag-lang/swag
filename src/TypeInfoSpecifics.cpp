@@ -1192,7 +1192,7 @@ Utf8 TypeInfoStruct::getDisplayName()
 {
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
         return FMT("interface %s", name.c_str());
-    if (declNode && declNode->kind == AstNodeKind::StructDecl && declNode->specFlags & AstStruct::SPECFLAG_UNION)
+    if (declNode && declNode->kind == AstNodeKind::StructDecl && declNode->hasSpecFlag(AstStruct::SPECFLAG_UNION))
         return FMT("union %s", name.c_str());
 
     Utf8 str;

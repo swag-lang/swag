@@ -132,7 +132,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 
     concat.addChar(' ');
 
-    if (node->kind == AstNodeKind::FuncDecl && node->specFlags & AstFuncDecl::SPECFLAG_IMPL)
+    if (node->kind == AstNodeKind::FuncDecl && node->hasSpecFlag(AstFuncDecl::SPECFLAG_IMPL))
         CONCAT_FIXED_STR(concat, "impl ");
 
     if (node->kind == AstNodeKind::FuncDecl)
@@ -164,7 +164,7 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
             CONCAT_FIXED_STR(concat, "->");
             SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
         }
-        else if (funcNode->returnType && funcNode->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED)
+        else if (funcNode->returnType && funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED))
         {
             CONCAT_FIXED_STR(concat, "->");
             SWAG_CHECK(outputNode(context, concat, returnNode));
@@ -172,9 +172,9 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     }
 
     // Throw
-    if (node->specFlags & AstFuncDecl::SPECFLAG_THROW)
+    if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_THROW))
         CONCAT_FIXED_STR(concat, " throw");
-    else if (node->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+    else if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_ASSUME))
         CONCAT_FIXED_STR(concat, " assume");
 
     // #validif must be exported
@@ -229,7 +229,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     }
 
     // Implementation
-    if (node->specFlags & AstFuncDecl::SPECFLAG_IMPL)
+    if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_IMPL))
         CONCAT_FIXED_STR(concat, " impl ");
 
     // Name
@@ -253,20 +253,20 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputType(context, concat, returnNode, typeFunc->returnType));
     }
-    else if (node->returnType && node->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED)
+    else if (node->returnType && node->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED))
     {
         CONCAT_FIXED_STR(concat, "->");
         SWAG_CHECK(outputNode(context, concat, returnNode));
     }
 
     // Throw
-    if (node->specFlags & AstFuncDecl::SPECFLAG_THROW)
+    if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_THROW))
         CONCAT_FIXED_STR(concat, " throw");
-    else if (node->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+    else if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_ASSUME))
         CONCAT_FIXED_STR(concat, " assume");
 
     // Content, short lambda
-    if (node->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA)
+    if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA))
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(node->content->kind == AstNodeKind::Return || node->content->kind == AstNodeKind::Try);
@@ -356,7 +356,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
         {
             concat.addIndent(context.indent + 1);
 
-            if (c->specFlags & AstEnumValue::SPECFLAG_HAS_USING)
+            if (c->hasSpecFlag(AstEnumValue::SPECFLAG_HAS_USING))
             {
                 CONCAT_FIXED_STR(concat, "using ");
                 SWAG_CHECK(outputNode(context, concat, c->childs.front()));
@@ -668,7 +668,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
 
             first            = false;
             const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-            if (param->specFlags & AstVarDecl::SPECFLAG_UNNAMED)
+            if (param->hasSpecFlag(AstVarDecl::SPECFLAG_UNNAMED))
                 concat.addChar('?');
             else
             {
@@ -690,7 +690,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
 
     concat.addChar(')');
 
-    if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA)
+    if (funcDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA))
     {
         CONCAT_FIXED_STR(concat, " => ");
         SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
@@ -707,7 +707,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
 
 bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstVarDecl* varNode, bool isSelf)
 {
-    if (!(varNode->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
+    if (!(varNode->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME)))
     {
         if (!varNode->publicName.empty())
             concat.addString(varNode->publicName);
@@ -721,7 +721,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, const AstV
         {
             if (!isSelf)
             {
-                if (!(varNode->specFlags & AstVarDecl::SPECFLAG_AUTO_NAME))
+                if (!(varNode->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME)))
                     CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(outputNode(context, concat, varNode->type));
             }
@@ -760,7 +760,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     }
     else if (varNode->kind != AstNodeKind::FuncDeclParam && !(varNode->flags & AST_STRUCT_MEMBER))
     {
-        if (varNode->specFlags & AstVarDecl::SPECFLAG_IS_LET)
+        if (varNode->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
             CONCAT_FIXED_STR(concat, "let ");
         else
             CONCAT_FIXED_STR(concat, "var ");
@@ -799,7 +799,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl);
         const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
-        if (structNode->specFlags & AstStruct::SPECFLAG_UNION)
+        if (structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION))
             CONCAT_FIXED_STR(concat, "union");
         else
             CONCAT_FIXED_STR(concat, "struct");
@@ -808,7 +808,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     if (node->genericParameters)
         SWAG_CHECK(outputGenericParameters(context, concat, node->genericParameters));
 
-    if (!(node->specFlags & AstStruct::SPECFLAG_ANONYMOUS))
+    if (!(node->hasSpecFlag(AstStruct::SPECFLAG_ANONYMOUS)))
     {
         CONCAT_FIXED_STR(concat, " ");
         concat.addString(node->token.text);
@@ -1079,7 +1079,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Try:
     case AstNodeKind::Assume:
     {
-        if (node->specFlags & AstTryCatchAssume::SPECFLAG_GENERATED && node->specFlags & AstTryCatchAssume::SPECFLAG_BLOCK)
+        if (node->hasSpecFlag(AstTryCatchAssume::SPECFLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPECFLAG_BLOCK))
         {
             context.indent += 1;
             for (const auto c : node->childs.front()->childs)
@@ -1297,7 +1297,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, arrayNode->array));
         concat.addChar('[');
         SWAG_CHECK(outputNode(context, concat, arrayNode->lowerBound));
-        if (arrayNode->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP)
+        if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP))
             CONCAT_FIXED_STR(concat, "..<");
         else
             CONCAT_FIXED_STR(concat, "..");
@@ -1309,7 +1309,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::ArrayPointerIndex:
     {
         const auto arrayNode = castAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DEREF)
+        if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
         {
             CONCAT_FIXED_STR(concat, "dref ");
             SWAG_CHECK(outputNode(context, concat, arrayNode->array));
@@ -1327,7 +1327,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::ExpressionList:
     {
         const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-        if (exprNode->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE)
+        if (exprNode->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
             concat.addChar('{');
         else
             concat.addChar('[');
@@ -1342,7 +1342,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, child));
         }
 
-        if (exprNode->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE)
+        if (exprNode->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
             concat.addChar('}');
         else
             concat.addChar(']');
@@ -1498,7 +1498,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         const auto compilerIf = castAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
         CONCAT_FIXED_STR(concat, "if ");
 
-        if (compilerIf->specFlags & AstIf::SPECFLAG_ASSIGN)
+        if (compilerIf->hasSpecFlag(AstIf::SPECFLAG_ASSIGN))
         {
             const auto varNode = castAst<AstVarDecl>(compilerIf->childs.front(), AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
             if (varNode->tokenId == TokenId::KwdConst)
@@ -1548,7 +1548,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
         CONCAT_FIXED_STR(concat, "visit ");
 
-        if (visitNode->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        if (visitNode->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
             concat.addChar('&');
 
         bool first = true;
@@ -1574,7 +1574,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
         CONCAT_FIXED_STR(concat, "loop");
-        if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
+        if (loopNode->hasSpecFlag(AstLoop::SPECFLAG_BACK))
             CONCAT_FIXED_STR(concat, ",back");
         concat.addChar(' ');
 
@@ -1736,7 +1736,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         if (node->flags & AST_DISCARD)
             CONCAT_FIXED_STR(concat, "discard ");
-        if (node->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE)
+        if (node->hasSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE))
             CONCAT_FIXED_STR(concat, ".");
         int idx = 0;
         for (const auto child : node->childs)
@@ -1783,12 +1783,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         if (identifier->callParameters)
         {
-            if (identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
+            if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
                 concat.addChar('{');
             else
                 concat.addChar('(');
             SWAG_CHECK(outputNode(context, concat, identifier->callParameters));
-            if (identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
+            if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
                 concat.addChar('}');
             else if (identifier->callParameters->childs.empty())
                 concat.addChar(')');
@@ -1926,7 +1926,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         concat.addChar(' ');
         concat.addString(node->token.text);
-        if (opNode->specFlags & AstOp::SPECFLAG_OVERFLOW)
+        if (opNode->hasSpecFlag(AstOp::SPECFLAG_OVERFLOW))
             CONCAT_FIXED_STR(concat, ",over");
         concat.addChar(' ');
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
@@ -1940,7 +1940,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
         concat.addChar(' ');
         concat.addString(node->token.text);
-        if (opNode->specFlags & AstOp::SPECFLAG_OVERFLOW)
+        if (opNode->hasSpecFlag(AstOp::SPECFLAG_OVERFLOW))
             CONCAT_FIXED_STR(concat, ",over");
         concat.addChar(' ');
         SWAG_CHECK(outputNode(context, concat, node->childs[1]));
@@ -1965,9 +1965,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Cast:
         CONCAT_FIXED_STR(concat, "cast");
-        if (node->specFlags & AstCast::SPECFLAG_OVERFLOW)
+        if (node->hasSpecFlag(AstCast::SPECFLAG_OVERFLOW))
             CONCAT_FIXED_STR(concat, ",over");
-        if (node->specFlags & AstCast::SPECFLAG_BIT)
+        if (node->hasSpecFlag(AstCast::SPECFLAG_BIT))
             CONCAT_FIXED_STR(concat, ",bit");
         concat.addChar('(');
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
@@ -1978,7 +1978,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::TypeExpression:
     {
         auto typeNode = static_cast<AstTypeExpression*>(node);
-        if (typeNode->specFlags & AstType::SPECFLAG_FORCE_TYPE)
+        if (typeNode->hasSpecFlag(AstType::SPECFLAG_FORCE_TYPE))
             concat.addString("#type ");
         SWAG_CHECK(outputType(context, concat, typeNode));
         break;
@@ -2024,7 +2024,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::Range:
         SWAG_CHECK(outputNode(context, concat, node->childs[0]));
-        if (node->specFlags & AstRange::SPECFLAG_EXCLUDE_UP)
+        if (node->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP))
             CONCAT_FIXED_STR(concat, " until ");
         else
             CONCAT_FIXED_STR(concat, " to ");
@@ -2035,7 +2035,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::TypeClosure:
     {
         const AstTypeLambda* typeNode = static_cast<AstTypeLambda*>(node);
-        if (typeNode->specFlags & AstType::SPECFLAG_FORCE_TYPE)
+        if (typeNode->hasSpecFlag(AstType::SPECFLAG_FORCE_TYPE))
             concat.addString("#type ");
         if (node->kind == AstNodeKind::TypeLambda)
             CONCAT_FIXED_STR(concat, "func");
@@ -2051,9 +2051,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, typeNode->returnType));
         }
 
-        if (node->specFlags & AstFuncDecl::SPECFLAG_THROW)
+        if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_THROW))
             CONCAT_FIXED_STR(concat, " throw");
-        else if (node->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+        else if (node->hasSpecFlag(AstFuncDecl::SPECFLAG_ASSUME))
             CONCAT_FIXED_STR(concat, " assume");
         break;
     }

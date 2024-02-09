@@ -210,7 +210,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
     const auto typeInfo = makeType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
     typeInfo->declNode  = node;
 
-    if (node->specFlags & AstTypeLambda::SPECFLAG_CAN_THROW)
+    if (node->hasSpecFlag(AstTypeLambda::SPECFLAG_CAN_THROW))
         typeInfo->flags |= TYPEINFO_CAN_THROW;
 
     if (node->returnType)
@@ -733,9 +733,9 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     }
 
     uint32_t castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
-    if (node->specFlags & AstCast::SPECFLAG_UN_CONST)
+    if (node->hasSpecFlag(AstCast::SPECFLAG_UN_CONST))
         castFlags |= CASTFLAG_FORCE_UN_CONST;
-    if (node->specFlags & AstCast::SPECFLAG_OVERFLOW)
+    if (node->hasSpecFlag(AstCast::SPECFLAG_OVERFLOW))
         castFlags |= CASTFLAG_CAN_OVERFLOW;
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
     YIELD();

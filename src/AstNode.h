@@ -332,8 +332,9 @@ struct AstNode
 
     // clang-format off
     bool hasAttribute(uint64_t attr) const  { return attributeFlags & attr; }
-    void addSpecFlags(uint16_t fl)          { specFlags |= fl; }
-    void removeSpecFlags(uint16_t fl)       { specFlags &= ~fl; }
+    bool hasSpecFlag(uint16_t fl) const     { return specFlags & fl; }
+    void addSpecFlag(uint16_t fl)           { specFlags |= fl; }
+    void removeSpecFlag(uint16_t fl)        { specFlags &= ~fl; }
     // clang-format on
 
     struct NodeExtensionByteCode

@@ -623,7 +623,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
         if (result)
             result->add(curAttr->attributes);
 
-        if (!(curAttr->specFlags & AstAttrUse::SPECFLAG_GLOBAL) && (!curAttr->hasExtOwner() || !curAttr->extOwner()->ownerAttrUse))
+        if (!curAttr->hasSpecFlag(AstAttrUse::SPECFLAG_GLOBAL) && (!curAttr->hasExtOwner() || !curAttr->extOwner()->ownerAttrUse))
             curAttr = forNode->sourceFile->astAttrUse;
         else
             curAttr = curAttr->hasExtOwner() ? curAttr->extOwner()->ownerAttrUse : nullptr;
@@ -663,7 +663,7 @@ bool Semantic::resolveAttrDecl(SemanticContext* context)
 bool Semantic::resolveAttrUse(SemanticContext* context)
 {
     auto node = castAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || (node->specFlags & AstAttrUse::SPECFLAG_GLOBAL), context->report({node, Err(Err0485)}));
+    SWAG_VERIFY(node->content || (node->hasSpecFlag(AstAttrUse::SPECFLAG_GLOBAL)), context->report({node, Err(Err0485)}));
     SWAG_CHECK(resolveAttrUse(context, node));
     return true;
 }
@@ -695,7 +695,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         }
 
         // Check that global attribute is authorized
-        if (node->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
+        if (node->hasSpecFlag(AstAttrUse::SPECFLAG_GLOBAL))
         {
             auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & File))

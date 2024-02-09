@@ -169,7 +169,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             return true;
     }
 
-    if (node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE)
+    if (node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
         node->resultRegisterRc = reserveRegisterRC(context);
     else
         reserveLinearRegisterRC2(context, node->resultRegisterRc);
@@ -276,7 +276,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         if (canDrop)
         {
             EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc[0])->b.u64 = startOffset;
-            if (!(node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
+            if (!(node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE)))
                 EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = listNode->childs.size();
         }
         else
@@ -299,7 +299,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         }
 
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRc[0]);
-        if (!(node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
+        if (!(node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE)))
             EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = typeList->subTypes.size();
     }
 

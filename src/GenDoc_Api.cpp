@@ -813,9 +813,9 @@ void GenDoc::generateContent()
                     code += getOutputNode(funcNode->returnType);
                 }
 
-                if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
+                if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_THROW))
                     code += " throw";
-                else if (funcNode->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+                else if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_ASSUME))
                     code += " assume";
                 code += "\n";
 

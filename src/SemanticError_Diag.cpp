@@ -142,7 +142,7 @@ namespace
             if (!errorParam.destParameters)
                 continue;
 
-            if (errorParam.destParameters->childs[si]->specFlags & AstVarDecl::SPECFLAG_UNNAMED)
+            if (errorParam.destParameters->childs[si]->hasSpecFlag(AstVarDecl::SPECFLAG_UNNAMED))
                 diag->remarks.push_back(FMT(Nte(Nte0089), Naming::niceParameterRank(si + 1).c_str(), errorParam.destParameters->childs[si]->typeInfo->getDisplayNameC()));
             else
                 diag->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->childs[si]->token.ctext(),

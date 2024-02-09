@@ -114,7 +114,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         // :DirectInlineLocalVar
         // The local variable is using the storage from the inline call.
         // No need to make a copy
-        if (node->specFlags & AstVarDecl::SPECFLAG_INLINE_STORAGE)
+        if (node->hasSpecFlag(AstVarDecl::SPECFLAG_INLINE_STORAGE))
         {
             freeRegisterRC(context, node->assignment);
         }
@@ -136,7 +136,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!mustDropLeft)
                 node->assignment->flags |= AST_NO_LEFT_DROP;
 
-            bool isLet = node->specFlags & AstVarDecl::SPECFLAG_IS_LET;
+            bool isLet = node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET);
             if (!node->typeInfo->isNativeIntegerOrRune() &&
                 !node->typeInfo->isNativeFloat() &&
                 !node->typeInfo->isPointer() &&
@@ -191,9 +191,9 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         const auto finalType = typeArray->finalType;
-        if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+        if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
         {
-            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
             {
                 if (typeArray->totalCount == 1)
                 {

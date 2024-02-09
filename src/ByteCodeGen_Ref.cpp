@@ -20,7 +20,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
     }
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
-    if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+    if (!(node->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF)))
     {
         const auto sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)
@@ -553,7 +553,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     }
 
     // Exclude upper bound limit
-    if (node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP && !node->upperBound->hasComputedValue())
+    if (node->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP) && !node->upperBound->hasComputedValue())
     {
         ensureCanBeChangedRC(context, node->upperBound->resultRegisterRc);
         EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRc)->b.s64 = -1;

@@ -421,7 +421,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                             break;
                         if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
                             enumIdx++;
-                        else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE)
+                        else if (child->kind == AstNodeKind::IdentifierRef && child->hasSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE))
                             enumIdx++;
                     }
 
@@ -774,7 +774,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
     // A closure has always a first parameter of type *void
     if (typeRef->isClosure() && identifier->callParameters)
     {
-        if (!(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
+        if (!identifier->hasSpecFlag(AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
         {
             Ast::constructNode(&context->closureFirstParam);
             context->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
@@ -899,7 +899,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     ScopedLock lk1(funcDecl->mutex);
 
     // Be sure block has been solved
-    if (!(funcDecl->specFlags & AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE))
+    if (!funcDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->baseJob);
         context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
@@ -1329,7 +1329,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
 
     // Name alias with overloads (more than one match)
-    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS && context->cacheMatches.size() > 1)
+    if (identifier->hasSpecFlag(AstIdentifier::SPECFLAG_NAME_ALIAS) && context->cacheMatches.size() > 1)
     {
         identifier->resolvedSymbolName     = context->cacheMatches[0]->symbolOverload->symbol;
         identifier->resolvedSymbolOverload = nullptr;

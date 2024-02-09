@@ -209,7 +209,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::KwdUnion)
     {
-        structNode->addSpecFlags(AstStruct::SPECFLAG_UNION);
+        structNode->addSpecFlag(AstStruct::SPECFLAG_UNION);
     }
 
     SWAG_CHECK(eatToken());
@@ -440,7 +440,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Err0478)}));
         SWAG_CHECK(eatToken());
         const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
-        structNode->addSpecFlags(AstStruct::SPECFLAG_HAS_USING);
+        structNode->addSpecFlag(AstStruct::SPECFLAG_HAS_USING);
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
         varDecl->flags |= AST_DECL_USING;
@@ -517,7 +517,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
 
             const auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
-            retNode->addSpecFlags(AstFuncDecl::SPECFLAG_RETURN_DEFINED);
+            retNode->addSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED);
             funcNode->returnType = retNode;
             funcNode->returnType->allocateExtension(ExtensionKind::Misc);
             funcNode->returnType->extMisc()->exportNode = typeNode->returnType;
@@ -530,8 +530,8 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         if (token.id == TokenId::KwdThrow)
         {
             SWAG_CHECK(eatToken());
-            typeNode->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
-            funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_THROW);
+            typeNode->addSpecFlag(AstTypeLambda::SPECFLAG_CAN_THROW);
+            funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_THROW);
         }
 
         varNode->allocateExtension(ExtensionKind::Misc);
