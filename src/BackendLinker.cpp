@@ -93,7 +93,7 @@ namespace BackendLinker
         bool     startLine = true;
     };
 
-    void getArgumentsCoff(const BuildParameters& buildParameters, Vector<Utf8>& arguments)
+    void getArgumentsCoff(const BuildParameters& buildParameters, const Vector<Path>& objectFiles, Vector<Utf8>& arguments)
     {
         Vector<Path> libPaths;
 
@@ -196,15 +196,24 @@ namespace BackendLinker
 
         const auto resultFile = Backend::getOutputFileName(buildParameters);
         arguments.push_back("/OUT:" + resultFile.string());
+
+        // Add all object files
+        const auto targetPath = Backend::getCacheFolder(buildParameters);
+        for (auto& file : objectFiles)
+        {
+            auto path = targetPath;
+            path.append(file.c_str());
+            arguments.push_back(path.string());
+        }
     }
 
-    void getArguments(const BuildParameters& buildParameters, Vector<Utf8>& arguments)
+    void getArguments(const BuildParameters& buildParameters, const Vector<Path>& objectFiles, Vector<Utf8>& arguments)
     {
         const auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
-            getArgumentsCoff(buildParameters, arguments);
+            getArgumentsCoff(buildParameters, objectFiles, arguments);
             break;
         case BackendObjType::Elf:
             SWAG_ASSERT(false);
@@ -234,20 +243,8 @@ namespace BackendLinker
         }
     }
 
-    bool link(const BuildParameters& buildParameters, const Vector<Path>& objectFiles)
+    bool link(const BuildParameters& buildParameters, const Vector<Utf8>& linkArguments)
     {
-        Vector<Utf8> linkArguments;
-        getArguments(buildParameters, linkArguments);
-
-        // Add all object files
-        const auto targetPath = Backend::getCacheFolder(buildParameters);
-        for (auto& file : objectFiles)
-        {
-            auto path = targetPath;
-            path.append(file.c_str());
-            linkArguments.push_back(path.string());
-        }
-
         VectorNative<const char*> linkArgumentsPtr;
         linkArgumentsPtr.push_back("lld");
         for (auto& one : linkArguments)
@@ -301,6 +298,13 @@ namespace BackendLinker
 
         oo.unlock();
         return result;
+    }
+
+    bool link(const BuildParameters& buildParameters, const Vector<Path>& objectFiles)
+    {
+        Vector<Utf8> linkArguments;
+        getArguments(buildParameters, objectFiles, linkArguments);
+        return link(buildParameters, linkArguments);
     }
 
 } // namespace BackendLinker
