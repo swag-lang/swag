@@ -711,7 +711,7 @@ namespace Swag
         None            // Nothing
         Export          // The module is an 'export' module which does not have its own code.
         Executable      // The module needs to be compiled to an executable application.
-        DynamicLib      // The module needs to be compiled to an dynamic library.
+        Library         // The module needs to be compiled as a library.
     }
 
     // The native backend sub category.

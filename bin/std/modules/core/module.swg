@@ -18,7 +18,7 @@
         cfg.moduleRevision = #swagrevision
         cfg.moduleBuildNum = #swagbuildnum
         cfg.moduleNamespace = "Core"
-        cfg.backendKind = .DynamicLib
+        cfg.backendKind = .Library
         cfg.repoPath = "https://github.com/swag-lang/swag/blob/master/bin/std/modules/core"
 
         cfg.genDoc.kind = .Api
