@@ -186,7 +186,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
-        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
+        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::DynamicLib);
         auto ptrStr = builder.CreateGlobalStringPtr(nameLib.c_str());
         emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }
@@ -284,7 +284,7 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto      fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
     const auto      funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
     llvm::Function* fct      = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, funcName.c_str(), modu);
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
@@ -307,7 +307,7 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
@@ -347,7 +347,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
@@ -425,7 +425,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), false);
     const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);

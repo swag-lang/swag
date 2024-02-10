@@ -47,10 +47,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
         pp.emit_Load64_Immediate(RAX, 1);
         pp.emit_Ret();
     }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
+    else { SWAG_ASSERT(false); }
 }
 
 void SCBE::emitMain(const BuildParameters& buildParameters) const
@@ -151,8 +148,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
-        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
-
+        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::DynamicLib);
         pp.pushParams.clear();
         pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) nameLib.c_str()});
         pp.pushParams.push_back({CPUPushParamType::Imm, (uint64_t) nameLib.length()});
@@ -205,10 +201,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     }
 
     // Call to main
-    if (module->byteCodeMainFunc)
-    {
-        pp.emit_Call(module->byteCodeMainFunc->getCallName());
-    }
+    if (module->byteCodeMainFunc) { pp.emit_Call(module->byteCodeMainFunc->getCallName()); }
 
     // Call to global drop of this module
     const auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
@@ -236,7 +229,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
 void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 {
-    if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
     const int   ct              = buildParameters.compileType;
@@ -252,7 +245,7 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += FMT("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
@@ -284,7 +277,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += FMT("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
@@ -338,7 +331,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += FMT("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
@@ -417,7 +410,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += FMT("/EXPORT:%s ", thisDrop.c_str());
 
     VectorNative<uint16_t> unwind;

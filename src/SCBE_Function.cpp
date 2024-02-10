@@ -60,7 +60,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     // Export symbol
     if (bcFuncNode && bcFuncNode->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
             pp.directives += FMT("/EXPORT:%s ", funcName.c_str());
     }
 

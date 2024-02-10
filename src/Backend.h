@@ -4,22 +4,23 @@
 #include "BackendParameters.h"
 #include "Concat.h"
 
-struct Module;
-struct BuildParameters;
-struct TypeInfoFuncAttr;
-struct TypeInfoStruct;
-struct TypeInfoEnum;
-struct TypeInfo;
 struct AstFuncDecl;
-struct AstStruct;
 struct AstNode;
-struct Scope;
-struct TypeInfoParam;
+struct AstStruct;
 struct AstVarDecl;
-struct Job;
 struct BackendFunctionBodyJob;
+struct BuildParameters;
+struct Job;
+struct Module;
+struct Scope;
+struct TypeInfo;
+struct TypeInfoEnum;
+struct TypeInfoFuncAttr;
+struct TypeInfoParam;
+struct TypeInfoStruct;
 enum class JobResult;
 enum class BuildCfgBackendKind;
+enum class BuildCfgOutputKind;
 
 static constexpr int MAX_PRECOMPILE_BUFFERS = 16;
 enum class BackendPreCompilePass
@@ -67,10 +68,10 @@ struct Backend
 
     static void setup();
     static Path getCacheFolder(const BuildParameters& buildParameters);
-    static Path getOutputFileName(const BuildParameters& buildParameters);
+    static Path getOutputFileName(const BuildParameters& buildParameters, BuildCfgOutputKind type);
 
     static Utf8           getObjectFileExtension(const BackendTarget& target);
-    static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type);
+    static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgOutputKind type);
     static BackendObjType getObjType(const BackendTarget& target);
     static const char*    getArchName(const BackendTarget& target);
     static const char*    getOsName(const BackendTarget& target);

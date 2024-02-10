@@ -110,7 +110,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // Be sure the output file is here, and is more recent than the export file
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
-        const auto outFileFame = getOutputFileName(module->buildParameters);
+        const auto outFileFame = getOutputFileName(module->buildParameters, BuildCfgOutputKind::DynamicLib);
         error_code err;
         if (!exists(outFileFame, err))
             return false;
@@ -145,30 +145,30 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     return true;
 }
 
-Path Backend::getOutputFileName(const BuildParameters& buildParameters)
+Path Backend::getOutputFileName(const BuildParameters& buildParameters, BuildCfgOutputKind type)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
     auto destFile = g_Workspace->targetPath;
     destFile.append(buildParameters.outputFileName.c_str());
-    destFile += getOutputFileExtension(g_CommandLine.target, buildParameters.buildCfg->backendKind).c_str();
+    destFile += getOutputFileExtension(g_CommandLine.target, type).c_str();
     return destFile;
 }
 
-Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgBackendKind type)
+Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgOutputKind type)
 {
     switch (type)
     {
-    case BuildCfgBackendKind::Executable:
+    case BuildCfgOutputKind::Executable:
         if (target.os == SwagTargetOs::Windows)
             return ".exe";
         return "";
 
-    case BuildCfgBackendKind::StaticLib:
+    case BuildCfgOutputKind::StaticLib:
         if (target.os == SwagTargetOs::Windows)
             return ".lib";
         return ".a";
 
-    case BuildCfgBackendKind::DynamicLib:
+    case BuildCfgOutputKind::DynamicLib:
         if (target.os == SwagTargetOs::Windows)
             return ".dll";
         if (isOsDarwin(target.os))

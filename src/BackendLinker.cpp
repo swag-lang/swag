@@ -13,9 +13,8 @@ namespace BackendLinker
     public:
         MyOStream()
             : raw_ostream(true)
-            , pos(0)
-        {
-        }
+              , pos(0) {}
+
         void write_impl(const char* ptr, size_t len) override
         {
             if (startLine)
@@ -81,10 +80,7 @@ namespace BackendLinker
             pos += len;
         }
 
-        uint64_t current_pos() const override
-        {
-            return pos;
-        }
+        uint64_t current_pos() const override { return pos; }
 
         Utf8     errMsg;
         size_t   pos;
@@ -113,7 +109,7 @@ namespace BackendLinker
             arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
         }
 
-        const auto libExt = Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
+        const auto libExt = Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::StaticLib);
 
         // Register #foreignlib
         // As this is defined by the user, we consider the library must exists
@@ -173,9 +169,6 @@ namespace BackendLinker
         else
             arguments.push_back("/MACHINE:X64");
 
-        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Executable)
-            arguments.push_back(FMT("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
-
         if (buildParameters.buildCfg->backendDebugInformations)
         {
             // 09/14/2023
@@ -191,11 +184,24 @@ namespace BackendLinker
             }
         }
 
-        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-            arguments.push_back("/DLL");
+        Path outFileName;
 
-        const auto resultFile = Backend::getOutputFileName(buildParameters);
-        arguments.push_back("/OUT:" + resultFile.string());
+        switch (buildParameters.buildCfg->backendKind)
+        {
+        case BuildCfgBackendKind::Executable:
+            arguments.push_back(FMT("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
+            outFileName = Backend::getOutputFileName(buildParameters, BuildCfgOutputKind::Executable);
+            break;
+        case BuildCfgBackendKind::Library:
+            arguments.push_back("/DLL");
+            outFileName = Backend::getOutputFileName(buildParameters, BuildCfgOutputKind::DynamicLib);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
+        arguments.push_back("/OUT:" + outFileName.string());
 
         // Add all object files
         const auto targetPath = Backend::getCacheFolder(buildParameters);
@@ -306,5 +312,4 @@ namespace BackendLinker
         getArguments(buildParameters, objectFiles, linkArguments);
         return link(buildParameters, linkArguments);
     }
-
-} // namespace BackendLinker
+}

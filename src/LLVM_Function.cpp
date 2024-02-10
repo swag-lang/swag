@@ -5923,7 +5923,7 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const Modul
     // Export public symbol in case of a dll
     if (funcNode &&
         funcNode->hasAttribute(ATTRIBUTE_PUBLIC) &&
-        buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
     {
         func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
     }

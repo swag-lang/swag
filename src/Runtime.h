@@ -212,6 +212,12 @@ enum class BuildCfgBackendKind
     None,
     Export,
     Executable,
+    Library,
+};
+
+enum class BuildCfgOutputKind
+{
+    Executable,
     DynamicLib,
     StaticLib,
 };
