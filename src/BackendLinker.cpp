@@ -93,7 +93,7 @@ namespace BackendLinker
         bool     startLine = true;
     };
 
-    void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
+    void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments)
     {
         Vector<Path> libPaths;
 
@@ -110,10 +110,7 @@ namespace BackendLinker
         for (const auto& oneLibPath : libPaths)
         {
             auto normalizedLibPath = oneLibPath;
-            if (forCmdLine)
-                arguments.push_back("/LIBPATH:\"" + normalizedLibPath.string() + "\"");
-            else
-                arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
+            arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
         }
 
         const auto libExt = Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
@@ -201,13 +198,13 @@ namespace BackendLinker
         arguments.push_back("/OUT:" + resultFile.string());
     }
 
-    void getArguments(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
+    void getArguments(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments)
     {
         const auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
-            getArgumentsCoff(buildParameters, module, arguments, forCmdLine);
+            getArgumentsCoff(buildParameters, module, arguments);
             break;
         case BackendObjType::Elf:
             SWAG_ASSERT(false);
@@ -240,7 +237,7 @@ namespace BackendLinker
     bool link(const BuildParameters& buildParameters, Module* module, const Vector<Path>& objectFiles)
     {
         Vector<Utf8> linkArguments;
-        getArguments(buildParameters, module, linkArguments, false);
+        getArguments(buildParameters, module, linkArguments);
 
         // Add all object files
         const auto targetPath = Backend::getCacheFolder(buildParameters);
@@ -249,19 +246,6 @@ namespace BackendLinker
             auto path = targetPath;
             path.append(file.c_str());
             linkArguments.push_back(path.string());
-        }
-
-        // Log linker parameters
-        if (g_CommandLine.verboseLink)
-        {
-            Utf8 linkStr;
-            for (const auto& one : linkArguments)
-            {
-                linkStr += one;
-                linkStr += "\n";
-            }
-
-            g_Log.messageVerbose(linkStr);
         }
 
         VectorNative<const char*> linkArgumentsPtr;
@@ -281,6 +265,14 @@ namespace BackendLinker
         {
             g_ThreadMgr.tryExecuteJob();
             this_thread::yield();
+        }
+
+        // Log linker parameters
+        if (g_CommandLine.verboseLink)
+        {
+            g_Log.messageVerbose(FMT("linker arguments for module [[%s]]:\n", module->name.c_str()));
+            for (const auto& one : linkArguments)
+                g_Log.messageVerbose(one);
         }
 
         const auto objFileType = Backend::getObjType(g_CommandLine.target);
