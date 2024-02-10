@@ -347,6 +347,7 @@
         <ClCompile Include="..\src\Ast_Convert.cpp"/>
         <ClCompile Include="..\src\Ast_Generate.cpp"/>
         <ClCompile Include="..\src\Ast_New.cpp"/>
+        <ClCompile Include="..\src\BackendLinker_Coff.cpp" />
         <ClCompile Include="..\src\LLVM_Call.cpp"/>
         <ClCompile Include="..\src\LLVM_Data.cpp"/>
         <ClCompile Include="..\src\LLVM_Debug.cpp"/>
