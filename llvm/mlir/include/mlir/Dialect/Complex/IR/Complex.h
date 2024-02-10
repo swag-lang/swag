@@ -9,6 +9,7 @@
 #ifndef MLIR_DIALECT_COMPLEX_IR_COMPLEX_H_
 #define MLIR_DIALECT_COMPLEX_IR_COMPLEX_H_
 
+#include "mlir/Bytecode/BytecodeOpInterface.h"
 #include "mlir/IR/BuiltinTypes.h"
 #include "mlir/IR/OpImplementation.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
@@ -26,5 +27,8 @@
 
 #define GET_OP_CLASSES
 #include "mlir/Dialect/Complex/IR/ComplexOps.h.inc"
+
+#define GET_ATTRDEF_CLASSES
+#include "mlir/Dialect/Complex/IR/ComplexAttributes.h.inc"
 
 #endif // MLIR_DIALECT_COMPLEX_IR_COMPLEX_H_

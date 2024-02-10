@@ -16,6 +16,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <mach-o/loader.h>
 #include <mach/mach.h>
+#include <optional>
 #include <pthread.h>
 #include <sys/signal.h>
 #include <uuid/uuid.h>
@@ -71,12 +72,11 @@ public:
   struct binary_image_information {
     std::string filename;
     uint64_t load_address;
-    uint64_t mod_date; // may not be available - 0 if so
     struct mach_o_information macho_info;
     bool is_valid_mach_header;
 
     binary_image_information()
-        : filename(), load_address(INVALID_NUB_ADDRESS), mod_date(0),
+        : filename(), load_address(INVALID_NUB_ADDRESS),
           is_valid_mach_header(false) {}
   };
 
@@ -126,6 +126,11 @@ public:
   static bool GetOSVersionNumbers(uint64_t *major, uint64_t *minor,
                                   uint64_t *patch);
   static std::string GetMacCatalystVersionString();
+
+  static nub_process_t GetParentProcessID(nub_process_t child_pid);
+
+  static bool ProcessIsBeingDebugged(nub_process_t pid);
+
 #ifdef WITH_BKS
   static void BKSCleanupAfterAttach(const void *attach_token,
                                     DNBError &err_str);
@@ -252,13 +257,14 @@ public:
   DeploymentInfo GetDeploymentInfo(const struct load_command &,
                                    uint64_t load_command_address,
                                    bool is_executable);
-  static const char *GetPlatformString(unsigned char platform);
+  static std::optional<std::string> GetPlatformString(unsigned char platform);
   bool GetMachOInformationFromMemory(uint32_t platform,
                                      nub_addr_t mach_o_header_addr,
                                      int wordsize,
                                      struct mach_o_information &inf);
   JSONGenerator::ObjectSP FormatDynamicLibrariesIntoJSON(
-      const std::vector<struct binary_image_information> &image_infos);
+      const std::vector<struct binary_image_information> &image_infos,
+      bool report_load_commands);
   uint32_t GetPlatform();
   /// Get the runtime platform from DYLD via SPI.
   uint32_t GetProcessPlatformViaDYLDSPI();
@@ -270,12 +276,12 @@ public:
   /// command details.
   void GetAllLoadedBinariesViaDYLDSPI(
       std::vector<struct binary_image_information> &image_infos);
-  JSONGenerator::ObjectSP GetLoadedDynamicLibrariesInfos(
-      nub_process_t pid, nub_addr_t image_list_address, nub_addr_t image_count);
   JSONGenerator::ObjectSP
   GetLibrariesInfoForAddresses(nub_process_t pid,
                                std::vector<uint64_t> &macho_addresses);
-  JSONGenerator::ObjectSP GetAllLoadedLibrariesInfos(nub_process_t pid);
+  JSONGenerator::ObjectSP
+  GetAllLoadedLibrariesInfos(nub_process_t pid,
+                             bool fetch_report_load_commands);
   JSONGenerator::ObjectSP GetSharedCacheInfo(nub_process_t pid);
 
   nub_size_t GetNumThreads() const;
@@ -361,6 +367,8 @@ public:
 
   DNBProfileDataScanType GetProfileScanType() { return m_profile_scan_type; }
 
+  JSONGenerator::ObjectSP GetDyldProcessState();
+
 private:
   enum {
     eMachProcessFlagsNone = 0,
@@ -379,6 +387,9 @@ private:
   void ReplyToAllExceptions();
   void PrivateResume();
   void StopProfileThread();
+
+  void RefineWatchpointStopInfo(nub_thread_t tid,
+                                struct DNBThreadStopInfo *stop_info);
 
   uint32_t Flags() const { return m_flags; }
   nub_state_t DoSIGSTOP(bool clear_bps_and_wps, bool allow_running,
@@ -467,6 +478,7 @@ private:
   void (*m_dyld_process_info_release)(void *info);
   void (*m_dyld_process_info_get_cache)(void *info, void *cacheInfo);
   uint32_t (*m_dyld_process_info_get_platform)(void *info);
+  void (*m_dyld_process_info_get_state)(void *info, void *stateInfo);
 };
 
 #endif // LLDB_TOOLS_DEBUGSERVER_SOURCE_MACOSX_MACHPROCESS_H

@@ -202,7 +202,7 @@ For more context, block arguments were previously used in the Swift
 and described in
 [a talk on YouTube](https://www.youtube.com/watch?v=Ntj8ab-5cvE). The section of
 interest
-[starts here](https://www.google.com/url?q=https://youtu.be/Ntj8ab-5cvE?t%3D596&sa=D&ust=1529450150971000&usg=AFQjCNFQHEWL7m8q3eO-1DiKw9zqC2v24Q).
+[starts here](https://www.youtube.com/watch?v=Ntj8ab-5cvE&t=596s).
 
 ### Index type usage and limitations
 
@@ -282,7 +282,7 @@ an external system, and should aim to reflect its design as closely as possible.
 
 ### Splitting floating point vs integer operations
 
-The MLIR "Arithmetic" dialect splits many integer and floating point operations
+The MLIR "Arith" dialect splits many integer and floating point operations
 into different categories, for example `arith.addf` vs `arith.addi` and
 `arith.cmpf` vs `arith.cmpi`
 ([following the design of LLVM](http://llvm.org/docs/LangRef.html#binary-operations)).

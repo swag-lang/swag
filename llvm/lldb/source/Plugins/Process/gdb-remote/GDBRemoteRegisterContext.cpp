@@ -107,12 +107,12 @@ bool GDBRemoteRegisterContext::ReadRegister(const RegisterInfo *reg_info,
 
       Status error;
       return value.SetFromMemoryData(
-                 reg_info, combined_data.data(), combined_data.size(),
+                 *reg_info, combined_data.data(), combined_data.size(),
                  m_reg_data.GetByteOrder(), error) == combined_data.size();
     } else {
       const bool partial_data_ok = false;
       Status error(value.SetValueFromData(
-          reg_info, m_reg_data, reg_info->byte_offset, partial_data_ok));
+          *reg_info, m_reg_data, reg_info->byte_offset, partial_data_ok));
       return error.Success();
     }
   }
@@ -457,7 +457,7 @@ bool GDBRemoteRegisterContext::WriteRegisterBytes(const RegisterInfo *reg_info,
       if (log) {
         if (log->GetVerbose()) {
           StreamString strm;
-          gdb_comm.DumpHistory(strm);
+          process->DumpPluginHistory(strm);
           LLDB_LOGF(log,
                     "error: failed to get packet sequence mutex, not sending "
                     "write register for \"%s\":\n%s",
@@ -566,7 +566,7 @@ bool GDBRemoteRegisterContext::ReadAllRegisterValues(
     if (log) {
       if (log->GetVerbose()) {
         StreamString strm;
-        gdb_comm.DumpHistory(strm);
+        process->DumpPluginHistory(strm);
         LLDB_LOGF(log,
                   "error: failed to get packet sequence mutex, not sending "
                   "read all registers:\n%s",
@@ -741,7 +741,7 @@ bool GDBRemoteRegisterContext::WriteAllRegisterValues(
     if (log) {
       if (log->GetVerbose()) {
         StreamString strm;
-        gdb_comm.DumpHistory(strm);
+        process->DumpPluginHistory(strm);
         LLDB_LOGF(log,
                   "error: failed to get packet sequence mutex, not sending "
                   "write all registers:\n%s",

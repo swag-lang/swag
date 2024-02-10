@@ -357,7 +357,7 @@ TEST(ExternalIOTests, TestDirectFormatted) {
   for (int j{1}; j <= records; ++j) {
     // WRITE(UNIT=unit,FMT=fmt,REC=j) j
     io = IONAME(BeginExternalFormattedOutput)(
-        fmt, sizeof fmt - 1, unit, __FILE__, __LINE__);
+        fmt, sizeof fmt - 1, nullptr, unit, __FILE__, __LINE__);
     ASSERT_TRUE(IONAME(SetRec)(io, j)) << "SetRec(" << j << ')';
     ASSERT_TRUE(IONAME(OutputInteger64)(io, j)) << "OutputInteger64()";
     ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
@@ -367,7 +367,7 @@ TEST(ExternalIOTests, TestDirectFormatted) {
   for (int j{records}; j >= 1; --j) {
     // READ(UNIT=unit,FMT=fmt,REC=j) n
     io = IONAME(BeginExternalFormattedInput)(
-        fmt, sizeof fmt - 1, unit, __FILE__, __LINE__);
+        fmt, sizeof fmt - 1, nullptr, unit, __FILE__, __LINE__);
     ASSERT_TRUE(IONAME(SetRec)(io, j)) << "SetRec(" << j << ')';
     std::int64_t buffer;
     ASSERT_TRUE(IONAME(InputInteger)(io, buffer)) << "InputInteger()";
@@ -412,7 +412,7 @@ TEST(ExternalIOTests, TestSequentialVariableFormatted) {
     std::snprintf(fmt, sizeof fmt, "(%dI4)", j);
     // DO J=1,RECORDS; WRITE(UNIT=unit,FMT=fmt) BUFFER(0:j); END DO
     io = IONAME(BeginExternalFormattedOutput)(
-        fmt, std::strlen(fmt), unit, __FILE__, __LINE__);
+        fmt, std::strlen(fmt), nullptr, unit, __FILE__, __LINE__);
     for (int k{0}; k < j; ++k) {
       ASSERT_TRUE(IONAME(OutputInteger64)(io, buffer[k]))
           << "OutputInteger64()";
@@ -430,7 +430,7 @@ TEST(ExternalIOTests, TestSequentialVariableFormatted) {
     std::snprintf(fmt, sizeof fmt, "(%dI4)", j);
     // DO J=1,RECORDS; READ(UNIT=unit,FMT=fmt) n; check n; END DO
     io = IONAME(BeginExternalFormattedInput)(
-        fmt, std::strlen(fmt), unit, __FILE__, __LINE__);
+        fmt, std::strlen(fmt), nullptr, unit, __FILE__, __LINE__);
 
     std::int64_t check[records];
     for (int k{0}; k < j; ++k) {
@@ -456,7 +456,7 @@ TEST(ExternalIOTests, TestSequentialVariableFormatted) {
     std::snprintf(fmt, sizeof fmt, "(%dI4)", j);
     // READ(UNIT=unit,FMT=fmt,SIZE=chars) n; check
     io = IONAME(BeginExternalFormattedInput)(
-        fmt, std::strlen(fmt), unit, __FILE__, __LINE__);
+        fmt, std::strlen(fmt), nullptr, unit, __FILE__, __LINE__);
 
     std::int64_t check[records];
     for (int k{0}; k < j; ++k) {
@@ -510,7 +510,7 @@ TEST(ExternalIOTests, TestNonAvancingInput) {
   for (const auto &record : records) {
     // WRITE(UNIT=unit,FMT=fmt) record
     io = IONAME(BeginExternalFormattedOutput)(
-        fmt.data(), fmt.length(), unit, __FILE__, __LINE__);
+        fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
     ASSERT_TRUE(IONAME(OutputAscii)(io, record.data(), record.length()))
         << "OutputAscii()";
     ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
@@ -525,35 +525,64 @@ TEST(ExternalIOTests, TestNonAvancingInput) {
   struct TestItems {
     std::string item;
     int expectedIoStat;
-    std::string expectedItemValue;
+    std::string expectedItemValue[2];
   };
   // Actual non advancing input IO test
   TestItems inputItems[]{
-      {std::string(4, '+'), IostatOk, "ABCD"},
-      {std::string(4, '+'), IostatOk, "EFGH"},
-      {std::string(4, '+'), IostatEor, "    "},
-      {std::string(2, '+'), IostatOk, "IJ"},
-      {std::string(8, '+'), IostatEor, "KLMNOP  "},
-      {std::string(10, '+'), IostatEor, "QRSTUVWX  "},
+      {std::string(4, '+'), IostatOk, {"ABCD", "ABCD"}},
+      {std::string(4, '+'), IostatOk, {"EFGH", "EFGH"}},
+      {std::string(4, '+'), IostatEor, {"++++", "    "}},
+      {std::string(2, '+'), IostatOk, {"IJ", "IJ"}},
+      {std::string(8, '+'), IostatEor, {"++++++++", "KLMNOP  "}},
+      {std::string(10, '+'), IostatEor, {"++++++++++", "QRSTUVWX  "}},
   };
 
+  // Test with PAD='NO'
   int j{0};
   for (auto &inputItem : inputItems) {
-    // READ(UNIT=unit, FMT=fmt, ADVANCE='NO', IOSTAT=iostat) inputItem
+    // READ(UNIT=unit, FMT=fmt, ADVANCE='NO', PAD='NO', IOSTAT=iostat) inputItem
     io = IONAME(BeginExternalFormattedInput)(
-        fmt.data(), fmt.length(), unit, __FILE__, __LINE__);
+        fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
     IONAME(EnableHandlers)(io, true, false, false, false, false);
     ASSERT_TRUE(IONAME(SetAdvance)(io, "NO", 2)) << "SetAdvance(NO)" << j;
+    ASSERT_TRUE(IONAME(SetPad)(io, "NO", 2)) << "SetPad(NO)" << j;
     bool result{
         IONAME(InputAscii)(io, inputItem.item.data(), inputItem.item.length())};
     ASSERT_EQ(result, inputItem.expectedIoStat == IostatOk)
         << "InputAscii() " << j;
     ASSERT_EQ(IONAME(EndIoStatement)(io), inputItem.expectedIoStat)
         << "EndIoStatement() for Read " << j;
-    ASSERT_EQ(inputItem.item, inputItem.expectedItemValue)
+    ASSERT_EQ(inputItem.item, inputItem.expectedItemValue[0])
         << "Input-item value after non advancing read " << j;
     j++;
   }
+
+  // REWIND(UNIT=unit)
+  io = IONAME(BeginRewind)(unit, __FILE__, __LINE__);
+  ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
+      << "EndIoStatement() for Rewind";
+
+  // Test again with PAD='YES'
+  j = 0;
+  for (auto &inputItem : inputItems) {
+    // READ(UNIT=unit, FMT=fmt, ADVANCE='NO', PAD='YES', IOSTAT=iostat)
+    // inputItem
+    io = IONAME(BeginExternalFormattedInput)(
+        fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
+    IONAME(EnableHandlers)(io, true, false, false, false, false);
+    ASSERT_TRUE(IONAME(SetAdvance)(io, "NO", 2)) << "SetAdvance(NO)" << j;
+    ASSERT_TRUE(IONAME(SetPad)(io, "YES", 3)) << "SetPad(YES)" << j;
+    bool result{
+        IONAME(InputAscii)(io, inputItem.item.data(), inputItem.item.length())};
+    ASSERT_EQ(result, inputItem.expectedIoStat == IostatOk)
+        << "InputAscii() " << j;
+    ASSERT_EQ(IONAME(EndIoStatement)(io), inputItem.expectedIoStat)
+        << "EndIoStatement() for Read " << j;
+    ASSERT_EQ(inputItem.item, inputItem.expectedItemValue[1])
+        << "Input-item value after non advancing read " << j;
+    j++;
+  }
+
   // CLOSE(UNIT=unit)
   io = IONAME(BeginClose)(unit, __FILE__, __LINE__);
   ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
@@ -581,7 +610,7 @@ TEST(ExternalIOTests, TestWriteAfterNonAvancingInput) {
   for (const auto &record : records) {
     // WRITE(UNIT=unit,FMT=fmt) record
     io = IONAME(BeginExternalFormattedOutput)(
-        fmt.data(), fmt.length(), unit, __FILE__, __LINE__);
+        fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
     ASSERT_TRUE(IONAME(OutputAscii)(io, record.data(), record.length()))
         << "OutputAscii()";
     ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
@@ -608,7 +637,7 @@ TEST(ExternalIOTests, TestWriteAfterNonAvancingInput) {
   for (auto &inputItem : inputItems) {
     // READ(UNIT=unit, FMT=fmt, ADVANCE='NO', IOSTAT=iostat) inputItem
     io = IONAME(BeginExternalFormattedInput)(
-        fmt.data(), fmt.length(), unit, __FILE__, __LINE__);
+        fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
     IONAME(EnableHandlers)(io, true, false, false, false, false);
     ASSERT_TRUE(IONAME(SetAdvance)(io, "NO", 2)) << "SetAdvance(NO)" << j;
     ASSERT_TRUE(
@@ -625,7 +654,7 @@ TEST(ExternalIOTests, TestWriteAfterNonAvancingInput) {
   static constexpr std::string_view outputItem{"XYZ"};
   // WRITE(UNIT=unit,FMT=fmt) record
   io = IONAME(BeginExternalFormattedOutput)(
-      fmt.data(), fmt.length(), unit, __FILE__, __LINE__);
+      fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
   ASSERT_TRUE(IONAME(OutputAscii)(io, outputItem.data(), outputItem.length()))
       << "OutputAscii()";
   ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
@@ -643,7 +672,7 @@ TEST(ExternalIOTests, TestWriteAfterNonAvancingInput) {
   std::string expectedRecord{"ABCDEFGHXYZ         "};
   // READ(UNIT=unit, FMT=fmt, IOSTAT=iostat) result
   io = IONAME(BeginExternalFormattedInput)(
-      fmt.data(), fmt.length(), unit, __FILE__, __LINE__);
+      fmt.data(), fmt.length(), nullptr, unit, __FILE__, __LINE__);
   IONAME(EnableHandlers)(io, true, false, false, false, false);
   ASSERT_TRUE(
       IONAME(InputAscii)(io, resultRecord.data(), resultRecord.length()))
@@ -674,7 +703,7 @@ TEST(ExternalIOTests, TestWriteAfterEndfile) {
   // WRITE(unit,"(I8)") 1234
   static constexpr std::string_view format{"(I8)"};
   io = IONAME(BeginExternalFormattedOutput)(
-      format.data(), format.length(), unit, __FILE__, __LINE__);
+      format.data(), format.length(), nullptr, unit, __FILE__, __LINE__);
   ASSERT_TRUE(IONAME(OutputInteger64)(io, 1234)) << "OutputInteger64()";
   ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
       << "EndIoStatement for WRITE before ENDFILE";
@@ -684,7 +713,7 @@ TEST(ExternalIOTests, TestWriteAfterEndfile) {
       << "EndIoStatement for ENDFILE";
   // WRITE(unit,"(I8)",iostat=iostat) 5678
   io = IONAME(BeginExternalFormattedOutput)(
-      format.data(), format.length(), unit, __FILE__, __LINE__);
+      format.data(), format.length(), nullptr, unit, __FILE__, __LINE__);
   IONAME(EnableHandlers)(io, true /*IOSTAT=*/);
   ASSERT_FALSE(IONAME(OutputInteger64)(io, 5678)) << "OutputInteger64()";
   ASSERT_EQ(IONAME(EndIoStatement)(io), IostatWriteAfterEndfile)
@@ -695,7 +724,7 @@ TEST(ExternalIOTests, TestWriteAfterEndfile) {
       << "EndIoStatement for BACKSPACE";
   // WRITE(unit,"(I8)") 3456
   io = IONAME(BeginExternalFormattedOutput)(
-      format.data(), format.length(), unit, __FILE__, __LINE__);
+      format.data(), format.length(), nullptr, unit, __FILE__, __LINE__);
   ASSERT_TRUE(IONAME(OutputInteger64)(io, 3456)) << "OutputInteger64()";
   ASSERT_EQ(IONAME(EndIoStatement)(io), IostatOk)
       << "EndIoStatement for WRITE after BACKSPACE";
@@ -706,7 +735,7 @@ TEST(ExternalIOTests, TestWriteAfterEndfile) {
   // READ(unit,"(I8)",END=) j, k
   std::int64_t j{-1}, k{-1}, eof{-1};
   io = IONAME(BeginExternalFormattedInput)(
-      format.data(), format.length(), unit, __FILE__, __LINE__);
+      format.data(), format.length(), nullptr, unit, __FILE__, __LINE__);
   IONAME(EnableHandlers)(io, false, false, true /*END=*/);
   ASSERT_TRUE(IONAME(InputInteger)(io, j)) << "InputInteger(j)";
   ASSERT_EQ(j, 1234) << "READ(j)";

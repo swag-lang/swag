@@ -142,6 +142,16 @@ function(darwin_test_archs os valid_archs)
     list(REMOVE_ITEM archs "x86_64h")
   endif()
 
+  if(${os} MATCHES "iossim")
+    message(STATUS "Disabling i386 slice for iossim")
+    list(REMOVE_ITEM archs "i386")
+  endif()
+
+  if(${os} MATCHES "^ios$")
+    message(STATUS "Disabling sanitizers armv7* slice for ios")
+    list(FILTER archs EXCLUDE REGEX "armv7.*")
+  endif()
+
   set(working_archs)
   foreach(arch ${archs})
    
@@ -413,6 +423,12 @@ macro(darwin_add_builtin_libraries)
                       ../profile/InstrProfilingInternal.c
                       ../profile/InstrProfilingVersionVar.c)
   foreach (os ${ARGN})
+    set(macosx_sdk_version 99999)
+    if ("${os}" STREQUAL "osx")
+      find_darwin_sdk_version(macosx_sdk_version "macosx")
+    endif()
+    add_security_warnings(CFLAGS ${macosx_sdk_version})
+
     list_intersect(DARWIN_BUILTIN_ARCHS DARWIN_${os}_BUILTIN_ARCHS BUILTIN_SUPPORTED_ARCH)
 
     if((arm64 IN_LIST DARWIN_BUILTIN_ARCHS OR arm64e IN_LIST DARWIN_BUILTIN_ARCHS) AND NOT TARGET lse_builtin_symlinks)

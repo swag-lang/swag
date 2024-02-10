@@ -2,7 +2,7 @@
 
 ! CHECK-LABEL: func @_QQmain
 program p
-  ! CHECK-DAG: [[ccc:%[0-9]+]] = fir.address_of(@_QFEccc) : !fir.ref<!fir.array<4x!fir.char<1,3>>>
+  ! CHECK-DAG: [[ccc:%[0-9]+]] = fir.alloca !fir.array<4x!fir.char<1,3>> {bindc_name = "ccc", uniq_name = "_QFEccc"}
   ! CHECK-DAG: [[jjj:%[0-9]+]] = fir.alloca i32 {bindc_name = "jjj", uniq_name = "_QFEjjj"}
   character*3 ccc(4)
   namelist /nnn/ jjj, ccc
@@ -17,11 +17,11 @@ program p
   ! CHECK: fir.insert_value
   ! CHECK: fir.address_of
   ! CHECK: fir.insert_value
-  ! CHECK: fir.address_of(@_QFEccc.desc) : !fir.ref<!fir.box<!fir.ptr<!fir.array<4x!fir.char<1,3>>>>>
+  ! CHECK: fir.embox [[ccc]]
   ! CHECK: fir.insert_value
-  ! CHECK: fir.alloca tuple<!fir.ref<i8>, i64, !fir.ref<!fir.array<2xtuple<!fir.ref<i8>, !fir.ref<!fir.box<none>>>>>>
+  ! CHECK: fir.alloca tuple<!fir.ref<i8>, i64, !fir.ref<!fir.array<2xtuple<!fir.ref<i8>, !fir.ref<!fir.box<none>>>>>, !fir.ref<none>>
   ! CHECK: fir.address_of
-  ! CHECK-COUNT-3: fir.insert_value
+  ! CHECK-COUNT-4: fir.insert_value
   ! CHECK: fir.call @_FortranAioOutputNamelist([[cookie]]
   ! CHECK: fir.call @_FortranAioEndIoStatement([[cookie]]
   write(*, nnn)
@@ -37,11 +37,11 @@ program p
   ! CHECK: fir.insert_value
   ! CHECK: fir.address_of
   ! CHECK: fir.insert_value
-  ! CHECK: fir.address_of(@_QFEccc.desc) : !fir.ref<!fir.box<!fir.ptr<!fir.array<4x!fir.char<1,3>>>>>
+  ! CHECK: fir.embox [[ccc]]
   ! CHECK: fir.insert_value
-  ! CHECK: fir.alloca tuple<!fir.ref<i8>, i64, !fir.ref<!fir.array<2xtuple<!fir.ref<i8>, !fir.ref<!fir.box<none>>>>>>
+  ! CHECK: fir.alloca tuple<!fir.ref<i8>, i64, !fir.ref<!fir.array<2xtuple<!fir.ref<i8>, !fir.ref<!fir.box<none>>>>>, !fir.ref<none>>
   ! CHECK: fir.address_of
-  ! CHECK-COUNT-3: fir.insert_value
+  ! CHECK-COUNT-4: fir.insert_value
   ! CHECK: fir.call @_FortranAioOutputNamelist([[cookie]]
   ! CHECK: fir.call @_FortranAioEndIoStatement([[cookie]]
   write(*, nnn)
@@ -75,7 +75,7 @@ subroutine global_pointer
   ! CHECK: %[[a0:.*]] = fir.address_of
   namelist/mygroup/ptrarray
   ! CHECK: %[[a1:.*]] = fir.convert %[[a0]]
-  ! CHECK: %[[a2:.*]] = fir.call @_FortranAioBeginExternalListOutput({{.*}}, %[[a1]], {{.*}}) : (i32, !fir.ref<i8>, i32) -> !fir.ref<i8>
+  ! CHECK: %[[a2:.*]] = fir.call @_FortranAioBeginExternalListOutput({{.*}}, %[[a1]], {{.*}}) {{.*}}: (i32, !fir.ref<i8>, i32) -> !fir.ref<i8>
   ! CHECK: %[[a3:.*]] = fir.address_of
   ! CHECK: %[[a4:.*]] = fir.convert %[[a3]]
   ! CHECK: %[[a5:.*]] = fir.call @_FortranAioOutputNamelist(%[[a2]], %[[a4]])
@@ -86,4 +86,3 @@ end
   ! CHECK-DAG: fir.global linkonce @_QQcl.6A6A6A00 constant : !fir.char<1,4>
   ! CHECK-DAG: fir.global linkonce @_QQcl.63636300 constant : !fir.char<1,4>
   ! CHECK-DAG: fir.global linkonce @_QQcl.6E6E6E00 constant : !fir.char<1,4>
-  ! CHECK-DAG: fir.global linkonce @_QFEccc.desc constant : !fir.box<!fir.ptr<!fir.array<4x!fir.char<1,3>>>>

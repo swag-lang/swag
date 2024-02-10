@@ -67,14 +67,14 @@ namespace ClassNTTP {
   static_assert(&id<A{1,2}> == &id<a>);
   static_assert(&id<A{1,3}> != &id<a>);
 
-  int k = id<1>; // expected-error {{no viable conversion from 'int' to 'ClassNTTP::A'}}
+  int k = id<1>; // expected-error {{no viable conversion from 'int' to 'A'}}
 
   struct B {
     constexpr B() {}
     constexpr B(int) = delete; // expected-note {{here}}
   };
   template<B> struct Q {}; // expected-note {{passing argument to parameter here}}
-  Q<1> q; // expected-error {{conversion function from 'int' to 'ClassNTTP::B' invokes a deleted function}}
+  Q<1> q; // expected-error {{conversion function from 'int' to 'B' invokes a deleted function}}
 
   struct C {
     constexpr C() {}
@@ -91,7 +91,7 @@ namespace ConvertedConstant {
   };
   template <A> struct X {};
   void f(X<1.0f>) {} // OK, user-defined conversion
-  void f(X<2>) {} // expected-error {{conversion from 'int' to 'ConvertedConstant::A' is not allowed in a converted constant expression}}
+  void f(X<2>) {} // expected-error {{conversion from 'int' to 'A' is not allowed in a converted constant expression}}
 }
 
 namespace CopyCounting {
@@ -184,8 +184,9 @@ namespace TemplateSpecializations {
 
 namespace Diags {
   struct A { int n, m; };
-  template<A a> struct X { static_assert(a.n == a.m); }; // expected-error {{static assertion failed due to requirement 'Diags::A{1, 2}.n == Diags::A{1, 2}.m'}}
-  template struct X<A{1, 2}>; // expected-note {{in instantiation of template class 'Diags::X<{1, 2}>' requested here}}
+  template<A a> struct X { static_assert(a.n == a.m); }; // expected-error {{static assertion failed due to requirement 'Diags::A{1, 2}.n == Diags::A{1, 2}.m'}} \
+                                                         // expected-note {{evaluates to '1 == 2'}}
+  template struct X<A{1, 2}>; // expected-note {{in instantiation of template class 'Diags::X<A{1, 2}>' requested here}}
 }
 
 namespace CTADPartialOrder {
@@ -304,4 +305,23 @@ namespace DependentCTAD {
     f(A<B(0)>()); // expected-error {{no matching function}}
     f<B>(A<B(0)>()); // OK
   }
+}
+
+namespace GH48731 {
+template <int> using N = int;
+struct X { template<typename T> void f(); };
+template<int ...Is> decltype((X().f<N<Is>>(), ...)) x;
+template<int ...Is> decltype(((new X())->f<N<Is>>(), ...)) y;
+
+struct A {};
+template<int> using Tfoo = A;
+template<int ...Ns> void foo(A a) {
+  (a.~Tfoo<Ns>(), ...);
+}
+
+struct B { operator int(); };
+template<int> using Tbar = int;
+template<int ...Ns> void bar(B b) {
+  (b.operator Tbar<Ns>(), ...);
+}
 }

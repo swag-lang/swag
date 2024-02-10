@@ -57,6 +57,22 @@
 // RUN: %clang --target=riscv64-unknown-linux-gnu -### -S -O3 %s 2>&1 | FileCheck -check-prefix=CHECK3-64 %s
 // RUN: %clang --target=riscv64-unknown-linux-gnu -### -S -Os %s 2>&1 | FileCheck -check-prefix=CHECKs-64 %s
 
+// RUN: %clang --target=riscv64-linux-android -### -S -O0 %s 2>&1 | FileCheck -check-prefix=CHECK-ANDROID-64 %s
+// RUN: %clang --target=riscv64-linux-android -### -S -O1 %s 2>&1 | FileCheck -check-prefix=CHECK-ANDROID-64 %s
+// RUN: %clang --target=riscv64-linux-android -### -S -Os %s 2>&1 | FileCheck -check-prefix=CHECK-ANDROID-64 %s
+
+// RUN: %clang --target=loongarch32 -### -S -O0 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK0-32 %s
+// RUN: %clang --target=loongarch32 -### -S -O1 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK1-32 %s
+// RUN: %clang --target=loongarch32 -### -S -O2 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK2-32 %s
+// RUN: %clang --target=loongarch32 -### -S -O3 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK3-32 %s
+// RUN: %clang --target=loongarch32 -### -S -Os %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECKs-32 %s
+
+// RUN: %clang --target=loongarch64 -### -S -O0 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK0-64 %s
+// RUN: %clang --target=loongarch64 -### -S -O1 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK1-64 %s
+// RUN: %clang --target=loongarch64 -### -S -O2 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK2-64 %s
+// RUN: %clang --target=loongarch64 -### -S -O3 %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECK3-64 %s
+// RUN: %clang --target=loongarch64 -### -S -Os %s -o %t.s 2>&1 | FileCheck -check-prefix=CHECKs-64 %s
+
 // CHECK0-32: -mframe-pointer=all
 // CHECK1-32-NOT: -mframe-pointer=all
 // CHECK2-32-NOT: -mframe-pointer=all
@@ -69,3 +85,5 @@
 // CHECK3-64-NOT: -mframe-pointer=all
 // CHECKs-64-NOT: -mframe-pointer=all
 // CHECK-MACHO-64: -mframe-pointer=all
+
+// CHECK-ANDROID-64: -mframe-pointer=non-leaf

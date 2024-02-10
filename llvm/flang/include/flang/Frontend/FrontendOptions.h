@@ -14,6 +14,7 @@
 #define FORTRAN_FRONTEND_FRONTENDOPTIONS_H
 
 #include "flang/Common/Fortran-features.h"
+#include "flang/Lower/EnvironmentDefault.h"
 #include "flang/Parser/characters.h"
 #include "flang/Parser/unparse.h"
 #include "llvm/ADT/StringRef.h"
@@ -33,8 +34,11 @@ enum ActionKind {
   /// -fsyntax-only
   ParseSyntaxOnly,
 
-  /// Emit a .mlir file
-  EmitMLIR,
+  /// Emit FIR mlir file
+  EmitFIR,
+
+  /// Emit HLFIR mlir file
+  EmitHLFIR,
 
   /// Emit an .ll file
   EmitLLVM,
@@ -112,6 +116,10 @@ bool isFreeFormSuffix(llvm::StringRef suffix);
 /// \return True if the file should be preprocessed
 bool isToBePreprocessed(llvm::StringRef suffix);
 
+/// \param suffix The file extension
+/// \return True if the file contains CUDA Fortran
+bool isCUDAFortranSuffix(llvm::StringRef suffix);
+
 enum class Language : uint8_t {
   Unknown,
 
@@ -181,6 +189,9 @@ class FrontendInputFile {
   /// sufficient to implement gfortran`s logic controlled with `-cpp/-nocpp`.
   unsigned mustBePreprocessed : 1;
 
+  /// Whether to enable CUDA Fortran language extensions
+  bool isCUDAFortran{false};
+
 public:
   FrontendInputFile() = default;
   FrontendInputFile(llvm::StringRef file, InputKind inKind)
@@ -192,6 +203,7 @@ public:
     std::string pathSuffix{file.substr(pathDotIndex + 1)};
     isFixedForm = isFixedFormSuffix(pathSuffix);
     mustBePreprocessed = isToBePreprocessed(pathSuffix);
+    isCUDAFortran = isCUDAFortranSuffix(pathSuffix);
   }
 
   FrontendInputFile(const llvm::MemoryBuffer *memBuf, InputKind inKind)
@@ -203,6 +215,7 @@ public:
   bool isFile() const { return (buffer == nullptr); }
   bool getIsFixedForm() const { return isFixedForm; }
   bool getMustBePreprocessed() const { return mustBePreprocessed; }
+  bool getIsCUDAFortran() const { return isCUDAFortran; }
 
   llvm::StringRef getFile() const {
     assert(isFile());
@@ -257,6 +270,9 @@ struct FrontendOptions {
 
   // The form to process files in, if specified.
   FortranForm fortranForm = FortranForm::Unknown;
+
+  // Default values for environment variables to be set by the runtime.
+  std::vector<Fortran::lower::EnvironmentDefault> envDefaults;
 
   // The column after which characters are ignored in fixed form lines in the
   // source file.

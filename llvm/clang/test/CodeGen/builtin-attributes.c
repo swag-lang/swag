@@ -1,10 +1,14 @@
 // REQUIRES: arm-registered-target
-// RUN: %clang_cc1 -no-opaque-pointers -triple arm-unknown-linux-gnueabi -emit-llvm -o - %s | FileCheck %s
+// RUN: %clang_cc1 -triple arm-unknown-linux-gnueabi -emit-llvm -o - %s | FileCheck %s
 
 int printf(const char *, ...);
 void exit(int);
 
-// CHECK: declare i32 @printf(i8* noundef, ...)
+float frexpf(float, int*);
+double frexp(double, int*);
+long double frexpl(long double, int*);
+
+// CHECK: declare i32 @printf(ptr noundef, ...)
 void f0() {
   printf("a\n");
 }
@@ -15,7 +19,7 @@ void f1() {
   exit(1);
 }
 
-// CHECK: call i8* @strstr{{.*}} [[NUW:#[0-9]+]]
+// CHECK: call ptr @strstr{{.*}} [[NUW:#[0-9]+]]
 char* f2(char* a, char* b) {
   return __builtin_strstr(a, b);
 }
@@ -49,9 +53,9 @@ char* f2(char* a, char* b) {
 // CHECK: ret
 int f3(double x) {
   int e;
-  __builtin_frexp(x, &e);
-  __builtin_frexpf(x, &e);
-  __builtin_frexpl(x, &e);
+  frexp(x, &e);
+  frexpf(x, &e);
+  frexpl(x, &e);
   __builtin_modf(x, &e);
   __builtin_modff(x, &e);
   __builtin_modfl(x, &e);

@@ -9,6 +9,7 @@
 #ifndef MLIR_DIALECT_LINALG_IR_LINALG_H
 #define MLIR_DIALECT_LINALG_IR_LINALG_H
 
+#include "mlir/Bytecode/BytecodeOpInterface.h"
 #include "mlir/Dialect/Utils/ReshapeOpsUtils.h"
 #include "mlir/Dialect/Utils/StructuredOpsUtils.h"
 #include "mlir/IR/AffineExpr.h"
@@ -20,29 +21,17 @@
 #include "mlir/IR/TypeUtilities.h"
 #include "mlir/Interfaces/ControlFlowInterfaces.h"
 #include "mlir/Interfaces/CopyOpInterface.h"
+#include "mlir/Interfaces/DestinationStyleOpInterface.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 #include "mlir/Interfaces/SideEffectInterfaces.h"
 #include "mlir/Interfaces/TilingInterface.h"
 #include "mlir/Interfaces/ViewLikeInterface.h"
+#include <optional>
 
 namespace mlir {
 namespace linalg {
 
 class LinalgOp;
-
-// TOFO: allow an extra ValueRange to specify an indexing and allow
-// non-hyperrectangular shapes.
-using LoopRangeBuilder =
-    std::function<SmallVector<Range, 4>(ImplicitLocOpBuilder)>;
-
-/// Provide a very simple inference procedure to build the loop ranges from the
-/// op and its operands. This only works with permutation affine maps and
-/// patterns of the form `(m, n)[s] -> (m + n - s floordiv 2)`.
-/// A more advanced Tensor-Comprehension like inference is possible but has
-/// proven to be ambiguous in unfavorable case.
-/// As a consequence, we relax the default behavior very conservatively and
-/// provide an op-specified hook so that Linalg ops may override the behavior.
-LoopRangeBuilder defaultLoopRangesBuilder(LinalgOp op);
 
 /// Returns the name mangled library call name to disambiguate between different
 /// overloads at the C level. The name mangling scheme is basic and uses MLIR
@@ -76,21 +65,26 @@ SmallVector<AffineExpr, 4> makeAffineDimExprs(unsigned num, unsigned &startIdx,
 
 /// Returns `maybeMap.get()` if `maybeMap` is set, otherwise returns the
 /// symbol-less identity map of `rank`.
-AffineMap extractOrIdentityMap(Optional<AffineMap> maybeMap, unsigned rank,
+AffineMap extractOrIdentityMap(std::optional<AffineMap> maybeMap, unsigned rank,
                                MLIRContext *context);
 
 /// Return the vector that is the concatenation of `a` and `b`.
 SmallVector<AffineExpr, 4> concat(ArrayRef<AffineExpr> a,
                                   ArrayRef<AffineExpr> b);
 
-/// Return the dims that are `iteratorTypeName` loops in the LinalgOp `op`.
-/// Assumes `op` is a LinalgOp.
-void getDimsOfType(Operation *op, StringRef iteratorTypeName,
-                   SmallVectorImpl<unsigned> &res);
+/// Create one memref::DimOp or tensor::DimOp depending on the type of `val`.
+/// This is a polymorphic convenience function to abstract away the rank and
+/// concrete type of `val`.
+/// Asserts that `val` is a memref or tensor type.
+Value createOrFoldDimOp(OpBuilder &b, Location loc, Value val, int64_t dim);
 
-namespace detail {
-LogicalResult verifyStructuredOpInterface(Operation *op);
-} // namespace detail
+/// Create one memref::DimOp or tensor::DimOp depending on the type of `val`.
+/// This is a polymorphic convenience function to abstract away the rank and
+/// concrete type of `val`.
+/// Asserts that `val` is a memref or tensor type.
+OpFoldResult createFoldedDimOp(OpBuilder &b, Location loc, Value val,
+                               int64_t dim);
+
 } // namespace linalg
 } // namespace mlir
 

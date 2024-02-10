@@ -19,8 +19,8 @@ define void @read_to_end(i1 %0) personality ptr null {
 ; CHECK-LABEL: read_to_end:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    mflr 0
-; CHECK-NEXT:    std 0, 16(1)
 ; CHECK-NEXT:    stdu 1, -80(1)
+; CHECK-NEXT:    std 0, 96(1)
 ; CHECK-NEXT:    .cfi_def_cfa_offset 80
 ; CHECK-NEXT:    .cfi_offset lr, 16
 ; CHECK-NEXT:    andi. 3, 3, 1

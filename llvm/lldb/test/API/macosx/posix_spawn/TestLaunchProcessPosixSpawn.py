@@ -1,6 +1,6 @@
 import contextlib
 import os
-import unittest2
+from os.path import exists
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -9,12 +9,16 @@ from lldbsuite.test import lldbutil
 
 def haswell():
     features = subprocess.check_output(["sysctl", "machdep.cpu"])
-    return "AVX2" in features.decode('utf-8')
+    return "AVX2" in features.decode("utf-8")
 
 
 def apple_silicon():
     features = subprocess.check_output(["sysctl", "machdep.cpu"])
-    return "Apple M" in features.decode('utf-8')
+    return "Apple M" in features.decode("utf-8")
+
+
+def rosetta_debugserver_installed():
+    return exists("/Library/Apple/usr/libexec/oah/debugserver")
 
 
 class TestLaunchProcessPosixSpawn(TestBase):
@@ -31,12 +35,12 @@ class TestLaunchProcessPosixSpawn(TestBase):
         return None
 
     def run_arch(self, exe, arch):
-        self.runCmd('target create -arch {} {}'.format(arch, exe))
-        self.runCmd('run')
+        self.runCmd("target create -arch {} {}".format(arch, exe))
+        self.runCmd("run")
 
         process = self.dbg.GetSelectedTarget().process
         self.assertState(process.GetState(), lldb.eStateExited)
-        self.assertIn('slice: {}'.format(arch), process.GetSTDOUT(1000))
+        self.assertIn("slice: {}".format(arch), process.GetSTDOUT(1000))
 
     @skipUnlessDarwin
     @skipIfDarwinEmbedded
@@ -46,8 +50,8 @@ class TestLaunchProcessPosixSpawn(TestBase):
     def test_haswell(self):
         self.build()
         exe = self.getBuildArtifact("fat.out")
-        self.run_arch(exe, 'x86_64')
-        self.run_arch(exe, 'x86_64h')
+        self.run_arch(exe, "x86_64")
+        self.run_arch(exe, "x86_64h")
 
     @skipUnlessDarwin
     @skipIfDarwinEmbedded
@@ -57,5 +61,6 @@ class TestLaunchProcessPosixSpawn(TestBase):
     def test_apple_silicon(self):
         self.build()
         exe = self.getBuildArtifact("fat.out")
-        self.run_arch(exe, 'x86_64')
-        self.run_arch(exe, 'arm64')
+        if rosetta_debugserver_installed():
+            self.run_arch(exe, "x86_64")
+        self.run_arch(exe, "arm64")

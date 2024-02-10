@@ -23,6 +23,7 @@ end program
 
 ! CHECK-NEXT: Canonicalizer
 ! CHECK-NEXT: SimplifyRegionLite
+! CHECK-NEXT: SimplifyIntrinsics
 ! CHECK-NEXT: AlgebraicSimplification
 ! CHECK-NEXT: CSE
 ! CHECK-NEXT:   (S) 0 num-cse'd - Number of operations CSE'd
@@ -38,6 +39,7 @@ end program
 ! CHECK-NEXT:   (S) 0 num-dce'd - Number of operations DCE'd
 
 ! CHECK-NEXT: 'func.func' Pipeline
+! CHECK-NEXT:   PolymorphicOpConversion
 ! CHECK-NEXT:   CFGConversion
 
 ! CHECK-NEXT: SCFToControlFlow

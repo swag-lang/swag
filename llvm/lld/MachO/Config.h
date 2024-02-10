@@ -13,6 +13,7 @@
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/DenseSet.h"
 #include "llvm/ADT/MapVector.h"
+#include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/ADT/StringSet.h"
 #include "llvm/BinaryFormat/MachO.h"
@@ -24,6 +25,10 @@
 #include "llvm/TextAPI/Target.h"
 
 #include <vector>
+
+namespace llvm::CodeGenOpt {
+enum Level : int;
+} // namespace llvm::CodeGenOpt
 
 namespace lld {
 namespace macho {
@@ -37,7 +42,6 @@ using SegmentRenameMap = llvm::DenseMap<llvm::StringRef, llvm::StringRef>;
 
 struct PlatformInfo {
   llvm::MachO::Target target;
-  llvm::VersionTuple minimum;
   llvm::VersionTuple sdk;
 };
 
@@ -65,6 +69,11 @@ enum class ICFLevel {
   none,
   safe,
   all,
+};
+
+enum class ObjCStubsMode {
+  fast,
+  small,
 };
 
 struct SectionAlign {
@@ -122,15 +131,21 @@ struct Configuration {
   bool saveTemps = false;
   bool adhocCodesign = false;
   bool emitFunctionStarts = false;
-  bool emitBitcodeBundle = false;
   bool emitDataInCodeInfo = false;
   bool emitEncryptionInfo = false;
+  bool emitInitOffsets = false;
+  bool emitChainedFixups = false;
+  bool thinLTOEmitImportsFiles;
+  bool thinLTOEmitIndexFiles;
+  bool thinLTOIndexOnly;
   bool timeTraceEnabled = false;
   bool dataConst = false;
-  bool dedupLiterals = true;
+  bool dedupStrings = true;
+  bool deadStripDuplicates = false;
   bool omitDebugInfo = false;
   bool warnDylibInstallName = false;
   bool ignoreOptimizationHints = false;
+  bool forceExactCpuSubtypeMatch = false;
   uint32_t headerPad;
   uint32_t dylibCompatibilityVersion = 0;
   uint32_t dylibCurrentVersion = 0;
@@ -152,23 +167,37 @@ struct Configuration {
   llvm::StringRef thinLTOJobs;
   llvm::StringRef umbrella;
   uint32_t ltoo = 2;
+  llvm::CodeGenOpt::Level ltoCgo;
   llvm::CachePruningPolicy thinLTOCachePolicy;
   llvm::StringRef thinLTOCacheDir;
+  llvm::StringRef thinLTOIndexOnlyArg;
+  std::pair<llvm::StringRef, llvm::StringRef> thinLTOObjectSuffixReplace;
+  llvm::StringRef thinLTOPrefixReplaceOld;
+  llvm::StringRef thinLTOPrefixReplaceNew;
+  llvm::StringRef thinLTOPrefixReplaceNativeObject;
   bool deadStripDylibs = false;
   bool demangle = false;
   bool deadStrip = false;
   bool errorForArchMismatch = false;
+  bool ignoreAutoLink = false;
+  // ld64 allows invalid auto link options as long as the link succeeds. LLD
+  // does not, but there are cases in the wild where the invalid linker options
+  // exist. This allows users to ignore the specific invalid options in the case
+  // they can't easily fix them.
+  llvm::StringSet<> ignoreAutoLinkOptions;
+  bool strictAutoLink = false;
   PlatformInfo platformInfo;
-  llvm::Optional<PlatformInfo> secondaryPlatformInfo;
+  std::optional<PlatformInfo> secondaryPlatformInfo;
   NamespaceKind namespaceKind = NamespaceKind::twolevel;
   UndefinedSymbolTreatment undefinedSymbolTreatment =
       UndefinedSymbolTreatment::error;
   ICFLevel icfLevel = ICFLevel::none;
+  ObjCStubsMode objcStubsMode = ObjCStubsMode::fast;
   llvm::MachO::HeaderFileType outputType;
   std::vector<llvm::StringRef> systemLibraryRoots;
   std::vector<llvm::StringRef> librarySearchPaths;
   std::vector<llvm::StringRef> frameworkSearchPaths;
-  std::vector<llvm::StringRef> runtimePaths;
+  llvm::SmallVector<llvm::StringRef, 0> runtimePaths;
   std::vector<std::string> astPaths;
   std::vector<Symbol *> explicitUndefineds;
   llvm::StringSet<> explicitDynamicLookups;
@@ -176,6 +205,9 @@ struct Configuration {
   // so use a vector instead of a map.
   std::vector<SectionAlign> sectionAlignments;
   std::vector<SegmentProtection> segmentProtections;
+  bool ltoDebugPassManager = false;
+  bool csProfileGenerate = false;
+  llvm::StringRef csProfilePath;
 
   bool callGraphProfileSort = false;
   llvm::StringRef printSymbolOrder;
@@ -192,10 +224,14 @@ struct Configuration {
 
   SymtabPresence localSymbolsPresence = SymtabPresence::All;
   SymbolPatterns localSymbolPatterns;
+  llvm::SmallVector<llvm::StringRef, 0> mllvmOpts;
 
-  bool zeroModTime = false;
+  bool zeroModTime = true;
+  bool generateUuid = true;
 
   llvm::StringRef osoPrefix;
+
+  std::vector<llvm::StringRef> dyldEnvs;
 
   llvm::MachO::Architecture arch() const { return platformInfo.target.Arch; }
 

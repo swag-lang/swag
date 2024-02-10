@@ -12,6 +12,7 @@
 #include <atomic>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -37,6 +38,7 @@
 #include "GDBRemoteRegisterContext.h"
 
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/StringMap.h"
 
 namespace lldb_private {
 namespace repro {
@@ -49,8 +51,6 @@ class ThreadGDBRemote;
 class ProcessGDBRemote : public Process,
                          private GDBRemoteClientBase::ContinueDelegate {
 public:
-  ProcessGDBRemote(lldb::TargetSP target_sp, lldb::ListenerSP listener_sp);
-
   ~ProcessGDBRemote() override;
 
   static lldb::ProcessSP CreateInstance(lldb::TargetSP target_sp,
@@ -77,18 +77,20 @@ public:
                 bool plugin_specified_by_name) override;
 
   CommandObject *GetPluginCommandObject() override;
+  
+  void DumpPluginHistory(Stream &s) override;
 
   // Creating a new process, or attaching to an existing one
-  Status WillLaunch(Module *module) override;
+  Status DoWillLaunch(Module *module) override;
 
   Status DoLaunch(Module *exe_module, ProcessLaunchInfo &launch_info) override;
 
   void DidLaunch() override;
 
-  Status WillAttachToProcessWithID(lldb::pid_t pid) override;
+  Status DoWillAttachToProcessWithID(lldb::pid_t pid) override;
 
-  Status WillAttachToProcessWithName(const char *process_name,
-                                     bool wait_for_launch) override;
+  Status DoWillAttachToProcessWithName(const char *process_name,
+                                       bool wait_for_launch) override;
 
   Status DoConnectRemote(llvm::StringRef remote_url) override;
 
@@ -160,7 +162,7 @@ public:
 
   Status DisableWatchpoint(Watchpoint *wp, bool notify = true) override;
 
-  Status GetWatchpointSupportInfo(uint32_t &num) override;
+  std::optional<uint32_t> GetWatchpointSlotCount() override;
 
   llvm::Expected<TraceSupportedResponse> TraceSupported() override;
 
@@ -173,7 +175,7 @@ public:
   llvm::Expected<std::vector<uint8_t>>
   TraceGetBinaryData(const TraceGetBinaryDataRequest &request) override;
 
-  Status GetWatchpointSupportInfo(uint32_t &num, bool &after) override;
+  std::optional<bool> DoGetWatchpointReportedAfter() override;
 
   bool StartNoticingNewThreads() override;
 
@@ -211,7 +213,7 @@ public:
                                  lldb::addr_t image_count) override;
 
   Status
-  ConfigureStructuredData(ConstString type_name,
+  ConfigureStructuredData(llvm::StringRef type_name,
                           const StructuredData::ObjectSP &config_sp) override;
 
   StructuredData::ObjectSP GetLoadedDynamicLibrariesInfos() override;
@@ -223,6 +225,8 @@ public:
   GetLoadedDynamicLibrariesInfos_sender(StructuredData::ObjectSP args);
 
   StructuredData::ObjectSP GetSharedCacheInfo() override;
+
+  StructuredData::ObjectSP GetDynamicLoaderProcessState() override;
 
   std::string HarmonizeThreadIdsForProfileData(
       StringExtractorGDBRemote &inputStringExtractor);
@@ -239,6 +243,8 @@ protected:
   friend class GDBRemoteCommunicationClient;
   friend class GDBRemoteRegisterContext;
 
+  ProcessGDBRemote(lldb::TargetSP target_sp, lldb::ListenerSP listener_sp);
+
   bool SupportsMemoryTagging() override;
 
   /// Broadcaster event bits definitions.
@@ -251,7 +257,7 @@ protected:
   GDBRemoteCommunicationClient m_gdb_comm;
   std::atomic<lldb::pid_t> m_debugserver_pid;
 
-  llvm::Optional<StringExtractorGDBRemote> m_last_stop_packet;
+  std::optional<StringExtractorGDBRemote> m_last_stop_packet;
   std::recursive_mutex m_last_stop_packet_mutex;
 
   GDBRemoteDynamicRegisterInfoSP m_register_info_sp;
@@ -307,8 +313,6 @@ protected:
   bool CanResume(lldb::StateType state) { return state == lldb::eStateStopped; }
 
   bool HasExited(lldb::StateType state) { return state == lldb::eStateExited; }
-
-  bool ProcessIDIsValid() const;
 
   void Clear();
 
@@ -373,6 +377,7 @@ protected:
   bool UpdateThreadIDList();
 
   void DidLaunchOrAttach(ArchSpec &process_arch);
+  void LoadStubBinaries();
   void MaybeLoadExecutableModule();
 
   Status ConnectToDebugserver(llvm::StringRef host_port);
@@ -464,6 +469,15 @@ private:
   // fork helpers
   void DidForkSwitchSoftwareBreakpoints(bool enable);
   void DidForkSwitchHardwareTraps(bool enable);
+
+  // Lists of register fields generated from the remote's target XML.
+  // Pointers to these RegisterFlags will be set in the register info passed
+  // back to the upper levels of lldb. Doing so is safe because this class will
+  // live at least as long as the debug session. We therefore do not store the
+  // data directly in the map because the map may reallocate it's storage as new
+  // entries are added. Which would invalidate any pointers set in the register
+  // info up to that point.
+  llvm::StringMap<std::unique_ptr<RegisterFlags>> m_registers_flags_types;
 };
 
 } // namespace process_gdb_remote

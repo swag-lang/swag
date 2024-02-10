@@ -11,22 +11,29 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "PassDetail.h"
+#include "mlir/Dialect/SPIRV/Transforms/Passes.h"
+
 #include "mlir/Dialect/SPIRV/IR/SPIRVDialect.h"
 #include "mlir/Dialect/SPIRV/IR/SPIRVOps.h"
 #include "mlir/Dialect/SPIRV/IR/SPIRVTypes.h"
-#include "mlir/Dialect/SPIRV/Transforms/Passes.h"
+#include "mlir/Dialect/SPIRV/IR/TargetAndABI.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/BuiltinAttributes.h"
 #include "mlir/IR/BuiltinTypes.h"
 #include "mlir/IR/SymbolTable.h"
-#include "mlir/Pass/AnalysisManager.h"
 #include "mlir/Transforms/DialectConversion.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/Support/Debug.h"
 #include <algorithm>
 #include <iterator>
+
+namespace mlir {
+namespace spirv {
+#define GEN_PASS_DEF_SPIRVUNIFYALIASEDRESOURCEPASS
+#include "mlir/Dialect/SPIRV/Transforms/Passes.h.inc"
+} // namespace spirv
+} // namespace mlir
 
 #define DEBUG_TYPE "spirv-unify-aliased-resource"
 
@@ -45,8 +52,8 @@ static AliasedResourceMap collectAliasedResources(spirv::ModuleOp moduleOp) {
   AliasedResourceMap aliasedResources;
   moduleOp->walk([&aliasedResources](spirv::GlobalVariableOp varOp) {
     if (varOp->getAttrOfType<UnitAttr>("aliased")) {
-      Optional<uint32_t> set = varOp.descriptor_set();
-      Optional<uint32_t> binding = varOp.binding();
+      std::optional<uint32_t> set = varOp.getDescriptorSet();
+      std::optional<uint32_t> binding = varOp.getBinding();
       if (set && binding)
         aliasedResources[{*set, *binding}].push_back(varOp);
     }
@@ -55,18 +62,19 @@ static AliasedResourceMap collectAliasedResources(spirv::ModuleOp moduleOp) {
 }
 
 /// Returns the element type if the given `type` is a runtime array resource:
-/// `!spv.ptr<!spv.struct<!spv.rtarray<...>>>`. Returns null type otherwise.
+/// `!spirv.ptr<!spirv.struct<!spirv.rtarray<...>>>`. Returns null type
+/// otherwise.
 static Type getRuntimeArrayElementType(Type type) {
-  auto ptrType = type.dyn_cast<spirv::PointerType>();
+  auto ptrType = dyn_cast<spirv::PointerType>(type);
   if (!ptrType)
     return {};
 
-  auto structType = ptrType.getPointeeType().dyn_cast<spirv::StructType>();
+  auto structType = dyn_cast<spirv::StructType>(ptrType.getPointeeType());
   if (!structType || structType.getNumElements() != 1)
     return {};
 
   auto rtArrayType =
-      structType.getElementType(0).dyn_cast<spirv::RuntimeArrayType>();
+      dyn_cast<spirv::RuntimeArrayType>(structType.getElementType(0));
   if (!rtArrayType)
     return {};
 
@@ -74,50 +82,59 @@ static Type getRuntimeArrayElementType(Type type) {
 }
 
 /// Given a list of resource element `types`, returns the index of the canonical
-/// resource that all resources should be unified into. Returns llvm::None if
+/// resource that all resources should be unified into. Returns std::nullopt if
 /// unable to unify.
-static Optional<int> deduceCanonicalResource(ArrayRef<spirv::SPIRVType> types) {
-  SmallVector<int> scalarNumBits, totalNumBits;
+static std::optional<int>
+deduceCanonicalResource(ArrayRef<spirv::SPIRVType> types) {
+  // scalarNumBits: contains all resources' scalar types' bit counts.
+  // vectorNumBits: only contains resources whose element types are vectors.
+  // vectorIndices: each vector's original index in `types`.
+  SmallVector<int> scalarNumBits, vectorNumBits, vectorIndices;
   scalarNumBits.reserve(types.size());
-  totalNumBits.reserve(types.size());
-  bool hasVector = false;
+  vectorNumBits.reserve(types.size());
+  vectorIndices.reserve(types.size());
 
-  for (spirv::SPIRVType type : types) {
+  for (const auto &indexedTypes : llvm::enumerate(types)) {
+    spirv::SPIRVType type = indexedTypes.value();
     assert(type.isScalarOrVector());
-    if (auto vectorType = type.dyn_cast<VectorType>()) {
+    if (auto vectorType = dyn_cast<VectorType>(type)) {
       if (vectorType.getNumElements() % 2 != 0)
-        return llvm::None; // Odd-sized vector has special layout requirements.
+        return std::nullopt; // Odd-sized vector has special layout
+                             // requirements.
 
-      Optional<int64_t> numBytes = type.getSizeInBytes();
+      std::optional<int64_t> numBytes = type.getSizeInBytes();
       if (!numBytes)
-        return llvm::None;
+        return std::nullopt;
 
       scalarNumBits.push_back(
           vectorType.getElementType().getIntOrFloatBitWidth());
-      totalNumBits.push_back(*numBytes * 8);
-      hasVector = true;
+      vectorNumBits.push_back(*numBytes * 8);
+      vectorIndices.push_back(indexedTypes.index());
     } else {
       scalarNumBits.push_back(type.getIntOrFloatBitWidth());
-      totalNumBits.push_back(scalarNumBits.back());
     }
   }
 
-  if (hasVector) {
-    // If there are vector types, require all element types to be the same for
-    // now to simplify the transformation.
-    if (!llvm::is_splat(scalarNumBits))
-      return llvm::None;
-
-    // Choose the one with the largest bitwidth as the canonical resource, so
-    // that we can still keep vectorized load/store.
-    auto *maxVal = std::max_element(totalNumBits.begin(), totalNumBits.end());
+  if (!vectorNumBits.empty()) {
+    // Choose the *vector* with the smallest bitwidth as the canonical resource,
+    // so that we can still keep vectorized load/store and avoid partial updates
+    // to large vectors.
+    auto *minVal = std::min_element(vectorNumBits.begin(), vectorNumBits.end());
     // Make sure that the canonical resource's bitwidth is divisible by others.
     // With out this, we cannot properly adjust the index later.
-    if (llvm::any_of(totalNumBits,
-                     [maxVal](int64_t bits) { return *maxVal % bits != 0; }))
-      return llvm::None;
+    if (llvm::any_of(vectorNumBits,
+                     [&](int bits) { return bits % *minVal != 0; }))
+      return std::nullopt;
 
-    return std::distance(totalNumBits.begin(), maxVal);
+    // Require all scalar type bit counts to be a multiple of the chosen
+    // vector's primitive type to avoid reading/writing subcomponents.
+    int index = vectorIndices[std::distance(vectorNumBits.begin(), minVal)];
+    int baseNumBits = scalarNumBits[index];
+    if (llvm::any_of(scalarNumBits,
+                     [&](int bits) { return bits % baseNumBits != 0; }))
+      return std::nullopt;
+
+    return index;
   }
 
   // All element types are scalars. Then choose the smallest bitwidth as the
@@ -125,7 +142,7 @@ static Optional<int> deduceCanonicalResource(ArrayRef<spirv::SPIRVType> types) {
   auto *minVal = std::min_element(scalarNumBits.begin(), scalarNumBits.end());
   if (llvm::any_of(scalarNumBits,
                    [minVal](int64_t bit) { return bit % *minVal != 0; }))
-    return llvm::None;
+    return std::nullopt;
   return std::distance(scalarNumBits.begin(), minVal);
 }
 
@@ -141,9 +158,9 @@ static bool areSameBitwidthScalarType(Type a, Type b) {
 namespace {
 /// A class for analyzing aliased resources.
 ///
-/// Resources are expected to be spv.GlobalVarible that has a descriptor set and
-/// binding number. Such resources are of the type `!spv.ptr<!spv.struct<...>>`
-/// per Vulkan requirements.
+/// Resources are expected to be spirv.GlobalVarible that has a descriptor set
+/// and binding number. Such resources are of the type
+/// `!spirv.ptr<!spirv.struct<...>>` per Vulkan requirements.
 ///
 /// Right now, we only support the case that there is a single runtime array
 /// inside the struct.
@@ -203,22 +220,26 @@ ResourceAliasAnalysis::ResourceAliasAnalysis(Operation *root) {
 }
 
 bool ResourceAliasAnalysis::shouldUnify(Operation *op) const {
+  if (!op)
+    return false;
+
   if (auto varOp = dyn_cast<spirv::GlobalVariableOp>(op)) {
     auto canonicalOp = getCanonicalResource(varOp);
     return canonicalOp && varOp != canonicalOp;
   }
   if (auto addressOp = dyn_cast<spirv::AddressOfOp>(op)) {
     auto moduleOp = addressOp->getParentOfType<spirv::ModuleOp>();
-    auto *varOp = SymbolTable::lookupSymbolIn(moduleOp, addressOp.variable());
+    auto *varOp =
+        SymbolTable::lookupSymbolIn(moduleOp, addressOp.getVariable());
     return shouldUnify(varOp);
   }
 
   if (auto acOp = dyn_cast<spirv::AccessChainOp>(op))
-    return shouldUnify(acOp.base_ptr().getDefiningOp());
+    return shouldUnify(acOp.getBasePtr().getDefiningOp());
   if (auto loadOp = dyn_cast<spirv::LoadOp>(op))
-    return shouldUnify(loadOp.ptr().getDefiningOp());
+    return shouldUnify(loadOp.getPtr().getDefiningOp());
   if (auto storeOp = dyn_cast<spirv::StoreOp>(op))
-    return shouldUnify(storeOp.ptr().getDefiningOp());
+    return shouldUnify(storeOp.getPtr().getDefiningOp());
 
   return false;
 }
@@ -252,18 +273,18 @@ void ResourceAliasAnalysis::recordIfUnifiable(
   // Collect the element types for all resources in the current set.
   SmallVector<spirv::SPIRVType> elementTypes;
   for (spirv::GlobalVariableOp resource : resources) {
-    Type elementType = getRuntimeArrayElementType(resource.type());
+    Type elementType = getRuntimeArrayElementType(resource.getType());
     if (!elementType)
       return; // Unexpected resource variable type.
 
-    auto type = elementType.cast<spirv::SPIRVType>();
+    auto type = cast<spirv::SPIRVType>(elementType);
     if (!type.isScalarOrVector())
       return; // Unexpected resource element type.
 
     elementTypes.push_back(type);
   }
 
-  Optional<int> index = deduceCanonicalResource(elementTypes);
+  std::optional<int> index = deduceCanonicalResource(elementTypes);
   if (!index)
     return;
 
@@ -313,7 +334,7 @@ struct ConvertAddressOf : public ConvertAliasResource<spirv::AddressOfOp> {
     // Rewrite the AddressOf op to get the address of the canoncical resource.
     auto moduleOp = addressOp->getParentOfType<spirv::ModuleOp>();
     auto srcVarOp = cast<spirv::GlobalVariableOp>(
-        SymbolTable::lookupSymbolIn(moduleOp, addressOp.variable()));
+        SymbolTable::lookupSymbolIn(moduleOp, addressOp.getVariable()));
     auto dstVarOp = analysis.getCanonicalResource(srcVarOp);
     rewriter.replaceOpWithNewOp<spirv::AddressOfOp>(addressOp, dstVarOp);
     return success();
@@ -326,13 +347,13 @@ struct ConvertAccessChain : public ConvertAliasResource<spirv::AccessChainOp> {
   LogicalResult
   matchAndRewrite(spirv::AccessChainOp acOp, OpAdaptor adaptor,
                   ConversionPatternRewriter &rewriter) const override {
-    auto addressOp = acOp.base_ptr().getDefiningOp<spirv::AddressOfOp>();
+    auto addressOp = acOp.getBasePtr().getDefiningOp<spirv::AddressOfOp>();
     if (!addressOp)
       return rewriter.notifyMatchFailure(acOp, "base ptr not addressof op");
 
     auto moduleOp = acOp->getParentOfType<spirv::ModuleOp>();
     auto srcVarOp = cast<spirv::GlobalVariableOp>(
-        SymbolTable::lookupSymbolIn(moduleOp, addressOp.variable()));
+        SymbolTable::lookupSymbolIn(moduleOp, addressOp.getVariable()));
     auto dstVarOp = analysis.getCanonicalResource(srcVarOp);
 
     spirv::SPIRVType srcElemType = analysis.getElementType(srcVarOp);
@@ -343,59 +364,66 @@ struct ConvertAccessChain : public ConvertAliasResource<spirv::AccessChainOp> {
       // We have the same bitwidth for source and destination element types.
       // Thie indices keep the same.
       rewriter.replaceOpWithNewOp<spirv::AccessChainOp>(
-          acOp, adaptor.base_ptr(), adaptor.indices());
+          acOp, adaptor.getBasePtr(), adaptor.getIndices());
       return success();
     }
 
     Location loc = acOp.getLoc();
-    auto i32Type = rewriter.getI32Type();
 
-    if (srcElemType.isIntOrFloat() && dstElemType.isa<VectorType>()) {
+    if (srcElemType.isIntOrFloat() && isa<VectorType>(dstElemType)) {
       // The source indices are for a buffer with scalar element types. Rewrite
       // them into a buffer with vector element types. We need to scale the last
       // index for the vector as a whole, then add one level of index for inside
       // the vector.
-      int srcNumBits = *srcElemType.getSizeInBytes();
-      int dstNumBits = *dstElemType.getSizeInBytes();
-      assert(dstNumBits > srcNumBits && dstNumBits % srcNumBits == 0);
-      int ratio = dstNumBits / srcNumBits;
-      auto ratioValue = rewriter.create<spirv::ConstantOp>(
-          loc, i32Type, rewriter.getI32IntegerAttr(ratio));
+      int srcNumBytes = *srcElemType.getSizeInBytes();
+      int dstNumBytes = *dstElemType.getSizeInBytes();
+      assert(dstNumBytes >= srcNumBytes && dstNumBytes % srcNumBytes == 0);
 
-      auto indices = llvm::to_vector<4>(acOp.indices());
+      auto indices = llvm::to_vector<4>(acOp.getIndices());
       Value oldIndex = indices.back();
+      Type indexType = oldIndex.getType();
+
+      int ratio = dstNumBytes / srcNumBytes;
+      auto ratioValue = rewriter.create<spirv::ConstantOp>(
+          loc, indexType, rewriter.getIntegerAttr(indexType, ratio));
+
       indices.back() =
-          rewriter.create<spirv::SDivOp>(loc, i32Type, oldIndex, ratioValue);
+          rewriter.create<spirv::SDivOp>(loc, indexType, oldIndex, ratioValue);
       indices.push_back(
-          rewriter.create<spirv::SModOp>(loc, i32Type, oldIndex, ratioValue));
+          rewriter.create<spirv::SModOp>(loc, indexType, oldIndex, ratioValue));
 
       rewriter.replaceOpWithNewOp<spirv::AccessChainOp>(
-          acOp, adaptor.base_ptr(), indices);
+          acOp, adaptor.getBasePtr(), indices);
       return success();
     }
 
-    if (srcElemType.isIntOrFloat() && dstElemType.isIntOrFloat()) {
-      // The source indices are for a buffer with larger bitwidth scalar element
-      // types. Rewrite them into a buffer with smaller bitwidth element types.
-      // We only need to scale the last index.
-      int srcNumBits = *srcElemType.getSizeInBytes();
-      int dstNumBits = *dstElemType.getSizeInBytes();
-      assert(srcNumBits > dstNumBits && srcNumBits % dstNumBits == 0);
-      int ratio = srcNumBits / dstNumBits;
-      auto ratioValue = rewriter.create<spirv::ConstantOp>(
-          loc, i32Type, rewriter.getI32IntegerAttr(ratio));
+    if ((srcElemType.isIntOrFloat() && dstElemType.isIntOrFloat()) ||
+        (isa<VectorType>(srcElemType) && isa<VectorType>(dstElemType))) {
+      // The source indices are for a buffer with larger bitwidth scalar/vector
+      // element types. Rewrite them into a buffer with smaller bitwidth element
+      // types. We only need to scale the last index.
+      int srcNumBytes = *srcElemType.getSizeInBytes();
+      int dstNumBytes = *dstElemType.getSizeInBytes();
+      assert(srcNumBytes >= dstNumBytes && srcNumBytes % dstNumBytes == 0);
 
-      auto indices = llvm::to_vector<4>(acOp.indices());
+      auto indices = llvm::to_vector<4>(acOp.getIndices());
       Value oldIndex = indices.back();
+      Type indexType = oldIndex.getType();
+
+      int ratio = srcNumBytes / dstNumBytes;
+      auto ratioValue = rewriter.create<spirv::ConstantOp>(
+          loc, indexType, rewriter.getIntegerAttr(indexType, ratio));
+
       indices.back() =
-          rewriter.create<spirv::IMulOp>(loc, i32Type, oldIndex, ratioValue);
+          rewriter.create<spirv::IMulOp>(loc, indexType, oldIndex, ratioValue);
 
       rewriter.replaceOpWithNewOp<spirv::AccessChainOp>(
-          acOp, adaptor.base_ptr(), indices);
+          acOp, adaptor.getBasePtr(), indices);
       return success();
     }
 
-    return rewriter.notifyMatchFailure(acOp, "unsupported src/dst types");
+    return rewriter.notifyMatchFailure(
+        acOp, "unsupported src/dst types for spirv.AccessChain");
   }
 };
 
@@ -405,15 +433,13 @@ struct ConvertLoad : public ConvertAliasResource<spirv::LoadOp> {
   LogicalResult
   matchAndRewrite(spirv::LoadOp loadOp, OpAdaptor adaptor,
                   ConversionPatternRewriter &rewriter) const override {
-    auto srcElemType =
-        loadOp.ptr().getType().cast<spirv::PointerType>().getPointeeType();
-    auto dstElemType =
-        adaptor.ptr().getType().cast<spirv::PointerType>().getPointeeType();
-    if (!srcElemType.isIntOrFloat() || !dstElemType.isIntOrFloat())
-      return rewriter.notifyMatchFailure(loadOp, "not scalar type");
+    auto srcPtrType = cast<spirv::PointerType>(loadOp.getPtr().getType());
+    auto srcElemType = cast<spirv::SPIRVType>(srcPtrType.getPointeeType());
+    auto dstPtrType = cast<spirv::PointerType>(adaptor.getPtr().getType());
+    auto dstElemType = cast<spirv::SPIRVType>(dstPtrType.getPointeeType());
 
     Location loc = loadOp.getLoc();
-    auto newLoadOp = rewriter.create<spirv::LoadOp>(loc, adaptor.ptr());
+    auto newLoadOp = rewriter.create<spirv::LoadOp>(loc, adaptor.getPtr());
     if (srcElemType == dstElemType) {
       rewriter.replaceOp(loadOp, newLoadOp->getResults());
       return success();
@@ -421,54 +447,88 @@ struct ConvertLoad : public ConvertAliasResource<spirv::LoadOp> {
 
     if (areSameBitwidthScalarType(srcElemType, dstElemType)) {
       auto castOp = rewriter.create<spirv::BitcastOp>(loc, srcElemType,
-                                                      newLoadOp.value());
+                                                      newLoadOp.getValue());
       rewriter.replaceOp(loadOp, castOp->getResults());
 
       return success();
     }
 
-    // The source and destination have scalar types of different bitwidths.
-    // For such cases, we need to load multiple smaller bitwidth values and
-    // construct a larger bitwidth one.
+    if ((srcElemType.isIntOrFloat() && dstElemType.isIntOrFloat()) ||
+        (isa<VectorType>(srcElemType) && isa<VectorType>(dstElemType))) {
+      // The source and destination have scalar types of different bitwidths, or
+      // vector types of different component counts. For such cases, we load
+      // multiple smaller bitwidth values and construct a larger bitwidth one.
 
-    int srcNumBits = srcElemType.getIntOrFloatBitWidth();
-    int dstNumBits = dstElemType.getIntOrFloatBitWidth();
-    assert(srcNumBits > dstNumBits && srcNumBits % dstNumBits == 0);
-    int ratio = srcNumBits / dstNumBits;
-    if (ratio > 4)
-      return rewriter.notifyMatchFailure(loadOp, "more than 4 components");
+      int srcNumBytes = *srcElemType.getSizeInBytes();
+      int dstNumBytes = *dstElemType.getSizeInBytes();
+      assert(srcNumBytes > dstNumBytes && srcNumBytes % dstNumBytes == 0);
+      int ratio = srcNumBytes / dstNumBytes;
+      if (ratio > 4)
+        return rewriter.notifyMatchFailure(loadOp, "more than 4 components");
 
-    SmallVector<Value> components;
-    components.reserve(ratio);
-    components.push_back(newLoadOp);
+      SmallVector<Value> components;
+      components.reserve(ratio);
+      components.push_back(newLoadOp);
 
-    auto acOp = adaptor.ptr().getDefiningOp<spirv::AccessChainOp>();
-    if (!acOp)
-      return rewriter.notifyMatchFailure(loadOp, "ptr not spv.AccessChain");
+      auto acOp = adaptor.getPtr().getDefiningOp<spirv::AccessChainOp>();
+      if (!acOp)
+        return rewriter.notifyMatchFailure(loadOp, "ptr not spirv.AccessChain");
 
-    auto i32Type = rewriter.getI32Type();
-    Value oneValue = spirv::ConstantOp::getOne(i32Type, loc, rewriter);
-    auto indices = llvm::to_vector<4>(acOp.indices());
-    for (int i = 1; i < ratio; ++i) {
-      // Load all subsequent components belonging to this element.
-      indices.back() = rewriter.create<spirv::IAddOp>(loc, i32Type,
-                                                      indices.back(), oneValue);
-      auto componentAcOp =
-          rewriter.create<spirv::AccessChainOp>(loc, acOp.base_ptr(), indices);
-      // Assuming little endian, this reads lower-ordered bits of the number to
-      // lower-numbered components of the vector.
-      components.push_back(rewriter.create<spirv::LoadOp>(loc, componentAcOp));
+      auto i32Type = rewriter.getI32Type();
+      Value oneValue = spirv::ConstantOp::getOne(i32Type, loc, rewriter);
+      auto indices = llvm::to_vector<4>(acOp.getIndices());
+      for (int i = 1; i < ratio; ++i) {
+        // Load all subsequent components belonging to this element.
+        indices.back() = rewriter.create<spirv::IAddOp>(
+            loc, i32Type, indices.back(), oneValue);
+        auto componentAcOp = rewriter.create<spirv::AccessChainOp>(
+            loc, acOp.getBasePtr(), indices);
+        // Assuming little endian, this reads lower-ordered bits of the number
+        // to lower-numbered components of the vector.
+        components.push_back(
+            rewriter.create<spirv::LoadOp>(loc, componentAcOp));
+      }
+
+      // Create a vector of the components and then cast back to the larger
+      // bitwidth element type. For spirv.bitcast, the lower-numbered components
+      // of the vector map to lower-ordered bits of the larger bitwidth element
+      // type.
+
+      Type vectorType = srcElemType;
+      if (!isa<VectorType>(srcElemType))
+        vectorType = VectorType::get({ratio}, dstElemType);
+
+      // If both the source and destination are vector types, we need to make
+      // sure the scalar type is the same for composite construction later.
+      if (auto srcElemVecType = dyn_cast<VectorType>(srcElemType))
+        if (auto dstElemVecType = dyn_cast<VectorType>(dstElemType)) {
+          if (srcElemVecType.getElementType() !=
+              dstElemVecType.getElementType()) {
+            int64_t count =
+                dstNumBytes / (srcElemVecType.getElementTypeBitWidth() / 8);
+
+            // Make sure not to create 1-element vectors, which are illegal in
+            // SPIR-V.
+            Type castType = srcElemVecType.getElementType();
+            if (count > 1)
+              castType = VectorType::get({count}, castType);
+
+            for (Value &c : components)
+              c = rewriter.create<spirv::BitcastOp>(loc, castType, c);
+          }
+        }
+      Value vectorValue = rewriter.create<spirv::CompositeConstructOp>(
+          loc, vectorType, components);
+
+      if (!isa<VectorType>(srcElemType))
+        vectorValue =
+            rewriter.create<spirv::BitcastOp>(loc, srcElemType, vectorValue);
+      rewriter.replaceOp(loadOp, vectorValue);
+      return success();
     }
 
-    // Create a vector of the components and then cast back to the larger
-    // bitwidth element type. For spv.bitcast, the lower-numbered components of
-    // the vector map to lower-ordered bits of the larger bitwidth element type.
-    auto vectorType = VectorType::get({ratio}, dstElemType);
-    Value vectorValue = rewriter.create<spirv::CompositeConstructOp>(
-        loc, vectorType, components);
-    rewriter.replaceOpWithNewOp<spirv::BitcastOp>(loadOp, srcElemType,
-                                                  vectorValue);
-    return success();
+    return rewriter.notifyMatchFailure(
+        loadOp, "unsupported src/dst types for spirv.Load");
   }
 };
 
@@ -479,20 +539,20 @@ struct ConvertStore : public ConvertAliasResource<spirv::StoreOp> {
   matchAndRewrite(spirv::StoreOp storeOp, OpAdaptor adaptor,
                   ConversionPatternRewriter &rewriter) const override {
     auto srcElemType =
-        storeOp.ptr().getType().cast<spirv::PointerType>().getPointeeType();
+        cast<spirv::PointerType>(storeOp.getPtr().getType()).getPointeeType();
     auto dstElemType =
-        adaptor.ptr().getType().cast<spirv::PointerType>().getPointeeType();
+        cast<spirv::PointerType>(adaptor.getPtr().getType()).getPointeeType();
     if (!srcElemType.isIntOrFloat() || !dstElemType.isIntOrFloat())
       return rewriter.notifyMatchFailure(storeOp, "not scalar type");
     if (!areSameBitwidthScalarType(srcElemType, dstElemType))
       return rewriter.notifyMatchFailure(storeOp, "different bitwidth");
 
     Location loc = storeOp.getLoc();
-    Value value = adaptor.value();
+    Value value = adaptor.getValue();
     if (srcElemType != dstElemType)
       value = rewriter.create<spirv::BitcastOp>(loc, dstElemType, value);
-    rewriter.replaceOpWithNewOp<spirv::StoreOp>(storeOp, adaptor.ptr(), value,
-                                                storeOp->getAttrs());
+    rewriter.replaceOpWithNewOp<spirv::StoreOp>(storeOp, adaptor.getPtr(),
+                                                value, storeOp->getAttrs());
     return success();
   }
 };
@@ -503,15 +563,35 @@ struct ConvertStore : public ConvertAliasResource<spirv::StoreOp> {
 
 namespace {
 class UnifyAliasedResourcePass final
-    : public SPIRVUnifyAliasedResourcePassBase<UnifyAliasedResourcePass> {
+    : public spirv::impl::SPIRVUnifyAliasedResourcePassBase<
+          UnifyAliasedResourcePass> {
 public:
+  explicit UnifyAliasedResourcePass(spirv::GetTargetEnvFn getTargetEnv)
+      : getTargetEnvFn(std::move(getTargetEnv)) {}
+
   void runOnOperation() override;
+
+private:
+  spirv::GetTargetEnvFn getTargetEnvFn;
 };
-} // namespace
 
 void UnifyAliasedResourcePass::runOnOperation() {
   spirv::ModuleOp moduleOp = getOperation();
   MLIRContext *context = &getContext();
+
+  if (getTargetEnvFn) {
+    // This pass is only needed for targeting WebGPU, Metal, or layering
+    // Vulkan on Metal via MoltenVK, where we need to translate SPIR-V into
+    // WGSL or MSL. The translation has limitations.
+    spirv::TargetEnvAttr targetEnv = getTargetEnvFn(moduleOp);
+    spirv::ClientAPI clientAPI = targetEnv.getClientAPI();
+    bool isVulkanOnAppleDevices =
+        clientAPI == spirv::ClientAPI::Vulkan &&
+        targetEnv.getVendorID() == spirv::Vendor::Apple;
+    if (clientAPI != spirv::ClientAPI::WebGPU &&
+        clientAPI != spirv::ClientAPI::Metal && !isVulkanOnAppleDevices)
+      return;
+  }
 
   // Analyze aliased resources first.
   ResourceAliasAnalysis &analysis = getAnalysis<ResourceAliasAnalysis>();
@@ -541,8 +621,9 @@ void UnifyAliasedResourcePass::runOnOperation() {
       resources.front()->removeAttr("aliased");
   }
 }
+} // namespace
 
 std::unique_ptr<mlir::OperationPass<spirv::ModuleOp>>
-spirv::createUnifyAliasedResourcePass() {
-  return std::make_unique<UnifyAliasedResourcePass>();
+spirv::createUnifyAliasedResourcePass(spirv::GetTargetEnvFn getTargetEnv) {
+  return std::make_unique<UnifyAliasedResourcePass>(std::move(getTargetEnv));
 }

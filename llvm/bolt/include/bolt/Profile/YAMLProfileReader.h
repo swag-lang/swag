@@ -33,9 +33,9 @@ public:
 
   Error preprocessProfile(BinaryContext &BC) override;
 
-  virtual bool hasLocalsWithFileName() const override;
+  bool hasLocalsWithFileName() const override;
 
-  virtual bool mayHaveProfileData(const BinaryFunction &BF) override;
+  bool mayHaveProfileData(const BinaryFunction &BF) override;
 
   /// Check if the file contains YAML.
   static bool isYAML(StringRef Filename);
@@ -69,6 +69,10 @@ private:
   /// Populate \p Function profile with the one supplied in YAML format.
   bool parseFunctionProfile(BinaryFunction &Function,
                             const yaml::bolt::BinaryFunctionProfile &YamlBF);
+
+  /// Infer function profile from stale data (collected on older binaries).
+  bool inferStaleProfile(BinaryFunction &Function,
+                         const yaml::bolt::BinaryFunctionProfile &YamlBF);
 
   /// Initialize maps for profile matching.
   void buildNameMaps(std::map<uint64_t, BinaryFunction> &Functions);

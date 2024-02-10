@@ -15,6 +15,8 @@
 #include "llvm/Support/PointerLikeTypeTraits.h"
 
 namespace mlir {
+class AsmState;
+
 /// Instances of the Type class are uniqued, have an immutable identifier and an
 /// optional mutable component.  They wrap a pointer to the storage object owned
 /// by MLIRContext.  Therefore, instances of Type are passed around by value.
@@ -81,7 +83,7 @@ public:
 
   using AbstractTy = AbstractType;
 
-  constexpr Type() {}
+  constexpr Type() = default;
   /* implicit */ Type(const ImplType *impl)
       : impl(const_cast<ImplType *>(impl)) {}
 
@@ -94,19 +96,16 @@ public:
 
   bool operator!() const { return impl == nullptr; }
 
-  template <typename U>
+  template <typename... Tys>
   bool isa() const;
-  template <typename First, typename Second, typename... Rest>
-  bool isa() const;
+  template <typename... Tys>
+  bool isa_and_nonnull() const;
   template <typename U>
   U dyn_cast() const;
   template <typename U>
   U dyn_cast_or_null() const;
   template <typename U>
   U cast() const;
-
-  // Support type casting Type to itself.
-  static bool classof(Type) { return true; }
 
   /// Return a unique identifier for the concrete type. This is used to support
   /// dynamic type casting.
@@ -121,8 +120,14 @@ public:
   // Convenience predicates.  This is only for floating point types,
   // derived types should use isa/dyn_cast.
   bool isIndex() const;
+  bool isFloat8E5M2() const;
+  bool isFloat8E4M3FN() const;
+  bool isFloat8E5M2FNUZ() const;
+  bool isFloat8E4M3FNUZ() const;
+  bool isFloat8E4M3B11FNUZ() const;
   bool isBF16() const;
   bool isF16() const;
+  bool isTF32() const;
   bool isF32() const;
   bool isF64() const;
   bool isF80() const;
@@ -162,6 +167,7 @@ public:
 
   /// Print the current type.
   void print(raw_ostream &os) const;
+  void print(raw_ostream &os, AsmState &state) const;
   void dump() const;
 
   friend ::llvm::hash_code hash_value(Type arg);
@@ -181,7 +187,51 @@ public:
   }
 
   /// Return the abstract type descriptor for this type.
-  const AbstractTy &getAbstractType() { return impl->getAbstractType(); }
+  const AbstractTy &getAbstractType() const { return impl->getAbstractType(); }
+
+  /// Return the Type implementation.
+  ImplType *getImpl() const { return impl; }
+
+  /// Walk all of the immediately nested sub-attributes and sub-types. This
+  /// method does not recurse into sub elements.
+  void walkImmediateSubElements(function_ref<void(Attribute)> walkAttrsFn,
+                                function_ref<void(Type)> walkTypesFn) const {
+    getAbstractType().walkImmediateSubElements(*this, walkAttrsFn, walkTypesFn);
+  }
+
+  /// Replace the immediately nested sub-attributes and sub-types with those
+  /// provided. The order of the provided elements is derived from the order of
+  /// the elements returned by the callbacks of `walkImmediateSubElements`. The
+  /// element at index 0 would replace the very first attribute given by
+  /// `walkImmediateSubElements`. On success, the new instance with the values
+  /// replaced is returned. If replacement fails, nullptr is returned.
+  auto replaceImmediateSubElements(ArrayRef<Attribute> replAttrs,
+                                   ArrayRef<Type> replTypes) const {
+    return getAbstractType().replaceImmediateSubElements(*this, replAttrs,
+                                                         replTypes);
+  }
+
+  /// Walk this type and all attibutes/types nested within using the
+  /// provided walk functions. See `AttrTypeWalker` for information on the
+  /// supported walk function types.
+  template <WalkOrder Order = WalkOrder::PostOrder, typename... WalkFns>
+  auto walk(WalkFns &&...walkFns) {
+    AttrTypeWalker walker;
+    (walker.addWalk(std::forward<WalkFns>(walkFns)), ...);
+    return walker.walk<Order>(*this);
+  }
+
+  /// Recursively replace all of the nested sub-attributes and sub-types using
+  /// the provided map functions. Returns nullptr in the case of failure. See
+  /// `AttrTypeReplacer` for information on the support replacement function
+  /// types.
+  template <typename... ReplacementFns>
+  auto replace(ReplacementFns &&...replacementFns) {
+    AttrTypeReplacer replacer;
+    (replacer.addReplacement(std::forward<ReplacementFns>(replacementFns)),
+     ...);
+    return replacer.replace(*this);
+  }
 
 protected:
   ImplType *impl{nullptr};
@@ -220,6 +270,14 @@ public:
 private:
   /// Returns the impl interface instance for the given type.
   static typename InterfaceBase::Concept *getInterfaceFor(Type type) {
+#ifndef NDEBUG
+    // Check that the current interface isn't an unresolved promise for the
+    // given type.
+    dialect_extension_detail::handleUseOfUndefinedPromisedInterface(
+        type.getDialect(), ConcreteType::getInterfaceID(),
+        llvm::getTypeName<ConcreteType>());
+#endif
+
     return type.getAbstractType().getInterface<ConcreteType>();
   }
 
@@ -248,29 +306,29 @@ inline ::llvm::hash_code hash_value(Type arg) {
   return DenseMapInfo<const Type::ImplType *>::getHashValue(arg.impl);
 }
 
-template <typename U>
+template <typename... Tys>
 bool Type::isa() const {
-  assert(impl && "isa<> used on a null type.");
-  return U::classof(*this);
+  return llvm::isa<Tys...>(*this);
 }
 
-template <typename First, typename Second, typename... Rest>
-bool Type::isa() const {
-  return isa<First>() || isa<Second, Rest...>();
+template <typename... Tys>
+bool Type::isa_and_nonnull() const {
+  return llvm::isa_and_present<Tys...>(*this);
 }
 
 template <typename U>
 U Type::dyn_cast() const {
-  return isa<U>() ? U(impl) : U(nullptr);
+  return llvm::dyn_cast<U>(*this);
 }
+
 template <typename U>
 U Type::dyn_cast_or_null() const {
-  return (impl && isa<U>()) ? U(impl) : U(nullptr);
+  return llvm::dyn_cast_or_null<U>(*this);
 }
+
 template <typename U>
 U Type::cast() const {
-  assert(isa<U>());
-  return U(impl);
+  return llvm::cast<U>(*this);
 }
 
 } // namespace mlir
@@ -316,6 +374,36 @@ public:
     return mlir::Type::getFromOpaquePointer(P);
   }
   static constexpr int NumLowBitsAvailable = 3;
+};
+
+/// Add support for llvm style casts.
+/// We provide a cast between To and From if From is mlir::Type or derives from
+/// it
+template <typename To, typename From>
+struct CastInfo<
+    To, From,
+    std::enable_if_t<std::is_same_v<mlir::Type, std::remove_const_t<From>> ||
+                     std::is_base_of_v<mlir::Type, From>>>
+    : NullableValueCastFailed<To>,
+      DefaultDoCastIfPossible<To, From, CastInfo<To, From>> {
+  /// Arguments are taken as mlir::Type here and not as `From`, because when
+  /// casting from an intermediate type of the hierarchy to one of its children,
+  /// the val.getTypeID() inside T::classof will use the static getTypeID of the
+  /// parent instead of the non-static Type::getTypeID that returns the dynamic
+  /// ID. This means that T::classof would end up comparing the static TypeID of
+  /// the children to the static TypeID of its parent, making it impossible to
+  /// downcast from the parent to the child.
+  static inline bool isPossible(mlir::Type ty) {
+    /// Return a constant true instead of a dynamic true when casting to self or
+    /// up the hierarchy.
+    if constexpr (std::is_base_of_v<To, From>) {
+      (void)ty;
+      return true;
+    } else {
+      return To::classof(ty);
+    };
+  }
+  static inline To doCast(mlir::Type ty) { return To(ty.getImpl()); }
 };
 
 } // namespace llvm

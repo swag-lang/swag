@@ -314,7 +314,17 @@ public:
               DescriptorInquiry::Field::LowerBound, dimension_}};
         }
       } else {
-        return (*this)(assoc->expr());
+        auto exprLowerBound{((*this)(assoc->expr()))};
+        if (IsActuallyConstant(exprLowerBound)) {
+          return std::move(exprLowerBound);
+        } else {
+          // If the lower bound of the associated entity is not resolved to
+          // constant expression at the time of the association, it is unsafe
+          // to re-evaluate it later in the associate construct. Statements
+          // in-between may have modified its operands value.
+          return ExtentExpr{DescriptorInquiry{std::move(base),
+              DescriptorInquiry::Field::LowerBound, dimension_}};
+        }
       }
     }
     if constexpr (LBOUND_SEMANTICS) {
@@ -429,20 +439,38 @@ static MaybeExtentExpr GetNonNegativeExtent(
   }
 }
 
+MaybeExtentExpr GetAssociatedExtent(const NamedEntity &base,
+    const semantics::AssocEntityDetails &assoc, int dimension) {
+  if (auto shape{GetShape(assoc.expr())}) {
+    if (dimension < static_cast<int>(shape->size())) {
+      auto &extent{shape->at(dimension)};
+      if (extent && IsActuallyConstant(*extent)) {
+        return std::move(extent);
+      } else {
+        // Otherwise, evaluating the associated expression extent expression
+        // after the associate statement is unsafe given statements inside the
+        // associate may have modified the associated expression operands
+        // values.
+        return ExtentExpr{DescriptorInquiry{
+            NamedEntity{base}, DescriptorInquiry::Field::Extent, dimension}};
+      }
+    }
+  }
+  return std::nullopt;
+}
+
 MaybeExtentExpr GetExtent(const NamedEntity &base, int dimension) {
   CHECK(dimension >= 0);
   const Symbol &last{base.GetLastSymbol()};
-  const Symbol &symbol{ResolveAssociations(last)};
+  const Symbol &symbol{ResolveAssociationsExceptSelectRank(last)};
   if (const auto *assoc{last.detailsIf<semantics::AssocEntityDetails>()}) {
     if (assoc->rank()) { // SELECT RANK case
       if (semantics::IsDescriptor(symbol) && dimension < *assoc->rank()) {
         return ExtentExpr{DescriptorInquiry{
             NamedEntity{base}, DescriptorInquiry::Field::Extent, dimension}};
       }
-    } else if (auto shape{GetShape(assoc->expr())}) {
-      if (dimension < static_cast<int>(shape->size())) {
-        return std::move(shape->at(dimension));
-      }
+    } else {
+      return GetAssociatedExtent(base, *assoc, dimension);
     }
   }
   if (const auto *details{symbol.detailsIf<semantics::ObjectEntityDetails>()}) {
@@ -531,7 +559,8 @@ MaybeExtentExpr ComputeUpperBound(
 }
 
 MaybeExtentExpr GetRawUpperBound(const NamedEntity &base, int dimension) {
-  const Symbol &symbol{ResolveAssociations(base.GetLastSymbol())};
+  const Symbol &symbol{
+      ResolveAssociationsExceptSelectRank(base.GetLastSymbol())};
   if (const auto *details{symbol.detailsIf<semantics::ObjectEntityDetails>()}) {
     int rank{details->shape().Rank()};
     if (dimension < rank) {
@@ -547,11 +576,9 @@ MaybeExtentExpr GetRawUpperBound(const NamedEntity &base, int dimension) {
     }
   } else if (const auto *assoc{
                  symbol.detailsIf<semantics::AssocEntityDetails>()}) {
-    if (auto shape{GetShape(assoc->expr())}) {
-      if (dimension < static_cast<int>(shape->size())) {
-        return ComputeUpperBound(
-            GetRawLowerBound(base, dimension), std::move(shape->at(dimension)));
-      }
+    if (auto extent{GetAssociatedExtent(base, *assoc, dimension)}) {
+      return ComputeUpperBound(
+          GetRawLowerBound(base, dimension), std::move(extent));
     }
   }
   return std::nullopt;
@@ -582,7 +609,8 @@ static MaybeExtentExpr GetExplicitUBOUND(
 
 static MaybeExtentExpr GetUBOUND(
     FoldingContext *context, const NamedEntity &base, int dimension) {
-  const Symbol &symbol{ResolveAssociations(base.GetLastSymbol())};
+  const Symbol &symbol{
+      ResolveAssociationsExceptSelectRank(base.GetLastSymbol())};
   if (const auto *details{symbol.detailsIf<semantics::ObjectEntityDetails>()}) {
     int rank{details->shape().Rank()};
     if (dimension < rank) {
@@ -597,12 +625,9 @@ static MaybeExtentExpr GetUBOUND(
     }
   } else if (const auto *assoc{
                  symbol.detailsIf<semantics::AssocEntityDetails>()}) {
-    if (auto shape{GetShape(assoc->expr())}) {
-      if (dimension < static_cast<int>(shape->size())) {
-        if (auto lb{GetLBOUND(base, dimension)}) {
-          return ComputeUpperBound(
-              std::move(*lb), std::move(shape->at(dimension)));
-        }
+    if (auto extent{GetAssociatedExtent(base, *assoc, dimension)}) {
+      if (auto lb{GetLBOUND(base, dimension)}) {
+        return ComputeUpperBound(std::move(*lb), std::move(extent));
       }
     }
   }
@@ -619,7 +644,8 @@ MaybeExtentExpr GetUBOUND(
 }
 
 static Shape GetUBOUNDs(FoldingContext *context, const NamedEntity &base) {
-  const Symbol &symbol{ResolveAssociations(base.GetLastSymbol())};
+  const Symbol &symbol{
+      ResolveAssociationsExceptSelectRank(base.GetLastSymbol())};
   if (const auto *details{symbol.detailsIf<semantics::ObjectEntityDetails>()}) {
     Shape result;
     int dim{0};
@@ -667,19 +693,29 @@ auto GetShapeHelper::operator()(const Symbol &symbol) const -> Result {
             return ScalarShape(); // no dimensions seen
           },
           [&](const semantics::ProcEntityDetails &proc) {
-            if (const Symbol * interface{proc.interface().symbol()}) {
+            if (const Symbol * interface{proc.procInterface()}) {
               return (*this)(*interface);
             } else {
               return ScalarShape();
             }
           },
           [&](const semantics::AssocEntityDetails &assoc) {
+            NamedEntity base{symbol};
             if (assoc.rank()) { // SELECT RANK case
               int n{assoc.rank().value()};
-              NamedEntity base{symbol};
               return Result{CreateShape(n, base)};
             } else {
-              return (*this)(assoc.expr());
+              auto exprShape{((*this)(assoc.expr()))};
+              if (exprShape) {
+                int rank{static_cast<int>(exprShape->size())};
+                for (int dimension{0}; dimension < rank; ++dimension) {
+                  auto &extent{(*exprShape)[dimension]};
+                  if (extent && !IsActuallyConstant(*extent)) {
+                    extent = GetExtent(base, dimension);
+                  }
+                }
+              }
+              return exprShape;
             }
           },
           [&](const semantics::SubprogramDetails &subp) -> Result {
@@ -769,9 +805,19 @@ auto GetShapeHelper::operator()(const ProcedureRef &call) const -> Result {
   if (call.Rank() == 0) {
     return ScalarShape();
   } else if (call.IsElemental()) {
-    for (const auto &arg : call.arguments()) {
-      if (arg && arg->Rank() > 0) {
-        return (*this)(*arg);
+    // Use the shape of an actual array argument associated with a
+    // non-OPTIONAL dummy object argument.
+    if (context_) {
+      if (auto chars{characteristics::Procedure::FromActuals(
+              call.proc(), call.arguments(), *context_)}) {
+        std::size_t j{0};
+        for (const auto &arg : call.arguments()) {
+          if (arg && arg->Rank() > 0 && j < chars->dummyArguments.size() &&
+              !chars->dummyArguments[j].IsOptional()) {
+            return (*this)(*arg);
+          }
+          ++j;
+        }
       }
     }
     return ScalarShape();
@@ -856,18 +902,18 @@ auto GetShapeHelper::operator()(const ProcedureRef &call) const -> Result {
           if (maskShape->size() == 0) {
             // Scalar MASK= -> [MERGE(SIZE(ARRAY=), 0, mask)]
             if (auto arrayShape{(*this)(call.arguments().at(0))}) {
-              auto arraySize{GetSize(std::move(*arrayShape))};
-              CHECK(arraySize);
-              ActualArguments toMerge{
-                  ActualArgument{AsGenericExpr(std::move(*arraySize))},
-                  ActualArgument{AsGenericExpr(ExtentExpr{0})},
-                  common::Clone(call.arguments().at(1))};
-              auto specific{context_->intrinsics().Probe(
-                  CallCharacteristics{"merge"}, toMerge, *context_)};
-              CHECK(specific);
-              return Shape{ExtentExpr{FunctionRef<ExtentType>{
-                  ProcedureDesignator{std::move(specific->specificIntrinsic)},
-                  std::move(specific->arguments)}}};
+              if (auto arraySize{GetSize(std::move(*arrayShape))}) {
+                ActualArguments toMerge{
+                    ActualArgument{AsGenericExpr(std::move(*arraySize))},
+                    ActualArgument{AsGenericExpr(ExtentExpr{0})},
+                    common::Clone(call.arguments().at(1))};
+                auto specific{context_->intrinsics().Probe(
+                    CallCharacteristics{"merge"}, toMerge, *context_)};
+                CHECK(specific);
+                return Shape{ExtentExpr{FunctionRef<ExtentType>{
+                    ProcedureDesignator{std::move(specific->specificIntrinsic)},
+                    std::move(specific->arguments)}}};
+              }
             }
           } else {
             // Non-scalar MASK= -> [COUNT(mask)]
@@ -986,6 +1032,16 @@ auto GetShapeHelper::operator()(const ProcedureRef &call) const -> Result {
   }
   // The rank is always known even if the extents are not.
   return Shape(static_cast<std::size_t>(call.Rank()), MaybeExtentExpr{});
+}
+
+void GetShapeHelper::AccumulateExtent(
+    ExtentExpr &result, ExtentExpr &&n) const {
+  result = std::move(result) + std::move(n);
+  if (context_) {
+    // Fold during expression creation to avoid creating an expression so
+    // large we can't evalute it without overflowing the stack.
+    result = Fold(*context_, std::move(result));
+  }
 }
 
 // Check conformance of the passed shapes.

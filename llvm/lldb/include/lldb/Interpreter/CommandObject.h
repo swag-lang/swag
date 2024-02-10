@@ -10,6 +10,8 @@
 #define LLDB_INTERPRETER_COMMANDOBJECT_H
 
 #include <map>
+#include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -64,7 +66,7 @@ size_t FindLongestCommandWord(std::map<std::string, ValueType> &dict) {
   return max_len;
 }
 
-class CommandObject {
+class CommandObject : public std::enable_shared_from_this<CommandObject> {
 public:
   typedef llvm::StringRef(ArgumentHelpCallbackFunction)();
 
@@ -81,7 +83,7 @@ public:
   struct ArgumentTableEntry {
     lldb::CommandArgumentType arg_type;
     const char *arg_name;
-    CommandCompletions::CommonCompletionTypes completion_type;
+    lldb::CompletionType completion_type;
     OptionEnumValues enum_values;
     ArgumentHelpCallback help_function;
     const char *help_text;
@@ -272,13 +274,13 @@ public:
   ///    The command arguments.
   ///
   /// \return
-  ///     llvm::None if there is no special repeat command - it will use the
+  ///     std::nullopt if there is no special repeat command - it will use the
   ///     current command line.
   ///     Otherwise a std::string containing the command to be repeated.
   ///     If the string is empty, the command won't be allow repeating.
-  virtual llvm::Optional<std::string>
+  virtual std::optional<std::string>
   GetRepeatCommand(Args &current_command_args, uint32_t index) {
-    return llvm::None;
+    return std::nullopt;
   }
 
   bool HasOverrideCallback() const {
@@ -292,8 +294,9 @@ public:
     m_command_override_baton = baton;
   }
 
-  void SetOverrideCallback(lldb::CommandOverrideCallbackWithResult callback,
-                           void *baton) {
+  void
+  SetOverrideCallback(lldb_private::CommandOverrideCallbackWithResult callback,
+                      void *baton) {
     m_command_override_callback = callback;
     m_command_override_baton = baton;
   }
@@ -375,7 +378,7 @@ protected:
   Flags m_flags;
   std::vector<CommandArgumentEntry> m_arguments;
   lldb::CommandOverrideCallback m_deprecated_command_override_callback;
-  lldb::CommandOverrideCallbackWithResult m_command_override_callback;
+  lldb_private::CommandOverrideCallbackWithResult m_command_override_callback;
   void *m_command_override_baton;
   bool m_is_user_command = false;
 

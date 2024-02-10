@@ -19,7 +19,7 @@
 #include "src/threads/thrd_create.h"
 #include "src/threads/thrd_join.h"
 
-#include "utils/IntegrationTest/test.h"
+#include "test/IntegrationTest/test.h"
 
 #include <threads.h>
 
@@ -35,7 +35,7 @@ namespace wait_notify_broadcast_test {
 // |broadcast_count| by 1 before they start waiting on |broadcast_cnd|, and
 // decrement it by 1 after getting signalled on |broadcast_cnd|.
 
-constexpr unsigned int THRD_COUNT = 10000;
+constexpr unsigned int THRD_COUNT = 1000;
 
 static __llvm_libc::cpp::Atomic<unsigned int> broadcast_count(0);
 static cnd_t broadcast_cnd, threads_ready_cnd;
@@ -77,7 +77,7 @@ void wait_notify_broadcast_test() {
 
   for (unsigned int i = 0; i < THRD_COUNT; ++i) {
     int retval = 0xBAD;
-    __llvm_libc::thrd_join(&threads[i], &retval);
+    __llvm_libc::thrd_join(threads[i], &retval);
     ASSERT_EQ(retval, 0);
   }
 
@@ -134,7 +134,7 @@ void single_waiter_test() {
   ASSERT_EQ(__llvm_libc::mtx_unlock(&waiter_mtx), int(thrd_success));
 
   int retval;
-  __llvm_libc::thrd_join(&waiter_thread, &retval);
+  __llvm_libc::thrd_join(waiter_thread, &retval);
   ASSERT_EQ(retval, 0x600D);
 
   __llvm_libc::mtx_destroy(&waiter_mtx);
@@ -145,7 +145,7 @@ void single_waiter_test() {
 
 } // namespace single_waiter_test
 
-int main() {
+TEST_MAIN() {
   wait_notify_broadcast_test::wait_notify_broadcast_test();
   single_waiter_test::single_waiter_test();
   return 0;

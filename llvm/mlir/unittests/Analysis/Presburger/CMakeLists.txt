@@ -4,11 +4,14 @@ add_mlir_unittest(MLIRPresburgerTests
   LinearTransformTest.cpp
   MatrixTest.cpp
   MPIntTest.cpp
+  Parser.h
+  ParserTest.cpp
   PresburgerSetTest.cpp
+  PresburgerRelationTest.cpp
   PresburgerSpaceTest.cpp
   PWMAFunctionTest.cpp
   SimplexTest.cpp
-  ../../Dialect/Affine/Analysis/AffineStructuresParser.cpp
+  UtilsTest.cpp
 )
 
 target_link_libraries(MLIRPresburgerTests

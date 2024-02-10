@@ -1,3 +1,12 @@
+add_mlir_upstream_c_api_library(MLIRCAPIArith
+  Arith.cpp
+
+  PARTIAL_SOURCES_INTENDED
+  LINK_LIBS PUBLIC
+  MLIRCAPIIR
+  MLIRArithDialect
+)
+
 add_mlir_upstream_c_api_library(MLIRCAPIAsync
   Async.cpp
   AsyncPasses.cpp
@@ -20,6 +29,24 @@ add_mlir_upstream_c_api_library(MLIRCAPIControlFlow
   LINK_LIBS PUBLIC
   MLIRCAPIIR
   MLIRControlFlowDialect
+)
+
+add_mlir_upstream_c_api_library(MLIRCAPIMath
+  Math.cpp
+
+  PARTIAL_SOURCES_INTENDED
+  LINK_LIBS PUBLIC
+  MLIRCAPIIR
+  MLIRMathDialect
+)
+
+add_mlir_upstream_c_api_library(MLIRCAPIMemRef
+  MemRef.cpp
+
+  PARTIAL_SOURCES_INTENDED
+  LINK_LIBS PUBLIC
+  MLIRCAPIIR
+  MLIRMemRefDialect
 )
 
 add_mlir_upstream_c_api_library(MLIRCAPIGPU
@@ -58,6 +85,15 @@ add_mlir_upstream_c_api_library(MLIRCAPILinalg
   MLIRLinalgDialect
   MLIRPass
   MLIRLinalgTransforms
+)
+
+add_mlir_upstream_c_api_library(MLIRCAPIMLProgram
+  MLProgram.cpp
+
+  PARTIAL_SOURCES_INTENDED
+  LINK_LIBS PUBLIC
+  MLIRCAPIIR
+  MLIRMLProgramDialect
 )
 
 add_mlir_upstream_c_api_library(MLIRCAPISCF
@@ -107,6 +143,15 @@ add_mlir_upstream_c_api_library(MLIRCAPITensor
   MLIRTensorDialect
 )
 
+add_mlir_upstream_c_api_library(MLIRCAPITransformDialect
+  Transform.cpp
+
+  PARTIAL_SOURCES_INTENDED
+  LINK_LIBS PUBLIC
+  MLIRCAPIIR
+  MLIRTransformDialect
+)
+
 add_mlir_upstream_c_api_library(MLIRCAPIQuant
   Quant.cpp
 
@@ -123,4 +168,13 @@ add_mlir_upstream_c_api_library(MLIRCAPIPDL
   LINK_LIBS PUBLIC
   MLIRCAPIIR
   MLIRPDLDialect
+)
+
+add_mlir_upstream_c_api_library(MLIRCAPIVector
+  Vector.cpp
+
+  PARTIAL_SOURCES_INTENDED
+  LINK_LIBS PUBLIC
+  MLIRCAPIIR
+  MLIRVectorDialect
 )

@@ -101,9 +101,9 @@ static StringRef getOutputSectionName(const InputSectionBase *s) {
   }
 
   for (StringRef v :
-       {".data.rel.ro", ".data", ".rodata", ".bss.rel.ro", ".bss",
-        ".gcc_except_table", ".init_array", ".fini_array", ".tbss", ".tdata",
-        ".ARM.exidx", ".ARM.extab", ".ctors", ".dtors"})
+       {".data.rel.ro", ".data", ".rodata", ".bss.rel.ro", ".bss", ".ldata",
+        ".lrodata", ".lbss", ".gcc_except_table", ".init_array", ".fini_array",
+        ".tbss", ".tdata", ".ARM.exidx", ".ARM.extab", ".ctors", ".dtors"})
     if (isSectionPrefix(v, s->name))
       return v;
 
@@ -157,24 +157,18 @@ OutputDesc *LinkerScript::getOrCreateOutputSection(StringRef name) {
 static void expandMemoryRegion(MemoryRegion *memRegion, uint64_t size,
                                StringRef secName) {
   memRegion->curPos += size;
-  uint64_t newSize = memRegion->curPos - (memRegion->origin)().getValue();
-  uint64_t length = (memRegion->length)().getValue();
-  if (newSize > length)
-    error("section '" + secName + "' will not fit in region '" +
-          memRegion->name + "': overflowed by " + Twine(newSize - length) +
-          " bytes");
 }
 
 void LinkerScript::expandMemoryRegions(uint64_t size) {
-  if (ctx->memRegion)
-    expandMemoryRegion(ctx->memRegion, size, ctx->outSec->name);
+  if (state->memRegion)
+    expandMemoryRegion(state->memRegion, size, state->outSec->name);
   // Only expand the LMARegion if it is different from memRegion.
-  if (ctx->lmaRegion && ctx->memRegion != ctx->lmaRegion)
-    expandMemoryRegion(ctx->lmaRegion, size, ctx->outSec->name);
+  if (state->lmaRegion && state->memRegion != state->lmaRegion)
+    expandMemoryRegion(state->lmaRegion, size, state->outSec->name);
 }
 
 void LinkerScript::expandOutputSection(uint64_t size) {
-  ctx->outSec->size += size;
+  state->outSec->size += size;
   expandMemoryRegions(size);
 }
 
@@ -182,7 +176,7 @@ void LinkerScript::setDot(Expr e, const Twine &loc, bool inSec) {
   uint64_t val = e().getValue();
   if (val < dot && inSec)
     error(loc + ": unable to move location counter backward for: " +
-          ctx->outSec->name);
+          state->outSec->name);
 
   // Update to location counter means update to section size.
   if (inSec)
@@ -203,7 +197,7 @@ static bool shouldDefineSym(SymbolAssignment *cmd) {
 
   // If a symbol was in PROVIDE(), we need to define it only
   // when it is a referenced undefined symbol.
-  Symbol *b = symtab->find(cmd->name);
+  Symbol *b = symtab.find(cmd->name);
   if (b && !b->isDefined() && !b->isCommon())
     return true;
   return false;
@@ -236,9 +230,9 @@ void LinkerScript::addSymbol(SymbolAssignment *cmd) {
   Defined newSym(nullptr, cmd->name, STB_GLOBAL, visibility, value.type,
                  symValue, 0, sec);
 
-  Symbol *sym = symtab->insert(cmd->name);
+  Symbol *sym = symtab.insert(cmd->name);
   sym->mergeProperties(newSym);
-  sym->replace(newSym);
+  newSym.overwrite(*sym);
   sym->isUsedInRegularObj = true;
   cmd->sym = cast<Defined>(sym);
 }
@@ -254,9 +248,9 @@ static void declareSymbol(SymbolAssignment *cmd) {
                  nullptr);
 
   // We can't calculate final value right now.
-  Symbol *sym = symtab->insert(cmd->name);
+  Symbol *sym = symtab.insert(cmd->name);
   sym->mergeProperties(newSym);
-  sym->replace(newSym);
+  newSym.overwrite(*sym);
 
   cmd->sym = cast<Defined>(sym);
   cmd->provide = false;
@@ -341,7 +335,7 @@ void LinkerScript::processInsertCommands() {
 // we don't know their final values until late stages of link. Here we scan
 // over symbol assignment commands and create placeholder symbols if needed.
 void LinkerScript::declareSymbols() {
-  assert(!ctx);
+  assert(!state);
   for (SectionCommand *cmd : sectionCommands) {
     if (auto *assign = dyn_cast<SymbolAssignment>(cmd)) {
       declareSymbol(assign);
@@ -438,7 +432,7 @@ static void sortSections(MutableArrayRef<InputSectionBase *> vec,
     // ">" is not a mistake. Sections with larger alignments are placed
     // before sections with smaller alignments in order to reduce the
     // amount of padding necessary. This is compatible with GNU.
-    return a->alignment > b->alignment;
+    return a->addralign > b->addralign;
   };
   auto nameComparator = [](InputSectionBase *a, InputSectionBase *b) {
     return a->name < b->name;
@@ -457,6 +451,8 @@ static void sortSections(MutableArrayRef<InputSectionBase *> vec,
     return llvm::stable_sort(vec, nameComparator);
   case SortSectionPolicy::Priority:
     return llvm::stable_sort(vec, priorityComparator);
+  case SortSectionPolicy::Reverse:
+    return std::reverse(vec.begin(), vec.end());
   }
 }
 
@@ -589,7 +585,7 @@ LinkerScript::createInputSectionList(OutputSection &outCmd) {
 
   for (SectionCommand *cmd : outCmd.commands) {
     if (auto *isd = dyn_cast<InputSectionDescription>(cmd)) {
-      isd->sectionBases = computeInputSections(isd, inputSections);
+      isd->sectionBases = computeInputSections(isd, ctx.inputSections);
       for (InputSectionBase *s : isd->sectionBases)
         s->parent = &outCmd;
       ret.insert(ret.end(), isd->sectionBases.begin(), isd->sectionBases.end());
@@ -633,7 +629,7 @@ void LinkerScript::processSectionCommands() {
     if (osec->subalignExpr) {
       uint32_t subalign = osec->subalignExpr().getValue();
       for (InputSectionBase *s : v)
-        s->alignment = subalign;
+        s->addralign = subalign;
     }
 
     // Set the partition field the same way OutputSection::recordSection()
@@ -681,12 +677,12 @@ void LinkerScript::processSymbolAssignments() {
   aether = make<OutputSection>("", 0, SHF_ALLOC);
   aether->sectionIndex = 1;
 
-  // ctx captures the local AddressState and makes it accessible deliberately.
+  // `st` captures the local AddressState and makes it accessible deliberately.
   // This is needed as there are some cases where we cannot just thread the
   // current state through to a lambda function created by the script parser.
-  AddressState state;
-  ctx = &state;
-  ctx->outSec = aether;
+  AddressState st;
+  state = &st;
+  st.outSec = aether;
 
   for (SectionCommand *cmd : sectionCommands) {
     if (auto *assign = dyn_cast<SymbolAssignment>(cmd))
@@ -697,7 +693,7 @@ void LinkerScript::processSymbolAssignments() {
           addSymbol(assign);
   }
 
-  ctx = nullptr;
+  state = nullptr;
 }
 
 static OutputSection *findByName(ArrayRef<SectionCommand *> vec,
@@ -846,7 +842,12 @@ void LinkerScript::addOrphanSections() {
   // to be created before we create relocation output section, so we want
   // to create target sections first. We do not want priority handling
   // for synthetic sections because them are special.
-  for (InputSectionBase *isec : inputSections) {
+  size_t n = 0;
+  for (InputSectionBase *isec : ctx.inputSections) {
+    // Process InputSection and MergeInputSection.
+    if (LLVM_LIKELY(isa<InputSection>(isec)))
+      ctx.inputSections[n++] = isec;
+
     // In -r links, SHF_LINK_ORDER sections are added while adding their parent
     // sections because we need to know the parent's output section before we
     // can select an output section for the SHF_LINK_ORDER section.
@@ -863,6 +864,8 @@ void LinkerScript::addOrphanSections() {
         if (depSec->flags & SHF_LINK_ORDER)
           add(depSec);
   }
+  // Keep just InputSection.
+  ctx.inputSections.resize(n);
 
   // If no SECTIONS command was given, we should insert sections commands
   // before others, so that we can handle scripts which refers them,
@@ -893,6 +896,15 @@ void LinkerScript::diagnoseOrphanHandling() const {
   }
 }
 
+void LinkerScript::diagnoseMissingSGSectionAddress() const {
+  if (!config->cmseImplib || !in.armCmseSGSection->isNeeded())
+    return;
+
+  OutputSection *sec = findByName(sectionCommands, ".gnu.sgstubs");
+  if (sec && !sec->addrExpr && !config->sectionStartMap.count(".gnu.sgstubs"))
+    error("no address assigned to the veneers output section " + sec->name);
+}
+
 // This function searches for a memory region to place the given output
 // section in. If found, a pointer to the appropriate memory region is
 // returned in the first member of the pair. Otherwise, a nullptr is returned.
@@ -902,7 +914,12 @@ std::pair<MemoryRegion *, MemoryRegion *>
 LinkerScript::findMemoryRegion(OutputSection *sec, MemoryRegion *hint) {
   // Non-allocatable sections are not part of the process image.
   if (!(sec->flags & SHF_ALLOC)) {
-    if (!sec->memoryRegionName.empty())
+    bool hasInputOrByteCommand =
+        sec->hasInputSections ||
+        llvm::any_of(sec->commands, [](SectionCommand *comm) {
+          return ByteCommand::classof(comm);
+        });
+    if (!sec->memoryRegionName.empty() && hasInputOrByteCommand)
       warn("ignoring memory region assignment for non-allocatable section '" +
            sec->name + "'");
     return {nullptr, nullptr};
@@ -950,11 +967,11 @@ static OutputSection *findFirstSection(PhdrEntry *load) {
 // for a single sections command (e.g. ".text { *(.text); }").
 void LinkerScript::assignOffsets(OutputSection *sec) {
   const bool isTbss = (sec->flags & SHF_TLS) && sec->type == SHT_NOBITS;
-  const bool sameMemRegion = ctx->memRegion == sec->memRegion;
-  const bool prevLMARegionIsDefault = ctx->lmaRegion == nullptr;
+  const bool sameMemRegion = state->memRegion == sec->memRegion;
+  const bool prevLMARegionIsDefault = state->lmaRegion == nullptr;
   const uint64_t savedDot = dot;
-  ctx->memRegion = sec->memRegion;
-  ctx->lmaRegion = sec->lmaRegion;
+  state->memRegion = sec->memRegion;
+  state->lmaRegion = sec->lmaRegion;
 
   if (!(sec->flags & SHF_ALLOC)) {
     // Non-SHF_ALLOC sections have zero addresses.
@@ -962,13 +979,13 @@ void LinkerScript::assignOffsets(OutputSection *sec) {
   } else if (isTbss) {
     // Allow consecutive SHF_TLS SHT_NOBITS output sections. The address range
     // starts from the end address of the previous tbss section.
-    if (ctx->tbssAddr == 0)
-      ctx->tbssAddr = dot;
+    if (state->tbssAddr == 0)
+      state->tbssAddr = dot;
     else
-      dot = ctx->tbssAddr;
+      dot = state->tbssAddr;
   } else {
-    if (ctx->memRegion)
-      dot = ctx->memRegion->curPos;
+    if (state->memRegion)
+      dot = state->memRegion->curPos;
     if (sec->addrExpr)
       setDot(sec->addrExpr, sec->location, false);
 
@@ -976,12 +993,12 @@ void LinkerScript::assignOffsets(OutputSection *sec) {
     // expression so that it now starts past the current curPos of the enclosing
     // region, we need to expand the current region to account for the space
     // between the previous section, if any, and the start of this section.
-    if (ctx->memRegion && ctx->memRegion->curPos < dot)
-      expandMemoryRegion(ctx->memRegion, dot - ctx->memRegion->curPos,
+    if (state->memRegion && state->memRegion->curPos < dot)
+      expandMemoryRegion(state->memRegion, dot - state->memRegion->curPos,
                          sec->name);
   }
 
-  ctx->outSec = sec;
+  state->outSec = sec;
   if (sec->addrExpr && script->hasSectionsCommand) {
     // The alignment is ignored.
     sec->addr = dot;
@@ -989,32 +1006,32 @@ void LinkerScript::assignOffsets(OutputSection *sec) {
     // sec->alignment is the max of ALIGN and the maximum of input
     // section alignments.
     const uint64_t pos = dot;
-    dot = alignToPowerOf2(dot, sec->alignment);
+    dot = alignToPowerOf2(dot, sec->addralign);
     sec->addr = dot;
     expandMemoryRegions(dot - pos);
   }
 
-  // ctx->lmaOffset is LMA minus VMA. If LMA is explicitly specified via AT() or
-  // AT>, recompute ctx->lmaOffset; otherwise, if both previous/current LMA
+  // state->lmaOffset is LMA minus VMA. If LMA is explicitly specified via AT()
+  // or AT>, recompute state->lmaOffset; otherwise, if both previous/current LMA
   // region is the default, and the two sections are in the same memory region,
   // reuse previous lmaOffset; otherwise, reset lmaOffset to 0. This emulates
   // heuristics described in
   // https://sourceware.org/binutils/docs/ld/Output-Section-LMA.html
   if (sec->lmaExpr) {
-    ctx->lmaOffset = sec->lmaExpr().getValue() - dot;
+    state->lmaOffset = sec->lmaExpr().getValue() - dot;
   } else if (MemoryRegion *mr = sec->lmaRegion) {
-    uint64_t lmaStart = alignToPowerOf2(mr->curPos, sec->alignment);
+    uint64_t lmaStart = alignToPowerOf2(mr->curPos, sec->addralign);
     if (mr->curPos < lmaStart)
       expandMemoryRegion(mr, lmaStart - mr->curPos, sec->name);
-    ctx->lmaOffset = lmaStart - dot;
+    state->lmaOffset = lmaStart - dot;
   } else if (!sameMemRegion || !prevLMARegionIsDefault) {
-    ctx->lmaOffset = 0;
+    state->lmaOffset = 0;
   }
 
-  // Propagate ctx->lmaOffset to the first "non-header" section.
+  // Propagate state->lmaOffset to the first "non-header" section.
   if (PhdrEntry *l = sec->ptLoad)
     if (sec == findFirstSection(l))
-      l->lmaOffset = ctx->lmaOffset;
+      l->lmaOffset = state->lmaOffset;
 
   // We can call this method multiple times during the creation of
   // thunks and want to start over calculation each time.
@@ -1046,7 +1063,7 @@ void LinkerScript::assignOffsets(OutputSection *sec) {
     for (InputSection *isec : cast<InputSectionDescription>(cmd)->sections) {
       assert(isec->getParent() == sec);
       const uint64_t pos = dot;
-      dot = alignToPowerOf2(dot, isec->alignment);
+      dot = alignToPowerOf2(dot, isec->addralign);
       isec->outSecOff = dot - sec->addr;
       dot += isec->getSize();
 
@@ -1063,7 +1080,7 @@ void LinkerScript::assignOffsets(OutputSection *sec) {
     dot = savedDot;
   } else if (isTbss) {
     // NOBITS TLS sections are similar. Additionally save the end address.
-    ctx->tbssAddr = dot;
+    state->tbssAddr = dot;
     dot = savedDot;
   }
 }
@@ -1145,8 +1162,8 @@ void LinkerScript::adjustOutputSections() {
 
     // Handle align (e.g. ".foo : ALIGN(16) { ... }").
     if (sec->alignExpr)
-      sec->alignment =
-          std::max<uint32_t>(sec->alignment, sec->alignExpr().getValue());
+      sec->addralign =
+          std::max<uint32_t>(sec->addralign, sec->alignExpr().getValue());
 
     bool isEmpty = (getFirstInputSection(sec) == nullptr);
     bool discardable = isEmpty && isDiscardable(*sec);
@@ -1304,10 +1321,10 @@ const Defined *LinkerScript::assignAddresses() {
     dot += getHeaderSize();
   }
 
-  AddressState state;
-  ctx = &state;
+  AddressState st;
+  state = &st;
   errorOnMissingSection = true;
-  ctx->outSec = aether;
+  st.outSec = aether;
 
   SymbolAssignmentMap oldValues = getSymbolAssignmentValues(sectionCommands);
   for (SectionCommand *cmd : sectionCommands) {
@@ -1320,7 +1337,7 @@ const Defined *LinkerScript::assignAddresses() {
     assignOffsets(&cast<OutputDesc>(cmd)->osec);
   }
 
-  ctx = nullptr;
+  state = nullptr;
   return getChangedSymbolAssignment(oldValues);
 }
 
@@ -1373,13 +1390,13 @@ bool LinkerScript::needsInterpSection() {
 
 ExprValue LinkerScript::getSymbolValue(StringRef name, const Twine &loc) {
   if (name == ".") {
-    if (ctx)
-      return {ctx->outSec, false, dot - ctx->outSec->addr, loc};
+    if (state)
+      return {state->outSec, false, dot - state->outSec->addr, loc};
     error(loc + ": unable to get location counter value");
     return 0;
   }
 
-  if (Symbol *sym = symtab->find(name)) {
+  if (Symbol *sym = symtab.find(name)) {
     if (auto *ds = dyn_cast<Defined>(sym)) {
       ExprValue v{ds->section, false, ds->value, loc};
       // Retain the original st_type, so that the alias will get the same
@@ -1398,12 +1415,12 @@ ExprValue LinkerScript::getSymbolValue(StringRef name, const Twine &loc) {
 }
 
 // Returns the index of the segment named Name.
-static Optional<size_t> getPhdrIndex(ArrayRef<PhdrsCommand> vec,
-                                     StringRef name) {
+static std::optional<size_t> getPhdrIndex(ArrayRef<PhdrsCommand> vec,
+                                          StringRef name) {
   for (size_t i = 0; i < vec.size(); ++i)
     if (vec[i].name == name)
       return i;
-  return None;
+  return std::nullopt;
 }
 
 // Returns indices of ELF headers containing specific section. Each index is a
@@ -1412,11 +1429,58 @@ SmallVector<size_t, 0> LinkerScript::getPhdrIndices(OutputSection *cmd) {
   SmallVector<size_t, 0> ret;
 
   for (StringRef s : cmd->phdrs) {
-    if (Optional<size_t> idx = getPhdrIndex(phdrsCommands, s))
+    if (std::optional<size_t> idx = getPhdrIndex(phdrsCommands, s))
       ret.push_back(*idx);
     else if (s != "NONE")
       error(cmd->location + ": program header '" + s +
             "' is not listed in PHDRS");
   }
   return ret;
+}
+
+void LinkerScript::printMemoryUsage(raw_ostream& os) {
+  auto printSize = [&](uint64_t size) {
+    if ((size & 0x3fffffff) == 0)
+      os << format_decimal(size >> 30, 10) << " GB";
+    else if ((size & 0xfffff) == 0)
+      os << format_decimal(size >> 20, 10) << " MB";
+    else if ((size & 0x3ff) == 0)
+      os << format_decimal(size >> 10, 10) << " KB";
+    else
+      os << " " << format_decimal(size, 10) << " B";
+  };
+  os << "Memory region         Used Size  Region Size  %age Used\n";
+  for (auto &pair : memoryRegions) {
+    MemoryRegion *m = pair.second;
+    uint64_t usedLength = m->curPos - m->getOrigin();
+    os << right_justify(m->name, 16) << ": ";
+    printSize(usedLength);
+    uint64_t length = m->getLength();
+    if (length != 0) {
+      printSize(length);
+      double percent = usedLength * 100.0 / length;
+      os << "    " << format("%6.2f%%", percent);
+    }
+    os << '\n';
+  }
+}
+
+static void checkMemoryRegion(const MemoryRegion *region,
+                              const OutputSection *osec, uint64_t addr) {
+  uint64_t osecEnd = addr + osec->size;
+  uint64_t regionEnd = region->getOrigin() + region->getLength();
+  if (osecEnd > regionEnd) {
+    error("section '" + osec->name + "' will not fit in region '" +
+          region->name + "': overflowed by " + Twine(osecEnd - regionEnd) +
+          " bytes");
+  }
+}
+
+void LinkerScript::checkMemoryRegions() const {
+  for (const OutputSection *sec : outputSections) {
+    if (const MemoryRegion *memoryRegion = sec->memRegion)
+      checkMemoryRegion(memoryRegion, sec, sec->addr);
+    if (const MemoryRegion *lmaRegion = sec->lmaRegion)
+      checkMemoryRegion(lmaRegion, sec, sec->getLMA());
+  }
 }

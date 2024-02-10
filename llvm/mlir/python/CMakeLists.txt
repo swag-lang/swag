@@ -114,6 +114,16 @@ declare_mlir_dialect_python_bindings(
   DIALECT_NAME linalg
   DEPENDS LinalgOdsGen)
 
+declare_mlir_dialect_extension_python_bindings(
+ADD_TO_PARENT MLIRPythonSources.Dialects
+ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir"
+  TD_FILE dialects/TransformPDLExtensionOps.td
+  SOURCES
+    dialects/_transform_pdl_extension_ops_ext.py
+    dialects/transform/pdl.py
+  DIALECT_NAME transform
+  EXTENSION_NAME transform_pdl_extension)
+
 declare_mlir_dialect_python_bindings(
   ADD_TO_PARENT MLIRPythonSources.Dialects
   ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir"
@@ -121,7 +131,27 @@ declare_mlir_dialect_python_bindings(
   SOURCES
     dialects/_transform_ops_ext.py
     dialects/transform/__init__.py
+    _mlir_libs/_mlir/dialects/transform/__init__.pyi
   DIALECT_NAME transform)
+
+declare_mlir_dialect_extension_python_bindings(
+  ADD_TO_PARENT MLIRPythonSources.Dialects
+  ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir"
+  TD_FILE dialects/BufferizationTransformOps.td
+  SOURCES
+    dialects/transform/bufferization.py
+  DIALECT_NAME transform
+  EXTENSION_NAME bufferization_transform)
+
+declare_mlir_dialect_extension_python_bindings(
+  ADD_TO_PARENT MLIRPythonSources.Dialects
+  ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir"
+  TD_FILE dialects/GPUTransformOps.td
+  SOURCES
+    dialects/_gpu_transform_ops_ext.py
+    dialects/transform/gpu.py
+  DIALECT_NAME transform
+  EXTENSION_NAME gpu_transform)
 
 declare_mlir_dialect_extension_python_bindings(
   ADD_TO_PARENT MLIRPythonSources.Dialects
@@ -153,7 +183,7 @@ declare_mlir_dialect_python_bindings(
 declare_mlir_dialect_python_bindings(
   ADD_TO_PARENT MLIRPythonSources.Dialects
   ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir"
-  TD_FILE dialects/ArithmeticOps.td
+  TD_FILE dialects/ArithOps.td
   SOURCES
     dialects/arith.py
     dialects/_arith_ops_ext.py
@@ -222,7 +252,9 @@ declare_mlir_dialect_python_bindings(
   ADD_TO_PARENT MLIRPythonSources.Dialects
   ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mlir"
   TD_FILE dialects/TensorOps.td
-  SOURCES dialects/tensor.py
+  SOURCES
+    dialects/tensor.py
+    dialects/_tensor_ops_ext.py
   DIALECT_NAME tensor)
 
 declare_mlir_dialect_python_bindings(
@@ -260,7 +292,6 @@ declare_mlir_python_extension(MLIRPythonExtension.Core
     IRInterfaces.cpp
     IRModule.cpp
     IRTypes.cpp
-    PybindUtils.cpp
     Pass.cpp
 
     # Headers must be included explicitly so they are installed.
@@ -349,6 +380,19 @@ declare_mlir_python_extension(MLIRPythonExtension.Dialects.SparseTensor.Pybind
   EMBED_CAPI_LINK_LIBS
     MLIRCAPIIR
     MLIRCAPISparseTensor
+)
+
+declare_mlir_python_extension(MLIRPythonExtension.Dialects.Transform.Pybind
+  MODULE_NAME _mlirDialectsTransform
+  ADD_TO_PARENT MLIRPythonSources.Dialects.transform
+  ROOT_DIR "${PYTHON_SOURCE_DIR}"
+  SOURCES
+    DialectTransform.cpp
+  PRIVATE_LINK_LIBS
+    LLVMSupport
+  EMBED_CAPI_LINK_LIBS
+    MLIRCAPIIR
+    MLIRCAPITransformDialect
 )
 
 declare_mlir_python_extension(MLIRPythonExtension.AsyncDialectPasses
@@ -482,6 +526,19 @@ add_mlir_python_common_capi_library(MLIRPythonCAPI
     MLIRPythonExtension.RegisterEverything
     ${_ADDL_TEST_SOURCES}
 )
+
+################################################################################
+# Custom targets.
+################################################################################
+
+_flatten_mlir_python_targets(mlir_python_sources_deps MLIRPythonSources)
+add_custom_target("mlir-python-sources" DEPENDS ${mlir_python_sources_deps})
+if(NOT LLVM_ENABLE_IDE)
+  add_llvm_install_targets(install-mlir-python-sources
+    DEPENDS mlir-python-sources
+    COMPONENT mlir-python-sources
+  )
+endif()
 
 ################################################################################
 # The fully assembled package of modules.

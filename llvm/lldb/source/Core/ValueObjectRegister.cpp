@@ -28,6 +28,7 @@
 
 #include <cassert>
 #include <memory>
+#include <optional>
 
 namespace lldb_private {
 class ExecutionContextScope;
@@ -82,7 +83,7 @@ size_t ValueObjectRegisterSet::CalculateNumChildren(uint32_t max) {
   return 0;
 }
 
-llvm::Optional<uint64_t> ValueObjectRegisterSet::GetByteSize() { return 0; }
+std::optional<uint64_t> ValueObjectRegisterSet::GetByteSize() { return 0; }
 
 bool ValueObjectRegisterSet::UpdateValue() {
   m_error.Clear();
@@ -127,12 +128,11 @@ ValueObject *ValueObjectRegisterSet::CreateChildAtIndex(
 }
 
 lldb::ValueObjectSP
-ValueObjectRegisterSet::GetChildMemberWithName(ConstString name,
+ValueObjectRegisterSet::GetChildMemberWithName(llvm::StringRef name,
                                                bool can_create) {
   ValueObject *valobj = nullptr;
   if (m_reg_ctx_sp && m_reg_set) {
-    const RegisterInfo *reg_info =
-        m_reg_ctx_sp->GetRegisterInfoByName(name.GetStringRef());
+    const RegisterInfo *reg_info = m_reg_ctx_sp->GetRegisterInfoByName(name);
     if (reg_info != nullptr)
       valobj = new ValueObjectRegister(*this, m_reg_ctx_sp, reg_info);
   }
@@ -142,11 +142,9 @@ ValueObjectRegisterSet::GetChildMemberWithName(ConstString name,
     return ValueObjectSP();
 }
 
-size_t
-ValueObjectRegisterSet::GetIndexOfChildWithName(ConstString name) {
+size_t ValueObjectRegisterSet::GetIndexOfChildWithName(llvm::StringRef name) {
   if (m_reg_ctx_sp && m_reg_set) {
-    const RegisterInfo *reg_info =
-        m_reg_ctx_sp->GetRegisterInfoByName(name.GetStringRef());
+    const RegisterInfo *reg_info = m_reg_ctx_sp->GetRegisterInfoByName(name);
     if (reg_info != nullptr)
       return reg_info->kinds[eRegisterKindLLDB];
   }
@@ -204,11 +202,11 @@ CompilerType ValueObjectRegister::GetCompilerTypeImpl() {
             exe_module->GetTypeSystemForLanguage(eLanguageTypeC);
         if (auto err = type_system_or_err.takeError()) {
           LLDB_LOG_ERROR(GetLog(LLDBLog::Types), std::move(err),
-                         "Unable to get CompilerType from TypeSystem");
+                         "Unable to get CompilerType from TypeSystem: {0}");
         } else {
-          m_compiler_type =
-              type_system_or_err->GetBuiltinTypeForEncodingAndBitSize(
-                  m_reg_info.encoding, m_reg_info.byte_size * 8);
+          if (auto ts = *type_system_or_err)
+            m_compiler_type = ts->GetBuiltinTypeForEncodingAndBitSize(
+                m_reg_info.encoding, m_reg_info.byte_size * 8);
         }
       }
     }
@@ -228,7 +226,7 @@ size_t ValueObjectRegister::CalculateNumChildren(uint32_t max) {
   return children_count <= max ? children_count : max;
 }
 
-llvm::Optional<uint64_t> ValueObjectRegister::GetByteSize() {
+std::optional<uint64_t> ValueObjectRegister::GetByteSize() {
   return m_reg_info.byte_size;
 }
 
@@ -282,7 +280,7 @@ bool ValueObjectRegister::SetValueFromCString(const char *value_str,
 }
 
 bool ValueObjectRegister::SetData(DataExtractor &data, Status &error) {
-  error = m_reg_value.SetValueFromData(&m_reg_info, data, 0, false);
+  error = m_reg_value.SetValueFromData(m_reg_info, data, 0, false);
   if (!error.Success())
     return false;
 

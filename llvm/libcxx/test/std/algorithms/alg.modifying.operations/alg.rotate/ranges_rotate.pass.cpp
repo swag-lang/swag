@@ -7,7 +7,6 @@
 //===----------------------------------------------------------------------===//
 
 // UNSUPPORTED: c++03, c++11, c++14, c++17
-// UNSUPPORTED: libcpp-has-no-incomplete-ranges
 
 // <algorithm>
 
@@ -69,8 +68,8 @@ static_assert(!HasRotateRange<ForwardRangeNotSentinelEqualityComparableWith>);
 static_assert(!HasRotateRange<PermutableRangeNotForwardIterator>);
 static_assert(!HasRotateRange<PermutableRangeNotSwappable>);
 
-template <class Iter, class Sent, size_t N>
-constexpr void test_one(const std::array<int, N> input, size_t mid_index, std::array<int, N> expected) {
+template <class Iter, class Sent, std::size_t N>
+constexpr void test_one(const std::array<int, N> input, std::size_t mid_index, std::array<int, N> expected) {
   assert(mid_index <= N);
 
   { // (iterator, sentinel) overload.
@@ -160,7 +159,7 @@ constexpr bool test() {
       auto begin = adl::Iterator::TrackSwaps(in.data(), swaps);
       auto end = adl::Iterator::TrackSwaps(in.data() + in.size(), swaps);
 
-      for (size_t mid = 0; mid != input.size(); ++mid) {
+      for (std::size_t mid = 0; mid != input.size(); ++mid) {
         std::ranges::rotate(begin, begin + mid, end);
         assert(swaps <= expected);
       }
@@ -173,7 +172,7 @@ constexpr bool test() {
       auto end = adl::Iterator::TrackSwaps(in.data() + in.size(), swaps);
       auto range = std::ranges::subrange(begin, end);
 
-      for (size_t mid = 0; mid != input.size(); ++mid) {
+      for (std::size_t mid = 0; mid != input.size(); ++mid) {
         std::ranges::rotate(range, begin + mid);
         assert(swaps <= expected);
       }

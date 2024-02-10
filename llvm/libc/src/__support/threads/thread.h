@@ -10,7 +10,13 @@
 #define LLVM_LIBC_SRC_SUPPORT_THREADS_THREAD_H
 
 #include "src/__support/CPP/atomic.h"
-#include "src/__support/architectures.h"
+#include "src/__support/CPP/optional.h"
+#include "src/__support/CPP/string_view.h"
+#include "src/__support/CPP/stringstream.h"
+#include "src/__support/macros/attributes.h"
+#include "src/__support/macros/properties/architectures.h"
+
+#include <linux/param.h> // for exec_pagesize.
 
 #include <stddef.h> // For size_t
 #include <stdint.h>
@@ -29,9 +35,13 @@ union ThreadReturnValue {
   void *posix_retval;
   int stdc_retval;
   constexpr ThreadReturnValue() : posix_retval(nullptr) {}
+  constexpr ThreadReturnValue(int r) : stdc_retval(r) {}
+  constexpr ThreadReturnValue(void *r) : posix_retval(r) {}
 };
 
-#if (defined(LLVM_LIBC_ARCH_AARCH64) || defined(LLVM_LIBC_ARCH_X86_64))
+#if (defined(LIBC_TARGET_ARCH_IS_AARCH64) ||                                   \
+     defined(LIBC_TARGET_ARCH_IS_X86_64) ||                                    \
+     defined(LIBC_TARGET_ARCH_IS_RISCV64))
 constexpr unsigned int STACK_ALIGNMENT = 16;
 #endif
 // TODO: Provide stack alignment requirements for other architectures.
@@ -53,6 +63,8 @@ enum class DetachType : int {
   // Indicates that the detach operation performed thread cleanup.
   CLEANUP = 2
 };
+
+class ThreadAtExitCallbackMgr;
 
 // A data type to hold common thread attributes which have to be stored as
 // thread state. Note that this is different from public attribute types like
@@ -81,40 +93,79 @@ struct alignas(STACK_ALIGNMENT) ThreadAttributes {
   //          exits. It will clean up the thread resources once the thread
   //          exits.
   cpp::Atomic<uint32_t> detach_state;
-  void *stack;                   // Pointer to the thread stack
-  unsigned long long stack_size; // Size of the stack
-  uintptr_t tls;                 // Address to the thread TLS memory
-  uintptr_t tls_size;            // The size of area pointed to by |tls|.
+  void *stack;                  // Pointer to the thread stack
+  unsigned long long stacksize; // Size of the stack
+  unsigned long long guardsize; // Guard size on stack
+  uintptr_t tls;                // Address to the thread TLS memory
+  uintptr_t tls_size;           // The size of area pointed to by |tls|.
   unsigned char owned_stack; // Indicates if the thread owns this stack memory
   int tid;
   ThreadStyle style;
   ThreadReturnValue retval;
+  ThreadAtExitCallbackMgr *atexit_callback_mgr;
   void *platform_data;
 
   constexpr ThreadAttributes()
       : detach_state(uint32_t(DetachState::DETACHED)), stack(nullptr),
-        stack_size(0), tls(0), tls_size(0), owned_stack(false), tid(-1),
-        style(ThreadStyle::POSIX), retval(), platform_data(nullptr) {}
+        stacksize(0), guardsize(0), tls(0), tls_size(0), owned_stack(false),
+        tid(-1), style(ThreadStyle::POSIX), retval(),
+        atexit_callback_mgr(nullptr), platform_data(nullptr) {}
 };
 
+using TSSDtor = void(void *);
+
+// Create a new TSS key and associate the |dtor| as the corresponding
+// destructor. Can be used to implement public functions like
+// pthread_key_create.
+cpp::optional<unsigned int> new_tss_key(TSSDtor *dtor);
+
+// Delete the |key|. Can be used to implement public functions like
+// pthread_key_delete.
+//
+// Return true on success, false on failure.
+bool tss_key_delete(unsigned int key);
+
+// Set the value associated with |key| for the current thread. Can be used
+// to implement public functions like pthread_setspecific.
+//
+// Return true on success, false on failure.
+bool set_tss_value(unsigned int key, void *value);
+
+// Return the value associated with |key| for the current thread. Return
+// nullptr if |key| is invalid. Can be used to implement public functions like
+// pthread_getspecific.
+void *get_tss_value(unsigned int key);
+
 struct Thread {
+  // NB: Default stacksize of 64kb is exceedingly small compared to the 2mb norm
+  // and will break many programs expecting the full 2mb.
+  static constexpr size_t DEFAULT_STACKSIZE = 1 << 16;
+  static constexpr size_t DEFAULT_GUARDSIZE = EXEC_PAGESIZE;
+  static constexpr bool DEFAULT_DETACHED = false;
+
   ThreadAttributes *attrib;
 
   constexpr Thread() : attrib(nullptr) {}
   constexpr Thread(ThreadAttributes *attr) : attrib(attr) {}
 
-  int run(ThreadRunnerPosix *func, void *arg, void *stack, size_t size,
-          bool detached = false) {
+  int run(ThreadRunnerPosix *func, void *arg, void *stack = nullptr,
+          size_t stacksize = DEFAULT_STACKSIZE,
+          size_t guardsize = DEFAULT_GUARDSIZE,
+          bool detached = DEFAULT_DETACHED) {
     ThreadRunner runner;
     runner.posix_runner = func;
-    return run(ThreadStyle::POSIX, runner, arg, stack, size, detached);
+    return run(ThreadStyle::POSIX, runner, arg, stack, stacksize, guardsize,
+               detached);
   }
 
-  int run(ThreadRunnerStdc *func, void *arg, void *stack, size_t size,
-          bool detached = false) {
+  int run(ThreadRunnerStdc *func, void *arg, void *stack = nullptr,
+          size_t stacksize = DEFAULT_STACKSIZE,
+          size_t guardsize = DEFAULT_GUARDSIZE,
+          bool detached = DEFAULT_DETACHED) {
     ThreadRunner runner;
     runner.stdc_runner = func;
-    return run(ThreadStyle::STDC, runner, arg, stack, size, detached);
+    return run(ThreadStyle::STDC, runner, arg, stack, stacksize, guardsize,
+               detached);
   }
 
   int join(int *val) {
@@ -122,7 +173,8 @@ struct Thread {
     int status = join(retval);
     if (status != 0)
       return status;
-    *val = retval.stdc_retval;
+    if (val != nullptr)
+      *val = retval.stdc_retval;
     return 0;
   }
 
@@ -131,7 +183,8 @@ struct Thread {
     int status = join(retval);
     if (status != 0)
       return status;
-    *val = retval.posix_retval;
+    if (val != nullptr)
+      *val = retval.posix_retval;
     return 0;
   }
 
@@ -139,7 +192,7 @@ struct Thread {
 
   // Return 0 on success or an error value on failure.
   int run(ThreadStyle style, ThreadRunner runner, void *arg, void *stack,
-          size_t stack_size, bool detached);
+          size_t stacksize, size_t guardsize, bool detached);
 
   // Return 0 on success or an error value on failure.
   int join(ThreadReturnValue &retval);
@@ -165,9 +218,34 @@ struct Thread {
 
   // Return true if this thread is equal to the other thread.
   bool operator==(const Thread &other) const;
+
+  // Set the name of the thread. Return the error number on error.
+  int set_name(const cpp::string_view &name);
+
+  // Return the name of the thread in |name|. Return the error number of error.
+  int get_name(cpp::StringStream &name) const;
 };
 
-extern thread_local Thread self;
+extern LIBC_THREAD_LOCAL Thread self;
+
+// Platforms should implement this function.
+[[noreturn]] void thread_exit(ThreadReturnValue retval, ThreadStyle style);
+
+namespace internal {
+// Internal namespace containing utilities which are to be used by platform
+// implementations of threads.
+
+// Return the current thread's atexit callback manager. After thread startup
+// but before running the thread function, platform implementations should
+// set the "atexit_callback_mgr" field of the thread's attributes to the value
+// returned by this function.
+ThreadAtExitCallbackMgr *get_thread_atexit_callback_mgr();
+
+// Call the currently registered thread specific atexit callbacks. Useful for
+// implementing the thread_exit function.
+void call_atexit_callbacks(ThreadAttributes *attrib);
+
+} // namespace internal
 
 } // namespace __llvm_libc
 

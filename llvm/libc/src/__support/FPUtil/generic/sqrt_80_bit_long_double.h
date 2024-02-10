@@ -9,32 +9,34 @@
 #ifndef LLVM_LIBC_SRC_SUPPORT_FPUTIL_GENERIC_SQRT_80_BIT_LONG_DOUBLE_H
 #define LLVM_LIBC_SRC_SUPPORT_FPUTIL_GENERIC_SQRT_80_BIT_LONG_DOUBLE_H
 
-#include "src/__support/CPP/UInt128.h"
 #include "src/__support/FPUtil/FEnvImpl.h"
 #include "src/__support/FPUtil/FPBits.h"
 #include "src/__support/FPUtil/PlatformDefs.h"
-#include "src/__support/FPUtil/builtin_wrappers.h"
+#include "src/__support/FPUtil/rounding_mode.h"
+#include "src/__support/UInt128.h"
+#include "src/__support/builtin_wrappers.h"
+#include "src/__support/common.h"
 
 namespace __llvm_libc {
 namespace fputil {
 namespace x86 {
 
-inline void normalize(int &exponent, UInt128 &mantissa) {
-  const int shift =
+LIBC_INLINE void normalize(int &exponent, UInt128 &mantissa) {
+  const unsigned int shift = static_cast<unsigned int>(
       unsafe_clz(static_cast<uint64_t>(mantissa)) -
-      (8 * sizeof(uint64_t) - 1 - MantissaWidth<long double>::VALUE);
+      (8 * sizeof(uint64_t) - 1 - MantissaWidth<long double>::VALUE));
   exponent -= shift;
   mantissa <<= shift;
 }
 
 // if constexpr statement in sqrt.h still requires x86::sqrt to be declared
 // even when it's not used.
-static inline long double sqrt(long double x);
+LIBC_INLINE long double sqrt(long double x);
 
 // Correctly rounded SQRT for all rounding modes.
 // Shift-and-add algorithm.
 #if defined(SPECIAL_X86_LONG_DOUBLE)
-static inline long double sqrt(long double x) {
+LIBC_INLINE long double sqrt(long double x) {
   using UIntType = typename FPBits<long double>::UIntType;
   constexpr UIntType ONE = UIntType(1)
                            << int(MantissaWidth<long double>::VALUE);
@@ -44,7 +46,7 @@ static inline long double sqrt(long double x) {
   if (bits.is_inf_or_nan()) {
     if (bits.get_sign() && (bits.get_mantissa() == 0)) {
       // sqrt(-Inf) = NaN
-      return FPBits<long double>::build_nan(ONE >> 1);
+      return FPBits<long double>::build_quiet_nan(ONE >> 1);
     } else {
       // sqrt(NaN) = NaN
       // sqrt(+Inf) = +Inf
@@ -56,7 +58,7 @@ static inline long double sqrt(long double x) {
     return x;
   } else if (bits.get_sign()) {
     // sqrt( negative numbers ) = NaN
-    return FPBits<long double>::build_nan(ONE >> 1);
+    return FPBits<long double>::build_quiet_nan(ONE >> 1);
   } else {
     int x_exp = bits.get_exponent();
     UIntType x_mant = bits.get_mantissa();
@@ -99,7 +101,7 @@ static inline long double sqrt(long double x) {
     }
 
     // We compute one more iteration in order to round correctly.
-    bool lsb = y & 1; // Least significant bit
+    bool lsb = static_cast<bool>(y & 1); // Least significant bit
     bool rb = false;  // Round bit
     r <<= 2;
     UIntType tmp = (y << 2) + 1;
@@ -113,7 +115,7 @@ static inline long double sqrt(long double x) {
     y |= (static_cast<UIntType>(x_exp)
           << (MantissaWidth<long double>::VALUE + 1));
 
-    switch (get_round()) {
+    switch (quick_get_round()) {
     case FE_TONEAREST:
       // Round to nearest, ties to even
       if (rb && (lsb || (r != 0)))

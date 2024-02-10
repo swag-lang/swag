@@ -1,4 +1,4 @@
-//===- TestDeadCodeAnalysis.cpp - Test dead code analysis -----------------===//
+//===- TestDenseDataFlowAnalysis.cpp - Test dense data flow analysis ------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,125 +6,38 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "TestDenseDataFlowAnalysis.h"
+#include "TestDialect.h"
 #include "mlir/Analysis/DataFlow/ConstantPropagationAnalysis.h"
 #include "mlir/Analysis/DataFlow/DeadCodeAnalysis.h"
 #include "mlir/Analysis/DataFlow/DenseAnalysis.h"
-#include "mlir/Analysis/DataFlow/SparseAnalysis.h"
 #include "mlir/Interfaces/SideEffectInterfaces.h"
 #include "mlir/Pass/Pass.h"
+#include <optional>
 
 using namespace mlir;
 using namespace mlir::dataflow;
+using namespace mlir::dataflow::test;
 
 namespace {
-/// This lattice represents a single underlying value for an SSA value.
-class UnderlyingValue {
-public:
-  /// The pessimistic underlying value of a value is itself.
-  static UnderlyingValue getPessimisticValueState(Value value) {
-    return {value};
-  }
-
-  /// Create an underlying value state with a known underlying value.
-  UnderlyingValue(Value underlyingValue = {})
-      : underlyingValue(underlyingValue) {}
-
-  /// Returns the underlying value.
-  Value getUnderlyingValue() const { return underlyingValue; }
-
-  /// Join two underlying values. If there are conflicting underlying values,
-  /// go to the pessimistic value.
-  static UnderlyingValue join(const UnderlyingValue &lhs,
-                              const UnderlyingValue &rhs) {
-    return lhs.underlyingValue == rhs.underlyingValue ? lhs : UnderlyingValue();
-  }
-
-  /// Compare underlying values.
-  bool operator==(const UnderlyingValue &rhs) const {
-    return underlyingValue == rhs.underlyingValue;
-  }
-
-  void print(raw_ostream &os) const { os << underlyingValue; }
-
-private:
-  Value underlyingValue;
-};
 
 /// This lattice represents, for a given memory resource, the potential last
 /// operations that modified the resource.
-class LastModification : public AbstractDenseLattice {
+class LastModification : public AbstractDenseLattice, public AccessLatticeBase {
 public:
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(LastModification)
 
   using AbstractDenseLattice::AbstractDenseLattice;
 
-  /// The lattice is always initialized.
-  bool isUninitialized() const override { return false; }
-
-  /// Initialize the lattice. Does nothing.
-  ChangeResult defaultInitialize() override { return ChangeResult::NoChange; }
-
-  /// Mark the lattice as having reached its pessimistic fixpoint. That is, the
-  /// last modifications of all memory resources are unknown.
-  ChangeResult reset() override {
-    if (lastMods.empty())
-      return ChangeResult::NoChange;
-    lastMods.clear();
-    return ChangeResult::Change;
-  }
-
-  /// The lattice is never at a fixpoint.
-  bool isAtFixpoint() const override { return false; }
-
   /// Join the last modifications.
   ChangeResult join(const AbstractDenseLattice &lattice) override {
-    const auto &rhs = static_cast<const LastModification &>(lattice);
-    ChangeResult result = ChangeResult::NoChange;
-    for (const auto &mod : rhs.lastMods) {
-      auto &lhsMod = lastMods[mod.first];
-      if (lhsMod != mod.second) {
-        lhsMod.insert(mod.second.begin(), mod.second.end());
-        result |= ChangeResult::Change;
-      }
-    }
-    return result;
-  }
-
-  /// Set the last modification of a value.
-  ChangeResult set(Value value, Operation *op) {
-    auto &lastMod = lastMods[value];
-    ChangeResult result = ChangeResult::NoChange;
-    if (lastMod.size() != 1 || *lastMod.begin() != op) {
-      result = ChangeResult::Change;
-      lastMod.clear();
-      lastMod.insert(op);
-    }
-    return result;
-  }
-
-  /// Get the last modifications of a value. Returns none if the last
-  /// modifications are not known.
-  Optional<ArrayRef<Operation *>> getLastModifiers(Value value) const {
-    auto it = lastMods.find(value);
-    if (it == lastMods.end())
-      return {};
-    return it->second.getArrayRef();
+    return AccessLatticeBase::merge(static_cast<AccessLatticeBase>(
+        static_cast<const LastModification &>(lattice)));
   }
 
   void print(raw_ostream &os) const override {
-    for (const auto &lastMod : lastMods) {
-      os << lastMod.first << ":\n";
-      for (Operation *op : lastMod.second)
-        os << "  " << *op << "\n";
-    }
+    return AccessLatticeBase::print(os);
   }
-
-private:
-  /// The potential last modifications of a memory resource. Use a set vector to
-  /// keep the results deterministic.
-  DenseMap<Value, SetVector<Operation *, SmallVector<Operation *, 2>,
-                            SmallPtrSet<Operation *, 2>>>
-      lastMods;
 };
 
 class LastModifiedAnalysis : public DenseDataFlowAnalysis<LastModification> {
@@ -137,48 +50,25 @@ public:
   /// resource, then its reaching definition is set to the written value.
   void visitOperation(Operation *op, const LastModification &before,
                       LastModification *after) override;
-};
 
-/// Define the lattice class explicitly to provide a type ID.
-struct UnderlyingValueLattice : public Lattice<UnderlyingValue> {
-  MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(UnderlyingValueLattice)
-  using Lattice::Lattice;
-};
+  void visitCallControlFlowTransfer(CallOpInterface call,
+                                    CallControlFlowAction action,
+                                    const LastModification &before,
+                                    LastModification *after) override;
 
-/// An analysis that uses forwarding of values along control-flow and callgraph
-/// edges to determine single underlying values for block arguments. This
-/// analysis exists so that the test analysis and pass can test the behaviour of
-/// the dense data-flow analysis on the callgraph.
-class UnderlyingValueAnalysis
-    : public SparseDataFlowAnalysis<UnderlyingValueLattice> {
-public:
-  using SparseDataFlowAnalysis::SparseDataFlowAnalysis;
+  void visitRegionBranchControlFlowTransfer(RegionBranchOpInterface branch,
+                                            std::optional<unsigned> regionFrom,
+                                            std::optional<unsigned> regionTo,
+                                            const LastModification &before,
+                                            LastModification *after) override;
 
-  /// The underlying value of the results of an operation are not known.
-  void visitOperation(Operation *op,
-                      ArrayRef<const UnderlyingValueLattice *> operands,
-                      ArrayRef<UnderlyingValueLattice *> results) override {
-    markAllPessimisticFixpoint(results);
+  /// At an entry point, the last modifications of all memory resources are
+  /// unknown.
+  void setToEntryState(LastModification *lattice) override {
+    propagateIfChanged(lattice, lattice->reset());
   }
 };
 } // end anonymous namespace
-
-/// Look for the most underlying value of a value.
-static Value getMostUnderlyingValue(
-    Value value,
-    function_ref<const UnderlyingValueLattice *(Value)> getUnderlyingValueFn) {
-  const UnderlyingValueLattice *underlying;
-  do {
-    underlying = getUnderlyingValueFn(value);
-    if (!underlying || underlying->isUninitialized())
-      return {};
-    Value underlyingValue = underlying->getValue().getUnderlyingValue();
-    if (underlyingValue == value)
-      break;
-    value = underlyingValue;
-  } while (true);
-  return value;
-}
 
 void LastModifiedAnalysis::visitOperation(Operation *op,
                                           const LastModification &before,
@@ -187,7 +77,7 @@ void LastModifiedAnalysis::visitOperation(Operation *op,
   // If we can't reason about the memory effects, then conservatively assume we
   // can't deduce anything about the last modifications.
   if (!memory)
-    return reset(after);
+    return setToEntryState(after);
 
   SmallVector<MemoryEffects::EffectInstance> effects;
   memory.getEffects(effects);
@@ -199,13 +89,16 @@ void LastModifiedAnalysis::visitOperation(Operation *op,
     // If we see an effect on anything other than a value, assume we can't
     // deduce anything about the last modifications.
     if (!value)
-      return reset(after);
+      return setToEntryState(after);
 
-    value = getMostUnderlyingValue(value, [&](Value value) {
-      return getOrCreateFor<UnderlyingValueLattice>(op, value);
-    });
+    // If we cannot find the underlying value, we shouldn't just propagate the
+    // effects through, return the pessimistic state.
+    value = UnderlyingValueAnalysis::getMostUnderlyingValue(
+        value, [&](Value value) {
+          return getOrCreateFor<UnderlyingValueLattice>(op, value);
+        });
     if (!value)
-      return;
+      return setToEntryState(after);
 
     // Nothing to do for reads.
     if (isa<MemoryEffects::Read>(effect.getEffect()))
@@ -214,6 +107,36 @@ void LastModifiedAnalysis::visitOperation(Operation *op,
     result |= after->set(value, op);
   }
   propagateIfChanged(after, result);
+}
+
+void LastModifiedAnalysis::visitCallControlFlowTransfer(
+    CallOpInterface call, CallControlFlowAction action,
+    const LastModification &before, LastModification *after) {
+  auto testCallAndStore =
+      dyn_cast<::test::TestCallAndStoreOp>(call.getOperation());
+  if (testCallAndStore && ((action == CallControlFlowAction::EnterCallee &&
+                            testCallAndStore.getStoreBeforeCall()) ||
+                           (action == CallControlFlowAction::ExitCallee &&
+                            !testCallAndStore.getStoreBeforeCall()))) {
+    return visitOperation(call, before, after);
+  }
+  AbstractDenseDataFlowAnalysis::visitCallControlFlowTransfer(call, action,
+                                                              before, after);
+}
+
+void LastModifiedAnalysis::visitRegionBranchControlFlowTransfer(
+    RegionBranchOpInterface branch, std::optional<unsigned> regionFrom,
+    std::optional<unsigned> regionTo, const LastModification &before,
+    LastModification *after) {
+  auto testStoreWithARegion =
+      dyn_cast<::test::TestStoreWithARegion>(branch.getOperation());
+  if (testStoreWithARegion &&
+      ((!regionTo && !testStoreWithARegion.getStoreBeforeRegion()) ||
+       (!regionFrom && testStoreWithARegion.getStoreBeforeRegion()))) {
+    return visitOperation(branch, before, after);
+  }
+  AbstractDenseDataFlowAnalysis::visitRegionBranchControlFlowTransfer(
+      branch, regionFrom, regionTo, before, after);
 }
 
 namespace {
@@ -244,14 +167,15 @@ struct TestLastModifiedPass
       const LastModification *lastMods =
           solver.lookupState<LastModification>(op);
       assert(lastMods && "expected a dense lattice");
-      for (auto &it : llvm::enumerate(op->getOperands())) {
-        os << " operand #" << it.index() << "\n";
-        Value value = getMostUnderlyingValue(it.value(), [&](Value value) {
-          return solver.lookupState<UnderlyingValueLattice>(value);
-        });
+      for (auto [index, operand] : llvm::enumerate(op->getOperands())) {
+        os << " operand #" << index << "\n";
+        Value value = UnderlyingValueAnalysis::getMostUnderlyingValue(
+            operand, [&](Value value) {
+              return solver.lookupState<UnderlyingValueLattice>(value);
+            });
         assert(value && "expected an underlying value");
-        if (Optional<ArrayRef<Operation *>> lastMod =
-                lastMods->getLastModifiers(value)) {
+        if (std::optional<ArrayRef<Operation *>> lastMod =
+                lastMods->getAdjacentAccess(value)) {
           for (Operation *lastModifier : *lastMod) {
             if (auto tagName =
                     lastModifier->getAttrOfType<StringAttr>("tag_name")) {

@@ -380,9 +380,8 @@ Status Variable::GetValuesForVariableExpressionPath(
     llvm::SmallVector<llvm::StringRef, 2> matches;
     variable_list.Clear();
     if (!g_regex.Execute(variable_expr_path, &matches)) {
-      error.SetErrorStringWithFormat(
-          "unable to extract a variable name from '%s'",
-          variable_expr_path.str().c_str());
+      error.SetErrorStringWithFormatv(
+          "unable to extract a variable name from '{0}'", variable_expr_path);
       return error;
     }
     std::string variable_name = matches[1].str();
@@ -411,10 +410,9 @@ Status Variable::GetValuesForVariableExpressionPath(
         valobj_sp = variable_valobj_sp->GetValueForExpressionPath(
             variable_sub_expr_path);
         if (!valobj_sp) {
-          error.SetErrorStringWithFormat(
-              "invalid expression path '%s' for variable '%s'",
-              variable_sub_expr_path.str().c_str(),
-              var_sp->GetName().GetCString());
+          error.SetErrorStringWithFormatv(
+              "invalid expression path '{0}' for variable '{1}'",
+              variable_sub_expr_path, var_sp->GetName().GetCString());
           variable_list.RemoveVariableAtIndex(i);
           continue;
         }
@@ -578,7 +576,8 @@ static void PrivateAutoComplete(
       if (frame) {
         const bool get_file_globals = true;
 
-        VariableList *variable_list = frame->GetVariableList(get_file_globals);
+        VariableList *variable_list = frame->GetVariableList(get_file_globals,
+                                                             nullptr);
 
         if (variable_list) {
           for (const VariableSP &var_sp : *variable_list)
@@ -674,7 +673,7 @@ static void PrivateAutoComplete(
           const bool get_file_globals = true;
 
           VariableList *variable_list =
-              frame->GetVariableList(get_file_globals);
+              frame->GetVariableList(get_file_globals, nullptr);
 
           if (!variable_list)
             break;

@@ -10,6 +10,7 @@
 
 #include "clang/Basic/Version.h"
 #include "clang/Config/config.h"
+#include "clang/Driver/Driver.h"
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/ADT/Twine.h"
@@ -51,15 +52,18 @@ static bool DefaultComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
   Log *log = GetLog(LLDBLog::Host);
   std::string raw_path = lldb_shlib_spec.GetPath();
   llvm::StringRef parent_dir = llvm::sys::path::parent_path(raw_path);
+  static const std::string clang_resource_path =
+      clang::driver::Driver::GetResourcesPath("bin/lldb", CLANG_RESOURCE_DIR);
 
   static const llvm::StringRef kResourceDirSuffixes[] = {
       // LLVM.org's build of LLDB uses the clang resource directory placed
-      // in $install_dir/lib{,64}/clang/$clang_version.
-      "lib" CLANG_LIBDIR_SUFFIX "/clang/" CLANG_VERSION_STRING,
+      // in $install_dir/lib{,64}/clang/$clang_version or
+      // $install_dir/bin/$CLANG_RESOURCE_DIR
+      clang_resource_path,
       // swift-lldb uses the clang resource directory copied from swift, which
       // by default is placed in $install_dir/lib{,64}/lldb/clang. LLDB places
-      // it there, so we use LLDB_LIBDIR_SUFFIX.
-      "lib" LLDB_LIBDIR_SUFFIX "/lldb/clang",
+      // it there, so we use LLDB_INSTALL_LIBDIR_BASENAME.
+      LLDB_INSTALL_LIBDIR_BASENAME "/lldb/clang",
   };
 
   for (const auto &Suffix : kResourceDirSuffixes) {
@@ -72,7 +76,7 @@ static bool DefaultComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
                "DefaultComputeClangResourceDir: Setting ClangResourceDir "
                "to \"{0}\", verify = {1}",
                clang_dir.str(), verify ? "true" : "false");
-      file_spec.GetDirectory().SetString(clang_dir);
+      file_spec.SetDirectory(clang_dir);
       FileSystem::Instance().Resolve(file_spec);
       return true;
     }
@@ -82,7 +86,8 @@ static bool DefaultComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
 }
 
 bool lldb_private::ComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
-                                         FileSpec &file_spec, bool verify) {
+                                                 FileSpec &file_spec,
+                                                 bool verify) {
 #if !defined(__APPLE__)
   return DefaultComputeClangResourceDirectory(lldb_shlib_spec, file_spec,
                                               verify);
@@ -119,7 +124,7 @@ bool lldb_private::ComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
                             "Developer/Toolchains/XcodeDefault.xctoolchain",
                             swift_clang_resource_dir);
     if (!verify || VerifyClangPath(clang_path)) {
-      file_spec.GetDirectory().SetString(clang_path.c_str());
+      file_spec.SetDirectory(clang_path);
       FileSystem::Instance().Resolve(file_spec);
       return true;
     }
@@ -134,7 +139,7 @@ bool lldb_private::ComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
       raw_path.resize(parent - r_end);
       llvm::sys::path::append(clang_path, raw_path, swift_clang_resource_dir);
       if (!verify || VerifyClangPath(clang_path)) {
-        file_spec.GetDirectory().SetString(clang_path.c_str());
+        file_spec.SetDirectory(clang_path);
         FileSystem::Instance().Resolve(file_spec);
         return true;
       }
@@ -145,7 +150,7 @@ bool lldb_private::ComputeClangResourceDirectory(FileSpec &lldb_shlib_spec,
   raw_path = lldb_shlib_spec.GetPath();
   raw_path.resize(rev_it - r_end);
   raw_path.append("LLDB.framework/Resources/Clang");
-  file_spec.GetDirectory().SetString(raw_path.c_str());
+  file_spec.SetDirectory(raw_path);
   FileSystem::Instance().Resolve(file_spec);
   return true;
 #endif // __APPLE__

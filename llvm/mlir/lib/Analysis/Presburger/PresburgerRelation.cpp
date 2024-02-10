@@ -7,11 +7,13 @@
 //===----------------------------------------------------------------------===//
 
 #include "mlir/Analysis/Presburger/PresburgerRelation.h"
+#include "mlir/Analysis/Presburger/IntegerRelation.h"
 #include "mlir/Analysis/Presburger/Simplex.h"
 #include "mlir/Analysis/Presburger/Utils.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/ScopeExit.h"
 #include "llvm/ADT/SmallBitVector.h"
+#include <optional>
 
 using namespace mlir;
 using namespace presburger;
@@ -26,6 +28,13 @@ void PresburgerRelation::setSpace(const PresburgerSpace &oSpace) {
   space = oSpace;
   for (IntegerRelation &disjunct : disjuncts)
     disjunct.setSpaceExceptLocals(space);
+}
+
+void PresburgerRelation::insertVarInPlace(VarKind kind, unsigned pos,
+                                          unsigned num) {
+  for (IntegerRelation &cs : disjuncts)
+    cs.insertVar(kind, pos, num);
+  space.insertVar(kind, pos, num);
 }
 
 unsigned PresburgerRelation::getNumDisjuncts() const {
@@ -68,7 +77,7 @@ PresburgerRelation::unionSet(const PresburgerRelation &set) const {
 }
 
 /// A point is contained in the union iff any of the parts contain the point.
-bool PresburgerRelation::containsPoint(ArrayRef<int64_t> point) const {
+bool PresburgerRelation::containsPoint(ArrayRef<MPInt> point) const {
   return llvm::any_of(disjuncts, [&](const IntegerRelation &disjunct) {
     return (disjunct.containsPointNoLocal(point));
   });
@@ -96,6 +105,14 @@ PresburgerRelation
 PresburgerRelation::intersect(const PresburgerRelation &set) const {
   assert(space.isCompatible(set.getSpace()) && "Spaces should match");
 
+  // If the set is empty or the other set is universe,
+  // directly return the set
+  if (isPlainEmpty() || set.isPlainUniverse())
+    return *this;
+
+  if (set.isPlainEmpty() || isPlainUniverse())
+    return set;
+
   PresburgerRelation result(getSpace());
   for (const IntegerRelation &csA : disjuncts) {
     for (const IntegerRelation &csB : set.disjuncts) {
@@ -105,6 +122,67 @@ PresburgerRelation::intersect(const PresburgerRelation &set) const {
     }
   }
   return result;
+}
+
+PresburgerRelation PresburgerRelation::intersectRange(PresburgerSet &set) {
+  assert(space.getRangeSpace().isCompatible(set.getSpace()) &&
+         "Range of `this` must be compatible with range of `set`");
+
+  PresburgerRelation other = set;
+  other.insertVarInPlace(VarKind::Domain, 0, getNumDomainVars());
+  return intersect(other);
+}
+
+PresburgerRelation
+PresburgerRelation::intersectDomain(const PresburgerSet &set) {
+  assert(space.getDomainSpace().isCompatible(set.getSpace()) &&
+         "Domain of `this` must be compatible with range of `set`");
+
+  PresburgerRelation other = set;
+  other.insertVarInPlace(VarKind::Domain, 0, getNumDomainVars());
+  other.inverse();
+  return intersect(other);
+}
+
+void PresburgerRelation::inverse() {
+  for (IntegerRelation &cs : disjuncts)
+    cs.inverse();
+
+  if (getNumDisjuncts())
+    setSpace(getDisjunct(0).getSpaceWithoutLocals());
+}
+
+void PresburgerRelation::compose(const PresburgerRelation &rel) {
+  assert(getSpace().getRangeSpace().isCompatible(
+             rel.getSpace().getDomainSpace()) &&
+         "Range of `this` should be compatible with domain of `rel`");
+
+  PresburgerRelation result =
+      PresburgerRelation::getEmpty(PresburgerSpace::getRelationSpace(
+          getNumDomainVars(), rel.getNumRangeVars(), getNumSymbolVars()));
+  for (const IntegerRelation &csA : disjuncts) {
+    for (const IntegerRelation &csB : rel.disjuncts) {
+      IntegerRelation composition = csA;
+      composition.compose(csB);
+      if (!composition.isEmpty())
+        result.unionInPlace(composition);
+    }
+  }
+  *this = result;
+}
+
+void PresburgerRelation::applyDomain(const PresburgerRelation &rel) {
+  assert(getSpace().getDomainSpace().isCompatible(
+             rel.getSpace().getDomainSpace()) &&
+         "Domain of `this` should be compatible with domain of `rel`");
+
+  inverse();
+  compose(rel);
+  inverse();
+}
+
+void PresburgerRelation::applyRange(const PresburgerRelation &rel) {
+  compose(rel);
 }
 
 /// Return the coefficients of the ineq in `rel` specified by  `idx`.
@@ -121,15 +199,15 @@ PresburgerRelation::intersect(const PresburgerRelation &set) const {
 ///
 /// For every eq `coeffs == 0` there are two possible ineqs to index into.
 /// The first is coeffs >= 0 and the second is coeffs <= 0.
-static SmallVector<int64_t, 8> getIneqCoeffsFromIdx(const IntegerRelation &rel,
-                                                    unsigned idx) {
+static SmallVector<MPInt, 8> getIneqCoeffsFromIdx(const IntegerRelation &rel,
+                                                  unsigned idx) {
   assert(idx < rel.getNumInequalities() + 2 * rel.getNumEqualities() &&
          "idx out of bounds!");
   if (idx < rel.getNumInequalities())
     return llvm::to_vector<8>(rel.getInequality(idx));
 
   idx -= rel.getNumInequalities();
-  ArrayRef<int64_t> eqCoeffs = rel.getEquality(idx / 2);
+  ArrayRef<MPInt> eqCoeffs = rel.getEquality(idx / 2);
 
   if (idx % 2 == 0)
     return llvm::to_vector<8>(eqCoeffs);
@@ -212,7 +290,7 @@ static PresburgerRelation getSetDifference(IntegerRelation b,
     SmallVector<unsigned, 8> ineqsToProcess;
     // The index of the last inequality that was processed at this level.
     // This is empty when we are coming to this level for the first time.
-    Optional<unsigned> lastIneqProcessed;
+    std::optional<unsigned> lastIneqProcessed;
   };
   SmallVector<Frame, 2> frames;
 
@@ -369,7 +447,7 @@ static PresburgerRelation getSetDifference(IntegerRelation b,
       unsigned simplexSnapshot = simplex.getSnapshot();
       IntegerRelation::CountsSnapshot bCounts = b.getCounts();
       frames.push_back(Frame{simplexSnapshot, bCounts, sI, ineqsToProcess,
-                             /*lastIneqProcessed=*/llvm::None});
+                             /*lastIneqProcessed=*/std::nullopt});
       // We have completed the initial setup for this level.
       // Fallthrough to the main recursive part below.
     }
@@ -389,7 +467,7 @@ static PresburgerRelation getSetDifference(IntegerRelation b,
         // state before adding this complement constraint, and add s_ij to b.
         simplex.rollback(frame.simplexSnapshot);
         b.truncate(frame.bCounts);
-        SmallVector<int64_t, 8> ineq =
+        SmallVector<MPInt, 8> ineq =
             getIneqCoeffsFromIdx(frame.sI, *frame.lastIneqProcessed);
         b.addInequality(ineq);
         simplex.addInequality(ineq);
@@ -407,7 +485,7 @@ static PresburgerRelation getSetDifference(IntegerRelation b,
       frame.simplexSnapshot = simplex.getSnapshot();
 
       unsigned idx = frame.ineqsToProcess.back();
-      SmallVector<int64_t, 8> ineq =
+      SmallVector<MPInt, 8> ineq =
           getComplementIneq(getIneqCoeffsFromIdx(frame.sI, idx));
       b.addInequality(ineq);
       simplex.addInequality(ineq);
@@ -452,6 +530,27 @@ bool PresburgerRelation::isEqual(const PresburgerRelation &set) const {
   return this->isSubsetOf(set) && set.isSubsetOf(*this);
 }
 
+/// Return true if the Presburger relation represents the universe set, false
+/// otherwise. It is a simple check that only check if the relation has at least
+/// one unconstrained disjunct, indicating the absence of constraints or
+/// conditions.
+bool PresburgerRelation::isPlainUniverse() const {
+  for (auto &disjunct : getAllDisjuncts()) {
+    if (disjunct.getNumConstraints() == 0)
+      return true;
+  }
+  return false;
+}
+
+bool PresburgerRelation::isConvexNoLocals() const {
+  if (getNumDisjuncts() == 1 && getSpace().getNumLocalVars() == 0)
+    return true;
+  return false;
+}
+
+/// Return true if there is no disjunct, false otherwise.
+bool PresburgerRelation::isPlainEmpty() const { return getNumDisjuncts() == 0; }
+
 /// Return true if all the sets in the union are known to be integer empty,
 /// false otherwise.
 bool PresburgerRelation::isIntegerEmpty() const {
@@ -459,10 +558,11 @@ bool PresburgerRelation::isIntegerEmpty() const {
   return llvm::all_of(disjuncts, std::mem_fn(&IntegerRelation::isIntegerEmpty));
 }
 
-bool PresburgerRelation::findIntegerSample(SmallVectorImpl<int64_t> &sample) {
+bool PresburgerRelation::findIntegerSample(SmallVectorImpl<MPInt> &sample) {
   // A sample exists iff any of the disjuncts contains a sample.
   for (const IntegerRelation &disjunct : disjuncts) {
-    if (Optional<SmallVector<int64_t, 8>> opt = disjunct.findIntegerSample()) {
+    if (std::optional<SmallVector<MPInt, 8>> opt =
+            disjunct.findIntegerSample()) {
       sample = std::move(*opt);
       return true;
     }
@@ -470,13 +570,13 @@ bool PresburgerRelation::findIntegerSample(SmallVectorImpl<int64_t> &sample) {
   return false;
 }
 
-Optional<uint64_t> PresburgerRelation::computeVolume() const {
+std::optional<MPInt> PresburgerRelation::computeVolume() const {
   assert(getNumSymbolVars() == 0 && "Symbols are not yet supported!");
   // The sum of the volumes of the disjuncts is a valid overapproximation of the
   // volume of their union, even if they overlap.
-  uint64_t result = 0;
+  MPInt result(0);
   for (const IntegerRelation &disjunct : disjuncts) {
-    Optional<uint64_t> volume = disjunct.computeVolume();
+    std::optional<MPInt> volume = disjunct.computeVolume();
     if (!volume)
       return {};
     result += *volume;
@@ -511,20 +611,20 @@ private:
 
   /// The list of all inversed equalities during typing. This ensures that
   /// the constraints exist even after the typing function has concluded.
-  SmallVector<SmallVector<int64_t, 2>, 2> negEqs;
+  SmallVector<SmallVector<MPInt, 2>, 2> negEqs;
 
   /// `redundantIneqsA` is the inequalities of `a` that are redundant for `b`
   /// (similarly for `cuttingIneqsA`, `redundantIneqsB`, and `cuttingIneqsB`).
-  SmallVector<ArrayRef<int64_t>, 2> redundantIneqsA;
-  SmallVector<ArrayRef<int64_t>, 2> cuttingIneqsA;
+  SmallVector<ArrayRef<MPInt>, 2> redundantIneqsA;
+  SmallVector<ArrayRef<MPInt>, 2> cuttingIneqsA;
 
-  SmallVector<ArrayRef<int64_t>, 2> redundantIneqsB;
-  SmallVector<ArrayRef<int64_t>, 2> cuttingIneqsB;
+  SmallVector<ArrayRef<MPInt>, 2> redundantIneqsB;
+  SmallVector<ArrayRef<MPInt>, 2> cuttingIneqsB;
 
   /// Given a Simplex `simp` and one of its inequalities `ineq`, check
   /// that the facet of `simp` where `ineq` holds as an equality is contained
   /// within `a`.
-  bool isFacetContained(ArrayRef<int64_t> ineq, Simplex &simp);
+  bool isFacetContained(ArrayRef<MPInt> ineq, Simplex &simp);
 
   /// Removes redundant constraints from `disjunct`, adds it to `disjuncts` and
   /// removes the disjuncts at position `i` and `j`. Updates `simplices` to
@@ -548,13 +648,13 @@ private:
   /// Types the inequality `ineq` according to its `IneqType` for `simp` into
   /// `redundantIneqsB` and `cuttingIneqsB`. Returns success, if no separate
   /// inequalities were encountered. Otherwise, returns failure.
-  LogicalResult typeInequality(ArrayRef<int64_t> ineq, Simplex &simp);
+  LogicalResult typeInequality(ArrayRef<MPInt> ineq, Simplex &simp);
 
   /// Types the equality `eq`, i.e. for `eq` == 0, types both `eq` >= 0 and
   /// -`eq` >= 0 according to their `IneqType` for `simp` into
   /// `redundantIneqsB` and `cuttingIneqsB`. Returns success, if no separate
   /// inequalities were encountered. Otherwise, returns failure.
-  LogicalResult typeEquality(ArrayRef<int64_t> eq, Simplex &simp);
+  LogicalResult typeEquality(ArrayRef<MPInt> eq, Simplex &simp);
 
   /// Replaces the element at position `i` with the last element and erases
   /// the last element for both `disjuncts` and `simplices`.
@@ -631,10 +731,10 @@ PresburgerRelation SetCoalescer::coalesce() {
 /// Given a Simplex `simp` and one of its inequalities `ineq`, check
 /// that all inequalities of `cuttingIneqsB` are redundant for the facet of
 /// `simp` where `ineq` holds as an equality is contained within `a`.
-bool SetCoalescer::isFacetContained(ArrayRef<int64_t> ineq, Simplex &simp) {
+bool SetCoalescer::isFacetContained(ArrayRef<MPInt> ineq, Simplex &simp) {
   SimplexRollbackScopeExit scopeExit(simp);
   simp.addEquality(ineq);
-  return llvm::all_of(cuttingIneqsB, [&simp](ArrayRef<int64_t> curr) {
+  return llvm::all_of(cuttingIneqsB, [&simp](ArrayRef<MPInt> curr) {
     return simp.isRedundantInequality(curr);
   });
 }
@@ -696,23 +796,23 @@ LogicalResult SetCoalescer::coalescePairCutCase(unsigned i, unsigned j) {
   /// redundant ones are, so only the cutting ones remain to be checked.
   Simplex &simp = simplices[i];
   IntegerRelation &disjunct = disjuncts[i];
-  if (llvm::any_of(cuttingIneqsA, [this, &simp](ArrayRef<int64_t> curr) {
+  if (llvm::any_of(cuttingIneqsA, [this, &simp](ArrayRef<MPInt> curr) {
         return !isFacetContained(curr, simp);
       }))
     return failure();
   IntegerRelation newSet(disjunct.getSpace());
 
-  for (ArrayRef<int64_t> curr : redundantIneqsA)
+  for (ArrayRef<MPInt> curr : redundantIneqsA)
     newSet.addInequality(curr);
 
-  for (ArrayRef<int64_t> curr : redundantIneqsB)
+  for (ArrayRef<MPInt> curr : redundantIneqsB)
     newSet.addInequality(curr);
 
   addCoalescedDisjunct(i, j, newSet);
   return success();
 }
 
-LogicalResult SetCoalescer::typeInequality(ArrayRef<int64_t> ineq,
+LogicalResult SetCoalescer::typeInequality(ArrayRef<MPInt> ineq,
                                            Simplex &simp) {
   Simplex::IneqType type = simp.findIneqType(ineq);
   if (type == Simplex::IneqType::Redundant)
@@ -724,11 +824,11 @@ LogicalResult SetCoalescer::typeInequality(ArrayRef<int64_t> ineq,
   return success();
 }
 
-LogicalResult SetCoalescer::typeEquality(ArrayRef<int64_t> eq, Simplex &simp) {
+LogicalResult SetCoalescer::typeEquality(ArrayRef<MPInt> eq, Simplex &simp) {
   if (typeInequality(eq, simp).failed())
     return failure();
   negEqs.push_back(getNegatedCoeffs(eq));
-  ArrayRef<int64_t> inv(negEqs.back());
+  ArrayRef<MPInt> inv(negEqs.back());
   if (typeInequality(inv, simp).failed())
     return failure();
   return success();

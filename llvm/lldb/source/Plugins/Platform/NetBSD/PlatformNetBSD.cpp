@@ -206,9 +206,12 @@ MmapArgList PlatformNetBSD::GetMmapArgumentList(const ArchSpec &arch,
 }
 
 CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
-  if (!m_type_system_up)
-    m_type_system_up.reset(new TypeSystemClang("siginfo", triple));
-  TypeSystemClang *ast = m_type_system_up.get();
+  {
+    std::lock_guard<std::mutex> guard(m_mutex);
+    if (!m_type_system)
+      m_type_system = std::make_shared<TypeSystemClang>("siginfo", triple);
+  }
+  TypeSystemClang *ast = m_type_system.get();
 
   // generic types
   CompilerType int_type = ast->GetBasicType(eBasicTypeInt);
@@ -274,7 +277,7 @@ CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_rt",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_pid", pid_type},
                                          {"_uid", uid_type},
@@ -284,7 +287,7 @@ CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_child",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_pid", pid_type},
                                          {"_uid", uid_type},
@@ -296,7 +299,7 @@ CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_fault",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_addr", voidp_type},
                                          {"_trap", int_type},
@@ -307,7 +310,7 @@ CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_poll",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_band", long_type},
                                          {"_fd", int_type},
@@ -316,7 +319,7 @@ CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(union_type, "_syscall",
                             ast->CreateStructForIdentifier(
-                                ConstString(),
+                                llvm::StringRef(),
                                 {
                                     {"_sysnum", int_type},
                                     {"_retval", int_type.GetArrayType(2)},
@@ -327,7 +330,7 @@ CompilerType PlatformNetBSD::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_ptrace_state",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_pe_report_event", int_type},
                                          {"_option", ptrace_option_type},

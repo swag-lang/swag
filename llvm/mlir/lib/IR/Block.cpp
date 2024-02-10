@@ -173,7 +173,7 @@ BlockArgument Block::insertArgument(unsigned index, Type type, Location loc) {
 /// Insert one value to the given position of the argument list. The existing
 /// arguments are shifted. The block is expected not to have predecessors.
 BlockArgument Block::insertArgument(args_iterator it, Type type, Location loc) {
-  assert(llvm::empty(getPredecessors()) &&
+  assert(getPredecessors().empty() &&
          "cannot insert arguments to blocks with predecessors");
   return insertArgument(it->getArgNumber(), type, loc);
 }
@@ -186,11 +186,13 @@ void Block::eraseArgument(unsigned index) {
     arg.setArgNumber(index++);
 }
 
-void Block::eraseArguments(ArrayRef<unsigned> argIndices) {
-  BitVector eraseIndices(getNumArguments());
-  for (unsigned i : argIndices)
-    eraseIndices.set(i);
-  eraseArguments(eraseIndices);
+void Block::eraseArguments(unsigned start, unsigned num) {
+  assert(start + num <= arguments.size());
+  for (unsigned i = 0; i < num; ++i)
+    arguments[start + i].destroy();
+  arguments.erase(arguments.begin() + start, arguments.begin() + start + num);
+  for (BlockArgument arg : llvm::drop_begin(arguments, start))
+    arg.setArgNumber(start++);
 }
 
 void Block::eraseArguments(const BitVector &eraseIndices) {
@@ -345,14 +347,14 @@ BlockRange::BlockRange(SuccessorRange successors)
 
 /// See `llvm::detail::indexed_accessor_range_base` for details.
 BlockRange::OwnerT BlockRange::offset_base(OwnerT object, ptrdiff_t index) {
-  if (auto *operand = object.dyn_cast<BlockOperand *>())
+  if (auto *operand = llvm::dyn_cast_if_present<BlockOperand *>(object))
     return {operand + index};
-  return {object.dyn_cast<Block *const *>() + index};
+  return {llvm::dyn_cast_if_present<Block *const *>(object) + index};
 }
 
 /// See `llvm::detail::indexed_accessor_range_base` for details.
 Block *BlockRange::dereference_iterator(OwnerT object, ptrdiff_t index) {
-  if (const auto *operand = object.dyn_cast<BlockOperand *>())
+  if (const auto *operand = llvm::dyn_cast_if_present<BlockOperand *>(object))
     return operand[index].get();
-  return object.dyn_cast<Block *const *>()[index];
+  return llvm::dyn_cast_if_present<Block *const *>(object)[index];
 }

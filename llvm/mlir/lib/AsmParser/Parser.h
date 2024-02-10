@@ -12,6 +12,7 @@
 #include "ParserState.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/OpImplementation.h"
+#include <optional>
 
 namespace mlir {
 namespace detail {
@@ -139,7 +140,7 @@ public:
   OptionalParseResult parseOptionalInteger(APInt &result);
 
   /// Parse a floating point value from an integer literal token.
-  ParseResult parseFloatFromIntegerLiteral(Optional<APFloat> &result,
+  ParseResult parseFloatFromIntegerLiteral(std::optional<APFloat> &result,
                                            const Token &tok, bool isNegative,
                                            const llvm::fltSemantics &semantics,
                                            size_t typeSizeInBits);
@@ -160,6 +161,7 @@ public:
   /// Parse a handle to a dialect resource within the assembly format.
   FailureOr<AsmDialectResourceHandle>
   parseResourceHandle(const OpAsmDialectInterface *dialect, StringRef &name);
+  FailureOr<AsmDialectResourceHandle> parseResourceHandle(Dialect *dialect);
 
   //===--------------------------------------------------------------------===//
   // Type Parsing
@@ -209,20 +211,12 @@ public:
   /// Parse a vector type.
   VectorType parseVectorType();
   ParseResult parseVectorDimensionList(SmallVectorImpl<int64_t> &dimensions,
-                                       unsigned &numScalableDims);
+                                       SmallVectorImpl<bool> &scalableDims);
   ParseResult parseDimensionListRanked(SmallVectorImpl<int64_t> &dimensions,
                                        bool allowDynamic = true,
                                        bool withTrailingX = true);
   ParseResult parseIntegerInDimensionList(int64_t &value);
   ParseResult parseXInDimensionList();
-
-  /// Parse strided layout specification.
-  ParseResult parseStridedLayout(int64_t &offset,
-                                 SmallVectorImpl<int64_t> &strides);
-
-  // Parse a brace-delimiter list of comma-separated integers with `?` as an
-  // unknown marker.
-  ParseResult parseStrideList(SmallVectorImpl<int64_t> &dimensions);
 
   //===--------------------------------------------------------------------===//
   // Attribute Parsing
@@ -236,6 +230,7 @@ public:
                                              Type type = {});
   OptionalParseResult parseOptionalAttribute(ArrayAttr &attribute, Type type);
   OptionalParseResult parseOptionalAttribute(StringAttr &attribute, Type type);
+  OptionalParseResult parseOptionalAttribute(SymbolRefAttr &result, Type type);
 
   /// Parse an optional attribute that is demarcated by a specific token.
   template <typename AttributeT>
@@ -243,10 +238,10 @@ public:
                                                       AttributeT &attr,
                                                       Type type = {}) {
     if (getToken().isNot(kind))
-      return llvm::None;
+      return std::nullopt;
 
     if (Attribute parsedAttr = parseAttribute(type)) {
-      attr = parsedAttr.cast<AttributeT>();
+      attr = cast<AttributeT>(parsedAttr);
       return success();
     }
     return failure();
@@ -254,6 +249,9 @@ public:
 
   /// Parse an attribute dictionary.
   ParseResult parseAttributeDict(NamedAttrList &attributes);
+
+  /// Parse a distinct attribute.
+  Attribute parseDistinctAttr(Type type);
 
   /// Parse an extended attribute.
   Attribute parseExtendedAttr(Type type);
@@ -265,18 +263,21 @@ public:
   /// or a float attribute.
   Attribute parseDecOrHexAttr(Type type, bool isNegative);
 
-  /// Parse an opaque elements attribute.
-  Attribute parseOpaqueElementsAttr(Type attrType);
-
   /// Parse a dense elements attribute.
   Attribute parseDenseElementsAttr(Type attrType);
   ShapedType parseElementsLiteralType(Type type);
 
+  /// Parse a dense resource elements attribute.
+  Attribute parseDenseResourceElementsAttr(Type attrType);
+
   /// Parse a DenseArrayAttr.
-  Attribute parseDenseArrayAttr();
+  Attribute parseDenseArrayAttr(Type type);
 
   /// Parse a sparse elements attribute.
   Attribute parseSparseElementsAttr(Type attrType);
+
+  /// Parse a strided layout attribute.
+  Attribute parseStridedLayoutAttr();
 
   //===--------------------------------------------------------------------===//
   // Location Parsing
@@ -298,10 +299,13 @@ public:
   // Affine Parsing
   //===--------------------------------------------------------------------===//
 
-  /// Parse a reference to either an affine map, or an integer set.
+  /// Parse a reference to either an affine map, expr, or an integer set.
   ParseResult parseAffineMapOrIntegerSetReference(AffineMap &map,
                                                   IntegerSet &set);
   ParseResult parseAffineMapReference(AffineMap &map);
+  ParseResult
+  parseAffineExprReference(ArrayRef<std::pair<StringRef, AffineExpr>> symbolSet,
+                           AffineExpr &expr);
   ParseResult parseIntegerSetReference(IntegerSet &set);
 
   /// Parse an AffineMap where the dim and symbol identifiers are SSA ids.

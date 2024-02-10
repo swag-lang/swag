@@ -1,4 +1,3 @@
-// RUN: %clang_cc1 -triple=powerpc-apple-darwin8 -target-feature +altivec -fsyntax-only -verify=expected,novsx %s
 // RUN: %clang_cc1 -triple=powerpc64-unknown-linux-gnu -target-feature +altivec -target-feature +vsx -fsyntax-only -verify=expected,nonaix %s
 // RUN: %clang_cc1 -triple=powerpc64le-unknown-linux-gnu -target-feature +altivec -target-feature -vsx -fsyntax-only -verify=expected,novsx %s
 // RUN: %clang_cc1 -triple=powerpc-ibm-aix -target-feature +altivec -fsyntax-only -verify=expected,aix %s
@@ -97,8 +96,8 @@ vector unsigned long int v_uli;     // nonaix-warning {{Use of 'long' with '__ve
 // These should have warnings.
 __vector long double  vv_ld;        // expected-error {{cannot use 'long double' with '__vector'}}
 vector long double  v_ld;           // expected-error {{cannot use 'long double' with '__vector'}}
-vector bool v_b;                    // expected-warning {{type specifier missing, defaults to 'int'}}
-vector __bool v___b;                // expected-warning {{type specifier missing, defaults to 'int'}}
+vector bool v_b;                    // expected-error {{type specifier missing, defaults to 'int'}}
+vector __bool v___b;                // expected-error {{type specifier missing, defaults to 'int'}}
 
 // These should have errors.
 #ifndef __VSX__

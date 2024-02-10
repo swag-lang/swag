@@ -216,7 +216,8 @@ Status TargetList::CreateTargetInternal(
   // If we have a valid architecture, make sure the current platform is
   // compatible with that architecture.
   if (!prefer_platform_arch && arch.IsValid()) {
-    if (!platform_sp->IsCompatibleArchitecture(arch, {}, false, nullptr)) {
+    if (!platform_sp->IsCompatibleArchitecture(
+            arch, {}, ArchSpec::CompatibleMatch, nullptr)) {
       platform_sp = platform_list.GetOrCreate(arch, {}, &platform_arch);
       if (platform_sp)
         platform_list.SetSelectedPlatform(platform_sp);
@@ -225,7 +226,8 @@ Status TargetList::CreateTargetInternal(
     // If "arch" isn't valid, yet "platform_arch" is, it means we have an
     // executable file with a single architecture which should be used.
     ArchSpec fixed_platform_arch;
-    if (!platform_sp->IsCompatibleArchitecture(platform_arch, {}, false, nullptr)) {
+    if (!platform_sp->IsCompatibleArchitecture(
+            platform_arch, {}, ArchSpec::CompatibleMatch, nullptr)) {
       platform_sp =
           platform_list.GetOrCreate(platform_arch, {}, &fixed_platform_arch);
       if (platform_sp)
@@ -256,8 +258,8 @@ Status TargetList::CreateTargetInternal(Debugger &debugger,
   ArchSpec arch(specified_arch);
 
   if (arch.IsValid()) {
-    if (!platform_sp ||
-        !platform_sp->IsCompatibleArchitecture(arch, {}, false, nullptr))
+    if (!platform_sp || !platform_sp->IsCompatibleArchitecture(
+                            arch, {}, ArchSpec::CompatibleMatch, nullptr))
       platform_sp =
           debugger.GetPlatformList().GetOrCreate(specified_arch, {}, &arch);
   }
@@ -323,6 +325,7 @@ Status TargetList::CreateTargetInternal(Debugger &debugger,
         return error;
       }
       target_sp.reset(new Target(debugger, arch, platform_sp, is_dummy_target));
+      debugger.GetTargetList().RegisterInProcessTarget(target_sp);
       target_sp->SetExecutableModule(exe_module_sp, load_dependent_files);
       if (user_exe_path_is_bundle)
         exe_module_sp->GetFileSpec().GetPath(resolved_bundle_exe_path,
@@ -334,6 +337,7 @@ Status TargetList::CreateTargetInternal(Debugger &debugger,
     // No file was specified, just create an empty target with any arch if a
     // valid arch was specified
     target_sp.reset(new Target(debugger, arch, platform_sp, is_dummy_target));
+    debugger.GetTargetList().RegisterInProcessTarget(target_sp);
   }
 
   if (!target_sp)
@@ -354,7 +358,7 @@ Status TargetList::CreateTargetInternal(Debugger &debugger,
   }
   if (file.GetDirectory()) {
     FileSpec file_dir;
-    file_dir.GetDirectory() = file.GetDirectory();
+    file_dir.SetDirectory(file.GetDirectory());
     target_sp->AppendExecutableSearchPaths(file_dir);
   }
 
@@ -487,7 +491,7 @@ uint32_t TargetList::SignalIfRunning(lldb::pid_t pid, int signo) {
   return num_signals_sent;
 }
 
-int TargetList::GetNumTargets() const {
+size_t TargetList::GetNumTargets() const {
   std::lock_guard<std::recursive_mutex> guard(m_target_list_mutex);
   return m_target_list.size();
 }
@@ -511,6 +515,7 @@ uint32_t TargetList::GetIndexOfTarget(lldb::TargetSP target_sp) const {
 void TargetList::AddTargetInternal(TargetSP target_sp, bool do_select) {
   lldbassert(!llvm::is_contained(m_target_list, target_sp) &&
              "target already exists it the list");
+  UnregisterInProcessTarget(target_sp);
   m_target_list.push_back(std::move(target_sp));
   if (do_select)
     SetSelectedTargetInternal(m_target_list.size() - 1);
@@ -538,3 +543,36 @@ lldb::TargetSP TargetList::GetSelectedTarget() {
     m_selected_target_idx = 0;
   return GetTargetAtIndex(m_selected_target_idx);
 }
+
+bool TargetList::AnyTargetContainsModule(Module &module) {
+  std::lock_guard<std::recursive_mutex> guard(m_target_list_mutex);
+  for (const auto &target_sp : m_target_list) {
+    if (target_sp->GetImages().FindModule(&module))
+      return true;
+  }
+  for (const auto &target_sp: m_in_process_target_list) {
+    if (target_sp->GetImages().FindModule(&module))
+      return true;
+  }
+  return false;
+}
+
+  void TargetList::RegisterInProcessTarget(TargetSP target_sp) {
+    std::lock_guard<std::recursive_mutex> guard(m_target_list_mutex);
+    [[maybe_unused]] bool was_added;
+    std::tie(std::ignore, was_added) =
+        m_in_process_target_list.insert(target_sp);
+    assert(was_added && "Target pointer was left in the in-process map");
+  }
+  
+  void TargetList::UnregisterInProcessTarget(TargetSP target_sp) {
+    std::lock_guard<std::recursive_mutex> guard(m_target_list_mutex);
+    [[maybe_unused]] bool was_present =
+        m_in_process_target_list.erase(target_sp);
+    assert(was_present && "Target pointer being removed was not registered");
+  }
+  
+  bool TargetList::IsTargetInProcess(TargetSP target_sp) {
+    std::lock_guard<std::recursive_mutex> guard(m_target_list_mutex);
+    return m_in_process_target_list.count(target_sp) == 1; 
+  }

@@ -8,6 +8,7 @@
 
 #include "TestIndex.h"
 #include "clang/Index/IndexSymbol.h"
+#include "llvm/ADT/StringExtras.h"
 #include "llvm/Support/Regex.h"
 
 namespace clang {
@@ -69,6 +70,10 @@ Symbol enm(llvm::StringRef Name) {
   return sym(Name, index::SymbolKind::Enum, "@E@\\0");
 }
 
+Symbol enmConstant(llvm::StringRef Name) {
+  return sym(Name, index::SymbolKind::EnumConstant, "@\\0");
+}
+
 Symbol var(llvm::StringRef Name) {
   return sym(Name, index::SymbolKind::Variable, "@\\0");
 }
@@ -97,6 +102,11 @@ Symbol objcSym(llvm::StringRef Name, index::SymbolKind Kind,
 
 Symbol objcClass(llvm::StringRef Name) {
   return objcSym(Name, index::SymbolKind::Class, "objc(cs)");
+}
+
+Symbol objcCategory(llvm::StringRef Name, llvm::StringRef CategoryName) {
+  std::string USRPrefix = ("objc(cy)" + Name + "@").str();
+  return objcSym(CategoryName, index::SymbolKind::Extension, USRPrefix);
 }
 
 Symbol objcProtocol(llvm::StringRef Name) {

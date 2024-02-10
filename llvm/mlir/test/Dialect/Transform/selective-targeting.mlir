@@ -53,7 +53,7 @@ func.func @matmul_tensors_3(
 }
 
 transform.with_pdl_patterns {
-^bb0(%arg0: !pdl.operation):
+^bb0(%arg0: !transform.any_op):
   // Match matmul operations inside @matmul_tensors with test.attrA set.
   pdl.pattern @pdl_target_attrA : benefit(1) {
     %args = operands
@@ -74,13 +74,13 @@ transform.with_pdl_patterns {
     rewrite %0 with "transform.dialect"
   }
 
-  transform.sequence %arg0 {
-  ^bb1(%arg1: !pdl.operation):
-    %0 = pdl_match @pdl_target_attrA in %arg1
-    transform.structured.tile %0 [4, 4, 4]
-    %1 = pdl_match @pdl_target_attrC in %arg1
-    %2 = transform.get_closest_isolated_parent %1
-    transform.structured.vectorize %2
+  transform.sequence %arg0 : !transform.any_op failures(propagate) {
+  ^bb1(%arg1: !transform.any_op):
+    %0 = pdl_match @pdl_target_attrA in %arg1 : (!transform.any_op) -> !transform.any_op
+    transform.structured.tile %0 [4, 4, 4] : (!transform.any_op) -> (!transform.any_op, !transform.any_op, !transform.any_op, !transform.any_op)
+    %1 = pdl_match @pdl_target_attrC in %arg1 : (!transform.any_op) -> !transform.any_op
+    %2 = get_parent_op %1 {isolated_from_above} : (!transform.any_op) -> !transform.any_op
+    transform.structured.vectorize %2 : (!transform.any_op) -> !transform.any_op
   }
 }
 
@@ -111,7 +111,7 @@ func.func @vectorize_none(
 }
 
 transform.with_pdl_patterns {
-^bb0(%arg0: !pdl.operation):
+^bb0(%arg0: !transform.any_op):
   pdl.pattern @pdl_target : benefit(1) {
     %args = operands
     %results = types
@@ -121,11 +121,11 @@ transform.with_pdl_patterns {
     rewrite %0 with "transform.dialect"
   }
 
-  transform.sequence %arg0 {
-  ^bb1(%arg1: !pdl.operation):
-    %0 = pdl_match @pdl_target in %arg1
-    %1 = get_closest_isolated_parent %0
-    transform.structured.vectorize %1
+  transform.sequence %arg0 : !transform.any_op failures(propagate) {
+  ^bb1(%arg1: !transform.any_op):
+    %0 = pdl_match @pdl_target in %arg1 : (!transform.any_op) -> !transform.any_op
+    %1 = get_parent_op %0 {isolated_from_above} : (!transform.any_op) -> !transform.any_op
+    transform.structured.vectorize %1 : (!transform.any_op) -> !transform.any_op
   }
 }
 
@@ -148,7 +148,7 @@ func.func @vectorize_all(
   return %1 : tensor<128x128xf32>
 }
 
-transform.sequence {
-^bb0(%arg0: !pdl.operation):
-  transform.structured.vectorize %arg0
+transform.sequence failures(propagate) {
+^bb0(%arg0: !transform.any_op):
+  transform.structured.vectorize %arg0 : (!transform.any_op) -> !transform.any_op
 }

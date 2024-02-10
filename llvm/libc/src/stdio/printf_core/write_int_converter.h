@@ -9,7 +9,7 @@
 #ifndef LLVM_LIBC_SRC_STDIO_PRINTF_CORE_WRITE_INT_CONVERTER_H
 #define LLVM_LIBC_SRC_STDIO_PRINTF_CORE_WRITE_INT_CONVERTER_H
 
-#include "src/__support/CPP/Limits.h"
+#include "src/__support/CPP/limits.h"
 #include "src/stdio/printf_core/core_structs.h"
 #include "src/stdio/printf_core/writer.h"
 
@@ -19,7 +19,8 @@
 namespace __llvm_libc {
 namespace printf_core {
 
-int inline convert_write_int(Writer *writer, const FormatSection &to_conv) {
+LIBC_INLINE int convert_write_int(Writer *writer,
+                                  const FormatSection &to_conv) {
 
   // This is an additional check added by LLVM-libc. The reason it returns -3 is
   // because printf uses negative return values for errors, and -1 and -2 are

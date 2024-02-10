@@ -13,7 +13,9 @@ namespace BackendLinker
     public:
         MyOStream()
             : raw_ostream(true)
-              , pos(0) {}
+            , pos(0)
+        {
+        }
 
         void write_impl(const char* ptr, size_t len) override
         {
@@ -213,7 +215,7 @@ namespace BackendLinker
     void getArguments(const BuildParameters& buildParameters, const Vector<Path>& objectFiles, Vector<Utf8>& arguments, BuildCfgOutputKind outputKind)
     {
         arguments.clear();
-        
+
         const auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
@@ -277,12 +279,13 @@ namespace BackendLinker
                 g_Log.messageVerbose(one);
         }
 
-        const auto objFileType = Backend::getObjType(g_CommandLine.target);
-        bool       result      = true;
+        const auto  objFileType = Backend::getObjType(g_CommandLine.target);
+        lld::Result result ;
+        llvm::ArrayRef<lld::DriverDef> drivers{lld::WinLink, nullptr};
+
         switch (objFileType)
         {
         case BackendObjType::Coff:
-            result = lld::coff::link(llvmArgs, myStdOut, myStdErr, false, false);
             break;
         case BackendObjType::Elf:
             result = lld::elf::link(llvmArgs, myStdOut, myStdErr, false, false);
@@ -295,6 +298,7 @@ namespace BackendLinker
             break;
         }
 
+        result = lld::lldMain(llvmArgs, myStdOut, myStdErr, drivers);
         if (!result)
         {
             g_Workspace->numErrors += myStdErr.errCount;
@@ -326,4 +330,4 @@ namespace BackendLinker
 
         return true;
     }
-}
+} // namespace BackendLinker

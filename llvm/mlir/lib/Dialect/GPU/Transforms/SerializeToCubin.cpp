@@ -12,12 +12,14 @@
 //===----------------------------------------------------------------------===//
 
 #include "mlir/Dialect/GPU/Transforms/Passes.h"
+#include "llvm/Support/Debug.h"
 
 #if MLIR_GPU_TO_CUBIN_PASS_ENABLE
 #include "mlir/Pass/Pass.h"
 #include "mlir/Target/LLVMIR/Dialect/NVVM/NVVMToLLVMIRTranslation.h"
 #include "mlir/Target/LLVMIR/Export.h"
 #include "llvm/Support/TargetSelect.h"
+#include "llvm/Support/Threading.h"
 
 #include <cuda.h>
 
@@ -45,10 +47,14 @@ static void emitCudaError(const llvm::Twine &expr, const char *buffer,
 namespace {
 class SerializeToCubinPass
     : public PassWrapper<SerializeToCubinPass, gpu::SerializeToBlobPass> {
+  static llvm::once_flag initializeBackendOnce;
+
 public:
   MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(SerializeToCubinPass)
 
-  SerializeToCubinPass();
+  SerializeToCubinPass(StringRef triple = "nvptx64-nvidia-cuda",
+                       StringRef chip = "sm_35", StringRef features = "+ptx60",
+                       int optLevel = 2, bool dumpPtx = false);
 
   StringRef getArgument() const override { return "gpu-to-cubin"; }
   StringRef getDescription() const override {
@@ -65,16 +71,32 @@ private:
 } // namespace
 
 // Sets the 'option' to 'value' unless it already has a value.
-static void maybeSetOption(Pass::Option<std::string> &option,
-                           const char *value) {
+static void maybeSetOption(Pass::Option<std::string> &option, StringRef value) {
   if (!option.hasValue())
-    option = value;
+    option = value.str();
 }
 
-SerializeToCubinPass::SerializeToCubinPass() {
-  maybeSetOption(this->triple, "nvptx64-nvidia-cuda");
-  maybeSetOption(this->chip, "sm_35");
-  maybeSetOption(this->features, "+ptx60");
+llvm::once_flag SerializeToCubinPass::initializeBackendOnce;
+
+SerializeToCubinPass::SerializeToCubinPass(StringRef triple, StringRef chip,
+                                           StringRef features, int optLevel,
+                                           bool dumpPtx) {
+  // No matter how this pass is constructed, ensure that the NVPTX backend
+  // is initialized exactly once.
+  llvm::call_once(initializeBackendOnce, []() {
+    // Initialize LLVM NVPTX backend.
+    LLVMInitializeNVPTXTarget();
+    LLVMInitializeNVPTXTargetInfo();
+    LLVMInitializeNVPTXTargetMC();
+    LLVMInitializeNVPTXAsmPrinter();
+  });
+
+  maybeSetOption(this->triple, triple);
+  maybeSetOption(this->chip, chip);
+  maybeSetOption(this->features, features);
+  this->dumpPtx = dumpPtx;
+  if (this->optLevel.getNumOccurrences() == 0)
+    this->optLevel.setValue(optLevel);
 }
 
 void SerializeToCubinPass::getDependentDialects(
@@ -108,6 +130,10 @@ SerializeToCubinPass::serializeISA(const std::string &isa) {
                                     &linkState));
 
   auto kernelName = getOperation().getName().str();
+  if (dumpPtx) {
+    llvm::dbgs() << " Kernel Name : [" << kernelName << "]\n";
+    llvm::dbgs() << isa << "\n";
+  }
   RETURN_ON_CUDA_ERROR(cuLinkAddData(
       linkState, CUjitInputType::CU_JIT_INPUT_PTX,
       const_cast<void *>(static_cast<const void *>(isa.c_str())), isa.length(),
@@ -133,16 +159,19 @@ SerializeToCubinPass::serializeISA(const std::string &isa) {
 
 // Register pass to serialize GPU kernel functions to a CUBIN binary annotation.
 void mlir::registerGpuSerializeToCubinPass() {
-  PassRegistration<SerializeToCubinPass> registerSerializeToCubin([] {
-    // Initialize LLVM NVPTX backend.
-    LLVMInitializeNVPTXTarget();
-    LLVMInitializeNVPTXTargetInfo();
-    LLVMInitializeNVPTXTargetMC();
-    LLVMInitializeNVPTXAsmPrinter();
-
-    return std::make_unique<SerializeToCubinPass>();
-  });
+  PassRegistration<SerializeToCubinPass> registerSerializeToCubin(
+      [] { return std::make_unique<SerializeToCubinPass>(); });
 }
+
+std::unique_ptr<Pass> mlir::createGpuSerializeToCubinPass(StringRef triple,
+                                                          StringRef arch,
+                                                          StringRef features,
+                                                          int optLevel,
+                                                          bool dumpPtx) {
+  return std::make_unique<SerializeToCubinPass>(triple, arch, features,
+                                                optLevel, dumpPtx);
+}
+
 #else  // MLIR_GPU_TO_CUBIN_PASS_ENABLE
 void mlir::registerGpuSerializeToCubinPass() {}
 #endif // MLIR_GPU_TO_CUBIN_PASS_ENABLE

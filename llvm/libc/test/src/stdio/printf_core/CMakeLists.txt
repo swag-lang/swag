@@ -9,18 +9,20 @@ add_libc_unittest(
   DEPENDS
     libc.src.stdio.printf_core.parser
     libc.src.stdio.printf_core.core_structs
+    libc.src.__support.CPP.string_view
     libc.src.__support.arg_list
 )
 
 add_libc_unittest(
-  string_writer_test
+  writer_test
   SUITE
     libc_stdio_unittests
   SRCS
-    string_writer_test.cpp
+    writer_test.cpp
   DEPENDS
     libc.src.stdio.printf_core.writer
-    libc.src.stdio.printf_core.string_writer
+    libc.src.string.memory_utils.inline_memcpy
+    libc.src.__support.CPP.string_view
 )
 
 add_libc_unittest(
@@ -32,6 +34,5 @@ add_libc_unittest(
   DEPENDS
     libc.src.stdio.printf_core.converter
     libc.src.stdio.printf_core.writer
-    libc.src.stdio.printf_core.string_writer
     libc.src.stdio.printf_core.core_structs
 )

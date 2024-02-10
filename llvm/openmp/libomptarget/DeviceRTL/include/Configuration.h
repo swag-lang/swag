@@ -15,7 +15,7 @@
 
 #include "Types.h"
 
-namespace _OMP {
+namespace ompx {
 namespace config {
 
 enum DebugKind : uint32_t {
@@ -37,6 +37,9 @@ uint32_t getDebugKind();
 /// Return the amount of dynamic shared memory that was allocated at launch.
 uint64_t getDynamicMemorySize();
 
+/// Returns the cycles per second of the device's fixed frequency clock.
+uint64_t getClockFrequency();
+
 /// Return if debugging is enabled for the given debug kind.
 bool isDebugMode(DebugKind Level);
 
@@ -44,7 +47,11 @@ bool isDebugMode(DebugKind Level);
 /// explicitly disabled by the user.
 bool mayUseThreadStates();
 
+/// Indicates if this kernel may require data environments for nested
+/// parallelism, or if it was explicitly disabled by the user.
+bool mayUseNestedParallelism();
+
 } // namespace config
-} // namespace _OMP
+} // namespace ompx
 
 #endif

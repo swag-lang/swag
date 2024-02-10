@@ -24,6 +24,15 @@ let Definition = "target" in {
     DefaultUnsignedValue<5>,
     Desc<"The maximum amount of errors to emit while parsing an expression. "
          "A value of 0 means to always continue parsing if possible.">;
+  def ExprAllocAddress: Property<"expr-alloc-address", "UInt64">,
+    DefaultUnsignedValue<0>,
+    Desc<"Start address within the process address space of memory allocation for expression evaluation.">;
+  def ExprAllocSize: Property<"expr-alloc-size", "UInt64">,
+    DefaultUnsignedValue<0>,
+    Desc<"Amount of memory in bytes to allocate for expression evaluation.">;
+  def ExprAllocAlign: Property<"expr-alloc-align", "UInt64">,
+    DefaultUnsignedValue<0>,
+    Desc<"Alignment for each memory allocation for expression evaluation.">;
   def PreferDynamic: Property<"prefer-dynamic-value", "Enum">,
     DefaultEnumValue<"eDynamicDontRunTarget">,
     EnumValues<"OptionEnumValues(g_dynamic_value_types)">,
@@ -37,6 +46,9 @@ let Definition = "target" in {
   def SourceMap: Property<"source-map", "PathMap">,
     DefaultStringValue<"">,
     Desc<"Source path remappings apply substitutions to the paths of source files, typically needed to debug from a different host than the one that built the target.  The source-map property consists of an array of pairs, the first element is a path prefix, and the second is its replacement.  The syntax is `prefix1 replacement1 prefix2 replacement2...`.  The pairs are checked in order, the first prefix that matches is used, and that prefix is substituted with the replacement.  A common pattern is to use source-map in conjunction with the clang -fdebug-prefix-map flag.  In the build, use `-fdebug-prefix-map=/path/to/build_dir=.` to rewrite the host specific build directory to `.`.  Then for debugging, use `settings set target.source-map . /path/to/local_dir` to convert `.` to a valid local path.">;
+  def AutoSourceMapRelative: Property<"auto-source-map-relative", "Boolean">,
+    DefaultTrue,
+    Desc<"Automatically deduce source path mappings based on source file breakpoint resolution. It only deduces source mapping if source file breakpoint request is using full path and if the debug info contains relative paths.">;
   def ExecutableSearchPaths: Property<"exec-search-paths", "FileSpecList">,
     DefaultStringValue<"">,
     Desc<"Executable search paths to use when locating executable files whose paths don't match the local file system.">;
@@ -213,7 +225,7 @@ let Definition = "process" in {
   def DisableLangRuntimeUnwindPlans: Property<"disable-language-runtime-unwindplans", "Boolean">,
     Global,
     DefaultFalse,
-    Desc<"If true, LanguageRuntime plugins' UnwindPlans will not be used when backtracing.">;
+    Desc<"If true, language runtime augmented/overidden backtraces will not be used when printing a stack trace.">;
   def DetachKeepsStopped: Property<"detach-keeps-stopped", "Boolean">,
     Global,
     DefaultFalse,
@@ -243,6 +255,9 @@ let Definition = "process" in {
   def VirtualAddressableBits: Property<"virtual-addressable-bits", "UInt64">,
     DefaultUnsignedValue<0>,
     Desc<"The number of bits used for addressing. If the value is 39, then bits 0..38 are used for addressing. The default value of 0 means unspecified.">;
+  def HighmemVirtualAddressableBits: Property<"highmem-virtual-addressable-bits", "UInt64">,
+    DefaultUnsignedValue<0>,
+    Desc<"The number of bits used for addressing high memory, when it differs from low memory in the same Process. When this is non-zero, target.process.virtual-addressable-bits will be the value for low memory (0x000... addresses) and this setting will be the value for high memory (0xfff... addresses). When this is zero, target.process.virtual-addressable-bits applies to all addresses. It is very uncommon to use this setting.">;
   def FollowForkMode: Property<"follow-fork-mode", "Enum">,
     DefaultEnumValue<"eFollowParent">,
     EnumValues<"OptionEnumValues(g_follow_fork_mode_values)">,

@@ -43,8 +43,10 @@
 # CHECK-NEXT:          "clangd.applyTweak"
 # CHECK-NEXT:        ]
 # CHECK-NEXT:      },
+# CHECK-NEXT:      "foldingRangeProvider": true,
 # CHECK-NEXT:      "hoverProvider": true,
 # CHECK-NEXT:      "implementationProvider": true,
+# CHECK-NEXT:      "inactiveRegionsProvider": true,
 # CHECK-NEXT:      "inlayHintProvider": true,
 # CHECK-NEXT:      "memoryUsageProvider": true,
 # CHECK-NEXT:      "referencesProvider": true,
@@ -57,6 +59,7 @@
 # CHECK-NEXT:        "legend": {
 # CHECK-NEXT:          "tokenModifiers": [
 # CHECK-NEXT:            "declaration",
+# CHECK-NEXT:            "definition",
 # CHECK-NEXT:            "deprecated",
 # CHECK-NEXT:            "deduced",
 # CHECK-NEXT:            "readonly",
@@ -66,6 +69,9 @@
 # CHECK-NEXT:            "dependentName",
 # CHECK-NEXT:            "defaultLibrary",
 # CHECK-NEXT:            "usedAsMutableReference",
+# CHECK-NEXT:            "usedAsMutablePointer",
+# CHECK-NEXT:            "constructorOrDestructor",
+# CHECK-NEXT:            "userDefined",
 # CHECK-NEXT:            "functionScope",
 # CHECK-NEXT:            "classScope",
 # CHECK-NEXT:            "fileScope",

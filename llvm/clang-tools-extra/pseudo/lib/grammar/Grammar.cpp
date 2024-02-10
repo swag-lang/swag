@@ -13,6 +13,7 @@
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/FormatVariadic.h"
 #include "llvm/Support/raw_ostream.h"
+#include <optional>
 
 namespace clang {
 namespace pseudo {
@@ -31,7 +32,7 @@ llvm::ArrayRef<Rule> Grammar::rulesFor(SymbolID SID) const {
   assert(isNonterminal(SID));
   const auto &R = T->Nonterminals[SID].RuleRange;
   assert(R.End <= T->Rules.size());
-  return llvm::makeArrayRef(&T->Rules[R.Start], R.End - R.Start);
+  return llvm::ArrayRef(&T->Rules[R.Start], R.End - R.Start);
 }
 
 const Rule &Grammar::lookupRule(RuleID RID) const {
@@ -45,35 +46,13 @@ llvm::StringRef Grammar::symbolName(SymbolID SID) const {
   return T->Nonterminals[SID].Name;
 }
 
-std::string Grammar::mangleSymbol(SymbolID SID) const {
-  static const char *const TokNames[] = {
-#define TOK(X) #X,
-#define KEYWORD(X, Y) #X,
-#include "clang/Basic/TokenKinds.def"
-      nullptr};
-  if (clang::pseudo::isToken(SID))
-    return TokNames[clang::pseudo::symbolToToken(SID)];
-  std::string Name = symbolName(SID).str();
-  // translation-unit -> translation_unit
-  std::replace(Name.begin(), Name.end(), '-', '_');
-  return Name;
-}
-
-std::string Grammar::mangleRule(RuleID RID) const {
-  const auto &R = lookupRule(RID);
-  std::string MangleName = mangleSymbol(R.Target);
-  for (size_t I = 0; I < R.seq().size(); ++I)
-    MangleName += llvm::formatv("_{0}{1}", I, mangleSymbol(R.seq()[I]));
-  return MangleName;
-}
-
-llvm::Optional<SymbolID> Grammar::findNonterminal(llvm::StringRef Name) const {
+std::optional<SymbolID> Grammar::findNonterminal(llvm::StringRef Name) const {
   auto It = llvm::partition_point(
       T->Nonterminals,
       [&](const GrammarTable::Nonterminal &X) { return X.Name < Name; });
   if (It != T->Nonterminals.end() && It->Name == Name)
     return It - T->Nonterminals.begin();
-  return llvm::None;
+  return std::nullopt;
 }
 
 std::string Grammar::dumpRule(RuleID RID) const {
@@ -201,7 +180,7 @@ static llvm::ArrayRef<std::string> getTerminalNames() {
   TerminalNames[tok::kw_##Keyword] = llvm::StringRef(#Keyword).upper();
 #define TOK(Tok) TerminalNames[tok::Tok] = llvm::StringRef(#Tok).upper();
 #include "clang/Basic/TokenKinds.def"
-    return llvm::makeArrayRef(TerminalNames, NumTerminals);
+    return llvm::ArrayRef(TerminalNames, NumTerminals);
   }();
   return TerminalNames;
 }

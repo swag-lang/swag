@@ -5,15 +5,11 @@
 
 @global = internal global %struct.widget zeroinitializer
 
-
 ;.
-; CHECK: @[[GLOBAL:[a-zA-Z0-9_$"\\.-]+]] = internal unnamed_addr global [[STRUCT_WIDGET:%.*]] zeroinitializer
-; CHECK: @[[GLOBAL_ARRAY_IN_STRUCT:[a-zA-Z0-9_$"\\.-]+]] = internal unnamed_addr global [[STRUCT_WITH_ARRAY:%.*]] zeroinitializer
-; CHECK: @[[GLOBAL_ARRAY:[a-zA-Z0-9_$"\\.-]+]] = internal unnamed_addr global [100 x i64] zeroinitializer
+; CHECK: @[[A:[a-zA-Z0-9_$"\\.-]+]] = global i8 0, align 4
 ;.
 define internal void @read_struct() {
 ; CHECK-LABEL: @read_struct(
-; CHECK-NEXT:    [[TMP:%.*]] = load ptr, ptr getelementptr inbounds ([[STRUCT_WIDGET:%.*]], ptr @global, i64 0, i32 16), align 8
 ; CHECK-NEXT:    ret void
 ;
   %tmp = load ptr, ptr getelementptr inbounds (%struct.widget, ptr @global, i64 0, i32 16), align 8
@@ -22,22 +18,6 @@ define internal void @read_struct() {
 
 define void @write_struct() {
 ; CHECK-LABEL: @write_struct(
-; CHECK-NEXT:    store ptr null, ptr @global, align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET:%.*]], ptr @global, i64 0, i32 1), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 2), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 3), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 4), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 5), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 6), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 7), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 8), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 9), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 10), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 11), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 12), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 13), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 14), align 8
-; CHECK-NEXT:    store ptr null, ptr getelementptr inbounds ([[STRUCT_WIDGET]], ptr @global, i64 0, i32 15), align 8
 ; CHECK-NEXT:    tail call fastcc void @read_struct()
 ; CHECK-NEXT:    ret void
 ;
@@ -68,7 +48,6 @@ define void @write_struct() {
 
 define internal void @read_non_array_field() {
 ; CHECK-LABEL: @read_non_array_field(
-; CHECK-NEXT:    [[TMP:%.*]] = load i64, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY:%.*]], ptr @global.array_in_struct, i64 0, i32 1), align 8
 ; CHECK-NEXT:    ret void
 ;
   %tmp = load i64, ptr getelementptr inbounds (%struct.with.array, ptr @global.array_in_struct, i64 0, i32 1), align 8
@@ -77,22 +56,6 @@ define internal void @read_non_array_field() {
 
 define void @store_to_struct_array() {
 ; CHECK-LABEL: @store_to_struct_array(
-; CHECK-NEXT:    store i64 0, ptr @global.array_in_struct, align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY:%.*]], ptr @global.array_in_struct, i64 0, i32 0, i32 1), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 2), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 3), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 4), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 5), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 6), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 7), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 8), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 9), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 10), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 11), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 12), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 13), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 14), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([[STRUCT_WITH_ARRAY]], ptr @global.array_in_struct, i64 0, i32 0, i32 15), align 8
 ; CHECK-NEXT:    tail call fastcc void @read_non_array_field()
 ; CHECK-NEXT:    ret void
 ;
@@ -120,7 +83,6 @@ define void @store_to_struct_array() {
 
 define internal void @read_array() {
 ; CHECK-LABEL: @read_array(
-; CHECK-NEXT:    [[TMP:%.*]] = load i64, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 99), align 8
 ; CHECK-NEXT:    ret void
 ;
   %tmp = load i64, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 99), align 8
@@ -129,22 +91,6 @@ define internal void @read_array() {
 
 define void @store_to_array() {
 ; CHECK-LABEL: @store_to_array(
-; CHECK-NEXT:    store i64 0, ptr @global.array, align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 1), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 2), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 3), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 4), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 5), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 6), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 7), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 8), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 9), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 10), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 11), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 12), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 13), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 14), align 8
-; CHECK-NEXT:    store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 15), align 8
 ; CHECK-NEXT:    tail call fastcc void @read_array()
 ; CHECK-NEXT:    ret void
 ;
@@ -165,5 +111,69 @@ define void @store_to_array() {
   store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 14), align 8
   store i64 0, ptr getelementptr inbounds ([100 x i64], ptr @global.array, i64 0, i32 15), align 8
   tail call void @read_array()
+  ret void
+}
+
+
+%struct.20i8 = type { i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8 }
+@a = global i8 0, align 4
+@b = internal global  %struct.20i8 { i8 4, i8 4, i8 4, i8 5, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 5, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4, i8 4 }
+
+define void @test_single_write_to_global_b() {
+; CHECK-LABEL: @test_single_write_to_global_b(
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 5, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 5, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    store volatile i8 4, ptr @a, align 4
+; CHECK-NEXT:    ret void
+;
+  store i8 0, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 1), align 1
+  %i3 = load i8, ptr @b, align 16
+  store volatile i8 %i3, ptr @a, align 4
+  %i4 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 2), align 2
+  store volatile i8 %i4, ptr @a, align 4
+  %i5 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 3), align 1
+  store volatile i8 %i5, ptr @a, align 4
+  %i6 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 4), align 4
+  store volatile i8 %i6, ptr @a, align 4
+  %i7 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 5), align 1
+  store volatile i8 %i7, ptr @a, align 4
+  %i8 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 7), align 1
+  store volatile i8 %i8, ptr @a, align 4
+  %i9 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 8), align 8
+  store volatile i8 %i9, ptr @a, align 4
+  %i10 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 9), align 1
+  store volatile i8 %i10, ptr @a, align 4
+  %i11 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 10), align 2
+  store volatile i8 %i11, ptr @a, align 4
+  %i12 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 11), align 1
+  store volatile i8 %i12, ptr @a, align 4
+  %i13 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 12), align 4
+  store volatile i8 %i13, ptr @a, align 4
+  %i14 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 13), align 1
+  store volatile i8 %i14, ptr @a, align 4
+  %i15 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 14), align 2
+  store volatile i8 %i15, ptr @a, align 4
+  %i16 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 15), align 1
+  store volatile i8 %i16, ptr @a, align 4
+  %i17 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 16), align 16
+  store volatile i8 %i17, ptr @a, align 4
+  %i18 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 17), align 1
+  store volatile i8 %i18, ptr @a, align 4
+  %i19 = load i8, ptr getelementptr inbounds (%struct.20i8, ptr @b, i64 0, i32 18), align 2
+  store volatile i8 %i19, ptr @a, align 4
   ret void
 }

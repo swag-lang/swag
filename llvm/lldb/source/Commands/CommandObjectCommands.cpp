@@ -24,6 +24,7 @@
 #include "lldb/Utility/Args.h"
 #include "lldb/Utility/StringList.h"
 #include "llvm/ADT/StringRef.h"
+#include <optional>
 
 using namespace lldb;
 using namespace lldb_private;
@@ -57,17 +58,16 @@ public:
 
   ~CommandObjectCommandsSource() override = default;
 
-  llvm::Optional<std::string> GetRepeatCommand(Args &current_command_args,
-                                               uint32_t index) override {
+  std::optional<std::string> GetRepeatCommand(Args &current_command_args,
+                                              uint32_t index) override {
     return std::string("");
   }
 
   void
   HandleArgumentCompletion(CompletionRequest &request,
                            OptionElementVector &opt_element_vector) override {
-    CommandCompletions::InvokeCommonCompletionCallbacks(
-        GetCommandInterpreter(), CommandCompletions::eDiskFileCompletion,
-        request, nullptr);
+    lldb_private::CommandCompletions::InvokeCommonCompletionCallbacks(
+        GetCommandInterpreter(), lldb::eDiskFileCompletion, request, nullptr);
   }
 
   Options *GetOptions() override { return &m_options; }
@@ -118,7 +118,7 @@ protected:
     }
 
     llvm::ArrayRef<OptionDefinition> GetDefinitions() override {
-      return llvm::makeArrayRef(g_source_options);
+      return llvm::ArrayRef(g_source_options);
     }
 
     // Instance variables to hold the values for command options.
@@ -201,7 +201,7 @@ protected:
 static const char *g_python_command_instructions =
     "Enter your Python command(s). Type 'DONE' to end.\n"
     "You must define a Python function with this signature:\n"
-    "def my_command_impl(debugger, args, result, internal_dict):\n";
+    "def my_command_impl(debugger, args, exe_ctx, result, internal_dict):\n";
 
 class CommandObjectCommandsAlias : public CommandObjectRaw {
 protected:
@@ -212,7 +212,7 @@ protected:
     ~CommandOptions() override = default;
 
     llvm::ArrayRef<OptionDefinition> GetDefinitions() override {
-      return llvm::makeArrayRef(g_alias_options);
+      return llvm::ArrayRef(g_alias_options);
     }
 
     Status SetOptionValue(uint32_t option_idx, llvm::StringRef option_value,
@@ -485,29 +485,31 @@ protected:
         OptionArgVectorSP(new OptionArgVector);
 
     const bool include_aliases = true;
-    if (CommandObjectSP cmd_obj_sp = m_interpreter.GetCommandSPExact(
-            cmd_obj.GetCommandName(), include_aliases)) {
-      if (m_interpreter.AliasExists(alias_command) ||
-          m_interpreter.UserCommandExists(alias_command)) {
-        result.AppendWarningWithFormat(
-            "Overwriting existing definition for '%s'.\n",
-            alias_command.str().c_str());
-      }
-      if (CommandAlias *alias = m_interpreter.AddAlias(
-              alias_command, cmd_obj_sp, raw_command_string)) {
-        if (m_command_options.m_help.OptionWasSet())
-          alias->SetHelp(m_command_options.m_help.GetCurrentValue());
-        if (m_command_options.m_long_help.OptionWasSet())
-          alias->SetHelpLong(m_command_options.m_long_help.GetCurrentValue());
-        result.SetStatus(eReturnStatusSuccessFinishNoResult);
-      } else {
-        result.AppendError("Unable to create requested alias.\n");
-      }
+    // Look up the command using command's name first.  This is to resolve
+    // aliases when you are making nested aliases.  But if you don't find
+    // it that way, then it wasn't an alias and we can just use the object
+    // we were passed in.
+    CommandObjectSP cmd_obj_sp = m_interpreter.GetCommandSPExact(
+            cmd_obj.GetCommandName(), include_aliases);
+    if (!cmd_obj_sp)
+      cmd_obj_sp = cmd_obj.shared_from_this();
 
+    if (m_interpreter.AliasExists(alias_command) ||
+        m_interpreter.UserCommandExists(alias_command)) {
+      result.AppendWarningWithFormat(
+          "Overwriting existing definition for '%s'.\n",
+          alias_command.str().c_str());
+    }
+    if (CommandAlias *alias = m_interpreter.AddAlias(
+            alias_command, cmd_obj_sp, raw_command_string)) {
+      if (m_command_options.m_help.OptionWasSet())
+        alias->SetHelp(m_command_options.m_help.GetCurrentValue());
+      if (m_command_options.m_long_help.OptionWasSet())
+        alias->SetHelpLong(m_command_options.m_long_help.GetCurrentValue());
+      result.SetStatus(eReturnStatusSuccessFinishNoResult);
     } else {
       result.AppendError("Unable to create requested alias.\n");
     }
-
     return result.Succeeded();
   }
 
@@ -877,7 +879,7 @@ protected:
     Status error;
     auto name = command[0].ref();
     m_regex_cmd_up = std::make_unique<CommandObjectRegexCommand>(
-        m_interpreter, name, m_options.GetHelp(), m_options.GetSyntax(), 10, 0,
+        m_interpreter, name, m_options.GetHelp(), m_options.GetSyntax(), 0,
         true);
 
     if (argc == 1) {
@@ -891,7 +893,7 @@ protected:
           llvm::StringRef(),     // Continuation prompt
           multiple_lines, color_prompt,
           0, // Don't show line numbers
-          *this, nullptr));
+          *this));
 
       if (io_handler_sp) {
         debugger.RunIOHandlerAsync(io_handler_sp);
@@ -1054,7 +1056,7 @@ private:
     }
 
     llvm::ArrayRef<OptionDefinition> GetDefinitions() override {
-      return llvm::makeArrayRef(g_regex_options);
+      return llvm::ArrayRef(g_regex_options);
     }
 
     llvm::StringRef GetHelp() { return m_help; }
@@ -1077,9 +1079,10 @@ class CommandObjectPythonFunction : public CommandObjectRaw {
 public:
   CommandObjectPythonFunction(CommandInterpreter &interpreter, std::string name,
                               std::string funct, std::string help,
-                              ScriptedCommandSynchronicity synch)
+                              ScriptedCommandSynchronicity synch,
+                              CompletionType completion_type)
       : CommandObjectRaw(interpreter, name), m_function_name(funct),
-        m_synchro(synch) {
+        m_synchro(synch), m_completion_type(completion_type) {
     if (!help.empty())
       SetHelp(help);
     else {
@@ -1113,6 +1116,15 @@ public:
     return CommandObjectRaw::GetHelpLong();
   }
 
+  void
+  HandleArgumentCompletion(CompletionRequest &request,
+                           OptionElementVector &opt_element_vector) override {
+    lldb_private::CommandCompletions::InvokeCommonCompletionCallbacks(
+        GetCommandInterpreter(), m_completion_type, request, nullptr);
+  }
+
+  bool WantsCompletion() override { return true; }
+
 protected:
   bool DoExecute(llvm::StringRef raw_command_line,
                  CommandReturnObject &result) override {
@@ -1143,6 +1155,7 @@ private:
   std::string m_function_name;
   ScriptedCommandSynchronicity m_synchro;
   bool m_fetched_help_long = false;
+  CompletionType m_completion_type = eNoCompletion;
 };
 
 class CommandObjectScriptingObject : public CommandObjectRaw {
@@ -1150,10 +1163,11 @@ public:
   CommandObjectScriptingObject(CommandInterpreter &interpreter,
                                std::string name,
                                StructuredData::GenericSP cmd_obj_sp,
-                               ScriptedCommandSynchronicity synch)
+                               ScriptedCommandSynchronicity synch,
+                               CompletionType completion_type)
       : CommandObjectRaw(interpreter, name), m_cmd_obj_sp(cmd_obj_sp),
         m_synchro(synch), m_fetched_help_short(false),
-        m_fetched_help_long(false) {
+        m_fetched_help_long(false), m_completion_type(completion_type) {
     StreamString stream;
     stream.Printf("For more information run 'help %s'", name.c_str());
     SetHelp(stream.GetString());
@@ -1162,6 +1176,15 @@ public:
   }
 
   ~CommandObjectScriptingObject() override = default;
+
+  void
+  HandleArgumentCompletion(CompletionRequest &request,
+                           OptionElementVector &opt_element_vector) override {
+    lldb_private::CommandCompletions::InvokeCommonCompletionCallbacks(
+        GetCommandInterpreter(), m_completion_type, request, nullptr);
+  }
+
+  bool WantsCompletion() override { return true; }
 
   bool IsRemovable() const override { return true; }
 
@@ -1229,6 +1252,7 @@ private:
   ScriptedCommandSynchronicity m_synchro;
   bool m_fetched_help_short : 1;
   bool m_fetched_help_long : 1;
+  CompletionType m_completion_type = eNoCompletion;
 };
 
 // CommandObjectCommandsScriptImport
@@ -1260,9 +1284,8 @@ public:
   void
   HandleArgumentCompletion(CompletionRequest &request,
                            OptionElementVector &opt_element_vector) override {
-    CommandCompletions::InvokeCommonCompletionCallbacks(
-        GetCommandInterpreter(), CommandCompletions::eDiskFileCompletion,
-        request, nullptr);
+    lldb_private::CommandCompletions::InvokeCommonCompletionCallbacks(
+        GetCommandInterpreter(), lldb::eDiskFileCompletion, request, nullptr);
   }
 
   Options *GetOptions() override { return &m_options; }
@@ -1301,7 +1324,7 @@ protected:
     }
 
     llvm::ArrayRef<OptionDefinition> GetDefinitions() override {
-      return llvm::makeArrayRef(g_script_import_options);
+      return llvm::ArrayRef(g_script_import_options);
     }
     bool relative_to_command_file = false;
     bool silent = false;
@@ -1436,6 +1459,18 @@ protected:
               "unrecognized value for synchronicity '%s'",
               option_arg.str().c_str());
         break;
+      case 'C': {
+        Status error;
+        OptionDefinition definition = GetDefinitions()[option_idx];
+        lldb::CompletionType completion_type =
+            static_cast<lldb::CompletionType>(OptionArgParser::ToOptionEnum(
+                option_arg, definition.enum_values, eNoCompletion, error));
+        if (!error.Success())
+          error.SetErrorStringWithFormat(
+              "unrecognized value for command completion type '%s'",
+              option_arg.str().c_str());
+        m_completion_type = completion_type;
+      } break;
       default:
         llvm_unreachable("Unimplemented option");
       }
@@ -1447,12 +1482,13 @@ protected:
       m_class_name.clear();
       m_funct_name.clear();
       m_short_help.clear();
+      m_completion_type = eNoCompletion;
       m_overwrite_lazy = eLazyBoolCalculate;
       m_synchronicity = eScriptedCommandSynchronicitySynchronous;
     }
 
     llvm::ArrayRef<OptionDefinition> GetDefinitions() override {
-      return llvm::makeArrayRef(g_script_add_options);
+      return llvm::ArrayRef(g_script_add_options);
     }
 
     // Instance variables to hold the values for command options.
@@ -1463,6 +1499,7 @@ protected:
     LazyBool m_overwrite_lazy = eLazyBoolCalculate;
     ScriptedCommandSynchronicity m_synchronicity =
         eScriptedCommandSynchronicitySynchronous;
+    CompletionType m_completion_type = eNoCompletion;
   };
 
   void IOHandlerActivated(IOHandler &io_handler, bool interactive) override {
@@ -1493,7 +1530,7 @@ protected:
 
             CommandObjectSP command_obj_sp(new CommandObjectPythonFunction(
                 m_interpreter, m_cmd_name, funct_name_str, m_short_help,
-                m_synchronicity));
+                m_synchronicity, m_completion_type));
             if (!m_container) {
               Status error = m_interpreter.AddUserCommand(
                   m_cmd_name, command_obj_sp, m_overwrite);
@@ -1574,6 +1611,7 @@ protected:
 
     m_short_help.assign(m_options.m_short_help);
     m_synchronicity = m_options.m_synchronicity;
+    m_completion_type = m_options.m_completion_type;
 
     // Handle the case where we prompt for the script code first:
     if (m_options.m_class_name.empty() && m_options.m_funct_name.empty()) {
@@ -1586,7 +1624,7 @@ protected:
     if (m_options.m_class_name.empty()) {
       new_cmd_sp.reset(new CommandObjectPythonFunction(
           m_interpreter, m_cmd_name, m_options.m_funct_name,
-          m_options.m_short_help, m_synchronicity));
+          m_options.m_short_help, m_synchronicity, m_completion_type));
     } else {
       ScriptInterpreter *interpreter = GetDebugger().GetScriptInterpreter();
       if (!interpreter) {
@@ -1597,12 +1635,14 @@ protected:
       auto cmd_obj_sp = interpreter->CreateScriptCommandObject(
           m_options.m_class_name.c_str());
       if (!cmd_obj_sp) {
-        result.AppendError("cannot create helper object");
+        result.AppendErrorWithFormatv("cannot create helper object for: "
+                                      "'{0}'", m_options.m_class_name);
         return false;
       }
 
       new_cmd_sp.reset(new CommandObjectScriptingObject(
-          m_interpreter, m_cmd_name, cmd_obj_sp, m_synchronicity));
+          m_interpreter, m_cmd_name, cmd_obj_sp, m_synchronicity,
+          m_completion_type));
     }
     
     // Assume we're going to succeed...
@@ -1630,6 +1670,7 @@ protected:
   bool m_overwrite = false;
   ScriptedCommandSynchronicity m_synchronicity =
       eScriptedCommandSynchronicitySynchronous;
+  CompletionType m_completion_type = eNoCompletion;
 };
 
 // CommandObjectCommandsScriptList
@@ -1702,8 +1743,8 @@ public:
   void
   HandleArgumentCompletion(CompletionRequest &request,
                            OptionElementVector &opt_element_vector) override {
-    CommandCompletions::CompleteModifiableCmdPathArgs(m_interpreter, request,
-                                                      opt_element_vector);
+    lldb_private::CommandCompletions::CompleteModifiableCmdPathArgs(
+        m_interpreter, request, opt_element_vector);
   }
 
 protected:
@@ -1853,8 +1894,8 @@ public:
   void
   HandleArgumentCompletion(CompletionRequest &request,
                            OptionElementVector &opt_element_vector) override {
-    CommandCompletions::CompleteModifiableCmdPathArgs(m_interpreter, request,
-                                                      opt_element_vector);
+    lldb_private::CommandCompletions::CompleteModifiableCmdPathArgs(
+        m_interpreter, request, opt_element_vector);
   }
 
 protected:
@@ -1895,7 +1936,7 @@ protected:
     }
 
     llvm::ArrayRef<OptionDefinition> GetDefinitions() override {
-      return llvm::makeArrayRef(g_container_add_options);
+      return llvm::ArrayRef(g_container_add_options);
     }
 
     // Instance variables to hold the values for command options.
@@ -1993,8 +2034,8 @@ public:
   void
   HandleArgumentCompletion(CompletionRequest &request,
                            OptionElementVector &opt_element_vector) override {
-    CommandCompletions::CompleteModifiableCmdPathArgs(m_interpreter, request,
-                                                      opt_element_vector);
+    lldb_private::CommandCompletions::CompleteModifiableCmdPathArgs(
+        m_interpreter, request, opt_element_vector);
   }
 
 protected:

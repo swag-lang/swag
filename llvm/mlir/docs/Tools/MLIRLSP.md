@@ -17,16 +17,16 @@ MLIR provides an implementation of an LSP language server for `.mlir` text files
 in the form of the `mlir-lsp-server` tool. This tool interacts with the MLIR C++
 API to support rich language queries, such as "Find Definition".
 
-### Supporting custom dialects and passes
+### Supporting custom dialects
 
 `mlir-lsp-server`, like many other MLIR based tools, relies on having the
 appropriate dialects registered to be able to parse in the custom assembly
 formats used in the textual .mlir files. The `mlir-lsp-server` found within the
-main MLIR repository provides support for all of the upstream MLIR dialects and
-passes. Downstream and out-of-tree users will need to provide a custom
+main MLIR repository provides support for all of the upstream MLIR dialects.
+Downstream and out-of-tree users will need to provide a custom
 `mlir-lsp-server` executable that registers the entities that they are
 interested in. The implementation of `mlir-lsp-server` is provided as a library,
-making it easy for downstream users to register their dialect/passes and simply
+making it easy for downstream users to register their dialect and simply
 call into the main implementation. A simple example is shown below:
 
 ```c++
@@ -35,7 +35,6 @@ call into the main implementation. A simple example is shown below:
 int main(int argc, char **argv) {
   mlir::DialectRegistry registry;
   registerMyDialects(registry);
-  registerMyPasses();
   return mlir::failed(mlir::MlirLspServerMain(argc, argv, registry));
 }
 ```
@@ -123,6 +122,14 @@ symbol, such as a `func.func`, within the file.
 
 ![IMG](/mlir-lsp-server/navigation.gif)
 
+#### Bytecode Editing and Inspection
+
+The language server provides support for interacting with MLIR bytecode files,
+enabling IDEs to transparently view and edit bytecode files in the same way
+as textual `.mlir` files.
+
+![IMG](/mlir-lsp-server/bytecode_edit.gif)
+
 ## PDLL LSP Language Server : `mlir-pdll-lsp-server`
 
 MLIR provides an implementation of an LSP language server for `.pdll` text files
@@ -150,12 +157,13 @@ Example:
 
 ```yaml
 --- !FileInfo:
-  filepath: "/home/user/llvm/mlir/lib/Dialect/Arithmetic/IR/ArithmeticCanonicalization.pdll"
-  includes: "/home/user/llvm/mlir/lib/Dialect/Arithmetic/IR;/home/user/llvm/mlir/include"
+  filepath: "/home/user/llvm/mlir/lib/Dialect/Arith/IR/ArithCanonicalization.pdll"
+  includes: "/home/user/llvm/mlir/lib/Dialect/Arith/IR;/home/user/llvm/mlir/include"
 ```
 
 - filepath: <string> - Absolute file path of the file.
-- includes: <string> - Semi-colon delimited list of absolute include directories.
+- includes: <string> - Semi-colon delimited list of absolute include
+  directories.
 
 #### Build System Integration
 
@@ -243,9 +251,9 @@ The language server provides additional information inline with the source code.
 Editors usually render this using read-only virtual text snippets interspersed
 with code. Hints may be shown for:
 
-* types of local variables
-* names of operand and result groups
-* constraint and rewrite arguments
+- types of local variables
+- names of operand and result groups
+- constraint and rewrite arguments
 
 ![IMG](/mlir-pdll-lsp-server/inlay_hints.png)
 
@@ -275,12 +283,13 @@ Example:
 
 ```yaml
 --- !FileInfo:
-  filepath: "/home/user/llvm/mlir/lib/Dialect/Arithmetic/IR/ArithmeticCanonicalization.td"
-  includes: "/home/user/llvm/mlir/lib/Dialect/Arithmetic/IR;/home/user/llvm/mlir/include"
+  filepath: "/home/user/llvm/mlir/lib/Dialect/Arith/IR/ArithCanonicalization.td"
+  includes: "/home/user/llvm/mlir/lib/Dialect/Arith/IR;/home/user/llvm/mlir/include"
 ```
 
 - filepath: <string> - Absolute file path of the file.
-- includes: <string> - Semi-colon delimited list of absolute include directories.
+- includes: <string> - Semi-colon delimited list of absolute include
+  directories.
 
 #### Build System Integration
 
@@ -319,6 +328,18 @@ Jump to the definition of a symbol under the cursor:
 Show all references of the symbol under the cursor.
 
 ![IMG](/tblgen-lsp-server/find_references.gif)
+
+#### Hover
+
+Hover over a symbol to see more information about it, such as its type,
+documentation, and more.
+
+![IMG](/tblgen-lsp-server/hover_def.png)
+
+Hovering over an overridden field will also show you information such as
+documentation from the base value:
+
+![IMG](/tblgen-lsp-server/hover_field.png)
 
 ## Language Server Design
 
@@ -447,6 +468,7 @@ The MLIR extension adds language support for the
 
 - Syntax highlighting for `.td` files and `tablegen` markdown blocks
 - go-to-definition and cross references
+- Types and documentation on hover
 
 [tablegen-vscode features]: #
 

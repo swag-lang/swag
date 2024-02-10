@@ -1,4 +1,4 @@
-# RUN: SUPPORT_LIB=%mlir_runner_utils_dir/libmlir_c_runner_utils%shlibext \
+# RUN: env SUPPORT_LIB=%mlir_c_runner_utils \
 # RUN:   %PYTHON %s | FileCheck %s
 
 import ctypes
@@ -18,21 +18,23 @@ _SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(_SCRIPT_PATH)
 from tools import sparse_compiler
 
+
 @dsl.linalg_structured_op
 def matmul_dsl(
     A=dsl.TensorDef(dsl.T, dsl.S.M, dsl.S.K),
     B=dsl.TensorDef(dsl.T, dsl.S.K, dsl.S.N),
-    C=dsl.TensorDef(dsl.T, dsl.S.M, dsl.S.N, output=True)):
+    C=dsl.TensorDef(dsl.T, dsl.S.M, dsl.S.N, output=True),
+):
     C[dsl.D.m, dsl.D.n] += A[dsl.D.m, dsl.D.k] * B[dsl.D.k, dsl.D.n]
 
 
 def build_SpMM(attr: st.EncodingAttr):
     """Build SpMM kernel.
 
-  This method generates a linalg op with for matrix multiplication using
-  just the Python API. Effectively, a generic linalg op is constructed
-  that computes C(i,j) += A(i,k) * B(k,j) for annotated matrix A.
-  """
+    This method generates a linalg op with for matrix multiplication using
+    just the Python API. Effectively, a generic linalg op is constructed
+    that computes C(i,j) += A(i,k) * B(k,j) for annotated matrix A.
+    """
     module = ir.Module.create()
     f64 = ir.F64Type.get()
     a = ir.RankedTensorType.get([3, 4], f64, attr)
@@ -51,11 +53,11 @@ def build_SpMM(attr: st.EncodingAttr):
 def boilerplate(attr: st.EncodingAttr):
     """Returns boilerplate main method.
 
-  This method sets up a boilerplate main method that takes three tensors
-  (a, b, c), converts the first tensor a into s sparse tensor, and then
-  calls the sparse kernel for matrix multiplication. For convenience,
-  this part is purely done as string input.
-  """
+    This method sets up a boilerplate main method that takes three tensors
+    (a, b, c), converts the first tensor a into s sparse tensor, and then
+    calls the sparse kernel for matrix multiplication. For convenience,
+    this part is purely done as string input.
+    """
     return f"""
 func.func @main(%ad: tensor<3x4xf64>, %b: tensor<4x2xf64>, %c: tensor<3x2xf64>) -> tensor<3x2xf64>
   attributes {{ llvm.emit_c_interface }} {{
@@ -79,8 +81,8 @@ def build_compile_and_run_SpMM(attr: st.EncodingAttr, compiler):
 
     # Set up numpy input and buffer for output.
     a = np.array(
-        [[1.1, 0.0, 0.0, 1.4], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 3.3, 0.0]],
-        np.float64)
+        [[1.1, 0.0, 0.0, 1.4], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 3.3, 0.0]], np.float64
+    )
     b = np.array([[1.0, 2.0], [4.0, 3.0], [5.0, 6.0], [8.0, 7.0]], np.float64)
     c = np.zeros((3, 2), np.float64)
 
@@ -95,59 +97,61 @@ def build_compile_and_run_SpMM(attr: st.EncodingAttr, compiler):
     # Invoke the kernel and get numpy output.
     # Built-in bufferization uses in-out buffers.
     # TODO: replace with inplace comprehensive bufferization.
-    engine.invoke('main', mem_out, mem_a, mem_b, mem_c)
+    engine.invoke("main", mem_out, mem_a, mem_b, mem_c)
 
     # Sanity check on computed result.
-    expected = np.matmul(a, b);
+    expected = np.matmul(a, b)
     c = rt.ranked_memref_to_numpy(mem_out[0])
     if np.allclose(c, expected):
         pass
     else:
-        quit(f'FAILURE')
+        quit(f"FAILURE")
 
 
 def main():
-    support_lib = os.getenv('SUPPORT_LIB')
-    assert support_lib is not None, 'SUPPORT_LIB is undefined'
+    support_lib = os.getenv("SUPPORT_LIB")
+    assert support_lib is not None, "SUPPORT_LIB is undefined"
     if not os.path.exists(support_lib):
         raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), support_lib)
 
     # CHECK-LABEL: TEST: testSpMM
-    print('\nTEST: testSpMM')
+    print("\nTEST: testSpMM")
     with ir.Context() as ctx, ir.Location.unknown():
         count = 0
         # Loop over various ways to compile and annotate the SpMM kernel with
         # a *single* sparse tensor. Note that we deliberate do not exhaustively
         # search the full state space to reduce runtime of the test. It is
         # straightforward to adapt the code below to explore more combinations.
-        par = 0
-        vec = 0
+
         vl = 1
         e = False
-        opt = (f'parallelization-strategy={par} '
-               f'vectorization-strategy={vec} '
-               f'vl={vl} enable-simd-index32={e}')
-        levels = [[st.DimLevelType.dense, st.DimLevelType.dense],
-                  [st.DimLevelType.dense, st.DimLevelType.compressed],
-                  [st.DimLevelType.compressed, st.DimLevelType.dense],
-                  [st.DimLevelType.compressed, st.DimLevelType.compressed]]
+        opt = f"parallelization-strategy=none"
+        levels = [
+            [st.DimLevelType.dense, st.DimLevelType.dense],
+            [st.DimLevelType.dense, st.DimLevelType.compressed],
+            [st.DimLevelType.compressed, st.DimLevelType.dense],
+            [st.DimLevelType.compressed, st.DimLevelType.compressed],
+        ]
         orderings = [
             ir.AffineMap.get_permutation([0, 1]),
-            ir.AffineMap.get_permutation([1, 0])
+            ir.AffineMap.get_permutation([1, 0]),
         ]
         bitwidths = [0]
         compiler = sparse_compiler.SparseCompiler(
-            options=opt, opt_level=0, shared_libs=[support_lib])
+            options=opt, opt_level=0, shared_libs=[support_lib]
+        )
         for level in levels:
             for ordering in orderings:
                 for pwidth in bitwidths:
                     for iwidth in bitwidths:
-                        attr = st.EncodingAttr.get(level, ordering, pwidth, iwidth)
+                        attr = st.EncodingAttr.get(
+                            level, ordering, pwidth, iwidth
+                        )
                         build_compile_and_run_SpMM(attr, compiler)
                         count = count + 1
         # CHECK: Passed 8 tests
-        print('Passed ', count, 'tests')
+        print("Passed ", count, "tests")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

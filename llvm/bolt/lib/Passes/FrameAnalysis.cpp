@@ -56,20 +56,11 @@ bool shouldFrameOptimize(const llvm::bolt::BinaryFunction &Function) {
     FrameOptFunctionNamesFile = "";
   }
 
-  bool IsValid = true;
-  if (!FrameOptFunctionNames.empty()) {
-    IsValid = false;
-    for (std::string &Name : FrameOptFunctionNames) {
-      if (Function.hasName(Name)) {
-        IsValid = true;
-        break;
-      }
-    }
-  }
-  if (!IsValid)
-    return false;
-
-  return IsValid;
+  if (FrameOptFunctionNames.empty())
+    return true;
+  return llvm::any_of(FrameOptFunctionNames, [&](std::string &Name) {
+    return Function.hasName(Name);
+  });
 }
 } // namespace opts
 
@@ -193,7 +184,7 @@ public:
       switch (CFI->getOperation()) {
       case MCCFIInstruction::OpDefCfa:
         CfaOffset = CFI->getOffset();
-        LLVM_FALLTHROUGH;
+        [[fallthrough]];
       case MCCFIInstruction::OpDefCfaRegister:
         CfaReg = CFI->getRegister();
         break;
@@ -361,7 +352,7 @@ bool FrameAnalysis::updateArgsTouchedFor(const BinaryFunction &BF, MCInst &Inst,
     // offset specially after an epilogue, where tailcalls happen. It should be
     // -8.
     for (std::pair<int64_t, uint8_t> Elem : Iter->second) {
-      if (ArgsTouchedMap[&BF].find(Elem) == ArgsTouchedMap[&BF].end()) {
+      if (!llvm::is_contained(ArgsTouchedMap[&BF], Elem)) {
         ArgsTouchedMap[&BF].emplace(Elem);
         Changed = true;
       }

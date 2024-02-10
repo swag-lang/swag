@@ -8,9 +8,10 @@
 
 #include "src/pthread/pthread_create.h"
 #include "src/pthread/pthread_join.h"
-#include "utils/IntegrationTest/test.h"
+#include "test/IntegrationTest/test.h"
 
 #include <pthread.h>
+#include <stdint.h> // uintptr_t
 
 static constexpr int thread_count = 1000;
 static int counter = 0;
@@ -55,7 +56,7 @@ void spawn_and_join() {
   }
 }
 
-int main() {
+TEST_MAIN() {
   create_and_join();
   spawn_and_join();
   return 0;

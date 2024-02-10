@@ -1,35 +1,19 @@
-add_libc_unittest(
+# This test currently uses too much memory to be made hermetic.
+add_libc_test(
   utils_test
   SUITE
-    libc_string_unittests
+    libc-string-tests
   SRCS
-    address_test.cpp
-    backend_test.cpp
-    elements_test.cpp
-    memory_access_test.cpp
+    op_tests.cpp
     utils_test.cpp
   COMPILE_OPTIONS
     ${LIBC_COMPILE_OPTIONS_NATIVE}
     -ffreestanding
-    -pthread
   DEPENDS
-    libc.src.string.memory_utils.memory_utils
     libc.src.__support.CPP.array
-    libc.src.__support.CPP.array_ref
-)
-
-if(NOT LLVM_LIBC_FULL_BUILD)
-# Disabling this unittest in fullbuild mode as #include<sstream> is pulling an
-# incomplete pthread implementation from llvm-libc.
-add_libc_unittest(
-  algorithm_test
-  SUITE
-    libc_string_unittests
-  SRCS
-    algorithm_test.cpp
-  DEPENDS
+    libc.src.__support.CPP.cstddef
+    libc.src.__support.CPP.span
+    libc.src.__support.macros.sanitizer
     libc.src.string.memory_utils.memory_utils
-    libc.src.__support.CPP.array
-    libc.src.__support.CPP.array_ref
+  UNIT_TEST_ONLY
 )
-endif()

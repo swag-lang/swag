@@ -22,9 +22,9 @@ static std::optional<Expr<SomeType>> ZeroExtend(const Constant<T> &c) {
       Constant<LargestInt>(std::move(exts), ConstantSubscripts(c.shape())));
 }
 
-// for ALL & ANY
+// for ALL, ANY & PARITY
 template <typename T>
-static Expr<T> FoldAllAny(FoldingContext &context, FunctionRef<T> &&ref,
+static Expr<T> FoldAllAnyParity(FoldingContext &context, FunctionRef<T> &&ref,
     Scalar<T> (Scalar<T>::*operation)(const Scalar<T> &) const,
     Scalar<T> identity) {
   static_assert(T::category == TypeCategory::Logical);
@@ -52,10 +52,10 @@ Expr<Type<TypeCategory::Logical, KIND>> FoldIntrinsicFunction(
   std::string name{intrinsic->name};
   using SameInt = Type<TypeCategory::Integer, KIND>;
   if (name == "all") {
-    return FoldAllAny(
+    return FoldAllAnyParity(
         context, std::move(funcRef), &Scalar<T>::AND, Scalar<T>{true});
   } else if (name == "any") {
-    return FoldAllAny(
+    return FoldAllAnyParity(
         context, std::move(funcRef), &Scalar<T>::OR, Scalar<T>{false});
   } else if (name == "associated") {
     bool gotConstant{true};
@@ -140,6 +140,8 @@ Expr<Type<TypeCategory::Logical, KIND>> FoldIntrinsicFunction(
           },
           ix->u);
     }
+  } else if (name == "dot_product") {
+    return FoldDotProduct<T>(context, std::move(funcRef));
   } else if (name == "extends_type_of") {
     // Type extension testing with EXTENDS_TYPE_OF() ignores any type
     // parameters. Returns a constant truth value when the result is known now.
@@ -153,33 +155,45 @@ Expr<Type<TypeCategory::Logical, KIND>> FoldIntrinsicFunction(
       }
     }
   } else if (name == "isnan" || name == "__builtin_ieee_is_nan") {
-    // A warning about an invalid argument is discarded from converting
-    // the argument of isnan() / IEEE_IS_NAN().
-    auto restorer{context.messages().DiscardMessages()};
-    using DefaultReal = Type<TypeCategory::Real, 4>;
-    return FoldElementalIntrinsic<T, DefaultReal>(context, std::move(funcRef),
-        ScalarFunc<T, DefaultReal>([](const Scalar<DefaultReal> &x) {
-          return Scalar<T>{x.IsNotANumber()};
-        }));
+    // Only replace the type of the function if we can do the fold
+    if (args[0] && args[0]->UnwrapExpr() &&
+        IsActuallyConstant(*args[0]->UnwrapExpr())) {
+      auto restorer{context.messages().DiscardMessages()};
+      using DefaultReal = Type<TypeCategory::Real, 4>;
+      return FoldElementalIntrinsic<T, DefaultReal>(context, std::move(funcRef),
+          ScalarFunc<T, DefaultReal>([](const Scalar<DefaultReal> &x) {
+            return Scalar<T>{x.IsNotANumber()};
+          }));
+    }
   } else if (name == "__builtin_ieee_is_negative") {
     auto restorer{context.messages().DiscardMessages()};
     using DefaultReal = Type<TypeCategory::Real, 4>;
-    return FoldElementalIntrinsic<T, DefaultReal>(context, std::move(funcRef),
-        ScalarFunc<T, DefaultReal>([](const Scalar<DefaultReal> &x) {
-          return Scalar<T>{x.IsNegative()};
-        }));
+    if (args[0] && args[0]->UnwrapExpr() &&
+        IsActuallyConstant(*args[0]->UnwrapExpr())) {
+      return FoldElementalIntrinsic<T, DefaultReal>(context, std::move(funcRef),
+          ScalarFunc<T, DefaultReal>([](const Scalar<DefaultReal> &x) {
+            return Scalar<T>{x.IsNegative()};
+          }));
+    }
   } else if (name == "__builtin_ieee_is_normal") {
     auto restorer{context.messages().DiscardMessages()};
     using DefaultReal = Type<TypeCategory::Real, 4>;
-    return FoldElementalIntrinsic<T, DefaultReal>(context, std::move(funcRef),
-        ScalarFunc<T, DefaultReal>([](const Scalar<DefaultReal> &x) {
-          return Scalar<T>{x.IsNormal()};
-        }));
+    if (args[0] && args[0]->UnwrapExpr() &&
+        IsActuallyConstant(*args[0]->UnwrapExpr())) {
+      return FoldElementalIntrinsic<T, DefaultReal>(context, std::move(funcRef),
+          ScalarFunc<T, DefaultReal>([](const Scalar<DefaultReal> &x) {
+            return Scalar<T>{x.IsNormal()};
+          }));
+    }
   } else if (name == "is_contiguous") {
     if (args.at(0)) {
       if (auto *expr{args[0]->UnwrapExpr()}) {
-        if (IsSimplyContiguous(*expr, context)) {
-          return Expr<T>{true};
+        if (auto contiguous{IsContiguous(*expr, context)}) {
+          return Expr<T>{*contiguous};
+        }
+      } else if (auto *assumedType{args[0]->GetAssumedTypeDummy()}) {
+        if (auto contiguous{IsContiguous(*assumedType, context)}) {
+          return Expr<T>{*contiguous};
         }
       }
     }
@@ -203,6 +217,9 @@ Expr<Type<TypeCategory::Logical, KIND>> FoldIntrinsicFunction(
     }
   } else if (name == "merge") {
     return FoldMerge<T>(context, std::move(funcRef));
+  } else if (name == "parity") {
+    return FoldAllAnyParity(
+        context, std::move(funcRef), &Scalar<T>::NEQV, Scalar<T>{false});
   } else if (name == "same_type_as") {
     // Type equality testing with SAME_TYPE_AS() ignores any type parameters.
     // Returns a constant truth value when the result is known now.
@@ -218,7 +235,6 @@ Expr<Type<TypeCategory::Logical, KIND>> FoldIntrinsicFunction(
   } else if (name == "__builtin_ieee_support_datatype" ||
       name == "__builtin_ieee_support_denormal" ||
       name == "__builtin_ieee_support_divide" ||
-      name == "__builtin_ieee_support_divide" ||
       name == "__builtin_ieee_support_inf" ||
       name == "__builtin_ieee_support_io" ||
       name == "__builtin_ieee_support_nan" ||
@@ -228,7 +244,7 @@ Expr<Type<TypeCategory::Logical, KIND>> FoldIntrinsicFunction(
       name == "__builtin_ieee_support_underflow_control") {
     return Expr<T>{true};
   }
-  // TODO: dot_product, is_iostat_end,
+  // TODO: is_iostat_end,
   // is_iostat_eor, logical, matmul, out_of_range,
   // parity
   return Expr<T>{std::move(funcRef)};

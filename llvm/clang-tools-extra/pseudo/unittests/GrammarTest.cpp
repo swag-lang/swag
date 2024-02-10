@@ -109,21 +109,6 @@ TEST_F(GrammarTest, Annotation) {
   EXPECT_TRUE(G.lookupRule(ruleFor("x")).Guarded);
 }
 
-TEST_F(GrammarTest, MangleName) {
-  build(R"bnf(
-    _ := declaration
-
-    declaration := ptr-declarator ;
-    ptr-declarator := * IDENTIFIER
-
-  )bnf");
-  ASSERT_TRUE(Diags.empty());
-  EXPECT_EQ(G.mangleRule(ruleFor("declaration")),
-            "declaration_0ptr_declarator_1semi");
-  EXPECT_EQ(G.mangleRule(ruleFor("ptr-declarator")),
-            "ptr_declarator_0star_1identifier");
-}
-
 TEST_F(GrammarTest, Diagnostics) {
   build(R"cpp(
     _ := ,_opt
@@ -149,6 +134,18 @@ TEST_F(GrammarTest, Diagnostics) {
                          "No rules for nonterminal: IDENFIFIE",
                          "The grammar contains a cycle involving symbol a",
                          "Unknown attribute 'unknown'"));
+}
+
+TEST_F(GrammarTest, DuplicatedDiagnostics) {
+  build(R"cpp(
+    _ := test
+
+    test := INT
+    test := DOUBLE
+    test := INT
+  )cpp");
+
+  EXPECT_THAT(Diags, UnorderedElementsAre("Duplicate rule: `test := INT`"));
 }
 
 TEST_F(GrammarTest, FirstAndFollowSets) {

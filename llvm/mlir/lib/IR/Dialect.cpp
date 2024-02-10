@@ -11,6 +11,7 @@
 #include "mlir/IR/Diagnostics.h"
 #include "mlir/IR/DialectImplementation.h"
 #include "mlir/IR/DialectInterface.h"
+#include "mlir/IR/ExtensibleDialect.h"
 #include "mlir/IR/MLIRContext.h"
 #include "mlir/IR/Operation.h"
 #include "llvm/ADT/MapVector.h"
@@ -74,9 +75,9 @@ Type Dialect::parseType(DialectAsmParser &parser) const {
   return Type();
 }
 
-Optional<Dialect::ParseOpHook>
+std::optional<Dialect::ParseOpHook>
 Dialect::getParseOperationHook(StringRef opName) const {
-  return None;
+  return std::nullopt;
 }
 
 llvm::unique_function<void(Operation *, OpAsmPrinter &printer)>
@@ -95,6 +96,9 @@ bool Dialect::isValidNamespace(StringRef str) {
 
 /// Register a set of dialect interfaces with this dialect instance.
 void Dialect::addInterface(std::unique_ptr<DialectInterface> interface) {
+  // Handle the case where the models resolve a promised interface.
+  handleAdditionOfUndefinedPromisedInterface(interface->getID());
+
   auto it = registeredInterfaces.try_emplace(interface->getID(),
                                              std::move(interface));
   (void)it;
@@ -113,9 +117,17 @@ void Dialect::addInterface(std::unique_ptr<DialectInterface> interface) {
 
 DialectInterface::~DialectInterface() = default;
 
+MLIRContext *DialectInterface::getContext() const {
+  return dialect->getContext();
+}
+
 DialectInterfaceCollectionBase::DialectInterfaceCollectionBase(
-    MLIRContext *ctx, TypeID interfaceKind) {
+    MLIRContext *ctx, TypeID interfaceKind, StringRef interfaceName) {
   for (auto *dialect : ctx->getLoadedDialects()) {
+#ifndef NDEBUG
+    dialect->handleUseOfUndefinedPromisedInterface(interfaceKind,
+                                                   interfaceName);
+#endif
     if (auto *interface = dialect->getRegisteredInterface(interfaceKind)) {
       interfaces.insert(interface);
       orderedInterfaces.push_back(interface);
@@ -137,6 +149,16 @@ DialectInterfaceCollectionBase::getInterfaceFor(Operation *op) const {
 //===----------------------------------------------------------------------===//
 
 DialectExtensionBase::~DialectExtensionBase() = default;
+
+void dialect_extension_detail::handleUseOfUndefinedPromisedInterface(
+    Dialect &dialect, TypeID interfaceID, StringRef interfaceName) {
+  dialect.handleUseOfUndefinedPromisedInterface(interfaceID, interfaceName);
+}
+
+void dialect_extension_detail::handleAdditionOfUndefinedPromisedInterface(
+    Dialect &dialect, TypeID interfaceID) {
+  dialect.handleAdditionOfUndefinedPromisedInterface(interfaceID);
+}
 
 //===----------------------------------------------------------------------===//
 // DialectRegistry
@@ -161,6 +183,24 @@ void DialectRegistry::insert(TypeID typeID, StringRef name,
         "Trying to register different dialects for the same namespace: " +
         name);
   }
+}
+
+void DialectRegistry::insertDynamic(
+    StringRef name, const DynamicDialectPopulationFunction &ctor) {
+  // This TypeID marks dynamic dialects. We cannot give a TypeID for the
+  // dialect yet, since the TypeID of a dynamic dialect is defined at its
+  // construction.
+  TypeID typeID = TypeID::get<void>();
+
+  // Create the dialect, and then call ctor, which allocates its components.
+  auto constructor = [nameStr = name.str(), ctor](MLIRContext *ctx) {
+    auto *dynDialect = ctx->getOrLoadDynamicDialect(
+        nameStr, [ctx, ctor](DynamicDialect *dialect) { ctor(ctx, dialect); });
+    assert(dynDialect && "Dynamic dialect creation unexpectedly failed");
+    return dynDialect;
+  };
+
+  insert(typeID, name, constructor);
 }
 
 void DialectRegistry::applyExtensions(Dialect *dialect) const {
@@ -204,8 +244,9 @@ void DialectRegistry::applyExtensions(Dialect *dialect) const {
     extension.apply(ctx, requiredDialects);
   };
 
-  for (const auto &extension : extensions)
-    applyExtension(*extension);
+  // Note: Additional extensions may be added while applying an extension.
+  for (int i = 0; i < static_cast<int>(extensions.size()); ++i)
+    applyExtension(*extensions[i]);
 }
 
 void DialectRegistry::applyExtensions(MLIRContext *ctx) const {
@@ -225,8 +266,9 @@ void DialectRegistry::applyExtensions(MLIRContext *ctx) const {
     extension.apply(ctx, requiredDialects);
   };
 
-  for (const auto &extension : extensions)
-    applyExtension(*extension);
+  // Note: Additional extensions may be added while applying an extension.
+  for (int i = 0; i < static_cast<int>(extensions.size()); ++i)
+    applyExtension(*extensions[i]);
 }
 
 bool DialectRegistry::isSubsetOf(const DialectRegistry &rhs) const {

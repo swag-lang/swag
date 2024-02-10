@@ -16,6 +16,14 @@ are expected to closely match the corresponding LLVM IR instructions and
 intrinsics. This minimizes the dependency on LLVM IR libraries in MLIR as well
 as reduces the churn in case of changes.
 
+Note that many different dialects can be lowered to LLVM but are provided as
+different sets of patterns and have different passes available to mlir-opt.
+However, this is primarily useful for testing and prototyping, and using the
+collection of patterns together is highly recommended. One place this is
+important and visible is the ControlFlow dialect's branching operations which
+will fail to apply if their types mismatch with the blocks they jump to in the
+parent op.
+
 SPIR-V to LLVM dialect conversion has a
 [dedicated document](SPIRVToLLVMDialectConversion.md).
 
@@ -27,7 +35,7 @@ Conversion to the LLVM dialect from other dialects is the first step to produce
 LLVM IR. All non-trivial IR modifications are expected to happen at this stage
 or before. The conversion is *progressive*: most passes convert one dialect to
 the LLVM dialect and keep operations from other dialects intact. For example,
-the `-convert-memref-to-llvm` pass will only convert operations from the
+the `-finalize-memref-to-llvm` pass will only convert operations from the
 `memref` dialect but will not convert operations from other dialects even if
 they use or produce `memref`-typed values.
 
@@ -560,9 +568,10 @@ into calls to `malloc` (`aligned_alloc` if aligned allocations are requested)
 and `free`. However, it is possible to convert them to more generic functions
 which can be implemented by a runtime library, thus allowing custom allocation
 strategies or runtime profiling. When the conversion pass is  instructed to
-perform such operation, the names of the calles are `_mlir_alloc`,
-`_mlir_aligned_alloc` and `_mlir_free`. Their signatures are the same of
-`malloc`, `aligned_alloc` and `free`.
+perform such operation, the names of the calles are
+`_mlir_memref_to_llvm_alloc`, `_mlir_memref_to_llvm_aligned_alloc` and
+`_mlir_memref_to_llvm_free`. Their signatures are the same of `malloc`,
+`aligned_alloc` and `free`.
 
 ### C-compatible wrapper emission
 

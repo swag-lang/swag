@@ -10,7 +10,7 @@
 
 #include "mlir/Conversion/LLVMCommon/ConversionTarget.h"
 #include "mlir/Conversion/LLVMCommon/Pattern.h"
-#include "mlir/Dialect/Arithmetic/IR/Arithmetic.h"
+#include "mlir/Dialect/Arith/IR/Arith.h"
 #include "mlir/Dialect/LLVMIR/LLVMDialect.h"
 #include "mlir/Dialect/X86Vector/X86VectorDialect.h"
 #include "mlir/IR/BuiltinOps.h"
@@ -22,11 +22,11 @@ using namespace mlir::x86vector;
 /// Extracts the "main" vector element type from the given X86Vector operation.
 template <typename OpTy>
 static Type getSrcVectorElementType(OpTy op) {
-  return op.getSrc().getType().template cast<VectorType>().getElementType();
+  return cast<VectorType>(op.getSrc().getType()).getElementType();
 }
 template <>
 Type getSrcVectorElementType(Vp2IntersectOp op) {
-  return op.getA().getType().template cast<VectorType>().getElementType();
+  return cast<VectorType>(op.getA().getType()).getElementType();
 }
 
 namespace {
@@ -51,13 +51,13 @@ struct LowerToIntrinsic : public OpConversionPattern<OpTy> {
     Type elementType = getSrcVectorElementType<OpTy>(op);
     unsigned bitwidth = elementType.getIntOrFloatBitWidth();
     if (bitwidth == 32)
-      return LLVM::detail::oneToOneRewrite(op, Intr32OpTy::getOperationName(),
-                                           adaptor.getOperands(),
-                                           getTypeConverter(), rewriter);
+      return LLVM::detail::oneToOneRewrite(
+          op, Intr32OpTy::getOperationName(), adaptor.getOperands(),
+          op->getAttrs(), getTypeConverter(), rewriter);
     if (bitwidth == 64)
-      return LLVM::detail::oneToOneRewrite(op, Intr64OpTy::getOperationName(),
-                                           adaptor.getOperands(),
-                                           getTypeConverter(), rewriter);
+      return LLVM::detail::oneToOneRewrite(
+          op, Intr64OpTy::getOperationName(), adaptor.getOperands(),
+          op->getAttrs(), getTypeConverter(), rewriter);
     return rewriter.notifyMatchFailure(
         op, "expected 'src' to be either f32 or f64");
   }
@@ -79,7 +79,7 @@ struct MaskCompressOpConversion
       src = rewriter.create<arith::ConstantOp>(op.getLoc(), opType,
                                                op.getConstantSrcAttr());
     } else {
-      Attribute zeroAttr = rewriter.getZeroAttr(opType);
+      auto zeroAttr = rewriter.getZeroAttr(opType);
       src = rewriter.create<arith::ConstantOp>(op->getLoc(), opType, zeroAttr);
     }
 

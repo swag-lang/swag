@@ -19,9 +19,6 @@
 
 namespace mlir {
 namespace quant {
-
-class QuantizedIntegerType;
-
 namespace detail {
 
 struct QuantizedTypeStorage;
@@ -371,8 +368,7 @@ public:
   bool isFixedPoint() const {
     if (!isSigned())
       return false;
-    return llvm::all_of(getZeroPoints(),
-                        [](int64_t zeroPoint) { return zeroPoint != 0; });
+    return !llvm::is_contained(getZeroPoints(), 0);
   }
 };
 

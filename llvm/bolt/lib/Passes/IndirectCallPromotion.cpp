@@ -14,7 +14,9 @@
 #include "bolt/Passes/BinaryFunctionCallGraph.h"
 #include "bolt/Passes/DataflowInfoManager.h"
 #include "bolt/Passes/Inliner.h"
+#include "llvm/ADT/STLExtras.h"
 #include "llvm/Support/CommandLine.h"
+#include <iterator>
 
 #define DEBUG_TYPE "ICP"
 #define DEBUG_VERBOSE(Level, X)                                                \
@@ -255,14 +257,14 @@ IndirectCallPromotion::getCallTargets(BinaryBasicBlock &BB,
            JT->EntrySize == BC.AsmInfo->getCodePointerSize());
     for (size_t I = Range.first; I < Range.second; ++I, JI += JIAdj) {
       MCSymbol *Entry = JT->Entries[I];
-      assert(BF.getBasicBlockForLabel(Entry) ||
-             Entry == BF.getFunctionEndLabel() ||
-             Entry == BF.getFunctionColdEndLabel());
+      const BinaryBasicBlock *ToBB = BF.getBasicBlockForLabel(Entry);
+      assert(ToBB || Entry == BF.getFunctionEndLabel() ||
+             Entry == BF.getFunctionEndLabel(FragmentNum::cold()));
       if (Entry == BF.getFunctionEndLabel() ||
-          Entry == BF.getFunctionColdEndLabel())
+          Entry == BF.getFunctionEndLabel(FragmentNum::cold()))
         continue;
       const Location To(Entry);
-      const BinaryBasicBlock::BinaryBranchInfo &BI = BB.getBranchInfo(Entry);
+      const BinaryBasicBlock::BinaryBranchInfo &BI = BB.getBranchInfo(*ToBB);
       Targets.emplace_back(From, To, BI.MispredictedCount, BI.Count,
                            I - Range.first);
     }
@@ -416,15 +418,15 @@ IndirectCallPromotion::maybeGetHotJumpTableTargets(BinaryBasicBlock &BB,
 
   ++TotalIndexBasedCandidates;
 
-  auto ErrorOrMemAccesssProfile =
+  auto ErrorOrMemAccessProfile =
       BC.MIB->tryGetAnnotationAs<MemoryAccessProfile>(*MemLocInstr,
                                                       "MemoryAccessProfile");
-  if (!ErrorOrMemAccesssProfile) {
+  if (!ErrorOrMemAccessProfile) {
     DEBUG_VERBOSE(1, dbgs()
                          << "BOLT-INFO: ICP no memory profiling data found\n");
     return JumpTableInfoType();
   }
-  MemoryAccessProfile &MemAccessProfile = ErrorOrMemAccesssProfile.get();
+  MemoryAccessProfile &MemAccessProfile = ErrorOrMemAccessProfile.get();
 
   uint64_t ArrayStart;
   if (DispExpr) {
@@ -497,11 +499,8 @@ IndirectCallPromotion::maybeGetHotJumpTableTargets(BinaryBasicBlock &BB,
     HotTarget.second = Index;
   }
 
-  llvm::transform(
-      HotTargetMap, std::back_inserter(HotTargets),
-      [](const std::pair<MCSymbol *, std::pair<uint64_t, uint64_t>> &A) {
-        return A.second;
-      });
+  llvm::copy(llvm::make_second_range(HotTargetMap),
+             std::back_inserter(HotTargets));
 
   // Sort with highest counts first.
   llvm::sort(reverse(HotTargets));
@@ -670,15 +669,15 @@ IndirectCallPromotion::MethodInfoType IndirectCallPromotion::maybeGetVtableSyms(
   });
 
   // Try to get value profiling data for the method load instruction.
-  auto ErrorOrMemAccesssProfile =
+  auto ErrorOrMemAccessProfile =
       BC.MIB->tryGetAnnotationAs<MemoryAccessProfile>(*MethodFetchInsns.back(),
                                                       "MemoryAccessProfile");
-  if (!ErrorOrMemAccesssProfile) {
+  if (!ErrorOrMemAccessProfile) {
     DEBUG_VERBOSE(1, dbgs()
                          << "BOLT-INFO: ICP no memory profiling data found\n");
     return MethodInfoType();
   }
-  MemoryAccessProfile &MemAccessProfile = ErrorOrMemAccesssProfile.get();
+  MemoryAccessProfile &MemAccessProfile = ErrorOrMemAccessProfile.get();
 
   // Find the vtable that each method belongs to.
   std::map<const MCSymbol *, uint64_t> MethodToVtable;
@@ -1158,8 +1157,7 @@ void IndirectCallPromotion::runOnFunctions(BinaryContext &BC) {
     for (auto &BFIt : BFs) {
       BinaryFunction &Function = BFIt.second;
 
-      if (!Function.isSimple() || Function.isIgnored() ||
-          !Function.hasProfile())
+      if (!shouldOptimize(Function))
         continue;
 
       const bool HasLayout = !Function.getLayout().block_empty();
@@ -1219,7 +1217,7 @@ void IndirectCallPromotion::runOnFunctions(BinaryContext &BC) {
   for (BinaryFunction *FuncPtr : Functions) {
     BinaryFunction &Function = *FuncPtr;
 
-    if (!Function.isSimple() || Function.isIgnored() || !Function.hasProfile())
+    if (!shouldOptimize(Function))
       continue;
 
     const bool HasLayout = !Function.getLayout().block_empty();

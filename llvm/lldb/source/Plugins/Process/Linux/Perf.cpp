@@ -10,11 +10,9 @@
 
 #include "Plugins/Process/POSIX/ProcessPOSIXLog.h"
 #include "lldb/Host/linux/Support.h"
-
 #include "llvm/Support/FormatVariadic.h"
 #include "llvm/Support/MathExtras.h"
 #include "llvm/Support/MemoryBuffer.h"
-
 #include <linux/version.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
@@ -27,7 +25,7 @@ using namespace llvm;
 
 Expected<LinuxPerfZeroTscConversion>
 lldb_private::process_linux::LoadPerfTscConversionParameters() {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0)
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 12, 0)
   lldb::pid_t pid = getpid();
   perf_event_attr attr;
   memset(&attr, 0, sizeof(attr));
@@ -78,9 +76,9 @@ void resource_handle::FileDescriptorDeleter::operator()(long *ptr) {
 }
 
 llvm::Expected<PerfEvent> PerfEvent::Init(perf_event_attr &attr,
-                                          Optional<lldb::pid_t> pid,
-                                          Optional<lldb::cpu_id_t> cpu,
-                                          Optional<long> group_fd,
+                                          std::optional<lldb::pid_t> pid,
+                                          std::optional<lldb::cpu_id_t> cpu,
+                                          std::optional<long> group_fd,
                                           unsigned long flags) {
   errno = 0;
   long fd = syscall(SYS_perf_event_open, &attr, pid.value_or(-1),
@@ -94,8 +92,8 @@ llvm::Expected<PerfEvent> PerfEvent::Init(perf_event_attr &attr,
 }
 
 llvm::Expected<PerfEvent> PerfEvent::Init(perf_event_attr &attr,
-                                          Optional<lldb::pid_t> pid,
-                                          Optional<lldb::cpu_id_t> cpu) {
+                                          std::optional<lldb::pid_t> pid,
+                                          std::optional<lldb::cpu_id_t> cpu) {
   return Init(attr, pid, cpu, -1, 0);
 }
 
@@ -364,12 +362,12 @@ lldb_private::process_linux::CreateContextSwitchTracePerfEvent(
   LLDB_LOG(log, "Will create context switch trace buffer of size {0}",
            data_buffer_size);
 
-  Optional<long> group_fd;
+  std::optional<long> group_fd;
   if (parent_perf_event)
     group_fd = parent_perf_event->GetFd();
 
-  if (Expected<PerfEvent> perf_event =
-          PerfEvent::Init(attr, /*pid=*/None, cpu_id, group_fd, /*flags=*/0)) {
+  if (Expected<PerfEvent> perf_event = PerfEvent::Init(
+          attr, /*pid=*/std::nullopt, cpu_id, group_fd, /*flags=*/0)) {
     if (Error mmap_err = perf_event->MmapMetadataAndBuffers(
             data_buffer_numpages, 0, /*data_buffer_write=*/false)) {
       return std::move(mmap_err);

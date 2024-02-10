@@ -11,6 +11,8 @@
 		- [Attach to process using process ID](#attach-using-pid)
 		- [Attach to process by name](#attach-by-name)
 		- [Loading a core file](#loading-a-core-file)
+- [Custom Debugger Commands](#custom-debugger-commands)
+  - [startDebugging](#startDebugging)
 
 # Introduction
 
@@ -36,6 +38,12 @@ $ cp /path/to/a/built/lldb-vscode .
 $ cp /path/to/a/built/liblldb.so .
 ```
 
+It is important to note that the directory `~/.vscode/extensions` works for users logged in locally to the machine. If you are remoting into the box using Visual Studio Code's Remote plugins (SSH, WSL, Docker) it will look for extensions on `~/.vscode-server/extensions` only and you will not see your just installed lldb-vscode plug-in. If you want this plugin to be visible to remoting users, you will need to either repeat the process above for the `~/.vscode-server` folder or create a symbolic link from it to `~/.vscode/extensions`:
+
+```
+$ cd ~/.vscode-server/extensions
+$ ln -s ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0  llvm-org.lldb-vscode-0.1.0
+```
 
 If you want to make a stand alone plug-in that you can send to others on macOS systems:
 
@@ -61,6 +69,8 @@ $ ln -s /path/to/a/built/lldb-vscode
 
 This is handy if you want to debug and develope the `lldb-vscode` executable when adding features or fixing bugs.
 
+
+
 # Configurations
 
 Launching to attaching require you to create a [launch configuration](https://code.visualstudio.com/Docs/editor/debugging#_launch-configurations). This file
@@ -85,6 +95,7 @@ file that defines how your program will be run. The JSON configuration file can 
 |**initCommands**   |[string]| | LLDB commands executed upon debugger startup prior to creating the LLDB target. Commands and command output will be sent to the debugger console when they are executed.
 |**preRunCommands** |[string]| | LLDB commands executed just before launching after the LLDB target has been created. Commands and command output will be sent to the debugger console when they are executed.
 |**stopCommands**   |[string]| | LLDB commands executed just after each stop. Commands and command output will be sent to the debugger console when they are executed.
+|**launchCommands** |[string]| | LLDB commands executed to launch the program. Commands and command output will be sent to the debugger console when they are executed.
 |**exitCommands**   |[string]| | LLDB commands executed when the program exits. Commands and command output will be sent to the debugger console when they are executed.
 |**terminateCommands** |[string]| | LLDB commands executed when the debugging session ends. Commands and command output will be sent to the debugger console when they are executed.
 |**sourceMap**      |[string[2]]| | Specify an array of path re-mappings. Each element in the array must be a two element array containing a source and destination pathname.
@@ -195,3 +206,52 @@ This loads the coredump file `/cores/123.core` associated with the program
   "program": "/tmp/a.out"
 }
 ```
+
+# Custom debugger commands
+
+The `lldb-vscode` tool includes additional custom commands to support the Debug
+Adapter Protocol features.
+
+## startDebugging
+
+Using the command `lldb-vscode startDebugging` it is possible to trigger a
+reverse request to the client requesting a child debug session with the
+specified configuration. For example, this can be used to attached to forked or
+spawned processes. For more information see
+[Reverse Requests StartDebugging](https://microsoft.github.io/debug-adapter-protocol/specification#Reverse_Requests_StartDebugging).
+
+The custom command has the following format:
+
+```
+lldb-vscode startDebugging <launch|attach> <configuration>
+```
+
+This will launch a server and then request a child debug session for a client.
+
+```javascript
+{
+  "program": "server",
+  "postRunCommand": [
+    "lldb-vscode startDebugging launch '{\"program\":\"client\"}'"
+  ]
+}
+```
+
+## repl-mode
+
+Inspect or adjust the behavior of lldb-vscode repl evaluation requests. The
+supported modes are `variable`, `command` and `auto`.
+
+*  `variable` - Variable mode expressions are evaluated in the context of the
+   current frame. Use a `\`` prefix on the command to run an lldb command.
+*  `command` - Command mode expressions are evaluated as lldb commands, as a
+   result, values printed by lldb are always stringified representations of the
+   expression output.
+*  `auto` - Auto mode will attempt to infer if the expression represents an lldb
+   command or a variable expression. A heuristic is used to infer if the input
+   represents a variable or a command. Use a `\`` prefix to ensure an expression
+   is evaluated as a command.
+
+The initial repl-mode can be configured with the cli flag `--repl-mode=<mode>`
+and may also be adjusted at runtime using the lldb command
+`lldb-vscode repl-mode <mode>`.

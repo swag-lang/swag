@@ -32,12 +32,10 @@ public:
 
   void ClearPseudoMemory();
 
-  bool LoadPseudoRegistersFromFrame(lldb_private::StackFrame &frame);
-
   bool LoadStateFromDictionary(lldb_private::OptionValueDictionary *test_data);
 
   bool CompareState(EmulationStateARM &other_state,
-                    lldb_private::Stream *out_stream);
+                    lldb_private::Stream &out_stream);
 
   static size_t
   ReadPseudoMemory(lldb_private::EmulateInstruction *instruction, void *baton,

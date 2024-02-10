@@ -123,7 +123,7 @@ PlatformLinux::PlatformLinux(bool is_host)
         {llvm::Triple::x86_64, llvm::Triple::x86, llvm::Triple::arm,
          llvm::Triple::aarch64, llvm::Triple::mips64, llvm::Triple::mips64,
          llvm::Triple::hexagon, llvm::Triple::mips, llvm::Triple::mips64el,
-         llvm::Triple::mipsel, llvm::Triple::systemz},
+         llvm::Triple::mipsel, llvm::Triple::msp430, llvm::Triple::systemz},
         llvm::Triple::Linux);
   }
 }
@@ -312,9 +312,12 @@ MmapArgList PlatformLinux::GetMmapArgumentList(const ArchSpec &arch,
 }
 
 CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
-  if (!m_type_system_up)
-    m_type_system_up.reset(new TypeSystemClang("siginfo", triple));
-  TypeSystemClang *ast = m_type_system_up.get();
+  {
+    std::lock_guard<std::mutex> guard(m_mutex);
+    if (!m_type_system)
+      m_type_system = std::make_shared<TypeSystemClang>("siginfo", triple);
+  }
+  TypeSystemClang *ast = m_type_system.get();
 
   bool si_errno_then_code = true;
 
@@ -357,13 +360,14 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
       nullptr, OptionalClangModuleID(), lldb::eAccessPublic, "",
       clang::TTK_Union, lldb::eLanguageTypeC);
   ast->StartTagDeclarationDefinition(sigfault_bounds_type);
-  ast->AddFieldToRecordType(sigfault_bounds_type, "_addr_bnd",
-      ast->CreateStructForIdentifier(ConstString(),
+  ast->AddFieldToRecordType(
+      sigfault_bounds_type, "_addr_bnd",
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_lower", voidp_type},
                                          {"_upper", voidp_type},
                                      }),
-                            lldb::eAccessPublic, 0);
+      lldb::eAccessPublic, 0);
   ast->AddFieldToRecordType(sigfault_bounds_type, "_pkey", uint_type,
                             lldb::eAccessPublic, 0);
   ast->CompleteTagDeclarationDefinition(sigfault_bounds_type);
@@ -401,7 +405,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_kill",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"si_pid", pid_type},
                                          {"si_uid", uid_type},
@@ -410,7 +414,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_timer",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"si_tid", int_type},
                                          {"si_overrun", int_type},
@@ -420,7 +424,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_rt",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"si_pid", pid_type},
                                          {"si_uid", uid_type},
@@ -430,7 +434,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_sigchld",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"si_pid", pid_type},
                                          {"si_uid", uid_type},
@@ -442,7 +446,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_sigfault",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"si_addr", voidp_type},
                                          {"si_addr_lsb", short_type},
@@ -452,7 +456,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
 
   ast->AddFieldToRecordType(
       union_type, "_sigpoll",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"si_band", band_type},
                                          {"si_fd", int_type},
@@ -462,7 +466,7 @@ CompilerType PlatformLinux::GetSiginfoType(const llvm::Triple &triple) {
   // NB: SIGSYS is not present on ia64 but we don't seem to support that
   ast->AddFieldToRecordType(
       union_type, "_sigsys",
-      ast->CreateStructForIdentifier(ConstString(),
+      ast->CreateStructForIdentifier(llvm::StringRef(),
                                      {
                                          {"_call_addr", voidp_type},
                                          {"_syscall", int_type},

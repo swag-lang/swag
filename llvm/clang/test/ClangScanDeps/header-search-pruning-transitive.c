@@ -41,14 +41,14 @@ module X { header "X.h" }
 [{
   "file": "DIR/test.c",
   "directory": "DIR",
-  "command": "clang -c test.c -o DIR/test.o -fmodules -fimplicit-modules -fmodules-cache-path=DIR/module-cache -fimplicit-module-maps -Ibegin -Ia -Ib -Iend"
+  "command": "clang -fsyntax-only test.c -fmodules -fimplicit-modules -fmodules-cache-path=DIR/module-cache -fimplicit-module-maps -Ibegin -Ia -Ib -Iend"
 }]
 
 //--- cdb_without_a.json.template
 [{
   "file": "DIR/test.c",
   "directory": "DIR",
-  "command": "clang -c test.c -o DIR/test.o -fmodules -fimplicit-modules -fmodules-cache-path=DIR/module-cache -fimplicit-module-maps -Ibegin     -Ib -Iend"
+  "command": "clang -fsyntax-only test.c -fmodules -fimplicit-modules -fmodules-cache-path=DIR/module-cache -fimplicit-module-maps -Ibegin     -Ib -Iend"
 }]
 
 // RUN: sed -e "s|DIR|%/t|g" %t/cdb_with_a.json.template    > %t/cdb_with_a.json
@@ -72,8 +72,8 @@ module X { header "X.h" }
 // CHECK:            ],
 // CHECK-NEXT:       "context-hash": "[[HASH_X:.*]]",
 // CHECK-NEXT:       "file-deps": [
-// CHECK-NEXT:         "[[PREFIX]]/./X.h",
-// CHECK-NEXT:         "[[PREFIX]]/./module.modulemap"
+// CHECK-NEXT:         "[[PREFIX]]/X.h",
+// CHECK-NEXT:         "[[PREFIX]]/module.modulemap"
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "name": "X"
 // CHECK-NEXT:     },
@@ -84,18 +84,18 @@ module X { header "X.h" }
 // CHECK:            ],
 // CHECK-NEXT:       "context-hash": "[[HASH_Y_WITH_A]]",
 // CHECK-NEXT:       "file-deps": [
-// CHECK-NEXT:         "[[PREFIX]]/./Y.h",
-// CHECK-NEXT:         "[[PREFIX]]/./a/a.h",
-// CHECK-NEXT:         "[[PREFIX]]/./begin/begin.h",
-// CHECK-NEXT:         "[[PREFIX]]/./end/end.h",
-// CHECK-NEXT:         "[[PREFIX]]/./module.modulemap"
+// CHECK-NEXT:         "[[PREFIX]]/Y.h",
+// CHECK-NEXT:         "[[PREFIX]]/a/a.h",
+// CHECK-NEXT:         "[[PREFIX]]/begin/begin.h",
+// CHECK-NEXT:         "[[PREFIX]]/end/end.h",
+// CHECK-NEXT:         "[[PREFIX]]/module.modulemap"
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "name": "Y"
 // CHECK-NEXT:     }
 // CHECK-NEXT:   ],
 // CHECK-NEXT:   "translation-units": [
 // CHECK-NEXT:     {
-// CHECK-NEXT:       "clang-context-hash": "{{.*}}",
+// CHECK:            "clang-context-hash": "{{.*}}",
 // CHECK-NEXT:       "clang-module-deps": [
 // CHECK-NEXT:         {
 // CHECK-NEXT:           "context-hash": "[[HASH_X]]",
@@ -104,14 +104,13 @@ module X { header "X.h" }
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "command-line": [
 // CHECK:            ],
-// CHECK-NEXT:       "file-deps": [
+// CHECK:            "file-deps": [
 // CHECK-NEXT:         "[[PREFIX]]/test.c"
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "input-file": "[[PREFIX]]/test.c"
 // CHECK-NEXT:     }
-// CHECK-NEXT:   ]
-// CHECK-NEXT: }
-// CHECK-NEXT: {
+
+// CHECK:      {
 // CHECK-NEXT:   "modules": [
 // CHECK-NEXT:     {
 // CHECK-NEXT:       "clang-module-deps": [
@@ -127,8 +126,8 @@ module X { header "X.h" }
 // also has a different context hash from the first version of module X.
 // CHECK-NOT:        "context-hash": "[[HASH_X]]",
 // CHECK:            "file-deps": [
-// CHECK-NEXT:         "[[PREFIX]]/./X.h",
-// CHECK-NEXT:         "[[PREFIX]]/./module.modulemap"
+// CHECK-NEXT:         "[[PREFIX]]/X.h",
+// CHECK-NEXT:         "[[PREFIX]]/module.modulemap"
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "name": "X"
 // CHECK-NEXT:     },
@@ -139,17 +138,17 @@ module X { header "X.h" }
 // CHECK:            ],
 // CHECK-NEXT:       "context-hash": "[[HASH_Y_WITHOUT_A]]",
 // CHECK-NEXT:       "file-deps": [
-// CHECK-NEXT:         "[[PREFIX]]/./Y.h",
-// CHECK-NEXT:         "[[PREFIX]]/./begin/begin.h",
-// CHECK-NEXT:         "[[PREFIX]]/./end/end.h",
-// CHECK-NEXT:         "[[PREFIX]]/./module.modulemap"
+// CHECK-NEXT:         "[[PREFIX]]/Y.h",
+// CHECK-NEXT:         "[[PREFIX]]/begin/begin.h",
+// CHECK-NEXT:         "[[PREFIX]]/end/end.h",
+// CHECK-NEXT:         "[[PREFIX]]/module.modulemap"
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "name": "Y"
 // CHECK-NEXT:     }
 // CHECK-NEXT:   ],
 // CHECK-NEXT:   "translation-units": [
 // CHECK-NEXT:     {
-// CHECK-NEXT:       "clang-context-hash": "{{.*}}",
+// CHECK:            "clang-context-hash": "{{.*}}",
 // CHECK-NEXT:       "clang-module-deps": [
 // CHECK-NEXT:         {
 // CHECK-NEXT:           "context-hash": "{{.*}}",
@@ -158,10 +157,8 @@ module X { header "X.h" }
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "command-line": [
 // CHECK:            ],
-// CHECK-NEXT:       "file-deps": [
+// CHECK:            "file-deps": [
 // CHECK-NEXT:         "[[PREFIX]]/test.c"
 // CHECK-NEXT:       ],
 // CHECK-NEXT:       "input-file": "[[PREFIX]]/test.c"
 // CHECK-NEXT:     }
-// CHECK-NEXT:   ]
-// CHECK-NEXT: }

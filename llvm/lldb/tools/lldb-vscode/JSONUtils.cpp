@@ -8,10 +8,10 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <optional>
 #include <sstream>
 #include <string.h>
 
-#include "llvm/ADT/Optional.h"
 #include "llvm/Support/FormatAdapters.h"
 #include "llvm/Support/Path.h"
 #include "llvm/Support/ScopedPrinter.h"
@@ -19,6 +19,8 @@
 #include "lldb/API/SBBreakpoint.h"
 #include "lldb/API/SBBreakpointLocation.h"
 #include "lldb/API/SBDeclaration.h"
+#include "lldb/API/SBStringList.h"
+#include "lldb/API/SBStructuredData.h"
 #include "lldb/API/SBValue.h"
 #include "lldb/Host/PosixApi.h"
 
@@ -45,7 +47,7 @@ llvm::StringRef GetAsString(const llvm::json::Value &value) {
 
 // Gets a string from a JSON object using the key, or returns an empty string.
 llvm::StringRef GetString(const llvm::json::Object &obj, llvm::StringRef key) {
-  if (llvm::Optional<llvm::StringRef> value = obj.getString(key))
+  if (std::optional<llvm::StringRef> value = obj.getString(key))
     return *value;
   return llvm::StringRef();
 }
@@ -132,27 +134,28 @@ std::vector<std::string> GetStrings(const llvm::json::Object *obj,
 
 void SetValueForKey(lldb::SBValue &v, llvm::json::Object &object,
                     llvm::StringRef key) {
-
-  llvm::StringRef value = v.GetValue();
-  llvm::StringRef summary = v.GetSummary();
-  llvm::StringRef type_name = v.GetType().GetDisplayTypeName();
-  lldb::SBError error = v.GetError();
-
   std::string result;
   llvm::raw_string_ostream strm(result);
+
+  lldb::SBError error = v.GetError();
   if (!error.Success()) {
     strm << "<error: " << error.GetCString() << ">";
-  } else if (!value.empty()) {
-    strm << value;
-    if (!summary.empty())
+  } else {
+    llvm::StringRef value = v.GetValue();
+    llvm::StringRef summary = v.GetSummary();
+    llvm::StringRef type_name = v.GetType().GetDisplayTypeName();
+    if (!value.empty()) {
+      strm << value;
+      if (!summary.empty())
+        strm << ' ' << summary;
+    } else if (!summary.empty()) {
       strm << ' ' << summary;
-  } else if (!summary.empty()) {
-    strm << ' ' << summary;
-  } else if (!type_name.empty()) {
-    strm << type_name;
-    lldb::addr_t address = v.GetLoadAddress();
-    if (address != LLDB_INVALID_ADDRESS)
-      strm << " @ " << llvm::format_hex(address, 0);
+    } else if (!type_name.empty()) {
+      strm << type_name;
+      lldb::addr_t address = v.GetLoadAddress();
+      if (address != LLDB_INVALID_ADDRESS)
+        strm << " @ " << llvm::format_hex(address, 0);
+    }
   }
   strm.flush();
   EmplaceSafeString(object, key, result);
@@ -304,8 +307,9 @@ llvm::json::Value CreateScope(const llvm::StringRef name,
 //   "required": [ "verified" ]
 // }
 llvm::json::Value CreateBreakpoint(lldb::SBBreakpoint &bp,
-                                   llvm::Optional<llvm::StringRef> request_path,
-                                   llvm::Optional<uint32_t> request_line) {
+                                   std::optional<llvm::StringRef> request_path,
+                                   std::optional<uint32_t> request_line,
+                                   std::optional<uint32_t> request_column) {
   // Each breakpoint location is treated as a separate breakpoint for VS code.
   // They don't have the notion of a single breakpoint with multiple locations.
   llvm::json::Object object;
@@ -342,11 +346,16 @@ llvm::json::Value CreateBreakpoint(lldb::SBBreakpoint &bp,
     const auto line = line_entry.GetLine();
     if (line != UINT32_MAX)
       object.try_emplace("line", line);
+    const auto column = line_entry.GetColumn();
+    if (column != 0)
+      object.try_emplace("column", column);
     object.try_emplace("source", CreateSource(line_entry));
   }
   // We try to add request_line as a fallback
   if (request_line)
     object.try_emplace("line", *request_line);
+  if (request_column)
+    object.try_emplace("column", *request_column);
   return llvm::json::Value(std::move(object));
 }
 
@@ -436,8 +445,8 @@ llvm::json::Value CreateModule(lldb::SBModule &module) {
 }
 
 void AppendBreakpoint(lldb::SBBreakpoint &bp, llvm::json::Array &breakpoints,
-                      llvm::Optional<llvm::StringRef> request_path,
-                      llvm::Optional<uint32_t> request_line) {
+                      std::optional<llvm::StringRef> request_path,
+                      std::optional<uint32_t> request_line) {
   breakpoints.emplace_back(CreateBreakpoint(bp, request_path, request_line));
 }
 
@@ -610,7 +619,9 @@ llvm::json::Value CreateSource(llvm::StringRef source_path) {
 llvm::json::Value CreateSource(lldb::SBFrame &frame, int64_t &disasm_line) {
   disasm_line = 0;
   auto line_entry = frame.GetLineEntry();
-  if (line_entry.GetFileSpec().IsValid())
+  // A line entry of 0 indicates the line is compiler generated i.e. no source
+  // file so don't return early with the line entry.
+  if (line_entry.GetFileSpec().IsValid() && line_entry.GetLine() != 0)
     return CreateSource(line_entry);
 
   llvm::json::Object object;
@@ -647,7 +658,11 @@ llvm::json::Value CreateSource(lldb::SBFrame &frame, int64_t &disasm_line) {
   }
   const auto num_insts = insts.GetSize();
   if (low_pc != LLDB_INVALID_ADDRESS && num_insts > 0) {
-    EmplaceSafeString(object, "name", frame.GetFunctionName());
+    if (line_entry.GetLine() == 0) {
+      EmplaceSafeString(object, "name", "<compiler-generated>");
+    } else {
+      EmplaceSafeString(object, "name", frame.GetDisplayFunctionName());
+    }
     SourceReference source;
     llvm::raw_string_ostream src_strm(source.content);
     std::string line;
@@ -930,7 +945,7 @@ llvm::json::Value CreateThreadStopped(lldb::SBThread &thread,
   // If no description has been set, then set it to the default thread stopped
   // description. If we have breakpoints that get hit and shouldn't be reported
   // as breakpoints, then they will set the description above.
-  if (ObjectContainsKey(body, "description")) {
+  if (!ObjectContainsKey(body, "description")) {
     char description[1024];
     if (thread.GetStopDescription(description, sizeof(description))) {
       EmplaceSafeString(body, "description", std::string(description));
@@ -1099,11 +1114,8 @@ llvm::json::Value CreateCompileUnit(lldb::SBCompileUnit unit) {
 llvm::json::Object
 CreateRunInTerminalReverseRequest(const llvm::json::Object &launch_request,
                                   llvm::StringRef debug_adaptor_path,
-                                  llvm::StringRef comm_file) {
-  llvm::json::Object reverse_request;
-  reverse_request.try_emplace("type", "request");
-  reverse_request.try_emplace("command", "runInTerminal");
-
+                                  llvm::StringRef comm_file,
+                                  lldb::pid_t debugger_pid) {
   llvm::json::Object run_in_terminal_args;
   // This indicates the IDE to open an embedded terminal, instead of opening the
   // terminal in a new window.
@@ -1112,8 +1124,13 @@ CreateRunInTerminalReverseRequest(const llvm::json::Object &launch_request,
   auto launch_request_arguments = launch_request.getObject("arguments");
   // The program path must be the first entry in the "args" field
   std::vector<std::string> args = {
-      debug_adaptor_path.str(), "--comm-file", comm_file.str(),
-      "--launch-target", GetString(launch_request_arguments, "program").str()};
+      debug_adaptor_path.str(), "--comm-file", comm_file.str()};
+  if (debugger_pid != LLDB_INVALID_PROCESS_ID) {
+    args.push_back("--debugger-pid");
+    args.push_back(std::to_string(debugger_pid));
+  }
+  args.push_back("--launch-target");
+  args.push_back(GetString(launch_request_arguments, "program").str());
   std::vector<std::string> target_args =
       GetStrings(launch_request_arguments, "args");
   args.insert(args.end(), target_args.begin(), target_args.end());
@@ -1134,9 +1151,77 @@ CreateRunInTerminalReverseRequest(const llvm::json::Object &launch_request,
   run_in_terminal_args.try_emplace("env",
                                    llvm::json::Value(std::move(environment)));
 
-  reverse_request.try_emplace(
-      "arguments", llvm::json::Value(std::move(run_in_terminal_args)));
-  return reverse_request;
+  return run_in_terminal_args;
+}
+
+// Keep all the top level items from the statistics dump, except for the
+// "modules" array. It can be huge and cause delay
+// Array and dictionary value will return as <key, JSON string> pairs
+void FilterAndGetValueForKey(const lldb::SBStructuredData data, const char *key,
+                             llvm::json::Object &out) {
+  lldb::SBStructuredData value = data.GetValueForKey(key);
+  std::string key_utf8 = llvm::json::fixUTF8(key);
+  if (strcmp(key, "modules") == 0)
+    return;
+  switch (value.GetType()) {
+  case lldb::eStructuredDataTypeFloat:
+    out.try_emplace(key_utf8, value.GetFloatValue());
+    break;
+  case lldb::eStructuredDataTypeUnsignedInteger:
+    out.try_emplace(key_utf8, value.GetIntegerValue((uint64_t)0));
+    break;
+  case lldb::eStructuredDataTypeSignedInteger:
+    out.try_emplace(key_utf8, value.GetIntegerValue((int64_t)0));
+    break;
+  case lldb::eStructuredDataTypeArray: {
+    lldb::SBStream contents;
+    value.GetAsJSON(contents);
+    out.try_emplace(key_utf8, llvm::json::fixUTF8(contents.GetData()));
+  } break;
+  case lldb::eStructuredDataTypeBoolean:
+    out.try_emplace(key_utf8, value.GetBooleanValue());
+    break;
+  case lldb::eStructuredDataTypeString: {
+    // Get the string size before reading
+    const size_t str_length = value.GetStringValue(nullptr, 0);
+    std::string str(str_length + 1, 0);
+    value.GetStringValue(&str[0], str_length);
+    out.try_emplace(key_utf8, llvm::json::fixUTF8(str));
+  } break;
+  case lldb::eStructuredDataTypeDictionary: {
+    lldb::SBStream contents;
+    value.GetAsJSON(contents);
+    out.try_emplace(key_utf8, llvm::json::fixUTF8(contents.GetData()));
+  } break;
+  case lldb::eStructuredDataTypeNull:
+  case lldb::eStructuredDataTypeGeneric:
+  case lldb::eStructuredDataTypeInvalid:
+    break;
+  }
+}
+
+void addStatistic(llvm::json::Object &event) {
+  lldb::SBStructuredData statistics = g_vsc.target.GetStatistics();
+  bool is_dictionary =
+      statistics.GetType() == lldb::eStructuredDataTypeDictionary;
+  if (!is_dictionary)
+    return;
+  llvm::json::Object stats_body;
+
+  lldb::SBStringList keys;
+  if (!statistics.GetKeys(keys))
+    return;
+  for (size_t i = 0; i < keys.GetSize(); i++) {
+    const char *key = keys.GetStringAtIndex(i);
+    FilterAndGetValueForKey(statistics, key, stats_body);
+  }
+  event.try_emplace("statistics", std::move(stats_body));
+}
+
+llvm::json::Object CreateTerminatedEventObject() {
+  llvm::json::Object event(CreateEventObject("terminated"));
+  addStatistic(event);
+  return event;
 }
 
 std::string JSONToString(const llvm::json::Value &json) {

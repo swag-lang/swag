@@ -19,9 +19,18 @@
 
 #define DEBUG_TYPE "callgraph"
 
+using namespace llvm;
+
 namespace opts {
-extern llvm::cl::opt<bool> TimeOpts;
-extern llvm::cl::opt<unsigned> Verbosity;
+
+extern cl::opt<bool> TimeOpts;
+extern cl::opt<unsigned> Verbosity;
+extern cl::OptionCategory BoltCategory;
+
+static cl::opt<std::string>
+    DumpCGDot("dump-cg", cl::desc("dump callgraph to the given file"),
+              cl::cat(BoltCategory));
+
 } // namespace opts
 
 namespace llvm {
@@ -80,7 +89,7 @@ std::deque<BinaryFunction *> BinaryFunctionCallGraph::buildTraversalOrder() {
 
 BinaryFunctionCallGraph
 buildCallGraph(BinaryContext &BC, CgFilterFunction Filter, bool CgFromPerfData,
-               bool IncludeColdCalls, bool UseFunctionHotSize,
+               bool IncludeSplitCalls, bool UseFunctionHotSize,
                bool UseSplitHotSize, bool UseEdgeCounts,
                bool IgnoreRecursiveCalls) {
   NamedRegionTimer T1("buildcg", "Callgraph construction", "CG breakdown",
@@ -135,32 +144,39 @@ buildCallGraph(BinaryContext &BC, CgFilterFunction Filter, bool CgFromPerfData,
     uint64_t Offset = 0;
 
     auto recordCall = [&](const MCSymbol *DestSymbol, const uint64_t Count) {
-      if (BinaryFunction *DstFunc =
-              DestSymbol ? BC.getFunctionForSymbol(DestSymbol) : nullptr) {
-        if (DstFunc == Function) {
-          LLVM_DEBUG(dbgs() << "BOLT-INFO: recursive call detected in "
-                            << *DstFunc << "\n");
-          ++RecursiveCallsites;
-          if (IgnoreRecursiveCalls)
-            return false;
-        }
-        if (Filter(*DstFunc))
-          return false;
-
-        const CallGraph::NodeId DstId = lookupNode(DstFunc);
-        const bool IsValidCount = Count != COUNT_NO_PROFILE;
-        const uint64_t AdjCount = UseEdgeCounts && IsValidCount ? Count : 1;
-        if (!IsValidCount)
-          ++NoProfileCallsites;
-        Cg.incArcWeight(SrcId, DstId, AdjCount, Offset);
-        LLVM_DEBUG(if (opts::Verbosity > 1) {
-          dbgs() << "BOLT-DEBUG: buildCallGraph: call " << *Function << " -> "
-                 << *DstFunc << " @ " << Offset << "\n";
-        });
-        return true;
+      BinaryFunction *DstFunc =
+          DestSymbol ? BC.getFunctionForSymbol(DestSymbol) : nullptr;
+      if (!DstFunc) {
+        LLVM_DEBUG(if (opts::Verbosity > 1) dbgs()
+                   << "BOLT-DEBUG: buildCallGraph: no function for symbol\n");
+        return false;
       }
 
-      return false;
+      if (DstFunc == Function) {
+        LLVM_DEBUG(dbgs() << "BOLT-INFO: recursive call detected in "
+                          << *DstFunc << "\n");
+        ++RecursiveCallsites;
+        if (IgnoreRecursiveCalls)
+          return false;
+      }
+      if (Filter(*DstFunc)) {
+        LLVM_DEBUG(if (opts::Verbosity > 1) dbgs()
+                   << "BOLT-DEBUG: buildCallGraph: filtered " << *DstFunc
+                   << '\n');
+        return false;
+      }
+
+      const CallGraph::NodeId DstId = lookupNode(DstFunc);
+      const bool IsValidCount = Count != COUNT_NO_PROFILE;
+      const uint64_t AdjCount = UseEdgeCounts && IsValidCount ? Count : 1;
+      if (!IsValidCount)
+        ++NoProfileCallsites;
+      Cg.incArcWeight(SrcId, DstId, AdjCount, Offset);
+      LLVM_DEBUG(if (opts::Verbosity > 1) {
+        dbgs() << "BOLT-DEBUG: buildCallGraph: call " << *Function << " -> "
+               << *DstFunc << " @ " << Offset << "\n";
+      });
+      return true;
     };
 
     // Pairs of (symbol, count) for each target at this callsite.
@@ -216,8 +232,8 @@ buildCallGraph(BinaryContext &BC, CgFilterFunction Filter, bool CgFromPerfData,
       }
     } else {
       for (BinaryBasicBlock *BB : Function->getLayout().blocks()) {
-        // Don't count calls from cold blocks unless requested.
-        if (BB->isCold() && !IncludeColdCalls)
+        // Don't count calls from split blocks unless requested.
+        if (BB->isSplit() && !IncludeSplitCalls)
           continue;
 
         // Determine whether the block is included in Function's (hot) size
@@ -225,7 +241,7 @@ buildCallGraph(BinaryContext &BC, CgFilterFunction Filter, bool CgFromPerfData,
         bool BBIncludedInFunctionSize = false;
         if (UseFunctionHotSize && Function->isSplit()) {
           if (UseSplitHotSize)
-            BBIncludedInFunctionSize = !BB->isCold();
+            BBIncludedInFunctionSize = !BB->isSplit();
           else
             BBIncludedInFunctionSize = BB->getKnownExecutionCount() != 0;
         } else {
@@ -269,6 +285,12 @@ buildCallGraph(BinaryContext &BC, CgFilterFunction Filter, bool CgFromPerfData,
                      Cg.numNodes(), TotalCallsites, RecursiveCallsites,
                      Cg.density(), NotProcessed, NoProfileCallsites,
                      NumFallbacks);
+
+  if (opts::DumpCGDot.getNumOccurrences()) {
+    Cg.printDot(opts::DumpCGDot, [&](CallGraph::NodeId Id) {
+      return Cg.nodeIdToFunc(Id)->getPrintName();
+    });
+  }
 
   return Cg;
 }

@@ -12,7 +12,6 @@
 #include "lldb/Core/ValueObjectList.h"
 #include "lldb/Host/Config.h"
 #include "lldb/Utility/CompletionRequest.h"
-#include "lldb/Utility/ConstString.h"
 #include "lldb/Utility/Flags.h"
 #include "lldb/Utility/Predicate.h"
 #include "lldb/Utility/Stream.h"
@@ -23,6 +22,7 @@
 
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -31,9 +31,6 @@
 
 namespace lldb_private {
 class Debugger;
-namespace repro {
-class DataRecorder;
-}
 } // namespace lldb_private
 
 namespace curses {
@@ -63,8 +60,7 @@ public:
 
   IOHandler(Debugger &debugger, IOHandler::Type type,
             const lldb::FileSP &input_sp, const lldb::StreamFileSP &output_sp,
-            const lldb::StreamFileSP &error_sp, uint32_t flags,
-            repro::DataRecorder *data_recorder);
+            const lldb::StreamFileSP &error_sp, uint32_t flags);
 
   virtual ~IOHandler();
 
@@ -110,7 +106,7 @@ public:
   }
   bool SetPrompt(const char *) = delete;
 
-  virtual ConstString GetControlSequence(char ch) { return ConstString(); }
+  virtual llvm::StringRef GetControlSequence(char ch) { return {}; }
 
   virtual const char *GetCommandPrefix() { return nullptr; }
 
@@ -173,7 +169,6 @@ protected:
   lldb::StreamFileSP m_output_sp;
   lldb::StreamFileSP m_error_sp;
   std::recursive_mutex m_output_mutex;
-  repro::DataRecorder *m_data_recorder;
   Predicate<bool> m_popped;
   Flags m_flags;
   Type m_type;
@@ -205,8 +200,8 @@ public:
 
   virtual void IOHandlerDeactivated(IOHandler &io_handler) {}
 
-  virtual llvm::Optional<std::string> IOHandlerSuggestion(IOHandler &io_handler,
-                                                          llvm::StringRef line);
+  virtual std::optional<std::string> IOHandlerSuggestion(IOHandler &io_handler,
+                                                         llvm::StringRef line);
 
   virtual void IOHandlerComplete(IOHandler &io_handler,
                                  CompletionRequest &request);
@@ -275,9 +270,7 @@ public:
     return true;
   }
 
-  virtual ConstString IOHandlerGetControlSequence(char ch) {
-    return ConstString();
-  }
+  virtual llvm::StringRef IOHandlerGetControlSequence(char ch) { return {}; }
 
   virtual const char *IOHandlerGetCommandPrefix() { return nullptr; }
 
@@ -299,24 +292,25 @@ protected:
 // the last line is equal to "end_line" which is specified in the constructor.
 class IOHandlerDelegateMultiline : public IOHandlerDelegate {
 public:
-  IOHandlerDelegateMultiline(const char *end_line,
+  IOHandlerDelegateMultiline(llvm::StringRef end_line,
                              Completion completion = Completion::None)
-      : IOHandlerDelegate(completion),
-        m_end_line((end_line && end_line[0]) ? end_line : "") {}
+      : IOHandlerDelegate(completion), m_end_line(end_line.str() + "\n") {}
 
   ~IOHandlerDelegateMultiline() override = default;
 
-  ConstString IOHandlerGetControlSequence(char ch) override {
+  llvm::StringRef IOHandlerGetControlSequence(char ch) override {
     if (ch == 'd')
-      return ConstString(m_end_line + "\n");
-    return ConstString();
+      return m_end_line;
+    return {};
   }
 
   bool IOHandlerIsInputComplete(IOHandler &io_handler,
                                 StringList &lines) override {
     // Determine whether the end of input signal has been entered
     const size_t num_lines = lines.GetSize();
-    if (num_lines > 0 && lines[num_lines - 1] == m_end_line) {
+    const llvm::StringRef end_line =
+        llvm::StringRef(m_end_line).drop_back(1); // Drop '\n'
+    if (num_lines > 0 && llvm::StringRef(lines[num_lines - 1]) == end_line) {
       // Remove the terminal line from "lines" so it doesn't appear in the
       // resulting input and return true to indicate we are done getting lines
       lines.PopBack();
@@ -338,8 +332,7 @@ public:
                     uint32_t line_number_start, // If non-zero show line numbers
                                                 // starting at
                                                 // 'line_number_start'
-                    IOHandlerDelegate &delegate,
-                    repro::DataRecorder *data_recorder);
+                    IOHandlerDelegate &delegate);
 
   IOHandlerEditline(Debugger &debugger, IOHandler::Type type,
                     const lldb::FileSP &input_sp,
@@ -351,8 +344,7 @@ public:
                     uint32_t line_number_start, // If non-zero show line numbers
                                                 // starting at
                                                 // 'line_number_start'
-                    IOHandlerDelegate &delegate,
-                    repro::DataRecorder *data_recorder);
+                    IOHandlerDelegate &delegate);
 
   IOHandlerEditline(Debugger &, IOHandler::Type, const char *, const char *,
                     const char *, bool, bool, uint32_t,
@@ -379,7 +371,7 @@ public:
 
   void TerminalSizeChanged() override;
 
-  ConstString GetControlSequence(char ch) override {
+  llvm::StringRef GetControlSequence(char ch) override {
     return m_delegate.IOHandlerGetControlSequence(ch);
   }
 
@@ -424,7 +416,7 @@ private:
   int FixIndentationCallback(Editline *editline, const StringList &lines,
                              int cursor_position);
 
-  llvm::Optional<std::string> SuggestionCallback(llvm::StringRef line);
+  std::optional<std::string> SuggestionCallback(llvm::StringRef line);
 
   void AutoCompleteCallback(CompletionRequest &request);
 #endif
@@ -528,8 +520,9 @@ public:
             m_stack[num_io_handlers - 2]->GetType() == second_top_type);
   }
 
-  ConstString GetTopIOHandlerControlSequence(char ch) {
-    return ((m_top != nullptr) ? m_top->GetControlSequence(ch) : ConstString());
+  llvm::StringRef GetTopIOHandlerControlSequence(char ch) {
+    return ((m_top != nullptr) ? m_top->GetControlSequence(ch)
+                               : llvm::StringRef());
   }
 
   const char *GetTopIOHandlerCommandPrefix() {

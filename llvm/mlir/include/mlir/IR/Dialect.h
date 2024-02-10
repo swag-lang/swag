@@ -115,7 +115,8 @@ public:
   /// By default this will lookup for registered operations and return the
   /// `parse()` method registered on the RegisteredOperationName. Dialects can
   /// override this behavior and handle unregistered operations as well.
-  virtual Optional<ParseOpHook> getParseOperationHook(StringRef opName) const;
+  virtual std::optional<ParseOpHook>
+  getParseOperationHook(StringRef opName) const;
 
   /// Print an operation registered to this dialect.
   /// This hook is invoked for registered operation which don't override the
@@ -157,13 +158,22 @@ public:
 
   /// Lookup an interface for the given ID if one is registered, otherwise
   /// nullptr.
-  const DialectInterface *getRegisteredInterface(TypeID interfaceID) {
+  DialectInterface *getRegisteredInterface(TypeID interfaceID) {
+#ifndef NDEBUG
+    handleUseOfUndefinedPromisedInterface(interfaceID);
+#endif
+
     auto it = registeredInterfaces.find(interfaceID);
     return it != registeredInterfaces.end() ? it->getSecond().get() : nullptr;
   }
   template <typename InterfaceT>
-  const InterfaceT *getRegisteredInterface() {
-    return static_cast<const InterfaceT *>(
+  InterfaceT *getRegisteredInterface() {
+#ifndef NDEBUG
+    handleUseOfUndefinedPromisedInterface(InterfaceT::getInterfaceID(),
+                                          llvm::getTypeName<InterfaceT>());
+#endif
+
+    return static_cast<InterfaceT *>(
         getRegisteredInterface(InterfaceT::getInterfaceID()));
   }
 
@@ -186,8 +196,44 @@ public:
   /// Register a set of dialect interfaces with this dialect instance.
   template <typename... Args>
   void addInterfaces() {
-    (void)std::initializer_list<int>{
-        0, (addInterface(std::make_unique<Args>(this)), 0)...};
+    (addInterface(std::make_unique<Args>(this)), ...);
+  }
+  template <typename InterfaceT, typename... Args>
+  InterfaceT &addInterface(Args &&...args) {
+    InterfaceT *interface = new InterfaceT(this, std::forward<Args>(args)...);
+    addInterface(std::unique_ptr<DialectInterface>(interface));
+    return *interface;
+  }
+
+  /// Declare that the given interface will be implemented, but has a delayed
+  /// registration. The promised interface type can be an interface of any type
+  /// not just a dialect interface, i.e. it may also be an
+  /// AttributeInterface/OpInterface/TypeInterface/etc.
+  template <typename InterfaceT>
+  void declarePromisedInterface() {
+    unresolvedPromisedInterfaces.insert(InterfaceT::getInterfaceID());
+  }
+
+  /// Checks if the given interface, which is attempting to be used, is a
+  /// promised interface of this dialect that has yet to be implemented. If so,
+  /// emits a fatal error. `interfaceName` is an optional string that contains a
+  /// more user readable name for the interface (such as the class name).
+  void handleUseOfUndefinedPromisedInterface(TypeID interfaceID,
+                                             StringRef interfaceName = "") {
+    if (unresolvedPromisedInterfaces.count(interfaceID)) {
+      llvm::report_fatal_error(
+          "checking for an interface (`" + interfaceName +
+          "`) that was promised by dialect '" + getNamespace() +
+          "' but never implemented. This is generally an indication "
+          "that the dialect extension implementing the interface was never "
+          "registered.");
+    }
+  }
+  /// Checks if the given interface, which is attempting to be attached to a
+  /// construct owned by this dialect, is a promised interface of this dialect
+  /// that has yet to be implemented. If so, it resolves the interface promise.
+  void handleAdditionOfUndefinedPromisedInterface(TypeID interfaceID) {
+    unresolvedPromisedInterfaces.erase(interfaceID);
   }
 
 protected:
@@ -204,6 +250,10 @@ protected:
   ///
   template <typename... Args>
   void addOperations() {
+    // This initializer_list argument pack expansion is essentially equal to
+    // using a fold expression with a comma operator. Clang however, refuses
+    // to compile a fold expression with a depth of more than 256 by default.
+    // There seem to be no such limitations for initializer_list.
     (void)std::initializer_list<int>{
         0, (RegisteredOperationName::insert<Args>(*this), 0)...};
   }
@@ -211,7 +261,7 @@ protected:
   /// Register a set of type classes with this dialect.
   template <typename... Args>
   void addTypes() {
-    (void)std::initializer_list<int>{0, (addType<Args>(), 0)...};
+    (addType<Args>(), ...);
   }
 
   /// Register a type instance with this dialect.
@@ -222,7 +272,7 @@ protected:
   /// Register a set of attribute classes with this dialect.
   template <typename... Args>
   void addAttributes() {
-    (void)std::initializer_list<int>{0, (addAttribute<Args>(), 0)...};
+    (addAttribute<Args>(), ...);
   }
 
   /// Register an attribute instance with this dialect.
@@ -279,6 +329,11 @@ private:
   /// A collection of registered dialect interfaces.
   DenseMap<TypeID, std::unique_ptr<DialectInterface>> registeredInterfaces;
 
+  /// A set of interfaces that the dialect (or its constructs, i.e.
+  /// Attributes/Operations/Types/etc.) has promised to implement, but has yet
+  /// to provide an implementation for.
+  DenseSet<TypeID> unresolvedPromisedInterfaces;
+
   friend class DialectRegistry;
   friend void registerDialect();
   friend class MLIRContext;
@@ -305,15 +360,11 @@ struct isa_impl<
 };
 template <typename T>
 struct cast_retty_impl<T, ::mlir::Dialect *> {
-  using ret_type =
-      std::conditional_t<std::is_base_of<::mlir::Dialect, T>::value, T *,
-                         const T *>;
+  using ret_type = T *;
 };
 template <typename T>
 struct cast_retty_impl<T, ::mlir::Dialect> {
-  using ret_type =
-      std::conditional_t<std::is_base_of<::mlir::Dialect, T>::value, T &,
-                         const T &>;
+  using ret_type = T &;
 };
 
 template <typename T>
@@ -325,7 +376,7 @@ struct cast_convert_val<T, ::mlir::Dialect, ::mlir::Dialect> {
   }
   template <typename To>
   static std::enable_if_t<std::is_base_of<::mlir::DialectInterface, To>::value,
-                          const To &>
+                          To &>
   doitImpl(::mlir::Dialect &dialect) {
     return *dialect.getRegisteredInterface<To>();
   }

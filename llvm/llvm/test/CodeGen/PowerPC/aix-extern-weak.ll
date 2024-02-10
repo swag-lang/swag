@@ -16,21 +16,20 @@
 ; RUN:   -filetype=obj -o %t64.o < %s
 ; RUN: llvm-readobj --symbols %t64.o | FileCheck --check-prefixes=CHECKSYM,CHECKSYM64 %s
 
-@foo_ext_weak_p = global void (...)* bitcast (void ()* @foo_ext_weak_ref to void (...)*)
+@foo_ext_weak_p = global ptr @foo_ext_weak_ref
 @b_w = extern_weak global i32
 
 declare extern_weak void @foo_ext_weak_ref()
 
 define i32 @main() {
 entry:
-  %0 = load void (...)*, void (...)** @foo_ext_weak_p
-  %callee.knr.cast = bitcast void (...)* %0 to void ()*
-  call void %callee.knr.cast()
-  call void @foo_ext_weak(i32* @b_w)
+  %0 = load ptr, ptr @foo_ext_weak_p
+  call void %0()
+  call void @foo_ext_weak(ptr @b_w)
   ret i32 0
 }
 
-declare extern_weak void @foo_ext_weak(i32*)
+declare extern_weak void @foo_ext_weak(ptr)
 
 ; COMMON:         .globl	main[DS]                # -- Begin function main
 ; COMMON-NEXT:    .globl	.main
@@ -42,7 +41,7 @@ declare extern_weak void @foo_ext_weak(i32*)
 ; BIT64-NEXT:     .vbyte	8, .main                   # @main
 ; BIT64-NEXT:     .vbyte	8, TOC[TC0]
 ; BIT64-NEXT:     .vbyte	8, 0
-; COMMON-NEXT:    .csect  .text[PR]
+; COMMON-NEXT:    .csect  [PR]
 ; COMMON-NEXT:    .main:
 
 ; COMMON:         .csect  .data[RW]
@@ -69,8 +68,9 @@ declare extern_weak void @foo_ext_weak(i32*)
 ; CHECKSYM-NEXT:     Name: <stdin>
 ; CHECKSYM-NEXT:     Value (SymbolTableIndex): 0x0
 ; CHECKSYM-NEXT:     Section: N_DEBUG
-; CHECKSYM-NEXT:     Source Language ID: TB_C (0x0)
-; CHECKSYM-NEXT:     CPU Version ID: 0x0
+; CHECKSYM-NEXT:     Source Language ID: TB_CPLUSPLUS (0x9)
+; CHECKSYM32-NEXT:   CPU Version ID: TCPU_COM (0x3)
+; CHECKSYM64-NEXT:   CPU Version ID: TCPU_PPC64 (0x2)
 ; CHECKSYM-NEXT:     StorageClass: C_FILE (0x67)
 ; CHECKSYM-NEXT:     NumberOfAuxEntries: 0
 ; CHECKSYM-NEXT:   }
@@ -181,7 +181,7 @@ declare extern_weak void @foo_ext_weak(i32*)
 ; CHECKSYM-NEXT:   }
 ; CHECKSYM-NEXT:   Symbol {
 ; CHECKSYM-NEXT:     Index: [[#Index+10]]
-; CHECKSYM-NEXT:     Name: .text
+; CHECKSYM-NEXT:     Name:
 ; CHECKSYM-NEXT:     Value (RelocatableAddress): 0x0
 ; CHECKSYM-NEXT:     Section: .text
 ; CHECKSYM-NEXT:     Type: 0x0

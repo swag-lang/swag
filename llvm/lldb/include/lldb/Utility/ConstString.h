@@ -12,9 +12,9 @@
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/FormatVariadic.h"
-#include "llvm/Support/YAMLTraits.h"
 
 #include <cstddef>
+#include <string_view>
 
 namespace lldb_private {
 class Stream;
@@ -44,7 +44,7 @@ public:
   /// Initializes the string to an empty string.
   ConstString() = default;
 
-  explicit ConstString(const llvm::StringRef &s);
+  explicit ConstString(llvm::StringRef s);
 
   /// Construct with C String value
   ///
@@ -180,6 +180,11 @@ public:
   bool operator!=(const char *rhs) const { return !(*this == rhs); }
 
   bool operator<(ConstString rhs) const;
+
+  // Implicitly convert \class ConstString instances to \class StringRef.
+  operator llvm::StringRef() const { return GetStringRef(); }
+  // Implicitly convert \class ConstString instances to \calss std::string_view.
+  operator std::string_view() const { return std::string_view(m_string, GetLength()); }
 
   /// Get the string value as a C string.
   ///
@@ -323,7 +328,7 @@ public:
   ///     A NULL terminated C string to add to the string pool.
   void SetCString(const char *cstr);
 
-  void SetString(const llvm::StringRef &s);
+  void SetString(llvm::StringRef s);
 
   /// Set the C string value and its mangled counterpart.
   ///
@@ -450,20 +455,10 @@ template <> struct DenseMapInfo<lldb_private::ConstString> {
 };
 /// \}
 
-namespace yaml {
-template <> struct ScalarTraits<lldb_private::ConstString> {
-  static void output(const lldb_private::ConstString &, void *, raw_ostream &);
-  static StringRef input(StringRef, void *, lldb_private::ConstString &);
-  static QuotingType mustQuote(StringRef S) { return QuotingType::Double; }
-};
-} // namespace yaml
-
 inline raw_ostream &operator<<(raw_ostream &os, lldb_private::ConstString s) {
   os << s.GetStringRef();
   return os;
 }
 } // namespace llvm
-
-LLVM_YAML_IS_SEQUENCE_VECTOR(lldb_private::ConstString)
 
 #endif // LLDB_UTILITY_CONSTSTRING_H

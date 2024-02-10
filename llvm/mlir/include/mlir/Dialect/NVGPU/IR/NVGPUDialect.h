@@ -13,24 +13,19 @@
 #ifndef MLIR_DIALECT_NVGPU_NVGPUDIALECT_H_
 #define MLIR_DIALECT_NVGPU_NVGPUDIALECT_H_
 
+#include "mlir/Bytecode/BytecodeOpInterface.h"
 #include "mlir/IR/BuiltinTypes.h"
 #include "mlir/IR/Dialect.h"
 #include "mlir/IR/OpDefinition.h"
 #include "mlir/Interfaces/SideEffectInterfaces.h"
 
-namespace mlir {
-namespace nvgpu {
+#include "mlir/Dialect/NVGPU/IR/NVGPUEnums.h.inc"
 
-/// Device-side token storage type. There is only one type of device-side token.
-class DeviceAsyncTokenType
-    : public Type::TypeBase<DeviceAsyncTokenType, Type, TypeStorage> {
-public:
-  // Used for generic hooks in TypeBase.
-  using Base::Base;
-};
+#define GET_ATTRDEF_CLASSES
+#include "mlir/Dialect/NVGPU/IR/NVGPUAttrDefs.h.inc"
 
-} // namespace nvgpu
-} // namespace mlir
+#define GET_TYPEDEF_CLASSES
+#include "mlir/Dialect/NVGPU/IR/NVGPUTypes.h.inc"
 
 #include "mlir/Dialect/NVGPU/IR/NVGPUDialect.h.inc"
 

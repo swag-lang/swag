@@ -11,9 +11,6 @@ SBCommandReturnObject, SBStream, and SBSymbolContextList, are all valid objects
 after default construction.
 """
 
-from __future__ import print_function
-
-
 import lldb
 from lldbsuite.test.decorators import *
 from lldbsuite.test.lldbtest import *
@@ -30,6 +27,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_address
+
         sb_address.fuzz_obj(obj)
 
     def test_SBBlock(self):
@@ -39,6 +37,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_block
+
         sb_block.fuzz_obj(obj)
 
     def test_SBBreakpoint(self):
@@ -48,6 +47,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_breakpoint
+
         sb_breakpoint.fuzz_obj(obj)
 
     def test_SBBreakpointLocation(self):
@@ -57,6 +57,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_breakpointlocation
+
         sb_breakpointlocation.fuzz_obj(obj)
 
     def test_SBBreakpointName(self):
@@ -66,6 +67,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_breakpointname
+
         sb_breakpointname.fuzz_obj(obj)
 
     def test_SBBroadcaster(self):
@@ -75,6 +77,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_broadcaster
+
         sb_broadcaster.fuzz_obj(obj)
 
     def test_SBCommandReturnObject(self):
@@ -91,6 +94,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_communication
+
         sb_communication.fuzz_obj(obj)
 
     def test_SBCompileUnit(self):
@@ -100,6 +104,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_compileunit
+
         sb_compileunit.fuzz_obj(obj)
 
     def test_SBDebugger(self):
@@ -109,6 +114,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_debugger
+
         sb_debugger.fuzz_obj(obj)
 
     # darwin: This test passes with swig 3.0.2, fails w/3.0.5 other tests fail
@@ -120,6 +126,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_error
+
         sb_error.fuzz_obj(obj)
 
     def test_SBEvent(self):
@@ -131,6 +138,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_event
+
         sb_event.fuzz_obj(obj)
 
     def test_SBFileSpec(self):
@@ -142,6 +150,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_filespec
+
         sb_filespec.fuzz_obj(obj)
 
     def test_SBFrame(self):
@@ -151,6 +160,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_frame
+
         sb_frame.fuzz_obj(obj)
 
     def test_SBFunction(self):
@@ -160,13 +170,14 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_function
+
         sb_function.fuzz_obj(obj)
 
     def test_SBFile(self):
         sbf = lldb.SBFile()
         self.assertFalse(sbf.IsValid())
         self.assertFalse(bool(sbf))
-        e, n = sbf.Write(b'foo')
+        e, n = sbf.Write(b"foo")
         self.assertTrue(e.Fail())
         self.assertEqual(n, 0)
         buffer = bytearray(100)
@@ -181,6 +192,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_instruction
+
         sb_instruction.fuzz_obj(obj)
 
     def test_SBInstructionList(self):
@@ -190,6 +202,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_instructionlist
+
         sb_instructionlist.fuzz_obj(obj)
 
     def test_SBLineEntry(self):
@@ -199,6 +212,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_lineentry
+
         sb_lineentry.fuzz_obj(obj)
 
     def test_SBListener(self):
@@ -208,11 +222,12 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_listener
+
         sb_listener.fuzz_obj(obj)
 
     # Py3 asserts due to a bug in SWIG.  Trying to upstream a patch to fix
     # this in 3.0.8
-    @skipIf(py_version=['>=', (3, 0)], swig_version=['<', (3, 0, 8)])
+    @skipIf(py_version=[">=", (3, 0)], swig_version=["<", (3, 0, 8)])
     def test_SBModule(self):
         obj = lldb.SBModule()
         if self.TraceOn():
@@ -220,6 +235,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_module
+
         sb_module.fuzz_obj(obj)
 
     def test_SBProcess(self):
@@ -229,6 +245,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_process
+
         sb_process.fuzz_obj(obj)
 
     def test_SBProcessInfo(self):
@@ -238,6 +255,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_process_info
+
         sb_process_info.fuzz_obj(obj)
 
     def test_SBSection(self):
@@ -247,6 +265,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_section
+
         sb_section.fuzz_obj(obj)
 
     def test_SBStream(self):
@@ -263,6 +282,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_stringlist
+
         sb_stringlist.fuzz_obj(obj)
 
     def test_SBSymbol(self):
@@ -272,6 +292,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_symbol
+
         sb_symbol.fuzz_obj(obj)
 
     def test_SBSymbolContext(self):
@@ -281,6 +302,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_symbolcontext
+
         sb_symbolcontext.fuzz_obj(obj)
 
     def test_SBSymbolContextList(self):
@@ -297,6 +319,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_target
+
         sb_target.fuzz_obj(obj)
 
     def test_SBThread(self):
@@ -306,6 +329,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_thread
+
         sb_thread.fuzz_obj(obj)
 
     def test_SBType(self):
@@ -323,6 +347,7 @@ class APIDefaultConstructorTestCase(TestBase):
         # Unreachable code because lldb.SBType() should fail.
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_type
+
         sb_type.fuzz_obj(obj)
 
     def test_SBTypeList(self):
@@ -339,6 +364,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_value
+
         sb_value.fuzz_obj(obj)
 
     def test_SBValueList(self):
@@ -348,6 +374,7 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_valuelist
+
         sb_valuelist.fuzz_obj(obj)
 
     def test_SBWatchpoint(self):
@@ -357,4 +384,5 @@ class APIDefaultConstructorTestCase(TestBase):
         self.assertFalse(obj)
         # Do fuzz testing on the invalid obj, it should not crash lldb.
         import sb_watchpoint
+
         sb_watchpoint.fuzz_obj(obj)

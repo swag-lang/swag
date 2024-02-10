@@ -11,7 +11,6 @@
 #include "flang/Common/template.h"
 #include "flang/Parser/parse-tree-visitor.h"
 #include "flang/Semantics/semantics.h"
-#include <cctype>
 #include <cstdarg>
 #include <type_traits>
 
@@ -374,6 +373,12 @@ public:
         std::get<parser::Statement<parser::EndBlockDataStmt>>(blockData.t));
   }
 
+  bool Pre(const parser::InterfaceBody &) {
+    PushDisposableMap();
+    return true;
+  }
+  void Post(const parser::InterfaceBody &) { PopDisposableMap(); }
+
   // C1564
   void Post(const parser::InterfaceBody::Function &func) {
     CheckOptionalName<parser::FunctionStmt>("FUNCTION", func,
@@ -492,10 +497,15 @@ public:
   }
 
   // C739
+  bool Pre(const parser::DerivedTypeDef &) {
+    PushDisposableMap();
+    return true;
+  }
   void Post(const parser::DerivedTypeDef &derivedTypeDef) {
     CheckOptionalName<parser::DerivedTypeStmt>("derived type definition",
         derivedTypeDef,
         std::get<parser::Statement<parser::EndTypeStmt>>(derivedTypeDef.t));
+    PopDisposableMap();
   }
 
   void Post(const parser::LabelDoStmt &labelDoStmt) {
@@ -779,7 +789,10 @@ private:
       LabeledStmtClassificationSet labeledStmtClassificationSet,
       ProxyForScope scope, bool isExecutableConstructEndStmt = false) {
     CheckLabelInRange(label);
-    const auto pair{programUnits_.back().targetStmts.emplace(label,
+    TargetStmtMap &targetStmtMap{disposableMaps_.empty()
+            ? programUnits_.back().targetStmts
+            : disposableMaps_.back()};
+    const auto pair{targetStmtMap.emplace(label,
         LabeledStatementInfoTuplePOD{scope, currentPosition_,
             labeledStmtClassificationSet, isExecutableConstructEndStmt})};
     if (!pair.second) {
@@ -818,11 +831,19 @@ private:
     }
   }
 
+  void PushDisposableMap() { disposableMaps_.emplace_back(); }
+  void PopDisposableMap() { disposableMaps_.pop_back(); }
+
   std::vector<UnitAnalysis> programUnits_;
   SemanticsContext &context_;
   parser::CharBlock currentPosition_;
   ProxyForScope currentScope_;
   std::vector<std::string> constructNames_;
+  // For labels in derived type definitions and procedure
+  // interfaces, which are their own inclusive scopes.  None
+  // of these labels can be used as a branch target, but they
+  // should be pairwise distinct.
+  std::vector<TargetStmtMap> disposableMaps_;
 };
 
 bool InInclusiveScope(const std::vector<ScopeInfo> &scopes, ProxyForScope tail,
@@ -904,7 +925,7 @@ parser::CharBlock SkipLabel(const parser::CharBlock &position) {
     std::size_t i{1l};
     for (; (i < maxPosition) && parser::IsDecimalDigit(position[i]); ++i) {
     }
-    for (; (i < maxPosition) && std::isspace(position[i]); ++i) {
+    for (; (i < maxPosition) && parser::IsWhiteSpace(position[i]); ++i) {
     }
     return parser::CharBlock{position.begin() + i, position.end()};
   }
@@ -940,8 +961,7 @@ void CheckLabelDoConstraints(const SourceStmtList &dos,
                        TargetStatementEnum::CompatibleDo)) ||
         (doTarget.isExecutableConstructEndStmt &&
             ParentScope(scopes, doTarget.proxyForScope) == scope)) {
-      if (context.warnOnNonstandardUsage() ||
-          context.ShouldWarn(
+      if (context.ShouldWarn(
               common::LanguageFeature::OldLabelDoEndStatements)) {
         context
             .Say(position,

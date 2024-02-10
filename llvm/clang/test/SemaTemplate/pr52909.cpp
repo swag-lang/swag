@@ -1,5 +1,5 @@
 // RUN: %clang_cc1 -std=c++20 -verify %s
-// RUN: %clang_cc1 -std=c++2b -verify %s
+// RUN: %clang_cc1 -std=c++23 -verify %s
 
 namespace PR52905 {
 template <class> concept C = true;
@@ -49,7 +49,7 @@ struct A {
 };
 
 static_assert(C<A>); // expected-error {{static assertion failed}}
-  // expected-note@-1 {{because 'PR52909b::A' does not satisfy 'C'}}
+  // expected-note@-1 {{because 'A' does not satisfy 'C'}}
 
 } // namespace PR52909b
 
@@ -66,6 +66,6 @@ struct S {
 };
 
 static_assert(C<S>); // expected-error {{static assertion failed}}
-  // expected-note@-1 {{because 'PR53075::S' does not satisfy 'C'}}
+  // expected-note@-1 {{because 'S' does not satisfy 'C'}}
 
 } // namespace PR53075

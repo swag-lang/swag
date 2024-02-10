@@ -15,6 +15,17 @@
 
 #include <cinttypes>
 
+namespace mlir {
+class Value;
+class Operation;
+class Location;
+} // namespace mlir
+
+namespace fir {
+class FirOpBuilder;
+class ConvertOp;
+} // namespace fir
+
 namespace Fortran {
 namespace parser {
 struct OpenMPConstruct;
@@ -32,15 +43,25 @@ struct Evaluation;
 struct Variable;
 } // namespace pft
 
+// Generate the OpenMP terminator for Operation at Location.
+void genOpenMPTerminator(fir::FirOpBuilder &, mlir::Operation *,
+                         mlir::Location);
+
 void genOpenMPConstruct(AbstractConverter &, pft::Evaluation &,
                         const parser::OpenMPConstruct &);
 void genOpenMPDeclarativeConstruct(AbstractConverter &, pft::Evaluation &,
                                    const parser::OpenMPDeclarativeConstruct &);
 int64_t getCollapseValue(const Fortran::parser::OmpClauseList &clauseList);
 void genThreadprivateOp(AbstractConverter &, const pft::Variable &);
+void genDeclareTargetIntGlobal(AbstractConverter &, const pft::Variable &);
 void genOpenMPReduction(AbstractConverter &,
                         const Fortran::parser::OmpClauseList &clauseList);
 
+mlir::Operation *findReductionChain(mlir::Value, mlir::Value * = nullptr);
+fir::ConvertOp getConvertFromReductionOp(mlir::Operation *, mlir::Value);
+void updateReduction(mlir::Operation *, fir::FirOpBuilder &, mlir::Value,
+                     mlir::Value, fir::ConvertOp * = nullptr);
+void removeStoreOp(mlir::Operation *, mlir::Value);
 } // namespace lower
 } // namespace Fortran
 

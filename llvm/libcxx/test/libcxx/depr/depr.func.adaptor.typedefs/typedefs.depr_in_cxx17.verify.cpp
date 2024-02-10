@@ -19,12 +19,6 @@
 #include <utility>
 #include "test_macros.h"
 
-// This test is disabled in LLVM 15 because we enable the removed
-// unary_function and binary_function classes by default, which means
-// that we also don't produce deprecation warnings for using their members.
-
-// expected-no-diagnostics
-#if 0
 void test_functional()
 {
     {
@@ -129,4 +123,3 @@ void test_map()
         (void)c;
     }
 }
-#endif

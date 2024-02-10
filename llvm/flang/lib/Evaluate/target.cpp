@@ -16,7 +16,6 @@ namespace Fortran::evaluate {
 Rounding TargetCharacteristics::defaultRounding;
 
 TargetCharacteristics::TargetCharacteristics() {
-  // TODO: Fill in the type information from command-line targeting information.
   auto enableCategoryKinds{[this](TypeCategory category) {
     for (int kind{0}; kind < maxKind; ++kind) {
       if (CanSupportType(category, kind)) {
@@ -102,6 +101,8 @@ bool TargetCharacteristics::IsTypeEnabled(
 void TargetCharacteristics::set_isBigEndian(bool isBig) {
   isBigEndian_ = isBig;
 }
+
+void TargetCharacteristics::set_isPPC(bool isPowerPC) { isPPC_ = isPowerPC; }
 
 void TargetCharacteristics::set_areSubnormalsFlushedToZero(bool yes) {
   areSubnormalsFlushedToZero_ = yes;

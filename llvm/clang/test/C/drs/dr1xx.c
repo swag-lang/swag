@@ -137,11 +137,21 @@ void dr105(void) {
  */
 void dr106(void *p, int i) {
   /* The behavior changed between C89 and C99. */
-  (void)&*p; /* c89only-warning {{ISO C forbids taking the address of an expression of type 'void'}} */
+  (void)&*p; /* c89only-warning {{ISO C forbids taking the address of an expression of type 'void'}}
+                c89only-warning {{ISO C does not allow indirection on operand of type 'void *'}} */
+
   /* The behavior of all three of these is undefined. */
-  (void)*p;
-  (void)(i ? *p : *p);
-  (void)(*p, *p); /* expected-warning {{left operand of comma operator has no effect}} */
+  (void)*p; /* expected-warning {{ISO C does not allow indirection on operand of type 'void *'}}*/
+
+  (void)&(*p); /* c89only-warning {{ISO C forbids taking the address of an expression of type 'void'}}
+                  expected-warning {{ISO C does not allow indirection on operand of type 'void *'}}*/
+
+  (void)(i ? *p : *p); /* expected-warning {{ISO C does not allow indirection on operand of type 'void *'}}
+                          expected-warning {{ISO C does not allow indirection on operand of type 'void *'}}*/
+
+  (void)(*p, *p); /* expected-warning {{left operand of comma operator has no effect}}
+                     expected-warning {{ISO C does not allow indirection on operand of type 'void *'}}
+		     expected-warning {{ISO C does not allow indirection on operand of type 'void *'}}*/
 }
 
 /* WG14 DR108: yes
@@ -178,10 +188,12 @@ void dr112(void *vp) {
  * Return expressions in functions declared to return qualified void
  */
 volatile void dr113_v(volatile void *vvp) { /* expected-warning {{function cannot return qualified void type 'volatile void'}} */
-  return *vvp; /* expected-warning {{void function 'dr113_v' should not return void expression}} */
+  return *vvp; /* expected-warning {{void function 'dr113_v' should not return void expression}}
+                  expected-warning{{ISO C does not allow indirection on operand of type 'volatile void *'}} */
 }
 const void dr113_c(const void *cvp) { /* expected-warning {{function cannot return qualified void type 'const void'}} */
-  return *cvp; /* expected-warning {{void function 'dr113_c' should not return void expression}} */
+  return *cvp; /* expected-warning {{void function 'dr113_c' should not return void expression}}
+                  expected-warning{{ISO C does not allow indirection on operand of type 'const void *'}} */
 }
 
 /* WG14 DR114: yes
@@ -223,7 +235,7 @@ void dr118(void) {
 	 * type at this point.
 	 */
     Val = sizeof(enum E)
-    #ifndef _WIN32
+    #if !defined(_WIN32) || defined(__MINGW32__)
     /* expected-error@-2 {{invalid application of 'sizeof' to an incomplete type 'enum E'}} */
     /* expected-note@-12 {{definition of 'enum E' is not complete until the closing '}'}} */
     #endif
@@ -369,7 +381,7 @@ void dr163(void) {
   int i;
   i = undeclared; /* expected-error {{use of undeclared identifier 'undeclared'}} */
   sdfsdfsf = 1;   /* expected-error {{use of undeclared identifier 'sdfsdfsf'}} */
-  i = also_undeclared(); /* c99untilc2x-warning {{call to undeclared function 'also_undeclared'; ISO C99 and later do not support implicit function declarations}}
+  i = also_undeclared(); /* c99untilc2x-error {{call to undeclared function 'also_undeclared'; ISO C99 and later do not support implicit function declarations}}
                             c2xandup-error {{use of undeclared identifier 'also_undeclared'}}
                           */
 }

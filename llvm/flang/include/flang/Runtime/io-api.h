@@ -23,6 +23,7 @@ class Descriptor;
 
 namespace Fortran::runtime::io {
 
+struct NonTbpDefinedIoTable;
 class NamelistGroup;
 class IoStatementState;
 using Cookie = IoStatementState *;
@@ -59,6 +60,8 @@ extern "C" {
 //   Cookie cookie{BeginExternalListOutput(DefaultUnit,__FILE__,__LINE__)};
 //   OutputInteger32(cookie, 666);
 //   EndIoStatement(cookie);
+// Formatted I/O with explicit formats can supply the format as a
+// const char * pointer with a length, or with a descriptor.
 
 // Internal I/O initiation
 // Internal I/O can loan the runtime library an optional block of memory
@@ -84,11 +87,13 @@ Cookie IONAME(BeginInternalArrayListInput)(const Descriptor &,
     void **scratchArea = nullptr, std::size_t scratchBytes = 0,
     const char *sourceFile = nullptr, int sourceLine = 0);
 Cookie IONAME(BeginInternalArrayFormattedOutput)(const Descriptor &,
-    const char *format, std::size_t formatLength, void **scratchArea = nullptr,
+    const char *format, std::size_t formatLength,
+    const Descriptor *formatDescriptor = nullptr, void **scratchArea = nullptr,
     std::size_t scratchBytes = 0, const char *sourceFile = nullptr,
     int sourceLine = 0);
 Cookie IONAME(BeginInternalArrayFormattedInput)(const Descriptor &,
-    const char *format, std::size_t formatLength, void **scratchArea = nullptr,
+    const char *format, std::size_t formatLength,
+    const Descriptor *formatDescriptor = nullptr, void **scratchArea = nullptr,
     std::size_t scratchBytes = 0, const char *sourceFile = nullptr,
     int sourceLine = 0);
 
@@ -104,12 +109,14 @@ Cookie IONAME(BeginInternalListInput)(const char *internal,
     int sourceLine = 0);
 Cookie IONAME(BeginInternalFormattedOutput)(char *internal,
     std::size_t internalLength, const char *format, std::size_t formatLength,
-    void **scratchArea = nullptr, std::size_t scratchBytes = 0,
-    const char *sourceFile = nullptr, int sourceLine = 0);
+    const Descriptor *formatDescriptor = nullptr, void **scratchArea = nullptr,
+    std::size_t scratchBytes = 0, const char *sourceFile = nullptr,
+    int sourceLine = 0);
 Cookie IONAME(BeginInternalFormattedInput)(const char *internal,
     std::size_t internalLength, const char *format, std::size_t formatLength,
-    void **scratchArea = nullptr, std::size_t scratchBytes = 0,
-    const char *sourceFile = nullptr, int sourceLine = 0);
+    const Descriptor *formatDescriptor = nullptr, void **scratchArea = nullptr,
+    std::size_t scratchBytes = 0, const char *sourceFile = nullptr,
+    int sourceLine = 0);
 
 // External unit numbers must fit in default integers. When the integer
 // provided as UNIT is of a wider type than the default integer, it could
@@ -133,11 +140,11 @@ Cookie IONAME(BeginExternalListOutput)(ExternalUnit = DefaultUnit,
 Cookie IONAME(BeginExternalListInput)(ExternalUnit = DefaultUnit,
     const char *sourceFile = nullptr, int sourceLine = 0);
 Cookie IONAME(BeginExternalFormattedOutput)(const char *format, std::size_t,
-    ExternalUnit = DefaultUnit, const char *sourceFile = nullptr,
-    int sourceLine = 0);
+    const Descriptor *formatDescriptor = nullptr, ExternalUnit = DefaultUnit,
+    const char *sourceFile = nullptr, int sourceLine = 0);
 Cookie IONAME(BeginExternalFormattedInput)(const char *format, std::size_t,
-    ExternalUnit = DefaultUnit, const char *sourceFile = nullptr,
-    int sourceLine = 0);
+    const Descriptor *formatDescriptor = nullptr, ExternalUnit = DefaultUnit,
+    const char *sourceFile = nullptr, int sourceLine = 0);
 Cookie IONAME(BeginUnformattedOutput)(ExternalUnit = DefaultUnit,
     const char *sourceFile = nullptr, int sourceLine = 0);
 Cookie IONAME(BeginUnformattedInput)(ExternalUnit = DefaultUnit,
@@ -268,6 +275,20 @@ bool IONAME(InputLogical)(Cookie, bool &);
 // list-directed I/O statement.
 bool IONAME(OutputNamelist)(Cookie, const NamelistGroup &);
 bool IONAME(InputNamelist)(Cookie, const NamelistGroup &);
+
+// When an I/O list item has a derived type with a specific defined
+// I/O subroutine of the appropriate generic kind for the active
+// I/O data transfer statement (read/write, formatted/unformatted)
+// that pertains to the type or its components, and those subroutines
+// are dynamic or neither type-bound nor defined with interfaces
+// in the same scope as the derived type (or an IMPORT statement has
+// made such a generic interface inaccessible), these data item transfer
+// APIs enable the I/O runtime to make the right calls to defined I/O
+// subroutines.
+bool IONAME(OutputDerivedType)(
+    Cookie, const Descriptor &, const NonTbpDefinedIoTable *);
+bool IONAME(InputDerivedType)(
+    Cookie, const Descriptor &, const NonTbpDefinedIoTable *);
 
 // Additional specifier interfaces for the connection-list of
 // on OPEN statement (only).  SetBlank(), SetDecimal(),

@@ -10,6 +10,7 @@
 #define LLVM_LIBC_SRC_STDIO_PRINTF_CORE_FLOAT_INF_NAN_CONVERTER_H
 
 #include "src/__support/FPUtil/FPBits.h"
+#include "src/__support/common.h"
 #include "src/stdio/printf_core/converter_utils.h"
 #include "src/stdio/printf_core/core_structs.h"
 #include "src/stdio/printf_core/writer.h"
@@ -22,7 +23,7 @@ namespace printf_core {
 
 using MantissaInt = fputil::FPBits<long double>::UIntType;
 
-int inline convert_inf_nan(Writer *writer, const FormatSection &to_conv) {
+LIBC_INLINE int convert_inf_nan(Writer *writer, const FormatSection &to_conv) {
   // All of the letters will be defined relative to variable a, which will be
   // the appropriate case based on the case of the conversion.
   const char a = (to_conv.conv_name & 32) | 'A';
@@ -35,7 +36,8 @@ int inline convert_inf_nan(Writer *writer, const FormatSection &to_conv) {
     is_negative = float_bits.get_sign();
     mantissa = float_bits.get_explicit_mantissa();
   } else {
-    fputil::FPBits<double>::UIntType float_raw = to_conv.conv_val_raw;
+    fputil::FPBits<double>::UIntType float_raw =
+        static_cast<fputil::FPBits<double>::UIntType>(to_conv.conv_val_raw);
     fputil::FPBits<double> float_bits(float_raw);
     is_negative = float_bits.get_sign();
     mantissa = float_bits.get_explicit_mantissa();
@@ -59,19 +61,19 @@ int inline convert_inf_nan(Writer *writer, const FormatSection &to_conv) {
 
   if (padding > 0 && ((to_conv.flags & FormatFlags::LEFT_JUSTIFIED) !=
                       FormatFlags::LEFT_JUSTIFIED))
-    RET_IF_RESULT_NEGATIVE(writer->write_chars(' ', padding));
+    RET_IF_RESULT_NEGATIVE(writer->write(' ', padding));
 
   if (sign_char)
-    RET_IF_RESULT_NEGATIVE(writer->write(&sign_char, 1));
+    RET_IF_RESULT_NEGATIVE(writer->write(sign_char));
   if (mantissa == 0) { // inf
-    RET_IF_RESULT_NEGATIVE(writer->write((a == 'a' ? "inf" : "INF"), 3));
+    RET_IF_RESULT_NEGATIVE(writer->write(a == 'a' ? "inf" : "INF"));
   } else { // nan
-    RET_IF_RESULT_NEGATIVE(writer->write((a == 'a' ? "nan" : "NAN"), 3));
+    RET_IF_RESULT_NEGATIVE(writer->write(a == 'a' ? "nan" : "NAN"));
   }
 
   if (padding > 0 && ((to_conv.flags & FormatFlags::LEFT_JUSTIFIED) ==
                       FormatFlags::LEFT_JUSTIFIED))
-    RET_IF_RESULT_NEGATIVE(writer->write_chars(' ', padding));
+    RET_IF_RESULT_NEGATIVE(writer->write(' ', padding));
 
   return WRITE_OK;
 }

@@ -20,7 +20,6 @@
 #include "lldb/Symbol/LocateSymbolFile.h"
 #include "lldb/Symbol/ObjectFile.h"
 #include "lldb/Target/Target.h"
-#include "lldb/Utility/ReproducerProvider.h"
 #include "lldb/Utility/StreamString.h"
 #include "lldb/Utility/Timer.h"
 
@@ -55,11 +54,11 @@ static bool UUIDsMatch(Module *module, ObjectFile *ofile,
     if (feedback_strm) {
       feedback_strm->PutCString(
           "warning: UUID mismatch detected between modules:\n    ");
-      module->GetUUID().Dump(feedback_strm);
+      module->GetUUID().Dump(*feedback_strm);
       feedback_strm->PutChar(' ');
       module->GetFileSpec().Dump(feedback_strm->AsRawOstream());
       feedback_strm->PutCString("\n    ");
-      dsym_uuid.Dump(feedback_strm);
+      dsym_uuid.Dump(*feedback_strm);
       feedback_strm->PutChar(' ');
       ofile->GetFileSpec().Dump(feedback_strm->AsRawOstream());
       feedback_strm->EOL();
@@ -279,13 +278,6 @@ SymbolVendorMacOSX::CreateInstance(const lldb::ModuleSP &module_sp,
         }
 
         symbol_vendor->AddSymbolFileRepresentation(dsym_objfile_sp);
-        if (!dsym_root.empty()) {
-          if (repro::Generator *g =
-                  repro::Reproducer::Instance().GetGenerator()) {
-            repro::FileProvider &fp = g->GetOrCreate<repro::FileProvider>();
-            fp.RecordInterestingDirectoryRecursive(dsym_root);
-          }
-        }
         return symbol_vendor;
       }
     }

@@ -3,6 +3,22 @@
 // RUN: %clang_cc1 -std=c++14 %s -verify -fexceptions -fcxx-exceptions -pedantic-errors -fno-spell-checking
 // RUN: %clang_cc1 -std=c++17 %s -verify -fexceptions -fcxx-exceptions -pedantic-errors -fno-spell-checking
 // RUN: %clang_cc1 -std=c++20 %s -verify -fexceptions -fcxx-exceptions -pedantic-errors -fno-spell-checking
+// RUN: %clang_cc1 -std=c++23 %s -verify -fexceptions -fcxx-exceptions -pedantic-errors -fno-spell-checking
+
+namespace dr600 { // dr600: yes
+struct S {
+  void f(int);
+
+private:
+  void f(double); // expected-note {{declared private here}}
+};
+
+void g(S *sp) {
+  sp->f(2);
+  // access control is applied after overload resolution
+  sp->f(2.2); // expected-error {{is a private member}}
+}
+} // namespace dr600
 
 namespace std {
   struct type_info {};
@@ -83,6 +99,34 @@ namespace dr606 { // dr606: yes
   }
 #endif
 }
+
+namespace dr607 { // dr607: yes
+namespace example1 {
+struct Y {};
+
+template <typename T> struct X : public virtual Y {};
+
+template <typename T> class A : public X<T> {
+  template <typename S> A(S) : S() {}
+};
+
+template A<int>::A(Y);
+} // namespace example1
+
+namespace example2 {
+namespace N {
+struct B {
+  B(int);
+};
+typedef B typedef_B;
+struct D : B {
+  D();
+};
+} // namespace N
+
+N::D::D() : typedef_B(0) {}
+} // namespace example2
+} // namespace dr607
 
 namespace dr608 { // dr608: yes
   struct A { virtual void f(); };
@@ -190,7 +234,7 @@ namespace dr619 { // dr619: yes
 
 // dr620: dup 568
 
-namespace dr621 {
+namespace dr621 { // dr621: yes
   template<typename T> T f();
   template<> int f() {} // expected-note {{previous}}
   template<> int f<int>() {} // expected-error {{redefinition}}
@@ -647,7 +691,7 @@ namespace dr656 { // dr656: yes
 }
 
 namespace dr657 { // dr657: partial
-  struct Abs { virtual void x() = 0; };
+  struct Abs { virtual void x() = 0; }; // expected-note {{unimplemented pure virtual method 'x' in 'Abs'}}
   struct Der : public Abs { virtual void x(); };
 
   struct Cnvt { template<typename F> Cnvt(F); };
@@ -663,10 +707,8 @@ namespace dr657 { // dr657: partial
   // FIXME: The following examples demonstrate that we might be accepting the
   // above cases for the wrong reason.
 
-  // FIXME: We should reject this.
-  struct C { C(Abs) {} };
-  // FIXME: We should reject this.
-  struct Q { operator Abs() { __builtin_unreachable(); } } q;
+  struct C { C(Abs) {} }; // expected-error {{parameter type 'Abs' is an abstract class}}
+  struct Q { operator Abs() { __builtin_unreachable(); } } q; // expected-error {{return type 'Abs' is an abstract class}}
 #if __cplusplus >= 201703L
   // FIXME: We should *definitely* reject this.
   C c = Q().operator Abs();
@@ -776,7 +818,7 @@ namespace dr666 { // dr666: yes
 #if __cplusplus >= 201103L
 namespace dr667 { // dr667: yes
   struct A {
-    A() = default; // expected-warning {{explicitly defaulted default constructor is implicitly deleted}}
+    A() = default; // expected-warning {{explicitly defaulted default constructor is implicitly deleted}} expected-note{{replace 'default'}}
     int &r; // expected-note {{because field 'r' of reference type 'int &' would not be initialized}}
   };
   static_assert(!__is_trivially_constructible(A), "");
@@ -911,9 +953,9 @@ namespace dr674 { // dr674: 8
 namespace dr675 { // dr675: dup 739
   template<typename T> struct A { T n : 1; };
 #if __cplusplus >= 201103L
-  static_assert(A<char>{1}.n < 0, "");
-  static_assert(A<int>{1}.n < 0, "");
-  static_assert(A<long long>{1}.n < 0, "");
+  static_assert(A<char>{1}.n < 0, ""); // expected-warning {{implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1}}
+  static_assert(A<int>{1}.n < 0, ""); // expected-warning {{implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1}}
+  static_assert(A<long long>{1}.n < 0, ""); // expected-warning {{implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1}}
 #endif
 }
 
@@ -1036,9 +1078,10 @@ namespace dr686 { // dr686: yes
     (void)const_cast<struct E{}*>(0); // expected-error {{cannot be defined in a type specifier}}
     (void)sizeof(struct F*);
     (void)sizeof(struct F{}*); // expected-error {{cannot be defined in a type specifier}}
-    (void)new struct G*;
-    (void)new struct G{}*; // expected-error {{cannot be defined in a type specifier}}
+    (void)new struct G*; // expected-note {{forward}}
+    (void)new struct G{}*; // expected-error {{incomplete}}
 #if __cplusplus >= 201103L
+    // expected-error@-2 {{expected expression}}
     (void)alignof(struct H*);
     (void)alignof(struct H{}*); // expected-error {{cannot be defined in a type specifier}}
 #endif
@@ -1079,20 +1122,29 @@ namespace dr687 { // dr687 (9 c++20, but the issue is still considered open)
   }
 }
 
-namespace dr692 { // dr692: no
+namespace dr692 { // dr692: 16
+  // Also see dr1395.
+
   namespace temp_func_order_example2 {
-    template <typename T, typename U> struct A {};
-    template <typename T, typename U> void f(U, A<U, T> *p = 0); // expected-note {{candidate}}
-    template <typename U> int &f(U, A<U, U> *p = 0); // expected-note {{candidate}}
-    template <typename T> void g(T, T = T());
-    template <typename T, typename... U> void g(T, U...); // expected-error 0-1{{C++11}}
+    template <typename... T> struct A1 {}; // expected-error 0-1{{C++11}}
+    template <typename U, typename... T> struct A2 {}; // expected-error 0-1{{C++11}}
+    template <typename T1, typename... U> void e1(A1<T1, U...>) = delete; // expected-error 0-2{{C++11}}
+    template <typename T1> void e1(A1<T1>);
+    template <typename T1, typename... U> void e2(A2<T1, U...>) = delete; // expected-error 0-2{{C++11}}
+    template <typename T1> void e2(A2<T1>);
+    template <typename T, typename U> void f(U, A1<U, T> *p = 0) = delete; // expected-note {{candidate}} expected-error 0-1{{C++11}}
+    template <typename U> int &f(U, A1<U, U> *p = 0); // expected-note {{candidate}}
+    template <typename T> void g(T, T = T()); // expected-note {{candidate}}
+    template <typename T, typename... U> void g(T, U...); // expected-note {{candidate}} expected-error 0-1{{C++11}}
     void h() {
-      int &r = f<int>(42, (A<int, int> *)0);
+      A1<int, int> a;
+      int &r = f<int>(42, &a);
+      A1<int> b1;
+      e1(b1);
+      A2<int> b2;
+      e2(b2);
       f<int>(42); // expected-error {{ambiguous}}
-      // FIXME: We should reject this due to ambiguity between the pack and the
-      // default argument. Only parameters with arguments are considered during
-      // partial ordering of function templates.
-      g(42);
+      g(42); // expected-error {{ambiguous}}
     }
   }
 
@@ -1125,20 +1177,16 @@ namespace dr692 { // dr692: no
     template <class T1, class T2> class S<T1, const T2&> {};
     S<int, const int&> s;
 
-    // FIXME: This should select the first partial specialization. Deduction of
-    // the second from the first should succeed, because we should ignore the
-    // trailing pack in A with no corresponding P.
     template<class T, class... U> struct A; // expected-error 0-1{{C++11}}
-    template<class T1, class T2, class... U> struct A<T1,T2*,U...>; // expected-note {{matches}} expected-error 0-1{{C++11}}
-    template<class T1, class T2> struct A<T1,T2> {}; // expected-note {{matches}}
-    template struct A<int, int*>; // expected-error {{ambiguous}}
+    template<class T1, class T2, class... U> struct A<T1,T2*,U...> {}; // expected-error 0-1{{C++11}}
+    template<class T1, class T2> struct A<T1,T2>;
+    template struct A<int, int*>;
   }
 
   namespace temp_deduct_type_example3 {
-    // FIXME: This should select the first template, as in the case above.
-    template<class T, class... U> void f(T*, U...){} // expected-note {{candidate}} expected-error 0-1{{C++11}}
-    template<class T> void f(T){} // expected-note {{candidate}}
-    template void f(int*); // expected-error {{ambiguous}}
+    template<class T, class... U> void f(T*, U...){} // expected-error 0-1{{C++11}}
+    template<class T> void f(T){}
+    template void f(int*);
   }
 }
 

@@ -13,10 +13,12 @@
 #include "lldb/Core/ValueObjectConstResult.h"
 #include "lldb/DataFormatters/FormattersHelpers.h"
 #include "lldb/Target/Target.h"
+#include "lldb/Utility/ConstString.h"
 #include "lldb/Utility/DataBufferHeap.h"
 #include "lldb/Utility/Endian.h"
 #include "lldb/Utility/Status.h"
 #include "lldb/Utility/Stream.h"
+#include "llvm/ADT/StringRef.h"
 
 using namespace lldb;
 using namespace lldb_private;
@@ -65,6 +67,31 @@ size_t lldb_private::formatters::LibcxxStdUnorderedMapSyntheticFrontEnd::
   return m_num_elements;
 }
 
+static void consumeInlineNamespace(llvm::StringRef &name) {
+  // Delete past an inline namespace, if any: __[a-zA-Z0-9_]+::
+  auto scratch = name;
+  if (scratch.consume_front("__") && std::isalnum(scratch[0])) {
+    scratch = scratch.drop_while([](char c) { return std::isalnum(c); });
+    if (scratch.consume_front("::")) {
+      // Successfully consumed a namespace.
+      name = scratch;
+    }
+  }
+}
+
+static bool isStdTemplate(ConstString type_name, llvm::StringRef type) {
+  llvm::StringRef name = type_name.GetStringRef();
+  // The type name may be prefixed with `std::__<inline-namespace>::`.
+  if (name.consume_front("std::"))
+    consumeInlineNamespace(name);
+  return name.consume_front(type) && name.startswith("<");
+}
+
+static bool isUnorderedMap(ConstString type_name) {
+  return isStdTemplate(type_name, "unordered_map") ||
+         isStdTemplate(type_name, "unordered_multimap");
+}
+
 lldb::ValueObjectSP lldb_private::formatters::
     LibcxxStdUnorderedMapSyntheticFrontEnd::GetChildAtIndex(size_t idx) {
   if (idx >= CalculateNumChildren())
@@ -81,14 +108,11 @@ lldb::ValueObjectSP lldb_private::formatters::
     if (!node_sp || error.Fail())
       return lldb::ValueObjectSP();
 
-    ValueObjectSP value_sp =
-        node_sp->GetChildMemberWithName(ConstString("__value_"), true);
-    ValueObjectSP hash_sp =
-        node_sp->GetChildMemberWithName(ConstString("__hash_"), true);
+    ValueObjectSP value_sp = node_sp->GetChildMemberWithName("__value_");
+    ValueObjectSP hash_sp = node_sp->GetChildMemberWithName("__hash_");
     if (!hash_sp || !value_sp) {
       if (!m_element_type) {
-        auto p1_sp = m_backend.GetChildAtNamePath({ConstString("__table_"),
-                                                   ConstString("__p1_")});
+        auto p1_sp = m_backend.GetChildAtNamePath({"__table_", "__p1_"});
         if (!p1_sp)
           return nullptr;
 
@@ -96,15 +120,13 @@ lldb::ValueObjectSP lldb_private::formatters::
         switch (p1_sp->GetCompilerType().GetNumDirectBaseClasses()) {
         case 1:
           // Assume a pre llvm r300140 __compressed_pair implementation:
-          first_sp = p1_sp->GetChildMemberWithName(ConstString("__first_"),
-                                                   true);
+          first_sp = p1_sp->GetChildMemberWithName("__first_");
           break;
         case 2: {
           // Assume a post llvm r300140 __compressed_pair implementation:
           ValueObjectSP first_elem_parent_sp =
-            p1_sp->GetChildAtIndex(0, true);
-          first_sp = p1_sp->GetChildMemberWithName(ConstString("__value_"),
-                                                   true);
+            p1_sp->GetChildAtIndex(0);
+          first_sp = p1_sp->GetChildMemberWithName("__value_");
           break;
         }
         default:
@@ -118,23 +140,36 @@ lldb::ValueObjectSP lldb_private::formatters::
         m_element_type = m_element_type.GetPointeeType();
         m_node_type = m_element_type;
         m_element_type = m_element_type.GetTypeTemplateArgument(0);
-        std::string name;
-        m_element_type =
-            m_element_type.GetFieldAtIndex(0, name, nullptr, nullptr, nullptr);
-        m_element_type = m_element_type.GetTypedefedType();
+        // This synthetic provider is used for both unordered_(multi)map and
+        // unordered_(multi)set. For unordered_map, the element type has an
+        // additional type layer, an internal struct (`__hash_value_type`)
+        // that wraps a std::pair. Peel away the internal wrapper type - whose
+        // structure is of no value to users, to expose the std::pair. This
+        // matches the structure returned by the std::map synthetic provider.
+        if (isUnorderedMap(m_backend.GetTypeName())) {
+          std::string name;
+          CompilerType field_type = m_element_type.GetFieldAtIndex(
+              0, name, nullptr, nullptr, nullptr);
+          CompilerType actual_type = field_type.GetTypedefedType();
+          if (isStdTemplate(actual_type.GetTypeName(), "pair"))
+            m_element_type = actual_type;
+        }
       }
       if (!m_node_type)
         return nullptr;
-      node_sp = node_sp->Cast(m_node_type);
-      value_sp = node_sp->GetChildMemberWithName(ConstString("__value_"), true);
-      hash_sp = node_sp->GetChildMemberWithName(ConstString("__hash_"), true);
+      node_sp = m_next_element->Cast(m_node_type.GetPointerType())
+              ->Dereference(error);
+      if (!node_sp || error.Fail())
+          return nullptr;
+
+      value_sp = node_sp->GetChildMemberWithName("__value_");
+      hash_sp = node_sp->GetChildMemberWithName("__hash_");
       if (!value_sp || !hash_sp)
         return nullptr;
     }
     m_elements_cache.push_back(
         {value_sp.get(), hash_sp->GetValueAsUnsigned(0)});
-    m_next_element =
-        node_sp->GetChildMemberWithName(ConstString("__next_"), true).get();
+    m_next_element = node_sp->GetChildMemberWithName("__next_").get();
     if (!m_next_element || m_next_element->GetValueAsUnsigned(0) == 0)
       m_next_element = nullptr;
   }
@@ -153,7 +188,7 @@ lldb::ValueObjectSP lldb_private::formatters::
   ExecutionContext exe_ctx = val_hash.first->GetExecutionContextRef().Lock(
       thread_and_frame_only_if_stopped);
   return CreateValueObjectFromData(stream.GetString(), data, exe_ctx,
-                                   val_hash.first->GetCompilerType());
+                                   m_element_type);
 }
 
 bool lldb_private::formatters::LibcxxStdUnorderedMapSyntheticFrontEnd::
@@ -161,30 +196,24 @@ bool lldb_private::formatters::LibcxxStdUnorderedMapSyntheticFrontEnd::
   m_num_elements = 0;
   m_next_element = nullptr;
   m_elements_cache.clear();
-  ValueObjectSP table_sp =
-      m_backend.GetChildMemberWithName(ConstString("__table_"), true);
+  ValueObjectSP table_sp = m_backend.GetChildMemberWithName("__table_");
   if (!table_sp)
     return false;
 
-  ValueObjectSP p2_sp = table_sp->GetChildMemberWithName(
-    ConstString("__p2_"), true);
+  ValueObjectSP p2_sp = table_sp->GetChildMemberWithName("__p2_");
   ValueObjectSP num_elements_sp = nullptr;
-  llvm::SmallVector<ConstString, 3> next_path;
+  llvm::SmallVector<llvm::StringRef, 3> next_path;
   switch (p2_sp->GetCompilerType().GetNumDirectBaseClasses()) {
   case 1:
     // Assume a pre llvm r300140 __compressed_pair implementation:
-    num_elements_sp = p2_sp->GetChildMemberWithName(
-      ConstString("__first_"), true);
-    next_path.append({ConstString("__p1_"), ConstString("__first_"),
-                      ConstString("__next_")});
+    num_elements_sp = p2_sp->GetChildMemberWithName("__first_");
+    next_path.append({"__p1_", "__first_", "__next_"});
     break;
   case 2: {
     // Assume a post llvm r300140 __compressed_pair implementation:
-    ValueObjectSP first_elem_parent = p2_sp->GetChildAtIndex(0, true);
-    num_elements_sp = first_elem_parent->GetChildMemberWithName(
-      ConstString("__value_"), true);
-    next_path.append({ConstString("__p1_"), ConstString("__value_"),
-                      ConstString("__next_")});
+    ValueObjectSP first_elem_parent = p2_sp->GetChildAtIndex(0);
+    num_elements_sp = first_elem_parent->GetChildMemberWithName("__value_");
+    next_path.append({"__p1_", "__value_", "__next_"});
     break;
   }
   default:

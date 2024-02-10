@@ -25,4 +25,3 @@ SpaceAfterTemplateKeyword: false
 SpaceBeforeParens: ControlStatements
 Standard: Cpp11
 UseTab: Never
-LambdaBodyIndentation: LBI_OuterScope

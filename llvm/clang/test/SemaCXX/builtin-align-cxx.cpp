@@ -200,7 +200,7 @@ static_assert(__builtin_align_down(&align32array[6], 4) == &align32array[4], "")
 static_assert(__builtin_align_down(&align32array[7], 4) == &align32array[4], "");
 static_assert(__builtin_align_down(&align32array[8], 4) == &align32array[8], "");
 
-// Achiving the same thing using casts to uintptr_t is not allowed:
+// Achieving the same thing using casts to uintptr_t is not allowed:
 static_assert((char *)((__UINTPTR_TYPE__)&align32array[7] & ~3) == &align32array[4], ""); // expected-error{{not an integral constant expression}}
 
 static_assert(__builtin_align_down(&align32array[1], 4) == &align32array[0], "");
@@ -238,3 +238,6 @@ static_assert(!__builtin_is_aligned(static_cast<signed long>(7), static_cast<uns
 static_assert(!__builtin_is_aligned(static_cast<unsigned long>(7), static_cast<signed long>(4)), "");
 static_assert(!__builtin_is_aligned(static_cast<signed long>(7), static_cast<unsigned short>(4)), "");
 static_assert(!__builtin_is_aligned(static_cast<unsigned short>(7), static_cast<signed long>(4)), "");
+
+// Check the diagnostic message
+_Alignas(void) char align_void_array[1]; // expected-error {{invalid application of '_Alignas' to an incomplete type 'void'}}

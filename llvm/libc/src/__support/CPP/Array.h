@@ -14,11 +14,11 @@
 namespace __llvm_libc {
 namespace cpp {
 
-template <class T, size_t N> struct Array {
-  static_assert(N != 0, "Cannot create a __llvm_libc::cpp::Array of size 0.");
+template <class T, size_t N> struct array {
+  static_assert(N != 0, "Cannot create a __llvm_libc::cpp::array of size 0.");
 
   T Data[N];
-
+  using value_type = T;
   using iterator = T *;
   using const_iterator = const T *;
 

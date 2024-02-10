@@ -1,9 +1,15 @@
-# Flang 15.0.0 Release Notes
+# Flang |version| (In-Progress) Release Notes
+
+> **warning**
+>
+> These are in-progress notes for the upcoming LLVM |version| release.
+> Release notes for previous releases can be found on [the Download
+> Page](https://releases.llvm.org/download.html).
 
 ## Introduction
 
 This document contains the release notes for the Flang Fortran frontend,
-part of the LLVM Compiler Infrastructure, release 15.0.0. Here we
+part of the LLVM Compiler Infrastructure, release |version|. Here we
 describe the status of Flang in some detail, including major
 improvements from the previous release and new feature work. For the
 general LLVM release notes, see [the LLVM
@@ -17,6 +23,13 @@ release notes for a specific release, please see the [releases
 page](https://llvm.org/releases/).
 
 ## Major New Features
+
+* Flang now supports loading LLVM pass plugins with the `-fpass-plugin` option
+  which is also available in clang. The option mimics the behavior of the
+  corresponding option in clang and has the same capabilities and limitations.
+* Flang also supports statically linked LLVM pass extensions. Projects can be
+  linked statically into `flang-new` if the cmake command includes
+  `-DLLVM_${NAME}_LINK_INTO_TOOLS=ON`. This behavior is also similar to clang.
 
 ## Bug Fixes
 
@@ -35,9 +48,7 @@ page](https://llvm.org/releases/).
   In particular, both `-fcolor-diagnostics` and `-fno-color-diagnostics` are
   now available in `flang-new` (the diagnostics are formatted by default). In
   the frontend driver, `flang-new -fc1`, only `-fcolor-diagnostics` is
-  available (by default, the diagnostics are not formatted). Note that this
-  will only affect the diagnostics printed by driver (scanning, parsing and
-  semantic diagnostics are not affected).
+  available (by default, the diagnostics are not formatted).
 
 ## Windows Support
 
@@ -54,5 +65,5 @@ Flang's documentation is located in the `flang/docs/` directory in the
 LLVM monorepo.
 
 If you have any questions or comments about Flang, please feel free to
-contact us via the [mailing
-list](https://lists.llvm.org/mailman/listinfo/flang-dev).
+contact us on the [Discourse 
+forums](https://discourse.llvm.org/c/subprojects/flang/33).

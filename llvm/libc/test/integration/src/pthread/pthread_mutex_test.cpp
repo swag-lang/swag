@@ -14,9 +14,10 @@
 #include "src/pthread/pthread_create.h"
 #include "src/pthread/pthread_join.h"
 
-#include "utils/IntegrationTest/test.h"
+#include "test/IntegrationTest/test.h"
 
 #include <pthread.h>
+#include <stdint.h> // uintptr_t
 
 constexpr int START = 0;
 constexpr int MAX = 10000;
@@ -185,7 +186,7 @@ void multiple_waiters() {
   __llvm_libc::pthread_mutex_destroy(&counter_lock);
 }
 
-int main() {
+TEST_MAIN() {
   relay_counter();
   wait_and_step();
   multiple_waiters();

@@ -18,14 +18,15 @@
 #include "lldb/Utility/StreamString.h"
 
 #include "llvm/ADT/StringExtras.h"
-#include "llvm/ADT/Triple.h"
-#include "llvm/Support/Host.h"
 #include "llvm/Support/Path.h"
 #include "llvm/Support/ScopedPrinter.h"
 #include "llvm/Support/Threading.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/TargetParser/Host.h"
+#include "llvm/TargetParser/Triple.h"
 
 #include <mutex>
+#include <optional>
 #include <thread>
 
 using namespace lldb;
@@ -107,13 +108,13 @@ const ArchSpec &HostInfoBase::GetArchitecture(ArchitectureKind arch_kind) {
                                               : g_fields->m_host_arch_32;
 }
 
-llvm::Optional<HostInfoBase::ArchitectureKind>
+std::optional<HostInfoBase::ArchitectureKind>
 HostInfoBase::ParseArchitectureKind(llvm::StringRef kind) {
-  return llvm::StringSwitch<llvm::Optional<ArchitectureKind>>(kind)
+  return llvm::StringSwitch<std::optional<ArchitectureKind>>(kind)
       .Case(LLDB_ARCH_DEFAULT, eArchKindDefault)
       .Case(LLDB_ARCH_DEFAULT_32BIT, eArchKind32)
       .Case(LLDB_ARCH_DEFAULT_64BIT, eArchKind64)
-      .Default(llvm::None);
+      .Default(std::nullopt);
 }
 
 FileSpec HostInfoBase::GetShlibDir() {
@@ -224,25 +225,21 @@ bool HostInfoBase::ComputePathRelativeToLibrary(FileSpec &file_spec,
     return false;
 
   std::string raw_path = lldb_file_spec.GetPath();
-  LLDB_LOGF(log,
-            "HostInfo::%s() attempting to "
-            "derive the path %s relative to liblldb install path: %s",
-            __FUNCTION__, dir.data(), raw_path.c_str());
+  LLDB_LOG(
+      log,
+      "Attempting to derive the path {0} relative to liblldb install path: {1}",
+      dir, raw_path);
 
   // Drop bin (windows) or lib
   llvm::StringRef parent_path = llvm::sys::path::parent_path(raw_path);
   if (parent_path.empty()) {
-    LLDB_LOGF(log,
-              "HostInfo::%s() failed to find liblldb within the shared "
-              "lib path",
-              __FUNCTION__);
+    LLDB_LOG(log, "Failed to find liblldb within the shared lib path");
     return false;
   }
 
   raw_path = (parent_path + dir).str();
-  LLDB_LOGF(log, "HostInfo::%s() derived the path as: %s", __FUNCTION__,
-            raw_path.c_str());
-  file_spec.GetDirectory().SetString(raw_path);
+  LLDB_LOG(log, "Derived the path as: {0}", raw_path);
+  file_spec.SetDirectory(raw_path);
   return (bool)file_spec.GetDirectory();
 }
 
@@ -258,7 +255,7 @@ bool HostInfoBase::ComputeSharedLibraryDirectory(FileSpec &file_spec) {
     g_shlib_dir_helper(lldb_file_spec);
 
   // Remove the filename so that this FileSpec only represents the directory.
-  file_spec.GetDirectory() = lldb_file_spec.GetDirectory();
+  file_spec.SetDirectory(lldb_file_spec.GetDirectory());
 
   return (bool)file_spec.GetDirectory();
 }
@@ -278,7 +275,7 @@ bool HostInfoBase::ComputeProcessTempFileDirectory(FileSpec &file_spec) {
   if (llvm::sys::fs::create_directory(temp_file_spec.GetPath()))
     return false;
 
-  file_spec.GetDirectory().SetCString(temp_file_spec.GetCString());
+  file_spec.SetDirectory(temp_file_spec.GetPathAsConstString());
   return true;
 }
 
@@ -301,7 +298,7 @@ bool HostInfoBase::ComputeGlobalTempFileDirectory(FileSpec &file_spec) {
   if (llvm::sys::fs::create_directory(temp_file_spec.GetPath()))
     return false;
 
-  file_spec.GetDirectory().SetCString(temp_file_spec.GetCString());
+  file_spec.SetDirectory(temp_file_spec.GetPathAsConstString());
   return true;
 }
 
@@ -339,6 +336,8 @@ void HostInfoBase::ComputeHostArchitectureSupport(ArchSpec &arch_32,
   case llvm::Triple::ppc64:
   case llvm::Triple::ppc64le:
   case llvm::Triple::x86_64:
+  case llvm::Triple::riscv64:
+  case llvm::Triple::loongarch64:
     arch_64.SetTriple(triple);
     arch_32.SetTriple(triple.get32BitArchVariant());
     break;

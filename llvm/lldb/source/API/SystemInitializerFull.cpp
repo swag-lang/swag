@@ -15,7 +15,6 @@
 #include "lldb/Initialization/SystemInitializerCommon.h"
 #include "lldb/Interpreter/CommandInterpreter.h"
 #include "lldb/Target/ProcessTrace.h"
-#include "lldb/Utility/Reproducer.h"
 #include "lldb/Utility/Timer.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/TargetSelect.h"
@@ -78,6 +77,9 @@ llvm::Error SystemInitializerFull::Initialize() {
   // The process settings need to know about installed plug-ins, so the
   // Settings must be initialized AFTER PluginManager::Initialize is called.
   Debugger::SettingsInitialize();
+
+  // Use the Debugger's LLDBAssert callback.
+  SetLLDBAssertCallback(Debugger::AssertCallback);
 
   return llvm::Error::success();
 }

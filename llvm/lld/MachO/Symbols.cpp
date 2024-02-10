@@ -9,7 +9,7 @@
 #include "Symbols.h"
 #include "InputFiles.h"
 #include "SyntheticSections.h"
-#include "lld/Common/Strings.h"
+#include "llvm/Demangle/Demangle.h"
 
 using namespace llvm;
 using namespace lld;
@@ -28,27 +28,39 @@ static_assert(sizeof(void *) != 8 || sizeof(Defined) == 88,
 static_assert(sizeof(SymbolUnion) == sizeof(Defined),
               "Defined should be the largest Symbol kind");
 
+// Returns a symbol name for an error message.
+static std::string maybeDemangleSymbol(StringRef symName) {
+  if (config->demangle) {
+    symName.consume_front("_");
+    return demangle(symName);
+  }
+  return symName.str();
+}
+
 std::string lld::toString(const Symbol &sym) {
-  return demangle(sym.getName(), config->demangle);
+  return maybeDemangleSymbol(sym.getName());
 }
 
 std::string lld::toMachOString(const object::Archive::Symbol &b) {
-  return demangle(b.getName(), config->demangle);
+  return maybeDemangleSymbol(b.getName());
 }
 
 uint64_t Symbol::getStubVA() const { return in.stubs->getVA(stubsIndex); }
+uint64_t Symbol::getLazyPtrVA() const {
+  return in.lazyPointers->getVA(stubsIndex);
+}
 uint64_t Symbol::getGotVA() const { return in.got->getVA(gotIndex); }
 uint64_t Symbol::getTlvVA() const { return in.tlvPointers->getVA(gotIndex); }
 
 Defined::Defined(StringRefZ name, InputFile *file, InputSection *isec,
                  uint64_t value, uint64_t size, bool isWeakDef, bool isExternal,
-                 bool isPrivateExtern, bool includeInSymtab, bool isThumb,
+                 bool isPrivateExtern, bool includeInSymtab,
                  bool isReferencedDynamically, bool noDeadStrip,
                  bool canOverrideWeakDef, bool isWeakDefCanBeHidden,
                  bool interposable)
     : Symbol(DefinedKind, name, file), overridesWeakDef(canOverrideWeakDef),
       privateExtern(isPrivateExtern), includeInSymtab(includeInSymtab),
-      wasIdenticalCodeFolded(false), thumb(isThumb),
+      wasIdenticalCodeFolded(false),
       referencedDynamically(isReferencedDynamically), noDeadStrip(noDeadStrip),
       interposable(interposable), weakDefCanBeHidden(isWeakDefCanBeHidden),
       weakDef(isWeakDef), external(isExternal), isec(isec), value(value),
@@ -91,6 +103,10 @@ uint64_t Defined::getVA() const {
     return TargetInfo::outOfRangeVA;
   }
   return isec->getVA(value);
+}
+
+ObjFile *Defined::getObjectFile() const {
+  return isec ? dyn_cast_or_null<ObjFile>(isec->getFile()) : nullptr;
 }
 
 void Defined::canonicalize() {

@@ -15,6 +15,8 @@
 
 #include "llvm/ADT/ArrayRef.h"
 
+#include <type_traits>
+
 namespace llvm {
 namespace sys {
 class DynamicLibrary;
@@ -24,6 +26,7 @@ class DynamicLibrary;
 namespace lldb_private {
 class Platform;
 class ExecutionContext;
+class RegisterFlags;
 
 typedef llvm::sys::DynamicLibrary (*LoadPluginCallbackType)(
     const lldb::DebuggerSP &debugger_sp, const FileSpec &spec, Status &error);
@@ -60,6 +63,8 @@ struct RegisterInfo {
   /// this register changes. For example, the invalidate list for eax would be
   /// rax ax, ah, and al.
   uint32_t *invalidate_regs;
+  /// If not nullptr, a type defined by XML descriptions.
+  const RegisterFlags *flags_type;
 
   llvm::ArrayRef<uint8_t> data(const uint8_t *context_base) const {
     return llvm::ArrayRef<uint8_t>(context_base + byte_offset, byte_size);
@@ -70,6 +75,8 @@ struct RegisterInfo {
                                           byte_size);
   }
 };
+static_assert(std::is_trivial<RegisterInfo>::value,
+              "RegisterInfo must be trivial.");
 
 /// Registers are grouped into register sets
 struct RegisterSet {
@@ -112,6 +119,10 @@ typedef struct type256 { uint64_t x[4]; } type256;
 using ValueObjectProviderTy =
     std::function<lldb::ValueObjectSP(ConstString, StackFrame *)>;
 
+typedef void (*DebuggerDestroyCallback)(lldb::user_id_t debugger_id,
+                                        void *baton);
+typedef bool (*CommandOverrideCallbackWithResult)(
+    void *baton, const char **argv, lldb_private::CommandReturnObject &result);
 } // namespace lldb_private
 
 #endif // #if defined(__cplusplus)

@@ -45,14 +45,14 @@ def Tensor_Dialect : Dialect {
 
   }];
 
+  let hasCanonicalizer = 1;
   let hasConstantMaterializer = 1;
+  let usePropertiesForAttributes = 1;
   let dependentDialects = [
-    "arith::ArithmeticDialect",
+    "affine::AffineDialect",
+    "arith::ArithDialect",
     "complex::ComplexDialect",
   ];
-
-  // TODO: flip post changing ViewLike interface.
-  let emitAccessorPrefix = kEmitAccessorPrefix_Both;
 }
 
 #endif // TENSOR_BASE

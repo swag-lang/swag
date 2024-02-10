@@ -14,8 +14,7 @@
 #include "llvm/ADT/STLExtras.h"
 #include <vector>
 
-namespace lld {
-namespace elf {
+namespace lld::elf {
 class Symbol;
 class InputSection;
 class InputSectionBase;
@@ -103,6 +102,15 @@ enum RelExpr {
   R_PPC64_RELAX_GOT_PC,
   R_RISCV_ADD,
   R_RISCV_PC_INDIRECT,
+  // Same as R_PC but with page-aligned semantics.
+  R_LOONGARCH_PAGE_PC,
+  // Same as R_PLT_PC but with page-aligned semantics.
+  R_LOONGARCH_PLT_PAGE_PC,
+  // In addition to having page-aligned semantics, LoongArch GOT relocs are
+  // also reused for TLS, making the semantics differ from other architectures.
+  R_LOONGARCH_GOT,
+  R_LOONGARCH_GOT_PAGE_PC,
+  R_LOONGARCH_TLSGD_PAGE_PC,
 };
 
 // Architecture-neutral representation of relocation.
@@ -126,7 +134,7 @@ struct JumpInstrMod {
 // This function writes undefined symbol diagnostics to an internal buffer.
 // Call reportUndefinedSymbols() after calling scanRelocations() to emit
 // the diagnostics.
-template <class ELFT> void scanRelocations(InputSectionBase &);
+template <class ELFT> void scanRelocations();
 void reportUndefinedSymbols();
 void postScanRelocations();
 
@@ -212,7 +220,6 @@ ArrayRef<RelTy> sortRels(ArrayRef<RelTy> rels, SmallVector<RelTy, 0> &storage) {
   }
   return rels;
 }
-} // namespace elf
-} // namespace lld
+} // namespace lld::elf
 
 #endif

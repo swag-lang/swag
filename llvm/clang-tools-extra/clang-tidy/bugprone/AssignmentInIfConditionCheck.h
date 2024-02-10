@@ -11,24 +11,21 @@
 
 #include "../ClangTidyCheck.h"
 
-namespace clang {
-namespace tidy {
-namespace bugprone {
+namespace clang::tidy::bugprone {
 
 /// Catches assignments within the condition clause of an if statement.
 ///
 /// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/bugprone-assignment-in-if-condition.html
+/// http://clang.llvm.org/extra/clang-tidy/checks/bugprone/assignment-in-if-condition.html
 class AssignmentInIfConditionCheck : public ClangTidyCheck {
 public:
   AssignmentInIfConditionCheck(StringRef Name, ClangTidyContext *Context)
       : ClangTidyCheck(Name, Context) {}
   void registerMatchers(ast_matchers::MatchFinder *Finder) override;
   void check(const ast_matchers::MatchFinder::MatchResult &Result) override;
+  void report(const Expr *AssignmentExpr);
 };
 
-} // namespace bugprone
-} // namespace tidy
-} // namespace clang
+} // namespace clang::tidy::bugprone
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_TIDY_BUGPRONE_ASSIGNMENTINIFCONDITIONCHECK_H

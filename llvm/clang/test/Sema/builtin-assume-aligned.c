@@ -66,6 +66,30 @@ int test12(int *a) {
 }
 #endif
 
+int test13(int *a) {
+  a = (int *)__builtin_assume_aligned(a, 2 * 2.0); // expected-error {{argument to '__builtin_assume_aligned' must be a constant integer}}
+  return a[0];
+}
+
+int test14(int *a, int b) {
+  a = (int *)__builtin_assume_aligned(b, 32); // expected-error {{incompatible integer to pointer conversion passing 'int' to parameter of type 'const void *}}
+}
+
+int test15(int *b) {
+  int arr[3] = {1, 2, 3};
+  b = (int *)__builtin_assume_aligned(arr, 32);
+  return b[0];
+}
+
+int val(int x) {
+  return x;
+}
+
+int test16(int *b) {
+  b = (int *)__builtin_assume_aligned(val, 32);
+  return b[0];
+}
+
 void test_void_assume_aligned(void) __attribute__((assume_aligned(32))); // expected-warning {{'assume_aligned' attribute only applies to return values that are pointers}}
 int test_int_assume_aligned(void) __attribute__((assume_aligned(16))); // expected-warning {{'assume_aligned' attribute only applies to return values that are pointers}}
 void *test_ptr_assume_aligned(void) __attribute__((assume_aligned(64))); // no-warning

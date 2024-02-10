@@ -13,20 +13,24 @@
 
 #include "mlir/Conversion/AffineToStandard/AffineToStandard.h"
 
-#include "../PassDetail.h"
 #include "mlir/Dialect/Affine/IR/AffineOps.h"
 #include "mlir/Dialect/Affine/Utils.h"
 #include "mlir/Dialect/MemRef/IR/MemRef.h"
 #include "mlir/Dialect/SCF/IR/SCF.h"
 #include "mlir/Dialect/Vector/IR/VectorOps.h"
-#include "mlir/IR/BlockAndValueMapping.h"
+#include "mlir/IR/IRMapping.h"
 #include "mlir/IR/IntegerSet.h"
 #include "mlir/IR/MLIRContext.h"
-#include "mlir/Pass/Pass.h"
 #include "mlir/Transforms/DialectConversion.h"
 #include "mlir/Transforms/Passes.h"
 
+namespace mlir {
+#define GEN_PASS_DEF_CONVERTAFFINETOSTANDARD
+#include "mlir/Conversion/Passes.h.inc"
+} // namespace mlir
+
 using namespace mlir;
+using namespace mlir::affine;
 using namespace mlir::vector;
 
 /// Given a range of values, emit the code that reduces them with "min" or "max"
@@ -43,7 +47,7 @@ using namespace mlir::vector;
 static Value buildMinMaxReductionSeq(Location loc,
                                      arith::CmpIPredicate predicate,
                                      ValueRange values, OpBuilder &builder) {
-  assert(!llvm::empty(values) && "empty min/max chain");
+  assert(!values.empty() && "empty min/max chain");
 
   auto valueIt = values.begin();
   Value value = *valueIt++;
@@ -100,7 +104,7 @@ public:
   LogicalResult matchAndRewrite(AffineMinOp op,
                                 PatternRewriter &rewriter) const override {
     Value reduced =
-        lowerAffineMapMin(rewriter, op.getLoc(), op.getMap(), op.operands());
+        lowerAffineMapMin(rewriter, op.getLoc(), op.getMap(), op.getOperands());
     if (!reduced)
       return failure();
 
@@ -116,7 +120,7 @@ public:
   LogicalResult matchAndRewrite(AffineMaxOp op,
                                 PatternRewriter &rewriter) const override {
     Value reduced =
-        lowerAffineMapMax(rewriter, op.getLoc(), op.getMap(), op.operands());
+        lowerAffineMapMax(rewriter, op.getLoc(), op.getMap(), op.getOperands());
     if (!reduced)
       return failure();
 
@@ -138,7 +142,7 @@ public:
       rewriter.replaceOpWithNewOp<scf::YieldOp>(op);
       return success();
     }
-    rewriter.replaceOpWithNewOp<scf::YieldOp>(op, op.operands());
+    rewriter.replaceOpWithNewOp<scf::YieldOp>(op, op.getOperands());
     return success();
   }
 };
@@ -220,9 +224,9 @@ public:
       // initialization of the result values.
       Attribute reduction = std::get<0>(pair);
       Type resultType = std::get<1>(pair);
-      Optional<arith::AtomicRMWKind> reductionOp =
+      std::optional<arith::AtomicRMWKind> reductionOp =
           arith::symbolizeAtomicRMWKind(
-              static_cast<uint64_t>(reduction.cast<IntegerAttr>().getInt()));
+              static_cast<uint64_t>(cast<IntegerAttr>(reduction).getInt()));
       assert(reductionOp && "Reduction operation cannot be of None Type");
       arith::AtomicRMWKind reductionOpValue = *reductionOp;
       identityVals.push_back(
@@ -240,9 +244,9 @@ public:
            "Unequal number of reductions and operands.");
     for (unsigned i = 0, end = reductions.size(); i < end; i++) {
       // For each of the reduction operations get the respective mlir::Value.
-      Optional<arith::AtomicRMWKind> reductionOp =
+      std::optional<arith::AtomicRMWKind> reductionOp =
           arith::symbolizeAtomicRMWKind(
-              reductions[i].cast<IntegerAttr>().getInt());
+              cast<IntegerAttr>(reductions[i]).getInt());
       assert(reductionOp && "Reduction Operation cannot be of None Type");
       arith::AtomicRMWKind reductionOpValue = *reductionOp;
       rewriter.setInsertionPoint(&parOp.getBody()->back());
@@ -272,7 +276,7 @@ public:
     auto integerSet = op.getIntegerSet();
     Value zeroConstant = rewriter.create<arith::ConstantIndexOp>(loc, 0);
     SmallVector<Value, 8> operands(op.getOperands());
-    auto operandsRef = llvm::makeArrayRef(operands);
+    auto operandsRef = llvm::ArrayRef(operands);
 
     // Calculate cond as a conjunction without short-circuiting.
     Value cond = nullptr;
@@ -416,7 +420,7 @@ public:
   LogicalResult matchAndRewrite(AffineDmaStartOp op,
                                 PatternRewriter &rewriter) const override {
     SmallVector<Value, 8> operands(op.getOperands());
-    auto operandsRef = llvm::makeArrayRef(operands);
+    auto operandsRef = llvm::ArrayRef(operands);
 
     // Expand affine map for DMA source memref.
     auto maybeExpandedSrcMap = expandAffineMap(
@@ -544,13 +548,14 @@ void mlir::populateAffineToVectorConversionPatterns(
 }
 
 namespace {
-class LowerAffinePass : public ConvertAffineToStandardBase<LowerAffinePass> {
+class LowerAffinePass
+    : public impl::ConvertAffineToStandardBase<LowerAffinePass> {
   void runOnOperation() override {
     RewritePatternSet patterns(&getContext());
     populateAffineToStdConversionPatterns(patterns);
     populateAffineToVectorConversionPatterns(patterns);
     ConversionTarget target(getContext());
-    target.addLegalDialect<arith::ArithmeticDialect, memref::MemRefDialect,
+    target.addLegalDialect<arith::ArithDialect, memref::MemRefDialect,
                            scf::SCFDialect, VectorDialect>();
     if (failed(applyPartialConversion(getOperation(), target,
                                       std::move(patterns))))

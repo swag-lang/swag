@@ -70,6 +70,9 @@
  * WG14 DR080: yes
  * Merging of string constants
  *
+ * WG14 DR085: yes
+ * Returning from main
+ *
  * WG14 DR086: yes
  * Object-like macros in system headers
  *
@@ -110,7 +113,7 @@ struct dr007_b;
  * of treated as declaring a parameter of type 'int (*)(dr009_t);'
  */
 typedef int dr009_t;
-void dr009_f((dr009_t)); /* c99untilc2x-warning {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
+void dr009_f((dr009_t)); /* c99untilc2x-error {{type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int}}
                             c2xandup-error {{a type specifier is required for all declarations}} */
 
 /* WG14 DR010:
@@ -160,7 +163,8 @@ void dr011(void) {
  */
 void dr012(void *p) {
   /* The behavior changed between C89 and C99. */
-  (void)&*p; /* c89only-warning {{ISO C forbids taking the address of an expression of type 'void'}} */
+  (void)&*p; /* c89only-warning {{ISO C forbids taking the address of an expression of type 'void'}}
+                c89only-warning {{ISO C does not allow indirection on operand of type 'void *'}} */
 }
 
 /* WG14 DR013: yes

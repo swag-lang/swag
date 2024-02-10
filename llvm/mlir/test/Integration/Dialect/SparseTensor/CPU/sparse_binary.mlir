@@ -1,11 +1,33 @@
-// RUN: mlir-opt %s --sparse-compiler | \
-// RUN: mlir-cpu-runner \
-// RUN:  -e entry -entry-point-result=void  \
-// RUN:  -shared-libs=%mlir_integration_test_dir/libmlir_c_runner_utils%shlibext | \
-// RUN: FileCheck %s
+// DEFINE: %{option} = enable-runtime-library=true
+// DEFINE: %{compile} = mlir-opt %s --sparse-compiler=%{option}
+// DEFINE: %{run} = mlir-cpu-runner \
+// DEFINE:  -e entry -entry-point-result=void  \
+// DEFINE:  -shared-libs=%mlir_c_runner_utils | \
+// DEFINE: FileCheck %s
+//
+// RUN: %{compile} | %{run}
+//
+// Do the same run, but now with direct IR generation.
+// REDEFINE: %{option} = "enable-runtime-library=false enable-buffer-initialization=true"
+// RUN: %{compile} | %{run}
+//
+// Do the same run, but now with direct IR generation and vectorization.
+// REDEFINE: %{option} = "enable-runtime-library=false enable-buffer-initialization=true vl=2 reassociate-fp-reductions=true enable-index-optimizations=true"
+// RUN: %{compile} | %{run}
 
-#SparseVector = #sparse_tensor.encoding<{dimLevelType = ["compressed"]}>
-#DCSR = #sparse_tensor.encoding<{dimLevelType = ["compressed", "compressed"]}>
+// Do the same run, but now with direct IR generation and, if available, VLA
+// vectorization.
+// REDEFINE: %{option} = "enable-runtime-library=false enable-buffer-initialization=true vl=4 enable-arm-sve=%ENABLE_VLA"
+// REDEFINE: %{run} = %lli_host_or_aarch64_cmd \
+// REDEFINE:   --entry-function=entry_lli \
+// REDEFINE:   --extra-module=%S/Inputs/main_for_lli.ll \
+// REDEFINE:   %VLA_ARCH_ATTR_OPTIONS \
+// REDEFINE:   --dlopen=%mlir_native_utils_lib_dir/libmlir_c_runner_utils%shlibext | \
+// REDEFINE: FileCheck %s
+// RUN: %{compile} | mlir-translate -mlir-to-llvmir | %{run}
+
+#SparseVector = #sparse_tensor.encoding<{lvlTypes = ["compressed"]}>
+#DCSR = #sparse_tensor.encoding<{lvlTypes = ["compressed", "compressed"]}>
 
 //
 // Traits for tensor operations.
@@ -43,27 +65,26 @@
 module {
   // Creates a new sparse vector using the minimum values from two input sparse vectors.
   // When there is no overlap, include the present value in the output.
-  func.func @vector_min(%arga: tensor<?xf64, #SparseVector>,
-                        %argb: tensor<?xf64, #SparseVector>) -> tensor<?xf64, #SparseVector> {
+  func.func @vector_min(%arga: tensor<?xi32, #SparseVector>,
+                        %argb: tensor<?xi32, #SparseVector>) -> tensor<?xi32, #SparseVector> {
     %c = arith.constant 0 : index
-    %d = tensor.dim %arga, %c : tensor<?xf64, #SparseVector>
-    %xv = bufferization.alloc_tensor(%d) : tensor<?xf64, #SparseVector>
+    %d = tensor.dim %arga, %c : tensor<?xi32, #SparseVector>
+    %xv = bufferization.alloc_tensor(%d) : tensor<?xi32, #SparseVector>
     %0 = linalg.generic #trait_vec_op
-       ins(%arga, %argb: tensor<?xf64, #SparseVector>, tensor<?xf64, #SparseVector>)
-        outs(%xv: tensor<?xf64, #SparseVector>) {
-        ^bb(%a: f64, %b: f64, %x: f64):
-          %1 = sparse_tensor.binary %a, %b : f64, f64 to f64
+       ins(%arga, %argb: tensor<?xi32, #SparseVector>, tensor<?xi32, #SparseVector>)
+        outs(%xv: tensor<?xi32, #SparseVector>) {
+        ^bb(%a: i32, %b: i32, %x: i32):
+          %1 = sparse_tensor.binary %a, %b : i32, i32 to i32
             overlap={
-              ^bb0(%a0: f64, %b0: f64):
-                %cmp = arith.cmpf "olt", %a0, %b0 : f64
-                %2 = arith.select %cmp, %a0, %b0: f64
-                sparse_tensor.yield %2 : f64
+              ^bb0(%a0: i32, %b0: i32):
+                %2 = arith.minsi %a0, %b0: i32
+                sparse_tensor.yield %2 : i32
             }
             left=identity
             right=identity
-          linalg.yield %1 : f64
-    } -> tensor<?xf64, #SparseVector>
-    return %0 : tensor<?xf64, #SparseVector>
+          linalg.yield %1 : i32
+    } -> tensor<?xi32, #SparseVector>
+    return %0 : tensor<?xi32, #SparseVector>
   }
 
   // Creates a new sparse vector by multiplying a sparse vector with a dense vector.
@@ -347,7 +368,7 @@ module {
   func.func @dump_vec(%arg0: tensor<?xf64, #SparseVector>) {
     // Dump the values array to verify only sparse contents are stored.
     %c0 = arith.constant 0 : index
-    %d0 = arith.constant -1.0 : f64
+    %d0 = arith.constant 0.0 : f64
     %0 = sparse_tensor.values %arg0 : tensor<?xf64, #SparseVector> to memref<?xf64>
     %1 = vector.transfer_read %0[%c0], %d0: memref<?xf64>, vector<16xf64>
     vector.print %1 : vector<16xf64>
@@ -361,7 +382,7 @@ module {
   func.func @dump_vec_i32(%arg0: tensor<?xi32, #SparseVector>) {
     // Dump the values array to verify only sparse contents are stored.
     %c0 = arith.constant 0 : index
-    %d0 = arith.constant -1 : i32
+    %d0 = arith.constant 0 : i32
     %0 = sparse_tensor.values %arg0 : tensor<?xi32, #SparseVector> to memref<?xi32>
     %1 = vector.transfer_read %0[%c0], %d0: memref<?xi32>, vector<24xi32>
     vector.print %1 : vector<24xi32>
@@ -383,7 +404,7 @@ module {
 
   func.func @dump_mat_4x4(%A: tensor<4x4xf64, #DCSR>) {
     %c0 = arith.constant 0 : index
-    %du = arith.constant -1.0 : f64
+    %du = arith.constant 0.0 : f64
 
     %c = sparse_tensor.convert %A : tensor<4x4xf64, #DCSR> to tensor<4x4xf64>
     %v = vector.transfer_read %c[%c0, %c0], %du: tensor<4x4xf64>, vector<4x4xf64>
@@ -398,7 +419,7 @@ module {
 
   func.func @dump_mat_4x4_i8(%A: tensor<4x4xi8, #DCSR>) {
     %c0 = arith.constant 0 : index
-    %du = arith.constant -1 : i8
+    %du = arith.constant 0 : i8
 
     %c = sparse_tensor.convert %A : tensor<4x4xi8, #DCSR> to tensor<4x4xi8>
     %v = vector.transfer_read %c[%c0, %c0], %du: tensor<4x4xi8>, vector<4x4xi8>
@@ -407,7 +428,7 @@ module {
     %1 = sparse_tensor.values %A : tensor<4x4xi8, #DCSR> to memref<?xi8>
     %2 = vector.transfer_read %1[%c0], %du: memref<?xi8>, vector<16xi8>
     vector.print %2 : vector<16xi8>
-  
+
     return
   }
 
@@ -428,8 +449,13 @@ module {
       [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 0., 1., 2., 3., 4., 5., 6., 7., 8., 9.,
        0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 0., 1.]
     > : tensor<32xf64>
+    %v1_si = arith.fptosi %v1 : tensor<32xf64> to tensor<32xi32>
+    %v2_si = arith.fptosi %v2 : tensor<32xf64> to tensor<32xi32>
+
     %sv1 = sparse_tensor.convert %v1 : tensor<32xf64> to tensor<?xf64, #SparseVector>
     %sv2 = sparse_tensor.convert %v2 : tensor<32xf64> to tensor<?xf64, #SparseVector>
+    %sv1_si = sparse_tensor.convert %v1_si : tensor<32xi32> to tensor<?xi32, #SparseVector>
+    %sv2_si = sparse_tensor.convert %v2_si : tensor<32xi32> to tensor<?xi32, #SparseVector>
     %dv3 = tensor.cast %v3 : tensor<32xf64> to tensor<?xf64>
 
     // Setup sparse matrices.
@@ -459,9 +485,9 @@ module {
     %sm4 = sparse_tensor.convert %m4 : tensor<4x4xf64> to tensor<4x4xf64, #DCSR>
 
     // Call sparse vector kernels.
-    %0 = call @vector_min(%sv1, %sv2)
-       : (tensor<?xf64, #SparseVector>,
-          tensor<?xf64, #SparseVector>) -> tensor<?xf64, #SparseVector>
+    %0 = call @vector_min(%sv1_si, %sv2_si)
+       : (tensor<?xi32, #SparseVector>,
+          tensor<?xi32, #SparseVector>) -> tensor<?xi32, #SparseVector>
     %1 = call @vector_mul(%sv1, %dv3)
       : (tensor<?xf64, #SparseVector>,
          tensor<?xf64>) -> tensor<?xf64, #SparseVector>
@@ -490,35 +516,35 @@ module {
     //
     // Verify the results.
     //
-    // CHECK:      ( 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, -1, -1, -1, -1, -1 )
+    // CHECK:      ( 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 4, 0, 0, 5, 6, 0, 0, 0, 0, 0, 0, 7, 8, 0, 9 )
-    // CHECK-NEXT: ( 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT: ( 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( 0, 11, 0, 12, 13, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 15, 0, 16, 0, 0, 17, 0, 0, 0, 0, 0, 0, 18, 19, 0, 20 )
-    // CHECK-NEXT: ( 1, 11, 2, 13, 14, 3, 15, 4, 16, 5, 6, 7, 8, 9, -1, -1 )
+    // CHECK-NEXT: ( 1, 11, 2, 13, 14, 3, 15, 4, 16, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( 1, 11, 0, 2, 13, 0, 0, 0, 0, 0, 14, 3, 0, 0, 0, 0, 15, 4, 16, 0, 5, 6, 0, 0, 0, 0, 0, 0, 7, 8, 0, 9 )
-    // CHECK-NEXT: ( 0, 6, 3, 28, 0, 6, 56, 72, 9, -1, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT: ( 0, 6, 3, 28, 0, 6, 56, 72, 9, 0, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 28, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 56, 72, 0, 9 )
-    // CHECK-NEXT: ( 1, 3, 4, 5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT: ( 1, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 4, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-    // CHECK-NEXT: ( 0, 3, 11, 17, 20, 21, 28, 29, 31, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT: ( 0, 3, 11, 17, 20, 21, 28, 29, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 17, 0, 0, 20, 21, 0, 0, 0, 0, 0, 0, 28, 29, 0, 31 )
     // CHECK-NEXT: ( ( 7, 0, 0, 0, 0, 0, 0, -5 ), ( -4, 0, 0, 0, 0, 0, -3, 0 ), ( 0, -2, 0, 0, 0, 0, 0, 7 ), ( 0, 0, 0, 0, 0, 0, 0, 0 ) )
     // CHECK-NEXT: ( ( 2, 0, 4, 1 ), ( 0, 2.5, 0, 0 ), ( 1, 5, 2, 4 ), ( 5, 4, 0, 0 ) )
-    // CHECK-NEXT:   ( 2, 4, 1, 2.5, 1, 5, 2, 4, 5, 4, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT:   ( 2, 4, 1, 2.5, 1, 5, 2, 4, 5, 4, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( ( 2, 0, 4, 1 ), ( 0, 2.5, 0, 0 ), ( 1, 5, 2, 4 ), ( 5, 4, 0, 0 ) )
-    // CHECK-NEXT:   ( 2, 4, 1, 2.5, 1, 5, 2, 4, 5, 4, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT:   ( 2, 4, 1, 2.5, 1, 5, 2, 4, 5, 4, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( ( 2, 0, 4, 1 ), ( 0, 2.5, 0, 0 ), ( -1, -5, 2, 4 ), ( 1, 4, 0, 0 ) )
-    // CHECK-NEXT:   ( 2, 4, 1, 2.5, -1, -5, 2, 4, 1, 4, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT:   ( 2, 4, 1, 2.5, -1, -5, 2, 4, 1, 4, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( ( 0, 0, 1, -1 ), ( 0, 1, 0, 0 ), ( -1, -2, -2, 2 ), ( 1, 2, 0, 0 ) )
-    // CHECK-NEXT:   ( 0, 1, -1, 1, -1, -2, -2, 2, 1, 2, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT:   ( 0, 1, -1, 1, -1, -2, -2, 2, 1, 2, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( ( 1, 0, 0, 0 ), ( 0, 0, 0, 0 ), ( 0, 0, 0, 0 ), ( 0, 0, 0, 0 ) )
-    // CHECK-NEXT:   ( 1, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT:   ( 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
     // CHECK-NEXT: ( ( 0, 0, 0, -1 ), ( 0, 0, 0, 0 ), ( -1, -5, -2, 4 ), ( 0, 4, 0, 0 ) )
-    // CHECK-NEXT:   ( -1, -1, -5, -2, 4, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 )
+    // CHECK-NEXT:   ( -1, -1, -5, -2, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
     //
     call @dump_vec(%sv1) : (tensor<?xf64, #SparseVector>) -> ()
     call @dump_vec(%sv2) : (tensor<?xf64, #SparseVector>) -> ()
-    call @dump_vec(%0) : (tensor<?xf64, #SparseVector>) -> ()
+    call @dump_vec_i32(%0) : (tensor<?xi32, #SparseVector>) -> ()
     call @dump_vec(%1) : (tensor<?xf64, #SparseVector>) -> ()
     call @dump_vec(%2) : (tensor<?xf64, #SparseVector>) -> ()
     call @dump_vec_i32(%3) : (tensor<?xi32, #SparseVector>) -> ()
@@ -533,11 +559,13 @@ module {
     // Release the resources.
     bufferization.dealloc_tensor %sv1 : tensor<?xf64, #SparseVector>
     bufferization.dealloc_tensor %sv2 : tensor<?xf64, #SparseVector>
+    bufferization.dealloc_tensor %sv1_si : tensor<?xi32, #SparseVector>
+    bufferization.dealloc_tensor %sv2_si : tensor<?xi32, #SparseVector>
     bufferization.dealloc_tensor %sm1 : tensor<?x?xf64, #DCSR>
     bufferization.dealloc_tensor %sm2 : tensor<?x?xf64, #DCSR>
     bufferization.dealloc_tensor %sm3 : tensor<4x4xf64, #DCSR>
     bufferization.dealloc_tensor %sm4 : tensor<4x4xf64, #DCSR>
-    bufferization.dealloc_tensor %0 : tensor<?xf64, #SparseVector>
+    bufferization.dealloc_tensor %0 : tensor<?xi32, #SparseVector>
     bufferization.dealloc_tensor %1 : tensor<?xf64, #SparseVector>
     bufferization.dealloc_tensor %2 : tensor<?xf64, #SparseVector>
     bufferization.dealloc_tensor %3 : tensor<?xi32, #SparseVector>

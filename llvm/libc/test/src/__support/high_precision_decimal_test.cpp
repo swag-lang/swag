@@ -6,10 +6,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/__support/CPP/UInt128.h"
+#include "src/__support/UInt128.h"
 #include "src/__support/high_precision_decimal.h"
 
-#include "utils/UnitTest/Test.h"
+#include "test/UnitTest/Test.h"
 
 TEST(LlvmLibcHighPrecisionDecimalTest, BasicInit) {
   __llvm_libc::internal::HighPrecisionDecimal hpd =

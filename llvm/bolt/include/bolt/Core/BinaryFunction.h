@@ -34,19 +34,25 @@
 #include "bolt/Core/JumpTable.h"
 #include "bolt/Core/MCPlus.h"
 #include "bolt/Utils/NameResolver.h"
+#include "llvm/ADT/STLExtras.h"
+#include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/ADT/iterator.h"
+#include "llvm/ADT/iterator_range.h"
 #include "llvm/BinaryFormat/Dwarf.h"
 #include "llvm/MC/MCContext.h"
 #include "llvm/MC/MCDwarf.h"
 #include "llvm/MC/MCInst.h"
 #include "llvm/MC/MCSymbol.h"
 #include "llvm/Object/ObjectFile.h"
+#include "llvm/Support/RWMutex.h"
 #include "llvm/Support/raw_ostream.h"
 #include <algorithm>
+#include <iterator>
 #include <limits>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 using namespace llvm::object;
@@ -142,7 +148,8 @@ public:
     uint64_t Action;
   };
 
-  using CallSitesType = SmallVector<CallSite, 0>;
+  using CallSitesList = SmallVector<std::pair<FragmentNum, CallSite>, 0>;
+  using CallSitesRange = iterator_range<CallSitesList::const_iterator>;
 
   using IslandProxiesType =
       std::map<BinaryFunction *, std::map<const MCSymbol *, MCSymbol *>>;
@@ -159,6 +166,10 @@ public:
 
     /// List of relocations associated with data in the constant island
     std::map<uint64_t, Relocation> Relocations;
+
+    /// Set true if constant island contains dynamic relocations, which may
+    /// happen if binary is linked with -z notext option.
+    bool HasDynamicRelocations{false};
 
     /// Offsets in function that are data values in a constant island identified
     /// after disassembling
@@ -231,9 +242,6 @@ private:
 
   /// Size of the function in the output file.
   uint64_t OutputSize{0};
-
-  /// Offset in the file.
-  uint64_t FileOffset{0};
 
   /// Maximum size this function is allowed to have.
   uint64_t MaxSize{std::numeric_limits<uint64_t>::max()};
@@ -331,6 +339,9 @@ private:
   bool HasPseudoProbe{BC.getUniqueSectionByName(".pseudo_probe_desc") &&
                       BC.getUniqueSectionByName(".pseudo_probe")};
 
+  /// True if the function uses ORC format for stack unwinding.
+  bool HasORC{false};
+
   /// True if the original entry point was patched.
   bool IsPatched{false};
 
@@ -345,13 +356,8 @@ private:
   /// This attribute is only valid when hasCFG() == true.
   bool HasCanonicalCFG{true};
 
-  /// The address for the code for this function in codegen memory.
-  /// Used for functions that are emitted in a dedicated section with a fixed
-  /// address. E.g. for functions that are overwritten in-place.
-  uint64_t ImageAddress{0};
-
-  /// The size of the code in memory.
-  uint64_t ImageSize{0};
+  /// True if another function body was merged into this one.
+  bool HasFunctionsFoldedInto{false};
 
   /// Name for the section this function code should reside in.
   std::string CodeSectionName;
@@ -381,6 +387,10 @@ private:
   /// Indicates the type of profile the function is using.
   uint16_t ProfileFlags{PF_NONE};
 
+  /// True if the function's input profile data has been inaccurate but has
+  /// been adjusted by the profile inference algorithm.
+  bool HasInferredProfile{false};
+
   /// For functions with mismatched profile we store all call profile
   /// information at a function level (as opposed to tying it to
   /// specific call sites).
@@ -392,6 +402,9 @@ private:
 
   /// Original LSDA address for the function.
   uint64_t LSDAAddress{0};
+
+  /// Original LSDA type encoding
+  unsigned LSDATypeEncoding{dwarf::DW_EH_PE_omit};
 
   /// Containing compilation unit for the function.
   DWARFUnit *DwarfUnit{nullptr};
@@ -411,21 +424,6 @@ private:
   unsigned getIndex(const BinaryBasicBlock *BB) const {
     assert(BB->getIndex() < BasicBlocks.size());
     return BB->getIndex();
-  }
-
-  /// Return basic block that originally contained offset \p Offset
-  /// from the function start.
-  BinaryBasicBlock *getBasicBlockContainingOffset(uint64_t Offset);
-
-  const BinaryBasicBlock *getBasicBlockContainingOffset(uint64_t Offset) const {
-    return const_cast<BinaryFunction *>(this)->getBasicBlockContainingOffset(
-        Offset);
-  }
-
-  /// Return basic block that started at offset \p Offset.
-  BinaryBasicBlock *getBasicBlockAtOffset(uint64_t Offset) {
-    BinaryBasicBlock *BB = getBasicBlockContainingOffset(Offset);
-    return BB && BB->getOffset() == Offset ? BB : nullptr;
   }
 
   /// Release memory taken by the list.
@@ -503,8 +501,7 @@ private:
   DenseMap<int32_t, SmallVector<int32_t, 4>> FrameRestoreEquivalents;
 
   // For tracking exception handling ranges.
-  CallSitesType CallSites;
-  CallSitesType ColdCallSites;
+  CallSitesList CallSites;
 
   /// Binary blobs representing action, type, and type index tables for this
   /// function' LSDA (exception handling).
@@ -518,9 +515,9 @@ private:
   /// addressing.
   LSDATypeTableTy LSDATypeAddressTable;
 
-  /// Marking for the beginning of language-specific data area for the function.
-  MCSymbol *LSDASymbol{nullptr};
-  MCSymbol *ColdLSDASymbol{nullptr};
+  /// Marking for the beginnings of language-specific data areas for each
+  /// fragment of the function.
+  SmallVector<MCSymbol *, 0> LSDASymbols;
 
   /// Map to discover which CFIs are attached to a given instruction offset.
   /// Maps an instruction offset into a FrameInstructions offset.
@@ -568,13 +565,10 @@ private:
   };
   SmallVector<BasicBlockOffset, 0> BasicBlockOffsets;
 
-  MCSymbol *ColdSymbol{nullptr};
+  SmallVector<MCSymbol *, 0> ColdSymbols;
 
-  /// Symbol at the end of the function.
-  mutable MCSymbol *FunctionEndLabel{nullptr};
-
-  /// Symbol at the end of the cold part of split function.
-  mutable MCSymbol *FunctionColdEndLabel{nullptr};
+  /// Symbol at the end of each fragment of a split function.
+  mutable SmallVector<MCSymbol *, 0> FunctionEndLabels;
 
   /// Unique number associated with the function.
   uint64_t FunctionNumber;
@@ -612,10 +606,6 @@ private:
       Islands = std::make_unique<IslandInfo>();
     Islands->CodeOffsets.emplace(Offset);
   }
-
-  /// Register secondary entry point at a given \p Offset into the function.
-  /// Return global symbol for use by extern function references.
-  MCSymbol *addEntryPointAtOffset(uint64_t Offset);
 
   /// Register an internal offset in a function referenced from outside.
   void registerReferencedOffset(uint64_t Offset) {
@@ -730,7 +720,6 @@ private:
       BB->releaseCFG();
 
     clearList(CallSites);
-    clearList(ColdCallSites);
     clearList(LSDATypeTable);
     clearList(LSDATypeAddressTable);
 
@@ -895,12 +884,28 @@ public:
     return LabelToBB.lookup(Label);
   }
 
+  /// Return basic block that originally contained offset \p Offset
+  /// from the function start.
+  BinaryBasicBlock *getBasicBlockContainingOffset(uint64_t Offset);
+
+  const BinaryBasicBlock *getBasicBlockContainingOffset(uint64_t Offset) const {
+    return const_cast<BinaryFunction *>(this)->getBasicBlockContainingOffset(
+        Offset);
+  }
+
+  /// Return basic block that started at offset \p Offset.
+  BinaryBasicBlock *getBasicBlockAtOffset(uint64_t Offset) {
+    BinaryBasicBlock *BB = getBasicBlockContainingOffset(Offset);
+    return BB && BB->getOffset() == Offset ? BB : nullptr;
+  }
+
   /// Retrieve the landing pad BB associated with invoke instruction \p Invoke
   /// that is in \p BB. Return nullptr if none exists
   BinaryBasicBlock *getLandingPadBBFor(const BinaryBasicBlock &BB,
                                        const MCInst &InvokeInst) const {
     assert(BC.MIB->isInvoke(InvokeInst) && "must be invoke instruction");
-    const Optional<MCPlus::MCLandingPad> LP = BC.MIB->getEHInfo(InvokeInst);
+    const std::optional<MCPlus::MCLandingPad> LP =
+        BC.MIB->getEHInfo(InvokeInst);
     if (LP && LP->first) {
       BinaryBasicBlock *LBB = BB.getLandingPad(LP->first);
       assert(LBB && "Landing pad should be defined");
@@ -977,7 +982,7 @@ public:
   /// returns false. Stop if Callback returns true or all names have been used.
   /// Return the name for which the Callback returned true if any.
   template <typename FType>
-  Optional<StringRef> forEachName(FType Callback) const {
+  std::optional<StringRef> forEachName(FType Callback) const {
     for (MCSymbol *Symbol : Symbols)
       if (Callback(Symbol->getName()))
         return Symbol->getName();
@@ -986,7 +991,7 @@ public:
       if (Callback(StringRef(Name)))
         return StringRef(Name);
 
-    return NoneType();
+    return std::nullopt;
   }
 
   /// Check if (possibly one out of many) function name matches the given
@@ -994,18 +999,19 @@ public:
   bool hasName(const std::string &FunctionName) const {
     auto Res =
         forEachName([&](StringRef Name) { return Name == FunctionName; });
-    return Res.hasValue();
+    return Res.has_value();
   }
 
   /// Check if any of function names matches the given regex.
-  Optional<StringRef> hasNameRegex(const StringRef NameRegex) const;
+  std::optional<StringRef> hasNameRegex(const StringRef NameRegex) const;
 
   /// Check if any of restored function names matches the given regex.
   /// Restored name means stripping BOLT-added suffixes like "/1",
-  Optional<StringRef> hasRestoredNameRegex(const StringRef NameRegex) const;
+  std::optional<StringRef>
+  hasRestoredNameRegex(const StringRef NameRegex) const;
 
   /// Return a vector of all possible names for the function.
-  const std::vector<StringRef> getNames() const {
+  std::vector<StringRef> getNames() const {
     std::vector<StringRef> AllNames;
     forEachName([&AllNames](StringRef Name) {
       AllNames.push_back(Name);
@@ -1063,7 +1069,9 @@ public:
   }
 
   /// Return offset of the function body in the binary file.
-  uint64_t getFileOffset() const { return FileOffset; }
+  uint64_t getFileOffset() const {
+    return getLayout().getMainFragment().getFileOffset();
+  }
 
   /// Return (original) byte size of the function.
   uint64_t getSize() const { return Size; }
@@ -1079,9 +1087,33 @@ public:
     return N;
   }
 
+  /// Return true if function has instructions to emit.
+  bool hasNonPseudoInstructions() const {
+    for (const BinaryBasicBlock &BB : blocks())
+      if (BB.getNumNonPseudos() > 0)
+        return true;
+    return false;
+  }
+
   /// Return MC symbol associated with the function.
   /// All references to the function should use this symbol.
-  MCSymbol *getSymbol() { return Symbols[0]; }
+  MCSymbol *getSymbol(const FragmentNum Fragment = FragmentNum::main()) {
+    if (Fragment == FragmentNum::main())
+      return Symbols[0];
+
+    size_t ColdSymbolIndex = Fragment.get() - 1;
+    if (ColdSymbolIndex >= ColdSymbols.size())
+      ColdSymbols.resize(ColdSymbolIndex + 1);
+
+    MCSymbol *&ColdSymbol = ColdSymbols[ColdSymbolIndex];
+    if (ColdSymbol == nullptr) {
+      SmallString<10> Appendix = formatv(".cold.{0}", ColdSymbolIndex);
+      ColdSymbol = BC.Ctx->getOrCreateSymbol(
+          NameResolver::append(Symbols[0]->getName(), Appendix));
+    }
+
+    return ColdSymbol;
+  }
 
   /// Return MC symbol associated with the function (const version).
   /// All references to the function should use this symbol.
@@ -1095,11 +1127,7 @@ public:
   /// secondary entry point into the function, then return a global symbol
   /// that represents the secondary entry point. Otherwise return nullptr.
   MCSymbol *getSecondaryEntryPointSymbol(const MCSymbol *BBLabel) const {
-    auto I = SecondaryEntryPoints.find(BBLabel);
-    if (I == SecondaryEntryPoints.end())
-      return nullptr;
-
-    return I->second;
+    return SecondaryEntryPoints.lookup(BBLabel);
   }
 
   /// If the basic block serves as a secondary entry point to the function,
@@ -1135,33 +1163,26 @@ public:
   /// Return true of all callbacks returned true, false otherwise.
   bool forEachEntryPoint(EntryPointCallbackTy Callback) const;
 
-  MCSymbol *getColdSymbol() {
-    if (ColdSymbol)
-      return ColdSymbol;
-
-    ColdSymbol = BC.Ctx->getOrCreateSymbol(
-        NameResolver::append(getSymbol()->getName(), ".cold.0"));
-
-    return ColdSymbol;
-  }
-
   /// Return MC symbol associated with the end of the function.
-  MCSymbol *getFunctionEndLabel() const {
+  MCSymbol *
+  getFunctionEndLabel(const FragmentNum Fragment = FragmentNum::main()) const {
     assert(BC.Ctx && "cannot be called with empty context");
+
+    size_t LabelIndex = Fragment.get();
+    if (LabelIndex >= FunctionEndLabels.size()) {
+      FunctionEndLabels.resize(LabelIndex + 1);
+    }
+
+    MCSymbol *&FunctionEndLabel = FunctionEndLabels[LabelIndex];
     if (!FunctionEndLabel) {
-      std::unique_lock<std::shared_timed_mutex> Lock(BC.CtxMutex);
-      FunctionEndLabel = BC.Ctx->createNamedTempSymbol("func_end");
+      std::unique_lock<llvm::sys::RWMutex> Lock(BC.CtxMutex);
+      if (Fragment == FragmentNum::main())
+        FunctionEndLabel = BC.Ctx->createNamedTempSymbol("func_end");
+      else
+        FunctionEndLabel = BC.Ctx->createNamedTempSymbol(
+            formatv("func_cold_end.{0}", Fragment.get() - 1));
     }
     return FunctionEndLabel;
-  }
-
-  /// Return MC symbol associated with the end of the cold part of the function.
-  MCSymbol *getFunctionColdEndLabel() const {
-    if (!FunctionColdEndLabel) {
-      std::unique_lock<std::shared_timed_mutex> Lock(BC.CtxMutex);
-      FunctionColdEndLabel = BC.Ctx->createNamedTempSymbol("func_cold_end");
-    }
-    return FunctionColdEndLabel;
   }
 
   /// Return a label used to identify where the constant island was emitted
@@ -1211,130 +1232,43 @@ public:
     return InputOffsetToAddressMap;
   }
 
-  void addRelocationAArch64(uint64_t Offset, MCSymbol *Symbol, uint64_t RelType,
-                            uint64_t Addend, uint64_t Value, bool IsCI) {
-    std::map<uint64_t, Relocation> &Rels =
-        (IsCI) ? Islands->Relocations : Relocations;
-    switch (RelType) {
-    case ELF::R_AARCH64_ABS64:
-    case ELF::R_AARCH64_ABS32:
-    case ELF::R_AARCH64_ABS16:
-    case ELF::R_AARCH64_ADD_ABS_LO12_NC:
-    case ELF::R_AARCH64_ADR_GOT_PAGE:
-    case ELF::R_AARCH64_ADR_PREL_LO21:
-    case ELF::R_AARCH64_ADR_PREL_PG_HI21:
-    case ELF::R_AARCH64_ADR_PREL_PG_HI21_NC:
-    case ELF::R_AARCH64_LD64_GOT_LO12_NC:
-    case ELF::R_AARCH64_LDST8_ABS_LO12_NC:
-    case ELF::R_AARCH64_LDST16_ABS_LO12_NC:
-    case ELF::R_AARCH64_LDST32_ABS_LO12_NC:
-    case ELF::R_AARCH64_LDST64_ABS_LO12_NC:
-    case ELF::R_AARCH64_LDST128_ABS_LO12_NC:
-    case ELF::R_AARCH64_TLSDESC_ADD_LO12:
-    case ELF::R_AARCH64_TLSDESC_ADR_PAGE21:
-    case ELF::R_AARCH64_TLSDESC_ADR_PREL21:
-    case ELF::R_AARCH64_TLSDESC_LD64_LO12:
-    case ELF::R_AARCH64_TLSIE_ADR_GOTTPREL_PAGE21:
-    case ELF::R_AARCH64_TLSIE_LD64_GOTTPREL_LO12_NC:
-    case ELF::R_AARCH64_MOVW_UABS_G0:
-    case ELF::R_AARCH64_MOVW_UABS_G0_NC:
-    case ELF::R_AARCH64_MOVW_UABS_G1:
-    case ELF::R_AARCH64_MOVW_UABS_G1_NC:
-    case ELF::R_AARCH64_MOVW_UABS_G2:
-    case ELF::R_AARCH64_MOVW_UABS_G2_NC:
-    case ELF::R_AARCH64_MOVW_UABS_G3:
-    case ELF::R_AARCH64_PREL16:
-    case ELF::R_AARCH64_PREL32:
-    case ELF::R_AARCH64_PREL64:
-      Rels[Offset] = Relocation{Offset, Symbol, RelType, Addend, Value};
-      return;
-    case ELF::R_AARCH64_CALL26:
-    case ELF::R_AARCH64_JUMP26:
-    case ELF::R_AARCH64_TSTBR14:
-    case ELF::R_AARCH64_CONDBR19:
-    case ELF::R_AARCH64_TLSDESC_CALL:
-    case ELF::R_AARCH64_TLSLE_ADD_TPREL_HI12:
-    case ELF::R_AARCH64_TLSLE_ADD_TPREL_LO12_NC:
-      return;
-    default:
-      llvm_unreachable("Unexpected AArch64 relocation type in code");
-    }
-  }
-
-  void addRelocationX86(uint64_t Offset, MCSymbol *Symbol, uint64_t RelType,
-                        uint64_t Addend, uint64_t Value) {
-    switch (RelType) {
-    case ELF::R_X86_64_8:
-    case ELF::R_X86_64_16:
-    case ELF::R_X86_64_32:
-    case ELF::R_X86_64_32S:
-    case ELF::R_X86_64_64:
-    case ELF::R_X86_64_PC8:
-    case ELF::R_X86_64_PC32:
-    case ELF::R_X86_64_PC64:
-    case ELF::R_X86_64_GOTPCRELX:
-    case ELF::R_X86_64_REX_GOTPCRELX:
-      Relocations[Offset] = Relocation{Offset, Symbol, RelType, Addend, Value};
-      return;
-    case ELF::R_X86_64_PLT32:
-    case ELF::R_X86_64_GOTPCREL:
-    case ELF::R_X86_64_TPOFF32:
-    case ELF::R_X86_64_GOTTPOFF:
-      return;
-    default:
-      llvm_unreachable("Unexpected x86 relocation type in code");
-    }
-  }
-
   /// Register relocation type \p RelType at a given \p Address in the function
   /// against \p Symbol.
   /// Assert if the \p Address is not inside this function.
   void addRelocation(uint64_t Address, MCSymbol *Symbol, uint64_t RelType,
-                     uint64_t Addend, uint64_t Value) {
-    assert(Address >= getAddress() && Address < getAddress() + getMaxSize() &&
-           "address is outside of the function");
-    uint64_t Offset = Address - getAddress();
-    if (BC.isAArch64()) {
-      return addRelocationAArch64(Offset, Symbol, RelType, Addend, Value,
-                                  isInConstantIsland(Address));
-    }
-
-    return addRelocationX86(Offset, Symbol, RelType, Addend, Value);
-  }
+                     uint64_t Addend, uint64_t Value);
 
   /// Return the name of the section this function originated from.
-  Optional<StringRef> getOriginSectionName() const {
+  std::optional<StringRef> getOriginSectionName() const {
     if (!OriginSection)
-      return NoneType();
+      return std::nullopt;
     return OriginSection->getName();
   }
 
   /// Return internal section name for this function.
-  StringRef getCodeSectionName() const { return StringRef(CodeSectionName); }
+  SmallString<32>
+  getCodeSectionName(const FragmentNum Fragment = FragmentNum::main()) const {
+    if (Fragment == FragmentNum::main())
+      return SmallString<32>(CodeSectionName);
+    if (Fragment == FragmentNum::cold())
+      return SmallString<32>(ColdCodeSectionName);
+    return formatv("{0}.{1}", ColdCodeSectionName, Fragment.get() - 1);
+  }
 
   /// Assign a code section name to the function.
-  void setCodeSectionName(StringRef Name) {
-    CodeSectionName = std::string(Name);
+  void setCodeSectionName(const StringRef Name) {
+    CodeSectionName = Name.str();
   }
 
   /// Get output code section.
-  ErrorOr<BinarySection &> getCodeSection() const {
-    return BC.getUniqueSectionByName(getCodeSectionName());
-  }
-
-  /// Return cold code section name for the function.
-  StringRef getColdCodeSectionName() const {
-    return StringRef(ColdCodeSectionName);
+  ErrorOr<BinarySection &>
+  getCodeSection(const FragmentNum Fragment = FragmentNum::main()) const {
+    return BC.getUniqueSectionByName(getCodeSectionName(Fragment));
   }
 
   /// Assign a section name for the cold part of the function.
-  void setColdCodeSectionName(StringRef Name) {
-    ColdCodeSectionName = std::string(Name);
-  }
-
-  /// Get output code section for cold code of this function.
-  ErrorOr<BinarySection &> getColdCodeSection() const {
-    return BC.getUniqueSectionByName(getColdCodeSectionName());
+  void setColdCodeSectionName(const StringRef Name) {
+    ColdCodeSectionName = Name.str();
   }
 
   /// Return true iif the function will halt execution on entry.
@@ -1394,6 +1328,9 @@ public:
   /// Return true if the body of the function was merged into another function.
   bool isFolded() const { return FoldedIntoFunction != nullptr; }
 
+  /// Return true if other functions were folded into this one.
+  bool hasFunctionsFoldedInto() const { return HasFunctionsFoldedInto; }
+
   /// If this function was folded, return the function it was folded into.
   BinaryFunction *getFoldedIntoFunction() const { return FoldedIntoFunction; }
 
@@ -1405,6 +1342,9 @@ public:
 
   /// Return true if the function has Pseudo Probe
   bool hasPseudoProbe() const { return HasPseudoProbe; }
+
+  /// Return true if the function uses ORC format for stack unwinding.
+  bool hasORC() const { return HasORC; }
 
   /// Return true if the original entry point was patched.
   bool isPatched() const { return IsPatched; }
@@ -1423,23 +1363,29 @@ public:
 
   uint8_t getPersonalityEncoding() const { return PersonalityEncoding; }
 
-  const CallSitesType &getCallSites() const { return CallSites; }
+  CallSitesRange getCallSites(const FragmentNum F) const {
+    return make_range(std::equal_range(CallSites.begin(), CallSites.end(),
+                                       std::make_pair(F, CallSite()),
+                                       llvm::less_first()));
+  }
 
-  const CallSitesType &getColdCallSites() const { return ColdCallSites; }
+  void
+  addCallSites(const ArrayRef<std::pair<FragmentNum, CallSite>> NewCallSites) {
+    llvm::copy(NewCallSites, std::back_inserter(CallSites));
+    llvm::stable_sort(CallSites, llvm::less_first());
+  }
 
-  const ArrayRef<uint8_t> getLSDAActionTable() const { return LSDAActionTable; }
+  ArrayRef<uint8_t> getLSDAActionTable() const { return LSDAActionTable; }
 
   const LSDATypeTableTy &getLSDATypeTable() const { return LSDATypeTable; }
+
+  unsigned getLSDATypeEncoding() const { return LSDATypeEncoding; }
 
   const LSDATypeTableTy &getLSDATypeAddressTable() const {
     return LSDATypeAddressTable;
   }
 
-  const ArrayRef<uint8_t> getLSDATypeIndexTable() const {
-    return LSDATypeIndexTable;
-  }
-
-  const LabelsMapType &getLabels() const { return Labels; }
+  ArrayRef<uint8_t> getLSDATypeIndexTable() const { return LSDATypeIndexTable; }
 
   IslandInfo &getIslandInfo() {
     assert(Islands && "function expected to have constant islands");
@@ -1472,7 +1418,7 @@ public:
   std::unique_ptr<BinaryBasicBlock>
   createBasicBlock(MCSymbol *Label = nullptr) {
     if (!Label) {
-      std::unique_lock<std::shared_timed_mutex> Lock(BC.CtxMutex);
+      std::unique_lock<llvm::sys::RWMutex> Lock(BC.CtxMutex);
       Label = BC.Ctx->createNamedTempSymbol("BB");
     }
     auto BB =
@@ -1500,6 +1446,10 @@ public:
   /// Add basic block \BB as an entry point to the function. Return global
   /// symbol associated with the entry.
   MCSymbol *addEntryPoint(const BinaryBasicBlock &BB);
+
+  /// Register secondary entry point at a given \p Offset into the function.
+  /// Return global symbol for use by extern function references.
+  MCSymbol *addEntryPointAtOffset(uint64_t Offset);
 
   /// Mark all blocks that are unreachable from a root (entry point
   /// or landing pad) as invalid.
@@ -1593,11 +1543,10 @@ public:
 
   /// Dump function information to debug output. If \p PrintInstructions
   /// is true - include instruction disassembly.
-  void dump(bool PrintInstructions = true) const;
+  void dump() const;
 
   /// Print function information to the \p OS stream.
-  void print(raw_ostream &OS, std::string Annotation = "",
-             bool PrintInstructions = true) const;
+  void print(raw_ostream &OS, std::string Annotation = "");
 
   /// Print all relocations between \p Offset and \p Offset + \p Size in
   /// this function.
@@ -1622,6 +1571,12 @@ public:
 
   /// Return flags describing a profile for this function.
   uint16_t getProfileFlags() const { return ProfileFlags; }
+
+  /// Return true if the function's input profile data has been inaccurate but
+  /// has been corrected by the profile inference algorithm.
+  bool hasInferredProfile() const { return HasInferredProfile; }
+
+  void setHasInferredProfile(bool Inferred) { HasInferredProfile = Inferred; }
 
   void addCFIInstruction(uint64_t Offset, MCCFIInstruction &&Inst) {
     assert(!Instructions.empty());
@@ -1652,7 +1607,6 @@ public:
     }
     OffsetToCFI.emplace(Offset, FrameInstructions.size());
     FrameInstructions.emplace_back(std::forward<MCCFIInstruction>(Inst));
-    return;
   }
 
   BinaryBasicBlock::iterator addCFIInstruction(BinaryBasicBlock *BB,
@@ -1697,7 +1651,7 @@ public:
                                              int64_t NewOffset);
 
   BinaryFunction &setFileOffset(uint64_t Offset) {
-    FileOffset = Offset;
+    getLayout().getMainFragment().setFileOffset(Offset);
     return *this;
   }
 
@@ -1751,6 +1705,14 @@ public:
 
   void setFolded(BinaryFunction *BF) { FoldedIntoFunction = BF; }
 
+  /// Indicate that another function body was merged with this function.
+  void setHasFunctionsFoldedInto() { HasFunctionsFoldedInto = true; }
+
+  void setHasSDTMarker(bool V) { HasSDTMarker = V; }
+
+  /// Mark the function as using ORC format for stack unwinding.
+  void setHasORC(bool V) { HasORC = V; }
+
   BinaryFunction &setPersonalityFunction(uint64_t Addr) {
     assert(!PersonalityFunction && "can't set personality function twice");
     PersonalityFunction = BC.getOrCreateGlobalSymbol(Addr, "FUNCat");
@@ -1767,6 +1729,7 @@ public:
     return *this;
   }
 
+  Align getAlign() const { return Align(Alignment); }
   uint16_t getAlignment() const { return Alignment; }
 
   BinaryFunction &setMaxAlignmentBytes(uint16_t MaxAlignBytes) {
@@ -1784,27 +1747,41 @@ public:
   uint16_t getMaxColdAlignmentBytes() const { return MaxColdAlignmentBytes; }
 
   BinaryFunction &setImageAddress(uint64_t Address) {
-    ImageAddress = Address;
+    getLayout().getMainFragment().setImageAddress(Address);
     return *this;
   }
 
   /// Return the address of this function' image in memory.
-  uint64_t getImageAddress() const { return ImageAddress; }
+  uint64_t getImageAddress() const {
+    return getLayout().getMainFragment().getImageAddress();
+  }
 
   BinaryFunction &setImageSize(uint64_t Size) {
-    ImageSize = Size;
+    getLayout().getMainFragment().setImageSize(Size);
     return *this;
   }
 
   /// Return the size of this function' image in memory.
-  uint64_t getImageSize() const { return ImageSize; }
+  uint64_t getImageSize() const {
+    return getLayout().getMainFragment().getImageSize();
+  }
 
   /// Return true if the function is a secondary fragment of another function.
   bool isFragment() const { return IsFragment; }
 
-  /// Returns if the given function is a parent fragment of this function.
-  bool isParentFragment(BinaryFunction *Parent) const {
-    return ParentFragments.count(Parent);
+  /// Returns if this function is a child of \p Other function.
+  bool isChildOf(const BinaryFunction &Other) const {
+    return ParentFragments.contains(&Other);
+  }
+
+  /// Returns if this function is a parent of \p Other function.
+  bool isParentOf(const BinaryFunction &Other) const {
+    return llvm::is_contained(Fragments, &Other);
+  }
+
+  /// Returns if this function is a parent or child of \p Other function.
+  bool isParentOrChildOf(const BinaryFunction &Other) const {
+    return isChildOf(Other) || isParentOf(Other);
   }
 
   /// Set the profile data for the number of times the function was called.
@@ -1826,9 +1803,11 @@ public:
     return *this;
   }
 
-  /// Set LSDA symbol for the function.
+  /// Set main LSDA symbol for the function.
   BinaryFunction &setLSDASymbol(MCSymbol *Symbol) {
-    LSDASymbol = Symbol;
+    if (LSDASymbols.empty())
+      LSDASymbols.resize(1);
+    LSDASymbols.front() = Symbol;
     return *this;
   }
 
@@ -1842,6 +1821,10 @@ public:
   /// executions corresponding to this function.
   uint64_t getRawBranchCount() const { return RawBranchCount; }
 
+  /// Set the profile data about the number of branch executions corresponding
+  /// to this function.
+  void setRawBranchCount(uint64_t Count) { RawBranchCount = Count; }
+
   /// Return the execution count for functions with known profile.
   /// Return 0 if the function has no profile.
   uint64_t getKnownExecutionCount() const {
@@ -1852,29 +1835,25 @@ public:
   uint64_t getLSDAAddress() const { return LSDAAddress; }
 
   /// Return symbol pointing to function's LSDA.
-  MCSymbol *getLSDASymbol() {
-    if (LSDASymbol)
-      return LSDASymbol;
-    if (CallSites.empty())
+  MCSymbol *getLSDASymbol(const FragmentNum F) {
+    if (F.get() < LSDASymbols.size() && LSDASymbols[F.get()] != nullptr)
+      return LSDASymbols[F.get()];
+    if (getCallSites(F).empty())
       return nullptr;
 
-    LSDASymbol = BC.Ctx->getOrCreateSymbol(
-        Twine("GCC_except_table") + Twine::utohexstr(getFunctionNumber()));
+    if (F.get() >= LSDASymbols.size())
+      LSDASymbols.resize(F.get() + 1);
 
-    return LSDASymbol;
-  }
+    SmallString<256> SymbolName;
+    if (F == FragmentNum::main())
+      SymbolName = formatv("GCC_except_table{0:x-}", getFunctionNumber());
+    else
+      SymbolName = formatv("GCC_cold_except_table{0:x-}.{1}",
+                           getFunctionNumber(), F.get());
 
-  /// Return symbol pointing to function's LSDA for the cold part.
-  MCSymbol *getColdLSDASymbol() {
-    if (ColdLSDASymbol)
-      return ColdLSDASymbol;
-    if (ColdCallSites.empty())
-      return nullptr;
+    LSDASymbols[F.get()] = BC.Ctx->getOrCreateSymbol(SymbolName);
 
-    ColdLSDASymbol = BC.Ctx->getOrCreateSymbol(
-        Twine("GCC_cold_except_table") + Twine::utohexstr(getFunctionNumber()));
-
-    return ColdLSDASymbol;
+    return LSDASymbols[F.get()];
   }
 
   void setOutputDataAddress(uint64_t Address) { OutputDataOffset = Address; }
@@ -1914,6 +1893,28 @@ public:
       Islands->Symbols.insert(Symbol);
     }
     return Symbol;
+  }
+
+  /// Support dynamic relocations in constant islands, which may happen if
+  /// binary is linked with -z notext option.
+  void markIslandDynamicRelocationAtAddress(uint64_t Address) {
+    if (!isInConstantIsland(Address)) {
+      errs() << "BOLT-ERROR: dynamic relocation found for text section at 0x"
+             << Twine::utohexstr(Address) << "\n";
+      exit(1);
+    }
+
+    // Mark island to have dynamic relocation
+    Islands->HasDynamicRelocations = true;
+
+    // Create island access, so we would emit the label and
+    // move binary data during updateOutputValues, making us emit
+    // dynamic relocation with the right offset value.
+    getOrCreateIslandAccess(Address);
+  }
+
+  bool hasDynamicRelocationAtIsland() const {
+    return !!(Islands && Islands->HasDynamicRelocations);
   }
 
   /// Called by an external function which wishes to emit references to constant
@@ -2015,7 +2016,9 @@ public:
     return Size;
   }
 
-  bool hasIslandsInfo() const { return !!Islands; }
+  bool hasIslandsInfo() const {
+    return Islands && (hasConstantIsland() || !Islands->Dependency.empty());
+  }
 
   bool hasConstantIsland() const {
     return Islands && !Islands->DataOffsets.empty();
@@ -2040,10 +2043,25 @@ public:
   /// Returns false if disassembly failed.
   bool disassemble();
 
+  void handlePCRelOperand(MCInst &Instruction, uint64_t Address, uint64_t Size);
+
+  MCSymbol *handleExternalReference(MCInst &Instruction, uint64_t Size,
+                                    uint64_t Offset, uint64_t TargetAddress,
+                                    bool &IsCall);
+
+  void handleIndirectBranch(MCInst &Instruction, uint64_t Size,
+                            uint64_t Offset);
+
+  // Check for linker veneers, which lack relocations and need manual
+  // adjustments.
+  void handleAArch64IndirectCall(MCInst &Instruction, const uint64_t Offset);
+
   /// Scan function for references to other functions. In relocation mode,
-  /// add relocations for external references.
+  /// add relocations for external references. In non-relocation mode, detect
+  /// and mark new entry points.
   ///
-  /// Return true on success.
+  /// Return true on success. False if the disassembly failed or relocations
+  /// could not be created.
   bool scanExternalRefs();
 
   /// Return the size of a data object located at \p Offset in the function.
@@ -2088,6 +2106,12 @@ public:
   /// Return true upon successful processing, or false if the control flow
   /// cannot be statically evaluated for any given indirect branch.
   bool postProcessIndirectBranches(MCPlusBuilder::AllocatorIdTy AllocId);
+
+  /// Validate that all data references to function offsets are claimed by
+  /// recognized jump tables. Register externally referenced blocks as entry
+  /// points. Returns true if there are no unclaimed externally referenced
+  /// offsets.
+  bool validateExternallyReferencedOffsets();
 
   /// Return all call site profile info for this function.
   IndirectCallSiteProfile &getAllCallSites() { return AllCallSites; }
@@ -2210,6 +2234,9 @@ public:
         return std::string();
       }) const;
 
+  /// Compute hash values for each block of the function.
+  void computeBlockHashes() const;
+
   void setDWARFUnit(DWARFUnit *Unit) { DwarfUnit = Unit; }
 
   /// Return DWARF compile unit for this function.
@@ -2285,33 +2312,6 @@ public:
   bool isAArch64Veneer() const;
 
   virtual ~BinaryFunction();
-
-  /// Info for fragmented functions.
-  class FragmentInfo {
-  private:
-    uint64_t Address{0};
-    uint64_t ImageAddress{0};
-    uint64_t ImageSize{0};
-    uint64_t FileOffset{0};
-
-  public:
-    uint64_t getAddress() const { return Address; }
-    uint64_t getImageAddress() const { return ImageAddress; }
-    uint64_t getImageSize() const { return ImageSize; }
-    uint64_t getFileOffset() const { return FileOffset; }
-
-    void setAddress(uint64_t VAddress) { Address = VAddress; }
-    void setImageAddress(uint64_t Address) { ImageAddress = Address; }
-    void setImageSize(uint64_t Size) { ImageSize = Size; }
-    void setFileOffset(uint64_t Offset) { FileOffset = Offset; }
-  };
-
-  /// Cold fragment of the function.
-  FragmentInfo ColdFragment;
-
-  FragmentInfo &cold() { return ColdFragment; }
-
-  const FragmentInfo &cold() const { return ColdFragment; }
 };
 
 inline raw_ostream &operator<<(raw_ostream &OS,

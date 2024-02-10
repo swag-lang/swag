@@ -6,18 +6,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "src/__support/CPP/StringView.h"
+#include "src/__support/CPP/string_view.h"
 #include "src/dirent/closedir.h"
 #include "src/dirent/dirfd.h"
 #include "src/dirent/opendir.h"
 #include "src/dirent/readdir.h"
+#include "src/errno/libc_errno.h"
 
-#include "utils/UnitTest/Test.h"
+#include "test/UnitTest/Test.h"
 
 #include <dirent.h>
-#include <errno.h>
 
-using StringView = __llvm_libc::cpp::StringView;
+using string_view = __llvm_libc::cpp::string_view;
 
 TEST(LlvmLibcDirentTest, SimpleOpenAndRead) {
   ::DIR *dir = __llvm_libc::opendir("testdata");
@@ -33,18 +33,18 @@ TEST(LlvmLibcDirentTest, SimpleOpenAndRead) {
     struct ::dirent *d = __llvm_libc::readdir(dir);
     if (d == nullptr)
       break;
-    if (StringView(&d->d_name[0]).equals("file1.txt"))
+    if (string_view(&d->d_name[0]) == "file1.txt")
       file1 = d;
-    if (StringView(&d->d_name[0]).equals("file2.txt"))
+    if (string_view(&d->d_name[0]) == "file2.txt")
       file2 = d;
-    if (StringView(&d->d_name[0]).equals("dir1"))
+    if (string_view(&d->d_name[0]) == "dir1")
       dir1 = d;
-    if (StringView(&d->d_name[0]).equals("dir2"))
+    if (string_view(&d->d_name[0]) == "dir2")
       dir2 = d;
   }
 
   // Verify that we don't break out of the above loop in error.
-  ASSERT_EQ(errno, 0);
+  ASSERT_EQ(libc_errno, 0);
 
   ASSERT_TRUE(file1 != nullptr);
   ASSERT_TRUE(file2 != nullptr);
@@ -55,17 +55,17 @@ TEST(LlvmLibcDirentTest, SimpleOpenAndRead) {
 }
 
 TEST(LlvmLibcDirentTest, OpenNonExistentDir) {
-  errno = 0;
+  libc_errno = 0;
   ::DIR *dir = __llvm_libc::opendir("___xyz123__.non_existent__");
   ASSERT_TRUE(dir == nullptr);
-  ASSERT_EQ(errno, ENOENT);
-  errno = 0;
+  ASSERT_EQ(libc_errno, ENOENT);
+  libc_errno = 0;
 }
 
 TEST(LlvmLibcDirentTest, OpenFile) {
-  errno = 0;
+  libc_errno = 0;
   ::DIR *dir = __llvm_libc::opendir("testdata/file1.txt");
   ASSERT_TRUE(dir == nullptr);
-  ASSERT_EQ(errno, ENOTDIR);
-  errno = 0;
+  ASSERT_EQ(libc_errno, ENOTDIR);
+  libc_errno = 0;
 }

@@ -15,9 +15,10 @@
 #include "src/pthread/pthread_mutex_unlock.h"
 #include "src/pthread/pthread_self.h"
 
-#include "utils/IntegrationTest/test.h"
+#include "test/IntegrationTest/test.h"
 
 #include <pthread.h>
+#include <stdint.h> // uintptr_t
 
 pthread_t child_thread;
 pthread_mutex_t mutex;
@@ -31,7 +32,7 @@ static void *child_func(void *arg) {
   return nullptr;
 }
 
-int main() {
+TEST_MAIN() {
   // We init and lock the mutex so that we guarantee that the child thread is
   // waiting after startup.
   ASSERT_EQ(__llvm_libc::pthread_mutex_init(&mutex, nullptr), 0);

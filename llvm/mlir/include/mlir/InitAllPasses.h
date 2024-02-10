@@ -15,17 +15,19 @@
 #define MLIR_INITALLPASSES_H_
 
 #include "mlir/Conversion/Passes.h"
+#include "mlir/Dialect/AMDGPU/Transforms/Passes.h"
 #include "mlir/Dialect/Affine/Passes.h"
-#include "mlir/Dialect/Arithmetic/Transforms/Passes.h"
+#include "mlir/Dialect/Arith/Transforms/Passes.h"
+#include "mlir/Dialect/ArmSME/Transforms/Passes.h"
 #include "mlir/Dialect/Async/Passes.h"
 #include "mlir/Dialect/Bufferization/Transforms/Passes.h"
 #include "mlir/Dialect/Func/Transforms/Passes.h"
 #include "mlir/Dialect/GPU/Transforms/Passes.h"
 #include "mlir/Dialect/LLVMIR/Transforms/Passes.h"
 #include "mlir/Dialect/Linalg/Passes.h"
+#include "mlir/Dialect/Math/Transforms/Passes.h"
 #include "mlir/Dialect/MemRef/Transforms/Passes.h"
-#include "mlir/Dialect/NVGPU/Passes.h"
-#include "mlir/Dialect/Quant/Passes.h"
+#include "mlir/Dialect/NVGPU/Transforms/Passes.h"
 #include "mlir/Dialect/SCF/Transforms/Passes.h"
 #include "mlir/Dialect/SPIRV/Transforms/Passes.h"
 #include "mlir/Dialect/Shape/Transforms/Passes.h"
@@ -56,9 +58,10 @@ inline void registerAllPasses() {
   registerConversionPasses();
 
   // Dialect passes
-  registerAffinePasses();
+  affine::registerAffinePasses();
+  amdgpu::registerAMDGPUPasses();
   registerAsyncPasses();
-  arith::registerArithmeticPasses();
+  arith::registerArithPasses();
   bufferization::registerBufferizationPasses();
   func::registerFuncPasses();
   registerGPUPasses();
@@ -68,8 +71,8 @@ inline void registerAllPasses() {
   registerNVGPUPasses();
   registerSparseTensorPasses();
   LLVM::registerLLVMPasses();
+  math::registerMathPasses();
   memref::registerMemRefPasses();
-  quant::registerQuantPasses();
   registerSCFPasses();
   registerShapePasses();
   spirv::registerSPIRVPasses();
@@ -77,6 +80,7 @@ inline void registerAllPasses() {
   tosa::registerTosaOptPasses();
   transform::registerTransformPasses();
   vector::registerVectorPasses();
+  arm_sme::registerArmSMEPasses();
 
   // Dialect pipelines
   sparse_tensor::registerSparseTensorPipelines();

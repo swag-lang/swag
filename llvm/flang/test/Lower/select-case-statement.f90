@@ -168,7 +168,7 @@
 
     ! CHECK:     %[[V_8:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
     ! CHECK:     %[[V_9:[0-9]+]] = arith.cmpi sge, %[[V_8]], %c0{{.*}} : i32
-    ! CHECK:     cond_br %[[V_9]], ^bb1, ^bb15
+    ! CHECK:     cond_br %[[V_9]], ^bb1, ^bb16
     ! CHECK:   ^bb1:  // pred: ^bb0
     if (lge(s,'00')) then
 
@@ -176,9 +176,6 @@
       ! CHECK:   %[[V_20:[0-9]+]] = fir.box_addr %[[V_18]] : (!fir.box<!fir.heap<!fir.char<1,?>>>) -> !fir.heap<!fir.char<1,?>>
       ! CHECK:   %[[V_42:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
       ! CHECK:   %[[V_43:[0-9]+]] = arith.cmpi eq, %[[V_42]], %c0{{.*}} : i32
-      ! CHECK:   fir.if %[[V_43]] {
-      ! CHECK:     fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
-      ! CHECK:   }
       ! CHECK:   cond_br %[[V_43]], ^bb3, ^bb2
       ! CHECK: ^bb2:  // pred: ^bb1
       select case(trim(s))
@@ -190,9 +187,6 @@
 
       ! CHECK:   %[[V_48:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
       ! CHECK:   %[[V_49:[0-9]+]] = arith.cmpi eq, %[[V_48]], %c0{{.*}} : i32
-      ! CHECK:   fir.if %[[V_49]] {
-      ! CHECK:     fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
-      ! CHECK:   }
       ! CHECK:   cond_br %[[V_49]], ^bb6, ^bb5
       ! CHECK: ^bb3:  // pred: ^bb1
       ! CHECK:   fir.store %c1{{.*}} to %[[V_1]] : !fir.ref<i32>
@@ -203,9 +197,6 @@
 
       ! CHECK:   %[[V_54:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
       ! CHECK:   %[[V_55:[0-9]+]] = arith.cmpi eq, %[[V_54]], %c0{{.*}} : i32
-      ! CHECK:   fir.if %[[V_55]] {
-      ! CHECK:     fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
-      ! CHECK:   }
       ! CHECK:   cond_br %[[V_55]], ^bb8, ^bb7
       ! CHECK: ^bb6:  // pred: ^bb2
       ! CHECK:   fir.store %c2{{.*}} to %[[V_1]] : !fir.ref<i32>
@@ -223,9 +214,6 @@
       ! CHECK: ^bb9:  // pred: ^bb7
       ! CHECK:   %[[V_66:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
       ! CHECK:   %[[V_67:[0-9]+]] = arith.cmpi sle, %[[V_66]], %c0{{.*}} : i32
-      ! CHECK:   fir.if %[[V_67]] {
-      ! CHECK:     fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
-      ! CHECK:   }
       ! CHECK:   cond_br %[[V_67]], ^bb14, ^bb10
       ! CHECK: ^bb10:  // 2 preds: ^bb7, ^bb9
       ! CHECK:   %[[V_72:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
@@ -234,56 +222,146 @@
       ! CHECK: ^bb11:  // pred: ^bb10
       ! CHECK:   %[[V_78:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
       ! CHECK:   %[[V_79:[0-9]+]] = arith.cmpi sle, %[[V_78]], %c0{{.*}} : i32
-      ! CHECK:   fir.if %[[V_79]] {
-      ! CHECK:     fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
-      ! CHECK:   }
       ! CHECK: ^bb12:  // 2 preds: ^bb10, ^bb11
       ! CHECK:   %[[V_84:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
       ! CHECK:   %[[V_85:[0-9]+]] = arith.cmpi sge, %[[V_84]], %c0{{.*}} : i32
-      ! CHECK:   fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
       ! CHECK:   cond_br %[[V_85]], ^bb14, ^bb13
       ! CHECK: ^bb13:  // pred: ^bb12
       ! CHECK: ^bb14:  // 3 preds: ^bb9, ^bb11, ^bb12
       ! CHECK:   fir.store %c4{{.*}} to %[[V_1]] : !fir.ref<i32>
-      ! CHECK: ^bb15:  // 6 preds: ^bb0, ^bb3, ^bb4, ^bb6, ^bb8, ^bb14
+      ! CHECK: ^bb15:  // 5 preds: ^bb3, ^bb4, ^bb6, ^bb8, ^bb14
+      ! CHECK:   fir.freemem %[[V_20]] : !fir.heap<!fir.char<1,?>>
       end select
     end if
     ! CHECK:     %[[V_89:[0-9]+]] = fir.load %[[V_1]] : !fir.ref<i32>
     print*, n
   end subroutine
 
-
   ! CHECK-LABEL: func @_QPscharacter2
   subroutine scharacter2(s)
     ! CHECK-DAG: %[[V_0:[0-9]+]] = fir.alloca !fir.box<!fir.heap<!fir.char<1,?>>>
     ! CHECK:   %[[V_1:[0-9]+]] = fir.alloca !fir.box<!fir.heap<!fir.char<1,?>>>
     character(len=3) :: s
-    n = 0
 
+    n = -10
     ! CHECK:   %[[V_12:[0-9]+]] = fir.load %[[V_1]] : !fir.ref<!fir.box<!fir.heap<!fir.char<1,?>>>>
     ! CHECK:   %[[V_13:[0-9]+]] = fir.box_addr %[[V_12]] : (!fir.box<!fir.heap<!fir.char<1,?>>>) -> !fir.heap<!fir.char<1,?>>
-    ! CHECK:   fir.freemem %[[V_13]] : !fir.heap<!fir.char<1,?>>
     ! CHECK:   br ^bb1
     ! CHECK: ^bb1:  // pred: ^bb0
+    ! CHECK:   fir.store %c9{{.*}}
     ! CHECK:   br ^bb2
-    n = -10
+    ! CHECK: ^bb2:  // pred: ^bb1
+    ! CHECK:   fir.freemem %[[V_13]] : !fir.heap<!fir.char<1,?>>
     select case(trim(s))
     case default
       n = 9
     end select
     print*, n
 
-    ! CHECK: ^bb2:  // pred: ^bb1
+    n = -2
     ! CHECK:   %[[V_28:[0-9]+]] = fir.load %[[V_0]] : !fir.ref<!fir.box<!fir.heap<!fir.char<1,?>>>>
     ! CHECK:   %[[V_29:[0-9]+]] = fir.box_addr %[[V_28]] : (!fir.box<!fir.heap<!fir.char<1,?>>>) -> !fir.heap<!fir.char<1,?>>
-    ! CHECK:   fir.freemem %[[V_29]] : !fir.heap<!fir.char<1,?>>
     ! CHECK:   br ^bb3
     ! CHECK: ^bb3:  // pred: ^bb2
-    n = -2
+    ! CHECK:   fir.freemem %[[V_29]] : !fir.heap<!fir.char<1,?>>
     select case(trim(s))
     end select
     print*, n
   end subroutine
+
+  ! CHECK-LABEL: func @_QPsempty
+  ! empty select case blocks
+  subroutine sempty(n)
+    ! CHECK:   %[[selectI1:[0-9]+]] = fir.load %arg0 : !fir.ref<i32>
+    ! CHECK:   fir.select_case %[[selectI1]] : i32 [#fir.point, %c1{{.*}}, ^bb1, #fir.point, %c2{{.*}}, ^bb2, unit, ^bb3]
+    ! CHECK: ^bb1:  // pred: ^bb0
+    ! CHECK:   fir.call @_FortranAioBeginExternalListOutput
+    ! CHECK:   br ^bb4
+    ! CHECK: ^bb2:  // pred: ^bb0
+    ! CHECK:   br ^bb4
+    ! CHECK: ^bb3:  // pred: ^bb0
+    ! CHECK:   fir.call @_FortranAioBeginExternalListOutput
+    ! CHECK:   br ^bb4
+    select case (n)
+      case (1)
+        print*, n, 'i:case 1'
+      case (2)
+      ! print*, n, 'i:case 2'
+      case default
+        print*, n, 'i:case default'
+    end select
+    ! CHECK: ^bb4:  // 3 preds: ^bb1, ^bb2, ^bb3
+    ! CHECK:   %[[cmpC1:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
+    ! CHECK:   %[[selectC1:[0-9]+]] = arith.cmpi eq, %[[cmpC1]], %c0{{.*}} : i32
+    ! CHECK:   cond_br %[[selectC1]], ^bb6, ^bb5
+    ! CHECK: ^bb5:  // pred: ^bb4
+    ! CHECK:   %[[cmpC2:[0-9]+]] = fir.call @_FortranACharacterCompareScalar1
+    ! CHECK:   %[[selectC2:[0-9]+]] = arith.cmpi eq, %[[cmpC2]], %c0{{.*}} : i32
+    ! CHECK:   cond_br %[[selectC2]], ^bb8, ^bb7
+    ! CHECK: ^bb6:  // pred: ^bb4
+    ! CHECK:   fir.call @_FortranAioBeginExternalListOutput
+    ! print*, n, 'c:case 2'
+    ! CHECK:   br ^bb10
+    ! CHECK: ^bb7:  // pred: ^bb5
+    ! CHECK:   br ^bb9
+    ! CHECK: ^bb8:  // pred: ^bb5
+    ! CHECK:   br ^bb10
+    ! CHECK: ^bb9:  // pred: ^bb7
+    ! CHECK:   fir.call @_FortranAioBeginExternalListOutput
+    ! CHECK:   br ^bb10
+    ! CHECK: ^bb10:  // 3 preds: ^bb6, ^bb8, ^bb9
+    select case (char(ichar('0')+n))
+      case ('1')
+        print*, n, 'c:case 1'
+      case ('2')
+      ! print*, n, 'c:case 2'
+      case default
+        print*, n, 'c:case default'
+    end select
+    ! CHECK:   return
+  end subroutine
+
+  ! CHECK-LABEL: func @_QPsgoto
+  ! select case with goto exit
+  subroutine sgoto
+    n = 0
+    do i=1,8
+      ! CHECK:   %[[i:[0-9]+]] = fir.alloca {{.*}} "_QFsgotoEi"
+      ! CHECK: ^bb2:  // pred: ^bb1
+      ! CHECK:   %[[selector:[0-9]+]] = fir.load %[[i]] : !fir.ref<i32>
+      ! CHECK:   fir.select_case %[[selector]] : i32 [#fir.upper, %c2{{.*}}, ^bb3, #fir.lower, %c5{{.*}}, ^bb4, unit, ^bb7]
+      ! CHECK: ^bb3:  // pred: ^bb2
+      ! CHECK:   arith.muli %c10{{[^0]}}
+      ! CHECK:   br ^bb8
+      ! CHECK: ^bb4:  // pred: ^bb2
+      ! CHECK:   arith.muli %c1000{{[^0]}}
+      ! CHECK:   cond_br {{.*}}, ^bb5, ^bb6
+      ! CHECK: ^bb5:  // pred: ^bb4
+      ! CHECK:   br ^bb8
+      ! CHECK: ^bb6:  // pred: ^bb4
+      ! CHECK:   arith.muli %c10000{{[^0]}}
+      ! CHECK:   br ^bb8
+      ! CHECK: ^bb7:  // pred: ^bb2
+      ! CHECK:   arith.muli %c100{{[^0]}}
+      ! CHECK:   br ^bb8
+      ! CHECK: ^bb8:  // 4 preds: ^bb3, ^bb5, ^bb6, ^bb7
+      ! CHECK:   fir.call @_FortranAioBeginExternalListOutput
+      ! CHECK:   br ^bb1
+      ! CHECK: ^bb9:  // pred: ^bb1
+      select case(i)
+      case (:2)
+        n = i * 10
+      case (5:)
+        n = i * 1000
+        if (i <= 6) goto 9
+        n = i * 10000
+      case default
+        n = i * 100
+  9   end select
+      print*, n
+    enddo
+    ! CHECK:   return
+  end
 
   ! CHECK-LABEL: func @_QPswhere
   subroutine swhere(num)
@@ -334,6 +412,27 @@
     ! CHECK: ^bb3:  // 2 preds: ^bb1, ^bb2
     print*, array(1)
   end subroutine sforall
+
+  ! CHECK-LABEL: func @_QPsnested
+  subroutine snested(str)
+    character(*), optional :: str
+    integer :: num
+
+    if (present(str)) then
+      select case (trim(str))
+        case ('a')
+          num = 10
+        case default
+          num = 20
+      end select
+      ! CHECK: ^bb5:  // 2 preds: ^bb3, ^bb4
+      ! CHECK: fir.freemem %{{[0-9]+}} : !fir.heap<!fir.char<1,?>>
+      ! CHECK: cf.br ^bb7
+    else
+      num = 30
+    end if
+    ! CHECK: ^bb7:  // 2 preds: ^bb5, ^bb6
+  end subroutine snested
 
   ! CHECK-LABEL: main
   program p
@@ -392,6 +491,15 @@
     call scharacter2('22 ')   ! expected output:  9 -2
     call scharacter2('.  ')   ! expected output:  9 -2
     call scharacter2('   ')   ! expected output:  9 -2
+
+    print*
+    call sempty(0)            ! expected output: 0 i:case default 0; c:case default
+    call sempty(1)            ! expected output: 1 i:case 1; 1 c:case 1
+    call sempty(2)            ! no output
+    call sempty(3)            ! expected output: 3 i:case default; 3 c:case default
+
+    print*
+    call sgoto                ! expected output:  10 20 300 400 5000 6000 70000 80000 
 
     print*
     call swhere(1)            ! expected output: 42.

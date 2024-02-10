@@ -9,10 +9,12 @@
 #ifndef LLDB_SOURCE_PLUGINS_SYMBOLFILE_DWARF_DWARFDECLCONTEXT_H
 #define LLDB_SOURCE_PLUGINS_SYMBOLFILE_DWARF_DWARFDECLCONTEXT_H
 
-#include <string>
-#include <vector>
 #include "lldb/Utility/ConstString.h"
 #include "DWARFDefines.h"
+
+#include <cassert>
+#include <string>
+#include <vector>
 
 // DWARFDeclContext
 //
@@ -53,12 +55,12 @@ public:
   uint32_t GetSize() const { return m_entries.size(); }
 
   Entry &operator[](uint32_t idx) {
-    // "idx" must be valid
+    assert(idx < m_entries.size() && "invalid index");
     return m_entries[idx];
   }
 
   const Entry &operator[](uint32_t idx) const {
-    // "idx" must be valid
+    assert(idx < m_entries.size() && "invalid index");
     return m_entries[idx];
   }
 
@@ -75,15 +77,10 @@ public:
     m_qualified_name.clear();
   }
 
-  lldb::LanguageType GetLanguage() const { return m_language; }
-
-  void SetLanguage(lldb::LanguageType language) { m_language = language; }
-
 protected:
   typedef std::vector<Entry> collection;
   collection m_entries;
   mutable std::string m_qualified_name;
-  lldb::LanguageType m_language = lldb::eLanguageTypeUnknown;
 };
 
 #endif // LLDB_SOURCE_PLUGINS_SYMBOLFILE_DWARF_DWARFDECLCONTEXT_H

@@ -103,7 +103,7 @@ private:
   /// After output/codegen, map output offsets of instructions in this basic
   /// block to instruction offsets in the original function. Note that the
   /// output basic block could be different from the input basic block.
-  /// We only map instruction of interest, such as calls, and sdt markers.
+  /// We only map instruction of interest, such as calls and markers.
   ///
   /// We store the offset array in a basic block to facilitate BAT tables
   /// generation. Otherwise, the mapping could be done at function level.
@@ -133,9 +133,9 @@ private:
   /// CFI state at the entry to this basic block.
   int32_t CFIState{-1};
 
-  /// In cases where the parent function has been split, IsCold == true means
-  /// this BB will be allocated outside its parent function.
-  bool IsCold{false};
+  /// In cases where the parent function has been split, FragmentNum > 0 means
+  /// this BB will be allocated in a fragment outside its parent function.
+  FragmentNum Fragment;
 
   /// Indicates if the block could be outlined.
   bool CanOutline{true};
@@ -143,6 +143,9 @@ private:
   /// Flag to indicate whether this block is valid or not.  Invalid
   /// blocks may contain out of date or incorrect information.
   bool IsValid{true};
+
+  /// Last computed hash value.
+  mutable uint64_t Hash{0};
 
 private:
   BinaryBasicBlock() = delete;
@@ -424,9 +427,8 @@ public:
   /// Return branch info corresponding to an edge going to \p Succ basic block.
   BinaryBranchInfo &getBranchInfo(const BinaryBasicBlock &Succ);
 
-  /// Return branch info corresponding to an edge going to a basic block with
-  /// label \p Label.
-  BinaryBranchInfo &getBranchInfo(const MCSymbol *Label);
+  /// Return branch info corresponding to an edge going to \p Succ basic block.
+  const BinaryBranchInfo &getBranchInfo(const BinaryBasicBlock &Succ) const;
 
   /// Set branch information for the outgoing edge to block \p Succ.
   void setSuccessorBranchInfo(const BinaryBasicBlock &Succ, uint64_t Count,
@@ -567,6 +569,7 @@ public:
   }
 
   /// Return required alignment for the block.
+  Align getAlign() const { return Align(Alignment); }
   uint32_t getAlignment() const { return Alignment; }
 
   /// Set the maximum number of bytes to use for the block alignment.
@@ -672,13 +675,21 @@ public:
 
   void markValid(const bool Valid) { IsValid = Valid; }
 
-  FragmentNum getFragmentNum() const {
-    return IsCold ? FragmentNum::cold() : FragmentNum::hot();
+  FragmentNum getFragmentNum() const { return Fragment; }
+
+  void setFragmentNum(const FragmentNum Value) { Fragment = Value; }
+
+  bool isSplit() const { return Fragment != FragmentNum::main(); }
+
+  bool isCold() const {
+    assert(Fragment.get() < 2 &&
+           "Function is split into more than two (hot/cold)-fragments");
+    return isSplit();
   }
 
-  bool isCold() const { return IsCold; }
-
-  void setIsCold(const bool Flag) { IsCold = Flag; }
+  void setIsCold(const bool Flag) {
+    Fragment = Flag ? FragmentNum::cold() : FragmentNum::main();
+  }
 
   /// Return true if the block can be outlined. At the moment we disallow
   /// outlining of blocks that can potentially throw exceptions or are
@@ -931,6 +942,9 @@ public:
   /// Check if the block has a jump table instruction.
   bool hasJumpTable() const { return getJumpTable() != nullptr; }
 
+  /// Returns the last computed hash value of the block.
+  uint64_t getHash() const { return Hash; }
+
 private:
   void adjustNumPseudos(const MCInst &Inst, int Sign);
 
@@ -955,6 +969,9 @@ private:
   /// Set the index of this basic block.
   void setIndex(unsigned I) { Index = I; }
 
+  /// Sets the hash value of the basic block.
+  void setHash(uint64_t Value) const { Hash = Value; }
+
   template <typename T> void clearList(T &List) {
     T TempList;
     TempList.swap(List);
@@ -974,7 +991,7 @@ private:
 #if defined(LLVM_ON_UNIX)
 /// Keep the size of the BinaryBasicBlock within a reasonable size class
 /// (jemalloc bucket) on Linux
-static_assert(sizeof(BinaryBasicBlock) <= 256, "");
+static_assert(sizeof(BinaryBasicBlock) <= 256);
 #endif
 
 bool operator<(const BinaryBasicBlock &LHS, const BinaryBasicBlock &RHS);

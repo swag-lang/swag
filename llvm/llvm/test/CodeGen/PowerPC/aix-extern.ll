@@ -16,7 +16,7 @@
 ; RUN:   -filetype=obj -o %t64.o < %s
 ; RUN: llvm-readobj --symbols %t64.o | FileCheck --check-prefixes=CHECKSYM,CHECKSYM64 %s
 
-@bar_p = global i32 (...)* @bar_ref, align 4
+@bar_p = global ptr @bar_ref, align 4
 @b_e = external global i32, align 4
 
 ; Function Attrs: noinline nounwind optnone
@@ -30,16 +30,15 @@ declare i32 @bar_ref(...)
 ; Function Attrs: noinline nounwind optnone
 define i32 @main() {
 entry:
-  %call = call i32 @bar_extern(i32* @b_e)
+  %call = call i32 @bar_extern(ptr @b_e)
   call void @foo()
-  %0 = load i32 (...)*, i32 (...)** @bar_p, align 4
-  %callee.knr.cast = bitcast i32 (...)* %0 to i32 ()*
-  %call1 = call i32 %callee.knr.cast()
-  %call2 = call i32 bitcast (i32 (...)* @bar_ref to i32 ()*)()
+  %0 = load ptr, ptr @bar_p, align 4
+  %call1 = call i32 %0()
+  %call2 = call i32 @bar_ref()
   ret i32 0
 }
 
-declare i32 @bar_extern(i32*)
+declare i32 @bar_extern(ptr)
 
 
 ; COMMON:           .globl	foo[DS]                 # -- Begin function foo
@@ -52,7 +51,7 @@ declare i32 @bar_extern(i32*)
 ; BIT64-NEXT:       .vbyte	8, .foo                    # @foo
 ; BIT64-NEXT:       .vbyte	8, TOC[TC0]
 ; BIT64-NEXT:       .vbyte	8, 0
-; COMMON-NEXT:      .csect .text[PR]
+; COMMON-NEXT:      .csect [PR]
 ; COMMON-NEXT: .foo:
 
 ; COMMON:           .globl	main[DS]                # -- Begin function main
@@ -65,7 +64,7 @@ declare i32 @bar_extern(i32*)
 ; BIT64-NEXT:       .vbyte	8, .main                   # @main
 ; BIT64-NEXT:       .vbyte	8, TOC[TC0]
 ; BIT64-NEXT:       .vbyte	8, 0
-; COMMON-NEXT:      .csect .text[PR]
+; COMMON-NEXT:      .csect [PR]
 ; COMMON-NEXT: .main:
 
 ; COMMON:           .csect .data[RW]
@@ -92,8 +91,9 @@ declare i32 @bar_extern(i32*)
 ; CHECKSYM-NEXT:     Name: <stdin>
 ; CHECKSYM-NEXT:     Value (SymbolTableIndex): 0x0
 ; CHECKSYM-NEXT:     Section: N_DEBUG
-; CHECKSYM-NEXT:     Source Language ID: TB_C (0x0)
-; CHECKSYM-NEXT:     CPU Version ID: 0x0
+; CHECKSYM-NEXT:     Source Language ID: TB_CPLUSPLUS (0x9)
+; CHECKSYM32-NEXT:   CPU Version ID: TCPU_COM (0x3)
+; CHECKSYM64-NEXT:   CPU Version ID: TCPU_PPC64 (0x2)
 ; CHECKSYM-NEXT:     StorageClass: C_FILE (0x67)
 ; CHECKSYM-NEXT:     NumberOfAuxEntries: 0
 ; CHECKSYM-NEXT:   }
@@ -204,7 +204,7 @@ declare i32 @bar_extern(i32*)
 ; CHECKSYM-NEXT:   }
 ; CHECKSYM-NEXT:   Symbol {
 ; CHECKSYM-NEXT:     Index: [[#Index+10]]
-; CHECKSYM-NEXT:     Name: .text
+; CHECKSYM-NEXT:     Name:
 ; CHECKSYM-NEXT:     Value (RelocatableAddress): 0x0
 ; CHECKSYM-NEXT:     Section: .text
 ; CHECKSYM-NEXT:     Type: 0x0

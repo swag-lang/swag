@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "src/__support/threads/thread.h"
-#include "utils/IntegrationTest/test.h"
+#include "test/IntegrationTest/test.h"
 
 static constexpr int INIT_VAL = 100;
 static constexpr int UPDATE_VAL = 123;
@@ -35,7 +35,7 @@ void thread_local_test() {
   ASSERT_EQ(retval, INIT_VAL);
 }
 
-int main() {
+TEST_MAIN() {
   // From the main thread, we will update the main thread's tlval.
   // This should not affect the child thread's tlval;
   ASSERT_EQ(tlval, INIT_VAL);

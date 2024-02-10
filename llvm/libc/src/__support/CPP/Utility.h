@@ -9,30 +9,47 @@
 #ifndef LLVM_LIBC_SRC_SUPPORT_CPP_UTILITY_H
 #define LLVM_LIBC_SRC_SUPPORT_CPP_UTILITY_H
 
-#include "src/__support/CPP/TypeTraits.h"
+#include "src/__support/CPP/type_traits.h"
+#include "src/__support/macros/attributes.h"
 
 namespace __llvm_libc::cpp {
 
-template <typename T, T... Seq> struct IntegerSequence {
-  static_assert(IsIntegral<T>::Value);
-  template <T Next> using append = IntegerSequence<T, Seq..., Next>;
+template <typename T, T... Ints> struct integer_sequence {
+  static_assert(is_integral_v<T>);
+  template <T Next> using append = integer_sequence<T, Ints..., Next>;
 };
 
 namespace internal {
 
-template <typename T, int N> struct MakeIntegerSequence {
-  using type = typename MakeIntegerSequence<T, N - 1>::type::template append<N>;
+template <typename T, int N> struct make_integer_sequence {
+  using type =
+      typename make_integer_sequence<T, N - 1>::type::template append<N>;
 };
 
-template <typename T> struct MakeIntegerSequence<T, -1> {
-  using type = IntegerSequence<T>;
+template <typename T> struct make_integer_sequence<T, -1> {
+  using type = integer_sequence<T>;
 };
 
 } // namespace internal
 
 template <typename T, int N>
-using MakeIntegerSequence =
-    typename internal::MakeIntegerSequence<T, N - 1>::type;
+using make_integer_sequence =
+    typename internal::make_integer_sequence<T, N - 1>::type;
+
+template <typename T>
+LIBC_INLINE constexpr T &&forward(typename remove_reference<T>::type &value) {
+  return static_cast<T &&>(value);
+}
+
+template <typename T>
+LIBC_INLINE constexpr T &&forward(typename remove_reference<T>::type &&value) {
+  return static_cast<T &&>(value);
+}
+
+template <typename T>
+LIBC_INLINE constexpr typename remove_reference<T>::type &&move(T &&value) {
+  return static_cast<typename remove_reference<T>::type &&>(value);
+}
 
 } // namespace __llvm_libc::cpp
 
