@@ -19,7 +19,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",               "--verbose-ctypes",           nullptr,    CommandLineType::Bool,          &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("bu sc te doc",        "--verbose-stages",           nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");                                             
 
-    addArg("bu sc doc",           "--error-oneline",            "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
+    addArg("bu sc doc",           "--error-one-line",           "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc doc",           "--error-absolute",           "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
     addArg("bu sc doc",           "--error-syntax-color",       "-es",      CommandLineType::Bool,          &cmdLine->errorSyntaxColor, nullptr, "syntax color code when an error is raised");
     addArg("bu sc doc",           "--error-syntax-color-lum",   nullptr,    CommandLineType::Bool,          &cmdLine->errorSyntaxColorLum, nullptr, "syntax color luminosity factor [0..1]");
@@ -459,91 +459,85 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
     return result;
 }
 
-Utf8 CommandLineParser::buildString(bool full) const
+Utf8 CommandLineParser::buildString() const
 {
     CommandLine       defaultValues;
     CommandLineParser defaultParser;
     defaultParser.setup(&defaultValues);
 
-    Utf8 result;
-    for (const auto& arg : longNameArgs)
-    {
-        auto itDefault  = defaultParser.longNameArgs.find(arg.first);
-        auto defaultArg = itDefault->second;
-        auto oneArg     = arg.second;
+    Vector<CommandLineArgument*> list;
+    for (const auto& oneArg : longNameArgs | views::values)
+        list.push_back(oneArg);
 
+    ranges::sort(list, [](const CommandLineArgument* a, const CommandLineArgument* b)
+    {
+        return strcmp(a->longName.c_str(), b->longName.c_str()) == -1;
+    });
+
+    Utf8 result;
+    for (const auto& oneArg : list)
+    {
+        result += Log::colorToVTS(LogColor::Header);
         switch (oneArg->type)
         {
         case CommandLineType::String:
-            if (full || *(Utf8*) oneArg->buffer != *(Utf8*) defaultArg->buffer)
-            {
-                result += oneArg->longName + ":";
-                result += *(Utf8*) oneArg->buffer;
-                result += " ";
-            }
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
+            result += *(Utf8*) oneArg->buffer;
             break;
         case CommandLineType::StringPath:
-            if (full || *(Path*) oneArg->buffer != *(Path*) defaultArg->buffer)
-            {
-                result += oneArg->longName + ":";
-                result += ((Path*) oneArg->buffer)->string();
-                result += " ";
-            }
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
+            result += ((Path*) oneArg->buffer)->string();
             break;
         case CommandLineType::EnumInt:
-            if (full || *(int*) oneArg->buffer != *(int*) defaultArg->buffer)
-            {
-                result += oneArg->longName + ":";
+        {
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
 
-                Vector<Utf8> tokens;
-                Utf8::tokenize(oneArg->param, '|', tokens);
-                int idx = *(int*) oneArg->buffer;
-                result += tokens[idx];
-                result += " ";
-            }
+            Vector<Utf8> tokens;
+            Utf8::tokenize(oneArg->param, '|', tokens);
+            const int idx = *(int*) oneArg->buffer;
+            result += tokens[idx];
             break;
+        }
         case CommandLineType::StringSet:
         {
-            if (full)
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
+            const auto all = (SetUtf8*) oneArg->buffer;
+            for (auto& one : *all)
             {
-                result += oneArg->longName + ":";
-                auto all = (SetUtf8*) oneArg->buffer;
-                for (auto& one : *all)
-                {
-                    result += one;
-                    result += " ";
-                }
+                result += one;
+                result += " ";
             }
             break;
         }
         case CommandLineType::EnumString:
-            if (full || *(Utf8*) oneArg->buffer != *(Utf8*) defaultArg->buffer)
-            {
-                result += oneArg->longName + ":";
-                result += *(Utf8*) oneArg->buffer;
-                result += " ";
-            }
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
+            result += *(Utf8*) oneArg->buffer;
             break;
+
         case CommandLineType::Int:
-            if (full || *(int*) oneArg->buffer != *(int*) defaultArg->buffer)
-            {
-                result += oneArg->longName + ":";
-                result += to_string(*(int*) oneArg->buffer);
-                result += " ";
-            }
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
+            result += to_string(*(int*) oneArg->buffer);
             break;
+
         case CommandLineType::Bool:
-            if (full || *(bool*) oneArg->buffer != *(bool*) defaultArg->buffer)
-            {
-                result += oneArg->longName + ":";
-                if (*(bool*) oneArg->buffer == true)
-                    result += "true";
-                else
-                    result += "false";
-                result += " ";
-            }
+        {
+            result += oneArg->longName + ":";
+            result += Log::colorToVTS(LogColor::Value);
+            if (*(bool*) oneArg->buffer == true)
+                result += "true";
+            else
+                result += "false";
             break;
         }
+        }
+
+        result += "\n";
     }
 
     return result;

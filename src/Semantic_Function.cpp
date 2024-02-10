@@ -281,7 +281,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (funcNode->aliasMask && funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
     {
         auto       mask = funcNode->aliasMask;
-        const auto maxN = OS::bitcountlz(funcNode->aliasMask);
+        const auto maxN = OS::bitCountLz(funcNode->aliasMask);
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)

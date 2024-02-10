@@ -218,7 +218,7 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
 
 void Semantic::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
 {
-    INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
+    INHERIT_SAFETY(child, SAFETY_BOUND_CHECK);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);
     INHERIT_SAFETY(child, SAFETY_MATH);
     INHERIT_SAFETY(child, SAFETY_ANY);
@@ -467,7 +467,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                         w.trim();
                         bool done = false;
 
-                        CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUNDCHECK);
+                        CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUND_CHECK);
                         CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);
                         CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
                         CHECK_SAFETY_NAME(name_any, SAFETY_ANY);

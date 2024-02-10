@@ -75,7 +75,7 @@ int main(int argc, const char* argv[])
 
     // Output command line in verbose mode
     if (g_CommandLine.verboseCmdLine)
-        g_Log.messageVerbose(cmdParser.buildString(true));
+        g_Log.messageVerbose(cmdParser.buildString());
 
     g_Workspace = Allocator::alloc<Workspace>();
 

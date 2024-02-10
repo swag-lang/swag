@@ -335,7 +335,7 @@ void ByteCodeGen::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint
 
 void ByteCodeGen::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
+    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
         return;
 
     emitSafetyBoundCheckLowerU64(context, r0, r1);
@@ -343,7 +343,7 @@ void ByteCodeGen::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32
 
 void ByteCodeGen::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
+    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
         return;
 
     emitSafetyBoundCheckLowerU64(context, r0, r1);
@@ -351,7 +351,7 @@ void ByteCodeGen::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_
 
 void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, const TypeInfoArray* typeInfoArray)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
+    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -392,7 +392,7 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
 
 void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* node)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
+    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -411,7 +411,7 @@ void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* n
 
 void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
+    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);

@@ -1,10 +1,10 @@
 #pragma once
 
-struct BuildParameters;
-struct Module;
 struct BackendTarget;
-struct TypeInfoFuncAttr;
+struct BuildParameters;
 struct ByteCodeRunContext;
+struct Module;
+struct TypeInfoFuncAttr;
 
 namespace OS
 {
@@ -91,22 +91,22 @@ namespace OS
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);
 
-    uint8_t  bitcountnz(uint8_t value);
-    uint16_t bitcountnz(uint16_t value);
-    uint32_t bitcountnz(uint32_t value);
-    uint64_t bitcountnz(uint64_t value);
-    uint8_t  bitcounttz(uint8_t value);
-    uint16_t bitcounttz(uint16_t value);
-    uint32_t bitcounttz(uint32_t value);
-    uint64_t bitcounttz(uint64_t value);
-    uint8_t  bitcountlz(uint8_t value);
-    uint16_t bitcountlz(uint16_t value);
-    uint32_t bitcountlz(uint32_t value);
-    uint64_t bitcountlz(uint64_t value);
+    uint8_t  bitCountNz(uint8_t value);
+    uint16_t bitCountNz(uint16_t value);
+    uint32_t bitCountNz(uint32_t value);
+    uint64_t bitCountNz(uint64_t value);
+    uint8_t  bitCountTz(uint8_t value);
+    uint16_t bitCountTz(uint16_t value);
+    uint32_t bitCountTz(uint32_t value);
+    uint64_t bitCountTz(uint64_t value);
+    uint8_t  bitCountLz(uint8_t value);
+    uint16_t bitCountLz(uint16_t value);
+    uint32_t bitCountLz(uint32_t value);
+    uint64_t bitCountLz(uint64_t value);
 
-    uint16_t byteswap(uint16_t value);
-    uint32_t byteswap(uint32_t value);
-    uint64_t byteswap(uint64_t value);
+    uint16_t byteSwap(uint16_t value);
+    uint32_t byteSwap(uint32_t value);
+    uint64_t byteSwap(uint64_t value);
 
 #ifdef _WIN32
 #define SWAG_TRY __try

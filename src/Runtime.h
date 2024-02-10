@@ -4,7 +4,7 @@
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-constexpr uint64_t SAFETY_BOUNDCHECK  = 0x0001;
+constexpr uint64_t SAFETY_BOUND_CHECK = 0x0001;
 constexpr uint64_t SAFETY_OVERFLOW    = 0x0002;
 constexpr uint64_t SAFETY_MATH        = 0x0004;
 constexpr uint64_t SAFETY_ANY         = 0x0008;
@@ -273,7 +273,7 @@ struct BuildCfgGenDoc
 
 struct BuildCfg
 {
-    // Module informations
+    // Module information
     uint32_t  moduleVersion  = 0;
     uint32_t  moduleRevision = 0;
     uint32_t  moduleBuildNum = 0;

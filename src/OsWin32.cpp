@@ -115,7 +115,7 @@ namespace OS
             Report::error(Err(Fat0036));
             g_Log.lock();
             g_Log.setColor(LogColor::Cyan);
-            g_Log.print("=> in order to build a windows executable or dll, you must install the latest version of the windows 10 sdk!\n");
+            g_Log.print("=> in order to build a windows executable or dll, you must install the latest version of the windows 10/11 sdk!\n");
             g_Log.print("=> you can try https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/\n");
             g_Log.setDefaultColor();
             g_Log.unlock();
@@ -576,9 +576,10 @@ namespace OS
 
     Utf8 captureStack()
     {
-        constexpr int SYM_LEN_NAME = 128;
-        TCHAR         sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
-        DWORD64       displacement = 0;
+        static constexpr int SYM_LEN_NAME = 128;
+
+        TCHAR   sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
+        DWORD64 displacement = 0;
 
         const auto psym    = (SYMBOL_INFO*) sym;
         psym->SizeOfStruct = sizeof(SYMBOL_INFO);
@@ -658,6 +659,8 @@ namespace OS
             DebugBreak();
             break;
         case IDCONTINUE:
+            break;
+        default:
             break;
         }
     }
@@ -814,27 +817,27 @@ namespace OS
         return _InterlockedCompareExchange64(addr, replaceWith, compareTo);
     }
 
-    uint8_t bitcountnz(uint8_t value)
+    uint8_t bitCountNz(uint8_t value)
     {
         return (uint8_t) __popcnt16(value);
     }
 
-    uint16_t bitcountnz(uint16_t value)
+    uint16_t bitCountNz(uint16_t value)
     {
         return __popcnt16(value);
     }
 
-    uint32_t bitcountnz(uint32_t value)
+    uint32_t bitCountNz(uint32_t value)
     {
         return __popcnt(value);
     }
 
-    uint64_t bitcountnz(uint64_t value)
+    uint64_t bitCountNz(uint64_t value)
     {
         return __popcnt64(value);
     }
 
-    uint8_t bitcounttz(uint8_t value)
+    uint8_t bitCountTz(uint8_t value)
     {
         unsigned long index;
         const auto    res = _BitScanForward(&index, value);
@@ -843,7 +846,7 @@ namespace OS
         return (uint8_t) index;
     }
 
-    uint16_t bitcounttz(uint16_t value)
+    uint16_t bitCountTz(uint16_t value)
     {
         unsigned long index;
         const auto    res = _BitScanForward(&index, value);
@@ -852,7 +855,7 @@ namespace OS
         return (uint16_t) index;
     }
 
-    uint32_t bitcounttz(uint32_t value)
+    uint32_t bitCountTz(uint32_t value)
     {
         unsigned long index;
         const auto    res = _BitScanForward(&index, value);
@@ -861,7 +864,7 @@ namespace OS
         return (uint32_t) index;
     }
 
-    uint64_t bitcounttz(uint64_t value)
+    uint64_t bitCountTz(uint64_t value)
     {
         unsigned long index;
         const auto    res = _BitScanForward64(&index, value);
@@ -870,7 +873,7 @@ namespace OS
         return (uint64_t) index;
     }
 
-    uint8_t bitcountlz(uint8_t value)
+    uint8_t bitCountLz(uint8_t value)
     {
         unsigned long index;
         const auto    res = _BitScanReverse(&index, value);
@@ -879,7 +882,7 @@ namespace OS
         return (uint8_t) (8 - index - 1);
     }
 
-    uint16_t bitcountlz(uint16_t value)
+    uint16_t bitCountLz(uint16_t value)
     {
         unsigned long index;
         const auto    res = _BitScanReverse(&index, value);
@@ -888,7 +891,7 @@ namespace OS
         return (uint8_t) (16 - index - 1);
     }
 
-    uint32_t bitcountlz(uint32_t value)
+    uint32_t bitCountLz(uint32_t value)
     {
         unsigned long index;
         const auto    res = _BitScanReverse(&index, value);
@@ -897,7 +900,7 @@ namespace OS
         return (uint8_t) (32 - index - 1);
     }
 
-    uint64_t bitcountlz(uint64_t value)
+    uint64_t bitCountLz(uint64_t value)
     {
         unsigned long index;
         const auto    res = _BitScanReverse64(&index, value);
@@ -906,17 +909,17 @@ namespace OS
         return (uint8_t) (64 - index - 1);
     }
 
-    uint16_t byteswap(uint16_t value)
+    uint16_t byteSwap(uint16_t value)
     {
         return _byteswap_ushort(value);
     }
 
-    uint32_t byteswap(uint32_t value)
+    uint32_t byteSwap(uint32_t value)
     {
         return _byteswap_ulong(value);
     }
 
-    uint64_t byteswap(uint64_t value)
+    uint64_t byteSwap(uint64_t value)
     {
         return _byteswap_uint64(value);
     }
@@ -1089,7 +1092,6 @@ namespace OS
             }
         }
     }
-
-}; // namespace OS
+}
 
 #endif

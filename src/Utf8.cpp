@@ -281,7 +281,7 @@ void Utf8::operator+=(uint32_t c)
     {
         if (count + 2 > allocated)
             reserve(count + 2);
-        buffer[count++] = (uint8_t) c;
+        buffer[count++] = static_cast<char>(c);
         buffer[count]   = 0;
     }
     else
@@ -296,7 +296,7 @@ Utf8::operator const char*() const
 char Utf8::operator[](uint32_t index) const
 {
     SWAG_ASSERT(index <= count);
-    return index == count ? 0 : buffer[index];
+    return index == count ? static_cast<char>(0) : buffer[index];
 }
 
 bool operator<(const Utf8& txt1, const Utf8& txt2)
@@ -560,7 +560,7 @@ void Utf8::append(const char* txt)
 
 void Utf8::append(const Utf8& txt)
 {
-    const int len = txt.count;
+    const auto len = txt.count;
     if (!len)
         return;
     reserve(count + len + 1);
@@ -582,35 +582,35 @@ void Utf8::append(uint32_t utf)
     if (utf <= 0x7F)
     {
         reserve(count + 2);
-        buffer[count++] = (uint8_t) utf;
+        buffer[count++] = static_cast<char>(utf);
     }
     else if (utf <= 0x07FF)
     {
         reserve(count + 3);
-        buffer[count++] = (uint8_t) (((utf >> 6) & 0x1F) | 0xC0);
-        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(((utf >> 6) & 0x1F) | 0xC0);
+        buffer[count++] = static_cast<char>(((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= 0xFFFF)
     {
         reserve(count + 4);
-        buffer[count++] = (uint8_t) (((utf >> 12) & 0x0F) | 0xE0);
-        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(((utf >> 12) & 0x0F) | 0xE0);
+        buffer[count++] = static_cast<char>(((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(((utf >> 0) & 0x3F) | 0x80);
     }
     else if (utf <= MAX_ENCODED_UNICODE)
     {
         reserve(count + 5);
-        buffer[count++] = (uint8_t) (((utf >> 18) & 0x07) | 0xF0);
-        buffer[count++] = (uint8_t) (((utf >> 12) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(((utf >> 18) & 0x07) | 0xF0);
+        buffer[count++] = static_cast<char>(((utf >> 12) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(((utf >> 6) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(((utf >> 0) & 0x3F) | 0x80);
     }
     else
     {
         reserve(count + 4);
-        buffer[count++] = (uint8_t) 0xEF;
-        buffer[count++] = (uint8_t) 0xBF;
-        buffer[count++] = (uint8_t) 0xBD;
+        buffer[count++] = static_cast<char>(0xEF);
+        buffer[count++] = static_cast<char>(0xBF);
+        buffer[count++] = static_cast<char>(0xBD);
     }
 
     buffer[count] = 0;
@@ -933,7 +933,7 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
     const unsigned int s1Len = str1.length();
     const unsigned int s2Len = str2.length();
 
-    auto column = new unsigned int[s1Len + 1];
+    const auto column = new unsigned int[s1Len + 1];
     for (y        = 1; y <= s1Len; y++)
         column[y] = y;
     for (unsigned int x = 1; x <= s2Len; x++)

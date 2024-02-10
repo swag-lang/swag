@@ -47,15 +47,13 @@ namespace BackendLinker
                             {
                                 Utf8 l2 = pze + 8;
                                 l2.trim();
-                                const auto l1 = FMT("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
-                                l             = l1;
+                                l = FMT("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
                             }
                             else
                             {
                                 Utf8 l2 = pzw + 10;
                                 l2.trim();
-                                const auto l1 = FMT("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
-                                l             = l1;
+                                l = FMT("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
                             }
                         }
 
@@ -83,7 +81,7 @@ namespace BackendLinker
             pos += len;
         }
 
-        [[nodiscard]] uint64_t current_pos() const override
+        uint64_t current_pos() const override
         {
             return pos;
         }
@@ -127,6 +125,7 @@ namespace BackendLinker
                 one += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
             arguments.push_back(one);
         }
+        
 
         // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
@@ -155,7 +154,7 @@ namespace BackendLinker
             auto fullName = g_Workspace->targetPath;
             fullName.append(libName.c_str());
 
-            // Be sure that the library exits. Some modules rely on external libraries, and do not have their
+            // Be sure that the library exists. Some modules rely on external libraries, and do not have their
             // own one
             error_code err;
             if (exists(fullName, err))
@@ -183,7 +182,7 @@ namespace BackendLinker
         {
             // 09/14/2023
             // If there's no test function to compile, in release x64, num-cores 1, because of a test filter on a file which should raise an error,
-            // then lld never ends because of codeview. Don't know why !! But anyway, in that case, this is not necessary to generate debug infos,
+            // then lld never ends because of code view. Don't know why !! But anyway, in that case, this is not necessary to generate debug infos,
             // because there's nothing to debug !
             if (module->kind != ModuleKind::Test || !module->byteCodeTestFunc.empty())
             {
@@ -263,7 +262,7 @@ namespace BackendLinker
             for (const auto& one : linkArguments)
             {
                 linkStr += one;
-                linkStr += " ";
+                linkStr += "\n";
             }
 
             g_Log.messageVerbose(linkStr);
