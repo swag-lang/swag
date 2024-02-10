@@ -84,8 +84,8 @@ constexpr uint16_t SYMBOL_USED          = 0x0002;
 
 struct SymbolName
 {
-    [[nodiscard]] SymbolOverload* findOverload(const TypeInfo* typeInfo);
-    [[nodiscard]] Utf8            getFullName() const;
+    SymbolOverload* findOverload(const TypeInfo* typeInfo);
+    Utf8            getFullName() const;
 
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
     void            decreaseOverloadNoLock();

@@ -48,7 +48,7 @@ struct RegisterList
         countResults = 1;
     }
 
-    [[nodiscard]] int size() const
+    int size() const
     {
         return countResults;
     }
@@ -93,7 +93,7 @@ struct RegisterList
         return isSame(other);
     }
 
-    [[nodiscard]] bool isSame(const RegisterList& other) const
+    bool isSame(const RegisterList& other) const
     {
         if (countResults != other.countResults)
             return false;

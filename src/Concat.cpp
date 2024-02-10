@@ -229,7 +229,7 @@ void Concat::addString3(const char* v)
 {
     ensureSpace(3);
     *reinterpret_cast<uint16_t*>(currentSP) = *reinterpret_cast<const uint16_t*>(v);
-    currentSP[2]           = v[2];
+    currentSP[2]                            = v[2];
     currentSP += 3;
 }
 
@@ -244,7 +244,7 @@ void Concat::addString5(const char* v)
 {
     ensureSpace(5);
     *reinterpret_cast<uint32_t*>(currentSP) = *reinterpret_cast<const uint32_t*>(v);
-    currentSP[4]           = v[4];
+    currentSP[4]                            = v[4];
     currentSP += 5;
 }
 

@@ -129,7 +129,7 @@ struct VectorNative
         count--;
     }
 
-    [[nodiscard]] T get_pop_back()
+    T get_pop_back()
     {
         SWAG_ASSERT(count);
         count--;
@@ -164,44 +164,44 @@ struct VectorNative
         count = 0;
     }
 
-    [[nodiscard]] T* begin()
+    T* begin()
     {
         return buffer;
     }
 
-    [[nodiscard]] T* end()
+    T* end()
     {
         return buffer + count;
     }
 
-    [[nodiscard]] const T* begin() const
+    const T* begin() const
     {
         return buffer;
     }
 
-    [[nodiscard]] const T* end() const
+    const T* end() const
     {
         return buffer + count;
     }
 
-    [[nodiscard]] bool empty() const
+    bool empty() const
     {
         return count == 0;
     }
 
-    [[nodiscard]] T& back()
+    T& back()
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
-    [[nodiscard]] const T& back() const
+    const T& back() const
     {
         SWAG_ASSERT(count);
         return buffer[count - 1];
     }
 
-    [[nodiscard]] const T& front() const
+    const T& front() const
     {
         return buffer[0];
     }
@@ -277,12 +277,12 @@ struct VectorNative
         return false;
     }
 
-    [[nodiscard]] size_t capacity() const
+    size_t capacity() const
     {
         return allocated;
     }
 
-    [[nodiscard]] size_t size() const
+    size_t size() const
     {
         return count;
     }

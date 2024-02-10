@@ -352,7 +352,7 @@ bool ByteCodeGen::emitAffectPlusEqual(const ByteCodeGenContext* context, uint32_
             return Report::internalError(context->node, "emitAffectPlusEqual, type not supported");
         }
     }
-    
+
     if (leftTypeInfo->isPointer())
     {
         const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
@@ -414,7 +414,7 @@ bool ByteCodeGen::emitAffectMinusEqual(const ByteCodeGenContext* context, uint32
             return Report::internalError(context->node, "emitAffectMinusEqual, type not supported");
         }
     }
-    
+
     if (leftTypeInfo->isPointer())
     {
         const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);

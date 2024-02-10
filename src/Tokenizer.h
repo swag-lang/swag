@@ -77,7 +77,7 @@ struct Token
     SourceLocation startLocation;
     SourceLocation endLocation;
 
-    [[nodiscard]] const char* ctext() const
+    const char* ctext() const
     {
         return text.c_str();
     }

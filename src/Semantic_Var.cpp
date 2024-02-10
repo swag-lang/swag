@@ -41,7 +41,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
         context->baseJob->nodes.push_back(varDecl->type);
         return true;
     }
-    
+
     if (varDecl->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
     {
         SWAG_ASSERT(varDecl->resolvedSymbolOverload);
@@ -774,7 +774,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()));
                 return context->report(diag, note);
             }
-            
+
             if (node->genTypeComesFrom)
             {
                 auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0140), node->typeInfo->getDisplayNameC()));

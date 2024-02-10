@@ -52,7 +52,7 @@ bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const Type
             return Report::internalError(context->node, "emitBinaryOpPlus, type not supported");
         }
     }
-    
+
     if (typeInfo->isPointer())
     {
         const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
@@ -147,7 +147,7 @@ bool ByteCodeGen::emitBinaryOpMinus(const ByteCodeGenContext* context, const Typ
             return Report::internalError(context->node, "emitBinaryOpMinus, type not supported");
         }
     }
-    
+
     if (typeInfo->isPointer())
     {
         const auto typePtr = castTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);

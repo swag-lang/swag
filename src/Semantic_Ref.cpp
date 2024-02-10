@@ -497,14 +497,14 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
             diag.addNote(front, Nte(Nte0026));
             return context->report(diag);
         }
-        
+
         if (front->kind == AstNodeKind::IdentifierRef)
         {
             diag.hint       = Nte(Nte0129);
             const auto note = Diagnostic::note(front, FMT(Nte(Nte0195), front->token.ctext()));
             return context->report(diag, note);
         }
-        
+
         diag.addNote(front, Diagnostic::isType(typeInfo));
         diag.hint = Nte(Nte0129);
         return context->report(diag);

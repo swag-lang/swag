@@ -77,8 +77,8 @@ struct AttributeParameter
 
 struct OneAttribute
 {
-    [[nodiscard]] const AttributeParameter* getParam(const Utf8& paramName) const;
-    [[nodiscard]] const ComputedValue*      getValue(const Utf8& paramName) const;
+    const AttributeParameter* getParam(const Utf8& paramName) const;
+    const ComputedValue*      getValue(const Utf8& paramName) const;
 
     Utf8                       name;
     Vector<AttributeParameter> parameters;
@@ -97,20 +97,11 @@ struct AttributeList
     void                      emplace(OneAttribute& other);
     void                      add(AttributeList& other);
 
-    void reset()
-    {
-        allAttributes.clear();
-    }
-
-    [[nodiscard]] bool empty() const
-    {
-        return allAttributes.empty();
-    }
-
-    [[nodiscard]] uint32_t size() const
-    {
-        return (uint32_t) allAttributes.size();
-    }
+    // clang-format off
+    void     reset()       { allAttributes.clear(); }
+    bool     empty() const { return allAttributes.empty(); }
+    uint32_t size() const  { return (uint32_t) allAttributes.size(); }
+    // clang-format on
 
     AttributeList& operator=(const AttributeList& other)
     {

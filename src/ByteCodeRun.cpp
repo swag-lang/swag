@@ -1127,7 +1127,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::SetZeroAtPointer8:
     {
-        auto ptr                                     = registersRC[ip->a.u32].pointer;
+        auto ptr           = registersRC[ip->a.u32].pointer;
         *(ptr + ip->b.u32) = 0;
         break;
     }
@@ -1159,7 +1159,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::ClearRR8:
     {
         SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
-        auto ptr                                     = registersRC[context->bc->registerStoreRR].pointer;
+        auto ptr           = registersRC[context->bc->registerStoreRR].pointer;
         *(ptr + ip->c.u32) = 0;
         break;
     }

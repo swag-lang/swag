@@ -92,15 +92,15 @@ struct Parser
     bool eatTokenError(TokenId id, const Utf8& err);
     bool eatSemiCol(const char* msg);
 
-    static bool        testIsSingleIdentifier(AstNode* node);
-    bool               checkIsSingleIdentifier(AstNode* node, const char* msg) const;
-    bool               checkIsIdentifier(const TokenParse& tokenParse, const char* msg) const;
-    bool               testIsValidUserName(const AstNode* node) const;
-    bool               checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
-    bool               checkIsValidVarName(AstNode* node) const;
-    [[nodiscard]] bool doCheckPublicInternalPrivate(const Token& tokenAttr) const;
-    void               registerSubDecl(AstNode* subDecl);
-    static void        isForceTakeAddress(AstNode* node);
+    static bool testIsSingleIdentifier(AstNode* node);
+    bool        checkIsSingleIdentifier(AstNode* node, const char* msg) const;
+    bool        checkIsIdentifier(const TokenParse& tokenParse, const char* msg) const;
+    bool        testIsValidUserName(const AstNode* node) const;
+    bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
+    bool        checkIsValidVarName(AstNode* node) const;
+    bool        doCheckPublicInternalPrivate(const Token& tokenAttr) const;
+    void        registerSubDecl(AstNode* subDecl);
+    static void isForceTakeAddress(AstNode* node);
 
     bool        doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion);
     bool        doCompilerScopeBreakable(AstNode* parent, AstNode** result);

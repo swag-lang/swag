@@ -120,7 +120,7 @@ struct TypeInfo
     void addFlag(uint64_t fl)                  { flags |= fl; }
     void removeFlag(uint64_t fl)               { flags &= ~fl; }
     // clang-format on
-    
+
     // clang-format off
     bool isSlice() const                       { return kind == TypeInfoKind::Slice; }
     bool isInterface() const                   { return kind == TypeInfoKind::Interface; }
