@@ -253,7 +253,27 @@ namespace BackendLinker
     bool link(const BuildParameters& buildParameters, const Vector<Utf8>& linkArguments)
     {
         VectorNative<const char*> linkArgumentsPtr;
-        linkArgumentsPtr.push_back("lld");
+
+        const auto objFileType = Backend::getObjType(g_CommandLine.target);
+        switch (objFileType)
+        {
+        case BackendObjType::Coff:
+            linkArgumentsPtr.push_back("lld-link");
+            break;
+        case BackendObjType::Elf:
+            linkArgumentsPtr.push_back("ld.lld");
+            break;
+        case BackendObjType::MachO:
+            linkArgumentsPtr.push_back("ld64.lld");
+            break;
+        case BackendObjType::Wasm:
+            linkArgumentsPtr.push_back("wasm-lld");
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
         for (auto& one : linkArguments)
             linkArgumentsPtr.push_back(one);
 
@@ -279,34 +299,35 @@ namespace BackendLinker
                 g_Log.messageVerbose(one);
         }
 
-        const auto  objFileType = Backend::getObjType(g_CommandLine.target);
-        lld::Result result ;
-        llvm::ArrayRef<lld::DriverDef> drivers{lld::WinLink, nullptr};
+        lld::Result result{};
 
         switch (objFileType)
         {
         case BackendObjType::Coff:
+            result = lld::lldMain(llvmArgs, myStdOut, myStdErr, {{lld::WinLink, &lld::coff::link}});
             break;
         case BackendObjType::Elf:
-            result = lld::elf::link(llvmArgs, myStdOut, myStdErr, false, false);
+            result = lld::lldMain(llvmArgs, myStdOut, myStdErr, {{lld::Gnu, &lld::elf::link}});
             break;
         case BackendObjType::MachO:
-            result = lld::macho::link(llvmArgs, myStdOut, myStdErr, false, false);
+            result = lld::lldMain(llvmArgs, myStdOut, myStdErr, {{lld::Darwin, &lld::macho::link}});
             break;
         case BackendObjType::Wasm:
-            result = lld::wasm::link(llvmArgs, myStdOut, myStdErr, false, false);
+            result = lld::lldMain(llvmArgs, myStdOut, myStdErr, {{lld::Wasm, &lld::wasm::link}});
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
         }
 
-        result = lld::lldMain(llvmArgs, myStdOut, myStdErr, drivers);
-        if (!result)
+        if (!result.canRunAgain)
         {
             g_Workspace->numErrors += myStdErr.errCount;
             buildParameters.module->numErrors += myStdErr.errCount;
         }
 
         oo.unlock();
-        return result;
+        return result.canRunAgain;
     }
 
     bool link(const BuildParameters& buildParameters, const Vector<Path>& objectFiles)

@@ -24,35 +24,31 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
 
     // SwagInterface
     {
-        llvm::Type* members[] = {
-            PTR_I8_TY(),
-            PTR_I8_TY()};
-        pp.interfaceTy = llvm::StructType::create(context, members, "SwagInterface");
+        llvm::Type* members[] = {PTR_I8_TY(), PTR_I8_TY()};
+        pp.interfaceTy        = llvm::StructType::create(context, members, "SwagInterface");
     }
 
     // SwagErrorValue
     {
-        llvm::Type* members[] = {
-            PTR_I8_TY(), // value
-            PTR_I8_TY(), // value
-            I32_TY(),    // pushUsedAlloc
-            I16_TY(),    // pushHasError
-            I16_TY()};   // pushTraceIndex
-        pp.errorTy = llvm::StructType::create(context, members, "SwagErrorValue");
+        llvm::Type* members[] = {PTR_I8_TY(), // value
+                                 PTR_I8_TY(), // value
+                                 I32_TY(),    // pushUsedAlloc
+                                 I16_TY(),    // pushHasError
+                                 I16_TY()};   // pushTraceIndex
+        pp.errorTy            = llvm::StructType::create(context, members, "SwagErrorValue");
     }
 
     // SwagScratchAllocator
     {
-        llvm::Type* members[] = {
-            pp.interfaceTy, // ScratchAllocator allocator
-            PTR_I8_TY(),    // ScratchAllocator block
-            I64_TY(),       // ScratchAllocator capacity
-            I64_TY(),       // ScratchAllocator used
-            I64_TY(),       // ScratchAllocator maxUsed
-            PTR_I8_TY(),    // ScratchAllocator firstLeak
-            I64_TY(),       // ScratchAllocator totalLeak
-            I64_TY()};      // ScratchAllocator maxLeak
-        pp.scratchTy = llvm::StructType::create(context, members, "SwagScratchAllocator");
+        llvm::Type* members[] = {pp.interfaceTy, // ScratchAllocator allocator
+                                 PTR_I8_TY(),    // ScratchAllocator block
+                                 I64_TY(),       // ScratchAllocator capacity
+                                 I64_TY(),       // ScratchAllocator used
+                                 I64_TY(),       // ScratchAllocator maxUsed
+                                 PTR_I8_TY(),    // ScratchAllocator firstLeak
+                                 I64_TY(),       // ScratchAllocator totalLeak
+                                 I64_TY()};      // ScratchAllocator maxLeak
+        pp.scratchTy          = llvm::StructType::create(context, members, "SwagScratchAllocator");
     }
 
     // SwagContext
@@ -138,11 +134,15 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
     // mainContext
     if (precompileIndex == 0)
     {
-        pp.mainContext       = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
-        pp.defaultAllocTable = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::WeakAnyLinkage,
-                                                        llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
-        pp.processInfos = new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy),
-                                                   "swag_processInfos");
+        pp.mainContext = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
+        pp.defaultAllocTable = new llvm::GlobalVariable(modu,
+                                                        pp.allocatorTy->getPointerTo(),
+                                                        false,
+                                                        llvm::GlobalValue::WeakAnyLinkage,
+                                                        llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()),
+                                                        "swag_defaultAllocTable");
+        pp.processInfos =
+            new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
         pp.symTls_threadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
     }
     else
@@ -313,7 +313,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     switch (g_CommandLine.target.os)
     {
     case SwagTargetOs::Windows:
-        osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
+        osName     = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
         vendorName = (const char*) llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin();
         abiName    = (const char*) llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin();
         break;
@@ -343,8 +343,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     Utf8 features;
 
     // CPU. If we are compiling for the native env, then get cpu features.
-    if (g_CommandLine.target.os == OS::getNativeTarget().os &&
-        g_CommandLine.target.arch == OS::getNativeTarget().arch &&
+    if (g_CommandLine.target.os == OS::getNativeTarget().os && g_CommandLine.target.arch == OS::getNativeTarget().arch &&
         (g_CommandLine.target.cpu.empty() || g_CommandLine.target.cpu == OS::getNativeTarget().cpu))
     {
         cpu = OS::getNativeTarget().cpu;
@@ -377,7 +376,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     opt.NoSignedZerosFPMath = buildParameters.buildCfg->backendLLVM.fpMathNoSignedZero;
     opt.ApproxFuncFPMath    = buildParameters.buildCfg->backendLLVM.fpMathApproxFunc;
 
-    auto rm            = llvm::Optional<llvm::Reloc::Model>();
+    auto rm            = std::optional<llvm::Reloc::Model>();
     auto targetMachine = target->createTargetMachine(targetTriple.c_str(), cpu.c_str(), features.c_str(), opt, rm);
 
     switch (buildParameters.buildCfg->backendOptimize)

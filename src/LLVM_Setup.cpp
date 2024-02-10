@@ -38,6 +38,7 @@
 #pragma comment(lib, "LLVMBitstreamReader.lib")
 #pragma comment(lib, "LLVMCFGuard.lib")
 #pragma comment(lib, "LLVMCodeGen.lib")
+#pragma comment(lib, "LLVMCodeGenTypes.lib")
 #pragma comment(lib, "LLVMCore.lib")
 #pragma comment(lib, "LLVMCoroutines.lib")
 #pragma comment(lib, "LLVMCoverage.lib")
@@ -61,6 +62,7 @@
 #pragma comment(lib, "LLVMHexagonDesc.lib")
 #pragma comment(lib, "LLVMHexagonDisassembler.lib")
 #pragma comment(lib, "LLVMHexagonInfo.lib")
+#pragma comment(lib, "LLVMIRPrinter.lib")
 #pragma comment(lib, "LLVMIRReader.lib")
 #pragma comment(lib, "LLVMInstCombine.lib")
 #pragma comment(lib, "LLVMInstrumentation.lib")
@@ -76,6 +78,11 @@
 #pragma comment(lib, "LLVMLibDriver.lib")
 #pragma comment(lib, "LLVMLineEditor.lib")
 #pragma comment(lib, "LLVMLinker.lib")
+#pragma comment(lib, "LLVMLoongArchAsmParser.lib")
+#pragma comment(lib, "LLVMLoongArchCodeGen.lib")
+#pragma comment(lib, "LLVMLoongArchDesc.lib")
+#pragma comment(lib, "LLVMLoongArchDisassembler.lib")
+#pragma comment(lib, "LLVMLoongArchInfo.lib")
 #pragma comment(lib, "LLVMMC.lib")
 #pragma comment(lib, "LLVMMCA.lib")
 #pragma comment(lib, "LLVMMCDisassembler.lib")
@@ -131,8 +138,10 @@
 #pragma comment(lib, "LLVMSystemZDisassembler.lib")
 #pragma comment(lib, "LLVMSystemZInfo.lib")
 #pragma comment(lib, "LLVMTableGen.lib")
+#pragma comment(lib, "LLVMTableGenCommon.lib")
 #pragma comment(lib, "LLVMTableGenGlobalISel.lib")
 #pragma comment(lib, "LLVMTarget.lib")
+#pragma comment(lib, "LLVMTargetParser.lib")
 #pragma comment(lib, "LLVMTestingSupport.lib")
 #pragma comment(lib, "LLVMTextAPI.lib")
 #pragma comment(lib, "LLVMTransformUtils.lib")
@@ -178,4 +187,4 @@ namespace LLVM
         llvm::InitializeAllAsmPrinters();
         llvm::InitializeAllAsmParsers();
     }
-} // namespace LLVM
+}

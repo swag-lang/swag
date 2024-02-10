@@ -3,7 +3,13 @@
 #pragma warning(push, 0)
 #pragma warning(disable : 4267)
 #pragma warning(disable : 4244)
+
 #include "lld/Common/Driver.h"
+LLD_HAS_DRIVER(coff)
+LLD_HAS_DRIVER(elf)
+LLD_HAS_DRIVER(macho)
+LLD_HAS_DRIVER(wasm)
+
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/Analysis/AliasAnalysis.h"
