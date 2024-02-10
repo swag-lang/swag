@@ -62,7 +62,7 @@ namespace BackendLinker
 
 #ifdef SWAG_DEV_MODE
                         if (pze)
-                            OS::errorBox("[Developer Mode]", "Error raised !");
+                            OS::errorBox("[Developer Mode]", "Linker Error raised !");
 #endif
                     }
                     else
@@ -251,11 +251,6 @@ namespace BackendLinker
             linkArguments.push_back(path.string());
         }
 
-        VectorNative<const char*> linkArgumentsPtr;
-        linkArgumentsPtr.push_back("lld");
-        for (auto& one : linkArguments)
-            linkArgumentsPtr.push_back(one);
-
         // Log linker parameters
         if (g_CommandLine.verboseLink)
         {
@@ -269,12 +264,16 @@ namespace BackendLinker
             g_Log.messageVerbose(linkStr);
         }
 
-        const llvm::ArrayRef<const char*> array_ref_args(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
+        VectorNative<const char*> linkArgumentsPtr;
+        linkArgumentsPtr.push_back("lld");
+        for (auto& one : linkArguments)
+            linkArgumentsPtr.push_back(one);
 
-        MyOStream diag_stdout;
-        MyOStream diag_stderr;
-        diag_stdout.module = module;
-        diag_stderr.module = module;
+        const llvm::ArrayRef llvmArgs(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
+
+        MyOStream myStdOut, myStdErr;
+        myStdOut.module = module;
+        myStdErr.module = module;
 
         // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
         static Mutex oo;
@@ -289,28 +288,23 @@ namespace BackendLinker
         switch (objFileType)
         {
         case BackendObjType::Coff:
-            result = lld::coff::link(array_ref_args, diag_stdout, diag_stderr, false, false);
+            result = lld::coff::link(llvmArgs, myStdOut, myStdErr, false, false);
             break;
         case BackendObjType::Elf:
-            result = lld::elf::link(array_ref_args, diag_stdout, diag_stderr, false, false);
+            result = lld::elf::link(llvmArgs, myStdOut, myStdErr, false, false);
             break;
         case BackendObjType::MachO:
-            result = lld::macho::link(array_ref_args, diag_stdout, diag_stderr, false, false);
+            result = lld::macho::link(llvmArgs, myStdOut, myStdErr, false, false);
             break;
         case BackendObjType::Wasm:
-            result = lld::wasm::link(array_ref_args, diag_stdout, diag_stderr, false, false);
+            result = lld::wasm::link(llvmArgs, myStdOut, myStdErr, false, false);
             break;
         }
 
-#ifdef SWAG_DEV_MODE
-        if (!result)
-            OS::errorBox("[Developer Mode]", "Error raised !");
-#endif
-
         if (!result)
         {
-            g_Workspace->numErrors += diag_stderr.errCount;
-            module->numErrors += diag_stderr.errCount;
+            g_Workspace->numErrors += myStdErr.errCount;
+            module->numErrors += myStdErr.errCount;
         }
 
         oo.unlock();
