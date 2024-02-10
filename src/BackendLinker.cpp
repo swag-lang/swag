@@ -116,23 +116,24 @@ namespace BackendLinker
                 arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
         }
 
+        const auto libExt = Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
+
         // Register #foreignlib
         // As this is defined by the user, we consider the library must exists
         for (const auto& fl : buildParameters.foreignLibs)
         {
             Utf8 one = fl;
-            if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
-                one += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(one) != libExt)
+                one += libExt;
             arguments.push_back(one);
         }
-        
 
         // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
         {
             Utf8 libName = dep->name;
-            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
-                libName += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(libName) != libExt)
+                libName += libExt;
             auto fullName = g_Workspace->targetPath;
             fullName.append(libName.c_str());
 
@@ -149,8 +150,8 @@ namespace BackendLinker
                 continue;
 
             auto libName = dep->name;
-            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
-                libName += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
+            if (Utf8::getExtension(libName) != libExt)
+                libName += libExt;
             auto fullName = g_Workspace->targetPath;
             fullName.append(libName.c_str());
 

@@ -9,7 +9,7 @@
         cfg.moduleVersion  = 0
         cfg.moduleRevision = 0
         cfg.moduleBuildNum = 0
-        cfg.embbedImports  = true
+        cfg.embeddedImports  = true
         cfg.backendKind    = .Executable
         cfg.backendSubKind = .Default
     }

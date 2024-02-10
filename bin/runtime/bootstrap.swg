@@ -783,7 +783,7 @@ namespace Swag
         moduleRevision:     u32 = 0     // The module revision
         moduleBuildNum:     u32 = 0     // The module build value
         moduleNamespace:    string      // The namespace name of the module
-        embbedImports       = false     // Module should embbed all its dependencies
+        embeddedImports     = false     // Module should embed all its dependencies
 
         tempAllocatorCapacity       = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator (in bytes)
         errorAllocatorCapacity      = 16'u32 * 1024       // Default capacity of the 'error' allocator (in bytes)

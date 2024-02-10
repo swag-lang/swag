@@ -485,11 +485,13 @@ Utf8 CommandLineParser::buildString() const
             result += Log::colorToVTS(LogColor::Value);
             result += *(Utf8*) oneArg->buffer;
             break;
+
         case CommandLineType::StringPath:
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
             result += ((Path*) oneArg->buffer)->string();
             break;
+
         case CommandLineType::EnumInt:
         {
             result += oneArg->longName + ":";
@@ -501,6 +503,7 @@ Utf8 CommandLineParser::buildString() const
             result += tokens[idx];
             break;
         }
+
         case CommandLineType::StringSet:
         {
             result += oneArg->longName + ":";
@@ -513,6 +516,7 @@ Utf8 CommandLineParser::buildString() const
             }
             break;
         }
+
         case CommandLineType::EnumString:
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
