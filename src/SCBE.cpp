@@ -299,5 +299,5 @@ bool SCBE::generateOutput(const BuildParameters& buildParameters)
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i]->filename);
 
-    return BackendLinker::link(buildParameters, module, files);
+    return BackendLinker::link(buildParameters, files);
 }

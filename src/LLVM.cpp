@@ -497,5 +497,5 @@ bool LLVM::generateOutput(const BuildParameters& buildParameters)
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
         files.push_back(perThread[buildParameters.compileType][i]->filename);
-    return BackendLinker::link(buildParameters, module, files);
+    return BackendLinker::link(buildParameters, files);
 }

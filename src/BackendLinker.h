@@ -4,5 +4,5 @@ struct BuildParameters;
 
 namespace BackendLinker
 {
-    bool link(const BuildParameters& buildParameters, Module* module, const Vector<Path>& objectFiles);
-} // namespace BackendLinker
+    bool link(const BuildParameters& buildParameters, const Vector<Path>& objectFiles);
+}

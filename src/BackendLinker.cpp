@@ -93,7 +93,7 @@ namespace BackendLinker
         bool     startLine = true;
     };
 
-    void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments)
+    void getArgumentsCoff(const BuildParameters& buildParameters, Vector<Utf8>& arguments)
     {
         Vector<Path> libPaths;
 
@@ -126,7 +126,7 @@ namespace BackendLinker
         }
 
         // Registered #import dependencies
-        for (const auto& dep : module->moduleDependencies)
+        for (const auto& dep : buildParameters.module->moduleDependencies)
         {
             Utf8 libName = dep->name;
             if (Utf8::getExtension(libName) != libExt)
@@ -141,7 +141,7 @@ namespace BackendLinker
                 arguments.push_back(libName);
         }
 
-        for (const auto& dep : module->moduleEmbedded)
+        for (const auto& dep : buildParameters.module->moduleEmbedded)
         {
             if (dep->buildCfg.backendKind != BuildCfgBackendKind::Export)
                 continue;
@@ -182,7 +182,7 @@ namespace BackendLinker
             // If there's no test function to compile, in release x64, num-cores 1, because of a test filter on a file which should raise an error,
             // then lld never ends because of code view. Don't know why !! But anyway, in that case, this is not necessary to generate debug infos,
             // because there's nothing to debug !
-            if (module->kind != ModuleKind::Test || !module->byteCodeTestFunc.empty())
+            if (buildParameters.module->kind != ModuleKind::Test || !buildParameters.module->byteCodeTestFunc.empty())
             {
                 if (g_ThreadMgr.numWorkers == 1)
                     arguments.push_back("/DEBUG");
@@ -198,13 +198,13 @@ namespace BackendLinker
         arguments.push_back("/OUT:" + resultFile.string());
     }
 
-    void getArguments(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments)
+    void getArguments(const BuildParameters& buildParameters, Vector<Utf8>& arguments)
     {
         const auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
-            getArgumentsCoff(buildParameters, module, arguments);
+            getArgumentsCoff(buildParameters, arguments);
             break;
         case BackendObjType::Elf:
             SWAG_ASSERT(false);
@@ -234,10 +234,10 @@ namespace BackendLinker
         }
     }
 
-    bool link(const BuildParameters& buildParameters, Module* module, const Vector<Path>& objectFiles)
+    bool link(const BuildParameters& buildParameters, const Vector<Path>& objectFiles)
     {
         Vector<Utf8> linkArguments;
-        getArguments(buildParameters, module, linkArguments);
+        getArguments(buildParameters, linkArguments);
 
         // Add all object files
         const auto targetPath = Backend::getCacheFolder(buildParameters);
@@ -256,8 +256,8 @@ namespace BackendLinker
         const llvm::ArrayRef llvmArgs(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
 
         MyOStream myStdOut, myStdErr;
-        myStdOut.module = module;
-        myStdErr.module = module;
+        myStdOut.module = buildParameters.module;
+        myStdErr.module = buildParameters.module;
 
         // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
         static Mutex oo;
@@ -270,7 +270,7 @@ namespace BackendLinker
         // Log linker parameters
         if (g_CommandLine.verboseLink)
         {
-            g_Log.messageVerbose(FMT("linker arguments for module [[%s]]:\n", module->name.c_str()));
+            g_Log.messageVerbose(FMT("linker arguments for module [[%s]]:\n", buildParameters.module->name.c_str()));
             for (const auto& one : linkArguments)
                 g_Log.messageVerbose(one);
         }
@@ -296,7 +296,7 @@ namespace BackendLinker
         if (!result)
         {
             g_Workspace->numErrors += myStdErr.errCount;
-            module->numErrors += myStdErr.errCount;
+            buildParameters.module->numErrors += myStdErr.errCount;
         }
 
         oo.unlock();
