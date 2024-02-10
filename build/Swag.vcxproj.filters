@@ -683,6 +683,9 @@
     <ClCompile Include="..\src\ByteCode_Print.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BackendLinker_Coff.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
