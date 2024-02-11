@@ -79,8 +79,8 @@ void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dir
     const auto file = Allocator::alloc<SourceFile>();
     file->name      = fileName;
     file->isCfgFile = true;
-    Path pathFile   = dirName.c_str();
-    pathFile.append(fileName.c_str());
+    Path pathFile   = dirName;
+    pathFile.append(fileName);
     file->path = pathFile;
 
     // If we have only one core, then we will sort files in alphabetical order to always
@@ -146,7 +146,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
     }
 }
 
-bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
+bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName)
 {
     auto remotePath = dep->resolvedLocation;
     remotePath.append(SWAG_CFG_FILE);
@@ -157,7 +157,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
         return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0093), SWAG_CFG_FILE, remotePath.string().c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
-    // Then later we will parse that file to get informations from the module
+    // Then later we will parse that file to get information from the module
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, remotePath.string().c_str(), "rbN"))
     {
@@ -167,12 +167,12 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // Remove source configuration file
     FILE* fdest    = nullptr;
     auto  destPath = g_Workspace->cachePath;
-    cfgFilePath.append(destPath.string().c_str());
+    cfgFilePath.append(destPath);
 
     // Generate a unique name for the configuration file
     static int cacheNum = 0;
     cfgFileName         = FMT("module%u.swg", cacheNum++).c_str();
-    destPath.append(cfgFileName.c_str());
+    destPath.append(cfgFileName);
     if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
     {
         fclose(fsrc);
@@ -197,12 +197,12 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     return true;
 }
 
-bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
+bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     Path remotePath = g_CommandLine.exePath.parent_path();
-    remotePath.append(dep->locationParam.c_str());
+    remotePath.append(dep->locationParam);
     remotePath.append(SWAG_MODULES_FOLDER);
-    remotePath.append(dep->name.c_str());
+    remotePath.append(dep->name);
 
     remotePath = absolute(remotePath);
     error_code err;
@@ -217,11 +217,11 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
 }
 
-bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
+bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     Path remotePath = dep->locationParam;
     remotePath.append(SWAG_MODULES_FOLDER);
-    remotePath.append(dep->name.c_str());
+    remotePath.append(dep->name);
 
     remotePath = absolute(remotePath);
     error_code err;
@@ -237,7 +237,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
 }
 
-bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
+bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Path& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
         return Report::report({dep->node, FMT(Err(Err0254), dep->name.c_str())});
@@ -508,7 +508,8 @@ bool ModuleDepManager::execute()
                 // We need to be sure that the dependency declaration is correct
                 if (!dep->location.empty() && !dep->locationAutoResolved)
                 {
-                    Utf8 cfgFilePath, cfgFileName;
+                    Path cfgFilePath;
+                    Utf8 cfgFileName;
                     SWAG_CHECK(fetchModuleCfg(dep, cfgFilePath, cfgFileName, false));
                 }
 
@@ -530,10 +531,11 @@ bool ModuleDepManager::execute()
                 continue;
 
             // Get the remote config file in cache (if it exists), that depends on the dependency
-            Utf8 cfgFilePath, cfgFileName;
+            Path cfgFilePath;
+            Utf8 cfgFileName;
             SWAG_CHECK(fetchModuleCfg(cfgModule->fetchDep, cfgFilePath, cfgFileName, true));
 
-            cfgModule->files.clear(); // memleak
+            cfgModule->files.clear(); // leak
 
             auto file = Allocator::alloc<SourceFile>();
             cfgModule->files.push_back(file);
@@ -541,8 +543,8 @@ bool ModuleDepManager::execute()
             file->name      = cfgFileName;
             file->isCfgFile = true;
             file->module    = cfgModule;
-            Path pathFile   = cfgFilePath.c_str();
-            pathFile.append(cfgFileName.c_str());
+            Path pathFile   = cfgFilePath;
+            pathFile.append(cfgFileName);
             file->path = pathFile;
 
             parseCfgFile(cfgModule);

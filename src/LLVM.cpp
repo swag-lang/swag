@@ -223,7 +223,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = FMT("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = FMT("%s%d", buildParameters.module->name.c_str(), precompileIndex);
         pp.filename += getObjectFileExtension(g_CommandLine.target);
 
         pp.context = new llvm::LLVMContext();
@@ -232,7 +232,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
         pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
         pp.builder = new llvm::IRBuilder<>(*pp.context);
 
-        if (buildParameters.buildCfg->backendDebugInformations)
+        if (buildParameters.buildCfg->backendDebugInfos)
         {
             pp.dbg = new LLVM_Debug;
             pp.dbg->setup(this, pp.module);
@@ -403,7 +403,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     // Output file
     auto targetPath = getCacheFolder(buildParameters);
     auto path       = targetPath;
-    path.append(pp.filename.c_str());
+    path.append(pp.filename);
     error_code                err;
     llvm::raw_fd_ostream      dest(path.string(), err, llvm::sys::fs::OF_None);
     llvm::legacy::PassManager llvmPass;

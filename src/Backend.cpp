@@ -55,10 +55,7 @@ void Backend::setup()
     g_CommandLine.libPaths.push_back(rtPath);
 }
 
-Path Backend::getCacheFolder(const BuildParameters& buildParameters)
-{
-    return g_Workspace->cachePath;
-}
+Path Backend::getCacheFolder(const BuildParameters& buildParameters) { return g_Workspace->cachePath; }
 
 void Backend::setMustCompile()
 {
@@ -110,7 +107,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // Be sure the output file is here, and is more recent than the export file
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
-        const auto outFileFame = getOutputFileName(module->buildParameters, BuildCfgOutputKind::DynamicLib);
+        const auto outFileFame = getOutputFileName(module, BuildCfgOutputKind::DynamicLib);
         error_code err;
         if (!exists(outFileFame, err))
             return false;
@@ -145,11 +142,10 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     return true;
 }
 
-Path Backend::getOutputFileName(const BuildParameters& buildParameters, BuildCfgOutputKind type)
+Path Backend::getOutputFileName(const Module* module, BuildCfgOutputKind type)
 {
-    SWAG_ASSERT(!buildParameters.outputFileName.empty());
     auto destFile = g_Workspace->targetPath;
-    destFile.append(buildParameters.outputFileName.c_str());
+    destFile.append(module->name.c_str());
     destFile += getOutputFileExtension(g_CommandLine.target, type).c_str();
     return destFile;
 }

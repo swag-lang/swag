@@ -40,7 +40,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
     else
     {
         Path pathFile = dirName;
-        pathFile.append(fileName.c_str());
+        pathFile.append(fileName);
         file->path = pathFile;
     }
 
@@ -90,7 +90,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
         if (!exists(filePath, err))
         {
             filePath = theModule->path;
-            filePath.append(orgFilePath.string());
+            filePath.append(orgFilePath);
             filePath             = absolute(filePath);
             const auto filePath1 = canonical(filePath, err);
             if (!err)

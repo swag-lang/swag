@@ -21,7 +21,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
         OS::exit(-1);
     }
 
-    cacheWorkspace.append(name.c_str());
+    cacheWorkspace.append(name);
     if (!exists(cacheWorkspace, err) && !create_directories(cacheWorkspace, err))
     {
         Report::errorOS(FMT(Err(Fat0016), cacheWorkspace.c_str()));

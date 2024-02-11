@@ -44,7 +44,7 @@ void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context)
 {
-    if (context->sourceFile->module->buildCfg.backendDebugInformations &&
+    if (context->sourceFile->module->buildCfg.backendDebugInfos &&
         context->sourceFile->module->buildCfg.byteCodeOptimizeLevel == 0 &&
         !context->sourceFile->isScriptFile)
     {

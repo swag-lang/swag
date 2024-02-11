@@ -897,7 +897,7 @@ bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
     concat.align(16);
     *pp.patchDBGSOffset = concat.totalCount();
     concat.addU32(DEBUG_SECTION_MAGIC);
-    if (buildParameters.buildCfg->backendDebugInformations)
+    if (buildParameters.buildCfg->backendDebugInfos)
     {
         pp.dbgTypeRecords.init(100 * 1024);
         emitCompilerFlagsDebugS(pp);
@@ -912,7 +912,7 @@ bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
     concat.align(16);
     *pp.patchDBGTOffset = concat.totalCount();
     concat.addU32(DEBUG_SECTION_MAGIC);
-    if (buildParameters.buildCfg->backendDebugInformations)
+    if (buildParameters.buildCfg->backendDebugInfos)
         emitDataDebugT(pp);
     *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
 

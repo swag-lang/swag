@@ -138,7 +138,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
 
     if (pp.pass == BackendPreCompilePass::Init)
     {
-        pp.filename = FMT("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = FMT("%s%d", buildParameters.module->name.c_str(), precompileIndex);
         pp.filename += getObjectFileExtension(g_CommandLine.target);
 
         switch (objFileType)
@@ -241,7 +241,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     auto&     pp              = *perThread[ct][precompileIndex];
 
     auto path = getCacheFolder(buildParameters);
-    path.append(pp.filename.c_str());
+    path.append(pp.filename);
     const auto filename = path;
 
     FILE* f = nullptr;

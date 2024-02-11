@@ -23,6 +23,7 @@ enum class BuildCfgBackendKind;
 enum class BuildCfgOutputKind;
 
 static constexpr int MAX_PRECOMPILE_BUFFERS = 16;
+
 enum class BackendPreCompilePass
 {
     Init,
@@ -35,9 +36,7 @@ enum class BackendPreCompilePass
 struct Backend
 {
     Backend(Module* mdl)
-        : module{mdl}
-    {
-    }
+        : module{mdl} {}
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      generateOutput(const BuildParameters& backendParameters);
@@ -68,7 +67,7 @@ struct Backend
 
     static void setup();
     static Path getCacheFolder(const BuildParameters& buildParameters);
-    static Path getOutputFileName(const BuildParameters& buildParameters, BuildCfgOutputKind type);
+    static Path getOutputFileName(const Module* module, BuildCfgOutputKind type);
 
     static Utf8           getObjectFileExtension(const BackendTarget& target);
     static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgOutputKind type);

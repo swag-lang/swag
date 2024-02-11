@@ -162,12 +162,11 @@ JobResult ModuleOutputJob::execute()
         // Compile a specific version, to test it
         if (module->mustGenerateTestExe())
         {
-            const auto compileJob                      = Allocator::alloc<ModuleGenOutputJob>();
-            compileJob->module                         = module;
-            compileJob->dependentJob                   = this;
-            compileJob->buildParameters                = module->buildParameters;
-            compileJob->buildParameters.outputFileName = module->name;
-            compileJob->buildParameters.compileType    = Test;
+            const auto compileJob                   = Allocator::alloc<ModuleGenOutputJob>();
+            compileJob->module                      = module;
+            compileJob->dependentJob                = this;
+            compileJob->buildParameters             = module->buildParameters;
+            compileJob->buildParameters.compileType = Test;
             jobsToAdd.push_back(compileJob);
         }
 
@@ -186,7 +185,6 @@ JobResult ModuleOutputJob::execute()
                 compileJob->buildParameters.compileType = Example;
             else
                 compileJob->buildParameters.compileType = Normal;
-            compileJob->buildParameters.outputFileName = module->name;
             jobsToAdd.push_back(compileJob);
         }
 

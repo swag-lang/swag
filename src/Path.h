@@ -19,6 +19,21 @@ struct Path : filesystem::path
         : path{other}
     {
     }
+
+    void append(const char* str)
+    {
+        path::append(str);
+    }
+
+    void append(const Utf8& str)
+    {
+        path::append(str.c_str());
+    }
+
+    void append(const Path& path)
+    {
+        path::append(path.string());
+    }    
 };
 
 struct HashPath

@@ -42,7 +42,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     auto        typeFunc        = bc->getCallType();
     auto        returnType      = typeFunc->concreteReturnType();
     bool        ok              = true;
-    bool        debug           = buildParameters.buildCfg->backendDebugInformations;
+    bool        debug           = buildParameters.buildCfg->backendDebugInfos;
     const auto& cc              = typeFunc->getCallConv();
 
     concat.align(16);

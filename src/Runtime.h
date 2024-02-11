@@ -311,7 +311,7 @@ struct BuildCfg
     // Backend common
     BuildCfgBackendKind    backendKind              = BuildCfgBackendKind::Executable;
     BuildCfgBackendSubKind backendSubKind           = BuildCfgBackendSubKind::Console;
-    bool                   backendDebugInformations = false;
+    bool                   backendDebugInfos = false;
     bool                   backendDebugInline       = false;
     BuildCfgBackendOptim   backendOptimize          = BuildCfgBackendOptim::O0;
     uint32_t               backendNumCU             = 0;

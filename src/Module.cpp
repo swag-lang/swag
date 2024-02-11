@@ -45,12 +45,11 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     nameNormalized.replaceAll('.', '_');
     path = modulePath;
 
-    scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
-    astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
-    scopeRoot->owner               = astRoot;
-    buildPass                      = g_CommandLine.buildPass;
-    buildParameters.buildCfg       = &buildCfg;
-    buildParameters.outputFileName = name;
+    scopeRoot                = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
+    astRoot                  = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
+    scopeRoot->owner         = astRoot;
+    buildPass                = g_CommandLine.buildPass;
+    buildParameters.buildCfg = &buildCfg;
 
     // Setup build configuration
     if (g_CommandLine.buildCfg == "fast-compile")
@@ -63,7 +62,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.errorStackTrace          = false;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
-        buildCfg.backendDebugInformations = false;
+        buildCfg.backendDebugInfos = false;
     }
     else if (g_CommandLine.buildCfg == "debug")
     {
@@ -75,7 +74,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.errorStackTrace          = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
-        buildCfg.backendDebugInformations = true;
+        buildCfg.backendDebugInfos = true;
     }
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
@@ -87,7 +86,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.errorStackTrace          = true;
         buildCfg.debugAllocator           = true;
         buildCfg.backendOptimize          = BuildCfgBackendOptim::O2;
-        buildCfg.backendDebugInformations = true;
+        buildCfg.backendDebugInfos = true;
     }
     else if (g_CommandLine.buildCfg == "release")
     {
@@ -99,7 +98,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.errorStackTrace                = false;
         buildCfg.debugAllocator                 = false;
         buildCfg.backendOptimize                = BuildCfgBackendOptim::O3;
-        buildCfg.backendDebugInformations       = true;
+        buildCfg.backendDebugInfos       = true;
         buildCfg.backendLLVM.fpMathFma          = true;
         buildCfg.backendLLVM.fpMathNoInf        = true;
         buildCfg.backendLLVM.fpMathNoNaN        = true;
@@ -112,7 +111,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     if (g_CommandLine.buildCfgOptimBC != "default")
         buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine.buildCfgOptimBC.c_str()), 2));
     if (g_CommandLine.buildCfgDebug != "default")
-        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true";
+        buildCfg.backendDebugInfos = g_CommandLine.buildCfgDebug == "true";
     if (g_CommandLine.buildCfgOptim != "default")
         buildCfg.backendOptimize = (BuildCfgBackendOptim) max(0, min(atoi(g_CommandLine.buildCfgOptim.c_str()), 5));
     if (g_CommandLine.buildCfgSafety != "default")

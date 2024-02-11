@@ -83,7 +83,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
     else
         arguments.push_back("/MACHINE:X64");
 
-    if (buildParameters.buildCfg->backendDebugInformations)
+    if (buildParameters.buildCfg->backendDebugInfos)
     {
         // 09/14/2023
         // If there's no test function to compile, in release x64, num-cores 1, because of a test filter on a file which should raise an error,
@@ -111,7 +111,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
         break;
     }
 
-    const auto outFileName = Backend::getOutputFileName(buildParameters, outputKind);
+    const auto outFileName = Backend::getOutputFileName(buildParameters.module, outputKind);
     arguments.push_back("/OUT:" + outFileName.string());
 
     // Add all object files
@@ -119,7 +119,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
     for (auto& file : objectFiles)
     {
         auto path = targetPath;
-        path.append(file.c_str());
+        path.append(file);
         arguments.push_back(path.string());
     }
 }

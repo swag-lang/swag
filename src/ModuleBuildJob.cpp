@@ -824,11 +824,10 @@ JobResult ModuleBuildJob::execute()
             g_CommandLine.runBackendTests)
         {
             module->logPass(ModuleBuildPass::RunNative);
-            auto job                            = Allocator::alloc<ModuleRunJob>();
-            job->module                         = module;
-            job->buildParameters                = module->buildParameters;
-            job->buildParameters.outputFileName = module->name;
-            job->buildParameters.compileType    = Test;
+            auto job                         = Allocator::alloc<ModuleRunJob>();
+            job->module                      = module;
+            job->buildParameters             = module->buildParameters;
+            job->buildParameters.compileType = Test;
             jobsToAdd.push_back(job);
         }
 

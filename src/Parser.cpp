@@ -299,7 +299,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
         !g_CommandLine.scriptCommand &&
         !fromNode->sourceFile->shouldHaveError &&
         !fromNode->sourceFile->shouldHaveWarning && g_CommandLine.output &&
-        fromNode->sourceFile->module->buildCfg.backendDebugInformations)
+        fromNode->sourceFile->module->buildCfg.backendDebugInfos)
     {
         SWAG_CHECK(saveEmbeddedAst(content, fromNode, tmpFilePath, tmpFileName, previousLogLine));
     }
@@ -310,7 +310,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     sourceFile->module    = parent->sourceFile->module;
     sourceFile->name      = tmpFileName;
     sourceFile->path      = tmpFilePath;
-    sourceFile->path.append(tmpFileName.c_str());
+    sourceFile->path.append(tmpFileName);
     if (fromNode)
     {
         sourceFile->fromNode          = fromNode;

@@ -72,7 +72,6 @@ struct BuildParameters
 {
     SetUtf8                foreignLibs;
     VectorNative<AstNode*> globalUsing;
-    Utf8                   outputFileName;
     Module*                module          = nullptr;
     BuildCfg*              buildCfg        = nullptr;
     int                    precompileIndex = 0;

@@ -98,7 +98,7 @@ namespace OS
         if (bestVersion[0] == 0)
             return false;
 
-        g_WinSdkFolder.append(bestName.c_str());
+        g_WinSdkFolder.append(bestName);
         if (g_CommandLine.verbosePath)
             g_Log.messageVerbose(FMT("winsdk path is [[%s]]", g_WinSdkFolder.string().c_str()));
 
