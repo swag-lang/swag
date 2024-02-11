@@ -40,16 +40,12 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
     // Registered #import dependencies
     for (const auto& dep : buildParameters.module->moduleDependencies)
     {
-        Utf8 libName = dep->name;
-        if (Utf8::getExtension(libName) != libExt)
-            libName += libExt;
-        auto fullName = g_Workspace->targetPath;
-        fullName.append(libName.c_str());
+        auto libName = Backend::getOutputFileName(dep->module, BuildCfgOutputKind::StaticLib);
 
         // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
         error_code err;
-        if (exists(fullName, err))
-            arguments.push_back(libName);
+        if (exists(libName, err))
+            arguments.push_back(libName.string());
     }
 
     for (const auto& dep : buildParameters.module->moduleEmbedded)
