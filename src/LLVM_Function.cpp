@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "LLVM.h"
 #include "LLVM_Debug.h"

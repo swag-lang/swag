@@ -4,6 +4,7 @@
 #include "AstFlags.h"
 #include "ByteCodeDebugger.h"
 #include "Crc32.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "TypeManager.h"
 
@@ -427,4 +428,107 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
 #endif
 
     out = newInstructions;
+}
+
+uint32_t ByteCode::getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint32_t& offset)
+{
+    switch (inst->op)
+    {
+    case ByteCodeOp::SetZeroAtPointer8:
+        offset = inst->b.u32;
+        return 1;
+    case ByteCodeOp::SetZeroAtPointer16:
+        offset = inst->b.u32;
+        return 2;
+    case ByteCodeOp::SetZeroAtPointer32:
+        offset = inst->b.u32;
+        return 4;
+    case ByteCodeOp::SetZeroAtPointer64:
+        offset = inst->b.u32;
+        return 8;
+    case ByteCodeOp::SetZeroAtPointerX:
+        offset = inst->c.u32;
+        return inst->b.u32;
+    default:
+        break;
+    }
+
+    return 0;
+}
+
+uint32_t ByteCode::getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t& offset)
+{
+    switch (inst->op)
+    {
+    case ByteCodeOp::SetZeroStack8:
+        offset = inst->a.u32;
+        return 1;
+    case ByteCodeOp::SetZeroStack16:
+        offset = inst->a.u32;
+        return 2;
+    case ByteCodeOp::SetZeroStack32:
+        offset = inst->a.u32;
+        return 4;
+    case ByteCodeOp::SetZeroStack64:
+        offset = inst->a.u32;
+        return 8;
+    case ByteCodeOp::SetZeroStackX:
+        offset = inst->a.u32;
+        return inst->b.u32;
+    default:
+        break;
+    }
+
+    return 0;
+}
+
+void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
+{
+    if (++context->curRC > context->maxRecurse)
+    {
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, FMT(Err(Err0604), context->maxRecurse));
+        return;
+    }
+
+#ifdef SWAG_STATS
+    if (g_CommandLine.profile)
+    {
+        profileCallCount++;
+        profileStart = OS::timerNow();
+        if (context->oldBc)
+            context->oldBc->profileChilds.insert(this);
+    }
+#endif
+
+    SWAG_ASSERT(context->curRC == (int) context->registersRC.size());
+    context->registersRC.push_back(context->registers.count);
+    context->registers.reserve(context->registers.count + maxReservedRegisterRC);
+    context->curRegistersRC = context->registers.buffer + context->registers.count;
+    context->registers.count += maxReservedRegisterRC;
+
+    if (returnRegOnRet != UINT32_MAX)
+        context->pushAlt<uint64_t>(context->registersRR[0].u64);
+    context->pushAlt<uint32_t>(returnRegOnRet);
+    context->pushAlt<uint32_t>((popParamsOnRet * sizeof(void*)) + incSPPostCall);
+}
+
+void ByteCode::leaveByteCode(ByteCodeRunContext* context)
+{
+    SWAG_ASSERT(context->curRC >= 0);
+    if (--context->curRC >= 0)
+    {
+        context->registers.count = context->registersRC.get_pop_back();
+        context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
+    }
+    else
+    {
+        context->registersRC.count = 0;
+    }
+
+#ifdef SWAG_STATS
+    if (g_CommandLine.profile)
+    {
+        profileCumTime += OS::timerNow() - profileStart;
+    }
+#endif
 }

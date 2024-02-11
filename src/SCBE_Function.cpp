@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"

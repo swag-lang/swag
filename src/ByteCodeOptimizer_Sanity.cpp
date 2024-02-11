@@ -4,6 +4,7 @@
 #include "ByteCodeOptimizer.h"
 #include "ByteCode_Math.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Naming.h"
 #include "Report.h"
 #include "TypeManager.h"

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AstNode.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "Module.h"

@@ -1,6 +1,8 @@
 #include "pch.h"
+#include "AstNode.h"
 #include "DataSegment.h"
 #include "ByteCode.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "Report.h"
 #include "TypeManager.h"

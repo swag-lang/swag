@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "Context.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "LLVM.h"
 #include "Log.h"

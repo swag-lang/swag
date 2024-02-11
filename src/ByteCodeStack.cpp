@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCodeStack.h"
 #include "AstFlags.h"
+#include "AstNode.h"
 #include "ByteCode.h"
 #include "ByteCodeRunContext.h"
 #include "Log.h"

@@ -5,6 +5,7 @@
 #include "ByteCodeGen.h"
 #include "ByteCodeGenContext.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Naming.h"
 #include "Report.h"
 #include "Symbol.h"

@@ -5,6 +5,7 @@
 #include "ByteCodeStack.h"
 #include "Context.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "Semantic.h"
 #include "TypeManager.h"

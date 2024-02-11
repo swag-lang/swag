@@ -1052,6 +1052,9 @@
     <ClInclude Include="..\src\ByteCode_Math.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ByteCode_LeaveEnter.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

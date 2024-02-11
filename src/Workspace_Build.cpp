@@ -3,6 +3,7 @@
 #include "ByteCodeOptimizer.h"
 #include "Diagnostic.h"
 #include "EnumerateModuleJob.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Log.h"
 #include "ModuleBuildJob.h"

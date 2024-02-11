@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AstNode.h"
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeOptimizerJob.h"
