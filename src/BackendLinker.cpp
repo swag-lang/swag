@@ -88,7 +88,7 @@ public:
     bool     startLine = true;
 };
 
-void BackendLinker::getArguments(const BuildParameters& buildParameters, const Vector<Path>& objectFiles, Vector<Utf8>& arguments, BuildCfgOutputKind outputKind)
+void BackendLinker::getArguments(const BuildParameters& buildParameters, Vector<Utf8>& arguments, BuildCfgOutputKind outputKind)
 {
     arguments.clear();
 
@@ -96,7 +96,7 @@ void BackendLinker::getArguments(const BuildParameters& buildParameters, const V
     switch (objFileType)
     {
     case BackendObjType::Coff:
-        getArgumentsCoff(buildParameters, objectFiles, arguments, outputKind);
+        getArgumentsCoff(buildParameters, arguments, outputKind);
         break;
     case BackendObjType::Elf:
         SWAG_ASSERT(false);
@@ -183,18 +183,18 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     return result;
 }
 
-bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Path>& objectFiles)
+bool BackendLinker::link(const BuildParameters& buildParameters)
 {
     Vector<Utf8> linkArguments;
 
     switch (buildParameters.buildCfg->backendKind)
     {
     case BuildCfgBackendKind::Executable:
-        getArguments(buildParameters, objectFiles, linkArguments, BuildCfgOutputKind::Executable);
+        getArguments(buildParameters, linkArguments, BuildCfgOutputKind::Executable);
         SWAG_CHECK(link(buildParameters, linkArguments));
         break;
     case BuildCfgBackendKind::Library:
-        getArguments(buildParameters, objectFiles, linkArguments, BuildCfgOutputKind::DynamicLib);
+        getArguments(buildParameters, linkArguments, BuildCfgOutputKind::DynamicLib);
         SWAG_CHECK(link(buildParameters, linkArguments));
         break;
     default:

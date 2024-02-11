@@ -294,10 +294,9 @@ bool SCBE::generateOutput(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
-    Vector<Path> files;
-    files.reserve(numPreCompileBuffers);
+    buildParameters.module->objFiles.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
-        files.push_back(perThread[buildParameters.compileType][i]->filename);
+        buildParameters.module->objFiles.push_back(perThread[buildParameters.compileType][i]->filename);
 
-    return BackendLinker::link(buildParameters, files);
+    return BackendLinker::link(buildParameters);
 }

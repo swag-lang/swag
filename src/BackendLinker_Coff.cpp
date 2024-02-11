@@ -5,7 +5,7 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 
-void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, const Vector<Path>& objectFiles, Vector<Utf8>& arguments, BuildCfgOutputKind outputKind)
+void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vector<Utf8>& arguments, BuildCfgOutputKind outputKind)
 {
     Vector<Path> libPaths;
 
@@ -97,7 +97,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
 
     // Add all object files
     const auto targetPath = Backend::getCacheFolder(buildParameters);
-    for (auto& file : objectFiles)
+    for (auto& file : buildParameters.module->objFiles)
     {
         auto path = targetPath;
         path.append(file);

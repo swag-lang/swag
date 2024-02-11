@@ -242,6 +242,7 @@ struct Module
     SwagProcessInfos processInfos;
 
     VectorNative<SourceFile*>                        files;
+    Vector<Path>                                     objFiles;
     VectorNative<Module*>                            errorModules;
     VectorNative<ByteCode*>                          byteCodeCompiler[(int) CompilerMsgKind::Max];
     Mutex                                            byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
@@ -280,6 +281,7 @@ struct Module
         DataSegment*    storageSegment;
         uint32_t        count;
     };
+
     VectorNative<GlobalVarToDrop> globalVarsToDrop;
 
     AstNode*             astRoot               = nullptr;
