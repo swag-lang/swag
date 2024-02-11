@@ -126,10 +126,10 @@ namespace OS
 
         Path p0 = g_WinSdkFolder;
         p0.append("um\\x64");
-        g_CommandLine.libPaths.push_back(g_WinSdkFolder);
+        g_CommandLine.libPaths.push_back(p0);
         Path p1 = g_WinSdkFolder;
-        p1.append("uctr\\x64");
-        g_CommandLine.libPaths.push_back(g_WinSdkFolder);
+        p1.append("ucrt\\x64");
+        g_CommandLine.libPaths.push_back(p1);
         return true;
     }
 

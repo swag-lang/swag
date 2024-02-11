@@ -84,13 +84,13 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     if (OS::atomicTestNull((void**) &ip->d.pointer))
     {
-        OS::atomicSetIfNotNull((void**) &ip->d.pointer, (uint8_t*) ffiGetFuncAddress(&context->jc, ip));
+        OS::atomicSetIfNotNull((void**) &ip->d.pointer, ffiGetFuncAddress(&context->jc, ip));
         if (OS::atomicTestNull((void**) &ip->d.pointer))
             return;
     }
 
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->b.pointer), TypeInfoKind::FuncAttr);
-    ffiCall(context, ip, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
+    ffiCall(context, ip, ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)

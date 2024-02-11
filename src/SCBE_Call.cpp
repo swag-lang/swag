@@ -116,9 +116,8 @@ void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcNa
     // Push parameters
     pp.emit_Call_Parameters(typeFunc, pushParams, offsetRT);
 
-    // Dll imported function name will have "__imp_" before (imported mangled name)
     if (!localCall)
-        pp.emit_Call_Far("__imp_" + funcName);
+        pp.emit_Call_Far(funcName);
     else
         pp.emit_Call(funcName);
 
@@ -150,7 +149,7 @@ void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcNa
     emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
 }
 
-void SCBE::emitInternalCall(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
+void SCBE::emitInternalCall(SCBE_X64& pp, Module*, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
@@ -163,7 +162,7 @@ void SCBE::emitInternalCall(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcN
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
-void SCBE::emitInternalCallExt(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
+void SCBE::emitInternalCallExt(SCBE_X64& pp, Module*, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc)
         typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);

@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
+#include "ModuleManager.h"
 #include "SCBE.h"
 #include "SCBE_Coff.h"
 #include "SCBE_Macros.h"
@@ -3710,12 +3711,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::LocalCallPopParam:
             pushRAParams.push_back(ip->d.u32);
+            [[fallthrough]];
+
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto callBc = (ByteCode*) ip->a.pointer;
-            emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
+            auto callBc  = (ByteCode*) ip->a.pointer;
+            auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+            emitCall(pp, typeFct, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
             pushRAParams.clear();
             pushRVParams.clear();
 
@@ -3732,7 +3736,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::ForeignCallPop:
         {
             auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
-            emitCall(pp, reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer), funcNode->getFullNameForeignImport(), pushRAParams, offsetRT, false);
+            auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+            auto moduleName = ModuleManager::getForeignModuleName(funcNode);
+            
+            // Dll imported function name will have "__imp_" before (imported mangled name)
+            auto callFuncName = funcNode->getFullNameForeignImport();
+            callFuncName = "__imp_" + callFuncName;
+
+            emitCall(pp, typeFct, callFuncName, pushRAParams, offsetRT, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;

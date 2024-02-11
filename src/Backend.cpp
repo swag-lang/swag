@@ -154,7 +154,7 @@ Path Backend::getOutputFileName(const BackendTarget& target, const Utf8& name, B
     case BuildCfgOutputKind::ImportLib:
         break;
     case BuildCfgOutputKind::StaticLib:
-        destFile += ".stat";
+        destFile += ".static";
         break;
     }
 
