@@ -3,7 +3,7 @@ struct Job;
 
 struct JobThread
 {
-    JobThread(int rank);
+    JobThread(uint32_t rank);
     ~JobThread();
 
     void loop();
@@ -12,10 +12,10 @@ struct JobThread
     mutex              mutexNotify;
     condition_variable condVar;
 
-    thread* thread     = nullptr;
-    int     threadRank = -1;
+    thread*  thread     = nullptr;
+    uint32_t threadRank = UINT32_MAX;
 
     bool requestEnd = false;
 };
 
-extern thread_local int g_ThreadIndex;
+extern thread_local uint32_t g_ThreadIndex;

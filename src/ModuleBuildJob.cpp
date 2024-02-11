@@ -326,7 +326,7 @@ JobResult ModuleBuildJob::execute()
             pass = ModuleBuildPass::Publish;
             module->syntaxGroup.complete(this);
 
-            // When synchrone, do it now, as syntaxGroup is not relevant
+            // When we are synchronized, do it now, as syntaxGroup is not relevant
             if (g_ThreadMgr.numWorkers == 1 || g_CommandLine.scriptCommand)
             {
                 for (auto file : module->files)
