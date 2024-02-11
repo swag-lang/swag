@@ -38,11 +38,10 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
     }
 
     // Registered #import dependencies
+    // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
     for (const auto& dep : buildParameters.module->moduleDependencies)
     {
-        auto libName = Backend::getOutputFileName(dep->module, BuildCfgOutputKind::StaticLib);
-
-        // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
+        auto       libName = Backend::getOutputFileName(dep->module, BuildCfgOutputKind::StaticLib);
         error_code err;
         if (exists(libName, err))
             arguments.push_back(libName.string());
@@ -53,16 +52,10 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
         if (dep->buildCfg.backendKind != BuildCfgBackendKind::Export)
             continue;
 
-        auto libName = dep->name;
-        if (Utf8::getExtension(libName) != libExt)
-            libName += libExt;
-        auto fullName = g_Workspace->targetPath;
-        fullName.append(libName.c_str());
-
-        // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
+        auto       libName = Backend::getOutputFileName(dep, BuildCfgOutputKind::StaticLib);
         error_code err;
-        if (exists(fullName, err))
-            arguments.push_back(libName);
+        if (exists(libName, err))
+            arguments.push_back(libName.string());
     }
 
     arguments.push_back("/INCREMENTAL:NO");
