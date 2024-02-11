@@ -933,7 +933,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
             // If variable is initialized, struct is too.
-            if (!(varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED)))
+            if (!varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
             {
                 if (varDecl->assignment || varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -946,7 +946,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 structFlags |= TYPEINFO_STRUCT_NO_COPY;
 
             // Remove attribute constexpr if necessary
-            if (child->typeInfo->isStruct() && !(child->typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR)))
+            if (child->typeInfo->isStruct() && !child->typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
                 node->removeAttribute(ATTRIBUTE_CONSTEXPR);
 
             // Var is a struct
@@ -956,9 +956,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
                 structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
 
-                if (!(varTypeInfo->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED)))
+                if (!varTypeInfo->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-                if (!(varTypeInfo->hasFlag(TYPEINFO_STRUCT_EMPTY)))
+                if (!varTypeInfo->hasFlag(TYPEINFO_STRUCT_EMPTY))
                     structFlags &= ~TYPEINFO_STRUCT_EMPTY;
 
                 if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
@@ -989,9 +989,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (varTypeArray->pointedType->isStruct())
                 {
                     structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                    if (!(varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED)))
+                    if (!varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                         structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-                    if (!(varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_EMPTY)))
+                    if (!varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_EMPTY))
                         structFlags &= ~TYPEINFO_STRUCT_EMPTY;
                 }
             }
@@ -1104,7 +1104,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 storageOffset += childType->sizeOf;
 
             // Create a generic alias
-            if (!(child->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME)))
+            if (!child->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME))
             {
                 // Special field name starts with 'item' followed by a number
                 bool hasItemName = false;

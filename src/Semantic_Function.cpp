@@ -470,7 +470,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 
         // We were not a short lambda, so just wakup our dependencies
-        if (!(funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED)))
+        if (!funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
         {
             funcNode->resolvedSymbolName->dependentJobs.setRunning();
         }
@@ -526,7 +526,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         // :DeduceLambdaType
         if (funcNode->makePointerLambda &&
             (funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE)) &&
-            !(funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA)))
+            !funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA))
         {
             auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
             if (deducedType->isLambdaClosure())
@@ -642,7 +642,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    if (!(funcNode->hasAstFlag(AST_FROM_GENERIC)))
+    if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         // Determine if function is generic
         if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
@@ -696,9 +696,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // If a lambda function will wait for a match, then no need to deduce the return type
     // It will be done in the same way as parameters
     bool shortLambdaPendingTyping = false;
-    if (!(funcNode->hasAstFlag(AST_IS_GENERIC)))
+    if (!funcNode->hasAstFlag(AST_IS_GENERIC))
     {
-        if ((funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING)) && typeNode->typeInfo->isVoid())
+        if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
             shortLambdaPendingTyping = funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
             typeNode->typeInfo       = g_TypeMgr->typeInfoUndefined;
@@ -710,7 +710,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // In that case, symbol registration will not be done at the end of that function but once the return expression
     // has been evaluated, and the type deduced
     bool shortLambda = false;
-    if ((funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA)) && !(funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED)))
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED))
         shortLambda = true;
 
     // :RunGeneratedExp
@@ -769,8 +769,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR),
-                        context->report({funcNode, funcNode->tokenName, FMT(Err(Err0102), typeStruct->getDisplayNameC())}));
+            SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0102), typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
@@ -793,7 +792,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
     if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
     {
-        if (!(funcNode->hasAstFlag(AST_IS_GENERIC)))
+        if (!funcNode->hasAstFlag(AST_IS_GENERIC))
         {
             funcNode->pendingLambdaJob = context->baseJob;
             context->baseJob->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
@@ -939,7 +938,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     // Be sure an overloaded function has the attribute
-    if (!(funcNode->hasAstFlag(AST_FROM_GENERIC)))
+    if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
         if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
@@ -949,7 +948,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
             {
                 if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
                 {
-                    if (!(n->hasAstFlag(AST_FROM_GENERIC)))
+                    if (!n->hasAstFlag(AST_FROM_GENERIC))
                     {
                         other = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
                     }
@@ -986,7 +985,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(funcNode->methodParam);
 
-        if(!typeFunc->attributes.empty())
+        if (!typeFunc->attributes.empty())
         {
             ScopedLock lk(typeStruct->mutex);
             funcNode->methodParam->attributes = typeFunc->attributes;
@@ -1007,7 +1006,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
         funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
         funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
-        !(funcNode->hasAstFlag(AST_FROM_GENERIC)) &&
+        !funcNode->hasAstFlag(AST_FROM_GENERIC) &&
         !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
         funcNode->ownerStructScope->owner->typeInfo->isStruct())
@@ -1043,7 +1042,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
     // Because for a generic function, the sub declarations will be cloned and solved after instantiation.
     // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instantiation
     // at the same time.
-    if (!(funcNode->hasAstFlag(AST_IS_GENERIC)) && funcNode->content && !(funcNode->content->hasAstFlag(AST_NO_SEMANTIC)))
+    if (!funcNode->hasAstFlag(AST_IS_GENERIC) && funcNode->content && !funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
     {
         for (auto f : funcNode->subDecls)
         {
@@ -1306,7 +1305,7 @@ void Semantic::propagateReturn(AstNode* node)
     // Propagate the return in the corresponding scope
     while (scanNode && scanNode != stopFct)
     {
-        if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !(scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN)))
+        if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
             break;
         scanNode->addSemFlag(SEMFLAG_SCOPE_HAS_RETURN);
         if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
@@ -1314,7 +1313,7 @@ void Semantic::propagateReturn(AstNode* node)
             const auto ifNode = castAst<AstIf>(scanNode->parent, AstNodeKind::If);
             if (ifNode->elseBlock != scanNode)
                 break;
-            if (!(ifNode->ifBlock->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN)))
+            if (!ifNode->ifBlock->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::SwitchCase)
@@ -1325,7 +1324,7 @@ void Semantic::propagateReturn(AstNode* node)
         }
         else if (scanNode->kind == AstNodeKind::Switch)
         {
-            if (!(scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN)))
+            if (!scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::While ||
@@ -1431,11 +1430,11 @@ bool Semantic::resolveReturn(SemanticContext* context)
     bool       lateRegister = funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
     if (funcReturnType->isVoid() || funcReturnType->isGeneric())
     {
-        if (!(funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE)))
+        if (!funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE))
         {
             // This is a short lambda without a specified return type. We now have it
             bool tryDeduce = false;
-            if ((funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA)) && !(funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED)))
+            if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED))
                 tryDeduce = true;
             if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
                 tryDeduce = true;

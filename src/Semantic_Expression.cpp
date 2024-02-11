@@ -155,9 +155,9 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
         typeParam->typeInfo  = childType;
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += childType->sizeOf;
-        if (!(child->hasAstFlag(AST_CONST_EXPR)))
+        if (!child->hasAstFlag(AST_CONST_EXPR))
             node->removeAstFlag(AST_CONST_EXPR);
-        if (!(child->hasAstFlag(AST_R_VALUE)))
+        if (!child->hasAstFlag(AST_R_VALUE))
             node->removeAstFlag(AST_R_VALUE);
     }
 

@@ -691,7 +691,7 @@ namespace
 
                 // Parameters
                 /////////////////////////////////
-                if (decl->parameters && !(decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC)))
+                if (decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
                 {
                     const auto countParams = decl->parameters->childs.size();
                     int        regCounter  = 0;
