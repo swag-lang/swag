@@ -4182,7 +4182,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             context->debugRaiseStart         = true;
             context->debugEntry              = true;
-            g_ByteCodeDebugger.debugStepMode = ByteCodeDebugger::DebugStepMode::None;
+            g_ByteCodeDebugger.stepMode = ByteCodeDebugger::DebugStepMode::None;
             throw "start debug";
         }
         break;
@@ -4202,7 +4202,7 @@ void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
-    if ((context->debugOn || !g_ByteCodeDebugger.debugBreakpoints.empty()) && context->debugAccept)
+    if ((context->debugOn || !g_ByteCodeDebugger.breakpoints.empty()) && context->debugAccept)
     {
         while (true)
         {
@@ -4210,7 +4210,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 OS::exit(0);
             if (!executeInstruction(context, context->ip++))
                 break;
-            if (!context->debugOn && g_ByteCodeDebugger.debugBreakpoints.empty())
+            if (!context->debugOn && g_ByteCodeDebugger.breakpoints.empty())
             {
                 runLoopNoDbg(context);
                 break;

@@ -96,15 +96,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
-    if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
+    if (g_ByteCodeDebugger.cxtBc->localVars.empty())
     {
         printCmdError("no locals");
         return BcDbgCommandResult::Continue;
     }
 
     Utf8 result;
-    for (const auto l : g_ByteCodeDebugger.debugCxtBc->localVars)
-        appendTypedValue(context, filter, l, g_ByteCodeDebugger.debugCxtBp, nullptr, result);
+    for (const auto l : g_ByteCodeDebugger.cxtBc->localVars)
+        appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, nullptr, result);
     printLong(result);
 
     return BcDbgCommandResult::Continue;
@@ -116,7 +116,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         return BcDbgCommandResult::BadArguments;
     const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
-    const auto funcDecl = castAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = castAst<AstFuncDecl>(g_ByteCodeDebugger.cxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
         printCmdError("no arguments");
@@ -125,7 +125,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 
     Utf8 result;
     for (const auto l : funcDecl->parameters->childs)
-        appendTypedValue(context, filter, l, g_ByteCodeDebugger.debugCxtBp, nullptr, result);
+        appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, nullptr, result);
     printLong(result);
 
     return BcDbgCommandResult::Continue;
@@ -146,9 +146,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     }
 
     g_Log.setColor(LogColor::Gray);
-    for (int i = 0; i < context->getRegCount(g_ByteCodeDebugger.debugCxtRc); i++)
+    for (int i = 0; i < context->getRegCount(g_ByteCodeDebugger.cxtRc); i++)
     {
-        auto& regP = context->getRegBuffer(g_ByteCodeDebugger.debugCxtRc)[i];
+        auto& regP = context->getRegBuffer(g_ByteCodeDebugger.cxtRc)[i];
         Utf8  str;
         appendLiteralValue(context, str, fmt, &regP);
         str.trim();

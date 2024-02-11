@@ -128,7 +128,7 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, 
             result = FMT("%4d ", getAddrValue<int8_t>(addr));
         else if (!fmt.isHexa)
             result = FMT("%3u ", getAddrValue<uint8_t>(addr));
-        else if (fmt.print0x)
+        else if (fmt.print0X)
             result = FMT("0x%02llx ", getAddrValue<uint8_t>(addr));
         else
             result = FMT("%02llx ", getAddrValue<uint8_t>(addr));
@@ -139,7 +139,7 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, 
             result = FMT("%6d ", getAddrValue<int16_t>(addr));
         else if (!fmt.isHexa)
             result = FMT("%5u ", getAddrValue<uint16_t>(addr));
-        else if (fmt.print0x)
+        else if (fmt.print0X)
             result = FMT("0x%04llx ", getAddrValue<uint16_t>(addr));
         else
             result = FMT("%04llx ", getAddrValue<uint16_t>(addr));
@@ -152,7 +152,7 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, 
             result = FMT("%11d ", getAddrValue<int32_t>(addr));
         else if (!fmt.isHexa)
             result = FMT("%10u ", getAddrValue<uint32_t>(addr));
-        else if (fmt.print0x)
+        else if (fmt.print0X)
             result = FMT("0x%08llx ", getAddrValue<uint32_t>(addr));
         else
             result = FMT("%08llx ", getAddrValue<uint32_t>(addr));
@@ -165,7 +165,7 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, 
             result = FMT("%21lld ", getAddrValue<int64_t>(addr));
         else if (!fmt.isHexa)
             result = FMT("%20llu ", getAddrValue<uint64_t>(addr));
-        else if (fmt.print0x)
+        else if (fmt.print0X)
             result = FMT("0x%016llx ", getAddrValue<uint64_t>(addr));
         else
             result = FMT("%016llx ", getAddrValue<uint64_t>(addr));
@@ -281,7 +281,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         if (res.value)
             addr = res.value->reg.pointer;
         auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        if (!debugPrintStruct)
+        if (!printStruct)
         {
             str += "<hidden>";
         }
@@ -315,7 +315,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         str += FMT("0x%016llx ", addr);
-        if (!debugPrintArray)
+        if (!printArray)
         {
             str += "<hidden>";
         }
@@ -350,7 +350,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         {
             str += FMT("(0x%016llx ", ptr);
             str += FMT("%llu) ", count);
-            if (!debugPrintArray)
+            if (!printArray)
             {
                 str += "<hidden>";
             }

@@ -11,14 +11,12 @@
 
 ByteCodeDebugger g_ByteCodeDebugger;
 
-int ByteCodeDebugger::LINE_W;
+static constexpr int LINE_W = 71;
 
 void ByteCodeDebugger::setup()
 {
     if (!commands.empty())
         return;
-
-    LINE_W = 71;
 
     // clang-format off
     commands.push_back({"<RET>", "", "", "repeat the last command", nullptr});
@@ -157,15 +155,15 @@ bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN) const
 {
     regN = atoi(arg.c_str() + 1);
-    if (!context->getRegCount(debugCxtRc))
+    if (!context->getRegCount(cxtRc))
     {
         printCmdError("no available register");
         return false;
     }
 
-    if (regN >= context->getRegCount(debugCxtRc))
+    if (regN >= context->getRegCount(cxtRc))
     {
-        printCmdError(FMT("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(debugCxtRc) - 1));
+        printCmdError(FMT("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(cxtRc) - 1));
         return false;
     }
 
@@ -174,13 +172,13 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, i
 
 void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
 {
-    debugCxtBc    = context->bc;
-    debugCxtIp    = context->ip;
-    debugCxtRc    = context->curRC;
-    debugCxtBp    = context->bp;
-    debugCxtSp    = context->sp;
-    debugCxtSpAlt = context->spAlt;
-    debugCxtStack = context->stack;
+    cxtBc    = context->bc;
+    cxtIp    = context->ip;
+    cxtRc    = context->curRC;
+    cxtBp    = context->bp;
+    cxtSp    = context->sp;
+    cxtSpAlt = context->spAlt;
+    cxtStack = context->stack;
     if (context->debugStackFrameOffset == 0)
         return;
 
@@ -201,20 +199,20 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
         const auto& step = steps[i];
         if (ns == context->debugStackFrameOffset)
         {
-            debugCxtBc    = step.bc;
-            debugCxtIp    = step.ip;
-            debugCxtBp    = step.bp;
-            debugCxtSp    = step.sp;
-            debugCxtSpAlt = step.spAlt;
-            debugCxtStack = step.stack;
+            cxtBc    = step.bc;
+            cxtIp    = step.ip;
+            cxtBp    = step.bp;
+            cxtSp    = step.sp;
+            cxtSpAlt = step.spAlt;
+            cxtStack = step.stack;
             break;
         }
 
         ns++;
         if (!step.ip)
             continue;
-        if (debugCxtRc)
-            debugCxtRc--;
+        if (cxtRc)
+            cxtRc--;
     }
 }
 
@@ -231,11 +229,11 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
     SemanticJob                       semJob;
     VectorNative<AlternativeScope>    scopeHierarchy;
     VectorNative<AlternativeScopeVar> scopeHierarchyVars;
-    semContext.sourceFile = debugCxtIp->node->sourceFile;
-    semContext.node       = debugCxtIp->node;
+    semContext.sourceFile = cxtIp->node->sourceFile;
+    semContext.node       = cxtIp->node;
     semContext.baseJob    = &semJob;
 
-    if (Semantic::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, debugCxtIp->node, COLLECT_ALL))
+    if (Semantic::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, cxtIp->node, COLLECT_ALL))
     {
         for (const auto& p : scopeHierarchy)
         {
@@ -431,7 +429,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         //////////////////////////////////
         case OS::Key::Tab:
         {
-            if (!debugCxtIp || !debugCxtIp->node || !debugCxtIp->node->sourceFile)
+            if (!cxtIp || !cxtIp->node || !cxtIp->node->sourceFile)
                 continue;
             if (cursorX != line.count)
                 continue;
@@ -473,20 +471,20 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     const auto ip           = context->ip;
     bool       zapCurrentIp = false;
 
-    switch (debugStepMode)
+    switch (stepMode)
     {
     case DebugStepMode::ToNextBreakpoint:
         zapCurrentIp = true;
         break;
 
     case DebugStepMode::NextInstructionStepIn:
-        debugStepCount--;
-        if (debugStepCount <= 0)
+        stepCount--;
+        if (stepCount <= 0)
         {
-            debugStepCount   = 0;
+            stepCount        = 0;
             context->debugOn = true;
-            debugStepMode    = DebugStepMode::None;
-            debugBcMode      = true;
+            stepMode         = DebugStepMode::None;
+            bcMode           = true;
         }
         else
             zapCurrentIp = true;
@@ -494,19 +492,19 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case DebugStepMode::NextInstructionStepOut:
         // If inside a sub function
-        if (context->curRC > debugStepRc)
+        if (context->curRC > stepRc)
         {
             zapCurrentIp = true;
             break;
         }
 
-        debugStepCount--;
-        if (debugStepCount <= 0)
+        stepCount--;
+        if (stepCount <= 0)
         {
-            debugStepCount   = 0;
+            stepCount        = 0;
             context->debugOn = true;
-            debugStepMode    = DebugStepMode::None;
-            debugBcMode      = true;
+            stepMode         = DebugStepMode::None;
+            bcMode           = true;
         }
         else
             zapCurrentIp = true;
@@ -514,7 +512,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case DebugStepMode::NextLineStepIn:
     {
-        debugBcMode    = false;
+        bcMode         = false;
         const auto loc = ByteCode::getLocation(context->bc, ip, true);
         if (!loc.file || !loc.location)
         {
@@ -522,32 +520,32 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
-        if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
+        if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
         }
         else
         {
-            debugStepCount--;
-            if (debugStepCount <= 0)
+            stepCount--;
+            if (stepCount <= 0)
             {
                 context->debugOn = true;
-                debugStepMode    = DebugStepMode::None;
+                stepMode         = DebugStepMode::None;
             }
             else
             {
-                zapCurrentIp                = true;
-                debugStepLastLocation->line = loc.location->line;
+                zapCurrentIp           = true;
+                stepLastLocation->line = loc.location->line;
             }
         }
         break;
     }
     case DebugStepMode::NextLineStepOut:
     {
-        debugBcMode = false;
+        bcMode = false;
 
         // If inside a sub function
-        if (context->curRC > debugStepRc)
+        if (context->curRC > stepRc)
         {
             zapCurrentIp = true;
             break;
@@ -559,7 +557,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
-        if (!debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
+        if (!lastBreakIp->node->ownerInline && ip->node->ownerInline)
         {
             // Can only step into a mixin if we come from a non inline block
             if (!(ip->node->hasAstFlag(AST_IN_MIXIN)))
@@ -569,18 +567,18 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
 
             const auto loc = ByteCode::getLocation(context->bc, ip, true);
-            if (loc.file != debugStepLastFile)
+            if (loc.file != stepLastFile)
             {
                 zapCurrentIp = true;
                 break;
             }
         }
 
-        if (debugLastBreakIp->node->ownerInline)
+        if (lastBreakIp->node->ownerInline)
         {
             // If i am still in an inline, but not in a mixin block, and was in a mixin block, zap
             if (ip->node->ownerInline &&
-                debugLastBreakIp->node->hasAstFlag(AST_IN_MIXIN) &&
+                lastBreakIp->node->hasAstFlag(AST_IN_MIXIN) &&
                 !(ip->node->hasAstFlag(AST_IN_MIXIN)))
             {
                 zapCurrentIp = true;
@@ -588,7 +586,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
 
             const auto loc = ByteCode::getLocation(context->bc, ip, true);
-            if (loc.file != debugStepLastFile)
+            if (loc.file != stepLastFile)
             {
                 zapCurrentIp = true;
                 break;
@@ -602,22 +600,22 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
-        if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
+        if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
         }
         else
         {
-            debugStepCount--;
-            if (debugStepCount <= 0)
+            stepCount--;
+            if (stepCount <= 0)
             {
                 context->debugOn = true;
-                debugStepMode    = DebugStepMode::None;
+                stepMode         = DebugStepMode::None;
             }
             else
             {
-                debugStepLastLocation->line = loc.location->line;
-                zapCurrentIp                = true;
+                stepLastLocation->line = loc.location->line;
+                zapCurrentIp           = true;
             }
         }
         break;
@@ -625,35 +623,35 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     case DebugStepMode::FinishedFunction:
     {
         // Top level function, break on ret
-        if (context->curRC == 0 && debugStepRc == -1 && ByteCode::isRet(ip))
+        if (context->curRC == 0 && stepRc == -1 && ByteCode::isRet(ip))
         {
-            debugStepMode = DebugStepMode::None;
+            stepMode = DebugStepMode::None;
             break;
         }
 
         // We are in a sub function
-        if (context->curRC > debugStepRc)
+        if (context->curRC > stepRc)
         {
             zapCurrentIp = true;
             break;
         }
 
         // If last break was in an inline block, and we are in a sub inline block
-        if (debugLastBreakIp->node->ownerInline && debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        if (lastBreakIp->node->ownerInline && lastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
         {
             zapCurrentIp = true;
             break;
         }
 
         // We are in the same inline block
-        if (ip->node->ownerInline && debugLastBreakIp->node->ownerInline == ip->node->ownerInline)
+        if (ip->node->ownerInline && lastBreakIp->node->ownerInline == ip->node->ownerInline)
         {
             zapCurrentIp = true;
             break;
         }
 
         context->debugOn = true;
-        debugStepMode    = DebugStepMode::None;
+        stepMode         = DebugStepMode::None;
         break;
     }
     default:
@@ -716,18 +714,18 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         context->debugEntry            = false;
         context->debugStackFrameOffset = 0;
-        debugStepMode                  = DebugStepMode::None;
-        debugStepLastLocation          = nullptr;
-        debugStepLastFile              = nullptr;
-        debugForcePrintContext         = true;
+        stepMode                       = DebugStepMode::None;
+        stepLastLocation               = nullptr;
+        stepLastFile                   = nullptr;
+        forcePrintContext              = true;
     }
 
     // Check breakpoints/step mode
     checkBreakpoints(context);
     if (!mustBreak(context))
     {
-        debugLastCurRc = context->curRC;
-        debugLastIp    = ip;
+        lastCurRc = context->curRC;
+        lastIp    = ip;
         return true;
     }
 
@@ -753,13 +751,13 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         if (line.empty())
         {
-            line = debugLastLine;
+            line = lastLine;
             if (line.empty())
                 continue;
         }
 
-        debugLastLine    = line;
-        debugLastBreakIp = ip;
+        lastLine    = line;
+        lastBreakIp = ip;
 
         // Split in command + parameters
         BcDbgCommandArg arg;
@@ -796,8 +794,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         continue;
     }
 
-    debugLastCurRc = context->curRC;
-    debugLastIp    = ip;
+    lastCurRc = context->curRC;
+    lastIp    = ip;
     return true;
 }
 
@@ -835,7 +833,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
             if (!getRegIdx(context, pz + 1, regN))
                 return;
 
-            const auto& regP = context->getRegBuffer(debugCxtRc)[regN];
+            const auto& regP = context->getRegBuffer(cxtRc)[regN];
             result += FMT("0x%llx", regP.u64);
             pz += 2;
             while (SWAG_IS_DIGIT(*pz))

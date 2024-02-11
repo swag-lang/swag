@@ -30,7 +30,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     const auto oldIndex            = context->debugStackFrameOffset;
     context->debugStackFrameOffset = maxLevel - off;
     g_ByteCodeDebugger.computeDebugContext(context);
-    if (!g_ByteCodeDebugger.debugCxtIp)
+    if (!g_ByteCodeDebugger.cxtIp)
     {
         context->debugStackFrameOffset = oldIndex;
         g_ByteCodeDebugger.computeDebugContext(context);
@@ -62,7 +62,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     const auto oldIndex = context->debugStackFrameOffset;
     context->debugStackFrameOffset += off;
     g_ByteCodeDebugger.computeDebugContext(context);
-    if (!g_ByteCodeDebugger.debugCxtIp)
+    if (!g_ByteCodeDebugger.cxtIp)
     {
         context->debugStackFrameOffset = oldIndex;
         g_ByteCodeDebugger.computeDebugContext(context);
@@ -93,7 +93,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
     const auto oldIndex = context->debugStackFrameOffset;
     context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
     g_ByteCodeDebugger.computeDebugContext(context);
-    if (!g_ByteCodeDebugger.debugCxtIp)
+    if (!g_ByteCodeDebugger.cxtIp)
     {
         context->debugStackFrameOffset = oldIndex;
         g_ByteCodeDebugger.computeDebugContext(context);

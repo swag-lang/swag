@@ -23,15 +23,15 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     auto expr = inExpr;
     g_ByteCodeDebugger.commandSubstitution(context, expr);
 
-    auto sourceFile = debugCxtBc->sourceFile;
+    auto sourceFile = cxtBc->sourceFile;
 
     // Syntax
     AstNode parent;
     Ast::constructNode(&parent);
-    parent.ownerScope = debugCxtIp->node ? debugCxtIp->node->ownerScope : nullptr;
-    parent.ownerFct   = castAst<AstFuncDecl>(debugCxtBc->node, AstNodeKind::FuncDecl);
+    parent.ownerScope = cxtIp->node ? cxtIp->node->ownerScope : nullptr;
+    parent.ownerFct   = castAst<AstFuncDecl>(cxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
-    parent.parent     = debugCxtIp->node;
+    parent.parent     = cxtIp->node;
 
     JobContext jobContext;
     Parser     parser;
@@ -112,10 +112,10 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     ByteCodeRunContext runContext;
     ByteCodeStack      stackTrace;
     ExecuteNodeParams  execParams;
-    execParams.inheritSp    = debugCxtSp;
-    execParams.inheritSpAlt = debugCxtSpAlt;
-    execParams.inheritStack = debugCxtStack;
-    execParams.inheritBp    = debugCxtBp;
+    execParams.inheritSp    = cxtSp;
+    execParams.inheritSpAlt = cxtSpAlt;
+    execParams.inheritStack = cxtStack;
+    execParams.inheritBp    = cxtBp;
     execParams.forDebugger  = true;
     runContext.debugAccept  = false;
     runContext.sharedStack  = true;

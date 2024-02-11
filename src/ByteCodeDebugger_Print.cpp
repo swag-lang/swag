@@ -108,17 +108,17 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     SWAG_ASSERT(debugCxtBc);
     SWAG_ASSERT(debugCxtIp);
 
-    if (debugForcePrintContext)
+    if (forcePrintContext)
         force = true;
-    debugForcePrintContext = false;
+    forcePrintContext = false;
 
-    const auto loc = ByteCode::getLocation(debugCxtBc, debugCxtIp, true);
+    const auto loc = ByteCode::getLocation(cxtBc, cxtIp, true);
 
     // Print file
     bool printSomething = false;
     if (loc.file)
     {
-        if (force || loc.file != debugStepLastFile)
+        if (force || loc.file != stepLastFile)
         {
             printTitleNameType("=> file", loc.file->name, "");
             printSomething = true;
@@ -128,7 +128,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     // Get current function
     AstNode*   newFunc   = nullptr;
     bool       isInlined = false;
-    const auto node      = debugCxtIp->node;
+    const auto node      = cxtIp->node;
     if (node)
     {
         if (node->ownerInline)
@@ -145,7 +145,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     // Print function name
     if (newFunc)
     {
-        if (force || newFunc != debugStepLastFunc)
+        if (force || newFunc != stepLastFunc)
         {
             if (isInlined)
                 printTitleNameType("=> inlined", newFunc->getScopedName(), newFunc->typeInfo->getDisplayNameC());
@@ -153,9 +153,9 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             printSomething = true;
         }
     }
-    else if (force || (debugLastBc != debugCxtBc))
+    else if (force || (lastBc != cxtBc))
     {
-        printTitleNameType("=> generated", debugCxtBc->name, debugCxtBc->typeInfoFunc ? debugCxtBc->typeInfoFunc->getDisplayNameC() : "");
+        printTitleNameType("=> generated", cxtBc->name, cxtBc->typeInfoFunc ? cxtBc->typeInfoFunc->getDisplayNameC() : "");
         printSomething = true;
     }
 
@@ -164,28 +164,28 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         g_Log.eol();
 
     // Print instruction
-    if (debugBcMode)
+    if (bcMode)
     {
-        printInstructions(context, debugCxtBc, debugCxtIp, 4);
+        printInstructions(context, cxtBc, cxtIp, 4);
     }
 
     // Print source line
     else if (loc.location && loc.file)
     {
         if (force ||
-            (debugStepLastFile != loc.file) ||
-            (debugStepLastLocation && debugStepLastLocation->line != loc.location->line))
+            (stepLastFile != loc.file) ||
+            (stepLastLocation && stepLastLocation->line != loc.location->line))
         {
-            printSourceLines(context, debugCxtBc, loc.file, loc.location, 3);
+            printSourceLines(context, cxtBc, loc.file, loc.location, 3);
         }
     }
 
-    debugLastBc           = debugCxtBc;
-    debugStepLastFile     = loc.file;
-    debugStepLastLocation = loc.location;
-    debugStepLastFunc     = newFunc;
+    lastBc           = cxtBc;
+    stepLastFile     = loc.file;
+    stepLastLocation = loc.location;
+    stepLastFunc     = newFunc;
 
-    if (!debugDisplay.empty())
+    if (!display.empty())
         g_Log.eol();
     printDisplay(context);
 }
@@ -195,8 +195,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(const ByteCodeRunContext* context,
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
 
-    const auto ipNode = g_ByteCodeDebugger.debugCxtIp->node;
-    const auto bc     = g_ByteCodeDebugger.debugCxtBc;
+    const auto ipNode = g_ByteCodeDebugger.cxtIp->node;
+    const auto bc     = g_ByteCodeDebugger.cxtBc;
 
     if (ipNode && ipNode->ownerFct)
     {
@@ -266,7 +266,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
 
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
-        for (auto& bkp : debugBreakpoints)
+        for (auto& bkp : breakpoints)
         {
             switch (bkp.type)
             {
@@ -347,7 +347,7 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
     }
 
     ByteCodePrintOptions opt;
-    opt.curIp = debugCxtIp;
+    opt.curIp = cxtIp;
     bc->print(opt, (uint32_t) (ip - bc->out), cpt + count - 1);
 }
 
@@ -364,7 +364,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     size_t      startIdx = 0;
     if (!exprCmds.empty() && getValueFormat(exprCmds[0], fmt))
         startIdx++;
-    fmt.print0x = false;
+    fmt.print0X = false;
 
     // Count
     int count = 64;
@@ -495,10 +495,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     int regN = 4;
     if (arg.split.size() == 2)
         regN = atoi(arg.split[1].c_str());
-    g_ByteCodeDebugger.debugBcMode = true;
+    g_ByteCodeDebugger.bcMode = true;
 
     g_Log.setStoreMode(true);
-    g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.debugCxtBc, g_ByteCodeDebugger.debugCxtIp, regN);
+    g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.cxtBc, g_ByteCodeDebugger.cxtIp, regN);
     g_Log.setStoreMode(false);
     g_ByteCodeDebugger.printLong(g_Log.store);
 
@@ -510,9 +510,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
-    auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
-    g_ByteCodeDebugger.debugBcMode = true;
+    auto toLogBc                   = g_ByteCodeDebugger.cxtBc;
+    auto toLogIp                   = g_ByteCodeDebugger.cxtIp;
+    g_ByteCodeDebugger.bcMode = true;
 
     if (arg.split.size() > 1)
     {
@@ -541,9 +541,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    const auto toLogBc             = g_ByteCodeDebugger.debugCxtBc;
-    const auto toLogIp             = g_ByteCodeDebugger.debugCxtIp;
-    g_ByteCodeDebugger.debugBcMode = false;
+    const auto toLogBc             = g_ByteCodeDebugger.cxtBc;
+    const auto toLogIp             = g_ByteCodeDebugger.cxtIp;
+    g_ByteCodeDebugger.bcMode = false;
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
@@ -551,7 +551,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         if (arg.split.size() == 2)
             offset = atoi(arg.split[1].c_str());
 
-        const auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
+        const auto inl = g_ByteCodeDebugger.lastBreakIp->node->ownerInline;
         if (inl)
         {
             const auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
@@ -574,9 +574,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
-    auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
-    g_ByteCodeDebugger.debugBcMode = false;
+    auto toLogBc                   = g_ByteCodeDebugger.cxtBc;
+    auto toLogIp                   = g_ByteCodeDebugger.cxtIp;
+    g_ByteCodeDebugger.bcMode = false;
 
     if (arg.split.size() > 1)
     {
@@ -594,7 +594,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         {
             toLogBc->printName();
 
-            const auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
+            const auto inl = g_ByteCodeDebugger.lastBreakIp->node->ownerInline;
             if (inl)
             {
                 const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);

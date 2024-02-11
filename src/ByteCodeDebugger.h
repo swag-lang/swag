@@ -36,8 +36,6 @@ struct BcDbgCommand
 
 struct ByteCodeDebugger
 {
-    static int LINE_W;
-
     struct EvaluateResult
     {
         TypeInfo*      type  = nullptr;
@@ -52,7 +50,7 @@ struct ByteCodeDebugger
         bool isSigned = false;
         bool isFloat  = false;
         bool isHexa   = true;
-        bool print0x  = true;
+        bool print0X  = true;
     };
 
     enum class DebugStepMode
@@ -190,32 +188,34 @@ struct ByteCodeDebugger
     void        printDisplay(ByteCodeRunContext* context) const;
     static void printSet(ByteCodeRunContext* context);
 
-    Vector<BcDbgCommand> commands;
+    Vector<BcDbgCommand>    commands;
+    Vector<DebugBreakpoint> breakpoints;
+    Vector<Utf8>            display;
+    Utf8                    lastLine;
 
-    Vector<DebugBreakpoint> debugBreakpoints;
-    Vector<Utf8>            debugDisplay;
-    Utf8                    debugLastLine;
-    ByteCodeInstruction*    debugLastIp            = nullptr;
-    ByteCodeInstruction*    debugLastBreakIp       = nullptr;
-    SourceFile*             debugStepLastFile      = nullptr;
-    SourceLocation*         debugStepLastLocation  = nullptr;
-    AstNode*                debugStepLastFunc      = nullptr;
-    ByteCode*               debugCxtBc             = nullptr;
-    ByteCode*               debugLastBc            = nullptr;
-    ByteCodeInstruction*    debugCxtIp             = nullptr;
-    uint8_t*                debugCxtBp             = nullptr;
-    uint8_t*                debugCxtSp             = nullptr;
-    uint8_t*                debugCxtSpAlt          = nullptr;
-    uint8_t*                debugCxtStack          = nullptr;
-    uint32_t                debugLastCurRc         = 0;
-    int32_t                 debugStepRc            = 0;
-    DebugStepMode           debugStepMode          = DebugStepMode::None;
-    uint32_t                debugCxtRc             = 0;
-    int                     debugStepCount         = 0;
-    uint32_t                debugBcMode            = false;
-    bool                    debugForcePrintContext = false;
-    bool                    debugPrintStruct       = true;
-    bool                    debugPrintArray        = true;
+    ByteCodeInstruction* lastIp           = nullptr;
+    ByteCodeInstruction* lastBreakIp      = nullptr;
+    SourceFile*          stepLastFile     = nullptr;
+    SourceLocation*      stepLastLocation = nullptr;
+    AstNode*             stepLastFunc     = nullptr;
+    ByteCode*            cxtBc            = nullptr;
+    ByteCode*            lastBc           = nullptr;
+    ByteCodeInstruction* cxtIp            = nullptr;
+    uint8_t*             cxtBp            = nullptr;
+    uint8_t*             cxtSp            = nullptr;
+    uint8_t*             cxtSpAlt         = nullptr;
+    uint8_t*             cxtStack         = nullptr;
+
+    uint32_t      lastCurRc = 0;
+    int32_t       stepRc    = 0;
+    DebugStepMode stepMode  = DebugStepMode::None;
+    uint32_t      cxtRc     = 0;
+    int           stepCount = 0;
+    uint32_t      bcMode    = false;
+
+    bool forcePrintContext = false;
+    bool printStruct       = true;
+    bool printArray        = true;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

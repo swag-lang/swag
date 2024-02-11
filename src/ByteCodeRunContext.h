@@ -30,7 +30,7 @@ struct ByteCodeRunContext
     int         getRegCount(int cur);
 
     template<typename T>
-    inline T pop()
+    T pop()
     {
         auto popResult = *(T*) sp;
         sp += sizeof(T);
@@ -38,14 +38,14 @@ struct ByteCodeRunContext
     }
 
     template<typename T>
-    inline T popAlt()
+    T popAlt()
     {
         spAlt -= sizeof(T);
         return *(T*) spAlt;
     }
 
     template<typename T>
-    inline void push(const T& value)
+    void push(const T& value)
     {
         if (sp - sizeof(T) < spAlt)
         {
@@ -58,7 +58,7 @@ struct ByteCodeRunContext
     }
 
     template<typename T>
-    inline void pushAlt(const T& value)
+    void pushAlt(const T& value)
     {
         if (spAlt + sizeof(T) >= sp)
         {
@@ -70,12 +70,12 @@ struct ByteCodeRunContext
         spAlt += sizeof(T);
     }
 
-    inline void incSP(uint32_t offset)
+    void incSP(uint32_t offset)
     {
         sp += offset;
     }
 
-    inline void decSP(uint32_t offset)
+    void decSP(uint32_t offset)
     {
         if (sp - offset < stack)
         {
@@ -86,7 +86,7 @@ struct ByteCodeRunContext
         sp -= offset;
     }
 
-    inline Register* getRegBuffer(int cur)
+    Register* getRegBuffer(int cur)
     {
         return registers.buffer + registersRC[cur];
     }

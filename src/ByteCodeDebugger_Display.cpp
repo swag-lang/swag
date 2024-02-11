@@ -7,7 +7,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayAdd(ByteCodeRunContext* context, 
         return BcDbgCommandResult::BadArguments;
 
     const auto line = arg.cmd + " " + arg.cmdExpr;
-    g_ByteCodeDebugger.debugDisplay.push_back(line);
+    g_ByteCodeDebugger.display.push_back(line);
     g_ByteCodeDebugger.printDisplay(context);
     return BcDbgCommandResult::Continue;
 }
@@ -16,11 +16,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
 {
     if (arg.split.size() == 2)
     {
-        if (g_ByteCodeDebugger.debugDisplay.empty())
+        if (g_ByteCodeDebugger.display.empty())
             printCmdError("no expression to remove");
         else
-            printCmdResult(FMT("%d expression(s) have been removed", g_ByteCodeDebugger.debugDisplay.size()));
-        g_ByteCodeDebugger.debugDisplay.clear();
+            printCmdResult(FMT("%d expression(s) have been removed", g_ByteCodeDebugger.display.size()));
+        g_ByteCodeDebugger.display.clear();
         return BcDbgCommandResult::Continue;
     }
 
@@ -30,11 +30,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
         return BcDbgCommandResult::BadArguments;
 
     const int numB = atoi(arg.split[2].c_str());
-    if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugDisplay.size())
+    if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.display.size())
         printCmdError("invalid expression number");
     else
     {
-        g_ByteCodeDebugger.debugDisplay.erase(g_ByteCodeDebugger.debugDisplay.begin() + numB - 1);
+        g_ByteCodeDebugger.display.erase(g_ByteCodeDebugger.display.begin() + numB - 1);
         printCmdResult(FMT("expression #%d has been removed", numB));
     }
 
@@ -43,16 +43,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
 
 void ByteCodeDebugger::printDisplayList() const
 {
-    if (debugDisplay.empty())
+    if (display.empty())
     {
         printCmdError("no expression");
         return;
     }
 
     g_Log.setColor(LogColor::Gray);
-    for (size_t i = 0; i < debugDisplay.size(); i++)
+    for (size_t i = 0; i < display.size(); i++)
     {
-        g_Log.print(FMT("#%d: %s", i + 1, debugDisplay[i].c_str()));
+        g_Log.print(FMT("#%d: %s", i + 1, display[i].c_str()));
         g_Log.eol();
     }
 }
@@ -74,10 +74,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplay(ByteCodeRunContext* context, con
 
 void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context) const
 {
-    if (debugDisplay.empty())
+    if (display.empty())
         return;
 
-    for (const auto& line : debugDisplay)
+    for (const auto& line : display)
     {
         BcDbgCommandArg arg;
         tokenizeCommand(context, line, arg);

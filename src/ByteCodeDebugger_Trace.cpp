@@ -9,7 +9,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    g_ByteCodeDebugger.debugStepCount = 0;
+    g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
@@ -18,11 +18,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.debugStepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
     }
 
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLineStepIn;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::NextLineStepIn;
     return BcDbgCommandResult::Break;
 }
 
@@ -31,7 +31,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    g_ByteCodeDebugger.debugStepCount = 0;
+    g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
@@ -40,11 +40,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.debugStepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
     }
 
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepIn;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::NextInstructionStepIn;
     return BcDbgCommandResult::Break;
 }
 
@@ -53,7 +53,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    g_ByteCodeDebugger.debugStepCount = 0;
+    g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
@@ -62,12 +62,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.debugStepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
     }
 
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLineStepOut;
-    g_ByteCodeDebugger.debugStepRc   = context->curRC;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::NextLineStepOut;
+    g_ByteCodeDebugger.stepRc   = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -76,7 +76,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    g_ByteCodeDebugger.debugStepCount = 0;
+    g_ByteCodeDebugger.stepCount = 0;
     if (arg.split.size() > 1)
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
@@ -85,12 +85,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.debugStepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
     }
 
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepOut;
-    g_ByteCodeDebugger.debugStepRc   = context->curRC;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::NextInstructionStepOut;
+    g_ByteCodeDebugger.stepRc   = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -100,11 +100,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::FinishedFunction;
-    if (g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline)
-        g_ByteCodeDebugger.debugStepRc = context->curRC;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::FinishedFunction;
+    if (g_ByteCodeDebugger.lastBreakIp->node->ownerInline)
+        g_ByteCodeDebugger.stepRc = context->curRC;
     else
-        g_ByteCodeDebugger.debugStepRc = context->curRC - 1;
+        g_ByteCodeDebugger.stepRc = context->curRC - 1;
     return BcDbgCommandResult::Break;
 }
 
@@ -116,7 +116,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
     printCmdResult("continue...");
     context->debugOn                 = false;
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
@@ -144,7 +144,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         if (loc.location && loc.location->line + 1 == to)
         {
             context->ip                   = curIp;
-            g_ByteCodeDebugger.debugCxtIp = context->ip;
+            g_ByteCodeDebugger.cxtIp = context->ip;
             break;
         }
 
@@ -173,7 +173,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
     }
 
     context->ip                   = context->bc->out + to;
-    g_ByteCodeDebugger.debugCxtIp = context->ip;
+    g_ByteCodeDebugger.cxtIp = context->ip;
 
     g_ByteCodeDebugger.printDebugContext(context);
     return BcDbgCommandResult::Continue;
@@ -188,13 +188,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
-    bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
-    bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
+    bkp.bc         = g_ByteCodeDebugger.cxtBc;
+    bkp.name       = g_ByteCodeDebugger.stepLastFile->name;
     bkp.line       = atoi(arg.split[1].c_str());
     bkp.autoRemove = true;
     g_ByteCodeDebugger.addBreakpoint(context, bkp);
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
@@ -207,13 +207,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, cons
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::InstructionIndex;
-    bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
-    bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
+    bkp.bc         = g_ByteCodeDebugger.cxtBc;
+    bkp.name       = g_ByteCodeDebugger.stepLastFile->name;
     bkp.line       = atoi(arg.split[1].c_str());
     bkp.autoRemove = true;
     g_ByteCodeDebugger.addBreakpoint(context, bkp);
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
+    g_ByteCodeDebugger.stepMode = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
