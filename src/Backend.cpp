@@ -164,6 +164,13 @@ Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgOutput
             return ".lib";
         return ".a";
 
+    case BuildCfgOutputKind::ImportLib:
+        if (target.os == SwagTargetOs::Windows)
+            return ".lib";
+        if (isOsDarwin(target.os))
+            return ".dylib";        
+        return ".so";
+
     case BuildCfgOutputKind::DynamicLib:
         if (target.os == SwagTargetOs::Windows)
             return ".dll";

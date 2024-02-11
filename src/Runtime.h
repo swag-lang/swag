@@ -219,6 +219,7 @@ enum class BuildCfgOutputKind
 {
     Executable,
     DynamicLib,
+    ImportLib,
     StaticLib,
 };
 

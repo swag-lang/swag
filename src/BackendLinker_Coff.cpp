@@ -9,21 +9,14 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
 {
     Vector<Path> libPaths;
 
-    // User defined library paths
+    // Libraries path
     for (const auto& p : g_CommandLine.libPaths)
         libPaths.push_back(p);
-
-    // Modules
     libPaths.push_back(g_Workspace->targetPath);
-
-    // Runtime
     libPaths.push_back(g_CommandLine.exePath.parent_path());
-
+    
     for (const auto& oneLibPath : libPaths)
-    {
-        auto normalizedLibPath = oneLibPath;
-        arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
-    }
+        arguments.push_back("/LIBPATH:" + oneLibPath.string());
 
     // Register #foreignlib
     // As this is defined by the user, we consider the library must exists
@@ -39,7 +32,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
     // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
     for (const auto& dep : buildParameters.module->moduleDependencies)
     {
-        auto       libName = Backend::getOutputFileName(dep->module, BuildCfgOutputKind::StaticLib);
+        auto       libName = Backend::getOutputFileName(dep->module, BuildCfgOutputKind::ImportLib);
         error_code err;
         if (exists(libName, err))
             arguments.push_back(libName.string());
@@ -49,7 +42,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
     {
         if (dep->buildCfg.backendKind == BuildCfgBackendKind::Export)
         {
-            auto       libName = Backend::getOutputFileName(dep, BuildCfgOutputKind::StaticLib);
+            auto       libName = Backend::getOutputFileName(dep, BuildCfgOutputKind::ImportLib);
             error_code err;
             if (exists(libName, err))
                 arguments.push_back(libName.string());
