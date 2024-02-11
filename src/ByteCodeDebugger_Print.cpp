@@ -105,8 +105,8 @@ void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
 
 void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
 {
-    SWAG_ASSERT(debugCxtBc);
-    SWAG_ASSERT(debugCxtIp);
+    SWAG_ASSERT(cxtBc);
+    SWAG_ASSERT(cxtIp);
 
     if (forcePrintContext)
         force = true;
