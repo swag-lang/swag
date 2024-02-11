@@ -25,15 +25,13 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
         arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
     }
 
-    const auto libExt = Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::StaticLib);
-
     // Register #foreignlib
     // As this is defined by the user, we consider the library must exists
     for (const auto& fl : buildParameters.foreignLibs)
     {
         Utf8 one = fl;
-        if (Utf8::getExtension(one) != libExt)
-            one += libExt;
+        if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::StaticLib))
+            one += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::StaticLib);
         arguments.push_back(one);
     }
 
@@ -49,13 +47,13 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
 
     for (const auto& dep : buildParameters.module->moduleEmbedded)
     {
-        if (dep->buildCfg.backendKind != BuildCfgBackendKind::Export)
-            continue;
-
-        auto       libName = Backend::getOutputFileName(dep, BuildCfgOutputKind::StaticLib);
-        error_code err;
-        if (exists(libName, err))
-            arguments.push_back(libName.string());
+        if (dep->buildCfg.backendKind == BuildCfgBackendKind::Export)
+        {
+            auto       libName = Backend::getOutputFileName(dep, BuildCfgOutputKind::StaticLib);
+            error_code err;
+            if (exists(libName, err))
+                arguments.push_back(libName.string());
+        }
     }
 
     arguments.push_back("/INCREMENTAL:NO");
