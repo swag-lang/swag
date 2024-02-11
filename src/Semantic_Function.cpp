@@ -983,11 +983,12 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     if (!(symbolFlags & OVERLOAD_INCOMPLETE) && isMethod(funcNode))
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+        const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+        SWAG_ASSERT(funcNode->methodParam);
 
+        if(!typeFunc->attributes.empty())
         {
             ScopedLock lk(typeStruct->mutex);
-            SWAG_ASSERT(funcNode->methodParam);
-            const auto typeFunc               = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
             funcNode->methodParam->attributes = typeFunc->attributes;
         }
 
