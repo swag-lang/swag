@@ -111,10 +111,6 @@ Utf8 ByteCode::getCallNameFromDecl()
 
 Utf8 ByteCode::getCallName()
 {
-    ScopedLock lk(mutexCallName);
-    if (!callName.empty())
-        return callName;
-
     // If this is an intrinsic that can be called by the compiler itself, it should not
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
@@ -122,11 +118,14 @@ Utf8 ByteCode::getCallName()
     {
         if (node->resolvedSymbolName && node->resolvedSymbolName->cptOverloadsInit == 1)
         {
-            callName = name;
-            return callName;
+            return name;
         }
     }
 
+    ScopedLock lk(mutexCallName);
+    if (!callName.empty())
+        return callName;
+    
     if (name.empty())
     {
         ScopedLock lock(node->mutex);
