@@ -97,8 +97,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
     }
 
     // Get all nodes we are dependent on
-    // For the next pass (we will have to wait for all those nodes to resolved
-    // before being resolved ourself)
+    // For the next pass (we will have to wait for all those nodes to be resolved before being resolved ourself)
     ScopedLock lk(node->mutex);
     getDependantCalls(node, node->extByteCode()->dependentNodes);
     context->dependentNodesTmp = node->extByteCode()->dependentNodes;
