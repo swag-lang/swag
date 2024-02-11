@@ -189,11 +189,10 @@ Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgOutput
         if (isOsDarwin(target.os))
             return ".dylib";
         return ".so";
-
-    default:
-        SWAG_ASSERT(false);
-        return "";
     }
+    
+    SWAG_ASSERT(false);
+    return "";
 }
 
 Utf8 Backend::getObjectFileExtension(const BackendTarget& target)
@@ -352,7 +351,7 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
     SWAG_ASSERT(numPreCompileBuffers > 1);
     const int range = size / (numPreCompileBuffers - 1);
 
-    // First precompileIndex is dedicated to datas and main
+    // First precompileIndex is dedicated to data and main
     // :SegZeroIsData
     if (precompileIndex == 0)
     {
