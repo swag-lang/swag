@@ -96,11 +96,8 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
     arguments.push_back("/OUT:" + outFileName.string());
 
     // Add all object files
-    const auto targetPath = Backend::getCacheFolder(buildParameters);
     for (auto& file : buildParameters.module->objFiles)
     {
-        auto path = targetPath;
-        path.append(file);
-        arguments.push_back(path.string());
+        arguments.push_back(file.string());
     }
 }

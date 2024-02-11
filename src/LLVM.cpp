@@ -492,9 +492,14 @@ bool LLVM::generateOutput(const BuildParameters& buildParameters)
     if (!mustCompile)
         return true;
 
+    const auto targetPath = getCacheFolder(buildParameters);
     buildParameters.module->objFiles.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
-        buildParameters.module->objFiles.push_back(perThread[buildParameters.compileType][i]->filename);
+    {
+        auto path = targetPath;
+        path.append(perThread[buildParameters.compileType][i]->filename);
+        buildParameters.module->objFiles.push_back(path);
+    }
     
     return BackendLinker::link(buildParameters);
 }
