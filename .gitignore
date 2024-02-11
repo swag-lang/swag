@@ -272,6 +272,5 @@ dependencies/
 **/examples/**/public
 **/testsuite/**/public
 **/tests/**/public
-**/foreign/**/objs
 /bin/examples/scripts/datas/cards/out
-/bin/std/modules/freetype/vendor/freetype-2.10.4/objs/freetype.dll
+**/vendor/**/objs

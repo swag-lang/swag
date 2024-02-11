@@ -183,12 +183,15 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     module->sortDependenciesByInitOrder(moduleDependencies);
     for (auto dep : moduleDependencies)
     {
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
-        auto nameLib = nameDown;
-        nameLib += getOutputFileExtension(g_CommandLine.target, BuildCfgOutputKind::DynamicLib);
-        auto ptrStr = builder.CreateGlobalStringPtr(nameLib.c_str());
-        emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
+        auto nameLib = getOutputFileName(g_CommandLine.target, dep->module->name, BuildCfgOutputKind::DynamicLib);
+
+        error_code err;
+        if (exists(nameLib, err))
+        {
+            nameLib = nameLib.filename();
+            auto ptrStr = builder.CreateGlobalStringPtr(nameLib.string());
+            emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, { UINT32_MAX, UINT32_MAX }, { ptrStr, builder.getInt64(nameLib.string().length()) });
+        }
     }
 
     // Call to global init of all dependencies

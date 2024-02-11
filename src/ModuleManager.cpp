@@ -37,19 +37,15 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         return false;
 
     // First try in the target folder (local modules)
-    const auto ext  = Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgOutputKind::DynamicLib);
-    Path       path = g_Workspace->getTargetPath(g_CommandLine.buildCfg, OS::getNativeTarget());
-    path.append(name.c_str());
-    path += ext.c_str();
-
-    auto h = OS::loadLibrary(path.string().c_str());
+    auto path = Backend::getOutputFileName(OS::getNativeTarget(), name, BuildCfgOutputKind::DynamicLib);
+    auto h    = OS::loadLibrary(path.string().c_str());
     if (h == nullptr)
     {
         // Try on system folders
         if (canBeSystem)
         {
-            path = name.c_str();
-            path += ext.c_str();
+            path = name;
+            path += Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgOutputKind::DynamicLib).c_str();
             h = OS::loadLibrary(path.string().c_str());
         }
 

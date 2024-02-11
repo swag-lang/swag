@@ -9,6 +9,7 @@ struct AstNode;
 struct AstStruct;
 struct AstVarDecl;
 struct BackendFunctionBodyJob;
+struct BackendTarget;
 struct BuildParameters;
 struct Job;
 struct Module;
@@ -67,7 +68,7 @@ struct Backend
 
     static void setup();
     static Path getCacheFolder(const BuildParameters& buildParameters);
-    static Path getOutputFileName(const Module* module, BuildCfgOutputKind type);
+    static Path getOutputFileName(const BackendTarget& target, const Utf8& name, BuildCfgOutputKind type);
 
     static Utf8           getObjectFileExtension(const BackendTarget& target);
     static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgOutputKind type);
