@@ -111,9 +111,6 @@ Utf8 ByteCode::getCallNameFromDecl()
 
 Utf8 ByteCode::getCallName()
 {
-    if (alias)
-        return alias->getCallName();
-
     ScopedLock lk(mutexCallName);
     if (!callName.empty())
         return callName;
@@ -146,8 +143,6 @@ TypeInfoFuncAttr* ByteCode::getCallType() const
 {
     if (isCompilerGenerated)
         return g_TypeMgr->typeInfoOpCall;
-    if (alias)
-        return alias->getCallType();
     if (out && node && node->typeInfo->isFuncAttr())
         return castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     return typeInfoFunc;
@@ -323,10 +318,6 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
         {
             const ByteCode* bc0 = (ByteCode*) ip0->a.u64;
             const ByteCode* bc1 = (ByteCode*) ip1->a.u64;
-            if (bc0 && bc0->alias)
-                bc0 = bc0->alias;
-            if (bc1 && bc1->alias)
-                bc1 = bc1->alias;
             if (bc0 != bc1)
                 same = false;
         }
@@ -375,10 +366,7 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
                         ip->op == ByteCodeOp::LocalCallPopRC))
     {
         const auto bc = reinterpret_cast<ByteCode*>(ip->a.u64);
-        if (bc && bc->alias)
-            oldCrc = Crc32::compute8((const uint8_t*) &bc->alias, oldCrc);
-        else
-            oldCrc = Crc32::compute8((const uint8_t*) &bc, oldCrc);
+        oldCrc = Crc32::compute8((const uint8_t*) &bc, oldCrc);
     }
     else if (hasSomethingInA(ip))
         oldCrc = Crc32::compute8((const uint8_t*) &ip->a.u64, oldCrc);

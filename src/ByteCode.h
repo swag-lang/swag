@@ -137,7 +137,6 @@ struct ByteCode
     SourceFile*          sourceFile   = nullptr;
     TypeInfoFuncAttr*    typeInfoFunc = nullptr;
     AstNode*             node         = nullptr;
-    ByteCode*            alias        = nullptr;
 
     uint32_t stackSize             = 0;
     uint32_t dynStackSize          = 0;
