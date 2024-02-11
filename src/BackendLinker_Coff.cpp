@@ -46,8 +46,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
         auto fullName = g_Workspace->targetPath;
         fullName.append(libName.c_str());
 
-        // Be sure that the library exists. Some modules rely on external libraries, and do not have their
-        // own one
+        // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
         error_code err;
         if (exists(fullName, err))
             arguments.push_back(libName);
@@ -64,8 +63,7 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, con
         auto fullName = g_Workspace->targetPath;
         fullName.append(libName.c_str());
 
-        // Be sure that the library exists. Some modules rely on external libraries, and do not have their
-        // own one
+        // Be sure that the library exists. Some modules rely on external libraries, and do not have their own one
         error_code err;
         if (exists(fullName, err))
             arguments.push_back(libName);
