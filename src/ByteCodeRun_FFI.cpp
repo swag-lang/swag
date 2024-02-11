@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "ModuleManager.h"
+#include "Os.h"
 #include "TypeManager.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, const ByteCodeInstruction* ip)

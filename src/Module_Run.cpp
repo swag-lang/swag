@@ -321,7 +321,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     }
     else if (!foreignCall)
     {
-        bc->enterByteCode(g_RunContext);
+        ByteCodeRun::enterByteCode(g_RunContext, bc);
     }
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not

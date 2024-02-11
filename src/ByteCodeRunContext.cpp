@@ -5,6 +5,7 @@
 #include "ByteCodeStack.h"
 #include "ErrorIds.h"
 #include "Module.h"
+#include "Os.h"
 #include "Statistics.h"
 
 Mutex g_FreeStackMutex;

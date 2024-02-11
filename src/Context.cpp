@@ -90,7 +90,7 @@ static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
     g_RunContext->ip      = bc->out;
     g_RunContext->bp      = g_RunContext->sp;
     g_RunContext->firstRC = g_RunContext->curRC;
-    g_RunContext->bc->enterByteCode(g_RunContext);
+    ByteCodeRun::enterByteCode(g_RunContext, g_RunContext->bc);
 
     g_ByteCodeStackTrace->push({nullptr, nullptr});
     const auto result = module->runner.run(g_RunContext);

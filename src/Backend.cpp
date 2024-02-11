@@ -5,6 +5,7 @@
 #include "CallConv.h"
 #include "LLVM_Setup.h"
 #include "Module.h"
+#include "Os.h"
 #include "ModuleSaveExportJob.h"
 #include "Version.h"
 #include "Workspace.h"

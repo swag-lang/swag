@@ -53,6 +53,57 @@
 #define IMMD_U32(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
 #define IMMD_U64(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
 
+SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
+{
+    if (++context->curRC > context->maxRecurse)
+    {
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, FMT(Err(Err0604), context->maxRecurse));
+        return;
+    }
+
+#ifdef SWAG_STATS
+    if (g_CommandLine.profile)
+    {
+        bc->profileCallCount++;
+        bc->profileStart = OS::timerNow();
+        if (context->oldBc)
+            context->oldBc->profileChilds.insert(bc);
+    }
+#endif
+
+    SWAG_ASSERT(context->curRC == (int) context->registersRC.size());
+    context->registersRC.push_back(context->registers.count);
+    context->registers.reserve(context->registers.count + bc->maxReservedRegisterRC);
+    context->curRegistersRC = context->registers.buffer + context->registers.count;
+    context->registers.count += bc->maxReservedRegisterRC;
+
+    if (returnRegOnRet != UINT32_MAX)
+        context->pushAlt<uint64_t>(context->registersRR[0].u64);
+    context->pushAlt<uint32_t>(returnRegOnRet);
+    context->pushAlt<uint32_t>((popParamsOnRet * sizeof(void*)) + incSPPostCall);
+}
+
+SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, ByteCode* bc)
+{
+    SWAG_ASSERT(context->curRC >= 0);
+    if (--context->curRC >= 0)
+    {
+        context->registers.count = context->registersRC.get_pop_back();
+        context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
+    }
+    else
+    {
+        context->registersRC.count = 0;
+    }
+
+#ifdef SWAG_STATS
+    if (g_CommandLine.profile)
+    {
+        bc->profileCumTime += OS::timerNow() - bc->profileStart;
+    }
+#endif
+}
+
 SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
     SWAG_ASSERT(!bc->node || bc->node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));
@@ -66,7 +117,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context
     SWAG_ASSERT(context->bc->out);
     context->ip = context->bc->out;
     context->bp = context->sp;
-    context->bc->enterByteCode(context, popParamsOnRet, returnRegOnRet, incSPPostCall);
+    enterByteCode(context, context->bc, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
 
 SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
@@ -499,7 +550,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->incSP(ip->a.u32);
         if (context->sp == context->stack + g_CommandLine.limitStackBC)
             return false;
-        context->bc->leaveByteCode(context);
+        leaveByteCode(context, context->bc);
         g_ByteCodeStackTrace->pop();
 
         context->ip = context->pop<ByteCodeInstruction*>();
@@ -588,9 +639,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             SWAG_ASSERT(context->ip);
             context->bp = context->sp;
             if (ip->op == ByteCodeOp::LambdaCallPop)
-                context->bc->enterByteCode(context, 0, UINT32_MAX, ip->c.u32);
+                enterByteCode(context, context->bc, 0, UINT32_MAX, ip->c.u32);
             else
-                context->bc->enterByteCode(context);
+                enterByteCode(context, context->bc);
         }
 
         // Native lambda

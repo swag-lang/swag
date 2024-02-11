@@ -9,6 +9,7 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "ModuleManager.h"
+#include "Os.h"
 #include "Report.h"
 #include "Scope.h"
 #include "SemanticJob.h"

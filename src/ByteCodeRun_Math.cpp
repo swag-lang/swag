@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeRun.h"
+#include "Os.h"
+#include "Tokenizer.h"
 
 void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned)
 {

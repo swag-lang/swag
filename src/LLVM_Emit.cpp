@@ -3,6 +3,7 @@
 #include "LanguageSpec.h"
 #include "LLVM.h"
 #include "LLVM_Macros.h"
+#include "SourceFile.h"
 
 void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
 {

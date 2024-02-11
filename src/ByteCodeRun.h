@@ -26,6 +26,8 @@ struct ByteCodeRun
     static bool  executeIsConstExprSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip);
     static void  executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip);
 
+    static void  enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
+    static void  leaveByteCode(ByteCodeRunContext* context, ByteCode* bc);
     static void  localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
     static void  localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
     static void  callInternalCompilerError(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg);

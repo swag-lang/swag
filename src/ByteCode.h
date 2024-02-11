@@ -1,9 +1,7 @@
 #pragma once
 #include "ByteCodeInstruction.h"
 #include "ByteCodeOp.h"
-#include "ByteCodeRunContext.h"
 #include "Mutex.h"
-#include "OS.h"
 #include "Profiler.h"
 #include "RaceCondition.h"
 #include "Register.h"
@@ -38,9 +36,6 @@ struct ByteCode
         Utf8 devMode;
 #endif
     };
-
-    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
-    void leaveByteCode(ByteCodeRunContext* context);
 
     void release();
 
