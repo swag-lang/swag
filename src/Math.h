@@ -202,5 +202,4 @@ namespace Math
             return true;
         return false;
     }
-
 } // namespace Math

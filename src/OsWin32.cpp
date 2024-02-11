@@ -464,7 +464,6 @@ namespace OS
 
                 const bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
                 user(writeTime, findfile.cFileName, isFolder);
-
             } while (FindNextFileA(h, &findfile));
 
             FindClose(h);
@@ -496,7 +495,6 @@ namespace OS
                 {
                     user(path.string().c_str());
                 }
-
             } while (FindNextFileA(h, &findfile));
 
             FindClose(h);
@@ -531,6 +529,7 @@ namespace OS
         {
         }
     }
+
     void setThreadName(const char* threadName)
     {
         setThreadName(GetCurrentThreadId(), threadName);

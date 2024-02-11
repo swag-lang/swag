@@ -63,11 +63,9 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     {
         return context->report(diag, note1);
     }
-    else
-    {
-        const auto note2 = Diagnostic::note(v->text);
-        return context->report(diag, note1, note2);
-    }
+
+    const auto note2 = Diagnostic::note(v->text);
+    return context->report(diag, note1, note2);
 }
 
 bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode* one)

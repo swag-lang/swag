@@ -190,7 +190,7 @@ Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgOutput
             return ".dylib";
         return ".so";
     }
-    
+
     SWAG_ASSERT(false);
     return "";
 }

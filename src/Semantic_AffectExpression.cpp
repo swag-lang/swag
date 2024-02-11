@@ -173,18 +173,17 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             const auto note1 = Diagnostic::note(Nte(Nte0059));
             return context->report(diag, note, note1);
         }
-        else if (left->typeInfo->isConstPointerRef())
+
+        if (left->typeInfo->isConstPointerRef())
         {
             Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
             diag.addNote(left, Diagnostic::isType(left->typeInfo));
             return context->report(diag, note);
         }
-        else
-        {
-            Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-            diag.addNote(left, Diagnostic::isType(left->typeInfo));
-            return context->report(diag, note);
-        }
+
+        Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+        diag.addNote(left, Diagnostic::isType(left->typeInfo));
+        return context->report(diag, note);
     }
 
     if (left->resolvedSymbolOverload &&

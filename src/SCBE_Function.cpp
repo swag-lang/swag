@@ -3739,10 +3739,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
             auto moduleName = ModuleManager::getForeignModuleName(funcNode);
-            
+
             // Dll imported function name will have "__imp_" before (imported mangled name)
             auto callFuncName = funcNode->getFullNameForeignImport();
-            callFuncName = "__imp_" + callFuncName;
+            callFuncName      = "__imp_" + callFuncName;
 
             emitCall(pp, typeFct, callFuncName, pushRAParams, offsetRT, false);
             pushRAParams.clear();

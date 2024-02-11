@@ -337,6 +337,7 @@ bool ByteCodeGen::emitCastToNativeU64(const ByteCodeGenContext* context, AstNode
 
     return true;
 }
+
 bool ByteCodeGen::emitCastToNativeS8(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())

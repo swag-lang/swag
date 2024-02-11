@@ -12,7 +12,9 @@ class MyOStream : public llvm::raw_ostream
 public:
     MyOStream()
         : raw_ostream(true)
-          , pos(0) {}
+        , pos(0)
+    {
+    }
 
     void write_impl(const char* ptr, size_t len) override
     {

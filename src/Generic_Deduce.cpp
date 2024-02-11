@@ -240,10 +240,8 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                     Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
                     return;
                 }
-                else
-                {
-                    SWAG_ASSERT(!callLambda->returnType->isGeneric());
-                }
+
+                SWAG_ASSERT(!callLambda->returnType->isGeneric());
             }
         }
 

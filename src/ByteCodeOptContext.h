@@ -26,6 +26,7 @@ struct ByteCodeOptTreeNode
 };
 
 struct ByteCodeOptContext;
+
 struct ByteCodeOptTreeParseContext
 {
     ByteCodeInstruction* startIp = nullptr;

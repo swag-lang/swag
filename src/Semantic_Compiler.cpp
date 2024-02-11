@@ -931,7 +931,6 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         SWAG_ASSERT(node->typeInfo);
         return true;
 
-
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
         node->computedValue->text = getCompilerFunctionString(node, node->tokenId);

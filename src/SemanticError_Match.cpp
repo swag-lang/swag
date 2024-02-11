@@ -349,6 +349,5 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
 
     if (tryMatches.size() == 1)
         return cannotMatchSingle(context, node, tryMatches);
-    else
-        return cannotMatchOverload(context, node, tryMatches);
+    return cannotMatchOverload(context, node, tryMatches);
 }

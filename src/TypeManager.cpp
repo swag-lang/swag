@@ -390,19 +390,22 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
         SWAG_ASSERT(typeStruct->alignOf);
         return typeStruct->alignOf;
     }
-    else if (typeInfo->isArray())
+
+    if (typeInfo->isArray())
     {
         const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         return alignOf(typeArray->finalType);
     }
-    else if (typeInfo->isPointer())
+
+    if (typeInfo->isPointer())
     {
         return typeInfo->sizeOf;
     }
-    else if (typeInfo->isSlice() ||
-             typeInfo->isInterface() ||
-             typeInfo->isAny() ||
-             typeInfo->isString())
+
+    if (typeInfo->isSlice() ||
+        typeInfo->isInterface() ||
+        typeInfo->isAny() ||
+        typeInfo->isString())
     {
         return sizeof(void*);
     }
@@ -457,13 +460,11 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
         mapConst[typeInfo] = typeAlias;
         return typeAlias;
     }
-    else
-    {
-        const auto typeConst = typeInfo->clone();
-        typeConst->setConst();
-        mapConst[typeInfo] = typeConst;
-        return typeConst;
-    }
+
+    const auto typeConst = typeInfo->clone();
+    typeConst->setConst();
+    mapConst[typeInfo] = typeConst;
+    return typeConst;
 }
 
 TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)

@@ -33,7 +33,7 @@ struct Path : filesystem::path
     void append(const Path& path)
     {
         path::append(path.string());
-    }    
+    }
 };
 
 struct HashPath

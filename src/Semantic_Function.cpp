@@ -25,8 +25,8 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     if (!parameters || funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
         return true;
 
-    bool   defaultValueDone = false;
-    size_t index            = 0;
+    bool     defaultValueDone = false;
+    uint32_t index            = 0;
 
     // If we have a tuple as a default parameter, without a user defined type, then we need to convert it to a tuple struct
     // and wait for the type to be solved.
@@ -51,7 +51,8 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             context->baseJob->nodes.push_back(nodeParam->type);
             return true;
         }
-        else if (nodeParam->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
+
+        if (nodeParam->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
         {
             SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
             nodeParam->typeInfo                         = nodeParam->type->typeInfo;
@@ -430,7 +431,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
 {
     if (funcNode->parameters)
     {
-        int storageIndex = 0;
+        uint32_t storageIndex = 0;
         if (funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
             const auto param       = funcNode->parameters->childs.back();
@@ -449,7 +450,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
             resolved->storageIndex = storageIndex;
 
             const auto typeParam    = TypeManager::concreteType(resolved->typeInfo);
-            const int  numRegisters = typeParam->numRegisters();
+            const auto numRegisters = typeParam->numRegisters();
             storageIndex += numRegisters;
         }
     }
@@ -469,7 +470,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 
-        // We were not a short lambda, so just wakup our dependencies
+        // We were not a short lambda, so just wakeup our dependencies
         if (!funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
         {
             funcNode->resolvedSymbolName->dependentJobs.setRunning();

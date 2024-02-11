@@ -155,7 +155,6 @@ namespace
         SWAG_ASSERT(false);
         return "";
     }
-
 }
 
 uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum)

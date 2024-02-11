@@ -920,10 +920,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
             {
                 return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
             }
-            else
-            {
-                return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
-            }
+
+            return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
         }
 
         return context->report({node->expression, FMT(Err(Err0418), typeInfo->getDisplayNameC())});

@@ -310,12 +310,12 @@ struct BuildCfg
     bool     byteCodeAutoInline    = true;
 
     // Backend common
-    BuildCfgBackendKind    backendKind              = BuildCfgBackendKind::Executable;
-    BuildCfgBackendSubKind backendSubKind           = BuildCfgBackendSubKind::Console;
-    bool                   backendDebugInfos = false;
-    bool                   backendDebugInline       = false;
-    BuildCfgBackendOptim   backendOptimize          = BuildCfgBackendOptim::O0;
-    uint32_t               backendNumCU             = 0;
+    BuildCfgBackendKind    backendKind        = BuildCfgBackendKind::Executable;
+    BuildCfgBackendSubKind backendSubKind     = BuildCfgBackendSubKind::Console;
+    bool                   backendDebugInfos  = false;
+    bool                   backendDebugInline = false;
+    BuildCfgBackendOptim   backendOptimize    = BuildCfgBackendOptim::O0;
+    uint32_t               backendNumCU       = 0;
 
     // Linker
     SwagSlice linkerArgs;

@@ -15,6 +15,7 @@ Utf8 g_E[MAX_ERRORS];
         SWAG_ASSERT(g_E[(int) (__n)].empty()); \
         g_E[(int) (__n)] = __msg;              \
     } while(0)
+
 void initErrors()
 {
     /////////////////////////////////////////////////////////////////////

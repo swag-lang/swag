@@ -6527,6 +6527,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
     setNop(context, ipn);
 }
+
 void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (!(context->contextBcFlags & OCF_HAS_COPY_RBRA))

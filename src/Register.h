@@ -24,6 +24,7 @@ union Register
     }            u64u32;
 
     Register() = default;
+
     Register(uint64_t val)
         : u64{val}
     {

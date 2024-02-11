@@ -45,6 +45,7 @@ template<typename T>
 struct StdAllocator
 {
     using value_type = T;
+
     template<class U>
     constexpr StdAllocator(const StdAllocator<U>&) noexcept
     {

@@ -801,11 +801,9 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
                 const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0290), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
-            else
-            {
-                const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-                return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
-            }
+
+            const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+            return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
         }
     }
 

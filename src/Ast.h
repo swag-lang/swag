@@ -105,7 +105,6 @@ namespace Ast
 #endif
         return node;
     }
-
 }; // namespace Ast
 
 template<typename T>

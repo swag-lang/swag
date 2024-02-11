@@ -54,39 +54,39 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     // Setup build configuration
     if (g_CommandLine.buildCfg == "fast-compile")
     {
-        buildCfg.byteCodeOptimizeLevel    = 0;
-        buildCfg.byteCodeInline           = false;
-        buildCfg.byteCodeAutoInline       = false;
-        buildCfg.byteCodeEmitAssume       = true;
-        buildCfg.safetyGuards             = 0;
-        buildCfg.errorStackTrace          = false;
-        buildCfg.debugAllocator           = true;
-        buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
-        buildCfg.backendDebugInfos = false;
+        buildCfg.byteCodeOptimizeLevel = 0;
+        buildCfg.byteCodeInline        = false;
+        buildCfg.byteCodeAutoInline    = false;
+        buildCfg.byteCodeEmitAssume    = true;
+        buildCfg.safetyGuards          = 0;
+        buildCfg.errorStackTrace       = false;
+        buildCfg.debugAllocator        = true;
+        buildCfg.backendOptimize       = BuildCfgBackendOptim::O0;
+        buildCfg.backendDebugInfos     = false;
     }
     else if (g_CommandLine.buildCfg == "debug")
     {
-        buildCfg.byteCodeOptimizeLevel    = 0;
-        buildCfg.byteCodeInline           = false;
-        buildCfg.byteCodeAutoInline       = false;
-        buildCfg.byteCodeEmitAssume       = true;
-        buildCfg.safetyGuards             = SAFETY_ALL;
-        buildCfg.errorStackTrace          = true;
-        buildCfg.debugAllocator           = true;
-        buildCfg.backendOptimize          = BuildCfgBackendOptim::O0;
-        buildCfg.backendDebugInfos = true;
+        buildCfg.byteCodeOptimizeLevel = 0;
+        buildCfg.byteCodeInline        = false;
+        buildCfg.byteCodeAutoInline    = false;
+        buildCfg.byteCodeEmitAssume    = true;
+        buildCfg.safetyGuards          = SAFETY_ALL;
+        buildCfg.errorStackTrace       = true;
+        buildCfg.debugAllocator        = true;
+        buildCfg.backendOptimize       = BuildCfgBackendOptim::O0;
+        buildCfg.backendDebugInfos     = true;
     }
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
-        buildCfg.byteCodeOptimizeLevel    = 1;
-        buildCfg.byteCodeInline           = true;
-        buildCfg.byteCodeAutoInline       = true;
-        buildCfg.byteCodeEmitAssume       = true;
-        buildCfg.safetyGuards             = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
-        buildCfg.errorStackTrace          = true;
-        buildCfg.debugAllocator           = true;
-        buildCfg.backendOptimize          = BuildCfgBackendOptim::O2;
-        buildCfg.backendDebugInfos = true;
+        buildCfg.byteCodeOptimizeLevel = 1;
+        buildCfg.byteCodeInline        = true;
+        buildCfg.byteCodeAutoInline    = true;
+        buildCfg.byteCodeEmitAssume    = true;
+        buildCfg.safetyGuards          = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
+        buildCfg.errorStackTrace       = true;
+        buildCfg.debugAllocator        = true;
+        buildCfg.backendOptimize       = BuildCfgBackendOptim::O2;
+        buildCfg.backendDebugInfos     = true;
     }
     else if (g_CommandLine.buildCfg == "release")
     {
@@ -98,7 +98,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.errorStackTrace                = false;
         buildCfg.debugAllocator                 = false;
         buildCfg.backendOptimize                = BuildCfgBackendOptim::O3;
-        buildCfg.backendDebugInfos       = true;
+        buildCfg.backendDebugInfos              = true;
         buildCfg.backendLLVM.fpMathFma          = true;
         buildCfg.backendLLVM.fpMathNoInf        = true;
         buildCfg.backendLLVM.fpMathNoNaN        = true;

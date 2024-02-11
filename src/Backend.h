@@ -37,7 +37,9 @@ enum class BackendPreCompilePass
 struct Backend
 {
     Backend(Module* mdl)
-        : module{mdl} {}
+        : module{mdl}
+    {
+    }
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      generateOutput(const BuildParameters& backendParameters);

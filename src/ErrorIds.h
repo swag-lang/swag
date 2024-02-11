@@ -2,6 +2,7 @@
 
 #undef SWAG_ERROR
 #define SWAG_ERROR(__enum) __enum
+
 enum ErrorID
 {
 #include "ErrorList.h"

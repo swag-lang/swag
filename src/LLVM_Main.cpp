@@ -188,9 +188,9 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         error_code err;
         if (exists(nameLib, err))
         {
-            nameLib = nameLib.filename();
+            nameLib     = nameLib.filename();
             auto ptrStr = builder.CreateGlobalStringPtr(nameLib.string());
-            emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, { UINT32_MAX, UINT32_MAX }, { ptrStr, builder.getInt64(nameLib.string().length()) });
+            emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.string().length())});
         }
     }
 

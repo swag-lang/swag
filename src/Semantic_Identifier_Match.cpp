@@ -1065,10 +1065,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                         Diagnostic diag(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.ctext()));
                         return context->report(diag, Diagnostic::hereIs(overload));
                     }
-                    else
-                    {
-                        identifier->addAstFlag(AST_DISCARD);
-                    }
+
+                    identifier->addAstFlag(AST_DISCARD);
                 }
             }
             else if (typeInfoRet->isVoid() && (identifier->hasAstFlag(AST_DISCARD)))
@@ -1274,10 +1272,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     Diagnostic diag(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.ctext()));
                     return context->report(diag, Diagnostic::hereIs(overload));
                 }
-                else
-                {
-                    identifier->addAstFlag(AST_DISCARD);
-                }
+
+                identifier->addAstFlag(AST_DISCARD);
             }
         }
         else if (returnType->isVoid() && (identifier->hasAstFlag(AST_DISCARD)))

@@ -1,6 +1,7 @@
 #pragma once
 #ifdef SWAG_STATS
 #include "ByteCodeOp.h"
+
 struct Stats
 {
     atomic<int> numFiles                 = 0;

@@ -116,5 +116,4 @@ namespace OS
 #define SWAG_LPEXCEPTION_POINTERS LPEXCEPTION_POINTERS
 #define SWAG_GET_EXCEPTION_INFOS() GetExceptionInformation()
 #endif
-
 } // namespace OS
