@@ -23,7 +23,12 @@ enum class JobResult;
 enum class BuildCfgBackendKind;
 enum class BuildCfgOutputKind;
 
-static constexpr int MAX_PRECOMPILE_BUFFERS = 16;
+static constexpr int MAX_PRECOMPILE_BUFFERS = 1024;
+
+struct BackendPerObj
+{
+    Utf8 filename;
+};
 
 enum class BackendPreCompilePass
 {
@@ -42,7 +47,6 @@ struct Backend
     }
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
-    virtual bool      generateOutput(const BuildParameters& backendParameters);
     virtual bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     void setMustCompile();
@@ -55,6 +59,10 @@ struct Backend
     JobResult generateExportFile(Job* ownerJob);
     bool      saveExportFile();
     bool      setupExportFile(bool force = false);
+
+    bool generateOutput(const BuildParameters& buildParameters);
+
+    BackendPerObj* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 
     Concat bufferSwg;
     Path   exportFileName;

@@ -15,10 +15,11 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
+
     if (!perThread[ct][precompileIndex])
         perThread[ct][precompileIndex] = new LLVMPerThread;
 
-    auto& pp      = *perThread[ct][precompileIndex];
+    auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& modu    = *pp.module;
 
@@ -207,9 +208,11 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
+
     if (!perThread[ct][precompileIndex])
         perThread[ct][precompileIndex] = new LLVMPerThread;
-    auto& pp = *perThread[ct][precompileIndex];
+
+    auto& pp = *(LLVMPerThread*) perThread[ct][precompileIndex];
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -290,7 +293,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
     auto& modu            = *pp.module;
 
     // Debug infos
@@ -484,22 +487,4 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     }
 
     delete targetMachine;
-}
-
-bool LLVM::generateOutput(const BuildParameters& buildParameters)
-{
-    // Do we need to generate the file ?
-    if (!mustCompile)
-        return true;
-
-    const auto targetPath = getCacheFolder(buildParameters);
-    buildParameters.module->objFiles.reserve(numPreCompileBuffers);
-    for (auto i = 0; i < numPreCompileBuffers; i++)
-    {
-        auto path = targetPath;
-        path.append(perThread[buildParameters.compileType][i]->filename);
-        buildParameters.module->objFiles.push_back(path);
-    }
-
-    return BackendLinker::link(buildParameters);
 }

@@ -39,7 +39,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
     auto        typeFunc        = bc->getCallType();
     auto        returnType      = typeFunc->concreteReturnType();

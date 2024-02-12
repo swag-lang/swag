@@ -12,12 +12,11 @@ struct ByteCodeInstruction;
 struct LLVM_Debug;
 enum class SegmentKind;
 
-struct LLVMPerThread
+struct LLVMPerThread : BackendPerObj
 {
     llvm::LLVMContext*    context;
     llvm::IRBuilder<>*    builder;
     llvm::Module*         module;
-    Utf8                  filename;
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     llvm::GlobalVariable* bssSeg               = nullptr;
@@ -101,7 +100,6 @@ struct LLVM : Backend
     }
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
-    bool      generateOutput(const BuildParameters& buildParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     bool                createRuntime(const BuildParameters& buildParameters);
@@ -140,6 +138,4 @@ struct LLVM : Backend
     static llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
     bool                     emitGetParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, const llvm::Function* func, TypeInfoFuncAttr* typeFunc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
     llvm::Value*             emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
-
-    LLVMPerThread* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 };

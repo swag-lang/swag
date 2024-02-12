@@ -738,7 +738,7 @@ void LLVM_Debug::createGlobalVariablesForSegment(const BuildParameters& buildPar
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *llvm->perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMPerThread*) llvm->perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.context;
     auto&       modu            = *pp.module;

@@ -25,7 +25,7 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     pp              = *(SCBE_X64*)perThread[ct][precompileIndex];
 
     if (precompileIndex == 0)
     {
@@ -125,7 +125,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (!perThread[ct][precompileIndex])
         perThread[ct][precompileIndex] = new SCBE_X64;
 
-    auto& pp     = *perThread[ct][precompileIndex];
+    auto& pp     = *(SCBE_X64*)perThread[ct][precompileIndex];
     auto& concat = pp.concat;
 
     // Message
@@ -238,7 +238,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     pp              = *(SCBE_CPU*) perThread[ct][precompileIndex];
 
     auto path = getCacheFolder(buildParameters);
     path.append(pp.filename);
@@ -286,22 +286,4 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     pp.dbgTypeRecords.release();
     pp.dbgMapTypes.release();
     pp.dbgMapTypesNames.release();
-}
-
-bool SCBE::generateOutput(const BuildParameters& buildParameters)
-{
-    // Do we need to generate the file ?
-    if (!mustCompile)
-        return true;
-
-    const auto targetPath = getCacheFolder(buildParameters);
-    buildParameters.module->objFiles.reserve(numPreCompileBuffers);
-    for (auto i = 0; i < numPreCompileBuffers; i++)
-    {
-        auto path = targetPath;
-        path.append(perThread[buildParameters.compileType][i]->filename);
-        buildParameters.module->objFiles.push_back(path);
-    }
-
-    return BackendLinker::link(buildParameters);
 }

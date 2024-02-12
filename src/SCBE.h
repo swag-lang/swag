@@ -21,7 +21,6 @@ struct SCBE : Backend
 
     void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
-    bool      generateOutput(const BuildParameters& buildParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     void saveObjFile(const BuildParameters& buildParameters) const;
@@ -58,6 +57,4 @@ struct SCBE : Backend
     bool        buildRelocationSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const;
     void        computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind) const;
     static void initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
-
-    SCBE_X64* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 };

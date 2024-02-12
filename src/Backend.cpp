@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend.h"
 #include "BackendFunctionBodyJob.h"
+#include "BackendLinker.h"
 #include "ByteCode.h"
 #include "CallConv.h"
 #include "LLVM_Setup.h"
@@ -13,11 +14,6 @@
 JobResult Backend::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     return JobResult::ReleaseJob;
-}
-
-bool Backend::generateOutput(const BuildParameters& backendParameters)
-{
-    return true;
 }
 
 bool Backend::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
@@ -397,4 +393,22 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Modu
 
     ownerJob->jobsToAdd.push_back(job);
     return true;
+}
+
+bool Backend::generateOutput(const BuildParameters& buildParameters)
+{
+    // Do we need to generate the file ?
+    if (!mustCompile)
+        return true;
+
+    const auto targetPath = getCacheFolder(buildParameters);
+    buildParameters.module->objFiles.reserve(numPreCompileBuffers);
+    for (auto i = 0; i < numPreCompileBuffers; i++)
+    {
+        auto path = targetPath;
+        path.append(perThread[buildParameters.compileType][i]->filename);
+        buildParameters.module->objFiles.push_back(path);
+    }
+
+    return BackendLinker::link(buildParameters);
 }

@@ -155,7 +155,7 @@ struct CPUFunction
     uint32_t                numScratchRegs          = 0;
 };
 
-struct SCBE_CPU
+struct SCBE_CPU : BackendPerObj
 {
     void            clearInstructionCache();
     CPUSymbol*      getSymbol(const Utf8& name);
@@ -166,7 +166,6 @@ struct SCBE_CPU
     CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
     static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
 
-    Utf8   filename;
     Concat concat;
     Concat postConcat;
 
