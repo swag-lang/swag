@@ -51,16 +51,14 @@ JobResult ModuleOutputJob::execute()
         backend->numPreCompileBuffers = module->buildParameters.buildCfg->backendNumCU;
         if (backend->numPreCompileBuffers == 0)
         {
-            auto numDiv                   = (uint32_t) module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
-            numDiv                        = max(numDiv, g_ThreadMgr.numWorkers * 32);
-            backend->numPreCompileBuffers = (uint32_t) module->byteCodeFunc.size() / numDiv;
+            const auto perWorker          = (uint32_t) module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
+            backend->numPreCompileBuffers = (uint32_t) module->byteCodeFunc.size() / max(perWorker, 32);
         }
 
-        backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 1);
-        backend->numPreCompileBuffers += 1; // :SegZeroIsData
+        backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 2); // :SegZeroIsData
         backend->numPreCompileBuffers = min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
-        for (int i = 0; i < backend->numPreCompileBuffers; i++)
+        for (uint32_t i = 0; i < backend->numPreCompileBuffers; i++)
         {
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
@@ -102,7 +100,7 @@ JobResult ModuleOutputJob::execute()
 
         pass = ModuleOutputJobPass::WaitForDependencies;
 
-        for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
+        for (uint32_t i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())

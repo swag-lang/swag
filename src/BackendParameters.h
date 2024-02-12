@@ -74,7 +74,7 @@ struct BuildParameters
     VectorNative<AstNode*> globalUsing;
     Module*                module          = nullptr;
     BuildCfg*              buildCfg        = nullptr;
-    int                    precompileIndex = 0;
+    uint32_t               precompileIndex = 0;
     BackendCompileType     compileType     = Normal;
 
     bool isDebug() const

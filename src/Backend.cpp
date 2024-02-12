@@ -6,8 +6,8 @@
 #include "CallConv.h"
 #include "LLVM_Setup.h"
 #include "Module.h"
-#include "Os.h"
 #include "ModuleSaveExportJob.h"
+#include "Os.h"
 #include "Version.h"
 #include "Workspace.h"
 
@@ -342,8 +342,8 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, int& start, int& end) const
 {
-    const int size            = (int) buildParameters.module->byteCodeFuncToGen.size();
-    const int precompileIndex = buildParameters.precompileIndex;
+    const auto size            = (uint32_t) buildParameters.module->byteCodeFuncToGen.size();
+    const auto precompileIndex = buildParameters.precompileIndex;
 
     SWAG_ASSERT(numPreCompileBuffers > 1);
     const int range = size / (numPreCompileBuffers - 1);
@@ -401,7 +401,7 @@ bool Backend::generateOutput(const BuildParameters& buildParameters) const
 
     const auto targetPath = getCacheFolder(buildParameters);
     buildParameters.module->objFiles.reserve(numPreCompileBuffers);
-    for (auto i = 0; i < numPreCompileBuffers; i++)
+    for (uint32_t i = 0; i < numPreCompileBuffers; i++)
     {
         auto path = targetPath;
         path.append(perThread[buildParameters.compileType][i]->filename);

@@ -83,7 +83,7 @@ struct Backend
 
     Module*               module               = nullptr;
     uint64_t              timeExportFile       = 0;
-    int                   numPreCompileBuffers = 0;
+    uint32_t              numPreCompileBuffers = 0;
     BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
     AstOutput::OutputContext outputContext;
