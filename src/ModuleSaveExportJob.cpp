@@ -3,6 +3,11 @@
 #include "Backend.h"
 #include "Module.h"
 
+ModuleSaveExportJob::ModuleSaveExportJob()
+{
+    addFlag(JOB_IS_IO);
+}
+
 JobResult ModuleSaveExportJob::execute()
 {
     module->backend->saveExportFile();

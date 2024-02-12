@@ -5,20 +5,12 @@ struct Module;
 
 struct SaveGenJob : Job
 {
-    virtual ~SaveGenJob() = default;
+    SaveGenJob();
 
-    SaveGenJob()
-    {
-        addFlag(JOB_IS_IO);
-    }
-
-    void release() override
-    {
-        Allocator::free<SaveGenJob>(this);
-    }
+    void      release() override;
+    JobResult execute() override;
 
     static bool flush(Module* module);
-    JobResult   execute() override;
 
     Utf8 content;
 };

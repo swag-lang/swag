@@ -4,6 +4,11 @@
 #include "Parser.h"
 #include "SourceFile.h"
 
+void SyntaxJob::release()
+{
+    Allocator::free<SyntaxJob>(this);
+}
+
 JobResult SyntaxJob::execute()
 {
     baseContext        = &context;

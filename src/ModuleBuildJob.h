@@ -7,14 +7,15 @@ struct ModuleDependency;
 struct ModuleBuildJob : Job
 {
     void      release() override;
-    bool      loadDependency(ModuleDependency* dep);
-    bool      loadDependency(Module* depModule);
-    void      publishFilesToPublic(const Module* moduleToPublish);
-    void      publishFilesToTarget(const Module* moduleToPublish);
-    void      publishFilesToPublic();
-    void      publishFilesToTarget();
-    void      checkMissingErrors() const;
     JobResult execute() override;
+
+    bool loadDependency(ModuleDependency* dep);
+    bool loadDependency(Module* depModule);
+    void publishFilesToPublic(const Module* moduleToPublish);
+    void publishFilesToTarget(const Module* moduleToPublish);
+    void publishFilesToPublic();
+    void publishFilesToTarget();
+    void checkMissingErrors() const;
 
     ModuleBuildPass pass      = ModuleBuildPass::Init;
     bool            fromError = false;

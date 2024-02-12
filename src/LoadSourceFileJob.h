@@ -6,16 +6,8 @@ struct SourceFile;
 struct LoadSourceFileJob : Job
 {
     virtual ~LoadSourceFileJob() = default;
+    LoadSourceFileJob();
 
-    LoadSourceFileJob()
-    {
-        addFlag(JOB_IS_IO);
-    }
-
-    void release() override
-    {
-        Allocator::free<LoadSourceFileJob>(this);
-    }
-
+    void      release() override;
     JobResult execute() override;
 };

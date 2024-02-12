@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Job.h"
 
+void Job::release()
+{
+}
+
 void Job::addDependentJob(Job* job)
 {
     ScopedLock lk(executeMutex);

@@ -5,6 +5,16 @@
 #include "Os.h"
 #include "Report.h"
 
+CopyFileJob::CopyFileJob()
+{
+    addFlag(JOB_IS_IO);
+}
+
+void CopyFileJob::release()
+{
+    Allocator::free<CopyFileJob>(this);
+}
+
 JobResult CopyFileJob::execute()
 {
     // Copy only if source is more recent than destination
@@ -49,6 +59,11 @@ JobResult CopyFileJob::execute()
     (void) fclose(fdest);
 
     return JobResult::ReleaseJob;
+}
+
+LoadFileJob::LoadFileJob()
+{
+    addFlag(JOB_IS_IO);
 }
 
 JobResult LoadFileJob::execute()

@@ -1,6 +1,6 @@
 #pragma once
 #include "Job.h"
-#include "Statistics.h"
+
 struct Module;
 
 enum class ModuleOutputJobPass

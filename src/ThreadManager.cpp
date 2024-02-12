@@ -3,7 +3,6 @@
 #include "AstNode.h"
 #include "Context.h"
 #include "JobThread.h"
-#include "Log.h"
 #include "Module.h"
 #include "Workspace.h"
 

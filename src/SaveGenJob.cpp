@@ -5,6 +5,16 @@
 #include "Module.h"
 #include "Report.h"
 
+SaveGenJob::SaveGenJob()
+{
+    addFlag(JOB_IS_IO);
+}
+
+void SaveGenJob::release()
+{
+    Allocator::free<SaveGenJob>(this);
+}
+
 bool SaveGenJob::flush(Module* module)
 {
     ScopedLock lk(module->mutexFlushGenFiles);

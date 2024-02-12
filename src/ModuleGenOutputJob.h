@@ -5,10 +5,7 @@ struct Module;
 
 struct ModuleGenOutputJob : Job
 {
-    ModuleGenOutputJob()
-    {
-        addFlag(JOB_IS_IO);
-    }
+    ModuleGenOutputJob();
 
     JobResult execute() override;
 

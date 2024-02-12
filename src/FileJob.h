@@ -4,18 +4,9 @@ struct Module;
 
 struct CopyFileJob : Job
 {
-    virtual ~CopyFileJob() = default;
+    CopyFileJob();
 
-    CopyFileJob()
-    {
-        addFlag(JOB_IS_IO);
-    }
-
-    void release() override
-    {
-        Allocator::free<CopyFileJob>(this);
-    }
-
+    void      release() override;
     JobResult execute() override;
 
     Path sourcePath;
@@ -24,10 +15,7 @@ struct CopyFileJob : Job
 
 struct LoadFileJob : Job
 {
-    LoadFileJob()
-    {
-        addFlag(JOB_IS_IO);
-    }
+    LoadFileJob();
 
     JobResult execute() override;
 

@@ -9,13 +9,8 @@ struct SyntaxContext : JobContext
 
 struct SyntaxJob : Job
 {
-    virtual ~SyntaxJob() = default;
-
-    void release() override
-    {
-        Allocator::free<SyntaxJob>(this);
-    }
-
+    virtual   ~SyntaxJob() = default;
+    void      release() override;
     JobResult execute() override;
 
     SyntaxContext context;

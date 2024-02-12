@@ -7,6 +7,11 @@
 #include "Timer.h"
 #endif
 
+ModuleGenOutputJob::ModuleGenOutputJob()
+{
+    addFlag(JOB_IS_IO);
+}
+
 JobResult ModuleGenOutputJob::execute()
 {
 #ifdef SWAG_STATS

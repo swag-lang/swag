@@ -1,6 +1,5 @@
 #pragma once
 #include "Job.h"
-struct Module;
 
 struct PrepCompilerMsgJob : Job
 {
