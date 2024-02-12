@@ -101,9 +101,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
     {
         pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits, CPUBits::B32);
-        pp.emit_NearJumpOp(JL);
-        pp.concat.addU8(0); // clear + store below
-        const auto seekPtr = pp.concat.getSeekPtr() - 1;
+        const auto seekPtr = pp.emit_NearJumpOp(JL);
         const auto seekJmp = pp.concat.totalCount();
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);

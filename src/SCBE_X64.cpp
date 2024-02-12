@@ -1463,7 +1463,7 @@ void SCBE_X64::emit_Extend_U16U64(CPURegister regDst, CPURegister regSrc)
 }
 
 /////////////////////////////////////////////////////////////////////
-void SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType)
+uint8_t* SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType, uint8_t value)
 {
     switch (jumpType)
     {
@@ -1510,6 +1510,9 @@ void SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType)
         SWAG_ASSERT(false);
         break;
     }
+
+    concat.addU8(value);
+    return concat.getSeekPtr() - 1;
 }
 
 uint32_t* SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType, uint32_t value)
@@ -1576,7 +1579,7 @@ uint32_t* SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType, uint32_t value)
         break;
     }
 
-    concat.addU32(0);
+    concat.addU32(value);
     return reinterpret_cast<uint32_t*>(concat.getSeekPtr()) - 1;
 }
 
@@ -1600,9 +1603,8 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
         const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
-            emit_NearJumpOp(jumpType);
-            int8_t offset8 = (int8_t) relOffset;
-            concat.addU8(*(uint8_t*) &offset8);
+            const auto offsetPtr = emit_NearJumpOp(jumpType);
+            *offsetPtr           = (uint8_t) (it->second - concat.totalCount());
         }
         else
         {
