@@ -11,17 +11,13 @@
 #include "Report.h"
 #include "Workspace.h"
 
-bool LLVM::createRuntime(const BuildParameters& buildParameters)
+bool LLVM::createRuntime(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-
-    if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new LLVMPerObj;
-
-    auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto& context = *pp.llvmContext;
-    auto& modu    = *pp.llvmModule;
+    auto&     pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    auto&     context         = *pp.llvmContext;
+    auto&     modu            = *pp.llvmModule;
 
     // SwagInterface
     {
@@ -209,9 +205,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
 
-    if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new LLVMPerObj;
-
+    allocatePerObj<LLVMPerObj>(buildParameters);
     auto& pp = *(LLVMPerObj*) perThread[ct][precompileIndex];
 
     // Message
@@ -232,8 +226,8 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
         pp.llvmContext = new llvm::LLVMContext();
         pp.llvmContext->setDiscardValueNames(true);
 
-        pp.llvmModule  = new llvm::Module(pp.filename.c_str(), *pp.llvmContext);
-        pp.builder = new llvm::IRBuilder<>(*pp.llvmContext);
+        pp.llvmModule = new llvm::Module(pp.filename.c_str(), *pp.llvmContext);
+        pp.builder    = new llvm::IRBuilder<>(*pp.llvmContext);
 
         if (buildParameters.buildCfg->backendDebugInfos)
         {

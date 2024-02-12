@@ -101,7 +101,7 @@ struct LLVM : Backend
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
-    bool                createRuntime(const BuildParameters& buildParameters);
+    bool                createRuntime(const BuildParameters& buildParameters) const;
     static llvm::Value* getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits);
     llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo);
     void                createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);

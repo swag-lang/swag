@@ -37,7 +37,8 @@ enum class BackendPreCompilePass
 struct BackendPerObj
 {
     Utf8                  filename;
-    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
+    Module*               module = nullptr;
+    BackendPreCompilePass pass   = {BackendPreCompilePass::Init};
 };
 
 struct Backend
@@ -61,6 +62,20 @@ struct Backend
     bool        generateOutput(const BuildParameters& buildParameters);
 
     BackendPerObj* perThread[Count][MAX_PRECOMPILE_BUFFERS];
+
+    template<typename T>
+    void allocatePerObj(const BuildParameters& buildParameters)
+    {
+        const int ct              = buildParameters.compileType;
+        const int precompileIndex = buildParameters.precompileIndex;
+
+        if (!perThread[ct][precompileIndex])
+        {
+            auto n                         = new T;
+            n->module                      = buildParameters.module;
+            perThread[ct][precompileIndex] = n;
+        }
+    }
 
     Concat bufferSwg;
     Path   exportFileName;
