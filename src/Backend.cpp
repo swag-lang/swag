@@ -16,7 +16,7 @@ JobResult Backend::prepareOutput(const BuildParameters& buildParameters, int sta
     return JobResult::ReleaseJob;
 }
 
-bool Backend::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool Backend::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     return false;
 }
@@ -340,9 +340,9 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
     }
 }
 
-void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, const Module* moduleToGen, int& start, int& end) const
+void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, int& start, int& end) const
 {
-    const int size            = (int) moduleToGen->byteCodeFuncToGen.size();
+    const int size            = (int) buildParameters.module->byteCodeFuncToGen.size();
     const int precompileIndex = buildParameters.precompileIndex;
 
     SWAG_ASSERT(numPreCompileBuffers > 1);
@@ -364,17 +364,15 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
     }
 }
 
-bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
+bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job* ownerJob)
 {
-    SWAG_ASSERT(moduleToGen);
-
     // Batch functions between files
     int start = 0;
     int end   = 0;
-    getRangeFunctionIndexForJob(buildParameters, moduleToGen, start, end);
+    getRangeFunctionIndexForJob(buildParameters, start, end);
 
     BackendFunctionBodyJob* job = Allocator::alloc<BackendFunctionBodyJob>();
-    job->module                 = moduleToGen;
+    job->module                 = buildParameters.module;
     job->dependentJob           = ownerJob;
     job->buildParameters        = buildParameters;
     job->backend                = this;
@@ -389,13 +387,13 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Modu
         addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int) g_Workspace->runtimeModule->byteCodeFuncToGen.size());
     }
 
-    addFunctionsToJob(moduleToGen, job, start, end);
+    addFunctionsToJob(buildParameters.module, job, start, end);
 
     ownerJob->jobsToAdd.push_back(job);
     return true;
 }
 
-bool Backend::generateOutput(const BuildParameters& buildParameters)
+bool Backend::generateOutput(const BuildParameters& buildParameters) const
 {
     // Do we need to generate the file ?
     if (!mustCompile)

@@ -8,7 +8,6 @@
 
 void LLVM::getReturnResult(llvm::LLVMContext&     context,
                            const BuildParameters& buildParameters,
-                           Module*                moduleToGen,
                            TypeInfo*              returnType,
                            bool                   imm,
                            const Register&        reg,
@@ -80,7 +79,7 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
     }
     else if (returnType->isPointer() || returnType->isLambdaClosure())
     {
-        const auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
+        const auto llvmType = swagTypeToLLVMType(buildParameters, returnType);
         if (imm)
             returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
         else
@@ -103,7 +102,7 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
     }
 }
 
-void LLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
+void LLVM::createRet(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -149,7 +148,7 @@ void LLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen
         }
         else if (returnType->isPointer() || returnType->isLambdaClosure())
         {
-            const auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
+            const auto llvmType = swagTypeToLLVMType(buildParameters, returnType);
             builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
         }
         // :ReturnStructByValue
@@ -169,7 +168,7 @@ void LLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen
     }
 }
 
-llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
+llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -191,7 +190,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
     }
 
     VectorNative<llvm::Type*> params;
-    llvm::Type*               llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
+    llvm::Type*               llvmRealReturnType = swagTypeToLLVMType(buildParameters, typeFunc->returnType);
     const bool                returnByAddress    = CallConv::returnByAddress(typeFunc);
     const auto                returnType         = typeFunc->concreteReturnType();
 
@@ -243,19 +242,19 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
             }
             else if (param->isString() || param->isSlice())
             {
-                auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
+                auto cType = swagTypeToLLVMType(buildParameters, param);
                 params.push_back(cType);
                 params.push_back(I64_TY());
             }
             else if (param->isAny() || param->isInterface())
             {
-                auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
+                auto cType = swagTypeToLLVMType(buildParameters, param);
                 params.push_back(cType);
                 params.push_back(PTR_I8_TY());
             }
             else
             {
-                auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
+                auto cType = swagTypeToLLVMType(buildParameters, param);
                 params.push_back(cType);
             }
         }
@@ -430,7 +429,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
             }
             else
             {
-                const auto ty = swagTypeToLLVMType(buildParameters, module, param);
+                const auto ty = swagTypeToLLVMType(buildParameters, param);
                 r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
                 builder.CreateStore(arg, r0);
             }
@@ -439,7 +438,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
         // Real type
         else
         {
-            const auto ty = swagTypeToLLVMType(buildParameters, module, param);
+            const auto ty = swagTypeToLLVMType(buildParameters, param);
             auto       r0 = GEP64(allocR, rDest);
             r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
@@ -466,7 +465,6 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
 bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
                               llvm::AllocaInst*             allocR,
                               llvm::AllocaInst*             allocRR,
-                              Module*                       moduleToGen,
                               TypeInfoFuncAttr*             typeFuncBC,
                               VectorNative<llvm::Value*>&   params,
                               const VectorNative<uint32_t>& pushParams,
@@ -525,7 +523,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
         else if (typeParam->isPointer())
         {
             const auto typePtr  = castTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
-            const auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
+            const auto llvmType = swagTypeToLLVMType(buildParameters, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else if (CallConv::structParamByValue(typeFuncBC, typeParam))
@@ -555,7 +553,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
         }
         else if (typeParam->isNative())
         {
-            const auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typeParam);
+            const auto llvmType = swagTypeToLLVMType(buildParameters, typeParam);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else
@@ -589,7 +587,6 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
 
 bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
                                llvm::AllocaInst*      allocRR,
-                               Module*                moduleToGen,
                                TypeInfoFuncAttr*      typeFuncBC,
                                llvm::Value*           callResult) const
 {
@@ -658,7 +655,6 @@ bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
 }
 
 llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
-                            Module*                       moduleToGen,
                             const Utf8&                   funcName,
                             TypeInfoFuncAttr*             typeFuncBC,
                             llvm::AllocaInst*             allocR,
@@ -675,10 +671,10 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
 
     // Get parameters
     VectorNative<llvm::Value*> params;
-    emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, params, pushParams, values);
+    emitCallParameters(buildParameters, allocR, allocRR, typeFuncBC, params, pushParams, values);
 
     // Make the call
-    const auto typeF = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncBC);
+    const auto typeF = getOrCreateFuncType(buildParameters, typeFuncBC);
     auto       func  = modu.getOrInsertFunction(funcName.c_str(), typeF);
     const auto F     = llvm::dyn_cast<llvm::Function>(func.getCallee());
 
@@ -690,7 +686,6 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
 }
 
 llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
-                            Module*                     moduleToGen,
                             const char*                 name,
                             llvm::AllocaInst*           allocR,
                             llvm::AllocaInst*           allocT,
@@ -698,7 +693,7 @@ llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
                             const Vector<llvm::Value*>& values)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
-    getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
+    getOrCreateFuncType(buildParameters, typeFunc);
 
     // Invert regs
     VectorNative<uint32_t> pushRAParams;
@@ -708,7 +703,7 @@ llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
     for (int i = (int) values.size() - 1; i >= 0; i--)
         pushVParams.push_back(values[i]);
 
-    return emitCall(buildParameters, moduleToGen, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
+    return emitCall(buildParameters, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }
 
 void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameters,
@@ -752,7 +747,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
         }
     }
 
-    // Two registers for variadics first
+    // Two registers for variadic first
     if (typeFuncBC->isVariadic())
     {
         auto index = pushRAParams[popRAidx--];
@@ -789,7 +784,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
             // By value
             if (typeParam->numRegisters() == 1)
             {
-                const auto ty = swagTypeToLLVMType(buildParameters, module, typeParam);
+                const auto ty = swagTypeToLLVMType(buildParameters, typeParam);
                 if (index == UINT32_MAX)
                 {
                     auto v0 = values[popRAidx + 1];

@@ -12,7 +12,7 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC)) && (buildParameters.compileType != Test))
@@ -20,7 +20,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMPerObj*)perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto& context         = *pp.llvmContext;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.llvmModule;
@@ -33,9 +33,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Function prototype
-    auto funcType = getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
+    auto funcType = getOrCreateFuncType(buildParameters, typeFunc);
     auto func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
-    setFuncAttributes(buildParameters, moduleToGen, bcFuncNode, bc, func);
+    setFuncAttributes(buildParameters, bcFuncNode, bc, func);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -840,31 +840,31 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::IntrinsicDbgAlloc:
         {
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atdbgalloc, allocR, allocT, {}, {});
+            auto result = emitCall(buildParameters, g_LangSpec->name_atdbgalloc, allocR, allocT, {}, {});
             builder.CreateStore(TO_PTR_I8(result), GEP64_PTR_PTR_I8(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicSysAlloc:
         {
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atsysalloc, allocR, allocT, {}, {});
+            auto result = emitCall(buildParameters, g_LangSpec->name_atsysalloc, allocR, allocT, {}, {});
             builder.CreateStore(TO_PTR_I8(result), GEP64_PTR_PTR_I8(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicRtFlags:
         {
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});
+            auto result = emitCall(buildParameters, g_LangSpec->name_atrtflags, allocR, allocT, {}, {});
             builder.CreateStore(result, GEP64(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicStringCmp:
         {
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+            auto result = emitCall(buildParameters, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
             builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->d.u32));
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:
         {
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_attypecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            auto result = emitCall(buildParameters, g_LangSpec->name_attypecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             builder.CreateStore(result, GEP64_PTR_I8(allocR, ip->d.u32));
             break;
         }
@@ -975,7 +975,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::IntrinsicItfTableOf:
         {
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atitftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            auto result = emitCall(buildParameters, g_LangSpec->name_atitftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             builder.CreateStore(result, GEP64_PTR_PTR_I8(allocR, ip->c.u32));
             break;
         }
@@ -3411,7 +3411,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::JumpDyn64:
         case ByteCodeOp::JumpDyn32:
         {
-            auto tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
+            auto tableCompiler = (int32_t*) buildParameters.module->compilerSegment.address(ip->d.u32);
 
             VectorNative<llvm::BasicBlock*> falseBlocks;
             VectorNative<llvm::BasicBlock*> trueBlocks;
@@ -4191,7 +4191,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         /////////////////////////////////////
 
         case ByteCodeOp::CopyRBtoRRRet:
-            getReturnResult(context, buildParameters, moduleToGen, returnType, ip->flags & BCI_IMM_B, ip->b, allocR, allocResult);
+            getReturnResult(context, buildParameters, returnType, ip->flags & BCI_IMM_B, ip->b, allocR, allocResult);
 
         case ByteCodeOp::Ret:
         {
@@ -4219,7 +4219,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             }
 #endif
 
-            createRet(buildParameters, moduleToGen, typeFunc, returnType, allocResult);
+            createRet(buildParameters, typeFunc, returnType, allocResult);
             blockIsClosed = true;
             break;
         }
@@ -4229,29 +4229,29 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::IntrinsicCompilerError:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extByteCode()->bc;
-            emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicCompilerWarning:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extByteCode()->bc;
-            emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
         case ByteCodeOp::IntrinsicPanic:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
 
         case ByteCodeOp::Unreachable:
-            emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) "executing unreachable code");
+            emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) "executing unreachable code");
             break;
         case ByteCodeOp::InternalUnreachable:
             builder.CreateUnreachable();
             blockIsClosed = true;
             break;
         case ByteCodeOp::InternalPanic:
-            emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) ip->d.pointer);
+            emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);
             break;
 
         case ByteCodeOp::InternalGetTlsPtr:
@@ -4259,7 +4259,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             auto v0     = builder.getInt64(module->tlsSegment.totalCount);
             auto r1     = builder.CreateInBoundsGEP(I8_TY(), pp.tlsSeg, pp.cst0_i64);
             auto vid    = builder.CreateLoad(I64_TY(), pp.symTls_threadLocalId);
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
+            auto result = emitCall(buildParameters, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
             builder.CreateStore(result, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
             break;
         }
@@ -4268,7 +4268,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto r0     = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
             auto v0     = builder.CreateLoad(I64_TY(), r0);
-            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
+            auto result = emitCall(buildParameters, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
             builder.CreateStore(builder.CreatePtrToInt(result, I64_TY()), GEP64(allocR, ip->a.u32));
             break;
         }
@@ -4276,7 +4276,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
             auto v0 = builder.CreateLoad(I64_TY(), r0);
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
+            emitCall(buildParameters, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
             break;
         }
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -4325,7 +4325,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         }
 
         case ByteCodeOp::IntrinsicArguments:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name_atargs, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name_atargs, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
 
@@ -4345,7 +4345,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         }
         case ByteCodeOp::IntrinsicModules:
         {
-            if (moduleToGen->modulesSliceOffset == UINT32_MAX)
+            if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
             {
                 auto r0 = GEP64(allocR, ip->a.u32);
                 builder.CreateStore(pp.cst0_i64, r0);
@@ -4355,16 +4355,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             else
             {
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                auto r1 = GEP8(pp.constantSeg, moduleToGen->modulesSliceOffset);
+                auto r1 = GEP8(pp.constantSeg, buildParameters.module->modulesSliceOffset);
                 builder.CreateStore(r1, r0);
                 auto r2 = GEP64(allocR, ip->b.u32);
-                builder.CreateStore(builder.getInt64(moduleToGen->moduleDependencies.count + 1), r2);
+                builder.CreateStore(builder.getInt64(buildParameters.module->moduleDependencies.count + 1), r2);
             }
             break;
         }
         case ByteCodeOp::IntrinsicGvtd:
         {
-            if (moduleToGen->globalVarsToDropSliceOffset == UINT32_MAX)
+            if (buildParameters.module->globalVarsToDropSliceOffset == UINT32_MAX)
             {
                 auto r0 = GEP64(allocR, ip->a.u32);
                 builder.CreateStore(pp.cst0_i64, r0);
@@ -4374,10 +4374,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             else
             {
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                auto r1 = GEP8(pp.mutableSeg, moduleToGen->globalVarsToDropSliceOffset);
+                auto r1 = GEP8(pp.mutableSeg, buildParameters.module->globalVarsToDropSliceOffset);
                 builder.CreateStore(r1, r0);
                 auto r2 = GEP64(allocR, ip->b.u32);
-                builder.CreateStore(builder.getInt64(moduleToGen->globalVarsToDrop.count), r2);
+                builder.CreateStore(builder.getInt64(buildParameters.module->globalVarsToDrop.count), r2);
             }
             break;
         }
@@ -4385,14 +4385,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         /////////////////////////////////////
 
         case ByteCodeOp::InternalFailedAssume:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__failedAssume, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name__failedAssume, allocR, allocT, {ip->a.u32}, {});
             break;
         case ByteCodeOp::IntrinsicGetErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name_aterr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name_aterr, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         case ByteCodeOp::InternalSetErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;
 
         case ByteCodeOp::InternalHasErr:
@@ -4433,13 +4433,13 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             break;
         }
         case ByteCodeOp::InternalPushErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
             break;
         case ByteCodeOp::InternalPopErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__poperr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name__poperr, allocR, allocT, {}, {});
             break;
         case ByteCodeOp::InternalCatchErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__catcherr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name__catcherr, allocR, allocT, {}, {});
             break;
         case ByteCodeOp::InternalInitStackTrace:
         {
@@ -4453,11 +4453,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto r1 = GEP8(pp.constantSeg, ip->b.u32);
             builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
 
         /////////////////////////////////////
@@ -4805,7 +4805,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         /////////////////////////////////////
 
         case ByteCodeOp::CopyRAtoRR:
-            getReturnResult(context, buildParameters, moduleToGen, returnType, ip->flags & BCI_IMM_A, ip->a, allocR, allocResult);
+            getReturnResult(context, buildParameters, returnType, ip->flags & BCI_IMM_A, ip->a, allocR, allocResult);
             break;
         case ByteCodeOp::CopyRARBtoRR2:
         {
@@ -5094,7 +5094,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             Utf8              callName     = funcNode->getCallName();
             TypeInfoFuncAttr* typeFuncNode = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-            auto T = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncNode);
+            auto T = getOrCreateFuncType(buildParameters, typeFuncNode);
             auto F = (llvm::Function*) modu.getOrInsertFunction(callName.c_str(), T).getCallee();
 
             auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
@@ -5143,7 +5143,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto callBc       = (ByteCode*) ip->a.pointer;
             auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
-            resultFuncCall    = emitCall(buildParameters, moduleToGen, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+            resultFuncCall    = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
             if (ip->op == ByteCodeOp::LocalCallPopRC)
                 storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
@@ -5158,7 +5158,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         {
             auto funcNode     = (AstFuncDecl*) ip->a.pointer;
             auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
-            resultFuncCall    = emitCall(buildParameters, moduleToGen, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
+            resultFuncCall    = emitCall(buildParameters, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -5187,7 +5187,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 llvm::FunctionType*        FT = nullptr;
                 auto                       v1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
                 VectorNative<llvm::Value*> fctParams;
-                emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncCall, fctParams, pushRAParams, {});
+                emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParams, pushRAParams, {});
 
                 if (typeFuncCall->isClosure())
                 {
@@ -5207,31 +5207,31 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                     // Lambda call. We must eliminate the first parameter (closure context)
                     builder.SetInsertPoint(blockLambda);
                     VectorNative<llvm::Value*> fctParamsLocal;
-                    emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
+                    emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
 
-                    FT            = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncCall, true);
+                    FT            = getOrCreateFuncType(buildParameters, typeFuncCall, true);
                     auto l_PT     = llvm::PointerType::getUnqual(FT);
                     auto l_r1     = builder.CreateIntToPtr(v1, l_PT);
                     auto l_result = builder.CreateCall(FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, l_result));
+                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, l_result));
                     builder.CreateBr(blockNext);
 
                     // Closure call. Normal call, as the type contains the first parameter.
                     builder.SetInsertPoint(blockClosure);
-                    FT            = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncCall);
+                    FT            = getOrCreateFuncType(buildParameters, typeFuncCall);
                     auto c_PT     = llvm::PointerType::getUnqual(FT);
                     auto c_r1     = builder.CreateIntToPtr(v1, c_PT);
                     auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
-                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, c_result));
+                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, c_result));
                     builder.CreateBr(blockNext);
                 }
                 else
                 {
-                    FT                = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncCall);
+                    FT                = getOrCreateFuncType(buildParameters, typeFuncCall);
                     auto PT           = llvm::PointerType::getUnqual(FT);
                     auto r1           = builder.CreateIntToPtr(v1, PT);
                     auto returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
-                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, returnResult));
+                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, returnResult));
                     builder.CreateBr(blockNext);
                 }
             }
@@ -5334,7 +5334,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5362,7 +5362,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5390,7 +5390,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5418,7 +5418,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5439,7 +5439,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5459,7 +5459,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5479,7 +5479,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5499,7 +5499,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5526,7 +5526,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5552,7 +5552,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5578,7 +5578,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5604,7 +5604,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5631,7 +5631,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5657,7 +5657,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5731,7 +5731,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5805,7 +5805,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -5813,24 +5813,24 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         default:
             ok = false;
-            Report::internalError(moduleToGen, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+            Report::internalError(buildParameters.module, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
             break;
         }
     }
 
     if (!blockIsClosed)
     {
-        createRet(buildParameters, moduleToGen, typeFunc, returnType, allocResult);
+        createRet(buildParameters, typeFunc, returnType, allocResult);
     }
 
     return ok;
 }
 
-llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo)
+llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo)
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMPerObj*)perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       context         = *pp.llvmContext;
 
     typeInfo = typeInfo->getConcreteAlias();
@@ -5838,7 +5838,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     if (typeInfo->isEnum())
     {
         const auto typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        return swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType);
+        return swagTypeToLLVMType(buildParameters, typeInfoEnum->rawType);
     }
 
     if (typeInfo->isPointer())
@@ -5847,7 +5847,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         const auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();
-        return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
+        return swagTypeToLLVMType(buildParameters, pointedType)->getPointerTo();
     }
 
     if (typeInfo->isSlice() ||
@@ -5910,9 +5910,9 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerObj& pp, llvm::Function* func, i
     return it->second;
 }
 
-void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const
+void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const
 {
-    if (!moduleToGen->mustOptimizeBackend(bc->node))
+    if (!buildParameters.module->mustOptimizeBackend(bc->node))
     {
         func->addFnAttr(llvm::Attribute::AttrKind::OptimizeNone);
         func->addFnAttr(llvm::Attribute::AttrKind::NoInline);

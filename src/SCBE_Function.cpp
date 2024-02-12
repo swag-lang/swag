@@ -31,7 +31,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
     }
 }
 
-bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC)) && (buildParameters.compileType != Test))
@@ -536,42 +536,42 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::BinOpMulS8:
         case ByteCodeOp::BinOpMulS8_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::IMUL, CPUBits::B8);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpMulS16:
         case ByteCodeOp::BinOpMulS16_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::IMUL, CPUBits::B16);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpMulS32:
         case ByteCodeOp::BinOpMulS32_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::IMUL, CPUBits::B32);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMulS64:
         case ByteCodeOp::BinOpMulS64_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::IMUL, CPUBits::B64);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMulU8:
         case ByteCodeOp::BinOpMulU8_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::MUL, CPUBits::B8);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::BinOpMulU16:
         case ByteCodeOp::BinOpMulU16_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::MUL, CPUBits::B16);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::BinOpMulU32:
         case ByteCodeOp::BinOpMulU32_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::MUL, CPUBits::B32);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulU64_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::MUL, CPUBits::B64);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpMulF32:
             emitBinOpFloat32AtReg(pp, ip, CPUOp::FMUL);
@@ -645,42 +645,42 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::BinOpPlusS8:
         case ByteCodeOp::BinOpPlusS8_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B8);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpPlusS16:
         case ByteCodeOp::BinOpPlusS16_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B16);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpPlusS32:
         case ByteCodeOp::BinOpPlusS32_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B32);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpPlusS64:
         case ByteCodeOp::BinOpPlusS64_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B64);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpPlusU8:
         case ByteCodeOp::BinOpPlusU8_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B8);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::BinOpPlusU16:
         case ByteCodeOp::BinOpPlusU16_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B16);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpPlusU32_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B32);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpPlusU64:
         case ByteCodeOp::BinOpPlusU64_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::ADD, CPUBits::B64);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpPlusF32:
             emitBinOpFloat32AtReg(pp, ip, CPUOp::FADD);
@@ -694,42 +694,42 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::BinOpMinusS8:
         case ByteCodeOp::BinOpMinusS8_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B8);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpMinusS16:
         case ByteCodeOp::BinOpMinusS16_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B16);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpMinusS32_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B32);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMinusS64:
         case ByteCodeOp::BinOpMinusS64_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B64);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMinusU8:
         case ByteCodeOp::BinOpMinusU8_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B8);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::BinOpMinusU16:
         case ByteCodeOp::BinOpMinusU16_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B16);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::BinOpMinusU32:
         case ByteCodeOp::BinOpMinusU32_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B32);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMinusU64:
         case ByteCodeOp::BinOpMinusU64_Safe:
             emitBinOpIntNAtReg(pp, ip, CPUOp::SUB, CPUBits::B64);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
             break;
 
         case ByteCodeOp::BinOpMinusF32:
@@ -869,7 +869,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load8_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::IMUL, CPUBits::B8);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -894,7 +894,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load16_Indirect(0, RAX, RAX);
             MK_IMMB_16(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::IMUL, CPUBits::B16);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -919,7 +919,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load32_Indirect(0, RAX, RAX);
             MK_IMMB_32(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::IMUL, CPUBits::B32);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store32_Indirect(0, RAX, RCX);
             break;
@@ -944,7 +944,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load64_Indirect(0, RAX, RAX);
             MK_IMMB_64(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::IMUL, CPUBits::B64);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);
             break;
@@ -969,7 +969,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load8_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::MUL, CPUBits::B8);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -994,7 +994,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load16_Indirect(0, RAX, RAX);
             MK_IMMB_16(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::MUL, CPUBits::B16);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1019,7 +1019,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load32_Indirect(0, RAX, RAX);
             MK_IMMB_32(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::MUL, CPUBits::B32);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store32_Indirect(0, RAX, RCX);
             break;
@@ -1044,7 +1044,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Load64_Indirect(0, RAX, RAX);
             MK_IMMB_64(RCX);
             pp.emit_OpN(RAX, RCX, CPUOp::MUL, CPUBits::B64);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);
             break;
@@ -1570,7 +1570,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpPlusEqS8:
         case ByteCodeOp::AffectOpPlusEqS8_Safe:
             MK_BINOPEQ8_CAB(CPUOp::ADD);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
@@ -1587,7 +1587,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpPlusEqS16:
         case ByteCodeOp::AffectOpPlusEqS16_Safe:
             MK_BINOPEQ16_CAB(CPUOp::ADD);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
@@ -1604,7 +1604,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpPlusEqS32:
         case ByteCodeOp::AffectOpPlusEqS32_Safe:
             MK_BINOPEQ32_CAB(CPUOp::ADD);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::AffectOpPlusEqS32_SSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
@@ -1621,7 +1621,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpPlusEqS64:
         case ByteCodeOp::AffectOpPlusEqS64_Safe:
             MK_BINOPEQ64_CAB(CPUOp::ADD);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::AffectOpPlusEqS64_SSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
@@ -1638,25 +1638,25 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpPlusEqU8:
         case ByteCodeOp::AffectOpPlusEqU8_Safe:
             MK_BINOPEQ8_CAB(CPUOp::ADD);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
             break;
 
         case ByteCodeOp::AffectOpPlusEqU16:
         case ByteCodeOp::AffectOpPlusEqU16_Safe:
             MK_BINOPEQ16_CAB(CPUOp::ADD);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
             break;
 
         case ByteCodeOp::AffectOpPlusEqU32:
         case ByteCodeOp::AffectOpPlusEqU32_Safe:
             MK_BINOPEQ32_CAB(CPUOp::ADD);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
             break;
 
         case ByteCodeOp::AffectOpPlusEqU64:
         case ByteCodeOp::AffectOpPlusEqU64_Safe:
             MK_BINOPEQ64_CAB(CPUOp::ADD);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
             break;
 
         case ByteCodeOp::AffectOpPlusEqF32:
@@ -1684,7 +1684,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpMinusEqS8:
         case ByteCodeOp::AffectOpMinusEqS8_Safe:
             MK_BINOPEQ8_CAB(CPUOp::SUB);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSafe:
         case ByteCodeOp::AffectOpMinusEqU8_SSafe:
@@ -1701,7 +1701,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpMinusEqS16:
         case ByteCodeOp::AffectOpMinusEqS16_Safe:
             MK_BINOPEQ16_CAB(CPUOp::SUB);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSafe:
         case ByteCodeOp::AffectOpMinusEqU16_SSafe:
@@ -1718,7 +1718,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpMinusEqS32:
         case ByteCodeOp::AffectOpMinusEqS32_Safe:
             MK_BINOPEQ32_CAB(CPUOp::SUB);
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::AffectOpMinusEqS32_SSafe:
         case ByteCodeOp::AffectOpMinusEqU32_SSafe:
@@ -1734,7 +1734,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::AffectOpMinusEqS64:
         case ByteCodeOp::AffectOpMinusEqS64_Safe:
-            emitOverflowSigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
             MK_BINOPEQ64_CAB(CPUOp::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS64_SSafe:
@@ -1752,25 +1752,25 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::AffectOpMinusEqU8:
         case ByteCodeOp::AffectOpMinusEqU8_Safe:
             MK_BINOPEQ8_CAB(CPUOp::SUB);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
             break;
 
         case ByteCodeOp::AffectOpMinusEqU16:
         case ByteCodeOp::AffectOpMinusEqU16_Safe:
             MK_BINOPEQ16_CAB(CPUOp::SUB);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
             break;
 
         case ByteCodeOp::AffectOpMinusEqU32:
         case ByteCodeOp::AffectOpMinusEqU32_Safe:
             MK_BINOPEQ32_CAB(CPUOp::SUB);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
             break;
 
         case ByteCodeOp::AffectOpMinusEqU64:
         case ByteCodeOp::AffectOpMinusEqU64_Safe:
             MK_BINOPEQ64_CAB(CPUOp::SUB);
-            emitOverflowUnsigned(pp, module, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
             break;
 
         case ByteCodeOp::AffectOpMinusEqF32:
@@ -2159,19 +2159,19 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         /////////////////////////////////////
 
         case ByteCodeOp::IntrinsicDbgAlloc:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atdbgalloc, {}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_atdbgalloc, {}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicSysAlloc:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atsysalloc, {}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_atsysalloc, {}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicRtFlags:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atrtflags, {}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_atrtflags, {}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicStringCmp:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atstrcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, REG_OFFSET(ip->d.u32));
+            emitInternalCall(pp, g_LangSpec->name_atstrcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, REG_OFFSET(ip->d.u32));
             break;
         case ByteCodeOp::IntrinsicTypeCmp:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_attypecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, REG_OFFSET(ip->d.u32));
+            emitInternalCall(pp, g_LangSpec->name_attypecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, REG_OFFSET(ip->d.u32));
             break;
 
         /////////////////////////////////////
@@ -2295,7 +2295,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::JumpDyn32:
         case ByteCodeOp::JumpDyn64:
         {
-            auto tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
+            auto tableCompiler = (int32_t*) buildParameters.module->compilerSegment.address(ip->d.u32);
 
             if (ip->op == ByteCodeOp::JumpDyn8)
                 pp.emit_LoadS8S64_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
@@ -2319,7 +2319,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Jump(JAE, i, tableCompiler[0]);
 
             uint8_t* addrConstant        = nullptr;
-            auto     offsetTableConstant = moduleToGen->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
+            auto     offsetTableConstant = buildParameters.module->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
 
             pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
             pp.emit_JumpTable(RCX, RAX);
@@ -2861,7 +2861,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.pushParams.push_back({CPUPushParamType::RegAdd, ip->a.u32, ip->c.u64});
                 pp.pushParams.push_back({CPUPushParamType::Imm, 0});
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
+                emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -2869,7 +2869,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
             pp.pushParams.push_back({CPUPushParamType::Imm, 0});
             pp.pushParams.push_back({CPUPushParamType::RegMul, ip->b.u32, ip->c.u64});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
+            emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
             break;
 
         /////////////////////////////////////
@@ -2918,7 +2918,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.pushParams.push_back({CPUPushParamType::RAX});
                 pp.pushParams.push_back({CPUPushParamType::Imm, 0});
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
+                emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
         }
@@ -2946,7 +2946,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.pushParams.push_back({CPUPushParamType::Addr, offsetStack + ip->a.u32});
                 pp.pushParams.push_back({CPUPushParamType::Imm, 0});
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u32});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
+                emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
 
@@ -3245,7 +3245,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                     pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
                 else
                     pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcpy, pp.pushParams);
+                emitInternalCallExt(pp, g_LangSpec->name_memcpy, pp.pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
@@ -3266,7 +3266,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                     pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
                 else
                     pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
+                emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemMove:
@@ -3277,7 +3277,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memmove, pp.pushParams);
+            emitInternalCallExt(pp, g_LangSpec->name_memmove, pp.pushParams);
             break;
         case ByteCodeOp::IntrinsicMemCmp:
             pp.pushParams.clear();
@@ -3287,33 +3287,33 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->d.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->d.u32});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcmp, pp.pushParams, REG_OFFSET(ip->a.u32));
+            emitInternalCallExt(pp, g_LangSpec->name_memcmp, pp.pushParams, REG_OFFSET(ip->a.u32));
             break;
 
         case ByteCodeOp::IntrinsicStrLen:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_strlen, {ip->b.u32}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_strlen, {ip->b.u32}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicStrCmp:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_strcmp, {ip->b.u32, ip->c.u32}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_strcmp, {ip->b.u32, ip->c.u32}, REG_OFFSET(ip->a.u32));
             break;
 
         case ByteCodeOp::IntrinsicAlloc:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_malloc, {ip->b.u32}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_malloc, {ip->b.u32}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicRealloc:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_realloc, {ip->b.u32, ip->c.u32}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_realloc, {ip->b.u32, ip->c.u32}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicFree:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_free, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name_free, {ip->a.u32});
             break;
 
         case ByteCodeOp::InternalPanic:
-            emitInternalPanic(pp, module, ip->node, (const char*) ip->d.pointer);
+            emitInternalPanic(pp, ip->node, (const char*) ip->d.pointer);
             break;
         case ByteCodeOp::InternalUnreachable:
             break;
         case ByteCodeOp::Unreachable:
-            emitInternalPanic(pp, module, ip->node, "executing unreachable code");
+            emitInternalPanic(pp, ip->node, "executing unreachable code");
             break;
 
         case ByteCodeOp::InternalGetTlsPtr:
@@ -3321,18 +3321,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symTls_threadLocalId});
             pp.pushParams.push_back({CPUPushParamType::Imm64, module->tlsSegment.totalCount});
             pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symTLSIndex});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
+            emitInternalCallExt(pp, g_LangSpec->name__tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
+            emitInternalCallExt(pp, g_LangSpec->name__tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicSetContext:
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
-            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsSetValue, pp.pushParams);
+            emitInternalCallExt(pp, g_LangSpec->name__tlsSetValue, pp.pushParams);
             break;
 
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -3382,10 +3382,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::IntrinsicArguments:
             SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atargs, {}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_atargs, {}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicModules:
-            if (moduleToGen->modulesSliceOffset == UINT32_MAX)
+            if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
             {
                 pp.emit_LoadAddress_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emit_Store64_Immediate(0, 0, RAX);
@@ -3394,14 +3394,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             }
             else
             {
-                pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, moduleToGen->modulesSliceOffset);
+                pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 pp.emit_LoadAddress_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-                pp.emit_Store64_Immediate(0, moduleToGen->moduleDependencies.count + 1, RAX);
+                pp.emit_Store64_Immediate(0, buildParameters.module->moduleDependencies.count + 1, RAX);
             }
             break;
         case ByteCodeOp::IntrinsicGvtd:
-            if (moduleToGen->globalVarsToDropSliceOffset == UINT32_MAX)
+            if (buildParameters.module->globalVarsToDropSliceOffset == UINT32_MAX)
             {
                 pp.emit_LoadAddress_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emit_Store64_Immediate(0, 0, RAX);
@@ -3410,10 +3410,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             }
             else
             {
-                pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, moduleToGen->globalVarsToDropSliceOffset);
+                pp.emit_Symbol_RelocationAddr(RAX, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 pp.emit_LoadAddress_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-                pp.emit_Store64_Immediate(0, moduleToGen->globalVarsToDrop.count, RAX);
+                pp.emit_Store64_Immediate(0, buildParameters.module->globalVarsToDrop.count, RAX);
             }
             break;
 
@@ -3428,16 +3428,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             pp.emit_Store32_Immediate(0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicCompilerError:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atcompilererror, {ip->a.u32, ip->b.u32, ip->c.u32});
+            emitInternalCall(pp, g_LangSpec->name_atcompilererror, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         case ByteCodeOp::IntrinsicCompilerWarning:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atcompilerwarning, {ip->a.u32, ip->b.u32, ip->c.u32});
+            emitInternalCall(pp, g_LangSpec->name_atcompilerwarning, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         case ByteCodeOp::IntrinsicPanic:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32});
+            emitInternalCall(pp, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         case ByteCodeOp::IntrinsicItfTableOf:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atitftableof, {ip->a.u32, ip->b.u32}, REG_OFFSET(ip->c.u32));
+            emitInternalCall(pp, g_LangSpec->name_atitftableof, {ip->a.u32, ip->b.u32}, REG_OFFSET(ip->c.u32));
             break;
 
         /////////////////////////////////////
@@ -4066,7 +4066,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4111,7 +4111,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4156,7 +4156,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4201,7 +4201,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4228,7 +4228,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4254,7 +4254,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4280,7 +4280,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4306,7 +4306,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4345,7 +4345,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4383,7 +4383,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4421,7 +4421,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4459,7 +4459,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4494,14 +4494,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
 
             case TokenId::IntrinsicPow:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_powf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_powf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_atan2f, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -4534,14 +4534,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
 
             case TokenId::IntrinsicPow:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_pow, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_pow, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_atan2, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             break;
@@ -4571,62 +4571,62 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
 
             case TokenId::IntrinsicSin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_sinf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicCos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_cosf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicTan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_tanf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicSinh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinhf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_sinhf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicCosh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_coshf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_coshf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicTanh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanhf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_tanhf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicASin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asinf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_asinf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicACos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acosf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_acosf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atanf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_atanf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_logf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_logf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_log2f, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog10:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_log10f, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicFloor:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floorf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_floorf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicCeil:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceilf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_ceilf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicTrunc:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_truncf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_truncf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicRound:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_roundf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_roundf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_expf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_expf, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_exp2f, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4657,62 +4657,62 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
 
             case TokenId::IntrinsicSin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sin, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_sin, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicCos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cos, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_cos, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicTan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tan, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_tan, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicSinh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinh, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_sinh, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicCosh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosh, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_cosh, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicTanh:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanh, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_tanh, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicASin:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asin, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_asin, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicACos:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acos, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_acos, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_atan, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_log, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_log2, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog10:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_log10, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicFloor:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floor, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_floor, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicCeil:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceil, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_ceil, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicTrunc:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_trunc, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_trunc, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicRound:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_round, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_round, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_exp, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp2:
-                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2, pp.pushParams, REG_OFFSET(ip->a.u32));
+                emitInternalCallExt(pp, g_LangSpec->name_exp2, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             default:
                 ok = false;
-                Report::internalError(moduleToGen, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -4720,14 +4720,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         }
 
         case ByteCodeOp::InternalFailedAssume:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__failedAssume, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name__failedAssume, {ip->a.u32});
             break;
         case ByteCodeOp::IntrinsicGetErr:
             SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name_aterr, {}, REG_OFFSET(ip->a.u32));
+            emitInternalCall(pp, g_LangSpec->name_aterr, {}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::InternalSetErr:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32});
+            emitInternalCall(pp, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32});
             break;
         case ByteCodeOp::InternalHasErr:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
@@ -4762,15 +4762,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::InternalStackTraceConst:
             pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, ip->b.u32);
             pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name__stackTrace, {ip->a.u32});
             break;
         case ByteCodeOp::InternalStackTrace:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name__stackTrace, {ip->a.u32});
             break;
 
         default:
             ok = false;
-            Report::internalError(moduleToGen, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+            Report::internalError(buildParameters.module, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
             break;
         }
     }

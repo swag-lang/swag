@@ -245,7 +245,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (pp.pass == BackendPreCompilePass::FunctionBodies)
     {
         pp.pass = BackendPreCompilePass::End;
-        emitAllFunctionBodies(buildParameters, module, ownerJob);
+        emitAllFunctionBodies(buildParameters, ownerJob);
 
         return JobResult::KeepJobAlive;
     }

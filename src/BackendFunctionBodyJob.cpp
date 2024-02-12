@@ -19,7 +19,7 @@ JobResult BackendFunctionBodyJob::execute()
             continue;
 
         // Emit the internal function
-        if (!backend->emitFunctionBody(buildParameters, module, one))
+        if (!backend->emitFunctionBody(buildParameters, one))
             return JobResult::ReleaseJob;
     }
 

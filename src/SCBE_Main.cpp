@@ -106,7 +106,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emit_Symbol_RelocationAddr(RDI, pp.symPI_contextTlsId, 0);
-    emitInternalCall(pp, module, g_LangSpec->name__tlsAlloc, {}, 0);
+    emitInternalCall(pp, g_LangSpec->name__tlsAlloc, {}, 0);
 
     //__process_infos.modules
     pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_modulesAddr, 0);
@@ -135,13 +135,13 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
     pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_defaultContext});
-    emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pp.pushParams);
+    emitInternalCallExt(pp, g_LangSpec->name__tlsSetValue, pp.pushParams);
 
     // Setup runtime
     const auto rtFlags = getRuntimeFlags(module);
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
-    emitInternalCallExt(pp, module, g_LangSpec->name__setupRuntime, pp.pushParams);
+    emitInternalCallExt(pp, g_LangSpec->name__setupRuntime, pp.pushParams);
 
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
@@ -157,7 +157,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) nameLib.c_str()});
             pp.pushParams.push_back({CPUPushParamType::Imm, (uint64_t) nameLib.string().length()});
-            emitInternalCallExt(pp, module, g_LangSpec->name__loaddll, pp.pushParams);
+            emitInternalCallExt(pp, g_LangSpec->name__loaddll, pp.pushParams);
         }
     }
 
@@ -171,12 +171,12 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-        emitInternalCallExt(pp, module, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+        emitInternalCallExt(pp, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global init of this module
     auto thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-    emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+    emitInternalCallExt(pp, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to global premain of all dependencies
     for (const auto dep : moduleDependencies)
@@ -186,12 +186,12 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
             continue;
 
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-        emitInternalCallExt(pp, module, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+        emitInternalCallExt(pp, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global premain of this module
     thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-    emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+    emitInternalCallExt(pp, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to test functions
     if (buildParameters.compileType == Test)
@@ -303,7 +303,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
     pp.pushParams.push_back({CPUPushParamType::Reg, 0});
     pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
-    emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
+    emitInternalCallExt(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
     for (const auto bc : module->byteCodePreMainFunc)
@@ -357,11 +357,11 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
     pp.pushParams.push_back({CPUPushParamType::Reg, 0});
     pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
-    emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
+    emitInternalCallExt(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
     pp.emit_Symbol_RelocationAddr(RDI, pp.symTls_threadLocalId, 0);
-    emitInternalCallExt(pp, module, g_LangSpec->name__tlsAlloc, {}, 0);
+    emitInternalCallExt(pp, g_LangSpec->name__tlsAlloc, {}, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
@@ -435,7 +435,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     }
 
     // __dropGlobalVariables
-    emitInternalCallExt(pp, module, g_LangSpec->name__dropGlobalVariables, pp.pushParams);
+    emitInternalCallExt(pp, g_LangSpec->name__dropGlobalVariables, pp.pushParams);
 
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Ret();
