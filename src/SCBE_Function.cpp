@@ -3687,9 +3687,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emit_Load64_Immediate(RCX, SWAG_LAMBDA_BC_MARKER);
             pp.emit_OpN(RAX, RCX, CPUOp::AND, CPUBits::B64);
             pp.emit_TestN(RCX, RCX, CPUBits::B64);
-            pp.emit_LongJumpOp(JZ);
-            concat.addU32(0);
-            auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+            auto jumpBCToAfterAddr   = pp.emit_LongJumpOp(JZ);
             auto jumpBCToAfterOffset = concat.totalCount();
 
             // ByteCode lambda
@@ -3759,9 +3757,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             // Test if it's a bytecode lambda
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), R10);
             pp.emit_OpN_Immediate(R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
-            pp.emit_LongJumpOp(JB);
-            concat.addU32(0);
-            auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+            auto jumpToBCAddr   = pp.emit_LongJumpOp(JB);
             auto jumpToBCOffset = concat.totalCount();
 
             // Native lambda
@@ -3770,9 +3766,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emit_Call_Indirect(R10);
             pp.emit_Call_Result(typeFuncBC, offsetRT);
 
-            pp.emit_LongJumpOp(JUMP);
-            concat.addU32(0);
-            auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+            auto jumpBCToAfterAddr   = pp.emit_LongJumpOp(JUMP);
             auto jumpBCToAfterOffset = concat.totalCount();
 
             // ByteCode lambda

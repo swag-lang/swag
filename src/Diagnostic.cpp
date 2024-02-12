@@ -357,14 +357,11 @@ void Diagnostic::collectRanges()
                 }
 
                 // If this is an operator
-#define ISOP(__c) __c == '>' || __c == '<' || __c == '=' || __c == '-' || __c == '+' || __c == '*' || __c == '/' || __c == '%'
-                if (ISOP(lineCode[decal]))
+#define IS_OP(__c) ((__c) == '>' || (__c) == '<' || (__c) == '=' || (__c) == '-' || (__c) == '+' || (__c) == '*' || (__c) == '/' || (__c) == '%')
+                while (IS_OP(lineCode[decal]) && IS_OP(lineCode[decal + 1]))
                 {
-                    while (ISOP(lineCode[decal + 1]))
-                    {
-                        decal += 1;
-                        r.width += 1;
-                    }
+                    decal += 1;
+                    r.width += 1;
                 }
             }
         }

@@ -1512,7 +1512,7 @@ void SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType)
     }
 }
 
-void SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType)
+uint32_t* SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType, uint32_t value)
 {
     switch (jumpType)
     {
@@ -1575,6 +1575,9 @@ void SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType)
         SWAG_ASSERT(false);
         break;
     }
+
+    concat.addU32(0);
+    return reinterpret_cast<uint32_t*>(concat.getSeekPtr()) - 1;
 }
 
 void SCBE_X64::emit_JumpTable(CPURegister table, CPURegister offset)
@@ -1593,8 +1596,8 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
     const auto it = labels.find(label.ipDest);
     if (it != labels.end())
     {
-        auto currentOffset = (int32_t) concat.totalCount() + 1;
-        int  relOffset     = it->second - (currentOffset + 1);
+        const auto currentOffset = (int32_t) concat.totalCount() + 1;
+        const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
             emit_NearJumpOp(jumpType);
@@ -1603,20 +1606,16 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
         }
         else
         {
-            emit_LongJumpOp(jumpType);
-            currentOffset = (int32_t) concat.totalCount();
-            relOffset     = it->second - (currentOffset + 4);
-            concat.addU32(*(uint32_t*) &relOffset);
+            const auto offsetPtr = emit_LongJumpOp(jumpType);
+            *offsetPtr           = it->second - concat.totalCount();
         }
 
         return;
     }
 
     // Here we do not know the destination label, so we assume 32 bits of offset
-    emit_LongJumpOp(jumpType);
-    concat.addU32(0);
+    label.patch         = (uint8_t*) emit_LongJumpOp(jumpType);
     label.currentOffset = (int32_t) concat.totalCount();
-    label.patch         = concat.getSeekPtr() - 4;
     labelsToSolve.push_back(label);
 }
 
@@ -2117,17 +2116,13 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
         emit_TestN(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
-        emit_LongJumpOp(JZ);
-        concat.addU32(0);
-        const auto seekPtrClosure = concat.getSeekPtr() - 4;
+        const auto seekPtrClosure = emit_LongJumpOp(JZ);
         const auto seekJmpClosure = concat.totalCount();
 
         emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
-        emit_LongJumpOp(JUMP);
-        concat.addU32(0);
-        const auto seekPtrAfterClosure = concat.getSeekPtr() - 4;
+        const auto seekPtrAfterClosure = emit_LongJumpOp(JUMP);
         const auto seekJmpAfterClosure = concat.totalCount();
 
         // Update jump to closure call

@@ -226,17 +226,13 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
         pp.emit_TestN(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
-        pp.emit_LongJumpOp(JZ);
-        pp.concat.addU32(0);
-        const auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
+        const auto seekPtrClosure = pp.emit_LongJumpOp(JZ);
         const auto seekJmpClosure = pp.concat.totalCount();
 
         emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
         // Jump to after closure call
-        pp.emit_LongJumpOp(JUMP);
-        pp.concat.addU32(0);
-        const auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
+        const auto seekPtrAfterClosure = pp.emit_LongJumpOp(JUMP);
         const auto seekJmpAfterClosure = pp.concat.totalCount();
 
         // Update jump to closure call
