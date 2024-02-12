@@ -199,7 +199,7 @@ namespace OS
 
         {
             if (!CreateProcessA(nullptr,
-                                (LPSTR) cmdline.c_str(),
+                                const_cast<LPSTR>(cmdline.c_str()),
                                 nullptr,
                                 nullptr,
                                 TRUE,
@@ -504,7 +504,7 @@ namespace OS
     constexpr DWORD MS_VC_EXCEPTION = 0x406D1388;
 
 #pragma pack(push, 8)
-    using THREADNAME_INFO = struct tagTHREADNAME_INFO
+    struct ThreadNameInfo
     {
         DWORD  dwType;     // Must be 0x1000.
         LPCSTR szName;     // Pointer to name (in user addr space).
@@ -515,7 +515,7 @@ namespace OS
 
     void setThreadName(uint32_t dwThreadID, const char* threadName)
     {
-        THREADNAME_INFO info;
+        ThreadNameInfo info;
         info.dwType     = 0x1000;
         info.szName     = threadName;
         info.dwThreadID = dwThreadID;
@@ -563,6 +563,7 @@ namespace OS
         MessageBoxA(nullptr, expr, title, MB_OK | MB_ICONERROR);
     }
 
+    [[noreturn]]
     void exit(int code)
     {
         ExitProcess(code);
@@ -653,7 +654,6 @@ namespace OS
         {
         case IDCANCEL:
             exit(-1);
-            break;
         case IDTRYAGAIN:
             DebugBreak();
             break;
@@ -946,7 +946,7 @@ namespace OS
             concat.firstBucket->data     = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
             concat.currentSP             = gen.concat.firstBucket->data;
 
-            // We need to generate unwind stuff to get a correct callstack, and in case the runtime caises an exception
+            // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
             // with 'RaiseException' (panic, error, etc.)
             // The function information is always the same, that's why we generate only one table per SCBE_X64.
             VectorNative<CPURegister> unwindRegs;
@@ -997,7 +997,7 @@ namespace OS
 
         // The real deal : make the call
         using funcPtr = void(*)();
-        const auto ptr = (funcPtr) (gen.concat.firstBucket->data + startOffset);
+        const auto ptr = reinterpret_cast<funcPtr>(gen.concat.firstBucket->data + startOffset);
         ptr();
 
         gen.concat.currentSP = (uint8_t*) ptr;
@@ -1082,7 +1082,7 @@ namespace OS
                     if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
                         return Key::PasteFromClipboard;
 
-                    c = evt.Event.KeyEvent.uChar.AsciiChar;
+                    c = (int) (unsigned) evt.Event.KeyEvent.uChar.AsciiChar;
                     if (c >= ' ' && c <= 127)
                         return Key::Ascii;
 
