@@ -29,7 +29,7 @@ JobResult CopyFileJob::execute()
     if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
     {
         ++module->numErrors;
-        fclose(fsrc);
+        (void) fclose(fsrc);
         Report::errorOS(FMT(Err(Err0095), destPath.string().c_str()));
         return JobResult::ReleaseJob;
     }
@@ -39,14 +39,14 @@ JobResult CopyFileJob::execute()
     {
         const auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);
         if (numRead)
-            fwrite(buffer, 1, numRead, fdest);
+            (void) fwrite(buffer, 1, numRead, fdest);
         if (numRead != sizeof(buffer))
             break;
     }
 
-    fclose(fsrc);
-    fflush(fdest);
-    fclose(fdest);
+    (void) fclose(fsrc);
+    (void) fflush(fdest);
+    (void) fclose(fdest);
 
     return JobResult::ReleaseJob;
 }
@@ -60,7 +60,7 @@ JobResult LoadFileJob::execute()
         return JobResult::ReleaseJob;
     }
 
-    fread(destBuffer, 1, sizeBuffer, fsrc);
-    fclose(fsrc);
+    (void) fread(destBuffer, 1, sizeBuffer, fsrc);
+    (void) fclose(fsrc);
     return JobResult::ReleaseJob;
 }

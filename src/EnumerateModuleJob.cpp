@@ -113,7 +113,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     {
         ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
         {
-            return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+            return strcmp(a->name.c_str(), b->name.c_str()) < 0;
         });
         for (const auto file : allFiles)
             theModule->addFile(file);
@@ -223,7 +223,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     {
         ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
         {
-            return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+            return strcmp(a->name.c_str(), b->name.c_str()) < 0;
         });
         for (const auto file : allFiles)
             theModule->addFile(file);
@@ -234,10 +234,10 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
 {
     // Scan source folder
     OS::visitFolders(basePath.string().c_str(),
-                     [&](const char* cFileName)
+                     [&](const char* fileName)
                      {
                          auto path = basePath;
-                         path.append(cFileName);
+                         path.append(fileName);
                          path = ModuleDepManager::getAliasPath(path);
                          path.append(SWAG_SRC_FOLDER);
 
@@ -255,30 +255,30 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                              directories.pop_back();
 
                              OS::visitFilesFolders(tmp.string().c_str(),
-                                                   [&](uint64_t writeTime, const char* cFileName, bool isFolder)
+                                                   [&](uint64_t writeTime, const char* subFileName, bool isFolder)
                                                    {
                                                        if (isFolder)
                                                        {
                                                            tmp1 = tmp;
-                                                           tmp1.append(cFileName);
+                                                           tmp1.append(subFileName);
                                                            directories.emplace_back(std::move(tmp1));
                                                        }
                                                        else
                                                        {
                                                            const auto file = Allocator::alloc<SourceFile>();
                                                            file->module    = module;
-                                                           file->name      = cFileName;
+                                                           file->name      = subFileName;
                                                            Path pathFile   = tmp;
-                                                           pathFile.append(cFileName);
+                                                           pathFile.append(subFileName);
                                                            file->path      = pathFile;
                                                            file->writeTime = writeTime;
                                                            module->files.push_back(file);
 
-                                                           const auto pz = strrchr(cFileName, '.');
+                                                           const auto pz = strrchr(subFileName, '.');
                                                            if (pz && !_strcmpi(pz, ".swg"))
                                                            {
-                                                               const auto readFileJob  = Allocator::alloc<LoadSourceFileJob>();
-                                                               readFileJob->flags      = JOB_IS_OPT;
+                                                               const auto readFileJob = Allocator::alloc<LoadSourceFileJob>();
+                                                               readFileJob->addFlag(JOB_IS_OPT);
                                                                readFileJob->sourceFile = file;
                                                                g_ThreadMgr.addJob(readFileJob);
                                                            }
@@ -434,7 +434,7 @@ JobResult EnumerateModuleJob::execute()
         {
             ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
             {
-                return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+                return strcmp(a->name.c_str(), b->name.c_str()) < 0;
             });
             for (const auto file : allFiles)
                 m->addFile(file);

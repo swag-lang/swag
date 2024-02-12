@@ -196,7 +196,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
 
 void ModuleBuildJob::checkMissingErrors() const
 {
-    // During unit testing, be sure we don't have untriggered errors
+    // During unit testing, be sure we don't have un-triggered errors
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto file : module->files)
@@ -360,7 +360,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Need to run all error modules
-        // Each file with a #global testerror on top is now in a dedicated module, so we need to
+        // Each file with a #global test error on top is now in a dedicated module, so we need to
         // run them in case the error has not been triggered during the syntax pass
         {
             for (auto errorMd : module->errorModules)

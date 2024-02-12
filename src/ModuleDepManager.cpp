@@ -139,7 +139,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
     {
         ranges::sort(allFiles, [](const SourceFile* a, const SourceFile* b)
         {
-            return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+            return strcmp(a->name.c_str(), b->name.c_str()) < 0;
         });
         for (const auto file : allFiles)
             registerCfgFile(file);

@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "Module.h"
-#include "Statistics.h"
+
 struct ModuleDependency;
 
 struct ModuleBuildJob : Job
