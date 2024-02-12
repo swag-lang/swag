@@ -109,24 +109,19 @@
 <h1 id="">How to build Swag </h1>
 <h2 id="">LLVM </h2>
 <p>Swag has two backends, a <span class="code-inline">x86_64</span> custom backend written for fast compile, but with far from optimal generated code, and <span class="code-inline">llvm</span> for optimized builds. </p>
-<p>The <a href="https://releases.llvm.org/download.html">LLVM</a> source tree is included in the Swag source tree for convenience. Version is <span class="code-inline">15.0.7</span>. </p>
+<p>The <a href="https://releases.llvm.org/download.html">LLVM</a> source tree is included in the Swag source tree for convenience. Version is <span class="code-inline">17.0.6</span>. </p>
 <p>In order to build LLVM, you will have to install <a href="https://cmake.org/download/">cmake 3.23.2</a> (or later) and <a href="https://www.python.org/downloads/">python 3</a>. </p>
 <h2 id="">Build </h2>
 <p>You will need <span class="code-inline">Visual Studio 2022 17.1</span> or later. </p>
 <ul>
 <li>As there's no automatic detection, edit <span class="code-inline">vs_build_cfg.bat</span> to match your version of Visual Studio.</li>
-<li>Launch <span class="code-inline">swag/build/vs_build_llvm_release.bat</span>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
+<li>Launch <span class="code-inline">swag/build/vs_build_llvm_release.bat</span>. Note that building LLVM takes a crazy amount of time and memory.</li>
 <li>Launch <span class="code-inline">swag/build/vs_build_swag_release.bat</span>.</li>
 <li>You can also launch <span class="code-inline">swag/build/vs_build_extern.bat</span>. This will build and update some external libraries in the standard workspace.</li>
 </ul>
 <p>If LLVM has been compiled once, you can also use the <span class="code-inline">Swag.sln</span> workspace in the <span class="code-inline">build</span> subfolder. </p>
-<h2 id="">Windows SDK </h2>
-<p>The path to the SDK version is defined in <span class="code-inline">vs_build_cfg.bat</span>. </p>
-<p>The Swag <b>runtime</b> contains a copy of some libraries from the SDK (<span class="code-inline">kernel32.lib</span>, <span class="code-inline">ucrt.lib</span>, <span class="code-inline">dbghelp.lib</span> and <span class="code-inline">user32.lib</span>). You will find them in <span class="code-inline">bin/runtime/windows-x86-64</span>. </p>
-<p>They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is". </p>
-<p>The standard modules (in <span class="code-inline">bin/std/modules</span>) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the <span class="code-inline">publish</span> folder of the corresponding modules. </p>
 <div class="swag-watermark">
-Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>

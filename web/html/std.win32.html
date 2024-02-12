@@ -9047,7 +9047,7 @@
 </tr>
 <tr>
 <td>using DUMMYUNIONNAME</td>
-<td class="code-type"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
+<td class="code-type"><span class="SCde">{uTimeout:<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>,uVersion:<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
 <td></td>
 </tr>
 <tr>
@@ -9135,7 +9135,7 @@
 </tr>
 <tr>
 <td>using DUMMYUNIONNAME</td>
-<td class="code-type"><span class="SCde">{uTimeout: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uVersion: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
+<td class="code-type"><span class="SCde">{uTimeout:<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>,uVersion:<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>}</span></td>
 <td></td>
 </tr>
 <tr>
@@ -11392,7 +11392,7 @@
 <p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>

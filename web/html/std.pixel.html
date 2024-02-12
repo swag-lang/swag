@@ -479,7 +479,6 @@
 </ul>
 <h4>poly</h4>
 <ul>
-<li><a href="#Pixel_Clipper_IntPoint_opEquals">IntPoint.opEquals</a></li>
 <li><a href="#Pixel_Polygon_add">Polygon.add</a></li>
 <li><a href="#Pixel_Polygon_clean">Polygon.clean</a></li>
 <li><a href="#Pixel_Polygon_clear">Polygon.clear</a></li>
@@ -1805,25 +1804,6 @@
 <td></td>
 </tr>
 </table>
-<h3>Special Functions</h3>
-<table class="table-enumeration">
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Clipper_IntPoint_opEquals">opEquals</a></span></td>
-<td></td>
-</tr>
-</table>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Pixel_Clipper_IntPoint_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IntPoint.</span><span class="api-item-title-strong">opEquals</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L37" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Clipper">Clipper</a></span>.<span class="SCst"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1906,7 +1886,7 @@
 <span id="Pixel_Clipper_Transform"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Clipper.</span><span class="api-item-title-strong">Transform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\poly\clipper.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2399,7 +2379,7 @@
 </table>
 </p>
 <p>Retrieve all components as floating point values between 0 and 1. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toArgbf</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{a: <span class="STpe">f32</span>, r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toArgbf</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{a:<span class="STpe">f32</span>,r:<span class="STpe">f32</span>,g:<span class="STpe">f32</span>,b:<span class="STpe">f32</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2412,7 +2392,7 @@
 </table>
 </p>
 <p>Returns hue, saturation, lightness. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHsl</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{h: <span class="STpe">f32</span>, s: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHsl</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{h:<span class="STpe">f32</span>,s:<span class="STpe">f32</span>,l:<span class="STpe">f32</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2425,7 +2405,7 @@
 </table>
 </p>
 <p>Retrieve all components as floating point values between 0 and 1. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRgbf</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{r: <span class="STpe">f32</span>, g: <span class="STpe">f32</span>, b: <span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRgbf</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;{r:<span class="STpe">f32</span>,g:<span class="STpe">f32</span>,b:<span class="STpe">f32</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2491,7 +2471,7 @@
 </tr>
 <tr>
 <td>using params</td>
-<td class="code-type"><span class="SCde">{clear: {color: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>}, drawTriangles: {start: <span class="STpe">u32</span>, count: <span class="STpe">u32</span>}, transform: {tr: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>}, clippingRect: {rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>}, clippingRegion: {mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>}, font: {fontRef: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>}, blendingMode: {mode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>}, textureFont: {font: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>, atlasIndex: <span class="STpe">s32</span>}, colorMask: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>, renderTgt: {tgt: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>, paintAlpha: <span class="STpe">bool</span>}, shader: {shader: *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>}, shaderParam: {param: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, _f32: <span class="STpe">f32</span>, _s32: <span class="STpe">s32</span>}, texture0: {boundRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>, textureRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>, type: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>, hatch: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>, uvMode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>, interpolationMode: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>, texture: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
+<td class="code-type"><span class="SCde">{clear:{color:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Color">Color</a></span>},drawTriangles:{start:<span class="STpe">u32</span>,count:<span class="STpe">u32</span>},transform:{tr:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Transform2</span>},clippingRect:{rect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>},clippingRegion:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ClippingMode">ClippingMode</a></span>},font:{fontRef:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>},blendingMode:{mode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BlendingMode">BlendingMode</a></span>},textureFont:{font:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Font">Font</a></span>,atlasIndex:<span class="STpe">s32</span>},colorMask:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ColorMask">ColorMask</a></span>,renderTgt:{tgt:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_RenderTarget">RenderTarget</a></span>,paintAlpha:<span class="STpe">bool</span>},shader:{shader:*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderBase">ShaderBase</a></span>},shaderParam:{param:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_ShaderParamHandle">ShaderParamHandle</a></span>,type:<span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>,_f32:<span class="STpe">f32</span>,_s32:<span class="STpe">s32</span>},texture0:{boundRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,textureRect:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>,type:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_BrushType">BrushType</a></span>,hatch:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_HatchStyle">HatchStyle</a></span>,uvMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_UVMode">UVMode</a></span>,interpolationMode:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_InterpolationMode">InterpolationMode</a></span>,texture:<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Texture">Texture</a></span>}}</span></td>
 <td></td>
 </tr>
 </table>
@@ -5838,7 +5818,7 @@
 </tr>
 <tr>
 <td>sharedRoundTmp</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({factor: <span class="STpe">f32</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>})</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'({factor:<span class="STpe">f32</span>,pos:<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector2</span>})</span></td>
 <td></td>
 </tr>
 <tr>
@@ -6370,7 +6350,7 @@
 </table>
 </p>
 <p>Returns the extent in both directions of a given LineCapStyle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">capStyleExtent</span>(capStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span>, lineSize: <span class="STpe">f32</span>, capScale: <span class="STpe">f32</span>)-&gt;{w: <span class="STpe">f32</span>, l: <span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">capStyleExtent</span>(capStyle: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span>, lineSize: <span class="STpe">f32</span>, capScale: <span class="STpe">f32</span>)-&gt;{w:<span class="STpe">f32</span>,l:<span class="STpe">f32</span>}</span></div>
 <ul>
 <li><span class="code-inline">lineSize</span> is the supposed line drawing size</li>
 <li><span class="code-inline">capScale</span> is the supposed LineCapStyle scale</li>
@@ -8416,7 +8396,7 @@
 </table>
 </p>
 <p>Get the actual render target size. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTargetSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTargetSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{width:<span class="STpe">s32</span>,height:<span class="STpe">s32</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9842,7 +9822,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>

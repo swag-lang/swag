@@ -750,6 +750,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@min</span>
 <span class="SItr">@pow</span>
 <span class="SItr">@realloc</span>
+<span class="SItr">@rol</span>
+<span class="SItr">@ror</span>
 <span class="SItr">@round</span>
 <span class="SItr">@sin</span>
 <span class="SItr">@sinh</span>
@@ -3608,7 +3610,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, low, up: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span> { <span class="SLgc">return</span> <span class="SStr">"true"</span>; }
 
     <span class="SCmt">// Get value by index</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
 
     <span class="SCmt">// Called by @countof</span>
     <span class="SCmt">// Use in a 'loop' block for example</span>
@@ -3654,17 +3656,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectSuffix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectSuffix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Affect struct with another value at a given index</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Called by '[] ='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Binary operator. 'op' generic argument contains the operator string</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
@@ -3691,9 +3693,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Called by a 'visit' block</span>
     <span class="SCmt">// Can have multiple versions, by adding a name after 'opVisit'</span>
@@ -4909,8 +4911,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="STpe">code</span>)
     {
-        <span class="SKwd">var</span> #alias0 = v
-        <span class="SKwd">var</span> #alias1 = v * <span class="SNum">2</span>
+        <span class="SKwd">let</span> #alias0 = v
+        <span class="SKwd">let</span> #alias1 = v * <span class="SNum">2</span>
         <span class="SCmp">#mixin</span> stmt
     }
 
@@ -5369,6 +5371,16 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
 <span class="SKwd">func</span> <span class="SItr">@byteswap</span>(value: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
 
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>;
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>;
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>;
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>;
+
 <span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>;
 <span class="SKwd">func</span> <span class="SItr">@muladd</span>(val1, val2, val3: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span>;</span></div>
 
@@ -5624,6 +5636,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// s32 version</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
         <span class="SCmp">#validif</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span>
     {
@@ -5631,6 +5644,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SCmt">// f32/f64 version</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">isNull</span>(x: <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span>
         <span class="SCmp">#validif</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">f32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">f64</span>
     {
@@ -7456,7 +7470,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>

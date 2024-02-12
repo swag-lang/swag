@@ -420,7 +420,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 </tr>
 <tr>
 <td>decode</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write: <span class="STpe">u64</span>, read: <span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_ICodec">ICodec</a></span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>, ^<span class="STpe">void</span>, <span class="STpe">u64</span>)-&gt;{write:<span class="STpe">u64</span>,read:<span class="STpe">u64</span>} <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -1061,7 +1061,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <p>Set the general output volume. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>

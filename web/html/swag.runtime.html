@@ -134,7 +134,7 @@
 <li><a href="#Swag_BaseError">BaseError</a></li>
 <li><a href="#Swag_BuildCfg">BuildCfg</a></li>
 <li><a href="#Swag_BuildCfgBackendLLVM">BuildCfgBackendLLVM</a></li>
-<li><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></li>
+<li><a href="#Swag_BuildCfgBackendSCBE">BuildCfgBackendSCBE</a></li>
 <li><a href="#Swag_BuildCfgGenDoc">BuildCfgGenDoc</a></li>
 <li><a href="#Swag_CVaList">CVaList</a></li>
 <li><a href="#Swag_CompilerMessage">CompilerMessage</a></li>
@@ -341,6 +341,8 @@
 <li><a href="#@pow">@pow</a></li>
 <li><a href="#@print">@print</a></li>
 <li><a href="#@realloc">@realloc</a></li>
+<li><a href="#@rol">@rol</a></li>
+<li><a href="#@ror">@ror</a></li>
 <li><a href="#@round">@round</a></li>
 <li><a href="#@rtflags">@rtflags</a></li>
 <li><a href="#@setcontext">@setcontext</a></li>
@@ -970,7 +972,7 @@
 <span id="@compilererror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilererror</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L136" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -983,7 +985,7 @@
 <span id="@compilerwarning"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilerwarning</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1296,7 +1298,7 @@
 <span id="@muladd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@muladd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1115" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1127" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1310,7 +1312,7 @@
 <span id="@panic"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@panic</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1368,6 +1370,38 @@
 </p>
 <p>Realloc a system memory block allocated with <a href="#@alloc">@alloc</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;^<span class="STpe">void</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="@rol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@rol</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1116" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Rotate bits left. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@rol</span>(value: <span class="STpe">u16</span>, num: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value: <span class="STpe">u32</span>, num: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value: <span class="STpe">u64</span>, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SItr">@rol</span>(value: <span class="STpe">u8</span>, num: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="@ror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@ror</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L1122" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Rotate bits right. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@ror</span>(value: <span class="STpe">u16</span>, num: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value: <span class="STpe">u32</span>, num: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value: <span class="STpe">u64</span>, num: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SItr">@ror</span>(value: <span class="STpe">u8</span>, num: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1583,8 +1617,8 @@
 <td><span class="code-inline">LLVM</span> backend specific options. </td>
 </tr>
 <tr>
-<td class="code-type"><a href="#Swag_BuildCfgBackendX64"><span class="SCst">BuildCfgBackendX64</span></a></td>
-<td><span class="code-inline">x86_64</span> backend specific options. </td>
+<td class="code-type"><a href="#Swag_BuildCfgBackendSCBE"><span class="SCst">BuildCfgBackendSCBE</span></a></td>
+<td><span class="code-inline">SCBE</span> backend specific options. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_BuildCfgGenDoc"><span class="SCst">BuildCfgGenDoc</span></a></td>
@@ -2211,8 +2245,8 @@
 <td>Bytecode. </td>
 </tr>
 <tr>
-<td>X64</td>
-<td>X86_64 backend. </td>
+<td>SCBE</td>
+<td>SCBE backend (SwagCustomBackEnd). </td>
 </tr>
 <tr>
 <td>LLVM</td>
@@ -2272,9 +2306,9 @@
 <td>The namespace name of the module. </td>
 </tr>
 <tr>
-<td>embbedImports</td>
+<td>embeddedImports</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>Module should embbed all its dependencies. </td>
+<td>Module should embed all its dependencies. </td>
 </tr>
 <tr>
 <td>tempAllocatorCapacity</td>
@@ -2397,9 +2431,9 @@
 <td>Specific LLVM options. </td>
 </tr>
 <tr>
-<td>backendX64</td>
-<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendX64">BuildCfgBackendX64</a></span></span></td>
-<td>Specific X86_64 options. </td>
+<td>backendSCBE</td>
+<td class="code-type"><span class="SCde"><span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_BuildCfgBackendSCBE">BuildCfgBackendSCBE</a></span></span></td>
+<td>Specific SCBE options. </td>
 </tr>
 <tr>
 <td>repoPath</td>
@@ -2439,8 +2473,8 @@
 <td>The module needs to be compiled to an executable application. </td>
 </tr>
 <tr>
-<td>DynamicLib</td>
-<td>The module needs to be compiled to an dynamic library. </td>
+<td>Library</td>
+<td>The module needs to be compiled as a library. </td>
 </tr>
 </table>
 <p>
@@ -2535,6 +2569,18 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Swag_BuildCfgBackendSCBE"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendSCBE</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L704" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p><span class="code-inline">SCBE</span> backend specific options. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Swag_BuildCfgBackendSubKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendSubKind</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2554,18 +2600,6 @@
 </tr>
 </table>
 <p> Under windows, by default, the application will be compiled to make a <span class="code-inline">windowed</span> application. But you can  change it and force the application to behave like a <span class="code-inline">console</span> one. </p>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Swag_BuildCfgBackendX64"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendX64</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L704" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p><span class="code-inline">x86_64</span> backend specific options. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5397,9 +5431,9 @@
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></div>
 <p> For example: </p>
-<div class="code-block"><span class="SAtr">#[Swag.Warn("wrn0002", Swag.WarnLevel.Error)
- #[Swag.Warn("wrn0003|wrn0002", Swag.WarnLevel.Disable)
- #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]</span></div>
+<div class="code-block"><span class="SAtr">#[Swag.Warn("Wrn0006", Swag.WarnLevel.Error)
+ #[Swag.Warn("Wrn0002|Wrn0006", Swag.WarnLevel.Disable)
+ #global #[Swag.Warn("Wrn0005", Swag.WarnLevel.Enable)]</span></div>
 <p> You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
 <p>
 <table class="api-item">
@@ -5428,7 +5462,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>
