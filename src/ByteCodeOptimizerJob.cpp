@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "ByteCodeOptimizerJob.h"
+#include "AstNode.h"
 #include "ByteCodeOptimizer.h"
 #include "Module.h"
 #include "Statistics.h"
+#include "ThreadManager.h"
 #ifdef SWAG_STATS
 #include "Timer.h"
 #endif
@@ -11,7 +12,7 @@
 JobResult ByteCodeOptimizerJob::execute()
 {
 #ifdef SWAG_STATS
-    Timer tm(&g_Stats.optimBCTime);
+	Timer tm(&g_Stats.optimBCTime);
 #endif
 
     optContext.module = module;

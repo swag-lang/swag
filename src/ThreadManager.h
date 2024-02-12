@@ -24,6 +24,8 @@ struct ThreadManager
     bool doneWithJobs() const;
     void clearOptionalJobs();
     void executeOneJob(Job* job);
+    void wakeUpThreads();
+    void wakeUpThreadsNoLock();
     void jobHasEnded(Job* job, JobResult result);
     void waitEndJobsSync();
     void waitEndJobs();

@@ -67,8 +67,8 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
             syntaxJob->sourceFile = file;
             syntaxJob->module     = theModule;
             syntaxJob->addFlag(JOB_IS_OPT);
-            syntaxJob->jobGroup = &theModule->syntaxGroup;
-            theModule->syntaxGroup.addJob(syntaxJob);
+            syntaxJob->jobGroup = &theModule->syntaxJobGroup;
+            theModule->syntaxJobGroup.addJob(syntaxJob);
         }
     }
 

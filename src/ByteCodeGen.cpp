@@ -4,6 +4,7 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
+#include "ByteCodeOptimizerJob.h"
 #include "Context.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
@@ -26,7 +27,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
         const auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(itable);
-        SWAG_ASSERT(((void**) itable)[0]);
+        SWAG_ASSERT(((void**)itable)[0]);
         g_SystemAllocatorTable = itable;
     }
 
@@ -38,7 +39,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
         const auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(itable);
-        SWAG_ASSERT(((void**) itable)[0]);
+        SWAG_ASSERT(((void**)itable)[0]);
         g_DebugAllocatorTable = itable;
     }
 
@@ -60,7 +61,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
         if (node->kind == AstNodeKind::FuncDecl || context->bc->isCompilerGenerated)
         {
 #ifdef SWAG_STATS
-            g_Stats.numInstructions += context->bc->numInstructions;
+			g_Stats.numInstructions += context->bc->numInstructions;
 #endif
 
             // Print resulting bytecode

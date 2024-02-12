@@ -8,10 +8,9 @@ struct ByteCodeOptimizerJob : Job
     virtual   ~ByteCodeOptimizerJob() = default;
     JobResult execute() override;
 
-    void release() override
-    {
-        Allocator::free<ByteCodeOptimizerJob>(this);
-    }
+	// clang-format off
+	void release() override { Allocator::free<ByteCodeOptimizerJob>(this); }
+    // clang-format on
 
     ByteCodeOptContext optContext;
     int                startIndex;

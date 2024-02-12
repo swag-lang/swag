@@ -268,7 +268,7 @@ struct Module
     MapUtf8<ByteCode*>                               mapRuntimeFct;
     MapUtf8<ForToSolve>                              implForToSolve;
     Map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
-    JobGroup                                         syntaxGroup;
+    JobGroup                                         syntaxJobGroup;
     Vector<Utf8>                                     contentJobGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;
     VectorNative<DataSegment*>                       compilerSegmentPerThread;

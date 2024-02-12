@@ -1,7 +1,6 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "ByteCodeOptimizer.h"
-#include "ByteCodeGen.h"
+#include "AstNode.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
 #include "Statistics.h"
@@ -113,87 +112,87 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
 
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc)
 {
-    ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
-    node->end                 = node->start;
+    ByteCodeOptTreeNode* treeNode = &context->tree[nodeIdx];
+    treeNode->end                 = treeNode->start;
 
-    while (!ByteCode::isRet(node->end) && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
+    while (!ByteCode::isRet(treeNode->end) && !ByteCode::isJumpOrDyn(treeNode->end) && !(treeNode->end[1].flags & BCI_START_STMT))
     {
-        setContextFlags(context, node->end);
+        setContextFlags(context, treeNode->end);
         if (computeCrc)
-            node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
+            treeNode->crc = context->bc->computeCrc(treeNode->end, treeNode->crc, true, false);
 #ifdef SWAG_DEV_MODE
-        node->end->treeNode = nodeIdx + 1;
+		treeNode->end->treeNode = nodeIdx + 1;
 #endif
-        node->end++;
+        treeNode->end++;
     }
 
-    setContextFlags(context, node->end);
+    setContextFlags(context, treeNode->end);
     if (computeCrc)
-        node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
+        treeNode->crc = context->bc->computeCrc(treeNode->end, treeNode->crc, true, false);
 
 #ifdef SWAG_DEV_MODE
-    node->end->treeNode = nodeIdx + 1;
-    auto ip             = node->start;
-    while (ip != node->end + 1)
-    {
-        ip->crc = node->crc;
-        ip++;
-    }
+	treeNode->end->treeNode = nodeIdx + 1;
+	auto ip = treeNode->start;
+	while (ip != treeNode->end + 1)
+	{
+		ip->crc = treeNode->crc;
+		ip++;
+	}
 #endif
 
-    if (ByteCode::isRet(node->end))
+    if (ByteCode::isRet(treeNode->end))
         return;
 
     bool here = false;
 
-    if (ByteCode::isJumpDyn(node->end))
+    if (ByteCode::isJumpDyn(treeNode->end))
     {
-        const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(node->end->d.u32));
-        for (uint32_t i = 0; i < node->end->c.u32; i++)
+        const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(treeNode->end->d.u32));
+        for (uint32_t i = 0; i < treeNode->end->c.u32; i++)
         {
-            auto newNode = newTreeNode(context, node->end + table[i] + 1, here);
+            auto newNode = newTreeNode(context, treeNode->end + table[i] + 1, here);
             if (!here)
                 genTree(context, newNode, computeCrc);
-            node = &context->tree[nodeIdx];
-            node->next.push_back(newNode);
+            treeNode = &context->tree[nodeIdx];
+            treeNode->next.push_back(newNode);
             const auto newNodePtr = &context->tree[newNode];
             newNodePtr->parent.push_back(nodeIdx);
         }
     }
-    else if (ByteCode::isJump(node->end))
+    else if (ByteCode::isJump(treeNode->end))
     {
-        ByteCodeInstruction* nextIp = node->end + node->end->b.s32 + 1;
+        ByteCodeInstruction* nextIp = treeNode->end + treeNode->end->b.s32 + 1;
         if (nextIp->op != ByteCodeOp::End)
         {
             const auto newNode = newTreeNode(context, nextIp, here);
             if (!here)
                 genTree(context, newNode, computeCrc);
-            node = &context->tree[nodeIdx];
-            node->next.push_back(newNode);
+            treeNode = &context->tree[nodeIdx];
+            treeNode->next.push_back(newNode);
             const auto newNodePtr = &context->tree[newNode];
             newNodePtr->parent.push_back(nodeIdx);
         }
 
-        if (node->end->op != ByteCodeOp::Jump && node->end->op != ByteCodeOp::End)
+        if (treeNode->end->op != ByteCodeOp::Jump && treeNode->end->op != ByteCodeOp::End)
         {
-            nextIp             = node->end + 1;
+            nextIp             = treeNode->end + 1;
             const auto newNode = newTreeNode(context, nextIp, here);
             if (!here)
                 genTree(context, newNode, computeCrc);
-            node = &context->tree[nodeIdx];
-            node->next.push_back(newNode);
+            treeNode = &context->tree[nodeIdx];
+            treeNode->next.push_back(newNode);
             const auto newNodePtr = &context->tree[newNode];
             newNodePtr->parent.push_back(nodeIdx);
         }
     }
     else
     {
-        const auto nextIp  = node->end + 1;
+        const auto nextIp  = treeNode->end + 1;
         const auto newNode = newTreeNode(context, nextIp, here);
         if (!here)
             genTree(context, newNode, computeCrc);
-        node = &context->tree[nodeIdx];
-        node->next.push_back(newNode);
+        treeNode = &context->tree[nodeIdx];
+        treeNode->next.push_back(newNode);
         const auto newNodePtr = &context->tree[newNode];
         newNodePtr->parent.push_back(nodeIdx);
     }
@@ -205,12 +204,9 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, bool computeCrc)
     context->nextTreeNode   = 0;
     context->contextBcFlags = 0;
 
-    const auto bc = context->bc;
-
-    bool       here = false;
-    const auto node = newTreeNode(context, bc->out, here);
-
-    genTree(context, node, computeCrc);
+    bool       here     = false;
+    const auto treeNode = newTreeNode(context, context->bc->out, here);
+    genTree(context, treeNode, computeCrc);
 }
 
 void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
@@ -308,7 +304,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::Nop)
         {
 #ifdef SWAG_STATS
-            ++g_Stats.totalOptimBC;
+			++g_Stats.totalOptimBC;
 #endif
             ip++;
             continue;
@@ -550,6 +546,8 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         optContext.passHasDoneSomething = false; \
         if (!__func(&optContext))                \
             return false;                        \
+        if (optContext.hasError)                 \
+            return false;                        \
         optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething; \
     } while(0)
 
@@ -558,6 +556,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
     optContext.bc = bc;
 
+    // Sanity must be done before any optimization, in order to have to deal with all extra instructions.
     if (bc->node && !bc->sanDone && optContext.module->mustEmitSafety(bc->node, SAFETY_SANITY))
     {
         bc->sanDone = true;
@@ -566,76 +565,71 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         SWAG_CHECK(optimizePassSanity(&optContext));
     }
 
-    if (optContext.module->mustOptimizeBytecode(bc->node))
+    if (!optContext.module->mustOptimizeBytecode(bc->node))
+        return true;
+
+    restart = false;
+    while (true)
     {
-        while (true)
+        restart = restart || optContext.allPassesHaveDoneSomething;
+
+        if (!bc->isEmpty && bc->isDoingNothing())
         {
-            if (!bc->isEmpty && bc->isDoingNothing())
-            {
-                bc->isEmpty = true;
-                restart     = true;
-            }
+            bc->isEmpty = true;
+            restart     = true;
+        }
+        else if (bc->isEmpty)
+            return true;
 
-            if (bc->isEmpty)
-                return true;
+        optContext.allPassesHaveDoneSomething = false;
 
-            setJumps(&optContext);
-            genTree(&optContext, false);
+        setJumps(&optContext);
+        genTree(&optContext, false);
+        OPT_PASS(optimizePassJumps);
+        OPT_PASS(optimizePassDeadCode);
+        OPT_PASS(optimizePassImmediate);
+        OPT_PASS(optimizePassConst);
+        OPT_PASS(optimizePassDupCopyRBRA);
+        OPT_PASS(optimizePassDupCopy);
+        OPT_PASS(optimizePassRetCopyLocal);
+        OPT_PASS(optimizePassRetCopyGlobal);
+        OPT_PASS(optimizePassRetCopyStructVal);
+        OPT_PASS(optimizePassReduce);
+        OPT_PASS(optimizePassDeadStore);
+        OPT_PASS(optimizePassDeadStoreDup);
+        OPT_PASS(optimizePassSwap);
+        OPT_PASS(optimizePassParam);
+        removeNops(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
 
-            if (optContext.hasError)
-                return false;
-            optContext.allPassesHaveDoneSomething = false;
+        setJumps(&optContext);
+        genTree(&optContext, true);
+        OPT_PASS(optimizePassErr);
+        OPT_PASS(optimizePassLoop);
+        OPT_PASS(optimizePassSwitch);
+        OPT_PASS(optimizePassDupBlocks);
+        OPT_PASS(optimizePassReduceX2);
+        removeNops(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
 
-            OPT_PASS(optimizePassJumps);
-            OPT_PASS(optimizePassDeadCode);
-            OPT_PASS(optimizePassImmediate);
-            OPT_PASS(optimizePassConst);
-            OPT_PASS(optimizePassDupCopyRBRA);
-            OPT_PASS(optimizePassDupCopy);
-            OPT_PASS(optimizePassRetCopyLocal);
-            OPT_PASS(optimizePassRetCopyGlobal);
-            OPT_PASS(optimizePassRetCopyStructVal);
-            OPT_PASS(optimizePassReduce);
-            OPT_PASS(optimizePassDeadStore);
-            OPT_PASS(optimizePassDeadStoreDup);
-            OPT_PASS(optimizePassSwap);
-            OPT_PASS(optimizePassParam);
-
-            removeNops(&optContext);
-            if (!optContext.allPassesHaveDoneSomething)
-            {
-                setJumps(&optContext);
-                genTree(&optContext, true);
-
-                OPT_PASS(optimizePassErr);
-                OPT_PASS(optimizePassLoop);
-                OPT_PASS(optimizePassSwitch);
-                OPT_PASS(optimizePassDupBlocks);
-                OPT_PASS(optimizePassReduceX2);
-                removeNops(&optContext);
-                if (!optContext.allPassesHaveDoneSomething)
-                {
 #ifdef SWAG_STATS
-                    if (g_CommandLine.statsFreq)
-                    {
-                        for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
-                        {
-                            const auto ip = optContext.bc->out + i;
-                            ++g_Stats.countOpFreq[(int) ip[0].op][(int) ByteCodeOp::End];
+		if (g_CommandLine.statsFreq)
+		{
+			for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
+			{
+				const auto ip = optContext.bc->out + i;
+				++g_Stats.countOpFreq[(int)ip[0].op][(int)ByteCodeOp::End];
 
-                            if (ip[1].flags & BCI_START_STMT)
-                                continue;
-                            ++g_Stats.countOpFreq[(int) ip[0].op][(int) ip[1].op];
-                        }
-                    }
+				if (ip[1].flags & BCI_START_STMT)
+					continue;
+				++g_Stats.countOpFreq[(int)ip[0].op][(int)ip[1].op];
+			}
+		}
 #endif
 
-                    break;
-                }
-            }
-
-            restart = true;
-        }
+        break;
     }
 
     return true;

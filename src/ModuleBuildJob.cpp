@@ -319,13 +319,13 @@ JobResult ModuleBuildJob::execute()
 
         if (!mustBuild)
         {
-            module->syntaxGroup.waitAndClear();
+            module->syntaxJobGroup.waitAndClear();
             pass = ModuleBuildPass::WaitForDependencies;
         }
         else
         {
             pass = ModuleBuildPass::Publish;
-            module->syntaxGroup.complete(this);
+            module->syntaxJobGroup.complete(this);
 
             // When we are synchronized, do it now, as syntaxGroup is not relevant
             if (g_ThreadMgr.numWorkers == 1 || g_CommandLine.scriptCommand)

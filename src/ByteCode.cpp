@@ -124,7 +124,7 @@ Utf8 ByteCode::getCallName()
     ScopedLock lk(mutexCallName);
     if (!callName.empty())
         return callName;
-    
+
     if (name.empty())
     {
         ScopedLock lock(node->mutex);
@@ -364,7 +364,7 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
                         ip->op == ByteCodeOp::LocalCallPopRC))
     {
         const auto bc = reinterpret_cast<ByteCode*>(ip->a.u64);
-        oldCrc = Crc32::compute8((const uint8_t*) &bc, oldCrc);
+        oldCrc        = Crc32::compute8((const uint8_t*) &bc, oldCrc);
     }
     else if (hasSomethingInA(ip))
         oldCrc = Crc32::compute8((const uint8_t*) &ip->a.u64, oldCrc);

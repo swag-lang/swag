@@ -111,15 +111,22 @@ void ThreadManager::addJobNoLock(Job* job)
             queueJobs.jobs.push_back(job);
     }
 
-    // Wakeup one thread
-    if (g_ThreadMgr.numWorkers != 1)
+    wakeUpThreadsNoLock();
+}
+
+void ThreadManager::wakeUpThreads()
+{
+    ScopedLock lk(mutexAdd);
+    wakeUpThreadsNoLock();
+}
+
+void ThreadManager::wakeUpThreadsNoLock()
+{
+    if (g_ThreadMgr.numWorkers != 1 && !availableThreads.empty())
     {
-        if (!availableThreads.empty())
-        {
-            const auto thread = availableThreads.back();
-            availableThreads.pop_back();
-            thread->notifyJob();
-        }
+        const auto thread = availableThreads.back();
+        availableThreads.pop_back();
+        thread->notifyJob();
     }
 }
 
@@ -468,7 +475,8 @@ Job* ThreadManager::getJob()
     {
         if (!p->addedToBuild)
             continue;
-        job = p->syntaxGroup.pickJob();
+
+        job = p->syntaxJobGroup.pickJob();
         if (job)
         {
             SWAG_ASSERT(job->hasFlag(JOB_IS_OPT));
