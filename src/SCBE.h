@@ -31,13 +31,13 @@ struct SCBE : Backend
     void emitOS(const BuildParameters& buildParameters) const;
     void emitMain(const BuildParameters& buildParameters) const;
 
-    void        emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const;
-    void        emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const;
+    static void emitOverflowSigned(SCBE_X64& pp, Module* module, const ByteCodeInstruction* ip, const char* msg);
+    static void emitOverflowUnsigned(SCBE_X64& pp, Module* module, const ByteCodeInstruction* ip, const char* msg);
     static void emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits);
     static void emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits);
     static void emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void        emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg) const;
+    static void emitInternalPanic(SCBE_X64& pp, Module* moduleToGen, const AstNode* node, const char* msg);
     static void emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);

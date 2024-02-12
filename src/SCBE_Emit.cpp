@@ -112,7 +112,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
     }
 }
 
-void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const
+void SCBE::emitOverflowSigned(SCBE_X64& pp, Module* module, const ByteCodeInstruction* ip, const char* msg)
 {
     const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->flags & BCI_CAN_OVERFLOW);
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -121,12 +121,12 @@ void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const
         pp.concat.addU32(0);
         const auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
         const auto prevCount = pp.concat.totalCount();
-        emitInternalPanic(pp, ip->node, msg);
+        emitInternalPanic(pp, module, ip->node, msg);
         *addr = pp.concat.totalCount() - prevCount;
     }
 }
 
-void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg) const
+void SCBE::emitOverflowUnsigned(SCBE_X64& pp, Module* module, const ByteCodeInstruction* ip, const char* msg)
 {
     const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->flags & BCI_CAN_OVERFLOW);
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -135,12 +135,12 @@ void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, con
         pp.concat.addU32(0);
         const auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
         const auto prevCount = pp.concat.totalCount();
-        emitInternalPanic(pp, ip->node, msg);
+        emitInternalPanic(pp, module, ip->node, msg);
         *addr = pp.concat.totalCount() - prevCount;
     }
 }
 
-void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg) const
+void SCBE::emitInternalPanic(SCBE_X64& pp, Module* moduleToGen, const AstNode* node, const char* msg)
 {
     const auto np = node->sourceFile->path.string();
     pp.pushParams.clear();
@@ -151,7 +151,7 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
         pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) msg});
     else
         pp.pushParams.push_back({CPUPushParamType::Imm, 0});
-    emitInternalCallExt(pp, module, g_LangSpec->name__panic, pp.pushParams);
+    emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__panic, pp.pushParams);
 }
 
 void SCBE::emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
