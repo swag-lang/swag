@@ -1,5 +1,5 @@
 #pragma once
-#include "SCBE_Debug.h"
+#include "SCBEDebug.h"
 
 struct BuildParameters;
 struct SCBE_CPU;
@@ -78,7 +78,7 @@ constexpr uint16_t R_R12 = 340;
 // const uint16_t R_RBP = 334;
 // const uint16_t R_RSP = 335;
 
-enum SimpleTypeKind : SCBE_DebugTypeIndex
+enum SimpleTypeKind : SCBEDebugTypeIndex
 {
     None          = 0x0000, // uncharacterized type (no type)
     Void          = 0x0003, // void
@@ -134,7 +134,7 @@ enum SimpleTypeKind : SCBE_DebugTypeIndex
     Boolean128 = 0x0034, // 128 bit boolean
 };
 
-enum SimpleTypeMode : SCBE_DebugTypeIndex
+enum SimpleTypeMode : SCBEDebugTypeIndex
 {
     Direct         = 0, // Not a pointer
     NearPointer    = 1, // Near pointer
@@ -146,7 +146,7 @@ enum SimpleTypeMode : SCBE_DebugTypeIndex
     NearPointer128 = 7  // 128 bit near pointer
 };
 
-struct SCBE_CodeView
+struct SCBEDebug_CodeView
 {
     static bool emit(const BuildParameters& buildParameters, SCBE_CPU& pp);
 };

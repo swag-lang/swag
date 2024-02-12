@@ -34,7 +34,7 @@ enum class BackendPreCompilePass
     Release,
 };
 
-struct BackendPerObj
+struct BackendEncoder
 {
     Utf8                  filename;
     Module*               module = nullptr;
@@ -61,7 +61,7 @@ struct Backend
     bool        setupExportFile(bool force = false);
     bool        generateOutput(const BuildParameters& buildParameters) const;
 
-    BackendPerObj* perThread[Count][MAX_PRECOMPILE_BUFFERS];
+    BackendEncoder* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 
     template<typename T>
     void allocatePerObj(const BuildParameters& buildParameters)

@@ -7,12 +7,12 @@ struct ByteCode;
 struct ByteCodeInstruction;
 struct DataSegment;
 struct Job;
-struct LLVM_Debug;
+struct LLVMDebug;
 struct Module;
 struct TypeInfo;
 enum class SegmentKind;
 
-struct LLVMPerObj : BackendPerObj
+struct LLVMEncoder : BackendEncoder
 {
     llvm::IRBuilder<>* builder;
     llvm::LLVMContext* llvmContext;
@@ -87,7 +87,7 @@ struct LLVMPerObj : BackendPerObj
     Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
 
     // Debug infos
-    LLVM_Debug* dbg = nullptr;
+    LLVMDebug* dbg = nullptr;
 };
 
 struct LLVM : Backend
@@ -132,6 +132,6 @@ struct LLVM : Backend
     void         emitOS(const BuildParameters& buildParameters) const;
     void         emitMain(const BuildParameters& buildParameters);
 
-    static llvm::BasicBlock* getOrCreateLabel(LLVMPerObj& pp, llvm::Function* func, int64_t ip);
+    static llvm::BasicBlock* getOrCreateLabel(LLVMEncoder& pp, llvm::Function* func, int64_t ip);
     bool                     emitGetParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, const llvm::Function* func, TypeInfoFuncAttr* typeFunc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
 };

@@ -72,7 +72,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     cpuFct->typeFunc     = typeFunc;
     cpuFct->startAddress = startAddress;
     if (debug)
-        SCBE_Debug::setLocation(cpuFct, bc, nullptr, 0);
+        SCBEDebug::setLocation(cpuFct, bc, nullptr, 0);
 
     // In order, starting at RSP, we have :
     //
@@ -214,7 +214,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             continue;
 
         if (debug)
-            SCBE_Debug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
+            SCBEDebug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->flags & BCI_JUMP_DEST)
             pp.getOrCreateLabel(i);

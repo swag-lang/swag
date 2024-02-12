@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SCBE_CodeView.h"
+#include "SCBEDebug_CodeView.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -160,7 +160,7 @@ namespace
         auto& concat = pp.concat;
 
         auto bucket = pp.dbgTypeRecords.firstBucket;
-        auto f      = (SCBE_DebugTypeRecord*) bucket->data;
+        auto f      = (SCBEDebugTypeRecord*) bucket->data;
         int  cpt    = 0;
 
         while (true)
@@ -282,7 +282,7 @@ namespace
 
             emitEndRecord(pp, false);
 
-            cpt += sizeof(SCBE_DebugTypeRecord);
+            cpt += sizeof(SCBEDebugTypeRecord);
             f += 1;
 
             if (cpt >= (int) pp.dbgTypeRecords.bucketCount(bucket))
@@ -291,7 +291,7 @@ namespace
                 if (!bucket)
                     break;
                 cpt = 0;
-                f   = (SCBE_DebugTypeRecord*) bucket->data;
+                f   = (SCBEDebugTypeRecord*) bucket->data;
             }
         }
 
@@ -304,7 +304,7 @@ namespace
         if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
         {
             emitStartRecord(pp, S_CONSTANT);
-            concat.addU32(SCBE_Debug::getOrCreateType(pp, node->typeInfo));
+            concat.addU32(SCBEDebug::getOrCreateType(pp, node->typeInfo));
             switch (node->typeInfo->sizeOf)
             {
             case 1:
@@ -342,12 +342,12 @@ namespace
             // Compile time constant
             if (p->hasComputedValue())
             {
-                emitConstant(pp, p, SCBE_Debug::getScopedName(p));
+                emitConstant(pp, p, SCBEDebug::getScopedName(p));
                 continue;
             }
 
             emitStartRecord(pp, S_LDATA32);
-            concat.addU32(SCBE_Debug::getOrCreateType(pp, p->typeInfo));
+            concat.addU32(SCBEDebug::getOrCreateType(pp, p->typeInfo));
 
             CPURelocation reloc;
 
@@ -365,7 +365,7 @@ namespace
             pp.relocTableDBGSSection.table.push_back(reloc);
             concat.addU16(0);
 
-            auto nn = SCBE_Debug::getScopedName(p);
+            auto nn = SCBEDebug::getScopedName(p);
             emitTruncatedString(pp, nn);
             emitEndRecord(pp);
         }
@@ -374,7 +374,7 @@ namespace
         if (patchSOffset == concat.totalCount())
         {
             emitStartRecord(pp, S_LDATA32);
-            concat.addU32(SCBE_Debug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
+            concat.addU32(SCBEDebug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
             concat.addU32(0);
             emitTruncatedString(pp, "__fake__");
             concat.addU16(0);
@@ -487,7 +487,7 @@ namespace
             SWAG_ASSERT(localVar->hasAttribute(ATTRIBUTE_GLOBAL));
 
             emitStartRecord(pp, S_LDATA32);
-            concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
+            concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo));
 
             CPURelocation reloc;
             const auto    segSymIndex = overload->hasFlag(OVERLOAD_VAR_BSS) ? pp.symBSIndex : pp.symMSIndex;
@@ -534,9 +534,9 @@ namespace
             //////////
             emitStartRecord(pp, S_LOCAL);
             if (overload->hasFlag(OVERLOAD_RETVAL))
-                concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
+                concat.addU32(SCBEDebug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
             else
-                concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
+                concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo)); // Type
             concat.addU16(0);                                             // CV_LVARFLAGS
             emitTruncatedString(pp, localVar->token.text);
             emitEndRecord(pp);
@@ -594,19 +594,19 @@ namespace
 
             // Add a func id type record
             /////////////////////////////////
-            const auto tr = SCBE_Debug::addTypeRecord(pp);
+            const auto tr = SCBEDebug::addTypeRecord(pp);
             tr->node      = f.node;
             if (typeFunc->isMethod())
             {
                 tr->kind                  = LF_MFUNC_ID;
                 const auto typeThis       = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-                tr->LF_MFuncId.parentType = SCBE_Debug::getOrCreateType(pp, typeThis->pointedType);
-                tr->LF_MFuncId.type       = SCBE_Debug::getOrCreateType(pp, typeFunc);
+                tr->LF_MFuncId.parentType = SCBEDebug::getOrCreateType(pp, typeThis->pointedType);
+                tr->LF_MFuncId.type       = SCBEDebug::getOrCreateType(pp, typeFunc);
             }
             else
             {
                 tr->kind           = LF_FUNC_ID;
-                tr->LF_FuncId.type = SCBE_Debug::getOrCreateType(pp, typeFunc);
+                tr->LF_FuncId.type = SCBEDebug::getOrCreateType(pp, typeFunc);
             }
 
             // Symbol
@@ -629,7 +629,7 @@ namespace
                 concat.addU32(tr->index);                     // FuncID type index
                 emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                 concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-                auto nn = SCBE_Debug::getScopedName(f.node);
+                auto nn = SCBEDebug::getScopedName(f.node);
                 emitTruncatedString(pp, nn);
                 emitEndRecord(pp);
 
@@ -660,14 +660,14 @@ namespace
                         if (!typeParam || !overload)
                             continue;
 
-                        SCBE_DebugTypeIndex typeIdx;
+                        SCBEDebugTypeIndex typeIdx;
                         switch (typeParam->kind)
                         {
                         case TypeInfoKind::Array:
-                            typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, false);
+                            typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
                             break;
                         default:
-                            typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                             break;
                         }
 
@@ -700,14 +700,14 @@ namespace
                         const auto child     = decl->parameters->childs[i];
                         const auto typeParam = typeFunc->parameters[i]->typeInfo;
 
-                        SCBE_DebugTypeIndex typeIdx;
+                        SCBEDebugTypeIndex typeIdx;
                         switch (typeParam->kind)
                         {
                         case TypeInfoKind::Struct:
                             if (CallConv::structParamByValue(typeFunc, typeParam))
-                                typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
+                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                             else
-                                typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, true);
+                                typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
                             break;
 
                         case TypeInfoKind::Pointer:
@@ -716,24 +716,24 @@ namespace
                             {
                                 const auto typeRef = TypeManager::concretePtrRefType(typeParam);
                                 if (CallConv::structParamByValue(typeFunc, typeRef))
-                                    typeIdx = SCBE_Debug::getOrCreateType(pp, typeRef);
+                                    typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
                                 else
-                                    typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
+                                    typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                             }
                             else
                             {
-                                typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
+                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                             }
 
                             break;
                         }
 
                         case TypeInfoKind::Array:
-                            typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, false);
+                            typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
                             break;
 
                         default:
-                            typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                             break;
                         }
 
@@ -774,7 +774,7 @@ namespace
                         // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                         if (typeParam->numRegisters() == 2)
                         {
-                            typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
 
                             //////////
                             emitStartRecord(pp, S_LOCAL);
@@ -845,7 +845,7 @@ namespace
                     concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
                     const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                    const auto typeIdx       = SCBE_Debug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
+                    const auto typeIdx       = SCBEDebug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
 
                     for (const auto l : dbgLines.lines)
                     {
@@ -888,7 +888,7 @@ namespace
     }
 }
 
-bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
+bool SCBEDebug_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     auto&      concat = pp.concat;
     const auto module = buildParameters.module;

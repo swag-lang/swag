@@ -611,14 +611,11 @@
     <ClCompile Include="../src/Context.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBE_Debug.cpp">
+    <ClCompile Include="..\src\SCBEDebug.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBE_CodeView.cpp">
+    <ClCompile Include="..\src\SCBEDebug_CodeView.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LLVM_Debug.cpp">
-      <Filter>Backend\LLVM\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\src\LLVM.cpp">
       <Filter>Backend\LLVM\Main</Filter>
@@ -685,6 +682,9 @@
     </ClCompile>
     <ClCompile Include="..\src\BackendLinker_Coff.cpp">
       <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVMDebug.cpp">
+      <Filter>Backend\LLVM\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1019,14 +1019,11 @@
     <ClInclude Include="../src/Context.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBE_Debug.h">
+    <ClInclude Include="..\src\SCBEDebug.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBE_CodeView.h">
+    <ClInclude Include="..\src\SCBEDebug_CodeView.h">
       <Filter>Backend\SCBE\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LLVM_Debug.h">
-      <Filter>Backend\LLVM\Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\src\LLVM.h">
       <Filter>Backend\LLVM\Main</Filter>
@@ -1052,8 +1049,8 @@
     <ClInclude Include="..\src\ByteCode_Math.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ByteCode_LeaveEnter.h">
-      <Filter>Backend\ByteCode</Filter>
+    <ClInclude Include="..\src\LLVMDebug.h">
+      <Filter>Backend\LLVM\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "LLVM.h"
-#include "LLVM_Debug.h"
+#include "LLVMDebug.h"
 #include "LLVM_Macros.h"
 #include "Module.h"
 #include "Report.h"
@@ -20,7 +20,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto& context         = *pp.llvmContext;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.llvmModule;
@@ -5830,7 +5830,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Typ
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&       context         = *pp.llvmContext;
 
     typeInfo = typeInfo->getConcreteAlias();
@@ -5895,7 +5895,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Typ
     return nullptr;
 }
 
-llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerObj& pp, llvm::Function* func, int64_t ip)
+llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMEncoder& pp, llvm::Function* func, int64_t ip)
 {
     auto& context = *pp.llvmContext;
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "LLVM.h"
-#include "LLVM_Debug.h"
+#include "LLVMDebug.h"
 #include "LLVM_Macros.h"
 #include "Module.h"
 
@@ -13,7 +13,7 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
 
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    auto&     pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&     context         = *pp.llvmContext;
     auto&     modu            = *pp.llvmModule;
 
@@ -109,7 +109,7 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     const int precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    const auto& pp      = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;

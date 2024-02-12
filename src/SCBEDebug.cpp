@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "SCBE_Debug.h"
+#include "SCBEDebug.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
-#include "SCBE_CodeView.h"
+#include "SCBEDebug_CodeView.h"
 #include "SCBE_CPU.h"
 #include "Scope.h"
 #include "TypeManager.h"
 #include "Workspace.h"
 
-SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value)
+SCBEDebugTypeIndex SCBEDebug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBEDebugTypeIndex* value)
 {
     const auto          tr0 = addTypeRecord(pp);
-    SCBE_DebugTypeField field;
+    SCBEDebugTypeField field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
     field.type          = getOrCreatePointerToType(pp, pointedType, false);
@@ -22,7 +22,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeI
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
     field.kind          = LF_MEMBER;
-    field.type          = (SCBE_DebugTypeIndex) UInt64;
+    field.type          = (SCBEDebugTypeIndex) UInt64;
     field.value.reg.u32 = sizeof(void*);
     field.name.setView(g_LangSpec->name_count);
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
@@ -44,12 +44,12 @@ SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeI
     return tr1->index;
 }
 
-void SCBE_Debug::getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+void SCBEDebug::getStructFields(SCBE_CPU& pp, SCBEDebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (const auto& p : typeStruct->fields)
     {
-        SCBE_DebugTypeField field;
+        SCBEDebugTypeField field;
         field.kind = LF_MEMBER;
         field.type = getOrCreateType(pp, p->typeInfo);
         field.name.setView(p->name);
@@ -64,7 +64,7 @@ void SCBE_Debug::getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInf
     }
 }
 
-SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef)
+SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = typeInfo->getConcreteAlias();
 
@@ -83,7 +83,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
 
     // In the cache
     /////////////////////////////////
-    using P = Map<TypeInfo*, SCBE_DebugTypeIndex>;
+    using P = Map<TypeInfo*, SCBEDebugTypeIndex>;
     pair<P::iterator, bool> iter = pp.dbgMapTypes.insert(P::value_type(typeInfo, 0));
     if (!iter.second)
         return iter.first->second;
@@ -130,7 +130,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     if (typeInfo->isString())
     {
         auto                tr0 = addTypeRecord(pp);
-        SCBE_DebugTypeField field;
+        SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
         field.type          = UnsignedCharacter | (NearPointer64 << 8);
@@ -140,7 +140,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
-        field.type          = (SCBE_DebugTypeIndex) (UInt64);
+        field.type          = (SCBEDebugTypeIndex) (UInt64);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_sizeof);
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
@@ -161,7 +161,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     if (typeInfo->isInterface())
     {
         auto                tr0 = addTypeRecord(pp);
-        SCBE_DebugTypeField field;
+        SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
         field.type          = UnsignedCharacter | (NearPointer64 << 8);
@@ -192,7 +192,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     if (typeInfo->isAny())
     {
         auto                tr0 = addTypeRecord(pp);
-        SCBE_DebugTypeField field;
+        SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
         field.type          = UnsignedCharacter | (NearPointer64 << 8);
@@ -248,7 +248,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         tr0->LF_FieldList.fields.reserve(typeStruct->methods.count);
         for (auto& p : typeStruct->methods)
         {
-            SCBE_DebugTypeField field;
+            SCBEDebugTypeField field;
             field.kind = LF_ONEMETHOD;
             field.type = getOrCreateType(pp, p->typeInfo);
             field.name = getScopedName(p->typeInfo->declNode);
@@ -289,7 +289,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
                 {
                     if (!value->value)
                         continue;
-                    SCBE_DebugTypeField field;
+                    SCBEDebugTypeField field;
                     field.kind      = LF_ENUMERATE;
                     field.type      = getOrCreateType(pp, value->typeInfo);
                     field.name      = value->name;
@@ -333,8 +333,8 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
         bool isMethod = typeFunc->isMethod();
         auto numArgs  = (uint16_t) typeFunc->parameters.size();
 
-        SCBE_DebugTypeIndex argsTypeIndex;
-        using P1 = MapUtf8<SCBE_DebugTypeIndex>;
+        SCBEDebugTypeIndex argsTypeIndex;
+        using P1 = MapUtf8<SCBEDebugTypeIndex>;
         pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
         if (iter1.second)
         {
@@ -386,17 +386,17 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
     switch (typeInfo->sizeOf)
     {
     case 1:
-        return (SCBE_DebugTypeIndex) UnsignedCharacter;
+        return (SCBEDebugTypeIndex) UnsignedCharacter;
     case 2:
-        return (SCBE_DebugTypeIndex) UInt16;
+        return (SCBEDebugTypeIndex) UInt16;
     case 4:
-        return (SCBE_DebugTypeIndex) UInt32;
+        return (SCBEDebugTypeIndex) UInt32;
     default:
-        return (SCBE_DebugTypeIndex) UInt64;
+        return (SCBEDebugTypeIndex) UInt64;
     }
 }
 
-SCBE_DebugTypeIndex SCBE_Debug::getSimpleType(const TypeInfo* typeInfo)
+SCBEDebugTypeIndex SCBEDebug::getSimpleType(const TypeInfo* typeInfo)
 {
     if (typeInfo->isNative())
     {
@@ -436,7 +436,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getSimpleType(const TypeInfo* typeInfo)
     return None;
 }
 
-SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef)
+SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef)
 {
     const auto simpleType = getSimpleType(typeInfo);
     if (simpleType != None)
@@ -450,7 +450,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo*
     return tr->index;
 }
 
-SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo)
+SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
     const auto tr              = addTypeRecord(pp);
@@ -459,15 +459,15 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerPointerToType(SCBE_CPU& pp, Ty
     return tr->index;
 }
 
-SCBE_DebugTypeRecord* SCBE_Debug::addTypeRecord(SCBE_CPU& pp)
+SCBEDebugTypeRecord* SCBEDebug::addTypeRecord(SCBE_CPU& pp)
 {
-    const auto tr = pp.dbgTypeRecords.addObj<SCBE_DebugTypeRecord>();
-    tr->index     = (SCBE_DebugTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
+    const auto tr = pp.dbgTypeRecords.addObj<SCBEDebugTypeRecord>();
+    tr->index     = (SCBEDebugTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
     pp.dbgTypeRecordsCount++;
     return tr;
 }
 
-Utf8 SCBE_Debug::getScopedName(AstNode* node)
+Utf8 SCBEDebug::getScopedName(AstNode* node)
 {
     const auto nn = node->getScopedName();
     Utf8       result;
@@ -493,17 +493,17 @@ Utf8 SCBE_Debug::getScopedName(AstNode* node)
     return result;
 }
 
-void SCBE_Debug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t byteOffset)
+void SCBEDebug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!cpuFct->node || cpuFct->node->isSpecialFunctionGenerated())
         return;
 
     if (!ip)
     {
-        SCBE_DebugLine dbgLine;
+        SCBEDebugLine dbgLine;
         dbgLine.line       = cpuFct->node->token.startLocation.line + 1;
         dbgLine.byteOffset = byteOffset;
-        SCBE_DebugLines dbgLines;
+        SCBEDebugLines dbgLines;
         dbgLines.sourceFile = cpuFct->node->sourceFile;
         dbgLines.lines.push_back(dbgLine);
         cpuFct->dbgLines.push_back(dbgLines);
@@ -539,7 +539,7 @@ void SCBE_Debug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const Byte
 
     if (cpuFct->dbgLines.back().sourceFile != loc.file || inlined != cpuFct->dbgLines.back().inlined)
     {
-        SCBE_DebugLines dbgLines;
+        SCBEDebugLines dbgLines;
         dbgLines.sourceFile = loc.file;
         dbgLines.inlined    = inlined;
         cpuFct->dbgLines.push_back(dbgLines);

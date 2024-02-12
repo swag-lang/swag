@@ -3,7 +3,7 @@
 #include "BackendLinker.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "LLVM_Debug.h"
+#include "LLVMDebug.h"
 #include "LLVM_Macros.h"
 #include "Log.h"
 #include "Module.h"
@@ -15,7 +15,7 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    auto&     pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&     context         = *pp.llvmContext;
     auto&     modu            = *pp.llvmModule;
 
@@ -205,8 +205,8 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
 
-    allocatePerObj<LLVMPerObj>(buildParameters);
-    auto& pp = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    allocatePerObj<LLVMEncoder>(buildParameters);
+    auto& pp = *(LLVMEncoder*) perThread[ct][precompileIndex];
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -231,7 +231,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
 
         if (buildParameters.buildCfg->backendDebugInfos)
         {
-            pp.dbg = new LLVM_Debug;
+            pp.dbg = new LLVMDebug;
             pp.dbg->setup(this, pp.llvmModule);
         }
 
@@ -287,7 +287,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto& modu            = *pp.llvmModule;
 
     // Debug infos

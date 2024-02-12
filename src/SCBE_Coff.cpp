@@ -2,7 +2,7 @@
 #include "SCBE_Coff.h"
 #include "Module.h"
 #include "SCBE.h"
-#include "SCBE_CodeView.h"
+#include "SCBEDebug_CodeView.h"
 
 namespace
 {
@@ -430,7 +430,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
 #ifdef SWAG_STATS
     const auto beforeCount = pp.concat.totalCount();
 #endif
-    SCBE_CodeView::emit(buildParameters, pp);
+    SCBEDebug_CodeView::emit(buildParameters, pp);
 #ifdef SWAG_STATS
     g_Stats.sizeBackendDbg += pp.concat.totalCount() - beforeCount;
 #endif

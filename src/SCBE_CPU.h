@@ -3,7 +3,7 @@
 #include "CallConv.h"
 #include "Concat.h"
 #include "DataSegment.h"
-#include "SCBE_Debug.h"
+#include "SCBEDebug.h"
 
 struct AstNode;
 
@@ -140,7 +140,7 @@ struct CPURelocationTable
 struct CPUFunction
 {
     VectorNative<uint16_t>  unwind;
-    Vector<SCBE_DebugLines> dbgLines;
+    Vector<SCBEDebugLines> dbgLines;
     AstNode*                node                    = nullptr;
     TypeInfoFuncAttr*       typeFunc                = nullptr;
     uint32_t                symbolIndex             = 0;
@@ -155,7 +155,7 @@ struct CPUFunction
     uint32_t                numScratchRegs          = 0;
 };
 
-struct SCBE_CPU : BackendPerObj
+struct SCBE_CPU : BackendEncoder
 {
     void            clearInstructionCache();
     CPUSymbol*      getSymbol(const Utf8& name);
@@ -290,8 +290,8 @@ struct SCBE_CPU : BackendPerObj
     uint32_t                            dbgStartRecordOffset[MAX_RECORD];
     uint32_t                            dbgTypeRecordsCount = 0;
     Concat                              dbgTypeRecords;
-    Map<TypeInfo*, SCBE_DebugTypeIndex> dbgMapTypes;
-    MapUtf8<SCBE_DebugTypeIndex>        dbgMapTypesNames;
+    Map<TypeInfo*, SCBEDebugTypeIndex> dbgMapTypes;
+    MapUtf8<SCBEDebugTypeIndex>        dbgMapTypesNames;
 
     uint32_t    storageRegCount = UINT32_MAX;
     uint32_t    storageRegStack = 0;
