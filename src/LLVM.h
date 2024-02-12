@@ -14,9 +14,9 @@ enum class SegmentKind;
 
 struct LLVMPerObj : BackendPerObj
 {
-    llvm::LLVMContext*    context;
-    llvm::IRBuilder<>*    builder;
-    llvm::Module*         module;
+    llvm::IRBuilder<>* builder;
+    llvm::LLVMContext* llvmContext;
+    llvm::Module*      llvmModule;
 
     llvm::GlobalVariable* bssSeg               = nullptr;
     llvm::GlobalVariable* mutableSeg           = nullptr;

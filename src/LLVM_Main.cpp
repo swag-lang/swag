@@ -13,9 +13,9 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
         const int   ct              = buildParameters.compileType;
         const int   precompileIndex = buildParameters.precompileIndex;
         const auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
-        auto&       context         = *pp.context;
+        auto&       context         = *pp.llvmContext;
         auto&       builder         = *pp.builder;
-        auto&       modu            = *pp.module;
+        auto&       modu            = *pp.llvmModule;
 
         // int _DllMainCRTStartup(void*, int, void*)
         {
@@ -72,9 +72,9 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
+    auto& context         = *pp.llvmContext;
     auto& builder         = *pp.builder;
-    auto& modu            = *pp.module;
+    auto& modu            = *pp.llvmModule;
 
     emitOS(buildParameters);
 
@@ -280,9 +280,9 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     const int precompileIndex = buildParameters.precompileIndex;
 
     const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto&       context = *pp.context;
+    auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
-    auto&       modu    = *pp.module;
+    auto&       modu    = *pp.llvmModule;
 
     const auto      fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
     const auto      funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
@@ -303,9 +303,9 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const int precompileIndex = buildParameters.precompileIndex;
 
     const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto&       context = *pp.context;
+    auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
-    auto&       modu    = *pp.module;
+    auto&       modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
@@ -343,9 +343,9 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     const int precompileIndex = buildParameters.precompileIndex;
 
     auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto& context = *pp.context;
+    auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
-    auto& modu    = *pp.module;
+    auto& modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
@@ -421,9 +421,9 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     const int precompileIndex = buildParameters.precompileIndex;
 
     const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto&       context = *pp.context;
+    auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
-    auto&       modu    = *pp.module;
+    auto&       modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), false);
     const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);

@@ -20,8 +20,8 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
         perThread[ct][precompileIndex] = new LLVMPerObj;
 
     auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto& context = *pp.context;
-    auto& modu    = *pp.module;
+    auto& context = *pp.llvmContext;
+    auto& modu    = *pp.llvmModule;
 
     // SwagInterface
     {
@@ -229,16 +229,16 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
         pp.filename = FMT("%s%d", buildParameters.module->name.c_str(), precompileIndex);
         pp.filename += getObjectFileExtension(g_CommandLine.target);
 
-        pp.context = new llvm::LLVMContext();
-        pp.context->setDiscardValueNames(true);
+        pp.llvmContext = new llvm::LLVMContext();
+        pp.llvmContext->setDiscardValueNames(true);
 
-        pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);
-        pp.builder = new llvm::IRBuilder<>(*pp.context);
+        pp.llvmModule  = new llvm::Module(pp.filename.c_str(), *pp.llvmContext);
+        pp.builder = new llvm::IRBuilder<>(*pp.llvmContext);
 
         if (buildParameters.buildCfg->backendDebugInfos)
         {
             pp.dbg = new LLVM_Debug;
-            pp.dbg->setup(this, pp.module);
+            pp.dbg->setup(this, pp.llvmModule);
         }
 
         createRuntime(buildParameters);
@@ -280,8 +280,8 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
         // Output file
         generateObjFile(buildParameters);
 
-        delete pp.module;
-        delete pp.context;
+        delete pp.llvmModule;
+        delete pp.llvmContext;
         delete pp.builder;
         delete pp.dbg;
     }
@@ -294,7 +294,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto& modu            = *pp.module;
+    auto& modu            = *pp.llvmModule;
 
     // Debug infos
     if (pp.dbg)

@@ -120,7 +120,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* mod
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
     auto&     pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
-    auto&     context         = *pp.context;
+    auto&     context         = *pp.llvmContext;
     auto&     builder         = *pp.builder;
 
     // Filename

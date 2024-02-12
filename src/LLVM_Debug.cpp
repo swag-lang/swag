@@ -425,7 +425,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLV
         return;
 
     auto& builder = *pp.builder;
-    auto& context = *pp.context;
+    auto& context = *pp.llvmContext;
 
     builder.SetCurrentDebugLocation(llvm::DebugLoc());
     lastDebugLine        = 0;
@@ -740,8 +740,8 @@ void LLVM_Debug::createGlobalVariablesForSegment(const BuildParameters& buildPar
     const int   precompileIndex = buildParameters.precompileIndex;
     const auto& pp              = *(LLVMPerObj*) llvm->perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
-    auto&       context         = *pp.context;
-    auto&       modu            = *pp.module;
+    auto&       context         = *pp.llvmContext;
+    auto&       modu            = *pp.llvmModule;
     const auto  module          = llvm->module;
 
     VectorNative<llvm::Value*> offset;
@@ -836,7 +836,7 @@ void LLVM_Debug::createGlobalVariablesForSegment(const BuildParameters& buildPar
             // Convert to int, in order to make an Add
             constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, I64_TY());
             // Add the byte offset
-            constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->computedValue.storageOffset));
+            constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.llvmContext), resolved->computedValue.storageOffset));
             // Convert back to a pointer to bytes
             constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, PTR_I8_TY());
 
