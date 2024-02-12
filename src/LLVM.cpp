@@ -17,9 +17,9 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
     const int precompileIndex = buildParameters.precompileIndex;
 
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new LLVMPerThread;
+        perThread[ct][precompileIndex] = new LLVMPerObj;
 
-    auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& modu    = *pp.module;
 
@@ -210,9 +210,9 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     const int precompileIndex = buildParameters.precompileIndex;
 
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new LLVMPerThread;
+        perThread[ct][precompileIndex] = new LLVMPerObj;
 
-    auto& pp = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto& pp = *(LLVMPerObj*) perThread[ct][precompileIndex];
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -293,7 +293,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto& modu            = *pp.module;
 
     // Debug infos

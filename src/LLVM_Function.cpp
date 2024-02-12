@@ -20,7 +20,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMPerThread*)perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMPerObj*)perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
@@ -5830,7 +5830,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMPerThread*)perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMPerObj*)perThread[ct][precompileIndex];
     auto&       context         = *pp.context;
 
     typeInfo = typeInfo->getConcreteAlias();
@@ -5895,7 +5895,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     return nullptr;
 }
 
-llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)
+llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerObj& pp, llvm::Function* func, int64_t ip)
 {
     auto& context = *pp.context;
 

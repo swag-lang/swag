@@ -13,7 +13,7 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
 
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto&     pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&     context         = *pp.context;
     auto&     modu            = *pp.module;
 
@@ -109,7 +109,7 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     const int precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    const auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       context = *pp.context;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.module;

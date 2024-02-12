@@ -119,7 +119,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* mod
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto&     pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&     context         = *pp.context;
     auto&     builder         = *pp.builder;
 
@@ -169,7 +169,7 @@ void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildPara
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
 
     SWAG_ASSERT(value);
@@ -200,7 +200,7 @@ void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
 
     auto r0 = GEP64(allocR, reg0);

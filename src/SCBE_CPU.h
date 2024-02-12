@@ -283,8 +283,6 @@ struct SCBE_CPU : BackendPerObj
     uint16_t sectionIndexDBGS = 0;
     uint16_t sectionIndexDBGT = 0;
 
-    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
-
     // Debug infos
     static constexpr int                MAX_RECORD   = 4;
     uint16_t                            dbgRecordIdx = 0;

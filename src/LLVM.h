@@ -2,22 +2,21 @@
 #include "Backend.h"
 #include "BackendParameters.h"
 
-struct Module;
 struct BuildParameters;
-struct Job;
-struct DataSegment;
 struct ByteCode;
-struct TypeInfo;
 struct ByteCodeInstruction;
+struct DataSegment;
+struct Job;
 struct LLVM_Debug;
+struct Module;
+struct TypeInfo;
 enum class SegmentKind;
 
-struct LLVMPerThread : BackendPerObj
+struct LLVMPerObj : BackendPerObj
 {
     llvm::LLVMContext*    context;
     llvm::IRBuilder<>*    builder;
     llvm::Module*         module;
-    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     llvm::GlobalVariable* bssSeg               = nullptr;
     llvm::GlobalVariable* mutableSeg           = nullptr;
@@ -135,7 +134,7 @@ struct LLVM : Backend
     void emitOS(const BuildParameters& buildParameters) const;
     void emitMain(const BuildParameters& buildParameters);
 
-    static llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
+    static llvm::BasicBlock* getOrCreateLabel(LLVMPerObj& pp, llvm::Function* func, int64_t ip);
     bool                     emitGetParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, const llvm::Function* func, TypeInfoFuncAttr* typeFunc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
     llvm::Value*             emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
 };

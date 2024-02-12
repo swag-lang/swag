@@ -419,7 +419,7 @@ llvm::DISubprogram* LLVM_Debug::startFunction(const ByteCode* bc, AstFuncDecl** 
     return SP;
 }
 
-void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+void LLVM_Debug::startFunction(const BuildParameters& buildParameters, const LLVMPerObj& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -738,7 +738,7 @@ void LLVM_Debug::createGlobalVariablesForSegment(const BuildParameters& buildPar
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMPerThread*) llvm->perThread[ct][precompileIndex];
+    const auto& pp              = *(LLVMPerObj*) llvm->perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.context;
     auto&       modu            = *pp.module;

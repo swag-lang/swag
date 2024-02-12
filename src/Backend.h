@@ -25,11 +25,6 @@ enum class BuildCfgOutputKind;
 
 static constexpr int MAX_PRECOMPILE_BUFFERS = 1024;
 
-struct BackendPerObj
-{
-    Utf8 filename;
-};
-
 enum class BackendPreCompilePass
 {
     Init,
@@ -37,6 +32,12 @@ enum class BackendPreCompilePass
     End,
     GenerateObj,
     Release,
+};
+
+struct BackendPerObj
+{
+    Utf8                  filename;
+    BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };
 
 struct Backend
@@ -49,18 +50,15 @@ struct Backend
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
-    void setMustCompile();
-    bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
-
+    void        setMustCompile();
+    bool        isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
     static void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end);
     void        getRangeFunctionIndexForJob(const BuildParameters& buildParameters, const Module* moduleToGen, int& start, int& end) const;
     bool        emitAllFunctionBodies(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
-
-    JobResult generateExportFile(Job* ownerJob);
-    bool      saveExportFile();
-    bool      setupExportFile(bool force = false);
-
-    bool generateOutput(const BuildParameters& buildParameters);
+    JobResult   generateExportFile(Job* ownerJob);
+    bool        saveExportFile();
+    bool        setupExportFile(bool force = false);
+    bool        generateOutput(const BuildParameters& buildParameters);
 
     BackendPerObj* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 

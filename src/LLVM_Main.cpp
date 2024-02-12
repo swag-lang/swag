@@ -12,7 +12,7 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
     {
         const int   ct              = buildParameters.compileType;
         const int   precompileIndex = buildParameters.precompileIndex;
-        const auto& pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+        const auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
         auto&       context         = *pp.context;
         auto&       builder         = *pp.builder;
         auto&       modu            = *pp.module;
@@ -71,7 +71,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto& pp              = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
@@ -279,7 +279,7 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       context = *pp.context;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.module;
@@ -302,7 +302,7 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       context = *pp.context;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.module;
@@ -342,7 +342,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
@@ -420,7 +420,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *(LLVMPerThread*) perThread[ct][precompileIndex];
+    const auto& pp      = *(LLVMPerObj*) perThread[ct][precompileIndex];
     auto&       context = *pp.context;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.module;
