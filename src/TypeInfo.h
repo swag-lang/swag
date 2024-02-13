@@ -92,9 +92,10 @@ constexpr uint8_t TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
 struct TypeInfo
 {
     // clang-format off
-    TypeInfo() = default;
-    TypeInfo(const char* name, TypeInfoKind kind) : name{ name }, kind { kind } {}
-    TypeInfo(TypeInfoKind kind) : kind{kind} {}
+    TypeInfo()           = default;
+    virtual  ~TypeInfo() = default;
+    explicit TypeInfo(const char* name, TypeInfoKind kind) : name{ name }, kind { kind } {}
+    explicit TypeInfo(TypeInfoKind kind) : kind{kind} {}
     // clang-format on
 
     bool isPointerTo(NativeTypeKind pointerKind);

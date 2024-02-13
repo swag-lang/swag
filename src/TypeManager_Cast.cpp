@@ -1637,10 +1637,11 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (!fromNode && fromType->isUntypedInteger())
         {
-            const auto    native = castTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-            const auto    value  = native->valueInteger;
-            const float   tmpF   = (float) value;
-            const int64_t tmpI   = (int64_t) tmpF;
+            const auto  native = castTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+            const auto  value  = native->valueInteger;
+            const float tmpF   = (float) value;
+            // ReSharper disable once CppRedundantCastExpression
+            const int64_t tmpI = (int64_t) tmpF;
             if (tmpI != value)
                 return false;
         }

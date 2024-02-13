@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "DataSegment.h"
 #include "AstNode.h"
 #include "ByteCode.h"
-#include "DataSegment.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Report.h"
