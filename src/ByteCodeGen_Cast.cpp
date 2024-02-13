@@ -637,7 +637,7 @@ bool ByteCodeGen::emitCastToNativeString(const ByteCodeGenContext* context, AstN
     return false;
 }
 
-bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToSlice(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     const auto node        = context->node;
     const auto toTypeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);

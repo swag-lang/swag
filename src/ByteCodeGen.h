@@ -184,7 +184,7 @@ namespace ByteCodeGen
     bool emitCastToNativeAny(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* fromTypeInfo);
     bool emitCastToNativeString(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     bool emitCastToInterface(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-    bool emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
+    bool emitCastToSlice(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t castFlags = EMIT_CASTFLAG_DEFAULT);
     bool emitFuncCallParam(ByteCodeGenContext* context);
     bool emitFuncDeclParams(ByteCodeGenContext* context);
@@ -250,7 +250,7 @@ namespace ByteCodeGen
     bool emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr);
     bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     bool emitIntrinsicDataOf(ByteCodeGenContext* context);
-    bool emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInfoKind from);
+    bool emitKindOf(const ByteCodeGenContext* context, AstNode* node, TypeInfoKind from);
     bool emitImplicitKindOfAny(ByteCodeGenContext* context);
     bool emitImplicitKindOfInterface(ByteCodeGenContext* context);
     bool emitIntrinsicKindOf(ByteCodeGenContext* context);

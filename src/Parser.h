@@ -212,7 +212,7 @@ struct Parser
     bool        doUnreachable(AstNode* parent, AstNode** result);
     bool        doContinue(AstNode* parent, AstNode** result);
     bool        doArrayPointerIndex(AstNode** exprNode);
-    bool        doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool        doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool        doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, const AstWith* withNode = nullptr);
     bool        doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool        doInit(AstNode* parent, AstNode** result);

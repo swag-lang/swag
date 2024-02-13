@@ -2157,7 +2157,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
     }
 }
 
-void SCBE_X64::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
+void SCBE_X64::emit_Call_Result(const TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
 {
     if (CallConv::returnByValue(typeFunc))
     {

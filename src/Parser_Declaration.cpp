@@ -632,7 +632,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode)
+bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
     switch (token.id)
     {

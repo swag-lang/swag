@@ -100,7 +100,7 @@ struct LLVM final : Backend
     void                createRuntime(const BuildParameters& buildParameters) const;
     static llvm::Value* getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits);
     llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo);
-    void                createRet(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
+    void                createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     llvm::FunctionType* getOrCreateFuncType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
     void                emitInternalPanic(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message);
     void                setFuncAttributes(const BuildParameters& buildParameters, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const;
@@ -115,7 +115,7 @@ struct LLVM final : Backend
     static void emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned);
 
     bool         emitCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
-    bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult) const;
+    bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, const TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult) const;
     llvm::Value* emitCall(const BuildParameters& buildParameters, const Utf8& funcName, TypeInfoFuncAttr* typeFuncBC, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
     llvm::Value* emitCall(const BuildParameters& buildParameters, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
     void         generateObjFile(const BuildParameters& buildParameters) const;

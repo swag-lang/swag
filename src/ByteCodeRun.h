@@ -18,7 +18,7 @@ struct ByteCodeRun
 
     static bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     static void runLoopNoDbg(ByteCodeRunContext* context);
-    bool        runLoop(ByteCodeRunContext* context);
+    static bool runLoop(ByteCodeRunContext* context);
     static bool run(ByteCodeRunContext* runContext);
 
     static bool  getVariadicSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip, Register* regPtr, Register* regCount);

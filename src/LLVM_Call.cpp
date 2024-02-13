@@ -102,7 +102,7 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
     }
 }
 
-void LLVM::createRet(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
+void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
     const int   ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
@@ -585,10 +585,10 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     return true;
 }
 
-bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
-                               llvm::AllocaInst*      allocRR,
-                               TypeInfoFuncAttr*      typeFuncBC,
-                               llvm::Value*           callResult) const
+bool LLVM::emitCallReturnValue(const BuildParameters&  buildParameters,
+                               llvm::AllocaInst*       allocRR,
+                               const TypeInfoFuncAttr* typeFuncBC,
+                               llvm::Value*            callResult) const
 {
     const int   ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
