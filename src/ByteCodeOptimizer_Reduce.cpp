@@ -2155,9 +2155,9 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
-        else if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
-                 ip[0].a.u32 == ip[1].a.u32 &&
-                 !(ip[1].flags & BCI_START_STMT))
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
         {
             switch (ip[1].b.u64)
             {

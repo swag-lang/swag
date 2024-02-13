@@ -478,7 +478,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]
                     {
                         return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
                     });
@@ -537,7 +537,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
 
             {
                 PushErrCxtStep ec(
-                    context, node, ErrCxtStepKind::Note, []()
+                    context, node, ErrCxtStepKind::Note, []
                     {
                         return Nte(Nte0021);
                     },

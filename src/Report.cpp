@@ -319,29 +319,27 @@ namespace
 
             return true;
         }
-        else
-        {
-            Vector<Utf8> tokens;
-            Utf8::tokenize(what->text, '|', tokens);
-            for (auto& tk : tokens)
-            {
-                tk.trim();
-                tk.makeLower();
-                if (tk == warnMsg)
-                {
-                    if (l == Disable)
-                    {
-                        retResult = false;
-                    }
-                    else
-                    {
-                        retResult = true;
-                        if (l == Error)
-                            diag.errorLevel = DiagnosticLevel::Error;
-                    }
 
-                    return true;
+        Vector<Utf8> tokens;
+        Utf8::tokenize(what->text, '|', tokens);
+        for (auto& tk : tokens)
+        {
+            tk.trim();
+            tk.makeLower();
+            if (tk == warnMsg)
+            {
+                if (l == Disable)
+                {
+                    retResult = false;
                 }
+                else
+                {
+                    retResult = true;
+                    if (l == Error)
+                        diag.errorLevel = DiagnosticLevel::Error;
+                }
+
+                return true;
             }
         }
 

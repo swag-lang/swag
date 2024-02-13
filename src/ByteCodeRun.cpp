@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "AstFlags.h"
-#include "ByteCodeRun.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "ByteCodeRun.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeStack.h"
 #include "ByteCode_Math.h"
@@ -755,8 +755,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::MemCpy8:
     {
-        auto dst = (uint8_t*) registersRC[ip->a.u32].pointer;
-        auto src = (uint8_t*) registersRC[ip->b.u32].pointer;
+        auto dst = registersRC[ip->a.u32].pointer;
+        auto src = registersRC[ip->b.u32].pointer;
         *dst     = *src;
         break;
     }
@@ -1048,7 +1048,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(ip->b.u32 + 1 <= context->bc->dynStackSize);
         SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-        *(context->bp + ip->a.u32) = *reinterpret_cast<uint8_t*>(context->bp + ip->b.u32);
+        *(context->bp + ip->a.u32) = *(context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack16:
         SWAG_ASSERT(ip->a.u32 + 2 <= context->bc->dynStackSize);
@@ -1204,10 +1204,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
     case ByteCodeOp::SetZeroAtPointerX:
-        memset((void*) (registersRC[ip->a.u32].pointer + ip->c.u32), 0, ip->b.u64);
+        memset(registersRC[ip->a.u32].pointer + ip->c.u32, 0, ip->b.u64);
         break;
     case ByteCodeOp::SetZeroAtPointerXRB:
-        memset((void*) registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u64 * ip->c.u64);
+        memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u64 * ip->c.u64);
         break;
 
     case ByteCodeOp::ClearRR8:
@@ -1255,7 +1255,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         // the cache initiliazed by one module, and used by another one, which is bad (because the first module
         // could be destroyed)
         if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint8_t*>(module->mutableSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *module->mutableSegment.address(ip->b.u32);
         else
         {
             SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
@@ -1329,7 +1329,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         // :SharedRuntimeBC
         if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint8_t*>(module->bssSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *module->bssSegment.address(ip->b.u32);
         else
         {
             SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
@@ -1394,7 +1394,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         // :SharedRuntimeBC
         if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
-            registersRC[ip->a.u32].u64 = *reinterpret_cast<uint8_t*>(module->compilerSegment.address(ip->b.u32));
+            registersRC[ip->a.u32].u64 = *module->compilerSegment.address(ip->b.u32);
         else
         {
             SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
@@ -1464,7 +1464,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             if (module->saveMutableValues && ip->c.pointer)
             {
                 auto over = (SymbolOverload*) ip->c.pointer;
-                module->mutableSegment.saveValue((void*) ptr, over->typeInfo->sizeOf, false);
+                module->mutableSegment.saveValue(ptr, over->typeInfo->sizeOf, false);
             }
 
             registersRC[ip->a.u32].pointer = ptr;
@@ -1478,7 +1478,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 if (module->saveMutableValues && ip->c.pointer)
                 {
                     auto over = (SymbolOverload*) ip->c.pointer;
-                    module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, false);
+                    module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf, false);
                 }
             }
 
@@ -1499,7 +1499,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 if (module->saveBssValues)
                 {
                     auto over = (SymbolOverload*) ip->c.pointer;
-                    module->mutableSegment.saveValue((void*) ptr, over->typeInfo->sizeOf, true);
+                    module->mutableSegment.saveValue(ptr, over->typeInfo->sizeOf, true);
                 }
                 else if (module->bssCannotChange)
                 {
@@ -1522,7 +1522,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     if (module->saveBssValues)
                     {
                         auto over = (SymbolOverload*) ip->c.pointer;
-                        module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, true);
+                        module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf, true);
                     }
                     else if (module->bssCannotChange)
                     {
@@ -2444,12 +2444,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::IntrinsicRealloc:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) realloc((void*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u64);
+        registersRC[ip->a.u32].pointer = (uint8_t*) realloc(registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u64);
         break;
     }
     case ByteCodeOp::IntrinsicFree:
     {
-        free((void*) registersRC[ip->a.u32].pointer);
+        free(registersRC[ip->a.u32].pointer);
         break;
     }
     case ByteCodeOp::InternalGetTlsPtr:
@@ -2470,7 +2470,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::IntrinsicSetContext:
     {
-        OS::tlsSetValue(g_TlsContextId, (void*) registersRC[ip->a.u32].pointer);
+        OS::tlsSetValue(g_TlsContextId, registersRC[ip->a.u32].pointer);
         break;
     }
     case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -2850,7 +2850,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         auto size                      = Allocator::alignSize(count + 1);
         registersRC[ip->a.u32].pointer = (uint8_t*) Allocator::alloc(size);
         context->bc->autoFree.push_back({(void*) registersRC[ip->a.u32].pointer, size});
-        memcpy((void*) registersRC[ip->a.u32].pointer, ptr, count + 1);
+        memcpy(registersRC[ip->a.u32].pointer, ptr, count + 1);
         registersRC[ip->a.u32].pointer[count] = 0;
         break;
     }
@@ -2864,37 +2864,37 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::CompareOp3Way8:
     {
         auto sub                   = IMMA_S8(ip) - IMMB_S8(ip);
-        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (sub > 0) - (sub < 0);
         break;
     }
     case ByteCodeOp::CompareOp3Way16:
     {
         auto sub                   = IMMA_S16(ip) - IMMB_S16(ip);
-        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (sub > 0) - (sub < 0);
         break;
     }
     case ByteCodeOp::CompareOp3Way32:
     {
         auto sub                   = IMMA_S32(ip) - IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (sub > 0) - (sub < 0);
         break;
     }
     case ByteCodeOp::CompareOp3Way64:
     {
         auto sub                   = IMMA_S64(ip) - IMMB_S64(ip);
-        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (sub > 0) - (sub < 0);
         break;
     }
     case ByteCodeOp::CompareOp3WayF32:
     {
         auto sub                   = IMMA_F32(ip) - IMMB_F32(ip);
-        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (sub > 0) - (sub < 0);
         break;
     }
     case ByteCodeOp::CompareOp3WayF64:
     {
         auto sub                   = IMMA_F64(ip) - IMMB_F64(ip);
-        registersRC[ip->c.u32].s32 = (int32_t) ((sub > 0) - (sub < 0));
+        registersRC[ip->c.u32].s32 = (sub > 0) - (sub < 0);
         break;
     }
 
@@ -3366,7 +3366,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(context->bp + ip->a.u32) += IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
-        *(context->bp + ip->a.u32) += *reinterpret_cast<uint8_t*>(context->bp + ip->b.u32);
+        *(context->bp + ip->a.u32) += *(context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpPlusEqU16:
@@ -3497,9 +3497,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::AffectOpMinusEqU8:
-        if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer), (uint8_t) IMMB_S8(ip)))
+        if (subWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
             callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
-        *reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMinusEqU8_Safe:
         *(registersRC[ip->a.u32].pointer) -= IMMB_S8(ip);
@@ -3508,7 +3508,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(context->bp + ip->a.u32) -= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMinusEqU8_SSSafe:
-        *(context->bp + ip->a.u32) -= *reinterpret_cast<uint8_t*>(context->bp + ip->b.u32);
+        *(context->bp + ip->a.u32) -= *(context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpMinusEqU16:
@@ -3639,18 +3639,18 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::AffectOpMulEqU8:
-        if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer), (uint8_t) IMMB_S8(ip)))
+        if (mulWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
             callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
-        *reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMulEqU8_Safe:
         *(registersRC[ip->a.u32].pointer) *= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMulEqU8_SSafe:
-        *reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) *= IMMB_S8(ip);
+        *(context->bp + ip->a.u32) *= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMulEqU8_SSSafe:
-        *reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) *= *reinterpret_cast<uint8_t*>(context->bp + ip->b.u32);
+        *(context->bp + ip->a.u32) *= *(context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpMulEqU16:
@@ -3767,7 +3767,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(context->bp + ip->a.u32) /= IMMB_U8(ip);
         break;
     case ByteCodeOp::AffectOpDivEqU8_SS:
-        *(context->bp + ip->a.u32) /= *reinterpret_cast<uint8_t*>(context->bp + ip->b.u32);
+        *(context->bp + ip->a.u32) /= *(context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpDivEqU16:
@@ -3869,7 +3869,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(context->bp + ip->a.u32) %= IMMB_U8(ip);
         break;
     case ByteCodeOp::AffectOpModuloEqU8_SS:
-        *(context->bp + ip->a.u32) %= *reinterpret_cast<uint8_t*>(context->bp + ip->b.u32);
+        *(context->bp + ip->a.u32) %= *(context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::AffectOpModuloEqU16:
@@ -3923,7 +3923,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     /////////////////////////////////////
 
     case ByteCodeOp::AffectOpOrEqU8:
-        *reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer) |= IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer |= IMMB_S8(ip);
         break;
 
     case ByteCodeOp::AffectOpOrEqU16:
@@ -3941,7 +3941,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     /////////////////////////////////////
 
     case ByteCodeOp::AffectOpXorEqU8:
-        *reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer) ^= IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer ^= IMMB_S8(ip);
         break;
 
     case ByteCodeOp::AffectOpXorEqU16:
@@ -3963,10 +3963,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         Register r1, rr;
         auto     ptr = registersRC[ip->a.u32].pointer;
-        rr.u8        = *reinterpret_cast<uint8_t*>(ptr);
+        rr.u8        = *ptr;
         r1.u32       = IMMB_U32(ip);
         executeLeftShift(&rr, rr, r1, 8, false);
-        *reinterpret_cast<uint8_t*>(ptr) = rr.u8;
+        *ptr = rr.u8;
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqS16:
@@ -4009,10 +4009,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         Register r1, rr;
         auto     ptr = registersRC[ip->a.u32].pointer;
-        rr.u8        = *reinterpret_cast<uint8_t*>(ptr);
+        rr.u8        = *ptr;
         r1.u32       = IMMB_U32(ip);
         executeRightShift(&rr, rr, r1, 8, true);
-        *reinterpret_cast<uint8_t*>(ptr) = rr.u8;
+        *ptr = rr.u8;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS16:
@@ -4050,10 +4050,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         Register r1, rr;
         auto     ptr = registersRC[ip->a.u32].pointer;
-        rr.u8        = *reinterpret_cast<uint8_t*>(ptr);
+        rr.u8        = *ptr;
         r1.u32       = IMMB_U32(ip);
         executeRightShift(&rr, rr, r1, 8, false);
-        *reinterpret_cast<uint8_t*>(ptr) = rr.u8;
+        *ptr = rr.u8;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU16:

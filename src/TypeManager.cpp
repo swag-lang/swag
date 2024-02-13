@@ -274,7 +274,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
         const auto one       = typeList->subTypes[idx];
-        auto       typeParam = (TypeInfoParam*) one->clone();
+        auto       typeParam = one->clone();
         typeParam->offset    = typeStruct->sizeOf;
 
         if (typeParam->name.empty())

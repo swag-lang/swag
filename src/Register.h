@@ -72,7 +72,7 @@ struct RegisterList
     void operator+=(const RegisterList& other)
     {
         SWAG_ASSERT(cannotFree == other.cannotFree);
-        for (int i = 0; i < (int) other.size(); i++)
+        for (int i = 0; i < other.size(); i++)
             *this += other[i];
     }
 

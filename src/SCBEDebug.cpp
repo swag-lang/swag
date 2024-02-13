@@ -386,13 +386,13 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
     switch (typeInfo->sizeOf)
     {
     case 1:
-        return (SCBEDebugTypeIndex) UnsignedCharacter;
+        return UnsignedCharacter;
     case 2:
-        return (SCBEDebugTypeIndex) UInt16;
+        return UInt16;
     case 4:
-        return (SCBEDebugTypeIndex) UInt32;
+        return UInt32;
     default:
-        return (SCBEDebugTypeIndex) UInt64;
+        return UInt64;
     }
 }
 
@@ -462,7 +462,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerPointerToType(SCBE_CPU& pp, Type
 SCBEDebugTypeRecord* SCBEDebug::addTypeRecord(SCBE_CPU& pp)
 {
     const auto tr = pp.dbgTypeRecords.addObj<SCBEDebugTypeRecord>();
-    tr->index     = (SCBEDebugTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
+    tr->index     = pp.dbgTypeRecordsCount + 0x1000;
     pp.dbgTypeRecordsCount++;
     return tr;
 }

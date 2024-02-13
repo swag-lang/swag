@@ -40,4 +40,4 @@ namespace Generic
     bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool validif = false);
     bool instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node);
     bool instantiateDefaultGenericFunc(SemanticContext* context);
-}; // namespace Generic
+}

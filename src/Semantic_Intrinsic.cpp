@@ -644,7 +644,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 
     SwagSlice* slice;
     node->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
-    slice->count                       = (uint64_t) runes.size();
+    slice->count                       = runes.size();
 
     uint8_t* addrDst;
     storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &addrDst);

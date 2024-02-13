@@ -196,7 +196,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     newType->cptRemainingInterfaces = (uint32_t) genericStructType->interfaces.size();
     for (const auto itf : genericStructType->interfaces)
     {
-        auto typeItf = (TypeInfoParam*) itf->clone();
+        auto typeItf = itf->clone();
         newType->interfaces.push_back(typeItf);
 
         SWAG_ASSERT(itf->declNode);

@@ -468,7 +468,7 @@ void SCBE_X64::emit_Store32_Immediate(uint32_t stackOffset, uint32_t val, CPUReg
 {
     concat.addU8(0xC7);
     emit_ModRM(concat, stackOffset, 0, memReg);
-    concat.addU32((uint32_t) val);
+    concat.addU32(val);
 }
 
 void SCBE_X64::emit_Store64_Immediate(uint32_t stackOffset, uint64_t val, CPURegister memReg)
@@ -2041,7 +2041,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
     }
 
     // All parameters
-    for (int i = 0; i < (int) numCallParams; i++)
+    for (int i = 0; i < numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteType(typeFunc->parameters[i]->typeInfo);
         if (typeParam->isAutoConstPointerRef())

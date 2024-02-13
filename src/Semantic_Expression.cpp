@@ -248,7 +248,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 
     // Make the cast
     {
-        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, []()
+        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, []
         {
             return Nte(Nte0185);
         });
@@ -375,7 +375,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     }
     else
     {
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, []()
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, []
         {
             return Nte(Nte0023);
         });

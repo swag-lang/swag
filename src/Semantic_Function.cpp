@@ -146,7 +146,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             if (!defaultValueDone)
             {
                 defaultValueDone               = true;
-                typeInfo->firstDefaultValueIdx = (uint32_t) (index - 1);
+                typeInfo->firstDefaultValueIdx = index - 1;
                 firstParamWithDef              = nodeParam;
             }
 
@@ -1537,7 +1537,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
         if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
         {
-            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, []()
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, []
                               {
                                   return Nte(Nte0134);
                               },
@@ -1547,7 +1547,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         }
         else if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {
-            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType]()
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType]
                               {
                                   return FMT(Nte(Nte0007), returnType->getDisplayNameC());
                               },
@@ -1560,7 +1560,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             auto nodeErr = funcNode->returnType;
             if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->childs.empty())
                 nodeErr = funcNode->returnType->childs.front();
-            PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType]()
+            PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType]
             {
                 return FMT(Nte(Nte0007), returnType->getDisplayNameC());
             }};

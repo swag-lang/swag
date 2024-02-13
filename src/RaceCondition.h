@@ -17,7 +17,7 @@ struct RaceCondition  // NOLINT(cppcoreguidelines-special-member-functions)
     RaceCondition(Instance* inst, bool read);
     ~RaceCondition();
 
-    void lock(Instance* inst, bool read);
+    void lock(Instance* inst, bool r);
     void unlock() const;
 
     Instance* myInstance;

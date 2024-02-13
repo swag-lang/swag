@@ -1,6 +1,7 @@
 #pragma once
 struct Path;
 struct BuildParameters;
+enum class BuildCfgOutputKind;
 
 struct BackendLinker
 {

@@ -412,7 +412,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             for (const auto cc : str)
             {
                 fputc(cc, stdout);
-                line.insert(cursorX, (char) cc);
+                line.insert(cursorX, cc);
                 cursorX++;
             }
 

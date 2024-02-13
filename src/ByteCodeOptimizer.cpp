@@ -339,7 +339,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
                 const auto srcJump = (int) (ip - context->bc->out);
-                const auto dstJump = srcJump + (int) table[idx] + 1;
+                const auto dstJump = srcJump + table[idx] + 1;
                 for (const auto nop : context->nops)
                 {
                     const auto idxNop = (int) (nop - context->bc->out);

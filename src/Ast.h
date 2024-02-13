@@ -105,7 +105,7 @@ namespace Ast
 #endif
         return node;
     }
-}; // namespace Ast
+}
 
 template<typename T>
 T* castAst(AstNode* ptr, AstNodeKind kind)

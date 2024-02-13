@@ -369,20 +369,20 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
             return true;
 
         case NativeTypeKind::String:
+        {
             if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
                 return true;
             }
-            else
-            {
-                const auto rt = reserveRegisterRC(context);
-                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1[1]);
-                EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], rt);
-                EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
-                freeRegisterRC(context, rt);
-                return true;
-            }
+
+            const auto rt = reserveRegisterRC(context);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1[1]);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], rt);
+            EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
+            freeRegisterRC(context, rt);
+            return true;
+        }
 
         case NativeTypeKind::Any:
             if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))

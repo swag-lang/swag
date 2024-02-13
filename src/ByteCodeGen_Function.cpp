@@ -1330,7 +1330,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     if (it != module->cacheSourceLoc.end())
         it->second.push_back(tmpLoc);
     else
-        module->cacheSourceLoc[crc] = VectorNative<SourceLocationCache>{tmpLoc};
+        module->cacheSourceLoc[crc] = VectorNative{tmpLoc};
 
     *storageOffset = offset;
 }
@@ -1639,7 +1639,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         auto  storageSegment = Semantic::getConstantSegFromContext(allParams);
 
         // We must export one type per parameter
-        for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
+        for (int i = numCallParams - 1; i >= numFuncParams - 1; i--)
         {
             auto     child        = allParams->childs[i];
             auto     concreteType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
@@ -1706,7 +1706,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         int  offset         = numVariadic * 2 * sizeof(Register);
         auto storageSegment = Semantic::getConstantSegFromContext(allParams);
 
-        for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
+        for (int i = numCallParams - 1; i >= numFuncParams - 1; i--)
         {
             auto child     = allParams->childs[i];
             auto typeParam = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);

@@ -565,7 +565,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         // Content must have been solved ! #validif pb
         SWAG_ASSERT(!(typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC)));
 
-        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -845,7 +845,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         SWAG_ASSERT(!(typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC)));
 
         needDrop = true;
-        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -958,7 +958,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         SWAG_ASSERT(!(typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC)));
 
         needPostCopy = true;
-        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1069,7 +1069,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         SWAG_ASSERT(!(typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC)));
 
         needPostMove = true;
-        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 

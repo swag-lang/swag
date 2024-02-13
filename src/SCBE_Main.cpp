@@ -156,7 +156,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
             nameLib = nameLib.filename();
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) nameLib.c_str()});
-            pp.pushParams.push_back({CPUPushParamType::Imm, (uint64_t) nameLib.string().length()});
+            pp.pushParams.push_back({CPUPushParamType::Imm, (nameLib.string().length())});
             emitInternalCallExt(pp, g_LangSpec->name__loaddll, pp.pushParams);
         }
     }

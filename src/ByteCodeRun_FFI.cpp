@@ -117,7 +117,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
 
     for (int i = 0; i < numParameters; i++)
     {
-        auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
+        auto typeParam = typeInfoFunc->parameters[i]->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
 
         if (typeParam->isSlice() ||

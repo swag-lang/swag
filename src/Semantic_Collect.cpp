@@ -663,7 +663,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     case NativeTypeKind::Any:
         node->setFlagsValueIsComputed();
         node->computedValue->storageSegment = storageSegment;
-        node->computedValue->storageOffset  = storageSegment->offset((uint8_t*) ptr);
+        node->computedValue->storageOffset  = storageSegment->offset(ptr);
         break;
 
     case NativeTypeKind::S8:

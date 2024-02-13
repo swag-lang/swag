@@ -9,7 +9,7 @@ void* getMessage(Module* module)
 
 void* getBuildCfg(Module* module)
 {
-    return (void*) &module->buildCfg;
+    return &module->buildCfg;
 }
 
 void compileString(Module* module, const char* str, uint32_t count)

@@ -892,7 +892,7 @@ bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* r
 
     {
         PushErrCxtStep ec(
-            context, node, ErrCxtStepKind::Note, []()
+            context, node, ErrCxtStepKind::Note, []
             {
                 return Nte(Nte0131);
             },

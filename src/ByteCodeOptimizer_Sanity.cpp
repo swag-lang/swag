@@ -287,7 +287,7 @@ namespace
             SET_OP(ip, ByteCodeOp::SetAtStackPointer8);
             ip->flags |= BCI_IMM_B;
             ip->a.u32 = offset;
-            ip->b.u64 = *reinterpret_cast<uint8_t*>(value);
+            ip->b.u64 = *value;
             break;
         case 2:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
@@ -471,7 +471,7 @@ namespace
 {
     bool getRegister(Value*& result, const Context& cxt, uint32_t reg)
     {
-        SWAG_ASSERT(reg < (uint32_t) STATE()->regs.count);
+        SWAG_ASSERT(reg < STATE()->regs.count);
         result = &STATE()->regs[reg];
         return true;
     }
@@ -546,7 +546,7 @@ namespace
     void setStackValue(const Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
     {
         const auto offset = (uint32_t) ((uint8_t*) addr - STATE()->stack.buffer);
-        SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE()->stackValue.count);
+        SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
         for (uint32_t i                 = offset; i < offset + sizeOf; i++)
             STATE()->stackValue[i].kind = kind;
     }
@@ -897,7 +897,7 @@ namespace
                 if (rc->kind == ValueKind::Constant)
                 {
                     auto sub    = va.reg.u8 - vb.reg.u8;
-                    rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+                    rc->reg.s32 = (sub > 0) - (sub < 0);
                 }
                 break;
             case ByteCodeOp::CompareOp3Way16:
@@ -908,7 +908,7 @@ namespace
                 if (rc->kind == ValueKind::Constant)
                 {
                     auto sub    = va.reg.u16 - vb.reg.u16;
-                    rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+                    rc->reg.s32 = (sub > 0) - (sub < 0);
                 }
                 break;
             case ByteCodeOp::CompareOp3Way32:
@@ -919,7 +919,7 @@ namespace
                 if (rc->kind == ValueKind::Constant)
                 {
                     auto sub    = va.reg.u32 - vb.reg.u32;
-                    rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+                    rc->reg.s32 = (sub > 0) - (sub < 0);
                 }
                 break;
             case ByteCodeOp::CompareOp3Way64:
@@ -930,7 +930,7 @@ namespace
                 if (rc->kind == ValueKind::Constant)
                 {
                     auto sub    = va.reg.u64 - vb.reg.u64;
-                    rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+                    rc->reg.s32 = (sub > 0) - (sub < 0);
                 }
                 break;
             case ByteCodeOp::CompareOp3WayF32:
@@ -941,7 +941,7 @@ namespace
                 if (rc->kind == ValueKind::Constant)
                 {
                     auto sub    = va.reg.f32 - vb.reg.f32;
-                    rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+                    rc->reg.s32 = (sub > 0) - (sub < 0);
                 }
                 break;
             case ByteCodeOp::CompareOp3WayF64:
@@ -952,7 +952,7 @@ namespace
                 if (rc->kind == ValueKind::Constant)
                 {
                     auto sub    = va.reg.f64 - vb.reg.f64;
-                    rc->reg.s32 = (int32_t) ((sub > 0) - (sub < 0));
+                    rc->reg.s32 = (sub > 0) - (sub < 0);
                 }
                 break;
 
@@ -1001,7 +1001,7 @@ namespace
                 break;
             case ByteCodeOp::SetZeroStack8:
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->a.u32, 1));
-                *reinterpret_cast<uint8_t*>(addr) = 0;
+                *addr = 0;
                 setStackValue(cxt, addr, 1, ValueKind::Constant);
                 break;
             case ByteCodeOp::SetZeroStack16:
@@ -1057,7 +1057,7 @@ namespace
                 if (ra->kind == ValueKind::StackAddr)
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->b.u32, 1));
-                    *reinterpret_cast<uint8_t*>(addr) = 0;
+                    *addr = 0;
                     setStackValue(cxt, addr, 1, ValueKind::Constant);
                 }
                 break;
@@ -1099,7 +1099,7 @@ namespace
                 {
                     SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u64 + ip->c.u32, 1));
                     SWAG_CHECK(getImmediateB(vb, cxt, ip));
-                    *reinterpret_cast<uint8_t*>(addr) = vb.reg.u8;
+                    *addr = vb.reg.u8;
                     setStackValue(cxt, addr, 1, vb.kind);
                 }
                 break;
@@ -1179,8 +1179,8 @@ namespace
                 SWAG_CHECK(getStackAddress(addr, cxt, ip->b.u32, 1));
                 SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
                 SWAG_CHECK(checkStackInitialized(cxt, addr, 1, ra->overload));
-                ra->reg.u64 = *reinterpret_cast<uint8_t*>(addr);
-                setConstant(cxt, ra->kind, ip, *reinterpret_cast<uint8_t*>(addr), ConstantKind::SetImmediateA);
+                ra->reg.u64 = *addr;
+                setConstant(cxt, ra->kind, ip, *addr, ConstantKind::SetImmediateA);
                 break;
             case ByteCodeOp::GetFromStack16:
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1272,7 +1272,7 @@ namespace
                     SWAG_CHECK(getStackAddress(addr, cxt, rb->reg.u64 + ip->c.s64, 1));
                     SWAG_CHECK(checkStackInitialized(cxt, addr, 1));
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 1));
-                    ra->reg.u64 = *reinterpret_cast<uint8_t*>(addr);
+                    ra->reg.u64 = *addr;
                     break;
                 }
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -2397,7 +2397,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         SWAG_ASSERT(over);
         if (over->computedValue.storageOffset == UINT32_MAX)
             continue;
-        if (over->computedValue.storageOffset + over->typeInfo->sizeOf > (uint32_t) state->stackValue.count)
+        if (over->computedValue.storageOffset + over->typeInfo->sizeOf > state->stackValue.count)
             continue;
 
         for (uint32_t i                                                       = 0; i < over->typeInfo->sizeOf; i++)

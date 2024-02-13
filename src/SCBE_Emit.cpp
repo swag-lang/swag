@@ -268,7 +268,7 @@ void SCBE::emitBinOpDivIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CP
     {
     case CPUBits::B8:
         if (ip->flags & BCI_IMM_A)
-            pp.emit_Load32_Immediate(RAX, (uint32_t) ip->a.u8);
+            pp.emit_Load32_Immediate(RAX, ip->a.u8);
         else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
             pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
         else

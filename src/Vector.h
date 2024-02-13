@@ -40,7 +40,7 @@ struct Vector : vector<T, StdAllocator<T>>
     void release() noexcept
     {
         this->~Vector<T>();
-        ::new(this) Vector<T>;
+        ::new(this) Vector;
     }
 };
 

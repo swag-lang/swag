@@ -366,7 +366,7 @@ namespace OS
 
     void* loadLibrary(const char* name)
     {
-        return (void*) LoadLibraryA(name);
+        return LoadLibraryA(name);
     }
 
     void* getProcAddress(void* handle, const char* name)
@@ -538,7 +538,7 @@ namespace OS
 
     void setThreadName(thread* thread, const char* threadName)
     {
-        const auto  handle   = static_cast<HANDLE>(thread->native_handle());
+        const auto  handle   = thread->native_handle();
         const DWORD threadId = GetThreadId(handle);
         setThreadName(threadId, threadName);
         // SetThreadPriority(handle, THREAD_PRIORITY_TIME_CRITICAL);
@@ -597,7 +597,7 @@ namespace OS
             for (int i = 0; i < nb; i++)
             {
                 displacement         = 0;
-                const auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], (DWORD64*) &displacement, psym);
+                const auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], &displacement, psym);
                 displacement         = 0;
                 const auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], (DWORD*) &displacement, &line);
 
@@ -809,7 +809,7 @@ namespace OS
 
     int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith)
     {
-        return _InterlockedCompareExchange((LONG*) addr, (LONG) replaceWith, (LONG) compareTo);
+        return _InterlockedCompareExchange((LONG*) addr, replaceWith, compareTo);
     }
 
     int64_t atomicCmpXchg(int64_t* addr, int64_t compareTo, int64_t replaceWith)
@@ -870,7 +870,7 @@ namespace OS
         const auto    res = _BitScanForward64(&index, value);
         if (!res)
             return 64;
-        return (uint64_t) index;
+        return index;
     }
 
     uint8_t bitCountLz(uint8_t value)

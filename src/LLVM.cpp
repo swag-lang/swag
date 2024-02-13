@@ -228,7 +228,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
         pp.llvmContext->setDiscardValueNames(true);
 
         pp.llvmModule = new llvm::Module(pp.filename.c_str(), *pp.llvmContext);
-        pp.builder    = new llvm::IRBuilder<>(*pp.llvmContext);
+        pp.builder    = new llvm::IRBuilder(*pp.llvmContext);
 
         if (buildParameters.buildCfg->backendDebugInfos)
         {
@@ -346,7 +346,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     {
         cpu = OS::getNativeTarget().cpu;
 
-        llvm::StringMap<bool, llvm::MallocAllocator> feat;
+        llvm::StringMap<bool> feat;
         llvm::sys::getHostCPUFeatures(feat);
         bool first = true;
         for (auto& it : feat)

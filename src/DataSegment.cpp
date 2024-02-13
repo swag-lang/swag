@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AstNode.h"
-#include "DataSegment.h"
 #include "ByteCode.h"
+#include "DataSegment.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Report.h"
@@ -240,7 +240,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* t
         uint8_t*   addr;
         const auto storageOffset = reserve(2 * sizeof(uint64_t), &addr);
         ((uint64_t*) addr)[0]    = (uint64_t) computedValue.text.buffer;
-        ((uint64_t*) addr)[1]    = (uint32_t) computedValue.text.count;
+        ((uint64_t*) addr)[1]    = computedValue.text.count;
         *resultPtr               = addr;
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
@@ -304,7 +304,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* t
     switch (typeInfo->sizeOf)
     {
     case 1:
-        *reinterpret_cast<uint8_t*>(addr) = computedValue.reg.u8;
+        *addr = computedValue.reg.u8;
         storedValues8[computedValue.reg.u8] = {storageOffset, addr};
         break;
     case 2:

@@ -172,7 +172,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
         // Do not substitute with unconverted TypeList
         if (!it->second.typeInfoReplace->isListArray())
             return it->second.typeInfoReplace;
-        else if (typeInfo->isKindGeneric())
+        if (typeInfo->isKindGeneric())
             return TypeManager::convertTypeListToArray(nullptr, (TypeInfoList*) it->second.typeInfoReplace, true);
     }
 

@@ -402,7 +402,7 @@ namespace
         if (iter.second)
         {
             checkSymIndex = (uint32_t) arrFileNames.size();
-            arrFileNames.push_back((uint32_t) stringTable.length());
+            arrFileNames.push_back(stringTable.length());
             iter.first->second = checkSymIndex;
             stringTable += sourceFile->path.string();
             stringTable.append((char) 0);

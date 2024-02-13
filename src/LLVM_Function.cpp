@@ -3464,7 +3464,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     r1 = builder.getInt16((uint16_t) (idx - 1) + ip->b.u16);
                     break;
                 case ByteCodeOp::JumpDyn32:
-                    r1 = builder.getInt32((uint32_t) (idx - 1) + ip->b.u32);
+                    r1 = builder.getInt32(idx - 1 + ip->b.u32);
                     break;
                 case ByteCodeOp::JumpDyn64:
                     r1 = builder.getInt64((uint64_t) (idx - 1) + ip->b.u64);
@@ -4228,13 +4228,13 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::IntrinsicCompilerError:
         {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extByteCode()->bc;
+            auto bcF = ip->node->resolvedSymbolOverload->node->extByteCode()->bc;
             emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicCompilerWarning:
         {
-            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extByteCode()->bc;
+            auto bcF = ip->node->resolvedSymbolOverload->node->extByteCode()->bc;
             emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
@@ -4244,7 +4244,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
 
         case ByteCodeOp::Unreachable:
-            emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) "executing unreachable code");
+            emitInternalPanic(buildParameters, allocR, allocT, ip->node, "executing unreachable code");
             break;
         case ByteCodeOp::InternalUnreachable:
             builder.CreateUnreachable();

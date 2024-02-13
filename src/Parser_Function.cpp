@@ -559,7 +559,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             {
                 isType = true;
                 PushErrCxtStep ec1(
-                    context, nullptr, ErrCxtStepKind::Note, [oneParam]()
+                    context, nullptr, ErrCxtStepKind::Note, [oneParam]
                     {
                         return FMT(Nte(Nte0083), oneParam->token.ctext());
                     },
@@ -1070,7 +1070,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         else
         {
             {
-                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
+                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []
                 {
                     return Nte(Nte0011);
                 });

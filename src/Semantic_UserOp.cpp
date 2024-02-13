@@ -163,7 +163,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(diag, note, note1);
     }
 
-    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]()
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
     {
         return getSpecialOpSignature(node);
     });
@@ -630,7 +630,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     if (leftType->isGeneric())
     {
         PushErrCxtStep ec(
-            context, left->parent, ErrCxtStepKind::Note, [&]()
+            context, left->parent, ErrCxtStepKind::Note, [&]
             {
                 return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
             },
@@ -663,7 +663,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         {
             PushErrCxtStep ec(
-                context, left->parent, ErrCxtStepKind::Note, [name, leftType]()
+                context, left->parent, ErrCxtStepKind::Note, [name, leftType]
                 {
                     return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
                 },

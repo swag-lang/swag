@@ -231,7 +231,7 @@ namespace ByteCodeGen
     bool emitLocalVarDeclBefore(ByteCodeGenContext* context);
     bool emitLocalVarDecl(ByteCodeGenContext* context);
     void emitRetValRef(const ByteCodeGenContext* context, SymbolOverload* resolved, const RegisterList& r0, bool retVal, uint32_t stackOffset);
-    bool emitStructInit(const ByteCodeGenContext* context, const TypeInfoStruct* typeInfo, uint32_t regOffset, bool retVal);
+    bool emitStructInit(const ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal);
     bool emitBreak(ByteCodeGenContext* context);
     bool emitFallThrough(ByteCodeGenContext* context);
     bool emitContinue(ByteCodeGenContext* context);

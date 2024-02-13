@@ -116,7 +116,7 @@ struct LLVM : Backend
 
     bool         emitCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
     bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult) const;
-    llvm::Value* emitCall(const BuildParameters& buildParameters, const Utf8& funcName, TypeInfoFuncAttr* typeFunc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
+    llvm::Value* emitCall(const BuildParameters& buildParameters, const Utf8& funcName, TypeInfoFuncAttr* typeFuncBC, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
     llvm::Value* emitCall(const BuildParameters& buildParameters, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
     void         generateObjFile(const BuildParameters& buildParameters) const;
     bool         emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;

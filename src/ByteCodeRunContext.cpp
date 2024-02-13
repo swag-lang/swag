@@ -87,5 +87,5 @@ int ByteCodeRunContext::getRegCount(int cur)
 {
     if ((size_t) cur >= registersRC.size() - 1)
         return (int) bc->maxReservedRegisterRC;
-    return (int) (registersRC[cur + 1] - registersRC[cur]);
+    return registersRC[cur + 1] - registersRC[cur];
 }

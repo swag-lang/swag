@@ -178,12 +178,12 @@ ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* cont
         ins.flags |= BCI_CAN_OVERFLOW;
 
 #if defined SWAG_DEV_MODE
-    ins.sourceFile            = file;
-    ins.sourceLine            = line;
-    static atomic<int> serial = 0;
-    ins.serial                = serial++;
-    ins.treeNode              = 0;
-    ins.crc                   = 0;
+    ins.sourceFile       = file;
+    ins.sourceLine       = line;
+    static atomic serial = 0;
+    ins.serial           = serial++;
+    ins.treeNode         = 0;
+    ins.crc              = 0;
 #endif
 
     if (context->noLocation)

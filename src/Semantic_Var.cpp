@@ -521,9 +521,9 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
     if (typeLambda->isClosure() && !nodeParam->ownerFct->captureParameters)
         paramIdx += 1;
 
-    if (paramIdx >= (uint32_t) typeLambda->parameters.count)
+    if (paramIdx >= typeLambda->parameters.count)
     {
-        const Diagnostic diag{nodeParam, FMT(Err(Err0630), (uint32_t) typeLambda->parameters.count, (uint32_t) nodeParam->parent->childs.count)};
+        const Diagnostic diag{nodeParam, FMT(Err(Err0630), typeLambda->parameters.count, nodeParam->parent->childs.count)};
         return context->report(diag);
     }
 

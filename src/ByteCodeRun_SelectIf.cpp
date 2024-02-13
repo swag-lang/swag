@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "AstFlags.h"
+#include "AstNode.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "ErrorIds.h"
