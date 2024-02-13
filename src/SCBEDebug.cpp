@@ -54,7 +54,7 @@ void SCBEDebug::getStructFields(SCBE_CPU& pp, SCBEDebugTypeRecord* tr, TypeInfoS
         field.type = getOrCreateType(pp, p->typeInfo);
         field.name.setView(p->name);
         field.value.reg.u32 = baseOffset + p->offset;
-        tr->LF_FieldList.fields.emplace_back(std::move(field));
+        tr->LF_FieldList.fields.push_back(field);
 
         if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
         {
@@ -137,13 +137,13 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
+        tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
         field.type          = (SCBEDebugTypeIndex) (UInt64);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_sizeof);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
+        tr0->LF_FieldList.fields.push_back(field);
 
         auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
@@ -199,13 +199,13 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_ptrvalue);
         tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
+        tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
         field.type          = getOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo, false);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_typeinfo);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
+        tr0->LF_FieldList.fields.push_back(field);
 
         auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
@@ -252,7 +252,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
             field.kind = LF_ONEMETHOD;
             field.type = getOrCreateType(pp, p->typeInfo);
             field.name = getScopedName(p->typeInfo->declNode);
-            tr0->LF_FieldList.fields.emplace_back(std::move(field));
+            tr0->LF_FieldList.fields.push_back(field);
         }
 
         // Struct itself, pointing to the field list
@@ -295,7 +295,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
                     field.name      = value->name;
                     field.valueType = typeInfoEnum->rawType;
                     field.value     = *value->value;
-                    tr0->LF_FieldList.fields.emplace_back(std::move(field));
+                    tr0->LF_FieldList.fields.push_back(field);
                 }
             }
 

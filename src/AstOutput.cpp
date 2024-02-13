@@ -1766,6 +1766,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
             concat.addChar(' ');
         }
+
+        [[fallthrough]];
     }
 
     case AstNodeKind::FuncCall:

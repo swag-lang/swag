@@ -159,18 +159,21 @@ bool ByteCodeGen::emitKindOf(const ByteCodeGenContext* context, AstNode* node, T
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitImplicitKindOfAny(ByteCodeGenContext* context)
 {
     SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Native));
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitImplicitKindOfInterface(ByteCodeGenContext* context)
 {
     SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Interface));
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

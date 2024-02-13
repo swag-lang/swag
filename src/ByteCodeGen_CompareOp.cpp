@@ -185,7 +185,7 @@ bool ByteCodeGen::emitCompareOpPostSpecialFunc(const ByteCodeGenContext* context
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
+bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -334,7 +334,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left,
     return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
 }
 
-bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
+bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -490,7 +490,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* le
     return Report::internalError(context->node, "emitCompareOpNotEqual, invalid type");
 }
 
-bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
+bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
@@ -499,7 +499,7 @@ bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, const Register
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
+bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
     const auto node  = context->node;
     const auto left  = node->childs.front();
