@@ -157,7 +157,7 @@ void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, AstNode* nod
         freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
 }
 
-void ByteCodeGen::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterList& r0)
+void ByteCodeGen::ensureCanBeChangedRC(const ByteCodeGenContext* context, RegisterList& r0)
 {
     if (r0.cannotFree)
     {

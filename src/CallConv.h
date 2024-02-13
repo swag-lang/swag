@@ -65,10 +65,10 @@ struct CallConv
     uint32_t    numScratchRegisters  = 4;
 
     static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
-    static bool returnByAddress(TypeInfoFuncAttr* typeFunc);
+    static bool returnByAddress(const TypeInfoFuncAttr* typeFunc);
     static bool returnByStackAddress(const TypeInfoFuncAttr* typeFunc);
-    static bool returnNeedsStack(TypeInfoFuncAttr* typeFunc);
-    static bool returnByValue(TypeInfoFuncAttr* typeFunc);
+    static bool returnNeedsStack(const TypeInfoFuncAttr* typeFunc);
+    static bool returnByValue(const TypeInfoFuncAttr* typeFunc);
     static bool returnStructByValue(const TypeInfoFuncAttr* typeFunc);
 };
 

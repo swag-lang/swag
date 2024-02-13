@@ -141,7 +141,7 @@ struct Parser
     bool        doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl);
     bool        doDefer(AstNode* parent, AstNode** result);
     bool        doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
-    bool        doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool        doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool        doTopLevelIdentifier(AstNode* parent, AstNode** result);
     bool        doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool        doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
@@ -163,7 +163,7 @@ struct Parser
     bool        doAssignmentExpression(AstNode* parent, AstNode** result);
     bool        doExpressionListTuple(AstNode* parent, AstNode** result);
     bool        doExpressionListArray(AstNode* parent, AstNode** result);
-    bool        doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doInitializationExpression(const TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool        doLiteral(AstNode* parent, AstNode** result);
     bool        doIntrinsicProp(AstNode* parent, AstNode** result);
     bool        doIndex(AstNode* parent, AstNode** result);

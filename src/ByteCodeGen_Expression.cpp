@@ -88,6 +88,7 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 {
     const auto ifTrue  = context->node;

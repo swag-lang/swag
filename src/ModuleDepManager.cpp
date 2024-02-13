@@ -448,7 +448,7 @@ bool ModuleDepManager::execute()
     }
 
     g_ThreadMgr.waitEndJobs();
-    g_Workspace->checkPendingJobs();
+    Workspace::checkPendingJobs();
     if (g_Workspace->numErrors)
         return false;
 
@@ -551,7 +551,7 @@ bool ModuleDepManager::execute()
         }
 
         g_ThreadMgr.waitEndJobs();
-        g_Workspace->checkPendingJobs();
+        Workspace::checkPendingJobs();
         ok = g_Workspace->numErrors.load() == 0;
     }
 

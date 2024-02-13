@@ -1254,7 +1254,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doInitializationExpression(const TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     // var x: type = undefined => not initialized
     if (token.id == TokenId::KwdUndefined)
@@ -1421,7 +1421,7 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
     }
 }
 
-bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode)
+bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode, withNode));

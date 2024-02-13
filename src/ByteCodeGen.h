@@ -320,7 +320,7 @@ namespace ByteCodeGen
     void     freeRegisterRC(const ByteCodeGenContext* context, AstNode* node);
     void     truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int count);
     void     sortRegistersRC(const ByteCodeGenContext* context);
-    void     ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterList& r0);
+    void     ensureCanBeChangedRC(const ByteCodeGenContext* context, RegisterList& r0);
 }
 
 #define EMIT_INST0(__cxt, __op) ByteCodeGen::emitInstruction(__cxt, __op, 0, 0, 0, 0, __FILE__, __LINE__)

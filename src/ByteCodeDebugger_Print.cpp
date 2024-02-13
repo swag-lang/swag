@@ -534,6 +534,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     return BcDbgCommandResult::Continue;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 2)

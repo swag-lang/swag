@@ -74,7 +74,7 @@ struct TypeManager
 {
     void setup();
 
-    static bool isOverflowEnabled(const SemanticContext* context, AstNode* fromNode, uint64_t castFlags);
+    static bool isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, uint64_t castFlags);
     static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, const TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
     static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static void getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);

@@ -30,7 +30,7 @@ bool CallConv::structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeIn
     return cc.structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
 }
 
-bool CallConv::returnByAddress(TypeInfoFuncAttr* typeFunc)
+bool CallConv::returnByAddress(const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;
@@ -67,7 +67,7 @@ bool CallConv::returnByStackAddress(const TypeInfoFuncAttr* typeFunc)
     return false;
 }
 
-bool CallConv::returnNeedsStack(TypeInfoFuncAttr* typeFunc)
+bool CallConv::returnNeedsStack(const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;
@@ -77,7 +77,7 @@ bool CallConv::returnNeedsStack(TypeInfoFuncAttr* typeFunc)
     return returnByStackAddress(typeFunc);
 }
 
-bool CallConv::returnByValue(TypeInfoFuncAttr* typeFunc)
+bool CallConv::returnByValue(const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;

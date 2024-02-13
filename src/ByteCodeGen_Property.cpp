@@ -7,6 +7,7 @@
 #include "Symbol.h"
 #include "TypeManager.h"
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

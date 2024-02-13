@@ -9,7 +9,6 @@ struct SyntaxContext : JobContext
 
 struct SyntaxJob final : Job
 {
-    virtual   ~SyntaxJob() = default;
     void      release() override;
     JobResult execute() override;
 

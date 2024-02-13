@@ -5,7 +5,7 @@
 #include "Module.h"
 #include "SourceFile.h"
 
-inline bool overflowIsEnabled(const ByteCodeInstruction* ip, AstNode* node)
+inline bool overflowIsEnabled(const ByteCodeInstruction* ip, const AstNode* node)
 {
     if (ip && ip->flags & BCI_CAN_OVERFLOW)
         return true;
