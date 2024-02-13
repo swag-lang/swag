@@ -55,7 +55,7 @@ struct Utf8
     bool        compareNoCase(const Utf8& txt1) const;
     bool        startsWith(const char* pz) const;
     int         countOf(char c) const;
-    int         toInt(int offset = 0) const;
+    int         toInt(uint32_t offset = 0) const;
 
     void clear();
     void makeLocal();

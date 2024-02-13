@@ -1010,7 +1010,7 @@ int Utf8::countOf(char c) const
     return cpt;
 }
 
-int Utf8::toInt(int offset) const
+int Utf8::toInt(uint32_t offset) const
 {
     SWAG_ASSERT(offset < length());
     char* end;
