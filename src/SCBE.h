@@ -12,7 +12,7 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 
-struct SCBE : Backend
+struct SCBE final : Backend
 {
     SCBE(Module* mdl);
     SCBE();

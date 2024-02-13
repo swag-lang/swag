@@ -3,7 +3,7 @@
 
 struct Module;
 
-struct SaveGenJob : Job
+struct SaveGenJob final : Job
 {
     SaveGenJob();
 

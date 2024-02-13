@@ -3,9 +3,8 @@
 
 struct SourceFile;
 
-struct LoadSourceFileJob : Job
+struct LoadSourceFileJob final : Job
 {
-    virtual ~LoadSourceFileJob() = default;
     LoadSourceFileJob();
 
     void      release() override;

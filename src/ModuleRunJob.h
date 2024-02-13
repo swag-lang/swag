@@ -4,7 +4,7 @@
 
 struct Module;
 
-struct ModuleRunJob : Job
+struct ModuleRunJob final : Job
 {
     JobResult execute() override;
 

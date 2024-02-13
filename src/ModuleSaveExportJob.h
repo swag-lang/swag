@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 
-struct ModuleSaveExportJob : Job
+struct ModuleSaveExportJob final : Job
 {
     ModuleSaveExportJob();
 

@@ -5,7 +5,7 @@ struct Module;
 struct Path;
 struct SourceFile;
 
-struct EnumerateModuleJob : Job
+struct EnumerateModuleJob final : Job
 {
     JobResult execute() override;
 

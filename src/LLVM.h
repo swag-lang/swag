@@ -90,7 +90,7 @@ struct LLVMEncoder : BackendEncoder
     LLVMDebug* dbg = nullptr;
 };
 
-struct LLVM : Backend
+struct LLVM final : Backend
 {
     LLVM(Module* mdl);
 

@@ -2,7 +2,7 @@
 #include "Job.h"
 struct Module;
 
-struct CopyFileJob : Job
+struct CopyFileJob final : Job
 {
     CopyFileJob();
 
@@ -13,7 +13,7 @@ struct CopyFileJob : Job
     Path destPath;
 };
 
-struct LoadFileJob : Job
+struct LoadFileJob final : Job
 {
     LoadFileJob();
 

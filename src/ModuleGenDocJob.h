@@ -3,7 +3,7 @@
 #include "Job.h"
 #include "Runtime.h"
 
-struct ModuleGenDocJob : Job
+struct ModuleGenDocJob final : Job
 {
     JobResult execute() override;
 

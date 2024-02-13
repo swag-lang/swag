@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 
-struct PrepCompilerMsgJob : Job
+struct PrepCompilerMsgJob final : Job
 {
     JobResult execute() override;
 

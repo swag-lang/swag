@@ -2,10 +2,9 @@
 #include "ByteCodeGenContext.h"
 #include "Job.h"
 
-struct ByteCodeGenJob : Job
+struct ByteCodeGenJob final : Job
 {
-    virtual ~ByteCodeGenJob() = default;
-    void    release() override;
+    void release() override;
 
     static JobResult       leaveJob(AstNode* node);
     JobResult              execute() override;

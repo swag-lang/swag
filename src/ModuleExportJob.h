@@ -3,7 +3,7 @@
 
 struct Backend;
 
-struct ModuleExportJob : Job
+struct ModuleExportJob final : Job
 {
     JobResult execute() override;
 

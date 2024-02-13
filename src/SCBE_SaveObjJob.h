@@ -3,7 +3,7 @@
 
 struct ModulePrepOutputStage1Job;
 
-struct SCBE_SaveObjJob : Job
+struct SCBE_SaveObjJob final : Job
 {
     SCBE_SaveObjJob()
     {

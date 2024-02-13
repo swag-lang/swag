@@ -7,7 +7,7 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 
-class MyOStream : public llvm::raw_ostream
+class MyOStream final : public llvm::raw_ostream
 {
 public:
     MyOStream()

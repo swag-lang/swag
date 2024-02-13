@@ -7,7 +7,7 @@ struct SyntaxContext : JobContext
     SyntaxJob* job = nullptr;
 };
 
-struct SyntaxJob : Job
+struct SyntaxJob final : Job
 {
     virtual   ~SyntaxJob() = default;
     void      release() override;

@@ -1,12 +1,9 @@
 #pragma once
 #include "Job.h"
 
-struct FetchModuleFileSystemJob : Job
+struct FetchModuleFileSystemJob final : Job
 {
-    FetchModuleFileSystemJob()
-    {
-        addFlag(JOB_IS_IO);
-    }
+    FetchModuleFileSystemJob();
 
     JobResult execute() override;
     bool      collectSourceFiles = true;

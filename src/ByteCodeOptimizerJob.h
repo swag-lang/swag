@@ -3,9 +3,8 @@
 #include "Job.h"
 struct ByteCode;
 
-struct ByteCodeOptimizerJob : Job
+struct ByteCodeOptimizerJob final : Job
 {
-    virtual   ~ByteCodeOptimizerJob() = default;
     JobResult execute() override;
 
 	// clang-format off

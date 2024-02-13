@@ -4,7 +4,7 @@
 
 struct ModuleDependency;
 
-struct ModuleBuildJob : Job
+struct ModuleBuildJob final : Job
 {
     void      release() override;
     JobResult execute() override;

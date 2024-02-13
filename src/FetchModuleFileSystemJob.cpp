@@ -9,6 +9,11 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 
+FetchModuleFileSystemJob::FetchModuleFileSystemJob()
+{
+    addFlag(JOB_IS_IO);
+}
+
 JobResult FetchModuleFileSystemJob::execute()
 {
     const auto dep = module->fetchDep;

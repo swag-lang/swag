@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 
-struct ModuleSemanticJob : Job
+struct ModuleSemanticJob final : Job
 {
     JobResult execute() override;
 };

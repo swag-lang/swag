@@ -2,14 +2,14 @@
 #include "BackendParameters.h"
 #include "Job.h"
 
-struct ModulePrepOutputStage1Job : Job
+struct ModulePrepOutputStage1Job final : Job
 {
     JobResult execute() override;
 
     BuildParameters buildParameters;
 };
 
-struct ModulePrepOutputStage2Job : Job
+struct ModulePrepOutputStage2Job final : Job
 {
     JobResult execute() override;
 
