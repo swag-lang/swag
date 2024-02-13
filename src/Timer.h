@@ -3,7 +3,7 @@
 
 struct Timer
 {
-    Timer(atomic<uint64_t>* dest, bool force = false)
+    explicit Timer(atomic<uint64_t>* dest, bool force = false)
         : destValue{dest}
     {
         start(force);

@@ -14,7 +14,7 @@ struct ByteCodeInstruction;
 
 struct SCBE final : Backend
 {
-    SCBE(Module* mdl);
+    explicit SCBE(Module* mdl);
     SCBE();
 
     void      createRuntime(const BuildParameters& buildParameters) const;

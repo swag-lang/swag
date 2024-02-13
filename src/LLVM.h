@@ -92,7 +92,7 @@ struct LLVMEncoder : BackendEncoder
 
 struct LLVM final : Backend
 {
-    LLVM(Module* mdl);
+    explicit LLVM(Module* mdl);
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;

@@ -47,13 +47,13 @@ struct StdAllocator
     using value_type = T;
 
     template<class U>
-    constexpr StdAllocator(const StdAllocator<U>&) noexcept
+    explicit constexpr StdAllocator(const StdAllocator<U>&) noexcept
     {
     }
 
     StdAllocator() = default;
 
-    static T* allocate(size_t n, const T* hint = nullptr)
+    static T* allocate(size_t n)
     {
         const auto size = Allocator::alignSize(n * sizeof(T));
 #ifdef SWAG_STATS

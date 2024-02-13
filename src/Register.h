@@ -108,6 +108,7 @@ struct RegisterList
         return true;
     }
 
+    // ReSharper disable once CppNonExplicitConversionOperator
     operator uint32_t() const
     {
         return (*this)[0];
