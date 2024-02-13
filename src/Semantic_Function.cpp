@@ -549,7 +549,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
         funcNode->addAstFlag(AST_CONST_EXPR);
     if (funcNode->ownerFct)
-        funcNode->addAttribute(funcNode->ownerFct->attributeFlags & ATTRIBUTE_COMPILER);
+        funcNode->inheritAttribute(funcNode->ownerFct, ATTRIBUTE_COMPILER);
 
     if (!funcNode->hasAstFlag(AST_FROM_GENERIC) && !funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR))
     {
@@ -569,24 +569,28 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
+            
             if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0225), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
+            
             if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0223), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
+            
             if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0226), funcNode->getDisplayNameC())};
                 auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 return context->report(diag, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
             }
+            
             if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, FMT(Err(Err0222), funcNode->getDisplayNameC())};

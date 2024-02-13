@@ -210,8 +210,8 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
     if (!child->parent)
         return;
 
-    child->addAttribute(child->parent->attributeFlags & ATTRIBUTE_MATCH_MASK);
-    child->addAttribute(child->parent->attributeFlags & ATTRIBUTE_OVERFLOW_MASK);
+    child->inheritAttribute(child->parent, ATTRIBUTE_MATCH_MASK);
+    child->inheritAttribute(child->parent, ATTRIBUTE_OVERFLOW_MASK);
     child->safetyOn |= child->parent->safetyOn;
     child->safetyOff |= child->parent->safetyOff;
 }

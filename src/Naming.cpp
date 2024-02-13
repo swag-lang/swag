@@ -543,7 +543,7 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
     if (node->hasAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC))
         return "[[#validifx]] block";
 
-    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC && node->hasAttribute(ATTRIBUTE_SHARP_FUNC))
+    if (node->hasAttribute(ATTRIBUTE_TEST_FUNC) && node->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         return "[[#test]] block";
     if (node->hasAttribute(ATTRIBUTE_MAIN_FUNC))
         return "[[#main]] block";

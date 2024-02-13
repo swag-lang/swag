@@ -331,19 +331,23 @@ struct AstNode
     void         printLoc() const;
 
     // clang-format off
-    bool hasAstFlag(uint64_t fl) const      { return flags & fl; }
-    void addAstFlag(uint64_t fl)            { flags |= fl; }
-    void removeAstFlag(uint64_t fl)         { flags &= ~fl; }
-    bool hasSemFlag(uint64_t fl) const      { return semFlags & fl; }
-    void addSemFlag(uint64_t fl)            { semFlags |= fl; }
-    void removeSemFlag(uint64_t fl)         { semFlags &= ~fl; }
-    bool hasAttribute(uint64_t attr) const  { return attributeFlags & attr; }
-    void addAttribute(uint64_t attr)        { attributeFlags |= attr; }
-    void removeAttribute(uint64_t attr)     { attributeFlags &= ~attr; }
-    bool hasSpecFlag(uint16_t fl) const     { return specFlags & fl; }
-    void addSpecFlag(uint16_t fl)           { specFlags |= fl; }
-    void setSpecFlags(uint16_t fl)          { specFlags = fl; }
-    void removeSpecFlag(uint16_t fl)        { specFlags &= ~fl; }
+    bool hasAstFlag(uint64_t fl) const   { return flags & fl; }
+    void addAstFlag(uint64_t fl)         { flags |= fl; }
+    void removeAstFlag(uint64_t fl)      { flags &= ~fl; }
+    
+    bool hasSemFlag(uint64_t fl) const   { return semFlags & fl; }
+    void addSemFlag(uint64_t fl)         { semFlags |= fl; }
+    void removeSemFlag(uint64_t fl)      { semFlags &= ~fl; }
+    
+    bool hasAttribute(uint64_t attr) const                  { return attributeFlags & attr; }
+    void addAttribute(uint64_t attr)                        { attributeFlags |= attr; }
+    void removeAttribute(uint64_t attr)                     { attributeFlags &= ~attr; }
+    void inheritAttribute(const AstNode *from, uint64_t w)  { attributeFlags |= from->attributeFlags & w; }
+    
+    bool hasSpecFlag(uint16_t fl) const  { return specFlags & fl; }
+    void addSpecFlag(uint16_t fl)        { specFlags |= fl; }
+    void setSpecFlags(uint16_t fl)       { specFlags = fl; }
+    void removeSpecFlag(uint16_t fl)     { specFlags &= ~fl; }
     // clang-format on
 
     struct NodeExtensionByteCode

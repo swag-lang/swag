@@ -915,7 +915,7 @@ bool Module::mustEmitSafety(const AstNode* node, uint16_t what, bool compileTime
 {
     if (what == SAFETY_OVERFLOW)
     {
-        if (node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON)
+        if (node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON))
             return false;
     }
 
@@ -938,9 +938,9 @@ bool Module::mustOptimizeBytecode(const AstNode* node) const
 
     while (node)
     {
-        if (node->attributeFlags & ATTRIBUTE_OPTIM_BYTECODE_OFF)
+        if (node->hasAttribute(ATTRIBUTE_OPTIM_BYTECODE_OFF))
             return false;
-        if (node->attributeFlags & ATTRIBUTE_OPTIM_BYTECODE_ON)
+        if (node->hasAttribute(ATTRIBUTE_OPTIM_BYTECODE_ON))
             return true;
         node = node->ownerFct;
     }

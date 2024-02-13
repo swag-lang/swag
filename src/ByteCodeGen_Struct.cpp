@@ -347,8 +347,6 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opInitGenerated;
-                if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
-                    funcNode->addAttribute(funcNode->attributeFlags & ATTRIBUTE_PUBLIC);
                 if (typeInfoStruct->opUserInitFct)
                     typeInfoStruct->opUserInitFct->removeAttribute(ATTRIBUTE_PUBLIC);
                 funcNode->allocateExtension(ExtensionKind::ByteCode);
