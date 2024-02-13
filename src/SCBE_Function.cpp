@@ -187,7 +187,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Save C variadics
-    if (typeFunc->isCVariadic())
+    if (typeFunc->isFctCVariadic())
     {
         while (iReg < cc.paramByRegisterCount)
         {

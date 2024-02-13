@@ -2024,7 +2024,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
     int indexParam = (int) pushRAParams.size() - 1;
 
     // Variadic are first
-    if (typeFunc->isVariadic())
+    if (typeFunc->isFctVariadic())
     {
         auto index = pushRAParams[indexParam--];
         pushParams3.push_back(index);
@@ -2035,7 +2035,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
         pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         numCallParams--;
     }
-    else if (typeFunc->isCVariadic())
+    else if (typeFunc->isFctCVariadic())
     {
         numCallParams--;
     }
@@ -2095,7 +2095,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
     }
 
     // Add all C variadic parameters
-    if (typeFunc->isCVariadic())
+    if (typeFunc->isFctCVariadic())
     {
         for (size_t i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
         {
@@ -2116,7 +2116,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
         uint32_t reg = (uint32_t) pushParams3[0].reg;
-        if (typeFunc->isVariadic())
+        if (typeFunc->isFctVariadic())
             reg = (uint32_t) pushParams3[2].reg;
 
         emit_Load64_Indirect(REG_OFFSET(reg), RAX);
@@ -2137,7 +2137,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        if (typeFunc->isVariadic())
+        if (typeFunc->isFctVariadic())
         {
             pushParams3.erase(2);
             pushParamsTypes.erase(2);

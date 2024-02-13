@@ -80,7 +80,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         // :VariadicAndClosure
         // If function is variable, then parameter of the capture context is 2 (after the slice), and not 0.
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-        if (typeFunc->isVariadic())
+        if (typeFunc->isFctVariadic())
             inst->b.u64u32.high = 2;
 
         if (typeInfo->isArray() ||

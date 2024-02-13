@@ -761,9 +761,9 @@ namespace
                         //////////
                         uint32_t offsetStackParam = 0;
                         uint32_t regParam         = regCounter;
-                        if (typeFunc->isVariadic() && i != countParams - 1)
+                        if (typeFunc->isFctVariadic() && i != countParams - 1)
                             regParam += 2;
-                        else if (typeFunc->isVariadic())
+                        else if (typeFunc->isFctVariadic())
                             regParam = 0;
                         offsetStackParam = SCBE_CPU::getParamStackOffset(&f, regParam);
                         regCounter += typeParam->numRegisters();

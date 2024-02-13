@@ -315,8 +315,8 @@ struct TypeInfoFuncAttr : TypeInfo
     bool            isSame(const TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi) const;
     bool            isSame(const TypeInfoFuncAttr* other, uint64_t castFlags) const;
     TypeInfo*       concreteReturnType() const;
-    bool            isVariadic() const;
-    bool            isCVariadic() const;
+    bool            isFctVariadic() const;
+    bool            isFctCVariadic() const;
     uint32_t        registerIdxToParamIdx(uint32_t argIdx);
     TypeInfo*       registerIdxToType(int argIdx);
     int             numParamsRegisters();

@@ -5203,7 +5203,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     // Test closure context pointer. If null, this is a lambda.
                     // :VariadicAndClosure
                     auto rc = pushRAParams[pushRAParams.size() - 1];
-                    if (typeFuncCall->isVariadic())
+                    if (typeFuncCall->isFctVariadic())
                         rc = pushRAParams[pushRAParams.size() - 3];
 
                     auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, rc));

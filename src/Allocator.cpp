@@ -7,24 +7,24 @@ constexpr uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
-void* operator new(size_t t)
+void* operator new(size_t _Size)
 {
-    t = Allocator::alignSize((int) t + 2 * sizeof(uint64_t));
+    _Size = Allocator::alignSize((int) _Size + 2 * sizeof(uint64_t));
 
-    const auto p = (uint64_t*) Allocator::alloc(t, 2 * sizeof(uint64_t));
-    *p           = t;
+    const auto p = (uint64_t*) Allocator::alloc(_Size, 2 * sizeof(uint64_t));
+    *p           = _Size;
 
 #ifdef SWAG_STATS
-    g_Stats.memNew += t;
+    g_Stats.memNew += _Size;
 #endif
     return p + 2;
 }
 
-void operator delete(void* addr) noexcept
+void operator delete(void* _Block) noexcept
 {
-    if (!addr)
+    if (!_Block)
         return;
-    auto p = (uint64_t*) addr;
+    auto p = (uint64_t*) _Block;
     p -= 2;
 #ifdef SWAG_STATS
     g_Stats.memNew -= *p;

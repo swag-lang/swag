@@ -213,14 +213,14 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
         auto numParams = typeFunc->parameters.size();
 
         // Variadic parameters are always first
-        if (typeFunc->isVariadic())
+        if (typeFunc->isFctVariadic())
         {
             params.push_back(PTR_I8_TY());
             params.push_back(I64_TY());
             SWAG_ASSERT(numParams);
             numParams--;
         }
-        else if (typeFunc->isCVariadic())
+        else if (typeFunc->isFctCVariadic())
         {
             SWAG_ASSERT(numParams);
             numParams--;
@@ -264,7 +264,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
     if (returnByAddress)
         params.push_back(llvmRealReturnType);
 
-    const auto result = llvm::FunctionType::get(llvmReturnType, {params.begin(), params.end()}, typeFunc->isCVariadic());
+    const auto result = llvm::FunctionType::get(llvmReturnType, {params.begin(), params.end()}, typeFunc->isFctCVariadic());
 
     if (closureToLambda)
         pp.mapFctTypeForeignClosure[typeFunc] = result;
@@ -481,7 +481,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     int idxParam      = (int) pushParams.size() - 1;
 
     // Variadic are first
-    if (typeFuncBC->isVariadic())
+    if (typeFuncBC->isFctVariadic())
     {
         auto index = pushParams[idxParam--];
         params.push_back(builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index)));
@@ -490,7 +490,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
         SWAG_ASSERT(numCallParams);
         numCallParams--;
     }
-    else if (typeFuncBC->isCVariadic())
+    else if (typeFuncBC->isFctCVariadic())
     {
         numCallParams--;
     }
@@ -573,7 +573,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     }
 
     // Add all C variadic parameters
-    if (typeFuncBC->isCVariadic())
+    if (typeFuncBC->isFctCVariadic())
     {
         for (size_t i = typeFuncBC->numParamsRegisters(); i < pushParams.size(); i++)
         {
@@ -748,7 +748,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
     }
 
     // Two registers for variadic first
-    if (typeFuncBC->isVariadic())
+    if (typeFuncBC->isFctVariadic())
     {
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
@@ -758,7 +758,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
         params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));
         numCallParams--;
     }
-    else if (typeFuncBC->isCVariadic())
+    else if (typeFuncBC->isFctCVariadic())
     {
         numCallParams--;
     }
@@ -828,7 +828,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
     }
 
     // C variadic arguments
-    if (typeFuncBC->isCVariadic())
+    if (typeFuncBC->isFctCVariadic())
     {
         const auto numVariadics = popRAidx + 1;
         for (int idxCall = 0; idxCall < numVariadics; idxCall++)

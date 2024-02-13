@@ -840,7 +840,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
     return true;
 }
 
-bool TypeInfoFuncAttr::isVariadic() const
+bool TypeInfoFuncAttr::isFctVariadic() const
 {
     if (parameters.empty())
         return false;
@@ -850,7 +850,7 @@ bool TypeInfoFuncAttr::isVariadic() const
     return false;
 }
 
-bool TypeInfoFuncAttr::isCVariadic() const
+bool TypeInfoFuncAttr::isFctCVariadic() const
 {
     if (parameters.empty())
         return false;

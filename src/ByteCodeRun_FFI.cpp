@@ -104,13 +104,13 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     int numParameters = (int) typeInfoFunc->parameters.size();
 
     // Variadic parameters are first on the stack, so need to treat them before
-    if (typeInfoFunc->isVariadic())
+    if (typeInfoFunc->isFctVariadic())
     {
         context->ffiPushRAParam.push_front(cptParam++);
         context->ffiPushRAParam.push_front(cptParam++);
         numParameters--;
     }
-    else if (typeInfoFunc->isCVariadic())
+    else if (typeInfoFunc->isFctCVariadic())
     {
         numParameters--;
     }
@@ -141,7 +141,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     else if (CallConv::returnByStackAddress(typeInfoFunc))
         retCopyAddr = context->registersRR[0].pointer;
 
-    if (typeInfoFunc->isCVariadic())
+    if (typeInfoFunc->isFctCVariadic())
     {
         for (int i = 0; i < numCVariadicParams; i++)
         {
