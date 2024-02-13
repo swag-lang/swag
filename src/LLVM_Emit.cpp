@@ -5,7 +5,7 @@
 #include "LLVM_Macros.h"
 #include "SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits)
+void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
     if (ip->flags & BCI_IMM_B)
     {
@@ -55,7 +55,7 @@ void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
     }
 }
 
-void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
+void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
     {

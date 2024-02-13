@@ -309,6 +309,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -329,6 +330,7 @@ bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
 {
     const auto node      = context->node;
@@ -339,6 +341,7 @@ bool ByteCodeGen::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicCVaArg(ByteCodeGenContext* context)
 {
     const auto node      = context->node;

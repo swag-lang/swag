@@ -476,7 +476,7 @@ namespace
         return true;
     }
 
-    bool getImmediateA(Value& result, Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateA(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
         if (ip->flags & BCI_IMM_A)
         {
@@ -491,7 +491,7 @@ namespace
         return true;
     }
 
-    bool getImmediateB(Value& result, Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateB(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
         if (ip->flags & BCI_IMM_B)
         {
@@ -506,7 +506,7 @@ namespace
         return true;
     }
 
-    bool getImmediateC(Value& result, Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateC(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
         if (ip->flags & BCI_IMM_C)
         {
@@ -521,7 +521,7 @@ namespace
         return true;
     }
 
-    bool getImmediateD(Value& result, Context& cxt, const ByteCodeInstruction* ip)
+    bool getImmediateD(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
         if (ip->flags & BCI_IMM_D)
         {
@@ -551,7 +551,7 @@ namespace
             STATE()->stackValue[i].kind = kind;
     }
 
-    void invalidateCurStateStack(Context& cxt)
+    void invalidateCurStateStack(const Context& cxt)
     {
         setStackValue(cxt, STATE()->stack.buffer, STATE()->stack.count, ValueKind::Unknown);
     }

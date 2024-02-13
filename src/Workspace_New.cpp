@@ -15,7 +15,7 @@ void newScriptFile()
         OS::exit(-1);
     }
 
-    auto content = R"(
+    const auto content = R"(
 // Swag script file
 #dependencies
 {

@@ -54,7 +54,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (realType->isString())
     {
         SWAG_ASSERT(node->resultRegisterRc.size() == 2);
-        auto           pz  = (const char*) runContext->registersRR[0].pointer;
+        const auto     pz  = (const char*) runContext->registersRR[0].pointer;
         const uint32_t len = runContext->registersRR[1].u32;
         node->computedValue->text.reserve(len + 1);
         node->computedValue->text.count = len;

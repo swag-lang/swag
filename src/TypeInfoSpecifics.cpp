@@ -741,7 +741,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         {
             if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, castFlags))
                 return false;
-            if (!(genericParameters[i]->value == other->genericParameters[i]->value))
+            if (genericParameters[i]->value != other->genericParameters[i]->value)
                 return false;
         }
     }

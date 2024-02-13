@@ -323,7 +323,7 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
     printLong(toPrint);
 }
 
-void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset) const
+void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset) const
 {
     int startLine;
     if (offset > curLocation->line)
@@ -334,7 +334,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
     printSourceLines(context, bc, file, curLocation, startLine, endLine);
 }
 
-void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* bc, const ByteCodeInstruction* ip, int num) const
+void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCode* bc, const ByteCodeInstruction* ip, int num) const
 {
     const int count = num;
     int       cpt   = 1;
@@ -569,6 +569,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Continue;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 2)

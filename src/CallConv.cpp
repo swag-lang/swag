@@ -47,7 +47,7 @@ bool CallConv::returnByAddress(TypeInfoFuncAttr* typeFunc)
     return returnByStackAddress(typeFunc);
 }
 
-bool CallConv::returnByStackAddress(TypeInfoFuncAttr* typeFunc)
+bool CallConv::returnByStackAddress(const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
         return false;

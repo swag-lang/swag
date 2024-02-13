@@ -181,9 +181,9 @@ namespace ByteCodeGen
     bool emitCastToNativeU64(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo);
     bool emitCastToNativeF32(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo);
     bool emitCastToNativeF64(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* typeInfo);
-    bool emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* fromTypeInfo);
-    bool emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
-    bool emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
+    bool emitCastToNativeAny(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* fromTypeInfo);
+    bool emitCastToNativeString(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
+    bool emitCastToInterface(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     bool emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t castFlags = EMIT_CASTFLAG_DEFAULT);
     bool emitFuncCallParam(ByteCodeGenContext* context);
@@ -313,7 +313,7 @@ namespace ByteCodeGen
 
     void     transformResultToLinear2(const ByteCodeGenContext* context, RegisterList& resultRegisterRC);
     uint32_t reserveRegisterRC(const ByteCodeGenContext* context, const SymbolOverload* overload = nullptr);
-    void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
+    void     reserveRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int num);
     void     reserveLinearRegisterRC2(const ByteCodeGenContext* context, RegisterList& rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, RegisterList& rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, uint32_t rc);

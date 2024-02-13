@@ -519,16 +519,16 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
     switch (size)
     {
     case 1:
-        savedValues[address] = {(void*) (size_t) *reinterpret_cast<uint8_t*>(address), size};
+        savedValues[address] = {(void*) (size_t) *static_cast<uint8_t*>(address), size};
         break;
     case 2:
-        savedValues[address] = {(void*) (size_t) *reinterpret_cast<uint16_t*>(address), size};
+        savedValues[address] = {(void*) (size_t) *static_cast<uint16_t*>(address), size};
         break;
     case 4:
-        savedValues[address] = {(void*) (size_t) *reinterpret_cast<uint32_t*>(address), size};
+        savedValues[address] = {(void*) (size_t) *static_cast<uint32_t*>(address), size};
         break;
     case 8:
-        savedValues[address] = {(void*) (size_t) *reinterpret_cast<uint64_t*>(address), size};
+        savedValues[address] = {(void*) *static_cast<uint64_t*>(address), size};
         break;
     default:
         const auto buf = Allocator::alloc(Allocator::alignSize(size));

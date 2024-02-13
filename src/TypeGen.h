@@ -30,10 +30,10 @@ struct TypeGen
 
     struct MapPerSeg
     {
-        SharedMutex                       mutex;
-        MapUtf8<MapType>                  exportedTypes;
-        MapUtf8<TypeGenStructJob*>        exportedTypesJob;
-        Map<ExportedTypeInfo*, TypeInfo*> exportedTypesReverse;
+        SharedMutex                             mutex;
+        MapUtf8<MapType>                        exportedTypes;
+        MapUtf8<TypeGenStructJob*>              exportedTypesJob;
+        Map<const ExportedTypeInfo*, TypeInfo*> exportedTypesReverse;
     };
 
     void         setup(const Utf8& moduleName);
@@ -51,7 +51,7 @@ struct TypeGen
 
     MapPerSeg& getMapPerSeg(const DataSegment* segment);
     void       tableJobDone(const TypeGenStructJob* job, DataSegment* segment);
-    TypeInfo*  getRealType(const DataSegment* segment, ExportedTypeInfo* concreteType);
+    TypeInfo*  getRealType(const DataSegment* segment, const ExportedTypeInfo* concreteType);
     void       initFrom(Module* module, TypeGen* other);
 
     Utf8                     name;

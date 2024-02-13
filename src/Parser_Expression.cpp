@@ -1009,7 +1009,7 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     return true;
 }
 
-bool Parser::doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(forToken, tokenId, mdfFlags));
@@ -1379,7 +1379,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
     return true;
 }
 
-bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode)
+bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
     switch (token.id)
     {

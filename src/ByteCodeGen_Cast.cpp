@@ -9,7 +9,7 @@
 #include "Scope.h"
 #include "TypeManager.h"
 
-bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode* exprNode, const TypeInfo* fromTypeInfo)
 {
     const auto node = context->node;
 
@@ -76,7 +76,7 @@ bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* expr
     return true;
 }
 
-bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToInterface(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     const auto node = context->node;
     if (fromTypeInfo->isPointerNull())
@@ -586,7 +586,7 @@ bool ByteCodeGen::emitCastToNativeF64(const ByteCodeGenContext* context, AstNode
     return true;
 }
 
-bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToNativeString(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
     const auto node = context->node;
 

@@ -76,6 +76,7 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 {
     const auto node     = context->node;

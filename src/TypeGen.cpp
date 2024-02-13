@@ -582,7 +582,7 @@ void TypeGen::tableJobDone(const TypeGenStructJob* job, DataSegment* segment)
         segment->addPatchMethod(it1.first, it1.second);
 }
 
-TypeInfo* TypeGen::getRealType(const DataSegment* segment, ExportedTypeInfo* concreteType)
+TypeInfo* TypeGen::getRealType(const DataSegment* segment, const ExportedTypeInfo* concreteType)
 {
     auto&      mapPerSeg = getMapPerSeg(segment);
     SharedLock lk(mapPerSeg.mutex);

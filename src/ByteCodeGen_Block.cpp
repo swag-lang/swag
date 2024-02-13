@@ -291,6 +291,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIf(ByteCodeGenContext* context)
 {
     const auto ifNode = castAst<AstIf>(context->node, AstNodeKind::If);
@@ -345,6 +346,7 @@ bool ByteCodeGen::emitIfAfterIf(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
 {
     const auto node = static_cast<AstBreakable*>(context->node);

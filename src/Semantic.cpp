@@ -177,7 +177,7 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
     case AstNodeResolveState::Enter:
         if (node->kind == AstNodeKind::IdentifierRef)
         {
-            auto idRef                    = static_cast<AstIdentifierRef*>(node);
+            const auto idRef              = static_cast<AstIdentifierRef*>(node);
             idRef->startScope             = nullptr;
             idRef->resolvedSymbolName     = nullptr;
             idRef->resolvedSymbolOverload = nullptr;

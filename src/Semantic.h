@@ -143,7 +143,7 @@ namespace Semantic
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
-    bool           waitForStructUserOps(SemanticContext* context, AstNode* node);
+    bool           waitForStructUserOps(SemanticContext* context, const AstNode* node);
     bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags);
     bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
     bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);

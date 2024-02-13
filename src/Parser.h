@@ -180,7 +180,7 @@ struct Parser
     bool        doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool        doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool        doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
-    bool        doMoveExpression(Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result);
+    bool        doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool        doGenericDeclParameters(AstNode* parent, AstNode** result);
     bool        doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool        doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid);
@@ -214,7 +214,7 @@ struct Parser
     bool        doArrayPointerIndex(AstNode** exprNode);
     bool        doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
     bool        doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, const AstWith* withNode = nullptr);
-    bool        doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool        doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool        doInit(AstNode* parent, AstNode** result);
     bool        doDropCopyMove(AstNode* parent, AstNode** result);
     bool        doRange(AstNode* parent, AstNode* expression, AstNode** result);

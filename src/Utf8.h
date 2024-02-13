@@ -8,8 +8,10 @@ struct SwagSlice;
 #define SWAG_IS_HEX(__c) (SWAG_IS_ALPHA_HEX(__c) || SWAG_IS_DIGIT(__c))
 #define SWAG_IS_ALPHA(__c) (((__c) >= 'a' && (__c) <= 'z') || ((__c) >= 'A' && (__c) <= 'Z'))
 #define SWAG_IS_NUM_SEP(__c) ((__c) == '_')
+#define SWAG_IS_NOT_NUM_SEP(__c) ((__c) != '_')
 #define SWAG_IS_BLANK(__c) ((__c) == ' ' || (__c) == '\t' || (__c) == '\v' || (__c) == '\f' || (__c) == '\r')
 #define SWAG_IS_EOL(__c) ((__c) == '\n')
+#define SWAG_IS_NOT_EOL(__c) ((__c) != '\n')
 #define SWAG_IS_WIN_EOL(__c) ((__c) == '\r')
 #define SWAG_IS_AL_NUM(__c) (SWAG_IS_ALPHA(__c) || SWAG_IS_DIGIT(__c))
 

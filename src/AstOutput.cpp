@@ -1977,7 +1977,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::TypeExpression:
     {
-        auto typeNode = static_cast<AstTypeExpression*>(node);
+        const auto typeNode = static_cast<AstTypeExpression*>(node);
         if (typeNode->hasSpecFlag(AstType::SPECFLAG_FORCE_TYPE))
             concat.addString("#type ");
         SWAG_CHECK(outputType(context, concat, typeNode));

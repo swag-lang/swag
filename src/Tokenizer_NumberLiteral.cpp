@@ -240,7 +240,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
         // Fraction part
         tokenFrac.startLocation = location;
         c                       = peekChar(offset);
-        SWAG_VERIFY(!SWAG_IS_NUM_SEP(c), error(tokenFrac, Err(Err0288)));
+        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenFrac, Err(Err0288)));
         if (SWAG_IS_DIGIT(c))
         {
             eatChar(c, offset);
@@ -273,7 +273,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
         }
 
         tokenExponent.startLocation = location;
-        SWAG_VERIFY(!SWAG_IS_NUM_SEP(c), error(tokenExponent, Err(Err0287)));
+        SWAG_VERIFY(SWAG_IS_NOT_NUM_SEP(c), error(tokenExponent, Err(Err0287)));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, Err(Err0286)));
         eatChar(c, offset);
         SWAG_CHECK(doIntLiteral(tokenExponent, c));

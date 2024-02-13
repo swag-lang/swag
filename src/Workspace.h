@@ -47,7 +47,7 @@ struct Workspace
     static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
     static void        errorPendingJobs(const Vector<PendingJob>& pendingJobs);
     static void        computeWaitingJobs();
-    void               checkPendingJobs();
+    static void        checkPendingJobs();
     bool               buildRTModule(Module* module);
     bool               buildTarget();
     bool               build();

@@ -236,7 +236,7 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         typeInfo->sizeOf = typeInfo->getConstAlias()->sizeOf;
 }
 
-bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
+bool Semantic::waitForStructUserOps(SemanticContext* context, const AstNode* node)
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));

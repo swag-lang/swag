@@ -1162,7 +1162,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
     // Need to drop first
     if (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct)
     {
-        const bool mustDrop = (from->hasAstFlag(AST_NO_LEFT_DROP)) ? false : true;
+        const bool mustDrop = !from->hasAstFlag(AST_NO_LEFT_DROP);
         if (mustDrop)
         {
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);

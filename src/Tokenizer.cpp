@@ -225,7 +225,7 @@ bool Tokenizer::nextToken(TokenParse& token)
                 }
 
                 startTokenName = curBuffer;
-                while (curBuffer[0] && !SWAG_IS_EOL(curBuffer[0]))
+                while (curBuffer[0] && SWAG_IS_NOT_EOL(curBuffer[0]))
                     readChar();
 
                 if (curBuffer[0])
