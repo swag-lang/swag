@@ -539,7 +539,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto node       = static_cast<AstVarDecl*>(context->node);
+    auto node       = castAst<AstVarDecl>(context->node);
 
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl;
     bool isLocalConstant    = false;

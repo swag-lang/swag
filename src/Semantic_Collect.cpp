@@ -461,7 +461,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 
 bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags)
 {
-    auto       node     = static_cast<AstVarDecl*>(context->node);
+    auto       node     = castAst<AstVarDecl>(context->node);
     const auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     DataSegment* storageSegment = nullptr;

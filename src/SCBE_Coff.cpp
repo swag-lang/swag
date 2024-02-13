@@ -654,7 +654,7 @@ void SCBE_Coff::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
     {
         uint16_t unwind0 = 0;
         unwind0          = (unwindRegs[i] << 12);
-        unwind0 |= (UWOP_PUSH_NONVOL << 8);
+        unwind0 |= (UWOP_PUSH_NO_VOL << 8);
         unwind0 |= (uint8_t) unwindOffsetRegs[i];
         unwind.push_back(unwind0);
     }

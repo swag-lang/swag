@@ -349,7 +349,7 @@ bool ByteCodeGen::emitIfAfterIf(ByteCodeGenContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
 {
-    const auto node = static_cast<AstBreakable*>(context->node);
+    const auto node = castAst<AstBreakable>(context->node);
 
     // Resolve ByteCodeOp::Jump expression
     // Be sure this is not an infinite loop without a jump instruction

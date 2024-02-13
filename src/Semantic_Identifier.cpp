@@ -86,7 +86,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIdentifierRef(SemanticContext* context)
 {
-    const auto node      = static_cast<AstIdentifierRef*>(context->node);
+    const auto node      = castAst<AstIdentifierRef>(context->node);
     const auto childBack = node->childs.back();
 
     // Keep resolution

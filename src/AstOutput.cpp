@@ -1678,7 +1678,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::VarDecl:
     case AstNodeKind::FuncDeclParam:
     {
-        const AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+        const AstVarDecl* varDecl = castAst<AstVarDecl>(node);
         SWAG_CHECK(outputVar(context, concat, varDecl));
         break;
     }
@@ -1770,7 +1770,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::FuncCall:
     {
-        const auto identifier = static_cast<AstIdentifier*>(node);
+        const auto identifier = castAst<AstIdentifier>(node);
         concat.addString(node->token.text);
 
         if (identifier->genericParameters)
@@ -1977,7 +1977,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::TypeExpression:
     {
-        const auto typeNode = static_cast<AstTypeExpression*>(node);
+        const auto typeNode = castAst<AstTypeExpression>(node);
         if (typeNode->hasSpecFlag(AstType::SPECFLAG_FORCE_TYPE))
             concat.addString("#type ");
         SWAG_CHECK(outputType(context, concat, typeNode));
@@ -2034,7 +2034,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::TypeLambda:
     case AstNodeKind::TypeClosure:
     {
-        const AstTypeLambda* typeNode = static_cast<AstTypeLambda*>(node);
+        const auto typeNode = castAst<AstTypeLambda>(node);
         if (typeNode->hasSpecFlag(AstType::SPECFLAG_FORCE_TYPE))
             concat.addString("#type ");
         if (node->kind == AstNodeKind::TypeLambda)

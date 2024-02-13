@@ -1280,7 +1280,7 @@ void Parser::isForceTakeAddress(AstNode* node)
         isForceTakeAddress(node->childs.back());
         break;
     case AstNodeKind::ArrayPointerIndex:
-        isForceTakeAddress(static_cast<AstArrayPointerIndex*>(node)->array);
+        isForceTakeAddress(castAst<AstArrayPointerIndex>(node)->array);
         break;
     default:
         break;

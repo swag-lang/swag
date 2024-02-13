@@ -682,7 +682,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 
         // Collect parameters
         auto identifierRef = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-        auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
+        auto identifier    = castAst<AstIdentifier>(identifierRef->childs.back());
 
         // Be sure this is an attribute
         auto resolvedName = identifier->resolvedSymbolName;
