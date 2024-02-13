@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "SCBE.h"
-#include "BackendLinker.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Os.h"
@@ -12,7 +11,6 @@
 SCBE::SCBE(Module* mdl)
     : Backend{mdl}
 {
-    memset(perThread, 0, sizeof(perThread));
 }
 
 SCBE::SCBE()
@@ -23,9 +21,9 @@ SCBE::SCBE()
 
 void SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
 
     if (precompileIndex == 0)
     {
@@ -117,7 +115,7 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     const int  ct              = buildParameters.compileType;
-    const int  precompileIndex = buildParameters.precompileIndex;
+    const auto precompileIndex = buildParameters.precompileIndex;
     const auto objFileType     = getObjType(g_CommandLine.target);
 
     SWAG_ASSERT(module == buildParameters.module);
@@ -234,9 +232,9 @@ void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAdd
 
 void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(SCBE_CPU*) perThread[ct][precompileIndex];
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = *(SCBE_CPU*) perThread[ct][precompileIndex];
 
     auto path = getCacheFolder(buildParameters);
     path.append(pp.filename);

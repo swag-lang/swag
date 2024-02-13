@@ -44,6 +44,7 @@ void* Allocator::alloc(size_t size, size_t align)
 #ifdef SWAG_STATS
     g_Stats.allocatedMemory += size;
     auto prevValue = g_Stats.maxAllocatedMemory.load();
+    // ReSharper disable once CppPossiblyErroneousEmptyStatements
     while (prevValue < g_Stats.allocatedMemory.load() && !g_Stats.maxAllocatedMemory.compare_exchange_weak(prevValue, g_Stats.allocatedMemory.load()));
 #endif
 

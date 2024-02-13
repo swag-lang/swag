@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdDisplayAdd(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {

@@ -4320,6 +4320,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case 8:
                 builder.CreateStore(v0, GEP64(allocR, ip->b.u32));
                 break;
+            default:
+                break;
             }
             break;
         }
@@ -5018,6 +5020,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     builder.CreateStore(r1, r0);
                     break;
                 }
+                default:
+                    break;
                 }
 
                 int idx      = 0;
@@ -5048,6 +5052,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
                         break;
                     }
+                    default:
+                        break;
                     }
 
                     idx++;
@@ -5829,7 +5835,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo)
 {
     const int   ct              = buildParameters.compileType;
-    const int   precompileIndex = buildParameters.precompileIndex;
+    const auto  precompileIndex = buildParameters.precompileIndex;
     const auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&       context         = *pp.llvmContext;
 

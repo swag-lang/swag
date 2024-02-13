@@ -3,7 +3,6 @@
 #include "ByteCodeOptimizer.h"
 #include "Scope.h"
 #include "TypeInfo.h"
-#include "TypeManager.h"
 
 namespace
 {

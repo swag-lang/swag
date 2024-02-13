@@ -1469,7 +1469,7 @@ uint8_t* SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType)
     {
     case JNO:
         concat.addU8(0x71);
-        break;        
+        break;
     case JB:
         concat.addU8(0x72);
         break;
@@ -1963,6 +1963,8 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<C
                     case 8:
                         emit_Load64_Indirect(0, RAX, RAX);
                         emit_Store64_Indirect(offsetStack, RAX, RSP);
+                        break;
+                    default:
                         break;
                     }
                 }

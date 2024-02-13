@@ -1,5 +1,4 @@
 #pragma once
-#include "AstFlags.h"
 #include "AstNode.h"
 #include "ByteCodeInstruction.h"
 #include "Math.h"

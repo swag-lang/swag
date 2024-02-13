@@ -160,7 +160,7 @@ namespace
 
 bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    const int     precompileIndex = buildParameters.precompileIndex;
+    const auto    precompileIndex = buildParameters.precompileIndex;
     const auto    module          = buildParameters.module;
     auto&         concat          = pp.concat;
     constexpr int NUM_SECTIONS_0  = 12;
@@ -418,7 +418,7 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& co
 bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     const auto module          = buildParameters.module;
-    const int  precompileIndex = buildParameters.precompileIndex;
+    const auto precompileIndex = buildParameters.precompileIndex;
     auto&      concat          = pp.concat;
 
     emitSymbolTable(buildParameters, pp);
@@ -523,7 +523,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
 bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     const auto module          = buildParameters.module;
-    const int  precompileIndex = buildParameters.precompileIndex;
+    const auto precompileIndex = buildParameters.precompileIndex;
 
     // Output the full concat buffer
     SWAG_IF_ASSERT(uint32_t totalCount = 0);

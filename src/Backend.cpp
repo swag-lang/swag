@@ -11,6 +11,12 @@
 #include "Version.h"
 #include "Workspace.h"
 
+Backend::Backend(Module* mdl)
+    : module{mdl}
+{
+    memset(perThread, 0, sizeof(perThread));
+}
+
 JobResult Backend::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     return JobResult::ReleaseJob;
@@ -378,7 +384,7 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job*
     job->backend                = this;
 
     // Put the bootstrap and the runtime in the first file
-    const int precompileIndex = buildParameters.precompileIndex;
+    const auto precompileIndex = buildParameters.precompileIndex;
     if (precompileIndex == 1) // :SegZeroIsData
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"

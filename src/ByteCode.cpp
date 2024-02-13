@@ -2,8 +2,8 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "ByteCodeDebugger.h"
 #include "Crc32.h"
+#include "Log.h"
 #include "Module.h"
 #include "TypeManager.h"
 

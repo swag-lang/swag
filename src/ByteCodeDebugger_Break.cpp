@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 #include "Workspace.h"
 
 void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const

@@ -43,10 +43,7 @@ struct BackendEncoder
 
 struct Backend
 {
-    Backend(Module* mdl)
-        : module{mdl}
-    {
-    }
+    Backend(Module* mdl);
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc);
@@ -61,13 +58,11 @@ struct Backend
     bool        setupExportFile(bool force = false);
     bool        generateOutput(const BuildParameters& buildParameters) const;
 
-    BackendEncoder* perThread[Count][MAX_PRECOMPILE_BUFFERS];
-
     template<typename T>
     void allocatePerObj(const BuildParameters& buildParameters)
     {
-        const int ct              = buildParameters.compileType;
-        const int precompileIndex = buildParameters.precompileIndex;
+        const auto ct              = buildParameters.compileType;
+        const auto precompileIndex = buildParameters.precompileIndex;
 
         if (!perThread[ct][precompileIndex])
         {
@@ -76,6 +71,8 @@ struct Backend
             perThread[ct][precompileIndex] = n;
         }
     }
+
+    BackendEncoder* perThread[Count][MAX_PRECOMPILE_BUFFERS];
 
     Concat bufferSwg;
     Path   exportFileName;

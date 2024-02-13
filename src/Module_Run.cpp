@@ -217,6 +217,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         case 8:
             node->computedValue->reg.u64 = runContext->registersRR[0].u64;
             return true;
+        default:
+            break;
         }
     }
 

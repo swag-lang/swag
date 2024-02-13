@@ -471,6 +471,8 @@ Utf8 Naming::niceArgumentRank(size_t idx)
         return "second argument";
     case 3:
         return "third argument";
+    default:
+        break;
     }
     return FMT("argument [[%d]]", idx);
 }
@@ -485,6 +487,8 @@ Utf8 Naming::niceParameterRank(size_t idx)
         return "second parameter";
     case 3:
         return "third parameter";
+    default:
+        break;
     }
     return FMT("parameter [[%d]]", idx);
 }

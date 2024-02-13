@@ -733,6 +733,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         case 2:
             setVer = &dep->buildNum;
             break;
+        default:
+            break;
         }
 
         if (splits[i] == '?')
@@ -767,6 +769,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             break;
         case 2:
             SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0126), dep->buildNum)}));
+            break;
+        default:
             break;
         }
     }
@@ -902,7 +906,7 @@ void Module::printBC()
         bc->print(opt);
 }
 
-bool Module::mustEmitSafetyOverflow(AstNode* node, bool compileTime) const
+bool Module::mustEmitSafetyOverflow(const AstNode* node, bool compileTime) const
 {
     return mustEmitSafety(node, SAFETY_OVERFLOW, compileTime);
 }

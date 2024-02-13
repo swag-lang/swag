@@ -2,6 +2,7 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 #include "Module.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const BcDbgCommandArg& arg)

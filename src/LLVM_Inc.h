@@ -1,3 +1,4 @@
+// ReSharper disable CppUnusedIncludeDirective
 #pragma once
 
 #pragma warning(push, 0)

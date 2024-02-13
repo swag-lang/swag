@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AstFlags.h"
 #include "ByteCodeRun.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
@@ -707,6 +708,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
         case 8:
             context->push(registersRC[ip->a.u32].u64);
+            break;
+        default:
             break;
         }
         break;
@@ -2502,6 +2505,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case 8:
             registersRC[ip->b.u32].u64 = *ptr;
             break;
+        default:
+            break;
         }
         ptr += 1;
         *(uint64_t**) registersRC[ip->a.u32].pointer = ptr;
@@ -4180,8 +4185,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicBcBreakpoint:
         if (!g_CommandLine.dbgOff)
         {
-            context->debugRaiseStart         = true;
-            context->debugEntry              = true;
+            context->debugRaiseStart    = true;
+            context->debugEntry         = true;
             g_ByteCodeDebugger.stepMode = ByteCodeDebugger::DebugStepMode::None;
             throw "start debug";
         }

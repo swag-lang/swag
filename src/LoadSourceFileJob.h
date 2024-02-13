@@ -1,6 +1,6 @@
 #pragma once
-#include "Allocator.h"
 #include "Job.h"
+
 struct SourceFile;
 
 struct LoadSourceFileJob : Job

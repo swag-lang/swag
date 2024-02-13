@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "Math.h"
 
 // Try to change JumpIfNotError with JumpIfError.
 // This make the "no error path" the "hot path", branching with a jump only in case of errors.

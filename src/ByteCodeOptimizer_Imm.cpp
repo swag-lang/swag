@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "AstNode.h"
-#include "ByteCodeGen.h"
 #include "ByteCodeOptimizer.h"
 
 // If an instruction can have an immediate form, then transform it if the corresponding

@@ -11,11 +11,11 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
     if (!dataSegment->totalCount)
         return true;
 
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
-    auto&     context         = *pp.llvmContext;
-    auto&     modu            = *pp.llvmModule;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    auto&      context         = *pp.llvmContext;
+    auto&      modu            = *pp.llvmModule;
 
     llvm::Type* type       = I64_TY();
     auto        totalCount = dataSegment->totalCount / 8;
@@ -105,8 +105,8 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
 
 bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const
 {
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
     const auto& pp      = *(LLVMEncoder*) perThread[ct][precompileIndex];

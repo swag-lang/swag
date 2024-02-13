@@ -17,8 +17,6 @@ struct SCBE : Backend
     SCBE(Module* mdl);
     SCBE();
 
-    void release();
-
     void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;

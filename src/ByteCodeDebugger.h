@@ -1,6 +1,5 @@
 #pragma once
 #include "ByteCodeRunContext.h"
-#include "Log.h"
 #include "Os.h"
 
 struct TypeInfo;

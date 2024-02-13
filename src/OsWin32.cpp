@@ -1,9 +1,10 @@
 #include "pch.h"
 #ifdef _WIN32
 #include <DbgHelp.h>
-#include "ByteCodeDebugger.h"
 #include "Context.h"
 #include "ErrorIds.h"
+#include "Log.h"
+#include "Os.h"
 #include "Report.h"
 #include "SCBE.h"
 #include "SCBE_Coff.h"

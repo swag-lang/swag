@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Log.h"
 #include "Symbol.h"
 #include "TypeManager.h"
 #include "Workspace.h"

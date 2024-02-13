@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "LLVM.h"
-#include "BackendLinker.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "LLVMDebug.h"
 #include "LLVM_Macros.h"
@@ -11,13 +9,18 @@
 #include "Report.h"
 #include "Workspace.h"
 
-bool LLVM::createRuntime(const BuildParameters& buildParameters) const
+LLVM::LLVM(Module* mdl)
+    : Backend{mdl}
 {
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
-    auto&     context         = *pp.llvmContext;
-    auto&     modu            = *pp.llvmModule;
+}
+
+void LLVM::createRuntime(const BuildParameters& buildParameters) const
+{
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    auto&      context         = *pp.llvmContext;
+    auto&      modu            = *pp.llvmModule;
 
     // SwagInterface
     {
@@ -196,14 +199,12 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters) const
     pp.cst0_f32 = llvm::ConstantFP::get(F32_TY(), 0);
     pp.cst0_f64 = llvm::ConstantFP::get(F64_TY(), 0);
     pp.cst_null = llvm::ConstantPointerNull::get(PTR_I64_TY());
-
-    return true;
 }
 
 JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
 
     allocatePerObj<LLVMEncoder>(buildParameters);
     auto& pp = *(LLVMEncoder*) perThread[ct][precompileIndex];

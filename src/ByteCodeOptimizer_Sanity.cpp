@@ -424,7 +424,7 @@ namespace
 
     bool checkEscapeFrame(const Context& cxt, uint64_t stackOffset, const SymbolOverload* overload = nullptr)
     {
-        SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
+        SWAG_ASSERT(stackOffset < UINT32_MAX);
         if (overload)
             return raiseError(cxt, FMT(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
         return raiseError(cxt, Err(San0003));

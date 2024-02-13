@@ -7,6 +7,7 @@
 #include "ByteCodeStack.h"
 #include "Context.h"
 #include "Diagnostic.h"
+#include "Log.h"
 #include "Module.h"
 #include "Parser.h"
 #include "Report.h"

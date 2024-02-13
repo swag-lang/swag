@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "Math.h"
 
 void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {

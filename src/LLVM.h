@@ -92,16 +92,12 @@ struct LLVMEncoder : BackendEncoder
 
 struct LLVM : Backend
 {
-    LLVM(Module* mdl)
-        : Backend{mdl}
-    {
-        memset(perThread, 0, sizeof(perThread));
-    }
+    LLVM(Module* mdl);
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
 
-    bool                createRuntime(const BuildParameters& buildParameters) const;
+    void                createRuntime(const BuildParameters& buildParameters) const;
     static llvm::Value* getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits);
     llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo);
     void                createRet(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);

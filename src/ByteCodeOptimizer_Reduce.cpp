@@ -2149,6 +2149,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA32);
                 setNop(context, ip + 1);
                 break;
+            default:
+                break;
             }
             break;
         }
@@ -2166,6 +2168,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             case 0xFFFF:
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA16);
                 setNop(context, ip + 1);
+                break;
+            default:
                 break;
             }
             break;

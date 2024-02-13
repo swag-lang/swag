@@ -241,6 +241,8 @@ namespace
                     case LF_ENUMERATE:
                         emitEmbeddedValue(pp, p.valueType, p.value);
                         break;
+                    default:
+                        break;
                     }
                     emitTruncatedString(pp, p.name);
                 }
@@ -277,6 +279,8 @@ namespace
                 concat.addU16(LF_ULONG);                           // LF_ULONG
                 concat.addU32(f->LF_Structure.sizeOf);
                 emitTruncatedString(pp, f->name);
+                break;
+            default:
                 break;
             }
 
@@ -322,6 +326,8 @@ namespace
             case 8:
                 concat.addU16(LF_QUADWORD);
                 concat.addU64(node->computedValue->reg.u64);
+                break;
+            default:
                 break;
             }
 

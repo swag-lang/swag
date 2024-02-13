@@ -4,7 +4,6 @@
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
-#include "ByteCodeOptimizerJob.h"
 #include "Context.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"

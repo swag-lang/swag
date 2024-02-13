@@ -3373,6 +3373,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case 8:
                 pp.emit_Load64_Indirect(0, RDX, RCX);
                 break;
+            default:
+                break;
             }
 
             pp.emit_Store64_Indirect(REG_OFFSET(ip->b.u32), RDX);
@@ -3546,6 +3548,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case 8:
                         pp.emit_Load64_Indirect(REG_OFFSET(reg), RAX);
                         pp.emit_Store64_Indirect(offset, RAX, RSP);
+                        break;
+                    default:
                         break;
                     }
 

@@ -25,7 +25,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 
         bool hasRead = false;
 
-        parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1)
+        parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext*, ByteCodeOptTreeParseContext& parseCxt1)
         {
             const auto ip1 = parseCxt1.curIp;
             if (ip1 == ip)
@@ -104,6 +104,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 if (ip1->d.u32 == regScan)
                 {
                     parseCxt1.mustStopBlock = true;
+                    // ReSharper disable once CppRedundantControlFlowJump
                     return;
                 }
             }

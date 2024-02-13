@@ -117,11 +117,11 @@ void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& bui
 
 void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message)
 {
-    const int ct              = buildParameters.compileType;
-    const int precompileIndex = buildParameters.precompileIndex;
-    auto&     pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
-    auto&     context         = *pp.llvmContext;
-    auto&     builder         = *pp.builder;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    auto&      context         = *pp.llvmContext;
+    auto&      builder         = *pp.builder;
 
     // Filename
     llvm::Value* r1 = builder.CreateGlobalString(node->sourceFile->path.string());
@@ -158,6 +158,8 @@ llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBui
             return builder.getInt32(ip->a.u32);
         case 64:
             return builder.getInt64(ip->a.u64);
+        default:
+            break;
         }
     }
 
@@ -168,7 +170,7 @@ llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBui
 void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const
 {
     const int   ct              = buildParameters.compileType;
-    const int   precompileIndex = buildParameters.precompileIndex;
+    const auto  precompileIndex = buildParameters.precompileIndex;
     const auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
 
@@ -199,7 +201,7 @@ void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
                                llvm::AllocaInst*      allocRR) const
 {
     const int   ct              = buildParameters.compileType;
-    const int   precompileIndex = buildParameters.precompileIndex;
+    const auto  precompileIndex = buildParameters.precompileIndex;
     const auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
     auto&       builder         = *pp.builder;
 

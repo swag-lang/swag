@@ -36,7 +36,7 @@ void Workspace::cleanPublic(const Path& basePath)
     if (exists(basePath, err))
     {
         OS::visitFolders(basePath.string().c_str(),
-                         [&](const char* folder)
+                         [&basePath](const char* folder)
                          {
                              auto path = basePath;
                              path.append(folder);
@@ -46,7 +46,7 @@ void Workspace::cleanPublic(const Path& basePath)
                              {
                                  // Clean all targets
                                  OS::visitFolders(path.string().c_str(),
-                                                  [&](const char* folder)
+                                                  [&path](const char* folder)
                                                   {
                                                       auto cfgpath = path;
                                                       cfgpath.append(folder);
