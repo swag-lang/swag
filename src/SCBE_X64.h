@@ -49,8 +49,8 @@ struct SCBE_X64 : SCBE_CPU
     void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
 
     void      emit_JumpTable(CPURegister table, CPURegister offset);
-    uint8_t*  emit_NearJumpOp(CPUJumpType jumpType, uint8_t value = 0);
-    uint32_t* emit_LongJumpOp(CPUJumpType jumpType, uint32_t value = 0);
+    uint8_t*  emit_NearJumpOp(CPUJumpType jumpType);
+    uint32_t* emit_LongJumpOp(CPUJumpType jumpType);
     void      emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void      emit_Jump(CPURegister reg);
 

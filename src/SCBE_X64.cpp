@@ -1463,10 +1463,13 @@ void SCBE_X64::emit_Extend_U16U64(CPURegister regDst, CPURegister regSrc)
 }
 
 /////////////////////////////////////////////////////////////////////
-uint8_t* SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType, uint8_t value)
+uint8_t* SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType)
 {
     switch (jumpType)
     {
+    case JNO:
+        concat.addU8(0x71);
+        break;        
     case JB:
         concat.addU8(0x72);
         break;
@@ -1511,11 +1514,11 @@ uint8_t* SCBE_X64::emit_NearJumpOp(CPUJumpType jumpType, uint8_t value)
         break;
     }
 
-    concat.addU8(value);
+    concat.addU8(0);
     return concat.getSeekPtr() - 1;
 }
 
-uint32_t* SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType, uint32_t value)
+uint32_t* SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType)
 {
     switch (jumpType)
     {
@@ -1579,7 +1582,7 @@ uint32_t* SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType, uint32_t value)
         break;
     }
 
-    concat.addU32(value);
+    concat.addU32(0);
     return reinterpret_cast<uint32_t*>(concat.getSeekPtr()) - 1;
 }
 

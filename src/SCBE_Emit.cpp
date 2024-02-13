@@ -115,10 +115,10 @@ void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const
     const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->flags & BCI_CAN_OVERFLOW);
     if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
     {
-        const auto addr      = pp.emit_LongJumpOp(JNO);
-        const auto prevCount = pp.concat.totalCount();
+        const auto seekPtr = pp.emit_NearJumpOp(JNO);
+        const auto seekJmp = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
-        *addr = pp.concat.totalCount() - prevCount;
+        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
     }
 }
 
@@ -127,10 +127,10 @@ void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, con
     const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->flags & BCI_CAN_OVERFLOW);
     if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
     {
-        const auto addr      = pp.emit_LongJumpOp(JAE);
-        const auto prevCount = pp.concat.totalCount();
+        const auto seekPtr = pp.emit_NearJumpOp(JAE);
+        const auto seekJmp = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
-        *addr = pp.concat.totalCount() - prevCount;
+        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
     }
 }
 
