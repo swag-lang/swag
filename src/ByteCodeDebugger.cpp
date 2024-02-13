@@ -155,7 +155,7 @@ bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
 
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN) const
 {
-    regN = atoi(arg.c_str() + 1);
+    regN = arg.toInt(1);
     if (!context->getRegCount(cxtRc))
     {
         printCmdError("no available register");

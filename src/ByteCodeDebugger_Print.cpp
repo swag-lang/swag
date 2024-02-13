@@ -374,7 +374,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         Utf8::isNumber(exprCmds[startIdx] + 1) &&
         exprCmds.size() != 1)
     {
-        count = atoi(exprCmds[startIdx] + 1);
+        count = exprCmds[startIdx].toInt(1);
         startIdx++;
     }
 
@@ -494,7 +494,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
 
     int regN = 4;
     if (arg.split.size() == 2)
-        regN = atoi(arg.split[1].c_str());
+        regN = arg.split[1].toInt();
     g_ByteCodeDebugger.bcMode = true;
 
     g_Log.setStoreMode(true);
@@ -549,7 +549,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     {
         uint32_t offset = 3;
         if (arg.split.size() == 2)
-            offset = atoi(arg.split[1].c_str());
+            offset = arg.split[1].toInt();
 
         const auto inl = g_ByteCodeDebugger.lastBreakIp->node->ownerInline;
         if (inl)

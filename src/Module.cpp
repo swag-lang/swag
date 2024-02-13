@@ -110,11 +110,11 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     if (g_CommandLine.buildCfgInlineBC != "default")
         buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true";
     if (g_CommandLine.buildCfgOptimBC != "default")
-        buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine.buildCfgOptimBC.c_str()), 2));
+        buildCfg.byteCodeOptimizeLevel = max(0, min(g_CommandLine.buildCfgOptimBC.toInt(), 2));
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInfos = g_CommandLine.buildCfgDebug == "true";
     if (g_CommandLine.buildCfgOptim != "default")
-        buildCfg.backendOptimize = (BuildCfgBackendOptim) max(0, min(atoi(g_CommandLine.buildCfgOptim.c_str()), 5));
+        buildCfg.backendOptimize = (BuildCfgBackendOptim) max(0, min(g_CommandLine.buildCfgOptim.toInt(), 5));
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")
@@ -754,7 +754,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             }
         }
 
-        *setVer = atoi(splits[i]);
+        *setVer = splits[i].toInt();
         if (*setVer < 0)
         {
             Diagnostic diag{importNode, tokenVersion, Err(Err0312)};

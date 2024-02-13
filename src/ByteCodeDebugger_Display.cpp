@@ -30,7 +30,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
     if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    const int numB = atoi(arg.split[2].c_str());
+    const int numB = arg.split[2].toInt();
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.display.size())
         printCmdError("invalid expression number");
     else

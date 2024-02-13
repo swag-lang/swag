@@ -25,7 +25,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Continue;
     }
 
-    uint32_t       off      = atoi(arg.split[1].c_str());
+    uint32_t       off      = arg.split[1].toInt();
     const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     off                     = min(off, maxLevel);
 
@@ -53,7 +53,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
 
     uint32_t off = 1;
     if (arg.split.size() == 2)
-        off = atoi(arg.split[1].c_str());
+        off = arg.split[1].toInt();
     const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     if (context->debugStackFrameOffset == maxLevel)
     {
@@ -85,7 +85,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
 
     uint32_t off = 1;
     if (arg.split.size() == 2)
-        off = atoi(arg.split[1].c_str());
+        off = arg.split[1].toInt();
     if (context->debugStackFrameOffset == 0)
     {
         printCmdError("bottom(innermost) frame selected; you cannot go down");

@@ -450,7 +450,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 continue;
             }
 
-            *(int*) arg->buffer = atoi(argument.c_str());
+            *(int*) arg->buffer = argument.toInt();
             break;
         }
         }

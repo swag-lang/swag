@@ -286,11 +286,12 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
     {
-        auto cpt               = (unsigned) (curBuffer - startTokenName);
-        auto ptr               = startTokenName + cpt;
-        auto sc                = *ptr;
-        *ptr                   = 0;
-        token.literalValue.f64 = atof(startTokenName);
+        auto cpt = (unsigned) (curBuffer - startTokenName);
+        auto ptr = startTokenName + cpt;
+        auto sc  = *ptr;
+        *ptr     = 0;
+        char* end;
+        token.literalValue.f64 = strtod(startTokenName, &end);
         *ptr                   = sc;
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)

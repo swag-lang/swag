@@ -19,11 +19,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = arg.split[1].toInt();
     }
 
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::NextLineStepIn;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::NextLineStepIn;
     return BcDbgCommandResult::Break;
 }
 
@@ -41,11 +41,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = arg.split[1].toInt();
     }
 
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::NextInstructionStepIn;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::NextInstructionStepIn;
     return BcDbgCommandResult::Break;
 }
 
@@ -63,12 +63,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = arg.split[1].toInt();
     }
 
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::NextLineStepOut;
-    g_ByteCodeDebugger.stepRc   = context->curRC;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::NextLineStepOut;
+    g_ByteCodeDebugger.stepRc      = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -86,12 +86,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const
             return BcDbgCommandResult::Continue;
         }
 
-        g_ByteCodeDebugger.stepCount = atoi(arg.split[1].c_str());
+        g_ByteCodeDebugger.stepCount = arg.split[1].toInt();
     }
 
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::NextInstructionStepOut;
-    g_ByteCodeDebugger.stepRc   = context->curRC;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::NextInstructionStepOut;
+    g_ByteCodeDebugger.stepRc      = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -100,8 +100,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
     if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::FinishedFunction;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::FinishedFunction;
     if (g_ByteCodeDebugger.lastBreakIp->node->ownerInline)
         g_ByteCodeDebugger.stepRc = context->curRC;
     else
@@ -115,9 +115,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
         return BcDbgCommandResult::BadArguments;
 
     printCmdResult("continue...");
-    context->debugOn                 = false;
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::ToNextBreakpoint;
+    context->debugOn               = false;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
@@ -130,7 +130,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
 
     context->debugStackFrameOffset = 0;
 
-    const uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
+    const auto to = (uint32_t) arg.split[1].toInt();
 
     auto curIp = context->bc->out;
     while (true)
@@ -144,7 +144,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         const auto loc = ByteCode::getLocation(context->bc, curIp);
         if (loc.location && loc.location->line + 1 == to)
         {
-            context->ip                   = curIp;
+            context->ip              = curIp;
             g_ByteCodeDebugger.cxtIp = context->ip;
             break;
         }
@@ -165,7 +165,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
 
     context->debugStackFrameOffset = 0;
 
-    const uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
+    const auto to = (uint32_t) arg.split[1].toInt();
 
     if (to >= context->bc->numInstructions - 1)
     {
@@ -173,7 +173,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Continue;
     }
 
-    context->ip                   = context->bc->out + to;
+    context->ip              = context->bc->out + to;
     g_ByteCodeDebugger.cxtIp = context->ip;
 
     g_ByteCodeDebugger.printDebugContext(context);
@@ -191,11 +191,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     bkp.type       = DebugBkpType::FileLine;
     bkp.bc         = g_ByteCodeDebugger.cxtBc;
     bkp.name       = g_ByteCodeDebugger.stepLastFile->name;
-    bkp.line       = atoi(arg.split[1].c_str());
+    bkp.line       = arg.split[1].toInt();
     bkp.autoRemove = true;
     g_ByteCodeDebugger.addBreakpoint(context, bkp);
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::ToNextBreakpoint;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
@@ -210,11 +210,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, cons
     bkp.type       = DebugBkpType::InstructionIndex;
     bkp.bc         = g_ByteCodeDebugger.cxtBc;
     bkp.name       = g_ByteCodeDebugger.stepLastFile->name;
-    bkp.line       = atoi(arg.split[1].c_str());
+    bkp.line       = arg.split[1].toInt();
     bkp.autoRemove = true;
     g_ByteCodeDebugger.addBreakpoint(context, bkp);
-    context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.stepMode = DebugStepMode::ToNextBreakpoint;
+    context->debugStackFrameOffset = 0;
+    g_ByteCodeDebugger.stepMode    = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 

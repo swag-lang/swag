@@ -1009,3 +1009,10 @@ int Utf8::countOf(char c) const
     }
     return cpt;
 }
+
+int Utf8::toInt(int offset) const
+{
+    SWAG_ASSERT(offset < length());
+    char* end;
+    return strtol(buffer + offset, &end, 10);
+}
