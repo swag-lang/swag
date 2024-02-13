@@ -65,7 +65,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
     }
 
     // If not null
-    for (int r = 0; r < node->resultRegisterRc.size(); r++)
+    for (uint32_t r = 0; r < node->resultRegisterRc.size(); r++)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[r], child0->resultRegisterRc[r]);
 
     freeRegisterRC(context, child0);
@@ -96,7 +96,7 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 
     // Reserve registers in the main node to copy the result
     reserveRegisterRC(context, binNode->resultRegisterRc, ifTrue->resultRegisterRc.size());
-    for (int r = 0; r < ifTrue->resultRegisterRc.size(); r++)
+    for (uint32_t r = 0; r < ifTrue->resultRegisterRc.size(); r++)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, binNode->resultRegisterRc[r], ifTrue->resultRegisterRc[r]);
 
     // Jump after ifFalse block

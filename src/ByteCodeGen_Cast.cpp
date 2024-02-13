@@ -61,7 +61,7 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
     if (!exprNode->resultRegisterRc.cannotFree)
     {
         exprNode->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
-        for (int r = 0; r < exprNode->resultRegisterRc.size(); r++)
+        for (uint32_t r = 0; r < exprNode->resultRegisterRc.size(); r++)
             exprNode->ownerScope->owner->extMisc()->registersToRelease.push_back(exprNode->resultRegisterRc[r]);
     }
 

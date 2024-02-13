@@ -166,7 +166,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 for (const auto child : node->childs)
                 {
                     const auto sizeChilds = child->resultRegisterRc.size();
-                    for (int r = 0; r < sizeChilds; r++)
+                    for (uint32_t r = 0; r < sizeChilds; r++)
                         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->ownerInline->resultRegisterRc[r], child->resultRegisterRc[r]);
                     freeRegisterRC(context, child);
                 }
@@ -276,7 +276,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             {
                 SWAG_ASSERT(node->childs.size() == 1);
                 const auto child = node->childs.front();
-                SWAG_ASSERT(child->resultRegisterRc.size() >= (size_t) returnType->numRegisters());
+                SWAG_ASSERT(child->resultRegisterRc.size() >= returnType->numRegisters());
                 const auto numRetReg = returnType->numRegisters();
                 SWAG_ASSERT(numRetReg <= 2);
                 if (numRetReg == 1)
@@ -1770,7 +1770,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 {
                     if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                     {
-                        for (int r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
+                        for (uint32_t r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                     }
 
@@ -1918,7 +1918,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                         done = true;
                         if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                         {
-                            for (int r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
+                            for (uint32_t r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
                                 toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                         }
 
@@ -1939,7 +1939,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 {
                     if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                     {
-                        for (int r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
+                        for (uint32_t r = 0; freeRegistersParams && r < param->extMisc()->additionalRegisterRC.size(); r++)
                             toFree.push_back(param->extMisc()->additionalRegisterRC[r]);
                     }
 

@@ -1007,6 +1007,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             setNop(context, ip);
             break;
         }
+        break;
 
     case ByteCodeOp::PushRAParam2:
         if (ip[1].op == ByteCodeOp::PushRAParam &&

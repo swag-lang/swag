@@ -4192,7 +4192,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::CopyRBtoRRRet:
             getReturnResult(context, buildParameters, returnType, ip->flags & BCI_IMM_B, ip->b, allocR, allocResult);
-
+            [[fallthrough]];
         case ByteCodeOp::Ret:
         {
             // :OptimizedAwayDebugCrap
@@ -5142,6 +5142,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::LocalCallPopParam:
             pushRAParams.push_back(ip->d.u32);
+            [[fallthrough]];
 
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:

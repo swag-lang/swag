@@ -49,7 +49,7 @@ struct RegisterList
         countResults = 1;
     }
 
-    int size() const
+    uint32_t size() const
     {
         return countResults;
     }
@@ -72,7 +72,7 @@ struct RegisterList
     void operator+=(const RegisterList& other)
     {
         SWAG_ASSERT(cannotFree == other.cannotFree);
-        for (int i = 0; i < other.size(); i++)
+        for (uint32_t i = 0; i < other.size(); i++)
             *this += other[i];
     }
 

@@ -108,6 +108,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
                 ip[0].flags |= BCI_IMM_D;
             setNop(context, ip + 1);
         }
+        break;
 
     case ByteCodeOp::SetAtStackPointer32:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer32 &&

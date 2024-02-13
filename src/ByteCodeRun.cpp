@@ -545,7 +545,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     case ByteCodeOp::CopyRBtoRRRet:
         context->registersRR[0].u64 = IMMB_U64(ip);
-    // fallthrough
+        [[fallthrough]];
     case ByteCodeOp::Ret:
     {
         context->incSP(ip->a.u32);

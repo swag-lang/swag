@@ -318,7 +318,7 @@ namespace ByteCodeGen
     void     freeRegisterRC(const ByteCodeGenContext* context, RegisterList& rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, uint32_t rc);
     void     freeRegisterRC(const ByteCodeGenContext* context, AstNode* node);
-    void     truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int count);
+    void     truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, uint32_t count);
     void     sortRegistersRC(const ByteCodeGenContext* context);
     void     ensureCanBeChangedRC(const ByteCodeGenContext* context, RegisterList& r0);
 }

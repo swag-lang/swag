@@ -158,7 +158,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             overload->symRegisters.cannotFree = true;
                             node->allocateExtension(ExtensionKind::Misc);
-                            for (int r = 0; r < overload->symRegisters.size(); r++)
+                            for (uint32_t r = 0; r < overload->symRegisters.size(); r++)
                                 node->extMisc()->registersToRelease.push_back(overload->symRegisters[r]);
                         }
                         break;
@@ -196,7 +196,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                                     SWAG_ASSERT(canFreeRegParams);
                                     overload->symRegisters.cannotFree = true;
                                     node->allocateExtension(ExtensionKind::Misc);
-                                    for (int r = 0; r < overload->symRegisters.size(); r++)
+                                    for (uint32_t r = 0; r < overload->symRegisters.size(); r++)
                                         node->extMisc()->registersToRelease.push_back(overload->symRegisters[r]);
                                 }
                                 covered = true;
@@ -227,7 +227,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                             SWAG_ASSERT(canFreeRegParams);
                             overload->symRegisters.cannotFree = true;
                             node->allocateExtension(ExtensionKind::Misc);
-                            for (int r = 0; r < overload->symRegisters.size(); r++)
+                            for (uint32_t r = 0; r < overload->symRegisters.size(); r++)
                                 node->extMisc()->registersToRelease.push_back(overload->symRegisters[r]);
                             break;
                         }

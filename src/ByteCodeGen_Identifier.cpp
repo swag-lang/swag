@@ -587,7 +587,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         SWAG_ASSERT(resolved->hasFlag(OVERLOAD_INLINE_REG));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 
-        for (int i = 0; i < node->resultRegisterRc.size(); i++)
+        for (uint32_t i = 0; i < node->resultRegisterRc.size(); i++)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[i], resolved->symRegisters[i]);
 
         // :UfcsItfInlined

@@ -192,7 +192,7 @@ JobResult SemanticJob::execute()
                 return JobResult::ReleaseJob;
             SWAG_ASSERT(context.result != ContextResult::Pending);
             SWAG_ASSERT(context.result != ContextResult::NewChilds);
-        // fallthrough
+            [[fallthrough]];
 
         case AstNodeResolveState::PostChilds:
             if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)

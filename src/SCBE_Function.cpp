@@ -3816,6 +3816,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RCX);
                 pp.emit_Store64_Indirect(0, RCX, RAX);
             }
+            [[fallthrough]];
 
         case ByteCodeOp::Ret:
 

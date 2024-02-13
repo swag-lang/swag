@@ -117,7 +117,7 @@ void ByteCodeGen::transformResultToLinear2(const ByteCodeGenContext* context, Re
     }
 }
 
-void ByteCodeGen::truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, int count)
+void ByteCodeGen::truncRegisterRC(const ByteCodeGenContext* context, RegisterList& rc, uint32_t count)
 {
     if (rc.size() == count)
         return;
@@ -125,12 +125,12 @@ void ByteCodeGen::truncRegisterRC(const ByteCodeGenContext* context, RegisterLis
     SWAG_ASSERT(!rc.cannotFree);
 
     RegisterList rs;
-    for (int i = 0; i < count; i++)
+    for (uint32_t i = 0; i < count; i++)
         rs += rc[i];
 
     if (!rc.cannotFree)
     {
-        for (int i = count; i < rc.size(); i++)
+        for (uint32_t i = count; i < rc.size(); i++)
             freeRegisterRC(context, rc[i]);
     }
 
@@ -142,7 +142,7 @@ void ByteCodeGen::freeRegisterRC(const ByteCodeGenContext* context, RegisterList
 {
     if (rc.cannotFree)
         return;
-    for (int i = 0; i < rc.size(); i++)
+    for (uint32_t i = 0; i < rc.size(); i++)
         freeRegisterRC(context, rc[i]);
     rc.clear();
     rc.cannotFree = false;
@@ -163,7 +163,7 @@ void ByteCodeGen::ensureCanBeChangedRC(const ByteCodeGenContext* context, Regist
     {
         RegisterList re;
         reserveRegisterRC(context, re, r0.size());
-        for (int i = 0; i < r0.size(); i++)
+        for (uint32_t i = 0; i < r0.size(); i++)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, re[i], r0[i]);
         freeRegisterRC(context, r0);
         r0 = re;
