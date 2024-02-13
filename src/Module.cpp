@@ -743,24 +743,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             continue;
         }
 
-        // Be sure we have a number
-        for (const char j : splits[i])
+        if (!Utf8::isNumber(splits[i]))
         {
-            if (!isdigit(j))
-            {
-                const Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
-                const auto       note = Diagnostic::note(Err(Nte0142));
-                return Report::report(diag, note);
-            }
+            const Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
+            const auto       note = Diagnostic::note(Err(Nte0142));
+            return Report::report(diag, note);
         }
 
         *setVer = splits[i].toInt();
-        if (*setVer < 0)
-        {
-            Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
-            auto       note = Diagnostic::note(Err(Nte0142));
-            return Report::report(diag, note);
-        }
 
         switch (i)
         {
