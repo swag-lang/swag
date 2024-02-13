@@ -19,13 +19,13 @@ SCBEDebugTypeIndex SCBEDebug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInf
     field.value.reg.u32 = 0;
     field.name.setView(g_LangSpec->name_data);
     tr0->LF_FieldList.fields.reserve(2);
-    tr0->LF_FieldList.fields.emplace_back(std::move(field));
+    tr0->LF_FieldList.fields.push_back(field);
 
     field.kind          = LF_MEMBER;
     field.type          = (SCBEDebugTypeIndex) UInt64;
     field.value.reg.u32 = sizeof(void*);
     field.name.setView(g_LangSpec->name_count);
-    tr0->LF_FieldList.fields.emplace_back(std::move(field));
+    tr0->LF_FieldList.fields.push_back(field);
 
     const auto tr1                = addTypeRecord(pp);
     tr1->kind                     = LF_STRUCTURE;
@@ -168,13 +168,13 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
+        tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
         field.type          = getOrCreatePointerPointerToType(pp, g_Workspace->swagScope.regTypeInfoStruct);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_itable);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
+        tr0->LF_FieldList.fields.push_back(field);
 
         auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;

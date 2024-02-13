@@ -7,7 +7,7 @@
 
 struct AstNode;
 
-#define REG_OFFSET(__r) __r * sizeof(Register)
+#define REG_OFFSET(__r) (__r) * sizeof(Register)
 
 enum class CPUBits : uint32_t
 {

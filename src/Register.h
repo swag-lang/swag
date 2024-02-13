@@ -60,12 +60,13 @@ struct RegisterList
         return oneResult[index];
     }
 
-    void operator=(uint32_t r)
+    RegisterList& operator=(uint32_t r)
     {
         SWAG_ASSERT(r < MAX_REGISTERS);
         oneResult[0] = (uint8_t) r;
         countResults = 1;
         cannotFree   = false;
+        return *this;
     }
 
     void operator+=(const RegisterList& other)

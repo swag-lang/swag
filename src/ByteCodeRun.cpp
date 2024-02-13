@@ -2490,11 +2490,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     case ByteCodeOp::IntrinsicCVaArg:
     {
-        auto ptr = *(uint64_t**) registersRC[ip->a.u32].pointer;
+        auto ptr = *reinterpret_cast<uint8_t**>(registersRC[ip->a.u32].pointer);
         switch (ip->c.u32)
         {
         case 1:
-            registersRC[ip->b.u32].u64 = *reinterpret_cast<uint8_t*>(ptr);
+            registersRC[ip->b.u32].u64 = *ptr;
             break;
         case 2:
             registersRC[ip->b.u32].u64 = *reinterpret_cast<uint16_t*>(ptr);
@@ -2503,13 +2503,13 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             registersRC[ip->b.u32].u64 = *reinterpret_cast<uint32_t*>(ptr);
             break;
         case 8:
-            registersRC[ip->b.u32].u64 = *ptr;
+            registersRC[ip->b.u32].u64 = *reinterpret_cast<uint64_t*>(ptr);
             break;
         default:
             break;
         }
-        ptr += 1;
-        *(uint64_t**) registersRC[ip->a.u32].pointer = ptr;
+
+        *reinterpret_cast<uint8_t**>(registersRC[ip->a.u32].pointer) += sizeof(uint64_t);
         break;
     }
 
