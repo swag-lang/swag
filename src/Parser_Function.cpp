@@ -592,6 +592,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
 bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
+    ScopedTryCatchAssume sct(this, nullptr);
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
     funcNode->semanticFct = Semantic::resolveFuncDecl;

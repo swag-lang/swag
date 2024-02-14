@@ -1471,14 +1471,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-
-        if (callNode->kind == AstNodeKind::Inline)
-        {
-            const Diagnostic diag{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.ctext())};
-            return context->report(diag, Diagnostic::hereIs(srcNode));
-        }
-
-        const Diagnostic diag{callNode, FMT(Err(Err0544), funcNode->token.ctext())};
+        const Diagnostic diag{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.ctext())};
         return context->report(diag, Diagnostic::hereIs(srcNode));
     }
 
