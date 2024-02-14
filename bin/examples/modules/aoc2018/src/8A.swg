@@ -39,7 +39,7 @@ private var total = 0
 func day8A() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    var values   = Tokenize.split(File.readAllText(dataPath), ` `'u8)
+    let values   = Tokenize.split(File.readAllText(dataPath), ` `'u8)
     let nums     = Slice.map(values.toSlice(), func(v) => assume StrConv.toS32(v))
 
     func read(n: Array's32, s: u32)->u32
