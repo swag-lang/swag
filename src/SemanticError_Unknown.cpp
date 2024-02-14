@@ -145,8 +145,6 @@ namespace
             else
                 note = Diagnostic::note(prev, FMT(Nte(Nte0003), prev->token.ctext(), kindName.c_str()));
             notes.push_back(note);
-            if (prev->resolvedSymbolOverload)
-                notes.push_back(Diagnostic::hereIs(prev));
         }
 
         return true;
