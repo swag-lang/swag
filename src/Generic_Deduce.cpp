@@ -223,8 +223,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
         const auto wantedLambda = castTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
         const auto callLambda   = castTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
 
-        if (wantedLambda->returnType &&
-            wantedLambda->returnType->isGeneric())
+        if (wantedLambda->returnType && wantedLambda->returnType->isGeneric())
         {
             if (!callLambda->returnType->isUndefined() && !callLambda->returnType->isGeneric())
             {
@@ -236,7 +235,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 const AstFuncDecl* decl = castAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
                 if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
                 {
-                    const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
+                    const auto tt = (TypeInfoFuncAttr*) replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
                     Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
                     return;
                 }
@@ -272,14 +271,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
     }
 }
 
-void Generic::deduceType(SymbolMatchContext&      context,
-                         TypeInfo*                wantedTypeInfo,
-                         TypeInfo*                callTypeInfo,
-                         uint64_t                 castFlags,
-                         int                      idxParam,
-                         VectorNative<TypeInfo*>& wantedTypeInfos,
-                         VectorNative<TypeInfo*>& callTypeInfos,
-                         AstNode*                 callParameter)
+void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, uint64_t castFlags, int idxParam, AstNode* callParameter)
 {
     // Do we already have mapped the generic parameter to something ?
     const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
@@ -378,7 +370,7 @@ void Generic::deduceGenericTypes(SymbolMatchContext& context, AstNode* callParam
         if (!callTypeInfo)
             continue;
 
-        deduceType(context, wantedTypeInfo, callTypeInfo, castFlags, idxParam, wantedTypeInfos, callTypeInfos, callParameter);
+        deduceType(context, wantedTypeInfo, callTypeInfo, castFlags, idxParam, callParameter);
         deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
         if (context.semContext->result != ContextResult::Done)
             return;
