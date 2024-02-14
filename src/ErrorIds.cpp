@@ -1015,7 +1015,7 @@ void initErrors()
     SWAG_ERROR(Nte0127, "the number of values ([[%d]]) is greater than one");
     SWAG_ERROR(Nte0128, "the number of values is variable and could be greater than one");
     SWAG_ERROR(Nte0129, "the operation is not allowed on a non-pointer types");
-    SWAG_ERROR(Nte0130, nullptr);
+    SWAG_ERROR(Nte0130, "the %s [[%s]] is marked with [[throw]] and can raise errors you must deal with");
     SWAG_ERROR(Nte0131, "the operator [[++]] requires compile-time strings as arguments");
     SWAG_ERROR(Nte0132, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0133, "the resulting type is [[%s]]");

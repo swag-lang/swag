@@ -508,8 +508,6 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
         {
             if (m->coerceCast < matches[0]->coerceCast)
             {
-                if (context->node->token.text == "0")
-                    int a = 0;
                 matches.clear();
                 break;
             }

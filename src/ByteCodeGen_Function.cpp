@@ -1472,7 +1472,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
         const Diagnostic diag{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.ctext())};
-        return context->report(diag, Diagnostic::hereIs(srcNode));
+        return context->report(diag, Diagnostic::hereIs(srcNode, Nte(Nte0130)));
     }
 
     if (!raiseErrors)

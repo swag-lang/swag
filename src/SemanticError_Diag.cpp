@@ -397,6 +397,16 @@ namespace
             {
                 diag->hint = castHint;
             }
+
+            // Is there an explicit cast possible ?
+            if (!(bi.castErrorFlags & CASTFLAG_EXPLICIT) || (bi.castErrorFlags & CASTFLAG_COERCE))
+            {
+                if (bi.castErrorToType && bi.castErrorFromType)
+                {
+                    if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
+                        errorParam.addNote(Diagnostic::note(callParamNode, FMT(Nte(Nte0030), bi.castErrorToType->getDisplayNameC())));
+                }
+            }
         }
 
         // Here is

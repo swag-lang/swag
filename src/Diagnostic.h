@@ -165,7 +165,7 @@ struct Diagnostic
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(const SymbolOverload* overload);
     static Utf8        isType(const AstNode* node);
-    static Diagnostic* hereIs(AstNode* node);
+    static Diagnostic* hereIs(AstNode* node, const char *msg = nullptr);
     static Diagnostic* hereIs(const SymbolOverload* overload);
 
     struct RangeHint
