@@ -11,7 +11,7 @@
 
 SCBEDebugTypeIndex SCBEDebug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBEDebugTypeIndex* value)
 {
-    const auto          tr0 = addTypeRecord(pp);
+    const auto         tr0 = addTypeRecord(pp);
     SCBEDebugTypeField field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
@@ -129,7 +129,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
     /////////////////////////////////
     if (typeInfo->isString())
     {
-        auto                tr0 = addTypeRecord(pp);
+        auto               tr0 = addTypeRecord(pp);
         SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
@@ -160,7 +160,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
     /////////////////////////////////
     if (typeInfo->isInterface())
     {
-        auto                tr0 = addTypeRecord(pp);
+        auto               tr0 = addTypeRecord(pp);
         SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
@@ -191,7 +191,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
     /////////////////////////////////
     if (typeInfo->isAny())
     {
-        auto                tr0 = addTypeRecord(pp);
+        auto               tr0 = addTypeRecord(pp);
         SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;

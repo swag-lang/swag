@@ -18,9 +18,9 @@ JobResult ModuleGenOutputJob::execute()
     Timer timer(&g_Stats.genOutputTimeJob);
 #endif
 
-    if(!module->backend->generateOutput(buildParameters))
+    if (!module->backend->generateOutput(buildParameters))
         return JobResult::ReleaseJob;
-    
+
 #ifdef SWAG_STATS
     ++g_Stats.numGenModules;
 #endif

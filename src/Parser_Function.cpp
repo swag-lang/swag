@@ -593,9 +593,9 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     ScopedTryCatchAssume sct(this, nullptr);
-    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
-    *result               = funcNode;
-    funcNode->semanticFct = Semantic::resolveFuncDecl;
+    auto                 funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    *result                       = funcNode;
+    funcNode->semanticFct         = Semantic::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
     funcNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgFuncDecl;
 
@@ -1037,9 +1037,9 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
     ScopedTryCatchAssume sc(this, nullptr);
-    const auto funcNode   = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
-    *result               = funcNode;
-    funcNode->semanticFct = Semantic::resolveFuncDecl;
+    const auto           funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    *result                       = funcNode;
+    funcNode->semanticFct         = Semantic::resolveFuncDecl;
     funcNode->addAstFlag(AST_GENERATED);
 
     const int id         = g_UniqueID.fetch_add(1);

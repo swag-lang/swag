@@ -60,7 +60,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
         if (node->kind == AstNodeKind::FuncDecl || context->bc->isCompilerGenerated)
         {
 #ifdef SWAG_STATS
-			g_Stats.numInstructions += context->bc->numInstructions;
+            g_Stats.numInstructions += context->bc->numInstructions;
 #endif
 
             // Print resulting bytecode

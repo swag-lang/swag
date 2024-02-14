@@ -121,7 +121,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
         if (computeCrc)
             treeNode->crc = context->bc->computeCrc(treeNode->end, treeNode->crc, true, false);
 #ifdef SWAG_DEV_MODE
-		treeNode->end->treeNode = nodeIdx + 1;
+        treeNode->end->treeNode = nodeIdx + 1;
 #endif
         treeNode->end++;
     }
@@ -131,13 +131,13 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
         treeNode->crc = context->bc->computeCrc(treeNode->end, treeNode->crc, true, false);
 
 #ifdef SWAG_DEV_MODE
-	treeNode->end->treeNode = nodeIdx + 1;
-	auto ip = treeNode->start;
-	while (ip != treeNode->end + 1)
-	{
-		ip->crc = treeNode->crc;
-		ip++;
-	}
+    treeNode->end->treeNode = nodeIdx + 1;
+    auto ip                 = treeNode->start;
+    while (ip != treeNode->end + 1)
+    {
+        ip->crc = treeNode->crc;
+        ip++;
+    }
 #endif
 
     if (ByteCode::isRet(treeNode->end))
@@ -304,7 +304,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::Nop)
         {
 #ifdef SWAG_STATS
-			++g_Stats.totalOptimBC;
+            ++g_Stats.totalOptimBC;
 #endif
             ip++;
             continue;
@@ -615,18 +615,18 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
             continue;
 
 #ifdef SWAG_STATS
-		if (g_CommandLine.statsFreq)
-		{
-			for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
-			{
-				const auto ip = optContext.bc->out + i;
-				++g_Stats.countOpFreq[(int)ip[0].op][(int)ByteCodeOp::End];
+        if (g_CommandLine.statsFreq)
+        {
+            for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
+            {
+                const auto ip = optContext.bc->out + i;
+                ++g_Stats.countOpFreq[(int) ip[0].op][(int) ByteCodeOp::End];
 
-				if (ip[1].flags & BCI_START_STMT)
-					continue;
-				++g_Stats.countOpFreq[(int)ip[0].op][(int)ip[1].op];
-			}
-		}
+                if (ip[1].flags & BCI_START_STMT)
+                    continue;
+                ++g_Stats.countOpFreq[(int) ip[0].op][(int) ip[1].op];
+            }
+        }
 #endif
 
         break;

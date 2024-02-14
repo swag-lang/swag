@@ -139,20 +139,20 @@ struct CPURelocationTable
 
 struct CPUFunction
 {
-    VectorNative<uint16_t>  unwind;
+    VectorNative<uint16_t> unwind;
     Vector<SCBEDebugLines> dbgLines;
-    AstNode*                node                    = nullptr;
-    TypeInfoFuncAttr*       typeFunc                = nullptr;
-    uint32_t                symbolIndex             = 0;
-    uint32_t                startAddress            = 0;
-    uint32_t                endAddress              = 0;
-    uint32_t                xdataOffset             = 0;
-    uint32_t                sizeProlog              = 0;
-    uint32_t                offsetStack             = 0;
-    uint32_t                offsetCallerStackParams = 0;
-    uint32_t                offsetLocalStackParams  = 0;
-    uint32_t                frameSize               = 0;
-    uint32_t                numScratchRegs          = 0;
+    AstNode*               node                    = nullptr;
+    TypeInfoFuncAttr*      typeFunc                = nullptr;
+    uint32_t               symbolIndex             = 0;
+    uint32_t               startAddress            = 0;
+    uint32_t               endAddress              = 0;
+    uint32_t               xdataOffset             = 0;
+    uint32_t               sizeProlog              = 0;
+    uint32_t               offsetStack             = 0;
+    uint32_t               offsetCallerStackParams = 0;
+    uint32_t               offsetLocalStackParams  = 0;
+    uint32_t               frameSize               = 0;
+    uint32_t               numScratchRegs          = 0;
 };
 
 struct SCBE_CPU : BackendEncoder
@@ -284,12 +284,12 @@ struct SCBE_CPU : BackendEncoder
     uint16_t sectionIndexDBGT = 0;
 
     // Debug infos
-    static constexpr int                MAX_RECORD   = 4;
-    uint16_t                            dbgRecordIdx = 0;
-    uint16_t*                           dbgStartRecordPtr[MAX_RECORD];
-    uint32_t                            dbgStartRecordOffset[MAX_RECORD];
-    uint32_t                            dbgTypeRecordsCount = 0;
-    Concat                              dbgTypeRecords;
+    static constexpr int               MAX_RECORD   = 4;
+    uint16_t                           dbgRecordIdx = 0;
+    uint16_t*                          dbgStartRecordPtr[MAX_RECORD];
+    uint32_t                           dbgStartRecordOffset[MAX_RECORD];
+    uint32_t                           dbgTypeRecordsCount = 0;
+    Concat                             dbgTypeRecords;
     Map<TypeInfo*, SCBEDebugTypeIndex> dbgMapTypes;
     MapUtf8<SCBEDebugTypeIndex>        dbgMapTypesNames;
 

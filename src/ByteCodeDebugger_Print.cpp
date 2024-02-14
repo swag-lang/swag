@@ -511,8 +511,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc                   = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp                   = g_ByteCodeDebugger.cxtIp;
+    auto toLogBc              = g_ByteCodeDebugger.cxtBc;
+    auto toLogIp              = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = true;
 
     if (arg.split.size() > 1)
@@ -543,8 +543,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    const auto toLogBc             = g_ByteCodeDebugger.cxtBc;
-    const auto toLogIp             = g_ByteCodeDebugger.cxtIp;
+    const auto toLogBc        = g_ByteCodeDebugger.cxtBc;
+    const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = false;
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
@@ -577,8 +577,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc                   = g_ByteCodeDebugger.cxtBc;
-    auto toLogIp                   = g_ByteCodeDebugger.cxtIp;
+    auto toLogBc              = g_ByteCodeDebugger.cxtBc;
+    auto toLogIp              = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = false;
 
     if (arg.split.size() > 1)
