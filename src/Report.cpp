@@ -55,7 +55,7 @@ namespace
                         note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
                 }
 
-                if (genCheckNode->typeInfo &&
+                /*if (genCheckNode->typeInfo &&
                     genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
                     !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
                 {
@@ -64,7 +64,7 @@ namespace
                     auto       remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                     if (!remarks.empty())
                         note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
-                }
+                }*/
             }
         }
     }

@@ -377,26 +377,3 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
 
     return result;
 }
-
-Utf8 Generic::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params)
-{
-    if (params.empty())
-        return "";
-
-    Utf8 result;
-    for (const auto param : params)
-    {
-        if (param->name == param->typeInfo->name)
-            continue;
-
-        if (result.empty())
-            result = "with ";
-        else
-            result += ", ";
-        result += param->name;
-        result += " = ";
-        result += param->typeInfo->name;
-    }
-
-    return result;
-}

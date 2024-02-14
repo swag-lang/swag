@@ -33,7 +33,6 @@ namespace Generic
     void         checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch);
     bool         instantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch, bool forStruct);
     Vector<Utf8> computeGenericParametersReplacement(const VectorMap<Utf8, GenericReplaceType>& replace);
-    Utf8         computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
 
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct);
     bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias);
