@@ -665,7 +665,7 @@ void initErrors()
     SWAG_ERROR(Err0541, "missing arguments                                 $ the [[#[Swag.Using]]] attribute should have at least one argument");
     SWAG_ERROR(Err0542, "missing attribute                                 $ [[opVisit]] functions must have the [[#[Swag.Macro]]] attribute");
     SWAG_ERROR(Err0543, "missing attribute name                            $ expected an attribute name before [[(]]");
-    SWAG_ERROR(Err0544, "missing catch error                               $ expected [[try]], [[assume]] or [[catch]] to deal with the errors of [[%s]]");
+    SWAG_ERROR(Err0544, "missing catch error                               $ expected [[try]], [[catch]] or [[assume]] to deal with the errors of [[%s]]");
     SWAG_ERROR(Err0545, "missing closing [[%s]]                            $ expected [[%s]] %s, found [[%s]] instead");
     SWAG_ERROR(Err0546, "missing constant type                             $ expected a type with [[:]] or an assignment with [[=]], found [[%s]] instead");
     SWAG_ERROR(Err0547, "missing default value                             $ the %s needs a default value as a preceding parameter has one");

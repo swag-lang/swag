@@ -1035,6 +1035,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
+    ScopedTryCatchAssume sc(this, nullptr);
     const auto funcNode   = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
     funcNode->semanticFct = Semantic::resolveFuncDecl;
