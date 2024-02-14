@@ -418,37 +418,41 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
     return true;
 }
 
-bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch*>& matches)
+void Semantic::computeMatchesCoerceCast(VectorNative<OneMatch*>& matches)
+{
+    for (const auto m : matches)
+    {
+        if (m->symbolOverload->symbol->kind != SymbolKind::Function)
+            continue;
+
+        m->coerceCast = 0;
+        for (const auto flags : m->solvedCastFlags)
+        {
+            if ((flags & CASTFLAG_RESULT_COERCE) && !(flags & CASTFLAG_RESULT_UNTYPED_CONVERT))
+                m->coerceCast++;
+            else if (flags & CASTFLAG_RESULT_CONST_COERCE)
+                m->coerceCast++;
+        }
+    }
+}
+
+bool Semantic::filterMatchesCoerceCast(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     if (matches.size() <= 1)
         return true;
 
-    for (const auto m : matches)
-    {
-        if (m->symbolOverload->symbol->kind != SymbolKind::Function)
-            continue;
-
-        m->prio = 0;
-        for (const auto flags : m->solvedCastFlags)
-        {
-            if (!(flags & CASTFLAG_RESULT_COERCE) || (flags & CASTFLAG_RESULT_UNTYPED_CONVERT))
-                continue;
-            m->prio++;
-        }
-    }
-
     ranges::sort(matches, [](const OneMatch* x, const OneMatch* y)
     {
-        return x->prio < y->prio;
+        return x->coerceCast < y->coerceCast;
     });
 
-    const auto prio = matches[0]->prio;
+    const auto prio = matches[0]->coerceCast;
     for (const auto m : matches)
     {
         if (m->symbolOverload->symbol->kind != SymbolKind::Function)
             continue;
 
-        if (m->prio > prio)
+        if (m->coerceCast > prio)
             m->remove = true;
     }
 
@@ -500,10 +504,24 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
     // the already instantiated one
     if (genMatches.size() > 1 && matches.size() == 1)
     {
-        auto   idCost       = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
+        for (const auto& m : genMatches)
+        {
+            if (m->coerceCast < matches[0]->coerceCast)
+            {
+                if (context->node->token.text == "0")
+                    int a = 0;
+                matches.clear();
+                break;
+            }
+        }
+    }
+
+    if (genMatches.size() > 1 && matches.size() == 1)
+    {
         auto   bestIsIdCost = true;
         size_t bestGenId    = 0;
 
+        auto idCost = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
         for (size_t i = 0; i < genMatches.size(); i++)
         {
             const auto& p    = genMatches[i];
@@ -620,7 +638,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
 
         genMatches = std::move(newGenericMatches);
     }
-
+    
     return true;
 }
 

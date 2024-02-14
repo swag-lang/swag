@@ -81,7 +81,7 @@ struct OneMatch
 
     uint32_t matchFlags                  = 0;
     uint32_t castFlagsResult             = 0;
-    uint32_t prio                        = 0;
+    uint32_t coerceCast                        = 0;
     uint32_t numOverloadsWhenChecked     = 0;
     uint32_t numOverloadsInitWhenChecked = 0;
 
@@ -108,7 +108,7 @@ struct OneMatch
 
         matchFlags                  = 0;
         castFlagsResult             = 0;
-        prio                        = 0;
+        coerceCast                        = 0;
         numOverloadsWhenChecked     = 0;
         numOverloadsInitWhenChecked = 0;
 

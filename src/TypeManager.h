@@ -55,6 +55,7 @@ constexpr uint32_t CASTFLAG_RESULT_UNTYPED_CONVERT     = 0x00000040;
 constexpr uint32_t CASTFLAG_RESULT_COERCE              = 0x00000080;
 constexpr uint32_t CASTFLAG_RESULT_GEN_AUTO_OP_CAST    = 0x00000100;
 constexpr uint32_t CASTFLAG_RESULT_FROM_REF            = 0x00000200;
+constexpr uint32_t CASTFLAG_RESULT_CONST_COERCE        = 0x00000400;
 
 constexpr uint32_t CONCRETE_ALL         = 0xFFFFFFFF;
 constexpr uint32_t CONCRETE_ENUM        = 0x00000001;

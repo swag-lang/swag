@@ -59,7 +59,7 @@ impl Array
     }
 
     #[Inline, Overload]
-    mtd opCast()->const [..] T
+    mtd const opCast()->const [..] T
     {
         return toSlice()
     }
@@ -247,8 +247,15 @@ impl Array
     mtd const isEmpty() => count == 0
 
     // Returns a slice
-    #[Inline]
+    #[Inline, Overload]
     mtd toSlice()->[..] T
+    {
+        return @mkslice(buffer, count)
+    }
+
+    // Returns a slice
+    #[Inline, Overload]
+    mtd const toSlice()->const [..] T
     {
         return @mkslice(buffer, count)
     }

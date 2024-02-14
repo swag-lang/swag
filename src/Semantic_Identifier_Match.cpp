@@ -1714,17 +1714,24 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         }
     }
 
+    if (matches.size() + genericMatches.size() + genericMatchesSI.size() > 1)
+    {
+        computeMatchesCoerceCast(matches);
+        computeMatchesCoerceCast(genericMatches);
+        computeMatchesCoerceCast(genericMatchesSI);
+    }
+
     auto prevMatchesCount = matches.size();
     SWAG_CHECK(filterMatchesDirect(context, matches));
     YIELD();
     SWAG_CHECK(filterMatchesCompare(context, matches));
     SWAG_CHECK(filterMatchesInContext(context, matches));
-    SWAG_CHECK(filterMatchesPrio(context, matches));
+    SWAG_CHECK(filterMatchesCoerceCast(context, matches));
 
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));
-    SWAG_CHECK(filterMatchesPrio(context, genericMatches));
-    SWAG_CHECK(filterMatchesPrio(context, genericMatchesSI));
+    SWAG_CHECK(filterMatchesCoerceCast(context, genericMatches));
+    SWAG_CHECK(filterMatchesCoerceCast(context, genericMatchesSI));
 
     SWAG_ASSERT(context->result == ContextResult::Done);
 
