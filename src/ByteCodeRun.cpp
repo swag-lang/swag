@@ -661,7 +661,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::MakeLambda:
     {
         auto funcNode                  = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
-        registersRC[ip->a.u32].pointer = (uint8_t*) makeLambda(&context->jc, funcNode, (ByteCode*) ip->c.pointer);
+        registersRC[ip->a.u32].pointer = (uint8_t*) makeLambda(&context->jc, funcNode, reinterpret_cast<ByteCode*>(ip->c.pointer));
         break;
     }
 
@@ -1505,7 +1505,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 }
                 else if (module->bssCannotChange)
                 {
-                    auto over                    = (SymbolOverload*) ip->c.pointer;
+                    auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                     context->internalPanicSymbol = over;
                     context->internalPanicHint   = Nte(Nte0081);
                     callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
@@ -2483,7 +2483,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::IntrinsicCVaStart:
     {
-        auto ptr = (void**) registersRC[ip->a.u32].pointer;
+        auto ptr = reinterpret_cast<void**>(registersRC[ip->a.u32].pointer);
         *ptr     = context->bp + ip->b.u32;
         break;
     }
@@ -2543,14 +2543,14 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::InternalHasErr:
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
-        auto cxt                   = (SwagContext*) registersRC[ip->b.u32].pointer;
+        auto cxt                   = reinterpret_cast<SwagContext*>(registersRC[ip->b.u32].pointer);
         registersRC[ip->a.u32].u64 = cxt->hasError != 0;
         break;
     }
     case ByteCodeOp::JumpIfError:
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
-        auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
+        auto cxt = reinterpret_cast<SwagContext*>(registersRC[ip->a.u32].pointer);
         if (cxt->hasError)
             context->ip += ip->b.s32;
         break;
@@ -2558,7 +2558,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::JumpIfNoError:
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
-        auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
+        auto cxt = reinterpret_cast<SwagContext*>(registersRC[ip->a.u32].pointer);
         if (!cxt->hasError)
             context->ip += ip->b.s32;
         break;
@@ -2618,7 +2618,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             registersRC[ip->a.u32].pointer = ip->d.pointer;
         }
 
-        cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traces[cxt->traceIndex] = reinterpret_cast<SwagSourceCodeLocation*>(registersRC[ip->a.u32].pointer);
         cxt->traceIndex++;
         break;
     }

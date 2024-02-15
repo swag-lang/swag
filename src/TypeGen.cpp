@@ -501,16 +501,16 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
     uint32_t curOffsetAttributes = storageOffsetAttributes;
     for (auto& one : attributes.allAttributes)
     {
-        const auto attrAddr        = (ExportedAttribute*) ptrStorageAttributes;
+        const auto attrAddr        = reinterpret_cast<ExportedAttribute*>(ptrStorageAttributes);
         const auto offsetStartAttr = curOffsetAttributes;
 
         // Type of the attribute
-        SWAG_CHECK(genExportedSubTypeInfo(context, (ExportedTypeInfo**) ptrStorageAttributes, attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, reinterpret_cast<ExportedTypeInfo**>(ptrStorageAttributes), attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
         curOffsetAttributes += sizeof(ExportedTypeInfo*);
         ptrStorageAttributes += sizeof(ExportedTypeInfo*);
 
         // Slice to all parameters
-        const auto ptrParamsAttribute = (SwagSlice*) ptrStorageAttributes;
+        const auto ptrParamsAttribute = reinterpret_cast<SwagSlice*>(ptrStorageAttributes);
         ptrParamsAttribute->buffer    = nullptr;
         ptrParamsAttribute->count     = one.parameters.size();
 
@@ -527,7 +527,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
             for (auto& oneParam : one.parameters)
             {
                 // Name of the parameter
-                const auto ptrString = (SwagSlice*) ptrStorageAllParams;
+                const auto ptrString = reinterpret_cast<SwagSlice*>(ptrStorageAllParams);
                 SWAG_CHECK(genExportedString(context, ptrString, oneParam.token.text, storageSegment, curOffsetParams));
                 curOffsetParams += sizeof(SwagSlice);
                 ptrStorageAllParams += sizeof(SwagSlice);
@@ -556,7 +556,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                 }
 
                 // Value of the parameter
-                genExportedAny(context, (SwagAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
+                genExportedAny(context, reinterpret_cast<SwagAny*>(ptrStorageAllParams), storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
 
                 curOffsetParams += sizeof(SwagAny);
                 ptrStorageAllParams += sizeof(SwagAny);
@@ -600,14 +600,14 @@ void TypeGen::initFrom(Module* module, TypeGen* other)
     mapPerSegment[0]->exportedTypes = other->mapPerSegment[0]->exportedTypes;
     for (auto& val : mapPerSegment[0]->exportedTypes | views::values)
     {
-        val.exportedType                                         = (ExportedTypeInfo*) module->constantSegment.address(val.storageOffset);
+        val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->constantSegment.address(val.storageOffset));
         mapPerSegment[0]->exportedTypesReverse[val.exportedType] = val.realType;
     }
 
     mapPerSegment[1]->exportedTypes = other->mapPerSegment[1]->exportedTypes;
     for (auto& val : mapPerSegment[1]->exportedTypes | views::values)
     {
-        val.exportedType                                         = (ExportedTypeInfo*) module->compilerSegment.address(val.storageOffset);
+        val.exportedType                                         = reinterpret_cast<ExportedTypeInfo*>(module->compilerSegment.address(val.storageOffset));
         mapPerSegment[1]->exportedTypesReverse[val.exportedType] = val.realType;
     }
 }

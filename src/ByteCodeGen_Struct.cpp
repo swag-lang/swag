@@ -1347,8 +1347,8 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 				child->addAstFlag(AST_NO_LEFT_DROP);
 
 				// When generating parameters for a closure call, keep the reference if we want one !
-				auto noRef = child->typeInfo;
-				auto front = param->childs.front();
+				auto       noRef = child->typeInfo;
+				const auto front = param->childs.front();
 				if (front->kind != AstNodeKind::MakePointer || !front->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
 					noRef = TypeManager::concretePtrRefType(noRef);
 

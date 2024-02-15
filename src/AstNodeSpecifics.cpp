@@ -628,6 +628,11 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     return newNode;
 }
 
+AstScopeBreakable::AstScopeBreakable()
+{
+    breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
+}
+
 AstNode* AstScopeBreakable::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstScopeBreakable>();
@@ -717,6 +722,12 @@ AstNode* AstVisit::clone(CloneContext& context)
     newNode->aliasNames       = aliasNames;
 
     return newNode;
+}
+
+AstSwitch::AstSwitch()
+{
+    breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
+    breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
 }
 
 AstNode* AstSwitch::clone(CloneContext& context)

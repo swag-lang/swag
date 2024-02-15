@@ -72,9 +72,9 @@ void DataSegment::initFrom(DataSegment* other)
         // get the address from another segment.
         SWAG_ASSERT(it.fromSegment == SegmentKind::Me || it.fromSegment == kind);
 
-        const auto patchAddr = address(it.patchOffset);
-        const auto fromAddr  = address(it.fromOffset);
-        *(void**) patchAddr  = fromAddr;
+        const auto patchAddr                 = address(it.patchOffset);
+        const auto fromAddr                  = address(it.fromOffset);
+        *reinterpret_cast<void**>(patchAddr) = fromAddr;
         addInitPtr(it.patchOffset, it.fromOffset, it.fromSegment);
     }
 
@@ -238,10 +238,10 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* t
     {
         const auto stringOffset = addString(computedValue.text);
         uint8_t*   addr;
-        const auto storageOffset = reserve(2 * sizeof(uint64_t), &addr);
-        ((uint64_t*) addr)[0]    = (uint64_t) computedValue.text.buffer;
-        ((uint64_t*) addr)[1]    = computedValue.text.count;
-        *resultPtr               = addr;
+        const auto storageOffset             = reserve(2 * sizeof(uint64_t), &addr);
+        reinterpret_cast<uint64_t*>(addr)[0] = (uint64_t) computedValue.text.buffer;
+        reinterpret_cast<uint64_t*>(addr)[1] = computedValue.text.count;
+        *resultPtr                           = addr;
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }
@@ -405,8 +405,8 @@ void DataSegment::doPatchMethods(JobContext* context)
 
         if (lambdaPtr)
         {
-            const auto addr = address(it.second);
-            *(void**) addr  = lambdaPtr;
+            const auto addr                 = address(it.second);
+            *reinterpret_cast<void**>(addr) = lambdaPtr;
         }
     }
 }
@@ -463,7 +463,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
     const auto* curBucket = &buckets[seek.seekBucket];
     if (seek.seekRead + 8 <= curBucket->count)
     {
-        const uint64_t* ptr = (uint64_t*) (curBucket->buffer + seek.seekRead);
+        const uint64_t* ptr = reinterpret_cast<uint64_t*>(curBucket->buffer + seek.seekRead);
         seek.seekRead += 8;
         result = *ptr;
         return true;

@@ -991,7 +991,7 @@ namespace
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                 ra->kind     = ValueKind::StackAddr;
                 ra->reg.u64  = ip->b.u32;
-                ra->overload = (SymbolOverload*) ip->c.pointer;
+                ra->overload = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                 break;
 
             case ByteCodeOp::SetZeroStackX:
@@ -1319,7 +1319,7 @@ namespace
                     SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
                     ra->reg.u64 = *reinterpret_cast<uint64_t*>(addr);
                     if (ip->d.pointer)
-                        ra->overload = (SymbolOverload*) ip->d.pointer;
+                        ra->overload = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
                     break;
                 }
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));

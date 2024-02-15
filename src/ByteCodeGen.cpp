@@ -26,7 +26,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
         const auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(itable);
-        SWAG_ASSERT(((void**)itable)[0]);
+        SWAG_ASSERT((reinterpret_cast<void**>(itable))[0]);
         g_SystemAllocatorTable = itable;
     }
 
@@ -38,7 +38,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
         const auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(itable);
-        SWAG_ASSERT(((void**)itable)[0]);
+        SWAG_ASSERT((reinterpret_cast<void**>(itable))[0]);
         g_DebugAllocatorTable = itable;
     }
 

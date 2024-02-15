@@ -922,10 +922,10 @@ Utf8 Utf8::toNiceSize(size_t size)
     if (size < 1024)
         return FMT("%u bytes", size);
     if (size < 1024 * 1024)
-        return FMT("%.1f Kb", size / 1024.0f);
+        return FMT("%.1f Kb", (float) size / 1024.0f);
     if (size < 1024 * 1024 * 1024)
-        return FMT("%.1f Mb", size / (1024.0f * 1024.0f));
-    return FMT("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
+        return FMT("%.1f Mb", (float) size / (1024.0f * 1024.0f));
+    return FMT("%.1f Gb", (float) size / (1024.0f * 1024.0f * 1024.0f));
 }
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)

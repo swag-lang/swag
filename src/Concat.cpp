@@ -143,7 +143,7 @@ uint32_t* Concat::addU32Addr(uint32_t v)
     ensureSpace(sizeof(uint32_t));
     *reinterpret_cast<uint32_t*>(currentSP) = v;
     currentSP += sizeof(uint32_t);
-    return (uint32_t*) (currentSP - sizeof(uint32_t));
+    return reinterpret_cast<uint32_t*>(currentSP - sizeof(uint32_t));
 }
 
 uint16_t* Concat::addU16Addr(uint16_t v)
@@ -151,7 +151,7 @@ uint16_t* Concat::addU16Addr(uint16_t v)
     ensureSpace(sizeof(uint16_t));
     *reinterpret_cast<uint16_t*>(currentSP) = v;
     currentSP += sizeof(uint16_t);
-    return (uint16_t*) (currentSP - sizeof(uint16_t));
+    return reinterpret_cast<uint16_t*>(currentSP - sizeof(uint16_t));
 }
 
 void Concat::addS8(int8_t v)
@@ -164,42 +164,42 @@ void Concat::addS8(int8_t v)
 void Concat::addS16(int16_t v)
 {
     ensureSpace(sizeof(int16_t));
-    *(int16_t*) currentSP = v;
+    *reinterpret_cast<int16_t*>(currentSP) = v;
     currentSP += sizeof(int16_t);
 }
 
 void Concat::addS32(int32_t v)
 {
     ensureSpace(sizeof(int32_t));
-    *(int32_t*) currentSP = v;
+    *reinterpret_cast<int32_t*>(currentSP) = v;
     currentSP += sizeof(int32_t);
 }
 
 void Concat::addS64(int64_t v)
 {
     ensureSpace(sizeof(int64_t));
-    *(int64_t*) currentSP = v;
+    *reinterpret_cast<int64_t*>(currentSP) = v;
     currentSP += sizeof(int64_t);
 }
 
 void Concat::addF32(float v)
 {
     ensureSpace(sizeof(float));
-    *(float*) currentSP = v;
+    *reinterpret_cast<float*>(currentSP) = v;
     currentSP += sizeof(float);
 }
 
 void Concat::addF64(double v)
 {
     ensureSpace(sizeof(double));
-    *(double*) currentSP = v;
+    *reinterpret_cast<double*>(currentSP) = v;
     currentSP += sizeof(double);
 }
 
 void Concat::addPointer(void* v)
 {
     ensureSpace(sizeof(void*));
-    *(void**) currentSP = v;
+    *reinterpret_cast<void**>(currentSP) = v;
     currentSP += sizeof(void*);
 }
 

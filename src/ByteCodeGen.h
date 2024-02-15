@@ -93,7 +93,7 @@ namespace ByteCodeGen
     void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
     void computeSourceLocation(const JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler = false);
     void releaseByteCodeJob(AstNode* node);
-    bool checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc);
+    bool checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, const AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc);
     bool sameStackFrame(ByteCodeGenContext* context, const SymbolOverload* overload);
     void freeStructParametersRegisters(ByteCodeGenContext* context);
     bool skipNodes(ByteCodeGenContext* context, AstNode* node);

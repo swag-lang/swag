@@ -3,9 +3,11 @@
 #include "AstNode.h"
 #include "Context.h"
 #include "JobThread.h"
-#include "Log.h"
 #include "Module.h"
 #include "Workspace.h"
+#if !defined(SWAG_DEV_MODE)
+#include "Log.h"
+#endif
 
 ThreadManager g_ThreadMgr;
 

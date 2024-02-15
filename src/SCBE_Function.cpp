@@ -2295,7 +2295,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::JumpDyn32:
         case ByteCodeOp::JumpDyn64:
         {
-            auto tableCompiler = (int32_t*) buildParameters.module->compilerSegment.address(ip->d.u32);
+            auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
 
             if (ip->op == ByteCodeOp::JumpDyn8)
                 pp.emit_LoadS8S64_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);

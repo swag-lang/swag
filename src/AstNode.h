@@ -705,11 +705,7 @@ struct AstBreakable : AstNode
 
 struct AstScopeBreakable : AstBreakable
 {
-    AstScopeBreakable()
-    {
-        breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
-    }
-
+    AstScopeBreakable();
     AstNode* clone(CloneContext& context);
 
     AstNode* block;
@@ -765,12 +761,7 @@ struct AstVisit : AstNode
 
 struct AstSwitch : AstBreakable
 {
-    AstSwitch()
-    {
-        breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
-        breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
-    }
-
+    AstSwitch();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstSwitchCase*> cases;

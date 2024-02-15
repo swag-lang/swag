@@ -737,8 +737,8 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         node->tokenId != TokenId::KwdPublic)
         return nullptr;
 
-    Utf8 txt  = msg ? Utf8{msg} : Nte(Nte0062);
-    Utf8 txt1 = FMT(txt, Naming::kindName(node).c_str(), node->token.ctext());
+    const Utf8 txt  = msg ? Utf8{msg} : Nte(Nte0062);
+    const Utf8 txt1 = FMT(txt, Naming::kindName(node).c_str(), node->token.ctext());
     return note(node, node->getTokenName(), txt1);
 }
 

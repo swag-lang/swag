@@ -31,7 +31,7 @@ impl TweakFile
     }
 
     // Parse a list of lines
-    #[Swag.Overload]
+    #[Overload]
     mtd parse(content: string) throw
     {
         var lines = Tokenize.splitLines(content)
@@ -39,7 +39,7 @@ impl TweakFile
     }
 
     // Parse a list of lines
-    #[Swag.Overload]
+    #[Overload]
     mtd parse(lines: Array'string) throw
     {
         Debug.assert(!folders.isEmpty())
@@ -47,8 +47,8 @@ impl TweakFile
         struct Ref
         {
             folder: *Folder
-            src:    *Swag.TypeValue
-            dst:    *Swag.TypeValue
+            src:    *TypeValue
+            dst:    *TypeValue
         }
 
         var refs: Array'Ref
