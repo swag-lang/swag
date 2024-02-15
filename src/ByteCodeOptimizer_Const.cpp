@@ -9,7 +9,7 @@
     do                                        \
     {                                         \
         context->passHasDoneSomething = true; \
-        ip->flags &= ~BCI_IMM_A;              \
+        ip->removeFlag(BCI_IMM_A);              \
     } while (0)
 
 #define CMP3(__a, __b) __a < (__b) ? -1 : ((__a) > (__b) ? 1 : 0)
@@ -897,7 +897,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA8);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskAnd16:
@@ -906,7 +906,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA16);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskAnd32:
@@ -915,7 +915,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA32);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskAnd64:
@@ -924,7 +924,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr8:
@@ -933,7 +933,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA8);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr16:
@@ -942,7 +942,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA16);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr32:
@@ -951,7 +951,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA32);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
             case ByteCodeOp::BinOpBitmaskOr64:
@@ -960,7 +960,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
                     ip->b.u32 = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
                 break;
 

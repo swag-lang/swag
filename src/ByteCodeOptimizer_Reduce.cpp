@@ -17,7 +17,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -35,7 +35,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -53,7 +53,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -71,7 +71,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -89,7 +89,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -107,7 +107,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -125,7 +125,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -143,7 +143,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -180,7 +180,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -198,7 +198,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -216,7 +216,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -234,7 +234,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
             ip->b.u32 = ip->a.u32;
             ip->a.u32 = ip->c.u32;
-            ip->flags &= ~BCI_IMM_B;
+            ip->removeFlag(BCI_IMM_B);
             break;
         }
 
@@ -896,7 +896,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             ip[0].b.u64 = ip[0].a.u64;
             ip[0].a.u64 = ip[1].a.u64;
             ip[0].flags |= ip[0].hasFlag(BCI_IMM_A) ? BCI_IMM_B : 0;
-            ip[0].flags &= ~BCI_IMM_A;
+            ip[0].removeFlag(BCI_IMM_A);
             SET_OP(ip, ByteCodeOp::CopyRBtoRRRet);
             if (!ip[1].hasFlag(BCI_START_STMT))
                 setNop(context, ip + 1);
@@ -2381,7 +2381,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u8;
-            ip[1].flags &= ~BCI_IMM_A;
+            ip[1].removeFlag(BCI_IMM_A);
             ip[1].addFlag(BCI_IMM_B);
             break;
         }
@@ -2456,7 +2456,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u16;
-            ip[1].flags &= ~BCI_IMM_A;
+            ip[1].removeFlag(BCI_IMM_A);
             ip[1].addFlag(BCI_IMM_B);
             break;
         }
@@ -2528,7 +2528,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u32;
-            ip[1].flags &= ~BCI_IMM_A;
+            ip[1].removeFlag(BCI_IMM_A);
             ip[1].addFlag(BCI_IMM_B);
             break;
         }
@@ -3160,7 +3160,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                     SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
                     ip->b.u64 = ip->a.u64;
                     ip->a.u64 = ip->c.u64;
-                    ip->flags &= ~BCI_IMM_B;
+                    ip->removeFlag(BCI_IMM_B);
                 }
             }
             break;
@@ -3366,7 +3366,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 const auto s = ip->a.u32;
                 ip->a.u32    = ip->c.u32;
                 ip->b.u32    = s;
-                ip->flags &= ~BCI_IMM_B;
+                ip->removeFlag(BCI_IMM_B);
             }
             break;
 
@@ -3384,7 +3384,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 const auto s = ip->a.u32;
                 ip->a.u32    = ip->c.u32;
                 ip->b.u32    = s;
-                ip->flags &= ~BCI_IMM_B;
+                ip->removeFlag(BCI_IMM_B);
             }
             break;
 
@@ -3402,7 +3402,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 const auto s = ip->a.u32;
                 ip->a.u32    = ip->c.u32;
                 ip->b.u32    = s;
-                ip->flags &= ~BCI_IMM_B;
+                ip->removeFlag(BCI_IMM_B);
             }
             break;
 
@@ -3420,7 +3420,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 const auto s = ip->a.u32;
                 ip->a.u32    = ip->c.u32;
                 ip->b.u32    = s;
-                ip->flags &= ~BCI_IMM_B;
+                ip->removeFlag(BCI_IMM_B);
             }
             break;
 
@@ -3434,7 +3434,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 const auto s = ip->a.u32;
                 ip->a.u32    = ip->c.u32;
                 ip->b.u32    = s;
-                ip->flags &= ~BCI_IMM_B;
+                ip->removeFlag(BCI_IMM_B);
             }
             break;
 
@@ -3448,7 +3448,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                 const auto s = ip->a.u32;
                 ip->a.u32    = ip->c.u32;
                 ip->b.u32    = s;
-                ip->flags &= ~BCI_IMM_B;
+                ip->removeFlag(BCI_IMM_B);
             }
             break;
 

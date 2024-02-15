@@ -436,7 +436,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        ip->flags &= ~BCI_START_STMT;
+        ip->removeFlag(BCI_START_STMT);
         if (ByteCode::isJumpOrDyn(ip))
             context->jumps.push_back(ip);
     }

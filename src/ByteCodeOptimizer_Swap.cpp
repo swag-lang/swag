@@ -154,7 +154,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 if (ip[1].hasFlag(BCI_START_STMT))
                 {
                     ip[0].inheritFlag(ip + 1, BCI_START_STMT);
-                    ip[1].flags &= ~BCI_START_STMT;
+                    ip[1].removeFlag(BCI_START_STMT);
                 }
 
                 ip++;

@@ -26,8 +26,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         case ByteCodeOp::ClearRA:
             regsRW.set(ip->a.u32, 0);
             regs.set(ip->a.u32, ip);
-            ip->flags &= ~BCI_IMM_C;
-            ip->flags &= ~BCI_IMM_D;
+            ip->removeFlag(BCI_IMM_C);
+            ip->removeFlag(BCI_IMM_D);
             break;
 
         case ByteCodeOp::ClearRAx2:
@@ -35,8 +35,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regsRW.set(ip->b.u32, 0);
             regs.set(ip->a.u32, ip);
             regs.set(ip->b.u32, ip);
-            ip->flags &= ~BCI_IMM_C;
-            ip->flags &= ~BCI_IMM_D;
+            ip->removeFlag(BCI_IMM_C);
+            ip->removeFlag(BCI_IMM_D);
             break;
 
         case ByteCodeOp::ClearRAx3:
@@ -46,8 +46,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regs.set(ip->a.u32, ip);
             regs.set(ip->b.u32, ip);
             regs.set(ip->c.u32, ip);
-            ip->flags &= ~BCI_IMM_C;
-            ip->flags &= ~BCI_IMM_D;
+            ip->removeFlag(BCI_IMM_C);
+            ip->removeFlag(BCI_IMM_D);
             break;
 
         case ByteCodeOp::ClearRAx4:
@@ -59,22 +59,22 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regs.set(ip->b.u32, ip);
             regs.set(ip->c.u32, ip);
             regs.set(ip->d.u32, ip);
-            ip->flags &= ~BCI_IMM_C;
-            ip->flags &= ~BCI_IMM_D;
+            ip->removeFlag(BCI_IMM_C);
+            ip->removeFlag(BCI_IMM_D);
             break;
 
         case ByteCodeOp::SetImmediate32:
             regsRW.set(ip->a.u32, ip->b.u32);
             regs.set(ip->a.u32, ip);
-            ip->flags &= ~BCI_IMM_C;
-            ip->flags &= ~BCI_IMM_D;
+            ip->removeFlag(BCI_IMM_C);
+            ip->removeFlag(BCI_IMM_D);
             break;
 
         case ByteCodeOp::SetImmediate64:
             regsRW.set(ip->a.u32, ip->b.u64);
             regs.set(ip->a.u32, ip);
-            ip->flags &= ~BCI_IMM_C;
-            ip->flags &= ~BCI_IMM_D;
+            ip->removeFlag(BCI_IMM_C);
+            ip->removeFlag(BCI_IMM_D);
             break;
 
         default:
