@@ -353,7 +353,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             ip[2].op == ByteCodeOp::InternalStackTraceConst &&
             ip[3].op == ByteCodeOp::InternalHasErr &&
             ip[4].op == ByteCodeOp::JumpIfZero32 &&
-            !(ip[3].hasFlag(BCI_START_STMT)))
+            !ip[3].hasFlag(BCI_START_STMT))
         {
             setNop(context, ip + 3);
             setNop(context, ip + 4);
