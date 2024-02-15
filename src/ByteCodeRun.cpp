@@ -194,7 +194,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
     {
-        auto& rb = (ip->hasFlag(BCI_IMM_B)) ? ip->b : registersRC[ip->b.u32];
+        auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
         SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}, !context->forConstExpr));
         break;
     }
@@ -210,8 +210,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     {
-        auto& rb = (ip->hasFlag(BCI_IMM_B)) ? ip->b : registersRC[ip->b.u32];
-        auto& rc = (ip->hasFlag(BCI_IMM_C)) ? ip->c : registersRC[ip->c.u32];
+        auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = ip->hasFlag(BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
         SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}, !context->forConstExpr));
         break;
     }
@@ -219,9 +219,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicMulAddF32:
     case ByteCodeOp::IntrinsicMulAddF64:
     {
-        auto& rb = (ip->hasFlag(BCI_IMM_B)) ? ip->b : registersRC[ip->b.u32];
-        auto& rc = (ip->hasFlag(BCI_IMM_C)) ? ip->c : registersRC[ip->c.u32];
-        auto& rd = (ip->hasFlag(BCI_IMM_D)) ? ip->d : registersRC[ip->d.u32];
+        auto& rb = ip->hasFlag(BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = ip->hasFlag(BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+        auto& rd = ip->hasFlag(BCI_IMM_D) ? ip->d : registersRC[ip->d.u32];
         SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd, !context->forConstExpr));
         break;
     }

@@ -145,7 +145,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
         }
 
-        if ((ip->hasFlag(BCI_IMM_B)) && (ip->hasFlag(BCI_IMM_C)) && (ip->hasFlag(BCI_IMM_D)))
+        if (ip->hasFlag(BCI_IMM_B) && ip->hasFlag(BCI_IMM_C) && ip->hasFlag(BCI_IMM_D))
         {
             switch (ip->op)
             {
@@ -166,7 +166,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
         }
 
-        if ((ip->hasFlag(BCI_IMM_A)) && (ip->hasFlag(BCI_IMM_B)))
+        if (ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
         {
             switch (ip->op)
             {
@@ -850,7 +850,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
         }
-        else if ((ip->hasFlag(BCI_IMM_B)) && (ip->hasFlag(BCI_IMM_C)))
+        else if (ip->hasFlag(BCI_IMM_B) && ip->hasFlag(BCI_IMM_C))
         {
             switch (ip->op)
             {

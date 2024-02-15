@@ -3230,7 +3230,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::IntrinsicMemCpy:
-            if ((ip->hasFlag(BCI_IMM_C)) && ip->c.u64 <= 128 && !buildParameters.isDebug())
+            if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 128 && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
@@ -3249,7 +3249,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
-            if ((ip->hasFlag(BCI_IMM_B)) && (ip->hasFlag(BCI_IMM_C)) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && !buildParameters.isDebug())
+            if (ip->hasFlag(BCI_IMM_B) && ip->hasFlag(BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emit_ClearX(ip->c.u32, 0, RCX);

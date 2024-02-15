@@ -276,12 +276,12 @@
             pp.emit_Load8_Indirect(REG_OFFSET(ip->a.u32), RAX);          \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B8);    \
         }                                                                \
-        else if ((ip->hasFlag(BCI_IMM_A)) && !ip->hasFlag(BCI_IMM_B))    \
+        else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))    \
         {                                                                \
             pp.emit_Load8_Immediate(RAX, ip->a.u8);                      \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B8);    \
         }                                                                \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_B)))    \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))    \
         {                                                                \
             pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u8, CPUBits::B8); \
         }                                                                \
@@ -301,12 +301,12 @@
             pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);           \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B16);     \
         }                                                                  \
-        else if ((ip->hasFlag(BCI_IMM_A)) && !ip->hasFlag(BCI_IMM_B))      \
+        else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))      \
         {                                                                  \
             pp.emit_Load16_Immediate(RAX, ip->a.u16);                      \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B16);     \
         }                                                                  \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_B)))      \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))      \
         {                                                                  \
             pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u16, CPUBits::B16); \
         }                                                                  \
@@ -326,12 +326,12 @@
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);           \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B32);     \
         }                                                                  \
-        else if ((ip->hasFlag(BCI_IMM_A)) && !ip->hasFlag(BCI_IMM_B))      \
+        else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))      \
         {                                                                  \
             pp.emit_Load32_Immediate(RAX, ip->a.u32);                      \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B32);     \
         }                                                                  \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_B)))      \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))      \
         {                                                                  \
             pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, CPUBits::B32); \
         }                                                                  \
@@ -351,12 +351,12 @@
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);                                 \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B64);                           \
         }                                                                                        \
-        else if ((ip->hasFlag(BCI_IMM_A)) && !ip->hasFlag(BCI_IMM_B))                            \
+        else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))                            \
         {                                                                                        \
             pp.emit_Load64_Immediate(RAX, ip->a.u64);                                            \
             pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B64);                           \
         }                                                                                        \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_B)) && ip->b.u64 <= 0x7FFFFFFF) \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF) \
         {                                                                                        \
             pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, CPUBits::B64);                       \
         }                                                                                        \
@@ -376,7 +376,7 @@
             pp.emit_LoadF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);    \
             pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI);             \
         }                                                             \
-        else if ((ip->hasFlag(BCI_IMM_A)) && !ip->hasFlag(BCI_IMM_B)) \
+        else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B)) \
         {                                                             \
             pp.emit_Load32_Immediate(RAX, ip->a.u32);                 \
             pp.emit_CopyF32(XMM0, RAX);                               \
@@ -398,7 +398,7 @@
             pp.emit_LoadF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);    \
             pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI);             \
         }                                                             \
-        else if ((ip->hasFlag(BCI_IMM_A)) && !ip->hasFlag(BCI_IMM_B)) \
+        else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B)) \
         {                                                             \
             pp.emit_Load64_Immediate(RAX, ip->a.u64);                 \
             pp.emit_CopyF64(XMM0, RAX);                               \
@@ -622,7 +622,7 @@
             pp.emit_Load8_Indirect(REG_OFFSET(ip->a.u32), RAX);                     \
             pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);    \
         }                                                                           \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_C)))               \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))               \
         {                                                                           \
             pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u8, CPUBits::B8); \
         }                                                                           \
@@ -643,7 +643,7 @@
             pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);                      \
             pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B16);     \
         }                                                                             \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_C)))                 \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))                 \
         {                                                                             \
             pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u16, CPUBits::B16); \
         }                                                                             \
@@ -664,7 +664,7 @@
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);                      \
             pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);     \
         }                                                                             \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_C)))                 \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))                 \
         {                                                                             \
             pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, CPUBits::B32); \
         }                                                                             \
@@ -685,7 +685,7 @@
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);                                 \
             pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B64);                \
         }                                                                                        \
-        else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_C)) && ip->c.u64 <= 0x7fffffff) \
+        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 0x7fffffff) \
         {                                                                                        \
             pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, CPUBits::B64);            \
         }                                                                                        \

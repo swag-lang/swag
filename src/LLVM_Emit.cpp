@@ -57,7 +57,7 @@ void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
 
 void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
-    if ((ip->hasFlag(BCI_IMM_B)) && ip->b.u32 >= numBits)
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         const auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         const auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
@@ -87,7 +87,7 @@ void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& build
 
 void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
-    if ((ip->hasFlag(BCI_IMM_B)) && ip->b.u32 >= numBits)
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         const auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
