@@ -388,12 +388,12 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
                 if (jump < insert && ipDest > insert)
                 {
                     table[i] += 1;
-                    jump[table[i] + 1].flags |= BCI_START_STMT;
+                    jump[table[i] + 1].addFlag(BCI_START_STMT);
                 }
                 else if (jump >= insert && ipDest < insert)
                 {
                     table[i] -= 1;
-                    jump[table[i] + 1].flags |= BCI_START_STMT;
+                    jump[table[i] + 1].addFlag(BCI_START_STMT);
                 }
             }
         }
@@ -403,12 +403,12 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
             if (jump < insert && ipDest > insert)
             {
                 jump->b.s32 += 1;
-                jump[jump->b.s32].flags |= BCI_START_STMT;
+                jump[jump->b.s32].addFlag(BCI_START_STMT);
             }
             else if (jump >= insert && ipDest < insert)
             {
                 jump->b.s32 -= 1;
-                jump[jump->b.s32].flags |= BCI_START_STMT;
+                jump[jump->b.s32].addFlag(BCI_START_STMT);
             }
         }
 
@@ -451,17 +451,17 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
             for (uint32_t i = 0; i < jump->c.u32; i++)
             {
                 if (jump->hasFlag(BCI_SAFETY))
-                    jump[table[i] + 1].flags |= BCI_START_STMT_S;
+                    jump[table[i] + 1].addFlag(BCI_START_STMT_S);
                 else
-                    jump[table[i] + 1].flags |= BCI_START_STMT_N;
+                    jump[table[i] + 1].addFlag(BCI_START_STMT_N);
             }
         }
         else
         {
             if (jump->hasFlag(BCI_SAFETY))
-                jump[jump->b.s32 + 1].flags |= BCI_START_STMT_S;
+                jump[jump->b.s32 + 1].addFlag(BCI_START_STMT_S);
             else
-                jump[jump->b.s32 + 1].flags |= BCI_START_STMT_N;
+                jump[jump->b.s32 + 1].addFlag(BCI_START_STMT_N);
         }
     }
 }

@@ -254,7 +254,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRc, 0, r0);
             SWAG_ASSERT(totalOffset != 0xFFFFFFFF);
             inst->b.u64 = totalOffset;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
 
             const auto saveR = context->node->resultRegisterRc;
             SWAG_CHECK(emitCast(context, child, child->typeInfo, child->castedTypeInfo));

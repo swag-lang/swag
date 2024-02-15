@@ -60,7 +60,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
 			inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
 			SWAG_ASSERT(offset != 0xFFFFFFFF);
 			inst->b.u64 = offset;
-			inst->flags |= BCI_IMM_B;
+			inst->addFlag(BCI_IMM_B);
 		}
 
 		EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
@@ -434,7 +434,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context,
 			EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
 		emitOpCallUser(context, typeStructVar, kind, pushParam, offset);
 		const auto inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
-		inst->flags |= BCI_IMM_B;
+		inst->addFlag(BCI_IMM_B);
 		inst->b.u64 = typeStructVar->sizeOf;
 		EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
 		emitOpCallUser(context, typeStructVar, kind, false);
@@ -450,7 +450,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context,
 			{
 				inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
 				inst->b.u64 = offset;
-				inst->flags |= BCI_IMM_B;
+				inst->addFlag(BCI_IMM_B);
 			}
 		}
 
@@ -465,7 +465,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context,
 		emitOpCallUser(context, typeStructVar, kind, false);
 
 		inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
-		inst->flags |= BCI_IMM_B;
+		inst->addFlag(BCI_IMM_B);
 		inst->b.u64 = typeStructVar->sizeOf;
 
 		EMIT_INST1(context, ByteCodeOp::DecrementRA32, r0);
@@ -651,7 +651,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 			inst = EMIT_INST0(&cxt, ByteCodeOp::IncPointer64);
 			SWAG_ASSERT(param->offset != 0xFFFFFFFF);
 			inst->b.u64 = param->offset;
-			inst->flags |= BCI_IMM_B;
+			inst->addFlag(BCI_IMM_B);
 		}
 
 		// A structure initialized with a literal
@@ -1338,7 +1338,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 					const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, 0, r0);
 					SWAG_ASSERT(typeParam->offset != 0xFFFFFFFF);
 					inst->b.u64 = typeParam->offset;
-					inst->flags |= BCI_IMM_B;
+					inst->addFlag(BCI_IMM_B);
 				}
 
 				if (regOffset != UINT32_MAX)
@@ -1519,7 +1519,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 			if (numToInit == 0)
 			{
 				const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
-				inst->flags |= BCI_IMM_B;
+				inst->addFlag(BCI_IMM_B);
 				inst->b.u64 = typeStruct->sizeOf;
 				const auto instJump = EMIT_INST0(context, ByteCodeOp::Jump);
 				instJump->b.s32 = startLoop - context->bc->numInstructions;
@@ -1530,7 +1530,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 			else if (numToInit > 1)
 			{
 				const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
-				inst->flags |= BCI_IMM_B;
+				inst->addFlag(BCI_IMM_B);
 				inst->b.u64 = typeStruct->sizeOf;
 				EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
 				const auto instJump = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
@@ -1570,7 +1570,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 		if (numToInit != 1)
 		{
 			const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
-			inst->flags |= BCI_IMM_B;
+			inst->addFlag(BCI_IMM_B);
 			inst->b.u64 = pointedType->sizeOf;
 
 			const auto instJump = EMIT_INST0(context, ByteCodeOp::Jump);
@@ -1622,7 +1622,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 		{
 			const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
 			inst->b.u64 = pointedType->sizeOf;
-			inst->flags |= BCI_IMM_B;
+			inst->addFlag(BCI_IMM_B);
 
 			const auto instJump = EMIT_INST0(context, ByteCodeOp::Jump);
 			instJump->b.s32 = startLoop - context->bc->numInstructions;
@@ -1731,7 +1731,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 		{
 			const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRc, 0, node->expression->resultRegisterRc);
 			inst->b.u64 = typeExpression->pointedType->sizeOf;
-			inst->flags |= BCI_IMM_B;
+			inst->addFlag(BCI_IMM_B);
 			const auto instJump = EMIT_INST0(context, ByteCodeOp::Jump);
 			instJump->b.s32 = startLoop - context->bc->numInstructions;
 			context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;

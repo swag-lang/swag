@@ -216,7 +216,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         const auto r0   = reserveRegisterRC(context);
         const auto inst = EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd8, r, 0, r0);
         inst->b.u32     = 0xFE;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
         EMIT_INST1(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
         EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidBool));
         freeRegisterRC(context, r0);
@@ -289,7 +289,7 @@ void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeIn
     {
         const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual8, r0, 0, re);
         inst->b.s64     = INT8_MIN;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
         emitAssert(context, re, forAbs ? msg : msg1);
         break;
     }
@@ -297,7 +297,7 @@ void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeIn
     {
         const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual16, r0, 0, re);
         inst->b.s64     = INT16_MIN;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
         emitAssert(context, re, forAbs ? msg : msg1);
         break;
     }
@@ -305,7 +305,7 @@ void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeIn
     {
         const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual32, r0, 0, re);
         inst->b.s64     = INT32_MIN;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
         emitAssert(context, re, forAbs ? msg : msg1);
         break;
     }
@@ -313,7 +313,7 @@ void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeIn
     {
         const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, 0, re);
         inst->b.s64     = INT64_MIN;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
         emitAssert(context, re, forAbs ? msg : msg1);
         break;
     }
@@ -487,7 +487,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U8:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU8, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -496,7 +496,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U16:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -506,7 +506,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::Rune:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -515,7 +515,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -524,12 +524,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S16:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT8_MIN;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -538,12 +538,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT8_MIN;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -552,12 +552,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT8_MIN;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -566,12 +566,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) INT8_MIN - 0.5f;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) INT8_MAX + 0.5f;
             emitAssert(context, re, msg);
             break;
@@ -580,12 +580,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT8_MIN - 0.5;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT8_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -603,12 +603,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT16_MIN;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -617,12 +617,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT16_MIN;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -631,7 +631,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U16:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -641,7 +641,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::Rune:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -650,7 +650,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -659,12 +659,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) INT16_MIN - 0.5f;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) INT16_MAX + 0.5f;
             emitAssert(context, re, msg);
             break;
@@ -673,12 +673,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT16_MIN - 0.5;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT16_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -697,7 +697,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::Rune:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT32_MAX;
             emitAssert(context, re, msg);
             break;
@@ -706,7 +706,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT32_MAX;
             emitAssert(context, re, msg);
             break;
@@ -715,12 +715,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT32_MIN;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.s64 = INT32_MAX;
             emitAssert(context, re, msg);
             break;
@@ -729,12 +729,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) INT32_MIN - 0.5f;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) INT32_MAX + 0.5f;
             emitAssert(context, re, msg);
             break;
@@ -743,12 +743,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT32_MIN - 0.5;
             emitAssert(context, re, msg);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT32_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -766,7 +766,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = INT64_MAX;
             emitAssert(context, re, msg);
             break;
@@ -775,7 +775,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) INT64_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -793,12 +793,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S8:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -807,12 +807,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S16:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -821,12 +821,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -835,12 +835,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -849,7 +849,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U16:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -859,7 +859,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::Rune:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -868,7 +868,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
@@ -877,12 +877,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) UINT8_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -891,12 +891,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) UINT8_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -914,7 +914,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S8:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -923,7 +923,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S16:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -932,12 +932,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -946,12 +946,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -961,7 +961,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::Rune:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -970,7 +970,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
@@ -979,12 +979,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = UINT16_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -993,12 +993,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) UINT16_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -1017,7 +1017,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S8:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -1026,7 +1026,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S16:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -1035,7 +1035,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S32:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg);
             break;
@@ -1044,12 +1044,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT32_MAX;
             emitAssert(context, re, msg);
             break;
@@ -1058,7 +1058,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::U64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = UINT32_MAX;
             emitAssert(context, re, msg);
             break;
@@ -1067,12 +1067,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = (float) UINT32_MAX + 0.5f;
             emitAssert(context, re, msg);
             break;
@@ -1081,12 +1081,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) UINT32_MAX + 0.5;
             emitAssert(context, re, msg);
             break;
@@ -1104,7 +1104,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S8:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -1113,7 +1113,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S16:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -1122,7 +1122,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S32:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -1131,7 +1131,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::S64:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u64 = 0;
             emitAssert(context, re, msg1);
             break;
@@ -1140,7 +1140,7 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F32:
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f32 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
             break;
@@ -1149,12 +1149,12 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
         case NativeTypeKind::F64:
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = -SAFETY_ZERO_EPSILON;
             emitAssert(context, re, msg1);
 
             inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.f64 = (double) UINT64_MAX + 0.5;
             emitAssert(context, re, msg);
             break;

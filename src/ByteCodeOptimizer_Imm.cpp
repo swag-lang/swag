@@ -91,7 +91,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 !(flags & OPFLAG_READ_B) && !(flags & OPFLAG_READ_VAL32_B) && !(flags & OPFLAG_READ_VAL64_B))
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_B;
+                ip->addFlag(BCI_IMM_B);
                 regs.remove(ip->a.u32);
                 ip->b.u64 = regsRW.val[ip->a.u32];
                 break;
@@ -101,7 +101,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 ip->a.u32 == ip->b.u32)
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_B;
+                ip->addFlag(BCI_IMM_B);
                 regs.remove(ip->a.u32);
                 ip->b.u64 = regsRW.val[ip->a.u32];
                 break;
@@ -113,7 +113,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 !(flags & OPFLAG_READ_C) && !(flags & OPFLAG_READ_VAL32_C) && !(flags & OPFLAG_READ_VAL64_C))
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_C;
+                ip->addFlag(BCI_IMM_C);
                 regs.remove(ip->a.u32);
                 ip->c.u64 = regsRW.val[ip->a.u32];
                 break;
@@ -143,7 +143,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             if (flags & OPFLAG_IMM_A)
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_A;
+                ip->addFlag(BCI_IMM_A);
                 regs.remove(ip->a.u32);
                 ip->a.u64 = regsRW.val[ip->a.u32];
             }
@@ -154,7 +154,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             if (flags & OPFLAG_IMM_B)
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_B;
+                ip->addFlag(BCI_IMM_B);
                 regs.remove(ip->b.u32);
                 ip->b.u64 = regsRW.val[ip->b.u32];
             }
@@ -172,7 +172,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             if (flags & OPFLAG_IMM_C)
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_C;
+                ip->addFlag(BCI_IMM_C);
                 regs.remove(ip->c.u32);
                 ip->c.u64 = regsRW.val[ip->c.u32];
             }
@@ -183,7 +183,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             if (flags & OPFLAG_IMM_D)
             {
                 context->passHasDoneSomething = true;
-                ip->flags |= BCI_IMM_D;
+                ip->addFlag(BCI_IMM_D);
                 regs.remove(ip->d.u32);
                 ip->d.u64 = regsRW.val[ip->d.u32];
             }

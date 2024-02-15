@@ -683,7 +683,7 @@ void ByteCodeGen::emitMemCpy(const ByteCodeGenContext* context, uint32_t r0, uin
     default:
     {
         const auto inst = EMIT_INST2(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
-        inst->flags |= BCI_IMM_C;
+        inst->addFlag(BCI_IMM_C);
         inst->c.u64 = sizeOf;
         break;
     }

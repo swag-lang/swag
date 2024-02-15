@@ -150,7 +150,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
 
                     EMIT_INST2(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc[0]);
                     const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRc);
-                    inst->flags |= BCI_IMM_B;
+                    inst->addFlag(BCI_IMM_B);
                     inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
                     inst->c.u32 = sizeof(void*);
                 }
@@ -250,7 +250,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 {
                     EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r1, child->resultRegisterRc[0]);
                     const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, r1);
-                    inst->flags |= BCI_IMM_B;
+                    inst->addFlag(BCI_IMM_B);
                     inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
                     inst->c.u32 = sizeof(void*);
 
@@ -386,7 +386,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterEqF32 : ByteCodeOp::CompareOpGreaterEqF64;
             auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRc, 0, re);
             inst->b.f64 = 0;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicSqrt, t0));
             freeRegisterRC(context, re);
             break;
@@ -398,7 +398,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
             auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRc, 0, re);
             inst->b.f64 = 0;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog, t0));
             freeRegisterRC(context, re);
             break;
@@ -410,7 +410,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
             auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRc, 0, re);
             inst->b.f64 = 0;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog2, t0));
             freeRegisterRC(context, re);
             break;
@@ -422,7 +422,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
             auto inst   = EMIT_INST3(context, op, callParams->childs[0]->resultRegisterRc, 0, re);
             inst->b.f64 = 0;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
             freeRegisterRC(context, re);
             break;
@@ -437,22 +437,22 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             {
                 auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->childs[0]->resultRegisterRc, 0, re);
                 inst->b.f32 = -1;
-                inst->flags |= BCI_IMM_B;
+                inst->addFlag(BCI_IMM_B);
                 emitAssert(context, re, msg);
                 inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF32, callParams->childs[0]->resultRegisterRc, 0, re);
                 inst->b.f32 = 1;
-                inst->flags |= BCI_IMM_B;
+                inst->addFlag(BCI_IMM_B);
                 emitAssert(context, re, msg);
             }
             else
             {
                 auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->childs[0]->resultRegisterRc, 0, re);
                 inst->b.f64 = -1;
-                inst->flags |= BCI_IMM_B;
+                inst->addFlag(BCI_IMM_B);
                 emitAssert(context, re, msg);
                 inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF64, callParams->childs[0]->resultRegisterRc, 0, re);
                 inst->b.f64 = 1;
-                inst->flags |= BCI_IMM_B;
+                inst->addFlag(BCI_IMM_B);
                 emitAssert(context, re, msg);
             }
             freeRegisterRC(context, re);
@@ -2016,11 +2016,11 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         {
             SWAG_ASSERT(node->extension);
             inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
-            inst->flags |= BCI_NO_BACKEND;
+            inst->addFlag(BCI_NO_BACKEND);
             inst->b.s64 = 1;
             inst        = EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[0]);
             inst->b.s64 = sizeof(Register);
-            inst->flags |= BCI_NO_BACKEND;
+            inst->addFlag(BCI_NO_BACKEND);
         }
 
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
@@ -2056,10 +2056,10 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         {
             SWAG_ASSERT(node->extension);
             inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->extMisc()->additionalRegisterRC[1]);
-            inst->flags |= BCI_NO_BACKEND;
+            inst->addFlag(BCI_NO_BACKEND);
             inst->b.s64 = 1;
             inst        = EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[0]);
-            inst->flags |= BCI_NO_BACKEND;
+            inst->addFlag(BCI_NO_BACKEND);
             inst->b.s64 = sizeof(Register);
         }
 
@@ -2258,7 +2258,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
             SWAG_ASSERT(funcNode->registerStoreRR == UINT32_MAX);
             funcNode->registerStoreRR = reserveRegisterRC(context);
             const auto inst           = EMIT_INST1(context, ByteCodeOp::SaveRRtoRA, funcNode->registerStoreRR);
-            inst->flags |= BCI_NOT_PURE;
+            inst->addFlag(BCI_NOT_PURE);
         }
     }
 

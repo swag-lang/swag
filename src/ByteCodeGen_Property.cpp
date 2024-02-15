@@ -152,7 +152,7 @@ bool ByteCodeGen::emitKindOf(const ByteCodeGenContext* context, AstNode* node, T
         EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc, 2);
         const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
         inst->b.u64     = sizeof(void*);
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
     }
 

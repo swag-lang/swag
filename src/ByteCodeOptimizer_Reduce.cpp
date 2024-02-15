@@ -6,7 +6,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
 {
     if (ip->hasFlag(BCI_IMM_A))
         return;
-    if (!(ip->hasFlag(BCI_IMM_B)))
+    if (!ip->hasFlag(BCI_IMM_B))
         return;
 
     switch (ip->op)
@@ -25,7 +25,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS8);
             ip->b.u32 = (uint32_t) log2(ip->b.u8);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -43,7 +43,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS16);
             ip->b.u32 = (uint32_t) log2(ip->b.u16);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -61,7 +61,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -79,7 +79,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -97,7 +97,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU8);
             ip->b.u32 = (uint32_t) log2(ip->b.u8);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -115,7 +115,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU16);
             ip->b.u32 = (uint32_t) log2(ip->b.u16);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -133,7 +133,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
             ip->b.u32 = (uint32_t) log2(ip->b.u32);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -151,7 +151,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
             ip->b.u64 = (uint64_t) log2(ip->b.u64);
-            ip->flags |= BCI_CAN_OVERFLOW;
+            ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
         break;
@@ -264,7 +264,7 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
             SET_OP(ip + 1, ByteCodeOp::BinOpMulU64_Safe);
             ip[1].a.u32 = ip[0].b.u32;
             ip[1].c.u32 = ip[0].a.u32;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -700,7 +700,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer8);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *reinterpret_cast<uint8_t*>(ptr);
-            ip[2].flags |= BCI_IMM_B;
+            ip[2].addFlag(BCI_IMM_B);
             break;
         }
         case ByteCodeOp::MemCpy16:
@@ -709,7 +709,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer16);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *reinterpret_cast<uint16_t*>(ptr);
-            ip[2].flags |= BCI_IMM_B;
+            ip[2].addFlag(BCI_IMM_B);
             break;
         }
         case ByteCodeOp::MemCpy32:
@@ -718,7 +718,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer32);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *reinterpret_cast<uint32_t*>(ptr);
-            ip[2].flags |= BCI_IMM_B;
+            ip[2].addFlag(BCI_IMM_B);
             break;
         }
         case ByteCodeOp::MemCpy64:
@@ -727,7 +727,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer64);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *reinterpret_cast<uint64_t*>(ptr);
-            ip[2].flags |= BCI_IMM_B;
+            ip[2].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2370,7 +2370,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer8);
             ip[1].b.u64 = ip[0].b.u8;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2382,7 +2382,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u8;
             ip[1].flags &= ~BCI_IMM_A;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2445,7 +2445,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer16);
             ip[1].b.u64 = ip[0].b.u16;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2457,7 +2457,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u16;
             ip[1].flags &= ~BCI_IMM_A;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2517,7 +2517,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer32);
             ip[1].b.u64 = ip[0].b.u32;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2529,7 +2529,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u32;
             ip[1].flags &= ~BCI_IMM_A;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2600,7 +2600,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer64);
             ip[1].b.u64 = ip[0].b.u64;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2611,7 +2611,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u32;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2622,7 +2622,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
             ip[1].b.u64 = ip[0].b.u64 >> 32;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 
@@ -2633,7 +2633,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::SetImmediate64);
             ip[1].b.u64 = ip[0].b.u64;
-            ip[1].flags |= BCI_IMM_B;
+            ip[1].addFlag(BCI_IMM_B);
             break;
         }
 

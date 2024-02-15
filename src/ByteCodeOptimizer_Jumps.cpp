@@ -1501,7 +1501,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                      !(destIp->hasFlag(BCI_IMM_A)))
             {
                 ip->b.s32 += 1;
-                destIp[1].flags |= BCI_START_STMT;
+                destIp[1].addFlag(BCI_START_STMT);
                 context->passHasDoneSomething = true;
             }
 
@@ -1541,7 +1541,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                      !(destIp->hasFlag(BCI_IMM_A)))
             {
                 ip->b.s32 += 1;
-                destIp[1].flags |= BCI_START_STMT;
+                destIp[1].addFlag(BCI_START_STMT);
                 context->passHasDoneSomething = true;
             }
 

@@ -112,7 +112,7 @@ bool ByteCodeGen::emitCastToInterface(const ByteCodeGenContext* context, AstNode
     {
         const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRc, 0, exprNode->resultRegisterRc);
         inst->b.u64     = exprNode->extMisc()->castOffset;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
     }
 
     // :ItfIsConstantSeg
@@ -811,7 +811,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         {
             const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
             inst->b.u64     = exprNode->extMisc()->castOffset;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
         }
 
         // The field is a pointer : need to dereference it
@@ -863,7 +863,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             {
                 const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
                 inst->b.u64     = exprNode->extMisc()->castOffset;
-                inst->flags |= BCI_IMM_B;
+                inst->addFlag(BCI_IMM_B);
             }
 
             return true;

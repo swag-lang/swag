@@ -54,7 +54,7 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
 
         inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
         inst->b.u64 = fromType->sizeOf;
-        inst->flags |= BCI_IMM_B;
+        inst->addFlag(BCI_IMM_B);
 
         EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
@@ -97,10 +97,10 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
 
     inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
     inst->b.u64 = typeStruct->sizeOf;
-    inst->flags |= BCI_IMM_B;
+    inst->addFlag(BCI_IMM_B);
     inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, srcReg, 0, srcReg);
     inst->b.u64 = typeStruct->sizeOf;
-    inst->flags |= BCI_IMM_B;
+    inst->addFlag(BCI_IMM_B);
 
     EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
     EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
@@ -178,7 +178,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
         {
             EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);
             const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, r0);
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
             inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
             inst->c.u32 = sizeof(void*);
 

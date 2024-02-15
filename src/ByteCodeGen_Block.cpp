@@ -478,7 +478,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
             const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64     = 0xFFFFFFFF'FFFFFFFF;
-            inst->flags |= BCI_IMM_C;
+            inst->addFlag(BCI_IMM_C);
 
             return true;
         }
@@ -494,7 +494,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         if (loopNode->expression->hasComputedValue())
         {
             inst->c.u64 = loopNode->expression->computedValue->reg.u64;
-            inst->flags |= BCI_IMM_C;
+            inst->addFlag(BCI_IMM_C);
         }
 
         return true;
@@ -533,7 +533,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
             inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
             inst->c.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
-            inst->flags |= BCI_IMM_C;
+            inst->addFlag(BCI_IMM_C);
             return true;
         }
 
@@ -550,7 +550,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
         if (!rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP))
             inst->c.u64++;
-        inst->flags |= BCI_IMM_C;
+        inst->addFlag(BCI_IMM_C);
         return true;
     }
 
@@ -1076,7 +1076,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
 
                 inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, r1, 0, r1);
                 inst->b.u64 = one.typeStruct->sizeOf;
-                inst->flags |= BCI_IMM_B;
+                inst->addFlag(BCI_IMM_B);
 
                 EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
                 EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;

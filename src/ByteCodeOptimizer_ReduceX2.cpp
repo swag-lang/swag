@@ -91,7 +91,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
             ip[0].c.u64 = ip[1].a.u64;
             ip[0].d.u64 = ip[1].b.u64;
             if (ip[1].hasFlag(BCI_IMM_B))
-                ip[0].flags |= BCI_IMM_D;
+                ip[0].addFlag(BCI_IMM_D);
             setNop(context, ip + 1);
             break;
         }
@@ -105,7 +105,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
             ip[0].c.u64 = ip[1].a.u64;
             ip[0].d.u64 = ip[1].b.u64;
             if (ip[1].hasFlag(BCI_IMM_B))
-                ip[0].flags |= BCI_IMM_D;
+                ip[0].addFlag(BCI_IMM_D);
             setNop(context, ip + 1);
         }
         break;
@@ -118,7 +118,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
             ip[0].c.u64 = ip[1].a.u64;
             ip[0].d.u64 = ip[1].b.u64;
             if (ip[1].hasFlag(BCI_IMM_B))
-                ip[0].flags |= BCI_IMM_D;
+                ip[0].addFlag(BCI_IMM_D);
             setNop(context, ip + 1);
             break;
         }
@@ -132,7 +132,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
             ip[0].c.u64 = ip[1].a.u64;
             ip[0].d.u64 = ip[1].b.u64;
             if (ip[1].hasFlag(BCI_IMM_B))
-                ip[0].flags |= BCI_IMM_D;
+                ip[0].addFlag(BCI_IMM_D);
             setNop(context, ip + 1);
             break;
         }
@@ -204,7 +204,7 @@ void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstr
         if (ip[1].op == ByteCodeOp::CopyRBtoRA32 ||
             ip[1].op == ByteCodeOp::CopyRBtoRA64)
         {
-            ip->flags |= BCI_NOT_PURE;
+            ip->addFlag(BCI_NOT_PURE);
             ip->c.u32 = ip[1].a.u32;
             swap(ip[1].a, ip[1].b);
             context->passHasDoneSomething = true;

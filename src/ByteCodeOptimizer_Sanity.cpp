@@ -285,25 +285,25 @@ namespace
         {
         case 1:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer8);
-            ip->flags |= BCI_IMM_B;
+            ip->addFlag(BCI_IMM_B);
             ip->a.u32 = offset;
             ip->b.u64 = *value;
             break;
         case 2:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
-            ip->flags |= BCI_IMM_B;
+            ip->addFlag(BCI_IMM_B);
             ip->a.u32 = offset;
             ip->b.u64 = *reinterpret_cast<uint16_t*>(value);
             break;
         case 4:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
-            ip->flags |= BCI_IMM_B;
+            ip->addFlag(BCI_IMM_B);
             ip->a.u32 = offset;
             ip->b.u64 = *reinterpret_cast<uint32_t*>(value);
             break;
         case 8:
             SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
-            ip->flags |= BCI_IMM_B;
+            ip->addFlag(BCI_IMM_B);
             ip->a.u32 = offset;
             ip->b.u64 = *reinterpret_cast<uint64_t*>(value);
             break;

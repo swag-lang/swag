@@ -154,8 +154,8 @@ void ByteCode::markLabels() const
     {
         if (isJump(ip))
         {
-            ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;
-            ip[1].flags |= BCI_JUMP_DEST;
+            ip[ip->b.s32 + 1].addFlag(BCI_JUMP_DEST);
+            ip[1].addFlag(BCI_JUMP_DEST);
             count--;
         }
         else if (isJumpDyn(ip))
@@ -163,7 +163,7 @@ void ByteCode::markLabels() const
             const auto table = reinterpret_cast<int32_t*>(sourceFile->module->compilerSegment.address(ip->d.u32));
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
-                ip[table[idx] + 1].flags |= BCI_JUMP_DEST;
+                ip[table[idx] + 1].addFlag(BCI_JUMP_DEST);
             }
 
             count--;

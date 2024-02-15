@@ -189,7 +189,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
             SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
             inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->flags |= BCI_IMM_B;
+            inst->addFlag(BCI_IMM_B);
         }
 
         auto typeField = node->typeInfo;
