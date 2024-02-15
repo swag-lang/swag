@@ -27,6 +27,8 @@ enum CommandId
     DrawTriangles
     BindTexture0
     ResetTexture0
+    StartFont
+    EndFont
     BindTextureFont
     ResetTextureFont
     SetClippingRect
@@ -241,6 +243,16 @@ impl Painter
 
         lastTexture0Handle = brush.texture.handle
         lastTexture0Type   = brush.type
+    }
+
+    internal mtd startFont()
+    {
+        discard newCommand(.StartFont, true)
+    }
+
+    internal mtd endFont()
+    {
+        discard newCommand(.EndFont, true)
     }
 
     internal mtd resetTextureFont()

@@ -32,6 +32,11 @@ struct ShaderAA
     using base: ShaderBase
 }
 
+struct ShaderFont
+{
+    using base: ShaderBase
+}
+
 struct ShaderBlur
 {
     using base: ShaderBase

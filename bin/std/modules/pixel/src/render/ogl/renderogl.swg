@@ -12,7 +12,11 @@ internal
 
     const VertexShaderAA     = #include "shaders/aa.vert"
     const PixelShaderAA      = #include "shaders/aa.frag"
+
     const PixelShaderBlur    = #include "shaders/blur.frag"
+
+    const VertexShaderFont   = #include "shaders/font.vert"
+    const PixelShaderFont    = #include "shaders/font.frag"
 }
 
 #[Swag.Strict]
@@ -35,6 +39,7 @@ struct RenderOgl
     shaderSimple:       ShaderSimple
     shaderAA:           ShaderAA
     shaderBlur:         ShaderBlur
+    shaderFont:         ShaderFont
     worldTransform:     Transform2
     orthoMatrix:        Matrix4x4
     modelMatrix:        Matrix4x4
@@ -73,7 +78,7 @@ internal impl RenderOgl
     {
         {
             assume createShader(&shaderSimple, VertexShaderSimple, PixelShaderSimple)
-            let text0 = glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            let text0 = glGetUniformLocation(cast(GLuint) shaderSimple.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderSimple.handle)
             glUniform1i(text0, 0);
         }
@@ -83,6 +88,15 @@ internal impl RenderOgl
             let text0 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
             let text1 = glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
             glUseProgram(cast(GLuint) shaderAA.handle)
+            glUniform1i(text0, 0);
+            glUniform1i(text1, 1);
+        }
+
+        {
+            assume createShader(&shaderFont, VertexShaderFont, PixelShaderFont)
+            let text0 = glGetUniformLocation(cast(GLuint) shaderFont.handle, @dataof("inTexture0"));
+            let text1 = glGetUniformLocation(cast(GLuint) shaderFont.handle, @dataof("inTexture1"));
+            glUseProgram(cast(GLuint) shaderFont.handle)
             glUniform1i(text0, 0);
             glUniform1i(text1, 1);
         }
@@ -675,6 +689,11 @@ impl RenderOgl
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
                 glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
             }
+
+        case StartFont:
+            setShader(&shaderFont)
+        case EndFont:
+            setShader(&shaderAA)
 
         case BindTextureFont:
             let params = &cmd.textureFont

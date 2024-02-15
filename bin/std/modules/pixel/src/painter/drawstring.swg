@@ -159,6 +159,8 @@ impl Painter
         if under != .None or brush.type != .SolidColor do
             ms = measureString(text, font)
 
+        startFont()
+
         // Set brush main texture
         if brush.type != .SolidColor do
             setTexture0({x, y - ms.ascent*zoom}, {x + ms.width*zoom, y + ms.height*zoom}, brush)
@@ -244,6 +246,7 @@ impl Painter
         }
 
         resetTextureFont()
+        endFont()
     }
 
     // Recompute the layout for a given rectangle
