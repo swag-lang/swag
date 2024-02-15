@@ -244,7 +244,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
 {
     // If we are collecting an expression list for a struct, then we must first collect all struct default
     // values if every fields are not covered
-    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::TypeListTuple)
+    if (node->typeInfo && node->typeInfo->isListTuple())
     {
         const auto exprNode = castAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
         if (exprNode->castToStruct)
@@ -309,7 +309,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
 
     // If we are collecting a tuple, then take the size of it to compute the "next" offset.
     // In case there's a padding here, because of the cast to struct.
-    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::TypeListTuple)
+    if (node->typeInfo && node->typeInfo->isListTuple())
         offset = baseOffset + node->typeInfo->sizeOf;
 
     return true;

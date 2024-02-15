@@ -346,9 +346,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     identifier->callParameters->inheritAstFlagsOr(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
     identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-    typeExpression->removeAstFlag(AST_NO_BYTECODE);
-    typeExpression->removeAstFlag(AST_NO_BYTECODE_CHILDS);
-    typeExpression->removeAstFlag(AST_VALUE_COMPUTED);
+    typeExpression->removeAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS | AST_VALUE_COMPUTED);
     typeExpression->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
 
     Ast::removeFromParent(varDecl->assignment);

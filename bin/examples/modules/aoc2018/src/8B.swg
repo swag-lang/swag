@@ -30,8 +30,7 @@ func day8B() assume
     func read(n: Array's32, s: u32)->{nStart, sum: u32}
     {
         var start = s
-        let nc = n[start]
-        let nm = n[start+1]
+        let (nc, nm) = {n[start], n[start+1]}
         start += 2
 
         if !nc

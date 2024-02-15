@@ -10,244 +10,244 @@
 
 bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
-    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+	const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
-    // No need to generate a local variable if it is never used
-    if (context->sourceFile->module->mustOptimizeBytecode(node))
-    {
-        if (node->resolvedSymbolOverload && !node->resolvedSymbolOverload->hasFlag(OVERLOAD_USED))
-        {
-            // Keep structs, because of opDrop
-            const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
-            if (!typeInfo->isStruct() && !typeInfo->isArrayOfStruct())
-            {
-                if (!node->assignment)
-                {
-                    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
-                    return true;
-                }
+	// No need to generate a local variable if it is never used
+	if (context->sourceFile->module->mustOptimizeBytecode(node))
+	{
+		if (node->resolvedSymbolOverload && !node->resolvedSymbolOverload->hasFlag(OVERLOAD_USED))
+		{
+			// Keep structs, because of opDrop
+			const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
+			if (!typeInfo->isStruct() && !typeInfo->isArrayOfStruct())
+			{
+				if (!node->assignment)
+				{
+					node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+					return true;
+				}
 
-                if (node->assignment->hasComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
-                {
-                    SWAG_CHECK(skipNodes(context, node));
-                    return true;
-                }
-            }
-        }
-    }
+				if (node->assignment->hasComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
+				{
+					SWAG_CHECK(skipNodes(context, node));
+					return true;
+				}
+			}
+		}
+	}
 
-    return true;
+	return true;
 }
 
 bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 {
-    const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+	const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
-    // Debug
-    context->bc->localVars.push_back(context->node);
+	// Debug
+	context->bc->localVars.push_back(context->node);
 
-    // If this variable comes from a tuple unpacking, then we have nothing to generate
-    if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
-        return true;
+	// If this variable comes from a tuple unpacking, then we have nothing to generate
+	if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
+		return true;
 
-    const auto resolved = node->resolvedSymbolOverload;
-    resolved->flags |= OVERLOAD_EMITTED;
+	const auto resolved = node->resolvedSymbolOverload;
+	resolved->flags |= OVERLOAD_EMITTED;
 
-    const auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCE_ALIAS);
-    const bool retVal   = resolved->hasFlag(OVERLOAD_RETVAL);
+	const auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCE_ALIAS);
+	const bool retVal = resolved->hasFlag(OVERLOAD_RETVAL);
 
-    Semantic::waitStructGenerated(context->baseJob, typeInfo);
-    YIELD();
+	Semantic::waitStructGenerated(context->baseJob, typeInfo);
+	YIELD();
 
-    // Struct initialization
-    bool mustDropLeft = false;
-    if (typeInfo->isStruct())
-    {
-        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+	// Struct initialization
+	bool mustDropLeft = false;
+	if (typeInfo->isStruct())
+	{
+		const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
-        // Generate initialization
-        // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
-        if (!node->hasExtMisc() ||
-            !node->extMisc()->resolvedUserOpSymbolOverload ||
-            node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
-            !(node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_COMPLETE)))
-        {
-            if (!node->hasSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
-            {
-                mustDropLeft = true;
-                if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
-                {
-                    // No need to initialize the variable if we are doing a struct to struct copy
-                    // No need to drop the left side either
-                    if (node->assignment && TypeManager::concreteType(node->assignment->typeInfo) == typeStruct)
-                        mustDropLeft = false;
-                    else
-                        emitStructInit(context, typeStruct, UINT32_MAX, retVal);
-                }
+		// Generate initialization
+		// Do not generate if we have a user define affectation, and the operator is marked as 'complete'
+		if (!node->hasExtMisc() ||
+			!node->extMisc()->resolvedUserOpSymbolOverload ||
+			node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
+			!node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_COMPLETE))
+		{
+			if (!node->hasSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
+			{
+				mustDropLeft = true;
+				if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
+				{
+					// No need to initialize the variable if we are doing a struct to struct copy
+					// No need to drop the left side either
+					if (node->assignment && TypeManager::concreteType(node->assignment->typeInfo) == typeStruct)
+						mustDropLeft = false;
+					else
+						emitStructInit(context, typeStruct, UINT32_MAX, retVal);
+				}
 
-                emitStructParameters(context, UINT32_MAX, retVal);
-                node->addSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS);
-            }
-        }
+				emitStructParameters(context, UINT32_MAX, retVal);
+				node->addSemFlag(SEMFLAG_VAR_DECL_STRUCT_PARAMETERS);
+			}
+		}
 
-        // User special function
-        if (node->hasSpecialFuncCall())
-        {
-            if (!node->hasSemFlag(SEMFLAG_VAR_DECL_REF_CALL))
-            {
-                const RegisterList r0 = reserveRegisterRC(context);
-                emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
-                node->type->resultRegisterRc = r0;
-                node->addSemFlag(SEMFLAG_VAR_DECL_REF_CALL);
-            }
+		// User special function
+		if (node->hasSpecialFuncCall())
+		{
+			if (!node->hasSemFlag(SEMFLAG_VAR_DECL_REF_CALL))
+			{
+				const RegisterList r0 = reserveRegisterRC(context);
+				emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
+				node->type->resultRegisterRc = r0;
+				node->addSemFlag(SEMFLAG_VAR_DECL_REF_CALL);
+			}
 
-            SWAG_CHECK(emitUserOp(context, nullptr, node));
-            YIELD();
+			SWAG_CHECK(emitUserOp(context, nullptr, node));
+			YIELD();
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 
-    // User specific initialization with a right side
-    if (node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
-    {
-        // :DirectInlineLocalVar
-        // The local variable is using the storage from the inline call.
-        // No need to make a copy
-        if (node->hasSpecFlag(AstVarDecl::SPECFLAG_INLINE_STORAGE))
-        {
-            freeRegisterRC(context, node->assignment);
-        }
-        // :ForceNoAffect
-        else if (node->assignment->resultRegisterRc.size())
-        {
-            if (!node->hasSemFlag(SEMFLAG_PRE_CAST))
-            {
-                node->allocateExtension(ExtensionKind::Misc);
-                node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
-                emitRetValRef(context, resolved, node->extMisc()->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
-                node->resultRegisterRc = node->assignment->resultRegisterRc;
-                node->addSemFlag(SEMFLAG_PRE_CAST);
-            }
+	// User specific initialization with a right side
+	if (node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
+	{
+		// :DirectInlineLocalVar
+		// The local variable is using the storage from the inline call.
+		// No need to make a copy
+		if (node->hasSpecFlag(AstVarDecl::SPECFLAG_INLINE_STORAGE))
+		{
+			freeRegisterRC(context, node->assignment);
+		}
+		// :ForceNoAffect
+		else if (node->assignment->resultRegisterRc.size())
+		{
+			if (!node->hasSemFlag(SEMFLAG_PRE_CAST))
+			{
+				node->allocateExtension(ExtensionKind::Misc);
+				node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
+				emitRetValRef(context, resolved, node->extMisc()->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
+				node->resultRegisterRc = node->assignment->resultRegisterRc;
+				node->addSemFlag(SEMFLAG_PRE_CAST);
+			}
 
-            SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
-            YIELD();
+			SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
+			YIELD();
 
-            if (!mustDropLeft)
-                node->assignment->addAstFlag(AST_NO_LEFT_DROP);
+			if (!mustDropLeft)
+				node->assignment->addAstFlag(AST_NO_LEFT_DROP);
 
-            bool isLet = node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET);
-            if (!node->typeInfo->isNativeIntegerOrRune() &&
-                !node->typeInfo->isNativeFloat() &&
-                !node->typeInfo->isPointer() &&
-                !node->typeInfo->isBool())
-            {
-                isLet = false;
-            }
+			bool isLet = node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET);
+			if (!node->typeInfo->isNativeIntegerOrRune() &&
+				!node->typeInfo->isNativeFloat() &&
+				!node->typeInfo->isPointer() &&
+				!node->typeInfo->isBool())
+			{
+				isLet = false;
+			}
 
-            // Keep the value in a persistent register, as it cannot be changed
-            if (isLet && !(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)))
-            {
-                context->bc->staticRegs += node->resultRegisterRc.size();
-                node->resultRegisterRc.cannotFree = true;
-                resolved->setRegisters(node->resultRegisterRc, OVERLOAD_PERSISTENT_REG);
+			// Keep the value in a persistent register, as it cannot be changed
+			if (isLet && !(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)))
+			{
+				context->bc->staticRegs += node->resultRegisterRc.size();
+				node->resultRegisterRc.cannotFree = true;
+				resolved->setRegisters(node->resultRegisterRc, OVERLOAD_PERSISTENT_REG);
 
-                switch (resolved->typeInfo->sizeOf)
-                {
-                case 1:
-                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x000000FF;
-                    break;
-                case 2:
-                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x0000FFFF;
-                    break;
-                case 4:
-                    if (!resolved->typeInfo->isNativeFloat())
-                        EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0xFFFFFFFF;
-                    break;
-                default:
-                    break;
-                }
-            }
+				switch (resolved->typeInfo->sizeOf)
+				{
+				case 1:
+					EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x000000FF;
+					break;
+				case 2:
+					EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x0000FFFF;
+					break;
+				case 4:
+					if (!resolved->typeInfo->isNativeFloat())
+						EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0xFFFFFFFF;
+					break;
+				default:
+					break;
+				}
+			}
 
-            // Store value to stack
-            if (!isLet || (resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER)) || (context->sourceFile->module->buildCfg.byteCodeOptimizeLevel != 2))
-            {
-                node->allocateExtension(ExtensionKind::Misc);
-                emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRc, node->typeInfo, node->assignment);
-                YIELD();
-            }
+			// Store value to stack
+			if (!isLet || (resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER)) || (context->sourceFile->module->buildCfg.byteCodeOptimizeLevel != 2))
+			{
+				node->allocateExtension(ExtensionKind::Misc);
+				emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRc, node->typeInfo, node->assignment);
+				YIELD();
+			}
 
-            freeRegisterRC(context, node);
-        }
+			freeRegisterRC(context, node);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // No default init for structures, it has been done before
-    if (typeInfo->isStruct())
-        return true;
+	// No default init for structures, it has been done before
+	if (typeInfo->isStruct())
+		return true;
 
-    if (typeInfo->isArrayOfStruct())
-    {
-        const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        const auto finalType = typeArray->finalType;
-        if (finalType->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES) || node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
-        {
-            if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) || node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
-            {
-                if (typeArray->totalCount == 1)
-                {
-                    if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
-                    emitStructParameters(context, UINT32_MAX, retVal);
-                }
-                else
-                {
-                    // Need to loop on every element of the array in order to initialize them
-                    RegisterList r0;
-                    reserveRegisterRC(context, r0, 2);
-                    EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
-                    EMIT_INST1(context, ByteCodeOp::ClearRA, r0[1]);
-                    const auto seekJump = context->bc->numInstructions;
+	if (typeInfo->isArrayOfStruct())
+	{
+		const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+		const auto finalType = typeArray->finalType;
+		if (finalType->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES) || node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+		{
+			if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) || node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+			{
+				if (typeArray->totalCount == 1)
+				{
+					if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
+						emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
+					emitStructParameters(context, UINT32_MAX, retVal);
+				}
+				else
+				{
+					// Need to loop on every element of the array in order to initialize them
+					RegisterList r0;
+					reserveRegisterRC(context, r0, 2);
+					EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
+					EMIT_INST1(context, ByteCodeOp::ClearRA, r0[1]);
+					const auto seekJump = context->bc->numInstructions;
 
-                    if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
-                    emitStructParameters(context, r0[1], retVal);
+					if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
+						emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
+					emitStructParameters(context, r0[1], retVal);
 
-                    EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
-                    if (finalType->sizeOf)
-                        EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
-                    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+					EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
+					if (finalType->sizeOf)
+						EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
+					EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
-                    freeRegisterRC(context, r0);
-                }
+					freeRegisterRC(context, r0);
+				}
 
-                freeStructParametersRegisters(context);
-            }
+				freeStructParametersRegisters(context);
+			}
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 
-    if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
-    {
-        if (retVal)
-        {
-            RegisterList r0 = reserveRegisterRC(context);
-            emitRetValRef(context, resolved, r0, true, 0);
-            emitSetZeroAtPointer(context, typeInfo->sizeOf, r0);
-            freeRegisterRC(context, r0);
-        }
-        else if (typeInfo->isClosure())
-        {
-            EMIT_INST0(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
-        }
-        else
-        {
-            SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
-            emitSetZeroStack(context, resolved->computedValue.storageOffset, typeInfo->sizeOf);
-        }
-    }
+	if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
+	{
+		if (retVal)
+		{
+			RegisterList r0 = reserveRegisterRC(context);
+			emitRetValRef(context, resolved, r0, true, 0);
+			emitSetZeroAtPointer(context, typeInfo->sizeOf, r0);
+			freeRegisterRC(context, r0);
+		}
+		else if (typeInfo->isClosure())
+		{
+			EMIT_INST0(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
+		}
+		else
+		{
+			SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
+			emitSetZeroStack(context, resolved->computedValue.storageOffset, typeInfo->sizeOf);
+		}
+	}
 
-    return true;
+	return true;
 }

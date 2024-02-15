@@ -85,7 +85,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
 
         // When generating parameters for a closure call, keep the reference if we want one !
         if (child->kind != AstNodeKind::MakePointer || !child->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
-            typeParam->typeInfo = TypeManager::concretePtrRef(child->typeInfo);
+            typeParam->typeInfo = TypeManager::concretePtrRefType(child->typeInfo, CONCRETE_FUNC);
         else
             typeParam->typeInfo = child->typeInfo;
 

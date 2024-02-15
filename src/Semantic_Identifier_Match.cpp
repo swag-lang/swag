@@ -992,8 +992,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         auto ownerFct = identifier->ownerFct;
         if (ownerFct)
         {
-            auto fctAttributes = ownerFct->attributeFlags;
-            if (!(fctAttributes & ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !(ownerFct->hasAstFlag(AST_IN_RUN_BLOCK)))
+            if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
             {
                 Diagnostic diag{identifier, FMT(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
                 auto       note = Diagnostic::note(overload->node, overload->node->token, FMT(Nte(Nte0147), Naming::kindName(overload->node).c_str()));
