@@ -341,7 +341,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 		{
 		case EmitOpUserKind::Init:
 			// Export generated function if necessary
-			if (!(structNode->hasAstFlag(AST_FROM_GENERIC)))
+			if (!structNode->hasAstFlag(AST_FROM_GENERIC))
 			{
 				const auto funcNode = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
 				funcNode->typeInfo = opInit->typeInfoFunc;
@@ -357,7 +357,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
 		case EmitOpUserKind::Drop:
 			// Export generated function if necessary
-			if ((structNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(structNode->hasAstFlag(AST_FROM_GENERIC)))
+			if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
 			{
 				const auto funcNode = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
 				funcNode->typeInfo = opInit->typeInfoFunc;
@@ -374,7 +374,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
 		case EmitOpUserKind::PostCopy:
 			// Export generated function if necessary
-			if ((structNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(structNode->hasAstFlag(AST_FROM_GENERIC)))
+			if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
 			{
 				const auto funcNode = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
 				funcNode->typeInfo = opInit->typeInfoFunc;
@@ -391,7 +391,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
 		case EmitOpUserKind::PostMove:
 			// Export generated function if necessary
-			if ((structNode->hasAttribute(ATTRIBUTE_PUBLIC)) && !(structNode->hasAstFlag(AST_FROM_GENERIC)))
+			if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
 			{
 				const auto funcNode = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
 				funcNode->typeInfo = opInit->typeInfoFunc;
@@ -563,7 +563,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 	if (typeInfoStruct->opUserInitFct)
 	{
 		// Content must have been solved ! #validif pb
-		SWAG_ASSERT(!(typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC)));
+		SWAG_ASSERT(!typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
 		askForByteCode(context->baseJob, typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
 		YIELD();
@@ -842,7 +842,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 	if (typeInfoStruct->opUserDropFct)
 	{
 		// Content must have been solved ! #validif pb
-		SWAG_ASSERT(!(typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC)));
+		SWAG_ASSERT(!typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
 		needDrop = true;
 		askForByteCode(context->baseJob, typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
@@ -866,8 +866,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 		if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
 			needDrop = true;
 		if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-			SWAG_VERIFY(!(structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION)),
-				context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop") }));
+			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop") }));
 	}
 
 	typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
@@ -955,7 +954,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 	if (typeInfoStruct->opUserPostCopyFct)
 	{
 		// Content must have been solved ! #validif pb
-		SWAG_ASSERT(!(typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC)));
+		SWAG_ASSERT(!typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
 		needPostCopy = true;
 		askForByteCode(context->baseJob, typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
@@ -979,8 +978,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 		if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
 			needPostCopy = true;
 		if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-			SWAG_VERIFY(!(structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION)),
-				context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy") }));
+			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy") }));
 	}
 
 	typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;

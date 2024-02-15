@@ -259,7 +259,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     // case, the inline node does not own the scope)
     if (node->hasExtMisc() && !node->extMisc()->registersToRelease.empty())
     {
-        if (!(node->hasAttribute(ATTRIBUTE_MIXIN)))
+        if (!node->hasAttribute(ATTRIBUTE_MIXIN))
         {
             for (const auto r : node->extMisc()->registersToRelease)
                 freeRegisterRC(context, r);
@@ -548,7 +548,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
         inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
         inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
-        if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
+        if (!rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP))
             inst->c.u64++;
         inst->flags |= BCI_IMM_C;
         return true;
@@ -566,7 +566,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         EMIT_INST1(context, ByteCodeOp::DecrementRA64, rangeNode->expressionLow->resultRegisterRc[0]);
 
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionUp->resultRegisterRc[0]);
-        if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
+        if (!rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP))
             EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
 
         loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
@@ -578,7 +578,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         return true;
     }
 
-    if (!(rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP)))
+    if (!rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP))
         EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRc[0]);
 
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRc[0]);

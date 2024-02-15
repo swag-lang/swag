@@ -40,7 +40,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     YIELD();
 
     // Restore the error context, and keep error trace of current call
-    if (!(context->node->hasSemFlag(SEMFLAG_STACK_TRACE1)))
+    if (!context->node->hasSemFlag(SEMFLAG_STACK_TRACE1))
     {
         SWAG_ASSERT(context->tryCatchScope);
         context->tryCatchScope--;
@@ -80,7 +80,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         {
             if (node->ownerInline)
                 node->regInit = node->ownerInline->resultRegisterRc;
-            else if (!(context->node->hasSemFlag(SEMFLAG_TRY_2)))
+            else if (!context->node->hasSemFlag(SEMFLAG_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
@@ -114,7 +114,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             }
             else
             {
-                if (!(context->node->hasSemFlag(SEMFLAG_TRY_2)))
+                if (!context->node->hasSemFlag(SEMFLAG_TRY_2))
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)

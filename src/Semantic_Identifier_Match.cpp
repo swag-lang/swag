@@ -159,7 +159,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->childs[idx], AstNodeKind::FuncCallParam);
 
         size_t i = idx;
-        if (idx < typeInfoFunc->parameters.size() - 1 || !(typeInfoFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC)))
+        if (idx < typeInfoFunc->parameters.size() - 1 || !typeInfoFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC))
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
@@ -732,7 +732,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     }
 
     // Do not register a sub impl scope, for ufcs to use the real variable
-    if (!(overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT)))
+    if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
     {
         identifierRef->resolvedSymbolName     = symbol;
         identifierRef->resolvedSymbolOverload = overload;
@@ -743,12 +743,12 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
     if (identifier->typeInfo->isGeneric())
         identifier->addAstFlag(AST_IS_GENERIC);
-    else if (overload->hasFlag(OVERLOAD_GENERIC) && !(identifier->hasAstFlag(AST_FROM_GENERIC)))
+    else if (overload->hasFlag(OVERLOAD_GENERIC) && !identifier->hasAstFlag(AST_FROM_GENERIC))
         identifier->addAstFlag(AST_IS_GENERIC);
 
     // Symbol is linked to a using var : insert the variable name before the symbol
     // Except if symbol is a constant !
-    if (!(overload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
+    if (!overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
         if (dependentVar && identifierRef->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
         {
@@ -873,7 +873,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     case SymbolKind::Struct:
     case SymbolKind::Interface:
     {
-        if (!(overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT)))
+        if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
             SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
 
@@ -882,8 +882,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters &&
-            !(identifier->hasAstFlag(AST_GENERATED)) &&
-            !(identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)))
+            !identifier->hasAstFlag(AST_GENERATED) &&
+            !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
             Diagnostic diag{identifier, identifier->token, Err(Err0377)};
             return context->report(diag);
@@ -893,9 +893,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         bool canConvertStructParams = false;
         bool canOptimAffect         = false;
         if (identifier->callParameters &&
-            !(identifier->hasAstFlag(AST_GENERATED)) &&
-            !(identifier->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION)) &&
-            !(identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS)))
+            !identifier->hasAstFlag(AST_GENERATED) &&
+            !identifier->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION) &&
+            !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
         {
             canConvertStructParams = true;
             if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
@@ -960,7 +960,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (canConvertStructParams)
         {
             if (identifier->parent->parent->kind != AstNodeKind::TypeExpression ||
-                !(identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPECFLAG_DONE_GEN)))
+                !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPECFLAG_DONE_GEN))
             {
                 SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
                 return true;
@@ -1059,7 +1059,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 if (isStatementIdentifier(identifier))
                 {
-                    if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !(identifier->hasAstFlag(AST_DISCARD)))
+                    if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                     {
                         Diagnostic diag(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.ctext()));
                         return context->report(diag, Diagnostic::hereIs(overload));
@@ -1135,7 +1135,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (childIdx)
         {
             auto prev = identifier->identifierRef()->childs[childIdx - 1];
-            if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->hasAstFlag(AST_FROM_UFCS)))
+            if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
             {
                 Diagnostic diag{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext())};
                 diag.addNote(identifier->token, FMT(Nte(Nte0154), prev->typeInfo->getDisplayNameC()));
@@ -1190,7 +1190,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
 
         // Need to make all types compatible, in case a cast is necessary
-        if (!identifier->ownerFct || !(identifier->ownerFct->hasAstFlag(AST_IS_GENERIC)))
+        if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
         {
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
             YIELD();
@@ -1202,9 +1202,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
             {
-                auto fctAttributes = ownerFct->attributeFlags;
-
-                if (!(fctAttributes & ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !(identifier->hasAstFlag(AST_IN_RUN_BLOCK)))
+                if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
                 {
                     Diagnostic diag{identifier, identifier->token, FMT(Err(Err0176), funcDecl->token.ctext(), ownerFct->token.ctext())};
                     auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0156));
@@ -1252,7 +1250,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     !returnType->isStruct() &&  // Treated later (as errors)
                     !returnType->isArray() &&   // Treated later (as errors)
                     !returnType->isClosure() && // Treated later (as errors)
-                    !(identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK)))
+                    !identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
                 {
                     identifier->removeAstFlag(AST_CONST_EXPR);
                 }
@@ -1266,7 +1264,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             if (isStatementIdentifier(identifier))
             {
-                if (!(funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE)) && !(identifier->hasAstFlag(AST_DISCARD)))
+                if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                 {
                     Diagnostic diag(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.ctext()));
                     return context->report(diag, Diagnostic::hereIs(overload));
@@ -1288,7 +1286,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
                 forceInline = true;
 
-            if (!(identifier->hasSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE)) || forceInline)
+            if (!identifier->hasSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE) || forceInline)
             {
                 // Expand inline function. Do not expand an inline call inside a function marked as inline.
                 // The expansion will be done at the lowest level possible
@@ -1301,7 +1299,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     // First pass, we inline the function.
                     // The identifier for the function call will be re-resolved later when the content
                     // of the inline os done.
-                    if (!(identifier->hasAstFlag(AST_INLINED)))
+                    if (!identifier->hasAstFlag(AST_INLINED))
                     {
                         identifier->addAstFlag(AST_INLINED);
 

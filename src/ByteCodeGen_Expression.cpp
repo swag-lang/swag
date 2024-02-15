@@ -19,7 +19,7 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
     const auto child1   = node->childs[1];
     const auto typeInfo = TypeManager::concreteType(child0->typeInfo);
 
-    if (!(child0->hasSemFlag(SEMFLAG_CAST1)))
+    if (!child0->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
         YIELD();
@@ -279,7 +279,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         if (canDrop)
         {
             EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc[0])->b.u64 = startOffset;
-            if (!(node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE)))
+            if (!node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
                 EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = listNode->childs.size();
         }
         else
@@ -302,7 +302,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         }
 
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRc[0]);
-        if (!(node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE)))
+        if (!node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
             EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = typeList->subTypes.size();
     }
 

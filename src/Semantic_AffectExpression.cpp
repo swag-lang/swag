@@ -159,7 +159,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             SWAG_ASSERT(left->resolvedSymbolOverload);
             if (left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
                 note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076));
-            else if (!(left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM)))
+            else if (!left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076), Diagnostic::isType(left->typeInfo));
         }
     }

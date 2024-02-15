@@ -234,7 +234,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->symbolOverload->hasFlag(OVERLOAD_IMPL_IN_STRUCT)))
+                if (!matches[j]->symbolOverload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
                 {
                     // If interface name is alone, then we take in priority the interface definition, not the impl block
                     if (node == node->parent->childs.front())
@@ -251,7 +251,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->symbolOverload->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM)))
+                if (!matches[j]->symbolOverload->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM))
                 {
                     curMatch->remove = true;
                     break;

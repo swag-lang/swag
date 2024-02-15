@@ -1500,7 +1500,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     if (testReturn->kind == AstNodeKind::Identifier || testReturn->kind == AstNodeKind::FuncCall)
     {
         // We need a copy in #ast functions
-        if (!node->ownerFct || !(node->ownerFct->hasAttribute(ATTRIBUTE_AST_FUNC)))
+        if (!node->ownerFct || !node->ownerFct->hasAttribute(ATTRIBUTE_AST_FUNC))
             testReturn = testReturn->parent;
     }
 

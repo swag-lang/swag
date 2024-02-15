@@ -171,7 +171,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
         scopeType           = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCE_ALIAS);
     }
 
-    if (!(identifierRef->hasSemFlag(SEMFLAG_TYPE_SOLVED)))
+    if (!identifierRef->hasSemFlag(SEMFLAG_TYPE_SOLVED))
         identifierRef->typeInfo = typeInfo;
 
     // Deref
@@ -1136,7 +1136,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
             // Be sure that we have at least a registered incomplete symbol
             SWAG_ASSERT(symbol->overloads.size() == 1);
-            if (!(symbol->overloads[0]->hasFlag(OVERLOAD_INCOMPLETE)))
+            if (!symbol->overloads[0]->hasFlag(OVERLOAD_INCOMPLETE))
             {
                 waitSymbolNoLock(job, symbol);
                 return true;
@@ -1216,7 +1216,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
             // The ufcs parameter has already been set in we are evaluating an identifier for the second time
             // (when we inline a function call)
-            if (!identifier->callParameters || identifier->callParameters->childs.empty() || !(identifier->callParameters->childs.front()->hasAstFlag(AST_TO_UFCS)))
+            if (!identifier->callParameters || identifier->callParameters->childs.empty() || !identifier->callParameters->childs.front()->hasAstFlag(AST_TO_UFCS))
             {
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 YIELD();
@@ -1334,7 +1334,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
-        if (!identifier->ownerFct || !(identifier->ownerFct->hasAstFlag(AST_IS_GENERIC)))
+        if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
         {
             if (match->dependentVar && !identifierRef->previousResolvedNode)
             {

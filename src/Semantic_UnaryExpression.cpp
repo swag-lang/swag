@@ -48,7 +48,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
     }
     }
 
-    if (child->hasComputedValue() && !(child->hasSemFlag(SEMFLAG_NEG_EATEN)))
+    if (child->hasComputedValue() && !child->hasSemFlag(SEMFLAG_NEG_EATEN))
     {
         context->node->addSemFlag(child->semFlags & SEMFLAG_LITERAL_SUFFIX);
         switch (typeInfo->nativeType)

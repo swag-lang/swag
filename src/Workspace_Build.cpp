@@ -714,7 +714,7 @@ bool Workspace::buildTarget()
             const auto job = waitingJobs[i];
             if (job->hasFlag(JOB_PENDING_PLACE_HOLDER))
             {
-                SWAG_ASSERT(!(job->hasFlag(JOB_IS_IN_THREAD)));
+                SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
                 job->addFlag(JOB_ACCEPT_PENDING_COUNT);
                 waitingJobs.erase_unordered(i);
                 i--;

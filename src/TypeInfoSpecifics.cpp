@@ -934,7 +934,7 @@ namespace
 {
     void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
     {
-        if (!(param->flags & TYPEINFOPARAM_HAS_USING) || param->typeInfo->kind != TypeInfoKind::Struct)
+        if (!(param->flags & TYPEINFOPARAM_HAS_USING) || !param->typeInfo->isStruct())
         {
             result.push_back(param);
             return;

@@ -303,7 +303,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoSlice->pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoSlice->pointedType));
-        else if (!(node->isForceTakeAddress()) || typeInfoSlice->pointedType->isPointer())
+        else if (!node->isForceTakeAddress() || typeInfoSlice->pointedType->isPointer())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoSlice->pointedType));
 
         node->resultRegisterRc         = node->array->resultRegisterRc;

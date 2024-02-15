@@ -725,7 +725,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     {
         SWAG_ASSERT(exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
 
-        if (!(exprNode->hasSemFlag(SEMFLAG_FLAT_PARAMS)))
+        if (!exprNode->hasSemFlag(SEMFLAG_FLAT_PARAMS))
         {
             exprNode->addSemFlag(SEMFLAG_FLAT_PARAMS);
             context->allocateTempCallParams();
