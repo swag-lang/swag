@@ -26,7 +26,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             // CopyRBRA followed by one single PushRAParam, take the original register
             if (ip[1].op == ByteCodeOp::PushRAParam &&
                 ip[0].a.u32 == ip[1].a.u32 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 ip[1].a.u32                   = ip[0].b.u32;
                 context->passHasDoneSomething = true;
@@ -38,7 +38,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 ip[0].a.u32 == ip[2].b.u32 &&
                 ip[1].a.u32 == ip[2].a.u32 &&
                 !(ip[0].hasFlag(BCI_START_STMT)) &&
-                !(ip[1].hasFlag(BCI_START_STMT)) &&
+                !ip[1].hasFlag(BCI_START_STMT) &&
                 !(ip[2].hasFlag(BCI_START_STMT)))
             {
                 ip[2].a.u32                   = ip[1].b.u32;

@@ -43,7 +43,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterF32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqF32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -54,7 +54,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqF32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -66,7 +66,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqF32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerF32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -77,7 +77,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerF32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -89,7 +89,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerF32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -100,7 +100,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -112,7 +112,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqF32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterF32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -123,7 +123,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterF32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -136,7 +136,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterF64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqF64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -147,7 +147,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqF64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -159,7 +159,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqF64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerF64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -170,7 +170,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerF64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -182,7 +182,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerF64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -193,7 +193,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -205,7 +205,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqF64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterF64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -216,7 +216,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterF64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -229,7 +229,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterS8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -240,7 +240,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -252,7 +252,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqS8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -263,7 +263,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -275,7 +275,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerS8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -286,7 +286,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -298,7 +298,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqS8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -309,7 +309,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -322,7 +322,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterS16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -333,7 +333,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -345,7 +345,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqS16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -356,7 +356,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -368,7 +368,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerS16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -379,7 +379,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -391,7 +391,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqS16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -402,7 +402,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -415,7 +415,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterS32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -426,7 +426,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -438,7 +438,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqS32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -449,7 +449,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -461,7 +461,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerS32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -472,7 +472,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -484,7 +484,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqS32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -495,7 +495,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -508,7 +508,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterS64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -519,7 +519,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -531,7 +531,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqS64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -542,7 +542,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -554,7 +554,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerS64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -565,7 +565,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -577,7 +577,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqS64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -588,7 +588,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -601,7 +601,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterU8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -612,7 +612,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -624,7 +624,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqU8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -635,7 +635,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -647,7 +647,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerU8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -658,7 +658,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -670,7 +670,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqU8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -681,7 +681,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -694,7 +694,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterU16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -705,7 +705,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -717,7 +717,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqU16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -728,7 +728,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -740,7 +740,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerU16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -751,7 +751,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -763,7 +763,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqU16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -774,7 +774,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -787,7 +787,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterU32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -798,7 +798,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -810,7 +810,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqU32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -821,7 +821,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -833,7 +833,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerU32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -844,7 +844,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -856,7 +856,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqU32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -867,7 +867,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -880,7 +880,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterU64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -891,7 +891,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -903,7 +903,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfGreaterEqU64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -914,7 +914,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -926,7 +926,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerU64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -937,7 +937,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -949,7 +949,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfLowerEqU64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -960,7 +960,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -973,7 +973,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfFalse:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfTrue);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -984,7 +984,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfTrue);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -996,7 +996,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfTrue:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfFalse);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1007,7 +1007,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfFalse);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1019,7 +1019,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotZero8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1030,7 +1030,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1043,7 +1043,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotZero16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1054,7 +1054,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1067,7 +1067,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotZero32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1078,7 +1078,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1091,7 +1091,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotZero64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1102,7 +1102,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1115,7 +1115,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfZero8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1126,7 +1126,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1139,7 +1139,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfZero16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1150,7 +1150,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1163,7 +1163,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfZero32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1174,7 +1174,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1187,7 +1187,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfZero64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1198,7 +1198,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1211,7 +1211,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfEqual8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1222,7 +1222,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1235,7 +1235,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfEqual16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1246,7 +1246,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1259,7 +1259,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfEqual32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1270,7 +1270,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1283,7 +1283,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfEqualF32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqualF32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1294,7 +1294,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqualF32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1307,7 +1307,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfEqual64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1318,7 +1318,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1331,7 +1331,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfEqualF64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqualF64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1342,7 +1342,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqualF64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1355,7 +1355,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotEqual8:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual8);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1366,7 +1366,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual8);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1379,7 +1379,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotEqual16:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual16);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1390,7 +1390,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual16);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1403,7 +1403,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotEqual32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual32);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1414,7 +1414,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual32);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1427,7 +1427,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         case ByteCodeOp::JumpIfNotEqual64:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual64);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1438,7 +1438,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (ip[1].op == ByteCodeOp::Ret &&
                 context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret &&
                 ip[0].b.s32 == 1 &&
-                !(ip[1].hasFlag(BCI_START_STMT)))
+                !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual64);
                 ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
@@ -1512,7 +1512,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             // Then we switch to (jump if true) whatever, and eliminate the unconditional jump
             else if (ip->b.s32 == 1 &&
                      ip[1].op == ByteCodeOp::Jump &&
-                     !(ip[1].hasFlag(BCI_START_STMT)))
+                     !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfTrue);
                 ip->b.s32 = ip[1].b.s32 + 1;
@@ -1552,7 +1552,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             // Then we switch to (jump if false) whatever, and eliminate the unconditional jump
             else if (ip->b.s32 == 1 &&
                      ip[1].op == ByteCodeOp::Jump &&
-                     !(ip[1].hasFlag(BCI_START_STMT)))
+                     !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfFalse);
                 ip->b.s32 = ip[1].b.s32 + 1;
