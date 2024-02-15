@@ -14,4 +14,5 @@ void main()
 {
     color = vcolor * texture(inTexture0, vuv0);
     color.w *= texture(inTexture1, vuv1).r;
+    //color.w = pow(color.w, 1.0/0.75);
 }

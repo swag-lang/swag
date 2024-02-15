@@ -117,7 +117,8 @@ internal impl RenderOgl
         Debug.assert(@countof(datas) <= 8*8)
 
         var arr: [64] u32
-        visit p, i: datas do arr[i] = p ? 0xFFFFFFFF : 0
+        visit p, i: datas do
+            arr[i] = p ? 0xFFFFFFFF : 0
 
         var result: GLuint
         glGenTextures(1, &result)
@@ -702,8 +703,8 @@ impl RenderOgl
             glBindTexture(GL_TEXTURE_2D, cast(GLuint) texture)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
         case ResetTextureFont:
             glActiveTexture(GL_TEXTURE1)

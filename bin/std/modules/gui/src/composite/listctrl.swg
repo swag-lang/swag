@@ -464,7 +464,9 @@ impl IWnd for ListView
             if shift and list.selectionMode == .Multi
             {
                 let startIdx = list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
-                loop i: startIdx to idx
+                let idx0 = Math.min(startIdx, idx)
+                let idx1 = Math.max(startIdx, idx)
+                loop i: idx0 to idx1
                 {
                     let idxLine = list.isVirtual ? i : list.lines[i].index
                     list.selModel.select(idxLine, true)
@@ -1204,7 +1206,7 @@ impl ListCtrl
         if !line.canExpand() or line.expanded do
             return
         line.expanded = true
-        sigExpand.call(line)
+        sigExpand.call(self, line)
 
         var tmp: Array'(*ListLine)
         tmp.add(line)
@@ -1246,7 +1248,7 @@ impl ListCtrl
         if !line.canExpand() or !line.expanded do
             return
         line.expanded = false
-        sigCollapse.call(line)
+        sigCollapse.call(self, line)
 
         var tmp: Array'(*ListLine)
         tmp.add(line)
