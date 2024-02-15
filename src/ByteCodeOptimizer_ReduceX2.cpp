@@ -34,7 +34,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
             ip[2].op == ByteCodeOp::ClearRA &&
             ip[3].op == ByteCodeOp::ClearRA &&
             !ip[1].hasFlag(BCI_START_STMT) &&
-            !(ip[2].hasFlag(BCI_START_STMT)) &&
+            !ip[2].hasFlag(BCI_START_STMT) &&
             !(ip[3].hasFlag(BCI_START_STMT)))
         {
             ip[0].b.u32 = ip[1].a.u32;
@@ -50,7 +50,7 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
         if (ip[1].op == ByteCodeOp::ClearRA &&
             ip[2].op == ByteCodeOp::ClearRA &&
             !ip[1].hasFlag(BCI_START_STMT) &&
-            !(ip[2].hasFlag(BCI_START_STMT)))
+            !ip[2].hasFlag(BCI_START_STMT))
         {
             ip[0].b.u32 = ip[1].a.u32;
             ip[0].c.u32 = ip[2].a.u32;

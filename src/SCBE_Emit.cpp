@@ -6,7 +6,7 @@
 
 void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
 {
-    if (!(ip->hasFlag(BCI_IMM_A)) && (ip->hasFlag(BCI_IMM_B)))
+    if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_B)))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_OpN_Immediate(RAX, ip->b.u32, CPUOp::SAR, numBits);
@@ -59,7 +59,7 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
         pp.emit_ClearN(RAX, numBits);
         pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
-    else if (!(ip->hasFlag(BCI_IMM_A)) && (ip->hasFlag(BCI_IMM_B)))
+    else if (!ip->hasFlag(BCI_IMM_A) && (ip->hasFlag(BCI_IMM_B)))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_OpN_Immediate(RAX, ip->b.u8, op, numBits);
@@ -150,7 +150,7 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
 
 void SCBE::emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
-    if (!(ip->hasFlag(BCI_IMM_A)) && !(ip->hasFlag(BCI_IMM_B)))
+    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emit_LoadF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
         pp.emit_OpF32(REG_OFFSET(ip->b.u32), XMM0, RDI, op);
@@ -177,7 +177,7 @@ void SCBE::emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
 
 void SCBE::emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
-    if (!(ip->hasFlag(BCI_IMM_A)) && !(ip->hasFlag(BCI_IMM_B)))
+    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emit_LoadF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
         pp.emit_OpF64(REG_OFFSET(ip->b.u32), XMM0, RDI, op);
@@ -216,14 +216,14 @@ void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CP
 
 void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
-    if (!(ip->hasFlag(BCI_IMM_A)) && !(ip->hasFlag(BCI_IMM_B)))
+    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_OpN(REG_OFFSET(ip->b.u32), RAX, RDI, op, numBits);
     }
     // Mul by power of 2 => shift by log2
     else if (op == CPUOp::MUL &&
-             !(ip->hasFlag(BCI_IMM_A)) &&
+             !ip->hasFlag(BCI_IMM_A) &&
              (ip->hasFlag(BCI_IMM_B)) &&
              Math::isPowerOfTwo(ip->b.u64) &&
              (ip->b.u64 < (uint64_t) numBits))
@@ -233,7 +233,7 @@ void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, 
         pp.emit_OpN(RCX, RAX, CPUOp::SHL, numBits);
     }
     else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
-             !(ip->hasFlag(BCI_IMM_A)) &&
+             !ip->hasFlag(BCI_IMM_A) &&
              (ip->hasFlag(BCI_IMM_B)) &&
              (ip->b.u64 <= 0x7FFFFFFF))
     {

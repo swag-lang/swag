@@ -39,7 +39,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 ip[1].a.u32 == ip[2].a.u32 &&
                 !(ip[0].hasFlag(BCI_START_STMT)) &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
-                !(ip[2].hasFlag(BCI_START_STMT)))
+                !ip[2].hasFlag(BCI_START_STMT))
             {
                 ip[2].a.u32                   = ip[1].b.u32;
                 ip[2].b.u32                   = ip[0].b.u32;
@@ -134,10 +134,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             // Do it only for CopyRBtoRA64, as other copy have an implicit cast
             // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
             // *NOT* for CopySP, because the register numbers are important in case of variadic parameters.
-            if ((ip->op != ByteCodeOp::PushRAParam || !(ip->hasFlag(BCI_VARIADIC))) &&
-                (ip->op != ByteCodeOp::PushRAParam2 || !(ip->hasFlag(BCI_VARIADIC))) &&
-                (ip->op != ByteCodeOp::PushRAParam3 || !(ip->hasFlag(BCI_VARIADIC))) &&
-                (ip->op != ByteCodeOp::PushRAParam4 || !(ip->hasFlag(BCI_VARIADIC))) &&
+            if ((ip->op != ByteCodeOp::PushRAParam || !ip->hasFlag(BCI_VARIADIC)) &&
+                (ip->op != ByteCodeOp::PushRAParam2 || !ip->hasFlag(BCI_VARIADIC)) &&
+                (ip->op != ByteCodeOp::PushRAParam3 || !ip->hasFlag(BCI_VARIADIC)) &&
+                (ip->op != ByteCodeOp::PushRAParam4 || !ip->hasFlag(BCI_VARIADIC)) &&
                 ip->op != ByteCodeOp::CopySP)
             {
                 if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
@@ -205,7 +205,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.clear();
         }
 
-        if ((flags & OPFLAG_WRITE_A) && !(ip->hasFlag(BCI_IMM_A)))
+        if ((flags & OPFLAG_WRITE_A) && !ip->hasFlag(BCI_IMM_A))
         {
             const auto it = mapCopyRA.find(ip->a.u32);
             if (it)
@@ -219,7 +219,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.remove(ip->a.u32);
         }
 
-        if ((flags & OPFLAG_WRITE_B) && !(ip->hasFlag(BCI_IMM_B)))
+        if ((flags & OPFLAG_WRITE_B) && !ip->hasFlag(BCI_IMM_B))
         {
             const auto it = mapCopyRA.find(ip->b.u32);
             if (it)
@@ -233,7 +233,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.remove(ip->b.u32);
         }
 
-        if ((flags & OPFLAG_WRITE_C) && !(ip->hasFlag(BCI_IMM_C)))
+        if ((flags & OPFLAG_WRITE_C) && !ip->hasFlag(BCI_IMM_C))
         {
             const auto it = mapCopyRA.find(ip->c.u32);
             if (it)
@@ -247,7 +247,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.remove(ip->c.u32);
         }
 
-        if ((flags & OPFLAG_WRITE_D) && !(ip->hasFlag(BCI_IMM_D)))
+        if ((flags & OPFLAG_WRITE_D) && !ip->hasFlag(BCI_IMM_D))
         {
             const auto it = mapCopyRA.find(ip->d.u32);
             if (it)

@@ -1486,7 +1486,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         // Jump if false to a jump if false with the same register
             if (destIp->op == ByteCodeOp::JumpIfFalse &&
                 destIp->a.u32 == ip->a.u32 &&
-                !(ip->hasFlag(BCI_IMM_A)) &&
+                !ip->hasFlag(BCI_IMM_A) &&
                 (destIp->b.s32 + 1) && // in case it's an empty loop
                 !(destIp->hasFlag(BCI_IMM_A)))
             {
@@ -1497,7 +1497,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             // Jump if false to a jump if true with the same register
             else if (destIp->op == ByteCodeOp::JumpIfTrue &&
                      destIp->a.u32 == ip->a.u32 &&
-                     !(ip->hasFlag(BCI_IMM_A)) &&
+                     !ip->hasFlag(BCI_IMM_A) &&
                      !(destIp->hasFlag(BCI_IMM_A)))
             {
                 ip->b.s32 += 1;
@@ -1526,7 +1526,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         // Jump if true to a jump if true with the same register
             if (destIp->op == ByteCodeOp::JumpIfTrue &&
                 destIp->a.u32 == ip->a.u32 &&
-                !(ip->hasFlag(BCI_IMM_A)) &&
+                !ip->hasFlag(BCI_IMM_A) &&
                 (destIp->b.s32 + 1) && // in case it's an empty loop
                 !(destIp->hasFlag(BCI_IMM_A)))
             {
@@ -1537,7 +1537,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             // Jump if true to a jump if false with the same register
             else if (destIp->op == ByteCodeOp::JumpIfFalse &&
                      destIp->a.u32 == ip->a.u32 &&
-                     !(ip->hasFlag(BCI_IMM_A)) &&
+                     !ip->hasFlag(BCI_IMM_A) &&
                      !(destIp->hasFlag(BCI_IMM_A)))
             {
                 ip->b.s32 += 1;
