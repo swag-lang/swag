@@ -273,8 +273,8 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
         {
             if (ip[0].a.u32 == ip[2].b.u32 && ip[1].a.u32 != ip[0].a.u32)
             {
-                ip[2].b.u32                   = ip[0].b.u32;
-                context->passHasDoneSomething = true;
+                ip[2].b.u32 = ip[0].b.u32;
+                context->setDirtyPass();
                 break;
             }
         }
@@ -378,7 +378,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             if (ipNext[0].op == ByteCodeOp::InternalHasErr && ipNext[1].op == ByteCodeOp::JumpIfZero32)
             {
                 ip[1].b.s32 += ipNext[1].b.s32 + 2;
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
                 break;
             }
         }
@@ -554,7 +554,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
 
         // Then we can eliminate some instructions related to the function call parameters
         auto backIp = ip;
-        if (!(backIp->hasFlag(BCI_START_STMT)))
+        if (!backIp->hasFlag(BCI_START_STMT))
         {
             while (backIp != context->bc->out &&
                    backIp->op != ByteCodeOp::LocalCall &&
@@ -853,10 +853,10 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         case ByteCodeOp::DeRef32:
         case ByteCodeOp::DeRef64:
         {
-            const auto s                  = ip[1].a.u32;
-            ip[1]                         = ip[0];
-            ip[1].a.u32                   = s;
-            context->passHasDoneSomething = true;
+            const auto s = ip[1].a.u32;
+            ip[1]        = ip[0];
+            ip[1].a.u32  = s;
+            context->setDirtyPass();
             break;
         }
 
@@ -911,7 +911,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             !ip[1].hasFlag(BCI_START_STMT))
         {
             swap(ip[0], ip[1]);
-            context->passHasDoneSomething = true;
+            context->setDirtyPass();
             break;
         }
         break;
@@ -2866,7 +2866,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             {
                 ip[1].a.u32 = ip[0].a.u32;
                 ip[1].c.s64 += ip[0].b.s64;
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
                 break;
             }
 
@@ -2887,7 +2887,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             {
                 ip[1].b.s64 += ip[0].b.s64;
                 swap(ip[0], ip[1]);
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
                 break;
             }
 
@@ -2904,7 +2904,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             {
                 ip[1].c.s64 += ip[0].b.s64;
                 swap(ip[0], ip[1]);
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
                 break;
             }
         }
@@ -6568,29 +6568,29 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
     if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) &&
         !ByteCode::hasWriteRefToRegA(ipn, ip->a.u32))
     {
-        ipn->a.u32                    = ip->b.u32;
-        context->passHasDoneSomething = true;
+        ipn->a.u32 = ip->b.u32;
+        context->setDirtyPass();
     }
 
     if (ByteCode::hasReadRefToRegB(ipn, ip->a.u32) &&
         !ByteCode::hasWriteRefToRegB(ipn, ip->a.u32))
     {
-        ipn->b.u32                    = ip->b.u32;
-        context->passHasDoneSomething = true;
+        ipn->b.u32 = ip->b.u32;
+        context->setDirtyPass();
     }
 
     if (ByteCode::hasReadRefToRegC(ipn, ip->a.u32) &&
         !ByteCode::hasWriteRefToRegC(ipn, ip->a.u32))
     {
-        ipn->c.u32                    = ip->b.u32;
-        context->passHasDoneSomething = true;
+        ipn->c.u32 = ip->b.u32;
+        context->setDirtyPass();
     }
 
     if (ByteCode::hasReadRefToRegD(ipn, ip->a.u32) &&
         !ByteCode::hasWriteRefToRegD(ipn, ip->a.u32))
     {
-        ipn->d.u32                    = ip->b.u32;
-        context->passHasDoneSomething = true;
+        ipn->d.u32 = ip->b.u32;
+        context->setDirtyPass();
     }
 }
 

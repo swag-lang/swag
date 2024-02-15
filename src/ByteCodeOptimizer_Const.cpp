@@ -8,7 +8,7 @@
 #define OK()                                  \
     do                                        \
     {                                         \
-        context->passHasDoneSomething = true; \
+        context->setDirtyPass(); \
         ip->removeFlag(BCI_IMM_A);              \
     } while (0)
 

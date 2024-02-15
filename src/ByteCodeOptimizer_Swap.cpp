@@ -160,8 +160,8 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 ip++;
             }
 
-            restart                       = true;
-            context->passHasDoneSomething = true;
+            restart = true;
+            context->setDirtyPass();
             break;
         }
     }

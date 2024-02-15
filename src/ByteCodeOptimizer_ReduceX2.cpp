@@ -207,7 +207,7 @@ void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstr
             ip->addFlag(BCI_NOT_PURE);
             ip->c.u32 = ip[1].a.u32;
             swap(ip[1].a, ip[1].b);
-            context->passHasDoneSomething = true;
+            context->setDirtyPass();
         }
     }
 }

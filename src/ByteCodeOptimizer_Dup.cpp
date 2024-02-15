@@ -28,8 +28,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 ip[0].a.u32 == ip[1].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                ip[1].a.u32                   = ip[0].b.u32;
-                context->passHasDoneSomething = true;
+                ip[1].a.u32 = ip[0].b.u32;
+                context->setDirtyPass();
             }
 
             // 2 CopyRBRA followed by one single PushRAParam2, take the original registers
@@ -41,9 +41,9 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 !ip[1].hasFlag(BCI_START_STMT) &&
                 !ip[2].hasFlag(BCI_START_STMT))
             {
-                ip[2].a.u32                   = ip[1].b.u32;
-                ip[2].b.u32                   = ip[0].b.u32;
-                context->passHasDoneSomething = true;
+                ip[2].a.u32 = ip[1].b.u32;
+                ip[2].b.u32 = ip[0].b.u32;
+                context->setDirtyPass();
             }
         }
 
@@ -98,8 +98,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->a.u32                     = (*it)->b.u32;
-                            context->passHasDoneSomething = true;
+                            ip->a.u32 = (*it)->b.u32;
+                            context->setDirtyPass();
                         }
                     }
                 }
@@ -116,8 +116,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->b.u32                     = (*it)->b.u32;
-                            context->passHasDoneSomething = true;
+                            ip->b.u32 = (*it)->b.u32;
+                            context->setDirtyPass();
                         }
                     }
                 }
@@ -148,8 +148,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->a.u32                     = (*it)->b.u32;
-                            context->passHasDoneSomething = true;
+                            ip->a.u32 = (*it)->b.u32;
+                            context->setDirtyPass();
                         }
                     }
                 }
@@ -162,8 +162,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->b.u32                     = (*it)->b.u32;
-                            context->passHasDoneSomething = true;
+                            ip->b.u32 = (*it)->b.u32;
+                            context->setDirtyPass();
                         }
                     }
                 }
@@ -176,8 +176,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->c.u32                     = (*it)->b.u32;
-                            context->passHasDoneSomething = true;
+                            ip->c.u32 = (*it)->b.u32;
+                            context->setDirtyPass();
                         }
                     }
                 }
@@ -190,8 +190,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
-                            ip->d.u32                     = (*it)->b.u32;
-                            context->passHasDoneSomething = true;
+                            ip->d.u32 = (*it)->b.u32;
+                            context->setDirtyPass();
                         }
                     }
                 }

@@ -51,6 +51,10 @@ constexpr uint32_t OCF_HAS_ERR       = 0x00000040;
 
 struct ByteCodeOptContext : JobContext
 {
+    // clang-format off
+    void setDirtyPass() { passHasDoneSomething = true; }
+    // clang-format on
+
     VectorNative<ByteCodeInstruction*>                  jumps;
     VectorNative<ByteCodeInstruction*>                  nops;
     VectorNative<ByteCodeInstruction*>                  vecInst;

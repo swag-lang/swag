@@ -17,8 +17,8 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         // Direct jump to a function return, just return now without the jump
         if (ip[0].op == ByteCodeOp::Jump && ByteCode::isRet(destIp))
         {
-            ip[0]                         = *destIp;
-            context->passHasDoneSomething = true;
+            ip[0] = *destIp;
+            context->setDirtyPass();
             continue;
         }
 
@@ -29,7 +29,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 break;
             ip->b.s32 += destIp->b.s32 + 1;
             destIp += destIp->b.s32 + 1;
-            context->passHasDoneSomething = true;
+            context->setDirtyPass();
         }
 
         // Jump to the next instruction
@@ -1491,7 +1491,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !(destIp->hasFlag(BCI_IMM_A)))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
             }
 
             // Jump if false to a jump if true with the same register
@@ -1502,7 +1502,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             {
                 ip->b.s32 += 1;
                 destIp[1].addFlag(BCI_START_STMT);
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
             }
 
             // If we have :
@@ -1531,7 +1531,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !(destIp->hasFlag(BCI_IMM_A)))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
             }
 
             // Jump if true to a jump if false with the same register
@@ -1542,7 +1542,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             {
                 ip->b.s32 += 1;
                 destIp[1].addFlag(BCI_START_STMT);
-                context->passHasDoneSomething = true;
+                context->setDirtyPass();
             }
 
             // If we have :

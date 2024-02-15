@@ -285,8 +285,8 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
         return;
 
     SWAG_ASSERT(ip->op != ByteCodeOp::End);
-    context->passHasDoneSomething = true;
-    ip->op                        = ByteCodeOp::Nop;
+    context->setDirtyPass();
+    ip->op = ByteCodeOp::Nop;
     context->nops.push_back(ip);
 }
 

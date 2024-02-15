@@ -88,13 +88,13 @@ struct ByteCodeOptimizer
         (__ip)->op                    = __op;     \
         (__ip)->sourceFile            = __FILE__; \
         (__ip)->sourceLine            = __LINE__; \
-        context->passHasDoneSomething = true;     \
+        context->setDirtyPass();                  \
     } while (0)
 #else
 #define SET_OP(__ip, __op)                    \
     do                                        \
     {                                         \
         (__ip)->op                    = __op; \
-        context->passHasDoneSomething = true; \
+        context->setDirtyPass();              \
     } while (0)
 #endif
