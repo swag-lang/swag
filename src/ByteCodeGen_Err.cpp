@@ -14,7 +14,7 @@ bool ByteCodeGen::emitInitStackTrace(ByteCodeGenContext* context)
 {
     if (context->sourceFile->module->buildCfg.errorStackTrace)
     {
-        PushICFlags ic(context, BCI_TRYCATCH);
+        PushICFlags ic(context, BCI_TRY_CATCH);
         const auto  node = context->node;
         SWAG_ASSERT(node->ownerFct && node->ownerFct->registerGetContext != UINT32_MAX);
         EMIT_INST1(context, ByteCodeOp::InternalInitStackTrace, node->ownerFct->registerGetContext);
@@ -216,7 +216,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
 {
     SWAG_CHECK(checkEscapedThrow(context));
 
-    PushICFlags ic(context, BCI_TRYCATCH);
+    PushICFlags ic(context, BCI_TRY_CATCH);
     const auto  node = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     const auto  expr = node->childs.front();
 
@@ -269,7 +269,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 {
     SWAG_CHECK(checkEscapedThrow(context));
 
-    PushICFlags ic(context, BCI_TRYCATCH);
+    PushICFlags ic(context, BCI_TRY_CATCH);
     const auto  node    = context->node;
     const auto  tryNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
 
@@ -338,7 +338,7 @@ bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
     if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)
         return true;
 
-    PushICFlags ic(context, BCI_TRYCATCH);
+    PushICFlags ic(context, BCI_TRY_CATCH);
 
     const auto node       = context->node;
     const auto assumeNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);

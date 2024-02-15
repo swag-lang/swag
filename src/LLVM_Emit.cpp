@@ -7,7 +7,7 @@
 
 void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
-    if (ip->flags & BCI_IMM_B)
+    if (ip->hasFlag(BCI_IMM_B))
     {
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
         const auto   r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
@@ -32,7 +32,7 @@ void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<
 
 void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
-    if (ip->flags & BCI_IMM_B)
+    if (ip->hasFlag(BCI_IMM_B))
     {
         const auto r2 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
         const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
@@ -57,13 +57,13 @@ void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
 
 void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
-    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
+    if ((ip->hasFlag(BCI_IMM_B)) && ip->b.u32 >= numBits)
     {
         const auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         const auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
         builder.CreateStore(v0, r0);
     }
-    else if (ip->flags & BCI_IMM_B)
+    else if (ip->hasFlag(BCI_IMM_B))
     {
         const auto   r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
@@ -87,13 +87,13 @@ void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& build
 
 void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left, bool isSigned)
 {
-    if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= numBits)
+    if ((ip->hasFlag(BCI_IMM_B)) && ip->b.u32 >= numBits)
     {
         const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         const auto v0 = llvm::ConstantInt::get(IX_TY(numBits), 0);
         builder.CreateStore(v0, r0);
     }
-    else if (ip->flags & BCI_IMM_B)
+    else if (ip->hasFlag(BCI_IMM_B))
     {
         const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         const auto r2 = builder.getIntN(numBits, ip->b.u8);
@@ -146,7 +146,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
 
 llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
-    if (ip->flags & BCI_IMM_A)
+    if (ip->hasFlag(BCI_IMM_A))
     {
         switch (numBits)
         {

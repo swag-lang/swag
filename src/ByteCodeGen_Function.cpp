@@ -2258,7 +2258,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
             SWAG_ASSERT(funcNode->registerStoreRR == UINT32_MAX);
             funcNode->registerStoreRR = reserveRegisterRC(context);
             const auto inst           = EMIT_INST1(context, ByteCodeOp::SaveRRtoRA, funcNode->registerStoreRR);
-            inst->flags |= BCI_UNPURE;
+            inst->flags |= BCI_NOT_PURE;
         }
     }
 

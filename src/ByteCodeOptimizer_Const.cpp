@@ -120,7 +120,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         auto       node       = ip->node;
         const auto sourceFile = node->sourceFile;
 
-        if (ip->flags & BCI_IMM_C)
+        if (ip->hasFlag(BCI_IMM_C))
         {
             switch (ip->op)
             {
@@ -145,7 +145,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
         }
 
-        if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->flags & BCI_IMM_D))
+        if ((ip->hasFlag(BCI_IMM_B)) && (ip->hasFlag(BCI_IMM_C)) && (ip->hasFlag(BCI_IMM_D)))
         {
             switch (ip->op)
             {
@@ -166,7 +166,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
         }
 
-        if ((ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
+        if ((ip->hasFlag(BCI_IMM_A)) && (ip->hasFlag(BCI_IMM_B)))
         {
             switch (ip->op)
             {
@@ -850,7 +850,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
         }
-        else if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C))
+        else if ((ip->hasFlag(BCI_IMM_B)) && (ip->hasFlag(BCI_IMM_C)))
         {
             switch (ip->op)
             {
@@ -887,7 +887,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
         }
-        else if (ip->flags & BCI_IMM_B)
+        else if (ip->hasFlag(BCI_IMM_B))
         {
             switch (ip->op)
             {
@@ -1255,7 +1255,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
         }
-        else if (ip->flags & BCI_IMM_C)
+        else if (ip->hasFlag(BCI_IMM_C))
         {
             switch (ip->op)
             {

@@ -173,7 +173,7 @@ ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* cont
     ins.node = context->forceNode ? context->forceNode : node;
 
     if (context->tryCatchScope)
-        ins.flags |= BCI_TRYCATCH;
+        ins.flags |= BCI_TRY_CATCH;
     if (ins.node && ins.node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON))
         ins.flags |= BCI_CAN_OVERFLOW;
 

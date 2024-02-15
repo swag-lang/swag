@@ -59,7 +59,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
     Utf8       str   = g_ByteCodeOpDesc[(int) ip->op].display;
     const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
-    if (ip->flags & BCI_IMM_A || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
+    if (ip->hasFlag(BCI_IMM_A) || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
     {
         str.replace("_rau8_", FMT("%u", ip->a.u8));
         str.replace("_rau16_", FMT("%u", ip->a.u16));
@@ -77,7 +77,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_ral32_", FMT("%u", ip->a.u64u32.low));
     }
 
-    if (ip->flags & BCI_IMM_B || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
+    if (ip->hasFlag(BCI_IMM_B) || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
     {
         str.replace("_rbu8_", FMT("%u", ip->b.u8));
         str.replace("_rbu16_", FMT("%u", ip->b.u16));
@@ -95,7 +95,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rbl32_", FMT("%u", ip->b.u64u32.low));
     }
 
-    if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
+    if (ip->hasFlag(BCI_IMM_C) || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
     {
         str.replace("_rcu8_", FMT("%u", ip->c.u8));
         str.replace("_rcu16_", FMT("%u", ip->c.u16));
@@ -113,7 +113,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rcl32_", FMT("%u", ip->c.u64u32.low));
     }
 
-    if (ip->flags & BCI_IMM_D || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
+    if (ip->hasFlag(BCI_IMM_D) || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
     {
         str.replace("_rdu8_", FMT("%u", ip->d.u8));
         str.replace("_rdu16_", FMT("%u", ip->d.u16));
@@ -256,27 +256,27 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     // Parameters
     const auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
     line.instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A,
-                                      opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
+                                      opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->hasFlag(BCI_IMM_A));
     line.instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B,
-                                      opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
+                                      opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->hasFlag(BCI_IMM_B));
     line.instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C,
-                                      opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
+                                      opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->hasFlag(BCI_IMM_C));
     line.instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D,
-                                      opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
+                                      opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->hasFlag(BCI_IMM_D));
     line.instRef.trim();
 
     // Flags
-    line.flags += ip->flags & BCI_SAFETY ? "S" : ".";
-    line.flags += ip->flags & BCI_TRYCATCH ? "E" : ".";
+    line.flags += ip->hasFlag(BCI_SAFETY) ? "S" : ".";
+    line.flags += ip->hasFlag(BCI_TRY_CATCH) ? "E" : ".";
     line.flags += ip->node && ip->node->ownerInline ? "I" : ".";
     line.flags += " ";
-    line.flags += ip->flags & BCI_IMM_A ? "A" : ".";
-    line.flags += ip->flags & BCI_IMM_B ? "B" : ".";
-    line.flags += ip->flags & BCI_IMM_C ? "C" : ".";
-    line.flags += ip->flags & BCI_IMM_D ? "D" : ".";
-    line.flags += ip->flags & BCI_START_STMT ? "S" : ".";
-    line.flags += ip->flags & BCI_UNPURE ? "U" : ".";
-    line.flags += ip->flags & BCI_CAN_OVERFLOW || (ip->node && ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) ? "O" : ".";
+    line.flags += ip->hasFlag(BCI_IMM_A) ? "A" : ".";
+    line.flags += ip->hasFlag(BCI_IMM_B) ? "B" : ".";
+    line.flags += ip->hasFlag(BCI_IMM_C) ? "C" : ".";
+    line.flags += ip->hasFlag(BCI_IMM_D) ? "D" : ".";
+    line.flags += ip->hasFlag(BCI_START_STMT) ? "S" : ".";
+    line.flags += ip->hasFlag(BCI_NOT_PURE) ? "U" : ".";
+    line.flags += ip->hasFlag(BCI_CAN_OVERFLOW) || (ip->node && ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) ? "O" : ".";
 
     // Pretty
     line.pretty = getPrettyInstruction(ip);

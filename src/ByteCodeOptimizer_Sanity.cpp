@@ -478,7 +478,7 @@ namespace
 
     bool getImmediateA(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
-        if (ip->flags & BCI_IMM_A)
+        if (ip->hasFlag(BCI_IMM_A))
         {
             result.kind = ValueKind::Constant;
             result.reg  = ip->b;
@@ -493,7 +493,7 @@ namespace
 
     bool getImmediateB(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
-        if (ip->flags & BCI_IMM_B)
+        if (ip->hasFlag(BCI_IMM_B))
         {
             result.kind = ValueKind::Constant;
             result.reg  = ip->b;
@@ -508,7 +508,7 @@ namespace
 
     bool getImmediateC(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
-        if (ip->flags & BCI_IMM_C)
+        if (ip->hasFlag(BCI_IMM_C))
         {
             result.kind = ValueKind::Constant;
             result.reg  = ip->c;
@@ -523,7 +523,7 @@ namespace
 
     bool getImmediateD(Value& result, const Context& cxt, const ByteCodeInstruction* ip)
     {
-        if (ip->flags & BCI_IMM_D)
+        if (ip->hasFlag(BCI_IMM_D))
         {
             result.kind = ValueKind::Constant;
             result.reg  = ip->d;
@@ -573,14 +573,14 @@ namespace
             if (ip->dynFlags & BCID_SAN_PASS)
                 return true;
 
-            if (ip->flags & BCI_SAFETY)
+            if (ip->hasFlag(BCI_SAFETY))
             {
                 ip->dynFlags |= BCID_SAN_PASS;
                 ip++;
                 continue;
             }
 
-            if (ip->flags & BCI_START_STMT_N)
+            if (ip->hasFlag(BCI_START_STMT_N))
                 cxt.canSetConstants = false;
 
             STATE()->ip = ip;
@@ -1239,7 +1239,7 @@ namespace
                 break;
 
             case ByteCodeOp::CopyRAtoRR:
-                if (ip->flags & BCI_IMM_A)
+                if (ip->hasFlag(BCI_IMM_A))
                     break;
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                 if (ra->kind == ValueKind::StackAddr)
@@ -1247,7 +1247,7 @@ namespace
                 break;
 
             case ByteCodeOp::CopyRARBtoRR2:
-                if (ip->flags & BCI_IMM_A)
+                if (ip->hasFlag(BCI_IMM_A))
                     break;
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
                 SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));

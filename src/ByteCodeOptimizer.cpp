@@ -115,7 +115,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     ByteCodeOptTreeNode* treeNode = &context->tree[nodeIdx];
     treeNode->end                 = treeNode->start;
 
-    while (!ByteCode::isRet(treeNode->end) && !ByteCode::isJumpOrDyn(treeNode->end) && !(treeNode->end[1].flags & BCI_START_STMT))
+    while (!ByteCode::isRet(treeNode->end) && !ByteCode::isJumpOrDyn(treeNode->end) && !(treeNode->end[1].hasFlag(BCI_START_STMT)))
     {
         setContextFlags(context, treeNode->end);
         if (computeCrc)
@@ -278,7 +278,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop)
         return;
-    if (ip->flags & BCI_UNPURE && ip->op != ByteCodeOp::ClearRA)
+    if (ip->hasFlag(BCI_NOT_PURE) && ip->op != ByteCodeOp::ClearRA)
         return;
     const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
     if (flags & OPFLAG_UNPURE)
@@ -450,7 +450,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(jump->d.u64 & 0xFFFFFFFF));
             for (uint32_t i = 0; i < jump->c.u32; i++)
             {
-                if (jump->flags & BCI_SAFETY)
+                if (jump->hasFlag(BCI_SAFETY))
                     jump[table[i] + 1].flags |= BCI_START_STMT_S;
                 else
                     jump[table[i] + 1].flags |= BCI_START_STMT_N;
@@ -458,7 +458,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
         }
         else
         {
-            if (jump->flags & BCI_SAFETY)
+            if (jump->hasFlag(BCI_SAFETY))
                 jump[jump->b.s32 + 1].flags |= BCI_START_STMT_S;
             else
                 jump[jump->b.s32 + 1].flags |= BCI_START_STMT_N;
@@ -622,7 +622,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
                 const auto ip = optContext.bc->out + i;
                 ++g_Stats.countOpFreq[(int) ip[0].op][(int) ByteCodeOp::End];
 
-                if (ip[1].flags & BCI_START_STMT)
+                if (ip[1].hasFlag(BCI_START_STMT))
                     continue;
                 ++g_Stats.countOpFreq[(int) ip[0].op][(int) ip[1].op];
             }

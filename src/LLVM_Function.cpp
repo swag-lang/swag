@@ -99,11 +99,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
             continue;
-        if (ip->flags & BCI_NO_BACKEND)
+        if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
 
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
-        if ((ip->flags & BCI_JUMP_DEST) || blockIsClosed)
+        if ((ip->hasFlag(BCI_JUMP_DEST)) || blockIsClosed)
         {
             auto label = getOrCreateLabel(pp, func, i);
             if (!blockIsClosed)
@@ -342,7 +342,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto         r1 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             llvm::Value* r2;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r2 = builder.getInt64(ip->b.u64);
             else
                 r2 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
@@ -358,7 +358,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto         r1 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             llvm::Value* r2;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r2 = builder.getInt64(ip->b.u64 * ip->d.u64);
             else
             {
@@ -1135,7 +1135,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             auto         r0 = builder.CreateInBoundsGEP(I8_TY(), ra, CST_RC32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt8(ip->b.u8);
             else
                 r1 = builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32));
@@ -1147,7 +1147,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             auto         r0 = GEP8_PTR_I16(ra, ip->c.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt16(ip->b.u16);
             else
                 r1 = builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32));
@@ -1159,7 +1159,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             auto         r0 = GEP8_PTR_I32(ra, ip->c.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt32(ip->b.u32);
             else
                 r1 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
@@ -1171,7 +1171,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
             auto         r0 = GEP8_PTR_I64(ra, ip->c.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt64(ip->b.u64);
             else
                 r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
@@ -1183,7 +1183,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto         r0 = GEP8(allocStack, ip->a.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt8(ip->b.u8);
             else
                 r1 = builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32));
@@ -1194,7 +1194,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt16(ip->b.u16);
             else
                 r1 = builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32));
@@ -1205,7 +1205,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt32(ip->b.u32);
             else
                 r1 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
@@ -1216,7 +1216,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32);
             llvm::Value* r1;
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 r1 = builder.getInt64(ip->b.u64);
             else
                 r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
@@ -1229,7 +1229,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8(allocStack, ip->a.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_B)
+                if (ip->hasFlag(BCI_IMM_B))
                     r1 = builder.getInt8(ip->b.u8);
                 else
                     r1 = builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32));
@@ -1238,7 +1238,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8(allocStack, ip->c.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_D)
+                if (ip->hasFlag(BCI_IMM_D))
                     r1 = builder.getInt8(ip->d.u8);
                 else
                     r1 = builder.CreateLoad(I8_TY(), GEP64(allocR, ip->d.u32));
@@ -1251,7 +1251,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_B)
+                if (ip->hasFlag(BCI_IMM_B))
                     r1 = builder.getInt16(ip->b.u16);
                 else
                     r1 = builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32));
@@ -1260,7 +1260,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8_PTR_I16(allocStack, ip->c.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_D)
+                if (ip->hasFlag(BCI_IMM_D))
                     r1 = builder.getInt16(ip->d.u16);
                 else
                     r1 = builder.CreateLoad(I16_TY(), GEP64(allocR, ip->d.u32));
@@ -1273,7 +1273,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_B)
+                if (ip->hasFlag(BCI_IMM_B))
                     r1 = builder.getInt32(ip->b.u32);
                 else
                     r1 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
@@ -1282,7 +1282,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8_PTR_I32(allocStack, ip->c.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_D)
+                if (ip->hasFlag(BCI_IMM_D))
                     r1 = builder.getInt32(ip->d.u32);
                 else
                     r1 = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->d.u32));
@@ -1295,7 +1295,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_B)
+                if (ip->hasFlag(BCI_IMM_B))
                     r1 = builder.getInt64(ip->b.u64);
                 else
                     r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
@@ -1304,7 +1304,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto         r0 = GEP8_PTR_I64(allocStack, ip->c.u32);
                 llvm::Value* r1;
-                if (ip->flags & BCI_IMM_D)
+                if (ip->hasFlag(BCI_IMM_D))
                     r1 = builder.getInt64(ip->d.u64);
                 else
                     r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32));
@@ -4191,7 +4191,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::CopyRBtoRRRet:
-            getReturnResult(context, buildParameters, returnType, ip->flags & BCI_IMM_B, ip->b, allocR, allocResult);
+            getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_B), ip->b, allocR, allocResult);
             [[fallthrough]];
         case ByteCodeOp::Ret:
         {
@@ -4807,7 +4807,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::CopyRAtoRR:
-            getReturnResult(context, buildParameters, returnType, ip->flags & BCI_IMM_A, ip->a, allocR, allocResult);
+            getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
             break;
         case ByteCodeOp::CopyRARBtoRR2:
         {

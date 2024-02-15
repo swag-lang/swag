@@ -564,7 +564,6 @@ namespace OS
         MessageBoxA(nullptr, expr, title, MB_OK | MB_ICONERROR);
     }
 
-    [[noreturn]]
     void exit(int code)
     {
         ExitProcess(code);

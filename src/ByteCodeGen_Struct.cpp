@@ -1182,7 +1182,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
 			return context->report(diag);
 		}
 
-		PushICFlags sf(context, BCI_POST_COPYMOVE);
+		PushICFlags sf(context, BCI_POST_COPY_MOVE);
 		if (typeInfoStruct->opPostCopy || typeInfoStruct->opUserPostCopyFct)
 		{
 			EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
@@ -1193,7 +1193,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
 	// A move
 	else
 	{
-		PushICFlags sf(context, BCI_POST_COPYMOVE);
+		PushICFlags sf(context, BCI_POST_COPY_MOVE);
 		if (typeInfoStruct->opPostMove || typeInfoStruct->opUserPostMoveFct)
 		{
 			EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);

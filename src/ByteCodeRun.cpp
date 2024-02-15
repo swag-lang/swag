@@ -16,43 +16,45 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-#define IMMA_U8(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u8 : registersRC[(ip)->a.u32].u8)
-#define IMMA_U16(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u16 : registersRC[(ip)->a.u32].u16)
-#define IMMA_U32(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u32 : registersRC[(ip)->a.u32].u32)
-#define IMMA_U64(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.u64 : registersRC[(ip)->a.u32].u64)
-#define IMMA_S8(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s8 : registersRC[(ip)->a.u32].s8)
-#define IMMA_S16(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s16 : registersRC[(ip)->a.u32].s16)
-#define IMMA_S32(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s32 : registersRC[(ip)->a.u32].s32)
-#define IMMA_S64(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.s64 : registersRC[(ip)->a.u32].s64)
-#define IMMA_F32(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.f32 : registersRC[(ip)->a.u32].f32)
-#define IMMA_F64(ip) (((ip)->flags & BCI_IMM_A) ? (ip)->a.f64 : registersRC[(ip)->a.u32].f64)
+// clang-format off
+#define IMMA_U8(ip)  ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u8  : registersRC[(ip)->a.u32].u8)
+#define IMMA_U16(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u16 : registersRC[(ip)->a.u32].u16)
+#define IMMA_U32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u32 : registersRC[(ip)->a.u32].u32)
+#define IMMA_U64(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u64 : registersRC[(ip)->a.u32].u64)
+#define IMMA_S8(ip)  ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s8  : registersRC[(ip)->a.u32].s8)
+#define IMMA_S16(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s16 : registersRC[(ip)->a.u32].s16)
+#define IMMA_S32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s32 : registersRC[(ip)->a.u32].s32)
+#define IMMA_S64(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s64 : registersRC[(ip)->a.u32].s64)
+#define IMMA_F32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.f32 : registersRC[(ip)->a.u32].f32)
+#define IMMA_F64(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.f64 : registersRC[(ip)->a.u32].f64)
 
-#define IMMB_U8(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u8 : registersRC[(ip)->b.u32].u8)
-#define IMMB_U16(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u16 : registersRC[(ip)->b.u32].u16)
-#define IMMB_U32(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u32 : registersRC[(ip)->b.u32].u32)
-#define IMMB_U64(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.u64 : registersRC[(ip)->b.u32].u64)
-#define IMMB_S8(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s8 : registersRC[(ip)->b.u32].s8)
-#define IMMB_S16(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s16 : registersRC[(ip)->b.u32].s16)
-#define IMMB_S32(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s32 : registersRC[(ip)->b.u32].s32)
-#define IMMB_S64(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.s64 : registersRC[(ip)->b.u32].s64)
-#define IMMB_F32(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.f32 : registersRC[(ip)->b.u32].f32)
-#define IMMB_F64(ip) (((ip)->flags & BCI_IMM_B) ? (ip)->b.f64 : registersRC[(ip)->b.u32].f64)
+#define IMMB_U8(ip)  ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u8  : registersRC[(ip)->b.u32].u8)
+#define IMMB_U16(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u16 : registersRC[(ip)->b.u32].u16)
+#define IMMB_U32(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u32 : registersRC[(ip)->b.u32].u32)
+#define IMMB_U64(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u64 : registersRC[(ip)->b.u32].u64)
+#define IMMB_S8(ip)  ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s8  : registersRC[(ip)->b.u32].s8)
+#define IMMB_S16(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s16 : registersRC[(ip)->b.u32].s16)
+#define IMMB_S32(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s32 : registersRC[(ip)->b.u32].s32)
+#define IMMB_S64(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s64 : registersRC[(ip)->b.u32].s64)
+#define IMMB_F32(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.f32 : registersRC[(ip)->b.u32].f32)
+#define IMMB_F64(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.f64 : registersRC[(ip)->b.u32].f64)
 
-#define IMMC_U8(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u8 : registersRC[(ip)->c.u32].u8)
-#define IMMC_U16(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u16 : registersRC[(ip)->c.u32].u16)
-#define IMMC_U32(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u32 : registersRC[(ip)->c.u32].u32)
-#define IMMC_U64(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.u64 : registersRC[(ip)->c.u32].u64)
-#define IMMC_S8(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s8 : registersRC[(ip)->c.u32].s8)
-#define IMMC_S16(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s16 : registersRC[(ip)->c.u32].s16)
-#define IMMC_S32(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s32 : registersRC[(ip)->c.u32].s32)
-#define IMMC_S64(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.s64 : registersRC[(ip)->c.u32].s64)
-#define IMMC_F32(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.f32 : registersRC[(ip)->c.u32].f32)
-#define IMMC_F64(ip) (((ip)->flags & BCI_IMM_C) ? (ip)->c.f64 : registersRC[(ip)->c.u32].f64)
+#define IMMC_U8(ip)  ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u8  : registersRC[(ip)->c.u32].u8)
+#define IMMC_U16(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u16 : registersRC[(ip)->c.u32].u16)
+#define IMMC_U32(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u32 : registersRC[(ip)->c.u32].u32)
+#define IMMC_U64(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u64 : registersRC[(ip)->c.u32].u64)
+#define IMMC_S8(ip)  ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s8  : registersRC[(ip)->c.u32].s8)
+#define IMMC_S16(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s16 : registersRC[(ip)->c.u32].s16)
+#define IMMC_S32(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s32 : registersRC[(ip)->c.u32].s32)
+#define IMMC_S64(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s64 : registersRC[(ip)->c.u32].s64)
+#define IMMC_F32(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.f32 : registersRC[(ip)->c.u32].f32)
+#define IMMC_F64(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.f64 : registersRC[(ip)->c.u32].f64)
 
-#define IMMD_U8(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u8 : registersRC[(ip)->d.u32].u8)
-#define IMMD_U16(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u16 : registersRC[(ip)->d.u32].u16)
-#define IMMD_U32(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
-#define IMMD_U64(ip) (((ip)->flags & BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
+#define IMMD_U8(ip)  ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u8  : registersRC[(ip)->d.u32].u8)
+#define IMMD_U16(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u16 : registersRC[(ip)->d.u32].u16)
+#define IMMD_U32(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
+#define IMMD_U64(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
+// clang-format on
 
 SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
@@ -192,7 +194,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
     {
-        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
+        auto& rb = (ip->hasFlag(BCI_IMM_B)) ? ip->b : registersRC[ip->b.u32];
         SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, {}, {}, !context->forConstExpr));
         break;
     }
@@ -208,8 +210,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     {
-        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-        auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
+        auto& rb = (ip->hasFlag(BCI_IMM_B)) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = (ip->hasFlag(BCI_IMM_C)) ? ip->c : registersRC[ip->c.u32];
         SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, {}, !context->forConstExpr));
         break;
     }
@@ -217,9 +219,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicMulAddF32:
     case ByteCodeOp::IntrinsicMulAddF64:
     {
-        auto& rb = (ip->flags & BCI_IMM_B) ? ip->b : registersRC[ip->b.u32];
-        auto& rc = (ip->flags & BCI_IMM_C) ? ip->c : registersRC[ip->c.u32];
-        auto& rd = (ip->flags & BCI_IMM_D) ? ip->d : registersRC[ip->d.u32];
+        auto& rb = (ip->hasFlag(BCI_IMM_B)) ? ip->b : registersRC[ip->b.u32];
+        auto& rc = (ip->hasFlag(BCI_IMM_C)) ? ip->c : registersRC[ip->c.u32];
+        auto& rd = (ip->hasFlag(BCI_IMM_D)) ? ip->d : registersRC[ip->d.u32];
         SWAG_CHECK(executeMathIntrinsic(&context->jc, ip, registersRC[ip->a.u32], rb, rc, rd, !context->forConstExpr));
         break;
     }

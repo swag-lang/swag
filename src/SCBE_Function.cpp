@@ -210,13 +210,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
             continue;
-        if (ip->flags & BCI_NO_BACKEND)
+        if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
 
         if (debug)
             SCBEDebug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
 
-        if (ip->flags & BCI_JUMP_DEST)
+        if (ip->hasFlag(BCI_JUMP_DEST))
             pp.getOrCreateLabel(i);
 
         if (ip->flags & (BCI_START_STMT | BCI_JUMP_DEST))
@@ -1574,7 +1574,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
             else
                 MK_BINOPEQ8_SCAB(CPUOp::ADD);
@@ -1591,7 +1591,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
             else
                 MK_BINOPEQ16_SCAB(CPUOp::ADD);
@@ -1608,7 +1608,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpPlusEqS32_SSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
             else
                 MK_BINOPEQ32_SCAB(CPUOp::ADD);
@@ -1625,7 +1625,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpPlusEqS64_SSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_IncN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
             else
                 MK_BINOPEQ64_SCAB(CPUOp::ADD);
@@ -1688,7 +1688,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSafe:
         case ByteCodeOp::AffectOpMinusEqU8_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
             else
                 MK_BINOPEQ8_SCAB(CPUOp::SUB);
@@ -1705,7 +1705,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSafe:
         case ByteCodeOp::AffectOpMinusEqU16_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
             else
                 MK_BINOPEQ16_SCAB(CPUOp::SUB);
@@ -1722,7 +1722,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpMinusEqS32_SSafe:
         case ByteCodeOp::AffectOpMinusEqU32_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
             else
                 MK_BINOPEQ32_SCAB(CPUOp::SUB);
@@ -1739,7 +1739,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::AffectOpMinusEqS64_SSafe:
         case ByteCodeOp::AffectOpMinusEqU64_SSafe:
-            if (ip->flags & BCI_IMM_B && ip->b.u32 == 1)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                 pp.emit_DecN_Indirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
             else
                 MK_BINOPEQ64_SCAB(CPUOp::SUB);
@@ -2954,7 +2954,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::SetAtPointer8:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store8_Immediate(ip->c.u32, ip->b.u8, RAX);
             else
             {
@@ -2964,7 +2964,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::SetAtPointer16:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store16_Immediate(ip->c.u32, ip->b.u16, RAX);
             else
             {
@@ -2974,7 +2974,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         case ByteCodeOp::SetAtPointer32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store32_Immediate(ip->c.u32, ip->b.u32, RAX);
             else
             {
@@ -2983,12 +2983,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtPointer64:
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 pp.emit_Store64_Immediate(ip->c.u32, ip->b.u64, RAX);
             }
-            else if (ip->flags & BCI_IMM_B)
+            else if (ip->hasFlag(BCI_IMM_B))
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 pp.emit_Load64_Immediate(RCX, ip->b.u64);
@@ -3005,7 +3005,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::SetAtStackPointer8:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store8_Immediate(offsetStack + ip->a.u32, ip->b.u8, RDI);
             else
             {
@@ -3014,7 +3014,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtStackPointer16:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store16_Immediate(offsetStack + ip->a.u32, ip->b.u16, RDI);
             else
             {
@@ -3023,7 +3023,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtStackPointer32:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store32_Immediate(offsetStack + ip->a.u32, ip->b.u32, RDI);
             else
             {
@@ -3032,9 +3032,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtStackPointer64:
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
                 pp.emit_Store64_Immediate(offsetStack + ip->a.u32, ip->b.u64, RDI);
-            else if (ip->flags & BCI_IMM_B)
+            else if (ip->hasFlag(BCI_IMM_B))
             {
                 pp.emit_Load64_Immediate(RAX, ip->b.u64);
                 pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -3049,7 +3049,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::SetAtStackPointer8x2:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store8_Immediate(offsetStack + ip->a.u32, ip->b.u8, RDI);
             else
             {
@@ -3057,7 +3057,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emit_Store8_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
 
-            if (ip->flags & BCI_IMM_D)
+            if (ip->hasFlag(BCI_IMM_D))
                 pp.emit_Store8_Immediate(offsetStack + ip->c.u32, ip->d.u8, RDI);
             else
             {
@@ -3066,7 +3066,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtStackPointer16x2:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store16_Immediate(offsetStack + ip->a.u32, ip->b.u16, RDI);
             else
             {
@@ -3074,7 +3074,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emit_Store16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
 
-            if (ip->flags & BCI_IMM_D)
+            if (ip->hasFlag(BCI_IMM_D))
                 pp.emit_Store16_Immediate(offsetStack + ip->c.u32, ip->d.u16, RDI);
             else
             {
@@ -3083,7 +3083,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtStackPointer32x2:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.emit_Store32_Immediate(offsetStack + ip->a.u32, ip->b.u32, RDI);
             else
             {
@@ -3091,7 +3091,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emit_Store32_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
 
-            if (ip->flags & BCI_IMM_D)
+            if (ip->hasFlag(BCI_IMM_D))
                 pp.emit_Store32_Immediate(offsetStack + ip->c.u32, ip->d.u32, RDI);
             else
             {
@@ -3100,9 +3100,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::SetAtStackPointer64x2:
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
                 pp.emit_Store64_Immediate(offsetStack + ip->a.u32, ip->b.u64, RDI);
-            else if (ip->flags & BCI_IMM_B)
+            else if (ip->hasFlag(BCI_IMM_B))
             {
                 pp.emit_Load64_Immediate(RAX, ip->b.u64);
                 pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
@@ -3113,9 +3113,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emit_Store64_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             }
 
-            if (ip->flags & BCI_IMM_D && ip->d.u64 <= 0x7FFFFFFF)
+            if (ip->hasFlag(BCI_IMM_D) && ip->d.u64 <= 0x7FFFFFFF)
                 pp.emit_Store64_Immediate(offsetStack + ip->c.u32, ip->d.u64, RDI);
-            else if (ip->flags & BCI_IMM_D)
+            else if (ip->hasFlag(BCI_IMM_D))
             {
                 pp.emit_Load64_Immediate(RAX, ip->d.u64);
                 pp.emit_Store64_Indirect(offsetStack + ip->c.u32, RAX, RDI);
@@ -3230,7 +3230,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::IntrinsicMemCpy:
-            if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && !buildParameters.isDebug())
+            if ((ip->hasFlag(BCI_IMM_C)) && ip->c.u64 <= 128 && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
@@ -3241,7 +3241,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.pushParams.clear();
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
-                if (ip->flags & BCI_IMM_C)
+                if (ip->hasFlag(BCI_IMM_C))
                     pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
                 else
                     pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
@@ -3249,7 +3249,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
-            if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && !buildParameters.isDebug())
+            if ((ip->hasFlag(BCI_IMM_B)) && (ip->hasFlag(BCI_IMM_C)) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emit_ClearX(ip->c.u32, 0, RCX);
@@ -3258,11 +3258,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 pp.pushParams.clear();
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
-                if (ip->flags & BCI_IMM_B)
+                if (ip->hasFlag(BCI_IMM_B))
                     pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u8});
                 else
                     pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
-                if (ip->flags & BCI_IMM_C)
+                if (ip->hasFlag(BCI_IMM_C))
                     pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
                 else
                     pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
@@ -3273,7 +3273,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
-            if (ip->flags & BCI_IMM_C)
+            if (ip->hasFlag(BCI_IMM_C))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
@@ -3283,7 +3283,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
-            if (ip->flags & BCI_IMM_D)
+            if (ip->hasFlag(BCI_IMM_D))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->d.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->d.u32});
@@ -3446,11 +3446,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::CopyRAtoRR:
             pp.emit_LoadAddress_Indirect(offsetResult, RAX, RDI);
-            if (ip->flags & BCI_IMM_A && ip->a.u64 <= 0x7FFFFFFF)
+            if (ip->hasFlag(BCI_IMM_A) && ip->a.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Store64_Immediate(0, ip->a.u64, RAX);
             }
-            else if (ip->flags & BCI_IMM_A)
+            else if (ip->hasFlag(BCI_IMM_A))
             {
                 pp.emit_Load64_Immediate(RCX, ip->a.u64);
                 pp.emit_Store64_Indirect(0, RCX, RAX);
@@ -3802,11 +3802,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::CopyRBtoRRRet:
             pp.emit_LoadAddress_Indirect(offsetResult, RAX, RDI);
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Store64_Immediate(0, ip->b.u64, RAX);
             }
-            else if (ip->flags & BCI_IMM_B)
+            else if (ip->hasFlag(BCI_IMM_B))
             {
                 pp.emit_Load64_Immediate(RCX, ip->b.u64);
                 pp.emit_Store64_Indirect(0, RCX, RAX);
@@ -4468,11 +4468,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::IntrinsicF32x2:
         {
             pp.pushParams.clear();
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u32});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
-            if (ip->flags & BCI_IMM_C)
+            if (ip->hasFlag(BCI_IMM_C))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u32});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
@@ -4508,11 +4508,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::IntrinsicF64x2:
         {
             pp.pushParams.clear();
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
-            if (ip->flags & BCI_IMM_C)
+            if (ip->hasFlag(BCI_IMM_C))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
@@ -4549,7 +4549,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::IntrinsicF32x1:
         {
             pp.pushParams.clear();
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u32});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
@@ -4635,7 +4635,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::IntrinsicF64x1:
         {
             pp.pushParams.clear();
-            if (ip->flags & BCI_IMM_B)
+            if (ip->hasFlag(BCI_IMM_B))
                 pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});

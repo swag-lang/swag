@@ -35,7 +35,7 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
         {
             for (int i = 0; i < countErrInst; i++)
             {
-                if (ip[i].flags & BCI_START_STMT)
+                if (ip[i].hasFlag(BCI_START_STMT))
                 {
                     invalid = true;
                     break;

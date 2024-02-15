@@ -14,7 +14,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::CopyRRtoRA)
         {
             auto ipScan = ip + 1;
-            while (!ByteCode::isRet(ipScan) && !(ipScan->flags & BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            while (!ByteCode::isRet(ipScan) && !(ipScan->hasFlag(BCI_START_STMT)) && !ByteCode::isJump(ipScan))
             {
                 if (ipScan->op == ByteCodeOp::CopyRRtoRA && ipScan->a.u32 == ip->a.u32)
                 {
@@ -37,7 +37,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
         else if (ip->op == ByteCodeOp::GetParam64)
         {
             auto ipScan = ip + 1;
-            while (!ByteCode::isRet(ipScan) && !(ipScan->flags & BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            while (!ByteCode::isRet(ipScan) && !(ipScan->hasFlag(BCI_START_STMT)) && !ByteCode::isJump(ipScan))
             {
                 if (ipScan->op == ByteCodeOp::GetIncParam64 &&
                     ipScan->a.u32 == ip->a.u32 &&
@@ -59,7 +59,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
         else if (ip->op == ByteCodeOp::GetIncParam64)
         {
             auto ipScan = ip + 1;
-            while (!ByteCode::isRet(ipScan) && !(ipScan->flags & BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            while (!ByteCode::isRet(ipScan) && !(ipScan->hasFlag(BCI_START_STMT)) && !ByteCode::isJump(ipScan))
             {
                 if (ipScan->op == ByteCodeOp::GetIncParam64 &&
                     ipScan->a.u32 == ip->a.u32 &&

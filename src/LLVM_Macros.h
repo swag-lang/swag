@@ -71,30 +71,30 @@
 #define TO_PTR_PTR_IX(__r, __numBits) TO_PTR_IX(__r, __n)->getPointerTo())
 #define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
-#define MK_IMMA_8() (ip->flags & BCI_IMM_A) ? (llvm::Value*) builder.getInt8(ip->a.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_16() (ip->flags & BCI_IMM_A) ? (llvm::Value*) builder.getInt16(ip->a.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_32() (ip->flags & BCI_IMM_A) ? (llvm::Value*) builder.getInt32(ip->a.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_64() (ip->flags & BCI_IMM_A) ? (llvm::Value*) builder.getInt64(ip->a.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_F32() (ip->flags & BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->a.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_F64() (ip->flags & BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->a.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_8() (ip->hasFlag(BCI_IMM_A)) ? (llvm::Value*) builder.getInt8(ip->a.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_16() (ip->hasFlag(BCI_IMM_A)) ? (llvm::Value*) builder.getInt16(ip->a.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_32() (ip->hasFlag(BCI_IMM_A)) ? (llvm::Value*) builder.getInt32(ip->a.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_64() (ip->hasFlag(BCI_IMM_A)) ? (llvm::Value*) builder.getInt64(ip->a.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_F32() (ip->hasFlag(BCI_IMM_A)) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->a.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_F64() (ip->hasFlag(BCI_IMM_A)) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->a.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->a.u32))
 
-#define MK_IMMB_8() (ip->flags & BCI_IMM_B) ? (llvm::Value*) builder.getInt8(ip->b.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_16() (ip->flags & BCI_IMM_B) ? (llvm::Value*) builder.getInt16(ip->b.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_32() (ip->flags & BCI_IMM_B) ? (llvm::Value*) builder.getInt32(ip->b.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_64() (ip->flags & BCI_IMM_B) ? (llvm::Value*) builder.getInt64(ip->b.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_F32() (ip->flags & BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->b.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_F64() (ip->flags & BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->b.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_8() (ip->hasFlag(BCI_IMM_B)) ? (llvm::Value*) builder.getInt8(ip->b.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_16() (ip->hasFlag(BCI_IMM_B)) ? (llvm::Value*) builder.getInt16(ip->b.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_32() (ip->hasFlag(BCI_IMM_B)) ? (llvm::Value*) builder.getInt32(ip->b.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_64() (ip->hasFlag(BCI_IMM_B)) ? (llvm::Value*) builder.getInt64(ip->b.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_F32() (ip->hasFlag(BCI_IMM_B)) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->b.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_F64() (ip->hasFlag(BCI_IMM_B)) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->b.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->b.u32))
 
-#define MK_IMMC_8() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt8(ip->c.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_16() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt16(ip->c.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_32() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt32(ip->c.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_64() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt64(ip->c.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_F32() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->c.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_F64() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->c.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_8() (ip->hasFlag(BCI_IMM_C)) ? (llvm::Value*) builder.getInt8(ip->c.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_16() (ip->hasFlag(BCI_IMM_C)) ? (llvm::Value*) builder.getInt16(ip->c.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_32() (ip->hasFlag(BCI_IMM_C)) ? (llvm::Value*) builder.getInt32(ip->c.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_64() (ip->hasFlag(BCI_IMM_C)) ? (llvm::Value*) builder.getInt64(ip->c.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_F32() (ip->hasFlag(BCI_IMM_C)) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->c.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_F64() (ip->hasFlag(BCI_IMM_C)) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->c.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->c.u32))
 
-#define MK_IMMD_64() (ip->flags & BCI_IMM_D) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_F32() (ip->flags & BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->d.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_F64() (ip->flags & BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->d.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_64() (ip->hasFlag(BCI_IMM_D)) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_F32() (ip->hasFlag(BCI_IMM_D)) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->d.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_F64() (ip->hasFlag(BCI_IMM_D)) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->d.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->d.u32))
 
 #define MK_BINOP8_CAB()                                \
     auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
@@ -215,8 +215,8 @@
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                             \
     do                                                                                                                     \
     {                                                                                                                      \
-        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true; \
-        if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))                            \
+        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->hasFlag(BCI_CAN_OVERFLOW)) ? false : true; \
+        if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->hasFlag(BCI_CANT_OVERFLOW)))                            \
         {                                                                                                                  \
             auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, builder.CreateLoad(__type, r1), r2);          \
             auto v0 = builder.CreateExtractValue(vs, {0});                                                                 \
@@ -244,8 +244,8 @@
 #define OP_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                               \
     do                                                                                                                     \
     {                                                                                                                      \
-        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true; \
-        if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))                            \
+        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->hasFlag(BCI_CAN_OVERFLOW)) ? false : true; \
+        if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->hasFlag(BCI_CANT_OVERFLOW)))                            \
         {                                                                                                                  \
             auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, r1, r2);                                      \
             auto v0 = builder.CreateExtractValue(vs, {0});                                                                 \

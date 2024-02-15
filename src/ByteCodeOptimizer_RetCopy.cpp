@@ -95,7 +95,7 @@ namespace
 
         // We need to remove every instructions related to the post move
         ip += 2;
-        while (ip->flags & BCI_POST_COPYMOVE)
+        while (ip->hasFlag(BCI_POST_COPY_MOVE))
             ByteCodeOptimizer::setNop(context, ip++);
     }
 }
@@ -187,7 +187,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
                 ip++;
             if (ip->op == ByteCodeOp::PopRR)
                 ip++;
-            while (ip->flags & BCI_TRYCATCH)
+            while (ip->hasFlag(BCI_TRY_CATCH))
                 ip++;
 
             // This will copy the result in the real variable
@@ -303,7 +303,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 ip++;
             if (ip->op == ByteCodeOp::PopRR)
                 ip++;
-            while (ip->flags & BCI_TRYCATCH)
+            while (ip->hasFlag(BCI_TRY_CATCH))
                 ip++;
 
             // This will copy the result in the real variable
@@ -360,7 +360,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                     setNop(context, ip);
                     // We need to remove every instructions related to the post move
                     ip += 1;
-                    while (ip->flags & BCI_POST_COPYMOVE)
+                    while (ip->hasFlag(BCI_POST_COPY_MOVE))
                         setNop(context, ip++);
                 }
             }

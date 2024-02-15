@@ -25,7 +25,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 
             case ByteCodeOp::IncPointer64:
             case ByteCodeOp::DecPointer64:
-                if (!(ip->flags & BCI_IMM_B))
+                if (!(ip->hasFlag(BCI_IMM_B)))
                     continue;
                 break;
             default:
@@ -38,7 +38,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             {
                 if (ipn->op == ByteCodeOp::Ret || ipn->op == ByteCodeOp::CopyRBtoRRRet)
                     break;
-                if (ipn->flags & BCI_START_STMT)
+                if (ipn->hasFlag(BCI_START_STMT))
                     break;
                 if (ipn->op == ByteCodeOp::Nop)
                     break;
@@ -151,9 +151,9 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 swap(ip[0].node, ip[1].node);
                 swap(ip[0].location, ip[1].location);
 
-                if (ip[1].flags & BCI_START_STMT)
+                if (ip[1].hasFlag(BCI_START_STMT))
                 {
-                    ip[0].flags |= ip[1].flags & BCI_START_STMT;
+                    ip[0].inheritFlag(ip + 1, BCI_START_STMT);
                     ip[1].flags &= ~BCI_START_STMT;
                 }
 
