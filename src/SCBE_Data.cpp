@@ -52,7 +52,7 @@ bool SCBE::buildRelocationSegment(const BuildParameters& buildParameters, DataSe
 
     for (auto& k : dataSegment->initFuncPtr)
     {
-        *(void**) dataSegment->address(k.first) = nullptr;
+        *reinterpret_cast<void**>(dataSegment->address(k.first)) = nullptr;
 
         const auto sym       = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
         reloc.virtualAddress = k.first;

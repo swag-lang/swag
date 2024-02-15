@@ -2332,7 +2332,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 
-            auto            tableConstant = (int32_t*) addrConstant;
+            auto            tableConstant = reinterpret_cast<int32_t*>(addrConstant);
             CPULabelToSolve label;
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
@@ -3520,7 +3520,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::CopySPVaargs:
         {
-            auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+            auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
             if (!pushRVParams.empty())
             {
                 auto     sizeOf            = pushRVParams[0].second;
@@ -3669,8 +3669,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::MakeLambda:
         {
-            auto funcNode = castAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == (ByteCode*) ip->c.pointer));
+            auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
+            SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
             Utf8 callName = funcNode->getCallName();
             pp.emit_Load64_Immediate(RAX, 0, true);
 
@@ -3720,7 +3720,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto callBc  = (ByteCode*) ip->a.pointer;
+            auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
             auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
             emitCall(pp, typeFct, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
             pushRAParams.clear();
@@ -3756,7 +3756,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
         {
-            auto typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
             // Test if it's a bytecode lambda
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), R10);

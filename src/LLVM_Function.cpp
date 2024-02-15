@@ -3411,7 +3411,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::JumpDyn64:
         case ByteCodeOp::JumpDyn32:
         {
-            auto tableCompiler = (int32_t*) buildParameters.module->compilerSegment.address(ip->d.u32);
+            auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
 
             VectorNative<llvm::BasicBlock*> falseBlocks;
             VectorNative<llvm::BasicBlock*> trueBlocks;
@@ -5064,7 +5064,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
                 // we have a dynamic test for bytecode execution. But for runtime, be put it back.
-                auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 auto sizeB        = ip->b.u32;
                 if (typeFuncCall->isClosure())
                     sizeB += sizeof(Register);
@@ -5096,7 +5096,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::MakeLambda:
         {
-            auto              funcNode     = castAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            auto              funcNode     = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
             Utf8              callName     = funcNode->getCallName();
             TypeInfoFuncAttr* typeFuncNode = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
@@ -5148,8 +5148,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto callBc       = (ByteCode*) ip->a.pointer;
-            auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
+            auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
             resultFuncCall    = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
             if (ip->op == ByteCodeOp::LocalCallPopRC)
@@ -5163,8 +5163,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::ForeignCall:
         case ByteCodeOp::ForeignCallPop:
         {
-            auto funcNode     = (AstFuncDecl*) ip->a.pointer;
-            auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
+            auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
             resultFuncCall    = emitCall(buildParameters, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();
             pushRVParams.clear();
@@ -5174,7 +5174,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
         {
-            auto typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
             llvm::BasicBlock* blockLambdaBC     = llvm::BasicBlock::Create(context, "", func);
             llvm::BasicBlock* blockLambdaNative = llvm::BasicBlock::Create(context, "", func);

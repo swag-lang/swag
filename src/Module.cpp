@@ -268,7 +268,7 @@ void Module::buildModulesSlice()
 
     uint8_t* resultPtr;
     modulesSliceOffset = constantSegment.reserve((moduleDependencies.count + 1) * sizeof(SwagModule), &resultPtr);
-    modulesSlice       = (SwagModule*) resultPtr;
+    modulesSlice       = reinterpret_cast<SwagModule*>(resultPtr);
     auto offset        = modulesSliceOffset;
 
     // Module name
@@ -323,7 +323,7 @@ void Module::buildGlobalVarsToDropSlice()
 
     uint8_t* resultPtr;
     globalVarsToDropSliceOffset = mutableSegment.reserve((uint32_t) globalVarsToDrop.size() * sizeof(SwagGlobalVarToDrop), &resultPtr);
-    globalVarsToDropSlice       = (SwagGlobalVarToDrop*) resultPtr;
+    globalVarsToDropSlice       = reinterpret_cast<SwagGlobalVarToDrop*>(resultPtr);
     auto offset                 = globalVarsToDropSliceOffset;
 
     auto oneVar = globalVarsToDropSlice;
@@ -382,14 +382,14 @@ void Module::buildTypesSlice()
     offset += sizeof(uint64_t);
 
     // Initialize the "current module" slice of types
-    const auto moduleSlice    = (SwagModule*) constantSegment.address(modulesSliceOffset);
+    const auto moduleSlice    = reinterpret_cast<SwagModule*>(constantSegment.address(modulesSliceOffset));
     moduleSlice->types.buffer = resultPtr;
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
     for (const auto& val : mapTypes | views::values)
     {
-        *(ExportedTypeInfo**) resultPtr = val.exportedType;
+        *reinterpret_cast<ExportedTypeInfo**>(resultPtr) = val.exportedType;
         constantSegment.addInitPtr(offset, val.storageOffset);
 
         resultPtr += sizeof(ExportedTypeInfo*);

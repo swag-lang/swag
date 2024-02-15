@@ -160,7 +160,7 @@ namespace
         auto& concat = pp.concat;
 
         auto bucket = pp.dbgTypeRecords.firstBucket;
-        auto f      = (SCBEDebugTypeRecord*) bucket->data;
+        auto f      = reinterpret_cast<SCBEDebugTypeRecord*>(bucket->data);
         int  cpt    = 0;
 
         while (true)
@@ -295,7 +295,7 @@ namespace
                 if (!bucket)
                     break;
                 cpt = 0;
-                f   = (SCBEDebugTypeRecord*) bucket->data;
+                f   = reinterpret_cast<SCBEDebugTypeRecord*>(bucket->data);
             }
         }
 

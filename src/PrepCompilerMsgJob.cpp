@@ -37,7 +37,7 @@ JobResult PrepCompilerMsgJob::execute()
             if (context.result != ContextResult::Done)
                 return JobResult::KeepJobAlive;
 
-            msg.concrete.type = (ExportedTypeInfo*) storageSegment->address(storageOffset);
+            msg.concrete.type = reinterpret_cast<ExportedTypeInfo*>(storageSegment->address(storageOffset));
         }
     }
 

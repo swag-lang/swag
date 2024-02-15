@@ -539,7 +539,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
         ip->op == ByteCodeOp::LocalCallPopParam ||
         ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        const auto destBC = (ByteCode*) ip->a.pointer;
+        const auto destBC = reinterpret_cast<ByteCode*>(ip->a.pointer);
         if (destBC->isEmpty.load() != true)
             return;
 
