@@ -39,8 +39,8 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = FMT(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(),
-                                     overload->node->ownerStructScope->owner->token.ctext());
+                const auto msg = FMT(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.c_str(), identifierRef->typeInfo->getDisplayNameC(),
+                                     overload->node->ownerStructScope->owner->token.c_str());
                 diag->remarks.push_back(msg);
             }
 
@@ -48,7 +48,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
             {
                 if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
                 {
-                    auto msg = FMT(Nte(Nte0136), node->token.ctext(), s->getFullName().c_str());
+                    auto msg = FMT(Nte(Nte0136), node->token.c_str(), s->getFullName().c_str());
                     diag->remarks.push_back(msg);
                 }
             }
@@ -58,7 +58,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = FMT(Err(Err0351), node->token.ctext(), typeInfo->getDisplayNameC());
+    Utf8 text = FMT(Err(Err0351), node->token.c_str(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";

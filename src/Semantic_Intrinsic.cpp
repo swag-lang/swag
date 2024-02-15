@@ -22,7 +22,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         YIELD();
         SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0033), node->token.text));
-        SWAG_VERIFY(front->typeInfo->isString(), context->report({front, FMT(Err(Err0200), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(front->typeInfo->isString(), context->report({front, FMT(Err(Err0200), node->token.c_str(), front->typeInfo->getDisplayNameC())}));
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
 
@@ -65,7 +65,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         YIELD();
         SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0033), node->token.text));
-        SWAG_VERIFY(front->typeInfo->isString(), context->report({front, FMT(Err(Err0200), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(front->typeInfo->isString(), context->report({front, FMT(Err(Err0200), node->token.c_str(), front->typeInfo->getDisplayNameC())}));
         const auto tag = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -84,7 +84,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
         YIELD();
 
         SWAG_CHECK(checkIsConstExpr(context, nameNode->hasComputedValue(), nameNode, Err(Err0033), node->token.text));
-        SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, FMT(Err(Err0200), node->token.ctext(), nameNode->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, FMT(Err(Err0200), node->token.c_str(), nameNode->typeInfo->getDisplayNameC())}));
         SWAG_VERIFY(defaultVal->computedValue, context->report({defaultVal, FMT(Err(Err0201), typeNode->typeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
@@ -182,7 +182,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
 
     // Check first parameter
     if (!first->typeInfo->isPointer())
-        return context->report({first, FMT(Err(Err0196), node->token.ctext(), first->typeInfo->getDisplayNameC())});
+        return context->report({first, FMT(Err(Err0196), node->token.c_str(), first->typeInfo->getDisplayNameC())});
 
     const auto ptrPointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)

@@ -82,7 +82,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     // Treat #load
     for (const auto n : theModule->compilerLoads)
     {
-        Path orgFilePath = n->token.ctext();
+        Path orgFilePath = n->token.c_str();
 
         // Is this a simple file ?
         auto       filePath = orgFilePath;
@@ -97,7 +97,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
                 filePath = filePath1;
             if (!exists(filePath, err))
             {
-                const Diagnostic diag{n->sourceFile, n->token, FMT(Err(Err0709), n->token.ctext())};
+                const Diagnostic diag{n->sourceFile, n->token, FMT(Err(Err0709), n->token.c_str())};
                 Report::report(diag);
                 return false;
             }

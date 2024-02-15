@@ -119,7 +119,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    const Diagnostic          diag{identifierRef, FMT(Err(Err0018), node->token.ctext())};
+                    const Diagnostic          diag{identifierRef, FMT(Err(Err0018), node->token.c_str())};
                     Vector<const Diagnostic*> notes;
                     for (const auto t : typeEnum)
                     {
@@ -146,7 +146,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (!hasEnum.empty())
                         {
-                            const Diagnostic          diag{identifierRef, FMT(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            const Diagnostic          diag{identifierRef, FMT(Err(Err0708), node->token.c_str(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
                             const auto                closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
@@ -157,7 +157,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                             return context->report(diag, notes);
                         }
 
-                        const Diagnostic diag{identifierRef, FMT(Err(Err0718), node->token.ctext())};
+                        const Diagnostic diag{identifierRef, FMT(Err(Err0718), node->token.c_str())};
 
                         // Call to a function ?
                         const Diagnostic* note = nullptr;

@@ -335,7 +335,7 @@ bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
     const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        const Diagnostic diag{expression, FMT(Err(Err0191), node->token.ctext(), typeInfo->getDisplayNameC())};
+        const Diagnostic diag{expression, FMT(Err(Err0191), node->token.c_str(), typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -401,7 +401,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     const auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.ctext())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     const Diagnostic diag{node, node->token, FMT(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
@@ -417,7 +417,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     const auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.ctext())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
 
     const Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};

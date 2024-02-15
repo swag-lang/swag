@@ -738,7 +738,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         return nullptr;
 
     const Utf8 txt  = msg ? Utf8{msg} : Nte(Nte0062);
-    const Utf8 txt1 = FMT(txt, Naming::kindName(node).c_str(), node->token.ctext());
+    const Utf8 txt1 = FMT(txt, Naming::kindName(node).c_str(), node->token.c_str());
     return note(node, node->getTokenName(), txt1);
 }
 

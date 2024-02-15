@@ -109,7 +109,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymVertical)
         {
-            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0310), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0310), token.c_str())));
             callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
@@ -137,7 +137,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return context->report({paramExpression, FMT(Err(Err0329), paramExpression->token.ctext())});
+                    return context->report({paramExpression, FMT(Err(Err0329), paramExpression->token.c_str())});
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->isNamed = paramExpression->childs.front();
                 param->allocateExtension(ExtensionKind::Owner);
@@ -207,7 +207,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     }
 
     if (token.id != TokenId::KwdConst)
-        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0356), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0356), token.c_str())));
     paramNode->token.text = token.text;
 
     // 'self'
@@ -219,7 +219,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             const auto constToken = token;
             isConst               = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(constToken, FMT(Err(Err0457), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(constToken, FMT(Err(Err0457), token.c_str())));
             paramNode->token.text = g_LangSpec->name_self;
         }
 
@@ -279,8 +279,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 unnamedTokens.push_back(token);
             }
 
-            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, FMT(Err(Err0131), token.ctext())));
-            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0356), token.ctext())));
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, FMT(Err(Err0131), token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0356), token.c_str())));
             SWAG_CHECK(eatToken());
             otherVariables.push_back(otherVarNode);
         }
@@ -377,7 +377,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (!acceptMissingType)
             {
                 prepareExpectTokenError();
-                const Diagnostic diag{sourceFile, token, FMT(Err(Err0571), token.ctext())};
+                const Diagnostic diag{sourceFile, token, FMT(Err(Err0571), token.c_str())};
                 Diagnostic*      note;
                 if (otherVariables.empty())
                     note = Diagnostic::note(paramNode, Nte(Nte0169));
@@ -433,9 +433,9 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     const auto startLoc = token.startLocation;
     if (token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, FMT("to declare the attribute parameters of [[%s]]", parent->token.ctext())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, FMT("to declare the attribute parameters of [[%s]]", parent->token.c_str())));
     else if (token.id != TokenId::SymLeftParen)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, FMT("to declare the function parameters of [[%s]]", parent->token.ctext())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, FMT("to declare the function parameters of [[%s]]", parent->token.c_str())));
     else
         SWAG_CHECK(eatToken());
 
@@ -489,7 +489,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             if (token.id == TokenId::SymRightParen)
                 return context->report({allParams, tokenComma, Err(Err0131)});
 
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing || token.id == TokenId::SymAttrStart, error(token, FMT(Err(Err0356), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing || token.id == TokenId::SymAttrStart, error(token, FMT(Err(Err0356), token.c_str())));
         }
     }
 
@@ -522,7 +522,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0307), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0307), token.c_str())));
         auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->addAstFlag(AST_IS_GENERIC);
         SWAG_CHECK(eatToken());
@@ -561,7 +561,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
                 PushErrCxtStep ec1(
                     context, nullptr, ErrCxtStepKind::Note, [oneParam]
                     {
-                        return FMT(Nte(Nte0083), oneParam->token.ctext());
+                        return FMT(Nte(Nte0083), oneParam->token.c_str());
                     },
                     true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
@@ -578,7 +578,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             oneParam->addSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT);
 
         if (isConstant && !oneParam->type && !oneParam->assignment)
-            return error(token, FMT(Err(Err0546), token.ctext()));
+            return error(token, FMT(Err(Err0546), token.c_str()));
 
         if (token.id != TokenId::SymComma)
             break;
@@ -729,11 +729,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {
-            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, FMT(Err(Err0294), token.ctext())));
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, FMT(Err(Err0294), token.c_str())));
         }
         else
         {
-            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.c_str())));
         }
 
         funcNode->tokenName = static_cast<Token>(token);
@@ -1116,7 +1116,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, FMT(Err(Err0529), token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, FMT(Err(Err0529), token.c_str())));
         typeInfo->addFlag(TYPEINFO_CLOSURE);
     }
     else

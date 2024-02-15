@@ -115,7 +115,7 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_ANY]                     = typeInfoAny;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]             = typeInfoUntypedInt;
     g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]           = typeInfoUntypedFloat;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BINHEXA]         = typeInfoUntypedBinHex;
+    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BIN_HEXA]         = typeInfoUntypedBinHex;
     g_LiteralTypeToType[(int) LiteralType::TT_CSTRING]                 = typeInfoCString;
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE]                    = nullptr; // will be done with registerTypeType
 

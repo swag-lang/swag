@@ -115,7 +115,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         default:
         {
-            Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             diag.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
@@ -227,7 +227,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 
             default:
             {
-                Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
                 diag.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
@@ -298,7 +298,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
 
             default:
             {
-                Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
                 diag.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
@@ -368,7 +368,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 
             default:
             {
-                Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+                Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
                 diag.addNote(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
@@ -428,7 +428,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !leftTypeInfo->isSlice() &&
              !leftTypeInfo->isInterface())
     {
-        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0242), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0242), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         diag.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -437,7 +437,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !rightTypeInfo->isStruct() &&
              !rightTypeInfo->isInterface())
     {
-        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0243), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0243), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
         diag.addNote(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
@@ -492,14 +492,14 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
         {
-            Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             diag.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
 
         if (leftTypeInfo->isAny())
         {
-            Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             diag.addNote(left, Nte(Nte0032));
             return context->report(diag);
         }

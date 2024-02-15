@@ -141,7 +141,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
     else
         r4 = builder.CreateIntToPtr(pp.cst0_i64, PTR_I8_TY());
 
-    emitCall(buildParameters, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+    emitCall(buildParameters, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
 llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)

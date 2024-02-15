@@ -114,7 +114,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 thisIsAType = true;
                 curIsAlone  = false;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0527), token.ctext())));
+                SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0527), token.c_str())));
             }
 
             if (token.id == TokenId::KwdConst)
@@ -288,8 +288,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     tokenAmb.endLocation   = token.startLocation;
 
                     Diagnostic diag{sourceFile, tokenAmb, Err(Err0022)};
-                    auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.ctext()));
-                    note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.ctext());
+                    auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
+                    note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
                     return context->report(diag, note);
                 }
 
@@ -465,7 +465,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     // Specific error messages
     if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
     {
-        const Diagnostic diag{sourceFile, token, FMT(Err(Err0401), token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(Err(Err0401), token.c_str())};
         return context->report(diag);
     }
 
@@ -475,11 +475,11 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     else if (token.id == TokenId::SymDotDotDot)
         note = Diagnostic::note(Nte(Nte0138));
     else if (Tokenizer::isKeyword(token.id))
-        note = Diagnostic::note(FMT(Nte(Nte0125), token.ctext()));
+        note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
     else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
         note = Diagnostic::note(Nte(Nte0085));
 
-    const Diagnostic diag{sourceFile, token, FMT(Err(Err0400), token.ctext())};
+    const Diagnostic diag{sourceFile, token, FMT(Err(Err0400), token.c_str())};
     return context->report(diag, note);
 }
 
@@ -577,7 +577,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
         if (token.id == TokenId::SymComma)
         {
-            const Diagnostic diag{sourceFile, token, FMT(Err(Err0402), token.ctext())};
+            const Diagnostic diag{sourceFile, token, FMT(Err(Err0402), token.c_str())};
             return context->report(diag);
         }
 

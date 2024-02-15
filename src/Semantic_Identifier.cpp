@@ -720,7 +720,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         case AstNodeKind::CompilerIf:
                         case AstNodeKind::While:
                         {
-                            const auto       msg = FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext());
+                            const auto       msg = FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.c_str(), brotherParent->token.c_str());
                             const Diagnostic diag{node, node->token, msg};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
@@ -798,11 +798,11 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0290), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0290), identifier->token.c_str(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
 
-            const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+            const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0289), identifier->token.c_str(), Naming::aKindName(symbol->kind).c_str())};
             return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
         }
     }
@@ -869,7 +869,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         {
             const auto       firstNode = symbol->nodes.front();
             const Diagnostic diag{genericParameters, FMT(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
-            const auto       note = Diagnostic::note(node, node->token, FMT(Nte(Nte0199), node->token.ctext(), Naming::aKindName(symbol->kind).c_str()));
+            const auto       note = Diagnostic::note(node, node->token, FMT(Nte(Nte0199), node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
             return context->report(diag, note, Diagnostic::hereIs(firstNode));
         }
 
@@ -1085,7 +1085,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (dependentSymbols.empty())
-        return context->report({identifier, FMT(Err(Err0730), identifier->token.ctext())});
+        return context->report({identifier, FMT(Err(Err0730), identifier->token.c_str())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwise it
     // can lead to ambiguities, or even worse, take the wrong one.
@@ -1192,7 +1192,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
-            return context->report({identifier, FMT(Err(Err0730), identifier->token.ctext())});
+            return context->report({identifier, FMT(Err(Err0730), identifier->token.c_str())});
         }
 
         auto& listTryMatch = context->cacheListTryMatch;

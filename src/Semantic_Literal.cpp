@@ -184,7 +184,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         switch (literalType)
         {
         case LiteralType::TT_U32:
-        case LiteralType::TT_UNTYPED_BINHEXA:
+        case LiteralType::TT_UNTYPED_BIN_HEXA:
         case LiteralType::TT_UNTYPED_INT:
             literalType = LiteralType::TT_S32;
             break;
@@ -318,7 +318,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
     case LiteralType::TT_U32:
     case LiteralType::TT_U64:
-    case LiteralType::TT_UNTYPED_BINHEXA:
+    case LiteralType::TT_UNTYPED_BIN_HEXA:
         switch (typeSuffix->nativeType)
         {
         case NativeTypeKind::U8:

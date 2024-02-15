@@ -71,13 +71,13 @@ bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, const Ast
     if (exact && (numCur != numWanted))
     {
         if (numCur > numWanted)
-            return context->report({parameters->childs[numWanted], FMT(Err(Err0638), node->token.ctext(), numWanted, numCur)});
-        return context->report({parameters, FMT(Err(Err0597), node->token.ctext(), numWanted, numCur)});
+            return context->report({parameters->childs[numWanted], FMT(Err(Err0638), node->token.c_str(), numWanted, numCur)});
+        return context->report({parameters, FMT(Err(Err0597), node->token.c_str(), numWanted, numCur)});
     }
 
     if (!exact && (numCur < numWanted))
     {
-        return context->report({parameters, FMT(Err(Err0598), node->token.ctext(), numWanted, numCur)});
+        return context->report({parameters, FMT(Err(Err0598), node->token.c_str(), numWanted, numCur)});
     }
 
     return true;
@@ -91,17 +91,17 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
     if (wanted == nullptr)
     {
         if (returnType->isVoid())
-            return context->report({node, node->getTokenName(), FMT(Err(Err0574), node->token.ctext())});
+            return context->report({node, node->getTokenName(), FMT(Err(Err0574), node->token.c_str())});
         return true;
     }
 
     if (!wanted->isVoid() && returnType->isVoid())
-        return context->report({node, node->getTokenName(), FMT(Err(Err0575), node->token.ctext(), wanted->getDisplayNameC())});
+        return context->report({node, node->getTokenName(), FMT(Err(Err0575), node->token.c_str(), wanted->getDisplayNameC())});
 
     if (!returnType->isSame(wanted, CASTFLAG_CAST))
     {
         auto childNode = node->returnType->childs.empty() ? node->returnType : node->returnType->childs.front();
-        auto msg       = FMT(Err(Err0654), wanted->getDisplayNameC(), node->token.ctext(), returnType->getDisplayNameC());
+        auto msg       = FMT(Err(Err0654), wanted->getDisplayNameC(), node->token.c_str(), returnType->getDisplayNameC());
         return context->report({childNode, msg});
     }
 
@@ -130,26 +130,26 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         auto start = node->tokenName.startLocation;
         start.column += 7;
-        const Diagnostic diag{node->sourceFile, start, node->getTokenName().endLocation, FMT(Err(Err0164), node->token.ctext() + 7)};
+        const Diagnostic diag{node->sourceFile, start, node->getTokenName().endLocation, FMT(Err(Err0164), node->token.c_str() + 7)};
         return context->report(diag);
     }
 
     // Special function outside an impl block
     if (!parent)
     {
-        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0509), node->token.ctext())};
+        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0509), node->token.c_str())};
         return context->report(diag);
     }
 
     if (node->ownerScope->kind == ScopeKind::Impl)
     {
-        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0508), node->token.ctext())};
+        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0508), node->token.c_str())};
         return context->report(diag);
     }
 
     if (node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0427), node->token.ctext())};
+        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0427), node->token.c_str())};
         const auto       note  = Diagnostic::note(Nte(Nte0106));
         const auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdInternal));
         return context->report(diag, note, note1);
@@ -157,7 +157,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 
     if (!node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0428), node->token.ctext())};
+        const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0428), node->token.c_str())};
         const auto       note  = Diagnostic::note(Nte(Nte0087));
         const auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
         return context->report(diag, note, note1);

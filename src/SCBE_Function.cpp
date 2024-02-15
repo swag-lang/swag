@@ -3321,18 +3321,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symTls_threadLocalId});
             pp.pushParams.push_back({CPUPushParamType::Imm64, module->tlsSegment.totalCount});
             pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symTLSIndex});
-            emitInternalCallExt(pp, g_LangSpec->name__tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
+            emitInternalCallExt(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
-            emitInternalCallExt(pp, g_LangSpec->name__tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
+            emitInternalCallExt(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicSetContext:
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
             pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
-            emitInternalCallExt(pp, g_LangSpec->name__tlsSetValue, pp.pushParams);
+            emitInternalCallExt(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
             break;
 
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -4719,14 +4719,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
 
         case ByteCodeOp::InternalFailedAssume:
-            emitInternalCall(pp, g_LangSpec->name__failedAssume, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name_priv_failedAssume, {ip->a.u32});
             break;
         case ByteCodeOp::IntrinsicGetErr:
             SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
             emitInternalCall(pp, g_LangSpec->name_aterr, {}, REG_OFFSET(ip->a.u32));
             break;
         case ByteCodeOp::InternalSetErr:
-            emitInternalCall(pp, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32});
+            emitInternalCall(pp, g_LangSpec->name_priv_seterr, {ip->a.u32, ip->b.u32});
             break;
         case ByteCodeOp::InternalHasErr:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
@@ -4746,13 +4746,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emit_Jump(JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::InternalPushErr:
-            pp.emit_Call(g_LangSpec->name__pusherr);
+            pp.emit_Call(g_LangSpec->name_priv_pusherr);
             break;
         case ByteCodeOp::InternalPopErr:
-            pp.emit_Call(g_LangSpec->name__poperr);
+            pp.emit_Call(g_LangSpec->name_priv_poperr);
             break;
         case ByteCodeOp::InternalCatchErr:
-            pp.emit_Call(g_LangSpec->name__catcherr);
+            pp.emit_Call(g_LangSpec->name_priv_catcherr);
             break;
         case ByteCodeOp::InternalInitStackTrace:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -4761,10 +4761,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         case ByteCodeOp::InternalStackTraceConst:
             pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, ip->b.u32);
             pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-            emitInternalCall(pp, g_LangSpec->name__stackTrace, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name_priv_stackTrace, {ip->a.u32});
             break;
         case ByteCodeOp::InternalStackTrace:
-            emitInternalCall(pp, g_LangSpec->name__stackTrace, {ip->a.u32});
+            emitInternalCall(pp, g_LangSpec->name_priv_stackTrace, {ip->a.u32});
             break;
 
         default:

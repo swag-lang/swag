@@ -344,9 +344,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
                         if (expr->isConstantGenTypeInfo())
-                            return context->report({expr, FMT(Err(Err0011), expr->token.ctext())}, note);
+                            return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, FMT(Err(Err0011), expr->token.ctext())}, note);
+                            return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
                         if (typeExpr->isNativeInteger())
                             return context->report({expr, FMT(Err(Err0009), expr->computedValue->reg.u64)}, note);
                         return context->report({expr, FMT(Err(Err0010), expr->computedValue->reg.f64)}, note);
@@ -635,7 +635,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
             newExpression = identifierRef;
         }
 
-        callVisit = Ast::newIdentifier(sourceFile, FMT("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);
+        callVisit = Ast::newIdentifier(sourceFile, FMT("opVisit%s", node->extraNameToken.c_str()), identifierRef, identifierRef);
         callVisit->allocateIdentifierExtension();
         callVisit->identifierExtension->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node);

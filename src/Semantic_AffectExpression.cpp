@@ -292,7 +292,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
     {
-        Diagnostic diag{node, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         diag.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -343,7 +343,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        const Diagnostic diag{node, node->token, FMT(Err(Err0350), node->token.ctext())};
+        const Diagnostic diag{node, node->token, FMT(Err(Err0350), node->token.c_str())};
         const auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag, note);
     }
@@ -387,7 +387,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 }
                 else if (forTuple)
                 {
-                    return context->report({node, node->token, FMT(Err(Err0350), node->token.ctext())});
+                    return context->report({node, node->token, FMT(Err(Err0350), node->token.c_str())});
                 }
                 else
                 {

@@ -1,3 +1,4 @@
+// ReSharper disable StringLiteralTypo
 #include "pch.h"
 #include "LanguageSpec.h"
 #include "Parser.h"
@@ -12,22 +13,22 @@ void LanguageSpec::setupNames()
     name_globalPreMain = "__%s_globalPreMain";
     name_getTypeTable  = "__%s_getTypeTable";
 
-    name__setupRuntime        = "__setupRuntime";
-    name__closeRuntime        = "__closeRuntime";
-    name__dropGlobalVariables = "__dropGlobalVariables";
-    name__compilererror       = "__compilerError";
-    name__panic               = "__panic";
-    name__pusherr             = "__pushErr";
-    name__poperr              = "__popErr";
-    name__catcherr            = "__catchErr";
-    name__seterr              = "__setErr";
-    name__failedAssume        = "__failedAssume";
-    name__tlsAlloc            = "__tlsAlloc";
-    name__tlsGetValue         = "__tlsGetValue";
-    name__tlsSetValue         = "__tlsSetValue";
-    name__tlsGetPtr           = "__tlsGetPtr";
-    name__stackTrace          = "__stackTrace";
-    name__loaddll             = "__loaddll";
+    name_priv_setupRuntime        = "__setupRuntime";
+    name_priv_closeRuntime        = "__closeRuntime";
+    name_priv_dropGlobalVariables = "__dropGlobalVariables";
+    name_priv_compilererror       = "__compilerError";
+    name_priv_panic               = "__panic";
+    name_priv_pusherr             = "__pushErr";
+    name_priv_poperr              = "__popErr";
+    name_priv_catcherr            = "__catchErr";
+    name_priv_seterr              = "__setErr";
+    name_priv_failedAssume        = "__failedAssume";
+    name_priv_tlsAlloc            = "__tlsAlloc";
+    name_priv_tlsGetValue         = "__tlsGetValue";
+    name_priv_tlsSetValue         = "__tlsSetValue";
+    name_priv_tlsGetPtr           = "__tlsGetPtr";
+    name_priv_stackTrace          = "__stackTrace";
+    name_priv_loaddll             = "__loaddll";
 
     name_swag = "swag";
     name_Swag = "Swag";

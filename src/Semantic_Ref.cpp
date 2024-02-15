@@ -405,7 +405,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         YIELD();
         if (!symbol)
         {
-            Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0374), node->array->token.ctext(), typeInfo->getDisplayNameC())};
+            Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0374), node->array->token.c_str(), typeInfo->getDisplayNameC())};
             diag.hint = FMT(Nte(Nte0144), g_LangSpec->name_opSlice.c_str());
             diag.addNote(node->array, Diagnostic::isType(typeInfo));
             return context->report(diag);
@@ -501,7 +501,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
         if (front->kind == AstNodeKind::IdentifierRef)
         {
             diag.hint       = Nte(Nte0129);
-            const auto note = Diagnostic::note(front, FMT(Nte(Nte0195), front->token.ctext()));
+            const auto note = Diagnostic::note(front, FMT(Nte(Nte0195), front->token.c_str()));
             return context->report(diag, note);
         }
 
@@ -1053,7 +1053,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 return context->report(diag);
             }
 
-            Diagnostic diag{arrayNode->access, FMT(Err(Err0258), arrayNode->array->token.ctext(), arrayType->getDisplayNameC())};
+            Diagnostic diag{arrayNode->access, FMT(Err(Err0258), arrayNode->array->token.c_str(), arrayType->getDisplayNameC())};
             diag.hint = FMT(Nte(Nte0144), g_LangSpec->name_opIndex.c_str());
             diag.addNote(arrayNode->array, Diagnostic::isType(arrayType));
             return context->report(diag);
@@ -1081,7 +1081,7 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
         return true;
 
     const auto countTypeInfo = TypeManager::concreteType(count->typeInfo);
-    SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, FMT(Err(Err0194), node->token.ctext(), countTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, FMT(Err(Err0194), node->token.c_str(), countTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, count, CASTFLAG_TRY_COERCE));
 
     if (!count->hasComputedValue() || count->computedValue->reg.u64 > 1)
@@ -1090,12 +1090,12 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
         {
             if (count->hasComputedValue())
             {
-                Diagnostic diag{expression, FMT(Err(Err0197), node->token.ctext(), expression->typeInfo->getDisplayNameC())};
+                Diagnostic diag{expression, FMT(Err(Err0197), node->token.c_str(), expression->typeInfo->getDisplayNameC())};
                 diag.addNote(count, FMT(Nte(Nte0127), count->computedValue->reg.u64));
                 return context->report(diag);
             }
 
-            Diagnostic diag{expression, FMT(Err(Err0198), node->token.ctext(), expression->typeInfo->getDisplayNameC())};
+            Diagnostic diag{expression, FMT(Err(Err0198), node->token.c_str(), expression->typeInfo->getDisplayNameC())};
             diag.addNote(count, Nte(Nte0128));
             return context->report(diag);
         }
@@ -1112,17 +1112,17 @@ bool Semantic::resolveInit(SemanticContext* context)
     if (!node->count)
     {
         expressionTypeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_ALIAS);
-        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, FMT(Err(Err0199), node->token.ctext())}));
-        SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, FMT(Err(Err0199), node->token.ctext())}));
-        SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, FMT(Err(Err0057), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
+        SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
+        SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, FMT(Err(Err0057), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
         const auto back = node->expression->childs.back();
         back->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
         back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
     }
     else
     {
-        SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, FMT(Err(Err0196), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, FMT(Err(Err0056), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, FMT(Err(Err0196), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, FMT(Err(Err0056), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
     }
 
@@ -1200,8 +1200,8 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
     const auto node               = castAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     const auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, FMT(Err(Err0196), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
-    SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, FMT(Err(Err0056), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, FMT(Err(Err0196), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, FMT(Err(Err0056), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 
     // Be sure struct if not marked as nocopy

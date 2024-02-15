@@ -24,7 +24,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, FMT(Err(Err0404), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, FMT(Err(Err0404), token.c_str())));
             const auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
             identifierRef->childs.back()->semanticFct = Semantic::resolveLiteralSuffix;
@@ -245,7 +245,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         *result = expr;
         expr->addAstFlag(AST_IN_ATOMIC_EXPR);
         if (parent)
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, FMT("to end the [[%s]] expression", parent->token.ctext())));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, FMT("to end the [[%s]] expression", parent->token.c_str())));
         else
             SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
         break;
@@ -579,8 +579,8 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
         node->semanticFct = Semantic::resolveUnaryOp;
         node->token       = static_cast<Token>(token);
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id != prevToken.id, error(token, FMT(Err(Err0071), token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdDeRef, error(token, FMT(Err(Err0282), prevToken.ctext(), token.ctext(), prevToken.ctext())));
+        SWAG_VERIFY(token.id != prevToken.id, error(token, FMT(Err(Err0071), token.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdDeRef, error(token, FMT(Err(Err0282), prevToken.c_str(), token.c_str(), prevToken.c_str())));
         return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
     }
     default:
@@ -610,10 +610,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::SymPercent:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_UP), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_UP), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_UP;
             SWAG_CHECK(eatToken());
             continue;
@@ -632,10 +632,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::KwdCast:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_OVERFLOW), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_OVERFLOW), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_OVERFLOW;
             SWAG_CHECK(eatToken());
             continue;
@@ -648,10 +648,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::SymEqual:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_NO_LEFT_DROP;
             SWAG_CHECK(eatToken());
             continue;
@@ -665,10 +665,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::KwdVisit:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_BACK), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_BACK), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_BACK;
             SWAG_CHECK(eatToken());
             continue;
@@ -681,10 +681,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::KwdCast:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_BIT), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_BIT), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_BIT;
             SWAG_CHECK(eatToken());
             continue;
@@ -697,10 +697,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::KwdCast:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_UN_CONST), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_UN_CONST), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_UN_CONST;
             SWAG_CHECK(eatToken());
             continue;
@@ -713,10 +713,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::SymEqual:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, FMT(Err(Err0070), token.c_str())));
             mdfFlags |= MODIFIER_MOVE;
             SWAG_CHECK(eatToken());
             continue;
@@ -729,17 +729,17 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
             case TokenId::SymEqual:
                 break;
             default:
-                return error(token, FMT(Err(Err0694), token.ctext(), forNode.ctext()));
+                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, FMT(Err(Err0070), token.ctext())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
             SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, FMT(Err(Err0070), g_LangSpec->name_move.c_str())));
             mdfFlags |= MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP;
             SWAG_CHECK(eatToken());
             continue;
         }
 
-        return error(token, FMT(Err(Err0352), token.ctext()));
+        return error(token, FMT(Err(Err0352), token.c_str()));
     }
 
     return true;
@@ -1122,7 +1122,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
     case TokenId::CompilerFuncPreMain:
     case TokenId::CompilerFuncMain:
     case TokenId::CompilerFuncTest:
-        return error(token, FMT(Err(Err0285), token.ctext()));
+        return error(token, FMT(Err(Err0285), token.c_str()));
 
     default:
         SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
@@ -1191,7 +1191,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (token.id == TokenId::SymColon)
             {
-                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, FMT(Err(Err0310), token.ctext())));
+                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, FMT(Err(Err0310), token.c_str())));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
                 auto       namedToFree     = paramExpression;
@@ -1299,7 +1299,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, FMT(Err(Err0698), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, FMT(Err(Err0698), token.c_str())));
             SWAG_CHECK(doIdentifierRef(multi, &dummyResult, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
             if (token.id != TokenId::SymComma)
                 break;
@@ -1368,10 +1368,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
 
     default:
     {
-        const Diagnostic  diag{sourceFile, token, FMT(Err(Err0408), token.ctext())};
+        const Diagnostic  diag{sourceFile, token, FMT(Err(Err0408), token.c_str())};
         const Diagnostic* note = nullptr;
         if (Tokenizer::isKeyword(token.id))
-            note = Diagnostic::note(FMT(Nte(Nte0125), token.ctext()));
+            note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
         return context->report(diag, note);
     }
     }

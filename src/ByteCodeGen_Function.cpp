@@ -1471,7 +1471,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        const Diagnostic diag{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.ctext())};
+        const Diagnostic diag{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.c_str())};
         return context->report(diag, Diagnostic::hereIs(srcNode, Nte(Nte0130)));
     }
 
@@ -1484,7 +1484,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            const Diagnostic diag{parent, parent->token, FMT(Err(Err0502), parent->token.ctext(), srcNode->token.ctext())};
+            const Diagnostic diag{parent, parent->token, FMT(Err(Err0502), parent->token.c_str(), srcNode->token.c_str())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
     }

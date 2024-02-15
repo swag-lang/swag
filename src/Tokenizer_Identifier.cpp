@@ -39,7 +39,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         else
         {
             token.endLocation = location;
-            const Diagnostic diag{sourceFile, token, FMT(Err(Err0245), token.ctext())};
+            const Diagnostic diag{sourceFile, token, FMT(Err(Err0245), token.c_str())};
 
             Vector<Utf8> searchList{};
             for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
@@ -60,7 +60,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
     else if (token.text[0] == '@')
     {
         token.endLocation = location;
-        const Diagnostic diag{sourceFile, token, FMT(Err(Err0316), token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(Err(Err0316), token.c_str())};
 
         Vector<Utf8> searchList{};
         for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)

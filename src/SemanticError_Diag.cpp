@@ -42,7 +42,7 @@ namespace
     void errorValidIfFailed(SemanticContext* context, const ErrorParam& errorParam)
     {
         const auto destFuncDecl = errorParam.destFuncDecl;
-        const auto msg          = FMT(Err(Err0085), destFuncDecl->validif->token.ctext(), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext());
+        const auto msg          = FMT(Err(Err0085), destFuncDecl->validif->token.c_str(), destFuncDecl->token.c_str(), destFuncDecl->validif->token.c_str());
         const auto diag         = new Diagnostic{errorParam.errorNode, errorParam.errorNode->token, msg};
         errorParam.addError(diag);
         errorParam.addNote(Diagnostic::hereIs(destFuncDecl->validif));
@@ -70,7 +70,7 @@ namespace
 
         if (errorParam.destStructDecl)
         {
-            errorParam.addError(new Diagnostic{isNamed, FMT(Err(Err0735), isNamed->token.ctext(), typeInfo->getDisplayNameC())});
+            errorParam.addError(new Diagnostic{isNamed, FMT(Err(Err0735), isNamed->token.c_str(), typeInfo->getDisplayNameC())});
             if (typeInfo->declNode->hasExtMisc() && typeInfo->declNode->extMisc()->exportNode)
                 errorParam.addNote(Diagnostic::note(typeInfo->declNode->extMisc()->exportNode, Nte(Nte0078)));
             else if (errorParam.oneTry->overload)
@@ -83,7 +83,7 @@ namespace
         }
         else
         {
-            errorParam.addError(new Diagnostic{isNamed, FMT(Err(Err0724), isNamed->token.ctext())});
+            errorParam.addError(new Diagnostic{isNamed, FMT(Err(Err0724), isNamed->token.c_str())});
             errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
         }
     }
@@ -91,7 +91,7 @@ namespace
     void errorDuplicatedNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
-        const auto msg  = FMT(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.ctext());
+        const auto msg  = FMT(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.c_str());
         const auto diag = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
         errorParam.addError(diag);
 
@@ -145,7 +145,7 @@ namespace
             if (errorParam.destParameters->childs[si]->hasSpecFlag(AstVarDecl::SPECFLAG_UNNAMED))
                 diag->remarks.push_back(FMT(Nte(Nte0089), Naming::niceParameterRank(si + 1).c_str(), errorParam.destParameters->childs[si]->typeInfo->getDisplayNameC()));
             else
-                diag->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->childs[si]->token.ctext(),
+                diag->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->childs[si]->token.c_str(),
                                             errorParam.destParameters->childs[si]->typeInfo->getDisplayNameC()));
             if (note && !errorParam.destParameters->childs[si]->isGeneratedSelf())
                 note->addNote(errorParam.destParameters->childs[si], "missing");
@@ -166,7 +166,7 @@ namespace
 
         Diagnostic* diag;
         if (errorParam.destFuncDecl && errorParam.destFuncDecl->isSpecialFunctionName())
-            diag = new Diagnostic{errNode, errNode->token, FMT(Err(Err0298), niceName.c_str(), errorParam.destFuncDecl->token.ctext())};
+            diag = new Diagnostic{errNode, errNode->token, FMT(Err(Err0298), niceName.c_str(), errorParam.destFuncDecl->token.c_str())};
         else if (genericParameters)
             diag = new Diagnostic{genericParameters, FMT(Err(Err0593), niceName.c_str())};
         else
@@ -277,7 +277,7 @@ namespace
             bi.badSignatureParameterIdx < (int) errorParam.destFuncDecl->genericParameters->childs.size())
         {
             const auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
-            const auto note     = Diagnostic::note(reqParam, FMT(Nte(Nte0068), reqParam->token.ctext(), Naming::kindName(overload).c_str()));
+            const auto note     = Diagnostic::note(reqParam, FMT(Nte(Nte0068), reqParam->token.c_str(), Naming::kindName(overload).c_str()));
             errorParam.addNote(note);
         }
         else
@@ -422,7 +422,7 @@ namespace
         }
         else if (destParamNode)
         {
-            const auto        msg  = FMT(Nte(Nte0064), destParamNode->token.ctext());
+            const auto        msg  = FMT(Nte(Nte0064), destParamNode->token.c_str());
             const Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
             errorParam.addNote(note);
         }

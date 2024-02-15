@@ -285,9 +285,9 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
                           node->getTokenName(),
                           FMT(Err(Err0426),
                               Naming::kindName(node->resolvedSymbolOverload).c_str(),
-                              node->token.ctext(),
+                              node->token.c_str(),
                               Naming::kindName(culprit->resolvedSymbolOverload).c_str(),
-                              culprit->token.ctext(),
+                              culprit->token.c_str(),
                               accessCulprit)};
 
     const Diagnostic* note  = nullptr;

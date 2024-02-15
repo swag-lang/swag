@@ -596,7 +596,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         !prevNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !prevNode->typeInfo->isStruct())
     {
-        Diagnostic diag{prevNode, FMT(Err(Err0257), prevNode->token.ctext(), prevNode->typeInfo->getDisplayNameC())};
+        Diagnostic diag{prevNode, FMT(Err(Err0257), prevNode->token.c_str(), prevNode->typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -613,7 +613,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     {
         if (prevNode->kind == AstNodeKind::Identifier && prevNode->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH))
         {
-            Diagnostic                diag{prevNode, FMT(Err(Err0586), prevNode->token.ctext(), symbol->name.c_str())};
+            Diagnostic                diag{prevNode, FMT(Err(Err0586), prevNode->token.c_str(), symbol->name.c_str())};
             Vector<const Diagnostic*> notes;
             auto                      prevIdentifier = castAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
             auto                      widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
@@ -626,16 +626,16 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)
         {
-            Diagnostic diag{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+            Diagnostic diag{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
             diag.addNote(identifier->token, FMT(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC()));
             Vector<const Diagnostic*> notes;
-            notes.push_back(Diagnostic::note(FMT(Nte(Nte0109), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())));
+            notes.push_back(Diagnostic::note(FMT(Nte(Nte0109), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())));
             notes.push_back(Diagnostic::hereIs(oneMatch.oneOverload->overload));
             notes.push_back(Diagnostic::note(FMT(Nte(Nte0035), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);
         }
 
-        Diagnostic diag{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+        Diagnostic diag{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
         diag.addNote(identifier->token, FMT(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC()));
         return context->report(diag, Diagnostic::hereIs(oneMatch.oneOverload->overload));
     }
@@ -994,7 +994,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
             {
-                Diagnostic diag{identifier, FMT(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
+                Diagnostic diag{identifier, FMT(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.c_str(), ownerFct->token.c_str())};
                 auto       note = Diagnostic::note(overload->node, overload->node->token, FMT(Nte(Nte0147), Naming::kindName(overload->node).c_str()));
                 return context->report(diag, note);
             }
@@ -1061,7 +1061,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                     {
-                        Diagnostic diag(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.ctext()));
+                        Diagnostic diag(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.c_str()));
                         return context->report(diag, Diagnostic::hereIs(overload));
                     }
 
@@ -1137,7 +1137,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto prev = identifier->identifierRef()->childs[childIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
             {
-                Diagnostic diag{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext())};
+                Diagnostic diag{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
                 diag.addNote(identifier->token, FMT(Nte(Nte0154), prev->typeInfo->getDisplayNameC()));
                 return context->report(diag, Diagnostic::hereIs(funcDecl));
             }
@@ -1147,7 +1147,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // Be sure it's () and not {}
         if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
-            return context->report({identifier->callParameters, FMT(Err(Err0291), identifier->token.ctext())});
+            return context->report({identifier->callParameters, FMT(Err(Err0291), identifier->token.c_str())});
 
         // Capture syntax
         if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
@@ -1155,7 +1155,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
             {
                 auto       cp = identifier->callParameters;
-                Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.ctext())};
+                Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.c_str())};
                 diag.addNote(identifier->token, Nte(Nte0155));
                 return context->report(diag);
             }
@@ -1178,7 +1178,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         // Be sure this is not a 'forward' decl
         if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')
         {
-            Diagnostic diag{identifier, identifier->token, FMT(Err(Err0292), identifier->token.ctext())};
+            Diagnostic diag{identifier, identifier->token, FMT(Err(Err0292), identifier->token.c_str())};
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
@@ -1204,7 +1204,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
                 {
-                    Diagnostic diag{identifier, identifier->token, FMT(Err(Err0176), funcDecl->token.ctext(), ownerFct->token.ctext())};
+                    Diagnostic diag{identifier, identifier->token, FMT(Err(Err0176), funcDecl->token.c_str(), ownerFct->token.c_str())};
                     auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0156));
                     return context->report(diag, note);
                 }
@@ -1266,7 +1266,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                 {
-                    Diagnostic diag(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.ctext()));
+                    Diagnostic diag(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.c_str()));
                     return context->report(diag, Diagnostic::hereIs(overload));
                 }
 

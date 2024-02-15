@@ -264,11 +264,11 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     if (depNode)
     {
-        msg = FMT(Nte(Nte0110), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), Naming::kindName(depNode).c_str(), depNode->token.ctext());
+        msg = FMT(Nte(Nte0110), Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), Naming::kindName(depNode).c_str(), depNode->token.c_str());
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = FMT(Nte(Nte0055), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), prevJob->waitingType->getDisplayNameC());
+        msg  = FMT(Nte(Nte0055), Naming::kindName(prevNode).c_str(), prevNode->token.c_str(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
@@ -281,7 +281,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     }
     else
     {
-        msg  = FMT(Nte(Nte0186), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
+        msg  = FMT(Nte(Nte0186), Naming::kindName(prevNode).c_str(), prevNode->token.c_str());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
@@ -294,7 +294,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
         case AstNodeKind::VarDecl:
         case AstNodeKind::EnumValue:
             msg += " ";
-            msg += FMT("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            msg += FMT("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.c_str());
             break;
         default:
             break;
@@ -386,7 +386,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 {
                     const auto front  = prevJob->nodes.front();
                     const auto back   = prevJob->nodes.back();
-                    auto       msg    = FMT(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
+                    auto       msg    = FMT(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.c_str(), Naming::kindName(back).c_str(), back->token.c_str());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);
@@ -404,7 +404,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             const auto prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, FMT(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
+            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, FMT(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.c_str())};
             Report::report(diag, notes);
             const auto sourceFile             = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;

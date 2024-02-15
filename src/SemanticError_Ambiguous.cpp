@@ -89,7 +89,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
 bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches)
 {
-    const Diagnostic diag{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
+    const Diagnostic diag{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
 
     Vector<const Diagnostic*> notes;
     for (const auto& p1 : matches)

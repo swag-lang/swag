@@ -292,12 +292,12 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 const auto contextualNode = idRef->previousResolvedNode;
                 if (contextualNode)
                 {
-                    const Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0556), node->token.ctext())};
+                    const Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0556), node->token.c_str())};
                     return context->report(diag);
                 }
             }
         }
     }
 
-    return context->report({node->sourceFile, node->token, FMT(Err(Err0300), node->token.ctext())});
+    return context->report({node->sourceFile, node->token, FMT(Err(Err0300), node->token.c_str())});
 }

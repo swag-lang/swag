@@ -4259,7 +4259,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             auto v0     = builder.getInt64(module->tlsSegment.totalCount);
             auto r1     = builder.CreateInBoundsGEP(I8_TY(), pp.tlsSeg, pp.cst0_i64);
             auto vid    = builder.CreateLoad(I64_TY(), pp.symTls_threadLocalId);
-            auto result = emitCall(buildParameters, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
+            auto result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
             builder.CreateStore(result, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
             break;
         }
@@ -4268,7 +4268,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto r0     = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
             auto v0     = builder.CreateLoad(I64_TY(), r0);
-            auto result = emitCall(buildParameters, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
+            auto result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
             builder.CreateStore(builder.CreatePtrToInt(result, I64_TY()), GEP64(allocR, ip->a.u32));
             break;
         }
@@ -4276,7 +4276,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
             auto v0 = builder.CreateLoad(I64_TY(), r0);
-            emitCall(buildParameters, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
+            emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
             break;
         }
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -4387,14 +4387,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         /////////////////////////////////////
 
         case ByteCodeOp::InternalFailedAssume:
-            emitCall(buildParameters, g_LangSpec->name__failedAssume, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_failedAssume, allocR, allocT, {ip->a.u32}, {});
             break;
         case ByteCodeOp::IntrinsicGetErr:
             emitCall(buildParameters, g_LangSpec->name_aterr, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         case ByteCodeOp::InternalSetErr:
-            emitCall(buildParameters, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;
 
         case ByteCodeOp::InternalHasErr:
@@ -4435,13 +4435,13 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
         }
         case ByteCodeOp::InternalPushErr:
-            emitCall(buildParameters, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_pusherr, allocR, allocT, {}, {});
             break;
         case ByteCodeOp::InternalPopErr:
-            emitCall(buildParameters, g_LangSpec->name__poperr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_poperr, allocR, allocT, {}, {});
             break;
         case ByteCodeOp::InternalCatchErr:
-            emitCall(buildParameters, g_LangSpec->name__catcherr, allocR, allocT, {}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_catcherr, allocR, allocT, {}, {});
             break;
         case ByteCodeOp::InternalInitStackTrace:
         {
@@ -4455,11 +4455,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         {
             auto r1 = GEP8(pp.constantSeg, ip->b.u32);
             builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
-            emitCall(buildParameters, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:
-            emitCall(buildParameters, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
 
         /////////////////////////////////////

@@ -560,12 +560,12 @@ Utf8 Naming::funcToName(const AstFuncDecl* node)
         return "lambda";
 
     if (node->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-        return FMT("[[%s]] block", node->token.ctext());
+        return FMT("[[%s]] block", node->token.c_str());
 
     if (node->hasAttribute(ATTRIBUTE_MIXIN))
-        return FMT("[[%s]] mixin", node->token.ctext());
+        return FMT("[[%s]] mixin", node->token.c_str());
     if (node->hasAttribute(ATTRIBUTE_MACRO))
-        return FMT("[[%s]] macro", node->token.ctext());
+        return FMT("[[%s]] macro", node->token.c_str());
 
-    return FMT("[[%s]] function", node->token.ctext());
+    return FMT("[[%s]] function", node->token.c_str());
 }

@@ -95,14 +95,14 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg = FMT(Err(Err0381), token.ctext());
+        msg = FMT(Err(Err0381), token.c_str());
         note = Nte(Nte0167);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg = FMT(Err(Err0262), token.ctext());
+        msg = FMT(Err(Err0262), token.c_str());
         break;
     case InvalidTokenError::LeftExpression:
-        msg = FMT(Err(Err0283), token.ctext());
+        msg = FMT(Err(Err0283), token.c_str());
         break;
     case InvalidTokenError::PrimaryExpression:
 
@@ -115,30 +115,30 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             eatToken();
             if (token.id == TokenId::SymQuote)
             {
-                const Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, FMT(Err(Err0237), inToken.ctext())};
+                const Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, FMT(Err(Err0237), inToken.c_str())};
                 return context->report(diag);
             }
 
             token = startToken;
         }
 
-        msg = FMT(Err(Err0283), token.ctext());
+        msg = FMT(Err(Err0283), token.c_str());
         if (parent)
         {
             if (Tokenizer::isKeyword(parent->tokenId))
             {
-                const Utf8 forWhat = FMT("[[%s]]", parent->token.ctext());
-                msg                = FMT(Err(Err0281), forWhat.c_str(), token.ctext());
+                const Utf8 forWhat = FMT("[[%s]]", parent->token.c_str());
+                msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
             }
             else if (Tokenizer::isCompiler(parent->tokenId))
             {
-                const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.ctext());
-                msg                = FMT(Err(Err0281), forWhat.c_str(), token.ctext());
+                const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.c_str());
+                msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
             }
             else if (Tokenizer::isSymbol(parent->tokenId))
             {
-                const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.ctext());
-                msg                = FMT(Err(Err0281), forWhat.c_str(), token.ctext());
+                const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.c_str());
+                msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
             }
         }
 
@@ -153,9 +153,9 @@ bool Parser::invalidIdentifierError(const TokenParse& tokenParse, const char* ms
     const Diagnostic* note = nullptr;
 
     if (Tokenizer::isKeyword(tokenParse.id))
-        note = Diagnostic::note(FMT(Nte(Nte0125), tokenParse.ctext()));
+        note = Diagnostic::note(FMT(Nte(Nte0125), tokenParse.c_str()));
 
-    const Diagnostic diag{sourceFile, token, msg ? msg : FMT(Err(Err0310), token.ctext()).c_str()};
+    const Diagnostic diag{sourceFile, token, msg ? msg : FMT(Err(Err0310), token.c_str()).c_str()};
     return context->report(diag, note);
 }
 
@@ -173,7 +173,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (token.id != id)
     {
         const Utf8 related = Naming::tokenToName(id);
-        const auto diagMsg = FMT(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext());
+        const auto diagMsg = FMT(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.c_str());
 
         if (token.id == TokenId::EndOfFile)
         {
@@ -205,7 +205,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& err)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        const Diagnostic diag{sourceFile, token, FMT(err.c_str(), token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(err.c_str(), token.c_str())};
         return context->report(diag);
     }
 
@@ -219,7 +219,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        const Diagnostic diag{sourceFile, token, FMT(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
+        const Diagnostic diag{sourceFile, token, FMT(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.c_str())};
         return context->report(diag);
     }
 
@@ -246,7 +246,7 @@ bool Parser::eatSemiCol(const char* msg)
             token = st;
         }
 
-        return error(token, FMT(Err(Err0550), msg, token.ctext()));
+        return error(token, FMT(Err(Err0550), msg, token.c_str()));
     }
 
     if (token.id == TokenId::SymSemiColon)

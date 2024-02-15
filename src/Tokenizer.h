@@ -49,7 +49,7 @@ enum class LiteralType : uint8_t
     TT_VOID,
     TT_TYPE,
     TT_CSTRING,
-    TT_UNTYPED_BINHEXA,
+    TT_UNTYPED_BIN_HEXA,
     TT_UNTYPED_INT,
     TT_UNTYPED_FLOAT,
     TT_MAX,
@@ -57,9 +57,6 @@ enum class LiteralType : uint8_t
 
 struct SourceLocation
 {
-    uint32_t line   = 0;
-    uint32_t column = 0;
-
     bool operator==(const SourceLocation& other) const
     {
         return line == other.line && column == other.column;
@@ -69,18 +66,21 @@ struct SourceLocation
     {
         return line != other.line || column != other.column;
     }
+
+    uint32_t line   = 0;
+    uint32_t column = 0;
 };
 
 struct Token
 {
-    Utf8           text;
-    SourceLocation startLocation;
-    SourceLocation endLocation;
-
-    const char* ctext() const
+    const char* c_str() const
     {
         return text.c_str();
     }
+
+    Utf8           text;
+    SourceLocation startLocation;
+    SourceLocation endLocation;
 };
 
 constexpr uint8_t TOKENPARSE_LAST_EOL           = 0x01;

@@ -56,12 +56,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         diag.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
 
-    Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     diag.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(diag);
 }
@@ -417,7 +417,7 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic        diag{child->sourceFile, child->token, FMT(Err(Err0399), child->token.ctext(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic        diag{child->sourceFile, child->token, FMT(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     const Diagnostic* note = Diagnostic::hereIs(symOver);
                     if ((typeNode->typeFlags & TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
                     {

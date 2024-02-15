@@ -36,7 +36,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
         {
-            return context->report({fromNode, FMT(Err(Saf0022), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, FMT(Err(Saf0022), fromNode->token.c_str(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
         }
     }
 

@@ -95,9 +95,9 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
     if (funcDecl->token.text[0] == '_')
         return true;
 
-    Diagnostic diag{funcDecl, funcDecl->tokenName, FMT(Err(Wrn0006), "function", "function", funcDecl->token.ctext()), DiagnosticLevel::Warning};
+    Diagnostic diag{funcDecl, funcDecl->tokenName, FMT(Err(Wrn0006), "function", "function", funcDecl->token.c_str()), DiagnosticLevel::Warning};
     if (!funcDecl->isSpecialFunctionName())
-        diag.hint = FMT(Nte(Nte0082), funcDecl->token.ctext());
+        diag.hint = FMT(Nte(Nte0082), funcDecl->token.c_str());
     return Report::report(diag);
 }
 

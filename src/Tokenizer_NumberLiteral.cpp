@@ -40,7 +40,7 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
     {
         token.startLocation = location;
         token.text          = c;
-        return error(token, FMT(Err(Err0227), token.ctext()));
+        return error(token, FMT(Err(Err0227), token.c_str()));
     }
 
     // Be sure we don't have 0x without nothing
@@ -53,7 +53,7 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
     // Type
     token.id = TokenId::LiteralNumber;
     if (token.literalValue.u64 <= UINT32_MAX)
-        token.literalType = LiteralType::TT_UNTYPED_BINHEXA;
+        token.literalType = LiteralType::TT_UNTYPED_BIN_HEXA;
     else
         token.literalType = LiteralType::TT_U64;
 
@@ -103,7 +103,7 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
     {
         token.startLocation = location;
         token.text          = c;
-        return error(token, FMT(Err(Err0308), token.ctext()));
+        return error(token, FMT(Err(Err0308), token.c_str()));
     }
 
     // Be sure we don't have 0x without nothing
@@ -116,7 +116,7 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
     // Type
     token.id = TokenId::LiteralNumber;
     if (token.literalValue.u64 <= UINT32_MAX)
-        token.literalType = LiteralType::TT_UNTYPED_BINHEXA;
+        token.literalType = LiteralType::TT_UNTYPED_BIN_HEXA;
     else
         token.literalType = LiteralType::TT_U64;
 
@@ -343,7 +343,7 @@ bool Tokenizer::doNumberLiteral(TokenParse& token, uint32_t c)
             eatChar(c, offset);
             token.text          = c;
             token.startLocation = startLoc;
-            return error(token, FMT(Err(Err0338), token.ctext()));
+            return error(token, FMT(Err(Err0338), token.c_str()));
         }
     }
 

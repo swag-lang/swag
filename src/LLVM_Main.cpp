@@ -143,7 +143,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
-        auto result  = emitCall(buildParameters, g_LangSpec->name__tlsAlloc, nullptr, allocT, {}, {});
+        auto result  = emitCall(buildParameters, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {}, {});
         auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
         builder.CreateStore(result, TO_PTR_I64(toTlsId));
     }
@@ -165,7 +165,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
         auto toTlsId   = builder.CreateLoad(I64_TY(), v0);
         auto toContext = builder.CreatePointerCast(pp.mainContext, PTR_I8_TY());
-        emitCall(buildParameters, g_LangSpec->name__tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
+        emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
     // Initialize constant segment because we need to have correct pointers to DebugAllocator...
@@ -175,7 +175,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     // __setupRuntime
     {
         auto rtFlags = builder.getInt64(getRuntimeFlags(module));
-        emitCall(buildParameters, g_LangSpec->name__setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
+        emitCall(buildParameters, g_LangSpec->name_priv_setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
     }
 
     // Load all dependencies
@@ -190,7 +190,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         {
             nameLib     = nameLib.filename();
             auto ptrStr = builder.CreateGlobalStringPtr(nameLib.string());
-            emitCall(buildParameters, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.string().length())});
+            emitCall(buildParameters, g_LangSpec->name_priv_loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.string().length())});
         }
     }
 
@@ -269,7 +269,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // __closeRuntime
-    emitCall(buildParameters, g_LangSpec->name__closeRuntime, nullptr, allocT, {}, {});
+    emitCall(buildParameters, g_LangSpec->name_priv_closeRuntime, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
 }
@@ -367,7 +367,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     {
         const auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
         allocT->setAlignment(llvm::Align{16});
-        emitCall(buildParameters, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
+        emitCall(buildParameters, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
     }
 
     // Initialize data segments
@@ -446,7 +446,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 
     // __dropGlobalVariables
     {
-        emitCall(buildParameters, g_LangSpec->name__dropGlobalVariables, nullptr, nullptr, {}, {});
+        emitCall(buildParameters, g_LangSpec->name_priv_dropGlobalVariables, nullptr, nullptr, {}, {});
     }
 
     builder.CreateRetVoid();

@@ -556,7 +556,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (!ownerFct)
         {
             auto note = Diagnostic::note(Nte(Nte0002));
-            return context->report({node, FMT(Err(Err0356), node->token.ctext())}, note);
+            return context->report({node, FMT(Err(Err0356), node->token.c_str())}, note);
         }
     }
 
@@ -574,14 +574,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (!ownerFct)
         {
             auto note = Diagnostic::note(Nte(Nte0001));
-            return context->report({node, node->token, FMT(Err(Err0356), node->token.ctext())}, note);
+            return context->report({node, node->token, FMT(Err(Err0356), node->token.c_str())}, note);
         }
     }
 
     if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
     {
         if (!node->type || !node->type->typeInfo->isStruct())
-            return context->report({node->assignment->childs.front(), FMT(Err(Err0403), node->assignment->childs.front()->token.ctext())});
+            return context->report({node->assignment->childs.front(), FMT(Err(Err0403), node->assignment->childs.front()->token.c_str())});
     }
 
     uint32_t symbolFlags = 0;
@@ -732,7 +732,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
             if (!ok)
             {
-                Diagnostic diag{node, FMT(Err(Err0566), node->token.ctext(), concreteTypeEnum->getDisplayNameC())};
+                Diagnostic diag{node, FMT(Err(Err0566), node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
                 auto       note = Diagnostic::hereIs(concreteNodeType->declNode);
                 return context->report(diag, note);
             }
@@ -769,7 +769,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             Diagnostic diag(node->typeConstraint, FMT(Err(Err0088), node->typeInfo->getDisplayNameC()));
             if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
             {
-                auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.ctext()));
+                auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
                 return context->report(diag, note);
             }
 
@@ -1024,7 +1024,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, FMT(Err(Err0413), Naming::kindName(node).c_str(), node->token.ctext())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, FMT(Err(Err0413), Naming::kindName(node).c_str(), node->token.c_str())}));
 
     // Type should be a correct one
     SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, Err(Err0414)}));

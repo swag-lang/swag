@@ -521,7 +521,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             const auto    scope     = SP;
             llvm::DIType* type      = getType(typeParam, file);
 
-            llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
+            llvm::DILocalVariable* var0 = dbgBuilder->createAutoVariable(scope, child->token.c_str(), file, loc.line + 1, type, !isOptimized);
 
             const auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocaVariadic, builder.getInt64(0));
             const auto arg0 = func->getArg(0);
@@ -547,7 +547,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             if (typeParam->isString() || typeParam->isSlice())
             {
                 const auto             type  = getType(typeParam, file);
-                llvm::DILocalVariable* value = dbgBuilder->createAutoVariable(scope, child->token.ctext(), file, loc.line + 1, type, !isOptimized);
+                llvm::DILocalVariable* value = dbgBuilder->createAutoVariable(scope, child->token.c_str(), file, loc.line + 1, type, !isOptimized);
 
                 if (isDebug)
                 {
@@ -579,7 +579,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
                 if (typeParam->isSelf() && child->token.text == "self")
                     flags |= llvm::DINode::FlagObjectPointer;
 
-                llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+                llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
 
                 llvm::Value* value = func->getArg(idxParam);
 
@@ -611,7 +611,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
         {
             llvm::DIType*          type   = getPointerToType(typeInfo, file);
             const auto             scope  = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.ctext(), file, localVar->token.startLocation.line, type, !isOptimized);
+            llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
             const auto             allocA = allocaRetval[idxRetVal++];
             dbgBuilder->insertDeclare(allocA, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             builder.CreateStore(func->getArg((uint32_t) func->arg_size() - 1), allocA);
@@ -620,7 +620,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
         {
             llvm::DIType*          type  = getType(typeInfo, file);
             const auto             scope = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.ctext(), file, localVar->token.startLocation.line, type, !isOptimized);
+            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
             const auto             v     = builder.CreateInBoundsGEP(I8_TY(), stack, pp.builder->getInt32(overload->computedValue.storageOffset));
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
@@ -823,7 +823,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             if (constant)
             {
                 const auto g   = new llvm::GlobalVariable(modu, constant->getType(), true, llvm::GlobalValue::PrivateLinkage, constant, name);
-                const auto gve = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.ctext(), name, file, 1, dbgType, true);
+                const auto gve = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.c_str(), name, file, 1, dbgType, true);
                 g->addDebugInfo(gve);
             }
         }
@@ -845,7 +845,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
 
             const auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
             const auto dbgRefType = getReferenceToType(typeInfo, file);
-            const auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.ctext(), name, file, 0, dbgRefType, true);
+            const auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, node->token.c_str(), name, file, 0, dbgRefType, true);
             g->addDebugInfo(gve);
         }
     }

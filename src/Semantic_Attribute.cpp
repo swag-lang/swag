@@ -187,7 +187,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     if (specificMsg)
     {
         const auto       nakedName = Naming::kindName(checkNode);
-        const Diagnostic diag{oneAttribute, FMT(Err(Err0491), oneAttribute->token.ctext(), specificMsg)};
+        const Diagnostic diag{oneAttribute, FMT(Err(Err0491), oneAttribute->token.c_str(), specificMsg)};
         const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0024), nakedName.c_str()));
         return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
@@ -195,12 +195,12 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     const auto nakedName = Naming::aKindName(checkNode);
     if (nakedName == "<node>")
     {
-        const Diagnostic diag{oneAttribute, FMT(Err(Err0495), oneAttribute->token.ctext())};
+        const Diagnostic diag{oneAttribute, FMT(Err(Err0495), oneAttribute->token.c_str())};
         return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
 
     const auto       nakedName1 = Naming::kindName(checkNode);
-    const Diagnostic diag{oneAttribute, FMT(Err(Err0492), oneAttribute->token.ctext(), nakedName.c_str())};
+    const Diagnostic diag{oneAttribute, FMT(Err(Err0492), oneAttribute->token.c_str(), nakedName.c_str())};
     const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0063), nakedName1.c_str()));
     return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
 }
@@ -301,7 +301,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{child, FMT(Err(Err0068), child->token.ctext())};
+                    Diagnostic diag{child, FMT(Err(Err0068), child->token.c_str())};
                     return context->report(diag);
                 }
 

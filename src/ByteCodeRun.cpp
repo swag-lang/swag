@@ -132,7 +132,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
 void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg)
 {
     msg            = _strdup(msg); // Leak and slow, but only for messages
-    const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__compilererror);
+    const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_compilererror);
     const auto loc = ByteCode::getLocation(context->bc, ip);
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
@@ -144,7 +144,7 @@ void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, const B
 void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, const ByteCodeInstruction* ip, const char* msg)
 {
     msg            = _strdup(msg); // Leak and slow, but only for messages
-    const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+    const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_panic);
     const auto loc = ByteCode::getLocation(context->bc, ip);
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
@@ -1508,7 +1508,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                     context->internalPanicSymbol = over;
                     context->internalPanicHint   = Nte(Nte0081);
-                    callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
+                    callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.c_str()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1530,7 +1530,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         context->internalPanicSymbol = over;
                         context->internalPanicHint   = Nte(Nte0081);
-                        callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.ctext()));
+                        callInternalPanic(context, ip, FMT(Err(Err0117), over->node->token.c_str()));
                     }
                 }
             }
@@ -2403,7 +2403,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::InternalPanic:
     {
-        auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+        auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_panic);
         auto loc = ByteCode::getLocation(context->bc, ip);
 
         context->push(ip->d.pointer);
@@ -2427,7 +2427,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     case ByteCodeOp::Unreachable:
     {
-        auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+        auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_panic);
         auto loc = ByteCode::getLocation(context->bc, ip);
 
         context->push((const uint8_t*) "executing unreachable code");
@@ -2456,7 +2456,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::InternalGetTlsPtr:
     {
         auto module = context->jc.sourceFile->module;
-        auto bc     = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__tlsGetPtr);
+        auto bc     = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_tlsGetPtr);
         module->tlsSegment.makeLinear(); // be sure init segment is not divided in chunks
         context->push(module->tlsSegment.address(0));
         context->push((uint64_t) module->tlsSegment.totalCount);
@@ -2516,7 +2516,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::InternalFailedAssume:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__failedAssume);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_failedAssume);
         context->push(registersRC[ip->a.u32].pointer);
         localCall(context, bc, 1);
         break;
@@ -2527,7 +2527,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->push(context->registersRR[0].u64);
         context->push(context->registersRR[1].u64);
 
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__seterr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_seterr);
         context->push(registersRC[ip->b.u32].pointer);
         context->push(registersRC[ip->a.u32].pointer);
         localCall(context, bc, 2);
@@ -2565,19 +2565,19 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::InternalPushErr:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__pusherr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_pusherr);
         localCall(context, bc, 0);
         break;
     }
     case ByteCodeOp::InternalPopErr:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__poperr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_poperr);
         localCall(context, bc, 0);
         break;
     }
     case ByteCodeOp::InternalCatchErr:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__catcherr);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_catcherr);
         localCall(context, bc, 0);
         break;
     }

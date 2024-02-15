@@ -154,7 +154,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRc = identifier->identifierRef()->resultRegisterRc;
         SWAG_VERIFY(node->resultRegisterRc.size() > 0,
-                    Report::internalError(context->node, FMT("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.ctext()).c_str()));
+                    Report::internalError(context->node, FMT("emitIdentifier, cannot reference identifier [[%s]]", identifier->token.c_str()).c_str()));
         forStruct = true;
     }
 
@@ -583,7 +583,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->symRegisters.size() > 0,
-                    Report::internalError(context->node, FMT("emitIdentifier, identifier not generated [[%s]]", identifier->token.ctext()).c_str()));
+                    Report::internalError(context->node, FMT("emitIdentifier, identifier not generated [[%s]]", identifier->token.c_str()).c_str()));
         SWAG_ASSERT(resolved->hasFlag(OVERLOAD_INLINE_REG));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 

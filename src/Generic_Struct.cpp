@@ -65,7 +65,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, FMT(Err(Err0301), node->token.ctext())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, FMT(Err(Err0301), node->token.c_str())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -83,7 +83,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     const auto genericStructType = castTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     const auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, FMT(Err(Err0297), node->token.ctext())}));
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, FMT(Err(Err0297), node->token.c_str())}));
 
     // Make a new type
     const auto newType = castTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);

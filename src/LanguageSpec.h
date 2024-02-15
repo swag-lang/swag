@@ -1,3 +1,5 @@
+// ReSharper disable CppInconsistentNaming
+// ReSharper disable IdentifierTypo
 #pragma once
 #include "LangHashTable.h"
 #include "Tokenizer.h"
@@ -23,22 +25,22 @@ struct LanguageSpec
     Utf8 name_globalPreMain;
     Utf8 name_getTypeTable;
 
-    Utf8 name__setupRuntime;
-    Utf8 name__closeRuntime;
-    Utf8 name__dropGlobalVariables;
-    Utf8 name__compilererror;
-    Utf8 name__panic;
-    Utf8 name__pusherr;
-    Utf8 name__poperr;
-    Utf8 name__catcherr;
-    Utf8 name__seterr;
-    Utf8 name__failedAssume;
-    Utf8 name__tlsAlloc;
-    Utf8 name__tlsGetValue;
-    Utf8 name__tlsSetValue;
-    Utf8 name__tlsGetPtr;
-    Utf8 name__stackTrace;
-    Utf8 name__loaddll;
+    Utf8 name_priv_setupRuntime;
+    Utf8 name_priv_closeRuntime;
+    Utf8 name_priv_dropGlobalVariables;
+    Utf8 name_priv_compilererror;
+    Utf8 name_priv_panic;
+    Utf8 name_priv_pusherr;
+    Utf8 name_priv_poperr;
+    Utf8 name_priv_catcherr;
+    Utf8 name_priv_seterr;
+    Utf8 name_priv_failedAssume;
+    Utf8 name_priv_tlsAlloc;
+    Utf8 name_priv_tlsGetValue;
+    Utf8 name_priv_tlsSetValue;
+    Utf8 name_priv_tlsGetPtr;
+    Utf8 name_priv_stackTrace;
+    Utf8 name_priv_loaddll;
 
     Utf8 name_memcpy;
     Utf8 name_memset;

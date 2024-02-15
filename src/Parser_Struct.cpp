@@ -78,13 +78,13 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        const Diagnostic  diag{implNode, FMT(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
+        const Diagnostic  diag{implNode, FMT(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
         const auto        note  = Diagnostic::hereIs(newScope->owner);
         const Diagnostic* note1 = nullptr;
         if (newScope->kind == ScopeKind::Enum)
-            note1 = Diagnostic::note(FMT(Nte(Nte0043), implNode->token.ctext()));
+            note1 = Diagnostic::note(FMT(Nte(Nte0043), implNode->token.c_str()));
         else if (newScope->kind == ScopeKind::Struct)
-            note1 = Diagnostic::note(FMT(Nte(Nte0042), implNode->token.ctext()));
+            note1 = Diagnostic::note(FMT(Nte(Nte0042), implNode->token.c_str()));
         return context->report(diag, note, note1);
     }
 
@@ -239,7 +239,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0581)));
-    SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0378), token.ctext())));
+    SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0378), token.c_str())));
     structNode->inheritTokenName(token);
     structNode->tokenName = static_cast<Token>(token);
     SWAG_CHECK(checkIsValidUserName(structNode, &token));
@@ -260,12 +260,12 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             {
                 const auto       implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 const Diagnostic diag{implNode->identifier,
-                                      FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
+                                      FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
                 const auto note = Diagnostic::hereIs(structNode);
                 return context->report(diag, note);
             }
             const Utf8       asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
-            const Diagnostic diag{structNode->sourceFile, token, FMT(Err(Err0626), "struct", structNode->token.ctext(), asA.c_str())};
+            const Diagnostic diag{structNode->sourceFile, token, FMT(Err(Err0626), "struct", structNode->token.c_str(), asA.c_str())};
             const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
             return context->report(diag, note);
         }
@@ -485,7 +485,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         const auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
 
         SWAG_CHECK(checkIsValidUserName(funcNode));
-        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.c_str())));
         SWAG_CHECK(eatToken());
 
         const auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
@@ -551,7 +551,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     // A normal declaration
     default:
     {
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, FMT(Err(Err0293), token.ctext())));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, FMT(Err(Err0293), token.c_str())));
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
         break;
