@@ -30,33 +30,33 @@ constexpr uint8_t BCID_SAFETY_OF = 0x04;
 
 struct ByteCodeInstruction
 {
-    // clang-format off
-    bool hasFlag(uint16_t fl) const                              { return flags & fl; }
-    void addFlag(uint16_t fl)                                    { flags |= fl; }
-    void removeFlag(uint16_t fl)                                 { flags &= ~fl; }
-    void inheritFlag(const ByteCodeInstruction *ip, uint16_t fl) { flags |= ip->flags & fl; }
-    // clang-format on
+	// clang-format off
+	bool hasFlag(uint16_t fl) const { return flags & fl; }
+	void addFlag(uint16_t fl) { flags |= fl; }
+	void removeFlag(uint16_t fl) { flags &= ~fl; }
+	void inheritFlag(const ByteCodeInstruction* ip, uint16_t fl) { flags |= ip->flags & fl; }
+	// clang-format on
 
-    // Keep 'op' first to dereference it in the runner without an offset
-    ByteCodeOp op;
-    uint16_t   flags;
-    uint16_t   padding0;
-    uint8_t    numVariadicParams;
-    uint8_t    dynFlags;
+	// Keep 'op' first to dereference it in the runner without an offset
+	ByteCodeOp op;
+	uint16_t   flags;
+	uint16_t   padding0;
+	uint8_t    numVariadicParams;
+	uint8_t    dynFlags;
 
-    Register a;
-    Register b;
-    Register c;
-    Register d;
+	Register a;
+	Register b;
+	Register c;
+	Register d;
 
-    AstNode*        node;
-    SourceLocation* location;
+	AstNode*        node;
+	SourceLocation* location;
 
 #ifdef SWAG_DEV_MODE
-    const char* sourceFile;
-    int         sourceLine;
-    int         serial;
-    int         treeNode;
-    uint32_t    crc;
+	const char* sourceFile;
+	int         sourceLine;
+	int         serial;
+	int         treeNode;
+	uint32_t    crc;
 #endif
 };

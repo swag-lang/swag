@@ -4,9 +4,9 @@ struct Job;
 
 struct DependentJobs
 {
-    void add(Job* job);
-    void clear();
-    void setRunning();
+	void add(Job* job);
+	void clear();
+	void setRunning();
 
-    VectorNative<Job*> list;
+	VectorNative<Job*> list;
 };

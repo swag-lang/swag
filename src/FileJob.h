@@ -4,22 +4,22 @@ struct Module;
 
 struct CopyFileJob final : Job
 {
-    CopyFileJob();
+	CopyFileJob();
 
-    void      release() override;
-    JobResult execute() override;
+	void      release() override;
+	JobResult execute() override;
 
-    Path sourcePath;
-    Path destPath;
+	Path sourcePath;
+	Path destPath;
 };
 
 struct LoadFileJob final : Job
 {
-    LoadFileJob();
+	LoadFileJob();
 
-    JobResult execute() override;
+	JobResult execute() override;
 
-    Path     sourcePath;
-    void*    destBuffer = nullptr;
-    uint32_t sizeBuffer = 0;
+	Path     sourcePath;
+	void*    destBuffer = nullptr;
+	uint32_t sizeBuffer = 0;
 };

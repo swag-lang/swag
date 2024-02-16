@@ -5,11 +5,11 @@ struct Module;
 
 struct ModuleGenOutputJob final : Job
 {
-    ModuleGenOutputJob();
+	ModuleGenOutputJob();
 
-    JobResult execute() override;
+	JobResult execute() override;
 
-    BuildParameters     buildParameters;
-    condition_variable* condVar   = nullptr;
-    mutex*              mutexDone = nullptr;
+	BuildParameters     buildParameters;
+	condition_variable* condVar   = nullptr;
+	mutex*              mutexDone = nullptr;
 };

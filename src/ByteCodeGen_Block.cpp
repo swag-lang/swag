@@ -147,7 +147,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 				auto callParam = allParams->childs[i];
 				auto symbol    = node->parametersScope->symTable.find(funcParam->token.text);
 				SWAG_ASSERT(symbol);
-				for (auto overload: symbol->overloads)
+				for (auto overload : symbol->overloads)
 				{
 					if (overload->hasFlag(OVERLOAD_VAR_INLINE))
 					{
@@ -185,7 +185,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 
 						auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
 						SWAG_ASSERT(symbol);
-						for (auto overload: symbol->overloads)
+						for (auto overload : symbol->overloads)
 						{
 							if (overload->hasFlag(OVERLOAD_VAR_INLINE))
 							{
@@ -215,7 +215,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 
 					auto symbol = node->parametersScope->symTable.find(defaultParam->token.text);
 					SWAG_ASSERT(symbol);
-					for (auto overload: symbol->overloads)
+					for (auto overload : symbol->overloads)
 					{
 						if (overload->hasFlag(OVERLOAD_VAR_INLINE))
 						{
@@ -244,7 +244,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 	const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
 
 	// Update all returns to jump at the end of the inline block
-	for (const auto r: node->returnList)
+	for (const auto r : node->returnList)
 		context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
 
 	// If the inlined function returns a reference, and we want a value, we need to unref
@@ -260,7 +260,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 	{
 		if (!node->hasAttribute(ATTRIBUTE_MIXIN))
 		{
-			for (const auto r: node->extMisc()->registersToRelease)
+			for (const auto r : node->extMisc()->registersToRelease)
 				freeRegisterRC(context, r);
 		}
 		else
@@ -269,14 +269,14 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 			// In that case we need to release our registers, because it's a compile time execution done.
 			if (node->parent->hasAstFlag(AST_CONST_EXPR) != node->ownerScope->owner->hasAstFlag(AST_CONST_EXPR))
 			{
-				for (const auto r: node->extMisc()->registersToRelease)
+				for (const auto r : node->extMisc()->registersToRelease)
 					freeRegisterRC(context, r);
 			}
 			else
 			{
 				// Transfers registers to release to the parent scope owner
 				node->ownerScope->owner->allocateExtension(ExtensionKind::Misc);
-				for (auto r: node->extMisc()->registersToRelease)
+				for (auto r : node->extMisc()->registersToRelease)
 					node->ownerScope->owner->extMisc()->registersToRelease.push_back(r);
 			}
 		}
@@ -622,7 +622,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
 	loopNode->seekJumpAfterBlock = context->bc->numInstructions;
 
 	// Resolve all continue instructions
-	for (const auto continueNode: loopNode->continueList)
+	for (const auto continueNode : loopNode->continueList)
 	{
 		const auto inst = context->bc->out + continueNode->jumpInstruction;
 		const auto diff = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
@@ -630,7 +630,7 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
 	}
 
 	// Resolve all break instructions
-	for (const auto breakNode: loopNode->breakList)
+	for (const auto breakNode : loopNode->breakList)
 	{
 		const auto inst = context->bc->out + breakNode->jumpInstruction;
 		const auto diff = context->bc->numInstructions - breakNode->jumpInstruction - 1;
@@ -745,7 +745,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 	inst->b.s32 = diff;
 
 	// Resolve all break instructions
-	for (const auto breakNode: switchNode->breakList)
+	for (const auto breakNode : switchNode->breakList)
 	{
 		inst        = context->bc->out + breakNode->jumpInstruction;
 		diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
@@ -753,7 +753,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 	}
 
 	// Resolve all fallthrough instructions
-	for (const auto fallNode: switchNode->fallThroughList)
+	for (const auto fallNode : switchNode->fallThroughList)
 	{
 		SWAG_ASSERT(fallNode->switchCase);
 		SWAG_ASSERT(fallNode->switchCase->caseIndex < static_cast<int>(switchNode->cases.size()) - 1);
@@ -822,7 +822,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 		// Normal switch, with an expression
 		if (caseNode->ownerSwitch->expression)
 		{
-			for (const auto expr: caseNode->expressions)
+			for (const auto expr : caseNode->expressions)
 			{
 				RegisterList r0;
 				if (expr->kind == AstNodeKind::Range)
@@ -883,7 +883,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 		// A switch without an expression
 		else
 		{
-			for (const auto expr: caseNode->expressions)
+			for (const auto expr : caseNode->expressions)
 			{
 				allJumps.push_back(context->bc->numInstructions);
 				const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRc);
@@ -891,7 +891,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 			}
 		}
 
-		for (const auto expr: caseNode->expressions)
+		for (const auto expr : caseNode->expressions)
 			freeRegisterRC(context, expr->resultRegisterRc);
 
 		// Jump to the next case, except for the default, which is the last
@@ -902,7 +902,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 		blockNode->seekStart = context->bc->numInstructions;
 
 		// Now this is the beginning of the block, so we can resolve all Jump
-		for (const auto jumpIdx: allJumps)
+		for (const auto jumpIdx : allJumps)
 		{
 			ByteCodeInstruction* jump = context->bc->out + jumpIdx;
 			jump->b.s32               = context->bc->numInstructions - jump->b.u32;
@@ -945,7 +945,7 @@ bool ByteCodeGen::emitFallThrough(ByteCodeGenContext* context)
 	const auto fallNode = castAst<AstBreakContinue>(node, AstNodeKind::FallThrough);
 
 	Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->collectScopes);
-	for (const auto scope: context->collectScopes)
+	for (const auto scope : context->collectScopes)
 	{
 		SWAG_CHECK(computeLeaveScope(context, scope));
 		YIELD();
@@ -963,7 +963,7 @@ bool ByteCodeGen::emitBreak(ByteCodeGenContext* context)
 	const auto breakNode = castAst<AstBreakContinue>(node, AstNodeKind::Break);
 
 	Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->collectScopes);
-	for (const auto scope: context->collectScopes)
+	for (const auto scope : context->collectScopes)
 	{
 		SWAG_CHECK(computeLeaveScope(context, scope));
 		YIELD();
@@ -981,7 +981,7 @@ bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
 	const auto continueNode = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
 	Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->collectScopes);
-	for (const auto scope: context->collectScopes)
+	for (const auto scope : context->collectScopes)
 	{
 		SWAG_CHECK(computeLeaveScope(context, scope));
 		YIELD();
@@ -1168,7 +1168,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
 		topScope = funcNode->scope;
 
 	Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->collectScopes);
-	for (const auto scope: context->collectScopes)
+	for (const auto scope : context->collectScopes)
 	{
 		SWAG_CHECK(computeLeaveScope(context, scope, forceNoDrop, forError));
 		YIELD();
@@ -1202,7 +1202,7 @@ bool ByteCodeGen::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, V
 	// Free some registers
 	if (context->node->hasExtMisc())
 	{
-		for (const auto r: context->node->extMisc()->registersToRelease)
+		for (const auto r : context->node->extMisc()->registersToRelease)
 			freeRegisterRC(context, r);
 		context->node->extMisc()->registersToRelease.clear();
 	}

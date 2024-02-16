@@ -29,78 +29,78 @@ enum class ModuleKind;
 
 struct OneTag
 {
-    Utf8          cmdLine;
-    Utf8          name;
-    TypeInfo*     type;
-    ComputedValue value;
+	Utf8          cmdLine;
+	Utf8          name;
+	TypeInfo*     type;
+	ComputedValue value;
 };
 
 struct PendingJob
 {
-    Job*     pendingJob;
-    AstNode* node;
+	Job*     pendingJob;
+	AstNode* node;
 };
 
 struct Workspace
 
 {
-    static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
-    static void        errorPendingJobs(const Vector<PendingJob>& pendingJobs);
-    static void        computeWaitingJobs();
-    static void        checkPendingJobs();
-    static bool        buildRTModule(Module* module);
-    bool               buildTarget();
-    bool               build();
-    Module*            createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
+	static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
+	static void        errorPendingJobs(const Vector<PendingJob>& pendingJobs);
+	static void        computeWaitingJobs();
+	static void        checkPendingJobs();
+	static bool        buildRTModule(Module* module);
+	bool               buildTarget();
+	bool               build();
+	Module*            createOrUseModule(const Utf8& moduleName, const Path& modulePath, ModuleKind kind, bool errorModule = false);
 
-    void        addBootstrap();
-    void        addRuntime();
-    void        addRuntimeFile(const char* fileName) const;
-    void        setupPaths();
-    void        setupInternalTags();
-    void        setupUserTags();
-    void        setup();
-    static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
-    SourceFile* findFile(const char* fileName) const;
-    Module*     getModuleByName(const Utf8& moduleName);
-    static void cleanFolderContent(const Path& path);
-    OneTag*     hasTag(const Utf8& name);
-    void        setupCachePath();
-    void        setScriptWorkspace(const Utf8& name);
-    static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
-    Path        getTargetPath(const Utf8& buildCfg, const BackendTarget& target) const;
-    void        setupTarget();
+	void        addBootstrap();
+	void        addRuntime();
+	void        addRuntimeFile(const char* fileName) const;
+	void        setupPaths();
+	void        setupInternalTags();
+	void        setupUserTags();
+	void        setup();
+	static void computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
+	SourceFile* findFile(const char* fileName) const;
+	Module*     getModuleByName(const Utf8& moduleName);
+	static void cleanFolderContent(const Path& path);
+	OneTag*     hasTag(const Utf8& name);
+	void        setupCachePath();
+	void        setScriptWorkspace(const Utf8& name);
+	static Utf8 getTargetFullName(const Utf8& buildCfg, const BackendTarget& target);
+	Path        getTargetPath(const Utf8& buildCfg, const BackendTarget& target) const;
+	void        setupTarget();
 
-    static void cleanPublic(const Path& basePath);
-    void        cleanScript(bool all);
-    void        cleanCommand();
-    void        newModule(const Utf8& moduleName) const;
-    void        newCommand();
-    static void scriptCommand();
+	static void cleanPublic(const Path& basePath);
+	void        cleanScript(bool all);
+	void        cleanCommand();
+	void        newModule(const Utf8& moduleName) const;
+	void        newCommand();
+	static void scriptCommand();
 
-    Path                  workspacePath;
-    Path                  targetPath;
-    Path                  cachePath;
-    Path                  testsPath;
-    Path                  modulesPath;
-    Path                  dependenciesPath;
-    SharedMutex           mutexModules;
-    atomic<int>           numErrors   = 0;
-    atomic<int>           numWarnings = 0;
-    VectorNative<Module*> modules;
-    Module*               runModule = nullptr;
+	Path                  workspacePath;
+	Path                  targetPath;
+	Path                  cachePath;
+	Path                  testsPath;
+	Path                  modulesPath;
+	Path                  dependenciesPath;
+	SharedMutex           mutexModules;
+	atomic<int>           numErrors   = 0;
+	atomic<int>           numWarnings = 0;
+	VectorNative<Module*> modules;
+	Module*               runModule = nullptr;
 
-    Vector<OneTag> tags;
+	Vector<OneTag> tags;
 
-    MapPath<Module*> mapFirstPassModulesNames;
-    MapUtf8<Module*> mapModulesNames;
-    Module*          filteredModule = nullptr;
-    Module*          bootstrapModule;
-    Module*          runtimeModule;
-    ScopeSwag        swagScope;
+	MapPath<Module*> mapFirstPassModulesNames;
+	MapUtf8<Module*> mapModulesNames;
+	Module*          filteredModule = nullptr;
+	Module*          bootstrapModule;
+	Module*          runtimeModule;
+	ScopeSwag        swagScope;
 
-    atomic<int>      skippedModules = 0;
-    atomic<uint64_t> totalTime      = 0;
+	atomic<int>      skippedModules = 0;
+	atomic<uint64_t> totalTime      = 0;
 };
 
 extern Workspace* g_Workspace;

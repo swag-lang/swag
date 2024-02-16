@@ -11,30 +11,30 @@
 JobResult ByteCodeOptimizerJob::execute()
 {
 #ifdef SWAG_STATS
-    Timer tm(&g_Stats.optimBCTime);
+	Timer tm(&g_Stats.optimBCTime);
 #endif
 
-    optContext.module = module;
+	optContext.module = module;
 
-    bool restart = false;
-    for (int i = startIndex; i < endIndex; i++)
-    {
-        const auto bc = module->byteCodeFunc[i];
-        if (!ByteCodeOptimizer::optimize(optContext, bc, restart))
-        {
-            if (bc->node && bc->node->hasAttribute(ATTRIBUTE_PRINT_BC))
-            {
-                constexpr ByteCodePrintOptions opt;
-                bc->print(opt);
-            }
+	bool restart = false;
+	for (int i = startIndex; i < endIndex; i++)
+	{
+		const auto bc = module->byteCodeFunc[i];
+		if (!ByteCodeOptimizer::optimize(optContext, bc, restart))
+		{
+			if (bc->node && bc->node->hasAttribute(ATTRIBUTE_PRINT_BC))
+			{
+				constexpr ByteCodePrintOptions opt;
+				bc->print(opt);
+			}
 
-            return JobResult::ReleaseJob;
-        }
-    }
+			return JobResult::ReleaseJob;
+		}
+	}
 
-    // Restart everything if something has been done during this pass
-    if (restart)
-        ++module->optimNeedRestart;
+	// Restart everything if something has been done during this pass
+	if (restart)
+		++module->optimNeedRestart;
 
-    return JobResult::ReleaseJob;
+	return JobResult::ReleaseJob;
 }

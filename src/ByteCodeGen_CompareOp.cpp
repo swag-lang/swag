@@ -371,10 +371,10 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNo
 		case NativeTypeKind::String:
 			{
 				if (right->hasSemFlag(SEMFLAG_TYPE_IS_NULL))
-			{
-				EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
-				return true;
-			}
+				{
+					EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+					return true;
+				}
 
 				const auto rt = reserveRegisterRC(context);
 				EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1[1]);

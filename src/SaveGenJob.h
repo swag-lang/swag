@@ -5,12 +5,12 @@ struct Module;
 
 struct SaveGenJob final : Job
 {
-    SaveGenJob();
+	SaveGenJob();
 
-    void      release() override;
-    JobResult execute() override;
+	void      release() override;
+	JobResult execute() override;
 
-    static bool flush(Module* module);
+	static bool flush(Module* module);
 
-    Utf8 content;
+	Utf8 content;
 };

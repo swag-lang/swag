@@ -3,5 +3,5 @@
 
 void swagAssert(const char* expr, const char* file, int line)
 {
-    OS::assertBox(expr, file, line);
+	OS::assertBox(expr, file, line);
 }

@@ -4,23 +4,23 @@
 
 void DependentJobs::add(Job* job)
 {
-    // Add it once !
+	// Add it once !
 #ifdef SWAG_DEV_MODE
-    for (const auto j : list)
-        SWAG_ASSERT(j != job);
+	for (const auto j : list)
+		SWAG_ASSERT(j != job);
 #endif
 
-    list.push_back(job);
+	list.push_back(job);
 }
 
 void DependentJobs::clear()
 {
-    list.clear();
+	list.clear();
 }
 
 void DependentJobs::setRunning()
 {
-    for (const auto job : list)
-        g_ThreadMgr.addJob(job);
-    list.clear();
+	for (const auto job : list)
+		g_ThreadMgr.addJob(job);
+	list.clear();
 }

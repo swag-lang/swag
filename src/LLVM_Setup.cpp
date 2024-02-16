@@ -179,12 +179,12 @@
 
 namespace LLVM
 {
-    void setup()
-    {
-        llvm::InitializeAllTargets();
-        llvm::InitializeAllTargetInfos();
-        llvm::InitializeAllTargetMCs();
-        llvm::InitializeAllAsmPrinters();
-        llvm::InitializeAllAsmParsers();
-    }
+	void setup()
+	{
+		llvm::InitializeAllTargets();
+		llvm::InitializeAllTargetInfos();
+		llvm::InitializeAllTargetMCs();
+		llvm::InitializeAllAsmPrinters();
+		llvm::InitializeAllAsmParsers();
+	}
 }

@@ -30,7 +30,7 @@ struct ByteCodeRunContext
 	static void stackOverflow();
 	int         getRegCount(int cur);
 
-	template <typename T>
+	template<typename T>
 	T pop()
 	{
 		auto popResult = *reinterpret_cast<T*>(sp);
@@ -38,14 +38,14 @@ struct ByteCodeRunContext
 		return popResult;
 	}
 
-	template <typename T>
+	template<typename T>
 	T popAlt()
 	{
 		spAlt -= sizeof(T);
 		return *reinterpret_cast<T*>(spAlt);
 	}
 
-	template <typename T>
+	template<typename T>
 	void push(const T& value)
 	{
 		if (sp - sizeof(T) < spAlt)
@@ -58,7 +58,7 @@ struct ByteCodeRunContext
 		*reinterpret_cast<T*>(sp) = value;
 	}
 
-	template <typename T>
+	template<typename T>
 	void pushAlt(const T& value)
 	{
 		if (spAlt + sizeof(T) >= sp)

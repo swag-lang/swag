@@ -42,41 +42,41 @@ constexpr uint32_t OVERLOAD_UNDEFINED        = 0x10000000;
 
 struct SymbolOverload
 {
-    void from(const SymbolOverload* other);
-    void setRegisters(const RegisterList& reg, uint32_t fl);
+	void from(const SymbolOverload* other);
+	void setRegisters(const RegisterList& reg, uint32_t fl);
 
-    // clang-format off
-    bool hasFlag(uint32_t fl) const     { return flags & fl; }
-    // clang-format on
+	// clang-format off
+	bool hasFlag(uint32_t fl) const { return flags & fl; }
+	// clang-format on
 
-    ComputedValue computedValue;
-    RegisterList  symRegisters;
+	ComputedValue computedValue;
+	RegisterList  symRegisters;
 
-    TypeInfo*   typeInfo        = nullptr;
-    AstNode*    node            = nullptr;
-    SymbolName* symbol          = nullptr;
-    AstNode*    fromInlineParam = nullptr;
+	TypeInfo*   typeInfo        = nullptr;
+	AstNode*    node            = nullptr;
+	SymbolName* symbol          = nullptr;
+	AstNode*    fromInlineParam = nullptr;
 
-    uint32_t storageIndex = 0;
-    uint32_t flags        = 0;
+	uint32_t storageIndex = 0;
+	uint32_t flags        = 0;
 };
 
 enum class SymbolKind : uint8_t
 {
-    Invalid,
-    Variable,
-    TypeAlias,
-    NameAlias,
-    Namespace,
-    Enum,
-    EnumValue,
-    Function,
-    Attribute,
-    Struct,
-    Interface,
-    GenericType,
-    Label,
-    PlaceHolder,
+	Invalid,
+	Variable,
+	TypeAlias,
+	NameAlias,
+	Namespace,
+	Enum,
+	EnumValue,
+	Function,
+	Attribute,
+	Struct,
+	Interface,
+	GenericType,
+	Label,
+	PlaceHolder,
 };
 
 constexpr uint16_t SYMBOL_ATTRIBUTE_GEN = 0x0001;
@@ -84,32 +84,32 @@ constexpr uint16_t SYMBOL_USED          = 0x0002;
 
 struct SymbolName
 {
-    SymbolOverload* findOverload(const TypeInfo* typeInfo);
-    Utf8            getFullName() const;
+	SymbolOverload* findOverload(const TypeInfo* typeInfo);
+	Utf8            getFullName() const;
 
-    SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
-    void            decreaseOverloadNoLock();
-    void            addDependentJob(Job* job);
-    void            addDependentJobNoLock(Job* job);
-    void            unregisterNode(const AstNode* node);
+	SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
+	void            decreaseOverloadNoLock();
+	void            addDependentJob(Job* job);
+	void            addDependentJobNoLock(Job* job);
+	void            unregisterNode(const AstNode* node);
 
-    // clang-format off
-    bool hasFlag(uint32_t fl) const     { return flags & fl; }
-    // clang-format on    
+	// clang-format off
+	bool hasFlag(uint32_t fl) const { return flags & fl; }
+	// clang-format on    
 
-    SharedMutex                   mutex;
-    VectorNative<SymbolOverload*> overloads;
-    Utf8                          name;
-    DependentJobs                 dependentJobs;
-    VectorNative<AstNode*>        nodes;
+	SharedMutex                   mutex;
+	VectorNative<SymbolOverload*> overloads;
+	Utf8                          name;
+	DependentJobs                 dependentJobs;
+	VectorNative<AstNode*>        nodes;
 
-    SymTable* ownerTable = nullptr;
+	SymTable* ownerTable = nullptr;
 
-    uint32_t cptOverloads     = 0;
-    uint32_t cptOverloadsInit = 0;
+	uint32_t cptOverloads     = 0;
+	uint32_t cptOverloadsInit = 0;
 
-    uint32_t   cptIfBlock = 0;
-    uint16_t   flags      = 0;
-    SymbolKind kind       = SymbolKind::Invalid;
-    uint8_t    padding    = 0;
+	uint32_t   cptIfBlock = 0;
+	uint16_t   flags      = 0;
+	SymbolKind kind       = SymbolKind::Invalid;
+	uint8_t    padding    = 0;
 };

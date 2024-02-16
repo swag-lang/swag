@@ -3,8 +3,8 @@
 
 struct FetchModuleFileSystemJob final : Job
 {
-    FetchModuleFileSystemJob();
+	FetchModuleFileSystemJob();
 
-    JobResult execute() override;
-    bool      collectSourceFiles = true;
+	JobResult execute() override;
+	bool      collectSourceFiles = true;
 };

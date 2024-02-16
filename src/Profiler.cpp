@@ -15,184 +15,184 @@ constexpr int COL4 = 48;
 
 namespace
 {
-    Utf8 getProfileBc(ByteCode* bc, int level)
-    {
-        Utf8 line;
-        line += Log::colorToVTS(LogColor::Index);
-        line += FMT("%d", bc->profileCallCount);
+	Utf8 getProfileBc(ByteCode* bc, int level)
+	{
+		Utf8 line;
+		line += Log::colorToVTS(LogColor::Index);
+		line += FMT("%d", bc->profileCallCount);
 
-        line += Log::colorToVTS(LogColor::Value);
-        while (Log::removeFormat(line).count < COL1)
-            line += " ";
-        line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
+		line += Log::colorToVTS(LogColor::Value);
+		while (Log::removeFormat(line).count < COL1)
+			line += " ";
+		line += FMT("%0.6f", OS::timerToSeconds(bc->profileCumTime));
 
-        while (Log::removeFormat(line).count < COL2)
-            line += " ";
-        line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
+		while (Log::removeFormat(line).count < COL2)
+			line += " ";
+		line += FMT("%0.6f", OS::timerToSeconds(bc->profileFFI));
 
-        while (Log::removeFormat(line).count < COL3)
-            line += " ";
-        line += FMT("%0.6f", bc->profilePerCall);
+		while (Log::removeFormat(line).count < COL3)
+			line += " ";
+		line += FMT("%0.6f", bc->profilePerCall);
 
-        while (Log::removeFormat(line).count < COL4)
-            line += " ";
+		while (Log::removeFormat(line).count < COL4)
+			line += " ";
 
-        while (level--)
-            line += "    ";
+		while (level--)
+			line += "    ";
 
-        line += Log::colorToVTS(LogColor::Location);
-        if (bc->sourceFile)
-        {
-            line += bc->sourceFile->name;
-            line += " -- ";
-        }
+		line += Log::colorToVTS(LogColor::Location);
+		if (bc->sourceFile)
+		{
+			line += bc->sourceFile->name;
+			line += " -- ";
+		}
 
-        line += bc->getCallName();
+		line += bc->getCallName();
 
-        line += Log::colorToVTS(LogColor::Default);
-        return line;
-    }
+		line += Log::colorToVTS(LogColor::Default);
+		return line;
+	}
 
-    Utf8 getProfileFFI(const FFIStat& ffi, int level)
-    {
-        Utf8 line;
-        line += Log::colorToVTS(LogColor::Index);
-        line += FMT("%d", ffi.count);
+	Utf8 getProfileFFI(const FFIStat& ffi, int level)
+	{
+		Utf8 line;
+		line += Log::colorToVTS(LogColor::Index);
+		line += FMT("%d", ffi.count);
 
-        while (Log::removeFormat(line).count < COL1)
-            line += " ";
+		while (Log::removeFormat(line).count < COL1)
+			line += " ";
 
-        line += Log::colorToVTS(LogColor::Value);
-        line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
+		line += Log::colorToVTS(LogColor::Value);
+		line += FMT("%0.6f", OS::timerToSeconds(ffi.cum));
 
-        while (Log::removeFormat(line).count < COL2)
-            line += " ";
+		while (Log::removeFormat(line).count < COL2)
+			line += " ";
 
-        line += Log::colorToVTS(LogColor::Location);
-        line += ffi.name;
+		line += Log::colorToVTS(LogColor::Location);
+		line += ffi.name;
 
-        line += Log::colorToVTS(LogColor::Default);
-        return line;
-    }
+		line += Log::colorToVTS(LogColor::Default);
+		return line;
+	}
 
-    void printChilds(const ByteCode* bc, int level)
-    {
-        if (level >= g_CommandLine.profileChildsLevel)
-            return;
+	void printChilds(const ByteCode* bc, int level)
+	{
+		if (level >= g_CommandLine.profileChildsLevel)
+			return;
 
-        level++;
-        for (const auto child : bc->profileChilds)
-        {
-            Utf8 line = getProfileBc(child, level);
-            g_Log.print(line);
-            g_Log.eol();
-            printChilds(child, level);
-        }
-    }
+		level++;
+		for (const auto child : bc->profileChilds)
+		{
+			Utf8 line = getProfileBc(child, level);
+			g_Log.print(line);
+			g_Log.eol();
+			printChilds(child, level);
+		}
+	}
 }
 
 void profiler()
 {
-    if (!g_CommandLine.profile)
-        return;
+	if (!g_CommandLine.profile)
+		return;
 
-    g_Log.setColor(LogColor::Gray);
-    g_Log.print("\n");
+	g_Log.setColor(LogColor::Gray);
+	g_Log.print("\n");
 
-    // Collect
-    //////////////////////////////////////////
+	// Collect
+	//////////////////////////////////////////
 
-    MapUtf8<FFIStat>  ffi;
-    Vector<FFIStat>   linFFi;
-    Vector<ByteCode*> bcs;
+	MapUtf8<FFIStat>  ffi;
+	Vector<FFIStat>   linFFi;
+	Vector<ByteCode*> bcs;
 
-    for (const auto m : g_Workspace->modules)
-    {
-        for (auto bc : m->byteCodeFunc)
-        {
-            if (!bc->profileCallCount)
-                continue;
-            bc->profilePerCall = OS::timerToSeconds(bc->profileCumTime) / bc->profileCallCount;
-            bcs.push_back(bc);
+	for (const auto m : g_Workspace->modules)
+	{
+		for (auto bc : m->byteCodeFunc)
+		{
+			if (!bc->profileCallCount)
+				continue;
+			bc->profilePerCall = OS::timerToSeconds(bc->profileCumTime) / bc->profileCallCount;
+			bcs.push_back(bc);
 
-            for (const auto& it : bc->ffiProfile)
-            {
-                ffi[it.first].name = it.first;
-                ffi[it.first].count += it.second.count;
-                ffi[it.first].cum += it.second.cum;
-            }
-        }
-    }
+			for (const auto& it : bc->ffiProfile)
+			{
+				ffi[it.first].name = it.first;
+				ffi[it.first].count += it.second.count;
+				ffi[it.first].cum += it.second.cum;
+			}
+		}
+	}
 
-    // BC
-    //////////////////////////////////////////
+	// BC
+	//////////////////////////////////////////
 
-    ranges::sort(bcs, [](const ByteCode* a, const ByteCode* b)
-    {
-        return b->profileCumTime < a->profileCumTime;
-    });
-    while (!bcs.empty() && OS::timerToSeconds(bcs.back()->profileCumTime) <= g_CommandLine.profileMinTime)
-        bcs.pop_back();
+	ranges::sort(bcs, [](const ByteCode* a, const ByteCode* b)
+	{
+		return b->profileCumTime < a->profileCumTime;
+	});
+	while (!bcs.empty() && OS::timerToSeconds(bcs.back()->profileCumTime) <= g_CommandLine.profileMinTime)
+		bcs.pop_back();
 
-    Utf8 line;
-    line += "#bc_calls";
-    while (line.count < COL1)
-        line += " ";
-    line += "cum_time";
-    while (line.count < COL2)
-        line += " ";
-    line += "ffi";
-    while (line.count < COL3)
-        line += " ";
-    line += "per_call";
-    while (line.count < COL4)
-        line += " ";
-    line += "name";
-    g_Log.print(line);
-    g_Log.eol();
+	Utf8 line;
+	line += "#bc_calls";
+	while (line.count < COL1)
+		line += " ";
+	line += "cum_time";
+	while (line.count < COL2)
+		line += " ";
+	line += "ffi";
+	while (line.count < COL3)
+		line += " ";
+	line += "per_call";
+	while (line.count < COL4)
+		line += " ";
+	line += "name";
+	g_Log.print(line);
+	g_Log.eol();
 
-    for (const auto bc : bcs)
-    {
-        if (!g_CommandLine.profileFilter.empty() && bc->name.find(g_CommandLine.profileFilter.c_str()) == -1)
-            continue;
-        line = getProfileBc(bc, 0);
-        g_Log.print(line);
-        g_Log.eol();
-        printChilds(bc, 0);
-    }
+	for (const auto bc : bcs)
+	{
+		if (!g_CommandLine.profileFilter.empty() && bc->name.find(g_CommandLine.profileFilter.c_str()) == -1)
+			continue;
+		line = getProfileBc(bc, 0);
+		g_Log.print(line);
+		g_Log.eol();
+		printChilds(bc, 0);
+	}
 
-    // FFI
-    //////////////////////////////////////////
+	// FFI
+	//////////////////////////////////////////
 
-    for (auto& val : ffi | views::values)
-        linFFi.push_back(val);
-    ranges::sort(linFFi, [](const FFIStat& a, const FFIStat& b)
-    {
-        return b.cum < a.cum;
-    });
-    while (!linFFi.empty() && OS::timerToSeconds(linFFi.back().cum) <= g_CommandLine.profileMinTime)
-        linFFi.pop_back();
+	for (auto& val : ffi | views::values)
+		linFFi.push_back(val);
+	ranges::sort(linFFi, [](const FFIStat& a, const FFIStat& b)
+	{
+		return b.cum < a.cum;
+	});
+	while (!linFFi.empty() && OS::timerToSeconds(linFFi.back().cum) <= g_CommandLine.profileMinTime)
+		linFFi.pop_back();
 
-    g_Log.eol();
-    line.clear();
-    line += "#ffi_calls";
-    while (line.count < COL1)
-        line += " ";
-    line += "cum_time";
-    while (line.count < COL2)
-        line += " ";
-    line += "name";
-    g_Log.print(line);
-    g_Log.eol();
+	g_Log.eol();
+	line.clear();
+	line += "#ffi_calls";
+	while (line.count < COL1)
+		line += " ";
+	line += "cum_time";
+	while (line.count < COL2)
+		line += " ";
+	line += "name";
+	g_Log.print(line);
+	g_Log.eol();
 
-    for (auto& it : linFFi)
-    {
-        line = getProfileFFI(it, 0);
-        g_Log.print(line);
-        g_Log.eol();
-    }
+	for (auto& it : linFFi)
+	{
+		line = getProfileFFI(it, 0);
+		g_Log.print(line);
+		g_Log.eol();
+	}
 
-    g_Log.setDefaultColor();
+	g_Log.setDefaultColor();
 }
 
 #endif // SWAG_STATS

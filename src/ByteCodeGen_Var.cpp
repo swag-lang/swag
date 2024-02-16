@@ -54,7 +54,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 	resolved->flags |= OVERLOAD_EMITTED;
 
 	const auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCE_ALIAS);
-	const bool retVal = resolved->hasFlag(OVERLOAD_RETVAL);
+	const bool retVal   = resolved->hasFlag(OVERLOAD_RETVAL);
 
 	Semantic::waitStructGenerated(context->baseJob, typeInfo);
 	YIELD();

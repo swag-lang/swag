@@ -5,7 +5,7 @@ struct Backend;
 
 struct ModuleExportJob final : Job
 {
-    JobResult execute() override;
+	JobResult execute() override;
 
-    Backend* backend = nullptr;
+	Backend* backend = nullptr;
 };

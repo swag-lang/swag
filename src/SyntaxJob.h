@@ -4,13 +4,13 @@ struct SyntaxJob;
 
 struct SyntaxContext : JobContext
 {
-    SyntaxJob* job = nullptr;
+	SyntaxJob* job = nullptr;
 };
 
 struct SyntaxJob final : Job
 {
-    void      release() override;
-    JobResult execute() override;
+	void      release() override;
+	JobResult execute() override;
 
-    SyntaxContext context;
+	SyntaxContext context;
 };

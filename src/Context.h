@@ -22,16 +22,16 @@ FuncCB   makeCallback(void* lambda);
 
 struct PushSwagContext
 {
-    PushSwagContext()
-    {
-        copy = g_DefaultContext;
-        OS::tlsSetValue(g_TlsContextId, &copy);
-    }
+	PushSwagContext()
+	{
+		copy = g_DefaultContext;
+		OS::tlsSetValue(g_TlsContextId, &copy);
+	}
 
-    ~PushSwagContext()
-    {
-        OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
-    }
+	~PushSwagContext()
+	{
+		OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
+	}
 
-    SwagContext copy;
+	SwagContext copy;
 };

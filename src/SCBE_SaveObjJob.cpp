@@ -10,10 +10,10 @@
 JobResult SCBE_SaveObjJob::execute()
 {
 #ifdef SWAG_STATS
-    Timer timer0{&g_Stats.prepOutputStage1TimeJob};
-    Timer timer1{&g_Stats.prepOutputTimeJobSaveObj};
+	Timer timer0{&g_Stats.prepOutputStage1TimeJob};
+	Timer timer1{&g_Stats.prepOutputTimeJobSaveObj};
 #endif
 
-    static_cast<SCBE*>(module->backend)->saveObjFile(prepJob->buildParameters);
-    return JobResult::ReleaseJob;
+	static_cast<SCBE*>(module->backend)->saveObjFile(prepJob->buildParameters);
+	return JobResult::ReleaseJob;
 }

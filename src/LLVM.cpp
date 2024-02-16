@@ -353,7 +353,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 		llvm::StringMap<bool> feat;
 		llvm::sys::getHostCPUFeatures(feat);
 		bool first = true;
-		for (auto& it: feat)
+		for (auto& it : feat)
 		{
 			if (!it.getValue())
 				continue;

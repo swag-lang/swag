@@ -4,9 +4,9 @@ struct AstFuncDecl;
 
 struct FFIStat
 {
-    Utf8     name;
-    uint32_t count;
-    uint64_t cum;
+	Utf8     name;
+	uint32_t count;
+	uint64_t cum;
 };
 
 extern void profiler();

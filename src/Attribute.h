@@ -70,47 +70,47 @@ struct AstNode;
 
 struct AttributeParameter
 {
-    Token         token;
-    ComputedValue value;
-    TypeInfo*     typeInfo;
+	Token         token;
+	ComputedValue value;
+	TypeInfo*     typeInfo;
 };
 
 struct OneAttribute
 {
-    const AttributeParameter* getParam(const Utf8& paramName) const;
-    const ComputedValue*      getValue(const Utf8& paramName) const;
+	const AttributeParameter* getParam(const Utf8& paramName) const;
+	const ComputedValue*      getValue(const Utf8& paramName) const;
 
-    Utf8                       name;
-    Vector<AttributeParameter> parameters;
-    AstNode*                   node     = nullptr;
-    AstNode*                   child    = nullptr;
-    TypeInfoFuncAttr*          typeFunc = nullptr;
+	Utf8                       name;
+	Vector<AttributeParameter> parameters;
+	AstNode*                   node     = nullptr;
+	AstNode*                   child    = nullptr;
+	TypeInfoFuncAttr*          typeFunc = nullptr;
 };
 
 struct AttributeList
 {
-    OneAttribute*             getAttribute(const Utf8& fullName);
-    void                      getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName) const;
-    const AttributeParameter* getParam(const Utf8& fullName, const Utf8& parameter) const;
-    const ComputedValue*      getValue(const Utf8& fullName, const Utf8& parameter) const;
-    bool                      hasAttribute(const Utf8& fullName) const;
-    void                      emplace(OneAttribute& other);
-    void                      add(AttributeList& other);
+	OneAttribute*             getAttribute(const Utf8& fullName);
+	void                      getAttributes(VectorNative<const OneAttribute*>& res, const Utf8& fullName) const;
+	const AttributeParameter* getParam(const Utf8& fullName, const Utf8& parameter) const;
+	const ComputedValue*      getValue(const Utf8& fullName, const Utf8& parameter) const;
+	bool                      hasAttribute(const Utf8& fullName) const;
+	void                      emplace(OneAttribute& other);
+	void                      add(AttributeList& other);
 
-    // clang-format off
-    void     reset()       { allAttributes.clear(); }
-    bool     empty() const { return allAttributes.empty(); }
-    uint32_t size() const  { return static_cast<uint32_t>(allAttributes.size()); }
-    // clang-format on
+	// clang-format off
+	void     reset() { allAttributes.clear(); }
+	bool     empty() const { return allAttributes.empty(); }
+	uint32_t size() const { return static_cast<uint32_t>(allAttributes.size()); }
+	// clang-format on
 
-    AttributeList& operator=(const AttributeList& other)
-    {
-        SWAG_RACE_CONDITION_WRITE(raceCond);
-        SWAG_RACE_CONDITION_READ1(other.raceCond);
-        allAttributes = other.allAttributes;
-        return *this;
-    }
+	AttributeList& operator=(const AttributeList& other)
+	{
+		SWAG_RACE_CONDITION_WRITE(raceCond);
+		SWAG_RACE_CONDITION_READ1(other.raceCond);
+		allAttributes = other.allAttributes;
+		return *this;
+	}
 
-    Vector<OneAttribute> allAttributes;
-    SWAG_RACE_CONDITION_INSTANCE(raceCond);
+	Vector<OneAttribute> allAttributes;
+	SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };

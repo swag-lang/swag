@@ -2,20 +2,20 @@
 
 enum class SyntaxColor
 {
-    SyntaxCode,
-    SyntaxComment,
-    SyntaxCompiler,
-    SyntaxFunction,
-    SyntaxConstant,
-    SyntaxIntrinsic,
-    SyntaxType,
-    SyntaxKeyword,
-    SyntaxLogic,
-    SyntaxNumber,
-    SyntaxString,
-    SyntaxAttribute,
-    SyntaxDefault,
-    SyntaxInvalid,
+	SyntaxCode,
+	SyntaxComment,
+	SyntaxCompiler,
+	SyntaxFunction,
+	SyntaxConstant,
+	SyntaxIntrinsic,
+	SyntaxType,
+	SyntaxKeyword,
+	SyntaxLogic,
+	SyntaxNumber,
+	SyntaxString,
+	SyntaxAttribute,
+	SyntaxDefault,
+	SyntaxInvalid,
 };
 
 static const char* SYN_CODE      = "SCde";
@@ -35,14 +35,14 @@ static const char* SYN_INVALID   = "SInv";
 
 enum class SyntaxColorMode
 {
-    ForDoc,
-    ForLog,
+	ForDoc,
+	ForLog,
 };
 
 struct SyntaxColorContext
 {
-    SyntaxColorMode mode                  = SyntaxColorMode::ForLog;
-    int             multiLineCommentLevel = 0;
+	SyntaxColorMode mode                  = SyntaxColorMode::ForLog;
+	int             multiLineCommentLevel = 0;
 };
 
 uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum);

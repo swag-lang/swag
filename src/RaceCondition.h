@@ -2,27 +2,27 @@
 #include "Mutex.h"
 
 #ifdef SWAG_HAS_ASSERT
-struct RaceCondition  // NOLINT(cppcoreguidelines-special-member-functions)
+struct RaceCondition // NOLINT(cppcoreguidelines-special-member-functions)
 {
-    struct Instance
-    {
-        Instance() = default;
+	struct Instance
+	{
+		Instance() = default;
 
-        SharedMutex      mutex;
-        thread::id       lastThreadID;
-        std::atomic<int> countWrite = 0;
-    };
+		SharedMutex      mutex;
+		thread::id       lastThreadID;
+		std::atomic<int> countWrite = 0;
+	};
 
-    RaceCondition() = default;
-    RaceCondition(Instance* inst, bool read);
-    ~RaceCondition();
+	RaceCondition() = default;
+	RaceCondition(Instance* inst, bool read);
+	~RaceCondition();
 
-    void lock(Instance* inst, bool r);
-    void unlock() const;
+	void lock(Instance* inst, bool r);
+	void unlock() const;
 
-    Instance* myInstance;
+	Instance* myInstance;
 
-    bool read = false;
+	bool read = false;
 };
 
 #define SWAG_RACE_CONDITION_WRITE(__x) RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), false)

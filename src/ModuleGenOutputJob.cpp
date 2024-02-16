@@ -9,32 +9,32 @@
 
 ModuleGenOutputJob::ModuleGenOutputJob()
 {
-    addFlag(JOB_IS_IO);
+	addFlag(JOB_IS_IO);
 }
 
 JobResult ModuleGenOutputJob::execute()
 {
 #ifdef SWAG_STATS
-    Timer timer(&g_Stats.genOutputTimeJob);
+	Timer timer(&g_Stats.genOutputTimeJob);
 #endif
 
-    if (!module->backend->generateOutput(buildParameters))
-        return JobResult::ReleaseJob;
+	if (!module->backend->generateOutput(buildParameters))
+		return JobResult::ReleaseJob;
 
 #ifdef SWAG_STATS
-    ++g_Stats.numGenModules;
+	++g_Stats.numGenModules;
 #endif
 
-    // Notify we are done
-    if (mutexDone)
-    {
-        ScopedLock lk(*mutexDone);
-        condVar->notify_all();
-    }
+	// Notify we are done
+	if (mutexDone)
+	{
+		ScopedLock lk(*mutexDone);
+		condVar->notify_all();
+	}
 
-    // The module is built, so notify (we notify before the test)
-    if (buildParameters.compileType != Test)
-        module->setHasBeenBuilt(BUILDRES_COMPILER);
+	// The module is built, so notify (we notify before the test)
+	if (buildParameters.compileType != Test)
+		module->setHasBeenBuilt(BUILDRES_COMPILER);
 
-    return JobResult::ReleaseJob;
+	return JobResult::ReleaseJob;
 }

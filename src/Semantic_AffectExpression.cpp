@@ -13,31 +13,31 @@
 
 bool Semantic::resolveMove(SemanticContext* context)
 {
-    const auto node  = context->node;
-    const auto right = node->childs[0];
-    SWAG_CHECK(checkIsConcrete(context, right));
-    node->inheritAstFlagsOr(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
-    node->typeInfo    = right->typeInfo;
-    node->byteCodeFct = ByteCodeGen::emitPassThrough;
-    if (right->resolvedSymbolOverload)
-        right->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
+	const auto node  = context->node;
+	const auto right = node->childs[0];
+	SWAG_CHECK(checkIsConcrete(context, right));
+	node->inheritAstFlagsOr(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
+	node->typeInfo    = right->typeInfo;
+	node->byteCodeFct = ByteCodeGen::emitPassThrough;
+	if (right->resolvedSymbolOverload)
+		right->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
 
-    if (node->hasAstFlag(AST_FORCE_MOVE))
-    {
-        if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
-        {
-            const Diagnostic diag{right, FMT(Err(Err0327), right->typeInfo->getDisplayNameC())};
-            if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-            {
-                const auto note = Diagnostic::note(Nte(Nte0059));
-                return context->report(diag, note);
-            }
+	if (node->hasAstFlag(AST_FORCE_MOVE))
+	{
+		if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
+		{
+			const Diagnostic diag{right, FMT(Err(Err0327), right->typeInfo->getDisplayNameC())};
+			if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
+			{
+				const auto note = Diagnostic::note(Nte(Nte0059));
+				return context->report(diag, note);
+			}
 
-            return context->report(diag);
-        }
-    }
+			return context->report(diag);
+		}
+	}
 
-    return true;
+	return true;
 }
 
 // :DeduceLambdaType
@@ -45,569 +45,569 @@ bool Semantic::resolveMove(SemanticContext* context)
 // This will launch the evaluation of the lambda now that we can deduce some missing types (like parameters)
 bool Semantic::resolveAfterKnownType(SemanticContext* context)
 {
-    const auto node     = context->node;
-    const auto typeInfo = TypeManager::concreteType(node->typeInfo);
-    if (!typeInfo->isLambdaClosure() && !typeInfo->isStruct())
-        return true;
+	const auto node     = context->node;
+	const auto typeInfo = TypeManager::concreteType(node->typeInfo);
+	if (!typeInfo->isLambdaClosure() && !typeInfo->isStruct())
+		return true;
 
-    const auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
-    if (!findMpl)
-        return true;
-    const auto mpl = castAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
-    if (!mpl->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE))
-        return true;
+	const auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
+	if (!findMpl)
+		return true;
+	const auto mpl = castAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
+	if (!mpl->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE))
+		return true;
 
-    // Cannot cast from closure to lambda
-    if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
-    {
-        Diagnostic diag{mpl, Err(Err0641)};
-        diag.addNote(node, Diagnostic::isType(node->typeInfo));
-        const auto note = Diagnostic::note(Nte(Nte0191));
-        return context->report(diag, note);
-    }
+	// Cannot cast from closure to lambda
+	if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
+	{
+		Diagnostic diag{mpl, Err(Err0641)};
+		diag.addNote(node, Diagnostic::isType(node->typeInfo));
+		const auto note = Diagnostic::note(Nte(Nte0191));
+		return context->report(diag, note);
+	}
 
-    ScopedLock lk(mpl->lambda->mutex);
-    mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC2);
-    launchResolveSubDecl(context, mpl->lambda);
-    return true;
+	ScopedLock lk(mpl->lambda->mutex);
+	mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC2);
+	launchResolveSubDecl(context, mpl->lambda);
+	return true;
 }
 
 bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right)
 {
-    if (left->childs.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
-    {
-        if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
-        {
-            left->addAstFlag(AST_IS_CONST);
-        }
-    }
+	if (left->childs.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
+	{
+		if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
+		{
+			left->addAstFlag(AST_IS_CONST);
+		}
+	}
 
-    // Check that left type is mutable
-    bool isConst = false;
-    if (left->hasAstFlag(AST_CONST_EXPR) ||
-        left->hasAstFlag(AST_IS_CONST) ||
-        !left->hasAstFlag(AST_L_VALUE) ||
-        (left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||
-        (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
-    {
-        isConst = true;
-    }
+	// Check that left type is mutable
+	bool isConst = false;
+	if (left->hasAstFlag(AST_CONST_EXPR) ||
+		left->hasAstFlag(AST_IS_CONST) ||
+		!left->hasAstFlag(AST_L_VALUE) ||
+		(left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||
+		(left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
+	{
+		isConst = true;
+	}
 
-    if (!isConst)
-    {
-        if (left->resolvedSymbolOverload)
-            left->resolvedSymbolOverload->flags |= OVERLOAD_HAS_AFFECT;
-        return true;
-    }
+	if (!isConst)
+	{
+		if (left->resolvedSymbolOverload)
+			left->resolvedSymbolOverload->flags |= OVERLOAD_HAS_AFFECT;
+		return true;
+	}
 
-    Utf8              hint;
-    const auto        node    = context->node;
-    const Diagnostic* note    = nullptr;
-    const auto        orgLeft = left;
+	Utf8              hint;
+	const auto        node    = context->node;
+	const Diagnostic* note    = nullptr;
+	const auto        orgLeft = left;
 
-    if (left->kind == AstNodeKind::IdentifierRef)
-    {
-        // If not, try to find the culprit type
-        for (int i = left->childs.count - 1; i >= 0; i--)
-        {
-            const auto child     = left->childs[i];
-            const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCE_ALIAS);
-            if (!typeChild)
-                continue;
+	if (left->kind == AstNodeKind::IdentifierRef)
+	{
+		// If not, try to find the culprit type
+		for (int i = left->childs.count - 1; i >= 0; i--)
+		{
+			const auto child     = left->childs[i];
+			const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCE_ALIAS);
+			if (!typeChild)
+				continue;
 
-            if (child->kind == AstNodeKind::ArrayPointerIndex)
-            {
-                const auto arr = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
-                if (arr->array->typeInfo->isString())
-                {
-                    left = arr->array;
-                    break;
-                }
-            }
+			if (child->kind == AstNodeKind::ArrayPointerIndex)
+			{
+				const auto arr = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+				if (arr->array->typeInfo->isString())
+				{
+					left = arr->array;
+					break;
+				}
+			}
 
-            if (child->isFunctionCall() && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
-            {
-                left = child;
-                hint = FMT(Nte(Nte0119), left->typeInfo->getDisplayNameC());
-                break;
-            }
+			if (child->isFunctionCall() && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
+			{
+				left = child;
+				hint = FMT(Nte(Nte0119), left->typeInfo->getDisplayNameC());
+				break;
+			}
 
-            if (typeChild->isConst())
-            {
-                left = child;
-                break;
-            }
-        }
+			if (typeChild->isConst())
+			{
+				left = child;
+				break;
+			}
+		}
 
-        if (left->kind == AstNodeKind::Identifier && left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
-        {
-            const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
-            hint              = "this is equivalent to [[";
-            for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
-            {
-                const auto c = orgLeft->childs[ic];
-                if (ic)
-                    hint += ".";
-                hint += c->token.text;
-            }
+		if (left->kind == AstNodeKind::Identifier && left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
+		{
+			const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
+			hint              = "this is equivalent to [[";
+			for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
+			{
+				const auto c = orgLeft->childs[ic];
+				if (ic)
+					hint += ".";
+				hint += c->token.text;
+			}
 
-            if (left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING))
-                hint += "]] because of a [[using]]";
-            else
-                hint += "]] because of a [[with]]";
+			if (left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING))
+				hint += "]] because of a [[using]]";
+			else
+				hint += "]] because of a [[with]]";
 
-            SWAG_ASSERT(left->resolvedSymbolOverload);
-            if (left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076));
-            else if (!left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076), Diagnostic::isType(left->typeInfo));
-        }
-    }
+			SWAG_ASSERT(left->resolvedSymbolOverload);
+			if (left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
+				note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076));
+			else if (!left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
+				note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076), Diagnostic::isType(left->typeInfo));
+		}
+	}
 
-    if (left->typeInfo->isConst() && left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-    {
-        if (left == left->parent->childs.back())
-        {
-            Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-            diag.addNote(left, Diagnostic::isType(left->typeInfo));
-            const auto note1 = Diagnostic::note(Nte(Nte0059));
-            return context->report(diag, note, note1);
-        }
+	if (left->typeInfo->isConst() && left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
+	{
+		if (left == left->parent->childs.back())
+		{
+			Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+			diag.addNote(left, Diagnostic::isType(left->typeInfo));
+			const auto note1 = Diagnostic::note(Nte(Nte0059));
+			return context->report(diag, note, note1);
+		}
 
-        if (left->typeInfo->isConstPointerRef())
-        {
-            Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-            diag.addNote(left, Diagnostic::isType(left->typeInfo));
-            return context->report(diag, note);
-        }
+		if (left->typeInfo->isConstPointerRef())
+		{
+			Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+			diag.addNote(left, Diagnostic::isType(left->typeInfo));
+			return context->report(diag, note);
+		}
 
-        Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-        diag.addNote(left, Diagnostic::isType(left->typeInfo));
-        return context->report(diag, note);
-    }
+		Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+		diag.addNote(left, Diagnostic::isType(left->typeInfo));
+		return context->report(diag, note);
+	}
 
-    if (left->resolvedSymbolOverload &&
-        left->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET) &&
-        (!left->resolvedSymbolOverload->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
-    {
-        Diagnostic diag{node, node->token, Err(Err0104)};
-        diag.addNote(left, Nte(Nte0017));
-        note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
-        return context->report(diag, note);
-    }
+	if (left->resolvedSymbolOverload &&
+		left->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET) &&
+		(!left->resolvedSymbolOverload->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
+	{
+		Diagnostic diag{node, node->token, Err(Err0104)};
+		diag.addNote(left, Nte(Nte0017));
+		note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
+		return context->report(diag, note);
+	}
 
-    if (left->hasAstFlag(AST_L_VALUE))
-    {
-        Diagnostic diag{node, node->token, Err(Err0104)};
-        if (hint.empty())
-            hint = Diagnostic::isType(left);
-        diag.addNote(left, hint);
-        return context->report(diag, note);
-    }
+	if (left->hasAstFlag(AST_L_VALUE))
+	{
+		Diagnostic diag{node, node->token, Err(Err0104)};
+		if (hint.empty())
+			hint = Diagnostic::isType(left);
+		diag.addNote(left, hint);
+		return context->report(diag, note);
+	}
 
-    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
-    {
-        Diagnostic diag{node, node->token, Err(Err0104)};
-        if (hint.empty())
-            hint = Nte(Nte0158);
-        diag.addNote(left, hint);
-        return context->report(diag);
-    }
+	if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+	{
+		Diagnostic diag{node, node->token, Err(Err0104)};
+		if (hint.empty())
+			hint = Nte(Nte0158);
+		diag.addNote(left, hint);
+		return context->report(diag);
+	}
 
-    Diagnostic diag{node, node->token, Err(Err0215)};
-    if (hint.empty())
-        hint = Diagnostic::isType(left);
-    diag.addNote(left, hint);
-    return context->report(diag);
+	Diagnostic diag{node, node->token, Err(Err0215)};
+	if (hint.empty())
+		hint = Diagnostic::isType(left);
+	diag.addNote(left, hint);
+	return context->report(diag);
 }
 
 bool Semantic::resolveAffect(SemanticContext* context)
 {
-    auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
-    auto       left    = node->childs[0];
-    auto       right   = node->childs[1];
-    const auto tokenId = node->tokenId;
+	auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
+	auto       left    = node->childs[0];
+	auto       right   = node->childs[1];
+	const auto tokenId = node->tokenId;
 
-    SWAG_CHECK(checkIsConcrete(context, left));
-    SWAG_CHECK(checkIsConcreteOrType(context, right));
-    YIELD();
+	SWAG_CHECK(checkIsConcrete(context, left));
+	SWAG_CHECK(checkIsConcreteOrType(context, right));
+	YIELD();
 
-    SWAG_CHECK(checkIsConstAffect(context, left, right));
+	SWAG_CHECK(checkIsConstAffect(context, left, right));
 
-    // :ConcreteRef
-    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
-    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
-    if (right->hasSemFlag(SEMFLAG_FROM_REF))
-        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
-    else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
-        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
-    SWAG_ASSERT(leftTypeInfo);
-    SWAG_ASSERT(rightTypeInfo);
+	// :ConcreteRef
+	TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
+	TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
+	if (right->hasSemFlag(SEMFLAG_FROM_REF))
+		leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+	else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
+		leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+	SWAG_ASSERT(leftTypeInfo);
+	SWAG_ASSERT(rightTypeInfo);
 
-    // Special case for enum : nothing is possible, except for flags
-    bool forEnumFlags = false;
-    if (node->tokenId != TokenId::SymEqual)
-    {
-        const auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        if (leftReal->kind != TypeInfoKind::Struct)
-        {
-            if (leftTypeInfo->getConcreteAlias()->isEnum() || rightTypeInfo->getConcreteAlias()->isEnum())
-            {
-                SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-                if (node->tokenId != TokenId::SymVerticalEqual &&
-                    node->tokenId != TokenId::SymAmpersandEqual &&
-                    node->tokenId != TokenId::SymCircumflexEqual)
-                    return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
-                if (!leftTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS) || !rightTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS))
-                    return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]", left);
-                forEnumFlags = true;
-            }
-        }
-    }
+	// Special case for enum : nothing is possible, except for flags
+	bool forEnumFlags = false;
+	if (node->tokenId != TokenId::SymEqual)
+	{
+		const auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+		if (leftReal->kind != TypeInfoKind::Struct)
+		{
+			if (leftTypeInfo->getConcreteAlias()->isEnum() || rightTypeInfo->getConcreteAlias()->isEnum())
+			{
+				SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+				if (node->tokenId != TokenId::SymVerticalEqual &&
+					node->tokenId != TokenId::SymAmpersandEqual &&
+					node->tokenId != TokenId::SymCircumflexEqual)
+					return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
+				if (!leftTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS) || !rightTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS))
+					return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]", left);
+				forEnumFlags = true;
+			}
+		}
+	}
 
-    rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+	rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, Err(Err0385)}));
+	SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, Err(Err0385)}));
 
-    // Be sure modifiers are relevant
-    if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
-    {
-        PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]
-        {
-            return Diagnostic::isType(rightTypeInfo);
-        });
+	// Be sure modifiers are relevant
+	if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
+	{
+		PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]
+		{
+			return Diagnostic::isType(rightTypeInfo);
+		});
 
-        const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
-        if (right->hasAstFlag(AST_NO_LEFT_DROP))
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
-                    context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
-        if (right->hasAstFlag(AST_NO_RIGHT_DROP))
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
-                    context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
-        if (right->hasAstFlag(AST_FORCE_MOVE))
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
-                    context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
-    }
+		const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
+		if (right->hasAstFlag(AST_NO_LEFT_DROP))
+			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+		            context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+		if (right->hasAstFlag(AST_NO_RIGHT_DROP))
+			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+		            context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+		if (right->hasAstFlag(AST_FORCE_MOVE))
+			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+		            context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+	}
 
-    // No direct operations on any, except affect any to any
-    if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
-    {
-        Diagnostic diag{node, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(diag);
-    }
+	// No direct operations on any, except affect any to any
+	if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
+	{
+		Diagnostic diag{node, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+		diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+		return context->report(diag);
+	}
 
-    // Is this an array like affectation ?
-    AstArrayPointerIndex* arrayNode = nullptr;
-    if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
-    {
-        arrayNode            = castAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
-        const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
-        if (!arrayType->isStruct())
-            arrayNode = nullptr;
+	// Is this an array like affectation ?
+	AstArrayPointerIndex* arrayNode = nullptr;
+	if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
+	{
+		arrayNode            = castAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
+		const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
+		if (!arrayType->isStruct())
+			arrayNode = nullptr;
 
-        // Add self and value in list of parameters
-        if (arrayNode)
-        {
-            if (!node->hasSemFlag(SEMFLAG_FLAT_PARAMS))
-            {
-                auto leftNode = arrayNode;
-                while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
-                    leftNode = castAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
-                arrayNode->structFlatParams.push_back(right);
-                arrayNode->structFlatParams.push_front(leftNode->array);
-                node->addSemFlag(SEMFLAG_FLAT_PARAMS);
-            }
-        }
-    }
+		// Add self and value in list of parameters
+		if (arrayNode)
+		{
+			if (!node->hasSemFlag(SEMFLAG_FLAT_PARAMS))
+			{
+				auto leftNode = arrayNode;
+				while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
+					leftNode = castAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
+				arrayNode->structFlatParams.push_back(right);
+				arrayNode->structFlatParams.push_front(leftNode->array);
+				node->addSemFlag(SEMFLAG_FLAT_PARAMS);
+			}
+		}
+	}
 
-    node->typeInfo = g_TypeMgr->typeInfoBool;
+	node->typeInfo = g_TypeMgr->typeInfoBool;
 
-    const bool forStruct = leftTypeInfo->isStruct();
-    const bool forTuple  = leftTypeInfo->isTuple();
+	const bool forStruct = leftTypeInfo->isStruct();
+	const bool forTuple  = leftTypeInfo->isTuple();
 
-    SWAG_CHECK(evaluateConstExpression(context, right));
-    YIELD();
+	SWAG_CHECK(evaluateConstExpression(context, right));
+	YIELD();
 
-    // Cast from struct to interface : need to wait for all interfaces to be registered
-    if (tokenId == TokenId::SymEqual)
-    {
-        if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
-        {
-            waitAllStructInterfaces(context->baseJob, rightTypeInfo);
-            YIELD();
-            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST));
-        }
-    }
+	// Cast from struct to interface : need to wait for all interfaces to be registered
+	if (tokenId == TokenId::SymEqual)
+	{
+		if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
+		{
+			waitAllStructInterfaces(context->baseJob, rightTypeInfo);
+			YIELD();
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST));
+		}
+	}
 
-    // For tuples, we can only affect
-    else if (forTuple)
-    {
-        const Diagnostic diag{node, node->token, FMT(Err(Err0350), node->token.c_str())};
-        const auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(diag, note);
-    }
+	// For tuples, we can only affect
+	else if (forTuple)
+	{
+		const Diagnostic diag{node, node->token, FMT(Err(Err0350), node->token.c_str())};
+		const auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
+		return context->report(diag, note);
+	}
 
-    switch (tokenId)
-    {
-    case TokenId::SymEqual:
-    {
-        if (!leftTypeInfo->isNative() &&
-            !leftTypeInfo->isPointer() &&
-            !leftTypeInfo->isSlice() &&
-            !leftTypeInfo->isLambdaClosure() &&
-            !leftTypeInfo->isListTuple() &&
-            !leftTypeInfo->isListArray() &&
-            !leftTypeInfo->isStruct() &&
-            !leftTypeInfo->isInterface() &&
-            !leftTypeInfo->isArray() &&
-            !leftTypeInfo->isAlias() &&
-            !leftTypeInfo->isEnum())
-            return context->report({left, FMT(Err(Err0105), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
-        if (!rightTypeInfo->isNative() &&
-            !rightTypeInfo->isPointer() &&
-            !rightTypeInfo->isSlice() &&
-            !rightTypeInfo->isLambdaClosure() &&
-            !rightTypeInfo->isListTuple() &&
-            !rightTypeInfo->isListArray() &&
-            !rightTypeInfo->isStruct() &&
-            !rightTypeInfo->isInterface() &&
-            !rightTypeInfo->isArray() &&
-            !rightTypeInfo->isAlias())
-            return context->report({right, FMT(Err(Err0107), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
+	switch (tokenId)
+	{
+	case TokenId::SymEqual:
+		{
+			if (!leftTypeInfo->isNative() &&
+				!leftTypeInfo->isPointer() &&
+				!leftTypeInfo->isSlice() &&
+				!leftTypeInfo->isLambdaClosure() &&
+				!leftTypeInfo->isListTuple() &&
+				!leftTypeInfo->isListArray() &&
+				!leftTypeInfo->isStruct() &&
+				!leftTypeInfo->isInterface() &&
+				!leftTypeInfo->isArray() &&
+				!leftTypeInfo->isAlias() &&
+				!leftTypeInfo->isEnum())
+				return context->report({left, FMT(Err(Err0105), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
+			if (!rightTypeInfo->isNative() &&
+				!rightTypeInfo->isPointer() &&
+				!rightTypeInfo->isSlice() &&
+				!rightTypeInfo->isLambdaClosure() &&
+				!rightTypeInfo->isListTuple() &&
+				!rightTypeInfo->isListArray() &&
+				!rightTypeInfo->isStruct() &&
+				!rightTypeInfo->isInterface() &&
+				!rightTypeInfo->isArray() &&
+				!rightTypeInfo->isAlias())
+				return context->report({right, FMT(Err(Err0107), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
 
-        if (forStruct)
-        {
-            if (arrayNode)
-            {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST))
-                {
-                    SWAG_CHECK(waitForStructUserOps(context, left));
-                    YIELD();
-                }
-                else if (forTuple)
-                {
-                    return context->report({node, node->token, FMT(Err(Err0350), node->token.c_str())});
-                }
-                else
-                {
-                    SymbolName* symbol = nullptr;
-                    SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndexAffect, left, &symbol));
-                    if (!symbol)
-                    {
-                        YIELD();
+			if (forStruct)
+			{
+				if (arrayNode)
+				{
+					if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST))
+					{
+						SWAG_CHECK(waitForStructUserOps(context, left));
+						YIELD();
+					}
+					else if (forTuple)
+					{
+						return context->report({node, node->token, FMT(Err(Err0350), node->token.c_str())});
+					}
+					else
+					{
+						SymbolName* symbol = nullptr;
+						SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndexAffect, left, &symbol));
+						if (!symbol)
+						{
+							YIELD();
 
-                        Diagnostic diag{right, FMT(Err(Err0341), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-                        diag.hint = Diagnostic::isType(rightTypeInfo);
-                        diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+							Diagnostic diag{right, FMT(Err(Err0341), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+							diag.hint = Diagnostic::isType(rightTypeInfo);
+							diag.addNote(left, Diagnostic::isType(leftTypeInfo));
 
-                        const auto note = Diagnostic::note(node, node->token, FMT(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
-                        return context->report(diag, note);
-                    }
+							const auto note = Diagnostic::note(node, node->token, FMT(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+							return context->report(diag, note);
+						}
 
-                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));
-                }
-            }
-            else
-            {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_AFFECT))
-                {
-                    SWAG_CHECK(waitForStructUserOps(context, left));
-                    YIELD();
-                }
-                else if (rightTypeInfo->isInitializerList())
-                {
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST | CASTFLAG_ACCEPT_PENDING));
-                    YIELD();
-                }
-                else
-                {
-                    if (leftTypeInfo->isTuple())
-                    {
-                        Diagnostic diag{node, node->token, Err(Err0216)};
-                        diag.addNote(right, Diagnostic::isType(rightTypeInfo));
-                        return context->report(diag);
-                    }
+						SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));
+					}
+				}
+				else
+				{
+					if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_AFFECT))
+					{
+						SWAG_CHECK(waitForStructUserOps(context, left));
+						YIELD();
+					}
+					else if (rightTypeInfo->isInitializerList())
+					{
+						SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST | CASTFLAG_ACCEPT_PENDING));
+						YIELD();
+					}
+					else
+					{
+						if (leftTypeInfo->isTuple())
+						{
+							Diagnostic diag{node, node->token, Err(Err0216)};
+							diag.addNote(right, Diagnostic::isType(rightTypeInfo));
+							return context->report(diag);
+						}
 
-                    SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
-                    YIELD();
-                }
-            }
+						SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
+						YIELD();
+					}
+				}
 
-            break;
-        }
+				break;
+			}
 
-        uint32_t castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
-        if (leftTypeInfo->isStruct() ||
-            leftTypeInfo->isArray() ||
-            leftTypeInfo->isClosure())
-            castFlags |= CASTFLAG_UN_CONST;
+			uint32_t castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
+			if (leftTypeInfo->isStruct() ||
+				leftTypeInfo->isArray() ||
+				leftTypeInfo->isClosure())
+				castFlags |= CASTFLAG_UN_CONST;
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
-        YIELD();
-        break;
-    }
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
+			YIELD();
+			break;
+		}
 
-    case TokenId::SymLowerLowerEqual:
-    case TokenId::SymGreaterGreaterEqual:
-    {
-        if (forStruct)
-        {
-            const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
+	case TokenId::SymLowerLowerEqual:
+	case TokenId::SymGreaterGreaterEqual:
+		{
+			if (forStruct)
+			{
+				const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
+				if (arrayNode)
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+				else
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+				break;
+			}
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString ||
-            leftTypeInfo->nativeType == NativeTypeKind::F32 ||
-            leftTypeInfo->nativeType == NativeTypeKind::F64)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
+			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+				leftTypeInfo->nativeType == NativeTypeKind::String ||
+				leftTypeInfo->nativeType == NativeTypeKind::CString ||
+				leftTypeInfo->nativeType == NativeTypeKind::F32 ||
+				leftTypeInfo->nativeType == NativeTypeKind::F64)
+			{
+				return SemanticError::notAllowedError(context, node, leftTypeInfo);
+			}
 
-        break;
-    }
+			break;
+		}
 
-    case TokenId::SymAmpersandEqual:
-    case TokenId::SymVerticalEqual:
-    case TokenId::SymCircumflexEqual:
-    {
-        if (forStruct)
-        {
-            auto op = "&=";
-            if (tokenId == TokenId::SymVerticalEqual)
-                op = "|=";
-            else if (tokenId == TokenId::SymCircumflexEqual)
-                op = "^=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
+	case TokenId::SymAmpersandEqual:
+	case TokenId::SymVerticalEqual:
+	case TokenId::SymCircumflexEqual:
+		{
+			if (forStruct)
+			{
+				auto op = "&=";
+				if (tokenId == TokenId::SymVerticalEqual)
+					op = "|=";
+				else if (tokenId == TokenId::SymCircumflexEqual)
+					op = "^=";
+				if (arrayNode)
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+				else
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+				break;
+			}
 
-        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
-        if (leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString ||
-            leftTypeInfo->nativeType == NativeTypeKind::F32 ||
-            leftTypeInfo->nativeType == NativeTypeKind::F64)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+			if (leftTypeInfo->nativeType == NativeTypeKind::String ||
+				leftTypeInfo->nativeType == NativeTypeKind::CString ||
+				leftTypeInfo->nativeType == NativeTypeKind::F32 ||
+				leftTypeInfo->nativeType == NativeTypeKind::F64)
+			{
+				return SemanticError::notAllowedError(context, node, leftTypeInfo);
+			}
+			break;
+		}
 
-    case TokenId::SymPlusEqual:
-    case TokenId::SymMinusEqual:
-    {
-        if (forStruct)
-        {
-            const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
+	case TokenId::SymPlusEqual:
+	case TokenId::SymMinusEqual:
+		{
+			if (forStruct)
+			{
+				const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
+				if (arrayNode)
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+				else
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+				break;
+			}
 
-        // :PointerArithmetic
-        if (leftTypeInfo->isPointer())
-        {
-            if (!leftTypeInfo->isPointerArithmetic())
-            {
-                Diagnostic diag{node, node->token, Err(Err0359)};
-                diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-                const auto note = Diagnostic::note(Nte(Nte0103));
-                return context->report(diag, note);
-            }
+			// :PointerArithmetic
+			if (leftTypeInfo->isPointer())
+			{
+				if (!leftTypeInfo->isPointerArithmetic())
+				{
+					Diagnostic diag{node, node->token, Err(Err0359)};
+					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+					const auto note = Diagnostic::note(Nte(Nte0103));
+					return context->report(diag, note);
+				}
 
-            if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
-            {
-                Diagnostic diag{node, node->token, Err(Err0358)};
-                diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(diag);
-            }
+				if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
+				{
+					Diagnostic diag{node, node->token, Err(Err0358)};
+					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+					return context->report(diag);
+				}
 
-            rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
-            break;
-        }
+				rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+				SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
+				SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
+				break;
+			}
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+				leftTypeInfo->nativeType == NativeTypeKind::String ||
+				leftTypeInfo->nativeType == NativeTypeKind::CString)
+			{
+				return SemanticError::notAllowedError(context, node, leftTypeInfo);
+			}
+			break;
+		}
 
-    case TokenId::SymSlashEqual:
-    {
-        if (forStruct)
-        {
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, "/=", nullptr, left, right));
-            break;
-        }
+	case TokenId::SymSlashEqual:
+		{
+			if (forStruct)
+			{
+				if (arrayNode)
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams));
+				else
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, "/=", nullptr, left, right));
+				break;
+			}
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+				leftTypeInfo->nativeType == NativeTypeKind::String ||
+				leftTypeInfo->nativeType == NativeTypeKind::CString)
+			{
+				return SemanticError::notAllowedError(context, node, leftTypeInfo);
+			}
+			break;
+		}
 
-    case TokenId::SymPercentEqual:
-    case TokenId::SymAsteriskEqual:
-    {
-        if (forStruct)
-        {
-            const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
+	case TokenId::SymPercentEqual:
+	case TokenId::SymAsteriskEqual:
+		{
+			if (forStruct)
+			{
+				const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
+				if (arrayNode)
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+				else
+					SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+				break;
+			}
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
 
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+				leftTypeInfo->nativeType == NativeTypeKind::String ||
+				leftTypeInfo->nativeType == NativeTypeKind::CString)
+			{
+				return SemanticError::notAllowedError(context, node, leftTypeInfo);
+			}
+			break;
+		}
 
-    default:
-        return Report::internalError(context->node, "resolveAffect, invalid token");
-    }
+	default:
+		return Report::internalError(context->node, "resolveAffect, invalid token");
+	}
 
-    node->byteCodeFct = ByteCodeGen::emitAffect;
-    return true;
+	node->byteCodeFct = ByteCodeGen::emitAffect;
+	return true;
 }

@@ -30,7 +30,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 				const auto ptrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 				if (ptrRef->pointedType->isStruct())
 				{
-					toType = ptrRef->pointedType;
+					toType  = ptrRef->pointedType;
 					convert = true;
 				}
 			}
@@ -63,7 +63,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 		if (!(castFlags & CASTFLAG_JUST_CHECK))
 		{
 			fromNode->castedTypeInfo = fromNode->typeInfo;
-			fromNode->typeInfo = toType;
+			fromNode->typeInfo       = toType;
 		}
 	}
 
@@ -106,7 +106,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 {
 	// convert {...} expression list to a structure : this will create a variable, with parameters
 	const auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
-	const auto realToType = concreteType(toType, CONCRETE_ALIAS);
+	const auto realToType   = concreteType(toType, CONCRETE_ALIAS);
 	SWAG_ASSERT(realFromType && realToType);
 	if (realFromType->isListTuple())
 	{
@@ -146,7 +146,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	// Transform enum to underlying type
 	if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->hasFlag(TYPEINFO_INCOMPLETE) || fromType->hasFlag(TYPEINFO_INCOMPLETE))
 	{
-		toType = concreteType(toType, CONCRETE_ENUM);
+		toType   = concreteType(toType, CONCRETE_ENUM);
 		fromType = concreteType(fromType, CONCRETE_ENUM);
 	}
 
@@ -157,7 +157,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 	// Transform typealias to related type
 	fromType = concreteType(fromType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
-	toType = concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+	toType   = concreteType(toType, (castFlags & CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
 	if (fromType->isListTuple() || fromType->isListArray())
 	{
@@ -166,7 +166,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 	if (toNode && toNode->resolvedSymbolName && toNode->resolvedSymbolName->kind == SymbolKind::EnumValue)
 	{
-		toType = toType->getConcreteAlias();
+		toType   = toType->getConcreteAlias();
 		fromType = fromType->getConcreteAlias();
 	}
 
@@ -175,7 +175,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 		if (fromNode->resolvedSymbolName->kind == SymbolKind::EnumValue ||
 			fromNode->resolvedSymbolName->kind == SymbolKind::Function)
 		{
-			toType = toType->getConcreteAlias();
+			toType   = toType->getConcreteAlias();
 			fromType = fromType->getConcreteAlias();
 		}
 	}
@@ -256,7 +256,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 		switch (toType->kind)
 		{
-			// Cast to pointer
+		// Cast to pointer
 		case TypeInfoKind::Pointer:
 			if (toType->isPointerRef())
 				SWAG_CHECK(castToPointerRef(context, toType, fromType, fromNode, castFlags));
@@ -264,32 +264,32 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 				SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
 			break;
 
-			// Cast to native type
+		// Cast to native type
 		case TypeInfoKind::Native:
 			SWAG_CHECK(castToNative(context, toType, fromType, toNode, fromNode, castFlags));
 			break;
 
-			// Cast to enum
+		// Cast to enum
 		case TypeInfoKind::Enum:
 			SWAG_CHECK(castToEnum(context, toType, fromType, toNode, fromNode, castFlags));
 			break;
 
-			// Cast to array
+		// Cast to array
 		case TypeInfoKind::Array:
 			SWAG_CHECK(castToArray(context, toType, fromType, fromNode, castFlags));
 			break;
 
-			// Cast to slice
+		// Cast to slice
 		case TypeInfoKind::Slice:
 			SWAG_CHECK(castToSlice(context, toType, fromType, fromNode, castFlags));
 			break;
 
-			// Cast to interface
+		// Cast to interface
 		case TypeInfoKind::Interface:
 			SWAG_CHECK(castToInterface(context, toType, fromType, fromNode, castFlags));
 			break;
 
-			// Cast to lambda
+		// Cast to lambda
 		case TypeInfoKind::LambdaClosure:
 			if (toType->isClosure())
 				SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
@@ -319,7 +319,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 				(!toType->isBool() || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
 				(!toType->isNative(NativeTypeKind::U64) || !fromType->isPointer()))
 			{
-				const bool toConst = toType->isConst();
+				const bool toConst   = toType->isConst();
 				const bool fromConst = fromType->isConst();
 				if (toConst != fromConst)
 					context->castFlagsResult |= CASTFLAG_RESULT_CONST_COERCE;

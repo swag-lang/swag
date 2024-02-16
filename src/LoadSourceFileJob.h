@@ -5,8 +5,8 @@ struct SourceFile;
 
 struct LoadSourceFileJob final : Job
 {
-    LoadSourceFileJob();
+	LoadSourceFileJob();
 
-    void      release() override;
-    JobResult execute() override;
+	void      release() override;
+	JobResult execute() override;
 };

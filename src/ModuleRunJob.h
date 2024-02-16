@@ -6,7 +6,7 @@ struct Module;
 
 struct ModuleRunJob final : Job
 {
-    JobResult execute() override;
+	JobResult execute() override;
 
-    BuildParameters buildParameters;
+	BuildParameters buildParameters;
 };

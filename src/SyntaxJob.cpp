@@ -6,32 +6,32 @@
 
 void SyntaxJob::release()
 {
-    Allocator::free<SyntaxJob>(this);
+	Allocator::free<SyntaxJob>(this);
 }
 
 JobResult SyntaxJob::execute()
 {
-    baseContext        = &context;
-    context.job        = this;
-    context.sourceFile = sourceFile;
+	baseContext        = &context;
+	context.job        = this;
+	context.sourceFile = sourceFile;
 
-    // Error when loading
-    if (sourceFile->numErrors)
-        return JobResult::ReleaseJob;
+	// Error when loading
+	if (sourceFile->numErrors)
+		return JobResult::ReleaseJob;
 
-    // Then load the file
-    if (!sourceFile->buffer)
-    {
-        const auto loadJob  = Allocator::alloc<LoadSourceFileJob>();
-        loadJob->sourceFile = sourceFile;
-        loadJob->addDependentJob(this);
-        jobsToAdd.push_back(loadJob);
-        return JobResult::KeepJobAlive;
-    }
+	// Then load the file
+	if (!sourceFile->buffer)
+	{
+		const auto loadJob  = Allocator::alloc<LoadSourceFileJob>();
+		loadJob->sourceFile = sourceFile;
+		loadJob->addDependentJob(this);
+		jobsToAdd.push_back(loadJob);
+		return JobResult::KeepJobAlive;
+	}
 
-    Parser parser;
-    parser.setup(&context, sourceFile->module, sourceFile);
-    parser.generateAst();
+	Parser parser;
+	parser.setup(&context, sourceFile->module, sourceFile);
+	parser.generateAst();
 
-    return JobResult::ReleaseJob;
+	return JobResult::ReleaseJob;
 }
