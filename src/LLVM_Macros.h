@@ -215,8 +215,8 @@
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                             \
     do                                                                                                                     \
     {                                                                                                                      \
-        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->hasFlag(BCI_CAN_OVERFLOW)) ? false : true; \
-        if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->hasFlag(BCI_CANT_OVERFLOW)))                            \
+        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || ip->hasFlag(BCI_CAN_OVERFLOW) ? false : true;     \
+        if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))                             \
         {                                                                                                                  \
             auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, builder.CreateLoad(__type, r1), r2);          \
             auto v0 = builder.CreateExtractValue(vs, {0});                                                                 \
@@ -244,8 +244,8 @@
 #define OP_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                               \
     do                                                                                                                     \
     {                                                                                                                      \
-        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || (ip->hasFlag(BCI_CAN_OVERFLOW)) ? false : true; \
-        if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->hasFlag(BCI_CANT_OVERFLOW)))                            \
+        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || ip->hasFlag(BCI_CAN_OVERFLOW) ? false : true;     \
+        if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))                             \
         {                                                                                                                  \
             auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, r1, r2);                                      \
             auto v0 = builder.CreateExtractValue(vs, {0});                                                                 \

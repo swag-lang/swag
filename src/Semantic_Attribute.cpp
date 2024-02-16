@@ -233,7 +233,7 @@ void Semantic::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, ui
 	INHERIT_ATTR(child, ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
 	INHERIT_ATTR(child, ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
 
-	if (!(child->hasAstFlag(AST_INTERNAL)))
+	if (!child->hasAstFlag(AST_INTERNAL))
 		INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
 }
 

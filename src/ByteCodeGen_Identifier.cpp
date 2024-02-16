@@ -159,7 +159,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
 	if (forStruct)
 	{
-		SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_VAR_INLINE)));
+		SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_VAR_INLINE));
 		if (resolved->computedValue.storageOffset > 0)
 		{
 			ensureCanBeChangedRC(context, node->resultRegisterRc);
@@ -434,7 +434,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
 		if (node->isSilentCall())
 		{
-			SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)));
+			SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_PERSISTENT_REG));
 			node->resultRegisterRc = reserveRegisterRC(context);
 			EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->parent->resultRegisterRc);
 			freeRegisterRC(context, node->parent);
@@ -460,7 +460,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 			typeInfo->isListArray() ||
 			typeInfo->isStruct())
 		{
-			SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)));
+			SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_PERSISTENT_REG));
 			node->resultRegisterRc = reserveRegisterRC(context);
 			const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
 			inst->b.u64            = resolved->computedValue.storageOffset;
@@ -521,7 +521,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 		}
 		else if (typeInfo->isClosure())
 		{
-			SWAG_ASSERT(!(resolved->hasFlag(OVERLOAD_PERSISTENT_REG)));
+			SWAG_ASSERT(!resolved->hasFlag(OVERLOAD_PERSISTENT_REG));
 			node->resultRegisterRc = reserveRegisterRC(context);
 			const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
 			inst->b.u64            = resolved->computedValue.storageOffset;

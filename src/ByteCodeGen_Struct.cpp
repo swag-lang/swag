@@ -1219,7 +1219,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
 		// Re-init source struct, except if AST_NO_RIGHT_DROP, because if we do not drop the
 		// right expression, then this is not necessary to reinitialize it
 		// Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
-		if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !(from->hasAstFlag(AST_NO_RIGHT_DROP)))
+		if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !from->hasAstFlag(AST_NO_RIGHT_DROP))
 		{
 			if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES)))
 			{

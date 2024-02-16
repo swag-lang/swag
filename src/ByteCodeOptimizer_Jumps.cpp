@@ -1488,7 +1488,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 				destIp->a.u32 == ip->a.u32 &&
 				!ip->hasFlag(BCI_IMM_A) &&
 				(destIp->b.s32 + 1) && // in case it's an empty loop
-				!(destIp->hasFlag(BCI_IMM_A)))
+				!destIp->hasFlag(BCI_IMM_A))
 			{
 				ip->b.s32 += destIp->b.s32 + 1;
 				context->setDirtyPass();
@@ -1498,7 +1498,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 			else if (destIp->op == ByteCodeOp::JumpIfTrue &&
 				destIp->a.u32 == ip->a.u32 &&
 				!ip->hasFlag(BCI_IMM_A) &&
-				!(destIp->hasFlag(BCI_IMM_A)))
+				!destIp->hasFlag(BCI_IMM_A))
 			{
 				ip->b.s32 += 1;
 				destIp[1].addFlag(BCI_START_STMT);
@@ -1528,7 +1528,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 				destIp->a.u32 == ip->a.u32 &&
 				!ip->hasFlag(BCI_IMM_A) &&
 				(destIp->b.s32 + 1) && // in case it's an empty loop
-				!(destIp->hasFlag(BCI_IMM_A)))
+				!destIp->hasFlag(BCI_IMM_A))
 			{
 				ip->b.s32 += destIp->b.s32 + 1;
 				context->setDirtyPass();
@@ -1538,7 +1538,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 			else if (destIp->op == ByteCodeOp::JumpIfFalse &&
 				destIp->a.u32 == ip->a.u32 &&
 				!ip->hasFlag(BCI_IMM_A) &&
-				!(destIp->hasFlag(BCI_IMM_A)))
+				!destIp->hasFlag(BCI_IMM_A))
 			{
 				ip->b.s32 += 1;
 				destIp[1].addFlag(BCI_START_STMT);
@@ -1858,7 +1858,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
 
 		const auto orgValue0 = ip->a.u32;
 		auto       orgValue1 = UINT32_MAX;
-		if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !(ip->hasFlag(BCI_START_STMT)))
+		if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !ip->hasFlag(BCI_START_STMT))
 			orgValue1 = ip[-1].a.u32;
 
 		const auto ipStart = ip;

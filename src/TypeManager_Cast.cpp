@@ -189,7 +189,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 	if (fromType->nativeType == NativeTypeKind::Rune)
 		return true;
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -444,7 +444,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -643,7 +643,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -834,7 +834,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1018,7 +1018,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1232,7 +1232,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1438,7 +1438,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1640,7 +1640,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1808,7 +1808,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1902,7 +1902,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1999,7 +1999,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -2179,7 +2179,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 	SWAG_CHECK(safetyComputedValue(context, toType, fromType, fromNode, castFlags));
 
 	// Automatic cast has been done
-	if(castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CASTFLAG_COERCE))
 	{
 		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK) && !fromNode->hasComputedValue())
 		{
@@ -2221,7 +2221,7 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
 				return true;
 			}
 
-			if (!(toEnum->hasFlag(TYPEINFO_ENUM_HAS_USING)))
+			if (!toEnum->hasFlag(TYPEINFO_ENUM_HAS_USING))
 				continue;
 
 			for (const auto value : toEnum->values)
@@ -2362,7 +2362,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 		{
 			const auto childType = concreteType(child->typeInfo, CONCRETE_FUNC);
 			newSizeof += childType->sizeOf;
-			if (!(child->hasAstFlag(AST_CONST_EXPR)))
+			if (!child->hasAstFlag(AST_CONST_EXPR))
 				fromNode->removeAstFlag(AST_CONST_EXPR);
 		}
 	}
@@ -2377,7 +2377,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 		fromNode->typeInfo   = fromTypeList;
 
 		// :ExprListArrayStorage
-		if (!(fromNode->hasAstFlag(AST_CONST_EXPR)) && fromNode->ownerScope && fromNode->ownerFct)
+		if (!fromNode->hasAstFlag(AST_CONST_EXPR) && fromNode->ownerScope && fromNode->ownerFct)
 		{
 			SWAG_ASSERT(fromNode->computedValue);
 			fromNode->ownerScope->startStackSize -= oldSizeof;
@@ -2649,7 +2649,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 		}
 
 		// No using ! We're done
-		if ((castFlags.has(CASTFLAG_FOR_GENERIC)) && !it.typeStruct->hasFlag(TYPEINFO_STRUCT_TYPEINFO))
+		if (castFlags.has(CASTFLAG_FOR_GENERIC) && !it.typeStruct->hasFlag(TYPEINFO_STRUCT_TYPEINFO))
 			return true;
 
 		const auto structNode = castAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
@@ -2879,7 +2879,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 		// When affecting a ref, const must be the same
 		if (fromNode &&
 			fromType->isPointerRef() &&
-			(castFlags.has(CASTFLAG_FOR_AFFECT)) &&
+			castFlags.has(CASTFLAG_FOR_AFFECT) &&
 			fromNode->kind == AstNodeKind::KeepRef &&
 			toType->isConst() != fromType->isConst())
 		{
@@ -2893,7 +2893,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 	}
 
 	// Value (with address) to const ref is possible for function parameters
-	else if (toType->isConst() && (castFlags.has(CASTFLAG_PARAMS)))
+	else if (toType->isConst() && castFlags.has(CASTFLAG_PARAMS))
 	{
 		if (toTypePointer->pointedType->isSame(fromType, castFlags.with(CASTFLAG_CAST)))
 			return true;
@@ -3016,7 +3016,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
 	// Struct to pointer to struct
 	// Accept only if this is ufcs, to simulate calling a method of a base 'class'
-	if ((castFlags.has(CASTFLAG_UFCS)) && fromType->isStruct() && toTypePointer->pointedType->isStruct())
+	if (castFlags.has(CASTFLAG_UFCS) && fromType->isStruct() && toTypePointer->pointedType->isStruct())
 	{
 		const auto fromStruct = castTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
 		const auto toStruct   = castTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
@@ -3033,7 +3033,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	// Lambda to *void
 	if (fromType->isLambdaClosure())
 	{
-		if ((castFlags.has(CASTFLAG_EXPLICIT)) && toType->isPointerVoid())
+		if (castFlags.has(CASTFLAG_EXPLICIT) && toType->isPointerVoid())
 		{
 			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 				fromNode->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid, TYPEINFO_CONST);
@@ -3048,7 +3048,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 			return true;
 
 		// Fine to compare pointers of TypeInfos, even if not of the same type
-		if ((castFlags.has(CASTFLAG_FOR_COMPARE)) && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
+		if (castFlags.has(CASTFLAG_FOR_COMPARE) && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
 			return true;
 
 		// Pointer to *void or *void to pointer
@@ -3118,7 +3118,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	// Struct/Interface to pointer
 	if (fromType->isStruct() || fromType->isInterface())
 	{
-		if ((castFlags.has(CASTFLAG_EXPLICIT)) || toTypePointer->isSelf() || toTypePointer->isConst() || (castFlags.has(CASTFLAG_UFCS)))
+		if (castFlags.has(CASTFLAG_EXPLICIT) || toTypePointer->isSelf() || toTypePointer->isConst() || (castFlags.has(CASTFLAG_UFCS)))
 		{
 			// to *void or *structure
 			if (toTypePointer->pointedType->isVoid() ||

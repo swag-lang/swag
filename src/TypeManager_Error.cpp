@@ -8,7 +8,7 @@
 
 bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, CastFlags castFlags)
 {
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_CAN_OVERFLOW)))
+	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_CAN_OVERFLOW))
 		return true;
 	if (castFlags.has(CASTFLAG_COERCE))
 		return false;

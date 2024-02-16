@@ -139,25 +139,25 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 	// Transform typealias to related type
 	if (toType->isAlias())
-		toType = concreteType(toType, (castFlags.has(CASTFLAG_EXPLICIT)) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+		toType = concreteType(toType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 	if (fromType->isAlias())
-		fromType = concreteType(fromType, (castFlags.has(CASTFLAG_EXPLICIT)) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+		fromType = concreteType(fromType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
 	// Transform enum to underlying type
-	if ((castFlags.has(CASTFLAG_CONCRETE_ENUM)) || (castFlags.has(CASTFLAG_EXPLICIT)) || toType->hasFlag(TYPEINFO_INCOMPLETE) || fromType->hasFlag(TYPEINFO_INCOMPLETE))
+	if (castFlags.has(CASTFLAG_CONCRETE_ENUM) || castFlags.has(CASTFLAG_EXPLICIT) || toType->hasFlag(TYPEINFO_INCOMPLETE) || fromType->hasFlag(TYPEINFO_INCOMPLETE))
 	{
 		toType   = concreteType(toType, CONCRETE_ENUM);
 		fromType = concreteType(fromType, CONCRETE_ENUM);
 	}
 
-	if ((castFlags.has(CASTFLAG_INDEX)) && fromType->hasFlag(TYPEINFO_ENUM_INDEX))
+	if (castFlags.has(CASTFLAG_INDEX) && fromType->hasFlag(TYPEINFO_ENUM_INDEX))
 	{
 		fromType = concreteType(fromType, CONCRETE_ENUM);
 	}
 
 	// Transform typealias to related type
-	fromType = concreteType(fromType, (castFlags.has(CASTFLAG_EXPLICIT)) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
-	toType   = concreteType(toType, (castFlags.has(CASTFLAG_EXPLICIT)) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+	fromType = concreteType(fromType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+	toType   = concreteType(toType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
 	if (fromType->isListTuple() || fromType->isListArray())
 	{

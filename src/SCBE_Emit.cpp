@@ -112,8 +112,8 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
 
 void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg)
 {
-	const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->hasFlag(BCI_CAN_OVERFLOW));
-	if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !(ip->hasFlag(BCI_CANT_OVERFLOW)))
+	const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+	if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
 	{
 		const auto seekPtr = pp.emit_NearJumpOp(JNO);
 		const auto seekJmp = pp.concat.totalCount();
@@ -124,8 +124,8 @@ void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const
 
 void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg)
 {
-	const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !(ip->hasFlag(BCI_CAN_OVERFLOW));
-	if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !(ip->hasFlag(BCI_CANT_OVERFLOW)))
+	const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+	if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
 	{
 		const auto seekPtr = pp.emit_NearJumpOp(JAE);
 		const auto seekJmp = pp.concat.totalCount();
