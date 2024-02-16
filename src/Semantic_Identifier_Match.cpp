@@ -190,7 +190,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 			{
 				setUnRef(nodeCall);
 			}
-			else if (oneMatch.solvedCastFlags[i] & CASTFLAG_RESULT_FROM_REF)
+			else if (oneMatch.solvedCastFlags[i].has(CASTFLAG_RESULT_FROM_REF))
 			{
 				setUnRef(nodeCall);
 				if (nodeCall->castedTypeInfo)
@@ -247,7 +247,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				else
 					return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
 			}
-			else if (context->castFlagsResult & CASTFLAG_RESULT_FORCE_REF)
+			else if (context->castFlagsResult.has(CASTFLAG_RESULT_FORCE_REF))
 			{
 				const auto front = nodeCall->children.front();
 
@@ -1736,7 +1736,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 	// to create an instance with the exact type.
 	// We only test the first match here, because the filtering of matches would have remove it if some other instances
 	// without autoOpCast are present.
-	if (!matches.empty() && (matches[0]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
+	if (!matches.empty() && (matches[0]->castFlagsResult.has(CASTFLAG_RESULT_GEN_AUTO_OP_CAST)) && (!genericMatches.empty() || !genericMatchesSI.empty()))
 	{
 		prevMatchesCount = 0;
 		matches.clear();

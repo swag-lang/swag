@@ -46,6 +46,7 @@ constexpr uint64_t CASTFLAG_EXACT              = 0x0000000010000000;
 constexpr uint64_t CASTFLAG_CAN_OVERFLOW       = 0x0000000020000000;
 constexpr uint64_t CASTFLAG_EXACT_TUPLE_STRUCT = 0x0000000040000000;
 
+using CastFlagsResult = Flags<uint32_t>;
 constexpr uint32_t CASTFLAG_RESULT_STRUCT_CONVERT      = 0x00000001;
 constexpr uint32_t CASTFLAG_RESULT_AUTO_OP_CAST        = 0x00000002;
 constexpr uint32_t CASTFLAG_RESULT_AUTO_OP_AFFECT      = 0x00000004;

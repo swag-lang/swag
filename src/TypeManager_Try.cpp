@@ -88,9 +88,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 				fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
 			}
 
-			context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_AFFECT;
+			context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_AFFECT);
 			if (isMoveRef)
-				context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT;
+				context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT);
 			return true;
 		}
 	}
@@ -146,9 +146,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		fromNode->extMisc()->resolvedUserOpSymbolOverload = toAffect[0];
 	}
 
-	context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_AFFECT;
+	context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_AFFECT);
 	if (isMoveRef)
-		context->castFlagsResult |= CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT;
+		context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT);
 	return true;
 }
 
@@ -188,7 +188,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 				fromNode->addSemFlag(SEMFLAG_USER_CAST);
 			}
 
-			context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_CAST;
+			context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_CAST);
 			return true;
 		}
 	}
@@ -253,6 +253,6 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 		fromNode->addSemFlag(SEMFLAG_USER_CAST);
 	}
 
-	context->castFlagsResult |= CASTFLAG_RESULT_AUTO_OP_CAST;
+	context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_CAST);
 	return true;
 }

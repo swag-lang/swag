@@ -124,11 +124,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 		}
 
 		// Priority to a 'moveref' call
-		if (curMatch->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT)
+		if (curMatch->castFlagsResult.has(CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT))
 		{
 			for (size_t j = 0; j < countMatches; j++)
 			{
-				if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT))
+				if (!(matches[j]->castFlagsResult.has(CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT)))
 				{
 					matches[j]->remove = true;
 				}
@@ -136,11 +136,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 		}
 
 		// Priority to a guess 'moveref' call
-		if (curMatch->castFlagsResult & CASTFLAG_RESULT_GUESS_MOVE)
+		if (curMatch->castFlagsResult.has(CASTFLAG_RESULT_GUESS_MOVE))
 		{
 			for (size_t j = 0; j < countMatches; j++)
 			{
-				if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_GUESS_MOVE))
+				if (!(matches[j]->castFlagsResult.has(CASTFLAG_RESULT_GUESS_MOVE)))
 				{
 					matches[j]->remove = true;
 				}
@@ -148,11 +148,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 		}
 
 		// Priority if no CASTFLAG_RESULT_STRUCT_CONVERT
-		if (curMatch->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT)
+		if (curMatch->castFlagsResult.has(CASTFLAG_RESULT_STRUCT_CONVERT))
 		{
 			for (size_t j = 0; j < countMatches; j++)
 			{
-				if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT))
+				if (!(matches[j]->castFlagsResult.has(CASTFLAG_RESULT_STRUCT_CONVERT)))
 				{
 					curMatch->remove = true;
 					break;
@@ -161,11 +161,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 		}
 
 		// Priority to a match without an auto cast
-		if (curMatch->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OP_CAST)
+		if (curMatch->castFlagsResult.has(CASTFLAG_RESULT_GEN_AUTO_OP_CAST))
 		{
 			for (size_t j = 0; j < countMatches; j++)
 			{
-				if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OP_CAST))
+				if (!(matches[j]->castFlagsResult.has(CASTFLAG_RESULT_GEN_AUTO_OP_CAST)))
 				{
 					curMatch->remove = true;
 					break;
@@ -174,11 +174,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 		}
 
 		// Priority to no coerce
-		if (curMatch->castFlagsResult & CASTFLAG_RESULT_COERCE)
+		if (curMatch->castFlagsResult.has(CASTFLAG_RESULT_COERCE))
 		{
 			for (size_t j = 0; j < countMatches; j++)
 			{
-				if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_COERCE))
+				if (!(matches[j]->castFlagsResult.has(CASTFLAG_RESULT_COERCE)))
 				{
 					curMatch->remove = true;
 					break;
@@ -428,9 +428,9 @@ void Semantic::computeMatchesCoerceCast(VectorNative<OneMatch*>& matches)
 		m->coerceCast = 0;
 		for (const auto flags : m->solvedCastFlags)
 		{
-			if ((flags & CASTFLAG_RESULT_COERCE) && !(flags & CASTFLAG_RESULT_UNTYPED_CONVERT))
+			if (flags.has(CASTFLAG_RESULT_COERCE) && !flags.has(CASTFLAG_RESULT_UNTYPED_CONVERT))
 				m->coerceCast++;
-			else if (flags & CASTFLAG_RESULT_CONST_COERCE)
+			else if (flags.has(CASTFLAG_RESULT_CONST_COERCE))
 				m->coerceCast++;
 		}
 	}
@@ -591,11 +591,11 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
 	// A match with a struct conversion is less prio
 	for (size_t i = 0; i < genMatches.size(); i++)
 	{
-		if (genMatches[i]->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT)
+		if (genMatches[i]->castFlagsResult.has(CASTFLAG_RESULT_STRUCT_CONVERT))
 		{
 			for (size_t j = 0; j < genMatches.size(); j++)
 			{
-				if (!(genMatches[j]->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT))
+				if (!(genMatches[j]->castFlagsResult.has(CASTFLAG_RESULT_STRUCT_CONVERT)))
 				{
 					genMatches[i] = genMatches.back();
 					genMatches.pop_back();
@@ -611,7 +611,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
 	// we can match or not with an untyped integer depending on instantiation order.
 	if (matches.size() == 1 &&
 		genMatches.size() > 1 &&
-		matches[0]->castFlagsResult & CASTFLAG_RESULT_UNTYPED_CONVERT &&
+		matches[0]->castFlagsResult.has(CASTFLAG_RESULT_UNTYPED_CONVERT) &&
 		!matches[0]->oneOverload->overload->node->isSpecialFunctionName())
 	{
 		matches.clear();

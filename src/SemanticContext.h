@@ -8,6 +8,7 @@
 struct AstFuncCallParam;
 struct SymbolName;
 struct SymbolOverload;
+using CastFlagsResult = Flags<uint32_t>;
 
 struct CastStructStructField
 {
@@ -67,7 +68,7 @@ struct OneMatch
 	VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
 	VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
 	VectorNative<TypeInfoParam*>        solvedParameters;
-	VectorNative<uint32_t>              solvedCastFlags;
+	VectorNative<CastFlagsResult>       solvedCastFlags;
 	VectorNative<ParamParameter>        paramParameters;
 	VectorNative<AstNode*>              parameters;
 
@@ -79,11 +80,11 @@ struct OneMatch
 	TypeInfo*       typeWasForced     = nullptr;
 	AstNode*        genericParameters = nullptr;
 
-	uint32_t matchFlags                  = 0;
-	uint32_t castFlagsResult             = 0;
-	uint32_t coerceCast                  = 0;
-	uint32_t numOverloadsWhenChecked     = 0;
-	uint32_t numOverloadsInitWhenChecked = 0;
+	uint32_t        matchFlags                  = 0;
+	CastFlagsResult castFlagsResult             = 0;
+	uint32_t        coerceCast                  = 0;
+	uint32_t        numOverloadsWhenChecked     = 0;
+	uint32_t        numOverloadsInitWhenChecked = 0;
 
 	bool ufcs   = false;
 	bool remove = false;
@@ -152,7 +153,7 @@ struct SemanticContext : JobContext
 	Vector<CastCollectInterfaceField> castCollectInterfaceField;
 	VectorNative<TypeInfoEnum*>       castCollectEnum;
 	Set<TypeInfoEnum*>                castCollectEnumDone;
-	uint32_t                          castFlagsResult   = 0;
+	CastFlagsResult                   castFlagsResult   = 0;
 	TypeInfo*                         castErrorToType   = nullptr;
 	TypeInfo*                         castErrorFromType = nullptr;
 	CastFlags                         castErrorFlags    = 0;

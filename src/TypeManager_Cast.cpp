@@ -2124,12 +2124,12 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 	}
 
 	if (castFlags.has(CASTFLAG_COERCE))
-		context->castFlagsResult |= CASTFLAG_RESULT_COERCE;
+		context->castFlagsResult.add(CASTFLAG_RESULT_COERCE);
 
 	// If it matches, then it matches with a conversion
 	// useful to discriminate generics
 	if (fromType->isUntypedInteger() || fromType->isUntypedFloat())
-		context->castFlagsResult |= CASTFLAG_RESULT_UNTYPED_CONVERT;
+		context->castFlagsResult.add(CASTFLAG_RESULT_UNTYPED_CONVERT);
 
 	switch (toType->nativeType)
 	{
@@ -2929,7 +2929,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 		if (ok || context->result == ContextResult::Pending)
 		{
 			if (!fromStruct->isSame(toStruct, castFlags.with(CASTFLAG_CAST)))
-				context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+				context->castFlagsResult.add(CASTFLAG_RESULT_STRUCT_CONVERT);
 			return true;
 		}
 	}
@@ -2945,7 +2945,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 		if (ok || context->result == ContextResult::Pending)
 		{
 			if (!fromStruct->isSame(toStruct, castFlags.with(CASTFLAG_CAST)))
-				context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+				context->castFlagsResult.add(CASTFLAG_RESULT_STRUCT_CONVERT);
 			return true;
 		}
 	}
@@ -2955,7 +2955,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 	{
 		if (fromType->isSame(toTypePointer->pointedType, castFlags.with(CASTFLAG_CAST)))
 		{
-			context->castFlagsResult |= CASTFLAG_RESULT_GUESS_MOVE;
+			context->castFlagsResult.add(CASTFLAG_RESULT_GUESS_MOVE);
 			return true;
 		}
 	}
@@ -2965,7 +2965,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 	{
 		if (toTypePointer->pointedType->isSame(fromType, castFlags.with(CASTFLAG_CAST)))
 		{
-			context->castFlagsResult |= CASTFLAG_RESULT_FORCE_REF;
+			context->castFlagsResult.add(CASTFLAG_RESULT_FORCE_REF);
 			return true;
 		}
 	}
@@ -3008,7 +3008,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 			if (ok || context->result == ContextResult::Pending)
 			{
 				if (!fromStruct->isSame(toStruct, castFlags.with(CASTFLAG_CAST)))
-					context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+					context->castFlagsResult.add(CASTFLAG_RESULT_STRUCT_CONVERT);
 				return true;
 			}
 		}
@@ -3025,7 +3025,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 		if (ok || context->result == ContextResult::Pending)
 		{
 			if (!fromStruct->isSame(toStruct, castFlags.with(CASTFLAG_CAST)))
-				context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+				context->castFlagsResult.add(CASTFLAG_RESULT_STRUCT_CONVERT);
 			return true;
 		}
 	}

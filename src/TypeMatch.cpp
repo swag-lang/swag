@@ -139,7 +139,7 @@ namespace
 			if (context.semContext->result != ContextResult::Done)
 				return;
 
-			context.castFlagsResult |= context.semContext->castFlagsResult;
+			context.castFlagsResult.add(context.semContext->castFlagsResult);
 			if (context.cptResolved < static_cast<int>(context.doneParameters.size()))
 				context.doneParameters[context.cptResolved] = true;
 
@@ -631,7 +631,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 	// Very special case because of automatic cast and generics.
 	// We match in priority without an implicit automatic cast. If this does not match, then we
 	// try with an implicit cast.
-	context.castFlagsResult &= ~CASTFLAG_RESULT_GEN_AUTO_OP_CAST;
+	context.castFlagsResult.remove(CASTFLAG_RESULT_GEN_AUTO_OP_CAST);
 	if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
 	{
 		const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
@@ -650,7 +650,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 				// We have a match with an automatic cast (opAffect or opCast).
 				if (context.result == MatchResult::Ok)
 				{
-					context.castFlagsResult |= CASTFLAG_RESULT_GEN_AUTO_OP_CAST;
+					context.castFlagsResult.add(CASTFLAG_RESULT_GEN_AUTO_OP_CAST);
 				}
 			}
 			else

@@ -1,4 +1,5 @@
 #pragma once
+#include "Flags.h"
 #include "Generic.h"
 
 struct AstNode;
@@ -9,6 +10,7 @@ struct TypeInfo;
 struct TypeInfoParam;
 struct ComputedValue;
 struct SemanticContext;
+using CastFlagsResult = Flags<uint32_t>;
 
 enum class MatchResult
 {
@@ -53,7 +55,7 @@ struct BadSignatureInfos
 	ComputedValue* badGenValue2              = nullptr;
 	MatchResult    matchResult               = MatchResult::Ok;
 
-	CastFlags     castErrorFlags           = 0;
+	CastFlags     castErrorFlags;
 	CastErrorType castErrorType            = CastErrorType::Zero;
 	int           badSignatureParameterIdx = 0;
 	int           badSignatureNum1         = 0;
@@ -94,7 +96,7 @@ struct SymbolMatchContext
 	VectorNative<AstNode*>              parameters;
 	VectorNative<TypeInfoParam*>        solvedParameters;
 	VectorNative<TypeInfoParam*>        solvedCallParameters;
-	VectorNative<uint32_t>              solvedCastFlags;
+	VectorNative<CastFlagsResult>       solvedCastFlags;
 	VectorNative<bool>                  doneParameters;
 	VectorNative<GenericReplaceType>    genericParametersCallTypes;
 	VectorNative<ComputedValue*>        genericParametersCallValues;
@@ -105,11 +107,11 @@ struct SymbolMatchContext
 
 	SemanticContext* semContext = nullptr;
 
-	uint32_t    matchFlags;
-	uint32_t    castFlagsResult;
-	MatchResult result;
-	int         cptResolved;
-	uint32_t    firstDefault;
+	uint32_t        matchFlags;
+	CastFlagsResult castFlagsResult;
+	MatchResult     result;
+	int             cptResolved;
+	uint32_t        firstDefault;
 
 	bool hasNamedParameters;
 

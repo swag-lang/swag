@@ -5,15 +5,15 @@ struct Flags
 {
 	T flags = 0;
 
-	Flags(const Flags& other)
-		: flags{other.flags}
-	{
-	}
+	Flags()  = default;
+	~Flags() = default;
 
 	Flags(const T other)
 		: flags{other}
 	{
 	}
+
+	bool operator==(const Flags& other) const { return flags == other.flags; }
 
 	bool  has(T fl) const { return flags & fl; }
 	void  add(T fl) { flags |= fl; }

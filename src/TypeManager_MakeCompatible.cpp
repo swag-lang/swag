@@ -250,7 +250,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	{
 		if (!toType->isPointer() && fromType->isPointerRef())
 		{
-			context->castFlagsResult |= CASTFLAG_RESULT_FROM_REF;
+			context->castFlagsResult.add(CASTFLAG_RESULT_FROM_REF);
 			fromType = concretePtrRef(fromType);
 		}
 
@@ -322,7 +322,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 				const bool toConst   = toType->isConst();
 				const bool fromConst = fromType->isConst();
 				if (toConst != fromConst)
-					context->castFlagsResult |= CASTFLAG_RESULT_CONST_COERCE;
+					context->castFlagsResult.add(CASTFLAG_RESULT_CONST_COERCE);
 
 				bool diff = false;
 				if (castFlags.has(CASTFLAG_FOR_GENERIC))
@@ -344,7 +344,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 						return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 					}
 
-					context->castFlagsResult &= ~CASTFLAG_RESULT_CONST_COERCE;
+					context->castFlagsResult.remove(CASTFLAG_RESULT_CONST_COERCE);
 				}
 			}
 		}
