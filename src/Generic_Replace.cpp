@@ -173,7 +173,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 		if (!it->second.typeInfoReplace->isListArray())
 			return it->second.typeInfoReplace;
 		if (typeInfo->isKindGeneric())
-			return TypeManager::convertTypeListToArray(nullptr, static_cast<TypeInfoList*>(it->second.typeInfoReplace), true);
+			return TypeManager::convertTypeListToArray(nullptr, castTypeInfo<TypeInfoList>(it->second.typeInfoReplace), true);
 	}
 
 	// When type is a compound, we do substitution in the raw type

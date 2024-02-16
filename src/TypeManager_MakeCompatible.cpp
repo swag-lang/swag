@@ -191,9 +191,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 	// Variadic
 	if (fromType->isTypedVariadic())
-		fromType = static_cast<TypeInfoVariadic*>(fromType)->rawType;
+		fromType = castTypeInfo<TypeInfoVariadic>(fromType)->rawType;
 	if (toType->isTypedVariadic())
-		toType = static_cast<TypeInfoVariadic*>(toType)->rawType;
+		toType = castTypeInfo<TypeInfoVariadic>(toType)->rawType;
 
 	bool result = false;
 

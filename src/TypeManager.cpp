@@ -238,7 +238,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 		{
 			typeList               = castTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
 			typeArray->pointedType = makeType<TypeInfoArray>();
-			typeArray              = static_cast<TypeInfoArray*>(typeArray->pointedType);
+			typeArray              = castTypeInfo<TypeInfoArray>(typeArray->pointedType);
 			continue;
 		}
 
@@ -315,7 +315,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 			return it->second;
 		}
 
-		const auto newType         = static_cast<TypeInfoNative*>(typeInfo->clone());
+		const auto newType         = castTypeInfo<TypeInfoNative>(typeInfo->clone());
 		newType->valueInteger      = *reinterpret_cast<int32_t*>(&value);
 		typeInfo                   = newType;
 		g_MapUntypedValuesI[value] = newType;
@@ -330,7 +330,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 			return it->second;
 		}
 
-		const auto newType         = static_cast<TypeInfoNative*>(typeInfo->clone());
+		const auto newType         = castTypeInfo<TypeInfoNative>(typeInfo->clone());
 		newType->valueInteger      = *reinterpret_cast<int32_t*>(&value);
 		typeInfo                   = newType;
 		g_MapUntypedValuesB[value] = newType;
@@ -345,7 +345,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 			return it->second;
 		}
 
-		const auto newType         = static_cast<TypeInfoNative*>(typeInfo->clone());
+		const auto newType         = castTypeInfo<TypeInfoNative>(typeInfo->clone());
 		newType->valueFloat        = *reinterpret_cast<float*>(&value);
 		typeInfo                   = newType;
 		g_MapUntypedValuesF[value] = newType;

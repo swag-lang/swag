@@ -578,3 +578,15 @@ const T* castTypeInfo(const TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind
 	SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
 	return casted;
 }
+
+template<typename T>
+T* castTypeInfo(TypeInfo* ptr)
+{
+	return static_cast<T*>(ptr);
+}
+
+template<typename T>
+const T* castTypeInfo(const TypeInfo* ptr)
+{
+	return static_cast<const T*>(ptr);
+}

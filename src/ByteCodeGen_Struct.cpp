@@ -98,7 +98,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 	const auto structNode = castAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
 	// Type of those functions
-	const auto typeInfoFunc               = static_cast<TypeInfoFuncAttr*>(g_TypeMgr->typeInfoOpCall->clone());
+	const auto typeInfoFunc               = castTypeInfo<TypeInfoFuncAttr>(g_TypeMgr->typeInfoOpCall->clone());
 	typeInfoFunc->parameters[0]->typeInfo = g_TypeMgr->makePointerTo(typeInfoStruct, typeInfoFunc->parameters[0]->typeInfo->flags);
 	typeInfoFunc->forceComputeName();
 

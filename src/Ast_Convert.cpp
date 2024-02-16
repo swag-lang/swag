@@ -225,7 +225,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 			i++;
 
 			if (typeField->isListArray())
-				typeField = TypeManager::convertTypeListToArray(context, static_cast<TypeInfoList*>(typeField), false);
+				typeField = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeField), false);
 			if (typeField->isListTuple())
 				return context->report({fromNode, Err(Err0739)});
 

@@ -424,7 +424,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 	{
 		emitSafetyBoundCheckSlice(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
-		const auto rawType = static_cast<TypeInfoVariadic*>(typeInfo)->rawType;
+		const auto rawType = castTypeInfo<TypeInfoVariadic>(typeInfo)->rawType;
 
 		// Increment pointer (if increment is not 0)
 		if (!node->access->isConstant0())

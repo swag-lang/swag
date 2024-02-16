@@ -101,7 +101,7 @@ namespace
 			else if (wantedTypeInfo->isTypedVariadic())
 			{
 				if (!callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD))
-					wantedTypeInfo = static_cast<TypeInfoVariadic*>(wantedTypeInfo)->rawType;
+					wantedTypeInfo = castTypeInfo<TypeInfoVariadic>(wantedTypeInfo)->rawType;
 				isAfterVariadic = true;
 			}
 
@@ -220,7 +220,7 @@ namespace
 				if (wantedTypeInfo->isTypedVariadic())
 				{
 					if (!callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD))
-						wantedTypeInfo = static_cast<TypeInfoVariadic*>(wantedTypeInfo)->rawType;
+						wantedTypeInfo = castTypeInfo<TypeInfoVariadic>(wantedTypeInfo)->rawType;
 				}
 
 				// If we pass a @spread, must be match to a TypedVariadic !

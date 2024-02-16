@@ -154,7 +154,7 @@ TypeInfo* TypeInfo::getConstAlias()
 {
 	if (!hasFlag(TYPEINFO_CONST_ALIAS))
 		return this;
-	return static_cast<TypeInfoAlias*>(this)->rawType;
+	return castTypeInfo<TypeInfoAlias>(this)->rawType;
 }
 
 const TypeInfo* TypeInfo::getConstAlias() const

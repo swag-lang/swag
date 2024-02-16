@@ -1138,7 +1138,7 @@ bool Semantic::resolveInit(SemanticContext* context)
 		{
 			pointedType = expressionTypeInfo;
 			if (pointedType->isArray())
-				pointedType = static_cast<TypeInfoArray*>(pointedType)->finalType;
+				pointedType = castTypeInfo<TypeInfoArray>(pointedType)->finalType;
 		}
 
 		if (pointedType->isNative() || pointedType->isPointer())

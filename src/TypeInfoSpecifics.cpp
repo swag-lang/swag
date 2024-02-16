@@ -466,8 +466,7 @@ TypeInfo* TypeInfoEnum::clone()
 
 	for (const auto& value : values)
 	{
-		auto param = static_cast<TypeInfoParam*>(value);
-		param      = param->clone();
+		auto param = value->clone();
 		newType->values.push_back(param);
 	}
 

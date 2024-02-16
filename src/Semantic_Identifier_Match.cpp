@@ -1075,7 +1075,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				}
 
 				// From now this is considered as a function, not a lambda
-				auto funcType           = static_cast<TypeInfoFuncAttr*>(typeInfo->clone());
+				auto funcType           = castTypeInfo<TypeInfoFuncAttr>(typeInfo->clone());
 				funcType->kind          = TypeInfoKind::FuncAttr;
 				identifier->typeInfo    = funcType;
 				identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
@@ -1466,7 +1466,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 					auto returnStructType = castTypeInfo<TypeInfoStruct>(fctTypeInfo->returnType, TypeInfoKind::Struct);
 					if (returnStructType->genericParameters.size() == rawTypeStruct->genericParameters.size() && !rawTypeStruct->genericParameters.empty())
 					{
-						rawTypeStruct = static_cast<TypeInfoStruct*>(rawTypeInfo->clone());
+						rawTypeStruct = castTypeInfo<TypeInfoStruct>(rawTypeInfo->clone());
 						rawTypeInfo   = rawTypeStruct;
 						typeWasForced = rawTypeInfo;
 						for (size_t i = 0; i < returnStructType->genericParameters.size(); i++)

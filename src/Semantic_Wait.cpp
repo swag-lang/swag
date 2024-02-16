@@ -19,7 +19,7 @@ void Semantic::waitSymbolNoLock(Job* job, SymbolName* symbol)
 void Semantic::waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo)
 {
 	if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-		typeInfo = static_cast<TypeInfoPointer*>(typeInfo)->pointedType;
+		typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
 	if (!typeInfo->isStruct())
 		return;
 
@@ -44,7 +44,7 @@ void Semantic::waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo)
 void Semantic::waitAllStructInterfaces(Job* job, TypeInfo* typeInfo)
 {
 	if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-		typeInfo = static_cast<TypeInfoPointer*>(typeInfo)->pointedType;
+		typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
 	if (!typeInfo->isStruct())
 		return;
 
@@ -69,7 +69,7 @@ void Semantic::waitAllStructInterfaces(Job* job, TypeInfo* typeInfo)
 void Semantic::waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo)
 {
 	if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-		typeInfo = static_cast<TypeInfoPointer*>(typeInfo)->pointedType;
+		typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
 	if (!typeInfo->isStruct())
 		return;
 
@@ -87,7 +87,7 @@ void Semantic::waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo)
 void Semantic::waitAllStructMethods(Job* job, TypeInfo* typeInfo)
 {
 	if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-		typeInfo = static_cast<TypeInfoPointer*>(typeInfo)->pointedType;
+		typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
 	if (!typeInfo->isStruct())
 		return;
 
@@ -105,9 +105,9 @@ void Semantic::waitAllStructMethods(Job* job, TypeInfo* typeInfo)
 void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
 {
 	if (typeInfo->isArrayOfStruct())
-		typeInfo = static_cast<TypeInfoArray*>(typeInfo)->finalType;
+		typeInfo = castTypeInfo<TypeInfoArray>(typeInfo)->finalType;
 	if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-		typeInfo = static_cast<TypeInfoPointer*>(typeInfo)->pointedType;
+		typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
 	if (!typeInfo->isStruct())
 		return;
 	if (typeInfo->isGeneric())
@@ -134,9 +134,9 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
 void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
 {
 	if (typeInfo->isArrayOfStruct())
-		typeInfo = static_cast<TypeInfoArray*>(typeInfo)->finalType;
+		typeInfo = castTypeInfo<TypeInfoArray>(typeInfo)->finalType;
 	if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-		typeInfo = static_cast<TypeInfoPointer*>(typeInfo)->pointedType;
+		typeInfo = castTypeInfo<TypeInfoPointer>(typeInfo)->pointedType;
 	typeInfo = typeInfo->getConcreteAlias();
 
 	if (!typeInfo->isStruct())
@@ -229,7 +229,7 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
 
 	orgTypeInfo = TypeManager::concreteType(orgTypeInfo);
 	if (orgTypeInfo->isArray())
-		orgTypeInfo->sizeOf = static_cast<TypeInfoArray*>(orgTypeInfo)->finalType->sizeOf * static_cast<TypeInfoArray*>(orgTypeInfo)->totalCount;
+		orgTypeInfo->sizeOf = castTypeInfo<TypeInfoArray>(orgTypeInfo)->finalType->sizeOf * castTypeInfo<TypeInfoArray>(orgTypeInfo)->totalCount;
 	if (orgTypeInfo->isConstAlias())
 		orgTypeInfo->sizeOf = orgTypeInfo->getConstAlias()->sizeOf;
 	if (typeInfo->isConstAlias())

@@ -378,7 +378,7 @@ bool Semantic::resolveType(SemanticContext* context)
 		// Typed variadic ?
 		if (typeNode->typeInfo->isVariadic() && !typeNode->childs.empty())
 		{
-			const auto typeVariadic = static_cast<TypeInfoVariadic*>(typeNode->typeInfo->clone());
+			const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeNode->typeInfo->clone());
 			typeVariadic->kind      = TypeInfoKind::TypedVariadic;
 			typeVariadic->rawType   = typeNode->childs.front()->typeInfo;
 			typeVariadic->addFlag(typeVariadic->rawType->flags & TYPEINFO_GENERIC);

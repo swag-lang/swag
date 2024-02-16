@@ -2161,7 +2161,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 	if (fromNode && (fromTypeList->sizeOf != newSizeof))
 	{
 		const auto oldSizeof = fromTypeList->sizeOf;
-		fromTypeList         = static_cast<TypeInfoList*>(fromTypeList->clone());
+		fromTypeList         = castTypeInfo<TypeInfoList>(fromTypeList->clone());
 		for (size_t i                           = 0; i < fromTypeList->subTypes.size(); i++)
 			fromTypeList->subTypes[i]->typeInfo = fromNode->childs[i]->typeInfo;
 		fromTypeList->sizeOf = newSizeof;

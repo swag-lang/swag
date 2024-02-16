@@ -221,7 +221,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
 				// opPostMove
 				SymbolName* symPostMove = nullptr;
-				SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opPostMove, static_cast<TypeInfoStruct*>(realType), &symPostMove));
+				SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opPostMove, castTypeInfo<TypeInfoStruct>(realType), &symPostMove));
 				if (symPostMove)
 				{
 					params.clear();
@@ -242,7 +242,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
 				// opDrop
 				SymbolName* symDrop = nullptr;
-				SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opDrop, static_cast<TypeInfoStruct*>(realType), &symDrop));
+				SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opDrop, castTypeInfo<TypeInfoStruct>(realType), &symDrop));
 				if (symDrop)
 				{
 					params.clear();
@@ -841,11 +841,11 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 				bool fromGen = false;
 				if (val.typeInfoReplace == locNode->typeInfo)
 					fromGen = true;
-				else if (locNode->typeInfo->isPointer() && val.typeInfoReplace == static_cast<TypeInfoPointer*>(locNode->typeInfo)->pointedType)
+				else if (locNode->typeInfo->isPointer() && val.typeInfoReplace == castTypeInfo<TypeInfoPointer>(locNode->typeInfo)->pointedType)
 					fromGen = true;
-				else if (locNode->typeInfo->isSlice() && val.typeInfoReplace == static_cast<TypeInfoSlice*>(locNode->typeInfo)->pointedType)
+				else if (locNode->typeInfo->isSlice() && val.typeInfoReplace == castTypeInfo<TypeInfoSlice>(locNode->typeInfo)->pointedType)
 					fromGen = true;
-				else if (locNode->typeInfo->isArray() && val.typeInfoReplace == static_cast<TypeInfoArray*>(locNode->typeInfo)->finalType)
+				else if (locNode->typeInfo->isArray() && val.typeInfoReplace == castTypeInfo<TypeInfoArray>(locNode->typeInfo)->finalType)
 					fromGen = true;
 
 				if (fromGen && val.fromNode)

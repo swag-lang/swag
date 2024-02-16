@@ -28,10 +28,10 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	switch (typeInfo->kind)
 	{
 	case TypeInfoKind::TypeListArray:
-		typeInfo = TypeManager::convertTypeListToArray(context, static_cast<TypeInfoList*>(typeInfo), true);
+		typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), true);
 		break;
 	case TypeInfoKind::TypeListTuple:
-		typeInfo = TypeManager::convertTypeListToStruct(context, static_cast<TypeInfoList*>(typeInfo), true);
+		typeInfo = TypeManager::convertTypeListToStruct(context, castTypeInfo<TypeInfoList>(typeInfo), true);
 		break;
 	default:
 		break;
@@ -220,7 +220,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::Pointer:
 		{
 			const auto concreteType = reinterpret_cast<ExportedTypeInfoPointer*>(exportedTypeInfoValue);
-			const auto realType     = static_cast<TypeInfoPointer*>(typeInfo);
+			const auto realType     = castTypeInfo<TypeInfoPointer>(typeInfo);
 			SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
 			break;
 		}
@@ -228,7 +228,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::Alias:
 		{
 			const auto concreteType = reinterpret_cast<ExportedTypeInfoAlias*>(exportedTypeInfoValue);
-			const auto realType     = static_cast<TypeInfoAlias*>(typeInfo);
+			const auto realType     = castTypeInfo<TypeInfoAlias>(typeInfo);
 			SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
 			break;
 		}
@@ -244,7 +244,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::FuncAttr:
 		{
 			const auto concreteType = reinterpret_cast<ExportedTypeInfoFunc*>(exportedTypeInfoValue);
-			const auto realType     = static_cast<TypeInfoFuncAttr*>(typeInfo);
+			const auto realType     = castTypeInfo<TypeInfoFuncAttr>(typeInfo);
 
 			SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
@@ -296,7 +296,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::Enum:
 		{
 			const auto concreteType = reinterpret_cast<ExportedTypeInfoEnum*>(exportedTypeInfoValue);
-			const auto realType     = static_cast<TypeInfoEnum*>(typeInfo);
+			const auto realType     = castTypeInfo<TypeInfoEnum>(typeInfo);
 
 			SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
@@ -324,7 +324,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::Array:
 		{
 			const auto concreteType  = reinterpret_cast<ExportedTypeInfoArray*>(exportedTypeInfoValue);
-			const auto realType      = static_cast<TypeInfoArray*>(typeInfo);
+			const auto realType      = castTypeInfo<TypeInfoArray>(typeInfo);
 			concreteType->count      = realType->count;
 			concreteType->totalCount = realType->totalCount;
 			SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
@@ -335,7 +335,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::Slice:
 		{
 			const auto concreteType = reinterpret_cast<ExportedTypeInfoSlice*>(exportedTypeInfoValue);
-			const auto realType     = static_cast<TypeInfoSlice*>(typeInfo);
+			const auto realType     = castTypeInfo<TypeInfoSlice>(typeInfo);
 			SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
 			break;
 		}
@@ -343,7 +343,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	case TypeInfoKind::TypedVariadic:
 		{
 			const auto concreteType = reinterpret_cast<ExportedTypeInfoVariadic*>(exportedTypeInfoValue);
-			const auto realType     = static_cast<TypeInfoVariadic*>(typeInfo);
+			const auto realType     = castTypeInfo<TypeInfoVariadic>(typeInfo);
 			SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
 			break;
 		}

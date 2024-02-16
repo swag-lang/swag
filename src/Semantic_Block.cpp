@@ -597,7 +597,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 	if (!typeInfo->isEnum())
 		SWAG_CHECK(checkIsConcrete(context, node->expression));
 	if (typeInfo->isListArray())
-		typeInfo = TypeManager::convertTypeListToArray(context, static_cast<TypeInfoList*>(typeInfo), node->expression->hasAstFlag(AST_CONST_EXPR));
+		typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), node->expression->hasAstFlag(AST_CONST_EXPR));
 
 	// Be sure that aliases are not defined elsewhere
 	for (const auto& c : node->aliasNames)
@@ -709,7 +709,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 	}
 
 	// Multi dimensional array
-	if (typeInfo->isArray() && static_cast<TypeInfoArray*>(typeInfo)->pointedType->isArray())
+	if (typeInfo->isArray() && castTypeInfo<TypeInfoArray>(typeInfo)->pointedType->isArray())
 	{
 		auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 		auto pointedType = typeArray->finalType;

@@ -1130,7 +1130,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				waitStructGeneratedAlloc(context->baseJob, typeNode);
 				YIELD();
 				if (typeNode->isArrayOfStruct())
-					typeNode = static_cast<TypeInfoArray*>(typeNode)->finalType;
+					typeNode = castTypeInfo<TypeInfoArray>(typeNode)->finalType;
 				TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
 				if (typeStruct->opDrop || typeStruct->opUserDropFct)
 					isGlobalToDrop = true;

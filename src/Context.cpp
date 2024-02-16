@@ -62,7 +62,7 @@ static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
 	// Parameters
 	// As we have values/registers values, we need to make a copy in a temporary register
 	fakeRegisters.reserve(typeFunc->numParamsRegisters());
-	for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
+	for (uint32_t i = 0; i < typeFunc->numParamsRegisters(); i++)
 	{
 		fakeRegisters.count++;
 		auto& r = fakeRegisters.back();
