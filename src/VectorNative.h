@@ -17,7 +17,7 @@ struct VectorNative
 
 		count = static_cast<int>(other.size());
 		reserve(count, false);
-		memcpy(buffer, other.buffer, count * sizeof(T));
+		std::copy_n(other.buffer, count, buffer);
 	}
 
 	VectorNative(VectorNative&& other) noexcept
@@ -63,7 +63,7 @@ struct VectorNative
 		T* newPtr = static_cast<T*>(Allocator::alloc(Allocator::alignSize(allocated * sizeof(T))));
 		SWAG_ASSERT(newPtr);
 		if (copy && count)
-			memcpy(newPtr, buffer, count * sizeof(T));
+			std::copy_n(buffer, count, newPtr);
 		if (buffer)
 			Allocator::free(buffer, Allocator::alignSize(oldAllocated * sizeof(T)));
 		buffer = newPtr;
@@ -248,7 +248,7 @@ struct VectorNative
 		if (!other.count)
 			return;
 		reserve(count + other.count);
-		memcpy(buffer + count, other.buffer, other.count * sizeof(T));
+		std::copy_n(other.buffer, other.count, buffer + count);
 		count += other.count;
 	}
 
@@ -291,7 +291,7 @@ struct VectorNative
 		count = static_cast<int>(other.size());
 		if (allocated < count)
 			reserve(count, false);
-		memcpy(buffer, &other[0], count * sizeof(T));
+		std::copy_n(&other[0], count, buffer);
 		return *this;
 	}
 
@@ -303,7 +303,7 @@ struct VectorNative
 		count = static_cast<int>(other.size());
 		if (allocated < count)
 			reserve(count, false);
-		memcpy(buffer, other.buffer, count * sizeof(T));
+		std::copy_n(other.buffer, count, buffer);
 		return *this;
 	}
 

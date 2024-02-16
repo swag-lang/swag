@@ -11,7 +11,7 @@ void SymTableHash::clone(const SymTableHash* from)
 	count      = from->count;
 	maxLength  = from->maxLength;
 	buffer     = static_cast<Entry*>(Allocator::alloc(from->allocated * sizeof(Entry)));
-	memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
+	std::copy_n(from->buffer, from->allocated, buffer);
 }
 
 SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc) const

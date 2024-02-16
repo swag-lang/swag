@@ -31,7 +31,7 @@ Utf8::Utf8(const char* from)
 		return;
 
 	reserve(len + 1);
-	memcpy(buffer, from, len + 1);
+	std::copy_n(from, len + 1, buffer);
 	count = len;
 }
 
@@ -40,7 +40,7 @@ Utf8::Utf8(const SwagSlice& slice)
 	if (!slice.buffer || !slice.count)
 		return;
 	reserve(static_cast<uint32_t>(slice.count) + 1);
-	memcpy(buffer, slice.buffer, slice.count);
+	std::copy_n(static_cast<uint8_t*>(slice.buffer), slice.count, buffer);
 	buffer[slice.count] = 0;
 	count               = static_cast<uint32_t>(slice.count);
 }
@@ -50,7 +50,7 @@ Utf8::Utf8(const char* from, uint32_t len)
 	if (!from || !len)
 		return;
 	reserve(len + 1);
-	memcpy(buffer, from, len);
+	std::copy_n(from, len, buffer);
 	buffer[len] = 0;
 	count       = len;
 }
@@ -62,7 +62,7 @@ Utf8::Utf8(const string& from)
 		return;
 
 	reserve(len + 1);
-	memcpy(buffer, from.c_str(), len + 1);
+	std::copy_n(from.c_str(), len + 1, buffer);
 	count = len;
 }
 
@@ -82,7 +82,7 @@ Utf8::Utf8(const Utf8& from)
 	}
 
 	reserve(len + 1);
-	memcpy(buffer, from.buffer, len + 1);
+	std::copy_n(from.buffer, len + 1, buffer);
 	count = len;
 }
 
@@ -102,7 +102,7 @@ Utf8::Utf8(const Utf8& from, uint32_t capacity)
 	}
 
 	reserve(max(len + 1, capacity));
-	memcpy(buffer, from.buffer, len + 1);
+	std::copy_n(from.buffer, len + 1, buffer);
 	count = len;
 }
 
@@ -127,7 +127,7 @@ void Utf8::reserve(uint32_t newSize)
 	allocated            = max(allocated, newSize);
 	const auto newBuffer = static_cast<char*>(Allocator::alloc(allocated));
 	if (count)
-		memcpy(newBuffer, buffer, count + 1);
+		std::copy_n(buffer, count + 1, newBuffer);
 
 	Allocator::free(buffer, lastAllocated);
 
@@ -156,7 +156,7 @@ Utf8 Utf8::toZeroTerminated() const
 
 	Utf8 res;
 	res.reserve(count + 1);
-	memcpy(res.buffer, buffer, count);
+	std::copy_n(buffer, count, res.buffer);
 	res.buffer[count] = 0;
 	res.count         = count;
 	return res;
@@ -173,7 +173,7 @@ const char* Utf8::c_str() const
 	// Should limit the call to c_str() as much as possible in a normal run (no errors)
 	const auto size = count + 1;
 	const auto buf  = static_cast<char*>(Allocator::alloc(size));
-	memcpy(buf, buffer, count);
+	std::copy_n(buffer, count, buf);
 	buf[count] = 0;
 
 #ifdef SWAG_STATS
@@ -525,7 +525,7 @@ void Utf8::makeLocal()
 
 	allocated      = count + 1;
 	const auto buf = static_cast<char*>(Allocator::alloc(allocated));
-	memcpy(buf, buffer, count);
+	std::copy_n(buffer, count, buf);
 	buffer        = buf;
 	buffer[count] = 0;
 
@@ -540,7 +540,7 @@ void Utf8::append(const char* txt, uint32_t len)
 		return;
 	SWAG_ASSERT(txt);
 	reserve(count + len + 1);
-	memcpy(buffer + count, txt, len);
+	std::copy_n(txt, len, buffer + count);
 	count += len;
 	buffer[count] = 0;
 }
@@ -553,7 +553,7 @@ void Utf8::append(const char* txt)
 	if (!len)
 		return;
 	reserve(count + len + 1);
-	memcpy(buffer + count, txt, len);
+	std::copy_n(txt, len, buffer + count);
 	count += len;
 	buffer[count] = 0;
 }
@@ -564,7 +564,7 @@ void Utf8::append(const Utf8& txt)
 	if (!len)
 		return;
 	reserve(count + len + 1);
-	memcpy(buffer + count, txt.buffer, len);
+	std::copy_n(txt.buffer, len, buffer + count);
 	count += len;
 	buffer[count] = 0;
 }
@@ -637,7 +637,7 @@ void Utf8::insert(uint32_t index, const char* str)
 	const uint32_t len = static_cast<uint32_t>(strlen(str));
 	reserve(count + len + 1);
 	memmove(buffer + index + len, buffer + index, count - index);
-	memcpy(buffer + index, str, len);
+	std::copy_n(str, len, buffer + index);
 	count += len;
 	buffer[count] = 0;
 }

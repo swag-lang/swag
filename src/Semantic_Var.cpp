@@ -208,7 +208,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 			const auto storageOffset            = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
 			node->computedValue->storageSegment = wantStorageSegment;
 			node->computedValue->storageOffset  = storageOffset;
-			memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+			std::copy_n(static_cast<uint8_t*>(addrSrc), node->typeInfo->sizeOf, addrDst);
 		}
 
 		// Will remove the incomplete flag, and finish the resolve

@@ -651,7 +651,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 	slice->buffer = addrDst;
 
 	// Setup array
-	memcpy(addrDst, runes.data(), runes.size() * sizeof(uint32_t));
+	std::copy_n(runes.data(), runes.size(), reinterpret_cast<uint32_t*>(addrDst));
 
 	node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
 	return true;

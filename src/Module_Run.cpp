@@ -34,7 +34,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 		node->computedValue->storageSegment = storageSegment;
 		node->computedValue->storageOffset  = storageOffset;
 		const auto addrSrc                  = runContext->bp;
-		memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+		std::copy_n(addrSrc, node->typeInfo->sizeOf, addrDst);
 		return true;
 	}
 
@@ -58,7 +58,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 		const uint32_t len = runContext->registersRR[1].u32;
 		node->computedValue->text.reserve(len + 1);
 		node->computedValue->text.count = len;
-		memcpy(node->computedValue->text.buffer, pz, len);
+		std::copy_n(pz, len, node->computedValue->text.buffer);
 		node->computedValue->text.buffer[len] = 0;
 		return true;
 	}
@@ -72,7 +72,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 		node->computedValue->storageOffset  = offsetStorage;
 		node->computedValue->storageSegment = storageSegment;
 		const auto addrSrc                  = runContext->registersRR[0].pointer;
-		memcpy(addrDst, addrSrc, realType->sizeOf);
+		std::copy_n(addrSrc, realType->sizeOf, addrDst);
 		return true;
 	}
 
@@ -84,7 +84,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 		node->computedValue->storageOffset  = offsetStorage;
 		node->computedValue->storageSegment = storageSegment;
 		const auto addrSrc                  = runContext->registersRR[0].pointer;
-		memcpy(addrDst, addrSrc, realType->sizeOf);
+		std::copy_n(addrSrc, realType->sizeOf, addrDst);
 		const auto typeList = castTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
 		node->typeInfo      = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
 		return true;
@@ -102,7 +102,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 			node->computedValue->storageOffset  = offsetStorage;
 			node->computedValue->storageSegment = storageSegment;
 			const auto addrSrc                  = runContext->registersRR[0].pointer;
-			memcpy(addrDst, addrSrc, realType->sizeOf);
+			std::copy_n(addrSrc, realType->sizeOf, addrDst);
 			return true;
 		}
 
@@ -112,7 +112,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 		// Make a copy of the returned struct, as we will lose the memory
 		const auto selfSize = Allocator::alignSize(realType->sizeOf);
 		auto       self     = Allocator::alloc(selfSize);
-		memcpy(self, runContext->registersRR[0].pointer, realType->sizeOf);
+		std::copy_n(runContext->registersRR[0].pointer, realType->sizeOf, static_cast<uint8_t*>(self));
 
 		// Call opPostMove if defined
 		if (params->specReturnOpPostMove)
@@ -172,7 +172,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 			const auto offsetStorage            = storageSegment->reserve(sizeSlice, &addrDst);
 			node->computedValue->storageOffset  = offsetStorage;
 			node->computedValue->storageSegment = storageSegment;
-			memcpy(addrDst, addrSrc, sizeSlice);
+			std::copy_n(addrSrc, sizeSlice, addrDst);
 
 			// Then transform the returned type to a static array
 			const auto typeArray   = makeType<TypeInfoArray>();

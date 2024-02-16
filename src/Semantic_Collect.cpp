@@ -233,7 +233,7 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
 		{
 			const auto varType = varDecl->type;
 			const auto srcAddr = varType->computedValue->getStorageAddr();
-			memcpy(ptrDest, srcAddr, typeInfo->sizeOf);
+			std::copy_n(static_cast<uint8_t*>(srcAddr), typeInfo->sizeOf, ptrDest);
 		}
 	}
 
@@ -379,7 +379,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 				uint8_t* addrDst;
 				storageOffset      = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
 				const auto addrSrc = value->getStorageAddr();
-				memcpy(addrDst, addrSrc, typeInfo->sizeOf);
+				std::copy_n(static_cast<uint8_t*>(addrSrc), typeInfo->sizeOf, addrDst);
 			}
 
 			return true;
@@ -424,7 +424,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 			storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, alignOf(node));
 			SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);
 			const auto addrSrc = overload->computedValue.getStorageAddr();
-			memcpy(addrDst, addrSrc, typeInfo->sizeOf);
+			std::copy_n(static_cast<uint8_t*>(addrSrc), typeInfo->sizeOf, addrDst);
 		}
 		else
 		{

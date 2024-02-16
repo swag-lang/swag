@@ -94,7 +94,7 @@ namespace
 				// in the compiler
 				concat.addU64(0);
 				const auto ptr = concat.getSeekPtr() - 8;
-				memcpy(ptr, symbol.name.buffer, symbol.name.length());
+				std::copy_n(symbol.name.buffer, symbol.name.length(), ptr);
 			}
 			else
 			{

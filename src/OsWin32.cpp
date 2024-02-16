@@ -371,19 +371,24 @@ namespace OS
 
 	void* getProcAddress(void* handle, const char* name)
 	{
-		return (void*) GetProcAddress(static_cast<HMODULE>(handle), name);
+		return static_cast<void*>(GetProcAddress(static_cast<HMODULE>(handle), name));
 	}
 
 	uint64_t getFileWriteTime(const char* fileName)
 	{
-		WIN32_FILE_ATTRIBUTE_DATA fileInfo;
-		if (!GetFileAttributesExA(fileName, GetFileExInfoStandard, &fileInfo))
+		const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+		if (hFile == INVALID_HANDLE_VALUE)
 			return 0;
 
 		uint64_t result = 0;
-		result          = static_cast<uint64_t>(fileInfo.ftLastWriteTime.dwHighDateTime) << 32;
-		result |= fileInfo.ftLastWriteTime.dwLowDateTime;
+		FILETIME ftCreate, ftAccess, ftWrite;
+		if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+		{
+			result = static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32;
+			result |= ftWrite.dwLowDateTime;
+		}
 
+		CloseHandle(hFile);
 		return result;
 	}
 
