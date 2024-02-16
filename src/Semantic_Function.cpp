@@ -431,7 +431,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
 	if (funcNode->parameters)
 	{
 		uint32_t storageIndex = 0;
-		if (funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+		if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
 		{
 			const auto param       = funcNode->parameters->children.back();
 			const auto resolved    = param->resolvedSymbolOverload;
@@ -442,7 +442,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
 		const auto childSize = funcNode->parameters->children.size();
 		for (size_t i = 0; i < childSize; i++)
 		{
-			if ((i == childSize - 1) && funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+			if ((i == childSize - 1) && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
 				break;
 			const auto param       = funcNode->parameters->children[i];
 			const auto resolved    = param->resolvedSymbolOverload;

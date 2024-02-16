@@ -73,7 +73,7 @@ TypeInfo* TypeInfoAlias::clone()
 
 void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-	if (nameType == COMPUTE_DISPLAY_NAME && flags & TYPEINFO_CONST_ALIAS)
+	if (nameType == COMPUTE_DISPLAY_NAME && flags.has(TYPEINFO_CONST_ALIAS))
 	{
 		if (isConst())
 			resName += "const ";
@@ -104,7 +104,7 @@ bool TypeInfoAlias::isSame(const TypeInfo* to, CastFlags castFlags) const
 		return rawType->isSame(other->rawType, castFlags);
 	}
 
-	SWAG_ASSERT(flags & TYPEINFO_CONST_ALIAS);
+	SWAG_ASSERT(flags.has(TYPEINFO_CONST_ALIAS));
 	return rawType->isSame(to, castFlags);
 }
 
@@ -237,7 +237,7 @@ bool TypeInfoArray::isSame(const TypeInfo* to, CastFlags castFlags) const
 
 void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-	if (flags & TYPEINFO_CONST)
+	if (flags.has(TYPEINFO_CONST))
 		resName += "const ";
 
 	if (count == UINT32_MAX)
@@ -444,7 +444,7 @@ void TypeInfoEnum::collectEnums(VectorNative<TypeInfoEnum*>& collect)
 {
 	collect.clear();
 	collect.push_back(this);
-	if (!(flags & TYPEINFO_ENUM_HAS_USING))
+	if (!flags.has(TYPEINFO_ENUM_HAS_USING))
 		return;
 
 	for (const auto value : values)
@@ -599,7 +599,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 	if (!addedName)
 	{
-		if (flags & TYPEINFO_FUNC_IS_ATTR)
+		if (flags.has(TYPEINFO_FUNC_IS_ATTR))
 			resName += "attr";
 		else if (isClosure())
 			resName += "closure";
@@ -675,13 +675,13 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
 	{
 		// We want func's32(s32) to match func(T) when func(T) is generic
 		// This is necessary for lambdas. Perhaps that test is not enough !
-		if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC) &&
-			!(flags & TYPEINFO_UNDEFINED) &&
+		if (flags.has(TYPEINFO_GENERIC) == other->flags.has(TYPEINFO_GENERIC) &&
+			!flags.has(TYPEINFO_UNDEFINED) &&
 			!other->hasFlag(TYPEINFO_UNDEFINED))
 			return false;
 	}
 
-	if ((flags & TYPEINFO_CAN_THROW) != (other->flags & TYPEINFO_CAN_THROW))
+	if (flags.has(TYPEINFO_CAN_THROW) != other->flags.has(TYPEINFO_CAN_THROW))
 	{
 		bi.matchResult = MatchResult::MismatchThrow;
 		return false;
@@ -881,7 +881,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
 	{
 		if (argNo >= parameters.size())
 		{
-			SWAG_ASSERT(flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
+			SWAG_ASSERT(flags.has(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
 			return static_cast<uint32_t>(parameters.size()) - 1;
 		}
 

@@ -453,7 +453,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
 		countParams = decl->parameters->children.size();
 		allocaParams.reserve(static_cast<uint32_t>(countParams));
 
-		if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+		if (typeFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
 		{
 			allocaVariadic = builder.CreateAlloca(I64_TY(), builder.getInt64(2));
 			idxParam += 2;
@@ -513,7 +513,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
 	if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
 	{
 		// Variadic. Pass as first parameters, but get type at the end
-		if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+		if (typeFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
 		{
 			const auto    child     = decl->parameters->children.back();
 			const auto&   loc       = child->token.startLocation;
@@ -677,8 +677,8 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
 {
 	SWAG_ASSERT(scope);
 
-	// If this assert triggers, this will crash at one point in llvm. This should never
-	// happens, so check the corresponding instruction !
+	// If this asserts triggers, this will crash at one point in llvm. This should never
+	// happen, so check the corresponding instruction !
 	SWAG_ASSERT(scope->kind != ScopeKind::Function);
 
 	llvm::DIScope*       parent = file;

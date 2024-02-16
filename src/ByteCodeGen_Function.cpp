@@ -2195,7 +2195,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
 
 	// Variadic parameter is the last one pushed on the stack
 	SWAG_IF_ASSERT(uint32_t storageIndex = 0);
-	if (funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+	if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
 	{
 		const auto param                      = node->children.back();
 		const auto resolved                   = param->resolvedSymbolOverload;
@@ -2208,7 +2208,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
 	const auto childSize = node->children.size();
 	for (size_t i = 0; i < childSize; i++)
 	{
-		if ((i == childSize - 1) && funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+		if ((i == childSize - 1) && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
 			break;
 		const auto param                      = node->children[i];
 		const auto resolved                   = param->resolvedSymbolOverload;

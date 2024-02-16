@@ -198,7 +198,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 	mapPerSeg.exportedTypesReverse[exportedTypeInfoValue] = typeInfo;
 
 	// Build pointer type to structure
-	typePtr->flags |= TYPEINFO_CONST;
+	typePtr->addFlag(TYPEINFO_CONST);
 	typePtr->pointedType = typeStruct;
 	typePtr->computeName();
 	typePtr->sizeOf = sizeof(void*);

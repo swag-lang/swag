@@ -212,7 +212,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 		newTypeFunc->replaceValues = cloneContext.replaceValues;
 		newFunc->typeInfo          = newTypeFunc;
 		if (noReplaceTypes)
-			newTypeFunc->flags |= TYPEINFO_UNDEFINED;
+			newTypeFunc->addFlag(TYPEINFO_UNDEFINED);
 	}
 	else
 	{

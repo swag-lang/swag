@@ -167,7 +167,7 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
 	const auto ptrSlice   = makeType<TypeInfoSlice>();
 	ptrSlice->pointedType = ptrPointer->pointedType;
 	if (ptrPointer->isConst())
-		ptrSlice->flags |= TYPEINFO_CONST;
+		ptrSlice->addFlag(TYPEINFO_CONST);
 	ptrSlice->computeName();
 	node->typeInfo = ptrSlice;
 
@@ -436,7 +436,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 		const auto ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 		auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
 		if (ptrSlice->isConst())
-			ptrFlags |= TYPEINFO_CONST;
+			ptrFlags.add(TYPEINFO_CONST);
 		node->typeInfo = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrFlags);
 
 		if (expression->hasComputedValue())
@@ -467,7 +467,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 		const auto ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 		auto       ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
 		if (ptrArray->isConst())
-			ptrFlags |= TYPEINFO_CONST;
+			ptrFlags.add(TYPEINFO_CONST);
 		node->typeInfo = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrFlags);
 
 		if (expression->hasComputedValue())

@@ -217,7 +217,10 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 			const auto newType     = replaceGenericTypes(replaceTypes, typePointer->pointedType);
 			if (newType != typePointer->pointedType)
 			{
-				typePointer = g_TypeMgr->makePointerTo(newType, (typePointer->flags & ~TYPEINFO_GENERIC) | TYPEINFO_FROM_GENERIC);
+				auto newFlags = typePointer->flags;
+				newFlags.remove(TYPEINFO_GENERIC);
+				newFlags.add(TYPEINFO_FROM_GENERIC);
+				typePointer = g_TypeMgr->makePointerTo(newType, newFlags);
 				return typePointer;
 			}
 
@@ -291,7 +294,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 				{
 					newType         = newType->clone();
 					newType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-					newType->flags |= TYPEINFO_CLOSURE;
+					newType->addFlag(TYPEINFO_CLOSURE);
 
 					auto newParam         = TypeManager::makeParam();
 					newParam->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);

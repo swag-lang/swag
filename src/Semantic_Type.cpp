@@ -382,7 +382,7 @@ bool Semantic::resolveType(SemanticContext* context)
 			const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeNode->typeInfo->clone());
 			typeVariadic->kind      = TypeInfoKind::TypedVariadic;
 			typeVariadic->rawType   = typeNode->children.front()->typeInfo;
-			typeVariadic->addFlag(typeVariadic->rawType->flags & TYPEINFO_GENERIC);
+			typeVariadic->addFlag(typeVariadic->rawType->flags.mask(TYPEINFO_GENERIC));
 			typeVariadic->forceComputeName();
 			typeNode->typeFromLiteral = typeVariadic;
 			typeNode->typeInfo        = typeVariadic;
@@ -442,16 +442,16 @@ bool Semantic::resolveType(SemanticContext* context)
 	// In fact, this is a pointer
 	if (typeNode->typeFlags & TYPEFLAG_IS_PTR)
 	{
-		auto ptrFlags = typeNode->typeInfo->flags & TYPEINFO_GENERIC;
+		auto ptrFlags = typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC);
 		if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
-			ptrFlags |= TYPEINFO_SELF;
+			ptrFlags.add(TYPEINFO_SELF);
 		if (typeNode->typeFlags & TYPEFLAG_HAS_USING)
-			ptrFlags |= TYPEINFO_HAS_USING;
+			ptrFlags.add(TYPEINFO_HAS_USING);
 		if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-			ptrFlags |= TYPEINFO_CONST;
+			ptrFlags.add(TYPEINFO_CONST);
 		if (typeNode->typeFlags & TYPEFLAG_IS_PTR_ARITHMETIC)
-			ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
-		if (ptrFlags & TYPEINFO_GENERIC)
+			ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
+		if (ptrFlags.has(TYPEINFO_GENERIC))
 			typeNode->addAstFlag(AST_IS_GENERIC);
 		typeNode->typeInfo = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
 		return true;
@@ -466,8 +466,8 @@ bool Semantic::resolveType(SemanticContext* context)
 		const auto ptrSlice   = makeType<TypeInfoSlice>();
 		ptrSlice->pointedType = typeNode->typeInfo;
 		if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-			ptrSlice->flags |= TYPEINFO_CONST;
-		ptrSlice->flags |= ptrSlice->pointedType->flags & TYPEINFO_GENERIC;
+			ptrSlice->addFlag(TYPEINFO_CONST);
+		ptrSlice->flags.add(ptrSlice->pointedType->flags.mask(TYPEINFO_GENERIC));
 		typeNode->typeInfo = ptrSlice;
 		ptrSlice->computeName();
 		return true;
@@ -478,14 +478,14 @@ bool Semantic::resolveType(SemanticContext* context)
 	{
 		auto ptrFlags = TYPEINFO_POINTER_REF;
 		if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-			ptrFlags |= TYPEINFO_CONST;
-		ptrFlags |= typeNode->typeInfo->flags & TYPEINFO_GENERIC;
+			ptrFlags.add(TYPEINFO_CONST);
+		ptrFlags.add(typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC));
 
 		if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
 		{
 			const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
 			SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, FMT(Err(Err0512), "&&")}));
-			ptrFlags |= TYPEINFO_POINTER_MOVE_REF;
+			ptrFlags.add(TYPEINFO_POINTER_MOVE_REF);
 		}
 
 		const auto typeRef = g_TypeMgr->makePointerTo(typeNode->typeInfo, ptrFlags);
@@ -507,8 +507,8 @@ bool Semantic::resolveType(SemanticContext* context)
 			ptrArray->pointedType = typeNode->typeInfo;
 			ptrArray->finalType   = typeNode->typeInfo;
 			if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-				ptrArray->flags |= TYPEINFO_CONST;
-			ptrArray->flags |= ptrArray->finalType->flags & TYPEINFO_GENERIC;
+				ptrArray->flags.add(TYPEINFO_CONST);
+			ptrArray->addFlag(ptrArray->finalType->flags.mask(TYPEINFO_GENERIC));
 			ptrArray->sizeOf = 0;
 			ptrArray->computeName();
 			typeNode->typeInfo = ptrArray;
@@ -559,12 +559,12 @@ bool Semantic::resolveType(SemanticContext* context)
 			ptrArray->finalType   = rawType;
 			ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
 			if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
-				ptrArray->flags |= TYPEINFO_CONST;
-			ptrArray->flags |= ptrArray->finalType->flags & TYPEINFO_GENERIC;
+				ptrArray->addFlag(TYPEINFO_CONST);
+			ptrArray->addFlag(ptrArray->finalType->flags.mask(TYPEINFO_GENERIC));
 
 			if (genericCount)
 			{
-				ptrArray->flags |= TYPEINFO_GENERIC | TYPEINFO_GENERIC_COUNT;
+				ptrArray->addFlag(TYPEINFO_GENERIC | TYPEINFO_GENERIC_COUNT);
 				ptrArray->sizeNode = child;
 			}
 
@@ -626,8 +626,8 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 	const auto typeInfo = castTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
 	typeInfo->rawType   = node->children.front()->typeInfo;
 	typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
-	typeInfo->addFlag(typeInfo->rawType->flags & TYPEINFO_GENERIC);
-	typeInfo->addFlag(typeInfo->rawType->flags & TYPEINFO_CONST);
+	typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_GENERIC));
+	typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_CONST));
 	typeInfo->computeName();
 	uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
 	if (typeInfo->isGeneric())
@@ -783,7 +783,7 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 
 	exprNode->typeInfo   = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
 	const auto cloneType = exprNode->typeInfo->clone();
-	cloneType->flags |= TYPEINFO_AUTO_CAST;
+	cloneType->addFlag(TYPEINFO_AUTO_CAST);
 	node->typeInfo = cloneType;
 
 	node->byteCodeFct = ByteCodeGen::emitExplicitAutoCast;

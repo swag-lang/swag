@@ -43,7 +43,7 @@ void TypeManager::setup()
 	typeInfoCVariadic       = new TypeInfoVariadic();
 	typeInfoCVariadic->kind = TypeInfoKind::CVariadic;
 	typeInfoCVariadic->name.setView("cvarargs", 8);
-	typeInfoCVariadic->flags |= TYPEINFO_C_VARIADIC;
+	typeInfoCVariadic->addFlag(TYPEINFO_C_VARIADIC);
 	typeInfoCVariadic->sizeOf = 0;
 
 	// Some default pointers
@@ -54,7 +54,7 @@ void TypeManager::setup()
 	typeInfoCString         = new TypeInfoPointer();
 	typeInfoCString->sizeOf = sizeof(Register);
 	typeInfoCString->setConst();
-	typeInfoCString->flags |= TYPEINFO_C_STRING;
+	typeInfoCString->addFlag(TYPEINFO_C_STRING);
 	typeInfoCString->pointedType = typeInfoU8;
 	typeInfoCString->name.setView("cstring", 7);
 
@@ -87,7 +87,7 @@ void TypeManager::setup()
 
 	typeInfoSliceRunes              = new TypeInfoSlice();
 	typeInfoSliceRunes->pointedType = typeInfoRune;
-	typeInfoSliceRunes->flags |= TYPEINFO_CONST;
+	typeInfoSliceRunes->addFlag(TYPEINFO_CONST);
 	typeInfoSliceRunes->computeName();
 
 	memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
@@ -224,7 +224,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 		typeArray->count       = static_cast<uint32_t>(typeList->subTypes.size());
 		typeArray->totalCount  = typeArray->count;
 		if (isCompilerConstant)
-			typeArray->flags |= TYPEINFO_CONST;
+			typeArray->addFlag(TYPEINFO_CONST);
 
 		if (typeArray->pointedType->isListTuple())
 		{
@@ -268,7 +268,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 	name += FMT("%d", g_UniqueID.fetch_add(1));
 	typeStruct->name = name;
 
-	typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GHOST_TUPLE;
+	typeStruct->addFlag(TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GHOST_TUPLE);
 
 	typeStruct->fields.reserve(static_cast<int>(typeList->subTypes.size()));
 	for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
@@ -433,7 +433,7 @@ TypeInfo* TypeManager::makeUnConst(TypeInfo* typeInfo)
 		return it->second;
 
 	const auto typeUnConst = typeInfo->clone();
-	typeUnConst->flags &= ~TYPEINFO_CONST;
+	typeUnConst->removeFlag(TYPEINFO_CONST);
 	typeUnConst->forceComputeName();
 	mapUnConst[typeInfo] = typeUnConst;
 
@@ -456,7 +456,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 		const auto typeAlias = makeType<TypeInfoAlias>();
 		typeAlias->copyFrom(typeInfo);
 		typeAlias->rawType = typeInfo;
-		typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_CONST_ALIAS;
+		typeAlias->addFlag(TYPEINFO_CONST | TYPEINFO_CONST_ALIAS);
 		mapConst[typeInfo] = typeAlias;
 		return typeAlias;
 	}
@@ -467,7 +467,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 	return typeConst;
 }
 
-TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, TypeInfoFlags ptrFlags)
 {
 	ScopedLock lk(mutex);
 

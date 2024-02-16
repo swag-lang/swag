@@ -402,7 +402,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
 	typeITable->name       = node->token.text;
 	typeITable->structName = node->token.text;
 	typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
-	typeITable->flags |= TYPEINFO_STRUCT_IS_ITABLE;
+	typeITable->addFlag(TYPEINFO_STRUCT_IS_ITABLE);
 
 	for (auto child : children)
 	{
@@ -845,10 +845,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	if (typeInfo->isTuple())
 		node->addAttribute(ATTRIBUTE_CONSTEXPR);
 
-	uint32_t storageOffset     = 0;
-	uint32_t storageIndexField = 0;
-	uint32_t storageIndexConst = 0;
-	uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
+	TypeInfoFlags structFlags = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
 	// No need to flatten structure if it's not a compound (optim)
 	VectorNative<AstNode*>& children = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->children;
@@ -881,6 +878,10 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	}
 
 	{
+		uint32_t storageOffset     = 0;
+		uint32_t storageIndexField = 0;
+		uint32_t storageIndexConst = 0;
+
 		SWAG_RACE_CONDITION_WRITE(typeInfo->raceFields);
 		for (auto child : children)
 		{
@@ -930,20 +931,20 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
 			// If variable is not empty, then struct is not
 			if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
-				structFlags &= ~TYPEINFO_STRUCT_EMPTY;
+				structFlags.remove(TYPEINFO_STRUCT_EMPTY);
 
 			// If variable is initialized, struct is too.
 			if (!varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
 			{
 				if (varDecl->assignment || varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
-					structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+					structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
 				else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
-					structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+					structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
 			}
 
 			// Inherit flags
 			if (varTypeInfo->hasFlag(TYPEINFO_STRUCT_NO_COPY))
-				structFlags |= TYPEINFO_STRUCT_NO_COPY;
+				structFlags.add(TYPEINFO_STRUCT_NO_COPY);
 
 			// Remove attribute constexpr if necessary
 			if (child->typeInfo->isStruct() && !child->typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
@@ -953,17 +954,17 @@ bool Semantic::resolveStruct(SemanticContext* context)
 			if (varTypeInfo->isStruct())
 			{
 				if (varTypeInfo->declNode->hasAttribute(ATTRIBUTE_EXPORT_TYPE_NO_ZERO))
-					structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-				structFlags |= varTypeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+					structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
+				structFlags.add(varTypeInfo->flags.mask(TYPEINFO_STRUCT_HAS_INIT_VALUES));
 
 				if (!varTypeInfo->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
-					structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+					structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
 				if (!varTypeInfo->hasFlag(TYPEINFO_STRUCT_EMPTY))
-					structFlags &= ~TYPEINFO_STRUCT_EMPTY;
+					structFlags.remove(TYPEINFO_STRUCT_EMPTY);
 
 				if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
 				{
-					structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+					structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
 					if (!varDecl->type->hasComputedValue())
 					{
 						auto constSegment = getConstantSegFromContext(varDecl);
@@ -978,7 +979,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 				else if (varDecl->assignment)
 				{
 					SWAG_ASSERT(varDecl->hasSemFlag(SEMFLAG_EXEC_RET_STACK));
-					structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+					structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
 				}
 			}
 
@@ -988,11 +989,11 @@ bool Semantic::resolveStruct(SemanticContext* context)
 				auto varTypeArray = castTypeInfo<TypeInfoArray>(varTypeInfo, TypeInfoKind::Array);
 				if (varTypeArray->pointedType->isStruct())
 				{
-					structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+					structFlags.add(varTypeArray->pointedType->flags.mask(TYPEINFO_STRUCT_HAS_INIT_VALUES));
 					if (!varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
-						structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+						structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
 					if (!varTypeArray->pointedType->hasFlag(TYPEINFO_STRUCT_EMPTY))
-						structFlags &= ~TYPEINFO_STRUCT_EMPTY;
+						structFlags.remove(TYPEINFO_STRUCT_EMPTY);
 				}
 			}
 
@@ -1006,7 +1007,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
 				if (typeInfoAssignment->isString())
 				{
-					structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+					structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
 					if (typeParam)
 					{
 						typeParam->allocateComputedValue();
@@ -1015,7 +1016,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 				}
 				else if (!typeInfoAssignment->isNative() || varDecl->assignment->computedValue->reg.u64)
 				{
-					structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+					structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
 					if (typeParam)
 					{
 						typeParam->allocateComputedValue();
@@ -1023,7 +1024,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 					}
 				}
 
-				structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+				structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
 			}
 
 			// If the struct is not generic, be sure that a field is not generic either
@@ -1200,15 +1201,15 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	// Need to recompute it if it's from generic
 	if (node->hasAstFlag(AST_FROM_GENERIC))
 	{
-		typeInfo->flags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-		typeInfo->flags &= ~TYPEINFO_STRUCT_HAS_INIT_VALUES;
-		typeInfo->flags &= ~TYPEINFO_STRUCT_EMPTY;
+		typeInfo->removeFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
+		typeInfo->removeFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES);
+		typeInfo->removeFlag(TYPEINFO_STRUCT_EMPTY);
 	}
 
-	typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
-	typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_EMPTY);
-	typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
-	typeInfo->addFlag(structFlags & TYPEINFO_STRUCT_NO_COPY);
+	typeInfo->addFlag(structFlags.mask(TYPEINFO_STRUCT_ALL_UNINITIALIZED));
+	typeInfo->addFlag(structFlags.mask(TYPEINFO_STRUCT_EMPTY));
+	typeInfo->addFlag(structFlags.mask(TYPEINFO_STRUCT_HAS_INIT_VALUES));
+	typeInfo->addFlag(structFlags.mask(TYPEINFO_STRUCT_NO_COPY));
 
 	// Register symbol with its type
 	node->typeInfo = typeInfo;

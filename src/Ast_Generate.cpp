@@ -31,7 +31,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 			return true;
 		}
 
-		typeLeft->flags |= TYPEINFO_GENERATED_OP_EQUALS;
+		typeLeft->addFlag(TYPEINFO_GENERATED_OP_EQUALS);
 	}
 
 	Utf8 content;

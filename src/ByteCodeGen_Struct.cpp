@@ -303,21 +303,21 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 		case EmitOpUserKind::Drop:
 			if (!needDrop)
 			{
-				typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
+				typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
 				continue;
 			}
 			break;
 		case EmitOpUserKind::PostCopy:
 			if (!needPostCopy)
 			{
-				typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
+				typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
 				continue;
 			}
 			break;
 		case EmitOpUserKind::PostMove:
 			if (!needPostMove)
 			{
-				typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
+				typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_MOVE);
 				continue;
 			}
 			break;
@@ -410,7 +410,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 		}
 	}
 
-	typeInfoStruct->flags |= TYPEINFO_SPEC_OP_GENERATED;
+	typeInfoStruct->addFlag(TYPEINFO_SPEC_OP_GENERATED);
 
 	ScopedLock lk1(structNode->mutex);
 	structNode->addSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED);
@@ -588,7 +588,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 	auto sourceFile = context->sourceFile;
 	auto opInit     = typeInfoStruct->opInit;
 
-	typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_INIT;
+	typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_INIT);
 	SWAG_ASSERT(typeInfoStruct->opInit);
 	sourceFile->module->addByteCodeFunc(opInit);
 
@@ -869,7 +869,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop") }));
 	}
 
-	typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
+	typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
 	if (!needDrop)
 		return true;
 
@@ -981,7 +981,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy") }));
 	}
 
-	typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
+	typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
 	if (!needPostCopy)
 		return true;
 
@@ -1092,7 +1092,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
 		            context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove") }));
 	}
 
-	typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
+	typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_MOVE);
 	if (!needPostMove)
 		return true;
 

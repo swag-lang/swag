@@ -198,8 +198,8 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 	node->inheritComputedValue(child);
 
 	// A new pointer
-	bool     forceConst = false;
-	uint64_t ptrFlags   = 0;
+	bool          forceConst = false;
+	TypeInfoFlags ptrFlags   = 0;
 
 	// Transform a reference pointer to a pointer to the pointed value
 	if (typeInfo->isPointerRef())
@@ -221,7 +221,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 			typeInfo             = typeArray->pointedType;
 		}
 
-		ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
+		ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
 	}
 
 	// :PointerArithmetic
@@ -230,13 +230,13 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 	{
 		const auto last = child->children.back();
 		if (last->kind == AstNodeKind::ArrayPointerIndex)
-			ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
+			ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
 	}
 
 	// Taking the address of a const is const
 	if (child->hasAstFlag(AST_IS_CONST) || forceConst)
 	{
-		ptrFlags |= TYPEINFO_CONST;
+		ptrFlags.add(TYPEINFO_CONST);
 	}
 
 	// Type is constant if we take address of a readonly variable
@@ -249,22 +249,22 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 			!typeResolved->isArray() &&
 			!typeResolved->isSlice())
 		{
-			ptrFlags |= TYPEINFO_CONST;
+			ptrFlags.add(TYPEINFO_CONST);
 		}
 		else if (typeResolved->isConst() && typeResolved->isSlice())
 		{
-			ptrFlags |= TYPEINFO_CONST;
+			ptrFlags.add(TYPEINFO_CONST);
 		}
 		else if (node->hasAstFlag(AST_IS_CONST))
 		{
-			ptrFlags |= TYPEINFO_CONST;
+			ptrFlags.add(TYPEINFO_CONST);
 		}
 	}
 
 	// Transform pointer to a reference
 	if (node->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
 	{
-		ptrFlags |= TYPEINFO_POINTER_REF;
+		ptrFlags.add(TYPEINFO_POINTER_REF);
 	}
 
 	const auto ptrType = g_TypeMgr->makePointerTo(typeInfo, ptrFlags);
@@ -347,7 +347,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 		const auto ptrSlice   = makeType<TypeInfoSlice>();
 		ptrSlice->pointedType = typeInfoArray->finalType;
 		if (typeInfoArray->isConst())
-			ptrSlice->flags |= TYPEINFO_CONST;
+			ptrSlice->addFlag(TYPEINFO_CONST);
 		ptrSlice->computeName();
 		node->typeInfo = ptrSlice;
 		maxBound       = typeInfoArray->count - 1;
@@ -376,7 +376,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 		const auto ptrSlice        = makeType<TypeInfoSlice>();
 		ptrSlice->pointedType      = typeInfoPointer->pointedType;
 		if (typeInfoPointer->isConst())
-			ptrSlice->flags |= TYPEINFO_CONST;
+			ptrSlice->addFlag(TYPEINFO_CONST);
 		ptrSlice->computeName();
 		node->typeInfo = ptrSlice;
 	}

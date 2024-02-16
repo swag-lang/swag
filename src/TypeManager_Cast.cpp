@@ -3056,7 +3056,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 		{
 			if (castFlags.has(CAST_FLAG_PARAMS))
 			{
-				if (toType->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC))
+				if (toType->hasFlag(TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC))
 					return castError(context, toType, fromType, fromNode, castFlags);
 			}
 
@@ -3222,7 +3222,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 
 		if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
 		{
-			fromType->flags |= TYPEINFO_LIST_ARRAY_ARRAY;
+			fromType->addFlag(TYPEINFO_LIST_ARRAY_ARRAY);
 		}
 
 		return true;
