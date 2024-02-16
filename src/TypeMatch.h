@@ -53,7 +53,7 @@ struct BadSignatureInfos
 	ComputedValue* badGenValue2              = nullptr;
 	MatchResult    matchResult               = MatchResult::Ok;
 
-	uint64_t      castErrorFlags           = 0;
+	CastFlags     castErrorFlags           = 0;
 	CastErrorType castErrorType            = CastErrorType::Zero;
 	int           badSignatureParameterIdx = 0;
 	int           badSignatureNum1         = 0;

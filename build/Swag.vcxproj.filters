@@ -1052,6 +1052,9 @@
     <ClInclude Include="..\src\LLVMDebug.h">
       <Filter>Backend\LLVM\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Flags.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

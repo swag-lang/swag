@@ -11,12 +11,12 @@ TypeInfo* TypeInfoNative::clone()
 	return newType;
 }
 
-bool TypeInfoNative::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoNative::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
 
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (to->isKindGeneric())
 			return true;
@@ -52,13 +52,13 @@ TypeInfo* TypeInfoCode::clone()
 	return newType;
 }
 
-bool TypeInfoCode::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoCode::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
 	if (!TypeInfo::isSame(to, castFlags))
 		return false;
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 		return true;
 	return false;
 }
@@ -85,7 +85,7 @@ void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
 	}
 }
 
-bool TypeInfoAlias::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoAlias::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
@@ -159,13 +159,13 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 	resName += pointedType->computeWhateverName(nameType);
 }
 
-bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoPointer::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
 
 	to = TypeManager::concreteType(to);
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (to->isKindGeneric() && !hasFlag(TYPEINFO_POINTER_MOVE_REF))
 			return true;
@@ -176,7 +176,7 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
 	if (!TypeInfo::isSame(to, castFlags))
 		return false;
 
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (this->isPointerNull())
 			return true;
@@ -187,9 +187,9 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, uint64_t castFlags) const
 	const auto other = castTypeInfo<TypeInfoPointer>(to, to->kind);
 
 	// Anonymous pointers
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
-		if (other->pointedType->isVoid() && !(castFlags & CASTFLAG_FOR_GENERIC))
+		if (other->pointedType->isVoid() && !(castFlags.has(CASTFLAG_FOR_GENERIC)))
 			return true;
 		if (to->hasFlag(TYPEINFO_POINTER_ARITHMETIC) && !hasFlag(TYPEINFO_POINTER_ARITHMETIC))
 			return false;
@@ -212,7 +212,7 @@ TypeInfo* TypeInfoArray::clone()
 	return newType;
 }
 
-bool TypeInfoArray::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoArray::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
@@ -285,7 +285,7 @@ TypeInfo* TypeInfoSlice::clone()
 	return newType;
 }
 
-bool TypeInfoSlice::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoSlice::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
@@ -332,14 +332,14 @@ TypeInfo* TypeInfoList::clone()
 	return newType;
 }
 
-bool TypeInfoList::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoList::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
 
 	// Can cast from type list tuple to struct
 	// The real check will be done later
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (to->isStruct() && kind == TypeInfoKind::TypeListTuple)
 			return true;
@@ -357,7 +357,7 @@ bool TypeInfoList::isSame(const TypeInfo* to, uint64_t castFlags) const
 			return false;
 	}
 
-	if (castFlags & CASTFLAG_EXACT)
+	if (castFlags.has(CASTFLAG_EXACT))
 	{
 		if (scope != other->scope)
 			return false;
@@ -387,7 +387,7 @@ void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
 	resName += "...";
 }
 
-bool TypeInfoVariadic::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoVariadic::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (!TypeInfo::isSame(to, castFlags))
 		return false;
@@ -409,15 +409,15 @@ TypeInfo* TypeInfoGeneric::clone()
 	return newType;
 }
 
-bool TypeInfoGeneric::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoGeneric::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
-	if (!(castFlags & CASTFLAG_EXACT) && !to->isKindGeneric())
+	if (!(castFlags.has(CASTFLAG_EXACT)) && !to->isKindGeneric())
 		return true;
 	if (to->kind == kind)
 		return name == to->name;
-	if (castFlags & CASTFLAG_EXACT)
+	if (castFlags.has(CASTFLAG_EXACT))
 		return name == to->name;
 	return true;
 }
@@ -474,12 +474,12 @@ TypeInfo* TypeInfoEnum::clone()
 	return newType;
 }
 
-bool TypeInfoEnum::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoEnum::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
 
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (to->isKindGeneric())
 			return true;
@@ -497,7 +497,7 @@ bool TypeInfoEnum::isSame(const TypeInfo* to, uint64_t castFlags) const
 	if (values.size() != other->values.size())
 		return false;
 
-	if (!(castFlags & CASTFLAG_CAST))
+	if (!(castFlags.has(CASTFLAG_CAST)))
 	{
 		const auto childSize = values.size();
 		if (childSize != other->values.size())
@@ -637,13 +637,13 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 		resName += " throw";
 }
 
-bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags) const
+bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags) const
 {
 	BadSignatureInfos bi;
 	return isSame(other, castFlags, bi);
 }
 
-bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi) const
+bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags, BadSignatureInfos& bi) const
 {
 	// Cannot convert a closure to a lambda
 	if (isClosure() && !other->isClosure())
@@ -691,7 +691,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
 	if (isLambdaClosure() && other->isLambdaClosure() && firstDefaultValueIdx != UINT32_MAX)
 		return false;
 
-	if (castFlags & CASTFLAG_EXACT)
+	if (castFlags.has(CASTFLAG_EXACT))
 	{
 		if ((!returnType || returnType->isVoid()) && other->returnType && !other->returnType->isVoid())
 		{
@@ -807,12 +807,12 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
 	return true;
 }
 
-bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoFuncAttr::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
 
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (kind == TypeInfoKind::LambdaClosure && to->isPointerNull())
 			return true;
@@ -826,7 +826,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfo* to, uint64_t castFlags) const
 	if (!isSame(other, castFlags))
 		return false;
 
-	if ((castFlags & CASTFLAG_EXACT) || to->isLambdaClosure())
+	if ((castFlags.has(CASTFLAG_EXACT)) || to->isLambdaClosure())
 	{
 		if (returnType && !returnType->isVoid() && !other->returnType)
 			return false;
@@ -1043,7 +1043,7 @@ TypeInfo* TypeInfoStruct::clone()
 	return newType;
 }
 
-bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
+bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
@@ -1051,13 +1051,13 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 	if (to->hasFlag(TYPEINFO_CONST_ALIAS))
 		to = castTypeInfo<TypeInfoAlias>(to, to->kind);
 
-	if (castFlags & CASTFLAG_CAST)
+	if (castFlags.has(CASTFLAG_CAST))
 	{
 		if (to->isKindGeneric())
 			return true;
 	}
 
-	if (castFlags & CASTFLAG_INTERFACE)
+	if (castFlags.has(CASTFLAG_INTERFACE))
 	{
 		if (kind == TypeInfoKind::Interface && to->isStruct())
 		{
@@ -1071,9 +1071,9 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 		return false;
 
 	// A tuple can only match a tuple, and a struct another struct
-	if (!(castFlags & CASTFLAG_CAST) ||
-		(castFlags & CASTFLAG_FOR_GENERIC) ||
-		(castFlags & CASTFLAG_EXACT_TUPLE_STRUCT))
+	if (!(castFlags.has(CASTFLAG_CAST)) ||
+		(castFlags.has(CASTFLAG_FOR_GENERIC)) ||
+		(castFlags.has(CASTFLAG_EXACT_TUPLE_STRUCT)))
 	{
 		if (isTuple() != to->isTuple())
 			return false;
@@ -1099,7 +1099,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 			{
 				const auto myGenParam    = genericParameters[i];
 				const auto otherGenParam = other->genericParameters[i];
-				if (castFlags & CASTFLAG_CAST)
+				if (castFlags.has(CASTFLAG_CAST))
 				{
 					if (otherGenParam->typeInfo->isKindGeneric())
 						continue;
@@ -1108,7 +1108,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 				if (myGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE || otherGenParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
 				{
 					SemanticContext cxt;
-					const auto      castCom = castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE;
+					const auto      castCom = castFlags.with(CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE);
 					if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, castCom) &&
 						!TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, castCom))
 						return false;
@@ -1126,7 +1126,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 
 	// Compare field by field
 	bool compareFields = false;
-	if (!hasTuple && !(castFlags & CASTFLAG_CAST))
+	if (!hasTuple && !(castFlags.has(CASTFLAG_CAST)))
 	{
 		if (isGeneric() != other->isGeneric())
 			return false;
@@ -1160,11 +1160,11 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, uint64_t castFlags) const
 
 			// But this is ok to affect between tuple and struct even if they do not have the same fields names
 			bool compareNames = false;
-			if (castFlags & CASTFLAG_EXACT)
+			if (castFlags.has(CASTFLAG_EXACT))
 				compareNames = true;
-			else if (!(castFlags & CASTFLAG_FOR_AFFECT) && !(castFlags & CASTFLAG_FOR_COMPARE))
+			else if (!(castFlags.has(CASTFLAG_FOR_AFFECT)) && !(castFlags.has(CASTFLAG_FOR_COMPARE)))
 				compareNames = true;
-			else if (castFlags & CASTFLAG_EXACT_TUPLE_STRUCT)
+			else if (castFlags.has(CASTFLAG_EXACT_TUPLE_STRUCT))
 				compareNames = true;
 			if (compareNames)
 			{

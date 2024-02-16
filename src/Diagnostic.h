@@ -125,14 +125,14 @@ struct Diagnostic
 	static constexpr uint32_t    MAX_INDENT_BLANKS       = 10;
 	static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
 
-	// clang-format off
+	
 	static Diagnostic* note(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Note}; }
 	static Diagnostic* note(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Note}; }
 	static Diagnostic* note(AstNode* node, const Utf8& msg, const Utf8& hint) { return new Diagnostic{node, msg, hint, DiagnosticLevel::Note}; }
 	static Diagnostic* note(SourceFile* file, const Token& token, const Utf8& msg) { return new Diagnostic{file, token, msg, DiagnosticLevel::Note}; }
 	static Diagnostic* note(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg) { return new Diagnostic{file, start, end, msg, DiagnosticLevel::Note}; }
 	static Diagnostic* note(AstNode* node, const Utf8& msg) { return node ? new Diagnostic{node, msg, DiagnosticLevel::Note} : nullptr; }
-	// clang-format on
+	
 
 	void setup();
 	void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);

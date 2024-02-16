@@ -91,7 +91,7 @@ constexpr uint8_t TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
 
 struct TypeInfo
 {
-	// clang-format off
+	
 	TypeInfo()          = default;
 	virtual ~TypeInfo() = default;
 
@@ -105,7 +105,7 @@ struct TypeInfo
 	{
 	}
 
-	// clang-format on
+	
 
 	bool isPointerTo(NativeTypeKind pointerKind);
 	bool isPointerTo(TypeInfoKind pointerKind);
@@ -125,13 +125,13 @@ struct TypeInfo
 	const TypeInfo* getConstAlias() const;
 	TypeInfo*       getConcreteAlias() const;
 
-	// clang-format off
+	
 	bool hasFlag(uint64_t fl) const { return flags & fl; }
 	void addFlag(uint64_t fl) { flags |= fl; }
 	void removeFlag(uint64_t fl) { flags &= ~fl; }
-	// clang-format on
+	
 
-	// clang-format off
+	
 	bool isSlice() const { return kind == TypeInfoKind::Slice; }
 	bool isInterface() const { return kind == TypeInfoKind::Interface; }
 	bool isStruct() const { return kind == TypeInfoKind::Struct; }
@@ -181,9 +181,9 @@ struct TypeInfo
 	bool isUntypedBinHex() const { return (flags & TYPEINFO_UNTYPED_BIN_HEX); }
 	bool isConstAlias() const { return (flags & TYPEINFO_CONST_ALIAS); }
 	bool isCharacter() const { return (flags & TYPEINFO_CHARACTER); }
-	// clang-format on
+	
 
-	virtual bool      isSame(const TypeInfo* from, uint64_t castFlags) const;
+	virtual bool      isSame(const TypeInfo* from, CastFlags castFlags) const;
 	virtual TypeInfo* clone() = 0;
 	virtual uint32_t  numRegisters() const;
 	virtual Utf8      getDisplayName();
@@ -193,11 +193,11 @@ struct TypeInfo
 	void        copyFrom(const TypeInfo* from);
 	void        setConst();
 
-	// clang-format off
+	
 	void computeName() { computeWhateverName(COMPUTE_NAME); }
 	void computeScopedName() { computeWhateverName(COMPUTE_SCOPED_NAME); }
 	void computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
-	// clang-format on
+	
 
 	void        removeGenericFlag();
 	void        clearName();
@@ -229,7 +229,7 @@ struct TypeInfo
 struct TypeInfoParam
 {
 	uint32_t       numRegisters() const;
-	bool           isSame(const TypeInfoParam* to, uint64_t castFlags) const;
+	bool           isSame(const TypeInfoParam* to, CastFlags castFlags) const;
 	TypeInfoParam* clone() const;
 	void           allocateComputedValue();
 
@@ -263,7 +263,7 @@ struct TypeInfoNative final : TypeInfo
 		valueInteger = 0;
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	union
@@ -292,7 +292,7 @@ struct TypeInfoEnum final : TypeInfo
 	{
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	Utf8      getDisplayName() override;
 	TypeInfo* clone() override;
 
@@ -320,10 +320,10 @@ struct TypeInfoFuncAttr final : TypeInfo
 
 	TypeInfo* clone() override;
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 
-	bool            isSame(const TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi) const;
-	bool            isSame(const TypeInfoFuncAttr* other, uint64_t castFlags) const;
+	bool            isSame(const TypeInfoFuncAttr* other, CastFlags castFlags, BadSignatureInfos& bi) const;
+	bool            isSame(const TypeInfoFuncAttr* other, CastFlags castFlags) const;
 	TypeInfo*       concreteReturnType() const;
 	bool            isFctVariadic() const;
 	bool            isFctCVariadic() const;
@@ -358,7 +358,7 @@ struct TypeInfoPointer final : TypeInfo
 
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
 	Utf8      getDisplayName() override;
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	TypeInfo* pointedType = nullptr;
@@ -377,7 +377,7 @@ struct TypeInfoArray final : TypeInfo
 	}
 
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	TypeInfo* pointedType = nullptr;
@@ -397,7 +397,7 @@ struct TypeInfoSlice final : TypeInfo
 	}
 
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	TypeInfo* pointedType = nullptr;
@@ -412,7 +412,7 @@ struct TypeInfoList final : TypeInfo
 		return 1;
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
 
@@ -428,7 +428,7 @@ struct TypeInfoVariadic final : TypeInfo
 	{
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
 
@@ -443,7 +443,7 @@ struct TypeInfoGeneric final : TypeInfo
 		flags |= TYPEINFO_GENERIC;
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	TypeInfo* rawType = nullptr;
@@ -463,7 +463,7 @@ struct TypeInfoStruct final : TypeInfo
 		return 1;
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 	Utf8      getDisplayName() override;
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
@@ -521,7 +521,7 @@ struct TypeInfoAlias final : TypeInfo
 	}
 
 	void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	uint32_t numRegisters() const override
@@ -539,7 +539,7 @@ struct TypeInfoCode final : TypeInfo
 	{
 	}
 
-	bool      isSame(const TypeInfo* to, uint64_t castFlags) const override;
+	bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
 	TypeInfo* clone() override;
 
 	AstNode* content = nullptr;

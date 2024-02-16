@@ -330,7 +330,6 @@ struct AstNode
 	uint32_t     childParentIdx() const;
 	void         printLoc() const;
 
-	// clang-format off
 	bool hasAstFlag(uint64_t fl) const { return flags & fl; }
 	void addAstFlag(uint64_t fl) { flags |= fl; }
 	void removeAstFlag(uint64_t fl) { flags &= ~fl; }
@@ -348,7 +347,6 @@ struct AstNode
 	void addSpecFlag(uint16_t fl) { specFlags |= fl; }
 	void setSpecFlags(uint16_t fl) { specFlags = fl; }
 	void removeSpecFlag(uint16_t fl) { specFlags &= ~fl; }
-	// clang-format on
 
 	struct NodeExtensionByteCode
 	{
@@ -410,7 +408,6 @@ struct AstNode
 	void setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
 	void addAlternativeScopes(NodeExtensionMisc* ext);
 
-	// clang-format off
 	bool                   hasExtByteCode() const { return extension && extension->bytecode; }
 	bool                   hasExtSemantic() const { return extension && extension->semantic; }
 	bool                   hasExtOwner() const { return extension && extension->owner; }
@@ -419,7 +416,6 @@ struct AstNode
 	NodeExtensionSemantic* extSemantic() const { return extension->semantic; }
 	NodeExtensionOwner*    extOwner() const { return extension->owner; }
 	NodeExtensionMisc*     extMisc() const { return extension->misc; }
-	// clang-format on
 
 	AstNodeKind         kind;
 	AstNodeResolveState semanticState;
@@ -686,9 +682,7 @@ struct AstBreakable : AstNode
 {
 	void copyFrom(CloneContext& context, AstBreakable* from);
 
-	// clang-format off
 	bool needIndex() const { return breakableFlags & BREAKABLE_NEED_INDEX; }
-	// clang-format on
 
 	VectorNative<AstBreakContinue*> breakList;
 	VectorNative<AstBreakContinue*> continueList;

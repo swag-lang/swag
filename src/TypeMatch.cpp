@@ -9,7 +9,7 @@
 
 namespace
 {
-	void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
+	void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, CastFlags forceCastFlags = 0)
 	{
 		// One boolean per used parameter
 		const auto maxParams = max(parameters.size(), context.parameters.size());
@@ -115,18 +115,19 @@ namespace
 				context.result = MatchResult::BadSignature;
 			}
 
-			uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
+			CastFlags castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
 			if (context.matchFlags & SymbolMatchContext::MATCH_UN_CONST)
-				castFlags |= CASTFLAG_UN_CONST;
+				castFlags.add(CASTFLAG_UN_CONST);
 			if (context.matchFlags & SymbolMatchContext::MATCH_UFCS && i == 0)
-				castFlags |= CASTFLAG_UFCS;
+				castFlags.add(CASTFLAG_UFCS);
 			if (callParameter->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-				castFlags |= CASTFLAG_LITERAL_SUFFIX;
+				castFlags.add(CASTFLAG_LITERAL_SUFFIX);
 			if (callParameter->hasAstFlag(AST_TRANSIENT) && wantedTypeInfo->isPointerMoveRef())
-				castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
+				castFlags.add(CASTFLAG_ACCEPT_MOVE_REF);
 			if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
-				castFlags |= CASTFLAG_TRY_COERCE;
-			castFlags |= forceCastFlags | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
+				castFlags.add(CASTFLAG_TRY_COERCE);
+			castFlags.add(forceCastFlags);
+			castFlags.add(CASTFLAG_PARAMS | CASTFLAG_PTR_REF);
 
 			context.semContext->castFlagsResult   = 0;
 			context.semContext->castErrorToType   = nullptr;
@@ -161,7 +162,7 @@ namespace
 			}
 			else if (wantedTypeInfo->isGeneric())
 			{
-				Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(i), castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
+				Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(i), castFlags.mask(CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
 				if (context.semContext->result != ContextResult::Done)
 					return;
 			}
@@ -184,7 +185,7 @@ namespace
 		}
 	}
 
-	void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
+	void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, CastFlags forceCastFlags = 0)
 	{
 		for (size_t j = 0; j < parameters.size(); j++)
 		{
@@ -233,8 +234,8 @@ namespace
 					context.result = MatchResult::BadSignature;
 				}
 
-				uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
-				castFlags |= forceCastFlags;
+				CastFlags castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
+				castFlags.add(forceCastFlags);
 				const bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
 				if (context.semContext->result != ContextResult::Done)
 					return;
@@ -249,7 +250,7 @@ namespace
 				}
 				else if (wantedTypeInfo->isGeneric())
 				{
-					Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(j), castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
+					Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(j), castFlags.mask(CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
 				}
 
 				context.solvedParameters[j]                  = wantedParameter;
@@ -274,7 +275,7 @@ namespace
 		}
 	}
 
-	void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
+	void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, CastFlags forceCastFlags = 0)
 	{
 		if (!context.hasNamedParameters)
 			return;
@@ -601,7 +602,7 @@ namespace
 		}
 	}
 
-	void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t castFlags)
+	void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, CastFlags castFlags)
 	{
 		matchParameters(context, parameters, castFlags);
 		if (context.semContext->result != ContextResult::Done)

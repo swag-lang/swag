@@ -5,11 +5,11 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
+bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
 	auto structType = toType;
 
-	if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
+	if (castFlags.has(CASTFLAG_UFCS) && structType->isPointerTo(TypeInfoKind::Struct))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
@@ -18,7 +18,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	bool isMoveRef = false;
 
 	// Cast to a const reference, must take the pointed struct
-	if (structType->isConstPointerRef() && castFlags & CASTFLAG_PARAMS)
+	if (structType->isConstPointerRef() && castFlags.has(CASTFLAG_PARAMS))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
@@ -26,7 +26,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	}
 
 	// We can also match a moveref with an opAffect
-	else if (structType->isPointerMoveRef() && castFlags & CASTFLAG_PARAMS)
+	else if (structType->isPointerMoveRef() && castFlags.has(CASTFLAG_PARAMS))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
@@ -34,7 +34,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		isMoveRef          = true;
 	}
 
-	if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST)))
+	if (!structType->isStruct() || !castFlags.has(CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST))
 		return false;
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
 	if (!typeStruct->declNode)
@@ -44,7 +44,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	SymbolName* symbol;
 
 	bool isSuffix = false;
-	if ((fromNode && fromNode->hasSemFlag(SEMFLAG_LITERAL_SUFFIX)) || castFlags & CASTFLAG_LITERAL_SUFFIX)
+	if ((fromNode && fromNode->hasSemFlag(SEMFLAG_LITERAL_SUFFIX)) || castFlags.has(CASTFLAG_LITERAL_SUFFIX))
 		isSuffix = true;
 
 	if (isSuffix)
@@ -79,7 +79,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 			if (!it->second)
 				return false;
 
-			if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
 			{
 				fromNode->addAstFlag(AST_OP_AFFECT_CAST);
 				fromNode->castedTypeInfo = fromType;
@@ -115,7 +115,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		for (auto over : symbol->overloads)
 		{
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags.has(CASTFLAG_EXPLICIT)))
 				continue;
 			if (typeFunc->parameters.size() <= 1)
 				continue;
@@ -137,7 +137,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		return false;
 
 	// :opAffectParam
-	if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+	if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
 	{
 		fromNode->addAstFlag(AST_OP_AFFECT_CAST);
 		fromNode->castedTypeInfo = fromType;
@@ -152,19 +152,19 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	return true;
 }
 
-bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
+bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
 	toType   = concretePtrRef(toType);
 	fromType = concretePtrRef(fromType);
 
 	auto structType = fromType;
-	if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
+	if (castFlags.has(CASTFLAG_UFCS) && structType->isPointerTo(TypeInfoKind::Struct))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
 	}
 
-	if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST)))
+	if (!structType->isStruct() || !castFlags.has(CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST))
 		return false;
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
 	if (!typeStruct->declNode)
@@ -179,7 +179,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 			if (!it->second)
 				return false;
 
-			if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
 			{
 				fromNode->castedTypeInfo = fromType;
 				fromNode->typeInfo       = toType;
@@ -228,7 +228,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
 			if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
 				continue;
-			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags.has(CASTFLAG_EXPLICIT)))
 				continue;
 			if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
 				toCast.push_back(over);
@@ -244,7 +244,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 	if (toCast.empty())
 		return false;
 
-	if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+	if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
 	{
 		fromNode->castedTypeInfo = fromType;
 		fromNode->typeInfo       = toType;

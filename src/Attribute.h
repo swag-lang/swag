@@ -97,11 +97,11 @@ struct AttributeList
 	void                      emplace(OneAttribute& other);
 	void                      add(AttributeList& other);
 
-	// clang-format off
+	
 	void     reset() { allAttributes.clear(); }
 	bool     empty() const { return allAttributes.empty(); }
 	uint32_t size() const { return static_cast<uint32_t>(allAttributes.size()); }
-	// clang-format on
+	
 
 	AttributeList& operator=(const AttributeList& other)
 	{

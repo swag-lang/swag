@@ -6,11 +6,11 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, uint64_t castFlags)
+bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, CastFlags castFlags)
 {
-	if ((castFlags & CASTFLAG_EXPLICIT) && (castFlags & CASTFLAG_CAN_OVERFLOW))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_CAN_OVERFLOW)))
 		return true;
-	if (castFlags & CASTFLAG_COERCE)
+	if (castFlags.has(CASTFLAG_COERCE))
 		return false;
 	if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode, true))
 		return true;
@@ -53,13 +53,13 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
 	}
 }
 
-bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
+bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
 	if (!fromNode || !fromNode->hasComputedValue())
 		return true;
-	if (castFlags & CASTFLAG_JUST_CHECK)
+	if (castFlags.has(CASTFLAG_JUST_CHECK))
 		return true;
-	if (!(castFlags & CASTFLAG_EXPLICIT))
+	if (!(castFlags.has(CASTFLAG_EXPLICIT)))
 		return true;
 	if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
 		return true;
@@ -126,7 +126,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
                                   TypeInfo*     toType,
                                   TypeInfo*     fromType,
                                   AstNode*      fromNode,
-                                  uint64_t      castFlags,
+                                  CastFlags     castFlags,
                                   CastErrorType castError,
                                   bool          forNote)
 {
@@ -200,10 +200,10 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
 	}
 }
 
-bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType)
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, CastErrorType castErrorType)
 {
 	// Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
-	if (!(castFlags & CASTFLAG_NO_LAST_MINUTE))
+	if (!(castFlags.has(CASTFLAG_NO_LAST_MINUTE)))
 	{
 		if (tryOpCast(context, toType, fromType, fromNode, castFlags))
 			return true;
@@ -217,7 +217,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 	context->castErrorFlags    = castFlags;
 	context->castErrorType     = castErrorType;
 
-	if (!(castFlags & CASTFLAG_JUST_CHECK))
+	if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
 	{
 		// More specific message
 		Utf8                      hint, msg;
@@ -232,7 +232,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 			notes.push_back(Diagnostic::note(fromNode, hint));
 
 		// Is there an explicit cast possible ?
-		if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
+		if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 		{
 			if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
 				notes.push_back(Diagnostic::note(fromNode, FMT(Nte(Nte0030), toType->getDisplayNameC())));

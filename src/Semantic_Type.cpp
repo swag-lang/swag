@@ -720,7 +720,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
 	SWAG_CHECK(checkIsConcrete(context, exprNode));
 
-	// When we cast from a structure to an interface, we need to be sure that every interfaces are
+	// When we cast from a structure to an interface, we need to be sure that every interface are
 	// registered in the structure type, otherwise the cast can fail depending on the compile order
 	exprNode->typeInfo      = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
 	const auto exprTypeInfo = exprNode->typeInfo;
@@ -730,11 +730,11 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 		YIELD();
 	}
 
-	uint32_t castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
+	CastFlags castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
 	if (node->hasSpecFlag(AstCast::SPECFLAG_UN_CONST))
-		castFlags |= CASTFLAG_FORCE_UN_CONST;
+		castFlags.add(CASTFLAG_FORCE_UN_CONST);
 	if (node->hasSpecFlag(AstCast::SPECFLAG_OVERFLOW))
-		castFlags |= CASTFLAG_CAN_OVERFLOW;
+		castFlags.add(CASTFLAG_CAN_OVERFLOW);
 	SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
 	YIELD();
 

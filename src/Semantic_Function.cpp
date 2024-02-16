@@ -1407,7 +1407,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 			return context->report(diag, note);
 		}
 
-		constexpr uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT;
+		const CastFlags castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT;
 		if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
 		{
 			const Diagnostic diag{child, FMT(Err(Err0621), funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
@@ -1531,7 +1531,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 			YIELD();
 		}
 
-		constexpr uint64_t castFlags = CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF | CASTFLAG_ACCEPT_PENDING;
+		const CastFlags castFlags = CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF | CASTFLAG_ACCEPT_PENDING;
 
 		if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
 		{

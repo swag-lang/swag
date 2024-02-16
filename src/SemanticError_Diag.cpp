@@ -399,7 +399,7 @@ namespace
 			}
 
 			// Is there an explicit cast possible ?
-			if (!(bi.castErrorFlags & CASTFLAG_EXPLICIT) || (bi.castErrorFlags & CASTFLAG_COERCE))
+			if (!bi.castErrorFlags.has(CASTFLAG_EXPLICIT) || bi.castErrorFlags.has(CASTFLAG_COERCE))
 			{
 				if (bi.castErrorToType && bi.castErrorFromType)
 				{

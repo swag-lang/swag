@@ -2,7 +2,7 @@
 
 namespace Crc32
 {
-	// clang-format off
+	
 	static constexpr uint32_t TABLE[256] =
 	{
 		0x00000000U, 0x77073096U, 0xEE0E612CU, 0x990951BAU, 0x076DC419U,
@@ -58,7 +58,7 @@ namespace Crc32
 		0x5D681B02U, 0x2A6F2B94U, 0xB40BBE37U, 0xC30C8EA1U, 0x5A05DF1BU,
 		0x2D02EF8DU
 	};
-	// clang-format on
+	
 
 	constexpr uint32_t compute(const uint8_t* data, uint32_t len, uint32_t crc = 0)
 	{

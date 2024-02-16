@@ -19,7 +19,7 @@ void ByteCodeDebugger::setup()
 	if (!commands.empty())
 		return;
 
-	// clang-format off
+	
 	commands.push_back({"<RET>", "", "", "repeat the last command", nullptr});
 	commands.push_back({"<TAB>", "", "", "contextual completion of the current word", nullptr});
 	commands.push_back({});
@@ -94,7 +94,7 @@ void ByteCodeDebugger::setup()
 	commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
 	commands.push_back({"help", "?", "<command>", "print help about a specific command", cmdHelp});
 	commands.push_back({"quit", "q", "", "quit the compiler", cmdQuit});
-	// clang-format on
+	
 }
 
 ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)

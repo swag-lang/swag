@@ -1,6 +1,7 @@
 #pragma once
 #include "Statistics.h"
 #include "TypeInfo.h"
+#include "Flags.h"
 
 struct AstNode;
 struct SemanticContext;
@@ -11,6 +12,7 @@ struct TypeInfoNative;
 struct TypeInfoVariadic;
 enum class LiteralType : uint8_t;
 
+using CastFlags = Flags<uint64_t>;
 constexpr uint64_t CASTFLAG_DEFAULT            = 0x0000000000000000;
 constexpr uint64_t CASTFLAG_INTERFACE          = 0x0000000000000001;
 constexpr uint64_t CASTFLAG_EXPLICIT           = 0x0000000000000002;
@@ -44,7 +46,6 @@ constexpr uint64_t CASTFLAG_EXACT              = 0x0000000010000000;
 constexpr uint64_t CASTFLAG_CAN_OVERFLOW       = 0x0000000020000000;
 constexpr uint64_t CASTFLAG_EXACT_TUPLE_STRUCT = 0x0000000040000000;
 
-// Stored in SymbolMatchContext.flags
 constexpr uint32_t CASTFLAG_RESULT_STRUCT_CONVERT      = 0x00000001;
 constexpr uint32_t CASTFLAG_RESULT_AUTO_OP_CAST        = 0x00000002;
 constexpr uint32_t CASTFLAG_RESULT_AUTO_OP_AFFECT      = 0x00000004;
@@ -75,45 +76,45 @@ struct TypeManager
 {
 	void setup();
 
-	static bool isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, uint64_t castFlags);
+	static bool isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, CastFlags castFlags);
 	static bool errorOutOfRange(SemanticContext* context, AstNode* fromNode, const TypeInfo* fromType, TypeInfo* toType, bool isNeg = false);
-	static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static void getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
-	static bool castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType = CastErrorType::Zero);
+	static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static void getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
+	static bool castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, CastErrorType castErrorType = CastErrorType::Zero);
 
-	static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
+	static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
 
-	static bool castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeRune(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castSubExpressionList(SemanticContext* context, AstNode* child, TypeInfo* toType, uint64_t castFlags);
-	static bool castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToEnum(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags);
-	static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags);
-	static bool castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, bool& ok);
-	static bool castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-	static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint64_t castFlags = 0);
-	static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
-	static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
+	static bool castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeRune(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castSubExpressionList(SemanticContext* context, AstNode* child, TypeInfo* toType, CastFlags castFlags);
+	static bool castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToEnum(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags);
+	static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToString(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags);
+	static bool castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, bool& ok);
+	static bool castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+	static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, CastFlags castFlags = 0);
+	static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags = 0);
+	static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags = 0);
 
 	static void            convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
 	static TypeInfoArray*  convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant);

@@ -155,7 +155,7 @@ struct SemanticContext : JobContext
 	uint32_t                          castFlagsResult   = 0;
 	TypeInfo*                         castErrorToType   = nullptr;
 	TypeInfo*                         castErrorFromType = nullptr;
-	uint64_t                          castErrorFlags    = 0;
+	CastFlags                         castErrorFlags    = 0;
 	CastErrorType                     castErrorType     = CastErrorType::Zero;
 
 	VectorNative<OneSymbolMatch>      cacheDependentSymbols;

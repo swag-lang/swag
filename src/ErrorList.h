@@ -1,4 +1,4 @@
-// clang-format off
+
 SWAG_ERROR(Fat0001),
 SWAG_ERROR(Fat0002),
 SWAG_ERROR(Fat0003),

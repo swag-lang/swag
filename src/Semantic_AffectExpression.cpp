@@ -437,11 +437,11 @@ bool Semantic::resolveAffect(SemanticContext* context)
 				break;
 			}
 
-			uint32_t castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
+			CastFlags castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
 			if (leftTypeInfo->isStruct() ||
 				leftTypeInfo->isArray() ||
 				leftTypeInfo->isClosure())
-				castFlags |= CASTFLAG_UN_CONST;
+				castFlags.add(CASTFLAG_UN_CONST);
 
 			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
 			YIELD();

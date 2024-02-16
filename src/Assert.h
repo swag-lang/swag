@@ -1,5 +1,5 @@
 #pragma once
-// clang-format off
+
 
 void swagAssert(const char* expr, const char* file, int line);
 

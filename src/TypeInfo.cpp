@@ -300,7 +300,7 @@ bool TypeInfo::isMethod() const
 	return true;
 }
 
-bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
+bool TypeInfo::isSame(const TypeInfo* from, CastFlags castFlags) const
 {
 	if (this == from)
 		return true;
@@ -308,7 +308,7 @@ bool TypeInfo::isSame(const TypeInfo* from, uint64_t castFlags) const
 	if (kind != from->kind)
 		return false;
 
-	if (castFlags & CASTFLAG_EXACT)
+	if (castFlags.has(CASTFLAG_EXACT))
 	{
 		if (isConst() != from->isConst())
 			return false;
@@ -386,7 +386,7 @@ TypeInfoParam* TypeInfoParam::clone() const
 	return newType;
 }
 
-bool TypeInfoParam::isSame(const TypeInfoParam* to, uint64_t castFlags) const
+bool TypeInfoParam::isSame(const TypeInfoParam* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;

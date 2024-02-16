@@ -272,15 +272,19 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 	}
 }
 
-void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, uint64_t castFlags, int idxParam, AstNode* callParameter)
+void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, CastFlags castFlags, int idxParam, AstNode* callParameter)
 {
 	// Do we already have mapped the generic parameter to something ?
 	const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
 	if (it != context.genericReplaceTypes.end())
 	{
 		// We must be sure that the registered type is the same as the new one
-		const bool same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr,
-		                                               CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+		const bool same = TypeManager::makeCompatibles(context.semContext,
+		                                               it->second.typeInfoReplace,
+		                                               callTypeInfo,
+		                                               nullptr,
+		                                               nullptr,
+		                                               castFlags.with(CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS));
 		if (context.semContext->result != ContextResult::Done)
 			return;
 
@@ -353,7 +357,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
 	}
 }
 
-void Generic::deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags)
+void Generic::deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, CastFlags castFlags)
 {
 	SWAG_ASSERT(wantedTypeInfo->isGeneric());
 

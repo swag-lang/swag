@@ -7,7 +7,7 @@
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
-	// clang-format off
+	
 	addArg("all", "--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
 	addArg("all", "--log-colors", nullptr, CommandLineType::Bool, &cmdLine->logColors, nullptr, "output to console can be colored");
 	addArg("all", "--log-ascii", nullptr, CommandLineType::Bool, &cmdLine->logAscii, nullptr, "output to console only use ascii characters (no unicode)");
@@ -101,7 +101,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
 	addArg("doc", "--css", nullptr, CommandLineType::String, &cmdLine->docCss, nullptr, "set the css file path to include in documentations");
 	addArg("doc", "--ext", nullptr, CommandLineType::String, &cmdLine->docExtension, nullptr, "force the output extension of all documentations");
-	// clang-format on
+	
 }
 
 namespace
