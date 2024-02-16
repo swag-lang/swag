@@ -11,7 +11,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asFlags)
+void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, AltScopeFlags asFlags)
 {
 	for (const auto& ds : symbols)
 	{
@@ -394,7 +394,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
 	}
 }
 
-void Semantic::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
+void Semantic::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags)
 {
 	if (hasAlternativeScope(scopes, scope))
 		return;
@@ -412,7 +412,7 @@ bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const
 	return false;
 }
 
-void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
+void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags)
 {
 	if (!scope)
 		return;
@@ -421,11 +421,10 @@ void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope
 	as.scope = scope;
 	as.flags = flags;
 	if (scope->flags.has(SCOPE_FILE_PRIVATE))
-		as.flags |= ALTSCOPE_FILE_PRIVATE;
+		as.flags.add(ALTSCOPE_FILE_PRIVATE);
 	scopes.push_back(as);
 }
 
-#pragma optimize("", off)
 void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                   context,
                                                 VectorNative<AlternativeScope>&    scopes,
                                                 VectorNative<AlternativeScopeVar>& scopesVars,
@@ -444,7 +443,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 			auto&      toProcess = context->scopesToProcess;
 			for (const auto& as : owner->extMisc()->alternativeScopes)
 			{
-				if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
+				if (!hasAlternativeScope(scopes, as.scope) && as.flags.has(ALTSCOPE_USING))
 				{
 					addAlternativeScope(scopes, as.scope, as.flags);
 					addAlternativeScopeOnce(toProcess, as.scope, as.flags);
@@ -557,7 +556,6 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 		}
 	}
 }
-#pragma optimize("", on)
 
 bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
                                      VectorNative<AlternativeScope>&    scopes,

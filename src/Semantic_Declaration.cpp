@@ -18,7 +18,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
 	SWAG_ASSERT(regNode);
 	SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, FMT(Err(Err0477), Naming::kindName(node->ownerScope->kind).c_str())}));
 
-	const uint32_t altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALTSCOPE_STRUCT_USING : 0;
+	const AltScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALTSCOPE_STRUCT_USING : 0;
 
 	typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
 	if (typeInfoVar->isStruct())

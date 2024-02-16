@@ -1,6 +1,7 @@
 #pragma once
 #include "Attribute.h"
 #include "DependentJobs.h"
+#include "Flags.h"
 #include "Mutex.h"
 #include "Register.h"
 #include "Tokenizer.h"
@@ -42,11 +43,6 @@ using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
 
-constexpr uint32_t ALTSCOPE_STRUCT_USING = 0x00000001;
-constexpr uint32_t ALTSCOPE_FILE_PRIVATE = 0x00000002;
-constexpr uint32_t ALTSCOPE_UFCS         = 0x00000004;
-constexpr uint32_t ALTSCOPE_USING        = 0x00000008;
-
 struct CloneUpdateRef
 {
 	AstNode*  node;
@@ -85,18 +81,24 @@ struct CloneContext
 	}
 };
 
+using AltScopeFlags = Flags<uint32_t>;
+const AltScopeFlags ALTSCOPE_STRUCT_USING = 0x00000001;
+const AltScopeFlags ALTSCOPE_FILE_PRIVATE = 0x00000002;
+const AltScopeFlags ALTSCOPE_UFCS         = 0x00000004;
+const AltScopeFlags ALTSCOPE_USING        = 0x00000008;
+
 struct AlternativeScope
 {
-	Scope*   scope = nullptr;
-	uint32_t flags = 0;
+	Scope*        scope = nullptr;
+	AltScopeFlags flags = 0;
 };
 
 struct AlternativeScopeVar
 {
-	AstNode* node     = nullptr;
-	AstNode* leafNode = nullptr;
-	Scope*   scope    = nullptr;
-	uint32_t flags    = 0;
+	AstNode*      node     = nullptr;
+	AstNode*      leafNode = nullptr;
+	Scope*        scope    = nullptr;
+	AltScopeFlags flags    = 0;
 };
 
 enum class IdentifierScopeUpMode : uint8_t
@@ -325,8 +327,8 @@ struct AstNode
 	AstNode*     inSimpleReturn() const;
 	bool         isForceTakeAddress() const;
 	void         computeLocation(SourceLocation& start, SourceLocation& end);
-	void         addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
-	void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
+	void         addAlternativeScope(Scope* scope, AltScopeFlags altFlags = 0);
+	void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, AltScopeFlags altFlags = 0);
 	uint32_t     childParentIdx() const;
 	void         printLoc() const;
 

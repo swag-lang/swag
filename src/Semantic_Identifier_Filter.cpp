@@ -722,11 +722,11 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 			continue;
 
 		// A variable inside a scope file has priority
-		if (p.asFlags & ALTSCOPE_FILE_PRIVATE)
+		if (p.asFlags.has(ALTSCOPE_FILE_PRIVATE))
 		{
 			for (auto& p1 : dependentSymbols)
 			{
-				if (!(p1.asFlags & ALTSCOPE_FILE_PRIVATE))
+				if (!p1.asFlags.has(ALTSCOPE_FILE_PRIVATE))
 					p1.remove = true;
 			}
 		}
@@ -762,11 +762,11 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 		}
 
 		// If a generic type does not come from a 'using', it has priority
-		if (!(p.asFlags & ALTSCOPE_STRUCT_USING) && p.symbol->kind == SymbolKind::GenericType)
+		if (!p.asFlags.has(ALTSCOPE_STRUCT_USING) && p.symbol->kind == SymbolKind::GenericType)
 		{
 			for (auto& p1 : dependentSymbols)
 			{
-				if (p1.asFlags & ALTSCOPE_STRUCT_USING && p1.symbol->kind == SymbolKind::GenericType)
+				if (p1.asFlags.has(ALTSCOPE_STRUCT_USING) && p1.symbol->kind == SymbolKind::GenericType)
 					p1.remove = true;
 			}
 		}

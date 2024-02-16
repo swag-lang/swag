@@ -85,8 +85,8 @@ namespace Semantic
 	bool hasUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result);
 	bool waitUserOp(SemanticContext* context, const Utf8& name, const AstNode* left, SymbolName** result);
 
-	void addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
-	void addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
+	void addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags = 0);
+	void addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, AltScopeFlags flags = 0);
 	bool hasAlternativeScope(VectorNative<AlternativeScope>& scopes, const Scope* scope);
 	bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
 	bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
@@ -173,7 +173,7 @@ namespace Semantic
 	bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
 	TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
 	bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
-	void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asFlags);
+	void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, AltScopeFlags asFlags);
 	bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
 	bool           filterGenericMatches(const SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
 	bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);

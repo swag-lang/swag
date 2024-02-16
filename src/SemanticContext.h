@@ -128,10 +128,10 @@ struct OneOverload
 
 struct OneSymbolMatch
 {
-	SymbolName* symbol  = nullptr;
-	Scope*      scope   = nullptr;
-	uint32_t    asFlags = 0;
-	bool        remove  = false;
+	SymbolName*   symbol  = nullptr;
+	Scope*        scope   = nullptr;
+	AltScopeFlags asFlags = 0;
+	bool          remove  = false;
 
 	bool operator==(const OneSymbolMatch& other) const
 	{
