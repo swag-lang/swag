@@ -485,7 +485,7 @@ namespace
 
 	int scopeCost(const Scope* from, const Scope* to)
 	{
-		// Not sure this is really correct, because we do not take care of 'using'
+		// Not sure if this is really correct, because we do not take care of 'using'
 		int cost = 0;
 		while (from && from != to)
 		{
@@ -588,7 +588,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
 		}
 	}
 
-	// A match with a struct conversion is less prio
+	// A match with a struct conversion has less priority
 	for (size_t i = 0; i < genMatches.size(); i++)
 	{
 		if (genMatches[i]->castFlagsResult.has(CASTFLAG_RESULT_STRUCT_CONVERT))
@@ -624,13 +624,13 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
 	{
 		VectorNative<OneMatch*> newGenericMatches;
 		newGenericMatches.reserve(static_cast<int>(genMatches.size()));
-		for (const auto& matche : matches)
+		for (const auto& match : matches)
 		{
-			for (auto& genMatche : genMatches)
+			for (auto& genMatch : genMatches)
 			{
-				const auto same = areGenericReplaceTypesIdentical(matche->oneOverload->overload->typeInfo, *genMatche);
+				const auto same = areGenericReplaceTypesIdentical(match->oneOverload->overload->typeInfo, *genMatch);
 				if (!same)
-					newGenericMatches.push_back_once(genMatche);
+					newGenericMatches.push_back_once(genMatch);
 			}
 		}
 
