@@ -132,7 +132,7 @@ void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const ch
 {
     PushICFlags ic(context, BCI_SAFETY);
     EMIT_INST1(context, ByteCodeOp::JumpIfTrue, reg)->b.s32   = 1;
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) message);
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(message));
 }
 
 bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, uint16_t what)
@@ -157,7 +157,7 @@ void ByteCodeGen::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uin
         EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r)->b.s32 = 1;
     else
         SWAG_ASSERT(false);
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) message);
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(message));
 }
 
 void ByteCodeGen::emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r)
@@ -200,7 +200,7 @@ bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
         return true;
     }
 
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::SwitchComplete));
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(safetyMsg(SafetyMsg::SwitchComplete)));
     return true;
 }
 
@@ -218,7 +218,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         inst->b.u32     = 0xFE;
         inst->addFlag(BCI_IMM_B);
         EMIT_INST1(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidBool));
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(safetyMsg(SafetyMsg::InvalidBool)));
         freeRegisterRC(context, r0);
         return true;
     }
@@ -233,7 +233,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         const auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidFloat));
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(safetyMsg(SafetyMsg::InvalidFloat)));
         freeRegisterRC(context, r0);
         return true;
     }
@@ -248,7 +248,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
         const auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>((const uint8_t*) safetyMsg(SafetyMsg::InvalidFloat));
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(safetyMsg(SafetyMsg::InvalidFloat)));
         freeRegisterRC(context, r0);
         return true;
     }

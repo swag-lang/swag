@@ -183,7 +183,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     AstAttrUse* attrUse = nullptr;
     if (token.id == TokenId::SymAttrStart)
     {
-        SWAG_CHECK(doAttrUse(nullptr, (AstNode**) &attrUse));
+        SWAG_CHECK(doAttrUse(nullptr, reinterpret_cast<AstNode**>(&attrUse)));
     }
 
     const auto paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);

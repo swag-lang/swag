@@ -290,7 +290,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
         {
-            line.pretty += Utf8::truncateDisplay((const char*) ip->d.pointer, 30);
+            line.pretty += Utf8::truncateDisplay(reinterpret_cast<const char*>(ip->d.pointer), 30);
             line.pretty += " ";
         }
         break;

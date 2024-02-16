@@ -922,8 +922,8 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         }
 
         Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(doFactorExpression((AstNode**) &binaryNode, exprFlags, &dummyResult));
-        SWAG_CHECK(doOperatorPrecedence((AstNode**) &binaryNode));
+        SWAG_CHECK(doFactorExpression(reinterpret_cast<AstNode**>(&binaryNode), exprFlags, &dummyResult));
+        SWAG_CHECK(doOperatorPrecedence(reinterpret_cast<AstNode**>(&binaryNode)));
         leftNode = binaryNode;
         isBinary = true;
     }

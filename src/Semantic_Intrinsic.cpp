@@ -580,7 +580,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
         const auto               typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
         AstOutput::outputNode(outputContext, concat, typeCode->content);
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
-            node->computedValue->text.append((const char*) b->data, concat.bucketCount(b));
+            node->computedValue->text.append(reinterpret_cast<const char*>(b->data), concat.bucketCount(b));
     }
     else if (expr->resolvedSymbolName)
         node->computedValue->text = expr->resolvedSymbolName->getFullName();
@@ -643,7 +643,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     node->computedValue->storageSegment = storageSegment;
 
     SwagSlice* slice;
-    node->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+    node->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
     slice->count                       = runes.size();
 
     uint8_t* addrDst;
@@ -724,7 +724,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         if (expr->hasComputedValue())
         {
             const auto any                     = static_cast<SwagAny*>(expr->computedValue->getStorageAddr());
-            expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
+            expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
             node->inheritComputedValue(expr);
             node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
             node->typeInfo = g_TypeMgr->typeInfoTypeType;

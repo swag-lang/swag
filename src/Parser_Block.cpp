@@ -33,17 +33,17 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         node->boolExpression->addAstFlag(AST_GENERATED);
         node->boolExpression->inheritTokenLocation(varDecl);
 
-        SWAG_CHECK(doScopedStatement(node, node->token, (AstNode**) &node->ifBlock));
+        SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
 
         if (token.id == TokenId::KwdElse)
         {
             const auto tokenElse = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doScopedStatement(node, tokenElse, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doScopedStatement(node, tokenElse, reinterpret_cast<AstNode**>(&node->elseBlock)));
         }
         else if (token.id == TokenId::KwdElif)
         {
-            SWAG_CHECK(doIf(node, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doIf(node, reinterpret_cast<AstNode**>(&node->elseBlock)));
         }
     }
 
@@ -51,17 +51,17 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        SWAG_CHECK(doScopedStatement(node, node->token, (AstNode**) &node->ifBlock));
+        SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
 
         if (token.id == TokenId::KwdElse)
         {
             const auto tokenElse = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doScopedStatement(node, tokenElse, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doScopedStatement(node, tokenElse, reinterpret_cast<AstNode**>(&node->elseBlock)));
         }
         else if (token.id == TokenId::KwdElif)
         {
-            SWAG_CHECK(doIf(node, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doIf(node, reinterpret_cast<AstNode**>(&node->elseBlock)));
         }
     }
 

@@ -1172,7 +1172,7 @@ bool Module::filterFunctionsToEmit()
 
     ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2)
     {
-        return (size_t) bc1->sourceFile < (size_t) bc2->sourceFile;
+        return reinterpret_cast<size_t>(bc1->sourceFile) < reinterpret_cast<size_t>(bc2->sourceFile);
     });
 
     return true;

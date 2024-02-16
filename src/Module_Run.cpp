@@ -54,7 +54,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (realType->isString())
     {
         SWAG_ASSERT(node->resultRegisterRc.size() == 2);
-        const auto     pz  = (const char*) runContext->registersRR[0].pointer;
+        const auto     pz  = reinterpret_cast<const char*>(runContext->registersRR[0].pointer);
         const uint32_t len = runContext->registersRR[1].u32;
         node->computedValue->text.reserve(len + 1);
         node->computedValue->text.count = len;
@@ -118,13 +118,13 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (params->specReturnOpPostMove)
         {
             opParams.callParams.clear();
-            opParams.callParams.push_back((uint64_t) self);
+            opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
             SWAG_CHECK(executeNode(sourceFile, params->specReturnOpPostMove->node, callerContext, &opParams));
         }
 
         // Get number of elements by calling 'opCount'
         SWAG_ASSERT(params->specReturnOpCount);
-        opParams.callParams.push_back((uint64_t) self);
+        opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
         const auto count = runContext->registersRR[0].u64;
         if (!count)
@@ -135,7 +135,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         opParams.callParams.clear();
         opParams.callParams.push_back(count - 1);
         opParams.callParams.push_back(0);
-        opParams.callParams.push_back((uint64_t) self);
+        opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpSlice->node, callerContext, &opParams));
         if (!runContext->registersRR[0].u64 || !runContext->registersRR[1].u64)
             return callerContext->report({node, FMT(Err(Err0028), realType->getDisplayNameC())});
@@ -162,7 +162,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (concreteType->isString())
         {
             node->typeInfo            = g_TypeMgr->typeInfoString;
-            node->computedValue->text = Utf8{(const char*) addrSrc, sizeSlice};
+            node->computedValue->text = Utf8{reinterpret_cast<const char*>(addrSrc), sizeSlice};
         }
         else
         {
@@ -190,7 +190,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (params->specReturnOpDrop)
         {
             opParams.callParams.clear();
-            opParams.callParams.push_back((uint64_t) self);
+            opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
             SWAG_CHECK(executeNode(sourceFile, params->specReturnOpDrop->node, callerContext, &opParams));
         }
 
@@ -270,8 +270,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         SWAG_ASSERT(node->isForeign());
         bc                  = &bcTmp;
         instTmp.op          = ByteCodeOp::ForeignCall;
-        instTmp.a.pointer   = (uint8_t*) castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        instTmp.b.pointer   = (uint8_t*) node->typeInfo;
+        instTmp.a.pointer   = reinterpret_cast<uint8_t*>(castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl));
+        instTmp.b.pointer   = reinterpret_cast<uint8_t*>(node->typeInfo);
         bc->out             = &instTmp;
         bc->numInstructions = 1;
         bc->maxInstructions = 1;

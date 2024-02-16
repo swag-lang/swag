@@ -116,10 +116,10 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
         return true;
 
     // Convert to a concrete message for the user
-    msg->moduleName.buffer = (void*) name.c_str();
+    msg->moduleName.buffer = (void*) (name.c_str());
     msg->moduleName.count  = name.length();
 
-    // Find to do that, as this function can only be called once (not multi threaded)
+    // Find to do that, as this function can only be called once (no multithreading)
     g_RunContext->currentCompilerMessage = msg;
 
     JobContext context;

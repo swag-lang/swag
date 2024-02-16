@@ -108,8 +108,8 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
         if (value1->reg.u64 == value2->reg.u64)
             return true;
 
-        const auto typeInfo1 = (TypeInfo*) value1->reg.u64;
-        const auto typeInfo2 = (TypeInfo*) value2->reg.u64;
+        const auto typeInfo1 = reinterpret_cast<TypeInfo*>(value1->reg.u64);
+        const auto typeInfo2 = reinterpret_cast<TypeInfo*>(value2->reg.u64);
         if (!typeInfo1 || !typeInfo2)
             return false;
 

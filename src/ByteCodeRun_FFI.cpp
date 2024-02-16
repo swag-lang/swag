@@ -84,10 +84,10 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    if (OS::atomicTestNull((void**) &ip->d.pointer))
+    if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
     {
-        OS::atomicSetIfNotNull((void**) &ip->d.pointer, ffiGetFuncAddress(&context->jc, ip));
-        if (OS::atomicTestNull((void**) &ip->d.pointer))
+        OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), ffiGetFuncAddress(&context->jc, ip));
+        if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
             return;
     }
 

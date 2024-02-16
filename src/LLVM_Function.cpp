@@ -4251,7 +4251,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             blockIsClosed = true;
             break;
         case ByteCodeOp::InternalPanic:
-            emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);
+            emitInternalPanic(buildParameters, allocR, allocT, ip->node, reinterpret_cast<const char*>(ip->d.pointer));
             break;
 
         case ByteCodeOp::InternalGetTlsPtr:

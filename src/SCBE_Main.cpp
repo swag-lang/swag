@@ -88,7 +88,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
-    const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]));
+    const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     pp.emit_LoadAddress_Indirect(0, RCX, RIP);
@@ -155,7 +155,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
         {
             nameLib = nameLib.filename();
             pp.pushParams.clear();
-            pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) nameLib.c_str()});
+            pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(nameLib.c_str())});
             pp.pushParams.push_back({CPUPushParamType::Imm, (nameLib.string().length())});
             emitInternalCallExt(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
         }

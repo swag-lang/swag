@@ -57,7 +57,7 @@ bool SourceFile::checkFormat()
 void SourceFile::setExternalBuffer(const Utf8& content)
 {
     externalContent = content;
-    buffer          = (char*) externalContent.c_str();
+    buffer          = const_cast<char*>(externalContent.c_str());
     bufferSize      = externalContent.length();
     isExternal      = true;
 }
@@ -157,7 +157,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
                 // Remove BOM
                 if (allLines.empty() && line.length() >= 3)
                 {
-                    const auto pz = (const uint8_t*) line.c_str();
+                    const auto pz = reinterpret_cast<const uint8_t*>(line.c_str());
                     if (pz[0] == 0xEF && pz[1] == 0xBB && pz[2] == 0xBF)
                         line.erase(0, 3);
                 }

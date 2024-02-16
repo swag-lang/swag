@@ -776,19 +776,19 @@ bool Workspace::build()
     pair<void*, void*> oneArg;
     g_CommandLine.exePathStr = g_CommandLine.exePath.string();
     oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();
-    oneArg.second            = (void*) static_cast<size_t>(g_CommandLine.exePathStr.length());
+    oneArg.second            = reinterpret_cast<void*>(static_cast<size_t>(g_CommandLine.exePathStr.length()));
     g_CommandLine.userArgumentsStr.push_back(oneArg);
 
     Utf8::tokenizeBlanks(g_CommandLine.userArguments, g_CommandLine.userArgumentsVec);
     for (auto& arg : g_CommandLine.userArgumentsVec)
     {
         oneArg.first  = static_cast<void*>(arg.buffer);
-        oneArg.second = (void*) static_cast<size_t>(arg.length());
+        oneArg.second = reinterpret_cast<void*>(static_cast<size_t>(arg.length()));
         g_CommandLine.userArgumentsStr.push_back(oneArg);
     }
 
     g_CommandLine.userArgumentsSlice.first  = g_CommandLine.userArgumentsStr.data();
-    g_CommandLine.userArgumentsSlice.second = (void*) g_CommandLine.userArgumentsStr.size();
+    g_CommandLine.userArgumentsSlice.second = reinterpret_cast<void*>(g_CommandLine.userArgumentsStr.size());
 
     // Build !
     auto result = true;

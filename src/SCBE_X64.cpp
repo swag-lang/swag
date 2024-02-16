@@ -1619,7 +1619,7 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
     }
 
     // Here we do not know the destination label, so we assume 32 bits of offset
-    label.patch         = (uint8_t*) emit_LongJumpOp(jumpType);
+    label.patch         = reinterpret_cast<uint8_t*>(emit_LongJumpOp(jumpType));
     label.currentOffset = static_cast<int32_t>(concat.totalCount());
     labelsToSolve.push_back(label);
 }
@@ -1812,7 +1812,7 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
         {
             SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
             if (retCopyAddr)
-                emit_Load64_Immediate(cc.paramByRegisterInteger[i], (uint64_t) retCopyAddr);
+                emit_Load64_Immediate(cc.paramByRegisterInteger[i], reinterpret_cast<uint64_t>(retCopyAddr));
             else if (returnByStackAddr)
                 emit_Load64_Indirect(reg, cc.paramByRegisterInteger[i], RDI);
             else
@@ -1891,7 +1891,7 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
                     emit_CopyN(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
                     break;
                 case CPUPushParamType::GlobalString:
-                    emit_Symbol_GlobalString(cc.paramByRegisterInteger[i], (const char*) paramsRegisters[i].reg);
+                    emit_Symbol_GlobalString(cc.paramByRegisterInteger[i], reinterpret_cast<const char*>(paramsRegisters[i].reg));
                     break;
                 default:
                     SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
@@ -1925,7 +1925,7 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
         {
             // r is an address to registerRR, for FFI
             if (retCopyAddr)
-                emit_Load64_Immediate(RAX, (uint64_t) retCopyAddr);
+                emit_Load64_Immediate(RAX, reinterpret_cast<uint64_t>(retCopyAddr));
             else if (returnByStackAddr)
                 emit_Load64_Indirect(reg, RAX, RDI);
             else

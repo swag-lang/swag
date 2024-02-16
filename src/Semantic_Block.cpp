@@ -868,11 +868,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
             return context->report(diag, note);
         }
 
-        content += FMT("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->data);
+        content += FMT("{ loop%s %s { ", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
         firstAliasVar = 0;
         content += "let ";
         content += alias0Name;
-        content += FMT(" = %s[#index]; ", (const char*) concat.firstBucket->data);
+        content += FMT(" = %s[#index]; ", reinterpret_cast<const char*>(concat.firstBucket->data));
 
         content += "let ";
         content += alias1Name;
@@ -890,7 +890,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        content += FMT("{ let __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->data);
+        content += FMT("{ let __addr%u = @typeof(%s); ", id, reinterpret_cast<const char*>(concat.firstBucket->data));
         content += FMT("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
         content += "let ";

@@ -138,11 +138,11 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
 {
     const auto np = node->sourceFile->path.string();
     pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) np.c_str()});
+    pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(np.c_str())});
     pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.line});
     pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.column});
     if (msg)
-        pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) msg});
+        pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(msg)});
     else
         pp.pushParams.push_back({CPUPushParamType::Imm, 0});
     emitInternalCallExt(pp, g_LangSpec->name_priv_panic, pp.pushParams);

@@ -9,7 +9,7 @@ namespace
     {
         if (type1->kind != TypeInfoKind::Alias || (type1->flags & static_cast<uint16_t>(ExportedTypeInfoFlags::Strict)))
             return type1;
-        const auto typeAlias = (const ExportedTypeInfoAlias*) type1;
+        const auto typeAlias = reinterpret_cast<const ExportedTypeInfoAlias*>(type1);
         return concreteAlias(typeAlias->rawType);
     }
 }

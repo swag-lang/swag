@@ -195,7 +195,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             while (true)
             {
                 Ast::removeFromParent(identifier);
-                SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
+                SWAG_CHECK(doArrayPointerIndex(reinterpret_cast<AstNode**>(&identifier)));
                 Ast::addChildBack(parent, identifier);
                 if (identifier->kind != AstNodeKind::ArrayPointerIndex)
                     break;

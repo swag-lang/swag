@@ -185,7 +185,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     {
         truncRegisterRC(context, node->resultRegisterRc, 1);
         const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-        inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
+        inst->d.pointer = reinterpret_cast<uint8_t*>(node->resolvedSymbolOverload);
         return true;
     }
 
@@ -193,7 +193,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     {
         truncRegisterRC(context, node->resultRegisterRc, 1);
         const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-        inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
+        inst->d.pointer = reinterpret_cast<uint8_t*>(node->resolvedSymbolOverload);
         return true;
     }
 
@@ -475,11 +475,11 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     node->resultRegisterRc = reserveRegisterRC(context);
 
     const auto inst = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRc);
-    inst->b.pointer = (uint8_t*) funcNode;
+    inst->b.pointer = reinterpret_cast<uint8_t*>(funcNode);
     inst->c.pointer = nullptr;
     if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
     {
-        inst->c.pointer                        = (uint8_t*) funcNode->extByteCode()->bc;
+        inst->c.pointer                        = reinterpret_cast<uint8_t*>(funcNode->extByteCode()->bc);
         funcNode->extByteCode()->bc->isUsed    = true;
         funcNode->extByteCode()->bc->forceEmit = true;
     }

@@ -116,7 +116,7 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
     inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
-    inst->d.pointer     = (uint8_t*) front->resolvedSymbolOverload;
+    inst->d.pointer     = reinterpret_cast<uint8_t*>(front->resolvedSymbolOverload);
 
     return true;
 }
@@ -133,7 +133,7 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
     inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
-    inst->d.pointer     = (uint8_t*) front->resolvedSymbolOverload;
+    inst->d.pointer     = reinterpret_cast<uint8_t*>(front->resolvedSymbolOverload);
 
     return true;
 }

@@ -405,12 +405,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     if (!res.addr)
     {
         res.addr = res.value->reg.pointer;
-        addrVal  = (uint64_t) res.addr;
+        addrVal  = reinterpret_cast<uint64_t>(res.addr);
     }
     else if (res.type->isPointer())
         addrVal = *static_cast<uint64_t*>(res.addr);
     else
-        addrVal = (uint64_t) res.addr;
+        addrVal = reinterpret_cast<uint64_t>(res.addr);
 
     int perLine = 8;
     switch (fmt.bitCount)
@@ -431,7 +431,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         break;
     }
 
-    auto addrB = (const uint8_t*) addrVal;
+    auto addrB = reinterpret_cast<const uint8_t*>(addrVal);
     while (count > 0)
     {
         const auto addrLine = addrB;

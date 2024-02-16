@@ -104,7 +104,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
-    auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]));
+    auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);

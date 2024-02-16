@@ -1308,7 +1308,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         }
 
         newNode->lambda = lambda;
-        context.nodeRefsToUpdate.push_back({newNode, (AstNode**) &newNode->lambda});
+        context.nodeRefsToUpdate.push_back({newNode, reinterpret_cast<AstNode**>(&newNode->lambda)});
     }
 
     return newNode;

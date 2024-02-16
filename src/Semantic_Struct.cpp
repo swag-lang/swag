@@ -333,7 +333,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
     constexpr int  sizeOfHeader = 2 * sizeof(void*);
-    const uint32_t itableOffset = constSegment->reserve((numFctInterface * sizeof(void*)) + sizeOfHeader, (uint8_t**) &ptrITable, sizeof(void*));
+    const uint32_t itableOffset = constSegment->reserve((numFctInterface * sizeof(void*)) + sizeOfHeader, reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
     // :itableHeader

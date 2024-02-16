@@ -237,7 +237,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             inst->c.u64         = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
-            inst->d.pointer     = (uint8_t*) resolved;
+            inst->d.pointer     = reinterpret_cast<uint8_t*>(resolved);
 
             identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
             node->parent->resultRegisterRc                = node->resultRegisterRc;
@@ -380,12 +380,12 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRc);
             if (node->isForceTakeAddress())
-                inst->c.pointer = (uint8_t*) resolved;
+                inst->c.pointer = reinterpret_cast<uint8_t*>(resolved);
         }
         else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRc);
-            inst->c.pointer           = (uint8_t*) resolved;
+            inst->c.pointer           = reinterpret_cast<uint8_t*>(resolved);
             if (node->parent->hasAstFlag(AST_ARRAY_POINTER_REF))
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         }
@@ -465,7 +465,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             node->resultRegisterRc = reserveRegisterRC(context);
             const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64            = resolved->computedValue.storageOffset;
-            inst->c.pointer        = (uint8_t*) resolved;
+            inst->c.pointer        = reinterpret_cast<uint8_t*>(resolved);
         }
         else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
@@ -479,7 +479,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 node->resultRegisterRc = reserveRegisterRC(context);
                 const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
                 inst->b.u64            = resolved->computedValue.storageOffset;
-                inst->c.pointer        = (uint8_t*) resolved;
+                inst->c.pointer        = reinterpret_cast<uint8_t*>(resolved);
                 if (node->parent->hasAstFlag(AST_ARRAY_POINTER_REF))
                     EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
             }
@@ -513,7 +513,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 node->resultRegisterRc = reserveRegisterRC(context);
                 const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
                 inst->b.u64            = resolved->computedValue.storageOffset;
-                inst->c.pointer        = (uint8_t*) resolved;
+                inst->c.pointer        = reinterpret_cast<uint8_t*>(resolved);
                 if (node->hasAstFlag(AST_FROM_UFCS)) // Get the ITable pointer
                     EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = sizeof(void*);
                 else if (node->hasAstFlag(AST_TO_UFCS)) // Get the structure pointer
@@ -526,7 +526,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             node->resultRegisterRc = reserveRegisterRC(context);
             const auto inst        = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64            = resolved->computedValue.storageOffset;
-            inst->c.pointer        = (uint8_t*) resolved;
+            inst->c.pointer        = reinterpret_cast<uint8_t*>(resolved);
         }
         else if (persistentReg)
         {

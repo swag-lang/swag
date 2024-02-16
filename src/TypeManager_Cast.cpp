@@ -3019,7 +3019,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 
                     SwagSlice* slice;
                     fromNode->computedValue->storageSegment = storageSegment;
-                    fromNode->computedValue->storageOffset  = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+                    fromNode->computedValue->storageOffset  = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
                     slice->buffer                           = addrString;
                     slice->count                            = fromNode->computedValue->text.length();
                     storageSegment->addInitPtr(fromNode->computedValue->storageOffset, stringOffset);

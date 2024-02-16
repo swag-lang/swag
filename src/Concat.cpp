@@ -106,7 +106,7 @@ void Concat::ensureSpace(int numBytes)
 void Concat::addBool(bool v)
 {
     ensureSpace(sizeof(bool));
-    *(bool*) currentSP = v;
+    *reinterpret_cast<bool*>(currentSP) = v;
     currentSP += sizeof(bool);
 }
 
@@ -157,7 +157,7 @@ uint16_t* Concat::addU16Addr(uint16_t v)
 void Concat::addS8(int8_t v)
 {
     ensureSpace(sizeof(int8_t));
-    *(int8_t*) currentSP = v;
+    *reinterpret_cast<int8_t*>(currentSP) = v;
     currentSP += sizeof(int8_t);
 }
 

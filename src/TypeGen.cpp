@@ -137,7 +137,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     // Build concrete structure content
     ExportedTypeInfo* exportedTypeInfoValue;
-    const uint32_t    storageOffset = storageSegment->reserve(typeStruct->sizeOf, (uint8_t**) &exportedTypeInfoValue);
+    const uint32_t    storageOffset = storageSegment->reserve(typeStruct->sizeOf, reinterpret_cast<uint8_t**>(&exportedTypeInfoValue));
 
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(genExportedString(context, &exportedTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSET_OF(exportedTypeInfoValue->fullName)));
@@ -212,14 +212,14 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     {
     case TypeInfoKind::Native:
     {
-        const auto concreteType  = (ExportedTypeInfoNative*) exportedTypeInfoValue;
+        const auto concreteType  = reinterpret_cast<ExportedTypeInfoNative*>(exportedTypeInfoValue);
         concreteType->nativeKind = typeInfo->nativeType;
         break;
     }
 
     case TypeInfoKind::Pointer:
     {
-        const auto concreteType = (ExportedTypeInfoPointer*) exportedTypeInfoValue;
+        const auto concreteType = reinterpret_cast<ExportedTypeInfoPointer*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoPointer*>(typeInfo);
         SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
         break;
@@ -227,7 +227,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     case TypeInfoKind::Alias:
     {
-        const auto concreteType = (ExportedTypeInfoAlias*) exportedTypeInfoValue;
+        const auto concreteType = reinterpret_cast<ExportedTypeInfoAlias*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoAlias*>(typeInfo);
         SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
         break;
@@ -243,7 +243,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     case TypeInfoKind::LambdaClosure:
     case TypeInfoKind::FuncAttr:
     {
-        const auto concreteType = (ExportedTypeInfoFunc*) exportedTypeInfoValue;
+        const auto concreteType = reinterpret_cast<ExportedTypeInfoFunc*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoFuncAttr*>(typeInfo);
 
         SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
@@ -295,7 +295,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     case TypeInfoKind::Enum:
     {
-        const auto concreteType = (ExportedTypeInfoEnum*) exportedTypeInfoValue;
+        const auto concreteType = reinterpret_cast<ExportedTypeInfoEnum*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoEnum*>(typeInfo);
 
         SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
@@ -323,7 +323,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     case TypeInfoKind::Array:
     {
-        const auto concreteType  = (ExportedTypeInfoArray*) exportedTypeInfoValue;
+        const auto concreteType  = reinterpret_cast<ExportedTypeInfoArray*>(exportedTypeInfoValue);
         const auto realType      = static_cast<TypeInfoArray*>(typeInfo);
         concreteType->count      = realType->count;
         concreteType->totalCount = realType->totalCount;
@@ -334,7 +334,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     case TypeInfoKind::Slice:
     {
-        const auto concreteType = (ExportedTypeInfoSlice*) exportedTypeInfoValue;
+        const auto concreteType = reinterpret_cast<ExportedTypeInfoSlice*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoSlice*>(typeInfo);
         SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
         break;
@@ -342,7 +342,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     case TypeInfoKind::TypedVariadic:
     {
-        const auto concreteType = (ExportedTypeInfoVariadic*) exportedTypeInfoValue;
+        const auto concreteType = reinterpret_cast<ExportedTypeInfoVariadic*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoVariadic*>(typeInfo);
         SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
         break;
@@ -384,7 +384,7 @@ bool TypeGen::genExportedString(JobContext* context, SwagSlice* result, const Ut
         return true;
     }
 
-    const auto offset = storageSegment->addString(str, (uint8_t**) &result->buffer);
+    const auto offset = storageSegment->addString(str, reinterpret_cast<uint8_t**>(&result->buffer));
     storageSegment->addInitPtr(offsetInBuffer, offset);
     SWAG_ASSERT(result->buffer);
     result->count = str.length();
@@ -436,7 +436,7 @@ bool TypeGen::genExportedAny(JobContext*    context,
 
     if (typeInfo->isNative())
     {
-        const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, typeInfo, computedValue, (uint8_t**) &ptrAny->value);
+        const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, typeInfo, computedValue, reinterpret_cast<uint8_t**>(&ptrAny->value));
         storageSegment->addInitPtr(storageOffset, storageOffsetValue);
     }
 
@@ -469,7 +469,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
         else
         {
             SWAG_ASSERT(realType->value);
-            const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, realType->typeInfo, *realType->value, (uint8_t**) &concreteType->value);
+            const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, realType->typeInfo, *realType->value, reinterpret_cast<uint8_t**>(&concreteType->value));
             storageSegment->addInitPtr(OFFSET_OF(concreteType->value), storageOffsetValue);
         }
     }

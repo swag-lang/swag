@@ -47,7 +47,7 @@ namespace OS
             return false;
 
         const auto value = new wchar_t[length + 1];
-        rc               = RegQueryValueExW(hKey, L"KitsRoot10", nullptr, nullptr, (LPBYTE) value, &length);
+        rc               = RegQueryValueExW(hKey, L"KitsRoot10", nullptr, nullptr, reinterpret_cast<LPBYTE>(value), &length);
         RegCloseKey(hKey);
         if (rc != S_OK)
             return false;
@@ -342,7 +342,7 @@ namespace OS
                                                     nullptr,
                                                     errorMessageID,
                                                     MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
-                                                    (LPSTR) &messageBuffer,
+                                                    reinterpret_cast<LPSTR>(&messageBuffer),
                                                     0,
                                                     nullptr);
 
@@ -519,7 +519,7 @@ namespace OS
 
         SWAG_TRY
         {
-            RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
+            RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), reinterpret_cast<ULONG_PTR*>(&info));
         }
         SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
@@ -576,7 +576,7 @@ namespace OS
         TCHAR   sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
         DWORD64 displacement = 0;
 
-        const auto psym    = (SYMBOL_INFO*) sym;
+        const auto psym    = reinterpret_cast<SYMBOL_INFO*>(sym);
         psym->SizeOfStruct = sizeof(SYMBOL_INFO);
         psym->MaxNameLen   = SYM_LEN_NAME;
 
@@ -591,9 +591,9 @@ namespace OS
             for (int i = 0; i < nb; i++)
             {
                 displacement         = 0;
-                const auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], &displacement, psym);
+                const auto hasSymbol = SymFromAddr(GetCurrentProcess(), reinterpret_cast<ULONG64>(where[i]), &displacement, psym);
                 displacement         = 0;
-                const auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], (DWORD*) &displacement, &line);
+                const auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), reinterpret_cast<ULONG64>(where[i]), reinterpret_cast<DWORD*>(&displacement), &line);
 
                 if (hasSymbol)
                 {
@@ -620,7 +620,7 @@ namespace OS
         g_ExceptionParams[1] = (void*) msg;
         g_ExceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
         g_ExceptionParams[3] = (void*) SwagExceptionKind::Panic;
-        RaiseException(code, 0, 4, (ULONG_PTR*) &g_ExceptionParams[0]);
+        RaiseException(code, 0, 4, reinterpret_cast<ULONG_PTR*>(&g_ExceptionParams[0]));
     }
 
     void assertBox(const char* expr, const char* file, int line)
@@ -694,7 +694,7 @@ namespace OS
 
     int8_t atomicAdd(int8_t* addr, int8_t value)
     {
-        return _InterlockedExchangeAdd8((char*) addr, value);
+        return _InterlockedExchangeAdd8(reinterpret_cast<char*>(addr), value);
     }
 
     int16_t atomicAdd(int16_t* addr, int16_t value)
@@ -704,7 +704,7 @@ namespace OS
 
     int32_t atomicAdd(int32_t* addr, int32_t value)
     {
-        return _InterlockedExchangeAdd((LONG*) addr, value);
+        return _InterlockedExchangeAdd(reinterpret_cast<LONG*>(addr), value);
     }
 
     int64_t atomicAdd(int64_t* addr, int64_t value)
@@ -714,7 +714,7 @@ namespace OS
 
     int8_t atomicAnd(int8_t* addr, int8_t value)
     {
-        return _InterlockedAnd8((char*) addr, value);
+        return _InterlockedAnd8(reinterpret_cast<char*>(addr), value);
     }
 
     int16_t atomicAnd(int16_t* addr, int16_t value)
@@ -724,7 +724,7 @@ namespace OS
 
     int32_t atomicAnd(int32_t* addr, int32_t value)
     {
-        return _InterlockedAnd((LONG*) addr, value);
+        return _InterlockedAnd(reinterpret_cast<LONG*>(addr), value);
     }
 
     int64_t atomicAnd(int64_t* addr, int64_t value)
@@ -734,7 +734,7 @@ namespace OS
 
     int8_t atomicOr(int8_t* addr, int8_t value)
     {
-        return _InterlockedOr8((char*) addr, value);
+        return _InterlockedOr8(reinterpret_cast<char*>(addr), value);
     }
 
     int16_t atomicOr(int16_t* addr, int16_t value)
@@ -744,7 +744,7 @@ namespace OS
 
     int32_t atomicOr(int32_t* addr, int32_t value)
     {
-        return _InterlockedOr((LONG*) addr, value);
+        return _InterlockedOr(reinterpret_cast<LONG*>(addr), value);
     }
 
     int64_t atomicOr(int64_t* addr, int64_t value)
@@ -754,7 +754,7 @@ namespace OS
 
     int8_t atomicXor(int8_t* addr, int8_t value)
     {
-        return _InterlockedXor8((char*) addr, value);
+        return _InterlockedXor8(reinterpret_cast<char*>(addr), value);
     }
 
     int16_t atomicXor(int16_t* addr, int16_t value)
@@ -764,7 +764,7 @@ namespace OS
 
     int32_t atomicXor(int32_t* addr, int32_t value)
     {
-        return _InterlockedXor((LONG*) addr, value);
+        return _InterlockedXor(reinterpret_cast<LONG*>(addr), value);
     }
 
     int64_t atomicXor(int64_t* addr, int64_t value)
@@ -774,7 +774,7 @@ namespace OS
 
     int8_t atomicXchg(int8_t* addr, int8_t replaceWith)
     {
-        return InterlockedExchange8((char*) addr, replaceWith);
+        return InterlockedExchange8(reinterpret_cast<char*>(addr), replaceWith);
     }
 
     int16_t atomicXchg(int16_t* addr, int16_t replaceWith)
@@ -784,7 +784,7 @@ namespace OS
 
     int32_t atomicXchg(int32_t* addr, int32_t replaceWith)
     {
-        return InterlockedExchange((LONG*) addr, replaceWith);
+        return InterlockedExchange(reinterpret_cast<LONG*>(addr), replaceWith);
     }
 
     int64_t atomicXchg(int64_t* addr, int64_t replaceWith)
@@ -794,7 +794,7 @@ namespace OS
 
     int8_t atomicCmpXchg(int8_t* addr, int8_t compareTo, int8_t replaceWith)
     {
-        return _InterlockedCompareExchange8((char*) addr, replaceWith, compareTo);
+        return _InterlockedCompareExchange8(reinterpret_cast<char*>(addr), replaceWith, compareTo);
     }
 
     int16_t atomicCmpXchg(int16_t* addr, int16_t compareTo, int16_t replaceWith)
@@ -804,7 +804,7 @@ namespace OS
 
     int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith)
     {
-        return _InterlockedCompareExchange((LONG*) addr, replaceWith, compareTo);
+        return _InterlockedCompareExchange(reinterpret_cast<LONG*>(addr), replaceWith, compareTo);
     }
 
     int64_t atomicCmpXchg(int64_t* addr, int64_t compareTo, int64_t replaceWith)
@@ -965,7 +965,7 @@ namespace OS
             uint32_t offset           = 0;
             concat.currentSP          = gen.concat.firstBucket->data + JIT_SIZE_BUFFER;
             SCBE_Coff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
-            RtlAddFunctionTable(rtFunc, 1, (DWORD64) gen.concat.firstBucket->data);
+            RtlAddFunctionTable(rtFunc, 1, reinterpret_cast<DWORD64>(gen.concat.firstBucket->data));
 
             // Restore back the start of the buffer
             concat.currentSP = gen.concat.firstBucket->data;
@@ -976,14 +976,14 @@ namespace OS
 
         gen.emit_Push(RDI);
         gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-        gen.emit_Load64_Immediate(RDI, (uint64_t) context->sp, true);
+        gen.emit_Load64_Immediate(RDI, reinterpret_cast<uint64_t>(context->sp), true);
         gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-        gen.emit_Load64_Immediate(RAX, (uint64_t) foreignPtr, true);
+        gen.emit_Load64_Immediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), true);
         gen.emit_Call_Indirect(RAX);
 
         if (!returnType->isVoid() && !retCopyAddr)
         {
-            gen.emit_Load64_Immediate(RDI, (uint64_t) context->registersRR, true);
+            gen.emit_Load64_Immediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), true);
             gen.emit_Call_Result(typeInfoFunc, 0);
         }
 
@@ -996,7 +996,7 @@ namespace OS
         const auto ptr = reinterpret_cast<funcPtr>(gen.concat.firstBucket->data + startOffset);
         ptr();
 
-        gen.concat.currentSP = (uint8_t*) ptr;
+        gen.concat.currentSP = reinterpret_cast<uint8_t*>(ptr);
     }
 
     Utf8 getClipboardString()
@@ -1078,7 +1078,7 @@ namespace OS
                     if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
                         return Key::PasteFromClipboard;
 
-                    c = static_cast<int>((unsigned) evt.Event.KeyEvent.uChar.AsciiChar);
+                    c = static_cast<int>(static_cast<unsigned>(evt.Event.KeyEvent.uChar.AsciiChar));
                     if (c >= ' ' && c <= 127)
                         return Key::Ascii;
 

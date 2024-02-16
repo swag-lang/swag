@@ -1215,7 +1215,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
         node->extMisc()->additionalRegisterRC += reserveRegisterRC(context);
         auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
         inst->c.u64     = 8;
-        inst->d.pointer = (uint8_t*) context->node->resolvedSymbolOverload;
+        inst->d.pointer = reinterpret_cast<uint8_t*>(context->node->resolvedSymbolOverload);
 
         // If 0, keep it 0, otherwise get the capture context by adding that offset to the address of the closure storage
         inst        = EMIT_INST2(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
@@ -1223,7 +1223,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 
         // Deref function pointer
         inst            = EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
-        inst->d.pointer = (uint8_t*) context->node->resolvedSymbolOverload;
+        inst->d.pointer = reinterpret_cast<uint8_t*>(context->node->resolvedSymbolOverload);
     }
 
     emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
@@ -1297,10 +1297,10 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
 
     // Is the same location is in the cache ?
     uint32_t crc  = Crc32::compute(addrName, static_cast<uint32_t>(str.string().length()));
-    crc           = Crc32::compute((uint8_t*) &node->token.startLocation.line, sizeof(uint32_t), crc);
-    crc           = Crc32::compute((uint8_t*) &node->token.startLocation.column, sizeof(uint32_t), crc);
-    crc           = Crc32::compute((uint8_t*) &node->token.endLocation.line, sizeof(uint32_t), crc);
-    crc           = Crc32::compute((uint8_t*) &node->token.endLocation.column, sizeof(uint32_t), crc);
+    crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.startLocation.line), sizeof(uint32_t), crc);
+    crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.startLocation.column), sizeof(uint32_t), crc);
+    crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.endLocation.line), sizeof(uint32_t), crc);
+    crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.endLocation.column), sizeof(uint32_t), crc);
     const auto it = module->cacheSourceLoc.find(crc);
     if (it != module->cacheSourceLoc.end())
     {
@@ -1311,7 +1311,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
                 l.loc.lineEnd == node->token.endLocation.line &&
                 l.loc.colEnd == node->token.endLocation.column &&
                 l.storageSegment == seg &&
-                !strncmp(static_cast<const char*>(l.loc.fileName.buffer), (const char*) addrName, l.loc.fileName.count))
+                !strncmp(static_cast<const char*>(l.loc.fileName.buffer), reinterpret_cast<const char*>(addrName), l.loc.fileName.count))
             {
                 *storageOffset = l.storageOffset;
                 return;
@@ -1320,7 +1320,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     }
 
     SwagSourceCodeLocation* loc;
-    const auto              offset = seg->reserve(sizeof(SwagSourceCodeLocation), (uint8_t**) &loc, sizeof(void*));
+    const auto              offset = seg->reserve(sizeof(SwagSourceCodeLocation), reinterpret_cast<uint8_t**>(&loc), sizeof(void*));
     seg->addInitPtr(offset, offsetName);
     memcpy(loc, &tmpLoc.loc, sizeof(tmpLoc.loc));
 
@@ -2008,7 +2008,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         if (node->typeInfo && node->typeInfo->isClosure())
             inst->b.u32 -= sizeof(Register);
 
-        inst->d.pointer = (uint8_t*) typeInfoFunc;
+        inst->d.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
 
         // In case of a real closure not affected to a lambda, we must count the first parameter
         // So we add sizeof(Register) to the CopySP pointer
@@ -2048,7 +2048,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         if (node->typeInfo && node->typeInfo->isClosure())
             inst->b.u32 -= sizeof(Register);
 
-        inst->d.pointer = (uint8_t*) typeInfoFunc;
+        inst->d.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
 
         // In case of a real closure not affected to a lambda, we must count the first parameter
         // So we add sizeof(Register) to the CopySP pointer
@@ -2073,8 +2073,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     if (foreign)
     {
         auto inst               = EMIT_INST0(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer         = (uint8_t*) funcNode;
-        inst->b.pointer         = (uint8_t*) typeInfoFunc;
+        inst->a.pointer         = reinterpret_cast<uint8_t*>(funcNode);
+        inst->b.pointer         = reinterpret_cast<uint8_t*>(typeInfoFunc);
         inst->numVariadicParams = static_cast<uint8_t>(numVariadic);
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcNode));
     }
@@ -2082,8 +2082,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     {
         auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extByteCode()->bc);
-        inst->a.pointer                     = (uint8_t*) funcNode->extByteCode()->bc;
-        inst->b.pointer                     = (uint8_t*) typeInfoFunc;
+        inst->a.pointer                     = reinterpret_cast<uint8_t*>(funcNode->extByteCode()->bc);
+        inst->b.pointer                     = reinterpret_cast<uint8_t*>(typeInfoFunc);
         inst->numVariadicParams             = static_cast<uint8_t>(numVariadic);
         funcNode->extByteCode()->bc->isUsed = true;
     }
@@ -2091,7 +2091,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
         auto inst                            = EMIT_INST1(context, ByteCodeOp::LambdaCall, varNodeRegisters);
-        inst->b.pointer                      = (uint8_t*) typeInfoFunc;
+        inst->b.pointer                      = reinterpret_cast<uint8_t*>(typeInfoFunc);
         inst->numVariadicParams              = static_cast<uint8_t>(numVariadic);
         context->bc->hasForeignFunctionCalls = true;
     }

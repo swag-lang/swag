@@ -2338,7 +2338,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 label.ipDest        = tableCompiler[idx] + i + 1;
                 label.currentOffset = currentOffset;
-                label.patch         = (uint8_t*) (tableConstant + idx);
+                label.patch         = reinterpret_cast<uint8_t*>(tableConstant + idx);
                 pp.labelsToSolve.push_back(label);
             }
 
@@ -3308,7 +3308,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             break;
 
         case ByteCodeOp::InternalPanic:
-            emitInternalPanic(pp, ip->node, (const char*) ip->d.pointer);
+            emitInternalPanic(pp, ip->node, reinterpret_cast<const char*>(ip->d.pointer));
             break;
         case ByteCodeOp::InternalUnreachable:
             break;

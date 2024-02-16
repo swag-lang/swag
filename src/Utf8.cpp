@@ -678,7 +678,7 @@ void Utf8::replace(const char* src, const char* dst)
 
 uint32_t Utf8::hash() const
 {
-    return Crc32::compute((const uint8_t*) buffer, count);
+    return Crc32::compute(reinterpret_cast<const uint8_t*>(buffer), count);
 }
 
 const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)

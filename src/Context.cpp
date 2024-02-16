@@ -23,7 +23,7 @@ static uint32_t                  g_MakeCallbackCount = 0;
 static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
 {
 #ifdef SWAG_DEV_MODE
-    SWAG_ASSERT((uint64_t) byteCodePtr != SWAG_PATCH_MARKER);
+    SWAG_ASSERT(reinterpret_cast<uint64_t>(byteCodePtr) != SWAG_PATCH_MARKER);
 #endif
     const auto        bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(byteCodePtr));
     TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);

@@ -9,7 +9,7 @@
 
 bool TypeGenStructJob::computeStruct()
 {
-    const auto concreteType = (ExportedTypeInfoStruct*) exportedTypeInfoValue;
+    const auto concreteType = reinterpret_cast<ExportedTypeInfoStruct*>(exportedTypeInfoValue);
     const auto realType     = castTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     const auto attributes   = realType->declNode ? realType->declNode->attributeFlags : 0;
 

@@ -214,7 +214,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
         const auto job    = Allocator::alloc<SCBE_SaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
-        job->prepJob      = (ModulePrepOutputStage1Job*) ownerJob;
+        job->prepJob      = reinterpret_cast<ModulePrepOutputStage1Job*>(ownerJob);
         ownerJob->jobsToAdd.push_back(job);
         return JobResult::KeepJobAlive;
     }

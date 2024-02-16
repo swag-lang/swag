@@ -201,7 +201,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             }
             else
             {
-                SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, (AstNode**) &typeExpr));
+                SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
 
                 // type...

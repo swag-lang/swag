@@ -35,7 +35,7 @@ struct LangHashTable
             return nullptr;
 
         if (!crc)
-            crc = Crc32::compute((const uint8_t*) key, keyLen);
+            crc = Crc32::compute(reinterpret_cast<const uint8_t*>(key), keyLen);
 
         uint32_t idx = crc % N;
         while (buffer[idx].hash)
@@ -53,7 +53,7 @@ struct LangHashTable
         SWAG_ASSERT(count != N);
 
         uint32_t keyLen = static_cast<uint32_t>(strlen(key));
-        auto     crc    = Crc32::compute((const uint8_t*) key, keyLen);
+        auto     crc    = Crc32::compute(reinterpret_cast<const uint8_t*>(key), keyLen);
 
         // Find a free slot
         uint32_t idx = crc % N;

@@ -133,7 +133,7 @@ Utf8 ByteCode::getCallName()
     else
         callName = name;
 
-    callName += FMT("_%lX", (uint64_t) this);
+    callName += FMT("_%lX", reinterpret_cast<uint64_t>(this));
     return callName;
 }
 
@@ -221,22 +221,22 @@ bool ByteCode::isDoingNothing() const
 
 void* ByteCode::doByteCodeLambda(void* ptr)
 {
-    uint64_t u = (uint64_t) ptr;
+    uint64_t u = reinterpret_cast<uint64_t>(ptr);
     u |= SWAG_LAMBDA_BC_MARKER;
-    return (void*) u;
+    return reinterpret_cast<void*>(u);
 }
 
 void* ByteCode::undoByteCodeLambda(void* ptr)
 {
-    uint64_t u = (uint64_t) ptr;
+    uint64_t u = reinterpret_cast<uint64_t>(ptr);
     SWAG_ASSERT(u & SWAG_LAMBDA_BC_MARKER);
     u ^= SWAG_LAMBDA_BC_MARKER;
-    return (void*) u;
+    return reinterpret_cast<void*>(u);
 }
 
 bool ByteCode::isByteCodeLambda(void* ptr)
 {
-    const uint64_t u = (uint64_t) ptr;
+    const uint64_t u = reinterpret_cast<uint64_t>(ptr);
     return u & SWAG_LAMBDA_BC_MARKER;
 }
 
@@ -314,8 +314,8 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
                             ip0->op == ByteCodeOp::LocalCallPopParam ||
                             ip0->op == ByteCodeOp::LocalCallPopRC))
         {
-            const ByteCode* bc0 = (ByteCode*) ip0->a.u64;
-            const ByteCode* bc1 = (ByteCode*) ip1->a.u64;
+            const ByteCode* bc0 = reinterpret_cast<ByteCode*>(ip0->a.u64);
+            const ByteCode* bc1 = reinterpret_cast<ByteCode*>(ip1->a.u64);
             if (bc0 != bc1)
                 same = false;
         }
@@ -349,13 +349,13 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
 uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
 {
     const uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
-    oldCrc               = Crc32::compute2((const uint8_t*) &ip->op, oldCrc);
-    oldCrc               = Crc32::compute2((const uint8_t*) &flags, oldCrc);
+    oldCrc               = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);
+    oldCrc               = Crc32::compute2(reinterpret_cast<const uint8_t*>(&flags), oldCrc);
 
     if (hasSomethingInC(ip))
-        oldCrc = Crc32::compute8((const uint8_t*) &ip->c.u64, oldCrc);
+        oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->c.u64), oldCrc);
     if (hasSomethingInD(ip))
-        oldCrc = Crc32::compute8((const uint8_t*) &ip->d.u64, oldCrc);
+        oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->d.u64), oldCrc);
 
     // Special call. We add the alias if it exists instead of the called bytecode
     if (specialCall && (ip->op == ByteCodeOp::LocalCall ||
@@ -364,21 +364,21 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
                         ip->op == ByteCodeOp::LocalCallPopRC))
     {
         const auto bc = reinterpret_cast<ByteCode*>(ip->a.u64);
-        oldCrc        = Crc32::compute8((const uint8_t*) &bc, oldCrc);
+        oldCrc        = Crc32::compute8(reinterpret_cast<const uint8_t*>(&bc), oldCrc);
     }
     else if (hasSomethingInA(ip))
-        oldCrc = Crc32::compute8((const uint8_t*) &ip->a.u64, oldCrc);
+        oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->a.u64), oldCrc);
 
-    // For a jump, we compute the crc to go the the destination (if two jump nodes
+    // For a jump, we compute the crc to go the destination (if two jump nodes
     // are going to the same instruction, then we consider they are equal)
     if (specialJump && ip->op == ByteCodeOp::Jump)
     {
         const auto destIp = ip + ip->b.s32 + 1;
         const auto destN  = destIp - out;
-        oldCrc            = Crc32::compute8((const uint8_t*) &destN, oldCrc);
+        oldCrc            = Crc32::compute8(reinterpret_cast<const uint8_t*>(&destN), oldCrc);
     }
     else if (hasSomethingInB(ip))
-        oldCrc = Crc32::compute8((const uint8_t*) &ip->b.u64, oldCrc);
+        oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->b.u64), oldCrc);
 
     return oldCrc;
 }
@@ -400,7 +400,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     {
         const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.
-        maxInstructions = static_cast<int>((float) funcDecl->nodeCounts * 0.8f);
+        maxInstructions = static_cast<int>(static_cast<float>(funcDecl->nodeCounts) * 0.8f);
     }
 
     maxInstructions            = max(maxInstructions, 8);

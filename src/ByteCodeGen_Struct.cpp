@@ -69,8 +69,8 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
 	if (funcDecl && !bc && funcDecl->hasAttribute(ATTRIBUTE_FOREIGN))
 	{
 		const auto inst = EMIT_INST0(context, ByteCodeOp::ForeignCall);
-		inst->a.pointer = (uint8_t*)funcDecl;
-		inst->b.pointer = (uint8_t*)funcDecl->typeInfo;
+		inst->a.pointer = reinterpret_cast<uint8_t*>(funcDecl);
+		inst->b.pointer = reinterpret_cast<uint8_t*>(funcDecl->typeInfo);
 		context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcDecl));
 		SWAG_ASSERT(inst->a.pointer);
 	}
@@ -80,10 +80,10 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
 		SWAG_ASSERT(bc || (funcDecl && funcDecl->hasExtByteCode() && funcDecl->extByteCode()->bc));
 		const auto bcReal = bc ? bc : funcDecl->extByteCode()->bc;
 		bcReal->isUsed = true;
-		inst->a.pointer = (uint8_t*)bcReal;
+		inst->a.pointer = reinterpret_cast<uint8_t*>(bcReal);
 		SWAG_ASSERT(inst->a.pointer);
 		SWAG_ASSERT(numParams <= 2);
-		inst->b.pointer = numParams == 1 ? (uint8_t*)g_TypeMgr->typeInfoOpCall : (uint8_t*)g_TypeMgr->typeInfoOpCall2;
+		inst->b.pointer = numParams == 1 ? reinterpret_cast<uint8_t*>(g_TypeMgr->typeInfoOpCall) : reinterpret_cast<uint8_t*>(g_TypeMgr->typeInfoOpCall2);
 	}
 
 	EMIT_INST1(context, ByteCodeOp::IncSPPostCall, numParams * 8);
@@ -1253,7 +1253,7 @@ void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverloa
 		const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
 		SWAG_ASSERT(stackOffset != UINT32_MAX);
 		inst->b.u32 = stackOffset;
-		inst->c.pointer = (uint8_t*)resolved;
+		inst->c.pointer = reinterpret_cast<uint8_t*>(resolved);
 	}
 }
 

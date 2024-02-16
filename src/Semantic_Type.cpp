@@ -15,12 +15,12 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {
     // Automatic convert to 'kindOf'
     // This has no sens to do a switch on an 'any'. So instead of raising an error,
-    // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
+    // we imply the usage of '@kindof'. That way we have a switch on the underlying type.
     const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
     if (typeInfo->isAny() && node->hasComputedValue())
     {
         const auto any                     = static_cast<SwagAny*>(node->computedValue->getStorageAddr());
-        node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
+        node->computedValue->storageOffset = node->computedValue->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
         node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
     }
@@ -814,7 +814,7 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     auto&      typeGen    = module->typeGen;
 
     node->allocateComputedValue();
-    node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
+    node->computedValue->reg.pointer    = reinterpret_cast<uint8_t*>(typeInfo);
     node->computedValue->storageSegment = getConstantSegFromContext(node);
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags, resultTypeInfo));
     YIELD();

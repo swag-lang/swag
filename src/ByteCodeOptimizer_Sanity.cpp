@@ -545,7 +545,7 @@ namespace
 
     void setStackValue(const Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
     {
-        const auto offset = static_cast<uint32_t>((uint8_t*) addr - STATE()->stack.buffer);
+        const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.buffer);
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
         for (uint32_t i                 = offset; i < offset + sizeOf; i++)
             STATE()->stackValue[i].kind = kind;

@@ -135,7 +135,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 {
                     SwagSlice* slice;
                     const auto storageSegment               = nodeParam->computedValue->storageSegment;
-                    nodeParam->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
+                    nodeParam->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
                     const auto typeList                     = castTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
                     slice->buffer                           = storageSegment->address(param->value->storageOffset);
                     slice->count                            = typeList->subTypes.size();

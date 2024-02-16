@@ -407,7 +407,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     case TokenId::SymAttrStart:
     {
         AstAttrUse* attrUse;
-        SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
+        SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
         SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
         parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
         if (attrUse->content)

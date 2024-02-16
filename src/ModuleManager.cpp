@@ -126,7 +126,7 @@ void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, A
         newPatch.patchAddress = patchAddress;
         newPatch.funcDecl     = func;
 #ifdef SWAG_DEV_MODE
-        *patchAddress = (void*) SWAG_PATCH_MARKER;
+        *patchAddress = reinterpret_cast<void*>(SWAG_PATCH_MARKER);
 #endif
 
         const auto it = patchOffsets.find(moduleName);
