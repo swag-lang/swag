@@ -30,7 +30,7 @@ bool TypeManager::compareConcreteType(const ExportedTypeInfo* type1, const Expor
 	return !memcmp(type1->fullName.buffer, type2->fullName.buffer, type1->fullName.count);
 }
 
-TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
+TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, ToConcreteFlags flags)
 {
 	if (!typeInfo)
 		return nullptr;
@@ -41,7 +41,7 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
 		return const_cast<TypeInfo*>(typeInfo);
 
 	case TypeInfoKind::FuncAttr:
-		if (flags & CONCRETE_FUNC)
+		if (flags.has(CONCRETE_FUNC))
 		{
 			const auto returnType = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
 			if (!returnType)
@@ -51,22 +51,22 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
 		break;
 
 	case TypeInfoKind::Enum:
-		if (flags & CONCRETE_ENUM)
+		if (flags.has(CONCRETE_ENUM))
 			return concreteType(castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum)->rawType, flags);
 		break;
 
 	case TypeInfoKind::Alias:
-		if (flags & (CONCRETE_ALIAS | CONCRETE_FORCE_ALIAS))
+		if (flags.has(CONCRETE_ALIAS | CONCRETE_FORCE_ALIAS))
 		{
 			const auto typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-			if (typeAlias->isStrict() && !(flags & CONCRETE_FORCE_ALIAS))
+			if (typeAlias->isStrict() && !flags.has(CONCRETE_FORCE_ALIAS))
 				return const_cast<TypeInfo*>(static_cast<const TypeInfo*>(typeAlias));
 			return concreteType(typeAlias->rawType, flags);
 		}
 		break;
 
 	case TypeInfoKind::Generic:
-		if (flags & CONCRETE_GENERIC)
+		if (flags.has(CONCRETE_GENERIC))
 		{
 			const auto typeGeneric = castTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
 			if (!typeGeneric->rawType)
@@ -82,7 +82,7 @@ TypeInfo* TypeManager::concreteType(const TypeInfo* typeInfo, uint32_t flags)
 	return const_cast<TypeInfo*>(typeInfo);
 }
 
-TypeInfo* TypeManager::concretePtrRefType(TypeInfo* typeInfo, uint32_t flags)
+TypeInfo* TypeManager::concretePtrRefType(TypeInfo* typeInfo, ToConcreteFlags flags)
 {
 	if (!typeInfo)
 		return nullptr;

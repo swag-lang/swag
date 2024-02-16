@@ -4,6 +4,7 @@
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Flags.h"
 #include "Module.h"
 #include "Naming.h"
 #include "Report.h"
@@ -730,11 +731,11 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 		YIELD();
 	}
 
-	CastFlags castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
+	CastFlags castFlags = CAST_FLAG_EXPLICIT | CAST_FLAG_ACCEPT_PENDING;
 	if (node->hasSpecFlag(AstCast::SPECFLAG_UN_CONST))
-		castFlags.add(CASTFLAG_FORCE_UN_CONST);
+		castFlags.add(CAST_FLAG_FORCE_UN_CONST);
 	if (node->hasSpecFlag(AstCast::SPECFLAG_OVERFLOW))
-		castFlags.add(CASTFLAG_CAN_OVERFLOW);
+		castFlags.add(CAST_FLAG_CAN_OVERFLOW);
 	SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
 	YIELD();
 
@@ -799,13 +800,13 @@ bool Semantic::resolveTypeList(SemanticContext* context)
 	return true;
 }
 
-bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, uint32_t flags)
+bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, GenExportFlags genFlags)
 {
-	SWAG_CHECK(resolveTypeAsExpression(context, node, node->typeInfo, resultTypeInfo, flags));
+	SWAG_CHECK(resolveTypeAsExpression(context, node, node->typeInfo, resultTypeInfo, genFlags));
 	return true;
 }
 
-bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags)
+bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, GenExportFlags genFlags)
 {
 	const auto sourceFile = context->sourceFile;
 	const auto module     = sourceFile->module;
@@ -814,7 +815,7 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
 	node->allocateComputedValue();
 	node->computedValue->reg.pointer    = reinterpret_cast<uint8_t*>(typeInfo);
 	node->computedValue->storageSegment = getConstantSegFromContext(node);
-	SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT | flags, resultTypeInfo));
+	SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, genFlags.with(GEN_EXPORTED_TYPE_SHOULD_WAIT), resultTypeInfo));
 	YIELD();
 	node->setFlagsValueIsComputed();
 	node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);

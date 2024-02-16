@@ -10,7 +10,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t genFlags, TypeInfo** ptrTypeInfo)
+bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, GenExportFlags genFlags, TypeInfo** ptrTypeInfo)
 {
 	auto&      mapPerSeg = getMapPerSeg(storageSegment);
 	ScopedLock lk(mapPerSeg.mutex);
@@ -22,7 +22,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                                         TypeInfo*          typeInfo,
                                         DataSegment*       storageSegment,
                                         uint32_t*          storage,
-                                        uint32_t           genFlags,
+                                        GenExportFlags     genFlags,
                                         TypeInfo**         ptrTypeInfo)
 {
 	switch (typeInfo->kind)
@@ -37,15 +37,15 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 		break;
 	}
 
-	if (!(genFlags & GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
+	if (!genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
 	{
 		typeInfo->computeScopedName();
 		SWAG_ASSERT(!typeInfo->scopedName.empty());
 	}
 
-	auto       typeName           = typeInfo->getTypeName(genFlags & GEN_EXPORTED_TYPE_FORCE_NO_SCOPE);
+	auto       typeName           = typeInfo->getTypeName(genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
 	const auto nonPartialTypeName = typeName;
-	if (genFlags & GEN_EXPORTED_TYPE_PARTIAL)
+	if (genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 		typeName += "__partial";
 	SWAG_ASSERT(!typeName.empty());
 
@@ -62,7 +62,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 		*storage = it->second.storageOffset;
 
 		// The registered type is the full version, so exit, and wait for the job to complete if necessary
-		if (genFlags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
+		if (genFlags.has(GEN_EXPORTED_TYPE_SHOULD_WAIT))
 		{
 			SWAG_ASSERT(context);
 			if (context->baseJob->baseContext->result != ContextResult::Pending)
@@ -360,7 +360,7 @@ bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
                                      DataSegment*       storageSegment,
                                      uint32_t           storageOffset,
                                      TypeInfo*          typeInfo,
-                                     uint32_t           genFlags)
+                                     GenExportFlags     genFlags)
 {
 	if (!typeInfo)
 	{
@@ -429,7 +429,7 @@ bool TypeGen::genExportedAny(JobContext*    context,
                              uint32_t       storageOffset,
                              ComputedValue& computedValue,
                              TypeInfo*      typeInfo,
-                             uint32_t       genFlags)
+                             GenExportFlags genFlags)
 {
 	const auto sourceFile = context->sourceFile;
 	ptrAny->value         = nullptr;
@@ -445,7 +445,7 @@ bool TypeGen::genExportedAny(JobContext*    context,
 	return true;
 }
 
-bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t genFlags)
+bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, GenExportFlags genFlags)
 {
 	const auto sourceFile   = context->sourceFile;
 	const auto concreteType = static_cast<ExportedTypeValue*>(exportedTypeInfoValue);
@@ -483,7 +483,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                                     DataSegment*   storageSegment,
                                     uint32_t       storageOffset,
                                     SwagSlice*     result,
-                                    uint32_t       genFlags)
+                                    GenExportFlags genFlags)
 {
 	if (attributes.empty())
 		return true;
@@ -645,7 +645,7 @@ bool TypeGen::genExportedStruct(const JobContext* context,
                                 TypeInfo*         typeInfo,
                                 DataSegment*      storageSegment,
                                 uint32_t          storageOffset,
-                                uint32_t          genFlags)
+                                GenExportFlags    genFlags)
 {
 	// If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
 	if (context->baseJob->waitingKind == JobWaitKind::GenExportedType && context->result != ContextResult::Done)
@@ -665,7 +665,7 @@ bool TypeGen::genExportedStruct(const JobContext* context,
 	job->storageOffset         = storageOffset;
 	job->storageSegment        = storageSegment;
 	job->affinity              = storageSegment->compilerThreadIdx;
-	job->genFlags              = genFlags & ~GEN_EXPORTED_TYPE_SHOULD_WAIT;
+	job->genFlags              = genFlags.maskInvert(GEN_EXPORTED_TYPE_SHOULD_WAIT);
 	job->typeName              = typeName;
 	job->nodes.push_back(context->node);
 	mapPerSeg.exportedTypesJob[typeName] = job;
@@ -675,7 +675,7 @@ bool TypeGen::genExportedStruct(const JobContext* context,
 		++g_Stats.totalConcreteStructTypes;
 #endif
 
-	if (genFlags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
+	if (genFlags.has(GEN_EXPORTED_TYPE_SHOULD_WAIT))
 	{
 		SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::GenExportedType1);
 		job->dependentJob = context->baseJob;

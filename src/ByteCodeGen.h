@@ -31,9 +31,9 @@ enum class TypeInfoKind : uint8_t;
 
 #define SAFETY_ZERO_EPSILON 0.00001f
 
-constexpr uint32_t EMIT_CASTFLAG_DEFAULT  = 0x00000000;
-constexpr uint32_t EMIT_CASTFLAG_EXPLICIT = 0x00000001;
-constexpr uint32_t EMIT_CASTFLAG_AUTO     = 0x00000002;
+constexpr uint32_t EMIT_CAST_FLAG_DEFAULT  = 0x00000000;
+constexpr uint32_t EMIT_CAST_FLAG_EXPLICIT = 0x00000001;
+constexpr uint32_t EMIT_CAST_FLAG_AUTO     = 0x00000002;
 
 enum class EmitOpUserKind
 {
@@ -185,7 +185,7 @@ namespace ByteCodeGen
 	bool emitCastToNativeString(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
 	bool emitCastToInterface(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
 	bool emitCastToSlice(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-	bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t emitCastFlags = EMIT_CASTFLAG_DEFAULT);
+	bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t emitCastFlags = EMIT_CAST_FLAG_DEFAULT);
 	bool emitFuncCallParam(ByteCodeGenContext* context);
 	bool emitFuncDeclParams(ByteCodeGenContext* context);
 	bool emitIfAfterExpr(ByteCodeGenContext* context);

@@ -15,7 +15,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
 	// convert {...} expression list to a structure : this will create a variable, with parameters
-	if (!castFlags.has(CASTFLAG_NO_TUPLE_TO_STRUCT))
+	if (!castFlags.has(CAST_FLAG_NO_TUPLE_TO_STRUCT))
 	{
 		SWAG_ASSERT(fromNode->typeInfo);
 		const auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
@@ -60,7 +60,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 	// auto cast
 	if (fromNode->typeInfo->hasFlag(TYPEINFO_AUTO_CAST) && !fromNode->castedTypeInfo)
 	{
-		if (!castFlags.has(CASTFLAG_JUST_CHECK))
+		if (!castFlags.has(CAST_FLAG_JUST_CHECK))
 		{
 			fromNode->castedTypeInfo = fromNode->typeInfo;
 			fromNode->typeInfo       = toType;
@@ -68,7 +68,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 	}
 
 	// Store constant expression in the constant segment
-	if (!castFlags.has(CASTFLAG_NO_COLLECT))
+	if (!castFlags.has(CAST_FLAG_NO_COLLECT))
 	{
 		if (fromNode->typeInfo->isListTuple() || fromNode->typeInfo->isListArray())
 		{
@@ -124,11 +124,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	SWAG_ASSERT(toType && fromType);
 
 	if (fromType->hasFlag(TYPEINFO_AUTO_CAST))
-		castFlags.add(CASTFLAG_EXPLICIT);
+		castFlags.add(CAST_FLAG_EXPLICIT);
 	if (toType->isGeneric())
-		castFlags.add(CASTFLAG_NO_IMPLICIT);
+		castFlags.add(CAST_FLAG_NO_IMPLICIT);
 	if (toType->isFromGeneric())
-		castFlags.add(CASTFLAG_NO_IMPLICIT);
+		castFlags.add(CAST_FLAG_NO_IMPLICIT);
 
 	if (toType->isFuncAttr())
 		toType = concreteType(toType, CONCRETE_FUNC);
@@ -139,25 +139,25 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 	// Transform typealias to related type
 	if (toType->isAlias())
-		toType = concreteType(toType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+		toType = concreteType(toType, castFlags.has(CAST_FLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 	if (fromType->isAlias())
-		fromType = concreteType(fromType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+		fromType = concreteType(fromType, castFlags.has(CAST_FLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
 	// Transform enum to underlying type
-	if (castFlags.has(CASTFLAG_CONCRETE_ENUM) || castFlags.has(CASTFLAG_EXPLICIT) || toType->hasFlag(TYPEINFO_INCOMPLETE) || fromType->hasFlag(TYPEINFO_INCOMPLETE))
+	if (castFlags.has(CAST_FLAG_CONCRETE_ENUM) || castFlags.has(CAST_FLAG_EXPLICIT) || toType->hasFlag(TYPEINFO_INCOMPLETE) || fromType->hasFlag(TYPEINFO_INCOMPLETE))
 	{
 		toType   = concreteType(toType, CONCRETE_ENUM);
 		fromType = concreteType(fromType, CONCRETE_ENUM);
 	}
 
-	if (castFlags.has(CASTFLAG_INDEX) && fromType->hasFlag(TYPEINFO_ENUM_INDEX))
+	if (castFlags.has(CAST_FLAG_INDEX) && fromType->hasFlag(TYPEINFO_ENUM_INDEX))
 	{
 		fromType = concreteType(fromType, CONCRETE_ENUM);
 	}
 
 	// Transform typealias to related type
-	fromType = concreteType(fromType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
-	toType   = concreteType(toType, castFlags.has(CASTFLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+	fromType = concreteType(fromType, castFlags.has(CAST_FLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
+	toType   = concreteType(toType, castFlags.has(CAST_FLAG_EXPLICIT) ? CONCRETE_FORCE_ALIAS : CONCRETE_ALIAS);
 
 	if (fromType->isListTuple() || fromType->isListArray())
 	{
@@ -200,7 +200,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	// To/From a moveref
 	if (!fromType->hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF) && toType->hasFlag(TYPEINFO_POINTER_MOVE_REF))
 	{
-		if (castFlags.has(CASTFLAG_PARAMS) && !castFlags.has(CASTFLAG_ACCEPT_MOVE_REF))
+		if (castFlags.has(CAST_FLAG_PARAMS) && !castFlags.has(CAST_FLAG_ACCEPT_MOVE_REF))
 			return castError(context, toType, fromType, fromNode, castFlags);
 	}
 	else if (fromType->hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF) && !toType->hasFlag(TYPEINFO_POINTER_MOVE_REF))
@@ -215,20 +215,20 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 		const auto fromTypeRef = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
 		if (fromTypeRef == toType)
 		{
-			castFlags.add(CASTFLAG_FORCE_UN_CONST);
+			castFlags.add(CAST_FLAG_FORCE_UN_CONST);
 			result = true;
 		}
-		else if (fromTypeRef->isSame(toType, castFlags.with(CASTFLAG_CAST)))
+		else if (fromTypeRef->isSame(toType, castFlags.with(CAST_FLAG_CAST)))
 		{
-			castFlags.add(CASTFLAG_FORCE_UN_CONST);
+			castFlags.add(CAST_FLAG_FORCE_UN_CONST);
 			result = true;
 		}
 	}
 
 	if (toType->isFromGeneric())
-		castFlags.add(CASTFLAG_EXACT_TUPLE_STRUCT);
+		castFlags.add(CAST_FLAG_EXACT_TUPLE_STRUCT);
 	if (fromType->isFromGeneric())
-		castFlags.add(CASTFLAG_EXACT_TUPLE_STRUCT);
+		castFlags.add(CAST_FLAG_EXACT_TUPLE_STRUCT);
 
 	if (toNode && toNode->hasSemFlag(SEMFLAG_FROM_REF) && toType->isPointerRef())
 		toType = concretePtrRef(toType);
@@ -236,7 +236,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 		fromType = concretePtrRef(fromType);
 
 	// If not already ok, call 'same'
-	if (!result && fromType->isSame(toType, castFlags.with(CASTFLAG_CAST)))
+	if (!result && fromType->isSame(toType, castFlags.with(CAST_FLAG_CAST)))
 		result = true;
 
 	// Always match against a generic
@@ -250,7 +250,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	{
 		if (!toType->isPointer() && fromType->isPointerRef())
 		{
-			context->castFlagsResult.add(CASTFLAG_RESULT_FROM_REF);
+			context->castFlagsResult.add(CAST_RESULT_FROM_REF);
 			fromType = concretePtrRef(fromType);
 		}
 
@@ -304,35 +304,35 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 	if (context->result != ContextResult::Done)
 	{
-		SWAG_ASSERT(castFlags.has(CASTFLAG_ACCEPT_PENDING));
+		SWAG_ASSERT(castFlags.has(CAST_FLAG_ACCEPT_PENDING));
 		return true;
 	}
 
 	// Const mismatch
-	if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !castFlags.has(CASTFLAG_FORCE_UN_CONST))
+	if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !castFlags.has(CAST_FLAG_FORCE_UN_CONST))
 	{
-		if (!castFlags.has(CASTFLAG_PARAMS) || !toType->isStruct())
+		if (!castFlags.has(CAST_FLAG_PARAMS) || !toType->isStruct())
 		{
 			if (!toType->isPointerNull() &&
 				!toType->isString() &&
 				!toType->isInterface() &&
-				(!toType->isBool() || !castFlags.has(CASTFLAG_AUTO_BOOL)) &&
+				(!toType->isBool() || !castFlags.has(CAST_FLAG_AUTO_BOOL)) &&
 				(!toType->isNative(NativeTypeKind::U64) || !fromType->isPointer()))
 			{
 				const bool toConst   = toType->isConst();
 				const bool fromConst = fromType->isConst();
 				if (toConst != fromConst)
-					context->castFlagsResult.add(CASTFLAG_RESULT_CONST_COERCE);
+					context->castFlagsResult.add(CAST_RESULT_CONST_COERCE);
 
 				bool diff = false;
-				if (castFlags.has(CASTFLAG_FOR_GENERIC))
+				if (castFlags.has(CAST_FLAG_FOR_GENERIC))
 					diff = toConst != fromConst;
 				else
 					diff = !toConst && fromConst;
 
 				if (diff)
 				{
-					if (!castFlags.has(CASTFLAG_UN_CONST))
+					if (!castFlags.has(CAST_FLAG_UN_CONST))
 						return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 
 					// We can affect a const to an un-const if type is by copy, and we are in an affectation
@@ -344,7 +344,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 						return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 					}
 
-					context->castFlagsResult.remove(CASTFLAG_RESULT_CONST_COERCE);
+					context->castFlagsResult.remove(CAST_RESULT_CONST_COERCE);
 				}
 			}
 		}

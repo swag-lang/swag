@@ -1,10 +1,12 @@
 #pragma once
+#include "Flags.h"
 #include "Job.h"
 
 struct AstFuncDecl;
 struct DataSegment;
 struct ExportedTypeInfo;
 struct TypeGen;
+using GenExportFlags = Flags<uint32_t>;
 
 struct TypeGenStructJob final : Job
 {
@@ -19,6 +21,6 @@ struct TypeGenStructJob final : Job
 	TypeInfo*         typeInfo              = nullptr;
 	DataSegment*      storageSegment        = nullptr;
 
-	uint32_t storageOffset = 0;
-	uint32_t genFlags      = 0;
+	uint32_t       storageOffset = 0;
+	GenExportFlags genFlags      = 0;
 };

@@ -8,9 +8,9 @@
 
 bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNode* fromNode, CastFlags castFlags)
 {
-	if (castFlags.has(CASTFLAG_EXPLICIT) && castFlags.has(CASTFLAG_CAN_OVERFLOW))
+	if (castFlags.has(CAST_FLAG_EXPLICIT) && castFlags.has(CAST_FLAG_CAN_OVERFLOW))
 		return true;
-	if (castFlags.has(CASTFLAG_COERCE))
+	if (castFlags.has(CAST_FLAG_COERCE))
 		return false;
 	if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode, true))
 		return true;
@@ -57,9 +57,9 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 {
 	if (!fromNode || !fromNode->hasComputedValue())
 		return true;
-	if (castFlags.has(CASTFLAG_JUST_CHECK))
+	if (castFlags.has(CAST_FLAG_JUST_CHECK))
 		return true;
-	if (!castFlags.has(CASTFLAG_EXPLICIT))
+	if (!castFlags.has(CAST_FLAG_EXPLICIT))
 		return true;
 	if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
 		return true;
@@ -185,7 +185,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
 	else if (!fromType->isPointer() && toType->isPointerRef())
 	{
 		const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-		if (fromType->isSame(toPtrRef->pointedType, CASTFLAG_CAST))
+		if (fromType->isSame(toPtrRef->pointedType, CAST_FLAG_CAST))
 			hint = Nte(Nte0196);
 	}
 	else if (toType->isTuple() && fromType->isTuple())
@@ -203,7 +203,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, CastErrorType castErrorType)
 {
 	// Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
-	if (!castFlags.has(CASTFLAG_NO_LAST_MINUTE))
+	if (!castFlags.has(CAST_FLAG_NO_LAST_MINUTE))
 	{
 		if (tryOpCast(context, toType, fromType, fromNode, castFlags))
 			return true;
@@ -217,7 +217,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 	context->castErrorFlags    = castFlags;
 	context->castErrorType     = castErrorType;
 
-	if (!castFlags.has(CASTFLAG_JUST_CHECK))
+	if (!castFlags.has(CAST_FLAG_JUST_CHECK))
 	{
 		// More specific message
 		Utf8                      hint, msg;
@@ -232,9 +232,9 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 			notes.push_back(Diagnostic::note(fromNode, hint));
 
 		// Is there an explicit cast possible ?
-		if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
+		if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
 		{
-			if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
+			if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
 				notes.push_back(Diagnostic::note(fromNode, FMT(Nte(Nte0030), toType->getDisplayNameC())));
 		}
 

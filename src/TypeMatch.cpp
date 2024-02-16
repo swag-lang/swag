@@ -115,19 +115,19 @@ namespace
 				context.result = MatchResult::BadSignature;
 			}
 
-			CastFlags castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
+			CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_FOR_AFFECT;
 			if (context.matchFlags & SymbolMatchContext::MATCH_UN_CONST)
-				castFlags.add(CASTFLAG_UN_CONST);
+				castFlags.add(CAST_FLAG_UN_CONST);
 			if (context.matchFlags & SymbolMatchContext::MATCH_UFCS && i == 0)
-				castFlags.add(CASTFLAG_UFCS);
+				castFlags.add(CAST_FLAG_UFCS);
 			if (callParameter->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-				castFlags.add(CASTFLAG_LITERAL_SUFFIX);
+				castFlags.add(CAST_FLAG_LITERAL_SUFFIX);
 			if (callParameter->hasAstFlag(AST_TRANSIENT) && wantedTypeInfo->isPointerMoveRef())
-				castFlags.add(CASTFLAG_ACCEPT_MOVE_REF);
+				castFlags.add(CAST_FLAG_ACCEPT_MOVE_REF);
 			if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
-				castFlags.add(CASTFLAG_TRY_COERCE);
+				castFlags.add(CAST_FLAG_TRY_COERCE);
 			castFlags.add(forceCastFlags);
-			castFlags.add(CASTFLAG_PARAMS | CASTFLAG_PTR_REF);
+			castFlags.add(CAST_FLAG_PARAMS | CAST_FLAG_PTR_REF);
 
 			context.semContext->castFlagsResult   = 0;
 			context.semContext->castErrorToType   = nullptr;
@@ -162,7 +162,7 @@ namespace
 			}
 			else if (wantedTypeInfo->isGeneric())
 			{
-				Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(i), castFlags.mask(CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
+				Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(i), castFlags.mask(CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_AUTO_OP_CAST));
 				if (context.semContext->result != ContextResult::Done)
 					return;
 			}
@@ -234,7 +234,7 @@ namespace
 					context.result = MatchResult::BadSignature;
 				}
 
-				CastFlags castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
+				CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_PARAMS;
 				castFlags.add(forceCastFlags);
 				const bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
 				if (context.semContext->result != ContextResult::Done)
@@ -250,7 +250,7 @@ namespace
 				}
 				else if (wantedTypeInfo->isGeneric())
 				{
-					Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(j), castFlags.mask(CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OP_CAST));
+					Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, static_cast<int>(j), castFlags.mask(CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_AUTO_OP_CAST));
 				}
 
 				context.solvedParameters[j]                  = wantedParameter;
@@ -562,7 +562,7 @@ namespace
 				same = false;
 			else
 				same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr,
-				                                    CASTFLAG_FOR_GENERIC | CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING);
+				                                    CAST_FLAG_FOR_GENERIC | CAST_FLAG_JUST_CHECK | CAST_FLAG_ACCEPT_PENDING);
 			if (context.semContext->result != ContextResult::Done)
 				return;
 
@@ -631,26 +631,26 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 	// Very special case because of automatic cast and generics.
 	// We match in priority without an implicit automatic cast. If this does not match, then we
 	// try with an implicit cast.
-	context.castFlagsResult.remove(CASTFLAG_RESULT_GEN_AUTO_OP_CAST);
+	context.castFlagsResult.remove(CAST_RESULT_GEN_AUTO_OP_CAST);
 	if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
 	{
 		const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
 		if (funcNode->parameters && (funcNode->parameters->hasAstFlag(AST_IS_GENERIC)))
 		{
 			SymbolMatchContext cpyContext = context;
-			matchParametersAndNamed(cpyContext, typeFunc->parameters, CASTFLAG_DEFAULT);
+			matchParametersAndNamed(cpyContext, typeFunc->parameters, CAST_FLAG_DEFAULT);
 			if (cpyContext.semContext->result != ContextResult::Done)
 				return;
 			if (cpyContext.result == MatchResult::BadSignature)
 			{
-				matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OP_CAST);
+				matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_AUTO_OP_CAST);
 				if (context.semContext->result != ContextResult::Done)
 					return;
 
 				// We have a match with an automatic cast (opAffect or opCast).
 				if (context.result == MatchResult::Ok)
 				{
-					context.castFlagsResult.add(CASTFLAG_RESULT_GEN_AUTO_OP_CAST);
+					context.castFlagsResult.add(CAST_RESULT_GEN_AUTO_OP_CAST);
 				}
 			}
 			else
@@ -660,12 +660,12 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 		}
 		else
 		{
-			matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OP_CAST);
+			matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_AUTO_OP_CAST);
 		}
 	}
 	else
 	{
-		matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_TRY_COERCE | CASTFLAG_AUTO_OP_CAST);
+		matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_TRY_COERCE | CAST_FLAG_AUTO_OP_CAST);
 	}
 
 	int cptDone = 0;
@@ -717,11 +717,11 @@ void Match::match(TypeInfoStruct* typeStruct, SymbolMatchContext& context)
 		return;
 
 	typeStruct->flattenUsingFields();
-	matchParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UN_CONST);
+	matchParameters(context, typeStruct->flattenFields, CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST);
 	if (context.result != MatchResult::Ok)
 		return;
 
-	matchNamedParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UN_CONST);
+	matchNamedParameters(context, typeStruct->flattenFields, CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST);
 	if (context.result != MatchResult::Ok)
 		return;
 

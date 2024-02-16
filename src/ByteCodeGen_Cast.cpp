@@ -985,7 +985,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 
 	// First we cast with the user requested type. This is important to keep it, to
 	// properly deref an 'any' for example
-	SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CASTFLAG_EXPLICIT));
+	SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CAST_FLAG_EXPLICIT));
 	YIELD();
 
 	// Then we cast again if necessary to the requested final type that can have been
@@ -1014,7 +1014,7 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 
 	const auto typeInfo     = TypeManager::concreteType(node->typeInfo);
 	const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-	SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CASTFLAG_AUTO));
+	SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CAST_FLAG_AUTO));
 	YIELD();
 	node->castedTypeInfo = nullptr;
 

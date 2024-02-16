@@ -581,7 +581,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 			if (!typeInfo->parameters.empty())
 			{
 				const auto firstParam = typeInfo->parameters.front()->typeInfo;
-				if (firstParam->isSame(dep.node->typeInfo, CASTFLAG_EXACT))
+				if (firstParam->isSame(dep.node->typeInfo, CAST_FLAG_EXACT))
 					okForUfcs = true;
 			}
 		}

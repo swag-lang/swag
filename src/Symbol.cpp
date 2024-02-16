@@ -76,7 +76,7 @@ SymbolOverload* SymbolName::findOverload(const TypeInfo* typeInfo)
 	{
 		if (it->typeInfo == typeInfo)
 			return it;
-		if (it->typeInfo->isSame(typeInfo, CASTFLAG_EXACT))
+		if (it->typeInfo->isSame(typeInfo, CAST_FLAG_EXACT))
 			return it;
 	}
 

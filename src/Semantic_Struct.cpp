@@ -254,7 +254,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 		BadSignatureInfos bi;
 		const auto        typeLambda = castTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
 		const auto        typeFunc   = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-		if (!typeLambda->isSame(typeFunc, CASTFLAG_EXACT | CASTFLAG_INTERFACE, bi))
+		if (!typeLambda->isSame(typeFunc, CAST_FLAG_EXACT | CAST_FLAG_INTERFACE, bi))
 		{
 			switch (bi.matchResult)
 			{

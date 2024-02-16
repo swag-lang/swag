@@ -86,7 +86,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 			SWAG_CHECK(checkIsConstExpr(context, nameNode->hasComputedValue(), nameNode, Err(Err0033), node->token.text));
 			SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, FMT(Err(Err0200), node->token.c_str(), nameNode->typeInfo->getDisplayNameC())}));
 			SWAG_VERIFY(defaultVal->computedValue, context->report({defaultVal, FMT(Err(Err0201), typeNode->typeInfo->getDisplayNameC())}));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CAST_FLAG_DEFAULT));
 
 			node->setFlagsValueIsComputed();
 			node->typeInfo = typeNode->typeInfo;
@@ -94,7 +94,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 			const auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
 			if (tag)
 			{
-				if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK))
+				if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
 				{
 					const Diagnostic diag{typeNode, FMT(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
 					const auto       note = Diagnostic::note(typeNode, FMT(Nte(Nte0022), tag->cmdLine.c_str()));
@@ -161,7 +161,7 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
 	SWAG_ASSERT(ptrPointer->pointedType);
 
 	// Slice count
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, second->typeInfo, nullptr, second, CAST_FLAG_TRY_COERCE));
 
 	// Create slice type
 	const auto ptrSlice   = makeType<TypeInfoSlice>();
@@ -195,7 +195,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
 		const auto genType  = second->getConstantGenTypeInfo();
 		const auto realType = context->sourceFile->module->typeGen.getRealType(second->computedValue->storageSegment, genType);
 
-		if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CASTFLAG_JUST_CHECK))
+		if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CAST_FLAG_JUST_CHECK))
 		{
 			Diagnostic diag{first, FMT(Err(Err0006), first->typeInfo->getDisplayNameC(), realType->getDisplayNameC())};
 			diag.addNote(second->token, Diagnostic::isType(realType));
@@ -384,7 +384,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
 			node->byteCodeFct = ByteCodeGen::emitIntrinsicCountOf;
 		}
 
-		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, typeInfo, nullptr, node, CAST_FLAG_TRY_COERCE));
 	}
 
 	return true;
@@ -398,7 +398,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 	{
 		const auto typeList  = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
 		const auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->hasAstFlag(AST_CONST_EXPR));
-		SWAG_CHECK(TypeManager::makeCompatibles(context, typeArray, nullptr, expression, CASTFLAG_DEFAULT));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, typeArray, nullptr, expression, CAST_FLAG_DEFAULT));
 		typeInfo = typeArray;
 	}
 

@@ -28,9 +28,9 @@ JobResult PrepCompilerMsgJob::execute()
 
 			context.result = ContextResult::Done;
 
-			uint32_t makeFlags = GEN_EXPORTED_TYPE_SHOULD_WAIT;
+			GenExportFlags makeFlags = GEN_EXPORTED_TYPE_SHOULD_WAIT;
 			if (pass == 0)
-				makeFlags |= GEN_EXPORTED_TYPE_PARTIAL;
+				makeFlags.add(GEN_EXPORTED_TYPE_PARTIAL);
 
 			if (!module->typeGen.genExportedTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
 				return JobResult::ReleaseJob;

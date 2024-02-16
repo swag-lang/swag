@@ -20,7 +20,7 @@ bool Semantic::resolveIf(SemanticContext* context)
 
 	// :ConcreteRef
 	node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
 	// Do not generate backend if 'if' is constant, and has already been evaluated
 	if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
@@ -54,7 +54,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
 	// :ConcreteRef
 	node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
 	// Do not evaluate while if it's constant and false
 	if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
@@ -449,8 +449,8 @@ bool Semantic::resolveCase(SemanticContext* context)
 					SWAG_CHECK(TypeManager::promote32(context, node->ownerSwitch->expression));
 					SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionLow));
 					SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionUp));
-					SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE));
-					SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE));
+					SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
+					SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
 				}
 			}
 			else
@@ -481,7 +481,7 @@ bool Semantic::resolveCase(SemanticContext* context)
 						return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
 					});
 					const auto typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
-					SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));
+					SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
 				}
 
 				// If the switch expression is constant, and the expression is constant too, then we can do the
@@ -503,7 +503,7 @@ bool Semantic::resolveCase(SemanticContext* context)
 			else
 			{
 				SWAG_CHECK(
-					TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_FOR_COMPARE | CASTFLAG_AUTO_BOOL));
+					TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CAST_FLAG_FOR_COMPARE | CAST_FLAG_AUTO_BOOL));
 			}
 		}
 	}
@@ -544,7 +544,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
 				YIELD();
 			}
 
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CAST_FLAG_TRY_COERCE));
 			node->typeInfo = node->expression->typeInfo;
 
 			// Do not evaluate loop if it's constant and 0
@@ -563,8 +563,8 @@ bool Semantic::resolveLoop(SemanticContext* context)
 		else
 		{
 			const auto rangeNode = castAst<AstRange>(node->expression, AstNodeKind::Range);
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CAST_FLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CAST_FLAG_TRY_COERCE));
 		}
 
 		node->expression->allocateExtension(ExtensionKind::ByteCode);

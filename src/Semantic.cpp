@@ -56,7 +56,7 @@ bool Semantic::setUnRef(AstNode* node)
 	return true;
 }
 
-TypeInfo* Semantic::getConcreteTypeUnRef(AstNode* node, uint32_t concreteFlags)
+TypeInfo* Semantic::getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags)
 {
 	auto typeInfo = TypeManager::concreteType(node->typeInfo, concreteFlags);
 	if (!typeInfo->isPointerRef())
@@ -113,7 +113,7 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
 		if (!typeInfo1 || !typeInfo2)
 			return false;
 
-		if (typeInfo1->isSame(typeInfo2, CASTFLAG_EXACT))
+		if (typeInfo1->isSame(typeInfo2, CAST_FLAG_EXACT))
 			return true;
 	}
 

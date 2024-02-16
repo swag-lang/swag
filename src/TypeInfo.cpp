@@ -308,7 +308,7 @@ bool TypeInfo::isSame(const TypeInfo* from, CastFlags castFlags) const
 	if (kind != from->kind)
 		return false;
 
-	if (castFlags.has(CASTFLAG_EXACT))
+	if (castFlags.has(CAST_FLAG_EXACT))
 	{
 		if (isConst() != from->isConst())
 			return false;

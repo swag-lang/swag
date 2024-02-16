@@ -399,11 +399,11 @@ namespace
 			}
 
 			// Is there an explicit cast possible ?
-			if (!bi.castErrorFlags.has(CASTFLAG_EXPLICIT) || bi.castErrorFlags.has(CASTFLAG_COERCE))
+			if (!bi.castErrorFlags.has(CAST_FLAG_EXPLICIT) || bi.castErrorFlags.has(CAST_FLAG_COERCE))
 			{
 				if (bi.castErrorToType && bi.castErrorFromType)
 				{
-					if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
+					if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
 						errorParam.addNote(Diagnostic::note(callParamNode, FMT(Nte(Nte0030), bi.castErrorToType->getDisplayNameC())));
 				}
 			}
@@ -522,7 +522,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
 
 		if (bi.badSignatureRequestedType->isNative() || bi.badSignatureRequestedType->isStruct())
 		{
-			if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
+			if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
 			{
 				errorParam.explicitCastMsg = FMT(Nte(Nte0033), bi.badSignatureRequestedType->name.c_str());
 				break;

@@ -721,7 +721,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 			{
 				auto param = castAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
 				SWAG_CHECK(checkIsConstExpr(context, param->hasComputedValue(), param, Err(Err0037)));
-				SWAG_CHECK(TypeManager::makeCompatibles(context, param->resolvedParameter->typeInfo, param->typeInfo, nullptr, param, CASTFLAG_EXPLICIT));
+				SWAG_CHECK(TypeManager::makeCompatibles(context, param->resolvedParameter->typeInfo, param->typeInfo, nullptr, param, CAST_FLAG_EXPLICIT));
 
 				AttributeParameter attrParam;
 				attrParam.token      = one->token;

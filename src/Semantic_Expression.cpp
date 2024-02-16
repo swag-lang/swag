@@ -231,7 +231,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 	YIELD();
 
 	expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expression, CAST_FLAG_AUTO_BOOL));
 
 	auto rightT = ifFalse;
 	auto leftT  = ifTrue;
@@ -251,7 +251,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 		{
 			return Nte(Nte0185);
 		});
-		SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
 	}
 
 	// Determine if we should take the type from the "false" expression, or from the "true"
@@ -378,7 +378,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 		{
 			return Nte(Nte0023);
 		});
-		SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
 
 		node->typeInfo    = expression->typeInfo;
 		node->byteCodeFct = ByteCodeGen::emitNullConditionalOp;
@@ -415,7 +415,7 @@ bool Semantic::resolveRange(SemanticContext* context)
 		return context->report(diag, Diagnostic::note(Nte(Nte0200)));
 	}
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CAST_FLAG_COMMUTATIVE));
 
 	node->typeInfo = node->expressionLow->typeInfo;
 	node->inheritAstFlagsAnd(AST_CONST_EXPR);

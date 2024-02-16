@@ -9,7 +9,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 {
 	auto structType = toType;
 
-	if (castFlags.has(CASTFLAG_UFCS) && structType->isPointerTo(TypeInfoKind::Struct))
+	if (castFlags.has(CAST_FLAG_UFCS) && structType->isPointerTo(TypeInfoKind::Struct))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
@@ -18,7 +18,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	bool isMoveRef = false;
 
 	// Cast to a const reference, must take the pointed struct
-	if (structType->isConstPointerRef() && castFlags.has(CASTFLAG_PARAMS))
+	if (structType->isConstPointerRef() && castFlags.has(CAST_FLAG_PARAMS))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
@@ -26,7 +26,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	}
 
 	// We can also match a moveref with an opAffect
-	else if (structType->isPointerMoveRef() && castFlags.has(CASTFLAG_PARAMS))
+	else if (structType->isPointerMoveRef() && castFlags.has(CAST_FLAG_PARAMS))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
@@ -34,7 +34,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		isMoveRef          = true;
 	}
 
-	if (!structType->isStruct() || !castFlags.has(CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST))
+	if (!structType->isStruct() || !castFlags.has(CAST_FLAG_EXPLICIT | CAST_FLAG_AUTO_OP_CAST))
 		return false;
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
 	if (!typeStruct->declNode)
@@ -44,7 +44,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 	SymbolName* symbol;
 
 	bool isSuffix = false;
-	if ((fromNode && fromNode->hasSemFlag(SEMFLAG_LITERAL_SUFFIX)) || castFlags.has(CASTFLAG_LITERAL_SUFFIX))
+	if ((fromNode && fromNode->hasSemFlag(SEMFLAG_LITERAL_SUFFIX)) || castFlags.has(CAST_FLAG_LITERAL_SUFFIX))
 		isSuffix = true;
 
 	if (isSuffix)
@@ -79,7 +79,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 			if (!it->second)
 				return false;
 
-			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
+			if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
 			{
 				fromNode->addAstFlag(AST_OP_AFFECT_CAST);
 				fromNode->castedTypeInfo = fromType;
@@ -88,9 +88,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 				fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
 			}
 
-			context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_AFFECT);
+			context->castFlagsResult.add(CAST_RESULT_AUTO_OP_AFFECT);
 			if (isMoveRef)
-				context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT);
+				context->castFlagsResult.add(CAST_RESULT_AUTO_MOVE_OP_AFFECT);
 			return true;
 		}
 	}
@@ -115,11 +115,11 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		for (auto over : symbol->overloads)
 		{
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CASTFLAG_EXPLICIT))
+			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CAST_FLAG_EXPLICIT))
 				continue;
 			if (typeFunc->parameters.size() <= 1)
 				continue;
-			if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
+			if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CAST_FLAG_NO_LAST_MINUTE | CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
 				toAffect.push_back(over);
 		}
 	}
@@ -137,7 +137,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		return false;
 
 	// :opAffectParam
-	if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
+	if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
 	{
 		fromNode->addAstFlag(AST_OP_AFFECT_CAST);
 		fromNode->castedTypeInfo = fromType;
@@ -146,9 +146,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		fromNode->extMisc()->resolvedUserOpSymbolOverload = toAffect[0];
 	}
 
-	context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_AFFECT);
+	context->castFlagsResult.add(CAST_RESULT_AUTO_OP_AFFECT);
 	if (isMoveRef)
-		context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_MOVE_OP_AFFECT);
+		context->castFlagsResult.add(CAST_RESULT_AUTO_MOVE_OP_AFFECT);
 	return true;
 }
 
@@ -158,13 +158,13 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 	fromType = concretePtrRef(fromType);
 
 	auto structType = fromType;
-	if (castFlags.has(CASTFLAG_UFCS) && structType->isPointerTo(TypeInfoKind::Struct))
+	if (castFlags.has(CAST_FLAG_UFCS) && structType->isPointerTo(TypeInfoKind::Struct))
 	{
 		const auto typePtr = castTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
 		structType         = typePtr->pointedType;
 	}
 
-	if (!structType->isStruct() || !castFlags.has(CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OP_CAST))
+	if (!structType->isStruct() || !castFlags.has(CAST_FLAG_EXPLICIT | CAST_FLAG_AUTO_OP_CAST))
 		return false;
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
 	if (!typeStruct->declNode)
@@ -179,7 +179,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 			if (!it->second)
 				return false;
 
-			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
+			if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromType;
 				fromNode->typeInfo       = toType;
@@ -188,7 +188,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 				fromNode->addSemFlag(SEMFLAG_USER_CAST);
 			}
 
-			context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_CAST);
+			context->castFlagsResult.add(CAST_RESULT_AUTO_OP_CAST);
 			return true;
 		}
 	}
@@ -228,9 +228,9 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
 			if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
 				continue;
-			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CASTFLAG_EXPLICIT))
+			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CAST_FLAG_EXPLICIT))
 				continue;
-			if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
+			if (typeFunc->returnType->isSame(toType, CAST_FLAG_EXACT))
 				toCast.push_back(over);
 		}
 	}
@@ -244,7 +244,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 	if (toCast.empty())
 		return false;
 
-	if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
+	if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
 	{
 		fromNode->castedTypeInfo = fromType;
 		fromNode->typeInfo       = toType;
@@ -253,6 +253,6 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 		fromNode->addSemFlag(SEMFLAG_USER_CAST);
 	}
 
-	context->castFlagsResult.add(CASTFLAG_RESULT_AUTO_OP_CAST);
+	context->castFlagsResult.add(CAST_RESULT_AUTO_OP_CAST);
 	return true;
 }

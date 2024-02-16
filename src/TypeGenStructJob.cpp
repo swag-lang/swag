@@ -16,7 +16,7 @@ bool TypeGenStructJob::computeStruct()
 	concreteType->base.sizeOf = realType->sizeOf;
 
 	// Flags
-	if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
+	if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 	{
 		if (realType->hasFlag(TYPEINFO_STRUCT_NO_COPY))
 			exportedTypeInfoValue->flags &= ~static_cast<uint16_t>(ExportedTypeInfoFlags::CanCopy);
@@ -34,7 +34,7 @@ bool TypeGenStructJob::computeStruct()
 	concreteType->opPostCopy = nullptr;
 	concreteType->opPostMove = nullptr;
 
-	if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
+	if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 	{
 		Utf8 callName;
 		if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
@@ -177,7 +177,7 @@ bool TypeGenStructJob::computeStruct()
 	// Methods
 	concreteType->methods.buffer = nullptr;
 	concreteType->methods.count  = 0;
-	if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
+	if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 	{
 		if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
 		{
@@ -212,7 +212,7 @@ bool TypeGenStructJob::computeStruct()
 	// Interfaces
 	concreteType->interfaces.buffer = nullptr;
 	concreteType->interfaces.count  = 0;
-	if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
+	if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 	{
 		concreteType->interfaces.count = realType->interfaces.size();
 		if (concreteType->interfaces.count)
@@ -261,7 +261,7 @@ JobResult TypeGenStructJob::execute()
 	if (baseContext->result != ContextResult::Done)
 		return JobResult::KeepJobAlive;
 
-	if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
+	if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 	{
 		Semantic::waitAllStructInterfaces(this, realType);
 		if (baseContext->result != ContextResult::Done)

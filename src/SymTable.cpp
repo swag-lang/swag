@@ -156,7 +156,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 			}
 			else
 			{
-				if ((resolved->hasFlag(OVERLOAD_UNDEFINED)) && resolved->typeInfo->isSame(toAdd.typeInfo, CASTFLAG_CAST))
+				if ((resolved->hasFlag(OVERLOAD_UNDEFINED)) && resolved->typeInfo->isSame(toAdd.typeInfo, CAST_FLAG_CAST))
 				{
 					overload = resolved;
 					overload->flags &= ~OVERLOAD_UNDEFINED;

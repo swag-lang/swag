@@ -154,7 +154,7 @@ bool Semantic::resolveThrow(SemanticContext* context)
 	if (type->isString())
 		context->node->printLoc();
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CASTFLAG_AUTO_OP_CAST | CASTFLAG_CONCRETE_ENUM));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_CONCRETE_ENUM));
 	node->byteCodeFct = ByteCodeGen::emitThrow;
 	return true;
 }

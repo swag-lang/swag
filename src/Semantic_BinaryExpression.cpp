@@ -46,7 +46,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 		}
 
 		SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
-		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
 		return true;
 	}
 
@@ -70,11 +70,11 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
 		node->typeInfo = rightTypeInfo;
 		SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, FMT(Err(Err0360), leftTypeInfo->getDisplayNameC())}));
-		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, right, left, CASTFLAG_TRY_COERCE));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, right, left, CAST_FLAG_TRY_COERCE));
 		return true;
 	}
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
 	leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
 	switch (leftTypeInfo->nativeType)
@@ -238,11 +238,11 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
 		}
 
 		SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
-		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
 		return true;
 	}
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
 	leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
 	switch (leftTypeInfo->nativeType)
@@ -360,7 +360,7 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
 
 	SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
 	leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
 	switch (leftTypeInfo->nativeType)
@@ -491,7 +491,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
 
 	SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
 	leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
 	switch (leftTypeInfo->nativeType)
@@ -595,7 +595,7 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
 
 	SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
 	leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
 	switch (leftTypeInfo->nativeType)
@@ -1129,7 +1129,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 		if (!leftTypeInfo->isStruct())
 		{
 			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
 			node->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
 		}
 
@@ -1167,7 +1167,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 		return true;
 	}
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CAST_FLAG_TRY_COERCE));
 	const auto module = node->sourceFile->module;
 
 	if (!leftTypeInfo->isNativeIntegerOrRune())
@@ -1245,7 +1245,7 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 		return true;
 	}
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CAST_FLAG_TRY_COERCE));
 	const auto module = node->sourceFile->module;
 
 	if (!leftTypeInfo->isNativeIntegerOrRune())
@@ -1405,8 +1405,8 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
 	}
 
 	node->typeInfo = g_TypeMgr->typeInfoBool;
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, left, CASTFLAG_AUTO_BOOL));
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, right, CASTFLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, left, CAST_FLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, right, CAST_FLAG_AUTO_BOOL));
 
 	node->byteCodeFct = ByteCodeGen::emitBinaryOp;
 

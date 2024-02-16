@@ -21,4 +21,5 @@ struct Flags
 	void  remove(Flags fl) { flags &= ~fl.flags; }
 	Flags with(Flags fl) { return flags | fl.flags; }
 	Flags mask(Flags fl) { return flags & fl.flags; }
+	Flags maskInvert(Flags fl) { return flags & ~fl.flags; }
 };

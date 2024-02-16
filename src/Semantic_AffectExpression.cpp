@@ -279,13 +279,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
 		const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
 		if (right->hasAstFlag(AST_NO_LEFT_DROP))
-			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
 		            context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
 		if (right->hasAstFlag(AST_NO_RIGHT_DROP))
-			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
 		            context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
 		if (right->hasAstFlag(AST_FORCE_MOVE))
-			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST),
+			SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
 		            context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
 	}
 
@@ -336,7 +336,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 		{
 			waitAllStructInterfaces(context->baseJob, rightTypeInfo);
 			YIELD();
-			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_UN_CONST));
 		}
 	}
 
@@ -380,7 +380,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 			{
 				if (arrayNode)
 				{
-					if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST))
+					if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CAST_FLAG_CAST))
 					{
 						SWAG_CHECK(waitForStructUserOps(context, left));
 						YIELD();
@@ -410,14 +410,14 @@ bool Semantic::resolveAffect(SemanticContext* context)
 				}
 				else
 				{
-					if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_AFFECT))
+					if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CAST_FLAG_CAST | CAST_FLAG_FOR_AFFECT))
 					{
 						SWAG_CHECK(waitForStructUserOps(context, left));
 						YIELD();
 					}
 					else if (rightTypeInfo->isInitializerList())
 					{
-						SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UN_CONST | CASTFLAG_ACCEPT_PENDING));
+						SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_UN_CONST | CAST_FLAG_ACCEPT_PENDING));
 						YIELD();
 					}
 					else
@@ -437,11 +437,11 @@ bool Semantic::resolveAffect(SemanticContext* context)
 				break;
 			}
 
-			CastFlags castFlags = CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING;
+			CastFlags castFlags = CAST_FLAG_AUTO_BOOL | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT | CAST_FLAG_ACCEPT_PENDING;
 			if (leftTypeInfo->isStruct() ||
 				leftTypeInfo->isArray() ||
 				leftTypeInfo->isClosure())
-				castFlags.add(CASTFLAG_UN_CONST);
+				castFlags.add(CAST_FLAG_UN_CONST);
 
 			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
 			YIELD();
@@ -461,7 +461,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 				break;
 			}
 
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CAST_FLAG_TRY_COERCE));
 
 			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
 			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
@@ -495,7 +495,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 			}
 
 			SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
 
 			if (leftTypeInfo->nativeType == NativeTypeKind::String ||
 				leftTypeInfo->nativeType == NativeTypeKind::CString ||
@@ -540,12 +540,12 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
 				rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 				SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
-				SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
+				SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
 				break;
 			}
 
 			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
 
 			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
 				leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -568,7 +568,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 			}
 
 			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
 
 			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
 				leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -593,7 +593,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 			}
 
 			SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
 
 			if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
 				leftTypeInfo->nativeType == NativeTypeKind::String ||

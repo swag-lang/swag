@@ -431,11 +431,11 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
 
 	// Expression to check
 	const auto expr = node->children[0];
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL | CASTFLAG_JUST_CHECK));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CAST_FLAG_AUTO_BOOL | CAST_FLAG_JUST_CHECK));
 	SWAG_CHECK(executeCompilerNode(context, expr, true));
 	YIELD();
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CAST_FLAG_AUTO_BOOL));
 	node->addAstFlag(AST_NO_BYTECODE);
 
 	if (!expr->computedValue->reg.b)
@@ -683,7 +683,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
 bool Semantic::resolveCompilerIf(SemanticContext* context)
 {
 	const auto node = castAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
+	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
 	SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
 	YIELD();

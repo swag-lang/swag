@@ -234,7 +234,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
 	const auto typeSubEnum         = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
 	const auto concreteTypeSubEnum = TypeManager::concreteType(typeSubEnum->rawType, CONCRETE_ALIAS);
 	const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
-	if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CASTFLAG_EXACT))
+	if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CAST_FLAG_EXACT))
 	{
 		const Diagnostic diag{node, FMT(Err(Err0429), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
 		const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload);
@@ -286,7 +286,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 		if (rawTypeInfo->isArray())
 		{
 			SWAG_CHECK(checkIsConstExpr(context, assignNode));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
 			SWAG_ASSERT(!assignNode->hasComputedValue());
 
 			assignNode->setFlagsValueIsComputed();
@@ -298,7 +298,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 		else if (rawTypeInfo->isSlice())
 		{
 			SWAG_CHECK(checkIsConstExpr(context, assignNode));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
 
 			const auto assignType = TypeManager::concreteType(assignNode->typeInfo);
 			assignNode->setFlagsValueIsComputed();
@@ -310,7 +310,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 		else
 		{
 			SWAG_CHECK(checkIsConstExpr(context, assignNode->hasComputedValue(), assignNode));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
+			SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
 			enumNode->computedValue = assignNode->computedValue;
 		}
 	}

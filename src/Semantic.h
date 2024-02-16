@@ -17,6 +17,8 @@ struct SymbolOverload;
 struct TypeInfoFuncAttr;
 enum class AstNodeKind : uint8_t;
 enum class SymbolKind : uint8_t;
+using ToConcreteFlags = Flags<uint32_t>;
+using GenExportFlags = Flags<uint32_t>;
 
 struct FindUserOp
 {
@@ -196,7 +198,7 @@ namespace Semantic
 	bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
 	AstFuncDecl*   getFunctionForReturn(AstNode* node);
 	bool           setUnRef(AstNode* node);
-	TypeInfo*      getConcreteTypeUnRef(AstNode* node, uint32_t concreteFlags);
+	TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
 	AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);
 	bool           makeIntrinsicKindof(SemanticContext* context, AstNode* node);
 
@@ -222,8 +224,8 @@ namespace Semantic
 	bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child);
 	bool resolveUnaryOpInvert(SemanticContext* context, AstNode* child);
 	bool resolveUnaryOp(SemanticContext* context);
-	bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags = 0);
-	bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, uint32_t flags = 0);
+	bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, GenExportFlags flags = 0);
+	bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, GenExportFlags flags = 0);
 	bool resolveType(SemanticContext* context);
 	bool resolveTypeLambdaClosure(SemanticContext* context);
 	bool resolveVarDeclAfterType(SemanticContext* context);

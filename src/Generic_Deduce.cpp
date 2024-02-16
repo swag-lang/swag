@@ -91,7 +91,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 				// But we do not want A and B to match in generic replacement.
 				// So we check they are the same.
 				const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
-				if (wantedPointer->pointedType->isSame(callPointer->pointedType, CASTFLAG_CAST))
+				if (wantedPointer->pointedType->isSame(callPointer->pointedType, CAST_FLAG_CAST))
 				{
 					wantedTypeInfos.push_back(wantedPointer->pointedType);
 					callTypeInfos.push_back(callPointer->pointedType);
@@ -102,7 +102,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 				// Because of using var cast, we can have here *A and *B with a match.
 				// But we do not want A and B to match in generic replacement.
 				// So we check they are the same.
-				if (wantedPointer->pointedType->isSame(callTypeInfo, CASTFLAG_CAST))
+				if (wantedPointer->pointedType->isSame(callTypeInfo, CAST_FLAG_CAST))
 				{
 					wantedTypeInfos.push_back(wantedPointer->pointedType);
 					callTypeInfos.push_back(callTypeInfo);
@@ -284,7 +284,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
 		                                               callTypeInfo,
 		                                               nullptr,
 		                                               nullptr,
-		                                               castFlags.with(CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS));
+		                                               castFlags.with(CAST_FLAG_JUST_CHECK | CAST_FLAG_PARAMS));
 		if (context.semContext->result != ContextResult::Done)
 			return;
 
@@ -312,7 +312,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
 	else if (wantedTypeInfo->isPointer())
 		canReg = false;
 	else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
-		canReg = wantedTypeInfo->isSame(callTypeInfo, CASTFLAG_CAST);
+		canReg = wantedTypeInfo->isSame(callTypeInfo, CAST_FLAG_CAST);
 
 	if (!canReg)
 		return;

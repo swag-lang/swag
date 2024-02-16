@@ -169,11 +169,11 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 			YIELD();
 		}
 
-		CastFlags castFlags = CASTFLAG_AUTO_OP_CAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
+		CastFlags castFlags = CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_PARAMS | CAST_FLAG_PTR_REF | CAST_FLAG_FOR_AFFECT | CAST_FLAG_ACCEPT_MOVE_REF;
 		if (i == 0 && oneMatch.ufcs)
-			castFlags.add(CASTFLAG_UFCS);
+			castFlags.add(CAST_FLAG_UFCS);
 		if (oneMatch.oneOverload && !oneMatch.oneOverload->overload->node->hasAttribute(ATTRIBUTE_OVERLOAD))
-			castFlags.add(CASTFLAG_TRY_COERCE);
+			castFlags.add(CAST_FLAG_TRY_COERCE);
 
 		TypeInfo* toType = nullptr;
 		if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
@@ -190,7 +190,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 			{
 				setUnRef(nodeCall);
 			}
-			else if (oneMatch.solvedCastFlags[i].has(CASTFLAG_RESULT_FROM_REF))
+			else if (oneMatch.solvedCastFlags[i].has(CAST_RESULT_FROM_REF))
 			{
 				setUnRef(nodeCall);
 				if (nodeCall->castedTypeInfo)
@@ -247,7 +247,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				else
 					return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
 			}
-			else if (context->castFlagsResult.has(CASTFLAG_RESULT_FORCE_REF))
+			else if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
 			{
 				const auto front = nodeCall->children.front();
 
@@ -922,9 +922,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 					size_t idx      = nodeCall->indexParam;
 					if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
 					{
-						CastFlags castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UN_CONST | CASTFLAG_PTR_REF;
+						CastFlags castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST | CAST_FLAG_PTR_REF;
 						if (canOptimAffect)
-							castFlags.add(CASTFLAG_NO_TUPLE_TO_STRUCT);
+							castFlags.add(CAST_FLAG_NO_TUPLE_TO_STRUCT);
 						SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
 
 						auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
@@ -1736,7 +1736,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 	// to create an instance with the exact type.
 	// We only test the first match here, because the filtering of matches would have remove it if some other instances
 	// without autoOpCast are present.
-	if (!matches.empty() && (matches[0]->castFlagsResult.has(CASTFLAG_RESULT_GEN_AUTO_OP_CAST)) && (!genericMatches.empty() || !genericMatchesSI.empty()))
+	if (!matches.empty() && (matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST)) && (!genericMatches.empty() || !genericMatchesSI.empty()))
 	{
 		prevMatchesCount = 0;
 		matches.clear();

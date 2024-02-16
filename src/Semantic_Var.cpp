@@ -369,7 +369,7 @@ bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node
 
 	// For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
 	if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-		SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags | CASTFLAG_NO_COLLECT));
+		SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags | CAST_FLAG_NO_COLLECT));
 	else
 		SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags));
 	node->typeInfo->sizeOf = node->assignment->typeInfo->sizeOf;
@@ -883,8 +883,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				YIELD();
 			}
 
-			auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT |
-				CASTFLAG_ACCEPT_PENDING;
+			auto castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_PTR_REF | CAST_FLAG_FOR_AFFECT | CAST_FLAG_FOR_VAR_INIT |
+				CAST_FLAG_ACCEPT_PENDING;
 			if (node->type->hasAstFlag(AST_FROM_GENERIC_REPLACE) || (node->type->children.count && node->type->children.back()->hasAstFlag(AST_FROM_GENERIC_REPLACE)))
 				SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
 			else
@@ -897,7 +897,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		}
 		else
 		{
-			if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, CASTFLAG_CAST))
+			if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, CAST_FLAG_CAST))
 			{
 				SWAG_CHECK(resolveUserOpAffect(context, leftConcreteType, rightConcreteType, node->type, node->assignment));
 				YIELD();
@@ -962,7 +962,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		{
 			CastFlags castFlags = 0;
 			if (!isCompilerConstant)
-				castFlags = CASTFLAG_FORCE_UN_CONST;
+				castFlags = CAST_FLAG_FORCE_UN_CONST;
 			SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags, castFlags));
 		}
 

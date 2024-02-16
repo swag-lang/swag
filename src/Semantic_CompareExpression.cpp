@@ -153,7 +153,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
 		leftTypeInfo  = leftTypeInfo->getConstAlias();
 		rightTypeInfo = rightTypeInfo->getConstAlias();
-		if (!leftTypeInfo->isSame(rightTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_COMPARE))
+		if (!leftTypeInfo->isSame(rightTypeInfo, CAST_FLAG_CAST | CAST_FLAG_FOR_COMPARE))
 			SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
 
 		SWAG_CHECK(Ast::generateOpEquals(context, leftTypeInfo, rightTypeInfo));
@@ -527,7 +527,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 	else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
 	{
 		SWAG_CHECK(
-			TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UN_CONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE | CASTFLAG_ACCEPT_PENDING
+			TypeManager::makeCompatibles(context, left, right, CAST_FLAG_COMMUTATIVE | CAST_FLAG_FORCE_UN_CONST | CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE | CAST_FLAG_ACCEPT_PENDING
 			));
 		YIELD();
 	}
