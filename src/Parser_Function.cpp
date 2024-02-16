@@ -1081,7 +1081,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
 
 			while (token.id != TokenId::SymVertical)
 			{
-				auto parentId = static_cast<AstNode*>(capture);
+				auto parentId = castAst<AstNode>(capture);
 				auto byRef    = false;
 				if (token.id == TokenId::SymAmpersand)
 				{

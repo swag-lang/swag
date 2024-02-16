@@ -2,7 +2,7 @@
 #include "Mutex.h"
 
 #ifdef SWAG_HAS_ASSERT
-struct RaceCondition // NOLINT(cppcoreguidelines-special-member-functions)
+struct RaceCondition
 {
 	struct Instance
 	{

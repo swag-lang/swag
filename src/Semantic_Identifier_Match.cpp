@@ -1009,12 +1009,12 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				*identifier->computedValue = overload->computedValue;
 
 				// If constant is inside an expression, everything before should be constant too.
-				// Otherwise that means that we reference a constant threw a variable
+				// Otherwise, that means that we reference a constant threw a variable
 				//
 				// var x = y.Constant where y is a variable
 				//
 				auto checkParent = identifier->parent;
-				auto child       = static_cast<AstNode*>(identifier);
+				auto child       = castAst<AstNode>(identifier);
 				while (checkParent->kind == AstNodeKind::ArrayPointerIndex ||
 					checkParent->kind == AstNodeKind::ArrayPointerSlicing)
 				{

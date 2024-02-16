@@ -294,7 +294,6 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 {
 	const auto node   = context->node;
@@ -502,7 +501,6 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 {
 	const auto node = context->node;
@@ -870,7 +868,6 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
 	const auto node = context->node;

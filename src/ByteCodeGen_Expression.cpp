@@ -88,7 +88,6 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 {
 	const auto ifTrue  = context->node;
@@ -110,7 +109,6 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 {
 	const auto node       = castAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
@@ -136,7 +134,6 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitExpressionListBefore(ByteCodeGenContext* context)
 {
 	const auto node = context->node;
@@ -521,7 +518,6 @@ bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitDefer(ByteCodeGenContext* context)
 {
 	const auto node = castAst<AstDefer>(context->node, AstNodeKind::Defer);

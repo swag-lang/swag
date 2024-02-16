@@ -935,7 +935,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
 		(token.id == TokenId::SymGreater) ||
 		(token.id == TokenId::SymLowerEqualGreater))
 	{
-		auto binaryNode         = static_cast<AstNode*>(Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr));
+		auto binaryNode         = castAst<AstNode>(Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr));
 		binaryNode->semanticFct = Semantic::resolveCompareExpression;
 		binaryNode->token       = static_cast<Token>(token);
 

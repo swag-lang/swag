@@ -6,7 +6,7 @@ static constexpr uint32_t BCC_FLAG_NO_LOCATION  = 0x00000001;
 static constexpr uint32_t BCC_FLAG_NO_SAFETY    = 0x00000002;
 static constexpr uint32_t BCC_FLAG_FOR_DEBUGGER = 0x00000004;
 
-struct ByteCodeGenContext : JobContext // NOLINT(cppcoreguidelines-special-member-functions)
+struct ByteCodeGenContext : JobContext
 {
 	ByteCodeGenContext()                                = default;
 	ByteCodeGenContext(const ByteCodeGenContext& other) = default;
@@ -39,7 +39,7 @@ struct ByteCodeGenContext : JobContext // NOLINT(cppcoreguidelines-special-membe
 	bool     noLocation        = false;
 };
 
-struct PushLocation // NOLINT(cppcoreguidelines-special-member-functions)
+struct PushLocation
 {
 	PushLocation(ByteCodeGenContext* bc, SourceLocation* loc)
 	{
@@ -64,7 +64,7 @@ struct PushLocation // NOLINT(cppcoreguidelines-special-member-functions)
 	ByteCodeGenContext* savedBc = nullptr;
 };
 
-struct PushNode // NOLINT(cppcoreguidelines-special-member-functions)
+struct PushNode
 {
 	PushNode(ByteCodeGenContext* bc, AstNode* node)
 	{
@@ -80,7 +80,7 @@ struct PushNode // NOLINT(cppcoreguidelines-special-member-functions)
 	ByteCodeGenContext* savedBc;
 };
 
-struct PushContextFlags // NOLINT(cppcoreguidelines-special-member-functions)
+struct PushContextFlags
 {
 	PushContextFlags(ByteCodeGenContext* bc, uint32_t flags)
 	{
@@ -98,7 +98,7 @@ struct PushContextFlags // NOLINT(cppcoreguidelines-special-member-functions)
 	uint32_t            savedFlags;
 };
 
-struct PushICFlags // NOLINT(cppcoreguidelines-special-member-functions)
+struct PushICFlags
 {
 	PushICFlags(ByteCodeGenContext* bc, uint16_t flags)
 	{

@@ -174,7 +174,6 @@ void ByteCodeGen::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
 	emitSafetyNotZero(context, r, 64, safetyMsg(SafetyMsg::ErrCheck));
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 {
 	if ((context->contextFlags & BCC_FLAG_NO_SAFETY) ||
@@ -190,7 +189,6 @@ bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
 	if ((context->contextFlags & BCC_FLAG_NO_SAFETY) ||

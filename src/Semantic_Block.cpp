@@ -203,7 +203,6 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
 	const auto node                  = castAst<AstFor>(context->node, AstNodeKind::For);
@@ -211,7 +210,6 @@ bool Semantic::resolveForBefore(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
 	const auto node                  = castAst<AstLoop>(context->node, AstNodeKind::Loop);
@@ -1026,7 +1024,6 @@ bool Semantic::resolveIndex(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
 	const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
@@ -1110,7 +1107,6 @@ bool Semantic::resolveContinue(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
 	const auto node = castAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);

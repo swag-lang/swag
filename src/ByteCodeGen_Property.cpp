@@ -7,7 +7,6 @@
 #include "Symbol.h"
 #include "TypeManager.h"
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
 	const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -21,7 +20,6 @@ bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
 	const auto node    = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -46,7 +44,6 @@ bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
 	const auto node   = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -77,7 +74,6 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 {
 	const auto node     = context->node;
@@ -104,7 +100,6 @@ bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
 	const auto node  = castAst<AstNode>(context->node, AstNodeKind::IntrinsicLocation);
@@ -121,7 +116,6 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 {
 	const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -159,21 +153,18 @@ bool ByteCodeGen::emitKindOf(const ByteCodeGenContext* context, AstNode* node, T
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitImplicitKindOfAny(ByteCodeGenContext* context)
 {
 	SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Native));
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitImplicitKindOfInterface(ByteCodeGenContext* context)
 {
 	SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Interface));
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
 	const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

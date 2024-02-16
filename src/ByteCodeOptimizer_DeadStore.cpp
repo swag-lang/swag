@@ -104,7 +104,6 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 				if (ip1->d.u32 == regScan)
 				{
 					parseCxt1.mustStopBlock = true;
-					// ReSharper disable once CppRedundantControlFlowJump
 					return;
 				}
 			}

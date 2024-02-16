@@ -189,7 +189,6 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
 	const auto node = context->node;
@@ -1154,7 +1153,6 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
 	const auto node = context->node;

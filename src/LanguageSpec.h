@@ -1,5 +1,3 @@
-// ReSharper disable CppInconsistentNaming
-// ReSharper disable IdentifierTypo
 #pragma once
 #include "LangHashTable.h"
 #include "Tokenizer.h"

@@ -326,7 +326,6 @@ bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitCatch(ByteCodeGenContext* context)
 {
 	EMIT_INST0(context, ByteCodeOp::InternalCatchErr);

@@ -775,7 +775,6 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
 	const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
@@ -792,7 +791,6 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveTypeList(SemanticContext* context)
 {
 	const auto node = context->node;

@@ -290,7 +290,6 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIf(ByteCodeGenContext* context)
 {
 	const auto ifNode = castAst<AstIf>(context->node, AstNodeKind::If);
@@ -345,7 +344,6 @@ bool ByteCodeGen::emitIfAfterIf(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
 {
 	const auto node = castAst<AstBreakable>(context->node);
@@ -414,7 +412,6 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLoopBeforeBlock(ByteCodeGenContext* context)
 {
 	const auto node         = context->node;
@@ -593,7 +590,6 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitLabelBeforeBlock(ByteCodeGenContext* context)
 {
 	const auto node                  = context->node;
@@ -640,7 +636,6 @@ bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitWhileBeforeExpr(ByteCodeGenContext* context)
 {
 	const auto node      = context->node;
@@ -676,7 +671,6 @@ bool ByteCodeGen::emitWhileAfterExpr(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
 {
 	const auto node    = context->node;
@@ -690,7 +684,6 @@ bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
 {
 	const auto node    = context->node;
@@ -702,7 +695,6 @@ bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
 {
 	const auto node    = context->node;
@@ -730,7 +722,6 @@ bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 {
 	const auto node       = context->node;
@@ -769,7 +760,6 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
 {
 	const auto node       = context->node;
@@ -784,7 +774,6 @@ bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 {
 	const auto node       = context->node;
@@ -993,7 +982,6 @@ bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
 {
 	const auto node        = context->node;

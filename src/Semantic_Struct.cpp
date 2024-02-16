@@ -613,7 +613,6 @@ bool Semantic::resolveImpl(SemanticContext* context)
 	return true;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 {
 	const auto structNode = castAst<AstStruct>(context->node, AstNodeKind::StructDecl);

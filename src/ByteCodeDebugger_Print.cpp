@@ -485,7 +485,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 	return BcDbgCommandResult::Continue;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
 	if (arg.split.size() > 2)
@@ -535,7 +534,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
 	return BcDbgCommandResult::Continue;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
 	if (arg.split.size() > 2)
@@ -571,7 +569,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 	return BcDbgCommandResult::Continue;
 }
 
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
 	if (arg.split.size() > 2)
