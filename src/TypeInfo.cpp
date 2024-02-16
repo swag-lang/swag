@@ -137,10 +137,10 @@ bool TypeInfo::isPointerVoid()
 	if (kind != TypeInfoKind::Pointer)
 		return false;
 	const auto ptr   = castTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
-	const auto unref = ptr->pointedType->getConcreteAlias();
-	if (!unref->isNative())
+	const auto unRef = ptr->pointedType->getConcreteAlias();
+	if (!unRef->isNative())
 		return false;
-	if (unref->nativeType != NativeTypeKind::Void)
+	if (unRef->nativeType != NativeTypeKind::Void)
 		return false;
 	return true;
 }
@@ -161,7 +161,7 @@ const TypeInfo* TypeInfo::getConstAlias() const
 {
 	if (!hasFlag(TYPEINFO_CONST_ALIAS))
 		return this;
-	return static_cast<const TypeInfoAlias*>(this)->rawType;
+	return castTypeInfo<TypeInfoAlias>(this)->rawType;
 }
 
 TypeInfo* TypeInfo::getConcreteAlias() const
@@ -361,7 +361,7 @@ void TypeInfo::removeGenericFlag()
 	}
 }
 
-int TypeInfoParam::numRegisters() const
+uint32_t TypeInfoParam::numRegisters() const
 {
 	return typeInfo->numRegisters();
 }

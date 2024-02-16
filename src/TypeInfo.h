@@ -226,7 +226,7 @@ struct TypeInfo
 
 struct TypeInfoParam
 {
-	int            numRegisters() const;
+	uint32_t       numRegisters() const;
 	bool           isSame(const TypeInfoParam* to, uint64_t castFlags) const;
 	TypeInfoParam* clone() const;
 	void           allocateComputedValue();
@@ -328,8 +328,8 @@ struct TypeInfoFuncAttr final : TypeInfo
 	uint32_t        registerIdxToParamIdx(uint32_t argIdx);
 	TypeInfo*       registerIdxToType(int argIdx);
 	uint32_t        numParamsRegisters();
-	int             numReturnRegisters() const;
-	int             numTotalRegisters();
+	uint32_t        numReturnRegisters() const;
+	uint32_t        numTotalRegisters();
 	const CallConv& getCallConv() const;
 
 	VectorNative<TypeInfoParam*>        capture;

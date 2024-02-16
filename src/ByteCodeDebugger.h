@@ -134,7 +134,7 @@ struct ByteCodeDebugger
 	static BcDbgCommandResult cmdUntil(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 	static BcDbgCommandResult cmdUntili(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 	static BcDbgCommandResult cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
-	static BcDbgCommandResult cmdWhere(const ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+	static BcDbgCommandResult cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 	static BcDbgCommandResult cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 	static BcDbgCommandResult cmdInstructionDump(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 	static BcDbgCommandResult cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg);

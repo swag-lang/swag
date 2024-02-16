@@ -728,7 +728,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
 	// Normal user case
 	if (allocRR)
 	{
-		for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+		for (uint32_t j = 0; j < typeFuncBC->numReturnRegisters(); j++)
 		{
 			params.push_back(GEP64(allocRR, j));
 		}
@@ -737,7 +737,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
 	// Special case when calling an internal function
 	else
 	{
-		for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+		for (uint32_t j = 0; j < typeFuncBC->numReturnRegisters(); j++)
 		{
 			const auto index = pushRAParams[popRAidx--];
 			if (index == UINT32_MAX)

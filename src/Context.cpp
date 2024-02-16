@@ -32,7 +32,7 @@ static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
 	VectorNative<Register*> paramRegisters;
 	VectorNative<Register>  fakeRegisters;
 
-	for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
+	for (uint32_t i = 0; i < typeFunc->numReturnRegisters(); i++)
 	{
 		auto r = va_arg(vaList, Register*);
 		returnRegisters.push_back(r);

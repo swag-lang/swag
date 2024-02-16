@@ -560,7 +560,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
 			if (!lastBreakIp->node->ownerInline && ip->node->ownerInline)
 			{
-				// Can only step into a mixin if we come from a non inline block
+				// Can only step into a mixin if we come from a not inlined block
 				if (!ip->node->hasAstFlag(AST_IN_MIXIN))
 				{
 					zapCurrentIp = true;

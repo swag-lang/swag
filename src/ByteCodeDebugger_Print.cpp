@@ -190,7 +190,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
 	printDisplay(context);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdWhere(const ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
 	if (arg.split.size() != 1)
 		return BcDbgCommandResult::BadArguments;

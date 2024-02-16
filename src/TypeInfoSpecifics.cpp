@@ -914,12 +914,12 @@ uint32_t TypeInfoFuncAttr::numParamsRegisters()
 	return total;
 }
 
-int TypeInfoFuncAttr::numReturnRegisters() const
+uint32_t TypeInfoFuncAttr::numReturnRegisters() const
 {
 	return returnType ? returnType->numRegisters() : 0;
 }
 
-int TypeInfoFuncAttr::numTotalRegisters()
+uint32_t TypeInfoFuncAttr::numTotalRegisters()
 {
 	return numReturnRegisters() + numParamsRegisters();
 }
