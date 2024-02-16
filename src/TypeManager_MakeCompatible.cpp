@@ -15,7 +15,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
 	// convert {...} expression list to a structure : this will create a variable, with parameters
-	if (!(castFlags.has(CASTFLAG_NO_TUPLE_TO_STRUCT)))
+	if (!castFlags.has(CASTFLAG_NO_TUPLE_TO_STRUCT))
 	{
 		SWAG_ASSERT(fromNode->typeInfo);
 		const auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
@@ -60,7 +60,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 	// auto cast
 	if (fromNode->typeInfo->hasFlag(TYPEINFO_AUTO_CAST) && !fromNode->castedTypeInfo)
 	{
-		if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (!castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			fromNode->castedTypeInfo = fromNode->typeInfo;
 			fromNode->typeInfo       = toType;
@@ -68,7 +68,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 	}
 
 	// Store constant expression in the constant segment
-	if (!(castFlags.has(CASTFLAG_NO_COLLECT)))
+	if (!castFlags.has(CASTFLAG_NO_COLLECT))
 	{
 		if (fromNode->typeInfo->isListTuple() || fromNode->typeInfo->isListArray())
 		{
@@ -200,7 +200,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	// To/From a moveref
 	if (!fromType->hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF) && toType->hasFlag(TYPEINFO_POINTER_MOVE_REF))
 	{
-		if ((castFlags.has(CASTFLAG_PARAMS)) && !(castFlags.has(CASTFLAG_ACCEPT_MOVE_REF)))
+		if (castFlags.has(CASTFLAG_PARAMS) && !castFlags.has(CASTFLAG_ACCEPT_MOVE_REF))
 			return castError(context, toType, fromType, fromNode, castFlags);
 	}
 	else if (fromType->hasFlag(TYPEINFO_POINTER_ACCEPT_MOVE_REF) && !toType->hasFlag(TYPEINFO_POINTER_MOVE_REF))
@@ -309,14 +309,14 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 	}
 
 	// Const mismatch
-	if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !(castFlags.has(CASTFLAG_FORCE_UN_CONST)))
+	if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !castFlags.has(CASTFLAG_FORCE_UN_CONST))
 	{
-		if (!(castFlags.has(CASTFLAG_PARAMS)) || !toType->isStruct())
+		if (!castFlags.has(CASTFLAG_PARAMS) || !toType->isStruct())
 		{
 			if (!toType->isPointerNull() &&
 				!toType->isString() &&
 				!toType->isInterface() &&
-				(!toType->isBool() || !(castFlags.has(CASTFLAG_AUTO_BOOL))) &&
+				(!toType->isBool() || !castFlags.has(CASTFLAG_AUTO_BOOL)) &&
 				(!toType->isNative(NativeTypeKind::U64) || !fromType->isPointer()))
 			{
 				const bool toConst   = toType->isConst();
@@ -332,7 +332,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
 				if (diff)
 				{
-					if (!(castFlags.has(CASTFLAG_UN_CONST)))
+					if (!castFlags.has(CASTFLAG_UN_CONST))
 						return castError(context, toType, fromType, fromNode, castFlags, CastErrorType::Const);
 
 					// We can affect a const to an un-const if type is by copy, and we are in an affectation

@@ -189,7 +189,7 @@ bool TypeInfoPointer::isSame(const TypeInfo* to, CastFlags castFlags) const
 	// Anonymous pointers
 	if (castFlags.has(CASTFLAG_CAST))
 	{
-		if (other->pointedType->isVoid() && !(castFlags.has(CASTFLAG_FOR_GENERIC)))
+		if (other->pointedType->isVoid() && !castFlags.has(CASTFLAG_FOR_GENERIC))
 			return true;
 		if (to->hasFlag(TYPEINFO_POINTER_ARITHMETIC) && !hasFlag(TYPEINFO_POINTER_ARITHMETIC))
 			return false;
@@ -413,7 +413,7 @@ bool TypeInfoGeneric::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
 	if (this == to)
 		return true;
-	if (!(castFlags.has(CASTFLAG_EXACT)) && !to->isKindGeneric())
+	if (!castFlags.has(CASTFLAG_EXACT) && !to->isKindGeneric())
 		return true;
 	if (to->kind == kind)
 		return name == to->name;
@@ -497,7 +497,7 @@ bool TypeInfoEnum::isSame(const TypeInfo* to, CastFlags castFlags) const
 	if (values.size() != other->values.size())
 		return false;
 
-	if (!(castFlags.has(CASTFLAG_CAST)))
+	if (!castFlags.has(CASTFLAG_CAST))
 	{
 		const auto childSize = values.size();
 		if (childSize != other->values.size())
@@ -1071,9 +1071,9 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
 		return false;
 
 	// A tuple can only match a tuple, and a struct another struct
-	if (!(castFlags.has(CASTFLAG_CAST)) ||
-		(castFlags.has(CASTFLAG_FOR_GENERIC)) ||
-		(castFlags.has(CASTFLAG_EXACT_TUPLE_STRUCT)))
+	if (!castFlags.has(CASTFLAG_CAST) ||
+		castFlags.has(CASTFLAG_FOR_GENERIC) ||
+		castFlags.has(CASTFLAG_EXACT_TUPLE_STRUCT))
 	{
 		if (isTuple() != to->isTuple())
 			return false;
@@ -1126,7 +1126,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
 
 	// Compare field by field
 	bool compareFields = false;
-	if (!hasTuple && !(castFlags.has(CASTFLAG_CAST)))
+	if (!hasTuple && !castFlags.has(CASTFLAG_CAST))
 	{
 		if (isGeneric() != other->isGeneric())
 			return false;
@@ -1162,7 +1162,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
 			bool compareNames = false;
 			if (castFlags.has(CASTFLAG_EXACT))
 				compareNames = true;
-			else if (!(castFlags.has(CASTFLAG_FOR_AFFECT)) && !(castFlags.has(CASTFLAG_FOR_COMPARE)))
+			else if (!castFlags.has(CASTFLAG_FOR_AFFECT) && !castFlags.has(CASTFLAG_FOR_COMPARE))
 				compareNames = true;
 			else if (castFlags.has(CASTFLAG_EXACT_TUPLE_STRUCT))
 				compareNames = true;

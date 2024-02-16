@@ -59,7 +59,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 		return true;
 	if (castFlags.has(CASTFLAG_JUST_CHECK))
 		return true;
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT))
 		return true;
 	if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
 		return true;
@@ -203,7 +203,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, CastErrorType castErrorType)
 {
 	// Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
-	if (!(castFlags.has(CASTFLAG_NO_LAST_MINUTE)))
+	if (!castFlags.has(CASTFLAG_NO_LAST_MINUTE))
 	{
 		if (tryOpCast(context, toType, fromType, fromNode, castFlags))
 			return true;
@@ -217,7 +217,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 	context->castErrorFlags    = castFlags;
 	context->castErrorType     = castErrorType;
 
-	if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+	if (!castFlags.has(CASTFLAG_JUST_CHECK))
 	{
 		// More specific message
 		Utf8                      hint, msg;

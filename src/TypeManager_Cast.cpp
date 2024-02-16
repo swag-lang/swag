@@ -26,7 +26,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		fromType->isInterface() ||
 		fromType->isSlice())
 	{
-		if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (!castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			fromNode->typeInfo       = g_TypeMgr->typeInfoBool;
 			fromNode->castedTypeInfo = fromType;
@@ -62,7 +62,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::U16:
 			if (fromNode)
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					if (fromNode->hasComputedValue())
 					{
@@ -83,7 +83,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::Rune:
 			if (fromNode)
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					if (fromNode->hasComputedValue())
 					{
@@ -103,7 +103,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::U64:
 			if (fromNode)
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					if (fromNode->hasComputedValue())
 					{
@@ -122,7 +122,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::F32:
 			if (fromNode)
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					if (fromNode->hasComputedValue())
 					{
@@ -141,7 +141,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::F64:
 			if (fromNode)
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					if (fromNode->hasComputedValue())
 					{
@@ -160,7 +160,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::String:
 			if (fromNode)
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					if (fromNode->hasComputedValue())
 					{
@@ -189,7 +189,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 	if (fromType->nativeType == NativeTypeKind::Rune)
 		return true;
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -221,7 +221,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::U64:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->typeInfo = g_TypeMgr->typeInfoU32;
 				}
@@ -231,7 +231,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::F32:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->computedValue->reg.u64 = static_cast<uint64_t>(fromNode->computedValue->reg.f32);
 					fromNode->typeInfo               = g_TypeMgr->typeInfoU32;
@@ -242,7 +242,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::F64:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->computedValue->reg.u64 = static_cast<uint64_t>(fromNode->computedValue->reg.f64);
 					fromNode->typeInfo               = g_TypeMgr->typeInfoU32;
@@ -256,7 +256,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 				uint32_t ch;
 				if (fromNode->computedValue->text.toChar32(ch))
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 					{
 						fromNode->computedValue->reg.u64 = ch;
 						fromNode->typeInfo               = g_TypeMgr->typeInfoRune;
@@ -278,7 +278,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 		case NativeTypeKind::S32:
 			if (fromType->isCharacter())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->typeInfo = g_TypeMgr->typeInfoRune;
 				}
@@ -294,7 +294,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
 				uint32_t ch;
 				if (fromNode->computedValue->text.toChar32(ch))
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 					{
 						fromNode->computedValue->reg.u64 = ch;
 						fromNode->typeInfo               = g_TypeMgr->typeInfoRune;
@@ -329,7 +329,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.s64 < 0)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
 					return false;
 				}
@@ -353,7 +353,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.u64 > UINT8_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
 					return false;
 				}
@@ -375,14 +375,14 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
 					return false;
 				}
 
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(UINT8_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
 					return false;
 				}
@@ -394,14 +394,14 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
 					return false;
 				}
 
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(UINT8_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
 					return false;
 				}
@@ -413,7 +413,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -427,7 +427,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode && fromNode->hasComputedValue())
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						fromNode->typeInfo = g_TypeMgr->typeInfoU8;
 					return true;
 				}
@@ -444,7 +444,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -458,7 +458,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoU8;
 		switch (fromType->nativeType)
@@ -532,7 +532,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.s64 < 0)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
 					return false;
 				}
@@ -556,7 +556,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.u64 > UINT16_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
 					return false;
 				}
@@ -578,13 +578,13 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(UINT16_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
 					return false;
 				}
@@ -596,13 +596,13 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(UINT16_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
 					return false;
 				}
@@ -613,7 +613,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -627,7 +627,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode && fromNode->hasComputedValue())
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						fromNode->typeInfo = g_TypeMgr->typeInfoU16;
 					return true;
 				}
@@ -643,7 +643,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -658,7 +658,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoU16;
 		switch (fromType->nativeType)
@@ -732,7 +732,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.s64 < 0)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32, true);
 					return false;
 				}
@@ -756,7 +756,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.u64 > UINT32_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32);
 					return false;
 				}
@@ -768,13 +768,13 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32, true);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(UINT32_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32);
 					return false;
 				}
@@ -786,13 +786,13 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32, true);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(UINT32_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32);
 					return false;
 				}
@@ -804,7 +804,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -818,7 +818,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode && fromNode->hasComputedValue())
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						fromNode->typeInfo = g_TypeMgr->typeInfoU32;
 					return true;
 				}
@@ -834,7 +834,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -853,7 +853,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoU32;
 		switch (fromType->nativeType)
@@ -919,7 +919,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 	{
 		if (castFlags.has(CASTFLAG_EXPLICIT))
 		{
-			if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				fromNode->typeInfo = g_TypeMgr->typeInfoU64;
 			return true;
 		}
@@ -937,7 +937,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.s64 < 0)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
 					return false;
 				}
@@ -959,7 +959,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f32 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
 					return false;
 				}
@@ -971,13 +971,13 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f64 <= -SAFETY_ZERO_EPSILON)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(UINT64_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64);
 					return false;
 				}
@@ -989,7 +989,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1002,7 +1002,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 		case NativeTypeKind::U32:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 					fromNode->typeInfo = g_TypeMgr->typeInfoU64;
 				return true;
 			}
@@ -1018,7 +1018,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1038,7 +1038,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoU64;
 		switch (fromType->nativeType)
@@ -1114,7 +1114,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 				const auto value  = native->valueInteger;
 				if (value > UINT8_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
@@ -1125,7 +1125,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.u64 > INT8_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
@@ -1139,7 +1139,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
@@ -1161,13 +1161,13 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.f32 <= static_cast<float>(INT8_MIN) - 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(INT8_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
@@ -1179,13 +1179,13 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 			{
 				if (fromNode->computedValue->reg.f64 <= static_cast<double>(INT8_MIN) - 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(INT8_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
 					return false;
 				}
@@ -1197,7 +1197,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1216,7 +1216,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 		case NativeTypeKind::S64:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 					fromNode->typeInfo = g_TypeMgr->typeInfoS8;
 				return true;
 			}
@@ -1232,7 +1232,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1245,7 +1245,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoS8;
 		switch (fromType->nativeType)
@@ -1320,7 +1320,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 				const auto value  = native->valueInteger;
 				if (value > UINT16_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
@@ -1331,7 +1331,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.u64 > INT16_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
@@ -1344,7 +1344,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
@@ -1366,13 +1366,13 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f32 <= static_cast<float>(INT16_MIN) - 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(INT16_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
@@ -1384,13 +1384,13 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f64 <= static_cast<double>(INT16_MIN) - 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(INT16_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
 					return false;
 				}
@@ -1402,7 +1402,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1421,7 +1421,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 		case NativeTypeKind::S64:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 					fromNode->typeInfo = g_TypeMgr->typeInfoS16;
 				return true;
 			}
@@ -1438,7 +1438,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1453,7 +1453,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoS16;
 		switch (fromType->nativeType)
@@ -1527,7 +1527,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 				const auto value  = native->valueInteger;
 				if (value > INT32_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
@@ -1538,7 +1538,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.u64 > INT32_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
@@ -1550,7 +1550,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
@@ -1572,14 +1572,14 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f32 <= static_cast<float>(INT32_MIN) - 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
 
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(INT32_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
@@ -1591,14 +1591,14 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f64 <= static_cast<double>(INT32_MIN) - 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
 
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(INT32_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
 					return false;
 				}
@@ -1610,7 +1610,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1624,7 +1624,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 		case NativeTypeKind::S64:
 			if (fromNode && fromNode->hasComputedValue())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 					fromNode->typeInfo = g_TypeMgr->typeInfoS32;
 				return true;
 			}
@@ -1640,7 +1640,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1658,7 +1658,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoS32;
 		switch (fromType->nativeType)
@@ -1729,7 +1729,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.u64 > INT64_MAX)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
 					return false;
 				}
@@ -1741,13 +1741,13 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f32 <= static_cast<float>(INT64_MIN) - 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f32 >= static_cast<float>(INT64_MAX) + 0.5f)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
 					return false;
 				}
@@ -1759,13 +1759,13 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode->computedValue->reg.f64 <= static_cast<double>(INT64_MIN) - 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
 					return false;
 				}
 				if (fromNode->computedValue->reg.f64 >= static_cast<double>(INT64_MAX) + 0.5)
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
 					return false;
 				}
@@ -1777,7 +1777,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if (!(castFlags.has(CASTFLAG_EXPLICIT)) || (castFlags.has(CASTFLAG_COERCE)))
+	if (!castFlags.has(CASTFLAG_EXPLICIT) || castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1792,7 +1792,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 			{
 				if (fromNode && fromNode->hasComputedValue())
 				{
-					if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+					if (!castFlags.has(CASTFLAG_JUST_CHECK))
 						fromNode->typeInfo = g_TypeMgr->typeInfoS64;
 					return true;
 				}
@@ -1808,7 +1808,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1827,7 +1827,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoS64;
 		switch (fromType->nativeType)
@@ -1902,7 +1902,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -1924,7 +1924,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoF32;
 		switch (fromType->nativeType)
@@ -1999,7 +1999,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 		}
 	}
 
-	if ((castFlags.has(CASTFLAG_EXPLICIT)) && (castFlags.has(CASTFLAG_COERCE)))
+	if ((castFlags.has(CASTFLAG_EXPLICIT)) && castFlags.has(CASTFLAG_COERCE))
 	{
 		switch (fromType->nativeType)
 		{
@@ -2023,7 +2023,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 
 	if (castFlags.has(CASTFLAG_EXPLICIT))
 	{
-		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags.has(CASTFLAG_JUST_CHECK));
+		const bool canChange = (fromNode && fromNode->hasComputedValue()) && !castFlags.has(CASTFLAG_JUST_CHECK);
 		if (canChange)
 			fromNode->typeInfo = g_TypeMgr->typeInfoF64;
 		switch (fromType->nativeType)
@@ -2179,9 +2179,9 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 	SWAG_CHECK(safetyComputedValue(context, toType, fromType, fromNode, castFlags));
 
 	// Automatic cast has been done
-	if (castFlags.has(CASTFLAG_COERCE))
+	if(castFlags.has(CASTFLAG_COERCE))
 	{
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)) && !fromNode->hasComputedValue())
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK) && !fromNode->hasComputedValue())
 		{
 			fromNode->typeInfo = toType;
 			if (!fromNode->castedTypeInfo)
@@ -2393,7 +2393,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 {
 	if (fromType->isPointerNull())
 	{
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			if (fromNode->hasComputedValue())
 				fromNode->computedValue->text.release();
@@ -2413,7 +2413,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 			const auto concreteType  = TypeManager::concreteType(fromTypeSlice->pointedType, CONCRETE_ALIAS);
 			if (concreteType->isNative(NativeTypeKind::U8))
 			{
-				if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->castedTypeInfo = fromNode->typeInfo;
 					fromNode->typeInfo       = g_TypeMgr->typeInfoString;
@@ -2430,7 +2430,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 			const auto concreteType  = TypeManager::concreteType(fromTypeArray->pointedType, CONCRETE_ALIAS);
 			if (concreteType->isNative(NativeTypeKind::U8))
 			{
-				if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->castedTypeInfo = fromNode->typeInfo;
 					fromNode->typeInfo       = g_TypeMgr->typeInfoString;
@@ -2450,7 +2450,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 	{
 		if (fromType->isPointerNull())
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->typeInfo       = toType;
 				fromNode->castedTypeInfo = fromType;
@@ -2461,7 +2461,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
 		if (castFlags.has(CASTFLAG_COMMUTATIVE))
 		{
-			if (toNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (toNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				// When casting something complex to any, we will copy the value to the stack to be sure
 				// that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
@@ -2488,7 +2488,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 			return true;
 		}
 
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			// When casting something complex to any, we will copy the value to the stack to be sure
 			// that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
@@ -2516,7 +2516,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 	{
 		const auto toRealType = concretePtrRef(toType);
 
-		if (!(castFlags.has(CASTFLAG_EXPLICIT)))
+		if (!castFlags.has(CASTFLAG_EXPLICIT))
 		{
 			// Ambiguous. Do we check for a bool, or do we check for null
 			if (toRealType->isBool())
@@ -2534,7 +2534,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 		{
 			if (toType->isPointerRef())
 			{
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->removeAstFlag(AST_VALUE_COMPUTED);
 					fromNode->removeAstFlag(AST_CONST_EXPR);
@@ -2552,13 +2552,13 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 				{
 					if (!toRealType->isSame(newTypeInfo, castFlags.with(CASTFLAG_EXACT)))
 					{
-						if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+						if (!castFlags.has(CASTFLAG_JUST_CHECK))
 							return castError(context, toRealType, newTypeInfo, fromNode, castFlags, CastErrorType::SafetyCastAny);
 						return false;
 					}
 				}
 
-				if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (!castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->typeInfo       = newTypeInfo;
 					fromNode->castedTypeInfo = nullptr;
@@ -2569,7 +2569,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 			}
 		}
 
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			// When casting something complex to any, we will copy the value to the stack to be sure
 			// that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
@@ -2620,7 +2620,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 		if (testStruct->isSame(toStruct, castFlags.with(CASTFLAG_CAST)))
 		{
 			ok = true;
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				if (toType->isSelf())
 				{
@@ -2699,7 +2699,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 					const auto foundTypeStruct1 = typeStruct->getStructOrPointedStruct();
 					if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, castFlags.with(CASTFLAG_CAST)))
 					{
-						if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+						if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 						{
 							const Diagnostic diag{
 								fromNode, FMT(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(),
@@ -2799,7 +2799,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
 	if (fromType->isPointerNull())
 	{
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			// We will copy the value to the stack to be sure that the memory layout is correct, without relying on
 			// registers being contiguous, and not being reallocated (by an optimize pass).
@@ -2850,7 +2850,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
 		if (itfRef.itf)
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->allocateExtension(ExtensionKind::Misc);
 				fromNode->extMisc()->castOffset = itfRef.fieldOffset;
@@ -2873,7 +2873,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 	if (fromType->isPointer())
 	{
 		// Convert from pointer to ref : only if authorized
-		if (!fromType->isPointerRef() && !(castFlags.has(CASTFLAG_EXPLICIT)) && !(castFlags.has(CASTFLAG_PTR_REF)))
+		if (!fromType->isPointerRef() && !castFlags.has(CASTFLAG_EXPLICIT) && !castFlags.has(CASTFLAG_PTR_REF))
 			return castError(context, toType, fromType, fromNode, castFlags);
 
 		// When affecting a ref, const must be the same
@@ -2910,7 +2910,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 		if (!fromTypeStruct->hasInterface(toTypeItf))
 			return castError(context, toType, fromType, fromNode, castFlags);
 
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			fromNode->castedTypeInfo = fromType;
 			fromNode->typeInfo       = toTypeItf;
@@ -2983,7 +2983,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	{
 		if (fromType->isString())
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromType;
 				fromNode->typeInfo       = toType;
@@ -3035,7 +3035,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	{
 		if ((castFlags.has(CASTFLAG_EXPLICIT)) && toType->isPointerVoid())
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 				fromNode->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid, TYPEINFO_CONST);
 			return true;
 		}
@@ -3083,11 +3083,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	if (fromType->isArray())
 	{
 		const auto fromTypeArray = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-		if ((!(castFlags.has(CASTFLAG_NO_IMPLICIT)) && toTypePointer->pointedType->isVoid()) ||
-			(!(castFlags.has(CASTFLAG_NO_IMPLICIT)) && toTypePointer->pointedType->isSame(fromTypeArray->pointedType, castFlags.with(CASTFLAG_CAST))) ||
-			(castFlags.has(CASTFLAG_EXPLICIT)))
+		if ((!castFlags.has(CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isVoid()) ||
+			(!castFlags.has(CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeArray->pointedType, castFlags.with(CASTFLAG_CAST))) ||
+			castFlags.has(CASTFLAG_EXPLICIT))
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toType;
@@ -3101,11 +3101,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	if (fromType->isSlice())
 	{
 		const auto fromTypeSlice = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
-		if ((!(castFlags.has(CASTFLAG_NO_IMPLICIT)) && toTypePointer->pointedType->isVoid()) ||
-			(!(castFlags.has(CASTFLAG_NO_IMPLICIT)) && toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, castFlags.with(CASTFLAG_CAST))) ||
-			(castFlags.has(CASTFLAG_EXPLICIT)))
+		if ((!castFlags.has(CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isVoid()) ||
+			(!castFlags.has(CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, castFlags.with(CASTFLAG_CAST))) ||
+			castFlags.has(CASTFLAG_EXPLICIT))
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toType;
@@ -3124,7 +3124,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 			if (toTypePointer->pointedType->isVoid() ||
 				toTypePointer->pointedType->isSame(fromType, castFlags.with(CASTFLAG_CAST)))
 			{
-				if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)) && !toTypePointer->isSelf())
+				if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK) && !toTypePointer->isSelf())
 				{
 					fromNode->castedTypeInfo = fromNode->typeInfo;
 					fromNode->typeInfo       = toType;
@@ -3145,7 +3145,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 			if (!toTypeStruct->hasInterface(fromTypeItf))
 				return castError(context, toType, fromType, fromNode, castFlags);
 
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromType;
 				fromNode->typeInfo       = toType;
@@ -3169,7 +3169,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 		{
 			if (toTypePointer->pointedType->isNative(NativeTypeKind::U8) && toTypePointer->isConst())
 			{
-				if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->castedTypeInfo = fromNode->typeInfo;
 					fromNode->typeInfo       = toType;
@@ -3185,7 +3185,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 	{
 		if (castFlags.has(CASTFLAG_EXPLICIT))
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toType;
@@ -3207,7 +3207,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 		const auto    fromSize     = fromTypeList->subTypes.size();
 		if (toTypeArray->count != fromSize)
 		{
-			if (!(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (!castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				if (toTypeArray->count > fromTypeList->subTypes.size())
 					context->report({fromNode, FMT(Err(Err0595), toTypeArray->count, fromTypeList->subTypes.size())});
@@ -3220,7 +3220,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 
 		SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeArray->pointedType, fromNode, castFlags));
 
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			fromType->flags |= TYPEINFO_LIST_ARRAY_ARRAY;
 		}
@@ -3253,7 +3253,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
 	{
 		if (fromType->isPointerNull() || fromType->isPointerConstVoid())
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toTypeLambda;
@@ -3273,7 +3273,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
 	{
 		if (fromType->isPointerNull())
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toTypeLambda;
@@ -3300,8 +3300,8 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 	if (fromType->isArray())
 	{
 		const TypeInfoArray* fromTypeArray = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-		if ((!(castFlags.has(CASTFLAG_NO_IMPLICIT)) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, castFlags.with(CASTFLAG_CAST))) ||
-			(castFlags.has(CASTFLAG_EXPLICIT)))
+		if ((!castFlags.has(CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, castFlags.with(CASTFLAG_CAST))) ||
+			castFlags.has(CASTFLAG_EXPLICIT))
 		{
 			const auto s = toTypeSlice->pointedType->sizeOf;
 			const auto d = fromTypeArray->sizeOf;
@@ -3310,7 +3310,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 			const bool match = s == 0 || (d / s) * s == d;
 			if (match)
 			{
-				if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+				if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 				{
 					fromNode->castedTypeInfo = fromNode->typeInfo;
 					fromNode->typeInfo       = toTypeSlice;
@@ -3326,7 +3326,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 	{
 		if (toTypeSlice->pointedType->isNative(NativeTypeKind::U8) && toTypeSlice->isConst())
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toTypeSlice;
@@ -3352,7 +3352,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 	}
 	else if (fromType->isPointerNull())
 	{
-		if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+		if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 		{
 			fromNode->castedTypeInfo = fromNode->typeInfo;
 			fromNode->typeInfo       = toTypeSlice;
@@ -3364,7 +3364,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 	{
 		if (castFlags.has(CASTFLAG_EXPLICIT))
 		{
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromNode->typeInfo;
 				fromNode->typeInfo       = toTypeSlice;

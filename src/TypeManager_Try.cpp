@@ -79,7 +79,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 			if (!it->second)
 				return false;
 
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->addAstFlag(AST_OP_AFFECT_CAST);
 				fromNode->castedTypeInfo = fromType;
@@ -115,7 +115,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		for (auto over : symbol->overloads)
 		{
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags.has(CASTFLAG_EXPLICIT)))
+			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CASTFLAG_EXPLICIT))
 				continue;
 			if (typeFunc->parameters.size() <= 1)
 				continue;
@@ -137,7 +137,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 		return false;
 
 	// :opAffectParam
-	if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+	if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 	{
 		fromNode->addAstFlag(AST_OP_AFFECT_CAST);
 		fromNode->castedTypeInfo = fromType;
@@ -179,7 +179,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 			if (!it->second)
 				return false;
 
-			if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+			if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 			{
 				fromNode->castedTypeInfo = fromType;
 				fromNode->typeInfo       = toType;
@@ -228,7 +228,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
 			if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
 				continue;
-			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !(castFlags.has(CASTFLAG_EXPLICIT)))
+			if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CASTFLAG_EXPLICIT))
 				continue;
 			if (typeFunc->returnType->isSame(toType, CASTFLAG_EXACT))
 				toCast.push_back(over);
@@ -244,7 +244,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 	if (toCast.empty())
 		return false;
 
-	if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
+	if (fromNode && !castFlags.has(CASTFLAG_JUST_CHECK))
 	{
 		fromNode->castedTypeInfo = fromType;
 		fromNode->typeInfo       = toType;
