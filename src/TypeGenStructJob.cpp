@@ -16,7 +16,7 @@ bool TypeGenStructJob::computeStruct()
     concreteType->base.sizeOf = realType->sizeOf;
 
     // Flags
-    if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
+    if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
     {
         if (realType->hasFlag(TYPEINFO_STRUCT_NO_COPY))
             exportedTypeInfoValue->flags &= ~static_cast<uint16_t>(ExportedTypeInfoFlags::CanCopy);
@@ -34,7 +34,7 @@ bool TypeGenStructJob::computeStruct()
     concreteType->opPostCopy = nullptr;
     concreteType->opPostMove = nullptr;
 
-    if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
+    if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
     {
         Utf8 callName;
         if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
@@ -101,7 +101,7 @@ bool TypeGenStructJob::computeStruct()
     SWAG_CHECK(typeGen->genExportedString(baseContext, &concreteType->structName, realType->structName, storageSegment, OFFSET_OF(concreteType->structName)));
 
     // Struct attributes
-    SWAG_CHECK(typeGen->genExportedAttributes(baseContext, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+    SWAG_CHECK(typeGen->genExportedAttributes(baseContext, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
     if (!realType->replaceTypes.empty())
     {
@@ -125,7 +125,7 @@ bool TypeGenStructJob::computeStruct()
     concreteType->fromGeneric = nullptr;
     if (realType->fromGeneric)
     {
-        SWAG_CHECK(typeGen->genExportedSubTypeInfo(baseContext, &concreteType->fromGeneric, concreteType, storageSegment, storageOffset, realType->fromGeneric, cflags));
+        SWAG_CHECK(typeGen->genExportedSubTypeInfo(baseContext, &concreteType->fromGeneric, concreteType, storageSegment, storageOffset, realType->fromGeneric, genFlags));
     }
 
     // Generic types
@@ -144,7 +144,7 @@ bool TypeGenStructJob::computeStruct()
                                                                                              storageArray));
         for (size_t param = 0; param < concreteType->generics.count; param++)
         {
-            SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+            SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], genFlags));
             storageArray += sizeof(ExportedTypeValue);
         }
     }
@@ -168,7 +168,7 @@ bool TypeGenStructJob::computeStruct()
                                                                                                  storageArray));
             for (size_t param = 0; param < concreteType->fields.count; param++)
             {
-                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], genFlags));
                 storageArray += sizeof(ExportedTypeValue);
             }
         }
@@ -177,7 +177,7 @@ bool TypeGenStructJob::computeStruct()
     // Methods
     concreteType->methods.buffer = nullptr;
     concreteType->methods.count  = 0;
-    if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
+    if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
     {
         if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
         {
@@ -195,7 +195,7 @@ bool TypeGenStructJob::computeStruct()
                                                                                                      storageArray));
                 for (size_t param = 0; param < concreteType->methods.count; param++)
                 {
-                    SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+                    SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], genFlags));
 
                     // 'value' will contain a pointer to the lambda.
                     // Register it for later patches
@@ -212,7 +212,7 @@ bool TypeGenStructJob::computeStruct()
     // Interfaces
     concreteType->interfaces.buffer = nullptr;
     concreteType->interfaces.count  = 0;
-    if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
+    if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
     {
         concreteType->interfaces.count = realType->interfaces.size();
         if (concreteType->interfaces.count)
@@ -228,7 +228,7 @@ bool TypeGenStructJob::computeStruct()
                                                                                                  storageArray));
             for (size_t param = 0; param < concreteType->interfaces.count; param++)
             {
-                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
+                SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], genFlags));
 
                 // :ItfIsConstantSeg
                 const uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
@@ -261,7 +261,7 @@ JobResult TypeGenStructJob::execute()
     if (baseContext->result != ContextResult::Done)
         return JobResult::KeepJobAlive;
 
-    if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
+    if (!(genFlags & GEN_EXPORTED_TYPE_PARTIAL))
     {
         Semantic::waitAllStructInterfaces(this, realType);
         if (baseContext->result != ContextResult::Done)

@@ -715,7 +715,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         }
 
         // If the two functions are generics, compare the types that have been used to instantiate the function.
-        // If the types does not match, then the two functions are not the same.
+        // If the types do not match, then the two functions are not the same.
         if (declNode && declNode->kind == AstNodeKind::FuncDecl && other->declNode && other->declNode->kind == AstNodeKind::FuncDecl)
         {
             const auto myFunc        = castAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);

@@ -10,11 +10,11 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
+bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t genFlags, TypeInfo** ptrTypeInfo)
 {
     auto&      mapPerSeg = getMapPerSeg(storageSegment);
     ScopedLock lk(mapPerSeg.mutex);
-    return genExportedTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, cflags, ptrTypeInfo);
+    return genExportedTypeInfoNoLock(context, nullptr, typeInfo, storageSegment, storage, genFlags, ptrTypeInfo);
 }
 
 bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
@@ -22,7 +22,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                                         TypeInfo*          typeInfo,
                                         DataSegment*       storageSegment,
                                         uint32_t*          storage,
-                                        uint32_t           cflags,
+                                        uint32_t           genFlags,
                                         TypeInfo**         ptrTypeInfo)
 {
     switch (typeInfo->kind)
@@ -37,15 +37,15 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         break;
     }
 
-    if (!(cflags & GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
+    if (!(genFlags & GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
     {
         typeInfo->computeScopedName();
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto       typeName           = typeInfo->getTypeName(cflags & GEN_EXPORTED_TYPE_FORCE_NO_SCOPE);
+    auto       typeName           = typeInfo->getTypeName(genFlags & GEN_EXPORTED_TYPE_FORCE_NO_SCOPE);
     const auto nonPartialTypeName = typeName;
-    if (cflags & GEN_EXPORTED_TYPE_PARTIAL)
+    if (genFlags & GEN_EXPORTED_TYPE_PARTIAL)
         typeName += "__partial";
     SWAG_ASSERT(!typeName.empty());
 
@@ -62,7 +62,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         *storage = it->second.storageOffset;
 
         // The registered type is the full version, so exit, and wait for the job to complete if necessary
-        if (cflags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
+        if (genFlags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
         {
             SWAG_ASSERT(context);
             if (context->baseJob->baseContext->result != ContextResult::Pending)
@@ -221,7 +221,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     {
         const auto concreteType = reinterpret_cast<ExportedTypeInfoPointer*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoPointer*>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
         break;
     }
 
@@ -229,14 +229,14 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     {
         const auto concreteType = reinterpret_cast<ExportedTypeInfoAlias*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoAlias*>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
         break;
     }
 
     case TypeInfoKind::Struct:
     case TypeInfoKind::Interface:
     {
-        SWAG_CHECK(genExportedStruct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, cflags));
+        SWAG_CHECK(genExportedStruct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, genFlags));
         break;
     }
 
@@ -246,7 +246,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         const auto concreteType = reinterpret_cast<ExportedTypeInfoFunc*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoFuncAttr*>(typeInfo);
 
-        SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+        SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
         // Generics
         concreteType->generics.buffer = nullptr;
@@ -259,7 +259,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                                                                                         &concreteType->generics.buffer, storageArray));
             for (size_t param = 0; param < concreteType->generics.count; param++)
             {
-                SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+                SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], genFlags));
                 storageArray += sizeof(ExportedTypeValue);
             }
         }
@@ -284,12 +284,12 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                                                                                         &concreteType->parameters.buffer, storageArray));
             for (size_t param = firstParam; param < realType->parameters.size(); param++)
             {
-                SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], cflags));
+                SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], genFlags));
                 storageArray += sizeof(ExportedTypeValue);
             }
         }
 
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->returnType, exportedTypeInfoValue, storageSegment, storageOffset, realType->returnType, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->returnType, exportedTypeInfoValue, storageSegment, storageOffset, realType->returnType, genFlags));
         break;
     }
 
@@ -298,7 +298,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         const auto concreteType = reinterpret_cast<ExportedTypeInfoEnum*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoEnum*>(typeInfo);
 
-        SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+        SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
         concreteType->values.buffer = nullptr;
         concreteType->values.count  = realType->values.size();
@@ -310,14 +310,14 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                                                                                         &concreteType->values.buffer, storageArray));
             for (size_t param = 0; param < concreteType->values.count; param++)
             {
-                SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], cflags));
+                SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], genFlags));
                 storageArray += sizeof(ExportedTypeValue);
             }
         }
 
         concreteType->rawType = nullptr;
         if (realType->rawType)
-            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
         break;
     }
 
@@ -327,8 +327,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         const auto realType      = static_cast<TypeInfoArray*>(typeInfo);
         concreteType->count      = realType->count;
         concreteType->totalCount = realType->totalCount;
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->finalType, exportedTypeInfoValue, storageSegment, storageOffset, realType->finalType, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->finalType, exportedTypeInfoValue, storageSegment, storageOffset, realType->finalType, genFlags));
         break;
     }
 
@@ -336,7 +336,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     {
         const auto concreteType = reinterpret_cast<ExportedTypeInfoSlice*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoSlice*>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
         break;
     }
 
@@ -344,7 +344,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     {
         const auto concreteType = reinterpret_cast<ExportedTypeInfoVariadic*>(exportedTypeInfoValue);
         const auto realType     = static_cast<TypeInfoVariadic*>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
         break;
     }
     default:
@@ -360,7 +360,7 @@ bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
                                      DataSegment*       storageSegment,
                                      uint32_t           storageOffset,
                                      TypeInfo*          typeInfo,
-                                     uint32_t           cflags)
+                                     uint32_t           genFlags)
 {
     if (!typeInfo)
     {
@@ -369,7 +369,7 @@ bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
     }
 
     uint32_t tmpStorageOffset;
-    SWAG_CHECK(genExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, &tmpStorageOffset, cflags));
+    SWAG_CHECK(genExportedTypeInfoNoLock(context, result, typeInfo, storageSegment, &tmpStorageOffset, genFlags));
     storageSegment->addInitPtr(OFFSET_OF_R(result), tmpStorageOffset);
 
     return true;
@@ -429,7 +429,7 @@ bool TypeGen::genExportedAny(JobContext*    context,
                              uint32_t       storageOffset,
                              ComputedValue& computedValue,
                              TypeInfo*      typeInfo,
-                             uint32_t       cflags)
+                             uint32_t       genFlags)
 {
     const auto sourceFile = context->sourceFile;
     ptrAny->value         = nullptr;
@@ -441,11 +441,11 @@ bool TypeGen::genExportedAny(JobContext*    context,
     }
 
     // Type of the value
-    SWAG_CHECK(genExportedSubTypeInfo(context, &ptrAny->type, ptrAny, storageSegment, storageOffset, typeInfo, cflags));
+    SWAG_CHECK(genExportedSubTypeInfo(context, &ptrAny->type, ptrAny, storageSegment, storageOffset, typeInfo, genFlags));
     return true;
 }
 
-bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags)
+bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t genFlags)
 {
     const auto sourceFile   = context->sourceFile;
     const auto concreteType = static_cast<ExportedTypeValue*>(exportedTypeInfoValue);
@@ -454,8 +454,8 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
 
     SWAG_CHECK(genExportedString(context, &concreteType->name, realType->name, storageSegment, OFFSET_OF(concreteType->name)));
     concreteType->crc32 = Crc32::compute(static_cast<const uint8_t*>(concreteType->name.buffer), static_cast<uint32_t>(concreteType->name.count));
-    SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, cflags));
-    SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
+    SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, genFlags));
+    SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
 
     // Value
     if (realType->flags & TYPEINFOPARAM_DEFINED_VALUE)
@@ -483,7 +483,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                                     DataSegment*   storageSegment,
                                     uint32_t       storageOffset,
                                     SwagSlice*     result,
-                                    uint32_t       cflags)
+                                    uint32_t       genFlags)
 {
     if (attributes.empty())
         return true;
@@ -505,7 +505,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
         const auto offsetStartAttr = curOffsetAttributes;
 
         // Type of the attribute
-        SWAG_CHECK(genExportedSubTypeInfo(context, reinterpret_cast<ExportedTypeInfo**>(ptrStorageAttributes), attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
+        SWAG_CHECK(genExportedSubTypeInfo(context, reinterpret_cast<ExportedTypeInfo**>(ptrStorageAttributes), attrAddr, storageSegment, offsetStartAttr, one.typeFunc, genFlags));
         curOffsetAttributes += sizeof(ExportedTypeInfo*);
         ptrStorageAttributes += sizeof(ExportedTypeInfo*);
 
@@ -556,7 +556,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
                 }
 
                 // Value of the parameter
-                genExportedAny(context, reinterpret_cast<SwagAny*>(ptrStorageAllParams), storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
+                genExportedAny(context, reinterpret_cast<SwagAny*>(ptrStorageAllParams), storageSegment, curOffsetParams, oneParam.value, typeValue, genFlags);
 
                 curOffsetParams += sizeof(SwagAny);
                 ptrStorageAllParams += sizeof(SwagAny);
@@ -645,7 +645,7 @@ bool TypeGen::genExportedStruct(const JobContext* context,
                                 TypeInfo*         typeInfo,
                                 DataSegment*      storageSegment,
                                 uint32_t          storageOffset,
-                                uint32_t          cflags)
+                                uint32_t          genFlags)
 {
     // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
     if (context->baseJob->waitingKind == JobWaitKind::GenExportedType && context->result != ContextResult::Done)
@@ -665,7 +665,7 @@ bool TypeGen::genExportedStruct(const JobContext* context,
     job->storageOffset         = storageOffset;
     job->storageSegment        = storageSegment;
     job->affinity              = storageSegment->compilerThreadIdx;
-    job->cflags                = cflags & ~GEN_EXPORTED_TYPE_SHOULD_WAIT;
+    job->genFlags                = genFlags & ~GEN_EXPORTED_TYPE_SHOULD_WAIT;
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.exportedTypesJob[typeName] = job;
@@ -675,7 +675,7 @@ bool TypeGen::genExportedStruct(const JobContext* context,
         ++g_Stats.totalConcreteStructTypes;
 #endif
 
-    if (cflags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
+    if (genFlags & GEN_EXPORTED_TYPE_SHOULD_WAIT)
     {
         SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::GenExportedType1);
         job->dependentJob = context->baseJob;
