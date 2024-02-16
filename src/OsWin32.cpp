@@ -621,9 +621,9 @@ namespace OS
 	{
 		msg                  = msg ? _strdup(msg) : nullptr;
 		g_ExceptionParams[0] = nullptr;
-		g_ExceptionParams[1] = (void*) msg;
-		g_ExceptionParams[2] = (void*) (msg ? strlen(msg) : 0);
-		g_ExceptionParams[3] = (void*) SwagExceptionKind::Panic;
+		g_ExceptionParams[1] = const_cast<char*>(msg);
+		g_ExceptionParams[2] = reinterpret_cast<void*>(msg ? strlen(msg) : 0);
+		g_ExceptionParams[3] = reinterpret_cast<void*>(SwagExceptionKind::Panic);
 		RaiseException(code, 0, 4, reinterpret_cast<ULONG_PTR*>(&g_ExceptionParams[0]));
 	}
 

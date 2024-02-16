@@ -624,11 +624,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 	case ByteCodeOp::LambdaCall:
 	case ByteCodeOp::LambdaCallPop:
 		{
-			auto ptr = registersRC[ip->a.u32].u64;
+			auto ptr = registersRC[ip->a.u32].pointer;
 			SWAG_ASSERT(ptr);
 
 			// Bytecode lambda
-			if (ByteCode::isByteCodeLambda(reinterpret_cast<void*>(ptr)))
+			if (ByteCode::isByteCodeLambda(ptr))
 			{
 				g_ByteCodeStackTrace->push(context);
 				context->push(context->bp);
@@ -636,7 +636,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 				context->push(context->ip);
 
 				context->oldBc = context->bc;
-				context->bc    = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(reinterpret_cast<void*>(ptr)));
+				context->bc    = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(ptr));
 				SWAG_ASSERT(context->bc);
 				context->ip = context->bc->out;
 				SWAG_ASSERT(context->ip);
@@ -651,7 +651,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			else
 			{
 				auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->b.pointer), TypeInfoKind::LambdaClosure);
-				ffiCall(context, ip, reinterpret_cast<void*>(ptr), typeInfoFunc);
+				ffiCall(context, ip, ptr, typeInfoFunc);
 				if (ip->op == ByteCodeOp::LambdaCallPop)
 					context->incSP(ip->c.u32);
 			}
@@ -2336,8 +2336,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
 	case ByteCodeOp::IntrinsicArguments:
 		{
-			registersRC[ip->a.u32].pointer = static_cast<uint8_t*>(g_CommandLine.userArgumentsSlice.first);
-			registersRC[ip->b.u32].u64     = reinterpret_cast<uint64_t>(g_CommandLine.userArgumentsSlice.second);
+			registersRC[ip->a.u32].pointer = static_cast<uint8_t*>(g_CommandLine.userArgumentsSlice.buffer);
+			registersRC[ip->b.u32].u64     = g_CommandLine.userArgumentsSlice.count;
 			break;
 		}
 	case ByteCodeOp::IntrinsicModules:

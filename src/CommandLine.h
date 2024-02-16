@@ -66,10 +66,10 @@ struct CommandLine
 #endif
 
 	// User arguments
-	Utf8                       userArguments;
-	Vector<Utf8>               userArgumentsVec;
-	Vector<pair<void*, void*>> userArgumentsStr;
-	pair<void*, void*>         userArgumentsSlice;
+	Utf8              userArguments;
+	Vector<Utf8>      userArgumentsVec;
+	Vector<SwagSlice> userArgumentsStr;
+	SwagSlice         userArgumentsSlice;
 
 	// Display
 	bool silent                = false;
