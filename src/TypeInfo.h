@@ -95,11 +95,13 @@ struct TypeInfo
 	TypeInfo()          = default;
 	virtual ~TypeInfo() = default;
 
-	explicit TypeInfo(const char* name, TypeInfoKind kind) : name{name}, kind{kind}
+	explicit TypeInfo(const char* name, TypeInfoKind kind)
+		: name{name}, kind{kind}
 	{
 	}
 
-	explicit TypeInfo(TypeInfoKind kind) : kind{kind}
+	explicit TypeInfo(TypeInfoKind kind)
+		: kind{kind}
 	{
 	}
 
