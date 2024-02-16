@@ -361,7 +361,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	return true;
 }
 
-bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags)
+bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, CastFlags castFlags)
 {
 	const auto typeList  = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
 	const auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
@@ -960,7 +960,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		// Convert from initialization list to array
 		if (node->typeInfo->isListArray())
 		{
-			uint32_t castFlags = 0;
+			CastFlags castFlags = 0;
 			if (!isCompilerConstant)
 				castFlags = CASTFLAG_FORCE_UN_CONST;
 			SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags, castFlags));

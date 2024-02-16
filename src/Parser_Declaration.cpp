@@ -63,7 +63,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
 	if (forGlobal)
 		sourceFile->globalAttr |= attr;
-	if (newScope->flags & SCOPE_FILE)
+	if (newScope->flags.has(SCOPE_FILE))
 		newScope = newScope->parentScope;
 
 	tokenizer.propagateComment = true;
@@ -270,7 +270,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 				typeInfo->name      = namespaceNode->token.text;
 				newScope            = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
 				if (scopeFilePriv)
-					newScope->flags |= SCOPE_FILE_PRIV;
+					newScope->flags.add(SCOPE_FILE_PRIVATE);
 				typeInfo->scope         = newScope;
 				namespaceNode->typeInfo = typeInfo;
 				AddSymbolTypeInfo toAdd;

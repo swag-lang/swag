@@ -185,7 +185,7 @@ namespace ByteCodeGen
 	bool emitCastToNativeString(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
 	bool emitCastToInterface(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
 	bool emitCastToSlice(const ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-	bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t castFlags = EMIT_CASTFLAG_DEFAULT);
+	bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t emitCastFlags = EMIT_CASTFLAG_DEFAULT);
 	bool emitFuncCallParam(ByteCodeGenContext* context);
 	bool emitFuncDeclParams(ByteCodeGenContext* context);
 	bool emitIfAfterExpr(ByteCodeGenContext* context);

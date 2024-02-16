@@ -420,7 +420,7 @@ void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope
 	AlternativeScope as;
 	as.scope = scope;
 	as.flags = flags;
-	if (scope->flags & SCOPE_FILE_PRIV)
+	if (scope->flags.has(SCOPE_FILE_PRIVATE))
 		as.flags |= ALTSCOPE_FILE_PRIVATE;
 	scopes.push_back(as);
 }

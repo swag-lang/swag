@@ -1,4 +1,5 @@
 #pragma once
+#include "Flags.h"
 #include "DependentJobs.h"
 #include "Mutex.h"
 #include "SymTable.h"
@@ -28,11 +29,12 @@ enum class ScopeKind : uint8_t
 	Macro,
 };
 
-constexpr uint8_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-constexpr uint8_t SCOPE_FILE             = 0x00000002;
-constexpr uint8_t SCOPE_AUTO_GENERATED   = 0x00000004;
-constexpr uint8_t SCOPE_IMPORTED         = 0x00000008;
-constexpr uint8_t SCOPE_FILE_PRIV        = 0x00000010;
+using ScopeFlags = Flags<uint8_t>;
+const ScopeFlags SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+const ScopeFlags SCOPE_FILE             = 0x00000002;
+const ScopeFlags SCOPE_AUTO_GENERATED   = 0x00000004;
+const ScopeFlags SCOPE_IMPORTED         = 0x00000008;
+const ScopeFlags SCOPE_FILE_PRIVATE     = 0x00000010;
 
 struct ScopePublicSet
 {
@@ -86,7 +88,7 @@ struct Scope
 	uint32_t backendStart   = 0;
 	uint32_t backendEnd     = 0;
 
-	ScopeKind kind  = ScopeKind::Invalid;
-	uint8_t   flags = 0;
-	uint8_t   padding[6];
+	ScopeKind  kind  = ScopeKind::Invalid;
+	ScopeFlags flags = 0;
+	uint8_t    padding[6];
 };

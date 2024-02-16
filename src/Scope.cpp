@@ -22,7 +22,7 @@ bool Scope::isGlobal() const
 
 bool Scope::isTopLevel() const
 {
-	return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_AUTO_GENERATED));
+	return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && flags.has(SCOPE_AUTO_GENERATED));
 }
 
 bool Scope::isGlobalOrImpl() const
@@ -36,7 +36,7 @@ bool Scope::isGlobalOrImpl() const
 
 const Utf8& Scope::getFullName()
 {
-	if (flags & SCOPE_FILE)
+	if (flags.has(SCOPE_FILE))
 		return name;
 
 	{
@@ -59,7 +59,7 @@ const Utf8& Scope::getFullName()
 
 Utf8 Scope::getDisplayFullName()
 {
-	if (flags & SCOPE_FILE)
+	if (flags.has(SCOPE_FILE))
 		return name;
 	if (!parentScope)
 		return name;
@@ -100,11 +100,11 @@ void Scope::allocPublicSet()
 	if (!publicSet)
 		publicSet = Allocator::alloc<ScopePublicSet>();
 
-	auto pscope = this;
-	while (pscope && !(pscope->flags & SCOPE_FLAG_HAS_EXPORTS))
+	auto ptrScope = this;
+	while (ptrScope && !ptrScope->flags.has(SCOPE_FLAG_HAS_EXPORTS))
 	{
-		pscope->flags |= SCOPE_FLAG_HAS_EXPORTS;
-		pscope = pscope->parentScope;
+		ptrScope->flags.add(SCOPE_FLAG_HAS_EXPORTS);
+		ptrScope = ptrScope->parentScope;
 	}
 }
 

@@ -35,7 +35,7 @@ namespace
 		const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind).c_str();
 
 		Utf8 displayName;
-		if (!(identifierRef->startScope->flags & SCOPE_FILE))
+		if (!identifierRef->startScope->flags.has(SCOPE_FILE))
 			displayName = identifierRef->startScope->getDisplayFullName();
 		if (displayName.empty() && !identifierRef->startScope->name.empty())
 			displayName = identifierRef->startScope->name;

@@ -711,7 +711,7 @@ bool ByteCodeGen::emitCastToSlice(const ByteCodeGenContext* context, AstNode* ex
 	return true;
 }
 
-bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t castFlags)
+bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t emitCastFlags)
 {
 	if (fromTypeInfo == nullptr)
 		return true;

@@ -157,7 +157,7 @@ namespace Semantic
 	bool           getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
 	void           forceConstType(SemanticContext* context, AstTypeExpression* node);
 	void           setVarDeclResolve(AstVarDecl* varNode);
-	bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
+	bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, CastFlags castFlags = 0);
 	DataSegment*   getSegmentForVar(SemanticContext* context, const AstVarDecl* varNode);
 	bool           getDigitHex(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pzr, int& result, const char* errMsg);
 	bool           processLiteralString(SemanticContext* context);

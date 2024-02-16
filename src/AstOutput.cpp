@@ -2148,9 +2148,9 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, const
 bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* moduleToGen, Scope* scope)
 {
 	SWAG_ASSERT(moduleToGen);
-	if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+	if (!scope->flags.has(SCOPE_FLAG_HAS_EXPORTS))
 		return true;
-	if (scope->flags & SCOPE_IMPORTED)
+	if (scope->flags.has(SCOPE_IMPORTED))
 		return true;
 
 	context.forExport = true;
@@ -2158,7 +2158,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
 	// Namespace
 	if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
 	{
-		if (!(scope->flags & SCOPE_AUTO_GENERATED))
+		if (!scope->flags.has(SCOPE_AUTO_GENERATED))
 		{
 			concat.addIndent(context.indent);
 			CONCAT_FIXED_STR(concat, "namespace ");
@@ -2174,7 +2174,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
 		for (const auto oneScope : scope->childScopes)
 			SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
 
-		if (!(scope->flags & SCOPE_AUTO_GENERATED))
+		if (!scope->flags.has(SCOPE_AUTO_GENERATED))
 		{
 			context.indent--;
 			removeLastBlankLine(concat);

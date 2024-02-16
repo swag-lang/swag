@@ -445,8 +445,8 @@ bool Parser::generateAst()
 		}
 
 		if (sourceFile->imported)
-			parentScope->flags |= SCOPE_IMPORTED;
-		parentScope->flags |= SCOPE_AUTO_GENERATED;
+			parentScope->flags.add(SCOPE_IMPORTED);
+		parentScope->flags.add(SCOPE_AUTO_GENERATED);
 	}
 
 	// One scope per file. We do NOT register the scope in the list of children
@@ -456,7 +456,7 @@ bool Parser::generateAst()
 	Ast::normalizeIdentifierName(scopeName);
 	sourceFile->scopeFile              = Ast::newScope(sourceFile->astRoot, scopeName, ScopeKind::File, nullptr);
 	sourceFile->scopeFile->parentScope = parentScope;
-	sourceFile->scopeFile->flags |= SCOPE_FILE;
+	sourceFile->scopeFile->flags.add(SCOPE_FILE);
 
 	// By default, everything is internal if it comes from the test folder, or from the configuration file
 	if (sourceFile->fromTests || sourceFile->isCfgFile)

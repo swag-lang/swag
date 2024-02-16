@@ -13,12 +13,12 @@ struct Flags
 	{
 	}
 
-	bool operator==(const Flags& other) const { return flags == other.flags; }
+	bool         operator==(const Flags& other) const { return flags == other.flags; }
+	Flags friend operator|(Flags a, Flags b) { return a.flags | b.flags; }
 
-	bool  has(T fl) const { return flags & fl; }
-	void  add(T fl) { flags |= fl; }
+	bool  has(Flags fl) const { return flags & fl.flags; }
 	void  add(Flags fl) { flags |= fl.flags; }
-	void  remove(T fl) { flags &= ~fl; }
-	Flags with(T fl) { return flags | fl; }
-	Flags mask(T fl) { return flags & fl; }
+	void  remove(Flags fl) { flags &= ~fl.flags; }
+	Flags with(Flags fl) { return flags | fl.flags; }
+	Flags mask(Flags fl) { return flags & fl.flags; }
 };

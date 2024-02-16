@@ -351,7 +351,7 @@ void GenDoc::collectNode(AstNode* node)
 
 void GenDoc::collectScopes(Scope* root)
 {
-	if (root->flags & SCOPE_IMPORTED)
+	if (root->flags.has(SCOPE_IMPORTED))
 		return;
 	if (root->name.length() > 2 && root->name[0] == '_' && root->name[1] == '_')
 		return;
@@ -379,7 +379,7 @@ void GenDoc::collectScopes(Scope* root)
 	if (collect.size() != count && root->kind == ScopeKind::Namespace && !root->owner->hasAttribute(ATTRIBUTE_PUBLIC))
 		root->owner->addAttribute(ATTRIBUTE_PUBLIC);
 
-	if (!(root->flags & SCOPE_AUTO_GENERATED))
+	if (!root->flags.has(SCOPE_AUTO_GENERATED))
 		collectNode(root->owner);
 }
 
@@ -402,10 +402,10 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 		n->tocName += tkn[tkn.size() - 1];
 	}
 
-	bool recom = true;
-	while (recom)
+	bool restart = true;
+	while (restart)
 	{
-		recom = false;
+		restart = false;
 
 		SetUtf8 here;
 		SetUtf8 conflict;
@@ -431,7 +431,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 				{
 					n->tocName.insert(0, ".");
 					n->tocName.insert(0, tkn[tkn.size() - tkn1.size() - 1]);
-					recom = true;
+					restart = true;
 				}
 			}
 		}
