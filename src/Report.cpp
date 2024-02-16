@@ -130,9 +130,9 @@ namespace
 		}
 
 		// Move ranges from note to note if they share the same line of code, and they do not overlap
-		for (int inote = 0; inote < static_cast<int>(notes.size()); inote++)
+		for (size_t idxNote = 0; idxNote < notes.size(); idxNote++)
 		{
-			const auto note = notes[inote];
+			const auto note = notes[idxNote];
 			if (!note->display || !note->canBeMerged)
 				continue;
 
@@ -212,9 +212,9 @@ namespace
 		}
 
 		// No need to repeat the same source file line reference
-		for (int inote = 0; inote < static_cast<int>(notes.size()); inote++)
+		for (size_t idxNote = 0; idxNote < notes.size(); idxNote++)
 		{
-			const auto note = notes[inote];
+			const auto note = notes[idxNote];
 			if (!note->display)
 				continue;
 			if (!note->showFileName)
@@ -224,9 +224,9 @@ namespace
 			if (sourceFile0 && sourceFile0->fileForSourceLocation)
 				sourceFile0 = sourceFile0->fileForSourceLocation;
 
-			for (int inote1 = inote + 1; inote1 < static_cast<int>(notes.size()); inote1++)
+			for (size_t idxNote1 = idxNote + 1; idxNote1 < notes.size(); idxNote1++)
 			{
-				const auto note1 = notes[inote1];
+				const auto note1 = notes[idxNote1];
 				if (!note1->display || !note1->hasLocation)
 					continue;
 

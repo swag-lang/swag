@@ -314,8 +314,8 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
 			ip0->op == ByteCodeOp::LocalCallPopParam ||
 			ip0->op == ByteCodeOp::LocalCallPopRC))
 		{
-			const ByteCode* bc0 = reinterpret_cast<ByteCode*>(ip0->a.u64);
-			const ByteCode* bc1 = reinterpret_cast<ByteCode*>(ip1->a.u64);
+			const ByteCode* bc0 = reinterpret_cast<ByteCode*>(ip0->a.pointer);
+			const ByteCode* bc1 = reinterpret_cast<ByteCode*>(ip1->a.pointer);
 			if (bc0 != bc1)
 				same = false;
 		}
@@ -353,9 +353,9 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
 	oldCrc               = Crc32::compute2(reinterpret_cast<const uint8_t*>(&flags), oldCrc);
 
 	if (hasSomethingInC(ip))
-		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->c.u64), oldCrc);
+		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->c.pointer), oldCrc);
 	if (hasSomethingInD(ip))
-		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->d.u64), oldCrc);
+		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->d.pointer), oldCrc);
 
 	// Special call. We add the alias if it exists instead of the called bytecode
 	if (specialCall && (ip->op == ByteCodeOp::LocalCall ||
@@ -363,11 +363,11 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
 		ip->op == ByteCodeOp::LocalCallPopParam ||
 		ip->op == ByteCodeOp::LocalCallPopRC))
 	{
-		const auto bc = reinterpret_cast<ByteCode*>(ip->a.u64);
+		const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
 		oldCrc        = Crc32::compute8(reinterpret_cast<const uint8_t*>(&bc), oldCrc);
 	}
 	else if (hasSomethingInA(ip))
-		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->a.u64), oldCrc);
+		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->a.pointer), oldCrc);
 
 	// For a jump, we compute the crc to go the destination (if two jump nodes
 	// are going to the same instruction, then we consider they are equal)
@@ -378,7 +378,7 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
 		oldCrc            = Crc32::compute8(reinterpret_cast<const uint8_t*>(&destN), oldCrc);
 	}
 	else if (hasSomethingInB(ip))
-		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->b.u64), oldCrc);
+		oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->b.pointer), oldCrc);
 
 	return oldCrc;
 }
