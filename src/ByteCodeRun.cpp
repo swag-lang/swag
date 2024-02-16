@@ -16,7 +16,6 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-
 #define IMMA_U8(ip)  ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u8  : registersRC[(ip)->a.u32].u8)
 #define IMMA_U16(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u16 : registersRC[(ip)->a.u32].u16)
 #define IMMA_U32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u32 : registersRC[(ip)->a.u32].u32)
@@ -54,7 +53,6 @@
 #define IMMD_U16(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u16 : registersRC[(ip)->d.u32].u16)
 #define IMMD_U32(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
 #define IMMD_U64(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
-
 
 SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {

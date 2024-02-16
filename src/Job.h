@@ -94,12 +94,10 @@ struct Job
 	void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
 	void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
 
-	
 	bool hasFlag(uint32_t fl) const { return flags & fl; }
 	void addFlag(uint32_t fl) { flags |= fl; }
 	void setFlags(uint32_t fl) { flags = fl; }
 	void removeFlag(uint32_t fl) { flags &= ~fl; }
-	
 
 	SharedMutex            executeMutex;
 	SharedMutex            mutexDependent;

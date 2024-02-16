@@ -91,7 +91,6 @@ constexpr uint8_t TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
 
 struct TypeInfo
 {
-	
 	TypeInfo()          = default;
 	virtual ~TypeInfo() = default;
 
@@ -104,8 +103,6 @@ struct TypeInfo
 		: kind{kind}
 	{
 	}
-
-	
 
 	bool isPointerTo(NativeTypeKind pointerKind);
 	bool isPointerTo(TypeInfoKind pointerKind);
@@ -125,13 +122,10 @@ struct TypeInfo
 	const TypeInfo* getConstAlias() const;
 	TypeInfo*       getConcreteAlias() const;
 
-	
 	bool hasFlag(uint64_t fl) const { return flags & fl; }
 	void addFlag(uint64_t fl) { flags |= fl; }
 	void removeFlag(uint64_t fl) { flags &= ~fl; }
-	
 
-	
 	bool isSlice() const { return kind == TypeInfoKind::Slice; }
 	bool isInterface() const { return kind == TypeInfoKind::Interface; }
 	bool isStruct() const { return kind == TypeInfoKind::Struct; }
@@ -181,7 +175,6 @@ struct TypeInfo
 	bool isUntypedBinHex() const { return (flags & TYPEINFO_UNTYPED_BIN_HEX); }
 	bool isConstAlias() const { return (flags & TYPEINFO_CONST_ALIAS); }
 	bool isCharacter() const { return (flags & TYPEINFO_CHARACTER); }
-	
 
 	virtual bool      isSame(const TypeInfo* from, CastFlags castFlags) const;
 	virtual TypeInfo* clone() = 0;
@@ -193,11 +186,9 @@ struct TypeInfo
 	void        copyFrom(const TypeInfo* from);
 	void        setConst();
 
-	
 	void computeName() { computeWhateverName(COMPUTE_NAME); }
 	void computeScopedName() { computeWhateverName(COMPUTE_SCOPED_NAME); }
 	void computeScopedNameExport() { computeWhateverName(COMPUTE_SCOPED_NAME_EXPORT); }
-	
 
 	void        removeGenericFlag();
 	void        clearName();

@@ -166,7 +166,6 @@ struct Callback
 // as the linker will make only one __callback function, and all pointers in
 // g_CallbackArr will be the same !!!
 
-
 DECL_CB(a);
 DECL_CB(b);
 DECL_CB(c);
@@ -200,7 +199,6 @@ static Callback g_CallbackArr[] = {
 	USE_CB(aa), USE_CB(ab), USE_CB(ac), USE_CB(ad), USE_CB(ae), USE_CB(af), USE_CB(ag), USE_CB(ah), USE_CB(ai),
 	USE_CB(aaa), USE_CB(aab), USE_CB(aac), USE_CB(aad), USE_CB(aae), USE_CB(aaf), USE_CB(aag), USE_CB(aah), USE_CB(aai),
 };
-
 
 // This is the actual callback that will be called by external libraries
 static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)

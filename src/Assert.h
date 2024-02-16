@@ -1,6 +1,5 @@
 #pragma once
 
-
 void swagAssert(const char* expr, const char* file, int line);
 
 #ifdef SWAG_HAS_ASSERT

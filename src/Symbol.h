@@ -45,9 +45,7 @@ struct SymbolOverload
 	void from(const SymbolOverload* other);
 	void setRegisters(const RegisterList& reg, uint32_t fl);
 
-	
 	bool hasFlag(uint32_t fl) const { return flags & fl; }
-	
 
 	ComputedValue computedValue;
 	RegisterList  symRegisters;
@@ -93,9 +91,7 @@ struct SymbolName
 	void            addDependentJobNoLock(Job* job);
 	void            unregisterNode(const AstNode* node);
 
-	
 	bool hasFlag(uint32_t fl) const { return flags & fl; }
-	    
 
 	SharedMutex                   mutex;
 	VectorNative<SymbolOverload*> overloads;

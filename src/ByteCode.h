@@ -39,7 +39,6 @@ struct ByteCode
 
 	void release();
 
-	
 	static bool isMemCpy(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags & OPFLAG_IS_MEMCPY; }
 	static bool isPushParam(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags & OPFLAG_IS_PUSH_PARAM; }
 	static bool isCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags & OPFLAG_IS_CALL; }
@@ -80,7 +79,6 @@ struct ByteCode
 	static bool hasSomethingInB(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags & (OPFLAG_READ_B | OPFLAG_WRITE_B | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B); }
 	static bool hasSomethingInC(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags & (OPFLAG_READ_C | OPFLAG_WRITE_C | OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C); }
 	static bool hasSomethingInD(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D | OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D); }
-	
 
 	static void*    doByteCodeLambda(void* ptr);
 	static void*    undoByteCodeLambda(void* ptr);

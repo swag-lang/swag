@@ -30,12 +30,10 @@ constexpr uint8_t BCID_SAFETY_OF = 0x04;
 
 struct ByteCodeInstruction
 {
-	
 	bool hasFlag(uint16_t fl) const { return flags & fl; }
 	void addFlag(uint16_t fl) { flags |= fl; }
 	void removeFlag(uint16_t fl) { flags &= ~fl; }
 	void inheritFlag(const ByteCodeInstruction* ip, uint16_t fl) { flags |= ip->flags & fl; }
-	
 
 	// Keep 'op' first to dereference it in the runner without an offset
 	ByteCodeOp op;

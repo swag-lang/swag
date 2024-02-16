@@ -2697,7 +2697,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 				{
 					const auto foundTypeStruct0 = foundStruct->getStructOrPointedStruct();
 					const auto foundTypeStruct1 = typeStruct->getStructOrPointedStruct();
-					if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, castFlags.with( CASTFLAG_CAST)))
+					if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, castFlags.with(CASTFLAG_CAST)))
 					{
 						if (fromNode && !(castFlags.has(CASTFLAG_JUST_CHECK)))
 						{

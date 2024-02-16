@@ -126,7 +126,6 @@ struct Tokenizer
 
 	static TokenId tokenRelated(TokenId id);
 
-	
 	static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_KWD; }
 	static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_SYM; }
 	static bool isLiteral(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_LITERAL; }
@@ -134,7 +133,6 @@ struct Tokenizer
 	static bool isIntrinsicReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_RETURN; }
 	static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_NORETURN; }
 	static bool isTopLevelInst(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_TOP_LEVEL_INST; }
-	
 
 	SourceLocation location;
 

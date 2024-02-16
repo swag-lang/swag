@@ -51,9 +51,7 @@ constexpr uint32_t OCF_HAS_ERR       = 0x00000040;
 
 struct ByteCodeOptContext : JobContext
 {
-	
 	void setDirtyPass() { passHasDoneSomething = true; }
-	
 
 	VectorNative<ByteCodeInstruction*>                  jumps;
 	VectorNative<ByteCodeInstruction*>                  nops;
