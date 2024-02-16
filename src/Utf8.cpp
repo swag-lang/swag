@@ -26,7 +26,7 @@ void Utf8::release()
 
 Utf8::Utf8(const char* from)
 {
-    const uint32_t len = from ? (uint32_t) strlen(from) : 0;
+    const uint32_t len = from ? static_cast<uint32_t>(strlen(from)) : 0;
     if (!len)
         return;
 
@@ -39,10 +39,10 @@ Utf8::Utf8(const SwagSlice& slice)
 {
     if (!slice.buffer || !slice.count)
         return;
-    reserve((uint32_t) slice.count + 1);
+    reserve(static_cast<uint32_t>(slice.count) + 1);
     memcpy(buffer, slice.buffer, slice.count);
     buffer[slice.count] = 0;
-    count               = (uint32_t) slice.count;
+    count               = static_cast<uint32_t>(slice.count);
 }
 
 Utf8::Utf8(const char* from, uint32_t len)
@@ -57,7 +57,7 @@ Utf8::Utf8(const char* from, uint32_t len)
 
 Utf8::Utf8(const string& from)
 {
-    const uint32_t len = (uint32_t) from.length();
+    const uint32_t len = static_cast<uint32_t>(from.length());
     if (!len)
         return;
 
@@ -125,7 +125,7 @@ void Utf8::reserve(uint32_t newSize)
     const auto lastAllocated = allocated;
     allocated *= 2;
     allocated            = max(allocated, newSize);
-    const auto newBuffer = (char*) Allocator::alloc(allocated);
+    const auto newBuffer = static_cast<char*>(Allocator::alloc(allocated));
     if (count)
         memcpy(newBuffer, buffer, count + 1);
 
@@ -172,7 +172,7 @@ const char* Utf8::c_str() const
     // Big huge leak... not so huge in fact
     // Should limit the call to c_str() as much as possible in a normal run (no errors)
     const auto size = count + 1;
-    const auto buf  = (char*) Allocator::alloc(size);
+    const auto buf  = static_cast<char*>(Allocator::alloc(size));
     memcpy(buf, buffer, count);
     buf[count] = 0;
 
@@ -322,7 +322,7 @@ bool operator==(const Utf8& str1, const char* str2)
     SWAG_ASSERT(str2);
     if (str1.count == 0)
         return false;
-    const auto len = (uint32_t) strlen(str2);
+    const auto len = static_cast<uint32_t>(strlen(str2));
     if (str1.count != len)
         return false;
     return !strncmp(str1.buffer, str2, str1.count);
@@ -357,14 +357,14 @@ void Utf8::makeUpper()
 {
     makeLocal();
     for (uint32_t i = 0; i < count; i++)
-        buffer[i]   = (char) toupper(buffer[i]);
+        buffer[i]   = static_cast<char>(toupper(buffer[i]));
 }
 
 void Utf8::makeLower()
 {
     makeLocal();
     for (uint32_t i = 0; i < count; i++)
-        buffer[i]   = (char) tolower(buffer[i]);
+        buffer[i]   = static_cast<char>(tolower(buffer[i]));
 }
 
 bool Utf8::compareNoCase(const Utf8& txt1) const
@@ -454,7 +454,7 @@ int Utf8::find(const Utf8& str, uint32_t startPos) const
     const auto pz = std::search(buffer + startPos, buffer + count, str.buffer, str.buffer + str.count);
     if (pz == buffer + count)
         return -1;
-    return (int) (pz - buffer);
+    return static_cast<int>(pz - buffer);
 }
 
 bool Utf8::toChar32(uint32_t& ch) const
@@ -477,7 +477,7 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars) const
     const auto  endpz = buffer + count;
     while (pz != endpz)
     {
-        if (maxChars != -1 && uni.size() >= (size_t) maxChars)
+        if (maxChars != -1 && uni.size() >= static_cast<size_t>(maxChars))
             return;
         uint32_t c;
         pz = decodeUtf8(pz, c, offset);
@@ -494,11 +494,11 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars) const
     const auto  endpz = buffer + count;
     while (pz != endpz)
     {
-        if (maxChars != -1 && uni.size() >= (size_t) maxChars)
+        if (maxChars != -1 && uni.size() >= static_cast<size_t>(maxChars))
             return;
         uint32_t c;
         pz = decodeUtf8(pz, c, offset);
-        uni.push_back((uint16_t) c);
+        uni.push_back(static_cast<uint16_t>(c));
     }
 }
 
@@ -524,7 +524,7 @@ void Utf8::makeLocal()
         return;
 
     allocated      = count + 1;
-    const auto buf = (char*) Allocator::alloc(allocated);
+    const auto buf = static_cast<char*>(Allocator::alloc(allocated));
     memcpy(buf, buffer, count);
     buffer        = buf;
     buffer[count] = 0;
@@ -549,7 +549,7 @@ void Utf8::append(const char* txt)
 {
     if (!txt)
         return;
-    const uint32_t len = (uint32_t) strlen(txt);
+    const uint32_t len = static_cast<uint32_t>(strlen(txt));
     if (!len)
         return;
     reserve(count + len + 1);
@@ -634,7 +634,7 @@ void Utf8::insert(uint32_t index, const char* str)
     }
 
     makeLocal();
-    const uint32_t len = (uint32_t) strlen(str);
+    const uint32_t len = static_cast<uint32_t>(strlen(str));
     reserve(count + len + 1);
     memmove(buffer + index + len, buffer + index, count - index);
     memcpy(buffer + index, str, len);
@@ -661,15 +661,15 @@ void Utf8::insert(uint32_t index, char c)
 void Utf8::replace(const char* src, const char* dst)
 {
     makeLocal();
-    const uint32_t len    = (uint32_t) strlen(src);
-    const uint32_t lenins = (uint32_t) strlen(dst);
+    const uint32_t len    = static_cast<uint32_t>(strlen(src));
+    const uint32_t lenins = static_cast<uint32_t>(strlen(dst));
     uint32_t       pos    = 0;
     while (true)
     {
         const auto npos = find(src, pos);
         if (npos == -1)
             break;
-        pos = (uint32_t) npos;
+        pos = static_cast<uint32_t>(npos);
         remove(pos, len);
         insert(pos, dst);
         pos += lenins;
@@ -755,7 +755,7 @@ Utf8 Utf8::format(const char* format, ...)
     va_end(args);
 
     Utf8 vec;
-    vec.resize((int) len);
+    vec.resize(static_cast<int>(len));
     va_start(args, format);
     vsnprintf(vec.buffer, len + 1, format, args);
     va_end(args);
@@ -849,7 +849,7 @@ void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength)
             i--;
         }
 
-        if (i && (int) (one.length() - extraLength) > maxLength && i > 10)
+        if (i && static_cast<int>(one.length() - extraLength) > maxLength && i > 10)
         {
             tokens.push_back(one);
             one.clear();
@@ -922,10 +922,10 @@ Utf8 Utf8::toNiceSize(size_t size)
     if (size < 1024)
         return FMT("%u bytes", size);
     if (size < 1024 * 1024)
-        return FMT("%.1f Kb", (float) size / 1024.0f);
+        return FMT("%.1f Kb", static_cast<float>(size) / 1024.0f);
     if (size < 1024 * 1024 * 1024)
-        return FMT("%.1f Mb", (float) size / (1024.0f * 1024.0f));
-    return FMT("%.1f Gb", (float) size / (1024.0f * 1024.0f * 1024.0f));
+        return FMT("%.1f Mb", static_cast<float>(size) / (1024.0f * 1024.0f));
+    return FMT("%.1f Gb", static_cast<float>(size) / (1024.0f * 1024.0f * 1024.0f));
 }
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)

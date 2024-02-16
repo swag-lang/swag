@@ -390,7 +390,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     if (numInstructions + room < maxInstructions)
         return;
 
-    const auto oldSize = (int) (maxInstructions * sizeof(ByteCodeInstruction));
+    const auto oldSize = static_cast<int>(maxInstructions * sizeof(ByteCodeInstruction));
     maxInstructions    = max(numInstructions + room * 2, maxInstructions * 2);
 
     // Evaluate the first number of instructions for a given function.
@@ -400,11 +400,11 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     {
         const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.
-        maxInstructions = (int) ((float) funcDecl->nodeCounts * 0.8f);
+        maxInstructions = static_cast<int>((float) funcDecl->nodeCounts * 0.8f);
     }
 
     maxInstructions            = max(maxInstructions, 8);
-    const auto newInstructions = (ByteCodeInstruction*) Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction));
+    const auto newInstructions = static_cast<ByteCodeInstruction*>(Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction)));
     memcpy(newInstructions, out, numInstructions * sizeof(ByteCodeInstruction));
     Allocator::free(out, oldSize);
 

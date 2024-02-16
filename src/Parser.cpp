@@ -415,7 +415,7 @@ bool Parser::generateAst()
         const auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
 
         Utf8 npName;
-        npName.append((const char*) moduleForNp->buildCfg.moduleNamespace.buffer, (int) moduleForNp->buildCfg.moduleNamespace.count);
+        npName.append(static_cast<const char*>(moduleForNp->buildCfg.moduleNamespace.buffer), static_cast<int>(moduleForNp->buildCfg.moduleNamespace.count));
         if (npName.empty())
             npName = moduleForNp->name;
         Ast::normalizeIdentifierName(npName);

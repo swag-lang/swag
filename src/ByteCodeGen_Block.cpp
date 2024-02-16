@@ -48,7 +48,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 	if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
 	{
 		allParams     = parent;
-		numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
+		numCallParams = static_cast<int>(allParams->childs.size()) - 1; // Remove the inline block
 		while (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
 			parent = parent->parent;
 		parent->resultRegisterRc = node->resultRegisterRc;
@@ -175,7 +175,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 				for (size_t j = 0; j < numCallParams; j++)
 				{
 					auto callParam = castAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
-					if (callParam->indexParam == (int) i)
+					if (callParam->indexParam == static_cast<int>(i))
 					{
 						if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
 						{
@@ -756,7 +756,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 	for (const auto fallNode: switchNode->fallThroughList)
 	{
 		SWAG_ASSERT(fallNode->switchCase);
-		SWAG_ASSERT(fallNode->switchCase->caseIndex < (int)switchNode->cases.size() - 1);
+		SWAG_ASSERT(fallNode->switchCase->caseIndex < static_cast<int>(switchNode->cases.size()) - 1);
 
 		const auto nextCase      = switchNode->cases[fallNode->switchCase->caseIndex + 1];
 		const auto nextCaseBlock = castAst<AstSwitchCaseBlock>(nextCase->block, AstNodeKind::SwitchCaseBlock);
@@ -1015,7 +1015,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
 	auto&      table = scope->symTable;
 	ScopedLock lock(table.mutex);
 
-	const auto count = (int) table.structVarsToDrop.size() - 1;
+	const auto count = static_cast<int>(table.structVarsToDrop.size()) - 1;
 	if (count == -1)
 		return true;
 

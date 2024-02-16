@@ -251,10 +251,10 @@ namespace
         if (range == 1)
             return;
 
-        const int decal = (int) startLocation.column;
+        const int decal = static_cast<int>(startLocation.column);
         int       cpt   = 0;
 
-        for (int i = decal; i < (int) lineCode.length() && i < decal + range; i++)
+        for (int i = decal; i < static_cast<int>(lineCode.length()) && i < decal + range; i++)
         {
             if (lineCode[i] == c1)
                 cpt++;
@@ -262,21 +262,21 @@ namespace
                 cpt--;
         }
 
-        if (cpt > 0 && ((decal + range) < (int) lineCode.length()) && lineCode[decal + range] == c2)
+        if (cpt > 0 && ((decal + range) < static_cast<int>(lineCode.length())) && lineCode[decal + range] == c2)
         {
             range++;
         }
-        else if (cpt > 0 && (decal < (int) lineCode.length()) && lineCode[decal] == c1)
+        else if (cpt > 0 && (decal < static_cast<int>(lineCode.length())) && lineCode[decal] == c1)
         {
             startLocation.column++;
             range--;
         }
-        else if (cpt < 0 && decal && ((decal - 1) < (int) lineCode.length()) && lineCode[decal - 1] == c1)
+        else if (cpt < 0 && decal && ((decal - 1) < static_cast<int>(lineCode.length())) && lineCode[decal - 1] == c1)
         {
             startLocation.column--;
             range++;
         }
-        else if (cpt < 0 && ((decal + range - 1) < (int) lineCode.length()) && lineCode[decal + range - 1] == c2)
+        else if (cpt < 0 && ((decal + range - 1) < static_cast<int>(lineCode.length())) && lineCode[decal + range - 1] == c2)
         {
             range--;
         }
@@ -335,7 +335,7 @@ void Diagnostic::collectRanges()
         if (r.endLocation.line == r.startLocation.line)
             r.width = r.endLocation.column - r.startLocation.column;
         else
-            r.width = (int) lineCode.length() - r.startLocation.column;
+            r.width = static_cast<int>(lineCode.length()) - r.startLocation.column;
         r.width = max(1, r.width);
 
         // Special case for a range == 1.
@@ -456,7 +456,7 @@ void Diagnostic::alignRangeColumn(int& curColumn, int where, bool withCode) cons
 {
     while (curColumn < where)
     {
-        if (withCode && curColumn < (int) lineCode.count && lineCode[curColumn] == '\t')
+        if (withCode && curColumn < static_cast<int>(lineCode.count) && lineCode[curColumn] == '\t')
             g_Log.print("\t");
         else
             g_Log.print(" ");
@@ -522,7 +522,7 @@ void Diagnostic::printRanges()
         if (i != ranges.size() - 1 && r.mergeNext)
             setColorRanges(ranges[i + 1].errorLevel);
 
-        while (curColumn < (int) r.startLocation.column + r.width && curColumn <= (int) lineCode.length() + 1)
+        while (curColumn < static_cast<int>(r.startLocation.column) + r.width && curColumn <= static_cast<int>(lineCode.length()) + 1)
         {
             curColumn++;
             g_Log.print(LogSymbol::HorizontalLine);
@@ -563,13 +563,13 @@ void Diagnostic::printRanges()
         curColumn = printRangesVerticalBars(ranges.size() - 1);
         g_Log.setColor(rangeNoteColor);
 
-        const bool notEnoughRoomRight = ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) || orgNumRanges >= 2);
-        const bool enoughRoomLeft     = mid - 2 - (int) unformat.length() >= 0;
+        const bool notEnoughRoomRight = ((mid + 3 + static_cast<int>(unformat.length()) > static_cast<int>(g_CommandLine.errorRightColumn)) || orgNumRanges >= 2);
+        const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unformat.length()) >= 0;
 
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
-            alignRangeColumn(curColumn, r.mid - 2 - (int) unformat.length());
+            alignRangeColumn(curColumn, r.mid - 2 - static_cast<int>(unformat.length()));
             g_Log.print(r.hint);
             g_Log.print(" ");
             g_Log.print(LogSymbol::HorizontalLine);
@@ -589,7 +589,7 @@ void Diagnostic::printRanges()
                 curColumn = minBlanks;
             }
 
-            if (mid - 2 - (int) unformat.length() > -4)
+            if (mid - 2 - static_cast<int>(unformat.length()) > -4)
                 alignRangeColumn(curColumn, curColumn + 4);
 
             printLastRangeHint(curColumn);

@@ -63,13 +63,13 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     if (forGenerics)
     {
         typeInfo->genericParameters.clear();
-        typeInfo->genericParameters.reserve((int) parameters->childs.size());
+        typeInfo->genericParameters.reserve(static_cast<int>(parameters->childs.size()));
         typeInfo->addFlag(TYPEINFO_GENERIC);
     }
     else
     {
         typeInfo->parameters.clear();
-        typeInfo->parameters.reserve((int) parameters->childs.size());
+        typeInfo->parameters.reserve(static_cast<int>(parameters->childs.size()));
     }
 
     AstNode* firstParamWithDef = nullptr;
@@ -174,7 +174,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
         {
             if (defaultValueDone)
             {
-                Diagnostic diag{nodeParam, FMT(Err(Err0547), Naming::niceParameterRank((int) index).c_str())};
+                Diagnostic diag{nodeParam, FMT(Err(Err0547), Naming::niceParameterRank(static_cast<int>(index)).c_str())};
                 diag.addNote(firstParamWithDef, Nte(Nte0170));
                 return context->report(diag);
             }
@@ -1679,7 +1679,7 @@ uint32_t Semantic::getMaxStackSize(AstNode* node)
 void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 {
     size = max(size, 1);
-    size = (uint32_t) TypeManager::align(size, sizeof(void*));
+    size = static_cast<uint32_t>(TypeManager::align(size, sizeof(void*)));
 
     if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
     {
@@ -1988,7 +1988,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
 bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
-    SWAG_CHECK(makeInline((JobContext*) context, funcDecl, identifier));
+    SWAG_CHECK(makeInline(static_cast<JobContext*>(context), funcDecl, identifier));
     context->result = ContextResult::NewChilds;
     return true;
 }

@@ -13,16 +13,16 @@ thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 uint32_t ByteCodeStack::maxLevel(const ByteCodeRunContext* runContext)
 {
     if (!runContext)
-        return (uint32_t) steps.size() - 1;
+        return static_cast<uint32_t>(steps.size()) - 1;
 
     // The last stack step can be the same as the current context. If it's not the case,
     // then it's like we have one more step.
     const auto& back = steps.back();
     if (back.bc == runContext->bc && back.ip == runContext->ip)
-        return (uint32_t) steps.size() - 1;
+        return static_cast<uint32_t>(steps.size()) - 1;
 
     // Not the case. One more step.
-    return (uint32_t) steps.size();
+    return static_cast<uint32_t>(steps.size());
 }
 
 Utf8 ByteCodeStack::getStepName(const AstNode* node, const ByteCodeInstruction* ip)
@@ -187,13 +187,13 @@ Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext) const
 
     Utf8      str;
     int       maxSteps = 20;
-    const int nb       = (int) copySteps.size() - 1;
+    const int nb       = static_cast<int>(copySteps.size()) - 1;
     for (int i = nb; i >= 0; i--)
     {
         bool current = false;
         if (runContext && runContext->debugOn)
-            current = (size_t) i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
-        str += getLogStep(i, current, copySteps[(size_t) i]);
+            current = static_cast<size_t>(i) == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
+        str += getLogStep(i, current, copySteps[static_cast<size_t>(i)]);
 
         maxSteps--;
         if (maxSteps == 0)

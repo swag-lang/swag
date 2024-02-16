@@ -35,7 +35,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
             if (same)
             {
                 SET_OP(node->start, ByteCodeOp::Jump);
-                node->start->b.s32 = (int32_t) (it->second->start - node->start) - 1;
+                node->start->b.s32 = static_cast<int32_t>(it->second->start - node->start) - 1;
             }
         }
         else

@@ -44,9 +44,9 @@ CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32
     sym.value      = value;
     sym.sectionIdx = sectionIdx;
     SWAG_ASSERT(allSymbols.size() < UINT32_MAX);
-    sym.index = (uint32_t) allSymbols.size();
+    sym.index = static_cast<uint32_t>(allSymbols.size());
     allSymbols.emplace_back(std::move(sym));
-    mapSymbols[name] = (uint32_t) allSymbols.size() - 1;
+    mapSymbols[name] = static_cast<uint32_t>(allSymbols.size()) - 1;
     return &allSymbols.back();
 }
 
@@ -65,7 +65,7 @@ CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
     if (it != globalStrings.end())
         return &allSymbols[it->second];
 
-    const Utf8 symName = FMT("__str%u", (uint32_t) globalStrings.size());
+    const Utf8 symName = FMT("__str%u", static_cast<uint32_t>(globalStrings.size()));
     const auto sym     = getOrAddSymbol(symName, CPUSymbolKind::GlobalString);
     globalStrings[str] = sym->index;
     sym->value         = stringSegment.addStringNoLock(str);

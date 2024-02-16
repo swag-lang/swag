@@ -57,7 +57,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqF32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -80,7 +80,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerF32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -103,7 +103,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -126,7 +126,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterF32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -150,7 +150,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqF64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -173,7 +173,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerF64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -196,7 +196,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -219,7 +219,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterF64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -243,7 +243,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -266,7 +266,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -289,7 +289,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -312,7 +312,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -336,7 +336,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -359,7 +359,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -382,7 +382,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -405,7 +405,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -429,7 +429,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -452,7 +452,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -475,7 +475,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -498,7 +498,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -522,7 +522,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqS64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -545,7 +545,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerS64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -568,7 +568,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -591,7 +591,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterS64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -615,7 +615,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -638,7 +638,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -661,7 +661,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -684,7 +684,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -708,7 +708,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -731,7 +731,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -754,7 +754,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -777,7 +777,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -801,7 +801,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -824,7 +824,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -847,7 +847,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -870,7 +870,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -894,7 +894,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerEqU64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -917,7 +917,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfLowerU64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -940,7 +940,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -963,7 +963,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfGreaterU64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -987,7 +987,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfTrue);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1010,7 +1010,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfFalse);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1033,7 +1033,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1057,7 +1057,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1081,7 +1081,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1105,7 +1105,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfZero64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1129,7 +1129,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1153,7 +1153,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1177,7 +1177,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1201,7 +1201,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotZero64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1225,7 +1225,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1249,7 +1249,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1273,7 +1273,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1297,7 +1297,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqualF32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1321,7 +1321,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqual64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1345,7 +1345,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfNotEqualF64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1369,7 +1369,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual8);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1393,7 +1393,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual16);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1417,7 +1417,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual32);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1441,7 +1441,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 SET_OP(ip, ByteCodeOp::JumpIfEqual64);
-                ip->b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
+                ip->b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1));
                 setNop(context, ip + 1);
                 break;
             }
@@ -1878,7 +1878,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                     break;
 
                 context->vecInst.push_back(destIp);
-                const auto offset = (uint32_t) (destIp - ipStart) + destIp->b.s32;
+                const auto offset = static_cast<uint32_t>(destIp - ipStart) + destIp->b.s32;
                 switch (sizeOf)
                 {
                 case 1:
@@ -1908,7 +1908,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                     break;
 
                 context->vecInst.push_back(destIp);
-                const auto offset = (uint32_t) (destIp - ipStart);
+                const auto offset = static_cast<uint32_t>(destIp - ipStart);
                 switch (sizeOf)
                 {
                 case 1:
@@ -1967,7 +1967,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // TargetLoweringBase::isSuitableForJumpTable in llvm
 
         const auto range    = (maxValue - minValue) + 1;
-        const auto numCases = (int64_t) context->vecInst.size();
+        const auto numCases = static_cast<int64_t>(context->vecInst.size());
         if (numCases < 4)
             continue;
         const bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && (numCases * 100 >= range * minDensity);
@@ -1977,12 +1977,12 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // Create the jump table
         // First element is always the "default" one
         uint8_t*   addrCompiler        = nullptr;
-        const auto offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
+        const auto offsetTableCompiler = context->module->compilerSegment.reserve((static_cast<uint32_t>(range) + 1) * sizeof(uint32_t), &addrCompiler);
         const auto patchCompiler       = reinterpret_cast<int32_t*>(addrCompiler);
 
         // Set table to default jump
         for (uint32_t i      = 0; i < range + 1; i++)
-            patchCompiler[i] = (int32_t) (defaultIp - ipStart) - 1;
+            patchCompiler[i] = static_cast<int32_t>(defaultIp - ipStart) - 1;
 
         // Then register each value
         for (const auto& it : context->map6432)

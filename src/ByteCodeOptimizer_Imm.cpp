@@ -18,7 +18,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         if (ip->hasFlag(BCI_START_STMT_N))
             regs.clear();
 
-        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
+        auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
         bool optPostWrite = false;
         switch (ip->op)
@@ -163,7 +163,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
                 regs.remove(ip->b.u32);
                 ip->b.u64 = regsRW.val[ip->b.u32];
-                flags     = g_ByteCodeOpDesc[(int) ip->op].flags;
+                flags     = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
             }
         }
 

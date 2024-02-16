@@ -35,9 +35,9 @@ bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint) cons
 void Tokenizer::appendTokenName(TokenParse& token) const
 {
     if (realAppendName)
-        token.text.append(startTokenName, (int) (curBuffer - startTokenName));
+        token.text.append(startTokenName, static_cast<int>(curBuffer - startTokenName));
     else
-        token.text.setView(startTokenName, (int) (curBuffer - startTokenName));
+        token.text.setView(startTokenName, static_cast<int>(curBuffer - startTokenName));
 }
 
 void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
@@ -51,13 +51,13 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
     curBuffer       = sourceFile->buffer + sourceFile->offsetStartBuffer;
     endBuffer       = sourceFile->buffer + sourceFile->bufferSize;
 
-    for (int i       = 'a'; i <= (int) 'z'; i++)
+    for (int i       = 'a'; i <= static_cast<int>('z'); i++)
         idLetters[i] = true;
-    for (int i       = 'A'; i <= (int) 'Z'; i++)
+    for (int i       = 'A'; i <= static_cast<int>('Z'); i++)
         idLetters[i] = true;
-    for (int i       = '0'; i <= (int) '9'; i++)
+    for (int i       = '0'; i <= static_cast<int>('9'); i++)
         idLetters[i] = true;
-    idLetters[(int) '_'] = true;
+    idLetters[static_cast<int>('_')] = true;
 }
 
 void Tokenizer::saveState(const TokenParse& token)

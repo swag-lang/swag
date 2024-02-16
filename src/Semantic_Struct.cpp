@@ -159,7 +159,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     // We need now the pointer to the itable
     const auto     typeInterface   = castTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
-    const uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
+    const uint32_t numFctInterface = static_cast<uint32_t>(typeInterface->fields.size());
 
     Map<TypeInfoParam*, AstNode*> mapItToFunc;
     VectorNative<AstFuncDecl*>    mapItIdxToFunc;
@@ -312,7 +312,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[itfSymbol]           = child;
-        mapItIdxToFunc[itfSymbol->index] = (AstFuncDecl*) child;
+        mapItIdxToFunc[itfSymbol->index] = static_cast<AstFuncDecl*>(child);
     }
 
     // If structure is generic, then do nothing, we cannot solve
@@ -636,7 +636,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 
     if (parent->ownerStructScope && !structNode->genericParameters)
     {
-        const auto parentStruct = (AstStruct*) parent->ownerStructScope->owner;
+        const auto parentStruct = static_cast<AstStruct*>(parent->ownerStructScope->owner);
         if (parentStruct->genericParameters)
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
     }
@@ -659,7 +659,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 
 bool Semantic::preResolveStructContent(SemanticContext* context)
 {
-    const auto node = (AstStruct*) context->node->parent;
+    const auto node = static_cast<AstStruct*>(context->node->parent);
     SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl);
 
     const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
@@ -1088,8 +1088,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     alignOf = userAlignOf->reg.u8;
                 else
                     alignOf = min(alignOf, node->packing);
-                realStorageOffset = (uint32_t) TypeManager::align(realStorageOffset, alignOf);
-                storageOffset     = (uint32_t) TypeManager::align(storageOffset, alignOf);
+                realStorageOffset = static_cast<uint32_t>(TypeManager::align(realStorageOffset, alignOf));
+                storageOffset     = static_cast<uint32_t>(TypeManager::align(storageOffset, alignOf));
             }
 
             typeParam->offset                                          = realStorageOffset;
@@ -1189,7 +1189,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
     // Align structure size
     if (typeInfo->alignOf > 1 && !typeInfo->isGeneric())
-        typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);
+        typeInfo->sizeOf = static_cast<uint32_t>(TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf));
 
     // Check public
     if (node->hasAttribute(ATTRIBUTE_PUBLIC) && !typeInfo->isTuple())

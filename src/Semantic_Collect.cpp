@@ -38,9 +38,9 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         const auto ptrAny = reinterpret_cast<SwagAny*>(ptrDest);
         if (assignment && !assignment->castedTypeInfo)
         {
-            const auto valueAny           = (SwagAny*) value->getStorageAddr();
+            const auto valueAny           = static_cast<SwagAny*>(value->getStorageAddr());
             *ptrAny                       = *valueAny;
-            const auto storageOffsetValue = value->storageSegment->offset((uint8_t*) valueAny->value);
+            const auto storageOffsetValue = value->storageSegment->offset(static_cast<uint8_t*>(valueAny->value));
             const auto storageOffsetType  = value->storageSegment->offset((uint8_t*) valueAny->type);
             value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
             value->storageSegment->addInitPtr(storageOffset + 8, storageOffsetType, value->storageSegment->kind);
@@ -86,11 +86,11 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
         }
         else if (assignType && assignType->isSlice())
         {
-            const auto slice = (SwagSlice*) value->getStorageAddr();
+            const auto slice = static_cast<SwagSlice*>(value->getStorageAddr());
             *ptrSlice        = *slice;
             if (slice->buffer)
             {
-                const auto storageOffsetValue = value->storageSegment->offset((uint8_t*) slice->buffer);
+                const auto storageOffsetValue = value->storageSegment->offset(static_cast<uint8_t*>(slice->buffer));
                 value->storageSegment->addInitPtr(storageOffset, storageOffsetValue, value->storageSegment->kind);
             }
         }
@@ -621,11 +621,11 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         const auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         const auto ptrSlice  = reinterpret_cast<SwagSlice*>(ptr);
         node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = ptrSlice->buffer ? storageSegment->offset((uint8_t*) ptrSlice->buffer) : UINT32_MAX;
+        node->computedValue->storageOffset  = ptrSlice->buffer ? storageSegment->offset(static_cast<uint8_t*>(ptrSlice->buffer)) : UINT32_MAX;
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->reg.u64        = ptrSlice->count;
         const auto typeArray                = makeType<TypeInfoArray>();
-        typeArray->count                    = (uint32_t) (reinterpret_cast<SwagSlice*>(ptr))->count;
+        typeArray->count                    = static_cast<uint32_t>((reinterpret_cast<SwagSlice*>(ptr))->count);
         typeArray->totalCount               = typeArray->count;
         typeArray->pointedType              = typeSlice->pointedType;
         typeArray->finalType                = typeSlice->pointedType;
@@ -654,7 +654,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     {
         const auto slice = reinterpret_cast<SwagSlice*>(ptr);
         node->setFlagsValueIsComputed();
-        node->computedValue->text = Utf8{(const char*) slice->buffer, (uint32_t) slice->count};
+        node->computedValue->text = Utf8{static_cast<const char*>(slice->buffer), static_cast<uint32_t>(slice->count)};
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoString;
         break;

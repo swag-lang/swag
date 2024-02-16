@@ -55,9 +55,9 @@ namespace OS
 
         // Convert to UTF8
         const std::wstring wstr{value};
-        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), (int) wstr.size(), nullptr, 0, nullptr, nullptr);
+        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), nullptr, 0, nullptr, nullptr);
         std::string        str(sizeNeeded, 0);
-        WideCharToMultiByte(CP_UTF8, 0, wstr.data(), (int) wstr.size(), str.data(), sizeNeeded, nullptr, nullptr);
+        WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), str.data(), sizeNeeded, nullptr, nullptr);
 
         g_WinSdkFolder = str.c_str();
         g_WinSdkFolder.append("Lib");
@@ -285,7 +285,7 @@ namespace OS
                 switch (exit)
                 {
                 case 0:
-                case (DWORD) -666:
+                case static_cast<DWORD>(-666):
                     break;
                 case STATUS_ACCESS_VIOLATION:
                     g_Log.lock();
@@ -354,7 +354,7 @@ namespace OS
                 pz[i] = 32;
         }
 
-        Utf8 message(messageBuffer, (uint32_t) size);
+        Utf8 message(messageBuffer, static_cast<uint32_t>(size));
         message.trim();
         if (message.length() && message.back() == '.')
             message.removeBack();
@@ -371,7 +371,7 @@ namespace OS
 
     void* getProcAddress(void* handle, const char* name)
     {
-        return (void*) GetProcAddress((HMODULE) handle, name);
+        return (void*) GetProcAddress(static_cast<HMODULE>(handle), name);
     }
 
     uint64_t getFileWriteTime(const char* fileName)
@@ -381,7 +381,7 @@ namespace OS
             return 0;
 
         uint64_t result = 0;
-        result          = ((uint64_t) fileInfo.ftLastWriteTime.dwHighDateTime) << 32;
+        result          = static_cast<uint64_t>(fileInfo.ftLastWriteTime.dwHighDateTime) << 32;
         result |= fileInfo.ftLastWriteTime.dwLowDateTime;
 
         return result;
@@ -455,7 +455,7 @@ namespace OS
                         continue;
                 }
 
-                uint64_t writeTime = ((uint64_t) findfile.ftLastWriteTime.dwHighDateTime) << 32;
+                uint64_t writeTime = static_cast<uint64_t>(findfile.ftLastWriteTime.dwHighDateTime) << 32;
                 writeTime |= findfile.ftLastWriteTime.dwLowDateTime;
 
                 const bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
@@ -546,12 +546,12 @@ namespace OS
 
     void tlsSetValue(uint64_t id, void* value)
     {
-        TlsSetValue((uint32_t) id, value);
+        TlsSetValue(static_cast<uint32_t>(id), value);
     }
 
     void* tlsGetValue(uint64_t id)
     {
-        return TlsGetValue((uint32_t) id);
+        return TlsGetValue(static_cast<uint32_t>(id));
     }
 
     void errorBox(const char* title, const char* expr)
@@ -679,7 +679,7 @@ namespace OS
     {
         LARGE_INTEGER freq;
         QueryPerformanceFrequency(&freq);
-        return (double) timer / (double) freq.QuadPart;
+        return static_cast<double>(timer) / static_cast<double>(freq.QuadPart);
     }
 
     bool atomicTestNull(void** ptr)
@@ -814,7 +814,7 @@ namespace OS
 
     uint8_t bitCountNz(uint8_t value)
     {
-        return (uint8_t) __popcnt16(value);
+        return static_cast<uint8_t>(__popcnt16(value));
     }
 
     uint16_t bitCountNz(uint16_t value)
@@ -838,7 +838,7 @@ namespace OS
         const auto    res = _BitScanForward(&index, value);
         if (!res)
             return 8;
-        return (uint8_t) index;
+        return static_cast<uint8_t>(index);
     }
 
     uint16_t bitCountTz(uint16_t value)
@@ -847,7 +847,7 @@ namespace OS
         const auto    res = _BitScanForward(&index, value);
         if (!res)
             return 16;
-        return (uint16_t) index;
+        return static_cast<uint16_t>(index);
     }
 
     uint32_t bitCountTz(uint32_t value)
@@ -856,7 +856,7 @@ namespace OS
         const auto    res = _BitScanForward(&index, value);
         if (!res)
             return 32;
-        return (uint32_t) index;
+        return static_cast<uint32_t>(index);
     }
 
     uint64_t bitCountTz(uint64_t value)
@@ -874,7 +874,7 @@ namespace OS
         const auto    res = _BitScanReverse(&index, value);
         if (!res)
             return 8;
-        return (uint8_t) (8 - index - 1);
+        return static_cast<uint8_t>(8 - index - 1);
     }
 
     uint16_t bitCountLz(uint16_t value)
@@ -883,7 +883,7 @@ namespace OS
         const auto    res = _BitScanReverse(&index, value);
         if (!res)
             return 16;
-        return (uint8_t) (16 - index - 1);
+        return static_cast<uint8_t>(16 - index - 1);
     }
 
     uint32_t bitCountLz(uint32_t value)
@@ -892,7 +892,7 @@ namespace OS
         const auto    res = _BitScanReverse(&index, value);
         if (!res)
             return 32;
-        return (uint8_t) (32 - index - 1);
+        return static_cast<uint8_t>(32 - index - 1);
     }
 
     uint64_t bitCountLz(uint64_t value)
@@ -901,7 +901,7 @@ namespace OS
         const auto    res = _BitScanReverse64(&index, value);
         if (!res)
             return 64;
-        return (uint8_t) (64 - index - 1);
+        return static_cast<uint8_t>(64 - index - 1);
     }
 
     uint16_t byteSwap(uint16_t value)
@@ -926,7 +926,7 @@ namespace OS
         const auto& cc         = typeInfoFunc->getCallConv();
         const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
-        uint32_t stackSize = (uint32_t) max(cc.paramByRegisterCount, pushRAParam.size()) * sizeof(void*);
+        uint32_t stackSize = static_cast<uint32_t>(max(cc.paramByRegisterCount, pushRAParam.size())) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 
@@ -939,7 +939,7 @@ namespace OS
             auto& concat = gen.concat;
             concat.init(0);
             concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
-            concat.firstBucket->data     = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
             concat.currentSP             = gen.concat.firstBucket->data;
 
             // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
@@ -1010,7 +1010,7 @@ namespace OS
             if (hglob)
             {
                 const auto pz     = GlobalLock(hglob);
-                Utf8       result = (const char*) pz;
+                Utf8       result = static_cast<const char*>(pz);
                 GlobalUnlock(pz);
                 return result;
             }
@@ -1078,7 +1078,7 @@ namespace OS
                     if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
                         return Key::PasteFromClipboard;
 
-                    c = (int) (unsigned) evt.Event.KeyEvent.uChar.AsciiChar;
+                    c = static_cast<int>((unsigned) evt.Event.KeyEvent.uChar.AsciiChar);
                     if (c >= ' ' && c <= 127)
                         return Key::Ascii;
 

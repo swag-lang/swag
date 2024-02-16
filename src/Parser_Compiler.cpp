@@ -537,7 +537,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             Ast::addChildFront(parent, resultNode);
         }
 
-        const auto attrUse = (AstAttrUse*) resultNode;
+        const auto attrUse = static_cast<AstAttrUse*>(resultNode);
         attrUse->addSpecFlag(AstAttrUse::SPECFLAG_GLOBAL);
         attrUse->allocateExtension(ExtensionKind::Owner);
         attrUse->extOwner()->ownerAttrUse = sourceFile->astAttrUse;

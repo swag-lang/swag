@@ -394,7 +394,7 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
     // Already created ?
     const auto it = mapScopes.find(decl->content->ownerScope);
     if (it != mapScopes.end())
-        return (llvm::DISubprogram*) it->second;
+        return static_cast<llvm::DISubprogram*>(it->second);
 
     // Type
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
@@ -451,7 +451,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
     {
         countParams = decl->parameters->childs.size();
-        allocaParams.reserve((uint32_t) countParams);
+        allocaParams.reserve(static_cast<uint32_t>(countParams));
 
         if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
@@ -614,7 +614,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             llvm::DILocalVariable* var    = dbgBuilder->createAutoVariable(scope, localVar->token.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
             const auto             allocA = allocaRetval[idxRetVal++];
             dbgBuilder->insertDeclare(allocA, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
-            builder.CreateStore(func->getArg((uint32_t) func->arg_size() - 1), allocA);
+            builder.CreateStore(func->getArg(static_cast<uint32_t>(func->arg_size()) - 1), allocA);
         }
         else
         {
@@ -710,7 +710,7 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
     if (toGen.empty())
         return parent;
 
-    for (int i = (int) toGen.size() - 1; i >= 0; i--)
+    for (int i = static_cast<int>(toGen.size()) - 1; i >= 0; i--)
     {
         auto           toGenScope = toGen[i];
         llvm::DIScope* newScope;
@@ -738,7 +738,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
 {
     const int   ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *(LLVMEncoder*) llvm->perThread[ct][precompileIndex];
+    const auto& pp              = *static_cast<LLVMEncoder*>(llvm->perThread[ct][precompileIndex]);
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.llvmContext;
     auto&       modu            = *pp.llvmModule;

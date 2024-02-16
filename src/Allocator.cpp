@@ -9,9 +9,9 @@ constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 
 void* operator new(size_t _Size)
 {
-    _Size = Allocator::alignSize((int) _Size + 2 * sizeof(uint64_t));
+    _Size = Allocator::alignSize(static_cast<int>(_Size) + 2 * sizeof(uint64_t));
 
-    const auto p = (uint64_t*) Allocator::alloc(_Size, 2 * sizeof(uint64_t));
+    const auto p = static_cast<uint64_t*>(Allocator::alloc(_Size, 2 * sizeof(uint64_t)));
     *p           = _Size;
 
 #ifdef SWAG_STATS
@@ -24,7 +24,7 @@ void operator delete(void* _Block) noexcept
 {
     if (!_Block)
         return;
-    auto p = (uint64_t*) _Block;
+    auto p = static_cast<uint64_t*>(_Block);
     p -= 2;
 #ifdef SWAG_STATS
     g_Stats.memNew -= *p;
@@ -36,7 +36,7 @@ void* Allocator::alloc(size_t size, size_t align)
 {
 #ifdef SWAG_CHECK_MEMORY
     auto result = mi_malloc_aligned(size + (3 * sizeof(uint64_t)), align);
-    result      = markDebugBlock((uint8_t*) result, size, MAGIC_ALLOC);
+    result      = markDebugBlock(static_cast<uint8_t*>(result), size, MAGIC_ALLOC);
 #else
     auto result = mi_malloc(size);
 #endif
@@ -57,8 +57,8 @@ void Allocator::free(void* ptr, size_t size)
         return;
 
 #ifdef SWAG_CHECK_MEMORY
-    ptr = checkUserBlock((uint8_t*) ptr, size, MAGIC_ALLOC);
-    markDebugBlock((uint8_t*) ptr, size, MAGIC_FREE);
+    ptr = checkUserBlock(static_cast<uint8_t*>(ptr), size, MAGIC_ALLOC);
+    markDebugBlock(static_cast<uint8_t*>(ptr), size, MAGIC_FREE);
 #endif
 
 #ifdef SWAG_STATS

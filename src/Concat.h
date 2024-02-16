@@ -57,7 +57,7 @@ struct Concat
     {
         ensureSpace(sizeof(T));
         ::new(currentSP) T;
-        auto result = (T*) currentSP;
+        auto result = reinterpret_cast<T*>(currentSP);
         currentSP += sizeof(T);
         return result;
     }
@@ -71,7 +71,7 @@ struct Concat
     {
         if (!lastBucket)
             return 0;
-        return totalCountBytes + (int) (currentSP - lastBucket->data);
+        return totalCountBytes + static_cast<int>(currentSP - lastBucket->data);
     }
 
     uint8_t* getPtr(int seek) const
@@ -82,7 +82,7 @@ struct Concat
         {
             if (ptr == lastBucket)
             {
-                SWAG_ASSERT(seek < (int) (currentSP - lastBucket->data));
+                SWAG_ASSERT(seek < static_cast<int>(currentSP - lastBucket->data));
                 return lastBucket->data + seek;
             }
 
@@ -97,7 +97,7 @@ struct Concat
     {
         if (b != lastBucket)
             return b->countBytes;
-        const auto count = (int) (currentSP - lastBucket->data);
+        const auto count = static_cast<int>(currentSP - lastBucket->data);
         SWAG_ASSERT(count <= bucketSize);
         return count;
     }

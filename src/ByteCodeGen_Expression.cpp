@@ -267,7 +267,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 
             if (canDrop)
             {
-                const auto varOffset = (uint32_t) (listNode->computedValue->storageOffset + totalOffset);
+                const auto varOffset = static_cast<uint32_t>(listNode->computedValue->storageOffset + totalOffset);
                 node->ownerScope->symTable.addVarToDrop(nullptr, child->typeInfo, varOffset);
             }
 
@@ -331,7 +331,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     }
     else if (node->kind == AstNodeKind::ArrayPointerIndex)
     {
-        identifierRef = (AstIdentifierRef*) node->findParent(AstNodeKind::IdentifierRef);
+        identifierRef = static_cast<AstIdentifierRef*>(node->findParent(AstNodeKind::IdentifierRef));
     }
 
     // A reference to a segment
@@ -491,8 +491,8 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
         // :SliceLiteral
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->computedValue);
-        const auto slice        = (SwagSlice*) node->computedValue->getStorageAddr();
-        const auto offsetValues = node->computedValue->storageSegment->offset((uint8_t*) slice->buffer);
+        const auto slice        = static_cast<SwagSlice*>(node->computedValue->getStorageAddr());
+        const auto offsetValues = node->computedValue->storageSegment->offset(static_cast<uint8_t*>(slice->buffer));
         emitMakeSegPointer(context, node->computedValue->storageSegment, offsetValues, regList[0]);
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = slice->count;
     }

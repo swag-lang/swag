@@ -108,8 +108,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
         newNode->token.text = itn->second;
     }
 
-    newNode->genericParameters = (AstFuncCallParams*) findChildRef(genericParameters, newNode);
-    newNode->callParameters    = (AstFuncCallParams*) findChildRef(callParameters, newNode);
+    newNode->genericParameters = static_cast<AstFuncCallParams*>(findChildRef(genericParameters, newNode));
+    newNode->callParameters    = static_cast<AstFuncCallParams*>(findChildRef(callParameters, newNode));
 
     if (identifierExtension)
     {
@@ -247,7 +247,7 @@ namespace
 
         *pzd++ = 0;
 
-        dest.count = (uint32_t) (pzd - dest.buffer) - 1;
+        dest.count = static_cast<uint32_t>(pzd - dest.buffer) - 1;
     }
 }
 
@@ -323,7 +323,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         if (f->parent->kind == AstNodeKind::AttrUse)
             f = f->parent;
         auto subF         = f->clone(cloneContext);
-        auto subDecl      = subF->kind == AstNodeKind::AttrUse ? ((AstAttrUse*) subF)->content : subF;
+        auto subDecl      = subF->kind == AstNodeKind::AttrUse ? static_cast<AstAttrUse*>(subF)->content : subF;
         subDecl->typeInfo = subDecl->typeInfo->clone();
 
         // Be sure symbol is not already there. This can happen when using mixins
@@ -568,8 +568,8 @@ AstNode* AstIf::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
-    newNode->ifBlock        = (AstCompilerIfBlock*) findChildRef(ifBlock, newNode);
-    newNode->elseBlock      = (AstCompilerIfBlock*) findChildRef(elseBlock, newNode);
+    newNode->ifBlock        = static_cast<AstCompilerIfBlock*>(findChildRef(ifBlock, newNode));
+    newNode->elseBlock      = static_cast<AstCompilerIfBlock*>(findChildRef(elseBlock, newNode));
     return newNode;
 }
 
@@ -742,7 +742,7 @@ AstNode* AstSwitch::clone(CloneContext& context)
 
     newNode->expression = findChildRef(expression, newNode);
     for (const auto expr : cases)
-        newNode->cases.push_back((AstSwitchCase*) findChildRef(expr, newNode));
+        newNode->cases.push_back(static_cast<AstSwitchCase*>(findChildRef(expr, newNode)));
     return newNode;
 }
 
@@ -1040,7 +1040,7 @@ AstNode* AstInit::clone(CloneContext& context)
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->count      = findChildRef(count, newNode);
-    newNode->parameters = (AstFuncCallParams*) findChildRef(parameters, newNode);
+    newNode->parameters = static_cast<AstFuncCallParams*>(findChildRef(parameters, newNode));
     return newNode;
 }
 

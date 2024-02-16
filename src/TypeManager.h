@@ -190,7 +190,7 @@ struct TypeManager
     TypeInfoSlice*    typeInfoSliceRunes    = nullptr;
     TypeInfoNative*   typeInfoCharacter     = nullptr;
 
-    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{nullptr}};
+    TypeInfoNative* promoteMatrix[static_cast<int>(NativeTypeKind::Count)][static_cast<int>(NativeTypeKind::Count)] = {{nullptr}};
 };
 
 extern TypeManager* g_TypeMgr;
@@ -206,8 +206,8 @@ T* makeType(TypeInfoKind k = TypeInfoKind::Invalid)
     g_Stats.memTypes += sizeof(T);
 #ifdef SWAG_DEV_MODE
     SWAG_ASSERT(newType->kind != TypeInfoKind::Invalid);
-    SWAG_ASSERT((size_t) newType->kind < std::size(g_Stats.countTypesByKind));
-    g_Stats.countTypesByKind[(int) newType->kind] += 1;
+    SWAG_ASSERT(static_cast<size_t>(newType->kind) < std::size(g_Stats.countTypesByKind));
+    g_Stats.countTypesByKind[static_cast<int>(newType->kind)] += 1;
 #endif
 #endif
 

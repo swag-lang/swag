@@ -16,7 +16,7 @@ void Concat::init(int size)
 
     bucketSize            = size;
     firstBucket           = Allocator::alloc<ConcatBucket>();
-    firstBucket->data     = bucketSize ? (uint8_t*) Allocator::alloc(bucketSize) : nullptr;
+    firstBucket->data     = bucketSize ? static_cast<uint8_t*>(Allocator::alloc(bucketSize)) : nullptr;
     firstBucket->capacity = size;
 
 #ifdef SWAG_STATS
@@ -61,13 +61,13 @@ void Concat::align(uint32_t align)
 
 bool Concat::hasEnoughSpace(uint32_t numBytes) const
 {
-    const auto count = (int) (currentSP - lastBucket->data);
-    return lastBucket->capacity - count >= (int) numBytes;
+    const auto count = static_cast<int>(currentSP - lastBucket->data);
+    return lastBucket->capacity - count >= static_cast<int>(numBytes);
 }
 
 void Concat::ensureSpace(int numBytes)
 {
-    const auto count = (int) (currentSP - lastBucket->data);
+    const auto count = static_cast<int>(currentSP - lastBucket->data);
     if (count + numBytes <= lastBucket->capacity)
         return;
 
@@ -92,8 +92,8 @@ void Concat::ensureSpace(int numBytes)
     lastBucket             = newBucket;
 
     lastBucket->capacity = max(numBytes, bucketSize);
-    lastBucket->capacity = (int) Allocator::alignSize(lastBucket->capacity);
-    lastBucket->data     = (uint8_t*) Allocator::alloc(lastBucket->capacity);
+    lastBucket->capacity = static_cast<int>(Allocator::alignSize(lastBucket->capacity));
+    lastBucket->data     = static_cast<uint8_t*>(Allocator::alloc(lastBucket->capacity));
 
 #ifdef SWAG_STATS
     g_Stats.memConcat += sizeof(ConcatBucket);
@@ -205,7 +205,7 @@ void Concat::addPointer(void* v)
 
 void Concat::addString(const Utf8& v)
 {
-    const auto len = (int) v.length();
+    const auto len = static_cast<int>(v.length());
     ensureSpace(len);
     memcpy(currentSP, v.buffer, len);
     currentSP += len;
@@ -257,7 +257,7 @@ void Concat::addString(const char* v, int len)
 
 void Concat::addString(const char* v)
 {
-    const auto len = (int) strlen(v);
+    const auto len = static_cast<int>(strlen(v));
     ensureSpace(len);
     memcpy(currentSP, v, len);
     currentSP += len;
@@ -313,7 +313,7 @@ void Concat::addStringFormat(const char* format, ...)
 void Concat::addU32Str(uint32_t value)
 {
     if (value < 10)
-        addChar((char) (value + '0'));
+        addChar(static_cast<char>(value + '0'));
     else
         addString(to_string(value));
 }
@@ -334,7 +334,7 @@ void Concat::addS32Str8(int value)
         {
             const auto id = value - (10 * (value / 10));
             value /= 10;
-            *pz = (char) ('0' + id);
+            *pz = static_cast<char>('0' + id);
         }
     }
 }

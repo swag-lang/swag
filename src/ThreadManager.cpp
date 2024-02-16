@@ -225,7 +225,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     if (result != JobResult::ReleaseJob)
     {
         waitingJobs.push_back(job);
-        job->waitingJobIndex = (int) waitingJobs.size() - 1;
+        job->waitingJobIndex = static_cast<int>(waitingJobs.size()) - 1;
     }
     else if (job->jobGroup)
     {
@@ -419,7 +419,7 @@ Job* ThreadManager::getJob(JobQueue& queue)
     }
     else
     {
-        auto jobPickIndex = (int) queue.jobs.size() - 1;
+        auto jobPickIndex = static_cast<int>(queue.jobs.size()) - 1;
 #ifdef SWAG_DEV_MODE
         if (g_CommandLine.randomize && !debuggerMode)
             jobPickIndex = rand() % queue.jobs.count;

@@ -146,13 +146,13 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 
         if (concreteType->isString())
         {
-            sizeSlice = (uint32_t) runContext->registersRR[1].u64;
+            sizeSlice = static_cast<uint32_t>(runContext->registersRR[1].u64);
             sliceType = g_TypeMgr->typeInfoU8;
         }
         else
         {
             const auto typeSlice = castTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
-            sizeSlice            = (uint32_t) runContext->registersRR[1].u64 * typeSlice->pointedType->sizeOf;
+            sizeSlice            = static_cast<uint32_t>(runContext->registersRR[1].u64) * typeSlice->pointedType->sizeOf;
             sliceType            = typeSlice->pointedType;
         }
 
@@ -284,10 +284,10 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     }
 
     // Setup flags before running
-    auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+    auto cxt = static_cast<SwagContext*>(OS::tlsGetValue(g_TlsContextId));
     SWAG_ASSERT(cxt);
     cxt->flags = getDefaultContextFlags(this);
-    cxt->flags |= (uint64_t) ContextFlags::ByteCode;
+    cxt->flags |= static_cast<uint64_t>(ContextFlags::ByteCode);
 
     // Global setup
     g_ByteCodeStackTrace->clear();
@@ -319,7 +319,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
             g_RunContext->push(r);
 
         if (!foreignCall)
-            ByteCodeRun::localCallNoTrace(g_RunContext, bc, (uint32_t) params->callParams.size());
+            ByteCodeRun::localCallNoTrace(g_RunContext, bc, static_cast<uint32_t>(params->callParams.size()));
     }
     else if (!foreignCall)
     {

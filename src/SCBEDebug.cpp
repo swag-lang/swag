@@ -22,7 +22,7 @@ SCBEDebugTypeIndex SCBEDebug::getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInf
     tr0->LF_FieldList.fields.push_back(field);
 
     field.kind          = LF_MEMBER;
-    field.type          = (SCBEDebugTypeIndex) UInt64;
+    field.type          = static_cast<SCBEDebugTypeIndex>(UInt64);
     field.value.reg.u32 = sizeof(void*);
     field.name.setView(g_LangSpec->name_count);
     tr0->LF_FieldList.fields.push_back(field);
@@ -140,7 +140,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
-        field.type          = (SCBEDebugTypeIndex) (UInt64);
+        field.type          = static_cast<SCBEDebugTypeIndex>(UInt64);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_sizeof);
         tr0->LF_FieldList.fields.push_back(field);
@@ -258,8 +258,8 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         // Struct itself, pointing to the field list
         auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
-        tr1->LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
-        tr1->LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
+        tr1->LF_Structure.memberCount = static_cast<uint16_t>(typeStruct->fields.size());
+        tr1->LF_Structure.sizeOf      = static_cast<uint16_t>(typeStruct->sizeOf);
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = sname;
 
@@ -302,7 +302,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
             // Enum itself, pointing to the field list
             auto tr1                    = addTypeRecord(pp);
             tr1->kind                   = LF_ENUM;
-            tr1->LF_Enum.count          = (uint16_t) typeInfoEnum->values.size();
+            tr1->LF_Enum.count          = static_cast<uint16_t>(typeInfoEnum->values.size());
             tr1->LF_Enum.fieldList      = tr0->index;
             tr1->LF_Enum.underlyingType = getOrCreateType(pp, typeInfoEnum->rawType);
             tr1->name                   = sname;
@@ -331,7 +331,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         }
 
         bool isMethod = typeFunc->isMethod();
-        auto numArgs  = (uint16_t) typeFunc->parameters.size();
+        auto numArgs  = static_cast<uint16_t>(typeFunc->parameters.size());
 
         SCBEDebugTypeIndex argsTypeIndex;
         using P1 = MapUtf8<SCBEDebugTypeIndex>;

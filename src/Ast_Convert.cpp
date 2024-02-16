@@ -73,7 +73,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     identifier->callParameters = newFuncCallParams(sourceFile, identifier);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
 
-    int countParams = (int) fromNode->childs.size();
+    int countParams = static_cast<int>(fromNode->childs.size());
     if (parentForRef == fromNode)
         countParams--;
     for (int i = 0; i < countParams; i++)
@@ -102,7 +102,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     // For a tuple initialization, every parameters must be covered
     if (!fromType && typeStruct->isTuple())
     {
-        const int maxCount = (int) typeStruct->fields.size();
+        const int maxCount = static_cast<int>(typeStruct->fields.size());
         if (countParams > maxCount)
         {
             const Diagnostic diag{fromNode->childs[maxCount], FMT(Err(Err0636), maxCount, countParams)};
@@ -193,8 +193,8 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
 
-    const int countParams = (int) typeList->subTypes.size();
-    const int maxCount    = (int) toType->fields.size();
+    const int countParams = static_cast<int>(typeList->subTypes.size());
+    const int maxCount    = static_cast<int>(toType->fields.size());
     if (countParams > maxCount)
         return context->report({fromNode->childs.front()->childs[maxCount], FMT(Err(Err0636), maxCount, countParams)});
     if (countParams < maxCount)
@@ -225,7 +225,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             i++;
 
             if (typeField->isListArray())
-                typeField = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeField, false);
+                typeField = TypeManager::convertTypeListToArray(context, static_cast<TypeInfoList*>(typeField), false);
             if (typeField->isListTuple())
                 return context->report({fromNode, Err(Err0739)});
 
@@ -275,7 +275,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
     const auto typeList = castTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8       varName;
-    const int  numChilds = (int) typeList->subTypes.size();
+    const int  numChilds = static_cast<int>(typeList->subTypes.size());
     for (int idx = 0; idx < numChilds; idx++)
     {
         const auto typeParam = typeList->subTypes[idx];

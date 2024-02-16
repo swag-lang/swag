@@ -31,7 +31,7 @@ struct LangHashTable
 
     const V* find(const char* key, uint32_t keyLen, uint32_t crc)
     {
-        if (keyLen < minLetters || keyLen > maxLetters || !firstLetter[(uint32_t) key[0]])
+        if (keyLen < minLetters || keyLen > maxLetters || !firstLetter[static_cast<uint32_t>(key[0])])
             return nullptr;
 
         if (!crc)
@@ -52,7 +52,7 @@ struct LangHashTable
     {
         SWAG_ASSERT(count != N);
 
-        uint32_t keyLen = (uint32_t) strlen(key);
+        uint32_t keyLen = static_cast<uint32_t>(strlen(key));
         auto     crc    = Crc32::compute((const uint8_t*) key, keyLen);
 
         // Find a free slot
@@ -62,7 +62,7 @@ struct LangHashTable
             idx = (idx + 1) % N;
         }
 
-        firstLetter[(uint32_t) key[0]] = true;
+        firstLetter[static_cast<uint32_t>(key[0])] = true;
         minLetters                     = min(minLetters, keyLen);
         maxLetters                     = max(maxLetters, keyLen);
         buffer[idx].hash               = crc;

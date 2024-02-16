@@ -171,7 +171,7 @@ JobResult ByteCodeGenJob::execute()
 
                 if (!node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDS))
                 {
-                    for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                    for (int i = static_cast<int>(node->childs.size()) - 1; i >= 0; i--)
                     {
                         auto child           = node->childs[i];
                         child->bytecodeState = AstNodeResolveState::Enter;

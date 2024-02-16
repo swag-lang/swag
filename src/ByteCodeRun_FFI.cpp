@@ -101,7 +101,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
 
     // Function call parameters
     context->ffiPushRAParam.clear();
-    int numParameters = (int) typeInfoFunc->parameters.size();
+    int numParameters = static_cast<int>(typeInfoFunc->parameters.size());
 
     // Variadic parameters are first on the stack, so need to treat them before
     if (typeInfoFunc->isFctVariadic())

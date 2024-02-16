@@ -31,7 +31,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
         return BcDbgCommandResult::BadArguments;
 
     const int numB = arg.split[2].toInt();
-    if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.display.size())
+    if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.display.size()))
         printCmdError("invalid expression number");
     else
     {

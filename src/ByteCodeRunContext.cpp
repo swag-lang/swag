@@ -42,12 +42,12 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
         ScopedLock lk(g_FreeStackMutex);
         if (g_FirstFreeStack)
         {
-            stack            = (uint8_t*) g_FirstFreeStack;
-            g_FirstFreeStack = *(void**) g_FirstFreeStack;
+            stack            = static_cast<uint8_t*>(g_FirstFreeStack);
+            g_FirstFreeStack = *static_cast<void**>(g_FirstFreeStack);
         }
         else
         {
-            stack = (uint8_t*) Allocator::alloc(g_CommandLine.limitStackBC);
+            stack = static_cast<uint8_t*>(Allocator::alloc(g_CommandLine.limitStackBC));
 #ifdef SWAG_STATS
             g_Stats.memBcStack += g_CommandLine.limitStackBC;
 #endif
@@ -85,7 +85,7 @@ void ByteCodeRunContext::stackOverflow()
 
 int ByteCodeRunContext::getRegCount(int cur)
 {
-    if ((size_t) cur >= registersRC.size() - 1)
-        return (int) bc->maxReservedRegisterRC;
+    if (static_cast<size_t>(cur) >= registersRC.size() - 1)
+        return static_cast<int>(bc->maxReservedRegisterRC);
     return registersRC[cur + 1] - registersRC[cur];
 }

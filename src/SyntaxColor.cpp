@@ -80,9 +80,9 @@ namespace
         }
 
         RgbColor result;
-        result.r = (unsigned char) (r * 255.0f);
-        result.g = (unsigned char) (g * 255.0f);
-        result.b = (unsigned char) (b * 255.0f);
+        result.r = static_cast<unsigned char>(r * 255.0f);
+        result.g = static_cast<unsigned char>(g * 255.0f);
+        result.b = static_cast<unsigned char>(b * 255.0f);
         return result;
     }
 

@@ -734,7 +734,7 @@ ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 {
     SWAG_ASSERT(computedValue);
     SWAG_ASSERT(isConstantGenTypeInfo());
-    return (ExportedTypeInfo*) computedValue->getStorageAddr();
+    return static_cast<ExportedTypeInfo*>(computedValue->getStorageAddr());
 }
 
 bool AstNode::isConstantTrue() const

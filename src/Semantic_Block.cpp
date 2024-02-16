@@ -137,7 +137,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                 for (const auto& child : identifier->callParameters->childs)
                 {
                     const auto callParam = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-                    if (callParam->indexParam != (int) i)
+                    if (callParam->indexParam != static_cast<int>(i))
                         continue;
                     orgCallParam = callParam;
                     if (!callParam->hasComputedValue())
@@ -597,7 +597,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     if (!typeInfo->isEnum())
         SWAG_CHECK(checkIsConcrete(context, node->expression));
     if (typeInfo->isListArray())
-        typeInfo = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeInfo, node->expression->hasAstFlag(AST_CONST_EXPR));
+        typeInfo = TypeManager::convertTypeListToArray(context, static_cast<TypeInfoList*>(typeInfo), node->expression->hasAstFlag(AST_CONST_EXPR));
 
     // Be sure that aliases are not defined elsewhere
     for (const auto& c : node->aliasNames)
@@ -631,7 +631,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
         else
         {
-            identifierRef = (AstIdentifierRef*) Ast::cloneRaw(node->expression, node);
+            identifierRef = static_cast<AstIdentifierRef*>(Ast::cloneRaw(node->expression, node));
             newExpression = identifierRef;
         }
 
@@ -709,7 +709,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     }
 
     // Multi dimensional array
-    if (typeInfo->isArray() && ((TypeInfoArray*) typeInfo)->pointedType->isArray())
+    if (typeInfo->isArray() && static_cast<TypeInfoArray*>(typeInfo)->pointedType->isArray())
     {
         auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
@@ -976,9 +976,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
         else if (x->ownerBreakable->isParentOf(loopNode))
         {
             if (x->tokenId == TokenId::KwdBreak)
-                x->ownerBreakable->breakList.erase_unordered_by_val((AstBreakContinue*) x);
+                x->ownerBreakable->breakList.erase_unordered_by_val(static_cast<AstBreakContinue*>(x));
             else if (x->tokenId == TokenId::KwdContinue)
-                x->ownerBreakable->continueList.erase_unordered_by_val((AstBreakContinue*) x);
+                x->ownerBreakable->continueList.erase_unordered_by_val(static_cast<AstBreakContinue*>(x));
             x->ownerBreakable = loopNode;
         }
         if (x->kind == AstNodeKind::Visit)
@@ -1085,7 +1085,7 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < (int) switchBlock->cases.size() - 1, context->report({node, Err(Err0461)}));
+    SWAG_VERIFY(node->switchCase->caseIndex < static_cast<int>(switchBlock->cases.size()) - 1, context->report({node, Err(Err0461)}));
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitFallThrough;

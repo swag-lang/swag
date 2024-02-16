@@ -12,7 +12,7 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
     {
         const int   ct              = buildParameters.compileType;
         const auto  precompileIndex = buildParameters.precompileIndex;
-        const auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
+        const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
         auto&       context         = *pp.llvmContext;
         auto&       builder         = *pp.builder;
         auto&       modu            = *pp.llvmModule;
@@ -71,7 +71,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
     auto& context         = *pp.llvmContext;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.llvmModule;
@@ -104,7 +104,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
-    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]);
+    auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
@@ -157,7 +157,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     // Set current backend as LLVM
     {
         auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst6_i32}));
-        builder.CreateStore(builder.getInt32((uint32_t) SwagBackendGenType::LLVM), toBackendKind);
+        builder.CreateStore(builder.getInt32(static_cast<uint32_t>(SwagBackendGenType::LLVM)), toBackendKind);
     }
 
     // Set default context in TLS
@@ -258,7 +258,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     builder.CreateCall(funcDrop);
 
     // Call to global drop of all dependencies
-    for (int i = (int) moduleDependencies.size() - 1; i >= 0; i--)
+    for (int i = static_cast<int>(moduleDependencies.size()) - 1; i >= 0; i--)
     {
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
@@ -279,7 +279,7 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    const auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;
@@ -302,7 +302,7 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    const auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;
@@ -342,7 +342,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
     auto& modu    = *pp.llvmModule;
@@ -420,7 +420,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *(LLVMEncoder*) perThread[ct][precompileIndex];
+    const auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;

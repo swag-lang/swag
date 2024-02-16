@@ -25,7 +25,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
         childs.push_back(n);
     });
 
-    for (int i = (int) childs.size() - 1; i >= 0; i--)
+    for (int i = static_cast<int>(childs.size()) - 1; i >= 0; i--)
     {
         const auto c = childs[i];
         if (c->hasAstFlag(AST_CONST_EXPR))
@@ -221,7 +221,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
                 // opPostMove
                 SymbolName* symPostMove = nullptr;
-                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opPostMove, (TypeInfoStruct*) realType, &symPostMove));
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opPostMove, static_cast<TypeInfoStruct*>(realType), &symPostMove));
                 if (symPostMove)
                 {
                     params.clear();
@@ -242,7 +242,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
                 // opDrop
                 SymbolName* symDrop = nullptr;
-                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opDrop, (TypeInfoStruct*) realType, &symDrop));
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opDrop, static_cast<TypeInfoStruct*>(realType), &symDrop));
                 if (symDrop)
                 {
                     params.clear();
@@ -384,7 +384,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
         SWAG_CHECK(parser.constructEmbeddedAst(expression->computedValue->text, node, expression, kind, true));
 
         job->nodes.pop_back();
-        for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+        for (int i = static_cast<int>(node->childs.size()) - 1; i >= 0; i--)
             job->nodes.push_back(node->childs[i]);
         job->nodes.push_back(node);
     }
@@ -841,11 +841,11 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
                 bool fromGen = false;
                 if (val.typeInfoReplace == locNode->typeInfo)
                     fromGen = true;
-                else if (locNode->typeInfo->isPointer() && val.typeInfoReplace == ((TypeInfoPointer*) locNode->typeInfo)->pointedType)
+                else if (locNode->typeInfo->isPointer() && val.typeInfoReplace == static_cast<TypeInfoPointer*>(locNode->typeInfo)->pointedType)
                     fromGen = true;
-                else if (locNode->typeInfo->isSlice() && val.typeInfoReplace == ((TypeInfoSlice*) locNode->typeInfo)->pointedType)
+                else if (locNode->typeInfo->isSlice() && val.typeInfoReplace == static_cast<TypeInfoSlice*>(locNode->typeInfo)->pointedType)
                     fromGen = true;
-                else if (locNode->typeInfo->isArray() && val.typeInfoReplace == ((TypeInfoArray*) locNode->typeInfo)->finalType)
+                else if (locNode->typeInfo->isArray() && val.typeInfoReplace == static_cast<TypeInfoArray*>(locNode->typeInfo)->finalType)
                     fromGen = true;
 
                 if (fromGen && val.fromNode)
@@ -908,10 +908,10 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         switch (g_CommandLine.backendGenType)
         {
         case BackendGenType::SCBE:
-            node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::SCBE;
+            node->computedValue->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::SCBE);
             break;
         case BackendGenType::LLVM:
-            node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::LLVM;
+            node->computedValue->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::LLVM);
             break;
         }
         node->typeInfo = g_Workspace->swagScope.regTypeInfoBackend;
@@ -920,14 +920,14 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 
     case TokenId::CompilerOs:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = (uint64_t) g_CommandLine.target.os;
+        node->computedValue->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.os);
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = (uint64_t) g_CommandLine.target.arch;
+        node->computedValue->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.arch);
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetArch;
         SWAG_ASSERT(node->typeInfo);
         return true;
@@ -940,7 +940,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 
     case TokenId::CompilerSwagOs:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = (uint64_t) OS::getNativeTarget().os;
+        node->computedValue->reg.u64 = static_cast<uint64_t>(OS::getNativeTarget().os);
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;

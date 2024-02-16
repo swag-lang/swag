@@ -107,7 +107,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
     const auto funcNode = node->resolvedSymbolOverload->node;
-    SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
+    SWAG_CHECK(checkCanMakeFuncPointer(context, static_cast<AstFuncDecl*>(funcNode), child));
 
     const auto lambdaType = child->typeInfo->clone();
     lambdaType->kind      = TypeInfoKind::LambdaClosure;
@@ -807,7 +807,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(overload->computedValue.storageSegment);
-                *storageOffset  = overload->computedValue.storageOffset + (uint32_t) offsetAccess;
+                *storageOffset  = overload->computedValue.storageOffset + static_cast<uint32_t>(offsetAccess);
                 *storageSegment = overload->computedValue.storageSegment;
                 return true;
             }
@@ -817,7 +817,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
                 SWAG_ASSERT(subArray->array->computedValue);
                 SWAG_ASSERT(subArray->array->computedValue->storageOffset != UINT32_MAX);
                 SWAG_ASSERT(subArray->array->computedValue->storageSegment);
-                *storageOffset  = subArray->array->computedValue->storageOffset + (uint32_t) offsetAccess;
+                *storageOffset  = subArray->array->computedValue->storageOffset + static_cast<uint32_t>(offsetAccess);
                 *storageSegment = subArray->array->computedValue->storageSegment;
                 return true;
             }
@@ -982,10 +982,10 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
             {
                 const auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
-                const auto  slice         = (SwagSlice*) computedValue.getStorageAddr();
+                const auto  slice         = static_cast<SwagSlice*>(computedValue.getStorageAddr());
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
 
-                auto ptr = (uint8_t*) slice->buffer;
+                auto ptr = static_cast<uint8_t*>(slice->buffer);
                 ptr += arrayNode->access->computedValue->reg.u64 * typeSlice->pointedType->sizeOf;
                 derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr);
             }
@@ -1138,7 +1138,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         {
             pointedType = expressionTypeInfo;
             if (pointedType->isArray())
-                pointedType = ((TypeInfoArray*) pointedType)->finalType;
+                pointedType = static_cast<TypeInfoArray*>(pointedType)->finalType;
         }
 
         if (pointedType->isNative() || pointedType->isPointer())
@@ -1172,7 +1172,7 @@ bool Semantic::resolveInit(SemanticContext* context)
                         t->genericParameters = nullptr;
                         t->callParameters    = node->parameters;
                         t->dependentVar      = nullptr;
-                        t->cptOverloads      = (uint32_t) symbol->overloads.size();
+                        t->cptOverloads      = static_cast<uint32_t>(symbol->overloads.size());
                         listTryMatch.push_back(t);
                     }
                 }

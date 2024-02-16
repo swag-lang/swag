@@ -11,7 +11,7 @@ bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
     // We can decide to filter the message only if all #message functions have been registered
     if (numCompilerFunctions == 0)
     {
-        const int index = (int) msg.concrete.kind;
+        const int index = static_cast<int>(msg.concrete.kind);
         if (byteCodeCompiler[index].empty())
             return true;
     }
@@ -32,7 +32,7 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
         auto& msg = compilerMessages[pass][i];
 
         // If no #message function corresponding to the message, remove
-        const int index = (int) msg.concrete.kind;
+        const int index = static_cast<int>(msg.concrete.kind);
         if (byteCodeCompiler[index].empty())
         {
             compilerMessages[pass][i] = compilerMessages[pass].back();
@@ -55,8 +55,8 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
         const auto newJob    = Allocator::alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
         newJob->pass         = pass;
-        newJob->startIndex   = (int) startIndex;
-        newJob->endIndex     = (int) min(startIndex + count, compilerMessages[pass].size());
+        newJob->startIndex   = static_cast<int>(startIndex);
+        newJob->endIndex     = static_cast<int>(min(startIndex + count, compilerMessages[pass].size()));
         newJob->dependentJob = context->baseJob;
         startIndex += count;
         context->baseJob->jobsToAdd.push_back(newJob);
@@ -83,7 +83,7 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
 
     for (auto& msg : compilerMessages[pass])
     {
-        SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
+        SWAG_ASSERT(!byteCodeCompiler[static_cast<int>(msg.concrete.kind)].empty());
 
         // If we have a type, then the concrete type should have been generated
         if (!msg.typeInfo || msg.concrete.type)
@@ -112,7 +112,7 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob)
 {
-    if (byteCodeCompiler[(int) msg->kind].empty())
+    if (byteCodeCompiler[static_cast<int>(msg->kind)].empty())
         return true;
 
     // Convert to a concrete message for the user
@@ -129,7 +129,7 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
     // :PushDefaultCxt
     PushSwagContext cxt;
 
-    for (const auto bc : byteCodeCompiler[(int) msg->kind])
+    for (const auto bc : byteCodeCompiler[static_cast<int>(msg->kind)])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }

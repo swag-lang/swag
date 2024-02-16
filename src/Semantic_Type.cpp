@@ -19,7 +19,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
     if (typeInfo->isAny() && node->hasComputedValue())
     {
-        const auto any                     = (SwagAny*) node->computedValue->getStorageAddr();
+        const auto any                     = static_cast<SwagAny*>(node->computedValue->getStorageAddr());
         node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
         node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
@@ -378,7 +378,7 @@ bool Semantic::resolveType(SemanticContext* context)
         // Typed variadic ?
         if (typeNode->typeInfo->isVariadic() && !typeNode->childs.empty())
         {
-            const auto typeVariadic = (TypeInfoVariadic*) typeNode->typeInfo->clone();
+            const auto typeVariadic = static_cast<TypeInfoVariadic*>(typeNode->typeInfo->clone());
             typeVariadic->kind      = TypeInfoKind::TypedVariadic;
             typeVariadic->rawType   = typeNode->childs.front()->typeInfo;
             typeVariadic->addFlag(typeVariadic->rawType->flags & TYPEINFO_GENERIC);

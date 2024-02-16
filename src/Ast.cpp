@@ -228,7 +228,7 @@ Utf8 Ast::literalToString(const TypeInfo* typeInfo, const ComputedValue& value)
         {
             if (c < 32)
                 result += FMT("\\x%02x", c);
-            else if ((uint8_t) c > 127)
+            else if (static_cast<uint8_t>(c) > 127)
                 result += FMT("\\x%02x", c);
             else
                 result += c;
@@ -315,7 +315,7 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
 void Ast::setForceConstType(AstNode* node)
 {
     if (node && node->kind == AstNodeKind::TypeExpression)
-        ((AstTypeExpression*) node)->typeFlags |= TYPEFLAG_FORCE_CONST;
+        static_cast<AstTypeExpression*>(node)->typeFlags |= TYPEFLAG_FORCE_CONST;
 }
 
 Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName)

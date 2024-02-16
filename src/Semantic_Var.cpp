@@ -115,7 +115,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::FuncDeclParam)
         parent = parent->parent;
     SWAG_ASSERT(parent);
-    const auto varDecl = (AstVarDecl*) parent;
+    const auto varDecl = static_cast<AstVarDecl*>(parent);
     if (!varDecl->type || !varDecl->assignment)
         return true;
 
@@ -293,7 +293,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
         parent = parent->parent;
     SWAG_ASSERT(parent);
-    const auto varDecl = (AstVarDecl*) parent;
+    const auto varDecl = static_cast<AstVarDecl*>(parent);
 
     const auto assign = varDecl->assignment;
     if (!assign || assign->kind != AstNodeKind::ExpressionList)
@@ -715,7 +715,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     {
                         if (!p->value)
                             continue;
-                        auto slice = (SwagSlice*) p->value->getStorageAddr();
+                        auto slice = static_cast<SwagSlice*>(p->value->getStorageAddr());
                         if (!slice->buffer && !slice->count)
                         {
                             ok = true;
@@ -840,7 +840,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
         {
-            typeArray->count      = (uint32_t) node->assignment->childs.size();
+            typeArray->count      = static_cast<uint32_t>(node->assignment->childs.size());
             typeArray->totalCount = typeArray->count;
             typeArray->sizeOf     = typeArray->count * typeArray->pointedType->sizeOf;
             typeArray->name       = FMT("[%d] %s", typeArray->count, typeArray->pointedType->getDisplayNameC());
@@ -1130,7 +1130,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 waitStructGeneratedAlloc(context->baseJob, typeNode);
                 YIELD();
                 if (typeNode->isArrayOfStruct())
-                    typeNode = ((TypeInfoArray*) typeNode)->finalType;
+                    typeNode = static_cast<TypeInfoArray*>(typeNode)->finalType;
                 TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
                 if (typeStruct->opDrop || typeStruct->opUserDropFct)
                     isGlobalToDrop = true;
@@ -1264,7 +1264,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 // So update it just in case (5294 bug)
                 node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
 
-                node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
+                node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, alignOf));
                 storageOffset                    = node->ownerScope->startStackSize;
                 node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
                 setOwnerMaxStackSize(node, node->ownerScope->startStackSize);

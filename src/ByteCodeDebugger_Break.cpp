@@ -101,7 +101,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 
         case DebugBkpType::InstructionIndex:
         {
-            const uint32_t offset = (uint32_t) (context->ip - context->bc->out);
+            const uint32_t offset = static_cast<uint32_t>(context->ip - context->bc->out);
             if (offset == bkp.line && context->bc == bkp.bc)
             {
                 if (!bkp.autoDisabled)
@@ -150,7 +150,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
         return BcDbgCommandResult::BadArguments;
 
     const int numB = arg.split[2].toInt();
-    if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.breakpoints.size())
+    if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
         printCmdError("invalid breakpoint number");
     else
     {
@@ -169,7 +169,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
         return BcDbgCommandResult::BadArguments;
 
     const int numB = arg.split[2].toInt();
-    if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.breakpoints.size())
+    if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
         printCmdError("invalid breakpoint number");
     else
     {
@@ -198,7 +198,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
         return BcDbgCommandResult::BadArguments;
 
     const int numB = arg.split[2].toInt();
-    if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.breakpoints.size())
+    if (!numB || numB - 1 >= static_cast<int>(g_ByteCodeDebugger.breakpoints.size()))
         printCmdError("invalid breakpoint number");
     else
     {

@@ -935,7 +935,7 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
              (token.id == TokenId::SymGreater) ||
              (token.id == TokenId::SymLowerEqualGreater))
     {
-        auto binaryNode         = (AstNode*) Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr);
+        auto binaryNode         = static_cast<AstNode*>(Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr));
         binaryNode->semanticFct = Semantic::resolveCompareExpression;
         binaryNode->token       = static_cast<Token>(token);
 
@@ -1336,9 +1336,9 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
             {
                 prePrendWith = false;
                 SWAG_ASSERT(exprNode->kind == AstNodeKind::IdentifierRef);
-                for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
+                for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
                 {
-                    const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) exprNode, exprNode, this);
+                    const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], static_cast<AstIdentifierRef*>(exprNode), exprNode, this);
                     id->addAstFlag(AST_GENERATED);
                     id->addSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH);
                     id->allocateIdentifierExtension();

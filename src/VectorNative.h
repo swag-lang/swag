@@ -16,7 +16,7 @@ struct VectorNative
         allocated = 0;
         buffer    = nullptr;
 
-        count = (int) other.size();
+        count = static_cast<int>(other.size());
         reserve(count, false);
         memcpy(buffer, other.buffer, count * sizeof(T));
     }
@@ -61,7 +61,7 @@ struct VectorNative
         allocated *= 2;
         allocated = max(allocated, 4);
         allocated = max(allocated, newCapacity);
-        T* newPtr = (T*) Allocator::alloc(Allocator::alignSize(allocated * sizeof(T)));
+        T* newPtr = static_cast<T*>(Allocator::alloc(Allocator::alignSize(allocated * sizeof(T))));
         SWAG_ASSERT(newPtr);
         if (copy && count)
             memcpy(newPtr, buffer, count * sizeof(T));
@@ -140,23 +140,23 @@ struct VectorNative
     {
         if (num)
         {
-            reserve((uint32_t) num, false);
+            reserve(static_cast<uint32_t>(num), false);
             if (count < num)
                 memset(buffer + count, 0, (num - count) * sizeof(T));
         }
 
-        count = (uint32_t) num;
+        count = static_cast<uint32_t>(num);
     }
 
     void set_size_clear(size_t num)
     {
         if (num)
         {
-            reserve((uint32_t) num, false);
+            reserve(static_cast<uint32_t>(num), false);
             memset(buffer, 0, num * sizeof(T));
         }
 
-        count = (uint32_t) num;
+        count = static_cast<uint32_t>(num);
     }
 
     void clear()
@@ -210,7 +210,7 @@ struct VectorNative
     {
         if (index != count - num)
             memmove(buffer + index, buffer + index + num, (count - index - num) * sizeof(T));
-        count -= (uint32_t) num;
+        count -= static_cast<uint32_t>(num);
     }
 
     void erase_unordered(size_t index)
@@ -289,7 +289,7 @@ struct VectorNative
 
     VectorNative& operator=(const Vector<T>& other)
     {
-        count = (int) other.size();
+        count = static_cast<int>(other.size());
         if (allocated < count)
             reserve(count, false);
         memcpy(buffer, &other[0], count * sizeof(T));
@@ -301,7 +301,7 @@ struct VectorNative
         if (&other == this)
             return *this;
 
-        count = (int) other.size();
+        count = static_cast<int>(other.size());
         if (allocated < count)
             reserve(count, false);
         memcpy(buffer, other.buffer, count * sizeof(T));

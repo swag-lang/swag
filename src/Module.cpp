@@ -114,7 +114,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInfos = g_CommandLine.buildCfgDebug == "true";
     if (g_CommandLine.buildCfgOptim != "default")
-        buildCfg.backendOptimize = (BuildCfgBackendOptim) max(0, min(g_CommandLine.buildCfgOptim.toInt(), 5));
+        buildCfg.backendOptimize = static_cast<BuildCfgBackendOptim>(max(0, min(g_CommandLine.buildCfgOptim.toInt(), 5)));
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")
@@ -322,7 +322,7 @@ void Module::buildGlobalVarsToDropSlice()
         return;
 
     uint8_t* resultPtr;
-    globalVarsToDropSliceOffset = mutableSegment.reserve((uint32_t) globalVarsToDrop.size() * sizeof(SwagGlobalVarToDrop), &resultPtr);
+    globalVarsToDropSliceOffset = mutableSegment.reserve(static_cast<uint32_t>(globalVarsToDrop.size()) * sizeof(SwagGlobalVarToDrop), &resultPtr);
     globalVarsToDropSlice       = reinterpret_cast<SwagGlobalVarToDrop*>(resultPtr);
     auto offset                 = globalVarsToDropSliceOffset;
 
@@ -371,7 +371,7 @@ void Module::buildTypesSlice()
 
     const auto&    mapTypes = typeGen.getMapPerSeg(&constantSegment).exportedTypes;
     uint8_t*       resultPtr;
-    const uint32_t numTypes = (uint32_t) mapTypes.size();
+    const uint32_t numTypes = static_cast<uint32_t>(mapTypes.size());
 
     typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ExportedTypeInfo*)), &resultPtr);
     auto offset      = typesSliceOffset;
@@ -410,7 +410,7 @@ void Module::buildTypesSlice()
         else
         {
             using funcCall = uint8_t* (*)();
-            const auto valPtr = ((funcCall) ptr)();
+            const auto valPtr = static_cast<funcCall>(ptr)();
 
             moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
             moduleSlice[i].types.count  = *reinterpret_cast<uint64_t*>(valPtr);
@@ -499,7 +499,7 @@ void Module::addFile(SourceFile* file)
 void Module::addFileNoLock(SourceFile* file)
 {
     file->module        = this;
-    file->indexInModule = (uint32_t) files.size();
+    file->indexInModule = static_cast<uint32_t>(files.size());
     files.push_back(file);
 
     // A file scope is not registered in the list of childs of
@@ -587,7 +587,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     const auto filter = funcDecl->parameters->computedValue->reg.u64;
     for (uint32_t i = 0; i < 64; i++)
     {
-        if (filter & ((uint64_t) 1 << i))
+        if (filter & (static_cast<uint64_t>(1) << i))
         {
             ScopedLock lk(byteCodeCompilerMutex[i]);
             SWAG_ASSERT(numCompilerFunctions > 0);
@@ -862,8 +862,8 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
 void Module::setBuildPass(BuildPass buildP)
 {
     ScopedLock lk(mutexBuildPass);
-    buildPass = (BuildPass) min((int) buildP, (int) buildPass);
-    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
+    buildPass = static_cast<BuildPass>(min((int) buildP, (int) buildPass));
+    buildPass = static_cast<BuildPass>(min((int) g_CommandLine.buildPass, (int) buildPass));
 }
 
 void Module::setHasBeenBuilt(uint32_t buildResult)
@@ -1150,7 +1150,7 @@ void Module::callPreMain()
         if (!ptr)
             continue;
         using funcCall = void(*)(SwagProcessInfos*);
-        ((funcCall) ptr)(&processInfos);
+        static_cast<funcCall>(ptr)(&processInfos);
     }
 }
 
@@ -1161,7 +1161,7 @@ Utf8 Module::getGlobalPrivFct(const Utf8& nameFct) const
 
 bool Module::filterFunctionsToEmit()
 {
-    byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
+    byteCodeFuncToGen.reserve(static_cast<int>(byteCodeFunc.size()));
     for (auto bc : byteCodeFunc)
     {
         SWAG_CHECK(SemanticError::warnUnusedFunction(this, bc));

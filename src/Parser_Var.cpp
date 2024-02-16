@@ -395,7 +395,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         (*result)->extMisc()->docComment = tkn[0];
 
         tokenizer.comment.clear();
-        for (int i = 1; i < (int) tkn.size(); i++)
+        for (int i = 1; i < static_cast<int>(tkn.size()); i++)
             tokenizer.comment += tkn[i];
     }
 

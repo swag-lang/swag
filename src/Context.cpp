@@ -25,7 +25,7 @@ static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
 #ifdef SWAG_DEV_MODE
     SWAG_ASSERT((uint64_t) byteCodePtr != SWAG_PATCH_MARKER);
 #endif
-    const auto        bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
+    const auto        bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(byteCodePtr));
     TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
     VectorNative<Register*> returnRegisters;
@@ -200,7 +200,7 @@ static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void*
     SWAG_ASSERT(cbIndex != UINT32_MAX);
 
     void*                   result   = nullptr;
-    const ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode);
+    const ByteCode*         bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode));
     const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
@@ -248,7 +248,7 @@ void initDefaultContext()
     args += g_CommandLine.userArguments;
 
     g_ProcessInfos.args.buffer = (void*) args.c_str();
-    g_ProcessInfos.args.count  = (uint64_t) args.length();
+    g_ProcessInfos.args.count  = static_cast<uint64_t>(args.length());
 
     g_ProcessInfos.contextTlsId   = g_TlsContextId;
     g_ProcessInfos.defaultContext = &g_DefaultContext;
@@ -261,6 +261,6 @@ uint64_t getDefaultContextFlags(const Module* module)
 {
     uint64_t flags = 0;
     if (module->kind == ModuleKind::Test)
-        flags |= (uint64_t) ContextFlags::Test;
+        flags |= static_cast<uint64_t>(ContextFlags::Test);
     return flags;
 }

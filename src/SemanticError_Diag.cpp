@@ -274,7 +274,7 @@ namespace
 
         // Here is
         if (errorParam.destFuncDecl &&
-            bi.badSignatureParameterIdx < (int) errorParam.destFuncDecl->genericParameters->childs.size())
+            bi.badSignatureParameterIdx < static_cast<int>(errorParam.destFuncDecl->genericParameters->childs.size()))
         {
             const auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
             const auto note     = Diagnostic::note(reqParam, FMT(Nte(Nte0068), reqParam->token.c_str(), Naming::kindName(overload).c_str()));
@@ -310,7 +310,7 @@ namespace
         }
 
         AstNode* destParamNode = nullptr;
-        if (errorParam.destParameters && bi.badSignatureParameterIdx < (int) errorParam.destParameters->childs.size())
+        if (errorParam.destParameters && bi.badSignatureParameterIdx < static_cast<int>(errorParam.destParameters->childs.size()))
             destParamNode = errorParam.destParameters->childs[bi.badSignatureParameterIdx];
         const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
@@ -477,8 +477,8 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     // Get the call parameter that failed
     const auto callParameters = oneTry.callParameters;
     errorParam.badParamIdx    = getBadParamIdx(oneTry, callParameters);
-    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < (int) callParameters->childs.size())
-        errorParam.failedParam = (AstFuncCallParam*) callParameters->childs[errorParam.badParamIdx];
+    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->childs.size()))
+        errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[errorParam.badParamIdx]);
     errorParam.badParamIdx += 1;
 
     // Error node

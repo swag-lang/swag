@@ -7,7 +7,7 @@
 #include "Workspace.h"
 
 TypeManager* g_TypeMgr = nullptr;
-TypeInfo*    g_LiteralTypeToType[(int) LiteralType::TT_MAX];
+TypeInfo*    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_MAX)];
 
 thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesI;
 thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesB;
@@ -91,33 +91,33 @@ void TypeManager::setup()
     typeInfoSliceRunes->computeName();
 
     memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
-    g_LiteralTypeToType[(int) LiteralType::TT_U8]                      = typeInfoU8;
-    g_LiteralTypeToType[(int) LiteralType::TT_U16]                     = typeInfoU16;
-    g_LiteralTypeToType[(int) LiteralType::TT_U32]                     = typeInfoU32;
-    g_LiteralTypeToType[(int) LiteralType::TT_U64]                     = typeInfoU64;
-    g_LiteralTypeToType[(int) LiteralType::TT_S8]                      = typeInfoS8;
-    g_LiteralTypeToType[(int) LiteralType::TT_S16]                     = typeInfoS16;
-    g_LiteralTypeToType[(int) LiteralType::TT_S32]                     = typeInfoS32;
-    g_LiteralTypeToType[(int) LiteralType::TT_S64]                     = typeInfoS64;
-    g_LiteralTypeToType[(int) LiteralType::TT_F32]                     = typeInfoF32;
-    g_LiteralTypeToType[(int) LiteralType::TT_F64]                     = typeInfoF64;
-    g_LiteralTypeToType[(int) LiteralType::TT_BOOL]                    = typeInfoBool;
-    g_LiteralTypeToType[(int) LiteralType::TT_RUNE]                    = typeInfoRune;
-    g_LiteralTypeToType[(int) LiteralType::TT_STRING]                  = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_STRING_RAW]              = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_STRING_MULTILINE]        = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_STRING_ESCAPE]           = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_STRING_MULTILINE_ESCAPE] = typeInfoString;
-    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER]               = typeInfoCharacter;
-    g_LiteralTypeToType[(int) LiteralType::TT_CHARACTER_ESCAPE]        = typeInfoCharacter;
-    g_LiteralTypeToType[(int) LiteralType::TT_VOID]                    = typeInfoVoid;
-    g_LiteralTypeToType[(int) LiteralType::TT_NULL]                    = typeInfoNull;
-    g_LiteralTypeToType[(int) LiteralType::TT_ANY]                     = typeInfoAny;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_INT]             = typeInfoUntypedInt;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_FLOAT]           = typeInfoUntypedFloat;
-    g_LiteralTypeToType[(int) LiteralType::TT_UNTYPED_BIN_HEXA]         = typeInfoUntypedBinHex;
-    g_LiteralTypeToType[(int) LiteralType::TT_CSTRING]                 = typeInfoCString;
-    g_LiteralTypeToType[(int) LiteralType::TT_TYPE]                    = nullptr; // will be done with registerTypeType
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_U8)]                      = typeInfoU8;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_U16)]                     = typeInfoU16;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_U32)]                     = typeInfoU32;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_U64)]                     = typeInfoU64;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_S8)]                      = typeInfoS8;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_S16)]                     = typeInfoS16;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_S32)]                     = typeInfoS32;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_S64)]                     = typeInfoS64;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_F32)]                     = typeInfoF32;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_F64)]                     = typeInfoF64;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_BOOL)]                    = typeInfoBool;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_RUNE)]                    = typeInfoRune;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_STRING)]                  = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_STRING_RAW)]              = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_STRING_MULTILINE)]        = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_STRING_ESCAPE)]           = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_STRING_MULTILINE_ESCAPE)] = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_CHARACTER)]               = typeInfoCharacter;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_CHARACTER_ESCAPE)]        = typeInfoCharacter;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_VOID)]                    = typeInfoVoid;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_NULL)]                    = typeInfoNull;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_ANY)]                     = typeInfoAny;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_UNTYPED_INT)]             = typeInfoUntypedInt;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_UNTYPED_FLOAT)]           = typeInfoUntypedFloat;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_UNTYPED_BIN_HEXA)]        = typeInfoUntypedBinHex;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_CSTRING)]                 = typeInfoCString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_TYPE)]                    = nullptr; // will be done with registerTypeType
 
     // Promotion matrix
 #define PR(__a, __b, __c)                                                          \
@@ -221,7 +221,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         typeArray->pointedType = solidifyUntyped(typeList->subTypes.front()->typeInfo);
         finalType              = typeArray->pointedType;
         typeArray->sizeOf      = typeList->sizeOf;
-        typeArray->count       = (uint32_t) typeList->subTypes.size();
+        typeArray->count       = static_cast<uint32_t>(typeList->subTypes.size());
         typeArray->totalCount  = typeArray->count;
         if (isCompilerConstant)
             typeArray->flags |= TYPEINFO_CONST;
@@ -238,7 +238,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         {
             typeList               = castTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
             typeArray->pointedType = makeType<TypeInfoArray>();
-            typeArray              = (TypeInfoArray*) typeArray->pointedType;
+            typeArray              = static_cast<TypeInfoArray*>(typeArray->pointedType);
             continue;
         }
 
@@ -270,7 +270,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 
     typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GHOST_TUPLE;
 
-    typeStruct->fields.reserve((int) typeList->subTypes.size());
+    typeStruct->fields.reserve(static_cast<int>(typeList->subTypes.size()));
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
         const auto one       = typeList->subTypes[idx];
@@ -315,7 +315,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        const auto newType         = (TypeInfoNative*) typeInfo->clone();
+        const auto newType         = static_cast<TypeInfoNative*>(typeInfo->clone());
         newType->valueInteger      = *(int32_t*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesI[value] = newType;
@@ -330,7 +330,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        const auto newType         = (TypeInfoNative*) typeInfo->clone();
+        const auto newType         = static_cast<TypeInfoNative*>(typeInfo->clone());
         newType->valueInteger      = *(int32_t*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesB[value] = newType;
@@ -345,7 +345,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
             return it->second;
         }
 
-        const auto newType         = (TypeInfoNative*) typeInfo->clone();
+        const auto newType         = static_cast<TypeInfoNative*>(typeInfo->clone());
         newType->valueFloat        = *(float*) &value;
         typeInfo                   = newType;
         g_MapUntypedValuesF[value] = newType;
@@ -357,7 +357,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
 {
     SWAG_ASSERT(literalType < LiteralType::TT_MAX);
-    const auto result = g_LiteralTypeToType[(int) literalType];
+    const auto result = g_LiteralTypeToType[static_cast<int>(literalType)];
     SWAG_ASSERT(result);
     return result;
 }
@@ -375,7 +375,7 @@ uint64_t TypeManager::align(uint64_t value, uint32_t align)
     SWAG_ASSERT(align);
     if (align == 1)
         return value;
-    auto alignValue = value & ~((uint64_t) align - 1);
+    auto alignValue = value & ~(static_cast<uint64_t>(align) - 1);
     if (alignValue < value)
         alignValue += align;
     return alignValue;
@@ -415,8 +415,8 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
 void TypeManager::registerTypeType()
 {
-    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, TYPEINFO_CONST);
-    g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
+    typeInfoTypeType                                            = makePointerTo(g_Workspace->swagScope.regTypeInfo, TYPEINFO_CONST);
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TT_TYPE)] = typeInfoTypeType;
 }
 
 TypeInfo* TypeManager::makeUnConst(TypeInfo* typeInfo)

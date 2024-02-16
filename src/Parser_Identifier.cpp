@@ -359,7 +359,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     SWAG_VERIFY(node->ownerFct, error(node, FMT(Err(Err0501), node->token.c_str())));
     SWAG_CHECK(eatToken());
 
-    ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
+    ScopedTryCatchAssume sc(this, static_cast<AstTryCatchAssume*>(node));
 
     if (token.id == TokenId::SymLeftCurly)
     {

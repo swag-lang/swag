@@ -98,10 +98,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS8x1:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicAbs:
-            ra.s8 = (int8_t) abs(rb.s8);
+            ra.s8 = static_cast<int8_t>(abs(rb.s8));
             break;
         case TokenId::IntrinsicBitCountNz:
             ra.u8 = OS::bitCountNz(rb.u8);
@@ -121,10 +121,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS16x1:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicAbs:
-            ra.s16 = (int16_t) abs(rb.s16);
+            ra.s16 = static_cast<int16_t>(abs(rb.s16));
             break;
         case TokenId::IntrinsicBitCountNz:
             ra.u16 = OS::bitCountNz(rb.u16);
@@ -147,7 +147,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS32x1:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicAbs:
             ra.s32 = abs(rb.s32);
@@ -173,7 +173,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS64x1:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicAbs:
             ra.s64 = abs(rb.s64);
@@ -199,7 +199,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS8x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.s8 = min(rb.s8, rc.s8);
@@ -216,7 +216,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS16x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.s16 = min(rb.s16, rc.s16);
@@ -233,7 +233,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS32x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.s32 = min(rb.s32, rc.s32);
@@ -250,7 +250,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicS64x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.s64 = min(rb.s64, rc.s64);
@@ -267,7 +267,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicU8x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.u8 = min(rb.u8, rc.u8);
@@ -276,10 +276,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.u8 = max(rb.u8, rc.u8);
             break;
         case TokenId::IntrinsicRol:
-            ra.u8 = (uint8_t) ((rb.u8 << rc.u32) | (rb.u8 >> (8 - rc.u32)));
+            ra.u8 = static_cast<uint8_t>((rb.u8 << rc.u32) | (rb.u8 >> (8 - rc.u32)));
             break;
         case TokenId::IntrinsicRor:
-            ra.u8 = (uint8_t) ((rb.u8 >> rc.u32) | (rb.u8 << (8 - rc.u32)));
+            ra.u8 = static_cast<uint8_t>((rb.u8 >> rc.u32) | (rb.u8 << (8 - rc.u32)));
             break;
         default:
             SWAG_ASSERT(false);
@@ -290,7 +290,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicU16x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.u16 = min(rb.u16, rc.u16);
@@ -299,10 +299,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.u16 = max(rb.u16, rc.u16);
             break;
         case TokenId::IntrinsicRol:
-            ra.u16 = (uint16_t) ((rb.u16 << rc.u32) | (rb.u16 >> (16 - rc.u32)));
+            ra.u16 = static_cast<uint16_t>((rb.u16 << rc.u32) | (rb.u16 >> (16 - rc.u32)));
             break;
         case TokenId::IntrinsicRor:
-            ra.u16 = (uint16_t) ((rb.u16 >> rc.u32) | (rb.u16 << (16 - rc.u32)));
+            ra.u16 = static_cast<uint16_t>((rb.u16 >> rc.u32) | (rb.u16 << (16 - rc.u32)));
             break;
         default:
             SWAG_ASSERT(false);
@@ -313,7 +313,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicU32x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.u32 = min(rb.u32, rc.u32);
@@ -336,7 +336,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicU64x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicMin:
             ra.u64 = min(rb.u64, rc.u64);
@@ -359,7 +359,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicF32x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicPow:
             ra.f32 = powf(rb.f32, rc.f32);
@@ -382,7 +382,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicF64x2:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicPow:
             ra.f64 = pow(rb.f64, rc.f64);
@@ -406,7 +406,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicF32x1:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicSin:
             ra.f32 = sinf(rb.f32);
@@ -478,7 +478,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
     case ByteCodeOp::IntrinsicF64x1:
     {
-        switch ((TokenId) ip->d.u32)
+        switch (static_cast<TokenId>(ip->d.u32))
         {
         case TokenId::IntrinsicSin:
             ra.f64 = sin(rb.f64);

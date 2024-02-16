@@ -10,7 +10,7 @@ struct Allocator
     template<typename T>
     static T* allocRaw()
     {
-        return (T*) alloc(alignSize(sizeof(T)));
+        return static_cast<T*>(alloc(alignSize(sizeof(T))));
     }
 
     template<typename T>
@@ -24,7 +24,7 @@ struct Allocator
     template<typename T>
     static void free(void* ptr)
     {
-        ((T*) ptr)->~T();
+        static_cast<T*>(ptr)->~T();
         free(ptr, alignSize(sizeof(T)));
     }
 
@@ -59,7 +59,7 @@ struct StdAllocator
 #ifdef SWAG_STATS
         g_Stats.memStd += size;
 #endif
-        return (T*) Allocator::alloc(size);
+        return static_cast<T*>(Allocator::alloc(size));
     }
 
     static void deallocate(T* p, size_t n)

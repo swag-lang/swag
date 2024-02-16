@@ -674,7 +674,7 @@ bool ModuleDepManager::execute()
 
                 fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
 
-                ((FetchModuleFileSystemJob*) fetchJob)->collectSourceFiles = false;
+                static_cast<FetchModuleFileSystemJob*>(fetchJob)->collectSourceFiles = false;
                 break;
             }
             default:
@@ -699,7 +699,7 @@ bool ModuleDepManager::execute()
         for (auto d : val->moduleDependencies)
             depNames.insert(d->module->name);
 
-        for (int i = 0; i < (int) dep.size(); i++)
+        for (int i = 0; i < static_cast<int>(dep.size()); i++)
         {
             auto d = dep[i];
             if (!d->module)

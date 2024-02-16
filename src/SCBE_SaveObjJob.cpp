@@ -14,6 +14,6 @@ JobResult SCBE_SaveObjJob::execute()
     Timer timer1{&g_Stats.prepOutputTimeJobSaveObj};
 #endif
 
-    ((SCBE*) module->backend)->saveObjFile(prepJob->buildParameters);
+    static_cast<SCBE*>(module->backend)->saveObjFile(prepJob->buildParameters);
     return JobResult::ReleaseJob;
 }

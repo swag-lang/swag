@@ -931,7 +931,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        inst->d.u32 = (uint32_t) node->tokenId;
+        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -967,7 +967,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-        inst->d.u32 = (uint32_t) node->tokenId;
+        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
         freeRegisterRC(context, child);
         break;
     }
@@ -1002,7 +1002,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        inst->d.u32 = (uint32_t) node->tokenId;
+        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -1033,7 +1033,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-        inst->d.u32 = (uint32_t) node->tokenId;
+        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
         freeRegisterRC(context, child);
         break;
     }
@@ -1113,7 +1113,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        inst->d.u32 = (uint32_t) node->tokenId;
+        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
         break;
@@ -1172,7 +1172,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
 
         auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-        inst->d.u32 = (uint32_t) node->tokenId;
+        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
         freeRegisterRC(context, child);
         break;
     }
@@ -1228,7 +1228,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 
     emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
 
-    SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->extMisc()->additionalRegisterRC, false, true, true));
+    SWAG_CHECK(emitCall(context, allParams, nullptr, static_cast<AstVarDecl*>(overload->node), node->extMisc()->additionalRegisterRC, false, true, true));
     SWAG_ASSERT(context->result == ContextResult::Done);
     freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
     return true;
@@ -1296,7 +1296,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     ScopedLock lock(module->mutexSourceLoc);
 
     // Is the same location is in the cache ?
-    uint32_t crc  = Crc32::compute(addrName, (uint32_t) str.string().length());
+    uint32_t crc  = Crc32::compute(addrName, static_cast<uint32_t>(str.string().length()));
     crc           = Crc32::compute((uint8_t*) &node->token.startLocation.line, sizeof(uint32_t), crc);
     crc           = Crc32::compute((uint8_t*) &node->token.startLocation.column, sizeof(uint32_t), crc);
     crc           = Crc32::compute((uint8_t*) &node->token.endLocation.line, sizeof(uint32_t), crc);
@@ -1311,7 +1311,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
                 l.loc.lineEnd == node->token.endLocation.line &&
                 l.loc.colEnd == node->token.endLocation.column &&
                 l.storageSegment == seg &&
-                !strncmp((const char*) l.loc.fileName.buffer, (const char*) addrName, l.loc.fileName.count))
+                !strncmp(static_cast<const char*>(l.loc.fileName.buffer), (const char*) addrName, l.loc.fileName.count))
             {
                 *storageOffset = l.storageOffset;
                 return;
@@ -1359,14 +1359,14 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
         {
             regList         = reserveRegisterRC(context);
             const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = (uint64_t) g_CommandLine.target.os;
+            inst->b.u64     = static_cast<uint64_t>(g_CommandLine.target.os);
             break;
         }
         case TokenId::CompilerArch:
         {
             regList         = reserveRegisterRC(context);
             const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = (uint64_t) g_CommandLine.target.arch;
+            inst->b.u64     = static_cast<uint64_t>(g_CommandLine.target.arch);
             break;
         }
 
@@ -1374,7 +1374,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
         {
             regList         = reserveRegisterRC(context);
             const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = (uint64_t) OS::getNativeTarget().os;
+            inst->b.u64     = static_cast<uint64_t>(OS::getNativeTarget().os);
             break;
         }
 
@@ -1382,7 +1382,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
         {
             regList         = reserveRegisterRC(context);
             const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = (uint64_t) g_CommandLine.backendGenType;
+            inst->b.u64     = static_cast<uint64_t>(g_CommandLine.backendGenType);
             break;
         }
 
@@ -1415,14 +1415,14 @@ void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNati
 {
     const auto node = context->node;
 
-    int cpt = (int) accParams.size();
+    int cpt = static_cast<int>(accParams.size());
 
     if (node->typeInfo && node->typeInfo->isClosure())
     {
         // The first argument of the function needs to be the capture context, which is stored in
         // node->additionalRegisterRC as the second register.
         SWAG_ASSERT(node->extension);
-        accParams[(int) accParams.size() - 1] = node->extMisc()->additionalRegisterRC[1];
+        accParams[static_cast<int>(accParams.size()) - 1] = node->extMisc()->additionalRegisterRC[1];
 
         // The last pushParam needs to be treated in a different way in case of closure, because
         // if in fact we call a lambda, it does not exists (the closure context)
@@ -1619,14 +1619,14 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     askForByteCode(context->baseJob, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
     YIELD();
 
-    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
+    int numCallParams = allParams ? static_cast<int>(allParams->childs.size()) : 0;
 
     // For a untyped variadic, we need to store all parameters as 'any'
     // So we must generate one type per parameter
     Vector<uint32_t> storageOffsetsVariadicTypes;
     if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
-        auto  numFuncParams  = (int) typeInfoFunc->parameters.size();
+        auto  numFuncParams  = static_cast<int>(typeInfoFunc->parameters.size());
         auto  module         = context->sourceFile->module;
         auto& typeGen        = module->typeGen;
         auto  storageSegment = Semantic::getConstantSegFromContext(allParams);
@@ -1694,8 +1694,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     VectorNative<uint32_t> toFree;
     if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
-        auto numFuncParams  = (int) typeInfoFunc->parameters.size();
-        auto numVariadic    = (uint32_t) (numCallParams - numFuncParams) + 1;
+        auto numFuncParams  = static_cast<int>(typeInfoFunc->parameters.size());
+        auto numVariadic    = static_cast<uint32_t>(numCallParams - numFuncParams) + 1;
         int  offset         = numVariadic * 2 * sizeof(Register);
         auto storageSegment = Semantic::getConstantSegFromContext(allParams);
 
@@ -1747,7 +1747,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
     // Push missing default parameters
     uint64_t numPushParams = 0;
-    int      numTypeParams = (int) typeInfoFunc->parameters.size();
+    int      numTypeParams = static_cast<int>(typeInfoFunc->parameters.size());
     if (numCallParams < numTypeParams)
     {
         // Push all parameters, from end to start
@@ -1953,7 +1953,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Pass a variadic parameter to another function
-    auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
+    auto numVariadic = static_cast<uint32_t>(numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
         SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, FMT(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
@@ -2000,7 +2000,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         toFree.push_back(r0[1]);
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
-        inst->b.u32              = (uint32_t) offset * sizeof(Register);
+        inst->b.u32              = static_cast<uint32_t>(offset) * sizeof(Register);
         context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
@@ -2040,7 +2040,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         toFree.push_back(r0[1]);
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
-        inst->b.u32              = (uint32_t) offset * sizeof(Register);
+        inst->b.u32              = static_cast<uint32_t>(offset) * sizeof(Register);
         context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
@@ -2075,7 +2075,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         auto inst               = EMIT_INST0(context, ByteCodeOp::ForeignCall);
         inst->a.pointer         = (uint8_t*) funcNode;
         inst->b.pointer         = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams = (uint8_t) numVariadic;
+        inst->numVariadicParams = static_cast<uint8_t>(numVariadic);
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcNode));
     }
     else if (funcNode)
@@ -2084,7 +2084,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         SWAG_ASSERT(funcNode->extension && funcNode->extension->bytecode && funcNode->extByteCode()->bc);
         inst->a.pointer                     = (uint8_t*) funcNode->extByteCode()->bc;
         inst->b.pointer                     = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams             = (uint8_t) numVariadic;
+        inst->numVariadicParams             = static_cast<uint8_t>(numVariadic);
         funcNode->extByteCode()->bc->isUsed = true;
     }
     else
@@ -2092,7 +2092,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         SWAG_ASSERT(varNodeRegisters.size() > 0);
         auto inst                            = EMIT_INST1(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer                      = (uint8_t*) typeInfoFunc;
-        inst->numVariadicParams              = (uint8_t) numVariadic;
+        inst->numVariadicParams              = static_cast<uint8_t>(numVariadic);
         context->bc->hasForeignFunctionCalls = true;
     }
 

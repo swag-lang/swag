@@ -167,7 +167,7 @@ void Scope::addChildNoLock(Scope* child)
 {
     if (!child)
         return;
-    child->indexInParent = (uint32_t) childScopes.size();
+    child->indexInParent = static_cast<uint32_t>(childScopes.size());
     childScopes.push_back(child);
     child->parentScope = this;
 }

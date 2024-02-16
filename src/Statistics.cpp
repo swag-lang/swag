@@ -26,7 +26,7 @@ void Stats::printFreq()
         int best  = -1;
         int bestI = 0;
 
-        for (int i = 0; i < (int) ByteCodeOp::End; i++)
+        for (int i = 0; i < static_cast<int>(ByteCodeOp::End); i++)
         {
             // Filter by name
             if (!str0.empty())
@@ -37,20 +37,20 @@ void Stats::printFreq()
                     continue;
             }
 
-            if (countOpFreq[i][(int) ByteCodeOp::End] > best)
+            if (countOpFreq[i][static_cast<int>(ByteCodeOp::End)] > best)
             {
-                best  = countOpFreq[i][(int) ByteCodeOp::End];
+                best  = countOpFreq[i][static_cast<int>(ByteCodeOp::End)];
                 bestI = i;
             }
         }
 
-        if (countOpFreq[bestI][(int) ByteCodeOp::End].load())
+        if (countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load())
         {
             g_Log.setColor(LogColor::Index);
-            g_Log.print(FMT("%5d ", countOpFreq[bestI][(int) ByteCodeOp::End].load()));
+            g_Log.print(FMT("%5d ", countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)].load()));
             g_Log.setColor(LogColor::Name);
             g_Log.print(FMT("%s\n", g_ByteCodeOpDesc[bestI].name));
-            countOpFreq[bestI][(int) ByteCodeOp::End] = 0;
+            countOpFreq[bestI][static_cast<int>(ByteCodeOp::End)] = 0;
         }
     }
 
@@ -61,7 +61,7 @@ void Stats::printFreq()
         int best  = -1;
         int bestI = 0;
         int bestJ = 0;
-        for (int i = 0; i < (int) ByteCodeOp::End; i++)
+        for (int i = 0; i < static_cast<int>(ByteCodeOp::End); i++)
         {
             // Filter by name
             if (!str0.empty())
@@ -72,7 +72,7 @@ void Stats::printFreq()
                     continue;
             }
 
-            for (int j = 0; j < (int) ByteCodeOp::End; j++)
+            for (int j = 0; j < static_cast<int>(ByteCodeOp::End); j++)
             {
                 // Filter by name
                 if (!str1.empty())
@@ -120,7 +120,7 @@ void Stats::print() const
     g_Log.messageHeaderDot("modules", FMT("%u", numModules.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("files", FMT("%u", numFiles.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("source lines", FMT("%u", numLines.load()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("lines/s", FMT("%u", (int) (numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("lines/s", FMT("%u", static_cast<int>(numLines.load() / OS::timerToSeconds(g_Workspace->totalTime.load()))), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("tokens", FMT("%u", numTokens.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("ast nodes", FMT("%u", numNodes.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("ast released nodes", FMT("%u", releaseNodes.load()), LogColor::Header, LogColor::Value);
@@ -137,7 +137,7 @@ void Stats::print() const
     g_Log.eol();
 
     g_Log.messageHeaderDot("instructions", FMT("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
-    const float pc1 = ((float) totalOptimBC.load() * 100.0f) / ((float) numInstructions.load());
+    const float pc1 = (static_cast<float>(totalOptimBC.load()) * 100.0f) / static_cast<float>(numInstructions.load());
     g_Log.messageHeaderDot("kicked", FMT("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total", FMT("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
     g_Log.eol();

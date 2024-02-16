@@ -7,7 +7,7 @@ namespace
 {
     const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
     {
-        if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) ExportedTypeInfoFlags::Strict))
+        if (type1->kind != TypeInfoKind::Alias || (type1->flags & static_cast<uint16_t>(ExportedTypeInfoFlags::Strict)))
             return type1;
         const auto typeAlias = (const ExportedTypeInfoAlias*) type1;
         return concreteAlias(typeAlias->rawType);

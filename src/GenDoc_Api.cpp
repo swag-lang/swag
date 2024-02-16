@@ -253,7 +253,7 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += FMT("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
 
     helpContent += "<span class=\"api-item-title-light\">";
-    for (int i = 0; i < (int) tkn.size() - 1; i++)
+    for (int i = 0; i < static_cast<int>(tkn.size()) - 1; i++)
     {
         helpContent += tkn[i];
         helpContent += ".";
@@ -282,7 +282,7 @@ void GenDoc::outputTitle(OneRef& c)
             if (module != g_Workspace->runtimeModule)
             {
                 Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
-                pathFile.remove(0, (uint32_t) module->path.string().size() + 1);
+                pathFile.remove(0, static_cast<uint32_t>(module->path.string().size()) + 1);
                 str.append(pathFile.c_str());
             }
             else
@@ -533,7 +533,7 @@ void GenDoc::generateContent()
     // Output content
     helpContent += "<h1>Content</h1>\n";
 
-    for (int i = 0; i < (int) allNodes.size(); i++)
+    for (int i = 0; i < static_cast<int>(allNodes.size()); i++)
     {
         auto& c  = allNodes[i];
         auto  n0 = c.nodes[0];
@@ -571,7 +571,7 @@ void GenDoc::generateContent()
 
             helpContent += "<table class=\"table-enumeration\">\n";
 
-            for (int j = i; j < (int) allNodes.size(); j++)
+            for (int j = i; j < static_cast<int>(allNodes.size()); j++)
             {
                 auto& c1 = allNodes[j];
                 auto  n  = c1.nodes[0];
@@ -612,7 +612,7 @@ void GenDoc::generateContent()
 
             helpContent += "<table class=\"table-enumeration\">\n";
 
-            for (int j = i; j < (int) allNodes.size(); j++)
+            for (int j = i; j < static_cast<int>(allNodes.size()); j++)
             {
                 auto& c1 = allNodes[j];
                 auto  n  = c1.nodes[0];
@@ -931,7 +931,7 @@ bool GenDoc::generateApi()
             if (c.second[0]->kind != AstNodeKind::Namespace)
             {
                 oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
-                const auto len  = (uint32_t) c.second[0]->sourceFile->module->path.string().size();
+                const auto len  = static_cast<uint32_t>(c.second[0]->sourceFile->module->path.string().size());
                 if (oneRef.category.length() <= len + 5) // +5 because of /src/
                     oneRef.category.clear();
                 else

@@ -23,7 +23,7 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
 
     if (precompileIndex == 0)
     {
@@ -121,7 +121,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     SWAG_ASSERT(module == buildParameters.module);
     allocatePerObj<SCBE_X64>(buildParameters);
 
-    auto& pp     = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto& pp     = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto& concat = pp.concat;
 
     // Message
@@ -234,7 +234,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *(SCBE_CPU*) perThread[ct][precompileIndex];
+    auto&      pp              = *static_cast<SCBE_CPU*>(perThread[ct][precompileIndex]);
 
     auto path = getCacheFolder(buildParameters);
     path.append(pp.filename);

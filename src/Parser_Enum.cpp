@@ -55,7 +55,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
 
         // If an 'impl' came first, then typeinfo has already been defined
         ScopedLock lk1(newScope->owner->mutex);
-        auto       typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
+        auto       typeInfo = static_cast<TypeInfoEnum*>(newScope->owner->typeInfo);
         if (!typeInfo)
         {
             typeInfo                  = makeType<TypeInfoEnum>();

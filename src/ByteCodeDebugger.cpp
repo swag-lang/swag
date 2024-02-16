@@ -164,7 +164,7 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, i
 
     if (regN >= context->getRegCount(cxtRc))
     {
-        printCmdError(FMT("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(cxtRc) - 1));
+        printCmdError(FMT("invalid register number, maximum value is [[%u]]", static_cast<uint32_t>(context->getRegCount(cxtRc)) - 1));
         return false;
     }
 
@@ -192,9 +192,9 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
-    for (int i = (int) maxLevel; i >= 0; i--)
+    for (int i = static_cast<int>(maxLevel); i >= 0; i--)
     {
-        if (i >= (int) steps.size())
+        if (i >= static_cast<int>(steps.size()))
             continue;
 
         const auto& step = steps[i];
@@ -423,7 +423,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         case OS::Key::Ascii:
             fputs("\x1B[1@", stdout); // Insert n blanks and shift right
             fputc(c, stdout);
-            line.insert(cursorX, (char) c);
+            line.insert(cursorX, static_cast<char>(c));
             cursorX++;
             break;
 
@@ -460,7 +460,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         while (debugCmdHistory.size() != debugCmdHistoryIndex)
             debugCmdHistory.pop_back();
         debugCmdHistory.push_back(line);
-        debugCmdHistoryIndex = (uint32_t) debugCmdHistory.size();
+        debugCmdHistoryIndex = static_cast<uint32_t>(debugCmdHistory.size());
     }
 
     g_Log.eol();
@@ -861,7 +861,7 @@ void ByteCodeDebugger::tokenizeCommand(ByteCodeRunContext* context, const Utf8& 
             c.trim();
         arg.cmd = arg.split[0];
 
-        for (int i = 1; i < (int) arg.split.size(); i++)
+        for (int i = 1; i < static_cast<int>(arg.split.size()); i++)
         {
             arg.cmdExpr += arg.split[i];
             arg.cmdExpr += " ";

@@ -136,7 +136,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
 
         const auto id        = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
         id->semanticFct      = Semantic::resolveIdentifier;
-        id->token.text.count = (int) (pz - pzStart);
+        id->token.text.count = static_cast<int>(pz - pzStart);
         if (name.allocated)
         {
             id->token.text = Utf8{pzStart, id->token.text.count};

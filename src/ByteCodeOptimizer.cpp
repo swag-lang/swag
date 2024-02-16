@@ -37,7 +37,7 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
     context->tree.push_back(newNode);
     context->nextTreeNode++;
 
-    const uint32_t pos       = (uint32_t) context->tree.size() - 1;
+    const uint32_t pos       = static_cast<uint32_t>(context->tree.size()) - 1;
     context->mapInstNode[ip] = pos;
     return pos;
 }
@@ -280,7 +280,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
         return;
     if (ip->hasFlag(BCI_NOT_PURE) && ip->op != ByteCodeOp::ClearRA)
         return;
-    const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
+    const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
     if (flags & OPFLAG_UNPURE)
         return;
 
@@ -312,11 +312,11 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
         if (ByteCode::isJump(ip))
         {
-            const auto srcJump = (int) (ip - context->bc->out);
+            const auto srcJump = static_cast<int>(ip - context->bc->out);
             const auto dstJump = srcJump + ip->b.s32 + 1;
             for (const auto nop : context->nops)
             {
-                const auto idxNop = (int) (nop - context->bc->out);
+                const auto idxNop = static_cast<int>(nop - context->bc->out);
 
                 // If this is a ordered jump, and there's a nop between the destination jump
                 // and the jump, then we need to remove one jump instruction
@@ -338,11 +338,11 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(ip->d.u32));
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
-                const auto srcJump = (int) (ip - context->bc->out);
+                const auto srcJump = static_cast<int>(ip - context->bc->out);
                 const auto dstJump = srcJump + table[idx] + 1;
                 for (const auto nop : context->nops)
                 {
-                    const auto idxNop = (int) (nop - context->bc->out);
+                    const auto idxNop = static_cast<int>(nop - context->bc->out);
                     if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
                         table[idx]--;
                     else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
@@ -354,7 +354,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         *ipDest++ = *ip++;
     }
 
-    context->bc->numInstructions -= (int) context->nops.size();
+    context->bc->numInstructions -= static_cast<int>(context->nops.size());
     context->nops.clear();
 }
 
@@ -374,7 +374,7 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
             nop++;
     }
 
-    for (int it = 0; it < (int) context->jumps.size(); it++)
+    for (int it = 0; it < static_cast<int>(context->jumps.size()); it++)
     {
         const auto jump = context->jumps[it];
         SWAG_ASSERT(ByteCode::isJumpOrDyn(jump));
@@ -442,7 +442,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     }
 
     // Mark all instructions which are a jump destination
-    context->bc->numJumps = (uint32_t) context->jumps.size();
+    context->bc->numJumps = static_cast<uint32_t>(context->jumps.size());
     for (const auto jump : context->jumps)
     {
         if (ByteCode::isJumpDyn(jump))
@@ -511,12 +511,12 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
             const auto newJob    = Allocator::alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
             newJob->dependentJob = job;
-            newJob->startIndex   = (int) startIndex;
-            newJob->endIndex     = (int) min(startIndex + 1, module->byteCodeFunc.size());
+            newJob->startIndex   = static_cast<int>(startIndex);
+            newJob->endIndex     = static_cast<int>(min(startIndex + 1, module->byteCodeFunc.size()));
             startIndex           = newJob->endIndex;
 
             auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;
-            while (curInst < totalInstructions && newJob->endIndex + 1 < (int) module->byteCodeFunc.size())
+            while (curInst < totalInstructions && newJob->endIndex + 1 < static_cast<int>(module->byteCodeFunc.size()))
             {
                 const auto bc = module->byteCodeFunc[newJob->endIndex];
                 if (bc->canEmit())
@@ -620,11 +620,11 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
             for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
             {
                 const auto ip = optContext.bc->out + i;
-                ++g_Stats.countOpFreq[(int) ip[0].op][(int) ByteCodeOp::End];
+                ++g_Stats.countOpFreq[static_cast<int>(ip[0].op)][static_cast<int>(ByteCodeOp::End)];
 
                 if (ip[1].hasFlag(BCI_START_STMT))
                     continue;
-                ++g_Stats.countOpFreq[(int) ip[0].op][(int) ip[1].op];
+                ++g_Stats.countOpFreq[static_cast<int>(ip[0].op)][static_cast<int>(ip[1].op)];
             }
         }
 #endif

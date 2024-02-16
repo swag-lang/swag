@@ -83,7 +83,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             const auto identifier         = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
-            for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
+            for (int i = 0; i < static_cast<int>(firstMatch.genericParametersCallTypes.size()); i++)
             {
                 const auto& param     = firstMatch.genericParametersCallTypes[i];
                 const auto  callParam = Ast::newFuncCallParam(node->sourceFile, genericParameters);
@@ -161,8 +161,8 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
 
 void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
 {
-    const int wantedNumGenericParams = (int) genericParameters.size();
-    const int numGenericParams       = (int) context.genericParameters.size();
+    const int wantedNumGenericParams = static_cast<int>(genericParameters.size());
+    const int numGenericParams       = static_cast<int>(context.genericParameters.size());
     if (!numGenericParams && !wantedNumGenericParams)
         return;
 

@@ -306,7 +306,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         // Slice literal. This can happen for enum values
         if (expression->hasComputedValue())
         {
-            const auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
+            const auto slice = static_cast<SwagSlice*>(node->computedValue->getStorageAddr());
             if (slice->count > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else
@@ -442,7 +442,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
-            const auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
+            const auto slice = static_cast<SwagSlice*>(node->computedValue->getStorageAddr());
             if (!slice->buffer)
             {
                 node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -451,7 +451,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             }
             else
             {
-                node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) slice->buffer);
+                node->computedValue->storageOffset = node->computedValue->storageSegment->offset(static_cast<uint8_t*>(slice->buffer));
             }
         }
         else
@@ -504,7 +504,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             }
             else
             {
-                const auto any = (SwagAny*) expression->computedValue->getStorageAddr();
+                const auto any = static_cast<SwagAny*>(expression->computedValue->getStorageAddr());
                 if (!any->value)
                 {
                     node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -513,7 +513,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
                 }
                 else
                 {
-                    node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->value);
+                    node->computedValue->storageOffset = node->computedValue->storageSegment->offset(static_cast<uint8_t*>(any->value));
                 }
             }
         }
@@ -647,7 +647,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     slice->count                       = runes.size();
 
     uint8_t* addrDst;
-    storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &addrDst);
+    storageSegment->reserve(static_cast<uint32_t>(runes.size()) * sizeof(uint32_t), &addrDst);
     slice->buffer = addrDst;
 
     // Setup array
@@ -683,7 +683,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 
         // Need to be sure that the expression list can be casted to the equivalent array
         const auto typeArr   = makeType<TypeInfoArray>();
-        typeArr->count       = (uint32_t) typeList->subTypes.size();
+        typeArr->count       = static_cast<uint32_t>(typeList->subTypes.size());
         typeArr->pointedType = typeList->subTypes[0]->typeInfo;
         typeArr->finalType   = typeArr->pointedType;
         typeArr->sizeOf      = typeArr->count * typeArr->finalType->sizeOf;
@@ -723,7 +723,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 
         if (expr->hasComputedValue())
         {
-            const auto any                     = (SwagAny*) expr->computedValue->getStorageAddr();
+            const auto any                     = static_cast<SwagAny*>(expr->computedValue->getStorageAddr());
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
             node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
@@ -821,7 +821,7 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
         expr->computedValue->storageSegment != nullptr)
     {
         const auto addr        = expr->computedValue->getStorageAddr();
-        const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(expr->computedValue->storageSegment, (ExportedTypeInfo*) addr);
+        const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(expr->computedValue->storageSegment, static_cast<ExportedTypeInfo*>(addr));
         if (newTypeInfo)
             typeInfo = newTypeInfo;
     }

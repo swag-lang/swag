@@ -154,14 +154,14 @@ TypeInfo* TypeInfo::getConstAlias()
 {
     if (!hasFlag(TYPEINFO_CONST_ALIAS))
         return this;
-    return ((TypeInfoAlias*) this)->rawType;
+    return static_cast<TypeInfoAlias*>(this)->rawType;
 }
 
 const TypeInfo* TypeInfo::getConstAlias() const
 {
     if (!hasFlag(TYPEINFO_CONST_ALIAS))
         return this;
-    return ((const TypeInfoAlias*) this)->rawType;
+    return static_cast<const TypeInfoAlias*>(this)->rawType;
 }
 
 TypeInfo* TypeInfo::getConcreteAlias() const

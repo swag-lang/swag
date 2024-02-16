@@ -24,7 +24,7 @@ public:
             startLine = false;
         }
 
-        const Utf8 str{ptr, (uint32_t) len};
+        const Utf8 str{ptr, static_cast<uint32_t>(len)};
         errMsg += str;
 
         if (strstr(ptr, "\n"))
@@ -114,7 +114,7 @@ void BackendLinker::getArguments(const BuildParameters& buildParameters, Vector<
     // Add user additional linker arguments
     if (buildParameters.buildCfg->linkerArgs.count)
     {
-        auto        pz  = (const char*) buildParameters.buildCfg->linkerArgs.buffer;
+        auto        pz  = static_cast<const char*>(buildParameters.buildCfg->linkerArgs.buffer);
         const char* pze = pz + buildParameters.buildCfg->linkerArgs.count;
         while (pz < pze)
         {

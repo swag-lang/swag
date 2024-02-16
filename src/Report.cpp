@@ -73,7 +73,7 @@ namespace
     void cleanNotes(Vector<Diagnostic*>& notes)
     {
         // Remove notes without messages
-        for (int i = 0; i < (int) notes.size(); i++)
+        for (int i = 0; i < static_cast<int>(notes.size()); i++)
         {
             if (notes[i]->textMsg.empty())
             {
@@ -103,7 +103,7 @@ namespace
 
             err->hint = parts[1];
 
-            for (int i = 2; i < (int) parts.size(); i++)
+            for (int i = 2; i < static_cast<int>(parts.size()); i++)
             {
                 auto newNote = Diagnostic::note(parts[i]);
                 notes.push_back(newNote);
@@ -131,7 +131,7 @@ namespace
         }
 
         // Move ranges from note to note if they share the same line of code, and they do not overlap
-        for (int inote = 0; inote < (int) notes.size(); inote++)
+        for (int inote = 0; inote < static_cast<int>(notes.size()); inote++)
         {
             const auto note = notes[inote];
             if (!note->display || !note->canBeMerged)
@@ -213,7 +213,7 @@ namespace
         }
 
         // No need to repeat the same source file line reference
-        for (int inote = 0; inote < (int) notes.size(); inote++)
+        for (int inote = 0; inote < static_cast<int>(notes.size()); inote++)
         {
             const auto note = notes[inote];
             if (!note->display)
@@ -225,7 +225,7 @@ namespace
             if (sourceFile0 && sourceFile0->fileForSourceLocation)
                 sourceFile0 = sourceFile0->fileForSourceLocation;
 
-            for (int inote1 = inote + 1; inote1 < (int) notes.size(); inote1++)
+            for (int inote1 = inote + 1; inote1 < static_cast<int>(notes.size()); inote1++)
             {
                 const auto note1 = notes[inote1];
                 if (!note1->display || !note1->hasLocation)
@@ -306,7 +306,7 @@ namespace
         auto       whatVal = what->text;
         whatVal.trim();
 
-        const auto l = (WarnLevel) level->reg.u8;
+        const auto l = static_cast<WarnLevel>(level->reg.u8);
         if (whatVal.empty())
         {
             if (l == Disable)
@@ -405,7 +405,7 @@ namespace
         // Check build configuration
         if (module->buildCfg.warnAsErrors.buffer)
         {
-            Utf8 txt{(const char*) module->buildCfg.warnAsErrors.buffer, (uint32_t) module->buildCfg.warnAsErrors.count};
+            Utf8 txt{static_cast<const char*>(module->buildCfg.warnAsErrors.buffer), static_cast<uint32_t>(module->buildCfg.warnAsErrors.count)};
             txt.trim();
             if (!txt.empty())
             {
@@ -426,7 +426,7 @@ namespace
 
         if (module->buildCfg.warnAsWarnings.buffer)
         {
-            Utf8 txt{(const char*) module->buildCfg.warnAsWarnings.buffer, (uint32_t) module->buildCfg.warnAsWarnings.count};
+            Utf8 txt{static_cast<const char*>(module->buildCfg.warnAsWarnings.buffer), static_cast<uint32_t>(module->buildCfg.warnAsWarnings.count)};
             txt.trim();
             if (!txt.empty())
             {
@@ -446,7 +446,7 @@ namespace
 
         if (module->buildCfg.warnAsDisabled.buffer)
         {
-            Utf8 txt{(const char*) module->buildCfg.warnAsDisabled.buffer, (uint32_t) module->buildCfg.warnAsDisabled.count};
+            Utf8 txt{static_cast<const char*>(module->buildCfg.warnAsDisabled.buffer), static_cast<uint32_t>(module->buildCfg.warnAsDisabled.count)};
             txt.trim();
             if (!txt.empty())
             {
@@ -604,10 +604,10 @@ namespace
 
             if (g_CommandLine.dbgCallStack)
             {
-                const SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+                const SwagContext* context = static_cast<SwagContext*>(OS::tlsGetValue(g_TlsContextId));
 
                 // Bytecode callstack
-                if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
+                if (context && (context->flags & static_cast<uint64_t>(ContextFlags::ByteCode)))
                 {
                     const auto callStack = g_ByteCodeStackTrace->log(runContext);
                     if (!callStack.empty())
@@ -626,7 +626,7 @@ namespace
                     Utf8 str;
                     for (int i = context->traceIndex - 1; i >= 0; i--)
                     {
-                        const auto sourceFile1 = g_Workspace->findFile((const char*) context->traces[i]->fileName.buffer);
+                        const auto sourceFile1 = g_Workspace->findFile(static_cast<const char*>(context->traces[i]->fileName.buffer));
                         if (sourceFile1)
                         {
                             str += Log::colorToVTS(LogColor::DarkYellow);

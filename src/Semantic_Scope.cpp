@@ -169,7 +169,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);
 
                     // Prepend the 'with' identifier, and reevaluate
-                    for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
+                    for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
                     {
                         const auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->addAstFlag(AST_GENERATED);

@@ -39,7 +39,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&       concat          = pp.concat;
     auto        typeFunc        = bc->getCallType();
     auto        returnType      = typeFunc->concreteReturnType();
@@ -124,7 +124,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Push on scratch register per parameter
     while (cpuFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.paramByRegisterCount, numTotalRegs)))
     {
-        auto cpuReg = (CPURegister) (cc.firstScratchRegister + cpuFct->numScratchRegs);
+        auto cpuReg = static_cast<CPURegister>(cc.firstScratchRegister + cpuFct->numScratchRegs);
         pp.emit_Push(cpuReg);
         unwindRegs.push_back(cpuReg);
         unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
@@ -148,7 +148,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::SUB, CPUBits::B64);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    cpuFct->offsetCallerStackParams = (uint32_t) (sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
+    cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
     cpuFct->offsetStack             = offsetStack;
     cpuFct->offsetLocalStackParams  = offsetS4;
     cpuFct->frameSize               = sizeStack + sizeParamsStack;
@@ -173,7 +173,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
 
         if (iReg < cpuFct->numScratchRegs)
-            pp.emit_Load64_Indirect(stackOffset, (CPURegister) (cc.firstScratchRegister + iReg), RDI);
+            pp.emit_Load64_Indirect(stackOffset, static_cast<CPURegister>(cc.firstScratchRegister + iReg), RDI);
 
         iReg++;
     }
@@ -2319,7 +2319,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emit_Jump(JAE, i, tableCompiler[0]);
 
             uint8_t* addrConstant        = nullptr;
-            auto     offsetTableConstant = buildParameters.module->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
+            auto     offsetTableConstant = buildParameters.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);
 
             pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
             pp.emit_JumpTable(RCX, RAX);
@@ -2330,7 +2330,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emit_OpN(RCX, RAX, CPUOp::ADD, CPUBits::B64);
             pp.emit_Jump(RAX);
 
-            auto currentOffset = (int32_t) pp.concat.totalCount();
+            auto currentOffset = static_cast<int32_t>(pp.concat.totalCount());
 
             auto            tableConstant = reinterpret_cast<int32_t*>(addrConstant);
             CPULabelToSolve label;
@@ -2734,7 +2734,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             if (ip->c.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-                pp.emit_LoadU8U64_Indirect((uint32_t) ip->c.u64, RAX, RAX);
+                pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(ip->c.u64), RAX, RAX);
             }
             else
             {
@@ -2748,7 +2748,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             if (ip->c.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-                pp.emit_LoadU16U64_Indirect((uint32_t) ip->c.u64, RAX, RAX);
+                pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(ip->c.u64), RAX, RAX);
             }
             else
             {
@@ -2762,7 +2762,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             if (ip->c.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-                pp.emit_Load32_Indirect((uint32_t) ip->c.u64, RAX, RAX);
+                pp.emit_Load32_Indirect(static_cast<uint32_t>(ip->c.u64), RAX, RAX);
             }
             else
             {
@@ -2776,7 +2776,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             if (ip->c.u64 <= 0x7FFFFFFF)
             {
                 pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);
-                pp.emit_Load64_Indirect((uint32_t) ip->c.u64, RAX, RAX);
+                pp.emit_Load64_Indirect(static_cast<uint32_t>(ip->c.u64), RAX, RAX);
             }
             else
             {
@@ -3524,7 +3524,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             if (!pushRVParams.empty())
             {
                 auto     sizeOf            = pushRVParams[0].second;
-                int      idxParam          = (int) pushRVParams.size() - 1;
+                int      idxParam          = static_cast<int>(pushRVParams.size()) - 1;
                 uint32_t variadicStackSize = idxParam * sizeOf;
                 MK_ALIGN16(variadicStackSize);
                 uint32_t offset = sizeParamsStack - variadicStackSize;
@@ -3570,7 +3570,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                 // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
-                int      idxParam          = (int) pushRAParams.size() - (sizeB / sizeof(Register)) - 1;
+                int      idxParam          = static_cast<int>(pushRAParams.size()) - (sizeB / sizeof(Register)) - 1;
                 uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                 MK_ALIGN16(variadicStackSize);
                 uint32_t offset = sizeParamsStack - variadicStackSize;
@@ -3831,7 +3831,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::ADD, CPUBits::B64);
-            for (int32_t rRet = (int32_t) unwindRegs.size() - 1; rRet >= 0; rRet--)
+            for (int32_t rRet = static_cast<int32_t>(unwindRegs.size()) - 1; rRet >= 0; rRet--)
                 pp.emit_Pop(unwindRegs[rRet]);
             pp.emit_Ret();
             break;
@@ -3846,12 +3846,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             pp.concat.addU8(0xF3);
             pp.concat.addU8(0x0F);
-            pp.concat.addU8((uint8_t) CPUOp::FMUL);
+            pp.concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
             pp.concat.addU8(0xC1);
 
             pp.concat.addU8(0xF3);
             pp.concat.addU8(0x0F);
-            pp.concat.addU8((uint8_t) CPUOp::FADD);
+            pp.concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
             pp.concat.addU8(0xC2);
 
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
@@ -3865,12 +3865,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             pp.concat.addU8(0xF2);
             pp.concat.addU8(0x0F);
-            pp.concat.addU8((uint8_t) CPUOp::FMUL);
+            pp.concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
             pp.concat.addU8(0xC1);
 
             pp.concat.addU8(0xF2);
             pp.concat.addU8(0x0F);
-            pp.concat.addU8((uint8_t) CPUOp::FADD);
+            pp.concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
             pp.concat.addU8(0xC2);
 
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
@@ -4033,7 +4033,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::IntrinsicS8x1:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_8(RAX);
@@ -4065,7 +4065,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4073,7 +4073,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicS16x1:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_16(RAX);
@@ -4110,7 +4110,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4118,7 +4118,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicS32x1:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_32(RAX);
@@ -4155,7 +4155,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4163,7 +4163,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicS64x1:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicAbs:
                 MK_IMMB_64(RAX);
@@ -4200,7 +4200,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4209,7 +4209,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::IntrinsicS8x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_S8_TO_S32(RAX);
@@ -4227,7 +4227,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4235,7 +4235,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicS16x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_16(RAX);
@@ -4253,7 +4253,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4261,7 +4261,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicS32x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_32(RAX);
@@ -4279,7 +4279,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4287,7 +4287,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicS64x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_64(RAX);
@@ -4305,7 +4305,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4314,7 +4314,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         case ByteCodeOp::IntrinsicU8x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_U8_TO_U32(RAX);
@@ -4344,7 +4344,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4352,7 +4352,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicU16x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_16(RAX);
@@ -4382,7 +4382,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4390,7 +4390,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicU32x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_32(RAX);
@@ -4420,7 +4420,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4428,7 +4428,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
         case ByteCodeOp::IntrinsicU64x2:
         {
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_64(RAX);
@@ -4458,7 +4458,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4477,7 +4477,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
 
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_F32(XMM0);
@@ -4500,7 +4500,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
             break;
@@ -4517,7 +4517,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
 
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicMin:
                 MK_IMMB_F64(XMM0);
@@ -4540,7 +4540,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
             break;
@@ -4554,7 +4554,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
 
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicSqrt:
                 MK_IMMB_F32(XMM0);
@@ -4625,7 +4625,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4640,7 +4640,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             else
                 pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
 
-            switch ((TokenId) ip->d.u32)
+            switch (static_cast<TokenId>(ip->d.u32))
             {
             case TokenId::IntrinsicSqrt:
                 MK_IMMB_F64(XMM0);
@@ -4711,7 +4711,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             default:
                 ok = false;
-                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                Report::internalError(buildParameters.module, FMT("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
                 break;
             }
 
@@ -4769,7 +4769,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
         default:
             ok = false;
-            Report::internalError(buildParameters.module, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+            Report::internalError(buildParameters.module, FMT("unknown instruction [[%s]] during backend generation", g_ByteCodeOpDesc[static_cast<int>(ip->op)].name));
             break;
         }
     }

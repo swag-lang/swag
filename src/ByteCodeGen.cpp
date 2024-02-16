@@ -271,7 +271,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
 				extension->bc->sourceFile = node->sourceFile;
 			}
 
-			extension->bc->typeInfoFunc = funcDecl ? (TypeInfoFuncAttr*) funcDecl->typeInfo : nullptr;
+			extension->bc->typeInfoFunc = funcDecl ? static_cast<TypeInfoFuncAttr*>(funcDecl->typeInfo) : nullptr;
 			if (node->hasAstFlag(AST_DEFINED_INTRINSIC))
 				extension->bc->name = node->token.text;
 			else if (node->sourceFile->isRuntimeFile)

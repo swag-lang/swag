@@ -29,7 +29,7 @@ namespace
             concat.align(4);
         SWAG_ASSERT(pp.dbgRecordIdx);
         pp.dbgRecordIdx--;
-        *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
+        *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = static_cast<uint16_t>(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
     }
 
     void emitCompilerFlagsDebugS(SCBE_CPU& pp)
@@ -63,7 +63,7 @@ namespace
         const Utf8 version = FMT("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         concat.addString(version.c_str(), version.length() + 1);
         concat.align(4);
-        *patchRecordCount = (uint16_t) (concat.totalCount() - patchRecordOffset);
+        *patchRecordCount = static_cast<uint16_t>(concat.totalCount() - patchRecordOffset);
 
         *patchSCount = concat.totalCount() - patchSOffset;
     }
@@ -218,7 +218,7 @@ namespace
                 break;
 
             case LF_DERIVED:
-                concat.addU32((uint16_t) f->LF_DerivedList.derived.size());
+                concat.addU32(static_cast<uint16_t>(f->LF_DerivedList.derived.size()));
                 for (const auto& p : f->LF_DerivedList.derived)
                     concat.addU32(p);
                 break;
@@ -289,7 +289,7 @@ namespace
             cpt += sizeof(SCBEDebugTypeRecord);
             f += 1;
 
-            if (cpt >= (int) pp.dbgTypeRecords.bucketCount(bucket))
+            if (cpt >= static_cast<int>(pp.dbgTypeRecords.bucketCount(bucket)))
             {
                 bucket = bucket->nextBucket;
                 if (!bucket)
@@ -401,11 +401,11 @@ namespace
         const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
         if (iter.second)
         {
-            checkSymIndex = (uint32_t) arrFileNames.size();
+            checkSymIndex = static_cast<uint32_t>(arrFileNames.size());
             arrFileNames.push_back(stringTable.length());
             iter.first->second = checkSymIndex;
             stringTable += sourceFile->path.string();
-            stringTable.append((char) 0);
+            stringTable.append(static_cast<char>(0));
         }
         else
         {
@@ -446,7 +446,7 @@ namespace
         // Compute file name index in the checksum table
         const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
 
-        const auto numLines = (uint32_t) lines.size();
+        const auto numLines = static_cast<uint32_t>(lines.size());
         concat.addU32(checkSymIndex);     // File index in checksum buffer (in bytes!)
         concat.addU32(numLines);          // NumLines
         concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)
@@ -480,7 +480,7 @@ namespace
 
         // Local variables marked as global
         /////////////////////////////////
-        const auto funcDecl = (AstFuncDecl*) f.node;
+        const auto funcDecl = static_cast<AstFuncDecl*>(f.node);
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
         for (const auto localVar : funcDecl->localGlobalVars)
         {
@@ -528,7 +528,7 @@ namespace
 
         // Local variables
         /////////////////////////////////
-        for (int i = 0; i < (int) f.node->extByteCode()->bc->localVars.size(); i++)
+        for (int i = 0; i < static_cast<int>(f.node->extByteCode()->bc->localVars.size()); i++)
         {
             const auto localVar = f.node->extByteCode()->bc->localVars[i];
             if (localVar->ownerScope != scope)
@@ -557,7 +557,7 @@ namespace
                 concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
             emitSecRel(pp, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
             const auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
-            concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
+            concat.addU16(static_cast<uint16_t>(endOffsetVar - localVar->ownerScope->backendStart)); // Range
             emitEndRecord(pp);
         }
 
@@ -690,7 +690,7 @@ namespace
                         concat.addU16(0);     // Flags
                         concat.addU32(overload->computedValue.storageOffset);
                         emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                        concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
+                        concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
                         emitEndRecord(pp);
                     }
                 }
@@ -774,7 +774,7 @@ namespace
                         concat.addU16(0);     // Flags
                         concat.addU32(offsetStackParam);
                         emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                        concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
+                        concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
                         emitEndRecord(pp);
 
                         // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
@@ -795,7 +795,7 @@ namespace
                             concat.addU16(0);     // Flags
                             concat.addU32(offsetStackParam);
                             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                            concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
+                            concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
                             emitEndRecord(pp);
                         }
 
@@ -816,7 +816,7 @@ namespace
                             concat.addU16(0);     // Flags
                             concat.addU32(offsetStackParam);
                             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                            concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
+                            concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
                             emitEndRecord(pp);
                         }
                     }
@@ -875,7 +875,7 @@ namespace
         // File checksum table
         /////////////////////////////////
         concat.addU32(DEBUG_S_FILECHKSMS);
-        concat.addU32((int) arrFileNames.size() * 8); // Size of sub section
+        concat.addU32(static_cast<int>(arrFileNames.size()) * 8); // Size of sub section
         for (const auto& p : arrFileNames)
         {
             concat.addU32(p); // Offset of file name in string table
@@ -886,7 +886,7 @@ namespace
         /////////////////////////////////
         concat.addU32(DEBUG_S_STRINGTABLE);
         while (stringTable.length() & 3) // Align to 4 bytes
-            stringTable.append((char) 0);
+            stringTable.append(static_cast<char>(0));
         concat.addU32(stringTable.length());
         concat.addString(stringTable);
 

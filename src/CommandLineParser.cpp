@@ -112,22 +112,22 @@ namespace
         {
         case CommandLineType::Bool:
             value = "true|false";
-            if (*(bool*) oneArg->buffer)
+            if (*static_cast<bool*>(oneArg->buffer))
                 defaultValue += "true";
             else
                 defaultValue += "false";
             break;
         case CommandLineType::Int:
             value = "<integer>";
-            defaultValue = to_string(*(int*) oneArg->buffer);
+            defaultValue = to_string(*static_cast<int*>(oneArg->buffer));
             break;
         case CommandLineType::String:
             value = "<string>";
-            defaultValue = *(Utf8*) oneArg->buffer;
+            defaultValue = *static_cast<Utf8*>(oneArg->buffer);
             break;
         case CommandLineType::StringPath:
             value = "<path>";
-            defaultValue = ((Path*) oneArg->buffer)->string();
+            defaultValue = static_cast<Path*>(oneArg->buffer)->string();
             break;
         case CommandLineType::StringSet:
             value = "<string>";
@@ -137,12 +137,12 @@ namespace
             value = oneArg->param;
             Vector<Utf8> tokens;
             Utf8::tokenize(oneArg->param, '|', tokens);
-            defaultValue = tokens[*(int*) oneArg->buffer];
+            defaultValue = tokens[*static_cast<int*>(oneArg->buffer)];
             break;
         }
         case CommandLineType::EnumString:
             value = oneArg->param;
-            defaultValue = *(Utf8*) oneArg->buffer;
+            defaultValue = *static_cast<Utf8*>(oneArg->buffer);
             break;
         }
     }
@@ -330,14 +330,14 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (one == argument)
                 {
-                    *(int*) arg->buffer = index;
+                    *static_cast<int*>(arg->buffer) = index;
                     break;
                 }
 
                 index++;
             }
 
-            if (index == (int) tokens.size())
+            if (index == static_cast<int>(tokens.size()))
             {
                 Report::error(FMT(Err(Fat0005), it->first.c_str(), arg->param));
                 result = false;
@@ -356,14 +356,14 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (one == argument)
                 {
-                    *(Utf8*) arg->buffer = one;
+                    *static_cast<Utf8*>(arg->buffer) = one;
                     break;
                 }
 
                 index++;
             }
 
-            if (index == (int) tokens.size())
+            if (index == static_cast<int>(tokens.size()))
             {
                 Report::error(FMT(Err(Fat0005), it->first.c_str(), arg->param));
                 result = false;
@@ -374,9 +374,9 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
         case CommandLineType::Bool:
             if (argument == "true" || argument.empty())
-                *(bool*) arg->buffer = true;
+                *static_cast<bool*>(arg->buffer) = true;
             else if (argument == "false")
-                *(bool*) arg->buffer = false;
+                *static_cast<bool*>(arg->buffer) = false;
             else
             {
                 Report::error(FMT(Err(Fat0001), it->first.c_str(), argument.c_str()));
@@ -394,7 +394,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 continue;
             }
 
-            *((Utf8*) arg->buffer) = argument;
+            *static_cast<Utf8*>(arg->buffer) = argument;
             break;
         }
 
@@ -407,7 +407,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 continue;
             }
 
-            *((Path*) arg->buffer) = argument;
+            *static_cast<Path*>(arg->buffer) = argument;
             break;
         }
 
@@ -420,7 +420,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 continue;
             }
 
-            ((SetUtf8*) arg->buffer)->insert(argument);
+            static_cast<SetUtf8*>(arg->buffer)->insert(argument);
             break;
         }
 
@@ -450,7 +450,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 continue;
             }
 
-            *(int*) arg->buffer = argument.toInt();
+            *static_cast<int*>(arg->buffer) = argument.toInt();
             break;
         }
         }
@@ -483,13 +483,13 @@ Utf8 CommandLineParser::buildString() const
         case CommandLineType::String:
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
-            result += *(Utf8*) oneArg->buffer;
+            result += *static_cast<Utf8*>(oneArg->buffer);
             break;
 
         case CommandLineType::StringPath:
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
-            result += ((Path*) oneArg->buffer)->string();
+            result += static_cast<Path*>(oneArg->buffer)->string();
             break;
 
         case CommandLineType::EnumInt:
@@ -499,7 +499,7 @@ Utf8 CommandLineParser::buildString() const
 
             Vector<Utf8> tokens;
             Utf8::tokenize(oneArg->param, '|', tokens);
-            const int idx = *(int*) oneArg->buffer;
+            const int idx = *static_cast<int*>(oneArg->buffer);
             result += tokens[idx];
             break;
         }
@@ -508,7 +508,7 @@ Utf8 CommandLineParser::buildString() const
         {
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
-            const auto all = (SetUtf8*) oneArg->buffer;
+            const auto all = static_cast<SetUtf8*>(oneArg->buffer);
             for (auto& one : *all)
             {
                 result += one;
@@ -520,20 +520,20 @@ Utf8 CommandLineParser::buildString() const
         case CommandLineType::EnumString:
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
-            result += *(Utf8*) oneArg->buffer;
+            result += *static_cast<Utf8*>(oneArg->buffer);
             break;
 
         case CommandLineType::Int:
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
-            result += to_string(*(int*) oneArg->buffer);
+            result += to_string(*static_cast<int*>(oneArg->buffer));
             break;
 
         case CommandLineType::Bool:
         {
             result += oneArg->longName + ":";
             result += Log::colorToVTS(LogColor::Value);
-            if (*(bool*) oneArg->buffer == true)
+            if (*static_cast<bool*>(oneArg->buffer) == true)
                 result += "true";
             else
                 result += "false";

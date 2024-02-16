@@ -1109,87 +1109,87 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             case ByteCodeOp::CastS8F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.s8;
+                ip->b.f32 = static_cast<float>(ip->b.s8);
                 OK();
                 break;
             case ByteCodeOp::CastS16F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.s16;
+                ip->b.f32 = static_cast<float>(ip->b.s16);
                 OK();
                 break;
             case ByteCodeOp::CastS32F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.s32;
+                ip->b.f32 = static_cast<float>(ip->b.s32);
                 OK();
                 break;
             case ByteCodeOp::CastS64F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.s64;
+                ip->b.f32 = static_cast<float>(ip->b.s64);
                 OK();
                 break;
             case ByteCodeOp::CastU8F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.u8;
+                ip->b.f32 = static_cast<float>(ip->b.u8);
                 OK();
                 break;
             case ByteCodeOp::CastU16F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.u16;
+                ip->b.f32 = static_cast<float>(ip->b.u16);
                 OK();
                 break;
             case ByteCodeOp::CastU32F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.u32;
+                ip->b.f32 = static_cast<float>(ip->b.u32);
                 OK();
                 break;
             case ByteCodeOp::CastU64F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.f32 = (float) ip->b.u64;
+                ip->b.f32 = static_cast<float>(ip->b.u64);
                 OK();
                 break;
             case ByteCodeOp::CastS8F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.s8;
+                ip->b.f64 = static_cast<double>(ip->b.s8);
                 OK();
                 break;
             case ByteCodeOp::CastS16F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.s16;
+                ip->b.f64 = static_cast<double>(ip->b.s16);
                 OK();
                 break;
             case ByteCodeOp::CastS32F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.s32;
+                ip->b.f64 = static_cast<double>(ip->b.s32);
                 OK();
                 break;
             case ByteCodeOp::CastS64F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.s64;
+                ip->b.f64 = static_cast<double>(ip->b.s64);
                 OK();
                 break;
             case ByteCodeOp::CastU8F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.u8;
+                ip->b.f64 = static_cast<double>(ip->b.u8);
                 OK();
                 break;
             case ByteCodeOp::CastU16F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.u16;
+                ip->b.f64 = static_cast<double>(ip->b.u16);
                 OK();
                 break;
             case ByteCodeOp::CastU32F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (double) ip->b.u32;
+                ip->b.f64 = static_cast<double>(ip->b.u32);
                 OK();
                 break;
             case ByteCodeOp::CastU64F64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f64 = (float) ip->b.u64;
+                ip->b.f64 = static_cast<float>(ip->b.u64);
                 OK();
                 break;
             case ByteCodeOp::CastF32S32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.s32 = (int32_t) ip->b.f32;
+                ip->b.s32 = static_cast<int32_t>(ip->b.f32);
                 OK();
                 break;
             case ByteCodeOp::CastF32F64:
@@ -1199,12 +1199,12 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             case ByteCodeOp::CastF64S64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.s64 = (int64_t) ip->b.f64;
+                ip->b.s64 = static_cast<int64_t>(ip->b.f64);
                 OK();
                 break;
             case ByteCodeOp::CastF64F32:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->b.f32 = (float) ip->b.f64;
+                ip->b.f32 = static_cast<float>(ip->b.f64);
                 OK();
                 break;
             case ByteCodeOp::TestNotZero8:

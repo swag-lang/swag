@@ -24,7 +24,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u8))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS8);
-            ip->b.u32 = (uint32_t) log2(ip->b.u8);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u8));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -42,7 +42,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u16))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS16);
-            ip->b.u32 = (uint32_t) log2(ip->b.u16);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u16));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -60,7 +60,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS32);
-            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u32));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -78,7 +78,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u64))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
-            ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            ip->b.u64 = static_cast<uint64_t>(log2(ip->b.u64));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -96,7 +96,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u8))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU8);
-            ip->b.u32 = (uint32_t) log2(ip->b.u8);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u8));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -114,7 +114,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u16))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU16);
-            ip->b.u32 = (uint32_t) log2(ip->b.u16);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u16));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -132,7 +132,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU32);
-            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u32));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -150,7 +150,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u64))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftRightU64);
-            ip->b.u64 = (uint64_t) log2(ip->b.u64);
+            ip->b.u64 = static_cast<uint64_t>(log2(ip->b.u64));
             ip->addFlag(BCI_CAN_OVERFLOW);
             break;
         }
@@ -187,7 +187,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftU32);
-            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u32));
             break;
         }
         break;
@@ -205,7 +205,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftU64);
-            ip->b.u64 = (uint32_t) log2(ip->b.u64);
+            ip->b.u64 = static_cast<uint32_t>(log2(ip->b.u64));
             break;
         }
         break;
@@ -223,7 +223,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftS32);
-            ip->b.u32 = (uint32_t) log2(ip->b.u32);
+            ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u32));
             break;
         }
         break;
@@ -241,7 +241,7 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
         if (Math::isPowerOfTwo(ip->b.u32))
         {
             SET_OP(ip, ByteCodeOp::BinOpShiftLeftS64);
-            ip->b.u64 = (uint32_t) log2(ip->b.u64);
+            ip->b.u64 = static_cast<uint32_t>(log2(ip->b.u64));
             break;
         }
         break;
@@ -391,7 +391,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret)
         {
             SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
-            ip[1].b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1) - 1);
+            ip[1].b.s32 = static_cast<int32_t>(&context->bc->out[context->bc->numInstructions - 2] - (ip + 1) - 1);
             setNop(context, ip + 2);
             break;
         }
@@ -739,7 +739,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
 
 void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    const auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
+    const auto opFlags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
     // Multiple InternalGetTlsPtr, just copy registers, as InternalGetTlsPtr has a function call cost
     if (ip[0].op == ByteCodeOp::InternalGetTlsPtr &&
@@ -2550,7 +2550,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !ip[1].hasFlag(BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
-            ip[0].b.u64 |= ((uint64_t) ip[1].b.u32) << 32;
+            ip[0].b.u64 |= static_cast<uint64_t>(ip[1].b.u32) << 32;
             setNop(context, ip + 1);
             break;
         }
@@ -3537,7 +3537,7 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             (ip[1].hasFlag(BCI_IMM_B)))
         {
             SET_OP(ip, ByteCodeOp::SetAtPointer16);
-            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 8;
+            ip->b.u64 |= static_cast<uint64_t>(ip[1].b.u32) << 8;
             setNop(context, ip + 1);
             break;
         }
@@ -3560,7 +3560,7 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             (ip[1].hasFlag(BCI_IMM_B)))
         {
             SET_OP(ip, ByteCodeOp::SetAtPointer32);
-            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 16;
+            ip->b.u64 |= static_cast<uint64_t>(ip[1].b.u32) << 16;
             setNop(context, ip + 1);
             break;
         }
@@ -3583,7 +3583,7 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             (ip[1].hasFlag(BCI_IMM_B)))
         {
             SET_OP(ip, ByteCodeOp::SetAtPointer64);
-            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
+            ip->b.u64 |= static_cast<uint64_t>(ip[1].b.u32) << 32;
             setNop(context, ip + 1);
             break;
         }
@@ -3647,7 +3647,7 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             (ip[1].hasFlag(BCI_IMM_B)))
         {
             SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
-            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
+            ip->b.u64 |= static_cast<uint64_t>(ip[1].b.u32) << 32;
             setNop(context, ip + 1);
             break;
         }
@@ -6512,7 +6512,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
         if (!isParam &&
             !ByteCode::isJump(ipn) &&
-            !(g_ByteCodeOpDesc[(int) ipn->op].flags & OPFLAG_IS_REGONLY) &&
+            !(g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags & OPFLAG_IS_REGONLY) &&
             ipn->op != ByteCodeOp::Nop)
             return;
 
@@ -6553,8 +6553,8 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
         ByteCode::isCall(ipn))
         return;
 
-    const auto fl0 = g_ByteCodeOpDesc[(int) ip->op].flags;
-    const auto fl1 = g_ByteCodeOpDesc[(int) ipn->op].flags;
+    const auto fl0 = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+    const auto fl1 = g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags;
 
     if (fl0 & OPFLAG_IS_8B && !(fl1 & OPFLAG_IS_8B))
         return;

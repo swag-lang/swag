@@ -318,7 +318,7 @@ TypeInfo* TypeInfoList::clone()
 {
     const auto newType = makeType<TypeInfoList>(kind);
 
-    const int size = (int) subTypes.size();
+    const int size = static_cast<int>(subTypes.size());
     newType->subTypes.reserve(size);
     for (int i = 0; i < size; i++)
     {
@@ -779,8 +779,8 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         if (type1->hasFlag(TYPEINFO_POINTER_MOVE_REF) != type2->hasFlag(TYPEINFO_POINTER_MOVE_REF))
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = (int) i;
-            bi.badSignatureNum2 = (int) i + firstParam;
+            bi.badSignatureNum1 = static_cast<int>(i);
+            bi.badSignatureNum2 = static_cast<int>(i) + firstParam;
             return false;
         }
 
@@ -789,8 +789,8 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
             type2->isPointerRef())
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = (int) i;
-            bi.badSignatureNum2 = (int) i + firstParam;
+            bi.badSignatureNum1 = static_cast<int>(i);
+            bi.badSignatureNum2 = static_cast<int>(i) + firstParam;
             return false;
         }
 
@@ -799,8 +799,8 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, uint64_t castFlags,
         if (!type1->isSame(type2, castFlags))
         {
             bi.matchResult      = MatchResult::BadSignature;
-            bi.badSignatureNum1 = (int) i;
-            bi.badSignatureNum2 = (int) i + firstParam;
+            bi.badSignatureNum1 = static_cast<int>(i);
+            bi.badSignatureNum2 = static_cast<int>(i) + firstParam;
             return false;
         }
     }
@@ -873,7 +873,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
     if (hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         if (argIdx < 2)
-            return (uint32_t) parameters.size() - 1;
+            return static_cast<uint32_t>(parameters.size()) - 1;
         argIdx -= 2;
     }
 
@@ -883,7 +883,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
         if (argNo >= parameters.size())
         {
             SWAG_ASSERT(flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
-            return (uint32_t) parameters.size() - 1;
+            return static_cast<uint32_t>(parameters.size()) - 1;
         }
 
         const auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
@@ -979,7 +979,7 @@ void TypeInfoStruct::flattenUsingFields()
     ScopedLock lk(mutexCache);
     if (!flattenFields.empty())
         return;
-    flattenFields.reserve((uint32_t) fields.size());
+    flattenFields.reserve(static_cast<uint32_t>(fields.size()));
     for (const auto p : fields)
         flatten(flattenFields, p);
 }
@@ -1004,7 +1004,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->structName        = structName;
     newType->replaceTypes      = replaceTypes;
 
-    int size = (int) genericParameters.size();
+    int size = static_cast<int>(genericParameters.size());
     newType->genericParameters.reserve(size);
     for (int i = 0; i < size; i++)
     {
@@ -1013,7 +1013,7 @@ TypeInfo* TypeInfoStruct::clone()
         newType->genericParameters.push_back(param);
     }
 
-    size = (int) fields.size();
+    size = static_cast<int>(fields.size());
     newType->fields.reserve(size);
     for (int i = 0; i < size; i++)
     {
@@ -1022,7 +1022,7 @@ TypeInfo* TypeInfoStruct::clone()
         newType->fields.push_back(param);
     }
 
-    size = (int) consts.size();
+    size = static_cast<int>(consts.size());
     newType->consts.reserve(size);
     for (int i = 0; i < size; i++)
     {
@@ -1031,7 +1031,7 @@ TypeInfo* TypeInfoStruct::clone()
         newType->consts.push_back(param);
     }
 
-    size = (int) methods.size();
+    size = static_cast<int>(methods.size());
     newType->methods.reserve(size);
     for (int i = 0; i < size; i++)
     {

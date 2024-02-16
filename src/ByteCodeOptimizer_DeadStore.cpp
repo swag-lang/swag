@@ -8,7 +8,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt)
     {
         const auto ip    = parseCxt.curIp;
-        const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
+        const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
         uint32_t regScan = UINT32_MAX;
         if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
@@ -31,7 +31,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             if (ip1 == ip)
                 return;
 
-            const auto flags1 = g_ByteCodeOpDesc[(int) ip1->op].flags;
+            const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
             if ((flags1 & OPFLAG_READ_A) && !(ip1->hasFlag(BCI_IMM_A)))
             {
                 if (ip1->a.u32 == regScan)

@@ -531,14 +531,14 @@ enum class CompilerMsgKind
 
 enum class CompilerMsgKindMask : uint64_t
 {
-    PassAfterSemantic     = 1 << (uint32_t) CompilerMsgKind::PassAfterSemantic,
-    PassBeforeRunByteCode = 1 << (uint32_t) CompilerMsgKind::PassBeforeRunByteCode,
-    PassBeforeOutput      = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
-    PassAllDone           = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
-    SemFunctions          = 1 << (uint32_t) CompilerMsgKind::SemFunctions,
-    SemTypes              = 1 << (uint32_t) CompilerMsgKind::SemTypes,
-    SemGlobals            = 1 << (uint32_t) CompilerMsgKind::SemGlobals,
-    AttributeGen          = 1 << (uint32_t) CompilerMsgKind::AttributeGen,
+    PassAfterSemantic     = 1 << static_cast<uint32_t>(CompilerMsgKind::PassAfterSemantic),
+    PassBeforeRunByteCode = 1 << static_cast<uint32_t>(CompilerMsgKind::PassBeforeRunByteCode),
+    PassBeforeOutput      = 1 << static_cast<uint32_t>(CompilerMsgKind::PassBeforeOutput),
+    PassAllDone           = 1 << static_cast<uint32_t>(CompilerMsgKind::PassAllDone),
+    SemFunctions          = 1 << static_cast<uint32_t>(CompilerMsgKind::SemFunctions),
+    SemTypes              = 1 << static_cast<uint32_t>(CompilerMsgKind::SemTypes),
+    SemGlobals            = 1 << static_cast<uint32_t>(CompilerMsgKind::SemGlobals),
+    AttributeGen          = 1 << static_cast<uint32_t>(CompilerMsgKind::AttributeGen),
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 

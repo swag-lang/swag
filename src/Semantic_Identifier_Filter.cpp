@@ -623,7 +623,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
     if (!matches.empty() && !genMatches.empty())
     {
         VectorNative<OneMatch*> newGenericMatches;
-        newGenericMatches.reserve((int) genMatches.size());
+        newGenericMatches.reserve(static_cast<int>(genMatches.size()));
         for (const auto& matche : matches)
         {
             for (auto& genMatche : genMatches)

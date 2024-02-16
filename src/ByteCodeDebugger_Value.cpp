@@ -196,7 +196,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isPointerRef())
     {
-        auto ptr = ((uint8_t**) addr)[0];
+        auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
             str += "null";
         else
@@ -204,7 +204,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += FMT("0x%016llx ", ptr);
             auto res1 = res;
             res1.type = TypeManager::concretePtrRef(typeInfo);
-            res1.addr = *(void**) res1.addr;
+            res1.addr = *static_cast<void**>(res1.addr);
             appendTypedValue(context, str, res1, indent + 1);
         }
 
@@ -214,7 +214,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (typeInfo->isEnum())
     {
         Register reg;
-        auto     ptr = ((uint8_t**) addr)[0];
+        auto     ptr = static_cast<uint8_t**>(addr)[0];
         reg.pointer  = ptr;
         str += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg, false);
         return;
@@ -222,7 +222,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isPointerToTypeInfo())
     {
-        auto ptr = ((ExportedTypeInfo**) addr)[0];
+        auto ptr = static_cast<ExportedTypeInfo**>(addr)[0];
         if (!ptr)
             str += "null";
         else
@@ -230,7 +230,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += FMT("0x%016llx", ptr);
             str += " ";
             Utf8 str1;
-            str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
+            str1.setView(static_cast<const char*>(ptr->name.buffer), static_cast<int>(ptr->name.count));
             str += Log::colorToVTS(LogColor::Type);
             str += str1;
             str += Log::colorToVTS(LogColor::Default);
@@ -241,7 +241,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isPointer())
     {
-        auto ptr = ((uint8_t**) addr)[0];
+        auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
             str += "null";
         else
@@ -251,7 +251,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isLambdaClosure())
     {
-        auto ptr = ((uint8_t**) addr)[0];
+        auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
             str += "null";
         else
@@ -260,7 +260,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             if (ByteCode::isByteCodeLambda(ptr))
             {
                 str += "(bytecode) ";
-                auto bc = (ByteCode*) ByteCode::undoByteCodeLambda(ptr);
+                auto bc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(ptr));
                 str += Log::colorToVTS(LogColor::Name);
                 str += bc->name.c_str();
                 str += " ";
@@ -302,7 +302,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                            Log::colorToVTS(LogColor::Default).c_str());
                 EvaluateResult res1;
                 res1.type = p->typeInfo;
-                res1.addr = ((uint8_t*) addr) + p->offset;
+                res1.addr = static_cast<uint8_t*>(addr) + p->offset;
                 appendTypedValue(context, str, res1, indent + 1);
                 if (str.back() != '\n')
                     str += "\n";
@@ -330,7 +330,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 str += FMT(" [%d] ", idx);
                 EvaluateResult res1;
                 res1.type = typeArray->pointedType;
-                res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
+                res1.addr = static_cast<uint8_t*>(addr) + (idx * typeArray->pointedType->sizeOf);
                 appendTypedValue(context, str, res1, indent + 1);
                 if (str.back() != '\n')
                     str += "\n";
@@ -343,8 +343,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (typeInfo->isSlice())
     {
         auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto ptr       = ((uint8_t**) addr)[0];
-        auto count     = ((uint64_t*) addr)[1];
+        auto ptr       = static_cast<uint8_t**>(addr)[0];
+        auto count     = static_cast<uint64_t*>(addr)[1];
         if (ptr == nullptr)
             str += "null";
         else
@@ -378,13 +378,13 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 
     if (typeInfo->isInterface())
     {
-        auto ptr = ((uint8_t**) addr)[0];
+        auto ptr = static_cast<uint8_t**>(addr)[0];
         if (ptr == nullptr)
             str += "null";
         else
         {
             str += FMT("(0x%016llx ", ptr);
-            str += FMT("0x%016llx)", ((void**) addr)[1]);
+            str += FMT("0x%016llx)", (static_cast<void**>(addr))[1]);
         }
         return;
     }
@@ -395,16 +395,16 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         {
         case NativeTypeKind::Any:
         {
-            auto ptr = ((uint8_t**) addr)[0];
+            auto ptr = static_cast<uint8_t**>(addr)[0];
             if (ptr == nullptr)
                 str += "null";
             else
             {
-                str += FMT("(0x%016llx ", ((void**) addr)[0]);
-                str += FMT("0x%016llx)", ((void**) addr)[1]);
+                str += FMT("(0x%016llx ", (static_cast<void**>(addr))[0]);
+                str += FMT("0x%016llx)", (static_cast<void**>(addr))[1]);
                 EvaluateResult res1;
                 res1.type = g_Workspace->swagScope.regTypeInfo;
-                res1.addr = ((void**) addr)[1];
+                res1.addr = static_cast<void**>(addr)[1];
                 appendTypedValue(context, str, res1, indent + 1);
                 if (str.back() != '\n')
                     str += "\n";
@@ -424,8 +424,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             }
             else
             {
-                ptr = ((void**) addr)[0];
-                len = ((uint64_t*) addr)[1];
+                ptr = static_cast<void**>(addr)[0];
+                len = static_cast<uint64_t*>(addr)[1];
             }
 
             if (!ptr)
@@ -433,7 +433,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             else
             {
                 Utf8 str1;
-                str1.resize((int) len);
+                str1.resize(static_cast<int>(len));
                 memcpy(str1.buffer, ptr, len);
                 str += "\"";
                 str += str1;
@@ -444,20 +444,20 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         }
 
         case NativeTypeKind::Bool:
-            str += FMT("%s", *(bool*) addr ? "true" : "false");
+            str += FMT("%s", *static_cast<bool*>(addr) ? "true" : "false");
             return;
 
         case NativeTypeKind::S8:
-            str += FMT("%d", *(int8_t*) addr);
+            str += FMT("%d", *static_cast<int8_t*>(addr));
             return;
         case NativeTypeKind::S16:
-            str += FMT("%d", *(int16_t*) addr);
+            str += FMT("%d", *static_cast<int16_t*>(addr));
             return;
         case NativeTypeKind::S32:
-            str += FMT("%d", *(int32_t*) addr);
+            str += FMT("%d", *static_cast<int32_t*>(addr));
             return;
         case NativeTypeKind::S64:
-            str += FMT("%lld", *(int64_t*) addr);
+            str += FMT("%lld", *static_cast<int64_t*>(addr));
             return;
 
         case NativeTypeKind::U8:
@@ -475,10 +475,10 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             return;
 
         case NativeTypeKind::F32:
-            str += FMT("%f", *(float*) addr);
+            str += FMT("%f", *static_cast<float*>(addr));
             return;
         case NativeTypeKind::F64:
-            str += FMT("%lf", *(double*) addr);
+            str += FMT("%lf", *static_cast<double*>(addr));
             return;
         default:
             break;

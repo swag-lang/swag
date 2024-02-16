@@ -407,7 +407,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
             if (paramNode->type)
             {
-                one->type = (AstTypeExpression*) paramNode->type->clone(cloneContext);
+                one->type = static_cast<AstTypeExpression*>(paramNode->type->clone(cloneContext));
             }
 
             if (paramNode->assignment)
@@ -417,7 +417,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
             if (paramNode->attrUse)
             {
-                one->attrUse          = (AstAttrUse*) paramNode->attrUse->clone(cloneContext);
+                one->attrUse          = static_cast<AstAttrUse*>(paramNode->attrUse->clone(cloneContext));
                 one->attrUse->content = one;
             }
         }
@@ -626,7 +626,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     bool isIntrinsic     = false;
-    auto funcForCompiler = (g_TokenFlags[(int) typeFuncId] & TOKEN_COMPILER_FUNC);
+    auto funcForCompiler = (g_TokenFlags[static_cast<int>(typeFuncId)] & TOKEN_COMPILER_FUNC);
 
     // Name
     if (funcForCompiler)
@@ -774,7 +774,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         typeStruct->cptRemainingMethods++;
         typeStruct->methods.push_back(typeParam);
         if (funcNode->hasExtOwner() && funcNode->extOwner()->ownerCompilerIfBlock)
-            funcNode->extOwner()->ownerCompilerIfBlock->methodsCount.push_back({funcNode, typeStruct, (int) typeStruct->methods.size() - 1});
+            funcNode->extOwner()->ownerCompilerIfBlock->methodsCount.push_back({funcNode, typeStruct, static_cast<int>(typeStruct->methods.size()) - 1});
         if (funcNode->isSpecialFunctionName())
             typeStruct->cptRemainingSpecialMethods++;
     }
@@ -1081,7 +1081,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
 
             while (token.id != TokenId::SymVertical)
             {
-                auto parentId = (AstNode*) capture;
+                auto parentId = static_cast<AstNode*>(capture);
                 auto byRef    = false;
                 if (token.id == TokenId::SymAmpersand)
                 {

@@ -595,7 +595,7 @@ JobResult ModuleBuildJob::execute()
         module->logStage(FMT("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
         ExecuteNodeParams execParams;
         auto              runtimeFlags = Backend::getRuntimeFlags(module);
-        runtimeFlags |= (uint64_t) SwagRuntimeFlags::FromCompiler;
+        runtimeFlags |= static_cast<uint64_t>(SwagRuntimeFlags::FromCompiler);
         execParams.callParams.push_back(runtimeFlags);
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext, &execParams);
 

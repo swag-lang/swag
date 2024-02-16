@@ -47,7 +47,7 @@ namespace
             concat.addU8(getModRM(DISP8, reg, memReg) | (op - 1));
             if (memReg == RSP || memReg == R12)
                 concat.addU8(0x24);
-            concat.addU8((uint8_t) stackOffset);
+            concat.addU8(static_cast<uint8_t>(stackOffset));
         }
         else
         {
@@ -477,7 +477,7 @@ void SCBE_X64::emit_Store64_Immediate(uint32_t stackOffset, uint64_t val, CPUReg
     emit_REX(concat, CPUBits::B64);
     concat.addU8(0xC7);
     emit_ModRM(concat, stackOffset, 0, memReg);
-    concat.addU32((uint32_t) val);
+    concat.addU32(static_cast<uint32_t>(val));
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -537,7 +537,7 @@ void SCBE_X64::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force
 
     if (value <= 0x7FFFFFFF && reg < R8)
     {
-        emit_Load32_Immediate(reg, (uint32_t) value);
+        emit_Load32_Immediate(reg, static_cast<uint32_t>(value));
         return;
     }
 
@@ -546,7 +546,7 @@ void SCBE_X64::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force
     {
         concat.addU8(0xC7);
         concat.addU8(0xC0 | (reg & 0b111));
-        concat.addU32((uint32_t) value);
+        concat.addU32(static_cast<uint32_t>(value));
     }
     else
     {
@@ -560,13 +560,13 @@ void SCBE_X64::emit_LoadN_Immediate(CPURegister reg, uint64_t value, CPUBits num
     switch (numBits)
     {
     case CPUBits::B8:
-        emit_Load8_Immediate(reg, (uint8_t) value);
+        emit_Load8_Immediate(reg, static_cast<uint8_t>(value));
         break;
     case CPUBits::B16:
-        emit_Load16_Immediate(reg, (uint16_t) value);
+        emit_Load16_Immediate(reg, static_cast<uint16_t>(value));
         break;
     case CPUBits::B32:
-        emit_Load32_Immediate(reg, (uint32_t) value);
+        emit_Load32_Immediate(reg, static_cast<uint32_t>(value));
         break;
     case CPUBits::B64:
         emit_Load64_Immediate(reg, value);
@@ -582,7 +582,7 @@ void SCBE_X64::emit_LoadN_Immediate(CPURegister reg, uint64_t value, CPUBits num
 void SCBE_X64::emit_ClearN(CPURegister reg, CPUBits numBits)
 {
     emit_REX(concat, numBits, reg, reg);
-    emit_Spec8(concat, (uint8_t) CPUOp::XOR, numBits);
+    emit_Spec8(concat, static_cast<uint8_t>(CPUOp::XOR), numBits);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
@@ -792,14 +792,14 @@ void SCBE_X64::emit_CmpN_Immediate(CPURegister reg, uint64_t value, CPUBits numB
         emit_REX(concat, numBits);
         concat.addU8(0x83);
         concat.addU8(0xF8 | reg);
-        concat.addU8((uint8_t) value);
+        concat.addU8(static_cast<uint8_t>(value));
     }
     else if (value <= 0x7fffffff)
     {
         SWAG_ASSERT(reg == RAX);
         emit_REX(concat, numBits);
         concat.addU8(0x3d);
-        concat.addU32((uint32_t) value);
+        concat.addU32(static_cast<uint32_t>(value));
     }
     else
     {
@@ -841,20 +841,20 @@ void SCBE_X64::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPUBi
     {
         concat.addU8(0x80);
         emit_ModRM(concat, offsetStack, RDI, RDI);
-        concat.addU8((uint8_t) value);
+        concat.addU8(static_cast<uint8_t>(value));
     }
     else if (value <= 0x7F)
     {
         concat.addU8(0x83);
         emit_ModRM(concat, offsetStack, RDI, RDI);
-        concat.addU8((uint8_t) value);
+        concat.addU8(static_cast<uint8_t>(value));
     }
     else
     {
         concat.addU8(0x81);
         emit_ModRM(concat, offsetStack, RDI, RDI);
         if (numBits == CPUBits::B16)
-            concat.addU16((uint16_t) value);
+            concat.addU16(static_cast<uint16_t>(value));
         else
             concat.addU32(value);
     }
@@ -871,7 +871,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
     {
         emit_REX(concat, numBits, regSrc, regDst);
         emit_Spec8(concat, 0xF7, numBits);
-        concat.addU8((uint8_t) op & ~2);
+        concat.addU8(static_cast<uint8_t>(op) & ~2);
 
         if (op == CPUOp::MOD || op == CPUOp::IMOD)
         {
@@ -916,7 +916,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
         SWAG_ASSERT(regDst == RAX && regSrc == RCX);
         emit_REX(concat, numBits, regSrc, regDst);
         emit_Spec8(concat, 0xD3, numBits);
-        concat.addU8((uint8_t) op);
+        concat.addU8(static_cast<uint8_t>(op));
     }
     else if (op == CPUOp::ADD ||
              op == CPUOp::SUB ||
@@ -925,7 +925,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
              op == CPUOp::OR)
     {
         emit_REX(concat, numBits, regSrc, regDst);
-        emit_Spec8(concat, (uint8_t) op, numBits);
+        emit_Spec8(concat, static_cast<uint8_t>(op), numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
     else if (op == CPUOp::BSF ||
@@ -934,7 +934,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
         SWAG_ASSERT(regSrc == RAX && regDst == RAX);
         emit_REX(concat, numBits, regSrc, regDst);
         concat.addU8(0x0F);
-        concat.addU8((uint8_t) op);
+        concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC0);
     }
     else if (op == CPUOp::POPCNT)
@@ -946,7 +946,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
         if (numBits == CPUBits::B64)
             emit_REX(concat, numBits, regSrc, regDst);
         concat.addU8(0x0F);
-        concat.addU8((uint8_t) op);
+        concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC0);
     }
     else
@@ -967,7 +967,7 @@ void SCBE_X64::emit_OpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
     }
 
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(0xC0 | regSrc | regDst << 3);
 }
 
@@ -987,7 +987,7 @@ void SCBE_X64::emit_OpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
     }
 
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(0xC0 | regSrc | regDst << 3);
 }
 
@@ -1020,9 +1020,9 @@ void SCBE_X64::emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memRe
     else
     {
         if (numBits == CPUBits::B8)
-            concat.addU8((uint8_t) op + 1);
+            concat.addU8(static_cast<uint8_t>(op) + 1);
         else
-            concat.addU8((uint8_t) op | 2);
+            concat.addU8(static_cast<uint8_t>(op) | 2);
         emit_ModRM(concat, offsetStack, RAX, RDI);
     }
 }
@@ -1031,7 +1031,7 @@ void SCBE_X64::emit_OpF32(uint32_t offsetStack, CPURegister reg, CPURegister mem
 {
     concat.addU8(0xF3);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     emit_ModRM(concat, offsetStack, XMM0, RDI);
 }
 
@@ -1039,7 +1039,7 @@ void SCBE_X64::emit_OpF64(uint32_t offsetStack, CPURegister reg, CPURegister mem
 {
     concat.addU8(0xF2);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     emit_ModRM(concat, offsetStack, XMM0, RDI);
 }
 
@@ -1061,16 +1061,16 @@ void SCBE_X64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegis
 
         if (offsetStack == 0)
         {
-            concat.addU8(((uint8_t) op & ~2) - 0xBA);
+            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0xBA);
         }
         else if (offsetStack <= 0x7F)
         {
-            concat.addU8(((uint8_t) op & ~2) - 0x7A);
-            concat.addU8((uint8_t) offsetStack);
+            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x7A);
+            concat.addU8(static_cast<uint8_t>(offsetStack));
         }
         else
         {
-            concat.addU8(((uint8_t) op & ~2) - 0x3A);
+            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x3A);
             concat.addU32(offsetStack);
         }
 
@@ -1085,7 +1085,7 @@ void SCBE_X64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegis
     }
     else
     {
-        emit_Spec8(concat, (uint8_t) op, numBits);
+        emit_Spec8(concat, static_cast<uint8_t>(op), numBits);
         emit_ModRM(concat, offsetStack, reg, memReg);
     }
 }
@@ -1097,7 +1097,7 @@ void SCBE_X64::emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, CPUOp op
     emit_LoadF32_Indirect(0, XMM0, memReg);
     concat.addU8(0xF3);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(0xC1);
     emit_StoreF32_Indirect(0, XMM0, memReg);
 }
@@ -1109,7 +1109,7 @@ void SCBE_X64::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, CPUOp op
     emit_LoadF64_Indirect(0, XMM0, memReg);
     concat.addU8(0xF2);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(0xC1);
     emit_StoreF64_Indirect(0, XMM0, memReg);
 }
@@ -1126,7 +1126,7 @@ void SCBE_X64::emit_OpN_IndirectDst(CPURegister regSrc, CPURegister regDst, CPUO
             concat.addU8(0xD2);
         else
             concat.addU8(0xD3);
-        concat.addU8(((uint8_t) op) & ~0xC0);
+        concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
     }
     else
     {
@@ -1147,13 +1147,13 @@ void SCBE_X64::emit_OpN_IndirectDst(CPURegister reg, uint64_t value, CPUOp op, C
         if (value == 1)
         {
             emit_Spec8(concat, 0xD1, numBits);
-            concat.addU8((uint8_t) op & ~0xC0);
+            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
         }
         else
         {
             emit_Spec8(concat, 0xC1, numBits);
-            concat.addU8((uint8_t) op & ~0xC0);
-            concat.addU8((uint8_t) value);
+            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+            concat.addU8(static_cast<uint8_t>(value));
         }
     }
     else if (op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB)
@@ -1163,15 +1163,15 @@ void SCBE_X64::emit_OpN_IndirectDst(CPURegister reg, uint64_t value, CPUOp op, C
         {
             if (numBits == CPUBits::B8)
             {
-                concat.addU8((uint8_t) op + 3);
+                concat.addU8(static_cast<uint8_t>(op) + 3);
             }
             else
             {
                 concat.addU8(0x83);
-                concat.addU8(0xBF + (uint8_t) op);
+                concat.addU8(0xBF + static_cast<uint8_t>(op));
             }
 
-            concat.addU8((uint8_t) value);
+            concat.addU8(static_cast<uint8_t>(value));
         }
         else
         {
@@ -1179,19 +1179,19 @@ void SCBE_X64::emit_OpN_IndirectDst(CPURegister reg, uint64_t value, CPUOp op, C
             switch (numBits)
             {
             case CPUBits::B8:
-                concat.addU8((uint8_t) op + 3);
-                concat.addU8((uint8_t) value);
+                concat.addU8(static_cast<uint8_t>(op) + 3);
+                concat.addU8(static_cast<uint8_t>(value));
                 break;
             case CPUBits::B16:
                 concat.addU8(0x81);
-                concat.addU8(0xBF + (uint8_t) op);
-                concat.addU16((uint16_t) value);
+                concat.addU8(0xBF + static_cast<uint8_t>(op));
+                concat.addU16(static_cast<uint16_t>(value));
                 break;
             case CPUBits::B32:
             case CPUBits::B64:
                 concat.addU8(0x81);
-                concat.addU8(0xBF + (uint8_t) op);
-                concat.addU32((uint32_t) value);
+                concat.addU8(0xBF + static_cast<uint8_t>(op));
+                concat.addU32(static_cast<uint32_t>(value));
                 break;
             }
         }
@@ -1259,7 +1259,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
             {
                 concat.addU8(0x83);
                 concat.addU8(0xC0 | reg);
-                concat.addU8((uint8_t) value);
+                concat.addU8(static_cast<uint8_t>(value));
             }
             break;
 
@@ -1277,7 +1277,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
             {
                 concat.addU8(0x83);
                 concat.addU8(0xE8 | reg);
-                concat.addU8((uint8_t) value);
+                concat.addU8(static_cast<uint8_t>(value));
             }
             break;
 
@@ -1300,14 +1300,14 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
             {
                 concat.addU8(0xC1);
                 concat.addU8(0xE0 | reg); // shl rax, ??
-                concat.addU8((uint8_t) log2(value));
+                concat.addU8(static_cast<uint8_t>(log2(value)));
             }
             else
             {
                 SWAG_ASSERT(reg == RAX);
                 concat.addU8(0x6B);
                 concat.addU8(0xC0);
-                concat.addU8((uint8_t) value);
+                concat.addU8(static_cast<uint8_t>(value));
             }
             break;
 
@@ -1317,7 +1317,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
                 concat.addU8(0x34);
             else
                 concat.addString("\x83\xF0");
-            concat.addU8((uint8_t) value);
+            concat.addU8(static_cast<uint8_t>(value));
             break;
 
         case CPUOp::SAR:
@@ -1328,22 +1328,22 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
             if (value == 1)
             {
                 emit_Spec8(concat, 0xD1, numBits);
-                concat.addU8((uint8_t) op | reg);
+                concat.addU8(static_cast<uint8_t>(op) | reg);
             }
             else
             {
                 emit_Spec8(concat, 0xC1, numBits);
-                concat.addU8((uint8_t) op | reg);
-                concat.addU8((uint8_t) value);
+                concat.addU8(static_cast<uint8_t>(op) | reg);
+                concat.addU8(static_cast<uint8_t>(value));
             }
             break;
 
         case CPUOp::BT:
             emit_REX(concat, numBits, RAX, reg);
             concat.addU8(0x0F);
-            concat.addU8((uint8_t) op);
+            concat.addU8(static_cast<uint8_t>(op));
             concat.addU8(0xE2);
-            concat.addU8((uint8_t) value);
+            concat.addU8(static_cast<uint8_t>(value));
             break;
 
         default:
@@ -1399,7 +1399,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
             break;
         }
 
-        concat.addU32((uint32_t) value);
+        concat.addU32(static_cast<uint32_t>(value));
     }
 }
 
@@ -1423,25 +1423,25 @@ void SCBE_X64::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPUReg
         concat.addU8(0x81);
     if (offsetStack == 0)
     {
-        concat.addU8((uint8_t) op - 1 + memReg);
+        concat.addU8(static_cast<uint8_t>(op) - 1 + memReg);
     }
     else if (offsetStack <= 0x7F)
     {
-        concat.addU8(0x3F + memReg + (uint8_t) op);
-        concat.addU8((uint8_t) offsetStack);
+        concat.addU8(0x3F + memReg + static_cast<uint8_t>(op));
+        concat.addU8(static_cast<uint8_t>(offsetStack));
     }
     else
     {
-        concat.addU8(0x7F + memReg + (uint8_t) op);
+        concat.addU8(0x7F + memReg + static_cast<uint8_t>(op));
         concat.addU32(offsetStack);
     }
 
     if (value <= 0x7F || numBits == CPUBits::B8)
-        concat.addU8((uint8_t) value);
+        concat.addU8(static_cast<uint8_t>(value));
     else if (numBits == CPUBits::B16)
-        concat.addU16((uint16_t) value);
+        concat.addU16(static_cast<uint16_t>(value));
     else
-        concat.addU32((uint32_t) value);
+        concat.addU32(static_cast<uint32_t>(value));
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1602,12 +1602,12 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
     const auto it = labels.find(label.ipDest);
     if (it != labels.end())
     {
-        const auto currentOffset = (int32_t) concat.totalCount() + 1;
+        const auto currentOffset = static_cast<int32_t>(concat.totalCount()) + 1;
         const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
             const auto offsetPtr = emit_NearJumpOp(jumpType);
-            *offsetPtr           = (uint8_t) (it->second - concat.totalCount());
+            *offsetPtr           = static_cast<uint8_t>(it->second - concat.totalCount());
         }
         else
         {
@@ -1620,7 +1620,7 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
 
     // Here we do not know the destination label, so we assume 32 bits of offset
     label.patch         = (uint8_t*) emit_LongJumpOp(jumpType);
-    label.currentOffset = (int32_t) concat.totalCount();
+    label.currentOffset = static_cast<int32_t>(concat.totalCount());
     labelsToSolve.push_back(label);
 }
 
@@ -1648,7 +1648,7 @@ void SCBE_X64::emit_CopyX(CPURegister regDst, CPURegister regSrc, uint32_t count
             if (offset <= 0x7F)
             {
                 concat.addU8(0x40 | regSrc);
-                concat.addU8((uint8_t) offset);
+                concat.addU8(static_cast<uint8_t>(offset));
             }
             else
             {
@@ -1659,7 +1659,7 @@ void SCBE_X64::emit_CopyX(CPURegister regDst, CPURegister regSrc, uint32_t count
             if (offset <= 0x7F)
             {
                 concat.addU8(0x40 | regDst);
-                concat.addU8((uint8_t) offset);
+                concat.addU8(static_cast<uint8_t>(offset));
             }
             else
             {
@@ -1721,7 +1721,7 @@ void SCBE_X64::emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg)
             if (offset <= 0x7F)
             {
                 concat.addU8(0x40 | reg);
-                concat.addU8((uint8_t) offset);
+                concat.addU8(static_cast<uint8_t>(offset));
             }
             else
             {
@@ -1795,14 +1795,14 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
     const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
 
     const int callConvRegisters    = cc.paramByRegisterCount;
-    const int maxParamsPerRegister = (int) paramsRegisters.size();
+    const int maxParamsPerRegister = static_cast<int>(paramsRegisters.size());
 
     // Set the first N parameters. Can be return register, or function parameter.
     int i = 0;
     for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
     {
         auto       type = paramsTypes[i];
-        const auto reg  = (uint32_t) paramsRegisters[i].reg;
+        const auto reg  = static_cast<uint32_t>(paramsRegisters[i].reg);
 
         if (type->isAutoConstPointerRef())
             type = TypeManager::concretePtrRef(type);
@@ -1834,7 +1834,7 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
                 if (paramsRegisters[i].type == CPUPushParamType::Imm)
                 {
                     SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
-                    emit_Load32_Immediate(RAX, (uint32_t) paramsRegisters[i].reg);
+                    emit_Load32_Immediate(RAX, static_cast<uint32_t>(paramsRegisters[i].reg));
                     emit_CopyF32(cc.paramByRegisterFloat[i], RAX);
                 }
                 else
@@ -1870,13 +1870,13 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
                     emit_Load64_Immediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, true);
                     break;
                 case CPUPushParamType::RelocV:
-                    emit_Symbol_RelocationValue(cc.paramByRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
+                    emit_Symbol_RelocationValue(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
                     break;
                 case CPUPushParamType::RelocAddr:
-                    emit_Symbol_RelocationAddr(cc.paramByRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
+                    emit_Symbol_RelocationAddr(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
                     break;
                 case CPUPushParamType::Addr:
-                    emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.paramByRegisterInteger[i], RDI);
+                    emit_LoadAddress_Indirect(static_cast<uint32_t>(paramsRegisters[i].reg), cc.paramByRegisterInteger[i], RDI);
                     break;
                 case CPUPushParamType::RegAdd:
                     emit_Load64_Indirect(REG_OFFSET(reg), cc.paramByRegisterInteger[i]);
@@ -1904,13 +1904,13 @@ void SCBE_X64::emit_Call_Parameters(const TypeInfoFuncAttr* typeFuncBC, VectorNa
 
     // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
     uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
-    for (; i < (int) paramsRegisters.size(); i++)
+    for (; i < static_cast<int>(paramsRegisters.size()); i++)
     {
         auto type = paramsTypes[i];
         if (type->isAutoConstPointerRef())
             type = TypeManager::concretePtrRef(type);
 
-        const auto reg = (uint32_t) paramsRegisters[i].reg;
+        const auto reg = static_cast<uint32_t>(paramsRegisters[i].reg);
         SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
 
         // This is a C variadic parameter
@@ -2017,11 +2017,11 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
 
 void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
-    int numCallParams = (int) typeFunc->parameters.size();
+    int numCallParams = static_cast<int>(typeFunc->parameters.size());
     pushParams3.clear();
     pushParamsTypes.clear();
 
-    int indexParam = (int) pushRAParams.size() - 1;
+    int indexParam = static_cast<int>(pushRAParams.size()) - 1;
 
     // Variadic are first
     if (typeFunc->isFctVariadic())
@@ -2115,9 +2115,9 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        uint32_t reg = (uint32_t) pushParams3[0].reg;
+        uint32_t reg = static_cast<uint32_t>(pushParams3[0].reg);
         if (typeFunc->isFctVariadic())
-            reg = (uint32_t) pushParams3[2].reg;
+            reg = static_cast<uint32_t>(pushParams3[2].reg);
 
         emit_Load64_Indirect(REG_OFFSET(reg), RAX);
         emit_TestN(RAX, RAX, CPUBits::B64);
@@ -2133,7 +2133,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
         const auto seekJmpAfterClosure = concat.totalCount();
 
         // Update jump to closure call
-        *seekPtrClosure = (uint8_t) (concat.totalCount() - seekJmpClosure);
+        *seekPtrClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpClosure);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
@@ -2149,7 +2149,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
         }
         emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
-        *seekPtrAfterClosure = (uint8_t) (concat.totalCount() - seekJmpAfterClosure);
+        *seekPtrAfterClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
@@ -2225,7 +2225,7 @@ void SCBE_X64::emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUB
     if (stackOffset <= 0x7F)
     {
         concat.addU8(0x57);
-        concat.addU8((uint8_t) stackOffset);
+        concat.addU8(static_cast<uint8_t>(stackOffset));
     }
     else
     {
@@ -2276,7 +2276,7 @@ void SCBE_X64::emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUB
     if (stackOffset <= 0x7F)
     {
         concat.addU8(0x5F);
-        concat.addU8((uint8_t) stackOffset);
+        concat.addU8(static_cast<uint8_t>(stackOffset));
     }
     else
     {
@@ -2291,7 +2291,7 @@ void SCBE_X64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
         numBits = CPUBits::B32;
     emit_REX(concat, numBits, regDst, regSrc);
     concat.addU8(0x0F);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
     concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
@@ -2301,7 +2301,7 @@ void SCBE_X64::emit_RotateN(CPURegister regDst, CPURegister regSrc, CPUOp op, CP
     SWAG_ASSERT(regDst == RAX && regSrc == RCX);
     emit_REX(concat, numBits, regDst, regSrc);
     concat.addU8(0xD3);
-    concat.addU8((uint8_t) op);
+    concat.addU8(static_cast<uint8_t>(op));
 }
 
 void SCBE_X64::emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits)

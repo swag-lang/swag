@@ -45,7 +45,7 @@ struct RegisterList
     RegisterList(uint32_t r)
     {
         SWAG_ASSERT(r < MAX_REGISTERS);
-        oneResult[0] = (uint8_t) r;
+        oneResult[0] = static_cast<uint8_t>(r);
         countResults = 1;
     }
 
@@ -63,7 +63,7 @@ struct RegisterList
     RegisterList& operator=(uint32_t r)
     {
         SWAG_ASSERT(r < MAX_REGISTERS);
-        oneResult[0] = (uint8_t) r;
+        oneResult[0] = static_cast<uint8_t>(r);
         countResults = 1;
         cannotFree   = false;
         return *this;
@@ -81,7 +81,7 @@ struct RegisterList
         SWAG_ASSERT(!cannotFree);
         SWAG_ASSERT(r < MAX_REGISTERS);
         SWAG_ASSERT(countResults < MAX_STATIC);
-        oneResult[countResults++] = (uint8_t) r;
+        oneResult[countResults++] = static_cast<uint8_t>(r);
     }
 
     void clear()

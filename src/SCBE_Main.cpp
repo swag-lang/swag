@@ -10,7 +10,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&      concat          = pp.concat;
 
     concat.align(16);
@@ -57,7 +57,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&      concat          = pp.concat;
 
     concat.align(16);
@@ -88,7 +88,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
-    const auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]);
+    const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     pp.emit_LoadAddress_Indirect(0, RCX, RIP);
@@ -129,7 +129,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     // Set current backend as SCBE
     pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_backendKind, 0);
-    pp.emit_Store32_Immediate(0, (uint32_t) SwagBackendGenType::SCBE, RCX);
+    pp.emit_Store32_Immediate(0, static_cast<uint32_t>(SwagBackendGenType::SCBE), RCX);
 
     // Set default context in TLS
     pp.pushParams.clear();
@@ -214,7 +214,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     pp.emit_Call(thisDrop);
 
     // Call to global drop of all dependencies
-    for (int i = (int) moduleDependencies.size() - 1; i >= 0; i--)
+    for (int i = static_cast<int>(moduleDependencies.size()) - 1; i >= 0; i--)
     {
         const auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
@@ -240,7 +240,7 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 
     const int   ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
@@ -272,7 +272,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 {
     const int   ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
@@ -326,7 +326,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 {
     const int   ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
@@ -406,7 +406,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *(SCBE_X64*) perThread[ct][precompileIndex];
+    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
     auto&      concat          = pp.concat;
 
     concat.align(16);

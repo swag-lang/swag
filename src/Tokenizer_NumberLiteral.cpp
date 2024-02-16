@@ -286,7 +286,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
     {
-        auto cpt = (unsigned) (curBuffer - startTokenName);
+        auto cpt = static_cast<unsigned>(curBuffer - startTokenName);
         auto ptr = startTokenName + cpt;
         auto sc  = *ptr;
         *ptr     = 0;
@@ -297,7 +297,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
         // Can be a negative number ?
-        if (token.literalValue.u64 > (uint64_t) INT64_MAX + 1)
+        if (token.literalValue.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
             token.literalType = LiteralType::TT_U64;
         else
             token.literalType = LiteralType::TT_S64;

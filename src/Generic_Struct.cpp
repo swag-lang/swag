@@ -110,8 +110,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     {
         if (v->typeInfo->name == newType->name)
         {
-            const auto t0 = (TypeInfoStruct*) v->typeInfo;
-            const auto t1 = (TypeInfoStruct*) newType;
+            const auto t0 = static_cast<TypeInfoStruct*>(v->typeInfo);
+            const auto t1 = static_cast<TypeInfoStruct*>(newType);
 
             bool same = true;
             for (size_t i = 0; i < t0->genericParameters.size(); i++)
@@ -193,7 +193,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Instantiate generic interfaces
     structNode->allocateExtension(ExtensionKind::Owner);
     cloneContext.ownerStructScope   = structNode->scope;
-    newType->cptRemainingInterfaces = (uint32_t) genericStructType->interfaces.size();
+    newType->cptRemainingInterfaces = static_cast<uint32_t>(genericStructType->interfaces.size());
     for (const auto itf : genericStructType->interfaces)
     {
         auto typeItf = itf->clone();

@@ -165,7 +165,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
         if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING)))
         {
-            resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, (uint32_t) i);
+            resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, static_cast<uint32_t>(i));
             YIELD();
         }
 
@@ -373,7 +373,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 const auto newParam  = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
-                Ast::insertChild(identifier->callParameters, newParam, (uint32_t) i);
+                Ast::insertChild(identifier->callParameters, newParam, static_cast<uint32_t>(i));
 
                 // If the match is against a 'moveref', then we should have a 'moveref' node and a make pointer.
                 if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())
@@ -560,7 +560,7 @@ namespace
 
             // If this is not the last identifier, and it's not a function call
             const auto back = identifier->identifierRef()->childs.back();
-            if (back->kind == AstNodeKind::Identifier && !((AstIdentifier*) back)->callParameters)
+            if (back->kind == AstNodeKind::Identifier && !static_cast<AstIdentifier*>(back)->callParameters)
                 return true;
         }
 
@@ -678,7 +678,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             if (prevNode->typeInfo->isStruct() || prevNode->typeInfo->isPointer())
             {
-                auto ptr = (uint8_t*) prevNode->computedValue->getStorageAddr();
+                auto ptr = static_cast<uint8_t*>(prevNode->computedValue->getStorageAddr());
                 if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
@@ -698,7 +698,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (arrayOver && (arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE)) && arrayNode->access->hasComputedValue())
             {
                 auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-                auto ptr     = (uint8_t*) arrayOver->computedValue.getStorageAddr();
+                auto ptr     = static_cast<uint8_t*>(arrayOver->computedValue.getStorageAddr());
                 ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
                 if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
                 {
@@ -755,7 +755,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
             if (dependentVar->kind == AstNodeKind::IdentifierRef)
             {
-                for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
+                for (int i = static_cast<int>(dependentVar->childs.size()) - 1; i >= 0; i--)
                 {
                     auto child  = dependentVar->childs[i];
                     auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
@@ -1014,7 +1014,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             // var x = y.Constant where y is a variable
             //
             auto checkParent = identifier->parent;
-            auto child       = (AstNode*) identifier;
+            auto child       = static_cast<AstNode*>(identifier);
             while (checkParent->kind == AstNodeKind::ArrayPointerIndex ||
                    checkParent->kind == AstNodeKind::ArrayPointerSlicing)
             {
@@ -1075,7 +1075,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
 
             // From now this is considered as a function, not a lambda
-            auto funcType           = (TypeInfoFuncAttr*) typeInfo->clone();
+            auto funcType           = static_cast<TypeInfoFuncAttr*>(typeInfo->clone());
             funcType->kind          = TypeInfoKind::FuncAttr;
             identifier->typeInfo    = funcType;
             identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
@@ -1466,7 +1466,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     auto returnStructType = castTypeInfo<TypeInfoStruct>(fctTypeInfo->returnType, TypeInfoKind::Struct);
                     if (returnStructType->genericParameters.size() == rawTypeStruct->genericParameters.size() && !rawTypeStruct->genericParameters.empty())
                     {
-                        rawTypeStruct = (TypeInfoStruct*) rawTypeInfo->clone();
+                        rawTypeStruct = static_cast<TypeInfoStruct*>(rawTypeInfo->clone());
                         rawTypeInfo   = rawTypeStruct;
                         typeWasForced = rawTypeInfo;
                         for (size_t i = 0; i < returnStructType->genericParameters.size(); i++)

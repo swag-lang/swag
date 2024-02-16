@@ -348,7 +348,7 @@ void ByteCodeDebugger::printInstructions(const ByteCodeRunContext*, const ByteCo
 
     ByteCodePrintOptions opt;
     opt.curIp = cxtIp;
-    bc->print(opt, (uint32_t) (ip - bc->out), cpt + count - 1);
+    bc->print(opt, static_cast<uint32_t>(ip - bc->out), cpt + count - 1);
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg)

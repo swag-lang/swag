@@ -14,12 +14,12 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip,
     else
     {
         if (ip->hasFlag(BCI_IMM_B))
-            pp.emit_Load8_Immediate(RCX, (uint8_t) min(ip->b.u32, (uint32_t) numBits - 1));
+            pp.emit_Load8_Immediate(RCX, static_cast<uint8_t>(min(ip->b.u32, (uint32_t) numBits - 1)));
         else
         {
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
-            pp.emit_Load32_Immediate(RAX, (uint32_t) numBits - 1);
-            pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
+            pp.emit_Load32_Immediate(RAX, static_cast<uint32_t>(numBits) - 1);
+            pp.emit_CmpN_Immediate(RCX, static_cast<uint32_t>(numBits) - 1, CPUBits::B32);
             pp.emit_CMovN(RCX, RAX, CPUOp::CMOVG, numBits);
         }
 
@@ -43,8 +43,8 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
     else
     {
         pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
-        pp.emit_Load32_Immediate(RAX, (uint32_t) numBits - 1);
-        pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
+        pp.emit_Load32_Immediate(RAX, static_cast<uint32_t>(numBits) - 1);
+        pp.emit_CmpN_Immediate(RCX, static_cast<uint32_t>(numBits) - 1, CPUBits::B32);
         pp.emit_CMovN(RCX, RAX, CPUOp::CMOVG, numBits);
 
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -54,7 +54,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
 
 void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= static_cast<uint32_t>(numBits))
     {
         pp.emit_ClearN(RAX, numBits);
         pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
@@ -79,7 +79,7 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
         pp.emit_OpN(RCX, RAX, op, numBits);
 
         pp.emit_ClearN(R8, numBits);
-        pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
+        pp.emit_CmpN_Immediate(RCX, static_cast<uint32_t>(numBits) - 1, CPUBits::B32);
         pp.emit_CMovN(RAX, R8, CPUOp::CMOVG, numBits);
         pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
@@ -88,7 +88,7 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
 void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= static_cast<uint32_t>(numBits))
     {
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
@@ -100,12 +100,12 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
     else
     {
         pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
-        pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits, CPUBits::B32);
+        pp.emit_CmpN_Immediate(RCX, static_cast<uint32_t>(numBits), CPUBits::B32);
         const auto seekPtr = pp.emit_NearJumpOp(JL);
         const auto seekJmp = pp.concat.totalCount();
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
-        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
+        *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
         pp.emit_OpN_IndirectDst(RCX, RAX, op, numBits);
     }
 }
@@ -118,7 +118,7 @@ void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const
         const auto seekPtr = pp.emit_NearJumpOp(JNO);
         const auto seekJmp = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
-        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
+        *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
     }
 }
 
@@ -130,7 +130,7 @@ void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, con
         const auto seekPtr = pp.emit_NearJumpOp(JAE);
         const auto seekJmp = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
-        *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
+        *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
     }
 }
 
@@ -226,10 +226,10 @@ void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, 
              !ip->hasFlag(BCI_IMM_A) &&
              ip->hasFlag(BCI_IMM_B) &&
              Math::isPowerOfTwo(ip->b.u64) &&
-             (ip->b.u64 < (uint64_t) numBits))
+             (ip->b.u64 < static_cast<uint64_t>(numBits)))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_Load8_Immediate(RCX, (uint8_t) log2(ip->b.u64));
+        pp.emit_Load8_Immediate(RCX, static_cast<uint8_t>(log2(ip->b.u64)));
         pp.emit_OpN(RCX, RAX, CPUOp::SHL, numBits);
     }
     else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
@@ -333,7 +333,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
     const auto val = ip->b.u64 * mul;
     if (ip->hasFlag(BCI_IMM_B) && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
-        pp.emit_OpN_IndirectDst(REG_OFFSET(ip->a.u32), (uint32_t) val, RDI, op, CPUBits::B64);
+        pp.emit_OpN_IndirectDst(REG_OFFSET(ip->a.u32), static_cast<uint32_t>(val), RDI, op, CPUBits::B64);
     }
     else
     {

@@ -107,7 +107,7 @@ void DataSegment::alignNoLock(uint32_t alignOf)
     // Align
     if (!buckets.empty() && alignOf > 1)
     {
-        const auto alignOffset = (uint32_t) TypeManager::align(totalCount, alignOf);
+        const auto alignOffset = static_cast<uint32_t>(TypeManager::align(totalCount, alignOf));
         if (alignOffset != totalCount)
         {
             const auto diff = alignOffset - totalCount;
@@ -148,8 +148,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         Bucket bucket;
         bucket.size = max(size, granularity);
         granularity *= 2;
-        bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
-        bucket.buffer = (uint8_t*) Allocator::alloc(bucket.size);
+        bucket.size   = static_cast<uint32_t>(Allocator::alignSize(bucket.size));
+        bucket.buffer = static_cast<uint8_t*>(Allocator::alloc(bucket.size));
 #ifdef SWAG_STATS
         g_Stats.memSeg += bucket.size;
 #endif
@@ -162,7 +162,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     }
 
     // Check that we do not overflow maximum size
-    if ((uint64_t) totalCount + size > SWAG_LIMIT_SEGMENT)
+    if (static_cast<uint64_t>(totalCount) + size > SWAG_LIMIT_SEGMENT)
     {
         if (!overflow)
         {
@@ -186,7 +186,7 @@ uint32_t DataSegment::tryOffset(const uint8_t* location)
         const auto bucket = &i;
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
-            offset += (uint32_t) (location - bucket->buffer);
+            offset += static_cast<uint32_t>(location - bucket->buffer);
             return offset;
         }
 
@@ -219,7 +219,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     for (auto& i : buckets)
     {
         const auto bucket = &i;
-        if (location < (uint64_t) bucket->count)
+        if (location < static_cast<uint64_t>(bucket->count))
             return bucket->buffer + location;
         location -= bucket->count;
     }
@@ -434,7 +434,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     // (even if no optimal)
     for (const auto ptr : initPtr)
     {
-        const auto diff = abs((int) ptr.patchOffset - (int) patchOffset);
+        const auto diff = abs(static_cast<int>(ptr.patchOffset) - static_cast<int>(patchOffset));
         SWAG_ASSERT(diff == 0 || diff >= 8);
     }
 #endif
@@ -478,7 +478,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
     {
         while (cpt != 8 && (seek.seekRead < curBucket->count))
         {
-            result |= ((uint64_t) *ptr) << shift;
+            result |= static_cast<uint64_t>(*ptr) << shift;
             shift += 8;
             cpt++;
             ptr++;
@@ -519,13 +519,13 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
     switch (size)
     {
     case 1:
-        savedValues[address] = {(void*) (size_t) *static_cast<uint8_t*>(address), size};
+        savedValues[address] = {(void*) static_cast<size_t>(*static_cast<uint8_t*>(address)), size};
         break;
     case 2:
-        savedValues[address] = {(void*) (size_t) *static_cast<uint16_t*>(address), size};
+        savedValues[address] = {(void*) static_cast<size_t>(*static_cast<uint16_t*>(address)), size};
         break;
     case 4:
-        savedValues[address] = {(void*) (size_t) *static_cast<uint32_t*>(address), size};
+        savedValues[address] = {(void*) static_cast<size_t>(*static_cast<uint32_t*>(address)), size};
         break;
     case 8:
         savedValues[address] = {(void*) *static_cast<uint64_t*>(address), size};
@@ -588,9 +588,9 @@ void DataSegment::makeLinear()
         return;
 
     Bucket h;
-    h.count  = (uint32_t) Allocator::alignSize(totalCount);
+    h.count  = static_cast<uint32_t>(Allocator::alignSize(totalCount));
     h.size   = h.count;
-    h.buffer = (uint8_t*) Allocator::alloc(h.count);
+    h.buffer = static_cast<uint8_t*>(Allocator::alloc(h.count));
 
     auto ptr = h.buffer;
     for (const auto& b : buckets)

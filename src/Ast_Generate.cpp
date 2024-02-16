@@ -96,7 +96,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
                                       TypeInfoStruct*             typeInterface)
 {
     const auto     node            = castAst<AstImpl>(context->node, AstNodeKind::Impl);
-    const uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
+    const uint32_t numFctInterface = static_cast<uint32_t>(typeInterface->fields.size());
     const auto     typeInfo        = node->identifier->typeInfo;
 
     Vector<const Diagnostic*> notes;
@@ -158,7 +158,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
     // We have generated methods, so restart
     if (!content.empty())
     {
-        const int numChilds = (int) node->childs.size();
+        const int numChilds = static_cast<int>(node->childs.size());
 
         Parser parser;
         parser.setup(context, context->sourceFile->module, context->sourceFile);

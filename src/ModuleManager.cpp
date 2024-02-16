@@ -74,7 +74,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (ptr)
     {
         using funcCall = void(*)(void*);
-        ((funcCall) ptr)(&g_ProcessInfos);
+        static_cast<funcCall>(ptr)(&g_ProcessInfos);
     }
 
     if (!applyPatches(name, h))

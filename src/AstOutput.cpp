@@ -79,7 +79,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
             break;
         if (scanAttr->content->childs[0]->kind != AstNodeKind::AttrUse)
             break;
-        scanAttr = (AstAttrUse*) scanAttr->content->childs[0];
+        scanAttr = static_cast<AstAttrUse*>(scanAttr->content->childs[0]);
     }
 
     if (!hasSomething)
@@ -767,7 +767,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     }
 
     const bool isSelf = varNode->token.text == g_LangSpec->name_self;
-    if (isSelf && varNode->type && ((AstTypeExpression*) varNode->type)->typeFlags & TYPEFLAG_IS_CONST)
+    if (isSelf && varNode->type && static_cast<AstTypeExpression*>(varNode->type)->typeFlags & TYPEFLAG_IS_CONST)
     {
         CONCAT_FIXED_STR(concat, "const ");
     }

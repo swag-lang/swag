@@ -735,7 +735,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         // The rest (default parameters)
         auto funcDecl    = castAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
         auto typeFunc    = castTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
-        auto countParams = (int) typeFunc->parameters.size();
+        auto countParams = static_cast<int>(typeFunc->parameters.size());
         if (typeFunc->isFctVariadic())
             countParams--;
         for (int i = numParams; i < countParams; i++)

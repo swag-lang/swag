@@ -130,7 +130,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
 
     context->debugStackFrameOffset = 0;
 
-    const auto to = (uint32_t) arg.split[1].toInt();
+    const auto to = static_cast<uint32_t>(arg.split[1].toInt());
 
     auto curIp = context->bc->out;
     while (true)
@@ -165,7 +165,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
 
     context->debugStackFrameOffset = 0;
 
-    const auto to = (uint32_t) arg.split[1].toInt();
+    const auto to = static_cast<uint32_t>(arg.split[1].toInt());
 
     if (to >= context->bc->numInstructions - 1)
     {

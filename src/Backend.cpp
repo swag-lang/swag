@@ -251,7 +251,7 @@ const char* Backend::getOsName(const BackendTarget& target)
 
 uint64_t Backend::getRuntimeFlags(Module* module)
 {
-    constexpr uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
+    constexpr uint64_t flags = static_cast<uint64_t>(SwagRuntimeFlags::Zero);
     return flags;
 }
 
@@ -348,7 +348,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, int& start, int& end) const
 {
-    const auto size            = (uint32_t) buildParameters.module->byteCodeFuncToGen.size();
+    const auto size            = static_cast<uint32_t>(buildParameters.module->byteCodeFuncToGen.size());
     const auto precompileIndex = buildParameters.precompileIndex;
 
     SWAG_ASSERT(numPreCompileBuffers > 1);
@@ -388,9 +388,9 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job*
     if (precompileIndex == 1) // :SegZeroIsData
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);
-        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int) g_Workspace->bootstrapModule->byteCodeFuncToGen.size());
+        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, static_cast<int>(g_Workspace->bootstrapModule->byteCodeFuncToGen.size()));
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int) g_Workspace->runtimeModule->byteCodeFuncToGen.size());
+        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, static_cast<int>(g_Workspace->runtimeModule->byteCodeFuncToGen.size()));
     }
 
     addFunctionsToJob(buildParameters.module, job, start, end);

@@ -244,8 +244,8 @@ struct Module
     VectorNative<SourceFile*>                        files;
     Vector<Path>                                     objFiles;
     VectorNative<Module*>                            errorModules;
-    VectorNative<ByteCode*>                          byteCodeCompiler[(int) CompilerMsgKind::Max];
-    Mutex                                            byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
+    VectorNative<ByteCode*>                          byteCodeCompiler[static_cast<int>(CompilerMsgKind::Max)];
+    Mutex                                            byteCodeCompilerMutex[static_cast<int>(CompilerMsgKind::Max)];
     Mutex                                            mutexCompilerMessages;
     Mutex                                            mutexSourceLoc;
     VectorNative<ByteCode*>                          byteCodeFunc;

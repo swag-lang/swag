@@ -18,7 +18,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
     case 1:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_Extend_U8U64(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx));
+            pp.emit_Extend_U8U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
         else
             pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -26,7 +26,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
     case 2:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_Extend_U16U64(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx));
+            pp.emit_Extend_U16U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
         else
             pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -34,7 +34,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
     case 4:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_CopyN(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx), CPUBits::B32);
+            pp.emit_CopyN(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx), CPUBits::B32);
         else
             pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -50,7 +50,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
     // Use scratch registers
     if (paramIdx < cpuFct->numScratchRegs && !structByValue)
     {
-        const auto scratch = (CPURegister) (cc.firstScratchRegister + paramIdx);
+        const auto scratch = static_cast<CPURegister>(cc.firstScratchRegister + paramIdx);
         if (toAdd == 0 && deRefSize == 0)
         {
             pp.emit_Store64_Indirect(REG_OFFSET(reg), scratch);
@@ -60,19 +60,19 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
             switch (deRefSize)
             {
             case 1:
-                pp.emit_LoadU8U64_Indirect((uint32_t) toAdd, RAX, scratch);
+                pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
                 break;
             case 2:
-                pp.emit_LoadU16U64_Indirect((uint32_t) toAdd, RAX, scratch);
+                pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
                 break;
             case 4:
-                pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, scratch);
+                pp.emit_Load32_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
                 break;
             case 8:
-                pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, scratch);
+                pp.emit_Load64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
                 break;
             default:
-                pp.emit_LoadAddress_Indirect((uint32_t) toAdd, RAX, scratch);
+                pp.emit_LoadAddress_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
                 break;
             }
 
@@ -91,16 +91,16 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
         switch (deRefSize)
         {
         case 1:
-            pp.emit_LoadU8U64_Indirect((uint32_t) toAdd, RAX, RAX);
+            pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
             break;
         case 2:
-            pp.emit_LoadU16U64_Indirect((uint32_t) toAdd, RAX, RAX);
+            pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
             break;
         case 4:
-            pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, RAX);
+            pp.emit_Load32_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
             break;
         case 8:
-            pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, RAX);
+            pp.emit_Load64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
             break;
         default:
             pp.emit_OpN_Immediate(RAX, toAdd, CPUOp::ADD, CPUBits::B64);
@@ -156,7 +156,7 @@ void SCBE::emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNati
 
     // Invert order
     VectorNative<CPUPushParam> p;
-    for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
+    for (int i = static_cast<int>(pushRAParams.size()) - 1; i >= 0; i--)
         p.push_back({CPUPushParamType::Reg, pushRAParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
@@ -170,7 +170,7 @@ void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorN
 
     // Invert order
     VectorNative<CPUPushParam> p;
-    for (int i = (int) pushParams.size() - 1; i >= 0; i--)
+    for (int i = static_cast<int>(pushParams.size()) - 1; i >= 0; i--)
         p.push_back({pushParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
@@ -195,7 +195,7 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, ui
     }
 
     uint32_t stackOffset = typeFuncBc->numReturnRegisters() * sizeof(Register);
-    for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
+    for (int idxParam = static_cast<int>(pushRAParams.size()) - 1; idxParam >= 0; idxParam--, idxReg++)
     {
         static constexpr CPURegister IDX_TO_REG[4] = {RDX, R8, R9};
 
@@ -236,12 +236,12 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
         const auto seekJmpAfterClosure = pp.concat.totalCount();
 
         // Update jump to closure call
-        *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);
+        *seekPtrClosure = static_cast<uint8_t>(pp.concat.totalCount() - seekJmpClosure);
 
         pushRAParams.pop_back();
         emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
-        *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
+        *seekPtrAfterClosure = static_cast<uint8_t>(pp.concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {

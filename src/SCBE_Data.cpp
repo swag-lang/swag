@@ -10,7 +10,7 @@ bool SCBE::buildRelocationSegment(const BuildParameters& buildParameters, DataSe
 
     const int     ct              = buildParameters.compileType;
     const auto    precompileIndex = buildParameters.precompileIndex;
-    auto&         pp              = *(SCBE_CPU*) perThread[ct][precompileIndex];
+    auto&         pp              = *static_cast<SCBE_CPU*>(perThread[ct][precompileIndex]);
     CPURelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);

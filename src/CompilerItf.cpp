@@ -26,8 +26,8 @@ using cb = void* (*)(Module*);
 namespace
 {
     cb itable[] = {
-        (cb) getMessage,
-        (cb) getBuildCfg,
+        static_cast<cb>(getMessage),
+        static_cast<cb>(getBuildCfg),
         (cb) compileString,
     };
 }

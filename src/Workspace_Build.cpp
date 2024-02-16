@@ -760,7 +760,7 @@ bool Workspace::build()
         {
             using namespace std::chrono;
             const milliseconds ms  = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-            g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
+            g_CommandLine.randSeed = static_cast<int>(ms.count()) & 0x7FFFFFFF;
             srand(g_CommandLine.randSeed);
             g_CommandLine.randSeed = rand() & 0x7FFFFFFF;
         }
@@ -776,14 +776,14 @@ bool Workspace::build()
     pair<void*, void*> oneArg;
     g_CommandLine.exePathStr = g_CommandLine.exePath.string();
     oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();
-    oneArg.second            = (void*) (size_t) g_CommandLine.exePathStr.length();
+    oneArg.second            = (void*) static_cast<size_t>(g_CommandLine.exePathStr.length());
     g_CommandLine.userArgumentsStr.push_back(oneArg);
 
     Utf8::tokenizeBlanks(g_CommandLine.userArguments, g_CommandLine.userArgumentsVec);
     for (auto& arg : g_CommandLine.userArgumentsVec)
     {
-        oneArg.first  = (void*) arg.buffer;
-        oneArg.second = (void*) (size_t) arg.length();
+        oneArg.first  = static_cast<void*>(arg.buffer);
+        oneArg.second = (void*) static_cast<size_t>(arg.length());
         g_CommandLine.userArgumentsStr.push_back(oneArg);
     }
 

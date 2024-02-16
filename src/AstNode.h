@@ -261,7 +261,7 @@ struct AstNode
     template<typename T>
     static AstNode* clone(AstNode* node, CloneContext& context)
     {
-        return ((T*) node)->clone(context);
+        return static_cast<T*>(node)->clone(context);
     }
 
     AstNode* clone(CloneContext& context);

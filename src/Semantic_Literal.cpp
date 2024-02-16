@@ -22,7 +22,7 @@ bool Semantic::getDigitHex(SemanticContext* context, const SourceLocation& start
     if (!SWAG_IS_HEX(c))
     {
         auto endLoc = startLoc;
-        endLoc.column += (uint32_t) (*pzr - pzs);
+        endLoc.column += static_cast<uint32_t>(*pzr - pzs);
         return context->report({node->sourceFile, startLoc, endLoc, errMsg});
     }
 
@@ -48,7 +48,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
     const auto len = node->computedValue->text.length();
     result.reserve(len);
 
-    const auto start = (const char*) node->computedValue->text.buffer;
+    const auto start = static_cast<const char*>(node->computedValue->text.buffer);
     auto       pz    = start;
     while (pz - start < len)
     {
@@ -116,7 +116,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
             SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
             SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
             const char32_t cw = (c1 << 4) + c2;
-            result.append((char) cw);
+            result.append(static_cast<char>(cw));
             loc.column += 2;
             continue;
         }
@@ -221,13 +221,13 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
             case NativeTypeKind::U8:
                 if (uni[0] > UINT8_MAX)
                     return FMT(Err(Err0607), uni[0]);
-                computedValue.reg.u8 = (uint8_t) uni[0];
+                computedValue.reg.u8 = static_cast<uint8_t>(uni[0]);
                 break;
 
             case NativeTypeKind::U16:
                 if (uni[0] > UINT16_MAX)
                     return FMT(Err(Err0606), uni[0]);
-                computedValue.reg.u16 = (uint16_t) uni[0];
+                computedValue.reg.u16 = static_cast<uint16_t>(uni[0]);
                 break;
 
             case NativeTypeKind::U32:
@@ -250,7 +250,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         switch (typeSuffix->nativeType)
         {
         case NativeTypeKind::F32:
-            computedValue.reg.f32 = (float) literalValue.f64;
+            computedValue.reg.f32 = static_cast<float>(literalValue.f64);
             if (negApplied)
                 computedValue.reg.f32 = -computedValue.reg.f32;
             break;
@@ -349,7 +349,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
                 return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s32"));
             break;
         case NativeTypeKind::S64:
-            if (computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
+            if (computedValue.reg.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
                 return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s64"));
             break;
 
@@ -489,7 +489,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
         if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TT_UNTYPED_FLOAT)
-            node->computedValue->reg.f32 = (float) node->literalValue.f64;
+            node->computedValue->reg.f32 = static_cast<float>(node->literalValue.f64);
         return true;
     }
 

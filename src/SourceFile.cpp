@@ -89,8 +89,8 @@ bool SourceFile::load()
     fseek(handle, 0, SEEK_SET);
 
     // Read content
-    allocBufferSize = (unsigned) Allocator::alignSize(bufferSize + 4);
-    buffer          = (char*) Allocator::alloc(allocBufferSize);
+    allocBufferSize = static_cast<unsigned>(Allocator::alignSize(bufferSize + 4));
+    buffer          = static_cast<char*>(Allocator::alloc(allocBufferSize));
 
 #ifdef SWAG_STATS
     g_Stats.memFileBuffer += allocBufferSize;
@@ -131,7 +131,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
     {
         if (isExternal && !fileForSourceLocation)
         {
-            auto pz = (const char*) buffer;
+            auto pz = static_cast<const char*>(buffer);
             Utf8 line;
             while (*pz)
             {
