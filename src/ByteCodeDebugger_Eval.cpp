@@ -52,7 +52,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 	}
 
 	// Semantic
-	auto child                       = parent.childs.front();
+	auto child                       = parent.children.front();
 	auto semanticJob                 = SemanticJob::newJob(nullptr, sourceFile, child, false);
 	semanticJob->context.forDebugger = true;
 	g_ThreadMgr.debuggerMode         = true;

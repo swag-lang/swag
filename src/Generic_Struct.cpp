@@ -20,14 +20,14 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
 			if (nodeStruct->genericParameters)
 			{
 				const auto idRef      = castAst<AstIdentifierRef>(typeExpr->identifier, AstNodeKind::IdentifierRef);
-				const auto identifier = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+				const auto identifier = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
 				if (!identifier->genericParameters)
 				{
 					identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
 					identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
 
 					CloneContext cloneContext;
-					for (const auto p : nodeStruct->genericParameters->childs)
+					for (const auto p : nodeStruct->genericParameters->children)
 					{
 						const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
 						if (!param->assignment)
@@ -46,8 +46,8 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
 					node->removeAstFlag(AST_IS_GENERIC);
 					node->type->removeAstFlag(AST_IS_GENERIC);
 
-					// Force the reevaluation of the variable and its childs
-					context->result     = ContextResult::NewChilds;
+					// Force the reevaluation of the variable and its children
+					context->result     = ContextResult::NewChildren;
 					node->semanticState = AstNodeResolveState::Enter;
 					Ast::visit(node, [](AstNode* n)
 					{
@@ -92,7 +92,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
 	// Replace generic types in the struct generic parameters
 	const auto sourceNodeStruct = castAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
-	SWAG_CHECK(replaceGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
+	SWAG_CHECK(replaceGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->children, genericParameters, match));
 
 	// For a tuple, replace inside types with real ones
 	if (newType->isTuple())
@@ -166,7 +166,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 	structNode->originalGeneric = sourceNode;
 
 	// Replace generic values in the struct generic parameters
-	SWAG_CHECK(replaceGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
+	SWAG_CHECK(replaceGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->children, genericParameters, match));
 
 	const auto structJob = end(context, context->baseJob, sourceSymbol, structNode, true, cloneContext.replaceTypes);
 

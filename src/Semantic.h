@@ -184,7 +184,7 @@ namespace Semantic
 	void           computeMatchesCoerceCast(VectorNative<OneMatch*>& matches);
 	bool           filterMatchesCoerceCast(SemanticContext* context, VectorNative<OneMatch*>& matches);
 	bool           filterSymbols(SemanticContext* context, AstIdentifier* node);
-	void           flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
+	void           flattenStructChildren(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
 	bool           setFullResolve(SemanticContext* context, AstFuncDecl* funcNode);
 	void           setFuncDeclParamsIndex(const AstFuncDecl* funcNode);
 	bool           isMethod(const AstFuncDecl* funcNode);

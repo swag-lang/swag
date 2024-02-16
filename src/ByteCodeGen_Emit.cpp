@@ -9,10 +9,10 @@
 bool ByteCodeGen::emitPassThrough(ByteCodeGenContext* context)
 {
 	const auto node = context->node;
-	if (node->childs.empty())
+	if (node->children.empty())
 		return true;
 
-	const auto child = node->childs.back();
+	const auto child = node->children.back();
 	if (node->hasAstFlag(AST_DISCARD))
 		freeRegisterRC(context, child);
 	else
@@ -54,8 +54,8 @@ void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context)
 bool ByteCodeGen::emitDebugNop(ByteCodeGenContext* context)
 {
 	const auto node = context->node;
-	if (!node->childs.empty())
-		node->resultRegisterRc = node->childs.back()->resultRegisterRc;
+	if (!node->children.empty())
+		node->resultRegisterRc = node->children.back()->resultRegisterRc;
 	emitDebugLine(context, node);
 	return true;
 }

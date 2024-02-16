@@ -48,7 +48,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 	if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
 	{
 		allParams     = parent;
-		numCallParams = static_cast<int>(allParams->childs.size()) - 1; // Remove the inline block
+		numCallParams = static_cast<int>(allParams->children.size()) - 1; // Remove the inline block
 		while (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
 			parent = parent->parent;
 		parent->resultRegisterRc = node->resultRegisterRc;
@@ -58,7 +58,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 		auto identifier                               = castAst<AstIdentifier>(parent, AstNodeKind::Identifier);
 		identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
 		allParams                                     = identifier->callParameters;
-		numCallParams                                 = allParams ? allParams->childs.size() : 0;
+		numCallParams                                 = allParams ? allParams->children.size() : 0;
 	}
 	else if (parent->kind == AstNodeKind::Loop)
 	{
@@ -75,9 +75,9 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 		parameters.sourceFile = parent->sourceFile;
 		parameters.inheritTokenLocation(parent);
 		parameters.inheritOwners(parent);
-		parameters.childs.push_back(arrayNode);
+		parameters.children.push_back(arrayNode);
 		allParams        = &parameters;
-		numCallParams    = parameters.childs.size();
+		numCallParams    = parameters.children.size();
 		canFreeRegParams = false;
 	}
 	else if (parent->kind == AstNodeKind::SwitchCase)
@@ -89,10 +89,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 		parameters.sourceFile = parent->sourceFile;
 		parameters.inheritTokenLocation(parent);
 		parameters.inheritOwners(parent);
-		parameters.childs.push_back(switchNode->expression);
-		parameters.childs.push_back(caseNode->childs.front());
+		parameters.children.push_back(switchNode->expression);
+		parameters.children.push_back(caseNode->children.front());
 		allParams     = &parameters;
-		numCallParams = parameters.childs.size();
+		numCallParams = parameters.children.size();
 	}
 	else if (parent->kind == AstNodeKind::AffectOp && (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
 	{
@@ -100,8 +100,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 		parameters.sourceFile = parent->sourceFile;
 		parameters.inheritTokenLocation(parent);
 		parameters.inheritOwners(parent);
-		SWAG_ASSERT(parent->childs.front()->kind == AstNodeKind::IdentifierRef);
-		auto ptIdx = castAst<AstArrayPointerIndex>(parent->childs.front()->childs.back(), AstNodeKind::ArrayPointerIndex);
+		SWAG_ASSERT(parent->children.front()->kind == AstNodeKind::IdentifierRef);
+		auto ptIdx = castAst<AstArrayPointerIndex>(parent->children.front()->children.back(), AstNodeKind::ArrayPointerIndex);
 		auto arr   = ptIdx->array;
 
 		auto ptIdx1 = ptIdx;
@@ -111,31 +111,31 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 			arr    = ptIdx1->array;
 		}
 
-		parameters.childs.push_back(arr);
+		parameters.children.push_back(arr);
 		while (ptIdx1 != ptIdx)
 		{
-			parameters.childs.push_back(ptIdx1->access);
+			parameters.children.push_back(ptIdx1->access);
 			ptIdx1 = castAst<AstArrayPointerIndex>(ptIdx1->parent, AstNodeKind::ArrayPointerIndex);
 		}
 
-		parameters.childs.push_back(ptIdx->access);
-		parameters.childs.push_back(parent->childs[1]);
+		parameters.children.push_back(ptIdx->access);
+		parameters.children.push_back(parent->children[1]);
 		allParams     = &parameters;
-		numCallParams = parameters.childs.size();
+		numCallParams = parameters.children.size();
 	}
 	else
 	{
 		allParams     = parent;
-		numCallParams = allParams->childs.size() - 1; // Remove the inline block
+		numCallParams = allParams->children.size() - 1; // Remove the inline block
 	}
 
 	// Need to Map all call parameters to function arguments
 	auto func = node->func;
 	if (func->parameters)
 	{
-		auto numFuncParams = func->parameters->childs.size();
+		auto numFuncParams = func->parameters->children.size();
 
-		// Sort childs by parameter index
+		// Sort children by parameter index
 		Semantic::sortParameters(allParams);
 
 		// Simple case, every parameters are covered by the call, and there's no named param
@@ -143,8 +143,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 		{
 			for (size_t i = 0; i < numCallParams; i++)
 			{
-				auto funcParam = castAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
-				auto callParam = allParams->childs[i];
+				auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
+				auto callParam = allParams->children[i];
 				auto symbol    = node->parametersScope->symTable.find(funcParam->token.text);
 				SWAG_ASSERT(symbol);
 				for (auto overload : symbol->overloads)
@@ -170,11 +170,11 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 			// Determine if this parameter has been covered by the call
 			for (size_t i = 0; i < numFuncParams; i++)
 			{
-				auto funcParam = castAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+				auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
 				bool covered   = false;
 				for (size_t j = 0; j < numCallParams; j++)
 				{
-					auto callParam = castAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
+					auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
 					if (callParam->indexParam == static_cast<int>(i))
 					{
 						if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
@@ -210,7 +210,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 				// If not covered, then this is a default value
 				if (!covered)
 				{
-					auto defaultParam = castAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+					auto defaultParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
 					SWAG_ASSERT(defaultParam->assignment);
 
 					auto symbol = node->parametersScope->symTable.find(defaultParam->token.text);
@@ -286,7 +286,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 
 	// Be sure this is done only once
 	// :EmitInlineOnce
-	node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 	return true;
 }
 
@@ -441,8 +441,8 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 		YIELD();
 
 		// If opCount has been inlined, then the register of the inline block contains the result
-		if (loopNode->childs.back()->kind == AstNodeKind::Inline)
-			node->resultRegisterRc = loopNode->childs.back()->resultRegisterRc;
+		if (loopNode->children.back()->kind == AstNodeKind::Inline)
+			node->resultRegisterRc = loopNode->children.back()->resultRegisterRc;
 	}
 
 	SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
@@ -840,8 +840,8 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 					caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = false;
 					expr->resultRegisterRc.cannotFree                              = false;
 
-					if (caseNode->childs.back()->kind == AstNodeKind::Inline)
-						r0 = caseNode->childs.back()->resultRegisterRc;
+					if (caseNode->children.back()->kind == AstNodeKind::Inline)
+						r0 = caseNode->children.back()->resultRegisterRc;
 					else
 						r0 = node->resultRegisterRc;
 				}
@@ -1094,7 +1094,7 @@ bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* sco
 	const auto numDeferred = scope->deferredNodes.size();
 	if (numDeferred)
 	{
-		context->result = ContextResult::NewChilds;
+		context->result = ContextResult::NewChildren;
 		const auto job  = context->baseJob;
 		for (size_t i = 0; i < numDeferred; i++)
 		{
@@ -1107,15 +1107,15 @@ bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* sco
 
 			// We duplicate because when we emit a node, some stuff will be reset (like the cast).
 			// Se wo want to be sure to emit the same node multiple times without side effects from the previous defer usage.
-			// We also do not want to change the number of childs of "node", that's why we fill "parent" of the
-			// clone without registering the node in the list of childs.
+			// We also do not want to change the number of children of "node", that's why we fill "parent" of the
+			// clone without registering the node in the list of children.
 			CloneContext cloneContext;
 			cloneContext.cloneFlags      = CLONE_RAW;
 			cloneContext.ownerDeferScope = scope;
 
 			node->allocateExtension(ExtensionKind::Owner);
 
-			auto child           = node->childs.front()->clone(cloneContext);
+			auto child           = node->children.front()->clone(cloneContext);
 			child->parent        = node;
 			child->bytecodeState = AstNodeResolveState::Enter;
 			child->removeAstFlag(AST_NO_BYTECODE);
@@ -1175,7 +1175,7 @@ bool ByteCodeGen::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, V
 		SWAG_CHECK(emitDeferredStatements(context, scope, forError));
 		SWAG_ASSERT(context->result != ContextResult::Pending);
 		scope->doneDefer.push_back(context->node);
-		if (context->result == ContextResult::NewChilds)
+		if (context->result == ContextResult::NewChildren)
 			return true;
 	}
 

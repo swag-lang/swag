@@ -34,7 +34,7 @@ void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, Sou
 		node->addAstFlag(parent->flags & (AST_NO_BACKEND | AST_IN_RUN_BLOCK | AST_IN_MIXIN));
 
 		ScopedLock lk(parent->mutex);
-		parent->childs.push_back(node);
+		parent->children.push_back(node);
 	}
 }
 
@@ -255,7 +255,7 @@ void Ast::removeFromParent(AstNode* child)
 	ScopedLock lk(parent->mutex);
 	SWAG_RACE_CONDITION_WRITE(parent->raceC);
 	const auto idx = child->childParentIdx();
-	parent->childs.erase(idx);
+	parent->children.erase(idx);
 	child->parent = nullptr;
 }
 
@@ -268,7 +268,7 @@ void Ast::insertChild(AstNode* parent, AstNode* child, uint32_t index)
 	{
 		ScopedLock lk(parent->mutex);
 		SWAG_RACE_CONDITION_WRITE(parent->raceC);
-		parent->childs.insert_at_index(child, index);
+		parent->children.insert_at_index(child, index);
 	}
 	else
 	{
@@ -287,7 +287,7 @@ void Ast::addChildFront(AstNode* parent, AstNode* child)
 	{
 		ScopedLock lk(parent->mutex);
 		SWAG_RACE_CONDITION_WRITE(parent->raceC);
-		parent->childs.push_front(child);
+		parent->children.push_front(child);
 		if (!child->ownerScope)
 			child->inheritOwners(parent);
 	}
@@ -304,7 +304,7 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
 	{
 		ScopedLock lk(parent->mutex);
 		SWAG_RACE_CONDITION_WRITE(parent->raceC);
-		parent->childs.push_back(child);
+		parent->children.push_back(child);
 		if (!child->ownerScope)
 			child->inheritOwners(parent);
 	}
@@ -338,7 +338,7 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
 void Ast::visit(AstNode* root, const function<void(AstNode*)>& fct)
 {
 	fct(root);
-	for (const auto child : root->childs)
+	for (const auto child : root->children)
 		visit(child, fct);
 }
 
@@ -350,7 +350,7 @@ Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function
 	if (result == NoChilds)
 		return Continue;
 
-	for (const auto child : root->childs)
+	for (const auto child : root->children)
 	{
 		result = visit(context, child, fct);
 		if (result == Stop)

@@ -449,7 +449,7 @@ bool Parser::generateAst()
 		parentScope->flags |= SCOPE_AUTO_GENERATED;
 	}
 
-	// One scope per file. We do NOT register the scope in the list of childs
+	// One scope per file. We do NOT register the scope in the list of children
 	// of the module scope, to avoid contention in // (and this is useless). That way,
 	// no need to lock the module scope each time a file is encountered.
 	const Utf8 scopeName = "__" + Path(sourceFile->name).replace_extension().string();

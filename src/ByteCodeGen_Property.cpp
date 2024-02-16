@@ -10,8 +10,8 @@
 bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
 	const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto front = node->childs.front();
-	const auto back  = node->childs.back();
+	const auto front = node->children.front();
+	const auto back  = node->children.back();
 	reserveRegisterRC(context, node->resultRegisterRc, 2);
 	EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], front->resultRegisterRc);
 	EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], back->resultRegisterRc);
@@ -23,7 +23,7 @@ bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
 	const auto node    = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto ptrNode = node->childs.front();
+	const auto ptrNode = node->children.front();
 	EMIT_INST1(context, ByteCodeOp::IntrinsicMakeCallback, ptrNode->resultRegisterRc);
 	node->resultRegisterRc = ptrNode->resultRegisterRc;
 	return true;
@@ -32,8 +32,8 @@ bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 {
 	const auto node      = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto ptrNode   = node->childs.front();
-	const auto countNode = node->childs.back();
+	const auto ptrNode   = node->children.front();
+	const auto countNode = node->children.back();
 
 	SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
 	reserveRegisterRC(context, node->resultRegisterRc, 2);
@@ -47,12 +47,12 @@ bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
 	const auto node   = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto params = node->childs.front();
+	const auto params = node->children.front();
 
 	reserveLinearRegisterRC2(context, node->resultRegisterRc);
 
 	// Reference to the interface concrete type info
-	const auto childItf = params->childs[2];
+	const auto childItf = params->children[2];
 	SWAG_ASSERT(childItf->computedValue);
 	SWAG_ASSERT(childItf->computedValue->storageSegment);
 	SWAG_ASSERT(childItf->computedValue->storageOffset != UINT32_MAX);
@@ -62,14 +62,14 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 	emitMakeSegPointer(context, constSegment, childItf->computedValue->storageOffset, r0);
 
 	// Copy object pointer to first result register
-	EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->childs[0]->resultRegisterRc);
+	EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->children[0]->resultRegisterRc);
 
 	// Get interface itable pointer in the second result register
-	EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->childs[1]->resultRegisterRc, r0, node->resultRegisterRc[1]);
+	EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->children[1]->resultRegisterRc, r0, node->resultRegisterRc[1]);
 
-	freeRegisterRC(context, params->childs[0]);
-	freeRegisterRC(context, params->childs[1]);
-	freeRegisterRC(context, params->childs[2]);
+	freeRegisterRC(context, params->children[0]);
+	freeRegisterRC(context, params->children[1]);
+	freeRegisterRC(context, params->children[2]);
 	freeRegisterRC(context, r0);
 	return true;
 }
@@ -77,7 +77,7 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 {
 	const auto node     = context->node;
-	const auto expr     = node->childs.back();
+	const auto expr     = node->children.back();
 	const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
 
 	if (typeInfo->isArray())
@@ -103,7 +103,7 @@ bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
 	const auto node  = castAst<AstNode>(context->node, AstNodeKind::IntrinsicLocation);
-	const auto front = node->childs.front();
+	const auto front = node->children.front();
 
 	node->resultRegisterRc = reserveRegisterRC(context);
 	const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicLocationSI, node->resultRegisterRc);
@@ -119,7 +119,7 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 {
 	const auto node  = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto front = node->childs.front();
+	const auto front = node->children.front();
 
 	node->resultRegisterRc = reserveRegisterRC(context);
 	const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRc);
@@ -168,7 +168,7 @@ bool ByteCodeGen::emitImplicitKindOfInterface(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
 	const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto front    = node->childs.front();
+	const auto front    = node->children.front();
 	const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
 	SWAG_CHECK(emitKindOf(context, front, typeInfo->kind));
 	node->resultRegisterRc         = front->resultRegisterRc;
@@ -211,7 +211,7 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* nod
 bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context)
 {
 	const auto node = context->node;
-	const auto expr = node->childs.back();
+	const auto expr = node->children.back();
 	SWAG_CHECK(emitIntrinsicCountOf(context, node, expr));
 	return true;
 }
@@ -219,7 +219,7 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
 	const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-	const auto front    = node->childs.front();
+	const auto front    = node->children.front();
 	const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
 
 	if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)

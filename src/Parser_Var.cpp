@@ -100,11 +100,11 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 		}
 
 		// Declare first variable, and affect it
-		const auto front = castAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+		const auto front = castAst<AstIdentifierRef>(leftNode->children.front(), AstNodeKind::IdentifierRef);
 
 		// Then declare all other variables, and assign them to the first one
 		bool firstDone = false;
-		for (const auto child : leftNode->childs)
+		for (const auto child : leftNode->children)
 		{
 			SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
 			const auto identifier = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
@@ -180,8 +180,8 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 		Semantic::setVarDeclResolve(orgVarNode);
 
 		// Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
-		orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
-		orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
+		orgVarNode->token.startLocation = leftNode->children.front()->token.startLocation;
+		orgVarNode->token.endLocation   = leftNode->children.back()->token.endLocation;
 		orgVarNode->allocateExtension(ExtensionKind::Semantic);
 		orgVarNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBeforeVar;
 
@@ -192,13 +192,13 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 		orgVarNode->publicName = "(";
 
 		int idx = 0;
-		for (size_t i = 0; i < leftNode->childs.size(); i++)
+		for (size_t i = 0; i < leftNode->children.size(); i++)
 		{
-			const auto child = leftNode->childs[i];
+			const auto child = leftNode->children[i];
 
 			// Ignore field if '?', otherwise check that this is a valid variable name
 			SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-			if (child->childs.front()->token.text == '?')
+			if (child->children.front()->token.text == '?')
 			{
 				Ast::removeFromParent(child);
 				Ast::addChildBack(parentNode, child);
@@ -239,7 +239,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 	else
 	{
 		SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
-		const auto identifier = leftNode->childs.back();
+		const auto identifier = leftNode->children.back();
 		SWAG_CHECK(checkIsValidVarName(identifier));
 		AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
 		*result             = varNode;
@@ -353,18 +353,18 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 		{
 			auto typeExpression = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
 			while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-				typeExpression = castAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
+				typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
 
 			if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
 			{
-				const auto back = typeExpression->identifier->childs.back();
+				const auto back = typeExpression->identifier->children.back();
 				if (back->kind == AstNodeKind::Identifier)
 				{
 					const auto identifier = castAst<AstIdentifier>(back, AstNodeKind::Identifier);
 					if (identifier->callParameters)
 					{
-						typeExpression->removeAstFlag(AST_NO_BYTECODE_CHILDS);
-						type->removeAstFlag(AST_NO_BYTECODE_CHILDS);
+						typeExpression->removeAstFlag(AST_NO_BYTECODE_CHILDREN);
+						type->removeAstFlag(AST_NO_BYTECODE_CHILDREN);
 						typeExpression->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
 						type->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
 					}

@@ -24,7 +24,7 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
 		regPtr->pointer = nullptr;
 
 	// Count
-	const auto numParamsCall = callParams->childs.size();
+	const auto numParamsCall = callParams->children.size();
 	const auto numParamsFunc = ip->c.u32;
 	const auto count         = numParamsCall - numParamsFunc;
 	if (regCount)
@@ -33,15 +33,15 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
 		return true;
 
 	// Try to deal with @spread
-	auto child = callParams->childs[paramIdx];
+	auto child = callParams->children[paramIdx];
 	if (!child->typeInfo->hasFlag(TYPEINFO_SPREAD))
 		return true;
 
-	child = child->childs.front();
+	child = child->children.front();
 	SWAG_ASSERT(child->kind == AstNodeKind::IdentifierRef);
-	child = child->childs.front();
+	child = child->children.front();
 	SWAG_ASSERT(child->kind == AstNodeKind::IntrinsicProp);
-	child = child->childs.front();
+	child = child->children.front();
 
 	if (child->typeInfo->isListArray())
 	{
@@ -68,10 +68,10 @@ void* ByteCodeRun::executeLocationSI(const ByteCodeRunContext* context, const By
 	const auto     callParams = context->callerContext->validIfParameters;
 	if (!callParams)
 		return nullptr;
-	if (paramIdx >= callParams->childs.size())
+	if (paramIdx >= callParams->children.size())
 		return nullptr;
 
-	const auto   child          = callParams->childs[paramIdx];
+	const auto   child          = callParams->children[paramIdx];
 	uint32_t     storageOffset  = UINT32_MAX;
 	DataSegment* storageSegment = nullptr;
 	ByteCodeGen::computeSourceLocation(context->callerContext, child, &storageOffset, &storageSegment, true);
@@ -91,10 +91,10 @@ bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const 
 	const auto     callParams = context->callerContext->validIfParameters;
 	if (!callParams)
 		return true;
-	if (paramIdx >= callParams->childs.size())
+	if (paramIdx >= callParams->children.size())
 		return true;
 
-	const auto child = callParams->childs[paramIdx];
+	const auto child = callParams->children[paramIdx];
 
 	// Slice
 	/////////////////////////////////////////
@@ -128,7 +128,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteC
 	const auto callParams  = context->callerContext->validIfParameters;
 	const auto registersRC = context->curRegistersRC;
 
-	if (!callParams || paramIdx >= callParams->childs.size())
+	if (!callParams || paramIdx >= callParams->children.size())
 	{
 		registersRC[ip->a.u32].pointer = nullptr;
 		registersRC[ip->b.u32].u64     = 0;
@@ -148,7 +148,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteC
 		return;
 	}
 
-	const auto child = callParams->childs[paramIdx];
+	const auto child = callParams->children[paramIdx];
 
 	// Slice
 	/////////////////////////////////////////
@@ -176,7 +176,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteC
 
 	// Native
 	/////////////////////////////////////////
-	SWAG_ASSERT(paramIdx < callParams->childs.size());
+	SWAG_ASSERT(paramIdx < callParams->children.size());
 	if (solved->typeInfo->isNative())
 	{
 		switch (solved->typeInfo->nativeType)

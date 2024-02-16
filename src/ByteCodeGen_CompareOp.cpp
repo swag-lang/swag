@@ -101,8 +101,8 @@ bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode*
 	SWAG_ASSERT(left->hasSpecialFuncCall());
 
 	context->allocateTempCallParams();
-	context->allParamsTmp->childs.push_back(left);
-	context->allParamsTmp->childs.push_back(right);
+	context->allParamsTmp->children.push_back(left);
+	context->allParamsTmp->children.push_back(right);
 	left->resultRegisterRc  = r0;
 	right->resultRegisterRc = r1;
 	SWAG_CHECK(emitUserOp(context, context->allParamsTmp, left, false));
@@ -493,8 +493,8 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNo
 bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs.front();
-	const auto right = node->childs.back();
+	const auto left  = node->children.front();
+	const auto right = node->children.back();
 	SWAG_CHECK(emitCompareOpEqual(context, left, right, r0, r1, r2));
 	return true;
 }
@@ -502,8 +502,8 @@ bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, const Re
 bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs.front();
-	const auto right = node->childs.back();
+	const auto left  = node->children.front();
+	const auto right = node->children.back();
 	SWAG_CHECK(emitCompareOpNotEqual(context, left, right, r0, r1, r2));
 	return true;
 }
@@ -511,7 +511,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, const
 bool ByteCodeGen::emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
 	AstNode*   node     = context->node;
-	const auto typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+	const auto typeInfo = TypeManager::concreteType(node->children[0]->typeInfo);
 	if (typeInfo->isNative())
 	{
 		switch (typeInfo->nativeType)
@@ -608,8 +608,8 @@ bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const As
 bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs.front();
-	const auto right = node->childs.back();
+	const auto left  = node->children.front();
+	const auto right = node->children.back();
 	SWAG_CHECK(emitCompareOpLower(context, left, right, r0, r1, r2));
 	return true;
 }
@@ -669,8 +669,8 @@ bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, const 
 bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs.front();
-	const auto right = node->childs.back();
+	const auto left  = node->children.front();
+	const auto right = node->children.back();
 	SWAG_CHECK(emitCompareOpLowerEq(context, left, right, r0, r1, r2));
 	return true;
 }
@@ -730,8 +730,8 @@ bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, const 
 bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs.front();
-	const auto right = node->childs.back();
+	const auto left  = node->children.front();
+	const auto right = node->children.back();
 	SWAG_CHECK(emitCompareOpGreater(context, left, right, r0, r1, r2));
 	return true;
 }
@@ -791,8 +791,8 @@ bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, cons
 bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs.front();
-	const auto right = node->childs.back();
+	const auto left  = node->children.front();
+	const auto right = node->children.back();
 	SWAG_CHECK(emitCompareOpGreaterEq(context, left, right, r0, r1, r2));
 	return true;
 }
@@ -803,14 +803,14 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
 
 	if (!node->hasSemFlag(SEMFLAG_CAST1))
 	{
-		SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
+		SWAG_CHECK(emitCast(context, node->children[0], TypeManager::concreteType(node->children[0]->typeInfo), node->children[0]->castedTypeInfo));
 		YIELD();
 		node->addSemFlag(SEMFLAG_CAST1);
 	}
 
 	if (!node->hasSemFlag(SEMFLAG_CAST2))
 	{
-		SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+		SWAG_CHECK(emitCast(context, node->children[1], TypeManager::concreteType(node->children[1]->typeInfo), node->children[1]->castedTypeInfo));
 		YIELD();
 		node->addSemFlag(SEMFLAG_CAST2);
 	}
@@ -824,8 +824,8 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
 	}
 	else
 	{
-		auto& r0 = node->childs[0]->resultRegisterRc;
-		auto& r1 = node->childs[1]->resultRegisterRc;
+		auto& r0 = node->children[0]->resultRegisterRc;
+		auto& r1 = node->children[1]->resultRegisterRc;
 
 		const RegisterList r2  = reserveRegisterRC(context);
 		node->resultRegisterRc = r2;

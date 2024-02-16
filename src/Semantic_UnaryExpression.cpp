@@ -221,7 +221,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 bool Semantic::resolveUnaryOp(SemanticContext* context)
 {
 	const auto op    = context->node;
-	const auto child = op->childs[0];
+	const auto child = op->children[0];
 
 	op->typeInfo    = child->typeInfo;
 	op->byteCodeFct = ByteCodeGen::emitUnaryOp;

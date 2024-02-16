@@ -29,8 +29,8 @@ enum class ContextResult
 {
 	Done,
 	Pending,
-	NewChilds,
-	NewChilds1,
+	NewChildren,
+	NewChildren1,
 };
 
 struct JobContext : ErrorContext

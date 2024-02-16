@@ -239,7 +239,7 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
 	const auto node = context->node;
 
 	// Return must be the last of its block
-	if (node->parent->childs.back() != node)
+	if (node->parent->children.back() != node)
 	{
 		if (node->parent->kind == AstNodeKind::If)
 		{
@@ -249,7 +249,7 @@ bool SemanticError::warnUnreachableCode(SemanticContext* context)
 		}
 
 		const auto idx = node->childParentIdx();
-		return context->report({node->parent->childs[idx + 1], Err(Wrn0005), DiagnosticLevel::Warning});
+		return context->report({node->parent->children[idx + 1], Err(Wrn0005), DiagnosticLevel::Warning});
 	}
 
 	return true;

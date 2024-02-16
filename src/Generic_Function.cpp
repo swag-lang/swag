@@ -150,7 +150,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
 	auto newFuncNode = cloneNode;
 	while (newFuncNode->kind == AstNodeKind::AttrUse)
-		newFuncNode = newFuncNode->childs.back();
+		newFuncNode = newFuncNode->children.back();
 
 	AstFuncDecl* newFunc = castAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
 	newFunc->addAstFlag(AST_FROM_GENERIC);
@@ -221,7 +221,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 	}
 
 	// Replace generic types and values in the function generic parameters
-	SWAG_CHECK(replaceGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
+	SWAG_CHECK(replaceGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->children, genericParameters, match));
 	newTypeFunc->forceComputeName();
 
 	const auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
@@ -249,7 +249,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
 				Ast::addChildFront(identifier, identifier->genericParameters);
 
 				CloneContext cloneContext;
-				for (const auto p : nodeFunc->genericParameters->childs)
+				for (const auto p : nodeFunc->genericParameters->children)
 				{
 					const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
 					if (!param->assignment)
@@ -266,8 +266,8 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
 				identifier->identifierRef()->removeAstFlag(AST_IS_GENERIC);
 				identifier->removeAstFlag(AST_IS_GENERIC);
 
-				// Force the reevaluation of the identifier and its childs
-				context->result     = ContextResult::NewChilds1;
+				// Force the reevaluation of the identifier and its children
+				context->result     = ContextResult::NewChildren1;
 				node->semanticState = AstNodeResolveState::Enter;
 				Ast::visit(node, [](AstNode* n)
 				{

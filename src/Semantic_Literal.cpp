@@ -469,7 +469,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 	SWAG_CHECK(processLiteralString(context));
 
 	// Suffix
-	auto suffix = node->childs.empty() ? nullptr : node->childs.front();
+	auto suffix = node->children.empty() ? nullptr : node->children.front();
 	if (!suffix || !suffix->typeInfo)
 	{
 		// If there's a suffix without a type, then this should be a 'user' suffix

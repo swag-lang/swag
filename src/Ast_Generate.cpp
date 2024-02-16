@@ -27,7 +27,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 		ScopedLock lk(typeLeft->mutex);
 		if (typeLeft->hasFlag(TYPEINFO_GENERATED_OP_EQUALS))
 		{
-			context->result = ContextResult::NewChilds;
+			context->result = ContextResult::NewChildren;
 			return true;
 		}
 
@@ -81,11 +81,11 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 	result->addAlternativeScope(typeRightStruct->declNode->ownerScope);
 
 	SWAG_ASSERT(result->kind == AstNodeKind::Impl);
-	SWAG_ASSERT(result->childs.back()->kind == AstNodeKind::FuncDecl);
+	SWAG_ASSERT(result->children.back()->kind == AstNodeKind::FuncDecl);
 
 	const auto job = context->baseJob;
 	job->nodes.push_back(result);
-	context->result = ContextResult::NewChilds;
+	context->result = ContextResult::NewChildren;
 	return true;
 }
 
@@ -158,15 +158,15 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
 	// We have generated methods, so restart
 	if (!content.empty())
 	{
-		const int numChilds = static_cast<int>(node->childs.size());
+		const int numChildren = static_cast<int>(node->children.size());
 
 		Parser parser;
 		parser.setup(context, context->sourceFile->module, context->sourceFile);
 		SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
 
-		for (size_t i = numChilds; i < node->childs.size(); i++)
-			context->baseJob->nodes.push_back(node->childs[i]);
-		context->result = ContextResult::NewChilds;
+		for (size_t i = numChildren; i < node->children.size(); i++)
+			context->baseJob->nodes.push_back(node->children[i]);
+		context->result = ContextResult::NewChildren;
 		return true;
 	}
 

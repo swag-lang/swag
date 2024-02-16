@@ -226,8 +226,8 @@ enum class AstNodeKind : uint8_t
 enum class AstNodeResolveState : uint8_t
 {
 	Enter,
-	ProcessingChilds,
-	PostChilds,
+	ProcessingChildren,
+	PostChildren,
 	Done,
 };
 
@@ -267,7 +267,7 @@ struct AstNode
 	AstNode* clone(CloneContext& context);
 	void     releaseChilds();
 	void     release();
-	void     cloneChilds(CloneContext& context, AstNode* from);
+	void     cloneChildren(CloneContext& context, AstNode* from);
 	void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
 
 	void inheritAstFlagsOr(uint64_t flag);
@@ -319,7 +319,7 @@ struct AstNode
 	Utf8         getScopedName();
 	void         setPassThrough();
 	void         setOwnerAttrUse(AstAttrUse* attrUse);
-	void         swap2Childs();
+	void         swap2Children();
 	bool         hasSpecialFuncCall() const;
 	bool         hasSpecialFuncCall(const Utf8& name) const;
 	AstNode*     inSimpleReturn() const;
@@ -430,7 +430,7 @@ struct AstNode
 
 	mutable SharedMutex    mutex;
 	Token                  token;
-	VectorNative<AstNode*> childs;
+	VectorNative<AstNode*> children;
 	ComputedValue*         computedValue;
 
 	Scope*        ownerScope;

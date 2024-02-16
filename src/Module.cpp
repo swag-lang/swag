@@ -502,7 +502,7 @@ void Module::addFileNoLock(SourceFile* file)
 	file->indexInModule = static_cast<uint32_t>(files.size());
 	files.push_back(file);
 
-	// A file scope is not registered in the list of childs of
+	// A file scope is not registered in the list of children of
 	// its parent
 	if (file->scopeFile)
 		file->scopeFile->parentScope = scopeRoot;

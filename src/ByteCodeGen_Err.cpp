@@ -218,7 +218,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
 
 	PushICFlags ic(context, BCI_TRY_CATCH);
 	const auto  node = castAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-	const auto  expr = node->childs.front();
+	const auto  expr = node->children.front();
 
 	if (!node->hasSemFlag(SEMFLAG_CAST1))
 	{

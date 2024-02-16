@@ -66,11 +66,11 @@ bool Semantic::resolveWith(SemanticContext* context)
 
 	// If this is a simple identifier, no bytecode generation
 	TypeInfo*  typeResolved = nullptr;
-	const auto front        = node->childs.front();
+	const auto front        = node->children.front();
 	bool       fromVar      = false;
 	if (front->kind == AstNodeKind::IdentifierRef)
 	{
-		front->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+		front->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 		SWAG_ASSERT(front->resolvedSymbolName && front->resolvedSymbolOverload);
 		typeResolved = front->resolvedSymbolOverload->typeInfo;
 		fromVar      = front->resolvedSymbolName->kind == SymbolKind::Variable;
@@ -83,8 +83,8 @@ bool Semantic::resolveWith(SemanticContext* context)
 	}
 	else if (front->kind == AstNodeKind::AffectOp)
 	{
-		SWAG_ASSERT(front->childs.front()->resolvedSymbolOverload);
-		typeResolved = front->childs.front()->resolvedSymbolOverload->typeInfo;
+		SWAG_ASSERT(front->children.front()->resolvedSymbolOverload);
+		typeResolved = front->children.front()->resolvedSymbolOverload->typeInfo;
 		fromVar      = true;
 	}
 
@@ -115,7 +115,7 @@ bool Semantic::resolveWith(SemanticContext* context)
 bool Semantic::resolveUsing(SemanticContext* context)
 {
 	auto       node  = context->node;
-	const auto idref = castAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
+	const auto idref = castAst<AstIdentifierRef>(node->children[0], AstNodeKind::IdentifierRef);
 	node->addAstFlag(AST_NO_BYTECODE);
 
 	SWAG_ASSERT(idref->resolvedSymbolName);

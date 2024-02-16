@@ -14,7 +14,7 @@
 bool Semantic::resolveMove(SemanticContext* context)
 {
 	const auto node  = context->node;
-	const auto right = node->childs[0];
+	const auto right = node->children[0];
 	SWAG_CHECK(checkIsConcrete(context, right));
 	node->inheritAstFlagsOr(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
 	node->typeInfo    = right->typeInfo;
@@ -74,7 +74,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
 
 bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const AstNode* right)
 {
-	if (left->childs.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
+	if (left->children.back()->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN))
 	{
 		if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
 		{
@@ -108,9 +108,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 	if (left->kind == AstNodeKind::IdentifierRef)
 	{
 		// If not, try to find the culprit type
-		for (int i = left->childs.count - 1; i >= 0; i--)
+		for (int i = left->children.count - 1; i >= 0; i--)
 		{
-			const auto child     = left->childs[i];
+			const auto child     = left->children[i];
 			const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCE_ALIAS);
 			if (!typeChild)
 				continue;
@@ -143,9 +143,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 		{
 			const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
 			hint              = "this is equivalent to [[";
-			for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
+			for (size_t ic = 0; ic < orgLeft->children.size(); ic++)
 			{
-				const auto c = orgLeft->childs[ic];
+				const auto c = orgLeft->children[ic];
 				if (ic)
 					hint += ".";
 				hint += c->token.text;
@@ -166,7 +166,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
 	if (left->typeInfo->isConst() && left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
 	{
-		if (left == left->parent->childs.back())
+		if (left == left->parent->children.back())
 		{
 			Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
 			diag.addNote(left, Diagnostic::isType(left->typeInfo));
@@ -224,8 +224,8 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 bool Semantic::resolveAffect(SemanticContext* context)
 {
 	auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
-	auto       left    = node->childs[0];
-	auto       right   = node->childs[1];
+	auto       left    = node->children[0];
+	auto       right   = node->children[1];
 	const auto tokenId = node->tokenId;
 
 	SWAG_CHECK(checkIsConcrete(context, left));
@@ -299,9 +299,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
 	// Is this an array like affectation ?
 	AstArrayPointerIndex* arrayNode = nullptr;
-	if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
+	if (left->kind == AstNodeKind::IdentifierRef && left->children.back()->kind == AstNodeKind::ArrayPointerIndex)
 	{
-		arrayNode            = castAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
+		arrayNode            = castAst<AstArrayPointerIndex>(left->children.back(), AstNodeKind::ArrayPointerIndex);
 		const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
 		if (!arrayType->isStruct())
 			arrayNode = nullptr;

@@ -729,7 +729,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 		{
 			exprNode->addSemFlag(SEMFLAG_FLAT_PARAMS);
 			context->allocateTempCallParams();
-			context->allParamsTmp->childs.push_back(exprNode);
+			context->allParamsTmp->children.push_back(exprNode);
 			context->allParamsTmp->allocateExtension(ExtensionKind::Misc);
 			context->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
 			context->allParamsTmp->inheritOwners(exprNode);
@@ -742,7 +742,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 		YIELD();
 
 		// If it has been inlined, then the inline block contains the register we need
-		const auto back = context->allParamsTmp->childs.back();
+		const auto back = context->allParamsTmp->children.back();
 		if (back->kind == AstNodeKind::Inline)
 		{
 			exprNode->resultRegisterRc = back->resultRegisterRc;
@@ -768,8 +768,8 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 		auto anyNode = exprNode;
 		if (!anyNode->hasExtMisc() || !anyNode->extMisc()->anyTypeSegment)
 		{
-			SWAG_ASSERT(!anyNode->childs.empty());
-			anyNode = anyNode->childs.front();
+			SWAG_ASSERT(!anyNode->children.empty());
+			anyNode = anyNode->children.front();
 		}
 
 		emitSafetyCastAny(context, anyNode, typeInfo);
@@ -980,7 +980,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 {
 	const auto node         = castAst<AstCast>(context->node, AstNodeKind::Cast);
 	const auto typeInfo     = node->toCastTypeInfo;
-	const auto exprNode     = node->childs[1];
+	const auto exprNode     = node->children[1];
 	const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
 	// First we cast with the user requested type. This is important to keep it, to
@@ -1002,7 +1002,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
 	const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
-	const auto exprNode = node->childs[0];
+	const auto exprNode = node->children[0];
 
 	// Will be done by parent in case of a func call param
 	if (node->parent->kind == AstNodeKind::FuncCallParam)

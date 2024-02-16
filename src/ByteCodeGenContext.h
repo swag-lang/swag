@@ -21,7 +21,7 @@ struct ByteCodeGenContext : JobContext
 	void pushNode(AstNode* myNode);
 	void popNode();
 
-	VectorNative<AstNode*>        collectChilds;
+	VectorNative<AstNode*>        collectChildren;
 	VectorNative<Scope*>          collectScopes;
 	VectorNative<AstNode*>        dependentNodesTmp;
 	VectorNative<AstNode*>        stackForceNode;

@@ -106,7 +106,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 			// Then setup the pointer to that data, and the data count
 			const auto ptrStorage = constSegment->address(storageOffsetValue);
 			ptrSlice->buffer      = ptrStorage;
-			ptrSlice->count       = assignment->childs.size();
+			ptrSlice->count       = assignment->children.size();
 			storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 		}
 
@@ -253,7 +253,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
 		}
 	}
 
-	for (const auto child : node->childs)
+	for (const auto child : node->children)
 	{
 		auto typeInfo = child->typeInfo;
 
@@ -272,20 +272,20 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
 				typeInfo = param->resolvedParameter->typeInfo;
 			}
 
-			assignment = child->childs.front();
+			assignment = child->children.front();
 
 			// If we have an expression list in a call parameter, like = {{1}}, then we check if the expression
 			// list has been converted to a variable. If that's the case, then we should have type parameters to
 			// that var, and we must take them instead of the expression list, because cast has been done
 			if (assignment->kind == AstNodeKind::ExpressionList &&
-				child->childs.count == 3 &&
-				child->childs[1]->kind == AstNodeKind::VarDecl)
+				child->children.count == 3 &&
+				child->children[1]->kind == AstNodeKind::VarDecl)
 			{
-				const auto varDecl = castAst<AstVarDecl>(child->childs[1], AstNodeKind::VarDecl);
+				const auto varDecl = castAst<AstVarDecl>(child->children[1], AstNodeKind::VarDecl);
 				SWAG_ASSERT(varDecl->type);
 				const auto typeDecl = castAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
 				SWAG_ASSERT(typeDecl->identifier);
-				const auto idDecl = castAst<AstIdentifier>(typeDecl->identifier->childs.back(), AstNodeKind::Identifier);
+				const auto idDecl = castAst<AstIdentifier>(typeDecl->identifier->children.back(), AstNodeKind::Identifier);
 				SWAG_ASSERT(idDecl->callParameters);
 				SWAG_CHECK(collectLiteralsToSegment(context, storageSegment, baseOffset, offset, idDecl->callParameters));
 			}
@@ -431,7 +431,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 			if (node->type && node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
 			{
 				const auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-				const auto identifier     = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+				const auto identifier     = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
 
 				// First collect values from the structure default initialization, except if the parameters cover
 				// all the fields (in that case no need to initialize the struct twice)

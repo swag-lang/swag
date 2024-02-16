@@ -37,7 +37,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 	{
 		varDecl->addSemFlag(SEMFLAG_TUPLE_CONVERT);
 		SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
-		context->result = ContextResult::NewChilds;
+		context->result = ContextResult::NewChildren;
 		context->baseJob->nodes.push_back(varDecl->type);
 		return true;
 	}
@@ -61,7 +61,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 	}
 
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-	const auto numUnpack  = scopeNode->childs.size() - 1;
+	const auto numUnpack  = scopeNode->children.size() - 1;
 
 	if (typeStruct->fields.empty())
 	{
@@ -320,7 +320,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	if (!typeExpression->identifier)
 		return true;
 
-	const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+	const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
 	if (identifier->callParameters)
 	{
 		Diagnostic diag{assign, Err(Err0063)};
@@ -331,10 +331,10 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	const auto sourceFile      = context->sourceFile;
 	identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
 
-	const auto numParams = assign->childs.size();
+	const auto numParams = assign->children.size();
 	for (size_t i = 0; i < numParams; i++)
 	{
-		const auto child = assign->childs[0];
+		const auto child = assign->children[0];
 		const auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
 		Ast::removeFromParent(child);
 		Ast::addChildBack(param, child);
@@ -346,7 +346,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	identifier->callParameters->inheritAstFlagsOr(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
 	identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
 	identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-	typeExpression->removeAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS | AST_VALUE_COMPUTED);
+	typeExpression->removeAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN | AST_VALUE_COMPUTED);
 	typeExpression->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
 
 	Ast::removeFromParent(varDecl->assignment);
@@ -429,7 +429,7 @@ TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer*
 
 	if (node->parent->kind == AstNodeKind::AffectOp)
 	{
-		result = node->parent->childs.front()->typeInfo;
+		result = node->parent->children.front()->typeInfo;
 	}
 	else if (node->parent->kind == AstNodeKind::VarDecl)
 	{
@@ -456,7 +456,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 	if (frontType->isStruct())
 	{
 		const auto op    = mpl->parent;
-		const auto front = op->childs.front();
+		const auto front = op->children.front();
 		SWAG_ASSERT(op->kind == AstNodeKind::AffectOp);
 
 		typeLambda = mpl->deducedLambdaType;
@@ -470,7 +470,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 				if (nodeParam->ownerFct->captureParameters)
 					tryType->addFlag(TYPEINFO_CLOSURE);
 
-				for (size_t i = 0; i < nodeParam->ownerFct->parameters->childs.size(); i++)
+				for (size_t i = 0; i < nodeParam->ownerFct->parameters->children.size(); i++)
 				{
 					auto p      = TypeManager::makeParam();
 					p->typeInfo = g_TypeMgr->typeInfoUndefined;
@@ -521,7 +521,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 
 	if (paramIdx >= typeLambda->parameters.count)
 	{
-		const Diagnostic diag{nodeParam, FMT(Err(Err0630), typeLambda->parameters.count, nodeParam->parent->childs.count)};
+		const Diagnostic diag{nodeParam, FMT(Err(Err0630), typeLambda->parameters.count, nodeParam->parent->children.count)};
 		return context->report(diag);
 	}
 
@@ -581,7 +581,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	if (node->assignment && node->assignment->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
 	{
 		if (!node->type || !node->type->typeInfo->isStruct())
-			return context->report({node->assignment->childs.front(), FMT(Err(Err0403), node->assignment->childs.front()->token.c_str())});
+			return context->report({node->assignment->children.front(), FMT(Err(Err0403), node->assignment->children.front()->token.c_str())});
 	}
 
 	uint32_t symbolFlags = 0;
@@ -840,7 +840,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		// Deduce size of array
 		if (typeArray->count == UINT32_MAX)
 		{
-			typeArray->count      = static_cast<uint32_t>(node->assignment->childs.size());
+			typeArray->count      = static_cast<uint32_t>(node->assignment->children.size());
 			typeArray->totalCount = typeArray->count;
 			typeArray->sizeOf     = typeArray->count * typeArray->pointedType->sizeOf;
 			typeArray->name       = FMT("[%d] %s", typeArray->count, typeArray->pointedType->getDisplayNameC());
@@ -885,7 +885,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
 			auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UN_CONST | CASTFLAG_AUTO_OP_CAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT |
 				CASTFLAG_ACCEPT_PENDING;
-			if (node->type->hasAstFlag(AST_FROM_GENERIC_REPLACE) || (node->type->childs.count && node->type->childs.back()->hasAstFlag(AST_FROM_GENERIC_REPLACE)))
+			if (node->type->hasAstFlag(AST_FROM_GENERIC_REPLACE) || (node->type->children.count && node->type->children.back()->hasAstFlag(AST_FROM_GENERIC_REPLACE)))
 				SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
 			else
 				SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
@@ -945,7 +945,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				auto nodeWhere = node->assignment;
 				auto over      = nodeWhere->resolvedSymbolOverload;
 				if (nodeWhere->kind == AstNodeKind::IdentifierRef)
-					nodeWhere = nodeWhere->childs.back();
+					nodeWhere = nodeWhere->children.back();
 				Diagnostic diag{nodeWhere, nodeWhere->token, Err(Err0371)};
 				return context->report(diag, Diagnostic::hereIs(over));
 			}
@@ -1040,8 +1040,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	{
 		auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
 		while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-			typeExpression = castAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
-		auto identifier = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+			typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
+		auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
 
 		TypeInfoStruct* typeStruct = nullptr;
 		if (node->typeInfo->isStruct())
@@ -1057,7 +1057,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		if (typeStruct && identifier->callParameters)
 		{
 			typeStruct->flattenUsingFields();
-			if (identifier->callParameters->childs.size() == typeStruct->flattenFields.size())
+			if (identifier->callParameters->children.size() == typeStruct->flattenFields.size())
 				node->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
 		}
 	}
@@ -1226,11 +1226,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		// inside the tuple, so we do not have to generate bytecode !
 		if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
 		{
-			node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+			node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 			SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
 			symbolFlags |= OVERLOAD_TUPLE_UNPACK;
 			storageOffset = 0;
-			for (auto& c : node->assignment->childs)
+			for (auto& c : node->assignment->children)
 			{
 				SWAG_ASSERT(c->resolvedSymbolOverload);
 				storageOffset += c->resolvedSymbolOverload->computedValue.storageOffset;
@@ -1242,18 +1242,18 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		{
 			auto assignment = node->assignment;
 			if (assignment && (assignment->kind == AstNodeKind::Catch || assignment->kind == AstNodeKind::Try || assignment->kind == AstNodeKind::Assume))
-				assignment = assignment->childs.front();
+				assignment = assignment->children.front();
 
 			// :DirectInlineLocalVar
 			if (assignment &&
 				assignment->kind == AstNodeKind::IdentifierRef &&
-				!assignment->childs.back()->childs.empty() &&
+				!assignment->children.back()->children.empty() &&
 				assignment->typeInfo == node->typeInfo &&
-				assignment->childs.back()->childs.back()->kind == AstNodeKind::Inline &&
-				assignment->childs.back()->childs.back()->hasAstFlag(AST_TRANSIENT))
+				assignment->children.back()->children.back()->kind == AstNodeKind::Inline &&
+				assignment->children.back()->children.back()->hasAstFlag(AST_TRANSIENT))
 			{
-				SWAG_ASSERT(assignment->childs.back()->childs.back()->computedValue);
-				storageOffset = assignment->childs.back()->childs.back()->computedValue->storageOffset;
+				SWAG_ASSERT(assignment->children.back()->children.back()->computedValue);
+				storageOffset = assignment->children.back()->children.back()->computedValue->storageOffset;
 				node->addSpecFlag(AstVarDecl::SPECFLAG_INLINE_STORAGE);
 			}
 			else

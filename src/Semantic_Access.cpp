@@ -131,7 +131,7 @@ void Semantic::computeAccess(AstNode* node)
 void Semantic::computeAccessRec(AstNode* node)
 {
 	setNodeAccess(node);
-	for (const auto c : node->childs)
+	for (const auto c : node->children)
 	{
 		if (!canInheritAccess(c))
 			continue;
@@ -254,7 +254,7 @@ namespace
 			}
 		}
 
-		for (const auto c : n->childs)
+		for (const auto c : n->children)
 		{
 			const auto res = getErrorCulprit(c, onNode);
 			if (res)

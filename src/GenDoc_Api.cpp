@@ -149,10 +149,10 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
 			{
 				const AstFuncDecl* funcNode = castAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
 				parameters                  = "(";
-				if (funcNode->parameters && !funcNode->parameters->childs.empty())
+				if (funcNode->parameters && !funcNode->parameters->children.empty())
 				{
 					bool firstParam = true;
-					for (const auto c : funcNode->parameters->childs)
+					for (const auto c : funcNode->parameters->children)
 					{
 						if (c->kind != AstNodeKind::FuncDeclParam)
 							continue;
@@ -329,7 +329,7 @@ void GenDoc::outputType(AstNode* node)
 	else if (node->kind == AstNodeKind::TypeAlias)
 	{
 		const auto typeDecl = castAst<AstAlias>(node, AstNodeKind::TypeAlias);
-		outputCode(getOutputNode(typeDecl->childs.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
+		outputCode(getOutputNode(typeDecl->children.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
 	}
 }
 

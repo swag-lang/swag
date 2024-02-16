@@ -81,7 +81,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 		param->allocateExtension(ExtensionKind::Misc);
 		param->extMisc()->exportNode = firstAddedType;
 
-		param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+		param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
 		Ast::removeFromParent(firstAddedType);
 		Ast::addChildBack(param, firstAddedType);
@@ -244,7 +244,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
 				param->allocateExtension(ExtensionKind::Misc);
 				param->extMisc()->exportNode = typeExpr;
-				param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+				param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
 				Ast::removeFromParent(typeExpr);
 				Ast::addChildBack(param, typeExpr);
@@ -382,7 +382,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 	const auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
 	*result          = idRef;
 
-	idRef->childs.back()->addAstFlag(AST_GENERATED);
+	idRef->children.back()->addAstFlag(AST_GENERATED);
 	Ast::removeFromParent(structNode);
 	Ast::addChildBack(newParent, structNode);
 	structNode->inheritOwners(newParent);
@@ -430,7 +430,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
 	{
 		SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
 		if (inTypeVarDecl)
-			node->identifier->childs.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+			node->identifier->children.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
 		node->token.endLocation = node->identifier->token.endLocation;
 		return true;
 	}
@@ -489,7 +489,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
 	const auto node = Ast::newTypeExpression(sourceFile, parent, this);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
 	// Const keyword
 	if (token.id == TokenId::KwdConst)
@@ -608,7 +608,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 	{
 		const auto node = Ast::newTypeExpression(sourceFile, parent, this);
 		*result         = node;
-		node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+		node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 		node->typeInfo = g_TypeMgr->typeInfoCode;
 		node->typeFlags |= TYPEFLAG_IS_CODE;
 		SWAG_CHECK(eatToken());
@@ -621,7 +621,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 		const auto node   = Ast::newTypeExpression(sourceFile, parent, this);
 		*result           = node;
 		node->semanticFct = Semantic::resolveRetVal;
-		node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+		node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 		node->typeFlags |= TYPEFLAG_IS_RETVAL;
 
 		// retval type can be followed by structure initializer, like a normal struct
@@ -633,7 +633,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 		if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
 		{
 			node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
-			const auto id    = castAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+			const auto id    = castAst<AstIdentifier>(node->identifier->children.back(), AstNodeKind::Identifier);
 			SWAG_CHECK(eatToken());
 			SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
 			id->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);

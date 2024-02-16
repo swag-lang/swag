@@ -151,7 +151,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 {
 	const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	node->allocateExtension(ExtensionKind::Semantic);
 	node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 	node->semanticFct                      = Semantic::resolveCompilerAssert;
@@ -168,7 +168,7 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
 {
 	const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerError, sourceFile, parent);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	node->allocateExtension(ExtensionKind::Semantic);
 	node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 	node->semanticFct                      = Semantic::resolveCompilerError;
@@ -184,7 +184,7 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
 {
 	const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerWarning, sourceFile, parent);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	node->allocateExtension(ExtensionKind::Semantic);
 	node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 	node->semanticFct                      = Semantic::resolveCompilerWarning;
@@ -208,7 +208,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
 	node->semanticFct                      = Semantic::resolveCompilerValidIfExpression;
 	SWAG_CHECK(eatToken());
 	parent->addAstFlag(AST_HAS_SELECT_IF);
-	node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
 	// Not for the 3 special special functions
 	if (parent->token.text == g_LangSpec->name_opDrop ||
@@ -227,7 +227,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
 		const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
 		idRef->token.startLocation      = node->token.startLocation;
 		idRef->token.endLocation        = node->token.endLocation;
-		const auto identifier           = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+		const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
 		identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
 		identifier->token.startLocation = node->token.startLocation;
 		identifier->token.endLocation   = node->token.endLocation;
@@ -259,7 +259,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
 
 		const auto idRef = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
 		idRef->inheritTokenLocation(node);
-		const auto identifier      = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+		const auto identifier      = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
 		identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
 		identifier->inheritTokenLocation(node);
 	}
@@ -283,7 +283,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 
 	const auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	node->semanticFct = Semantic::resolveCompilerRun;
 	SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
 	SWAG_CHECK(eatSemiCol("[[#run]] statement"));
@@ -294,7 +294,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 {
 	const auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	node->allocateExtension(ExtensionKind::Semantic);
 	node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 	node->semanticFct                      = Semantic::resolveCompilerRun;
@@ -310,7 +310,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 		const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
 		idRef->token.startLocation      = node->token.startLocation;
 		idRef->token.endLocation        = node->token.endLocation;
-		const auto identifier           = castAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+		const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
 		identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
 		identifier->token.startLocation = node->token.startLocation;
 		identifier->token.endLocation   = node->token.endLocation;
@@ -328,7 +328,7 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
 {
 	const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
 	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	node->allocateExtension(ExtensionKind::Semantic);
 	node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 	node->semanticFct                      = Semantic::resolveCompilerPrint;
@@ -531,7 +531,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 		{
 			parent = sourceFile->astRoot;
 
-			// Add front in case astRoot already has some childs (if the #global comes after another one).
+			// Add front in case astRoot already has some children (if the #global comes after another one).
 			// We need #global attributes to be first in the file, before other #globals (namespaces, public etc...).
 			// Otherwise we can have a race condition between multiple globals.
 			Ast::addChildFront(parent, resultNode);
@@ -551,11 +551,11 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 	{
 		SWAG_VERIFY(sourceFile->isCfgFile, context->report({sourceFile, token, Err(Err0437)}));
 
-		auto prevCount = parent->childs.count;
+		auto prevCount = parent->children.count;
 		SWAG_CHECK(doUsing(parent, &dummyResult));
-		while (prevCount != parent->childs.count)
+		while (prevCount != parent->children.count)
 		{
-			sourceFile->module->buildParameters.globalUsing.push_back(parent->childs[prevCount]);
+			sourceFile->module->buildParameters.globalUsing.push_back(parent->children[prevCount]);
 			prevCount++;
 		}
 	}
@@ -627,7 +627,7 @@ bool Parser::doCompilerDependencies(AstNode* parent)
 	if (sourceFile->module->kind != ModuleKind::Config)
 	{
 		node->addAstFlag(AST_NO_SEMANTIC);
-		node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+		node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	}
 
 	return true;

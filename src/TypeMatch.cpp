@@ -280,7 +280,7 @@ namespace
 			return;
 
 		auto callParameter = context.parameters[0];
-		callParameter->parent->addAstFlag(AST_MUST_SORT_CHILDS);
+		callParameter->parent->addAstFlag(AST_MUST_SORT_CHILDREN);
 
 		AstFuncCallParam fakeParam;
 		Ast::constructNode(&fakeParam);
@@ -479,7 +479,7 @@ namespace
 
 			if (myTypeInfo->isGeneric())
 			{
-				const auto firstChild = callParameter->childs.empty() ? nullptr : callParameter->childs.front();
+				const auto firstChild = callParameter->children.empty() ? nullptr : callParameter->children.front();
 				if (firstChild)
 				{
 					bool isValue = false;

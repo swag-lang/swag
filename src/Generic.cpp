@@ -44,13 +44,13 @@ void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatc
 	// Be sure number of overloads has not changed since then
 	if (firstMatch.numOverloadsWhenChecked != symbol->overloads.size())
 	{
-		context->result = ContextResult::NewChilds;
+		context->result = ContextResult::NewChildren;
 		return;
 	}
 
 	if (firstMatch.numOverloadsInitWhenChecked != symbol->cptOverloadsInit)
 	{
-		context->result = ContextResult::NewChilds;
+		context->result = ContextResult::NewChildren;
 		return;
 	}
 
@@ -136,14 +136,14 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
 			// :DupGen
 			// We generate a new struct with the wanted generic parameters to have those names for replacement.
 			auto newStructType = castTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
-			if (newStructType->genericParameters.size() == genericParameters->childs.size() && !genericParameters->childs.empty())
+			if (newStructType->genericParameters.size() == genericParameters->children.size() && !genericParameters->children.empty())
 			{
 				const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
 				newStructType            = castTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
-				for (size_t i = 0; i < genericParameters->childs.size(); i++)
+				for (size_t i = 0; i < genericParameters->children.size(); i++)
 				{
-					newStructType->genericParameters[i]->name     = genericParameters->childs[i]->typeInfo->name;
-					newStructType->genericParameters[i]->typeInfo = genericParameters->childs[i]->typeInfo;
+					newStructType->genericParameters[i]->name     = genericParameters->children[i]->typeInfo->name;
+					newStructType->genericParameters[i]->typeInfo = genericParameters->children[i]->typeInfo;
 				}
 
 				typeWasForced->forceComputeName();

@@ -70,7 +70,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 		bc->profileCallCount++;
 		bc->profileStart = OS::timerNow();
 		if (context->oldBc)
-			context->oldBc->profileChilds.insert(bc);
+			context->oldBc->profileChildren.insert(bc);
 	}
 #endif
 

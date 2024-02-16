@@ -118,14 +118,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 	const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
 	const auto funcDecl = castAst<AstFuncDecl>(g_ByteCodeDebugger.cxtBc->node, AstNodeKind::FuncDecl);
-	if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
+	if (!funcDecl->parameters || funcDecl->parameters->children.empty())
 	{
 		printCmdError("no arguments");
 		return BcDbgCommandResult::Continue;
 	}
 
 	Utf8 result;
-	for (const auto l : funcDecl->parameters->childs)
+	for (const auto l : funcDecl->parameters->children)
 		appendTypedValue(context, filter, l, g_ByteCodeDebugger.cxtBp, nullptr, result);
 	printLong(result);
 

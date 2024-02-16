@@ -96,9 +96,9 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 
 	// When this is a closure, we have /capture params/ref to the function/capture block/ref to the capture block
 	if (node->lambda && node->lambda->captureParameters)
-		child = node->childs[1];
+		child = node->children[1];
 	else
-		child = node->childs.front();
+		child = node->children.front();
 
 	SWAG_CHECK(checkCanTakeAddress(context, child));
 	SWAG_CHECK(checkIsConcrete(context, child));
@@ -122,7 +122,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 	// Block capture
 	if (node->lambda && node->lambda->captureParameters)
 	{
-		const auto     typeBlock = castTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
+		const auto     typeBlock = castTypeInfo<TypeInfoStruct>(node->children.back()->typeInfo, TypeInfoKind::Struct);
 		constexpr auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
 		SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report({node->lambda->captureParameters, FMT(Err(Err0026), typeBlock->sizeOf, MaxSize)}));
 	}
@@ -133,7 +133,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 bool Semantic::resolveMakePointer(SemanticContext* context)
 {
 	const auto node     = castAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
-	const auto child    = node->childs.front();
+	const auto child    = node->children.front();
 	auto       typeInfo = child->typeInfo;
 
 	if (!child->resolvedSymbolName)
@@ -151,7 +151,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 
 	if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET))
 	{
-		if (child->kind != AstNodeKind::IdentifierRef || child->childs.back()->kind != AstNodeKind::ArrayPointerIndex)
+		if (child->kind != AstNodeKind::IdentifierRef || child->children.back()->kind != AstNodeKind::ArrayPointerIndex)
 		{
 			const Diagnostic diag{node, node->token, Err(Err0185)};
 			return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload->node));
@@ -161,7 +161,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 	if (child->resolvedSymbolName->kind == SymbolKind::Function)
 	{
 		// For a function, if no parameters, then this is for a lambda
-		const auto back = child->childs.back();
+		const auto back = child->children.back();
 		if (back->kind != AstNodeKind::FuncCall)
 		{
 			if (back->kind != AstNodeKind::Identifier)
@@ -207,7 +207,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 		forceConst = typeInfo->isConst();
 		typeInfo   = TypeManager::concretePtrRef(typeInfo);
 		child->addSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS);
-		child->childs.back()->addSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS);
+		child->children.back()->addSemFlag(SEMFLAG_FORCE_NO_TAKE_ADDRESS);
 		node->byteCodeFct = ByteCodeGen::emitPassThrough;
 	}
 
@@ -228,7 +228,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 	// Taking the address of an array element is ok for pointer arithmetic
 	if (child->kind == AstNodeKind::IdentifierRef)
 	{
-		const auto last = child->childs.back();
+		const auto last = child->children.back();
 		if (last->kind == AstNodeKind::ArrayPointerIndex)
 			ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
 	}
@@ -447,7 +447,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 bool Semantic::resolveMoveRef(SemanticContext* context)
 {
 	const auto node  = context->node;
-	const auto front = node->childs.front();
+	const auto front = node->children.front();
 	node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
 	auto typeInfo = TypeManager::concreteType(front->typeInfo);
@@ -484,7 +484,7 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
 bool Semantic::resolveKeepRef(SemanticContext* context)
 {
 	const auto node  = context->node;
-	const auto front = node->childs.front();
+	const auto front = node->children.front();
 	node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
 	auto typeInfo = TypeManager::concreteType(front->typeInfo);
@@ -492,7 +492,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 	{
 		Diagnostic diag{node, node->token, FMT(Err(Err0365), typeInfo->getDisplayNameC())};
 
-		if (front->kind == AstNodeKind::IdentifierRef && front->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+		if (front->kind == AstNodeKind::IdentifierRef && front->children.front()->kind == AstNodeKind::ArrayPointerIndex)
 		{
 			diag.addNote(front, Nte(Nte0026));
 			return context->report(diag);
@@ -546,10 +546,10 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 	if (node->parent->kind == AstNodeKind::IdentifierRef)
 	{
 		const auto parent = castAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
-		if (node != parent->childs.back())
+		if (node != parent->children.back())
 		{
 			// The last ArrayPointerIndex in a list [0, 0, 0] must dereference
-			if (node->childs[0]->kind != AstNodeKind::ArrayPointerIndex)
+			if (node->children[0]->kind != AstNodeKind::ArrayPointerIndex)
 				node->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 
 			// In order to resolve what's next, we need to fill the startScope of the identifier ref
@@ -1115,7 +1115,7 @@ bool Semantic::resolveInit(SemanticContext* context)
 		SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
 		SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
 		SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, FMT(Err(Err0057), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
-		const auto back = node->expression->childs.back();
+		const auto back = node->expression->children.back();
 		back->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 		back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
 	}
@@ -1143,8 +1143,8 @@ bool Semantic::resolveInit(SemanticContext* context)
 
 		if (pointedType->isNative() || pointedType->isPointer())
 		{
-			SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->parameters, FMT(Err(Err0637), pointedType->getDisplayNameC())}));
-			const auto child = node->parameters->childs.front();
+			SWAG_VERIFY(node->parameters->children.size() == 1, context->report({node->parameters, FMT(Err(Err0637), pointedType->getDisplayNameC())}));
+			const auto child = node->parameters->children.front();
 			SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
 		}
 		else if (pointedType->isStruct())
@@ -1153,7 +1153,7 @@ bool Semantic::resolveInit(SemanticContext* context)
 
 			SymbolMatchContext symMatchContext;
 			symMatchContext.reset();
-			for (auto child : node->parameters->childs)
+			for (auto child : node->parameters->children)
 				symMatchContext.parameters.push_back(child);
 
 			auto& listTryMatch = context->cacheListTryMatch;
@@ -1180,7 +1180,7 @@ bool Semantic::resolveInit(SemanticContext* context)
 				SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));
 				if (context->result == ContextResult::Pending)
 					return true;
-				if (context->result != ContextResult::NewChilds)
+				if (context->result != ContextResult::NewChildren)
 					break;
 				context->result = ContextResult::Done;
 			}

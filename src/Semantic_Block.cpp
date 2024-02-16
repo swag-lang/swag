@@ -121,9 +121,9 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 		const AstIdentifier* identifier = nullptr;
 		if (node->parent->kind == AstNodeKind::Identifier)
 			identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-		for (size_t i = 0; i < func->parameters->childs.size(); i++)
+		for (size_t i = 0; i < func->parameters->children.size(); i++)
 		{
-			const auto funcParam = func->parameters->childs[i];
+			const auto funcParam = func->parameters->children[i];
 
 			// If the call parameter of the inlined function is constant, then we register it in a specific
 			// constant scope, not in the caller (for mixins)/inline scope.
@@ -134,7 +134,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 			AstFuncCallParam* orgCallParam = nullptr;
 			if (identifier && identifier->callParameters)
 			{
-				for (const auto& child : identifier->callParameters->childs)
+				for (const auto& child : identifier->callParameters->children)
 				{
 					const auto callParam = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
 					if (callParam->indexParam != static_cast<int>(i))
@@ -553,7 +553,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
 				if (!node->expression->computedValue->reg.u64)
 				{
 					node->addAstFlag(AST_NO_BYTECODE);
-					node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+					node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 					return true;
 				}
 			}
@@ -716,7 +716,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 		varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
 		varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
 		Ast::clone(node->expression, varDecl->assignment);
-		varDecl->assignment->childs.front()->addAstFlag(AST_NO_SEMANTIC);
+		varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
 		newVar = varDecl;
 
 		firstAliasVar = 2;
@@ -757,7 +757,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 		varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
 		varDecl->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
 		Ast::clone(node->expression, varDecl->assignment);
-		varDecl->assignment->childs.front()->addAstFlag(AST_NO_SEMANTIC);
+		varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
 		newVar = varDecl;
 
 		firstAliasVar = 1;
@@ -925,13 +925,13 @@ bool Semantic::resolveVisit(SemanticContext* context)
 		return context->report({node->expression, FMT(Err(Err0418), typeInfo->getDisplayNameC())});
 	}
 
-	node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+	node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
 	Parser parser;
 	parser.setup(context, context->sourceFile->module, context->sourceFile);
 	SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
 
-	newExpression = node->childs.back();
+	newExpression = node->children.back();
 	if (newVar)
 	{
 		Ast::removeFromParent(newVar);
@@ -962,7 +962,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 	});
 
 	// First child is the let in the statement, and first child of this is the loop node
-	auto loopNode            = castAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+	auto loopNode            = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
 	loopNode->ownerBreakable = node->ownerBreakable;
 	Ast::removeFromParent(node->block);
 	Ast::addChildBack(loopNode->block, node->block);
@@ -989,7 +989,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 	// Re-root the parent scope of the user block so that it points to the scope of the loop block
 	auto ownerScope = node->block->ownerScope;
 	ownerScope->parentScope->removeChildNoLock(ownerScope);
-	ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
+	ownerScope->parentScope = loopNode->block->children.front()->ownerScope;
 	ownerScope->parentScope->addChildNoLock(ownerScope);
 
 	job->nodes.pop_back();
@@ -1029,9 +1029,9 @@ bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 	const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
 	if (node->ownerBreakable == node->altSubstBreakable)
-		node->defaultSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+		node->defaultSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 	else
-		node->altSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+		node->altSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
 	return true;
 }

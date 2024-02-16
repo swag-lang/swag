@@ -93,7 +93,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 	addArg("all", "--stats-freq-op1", nullptr, CommandLineType::String, &cmdLine->statsFreqOp1, nullptr, "[stats] name of the bytecode op to display statistics about");
 	addArg("bu sc ru te", "--profile", nullptr, CommandLineType::Bool, &cmdLine->profile, nullptr, "[stats] profile bytecode execution");
 	addArg("bu sc ru te", "--profile-filter", nullptr, CommandLineType::String, &cmdLine->profileFilter, nullptr, "[stats] filter profile output names");
-	addArg("bu sc ru te", "--profile-childs", nullptr, CommandLineType::Int, &cmdLine->profileChildsLevel, nullptr, "[stats] display to the a given amount of sub-functions level");
+	addArg("bu sc ru te", "--profile-children", nullptr, CommandLineType::Int, &cmdLine->profileChildsLevel, nullptr, "[stats] display to the a given amount of sub-functions level");
 #endif
 
 	addArg("cl sc", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");

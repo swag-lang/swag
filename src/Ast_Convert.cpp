@@ -22,7 +22,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 	if (fromNode->kind == AstNodeKind::FuncCallParam)
 	{
 		fromNode->setPassThrough();
-		fromNode = fromNode->childs.front();
+		fromNode = fromNode->children.front();
 		if (fromNode->kind != AstNodeKind::ExpressionList)
 			return true;
 	}
@@ -55,7 +55,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 	typeNode->identifier->addAstFlag(AST_GENERATED);
 	typeNode->identifier->inheritTokenLocation(fromNode);
 
-	const auto back = typeNode->identifier->childs.back();
+	const auto back = typeNode->identifier->children.back();
 	back->removeAstFlag(AST_NO_BYTECODE);
 	back->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
 
@@ -68,17 +68,17 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 	identifierRef->addAstFlag(AST_R_VALUE | AST_TRANSIENT | AST_GENERATED);
 
 	// Make parameters
-	const auto identifier = castAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+	const auto identifier = castAst<AstIdentifier>(typeNode->identifier->children.back(), AstNodeKind::Identifier);
 	identifier->inheritTokenLocation(fromNode);
 	identifier->callParameters = newFuncCallParams(sourceFile, identifier);
 	identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
 
-	int countParams = static_cast<int>(fromNode->childs.size());
+	int countParams = static_cast<int>(fromNode->children.size());
 	if (parentForRef == fromNode)
 		countParams--;
 	for (int i = 0; i < countParams; i++)
 	{
-		const auto   oneChild = fromNode->childs[i];
+		const auto   oneChild = fromNode->children[i];
 		const auto   oneParam = newFuncCallParam(sourceFile, identifier->callParameters);
 		CloneContext cloneContext;
 		cloneContext.parent = oneParam;
@@ -105,13 +105,13 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 		const int maxCount = static_cast<int>(typeStruct->fields.size());
 		if (countParams > maxCount)
 		{
-			const Diagnostic diag{fromNode->childs[maxCount], FMT(Err(Err0636), maxCount, countParams)};
+			const Diagnostic diag{fromNode->children[maxCount], FMT(Err(Err0636), maxCount, countParams)};
 			return context->report(diag);
 		}
 
 		if (countParams < maxCount)
 		{
-			const Diagnostic diag{fromNode->childs.back(), FMT(Err(Err0596), maxCount, countParams)};
+			const Diagnostic diag{fromNode->children.back(), FMT(Err(Err0596), maxCount, countParams)};
 			return context->report(diag);
 		}
 	}
@@ -196,9 +196,9 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 	const int countParams = static_cast<int>(typeList->subTypes.size());
 	const int maxCount    = static_cast<int>(toType->fields.size());
 	if (countParams > maxCount)
-		return context->report({fromNode->childs.front()->childs[maxCount], FMT(Err(Err0636), maxCount, countParams)});
+		return context->report({fromNode->children.front()->children[maxCount], FMT(Err(Err0636), maxCount, countParams)});
 	if (countParams < maxCount)
-		return context->report({fromNode->childs.front()->childs.back(), FMT(Err(Err0596), maxCount, countParams)});
+		return context->report({fromNode->children.front()->children.back(), FMT(Err(Err0596), maxCount, countParams)});
 
 	// Each field of the toType struct must have a type given by the tuple.
 	// But as that tuple can have named parameters, we need to find the correct type depending
@@ -250,7 +250,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 	SWAG_CHECK(convertLiteralTupleToStructVar(context, typeInfo, fromNode, true));
 
 	context->baseJob->nodes.push_back(structNode);
-	context->result = ContextResult::NewChilds1;
+	context->result = ContextResult::NewChildren1;
 
 	return true;
 }
@@ -275,12 +275,12 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
 	const auto typeList = castTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
 	Utf8       varName;
-	const int  numChilds = static_cast<int>(typeList->subTypes.size());
-	for (int idx = 0; idx < numChilds; idx++)
+	const int  numChildren = static_cast<int>(typeList->subTypes.size());
+	for (int idx = 0; idx < numChildren; idx++)
 	{
 		const auto typeParam = typeList->subTypes[idx];
 		const auto childType = TypeManager::concreteType(typeParam->typeInfo, CONCRETE_FUNC);
-		const auto subAffect = assignment->childs[idx];
+		const auto subAffect = assignment->children[idx];
 
 		bool autoName = false;
 
@@ -291,9 +291,9 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 		}
 
 		// If this is a single identifier, then we take the identifier name
-		else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
+		else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->children.back()->kind == AstNodeKind::Identifier)
 		{
-			varName         = subAffect->childs.back()->token.text;
+			varName         = subAffect->children.back()->token.text;
 			typeParam->name = varName;
 		}
 
@@ -371,7 +371,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, 
 
 	// Reference to that generated structure
 	const auto typeExpression = newTypeExpression(sourceFile, parent);
-	typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDS | AST_GENERATED);
+	typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDREN | AST_GENERATED);
 	typeExpression->identifier = newIdentifierRef(sourceFile, structNode->token.text, typeExpression);
 	*result                    = typeExpression;
 	return true;
@@ -461,7 +461,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	cloneContext.parent     = typeNode;
 	cloneContext.cloneFlags = CLONE_RAW;
 	typeNode->identifier    = identifier->identifierRef()->clone(cloneContext);
-	const auto back         = castAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+	const auto back         = castAst<AstIdentifier>(typeNode->identifier->children.back(), AstNodeKind::Identifier);
 	back->removeAstFlag(AST_NO_BYTECODE);
 	back->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
 
@@ -486,9 +486,9 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	identifierRef->extMisc()->exportNode = identifier;
 
 	identifierRef->allocateExtension(ExtensionKind::Owner);
-	for (auto c : identifierRef->childs)
+	for (auto c : identifierRef->children)
 		identifierRef->extOwner()->nodesToFree.push_back(c);
-	identifierRef->childs.clear();
+	identifierRef->children.clear();
 	const auto idNode = newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
 	idNode->addAstFlag(AST_R_VALUE | AST_TRANSIENT);
 
@@ -503,7 +503,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	context->baseJob->nodes.pop_back();
 	context->baseJob->nodes.push_back(idNode);
 	context->baseJob->nodes.push_back(varNode);
-	context->result = ContextResult::NewChilds;
+	context->result = ContextResult::NewChildren;
 
 	return true;
 }
@@ -543,7 +543,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
 	}
 
 	const auto typeExpression = newTypeExpression(sourceFile, parent);
-	typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDS);
+	typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 	if (childType->isConst())
 		typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
 

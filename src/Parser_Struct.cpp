@@ -59,7 +59,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 		identifierStruct                          = implNode->identifierFor;
 		implInterface                             = true;
 
-		const auto last = castAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
+		const auto last = castAst<AstIdentifier>(identifierStruct->children.back(), AstNodeKind::Identifier);
 		SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Err0686)}));
 	}
 	else
@@ -72,7 +72,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 	SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[impl]] body"));
 
 	// Get existing scope or create a new one
-	const auto& structName = identifierStruct->childs.back()->token.text;
+	const auto& structName = identifierStruct->children.back()->token.text;
 	implNode->token.text   = structName;
 
 	const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
@@ -138,7 +138,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 	if (implInterface)
 	{
 		ScopedLock lk(newScope->symTable.mutex);
-		Utf8       itfName  = implNode->identifier->childs.back()->token.text;
+		Utf8       itfName  = implNode->identifier->children.back()->token.text;
 		const auto symbol   = newScope->symTable.findNoLock(itfName);
 		Scope*     subScope = nullptr;
 		if (!symbol)
@@ -147,7 +147,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 
 			// :FakeImplForType
 			const auto typeInfo  = makeType<TypeInfoStruct>();
-			typeInfo->name       = implNode->identifier->childs.back()->token.text;
+			typeInfo->name       = implNode->identifier->children.back()->token.text;
 			typeInfo->structName = typeInfo->name;
 			typeInfo->scope      = subScope;
 			typeInfo->declNode   = implNode;

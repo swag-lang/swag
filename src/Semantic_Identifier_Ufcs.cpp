@@ -75,9 +75,9 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
 		else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
 			identifierRef->previousResolvedNode &&
 			identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-			!identifierRef->previousResolvedNode->childs.empty() &&
-			identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&
-			identifierRef->previousResolvedNode->childs.back()->kind == AstNodeKind::Inline)
+			!identifierRef->previousResolvedNode->children.empty() &&
+			identifierRef->previousResolvedNode->children.front()->kind == AstNodeKind::FuncCallParams &&
+			identifierRef->previousResolvedNode->children.back()->kind == AstNodeKind::Inline)
 			canTry = true;
 
 		if (canTry)
@@ -151,7 +151,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 
 	// Insert variable in first position. Need to update child
 	// rank of all brothers.
-	node->callParameters->childs.push_front(fctCallParam);
+	node->callParameters->children.push_front(fctCallParam);
 
 	fctCallParam->parent   = node->callParameters;
 	fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
@@ -189,7 +189,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 			// Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
 			// Copy all previous references to the one we want to pass as parameter
 			// X.Y.call(...) => X.Y.call(X.Y, ...)
-			for (const auto child : identifierRef->childs)
+			for (const auto child : identifierRef->children)
 			{
 				const auto copyChild = Ast::cloneRaw(child, idRef);
 
@@ -218,7 +218,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 		// the first call parameter
 		if (dependentVar == identifierRef->previousResolvedNode)
 		{
-			for (const auto child : dependentVar->childs)
+			for (const auto child : dependentVar->children)
 			{
 				const auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
 				copyChild->inheritOwners(fctCallParam);
@@ -264,7 +264,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 			// Copy all previous references to the one we want to pass as parameter
 			// X.Y.call(...) => X.Y.call(X.Y, ...)
 			// We copy instead of moving in case this will be evaluated another time (inline)
-			for (const auto child : identifierRef->childs)
+			for (const auto child : identifierRef->children)
 			{
 				const auto copyChild = Ast::cloneRaw(child, idRef);
 				child->addAstFlag(AST_NO_BYTECODE);

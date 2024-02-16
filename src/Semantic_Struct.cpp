@@ -23,7 +23,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 	const auto node = castAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
 	if (id->resolvedSymbolName->kind != SymbolKind::Struct)
-		return context->report({id->childs.back(), FMT(Err(Err0160), id->resolvedSymbolName->name.c_str(), Naming::aKindName(id->resolvedSymbolName->kind).c_str())});
+		return context->report({id->children.back(), FMT(Err(Err0160), id->resolvedSymbolName->name.c_str(), Naming::aKindName(id->resolvedSymbolName->kind).c_str())});
 
 	const auto structDecl = castAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 
@@ -76,8 +76,8 @@ bool Semantic::resolveImplForType(SemanticContext* context)
 	// Race condition in case a templated function is instantiated in the impl block during that access
 	{
 		SharedLock lk(node->mutex);
-		first = node->childs[0];
-		back  = node->childs[1];
+		first = node->children[0];
+		back  = node->children[1];
 	}
 
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
@@ -137,14 +137,14 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 	typeInfo = node->identifierFor->typeInfo;
 	SWAG_ASSERT(typeInfo->isStruct());
 
-	VectorNative<AstNode*>& childs = context->tmpNodes;
+	VectorNative<AstNode*>& children = context->tmpNodes;
 	context->tmpNodes.clear();
-	flattenStructChilds(context, node, context->tmpNodes);
+	flattenStructChildren(context, node, context->tmpNodes);
 
-	SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
-	SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
-	const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Interface);
-	const auto typeStruct        = castTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
+	SWAG_ASSERT(node->children[0]->kind == AstNodeKind::IdentifierRef);
+	SWAG_ASSERT(node->children[1]->kind == AstNodeKind::IdentifierRef);
+	const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(node->children[0]->typeInfo, TypeInfoKind::Interface);
+	const auto typeStruct        = castTypeInfo<TypeInfoStruct>(node->children[1]->typeInfo, TypeInfoKind::Struct);
 
 	// Be sure interface has been fully solved
 	{
@@ -189,7 +189,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 	if (hasRegItf)
 		decreaseInterfaceRegCount(typeStruct);
 
-	for (const auto child : childs)
+	for (const auto child : children)
 	{
 		if (child->kind != AstNodeKind::FuncDecl)
 			continue;
@@ -261,8 +261,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 			case MatchResult::BadSignature:
 				{
 					const Diagnostic diag{childFct, childFct->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-					const auto       note = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2],
-					                                   FMT(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+					const auto       note = Diagnostic::note(childFct->parameters->children[bi.badSignatureNum2],
+					                                   FMT(Nte(Nte0102), childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
 					const auto note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
 					                                    FMT(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
 					return context->report(diag, note, note1);
@@ -390,11 +390,11 @@ bool Semantic::resolveInterface(SemanticContext* context)
 	uint32_t storageOffset = 0;
 	uint32_t storageIndex  = 0;
 
-	VectorNative<AstNode*>& childs = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->childs;
+	VectorNative<AstNode*>& children = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->children;
 	if (node->hasAstFlag(AST_STRUCT_COMPOUND))
 	{
 		context->tmpNodes.clear();
-		flattenStructChilds(context, node->content, context->tmpNodes);
+		flattenStructChildren(context, node->content, context->tmpNodes);
 	}
 
 	// itable
@@ -404,7 +404,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
 	typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
 	typeITable->flags |= TYPEINFO_STRUCT_IS_ITABLE;
 
-	for (auto child : childs)
+	for (auto child : children)
 	{
 		if (child->kind != AstNodeKind::VarDecl)
 			continue;
@@ -676,7 +676,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 	{
 		if (node->genericParameters)
 		{
-			for (const auto param : node->genericParameters->childs)
+			for (const auto param : node->genericParameters->children)
 			{
 				auto funcParam      = TypeManager::makeParam();
 				funcParam->name     = param->token.text;
@@ -729,10 +729,10 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 	return true;
 }
 
-void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
+void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
 {
 	SharedLock lock(parent->mutex);
-	for (auto child : parent->childs)
+	for (auto child : parent->children)
 	{
 		switch (child->kind)
 		{
@@ -743,16 +743,16 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
 		case AstNodeKind::CompilerIfBlock:
 		case AstNodeKind::CompilerAst:
 		case AstNodeKind::CompilerAssert:
-			flattenStructChilds(context, child, result);
+			flattenStructChildren(context, child, result);
 			continue;
 
 		case AstNodeKind::CompilerIf:
 			{
 				const AstIf* compilerIf = castAst<AstIf>(child, AstNodeKind::CompilerIf);
 				if (!compilerIf->ifBlock->hasAstFlag(AST_NO_SEMANTIC))
-					flattenStructChilds(context, compilerIf->ifBlock, result);
+					flattenStructChildren(context, compilerIf->ifBlock, result);
 				else if (compilerIf->elseBlock)
-					flattenStructChilds(context, compilerIf->elseBlock, result);
+					flattenStructChildren(context, compilerIf->elseBlock, result);
 				continue;
 			}
 
@@ -760,7 +760,7 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
 			{
 				const AstAttrUse* attrUse = castAst<AstAttrUse>(child, AstNodeKind::AttrUse);
 				if (attrUse->content->kind == AstNodeKind::Statement)
-					flattenStructChilds(context, attrUse->content, result);
+					flattenStructChildren(context, attrUse->content, result);
 				else
 					result.push_back(attrUse->content);
 				continue;
@@ -778,7 +778,7 @@ bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDec
 	ScopedLock lk1(structDecl->mutex);
 
 	// Execute #validif/#validifx block
-	const auto expr = structDecl->validif->childs.back();
+	const auto expr = structDecl->validif->children.back();
 
 	if (!expr->hasComputedValue())
 	{
@@ -841,7 +841,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	}
 
 	// Be default, a tuple is 'constexpr'
-	// If one of the childs is not, then the attribute will be removed
+	// If one of the children is not, then the attribute will be removed
 	if (typeInfo->isTuple())
 		node->addAttribute(ATTRIBUTE_CONSTEXPR);
 
@@ -851,18 +851,18 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
 	// No need to flatten structure if it's not a compound (optim)
-	VectorNative<AstNode*>& childs = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->childs;
+	VectorNative<AstNode*>& children = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->children;
 	if (node->hasAstFlag(AST_STRUCT_COMPOUND))
 	{
 		context->tmpNodes.clear();
-		flattenStructChilds(context, node->content, context->tmpNodes);
+		flattenStructChildren(context, node->content, context->tmpNodes);
 	}
 
 	typeInfo->alignOf = 0;
 	typeInfo->sizeOf  = 0;
 
-	// If one of my childs is incomplete, then we must wait
-	for (auto child : childs)
+	// If one of my children is incomplete, then we must wait
+	for (auto child : children)
 	{
 		// Waiting for myself !
 		if (child->typeInfo == typeInfo)
@@ -882,7 +882,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
 	{
 		SWAG_RACE_CONDITION_WRITE(typeInfo->raceFields);
-		for (auto child : childs)
+		for (auto child : children)
 		{
 			if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
 				continue;
@@ -1234,7 +1234,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	if (!typeInfo->isGeneric())
 	{
 		node->removeAstFlag(AST_NO_BYTECODE);
-		node->addAstFlag(AST_NO_BYTECODE_CHILDS);
+		node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 		SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
 
 		node->allocateExtension(ExtensionKind::ByteCode);

@@ -63,7 +63,7 @@ bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 
 bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
-	for (const auto child : node->childs)
+	for (const auto child : node->children)
 	{
 		SWAG_CHECK(checkIsConcreteOrType(context, child));
 		YIELD();
@@ -75,7 +75,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
 	typeInfo->declNode  = node;
 
 	node->addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
-	for (const auto child : node->childs)
+	for (const auto child : node->children)
 	{
 		if (!typeInfo->subTypes.empty())
 			typeInfo->name += ", ";
@@ -136,18 +136,18 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
 {
 	const auto node = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-	for (const auto child : node->childs)
+	for (const auto child : node->children)
 	{
 		SWAG_CHECK(checkIsConcreteOrType(context, child));
 		YIELD();
 	}
 
 	const auto typeInfo = makeType<TypeInfoList>(TypeInfoKind::TypeListArray);
-	SWAG_ASSERT(!node->childs.empty());
+	SWAG_ASSERT(!node->children.empty());
 	typeInfo->declNode = node;
 
 	node->addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
-	for (const auto child : node->childs)
+	for (const auto child : node->children)
 	{
 		auto       typeParam = TypeManager::makeParam();
 		const auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
@@ -218,11 +218,11 @@ bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node1,
 bool Semantic::resolveConditionalOp(SemanticContext* context)
 {
 	const auto node = context->node;
-	SWAG_ASSERT(node->childs.size() == 3);
+	SWAG_ASSERT(node->children.size() == 3);
 
-	const auto expression = node->childs[0];
-	const auto ifTrue     = node->childs[1];
-	const auto ifFalse    = node->childs[2];
+	const auto expression = node->children[0];
+	const auto ifTrue     = node->children[1];
+	const auto ifFalse    = node->children[2];
 	SWAG_CHECK(checkIsConcrete(context, expression));
 	SWAG_CHECK(checkIsConcreteOrType(context, ifTrue));
 	SWAG_CHECK(checkIsConcreteOrType(context, ifFalse));
@@ -263,18 +263,18 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 	// Constant expression
 	if (expression->hasComputedValue())
 	{
-		node->childs.clear();
+		node->children.clear();
 
 		if (expression->computedValue->reg.b)
 		{
 			node->inheritComputedValue(ifTrue);
-			node->childs.push_back(ifTrue);
+			node->children.push_back(ifTrue);
 			ifFalse->release();
 		}
 		else
 		{
 			node->inheritComputedValue(ifFalse);
-			node->childs.push_back(ifFalse);
+			node->children.push_back(ifFalse);
 			ifTrue->release();
 		}
 
@@ -293,10 +293,10 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 {
 	const auto node = context->node;
-	SWAG_ASSERT(node->childs.size() >= 2);
+	SWAG_ASSERT(node->children.size() >= 2);
 
-	const auto expression = node->childs[0];
-	const auto ifZero     = node->childs[1];
+	const auto expression = node->children[0];
+	const auto ifZero     = node->children[1];
 	SWAG_CHECK(checkIsConcrete(context, expression));
 	SWAG_CHECK(checkIsConcrete(context, ifZero));
 
@@ -392,8 +392,8 @@ bool Semantic::resolveDefer(SemanticContext* context)
 	const auto node   = castAst<AstDefer>(context->node, AstNodeKind::Defer);
 	node->byteCodeFct = ByteCodeGen::emitDefer;
 
-	SWAG_ASSERT(node->childs.size() == 1);
-	const auto expr = node->childs.front();
+	SWAG_ASSERT(node->children.size() == 1);
+	const auto expr = node->children.front();
 	expr->addAstFlag(AST_NO_BYTECODE);
 
 	return true;

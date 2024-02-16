@@ -50,7 +50,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
 	if (checkNode->kind == AstNodeKind::Statement || checkNode->kind == AstNodeKind::StatementNoScope)
 	{
-		for (const auto s : checkNode->childs)
+		for (const auto s : checkNode->children)
 			SWAG_CHECK(checkAttribute(context, oneAttribute, s));
 		return true;
 	}
@@ -59,7 +59,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 	{
 		const auto attrUse = castAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
 		if (checkNode->hasAstFlag(AST_GENERATED) && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->hasAstFlag(AST_GENERATED))
-			SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->childs.front()));
+			SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->children.front()));
 		else
 			SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
 		return true;
@@ -289,7 +289,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 		// Inherit some attributes and safety
 		inheritAttributesFrom(forNode, attributeFlags, safetyOn, safetyOff);
 
-		for (auto child : curAttr->childs)
+		for (auto child : curAttr->children)
 		{
 			if (child == curAttr->content)
 				continue;
@@ -372,11 +372,11 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 			//////
 			else if (child->token.text == g_LangSpec->name_Using)
 			{
-				auto id = castAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
+				auto id = castAst<AstIdentifier>(child->children.back(), AstNodeKind::Identifier);
 				id->addAstFlag(AST_NO_SEMANTIC);
 
-				SWAG_VERIFY(id->callParameters && !id->callParameters->childs.empty(), context->report({id, Err(Err0541)}));
-				for (auto c : id->callParameters->childs)
+				SWAG_VERIFY(id->callParameters && !id->callParameters->children.empty(), context->report({id, Err(Err0541)}));
+				for (auto c : id->callParameters->children)
 				{
 					auto ptr       = c->getConstantGenTypeInfo();
 					auto typeChild = context->sourceFile->module->typeGen.getRealType(c->computedValue->storageSegment, ptr);
@@ -670,7 +670,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context)
 
 bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 {
-	for (auto child : node->childs)
+	for (auto child : node->children)
 	{
 		if (child == node->content)
 			continue;
@@ -682,7 +682,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 
 		// Collect parameters
 		auto identifierRef = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-		auto identifier    = castAst<AstIdentifier>(identifierRef->childs.back());
+		auto identifier    = castAst<AstIdentifier>(identifierRef->children.back());
 
 		// Be sure this is an attribute
 		auto resolvedName = identifier->resolvedSymbolName;
@@ -716,8 +716,8 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 		uint32_t numParams = 0;
 		if (identifier->callParameters)
 		{
-			numParams = identifier->callParameters->childs.count;
-			for (auto one : identifier->callParameters->childs)
+			numParams = identifier->callParameters->children.count;
+			for (auto one : identifier->callParameters->children)
 			{
 				auto param = castAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
 				SWAG_CHECK(checkIsConstExpr(context, param->hasComputedValue(), param, Err(Err0037)));
@@ -740,7 +740,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 			countParams--;
 		for (int i = numParams; i < countParams; i++)
 		{
-			auto param = castAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+			auto param = castAst<AstVarDecl>(funcDecl->parameters->children[i], AstNodeKind::FuncDeclParam);
 			SWAG_ASSERT(param->assignment);
 
 			AttributeParameter attrParam;

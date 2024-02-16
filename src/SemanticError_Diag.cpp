@@ -56,7 +56,7 @@ namespace
 		const auto diag = new Diagnostic{errorParam.failedParam, msg};
 		errorParam.addError(diag);
 
-		const auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[errorParam.badParamIdx - 2], Nte(Nte0151));
+		const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[errorParam.badParamIdx - 2], Nte(Nte0151));
 		errorParam.addNote(note);
 	}
 
@@ -96,8 +96,8 @@ namespace
 		errorParam.addError(diag);
 
 		const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
-		SWAG_ASSERT(other < errorParam.oneTry->callParameters->childs.size());
-		const auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[other], Nte(Nte0165));
+		SWAG_ASSERT(other < errorParam.oneTry->callParameters->children.size());
+		const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[other], Nte(Nte0165));
 		errorParam.addNote(note);
 	}
 
@@ -122,7 +122,7 @@ namespace
 		const Utf8  niceName       = "the " + Naming::kindName(overload);
 
 		Diagnostic* diag;
-		if (!callParameters || callParameters->childs.empty())
+		if (!callParameters || callParameters->children.empty())
 			diag = new Diagnostic{node, node->token, FMT(Err(Err0540), Naming::kindName(overload).c_str())};
 		else if (errorParam.destAttrDecl)
 			diag = new Diagnostic{node, node->token, FMT(Err(Err0591), niceName.c_str())};
@@ -142,13 +142,13 @@ namespace
 			if (!errorParam.destParameters)
 				continue;
 
-			if (errorParam.destParameters->childs[si]->hasSpecFlag(AstVarDecl::SPECFLAG_UNNAMED))
-				diag->remarks.push_back(FMT(Nte(Nte0089), Naming::niceParameterRank(si + 1).c_str(), errorParam.destParameters->childs[si]->typeInfo->getDisplayNameC()));
+			if (errorParam.destParameters->children[si]->hasSpecFlag(AstVarDecl::SPECFLAG_UNNAMED))
+				diag->remarks.push_back(FMT(Nte(Nte0089), Naming::niceParameterRank(si + 1).c_str(), errorParam.destParameters->children[si]->typeInfo->getDisplayNameC()));
 			else
-				diag->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->childs[si]->token.c_str(),
-				                            errorParam.destParameters->childs[si]->typeInfo->getDisplayNameC()));
-			if (note && !errorParam.destParameters->childs[si]->isGeneratedSelf())
-				note->addNote(errorParam.destParameters->childs[si], "missing");
+				diag->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->children[si]->token.c_str(),
+				                            errorParam.destParameters->children[si]->typeInfo->getDisplayNameC()));
+			if (note && !errorParam.destParameters->children[si]->isGeneratedSelf())
+				note->addNote(errorParam.destParameters->children[si], "missing");
 		}
 	}
 
@@ -214,7 +214,7 @@ namespace
 		else
 		{
 			if (genericParameters)
-				errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
+				errNode = genericParameters->children[match.badSignatureInfos.badSignatureNum2];
 			const auto msg = FMT(Err(Err0631), match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(),
 			                     match.badSignatureInfos.badSignatureNum1);
 			diag = new Diagnostic{errNode, msg};
@@ -274,9 +274,9 @@ namespace
 
 		// Here is
 		if (errorParam.destFuncDecl &&
-			bi.badSignatureParameterIdx < static_cast<int>(errorParam.destFuncDecl->genericParameters->childs.size()))
+			bi.badSignatureParameterIdx < static_cast<int>(errorParam.destFuncDecl->genericParameters->children.size()))
 		{
-			const auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
+			const auto reqParam = errorParam.destFuncDecl->genericParameters->children[bi.badSignatureParameterIdx];
 			const auto note     = Diagnostic::note(reqParam, FMT(Nte(Nte0068), reqParam->token.c_str(), Naming::kindName(overload).c_str()));
 			errorParam.addNote(note);
 		}
@@ -310,8 +310,8 @@ namespace
 		}
 
 		AstNode* destParamNode = nullptr;
-		if (errorParam.destParameters && bi.badSignatureParameterIdx < static_cast<int>(errorParam.destParameters->childs.size()))
-			destParamNode = errorParam.destParameters->childs[bi.badSignatureParameterIdx];
+		if (errorParam.destParameters && bi.badSignatureParameterIdx < static_cast<int>(errorParam.destParameters->children.size()))
+			destParamNode = errorParam.destParameters->children[bi.badSignatureParameterIdx];
 		const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
 		Diagnostic* diag;
@@ -441,9 +441,9 @@ namespace
 		int badParamIdx = bi.badSignatureParameterIdx;
 		if (badParamIdx &&
 			callParameters &&
-			!callParameters->childs.empty() &&
-			callParameters->childs.front()->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) &&
-			!callParameters->childs.front()->hasAstFlag(AST_UFCS_FCT))
+			!callParameters->children.empty() &&
+			callParameters->children.front()->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) &&
+			!callParameters->children.front()->hasAstFlag(AST_UFCS_FCT))
 		{
 			badParamIdx--;
 		}
@@ -477,15 +477,15 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
 	// Get the call parameter that failed
 	const auto callParameters = oneTry.callParameters;
 	errorParam.badParamIdx    = getBadParamIdx(oneTry, callParameters);
-	if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->childs.size()))
-		errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[errorParam.badParamIdx]);
+	if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->children.size()))
+		errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->children[errorParam.badParamIdx]);
 	errorParam.badParamIdx += 1;
 
 	// Error node
 	errorParam.errorNode = context->node;
 	if (errorParam.errorNode->isSilentCall())
 	{
-		errorParam.errorNode = errorParam.errorNode->parent->childs[errorParam.errorNode->childParentIdx() - 1];
+		errorParam.errorNode = errorParam.errorNode->parent->children[errorParam.errorNode->childParentIdx() - 1];
 		SWAG_ASSERT(errorParam.errorNode->kind == AstNodeKind::ArrayPointerIndex);
 	}
 

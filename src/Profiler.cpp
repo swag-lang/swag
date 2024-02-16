@@ -75,18 +75,18 @@ namespace
 		return line;
 	}
 
-	void printChilds(const ByteCode* bc, int level)
+	void printChildren(const ByteCode* bc, int level)
 	{
 		if (level >= g_CommandLine.profileChildsLevel)
 			return;
 
 		level++;
-		for (const auto child : bc->profileChilds)
+		for (const auto child : bc->profileChildren)
 		{
 			Utf8 line = getProfileBc(child, level);
 			g_Log.print(line);
 			g_Log.eol();
-			printChilds(child, level);
+			printChildren(child, level);
 		}
 	}
 }
@@ -158,7 +158,7 @@ void profiler()
 		line = getProfileBc(bc, 0);
 		g_Log.print(line);
 		g_Log.eol();
-		printChilds(bc, 0);
+		printChildren(bc, 0);
 	}
 
 	// FFI

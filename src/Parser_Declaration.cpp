@@ -155,7 +155,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 	// We must ensure that no job can be run before the using
 	if (!parent->ownerFct)
 	{
-		for (const auto child : parent->childs)
+		for (const auto child : parent->children)
 		{
 			switch (child->kind)
 			{
@@ -550,10 +550,10 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
 			// Clone all attributes
 			CloneContext cloneContext;
-			for (size_t i = 0; i < testParent->childs.size() - 1; i++) // Do not clone content
+			for (size_t i = 0; i < testParent->children.size() - 1; i++) // Do not clone content
 			{
 				cloneContext.parent = newAttrUse;
-				const auto child    = testParent->childs[i]->clone(cloneContext);
+				const auto child    = testParent->children[i]->clone(cloneContext);
 
 				// Only the last attribute of the block needs to have a semanticAfterFct, so
 				// we rest it, and we will set it later for the last child
@@ -584,7 +584,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 	{
 		// The last child must have the semanticAfterFct set
 		// :AttrUseLastChild
-		const auto back = newAttrUse->childs.back();
+		const auto back = newAttrUse->children.back();
 		back->allocateExtension(ExtensionKind::Semantic);
 		SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
 		back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;
@@ -606,7 +606,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 	{
 		const auto solver   = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
 		solver->semanticFct = Semantic::resolveSubDeclRef;
-		solver->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+		solver->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 		solver->refSubDecl = orgSubDecl;
 		orgSubDecl->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
 	}

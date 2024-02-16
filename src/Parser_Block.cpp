@@ -27,7 +27,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 		AstNode* varDecl;
 		SWAG_CHECK(doVarDecl(node, &varDecl));
 
-		SWAG_VERIFY(varDecl->childs.size() == 1, error(varDecl->childs.back()->token, Err(Err0406)));
+		SWAG_VERIFY(varDecl->children.size() == 1, error(varDecl->children.back()->token, Err(Err0406)));
 
 		node->boolExpression = Ast::newIdentifierRef(sourceFile, varDecl->token.text, node, this);
 		node->boolExpression->addAstFlag(AST_GENERATED);
@@ -267,8 +267,8 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 	if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
 	{
 		SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
-		SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
-		node->aliasNames.push_back(node->expression->childs.back()->token);
+		SWAG_CHECK(checkIsValidVarName(node->expression->children.back()));
+		node->aliasNames.push_back(node->expression->children.back()->token);
 		node->expression->release();
 		while (token.id != TokenId::SymColon)
 		{
@@ -276,8 +276,8 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 			SWAG_VERIFY(token.id != TokenId::SymColon, error(prevToken, Err(Err0538)));
 			SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
 			SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
-			SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
-			node->aliasNames.push_back(node->expression->childs.back()->token);
+			SWAG_CHECK(checkIsValidVarName(node->expression->children.back()));
+			node->aliasNames.push_back(node->expression->children.back()->token);
 			node->expression->release();
 		}
 
@@ -345,8 +345,8 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 		if (token.id == TokenId::SymColon)
 		{
 			SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'loop' variable name"));
-			SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
-			name = node->expression->childs.back()->token.text;
+			SWAG_CHECK(checkIsValidVarName(node->expression->children.back()));
+			name = node->expression->children.back()->token.text;
 			node->expression->release();
 			SWAG_CHECK(eatToken());
 			SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(token, FMT(Err(Err0536), token.c_str())));
@@ -358,11 +358,11 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 
 			// Missing ':' ?
 			if (node->expression->kind == AstNodeKind::IdentifierRef &&
-				node->expression->childs.size() == 1 &&
-				node->expression->childs.back()->kind == AstNodeKind::Identifier &&
+				node->expression->children.size() == 1 &&
+				node->expression->children.back()->kind == AstNodeKind::Identifier &&
 				token.id == TokenId::LiteralNumber)
 			{
-				return error(token, FMT(Err(Err0530), node->expression->childs.back()->token.c_str()));
+				return error(token, FMT(Err(Err0530), node->expression->children.back()->token.c_str()));
 			}
 		}
 	}
@@ -404,7 +404,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 		SWAG_CHECK(doVarDecl(node, &id));
 		if (id->kind != AstNodeKind::VarDecl)
 		{
-			const Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0311)};
+			const Diagnostic diag{id->sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
 			const auto       note = Diagnostic::note(Nte(Nte0014));
 			return context->report(diag, note);
 		}
@@ -419,7 +419,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
 		if (id->kind == AstNodeKind::StatementNoScope)
 		{
-			const Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0311)};
+			const Diagnostic diag{node->sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
 			const auto       note = Diagnostic::note(Nte(Nte0014));
 			return context->report(diag, note);
 		}
@@ -434,7 +434,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 		{
 			SWAG_ASSERT(!id->extSemantic()->semanticAfterFct);
 			id->extSemantic()->semanticAfterFct = Semantic::resolveWith;
-			for (const auto& child : id->childs)
+			for (const auto& child : id->children)
 				node->id.push_back(child->token.text);
 		}
 		else if (id->kind == AstNodeKind::VarDecl)
@@ -445,12 +445,12 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 		}
 		else if (id->kind == AstNodeKind::AffectOp)
 		{
-			id = id->childs.front();
+			id = id->children.front();
 			if (id->extSemantic()->semanticAfterFct == Semantic::resolveAfterKnownType)
 				id->extSemantic()->semanticAfterFct = Semantic::resolveWithAfterKnownType;
 			else
 				id->extSemantic()->semanticAfterFct = Semantic::resolveWith;
-			for (const auto& child : id->childs)
+			for (const auto& child : id->children)
 				node->id.push_back(child->token.text);
 		}
 		else

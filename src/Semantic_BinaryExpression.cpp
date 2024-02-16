@@ -981,8 +981,8 @@ bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* righ
 bool Semantic::resolveFactorExpression(SemanticContext* context)
 {
 	auto node  = context->node;
-	auto left  = node->childs[0];
-	auto right = node->childs[1];
+	auto left  = node->children[0];
+	auto right = node->children[1];
 
 	SWAG_CHECK(checkIsConcrete(context, left));
 	SWAG_CHECK(checkIsConcrete(context, right));
@@ -1314,8 +1314,8 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 bool Semantic::resolveShiftExpression(SemanticContext* context)
 {
 	const auto node  = context->node;
-	const auto left  = node->childs[0];
-	const auto right = node->childs[1];
+	const auto left  = node->children[0];
+	const auto right = node->children[1];
 
 	SWAG_CHECK(checkIsConcrete(context, left));
 	SWAG_CHECK(checkIsConcrete(context, right));
@@ -1376,8 +1376,8 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
 bool Semantic::resolveBoolExpression(SemanticContext* context)
 {
 	const auto node   = context->node;
-	const auto left   = node->childs[0];
-	const auto right  = node->childs[1];
+	const auto left   = node->children[0];
+	const auto right  = node->children[1];
 	const auto module = context->sourceFile->module;
 
 	SWAG_CHECK(checkIsConcrete(context, left));

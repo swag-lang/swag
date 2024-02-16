@@ -2041,22 +2041,22 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 	bool hasChanged = false;
 
 	// Not enough fields
-	if (toTypeStruct->fields.size() > child->childs.size())
+	if (toTypeStruct->fields.size() > child->children.size())
 	{
 		exprNode->castToStruct = toTypeStruct;
 	}
 
 	// Too many fields
-	else if (toTypeStruct->fields.size() < child->childs.size())
+	else if (toTypeStruct->fields.size() < child->children.size())
 	{
-		const auto       msg = FMT(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size());
-		const Diagnostic diag{child->childs[toTypeStruct->fields.count], msg};
+		const auto       msg = FMT(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->children.size());
+		const Diagnostic diag{child->children[toTypeStruct->fields.count], msg};
 		return context->report(diag);
 	}
 
 	SymbolMatchContext symContext;
 	symContext.semContext = context;
-	for (auto c : child->childs)
+	for (auto c : child->children)
 		symContext.parameters.push_back(c);
 	Match::match(toTypeStruct, symContext);
 
@@ -2081,9 +2081,9 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 		break;
 	}
 
-	for (size_t j = 0; j < child->childs.size(); j++)
+	for (size_t j = 0; j < child->children.size(); j++)
 	{
-		const auto           childJ = child->childs[j];
+		const auto           childJ = child->children[j];
 		const TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
 		const auto oldType = childJ->typeInfo;
@@ -2126,8 +2126,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 {
 	const auto fromSize = fromTypeList->subTypes.size();
 	while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
-		fromNode = fromNode->childs.front();
-	SWAG_ASSERT(!fromNode || fromSize == fromNode->childs.size());
+		fromNode = fromNode->children.front();
+	SWAG_ASSERT(!fromNode || fromSize == fromNode->children.size());
 
 	// Need to recompute total size, as the size of each element can have been changed by the cast
 	uint32_t newSizeof = 0;
@@ -2138,7 +2138,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
 	for (size_t i = 0; i < fromSize; i++)
 	{
-		const auto child = fromNode ? fromNode->childs[i] : nullptr;
+		const auto child = fromNode ? fromNode->children[i] : nullptr;
 
 		// Expression list inside another expression list (like a struct inside an array)
 		if (child && child->kind == AstNodeKind::ExpressionList && toType->isStruct())
@@ -2162,7 +2162,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 		const auto oldSizeof = fromTypeList->sizeOf;
 		fromTypeList         = castTypeInfo<TypeInfoList>(fromTypeList->clone());
 		for (size_t i                           = 0; i < fromTypeList->subTypes.size(); i++)
-			fromTypeList->subTypes[i]->typeInfo = fromNode->childs[i]->typeInfo;
+			fromTypeList->subTypes[i]->typeInfo = fromNode->children[i]->typeInfo;
 		fromTypeList->sizeOf = newSizeof;
 		fromNode->typeInfo   = fromTypeList;
 
@@ -2328,7 +2328,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 				{
 					fromNode->removeAstFlag(AST_VALUE_COMPUTED);
 					fromNode->removeAstFlag(AST_CONST_EXPR);
-					fromNode->removeAstFlag(AST_NO_BYTECODE_CHILDS);
+					fromNode->removeAstFlag(AST_NO_BYTECODE_CHILDREN);
 					fromNode->computedValue = nullptr;
 				}
 			}

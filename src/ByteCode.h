@@ -130,7 +130,7 @@ struct ByteCode
 	uint64_t         profileFFI       = 0;
 	uint32_t         profileCallCount = 0;
 	double           profilePerCall   = 0;
-	Set<ByteCode*>   profileChilds;
+	Set<ByteCode*>   profileChildren;
 #endif
 
 	ByteCodeInstruction* out          = nullptr;

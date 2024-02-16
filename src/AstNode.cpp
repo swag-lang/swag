@@ -130,28 +130,28 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
 	if (cloneHie)
 	{
-		cloneChilds(context, from);
+		cloneChildren(context, from);
 
 		// Force semantic on specific nodes on generic instantiation
 		if (from->hasAstFlag(AST_IS_GENERIC) && from->hasSemFlag(SEMFLAG_ON_CLONE))
 		{
-			for (const auto one : childs)
+			for (const auto one : children)
 				one->removeAstFlag(AST_NO_SEMANTIC);
 		}
 	}
 }
 
-void AstNode::cloneChilds(CloneContext& context, AstNode* from)
+void AstNode::cloneChildren(CloneContext& context, AstNode* from)
 {
 	const auto oldParent = context.parent;
 	context.parent       = this;
-	const auto num       = from->childs.size();
+	const auto num       = from->children.size();
 	for (size_t i = 0; i < num; i++)
 	{
 		// Do not duplicate a struct if it's a child of something else (i.e. another struct), because
 		// in case of generics, we do want the normal generic stuff to be done (cloning)
-		if (from->childs[i]->kind != AstNodeKind::StructDecl)
-			from->childs[i]->clone(context);
+		if (from->children[i]->kind != AstNodeKind::StructDecl)
+			from->children[i]->clone(context);
 	}
 
 	context.parent = oldParent;
@@ -159,9 +159,9 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
 
 void AstNode::releaseChilds()
 {
-	for (const auto c : childs)
+	for (const auto c : children)
 		c->release();
-	childs.release();
+	children.release();
 }
 
 void AstNode::release()
@@ -200,7 +200,7 @@ void AstNode::release()
 	if (extension)
 		Allocator::free<NodeExtension>(extension);
 
-	// Prerelease, if we need to childs to be alive
+	// Prerelease, if we need to children to be alive
 	switch (kind)
 	{
 	case AstNodeKind::FuncDecl:
@@ -214,8 +214,8 @@ void AstNode::release()
 		break;
 	}
 
-	// Release childs first
-	for (const auto c : childs)
+	// Release children first
+	for (const auto c : children)
 		c->release();
 
 	// Then destruct node
@@ -546,7 +546,7 @@ AstNode* AstNode::clone(CloneContext& context)
 
 void AstNode::inheritAstFlagsOr(uint64_t flag)
 {
-	for (const auto child : childs)
+	for (const auto child : children)
 		flags |= child->flags & flag;
 }
 
@@ -574,7 +574,7 @@ void AstNode::inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2, uint64_t flag3)
 
 void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag)
 {
-	for (const auto child : who->childs)
+	for (const auto child : who->children)
 	{
 		if (!(child->flags & flag))
 			return;
@@ -588,7 +588,7 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2)
 	flags |= flag1;
 	flags |= flag2;
 
-	for (const auto child : who->childs)
+	for (const auto child : who->children)
 	{
 		if (!(child->flags & flag1))
 			flags &= ~flag1;
@@ -605,7 +605,7 @@ void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2, u
 	flags |= flag2;
 	flags |= flag3;
 
-	for (const auto child : who->childs)
+	for (const auto child : who->children)
 	{
 		if (!(child->flags & flag1))
 			flags &= ~flag1;
@@ -799,12 +799,12 @@ bool AstNode::isForceTakeAddress() const
 	return false;
 }
 
-void AstNode::swap2Childs()
+void AstNode::swap2Children()
 {
-	SWAG_ASSERT(childs.size() == 2);
-	const auto tmp = childs[0];
-	childs[0]      = childs[1];
-	childs[1]      = tmp;
+	SWAG_ASSERT(children.size() == 2);
+	const auto tmp = children[0];
+	children[0]    = children[1];
+	children[1]    = tmp;
 }
 
 bool AstNode::hasSpecialFuncCall() const
@@ -1116,9 +1116,9 @@ void AstNode::printLoc() const
 uint32_t AstNode::childParentIdx() const
 {
 	SWAG_ASSERT(parent);
-	for (uint32_t it = 0; it < parent->childs.size(); it++)
+	for (uint32_t it = 0; it < parent->children.size(); it++)
 	{
-		if (parent->childs[it] == this)
+		if (parent->children[it] == this)
 			return it;
 	}
 
@@ -1165,7 +1165,7 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
 {
 	start = token.startLocation;
 	end   = token.endLocation;
-	for (const auto p : childs)
+	for (const auto p : children)
 	{
 		if (p->kind == AstNodeKind::Statement)
 			break;
@@ -1173,7 +1173,7 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
 			break;
 		if (p->hasAstFlag(AST_GENERATED))
 			continue;
-		if (p->kind == AstNodeKind::FuncDeclType && p->childs.empty())
+		if (p->kind == AstNodeKind::FuncDeclType && p->children.empty())
 			continue;
 
 		SourceLocation childStart, childEnd;
@@ -1244,7 +1244,7 @@ AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) c
 
 AstNode* AstNode::findChild(AstNodeKind childKind) const
 {
-	for (const auto c : childs)
+	for (const auto c : children)
 	{
 		if (c->kind == childKind)
 			return c;
@@ -1257,10 +1257,10 @@ AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild) const
 {
 	if (!ref)
 		return nullptr;
-	for (size_t i = 0; i < childs.size(); i++)
+	for (size_t i = 0; i < children.size(); i++)
 	{
-		if (childs[i] == ref)
-			return fromChild->childs[i];
+		if (children[i] == ref)
+			return fromChild->children[i];
 	}
 
 	return nullptr;
@@ -1272,14 +1272,14 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild) const
 		return nullptr;
 	if (this == ref)
 		return fromChild;
-	for (size_t i = 0; i < childs.size(); i++)
+	for (size_t i = 0; i < children.size(); i++)
 	{
-		if (childs[i] == ref)
-			return fromChild->childs[i];
+		if (children[i] == ref)
+			return fromChild->children[i];
 
-		if (childs[i]->childs.count == fromChild->childs[i]->childs.count)
+		if (children[i]->children.count == fromChild->children[i]->children.count)
 		{
-			const auto result = childs[i]->findChildRefRec(ref, fromChild->childs[i]);
+			const auto result = children[i]->findChildRefRec(ref, fromChild->children[i]);
 			if (result)
 				return result;
 		}
@@ -1299,7 +1299,7 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
 	case AstNodeKind::CompilerIf:
 	case AstNodeKind::CompilerIfBlock:
 	case AstNodeKind::SwitchCaseBlock:
-		for (const auto s : childs)
+		for (const auto s : children)
 			s->setOwnerAttrUse(attrUse);
 		break;
 

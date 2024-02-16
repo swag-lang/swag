@@ -16,19 +16,19 @@ void Semantic::sortParameters(AstNode* allParams)
 {
 	ScopedLock lk(allParams->mutex);
 
-	if (!allParams || !allParams->hasAstFlag(AST_MUST_SORT_CHILDS))
+	if (!allParams || !allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
 		return;
-	if (allParams->childs.size() <= 1)
+	if (allParams->children.size() <= 1)
 		return;
 
-	ranges::sort(allParams->childs, [](AstNode* n1, AstNode* n2)
+	ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2)
 	{
 		const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
 		const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
 		return p1->indexParam < p2->indexParam;
 	});
 
-	allParams->flags ^= AST_MUST_SORT_CHILDS;
+	allParams->flags ^= AST_MUST_SORT_CHILDREN;
 }
 
 void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier)
@@ -42,8 +42,8 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
 			if (module->mustOptimizeBytecode(context->node))
 			{
 				// Remove assert(true)
-				SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->childs.empty());
-				const auto param = identifier->callParameters->childs.front();
+				SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
+				const auto param = identifier->callParameters->children.front();
 				if (param->hasComputedValue() && param->computedValue->reg.b)
 					identifier->addAstFlag(AST_NO_BYTECODE);
 			}
@@ -65,7 +65,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
 	// Replace every parameters types
 	for (size_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
 	{
-		const auto childType = funcDecl->parameters->childs[paramIdx];
+		const auto childType = funcDecl->parameters->children[paramIdx];
 
 		TypeInfo* definedType;
 		if (typeDefinedFct->isClosure() && !typeUndefinedFct->isClosure())
@@ -153,10 +153,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 	}
 
 	sortParameters(identifier->callParameters);
-	const auto maxParams = identifier->callParameters->childs.size();
+	const auto maxParams = identifier->callParameters->children.size();
 	for (size_t idx = 0; idx < maxParams; idx++)
 	{
-		const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->childs[idx], AstNodeKind::FuncCallParam);
+		const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[idx], AstNodeKind::FuncCallParam);
 
 		size_t i = idx;
 		if (idx < typeInfoFunc->parameters.size() - 1 || !typeInfoFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC))
@@ -205,7 +205,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				!nodeCall->typeInfo->isStruct() &&
 				!nodeCall->typeInfo->isListTuple())
 			{
-				const auto front = nodeCall->childs.front();
+				const auto front = nodeCall->children.front();
 
 				// We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
 				// We need to create a temporary variable to store the value, in order to have an address.
@@ -234,7 +234,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 					context->baseJob->nodes.push_back(varNode);
 					nodeCall->removeAstFlag(AST_VALUE_COMPUTED);
 
-					context->result = ContextResult::NewChilds;
+					context->result = ContextResult::NewChildren;
 					return true;
 				}
 
@@ -242,20 +242,20 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				// Force to keep the address
 				if (front->kind == AstNodeKind::IdentifierRef)
 				{
-					front->childs.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
+					front->children.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 				}
 				else
 					return Report::internalError(nodeCall, "cannot deal with value to pointer ref conversion");
 			}
 			else if (context->castFlagsResult & CASTFLAG_RESULT_FORCE_REF)
 			{
-				const auto front = nodeCall->childs.front();
+				const auto front = nodeCall->children.front();
 
 				// We have a value, and we need a reference.
 				// Force to keep the address
 				if (front->kind == AstNodeKind::IdentifierRef)
 				{
-					front->childs.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
+					front->children.back()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 				}
 			}
 		}
@@ -269,7 +269,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 		// If passing a closure
 		// :FctCallParamClosure
 		const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCE_ALIAS);
-		auto       makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
+		auto       makePtrL  = nodeCall->children.empty() ? nullptr : nodeCall->children.front();
 
 		if (makePtrL && toTypeRef && toTypeRef->isClosure())
 		{
@@ -328,7 +328,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				// it twice.
 				varNode->addSemFlag(SEMFLAG_ONCE);
 
-				context->result = ContextResult::NewChilds;
+				context->result = ContextResult::NewChildren;
 			}
 		}
 	}
@@ -337,7 +337,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 	// :opAffectParam
 	for (size_t i = 0; i < maxParams; i++)
 	{
-		const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+		const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
 		if (nodeCall->hasExtMisc() && nodeCall->extMisc()->resolvedUserOpSymbolOverload)
 		{
 			const auto overload = nodeCall->extMisc()->resolvedUserOpSymbolOverload;
@@ -359,9 +359,9 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				typeExpr->addAstFlag(AST_NO_SEMANTIC);
 				varNode->type = typeExpr;
 
-				auto assign = nodeCall->childs.front();
+				auto assign = nodeCall->children.front();
 				if (assign->kind == AstNodeKind::Cast)
-					assign = assign->childs.back();
+					assign = assign->children.back();
 
 				CloneContext cloneContext;
 				cloneContext.parent      = varNode;
@@ -406,7 +406,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				// So we set a special flag to not reevaluate it twice.
 				varNode->addSemFlag(SEMFLAG_ONCE);
 
-				context->result = ContextResult::NewChilds;
+				context->result = ContextResult::NewChildren;
 			}
 		}
 	}
@@ -425,14 +425,14 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 		else
 		{
 			const auto funcDecl = castAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-			parameters          = funcDecl->childs.front();
+			parameters          = funcDecl->children.front();
 		}
 
-		for (uint32_t i = 0; i < parameters->childs.size(); i++)
+		for (uint32_t i = 0; i < parameters->children.size(); i++)
 		{
-			if (parameters->childs[i]->kind != AstNodeKind::FuncDeclParam)
+			if (parameters->children[i]->kind != AstNodeKind::FuncDeclParam)
 				continue;
-			const auto funcParam = castAst<AstVarDecl>(parameters->childs[i], AstNodeKind::FuncDeclParam);
+			const auto funcParam = castAst<AstVarDecl>(parameters->children[i], AstNodeKind::FuncDeclParam);
 			if (!funcParam->assignment)
 				continue;
 			switch (funcParam->assignment->tokenId)
@@ -462,7 +462,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 			bool covered = false;
 			for (uint32_t j = 0; j < maxParams; j++)
 			{
-				const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
+				const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[j], AstNodeKind::FuncCallParam);
 				if (nodeCall->resolvedParameter && nodeCall->resolvedParameter->index == i)
 				{
 					covered = true;
@@ -525,7 +525,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 				// it twice.
 				varNode->addSemFlag(SEMFLAG_ONCE);
 
-				context->result = ContextResult::NewChilds;
+				context->result = ContextResult::NewChildren;
 			}
 		}
 	}
@@ -555,11 +555,11 @@ namespace
 			checkParent->kind == AstNodeKind::SwitchCaseBlock)
 		{
 			// If this is the last identifier
-			if (identifier == identifier->identifierRef()->childs.back())
+			if (identifier == identifier->identifierRef()->children.back())
 				return true;
 
 			// If this is not the last identifier, and it's not a function call
-			const auto back = identifier->identifierRef()->childs.back();
+			const auto back = identifier->identifierRef()->children.back();
 			if (back->kind == AstNodeKind::Identifier && !static_cast<AstIdentifier*>(back)->callParameters)
 				return true;
 		}
@@ -646,7 +646,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 		identifier->typeInfo->isArray() &&
 		identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
 		identifier->parent == identifierRef &&
-		identifierRef->childs.back() != identifier)
+		identifierRef->children.back() != identifier)
 	{
 		return context->report({identifier, FMT(Err(Err0548), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
 	}
@@ -657,7 +657,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 		identifier->typeInfo->isSlice() &&
 		identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
 		identifier->parent == identifierRef &&
-		identifierRef->childs.back() != identifier)
+		identifierRef->children.back() != identifier)
 	{
 		return context->report({identifier, FMT(Err(Err0549), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
 	}
@@ -755,9 +755,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			auto idRef = castAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef);
 			if (dependentVar->kind == AstNodeKind::IdentifierRef)
 			{
-				for (int i = static_cast<int>(dependentVar->childs.size()) - 1; i >= 0; i--)
+				for (int i = static_cast<int>(dependentVar->children.size()) - 1; i >= 0; i--)
 				{
-					auto child  = dependentVar->childs[i];
+					auto child  = dependentVar->children[i];
 					auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
 					idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
 					idNode->inheritTokenLocation(idRef);
@@ -807,7 +807,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			}
 
 			context->node->semanticState = AstNodeResolveState::Enter;
-			context->result              = ContextResult::NewChilds;
+			context->result              = ContextResult::NewChildren;
 			return true;
 		}
 	}
@@ -915,10 +915,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			if (identifier->callParameters)
 			{
 				sortParameters(identifier->callParameters);
-				auto maxParams = identifier->callParameters->childs.size();
+				auto maxParams = identifier->callParameters->children.size();
 				for (size_t i = 0; i < maxParams; i++)
 				{
-					auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+					auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
 					size_t idx      = nodeCall->indexParam;
 					if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
 					{
@@ -952,7 +952,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				context->baseJob->nodes.pop_back();
 				context->baseJob->nodes.pop_back();
 				context->baseJob->nodes.push_back(typeNode);
-				context->result = ContextResult::NewChilds;
+				context->result = ContextResult::NewChildren;
 				return true;
 			}
 
@@ -1028,7 +1028,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				auto childIdx = child->childParentIdx();
 				for (uint32_t i = 0; i < childIdx; i++)
 				{
-					auto brother = checkParent->childs[i];
+					auto brother = checkParent->children[i];
 					if (!brother->hasComputedValue() &&
 						brother->resolvedSymbolOverload &&
 						brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
@@ -1134,7 +1134,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			auto childIdx = identifier->childParentIdx();
 			if (childIdx)
 			{
-				auto prev = identifier->identifierRef()->childs[childIdx - 1];
+				auto prev = identifier->identifierRef()->children[childIdx - 1];
 				if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
 				{
 					Diagnostic diag{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
@@ -1598,7 +1598,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 					if (node && node->kind == AstNodeKind::Identifier)
 					{
 						auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-						if (id == id->identifierRef()->childs.back())
+						if (id == id->identifierRef()->children.back())
 							isLast = true;
 					}
 
@@ -1665,7 +1665,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 					auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 					if (id->genericParameters)
 					{
-						for (auto p : id->genericParameters->childs)
+						for (auto p : id->genericParameters->children)
 						{
 							if (p->hasAstFlag(AST_IS_GENERIC))
 							{

@@ -115,10 +115,10 @@ namespace
 
 	bool badParentScope(const AstIdentifier* identifier, Vector<const Diagnostic*>& notes)
 	{
-		if (identifier->identifierRef()->startScope || identifier == identifier->parent->childs.front())
+		if (identifier->identifierRef()->startScope || identifier == identifier->parent->children.front())
 			return false;
 
-		const auto prev = identifier->identifierRef()->childs[identifier->childParentIdx() - 1];
+		const auto prev = identifier->identifierRef()->children[identifier->childParentIdx() - 1];
 		if (!prev->resolvedSymbolName)
 			return false;
 
@@ -155,9 +155,9 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
 {
 	// What kind of thing to we search for ?
 	auto searchFor = IdentifierSearchFor::Whatever;
-	if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression && node->parent->childs.back() == node)
+	if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression && node->parent->children.back() == node)
 		searchFor = IdentifierSearchFor::Type;
-	else if (node->parent->parent && node->parent->parent->kind == AstNodeKind::AttrUse && node->parent->childs.back() == node)
+	else if (node->parent->parent && node->parent->parent->kind == AstNodeKind::AttrUse && node->parent->children.back() == node)
 		searchFor = IdentifierSearchFor::Attribute;
 	else if (node->callParameters && node->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
 		searchFor = IdentifierSearchFor::Struct;

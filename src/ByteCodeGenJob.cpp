@@ -157,11 +157,11 @@ JobResult ByteCodeGenJob::execute()
 						return leaveJob(originalNode);
 					if (context.result == ContextResult::Pending)
 						return JobResult::KeepJobAlive;
-					if (context.result == ContextResult::NewChilds)
+					if (context.result == ContextResult::NewChildren)
 						continue;
 				}
 
-				node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+				node->bytecodeState = AstNodeResolveState::ProcessingChildren;
 
 				if (node->hasAstFlag(AST_NO_BYTECODE))
 				{
@@ -169,11 +169,11 @@ JobResult ByteCodeGenJob::execute()
 					break;
 				}
 
-				if (!node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDS))
+				if (!node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDREN))
 				{
-					for (int i = static_cast<int>(node->childs.size()) - 1; i >= 0; i--)
+					for (int i = static_cast<int>(node->children.size()) - 1; i >= 0; i--)
 					{
-						auto child           = node->childs[i];
+						auto child           = node->children[i];
 						child->bytecodeState = AstNodeResolveState::Enter;
 						nodes.push_back(child);
 					}
@@ -182,7 +182,7 @@ JobResult ByteCodeGenJob::execute()
 				}
 				[[fallthrough]];
 
-			case AstNodeResolveState::ProcessingChilds:
+			case AstNodeResolveState::ProcessingChildren:
 				if (node->hasAstFlag(AST_NO_BYTECODE))
 				{
 					nodes.pop_back();
@@ -201,14 +201,14 @@ JobResult ByteCodeGenJob::execute()
 						return leaveJob(originalNode);
 					if (context.result == ContextResult::Pending)
 						return JobResult::KeepJobAlive;
-					if (context.result == ContextResult::NewChilds)
+					if (context.result == ContextResult::NewChildren)
 						continue;
 				}
 
-				node->bytecodeState = AstNodeResolveState::PostChilds;
+				node->bytecodeState = AstNodeResolveState::PostChildren;
 				[[fallthrough]];
 
-			case AstNodeResolveState::PostChilds:
+			case AstNodeResolveState::PostChildren:
 				if (node->hasAstFlag(AST_NO_BYTECODE))
 				{
 					nodes.pop_back();
@@ -221,7 +221,7 @@ JobResult ByteCodeGenJob::execute()
 						return leaveJob(originalNode);
 					if (context.result == ContextResult::Pending)
 						return JobResult::KeepJobAlive;
-					if (context.result == ContextResult::NewChilds)
+					if (context.result == ContextResult::NewChildren)
 						continue;
 				}
 

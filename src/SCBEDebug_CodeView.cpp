@@ -655,13 +655,13 @@ namespace
 				/////////////////////////////////
 				if (decl->captureParameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
 				{
-					const auto countParams = decl->captureParameters->childs.size();
+					const auto countParams = decl->captureParameters->children.size();
 					for (size_t i = 0; i < countParams; i++)
 					{
-						auto       child     = decl->captureParameters->childs[i];
+						auto       child     = decl->captureParameters->children[i];
 						const auto typeParam = child->typeInfo;
 						if (child->kind == AstNodeKind::MakePointer)
-							child = child->childs.front();
+							child = child->children.front();
 						const auto overload = child->resolvedSymbolOverload;
 						if (!typeParam || !overload)
 							continue;
@@ -699,11 +699,11 @@ namespace
 				/////////////////////////////////
 				if (decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
 				{
-					const auto countParams = decl->parameters->childs.size();
+					const auto countParams = decl->parameters->children.size();
 					int        regCounter  = 0;
 					for (size_t i = 0; i < countParams; i++)
 					{
-						const auto child     = decl->parameters->childs[i];
+						const auto child     = decl->parameters->children[i];
 						const auto typeParam = typeFunc->parameters[i]->typeInfo;
 
 						SCBEDebugTypeIndex typeIdx;

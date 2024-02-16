@@ -114,10 +114,10 @@ JobResult SemanticJob::execute()
 
 		// To be sure that a bytecode job is not running on those nodes !
 		SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
-			node->bytecodeState == AstNodeResolveState::PostChilds ||
+			node->bytecodeState == AstNodeResolveState::PostChildren ||
 			node->hasAstFlag(AST_VALUE_COMPUTED | AST_CONST_EXPR));
 
-		// Some attribute flags must propagate from parent to childs, whatever
+		// Some attribute flags must propagate from parent to children, whatever
 		Semantic::inheritAttributesFromParent(node);
 
 		switch (node->semanticState)
@@ -133,20 +133,20 @@ JobResult SemanticJob::execute()
 					if (!node->extSemantic()->semanticBeforeFct(&context))
 						return JobResult::ReleaseJob;
 					SWAG_ASSERT(context.result != ContextResult::Pending);
-					SWAG_ASSERT(context.result != ContextResult::NewChilds);
+					SWAG_ASSERT(context.result != ContextResult::NewChildren);
 				}
 
 				if (node->hasAstFlag(AST_NO_SEMANTIC))
 				{
-					if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
+					if (!Semantic::setState(&context, node, AstNodeResolveState::PostChildren))
 						return JobResult::ReleaseJob;
 					continue;
 				}
 
-				if (!Semantic::setState(&context, node, AstNodeResolveState::ProcessingChilds))
+				if (!Semantic::setState(&context, node, AstNodeResolveState::ProcessingChildren))
 					return JobResult::ReleaseJob;
 
-				context.tmpNodes = node->childs;
+				context.tmpNodes = node->children;
 				if (node->hasAstFlag(AST_REVERSE_SEMANTIC))
 					context.tmpNodes.reverse();
 				for (int i = static_cast<int>(context.tmpNodes.count) - 1; i >= 0; i--)
@@ -167,11 +167,11 @@ JobResult SemanticJob::execute()
 			}
 			break;
 
-		case AstNodeResolveState::ProcessingChilds:
+		case AstNodeResolveState::ProcessingChildren:
 
 			if (node->hasAstFlag(AST_NO_SEMANTIC))
 			{
-				if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
+				if (!Semantic::setState(&context, node, AstNodeResolveState::PostChildren))
 					return JobResult::ReleaseJob;
 				continue;
 			}
@@ -185,16 +185,16 @@ JobResult SemanticJob::execute()
 
 			if (context.result == ContextResult::Pending)
 				return JobResult::KeepJobAlive;
-			if (context.result == ContextResult::NewChilds)
+			if (context.result == ContextResult::NewChildren)
 				continue;
 
-			if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
+			if (!Semantic::setState(&context, node, AstNodeResolveState::PostChildren))
 				return JobResult::ReleaseJob;
 			SWAG_ASSERT(context.result != ContextResult::Pending);
-			SWAG_ASSERT(context.result != ContextResult::NewChilds);
+			SWAG_ASSERT(context.result != ContextResult::NewChildren);
 			[[fallthrough]];
 
-		case AstNodeResolveState::PostChilds:
+		case AstNodeResolveState::PostChildren:
 			if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)
 			{
 				context.result = ContextResult::Done;
@@ -202,7 +202,7 @@ JobResult SemanticJob::execute()
 					return JobResult::ReleaseJob;
 				if (context.result == ContextResult::Pending)
 					return JobResult::KeepJobAlive;
-				if (context.result == ContextResult::NewChilds)
+				if (context.result == ContextResult::NewChildren)
 					continue;
 			}
 

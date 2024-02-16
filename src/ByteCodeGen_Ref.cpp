@@ -320,7 +320,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 		if (node->hasSpecialFuncCall())
 		{
 			context->allocateTempCallParams();
-			context->allParamsTmp->childs = node->structFlatParams;
+			context->allParamsTmp->children = node->structFlatParams;
 			SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
 			if (context->result != ContextResult::Done)
 			{
@@ -457,9 +457,9 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 
 	AstNode* front;
 	if (node->lambda && node->lambda->captureParameters)
-		front = node->childs[1];
+		front = node->children[1];
 	else
-		front = node->childs.front();
+		front = node->children.front();
 
 	const auto funcNode = castAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
@@ -487,7 +487,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 	// Block capture
 	if (node->typeInfo->isClosure())
 	{
-		node->resultRegisterRc += node->childs.back()->resultRegisterRc[0];
+		node->resultRegisterRc += node->children.back()->resultRegisterRc[0];
 	}
 
 	return true;
@@ -496,7 +496,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
 	const auto node        = context->node;
-	const auto front       = node->childs.front();
+	const auto front       = node->children.front();
 	node->resultRegisterRc = front->resultRegisterRc;
 	return true;
 }
@@ -510,7 +510,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
 	if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
 	{
 		context->allocateTempCallParams();
-		context->allParamsTmp->childs.push_back(arrayNode);
+		context->allParamsTmp->children.push_back(arrayNode);
 		SWAG_CHECK(emitUserOp(context, context->allParamsTmp, nullptr, false));
 		YIELD();
 		EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRc)->b.s64 = -1;
@@ -565,7 +565,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 		if (node->hasSpecialFuncCall())
 		{
 			context->allocateTempCallParams();
-			context->allParamsTmp->childs = node->structFlatParams;
+			context->allParamsTmp->children = node->structFlatParams;
 			SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
 			YIELD();
 			return true;

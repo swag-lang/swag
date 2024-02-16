@@ -6,7 +6,7 @@ void ByteCodeGenContext::release() const
 {
 	if (allParamsTmp)
 	{
-		allParamsTmp->childs.clear();
+		allParamsTmp->children.clear();
 		allParamsTmp->release();
 	}
 }
@@ -15,7 +15,7 @@ void ByteCodeGenContext::allocateTempCallParams()
 {
 	if (!allParamsTmp)
 		allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-	allParamsTmp->childs.clear();
+	allParamsTmp->children.clear();
 }
 
 void ByteCodeGenContext::setNoLocation()

@@ -21,12 +21,12 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
 	// In configuration pass1, we only treat the #dependencies block
 	if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
 	{
-		for (const auto c : originalNode->childs)
+		for (const auto c : originalNode->children)
 		{
 			if (c->kind != AstNodeKind::CompilerDependencies)
 			{
 				c->addAstFlag(AST_NO_SEMANTIC); // :FirstPassCfgNoSem
-				c->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+				c->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 			}
 		}
 	}
@@ -47,7 +47,7 @@ bool Semantic::setUnRef(AstNode* node)
 	case AstNodeKind::NoDrop:
 	case AstNodeKind::Move:
 	case AstNodeKind::FuncCallParam:
-		setUnRef(node->childs.back());
+		setUnRef(node->children.back());
 		break;
 	default:
 		break;
@@ -76,12 +76,12 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
 	if (!context->tmpIdRef)
 	{
 		context->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, name, nullptr, nullptr);
-		context->tmpIdRef->childs.back()->addAstFlag(AST_SILENT_CHECK);
+		context->tmpIdRef->children.back()->addAstFlag(AST_SILENT_CHECK);
 		context->tmpIdRef->addAstFlag(AST_SILENT_CHECK);
 	}
 
 	context->tmpIdRef->parent = node;
-	const auto id             = castAst<AstIdentifier>(context->tmpIdRef->childs.back(), AstNodeKind::Identifier);
+	const auto id             = castAst<AstIdentifier>(context->tmpIdRef->children.back(), AstNodeKind::Identifier);
 	id->sourceFile            = context->sourceFile;
 	id->token.text            = node->token.text;
 	id->inheritOwners(node);
@@ -186,7 +186,7 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
 		}
 		break;
 
-	case AstNodeResolveState::PostChilds:
+	case AstNodeResolveState::PostChildren:
 		if (node->kind == AstNodeKind::FuncDecl ||
 			node->kind == AstNodeKind::StructDecl ||
 			node->kind == AstNodeKind::EnumDecl ||

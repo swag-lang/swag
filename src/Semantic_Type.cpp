@@ -128,7 +128,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 	// to raise an error on the first problem, and not only the result
 	if (node->kind == AstNodeKind::IdentifierRef)
 	{
-		for (const auto c : node->childs)
+		for (const auto c : node->children)
 		{
 			if (c == node)
 				break;
@@ -143,7 +143,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 		const Diagnostic* note = nullptr;
 
 		// Missing self ?
-		if (node->childs.size() <= 1 &&
+		if (node->children.size() <= 1 &&
 			node->ownerStructScope &&
 			node->ownerStructScope == context->node->ownerStructScope &&
 			node->ownerFct)
@@ -155,7 +155,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 				if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
 					note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
 				else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-					note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Nte0027));
+					note = Diagnostic::note(nodeFct->parameters->children.front(), Nte(Nte0027));
 				else
 					note = Diagnostic::note(Nte(Nte0045));
 			}
@@ -225,7 +225,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 	if (node->parameters)
 	{
 		size_t index = 0;
-		for (auto param : node->parameters->childs)
+		for (auto param : node->parameters->children)
 		{
 			auto typeParam      = TypeManager::makeParam();
 			typeParam->typeInfo = param->typeInfo;
@@ -241,19 +241,19 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 			if (typeParam->typeInfo->isVariadic())
 			{
 				typeInfo->addFlag(TYPEINFO_VARIADIC);
-				if (index != node->parameters->childs.size() - 1)
+				if (index != node->parameters->children.size() - 1)
 					return context->report({param, Err(Err0513)});
 			}
 			else if (typeParam->typeInfo->isTypedVariadic())
 			{
 				typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
-				if (index != node->parameters->childs.size() - 1)
+				if (index != node->parameters->children.size() - 1)
 					return context->report({param, Err(Err0513)});
 			}
 			else if (typeParam->typeInfo->isCVariadic())
 			{
 				typeInfo->addFlag(TYPEINFO_C_VARIADIC);
-				if (index != node->parameters->childs.size() - 1)
+				if (index != node->parameters->children.size() - 1)
 					return context->report({param, Err(Err0513)});
 			}
 
@@ -308,7 +308,7 @@ bool Semantic::resolveType(SemanticContext* context)
 	{
 		for (int i = typeNode->arrayDim - 1; i >= 0; i--)
 		{
-			const auto child = typeNode->childs[i];
+			const auto child = typeNode->children[i];
 			SWAG_CHECK(evaluateConstExpression(context, child));
 			YIELD();
 			if (child->hasComputedValue())
@@ -367,7 +367,7 @@ bool Semantic::resolveType(SemanticContext* context)
 	}
 	else if (typeNode->typeFlags & TYPEFLAG_IS_SUB_TYPE)
 	{
-		typeNode->typeInfo = typeNode->childs.back()->typeInfo;
+		typeNode->typeInfo = typeNode->children.back()->typeInfo;
 	}
 	else
 	{
@@ -376,11 +376,11 @@ bool Semantic::resolveType(SemanticContext* context)
 		typeNode->typeInfo = typeNode->typeFromLiteral;
 
 		// Typed variadic ?
-		if (typeNode->typeInfo->isVariadic() && !typeNode->childs.empty())
+		if (typeNode->typeInfo->isVariadic() && !typeNode->children.empty())
 		{
 			const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeNode->typeInfo->clone());
 			typeVariadic->kind      = TypeInfoKind::TypedVariadic;
-			typeVariadic->rawType   = typeNode->childs.front()->typeInfo;
+			typeVariadic->rawType   = typeNode->children.front()->typeInfo;
 			typeVariadic->addFlag(typeVariadic->rawType->flags & TYPEINFO_GENERIC);
 			typeVariadic->forceComputeName();
 			typeNode->typeFromLiteral = typeVariadic;
@@ -402,9 +402,9 @@ bool Semantic::resolveType(SemanticContext* context)
 	SWAG_VERIFY(typeNode->typeInfo, Report::internalError(context->node, "resolveType, null type !"));
 
 	// If type comes from an identifier, be sure it's a type
-	if (typeNode->identifier && !typeNode->identifier->childs.empty())
+	if (typeNode->identifier && !typeNode->identifier->children.empty())
 	{
-		const auto child = typeNode->identifier->childs.back();
+		const auto child = typeNode->identifier->children.back();
 		if (!child->typeInfo || !child->typeInfo->isUndefined())
 		{
 			if (child->resolvedSymbolName)
@@ -515,12 +515,12 @@ bool Semantic::resolveType(SemanticContext* context)
 		}
 
 		const auto rawType = typeNode->typeInfo;
-		SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->childs.back(), Err(Err0736)}));
+		SWAG_VERIFY(!rawType->isVoid(), context->report({typeNode->children.back(), Err(Err0736)}));
 
 		uint32_t totalCount = 1;
 		for (int i = typeNode->arrayDim - 1; i >= 0; i--)
 		{
-			auto child = typeNode->childs[i];
+			auto child = typeNode->children[i];
 
 			uint32_t count        = 0;
 			bool     genericCount = false;
@@ -623,7 +623,7 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 {
 	const auto node     = context->node;
 	const auto typeInfo = castTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
-	typeInfo->rawType   = node->childs.front()->typeInfo;
+	typeInfo->rawType   = node->children.front()->typeInfo;
 	typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
 	typeInfo->addFlag(typeInfo->rawType->flags & TYPEINFO_GENERIC);
 	typeInfo->addFlag(typeInfo->rawType->flags & TYPEINFO_CONST);
@@ -644,8 +644,8 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 {
 	const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
-	const auto typeNode = node->childs[0];
-	const auto exprNode = node->childs[1];
+	const auto typeNode = node->children[0];
+	const auto exprNode = node->children[1];
 
 	SWAG_CHECK(checkIsConcrete(context, exprNode));
 
@@ -715,8 +715,8 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 bool Semantic::resolveExplicitCast(SemanticContext* context)
 {
 	const auto node     = castAst<AstCast>(context->node, AstNodeKind::Cast);
-	const auto typeNode = node->childs[0];
-	const auto exprNode = node->childs[1];
+	const auto typeNode = node->children[0];
+	const auto exprNode = node->children[1];
 
 	SWAG_CHECK(checkIsConcrete(context, exprNode));
 
@@ -778,7 +778,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
 	const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);
-	const auto exprNode = node->childs[0];
+	const auto exprNode = node->children[0];
 
 	exprNode->typeInfo   = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
 	const auto cloneType = exprNode->typeInfo->clone();
@@ -794,8 +794,8 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 bool Semantic::resolveTypeList(SemanticContext* context)
 {
 	const auto node = context->node;
-	if (node->childs.size() == 1)
-		node->typeInfo = node->childs.front()->typeInfo;
+	if (node->children.size() == 1)
+		node->typeInfo = node->children.front()->typeInfo;
 	return true;
 }
 

@@ -78,7 +78,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 		{
 			AstNode* params;
 			SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
-			params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+			params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
 			SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, FMT(Err(Err0220), token.c_str())));
 
@@ -97,8 +97,8 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 	}
 
 	// :AttrUseLastChild
-	SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, Err(Err0263)));
-	const auto back = attrBlockNode->childs.back();
+	SWAG_VERIFY(!attrBlockNode->children.empty(), error(attrBlockNode, Err(Err0263)));
+	const auto back = attrBlockNode->children.back();
 	back->allocateExtension(ExtensionKind::Semantic);
 	SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
 	back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;

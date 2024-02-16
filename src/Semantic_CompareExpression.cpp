@@ -387,8 +387,8 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 bool Semantic::resolveCompareExpression(SemanticContext* context)
 {
 	const auto node  = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
-	auto       left  = node->childs[0];
-	auto       right = node->childs[1];
+	auto       left  = node->children[0];
+	auto       right = node->children[1];
 
 	SWAG_CHECK(checkIsConcreteOrType(context, left));
 	YIELD();

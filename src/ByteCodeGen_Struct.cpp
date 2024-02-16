@@ -1207,7 +1207,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
 		{
 			if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
 			{
-				if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->computedValue->storageOffset)
+				if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->children.back()->computedValue->storageOffset)
 				{
 					mustReinit        = false;
 					toDrop.typeStruct = nullptr;
@@ -1314,12 +1314,12 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 		const auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
 		auto       typeId         = typeExpression;
 		while (typeId->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-			typeId = castAst<AstTypeExpression>(typeId->childs.back(), AstNodeKind::TypeExpression);
-		const auto identifier = castAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
+			typeId = castAst<AstTypeExpression>(typeId->children.back(), AstNodeKind::TypeExpression);
+		const auto identifier = castAst<AstIdentifier>(typeId->identifier->children.back(), AstNodeKind::Identifier);
 
 		if (identifier->callParameters)
 		{
-			for (const auto child : identifier->callParameters->childs)
+			for (const auto child : identifier->callParameters->children)
 			{
 				// Already set by something else, as a direct reference, so no need to copy
 				if (child->hasSemFlag(SEMFLAG_FIELD_STRUCT))
@@ -1348,7 +1348,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
 				// When generating parameters for a closure call, keep the reference if we want one !
 				auto       noRef = child->typeInfo;
-				const auto front = param->childs.front();
+				const auto front = param->children.front();
 				if (front->kind != AstNodeKind::MakePointer || !front->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
 					noRef = TypeManager::concretePtrRefType(noRef);
 
@@ -1369,11 +1369,11 @@ void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 	{
 		auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
 		while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
-			typeExpression = castAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
-		const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+			typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
+		const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
 		if (identifier->callParameters)
 		{
-			for (const auto child : identifier->callParameters->childs)
+			for (const auto child : identifier->callParameters->children)
 			{
 				freeRegisterRC(context, child);
 			}
@@ -1422,7 +1422,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
 	freeRegisterRC(context, node->count);
 	if (node->parameters)
 	{
-		for (const auto c : node->parameters->childs)
+		for (const auto c : node->parameters->children)
 			freeRegisterRC(context, c);
 	}
 
@@ -1435,7 +1435,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 	bool justClear = true;
 	if (parameters)
 	{
-		for (const auto child : parameters->childs)
+		for (const auto child : parameters->children)
 		{
 			if (!child->hasComputedValue())
 			{
@@ -1478,7 +1478,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 			}
 		}
 	}
-	else if (!parameters || parameters->childs.empty())
+	else if (!parameters || parameters->children.empty())
 	{
 		SWAG_ASSERT(typeStruct);
 		if (!typeStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
@@ -1540,7 +1540,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 	}
 	else if (!typeStruct)
 	{
-		const auto child = parameters->childs.front();
+		const auto child = parameters->children.front();
 		ensureCanBeChangedRC(context, rExpr);
 
 		uint32_t regCount     = count ? count->resultRegisterRc[0] : 0;
@@ -1606,7 +1606,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 			EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
 		}
 
-		for (const auto child : parameters->childs)
+		for (const auto child : parameters->children)
 		{
 			const auto param     = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
 			const auto typeParam = param->resolvedParameter;
@@ -1628,7 +1628,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 			context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
 		}
 
-		for (const auto child : parameters->childs)
+		for (const auto child : parameters->children)
 			freeRegisterRC(context, child);
 		freeRegisterRC(context, r1);
 		if (freeRegCount)

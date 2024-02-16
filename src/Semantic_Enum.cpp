@@ -53,7 +53,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
 		const auto rawType = TypeManager::concreteType(typeInfo->rawType);
 		if (!rawType->isNative() && !rawType->isString())
 		{
-			const Diagnostic diag{node->childs.front(), FMT(Err(Err0269), rawType->getDisplayNameC())};
+			const Diagnostic diag{node->children.front(), FMT(Err(Err0269), rawType->getDisplayNameC())};
 			return context->report(diag);
 		}
 
@@ -132,8 +132,8 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
 	// By default, raw type is s32, except for flags and index
 	TypeInfo* rawTypeInfo = (enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX)) ? g_TypeMgr->typeInfoU32 : g_TypeMgr->typeInfoS32;
-	if (!typeNode->childs.empty())
-		rawTypeInfo = typeNode->childs[0]->typeInfo;
+	if (!typeNode->children.empty())
+		rawTypeInfo = typeNode->children[0]->typeInfo;
 
 	typeInfo->rawType = rawTypeInfo;
 	typeInfo->sizeOf  = rawTypeInfo->sizeOf;
@@ -143,7 +143,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 		typeInfo->addFlag(TYPEINFO_ENUM_FLAGS);
 		const auto concreteType = TypeManager::concreteType(rawTypeInfo);
 		if (!concreteType->isNativeInteger() || concreteType->isNativeIntegerSigned())
-			return context->report({typeNode->childs.front(), FMT(Err(Err0267), rawTypeInfo->getDisplayNameC())});
+			return context->report({typeNode->children.front(), FMT(Err(Err0267), rawTypeInfo->getDisplayNameC())});
 	}
 
 	if (enumNode->hasAttribute(ATTRIBUTE_ENUM_INDEX))
@@ -151,7 +151,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 		typeInfo->addFlag(TYPEINFO_ENUM_INDEX);
 		const auto concreteType = TypeManager::concreteType(rawTypeInfo);
 		if (!concreteType->isNativeInteger())
-			return context->report({typeNode->childs.front(), FMT(Err(Err0268), rawTypeInfo->getDisplayNameC())});
+			return context->report({typeNode->children.front(), FMT(Err(Err0268), rawTypeInfo->getDisplayNameC())});
 	}
 
 	if (enumNode->hasAttribute(ATTRIBUTE_INCOMPLETE))
@@ -168,14 +168,14 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 			const auto typeArray = castTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
 			if (typeArray->count == UINT32_MAX)
 			{
-				const auto       front = typeNode->childs.front();
+				const auto       front = typeNode->children.front();
 				const Diagnostic diag{front, FMT(Err(Err0271), rawTypeInfo->getDisplayNameC())};
 				return context->report(diag);
 			}
 
 			if (!rawTypeInfo->isConst())
 			{
-				const auto       front = typeNode->childs.front();
+				const auto       front = typeNode->children.front();
 				const Diagnostic diag{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
 				const auto       note = Diagnostic::note(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
 				return context->report(diag, note);
@@ -186,7 +186,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
 	case TypeInfoKind::Slice:
 		{
-			const auto       front = typeNode->childs.front();
+			const auto       front = typeNode->children.front();
 			const Diagnostic diag{front, FMT(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
 			SWAG_VERIFY(rawTypeInfo->isConst(), context->report(diag));
 			return true;
@@ -194,7 +194,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
 	case TypeInfoKind::Native:
 		if (rawTypeInfo->nativeType == NativeTypeKind::Any)
-			return context->report({typeNode->childs.front(), FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
+			return context->report({typeNode->children.front(), FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
 		return true;
 
 	default:
@@ -202,17 +202,17 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 	}
 
 	if (rawTypeInfo->isCString())
-		return context->report({typeNode->childs.front(), Err(Err0274)});
+		return context->report({typeNode->children.front(), Err(Err0274)});
 
-	if (!typeNode->childs.empty())
-		typeNode = typeNode->childs.front();
+	if (!typeNode->children.empty())
+		typeNode = typeNode->children.front();
 	return context->report({typeNode, FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
 }
 
 bool Semantic::resolveSubEnumValue(SemanticContext* context)
 {
 	const auto node  = context->node;
-	const auto child = node->childs.front();
+	const auto child = node->children.front();
 
 	node->typeInfo               = child->typeInfo;
 	node->resolvedSymbolName     = child->resolvedSymbolName;
@@ -272,7 +272,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 	if (typeEnum->rawType->isGeneric())
 		return true;
 
-	const auto   assignNode     = valNode->childs.empty() ? nullptr : valNode->childs[0];
+	const auto   assignNode     = valNode->children.empty() ? nullptr : valNode->children[0];
 	const auto   rawTypeInfo    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_FORCE_ALIAS);
 	uint32_t     storageOffset  = UINT32_MAX;
 	DataSegment* storageSegment = nullptr;
@@ -346,9 +346,9 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
 		// First child is enumType
 		const AstNode* firstEnumValue = nullptr;
-		for (size_t fev = 1; fev < enumNode->childs.size(); fev++)
+		for (size_t fev = 1; fev < enumNode->children.size(); fev++)
 		{
-			firstEnumValue = enumNode->childs[fev];
+			firstEnumValue = enumNode->children[fev];
 			if (firstEnumValue->kind == AstNodeKind::EnumValue && !firstEnumValue->hasSpecFlag(AstEnumValue::SPECFLAG_HAS_USING))
 				break;
 		}
