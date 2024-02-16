@@ -376,19 +376,14 @@ namespace OS
 
     uint64_t getFileWriteTime(const char* fileName)
     {
-        const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
-        if (hFile == INVALID_HANDLE_VALUE)
+        WIN32_FILE_ATTRIBUTE_DATA fileInfo;
+        if (!GetFileAttributesExA(fileName, GetFileExInfoStandard, &fileInfo))
             return 0;
 
         uint64_t result = 0;
-        FILETIME ftCreate, ftAccess, ftWrite;
-        if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
-        {
-            result = ((uint64_t) ftWrite.dwHighDateTime) << 32;
-            result |= ftWrite.dwLowDateTime;
-        }
+        result          = ((uint64_t) fileInfo.ftLastWriteTime.dwHighDateTime) << 32;
+        result |= fileInfo.ftLastWriteTime.dwLowDateTime;
 
-        CloseHandle(hFile);
         return result;
     }
 
