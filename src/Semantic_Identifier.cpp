@@ -981,7 +981,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context)
 	return resolveIdentifier(context, node, RI_ZERO);
 }
 
-bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
+bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags)
 {
 	auto  job                = context->baseJob;
 	auto& scopeHierarchy     = context->cacheScopeHierarchy;
@@ -1044,7 +1044,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 	}
 
 	// Compute dependencies if not already done
-	if (identifier->semanticState == AstNodeResolveState::ProcessingChildren || (riFlags & RI_FOR_GHOSTING) || (riFlags & RI_FOR_ZERO_GHOSTING))
+	if (identifier->semanticState == AstNodeResolveState::ProcessingChildren || riFlags.has(RI_FOR_GHOSTING) || riFlags.has(RI_FOR_ZERO_GHOSTING))
 	{
 		scopeHierarchy.clear();
 		scopeHierarchyVars.clear();
@@ -1270,9 +1270,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 		}
 
 		MatchIdParamsFlags mipFlags = 0;
-		if (riFlags & RI_FOR_GHOSTING)
+		if (riFlags.has(RI_FOR_GHOSTING))
 			mipFlags.add(MIP_FOR_GHOSTING);
-		if (riFlags & RI_FOR_ZERO_GHOSTING)
+		if (riFlags.has(RI_FOR_ZERO_GHOSTING))
 			mipFlags.add(MIP_FOR_ZERO_GHOSTING);
 		SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
 
@@ -1315,7 +1315,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 		return false;
 	}
 
-	if (riFlags & (RI_FOR_GHOSTING | RI_FOR_ZERO_GHOSTING))
+	if (riFlags.has(RI_FOR_GHOSTING | RI_FOR_ZERO_GHOSTING))
 		return true;
 
 	// Name alias with overloads (more than one match)

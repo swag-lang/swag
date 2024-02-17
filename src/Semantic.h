@@ -42,9 +42,10 @@ constexpr MatchIdParamsFlags MIP_SECOND_GENERIC_TRY = 0x00000008;
 
 constexpr uint32_t ROP_SIMPLE_CAST = 0x00000001;
 
-constexpr uint32_t RI_ZERO              = 0x00000000;
-constexpr uint32_t RI_FOR_GHOSTING      = 0x00000001;
-constexpr uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
+using ResolveIdFlags = Flags<uint32_t>;
+constexpr ResolveIdFlags RI_ZERO              = 0x00000000;
+constexpr ResolveIdFlags RI_FOR_GHOSTING      = 0x00000001;
+constexpr ResolveIdFlags RI_FOR_ZERO_GHOSTING = 0x00000002;
 
 namespace Semantic
 {
@@ -176,7 +177,7 @@ namespace Semantic
 	bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
 	bool           needToCompleteSymbol(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
 	bool           needToWaitForSymbol(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);
-	bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
+	bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags);
 	TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
 	bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
 	void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, AltScopeFlags asFlags);
