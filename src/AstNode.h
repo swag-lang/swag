@@ -40,6 +40,7 @@ using SemanticFct = bool(*)(SemanticContext* context);
 using ByteCodeFct = bool(*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
 using AstNodeFlags = Flags<uint64_t>;
+using AstSemFlags = Flags<uint64_t>;
 
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -268,7 +269,7 @@ struct AstNode
 	}
 
 	AstNode* clone(CloneContext& context);
-	void     releaseChilds();
+	void     releaseChildren();
 	void     release();
 	void     cloneChildren(CloneContext& context, AstNode* from);
 	void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
@@ -337,9 +338,9 @@ struct AstNode
 	void addAstFlag(AstNodeFlags fl) { flags.add(fl); }
 	void removeAstFlag(AstNodeFlags fl) { flags.remove(fl); }
 
-	bool hasSemFlag(uint64_t fl) const { return semFlags & fl; }
-	void addSemFlag(uint64_t fl) { semFlags |= fl; }
-	void removeSemFlag(uint64_t fl) { semFlags &= ~fl; }
+	bool hasSemFlag(AstSemFlags fl) const { return semFlags.has(fl); }
+	void addSemFlag(AstSemFlags fl) { semFlags.add(fl); }
+	void removeSemFlag(AstSemFlags fl) { semFlags.remove(fl); }
 
 	bool hasAttribute(uint64_t attr) const { return attributeFlags & attr; }
 	void addAttribute(uint64_t attr) { attributeFlags |= attr; }
@@ -452,7 +453,7 @@ struct AstNode
 	ByteCodeFct byteCodeFct;
 
 	AstNodeFlags flags;
-	uint64_t     semFlags;
+	AstSemFlags  semFlags;
 	uint64_t     attributeFlags;
 
 	RegisterList resultRegisterRc;

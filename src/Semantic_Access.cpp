@@ -86,7 +86,7 @@ void Semantic::setNodeAccess(AstNode* node)
 		return;
 	}
 
-	node->addSemFlag(overload->node->semFlags & SEMFLAG_ACCESS_MASK);
+	node->addSemFlag(overload->node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 }
 
 void Semantic::doInheritAccess(AstNode* forNode, const AstNode* node)
@@ -140,15 +140,15 @@ void Semantic::computeAccessRec(AstNode* node)
 	}
 }
 
-uint64_t Semantic::attributeToAccess(uint64_t attribute)
+AstSemFlags Semantic::attributeToAccess(uint64_t attribute)
 {
-	uint64_t result = 0;
+	AstSemFlags result = 0;
 	if (attribute & ATTRIBUTE_PRIVATE)
-		result |= SEMFLAG_ACCESS_PRIVATE;
+		result.add(SEMFLAG_ACCESS_PRIVATE);
 	else if (attribute & ATTRIBUTE_INTERNAL)
-		result |= SEMFLAG_ACCESS_INTERNAL;
+		result.add(SEMFLAG_ACCESS_INTERNAL);
 	else if (attribute & ATTRIBUTE_PUBLIC)
-		result |= SEMFLAG_ACCESS_PUBLIC;
+		result.add(SEMFLAG_ACCESS_PUBLIC);
 	return result;
 }
 
@@ -177,14 +177,14 @@ void Semantic::setDefaultAccess(AstNode* node)
 		{
 			const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
 			SWAG_ASSERT(structNode->originalGeneric);
-			node->addSemFlag(structNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK);
+			node->addSemFlag(structNode->originalGeneric->semFlags.mask(SEMFLAG_ACCESS_MASK));
 		}
 
 		if (node->kind == AstNodeKind::FuncDecl)
 		{
 			const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 			SWAG_ASSERT(funcNode->originalGeneric);
-			node->addSemFlag(funcNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK);
+			node->addSemFlag(funcNode->originalGeneric->semFlags.mask(SEMFLAG_ACCESS_MASK));
 		}
 
 		return;

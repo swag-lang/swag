@@ -99,17 +99,17 @@ namespace Semantic
 	bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
 	bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
-	bool     canInheritAccess(const AstNode* node);
-	uint64_t attributeToAccess(uint64_t attribute);
-	void     doInheritAccess(AstNode* forNode, const AstNode* node);
-	void     inheritAccess(const AstNode* node);
-	void     setNodeAccess(AstNode* node);
-	void     setDefaultAccess(AstNode* node);
-	bool     canHaveGlobalAccess(const AstNode* node);
-	bool     canHaveAccess(const AstNode* node);
-	void     computeAccess(AstNode* node);
-	void     computeAccessRec(AstNode* node);
-	bool     checkAccess(JobContext* context, AstNode* node);
+	bool        canInheritAccess(const AstNode* node);
+	AstSemFlags attributeToAccess(uint64_t attribute);
+	void        doInheritAccess(AstNode* forNode, const AstNode* node);
+	void        inheritAccess(const AstNode* node);
+	void        setNodeAccess(AstNode* node);
+	void        setDefaultAccess(AstNode* node);
+	bool        canHaveGlobalAccess(const AstNode* node);
+	bool        canHaveAccess(const AstNode* node);
+	void        computeAccess(AstNode* node);
+	void        computeAccessRec(AstNode* node);
+	bool        checkAccess(JobContext* context, AstNode* node);
 
 	void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
 	void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);

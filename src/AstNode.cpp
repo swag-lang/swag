@@ -63,9 +63,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 	// as functions, and also each time they are inline.
 	if (context.cloneFlags & CLONE_RAW)
 	{
-		addSemFlag(from->semFlags & SEMFLAG_USER_CAST);
-		addSemFlag(from->semFlags & SEMFLAG_FROM_REF);
-		addSemFlag(from->semFlags & SEMFLAG_FROM_PTR_REF);
+		addSemFlag(from->semFlags.mask(SEMFLAG_USER_CAST));
+		addSemFlag(from->semFlags.mask(SEMFLAG_FROM_REF));
+		addSemFlag(from->semFlags.mask(SEMFLAG_FROM_PTR_REF));
 		castedTypeInfo = from->castedTypeInfo;
 	}
 
@@ -157,7 +157,7 @@ void AstNode::cloneChildren(CloneContext& context, AstNode* from)
 	context.parent = oldParent;
 }
 
-void AstNode::releaseChilds()
+void AstNode::releaseChildren()
 {
 	for (const auto c : children)
 		c->release();

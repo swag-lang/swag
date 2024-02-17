@@ -468,12 +468,12 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	// :StructParamsNoSem
 	// Call parameters have already been evaluated, so do not reevaluate them again
 	back->callParameters->addAstFlag(AST_NO_SEMANTIC);
-	back->callParameters->addSemFlag(node->semFlags & SEMFLAG_ACCESS_MASK);
+	back->callParameters->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 
 	// :DupGen :StructParamsNoSem
 	// Type has already been evaluated
 	typeNode->identifier->addAstFlag(AST_NO_SEMANTIC);
-	typeNode->identifier->addSemFlag(node->semFlags & SEMFLAG_ACCESS_MASK);
+	typeNode->identifier->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 
 	// If this is in a return expression, then force the identifier type to be retval
 	if (node->parent && node->parent->inSimpleReturn())
