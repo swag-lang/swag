@@ -85,10 +85,10 @@ struct CloneContext
 };
 
 using AltScopeFlags = Flags<uint32_t>;
-const AltScopeFlags ALTSCOPE_STRUCT_USING = 0x00000001;
-const AltScopeFlags ALTSCOPE_FILE_PRIVATE = 0x00000002;
-const AltScopeFlags ALTSCOPE_UFCS         = 0x00000004;
-const AltScopeFlags ALTSCOPE_USING        = 0x00000008;
+constexpr AltScopeFlags ALTSCOPE_STRUCT_USING = 0x00000001;
+constexpr AltScopeFlags ALTSCOPE_FILE_PRIVATE = 0x00000002;
+constexpr AltScopeFlags ALTSCOPE_UFCS         = 0x00000004;
+constexpr AltScopeFlags ALTSCOPE_USING        = 0x00000008;
 
 struct AlternativeScope
 {
