@@ -278,7 +278,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
 					                                       if (pz && !_strcmpi(pz, ".swg"))
 					                                       {
 						                                       const auto readFileJob = Allocator::alloc<LoadSourceFileJob>();
-						                                       readFileJob->setFlags(JOB_IS_OPT);
+						                                       readFileJob->flags = JOB_IS_OPT;
 						                                       readFileJob->sourceFile = file;
 						                                       g_ThreadMgr.addJob(readFileJob);
 					                                       }
