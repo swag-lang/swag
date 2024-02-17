@@ -14,7 +14,9 @@ struct SymbolName;
 struct SymbolOverload;
 struct TypeInfo;
 struct TypeInfoParam;
+
 using CastFlags = Flags<uint64_t>;
+using MatchIdParamsFlags = Flags<uint32_t>;
 
 struct GenericReplaceType
 {
@@ -31,7 +33,7 @@ namespace Generic
 	void         deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo*& callTypeInfo, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter);
 	void         deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, CastFlags castFlags, int idxParam, AstNode* callParameter);
 	void         deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, CastFlags castFlags);
-	void         setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, uint32_t flags);
+	void         setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, MatchIdParamsFlags flags);
 	void         setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
 	void         checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch);
 	bool         instantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch, bool forStruct);

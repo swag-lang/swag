@@ -259,7 +259,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 	}
 }
 
-void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, uint32_t flags)
+void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, const SymbolOverload* symOverload, MatchIdParamsFlags flags)
 {
 	const auto node = context->node;
 
@@ -285,7 +285,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
 		toCheck.push_back(node->ownerFct);
 
 	// Except for a second try
-	if (node->ownerFct && symOverload->typeInfo->isFuncAttr() && flags & MIP_SECOND_GENERIC_TRY)
+	if (node->ownerFct && symOverload->typeInfo->isFuncAttr() && flags.has(MIP_SECOND_GENERIC_TRY))
 		toCheck.push_back(node->ownerFct);
 
 	// With A.B form, we try to get generic parameters from A if they exist

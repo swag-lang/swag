@@ -1269,11 +1269,11 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 			break;
 		}
 
-		uint32_t mipFlags = 0;
+		MatchIdParamsFlags mipFlags = 0;
 		if (riFlags & RI_FOR_GHOSTING)
-			mipFlags |= MIP_FOR_GHOSTING;
+			mipFlags.add(MIP_FOR_GHOSTING);
 		if (riFlags & RI_FOR_ZERO_GHOSTING)
-			mipFlags |= MIP_FOR_ZERO_GHOSTING;
+			mipFlags.add(MIP_FOR_ZERO_GHOSTING);
 		SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, identifier, mipFlags));
 
 		if (context->result == ContextResult::Pending)

@@ -1383,9 +1383,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 	return true;
 }
 
-bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags)
+bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, MatchIdParamsFlags flags)
 {
-	bool  justCheck        = flags & MIP_JUST_CHECK;
+	bool  justCheck        = flags.has(MIP_JUST_CHECK);
 	auto  job              = context->baseJob;
 	auto& matches          = context->cacheMatches;
 	auto& genericMatches   = context->cacheGenericMatches;
@@ -1785,7 +1785,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 	// This is a generic
 	if (genericMatches.size() == 1 && matches.empty())
 	{
-		if (justCheck && !(flags & MIP_SECOND_GENERIC_TRY))
+		if (justCheck && !flags.has(MIP_SECOND_GENERIC_TRY))
 			return true;
 		SWAG_CHECK(Generic::instantiateGenericSymbol(context, *genericMatches[0], forStruct));
 		return true;
@@ -1795,7 +1795,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 	if (matches.size() == 1)
 	{
 		// We should have no symbol
-		if (flags & MIP_FOR_ZERO_GHOSTING)
+		if (flags.has(MIP_FOR_ZERO_GHOSTING))
 		{
 			if (justCheck)
 				return false;
@@ -1819,7 +1819,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 		return SemanticError::ambiguousGenericError(context, node, overloads, genericMatches);
 	}
 
-	// We remove all generated nodes, because if they exist, they do not participate to the
+	// We remove all generated nodes, because if they exist, they do not participate in the
 	// error
 	auto oneTry = overloads[0];
 	for (size_t i = 0; i < overloads.size(); i++)
@@ -1840,7 +1840,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 	// There's no match at all
 	if (matches.empty())
 	{
-		if (!(flags & MIP_SECOND_GENERIC_TRY))
+		if (!flags.has(MIP_SECOND_GENERIC_TRY))
 		{
 			VectorNative<OneTryMatch*> cpyOverloads;
 			for (auto& oneMatch : overloads)

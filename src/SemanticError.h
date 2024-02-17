@@ -1,4 +1,5 @@
 #pragma once
+#include "Flags.h"
 #include "Symbol.h"
 
 struct AlternativeScope;
@@ -17,6 +18,8 @@ struct SemanticContext;
 struct SourceFile;
 struct SymbolName;
 struct Token;
+
+using MatchIdParamsFlags = Flags<uint32_t>;
 
 enum class IdentifierSearchFor
 {
@@ -45,7 +48,7 @@ namespace SemanticError
 
 	bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
 	bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& genericMatches);
-	bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, uint32_t flags);
+	bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags);
 	bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches);
 
 	void unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);

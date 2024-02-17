@@ -34,10 +34,11 @@ constexpr CollectFlags COLLECT_ALL              = 0x00000000;
 constexpr CollectFlags COLLECT_NO_STRUCT        = 0x00000001;
 constexpr CollectFlags COLLECT_NO_INLINE_PARAMS = 0x00000002;
 
-constexpr uint32_t MIP_JUST_CHECK         = 0x00000001;
-constexpr uint32_t MIP_FOR_GHOSTING       = 0x00000002;
-constexpr uint32_t MIP_FOR_ZERO_GHOSTING  = 0x00000004;
-constexpr uint32_t MIP_SECOND_GENERIC_TRY = 0x00000008;
+using MatchIdParamsFlags = Flags<uint32_t>;
+constexpr MatchIdParamsFlags MIP_JUST_CHECK         = 0x00000001;
+constexpr MatchIdParamsFlags MIP_FOR_GHOSTING       = 0x00000002;
+constexpr MatchIdParamsFlags MIP_FOR_ZERO_GHOSTING  = 0x00000004;
+constexpr MatchIdParamsFlags MIP_SECOND_GENERIC_TRY = 0x00000008;
 
 constexpr uint32_t ROP_SIMPLE_CAST = 0x00000001;
 
@@ -144,7 +145,7 @@ namespace Semantic
 	bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
 	bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
 	bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol);
-	bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags = 0);
+	bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, MatchIdParamsFlags flags = 0);
 	bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
 	bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
 	bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);

@@ -26,13 +26,13 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
 	return context->report(diag, notes);
 }
 
-bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, uint32_t flags)
+bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags)
 {
 	const auto symbol = tryMatches[0]->overload->symbol;
 	if (!node)
 		node = context->node;
 
-	if (flags & MIP_FOR_GHOSTING)
+	if (flags.has(MIP_FOR_GHOSTING))
 	{
 		AstNode* otherNode = nullptr;
 		auto     otherKind = SymbolKind::Invalid;
