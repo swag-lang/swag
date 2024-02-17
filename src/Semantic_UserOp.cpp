@@ -620,7 +620,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 		literal.kind                = AstNodeKind::Literal;
 		literal.computedValue->text = opConst ? opConst : "";
 		literal.typeInfo            = opType ? opType : g_TypeMgr->typeInfoString;
-		literal.flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+		literal.addAstFlag(AST_VALUE_COMPUTED | AST_CONST_EXPR);
 		symMatchContext.genericParameters.push_back(&literal);
 		parameters.kind   = AstNodeKind::FuncDeclParams;
 		genericParameters = &parameters;

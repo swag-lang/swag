@@ -31,7 +31,7 @@ void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, Sou
 			parent->ownerFct->nodeCounts++;
 
 		// Some flags are inherited from the parent, whatever...
-		node->addAstFlag(parent->flags & (AST_NO_BACKEND | AST_IN_RUN_BLOCK | AST_IN_MIXIN));
+		node->addAstFlag(parent->flags.mask(AST_NO_BACKEND | AST_IN_RUN_BLOCK | AST_IN_MIXIN));
 
 		ScopedLock lk(parent->mutex);
 		parent->children.push_back(node);
@@ -360,7 +360,7 @@ Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function
 	return Continue;
 }
 
-AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags, uint64_t removeFlags)
+AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, AstNodeFlags forceFlags, AstNodeFlags removeFlags)
 {
 	if (!source)
 		return nullptr;
@@ -372,7 +372,7 @@ AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags, ui
 	return source->clone(cloneContext);
 }
 
-AstNode* Ast::clone(AstNode* source, AstNode* parent, uint64_t forceFlags, uint64_t removeFlags)
+AstNode* Ast::clone(AstNode* source, AstNode* parent, AstNodeFlags forceFlags, AstNodeFlags removeFlags)
 {
 	if (!source)
 		return nullptr;

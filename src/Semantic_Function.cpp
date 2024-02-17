@@ -1836,10 +1836,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 	cloneContext.ownerFct       = identifier->ownerFct;
 	cloneContext.ownerBreakable = identifier->ownerBreakable;
 	cloneContext.parentScope    = newScope;
-	cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
-	cloneContext.forceFlags |= identifier->flags & AST_IN_RUN_BLOCK;
-	cloneContext.forceFlags |= identifier->flags & AST_IN_DEFER;
-	cloneContext.removeFlags |= AST_R_VALUE;
+	cloneContext.forceFlags.add(identifier->flags.mask(AST_NO_BACKEND));
+	cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));
+	cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
+	cloneContext.removeFlags.add(AST_R_VALUE);
 	cloneContext.cloneFlags |= CLONE_FORCE_OWNER_FCT;
 
 	// Here we inline a call in a global declaration, like a variable/constant initialization
@@ -1850,7 +1850,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 		identifier->addAstFlag(AST_SPEC_STACK_SIZE);
 		if (identifier->kind == AstNodeKind::Identifier)
 			identifier->parent->addAstFlag(AST_SPEC_STACK_SIZE);
-		cloneContext.forceFlags |= AST_SPEC_STACK_SIZE;
+		cloneContext.forceFlags.add(AST_SPEC_STACK_SIZE);
 	}
 
 	// Register all aliases

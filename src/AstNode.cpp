@@ -13,9 +13,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 	kind = from->kind;
 
 	flags = from->flags;
-	flags &= ~AST_IS_GENERIC;
-	flags |= context.forceFlags;
-	flags &= ~context.removeFlags;
+	flags.remove(AST_IS_GENERIC);
+	flags.add(context.forceFlags);
+	flags.remove(context.removeFlags);
 
 	specFlags.store(from->specFlags);
 
@@ -531,7 +531,7 @@ AstNode* AstNode::clone(CloneContext& context)
 
 				// We need to register sub-decls
 				// All of this is a hack, not cool
-				if (cloneContext.forceFlags & AST_IN_MIXIN)
+				if (cloneContext.forceFlags.has(AST_IN_MIXIN))
 					cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
 
 				newNode->copyFrom(cloneContext, this);
@@ -544,76 +544,76 @@ AstNode* AstNode::clone(CloneContext& context)
 	}
 }
 
-void AstNode::inheritAstFlagsOr(uint64_t flag)
+void AstNode::inheritAstFlagsOr(AstNodeFlags flag)
 {
 	for (const auto child : children)
-		flags |= child->flags & flag;
+		flags.add(child->flags.mask(flag));
 }
 
-void AstNode::inheritAstFlagsOr(const AstNode* op, uint64_t flag)
+void AstNode::inheritAstFlagsOr(const AstNode* op, AstNodeFlags flag)
 {
 	if (!op)
 		return;
-	flags |= op->flags & flag;
+	flags.add(op->flags.mask(flag));
 }
 
-void AstNode::inheritAstFlagsAnd(uint64_t flag)
+void AstNode::inheritAstFlagsAnd(AstNodeFlags flag)
 {
 	inheritAstFlagsAnd(this, flag);
 }
 
-void AstNode::inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2)
+void AstNode::inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2)
 {
 	inheritAstFlagsAnd(this, flag1, flag2);
 }
 
-void AstNode::inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2, uint64_t flag3)
+void AstNode::inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3)
 {
 	inheritAstFlagsAnd(this, flag1, flag2, flag3);
 }
 
-void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag)
+void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag)
 {
 	for (const auto child : who->children)
 	{
-		if (!(child->flags & flag))
+		if (!child->flags.has(flag))
 			return;
 	}
 
-	flags |= flag;
+	flags.add(flag);
 }
 
-void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2)
+void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2)
 {
-	flags |= flag1;
-	flags |= flag2;
+	flags.add(flag1);
+	flags.add(flag2);
 
 	for (const auto child : who->children)
 	{
-		if (!(child->flags & flag1))
-			flags &= ~flag1;
-		if (!(child->flags & flag2))
-			flags &= ~flag2;
-		if (!(flags & (flag1 | flag2)))
+		if (!child->flags.has(flag1))
+			flags.remove(flag1);
+		if (!child->flags.has(flag2))
+			flags.remove(flag2);
+		if (!flags.has(flag1 | flag2))
 			return;
 	}
 }
 
-void AstNode::inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3)
+void AstNode::inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3)
 {
-	flags |= flag1;
-	flags |= flag2;
-	flags |= flag3;
+	flags.add(flag1);
+	flags.add(flag2);
+	flags.add(flag3);
 
 	for (const auto child : who->children)
 	{
-		if (!(child->flags & flag1))
-			flags &= ~flag1;
-		if (!(child->flags & flag2))
-			flags &= ~flag2;
-		if (!(child->flags & flag3))
-			flags &= ~flag3;
-		if (!(flags & (flag1 | flag2 | flag3)))
+		if (!child->flags.has(flag1))
+			flags.remove(flag1);
+		if (!child->flags.has(flag2))
+			flags.remove(flag2);
+		if (!child->flags.has(flag3))
+			flags.remove(flag3);
+		if (!flags.has(flag1 | flag2 | flag3))
 			return;
 	}
 }
@@ -687,7 +687,7 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
 		extOwner()->ownerTryCatchAssume = nullptr;
 	}
 
-	flags |= parser->currentFlags;
+	flags.add(parser->currentFlags);
 }
 
 void AstNode::allocateComputedValue()

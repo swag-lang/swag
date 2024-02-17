@@ -97,11 +97,11 @@ struct ScopedCompilerIfBlock
 
 struct ScopedFlags
 {
-	ScopedFlags(Parser* parser, uint64_t newFlags)
+	ScopedFlags(Parser* parser, AstNodeFlags newFlags)
 	{
 		savedJob   = parser;
 		savedFlags = parser->currentFlags;
-		parser->currentFlags |= newFlags;
+		parser->currentFlags.add(newFlags);
 	}
 
 	~ScopedFlags()
@@ -109,8 +109,8 @@ struct ScopedFlags
 		savedJob->currentFlags = savedFlags;
 	}
 
-	Parser*  savedJob;
-	uint64_t savedFlags;
+	Parser*      savedJob;
+	AstNodeFlags savedFlags;
 };
 
 struct ScopedStruct

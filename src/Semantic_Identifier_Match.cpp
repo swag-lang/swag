@@ -28,7 +28,7 @@ void Semantic::sortParameters(AstNode* allParams)
 		return p1->indexParam < p2->indexParam;
 	});
 
-	allParams->flags ^= AST_MUST_SORT_CHILDREN;
+	allParams->removeAstFlag(AST_MUST_SORT_CHILDREN);
 }
 
 void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier)
@@ -722,7 +722,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				if (identifierRef->previousResolvedNode->hasAstFlag(AST_R_VALUE))
 					identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
 				else
-					identifier->addAstFlag(identifierRef->previousResolvedNode->flags & AST_L_VALUE);
+					identifier->addAstFlag(identifierRef->previousResolvedNode->flags.mask(AST_L_VALUE));
 			}
 		}
 	}

@@ -39,6 +39,7 @@ struct TypeInfoStruct;
 using SemanticFct = bool(*)(SemanticContext* context);
 using ByteCodeFct = bool(*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
+using AstNodeFlags = Flags<uint64_t>;
 
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -70,8 +71,8 @@ struct CloneContext
 	Scope*              ownerDeferScope        = nullptr;
 	AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
 	Token*              forceLocation          = nullptr;
-	uint64_t            forceFlags             = 0;
-	uint64_t            removeFlags            = 0;
+	AstNodeFlags        forceFlags             = 0;
+	AstNodeFlags        removeFlags            = 0;
 	uint32_t            cloneFlags             = 0;
 
 	void propagateResult(CloneContext& context)
@@ -272,14 +273,14 @@ struct AstNode
 	void     cloneChildren(CloneContext& context, AstNode* from);
 	void     copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
 
-	void inheritAstFlagsOr(uint64_t flag);
-	void inheritAstFlagsOr(const AstNode* op, uint64_t flag);
-	void inheritAstFlagsAnd(uint64_t flag);
-	void inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2);
-	void inheritAstFlagsAnd(uint64_t flag1, uint64_t flag2, uint64_t flag3);
-	void inheritAstFlagsAnd(AstNode* who, uint64_t flag);
-	void inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2);
-	void inheritAstFlagsAnd(AstNode* who, uint64_t flag1, uint64_t flag2, uint64_t flag3);
+	void inheritAstFlagsOr(AstNodeFlags flag);
+	void inheritAstFlagsOr(const AstNode* op, AstNodeFlags flag);
+	void inheritAstFlagsAnd(AstNodeFlags flag);
+	void inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2);
+	void inheritAstFlagsAnd(AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3);
+	void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag);
+	void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2);
+	void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3);
 	void inheritTokenName(Token& tkn);
 	void inheritTokenLocation(const Token& tkn);
 	void inheritTokenLocation(const AstNode* node);
@@ -332,9 +333,9 @@ struct AstNode
 	uint32_t     childParentIdx() const;
 	void         printLoc() const;
 
-	bool hasAstFlag(uint64_t fl) const { return flags & fl; }
-	void addAstFlag(uint64_t fl) { flags |= fl; }
-	void removeAstFlag(uint64_t fl) { flags &= ~fl; }
+	bool hasAstFlag(AstNodeFlags fl) const { return flags.has(fl); }
+	void addAstFlag(AstNodeFlags fl) { flags.add(fl); }
+	void removeAstFlag(AstNodeFlags fl) { flags.remove(fl); }
 
 	bool hasSemFlag(uint64_t fl) const { return semFlags & fl; }
 	void addSemFlag(uint64_t fl) { semFlags |= fl; }
@@ -450,9 +451,9 @@ struct AstNode
 	SemanticFct semanticFct;
 	ByteCodeFct byteCodeFct;
 
-	uint64_t flags;
-	uint64_t semFlags;
-	uint64_t attributeFlags;
+	AstNodeFlags flags;
+	uint64_t     semFlags;
+	uint64_t     attributeFlags;
 
 	RegisterList resultRegisterRc;
 	uint16_t     safetyOn;

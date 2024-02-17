@@ -393,7 +393,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
 	if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT)))
 		return &module->constantSegment;
 
-	if (varNode->hasAttribute(AST_EXPLICITLY_NOT_INITIALIZED))
+	if (varNode->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
 		return &module->mutableSegment;
 
 	// An array of struct with default values should go to the mutable segment

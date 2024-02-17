@@ -343,12 +343,12 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 		tokenizer.location                = parent->token.startLocation;
 	}
 
-	auto sflags = parent->flags & (AST_IN_RUN_BLOCK | AST_NO_BACKEND);
-	sflags |= AST_GENERATED;
+	auto scopeFlags = parent->flags.mask(AST_IN_RUN_BLOCK | AST_NO_BACKEND);
+	scopeFlags.add(AST_GENERATED);
 	if (logGenerated)
-		sflags |= AST_GENERATED_USER;
+		scopeFlags.add(AST_GENERATED_USER);
 
-	ScopedFlags scopedFlags(this, sflags);
+	ScopedFlags scopedFlags(this, scopeFlags);
 	SWAG_CHECK(eatToken());
 
 	if (!result)

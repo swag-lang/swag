@@ -26,6 +26,7 @@ struct SourceFile;
 struct Utf8;
 
 enum class AstNodeKind : uint8_t;
+using AstNodeFlags = Flags<uint64_t>;
 
 enum class InvalidTokenError
 {
@@ -237,7 +238,7 @@ struct Parser
 	AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
 	AstInline*          currentInline          = nullptr;
 
-	uint64_t currentFlags = 0;
+	AstNodeFlags currentFlags = 0;
 
 	bool afterGlobal = false;
 };

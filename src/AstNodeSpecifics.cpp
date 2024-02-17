@@ -434,7 +434,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 {
 	const auto newNode      = Ast::newNode<AstFuncDecl>();
 	auto       cloneContext = context;
-	cloneContext.forceFlags &= ~AST_SPEC_STACK_SIZE;
+	cloneContext.forceFlags.remove(AST_SPEC_STACK_SIZE);
 
 	newNode->copyFrom(context, this, false);
 	newNode->aliasMask   = aliasMask;
@@ -1156,7 +1156,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 	const auto newNode = Ast::newNode<AstCompilerSpecFunc>();
 
 	auto cloneContext = context;
-	cloneContext.forceFlags &= ~AST_SPEC_STACK_SIZE;
+	cloneContext.forceFlags.remove(AST_SPEC_STACK_SIZE);
 
 	newNode->copyFrom(cloneContext, this, false);
 
@@ -1168,7 +1168,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 		if (p->kind == AstNodeKind::FuncDecl)
 		{
 			cloneContext.ownerInline = nullptr;
-			cloneContext.removeFlags |= AST_IN_RUN_BLOCK;
+			cloneContext.removeFlags.add(AST_IN_RUN_BLOCK);
 		}
 		else
 		{
@@ -1295,7 +1295,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
 		// The problem is that the relation between a lambda and the make pointer lambda is tight,
 		// and with #mixin the lambda is not duplicated, but the make pointer lambda is...
 		// So this is a mess
-		if (context.forceFlags & AST_IN_MIXIN)
+		if (context.forceFlags.has(AST_IN_MIXIN))
 		{
 			if (lambda->captureParameters && children.front() == lambda->captureParameters)
 			{

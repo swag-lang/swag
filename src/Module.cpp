@@ -620,7 +620,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
 			!(attributeFlags & ATTRIBUTE_DROP_FUNC) &&
 			!(attributeFlags & ATTRIBUTE_PREMAIN_FUNC) &&
 			!(attributeFlags & ATTRIBUTE_TEST_FUNC) &&
-			!(flags & AST_FROM_GENERIC))
+			!flags.has(AST_FROM_GENERIC))
 		{
 			bc->node->ownerScope->addPublicFunc(bc->node);
 		}

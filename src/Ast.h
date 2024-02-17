@@ -34,8 +34,8 @@ namespace Ast
 	Utf8        enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
 	Utf8        literalToString(const TypeInfo* typeInfo, const ComputedValue& value);
 	void        normalizeIdentifierName(const Utf8& name);
-	AstNode*    cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
-	AstNode*    clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
+	AstNode*    cloneRaw(AstNode* source, AstNode* parent, AstNodeFlags forceFlags = 0, AstNodeFlags removeFlags = 0);
+	AstNode*    clone(AstNode* source, AstNode* parent, AstNodeFlags forceFlags = 0, AstNodeFlags removeFlags = 0);
 
 	Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
 	AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);

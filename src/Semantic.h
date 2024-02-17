@@ -59,7 +59,7 @@ namespace Semantic
 	void waitForGenericParameters(const SemanticContext* context, OneMatch& match);
 
 	bool valueEqualsTo(const ComputedValue* value, AstNode* node);
-	bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, uint64_t flags);
+	bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, AstNodeFlags flags);
 
 	bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
 	bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
