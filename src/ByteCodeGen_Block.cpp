@@ -417,7 +417,7 @@ bool ByteCodeGen::emitLoopBeforeBlock(ByteCodeGenContext* context)
 	const auto node         = context->node;
 	const auto loopNode     = castAst<AstLoop>(node->parent, AstNodeKind::Loop);
 	loopNode->registerIndex = reserveRegisterRC(context);
-	loopNode->breakableFlags |= BREAKABLE_NEED_INDEX;
+	loopNode->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
 	EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
 
@@ -450,7 +450,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
 	// To store the 'index' of the loop
 	loopNode->registerIndex = reserveRegisterRC(context);
-	loopNode->breakableFlags |= BREAKABLE_NEED_INDEX;
+	loopNode->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
 	// Normal loop
 	if (loopNode->expression->kind != AstNodeKind::Range)
@@ -988,7 +988,7 @@ bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
 	node->resultRegisterRc = reserveRegisterRC(context);
 
 	auto ownerBreakable = node->ownerBreakable;
-	while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
+	while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
 		ownerBreakable = ownerBreakable->ownerBreakable;
 	SWAG_ASSERT(ownerBreakable);
 	EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc, ownerBreakable->registerIndex);

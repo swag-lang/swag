@@ -1282,23 +1282,23 @@ void Semantic::propagateReturn(AstNode* node)
 		{
 			const auto loopNode = castAst<AstLoop>(breakable, AstNodeKind::Loop);
 			if (!loopNode->expression)
-				loopNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
+				loopNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
 			break;
 		}
 
 		if (breakable->kind == AstNodeKind::While)
 		{
 			const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
-			if (whileNode->boolExpression->hasComputedValue() && (whileNode->boolExpression->computedValue->reg.b))
-				whileNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
+			if (whileNode->boolExpression->hasComputedValue() && whileNode->boolExpression->computedValue->reg.b)
+				whileNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
 			break;
 		}
 
 		if (breakable->kind == AstNodeKind::For)
 		{
 			const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
-			if (forNode->boolExpression->hasComputedValue() && (forNode->boolExpression->computedValue->reg.b))
-				forNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
+			if (forNode->boolExpression->hasComputedValue() && forNode->boolExpression->computedValue->reg.b)
+				forNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
 			break;
 		}
 

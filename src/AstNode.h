@@ -678,23 +678,24 @@ struct AstBreakContinue : AstNode
 	int jumpInstruction;
 };
 
-constexpr uint32_t BREAKABLE_CAN_HAVE_INDEX          = 0x00000001;
-constexpr uint32_t BREAKABLE_CAN_HAVE_CONTINUE       = 0x00000002;
-constexpr uint32_t BREAKABLE_NEED_INDEX              = 0x00000004;
-constexpr uint32_t BREAKABLE_RETURN_IN_INFINITE_LOOP = 0x00000008;
+using BreakableFlags = Flags<uint32_t>;
+constexpr BreakableFlags BREAKABLE_CAN_HAVE_INDEX          = 0x00000001;
+constexpr BreakableFlags BREAKABLE_CAN_HAVE_CONTINUE       = 0x00000002;
+constexpr BreakableFlags BREAKABLE_NEED_INDEX              = 0x00000004;
+constexpr BreakableFlags BREAKABLE_RETURN_IN_INFINITE_LOOP = 0x00000008;
 
 struct AstBreakable : AstNode
 {
 	void copyFrom(CloneContext& context, AstBreakable* from);
 
-	bool needIndex() const { return breakableFlags & BREAKABLE_NEED_INDEX; }
+	bool needIndex() const { return breakableFlags.has(BREAKABLE_NEED_INDEX); }
 
 	VectorNative<AstBreakContinue*> breakList;
 	VectorNative<AstBreakContinue*> continueList;
 	VectorNative<AstBreakContinue*> fallThroughList;
 
-	uint32_t registerIndex;
-	uint32_t breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
+	uint32_t       registerIndex;
+	BreakableFlags breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
 
 	uint32_t seekJumpBeforeContinue;
 	uint32_t seekJumpBeforeExpression;

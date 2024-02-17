@@ -79,7 +79,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
 	node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
 	// :SpecPropagateReturn
-	if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINITE_LOOP && node->breakList.empty())
+	if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
 		propagateReturn(node->parent);
 
 	return true;
@@ -232,7 +232,7 @@ bool Semantic::resolveFor(SemanticContext* context)
 	node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
 	// :SpecPropagateReturn
-	if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINITE_LOOP && node->breakList.empty())
+	if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
 		propagateReturn(node->parent);
 
 	return true;
@@ -578,7 +578,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
 		node->block->setBcNotifyBefore(ByteCodeGen::emitLoopBeforeBlock);
 
 	// :SpecPropagateReturn
-	if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINITE_LOOP && node->breakList.empty())
+	if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
 		propagateReturn(node->parent);
 
 	return true;
@@ -1004,11 +1004,11 @@ bool Semantic::resolveIndex(SemanticContext* context)
 	auto node = context->node;
 
 	auto ownerBreakable = node->ownerBreakable;
-	while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
+	while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
 		ownerBreakable = ownerBreakable->ownerBreakable;
 	SWAG_VERIFY(ownerBreakable, context->report({node, Err(Err0441)}));
 
-	ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
+	ownerBreakable->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
 	// Take the type from the expression
 	if (ownerBreakable->kind == AstNodeKind::Loop)
@@ -1096,7 +1096,7 @@ bool Semantic::resolveContinue(SemanticContext* context)
 	SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0459)}));
 
 	auto checkBreakable = node->ownerBreakable;
-	while (checkBreakable && !(checkBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE))
+	while (checkBreakable && !checkBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_CONTINUE))
 		checkBreakable = checkBreakable->ownerBreakable;
 	SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0459)}));
 	checkBreakable->continueList.push_back(node);

@@ -630,7 +630,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
 
 AstScopeBreakable::AstScopeBreakable()
 {
-	breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
+	breakableFlags.remove(BREAKABLE_CAN_HAVE_INDEX);
 }
 
 AstNode* AstScopeBreakable::clone(CloneContext& context)
@@ -726,8 +726,7 @@ AstNode* AstVisit::clone(CloneContext& context)
 
 AstSwitch::AstSwitch()
 {
-	breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
-	breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
+	breakableFlags.remove(BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE);
 }
 
 AstNode* AstSwitch::clone(CloneContext& context)
