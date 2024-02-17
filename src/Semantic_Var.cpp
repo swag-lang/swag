@@ -115,7 +115,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
 	while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::FuncDeclParam)
 		parent = parent->parent;
 	SWAG_ASSERT(parent);
-	const auto varDecl = static_cast<AstVarDecl*>(parent);
+	const auto varDecl = castAst<AstVarDecl>(parent);
 	if (!varDecl->type || !varDecl->assignment)
 		return true;
 
@@ -293,14 +293,14 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
 		parent = parent->parent;
 	SWAG_ASSERT(parent);
-	const auto varDecl = static_cast<AstVarDecl*>(parent);
+	const auto varDecl = castAst<AstVarDecl>(parent);
 
 	const auto assign = varDecl->assignment;
 	if (!assign || assign->kind != AstNodeKind::ExpressionList)
 		return true;
 
 	const auto exprList = castAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
-	if (!exprList->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
+	if (!exprList->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
 		return true;
 
 	// If there's an assignment, but no type, then we need to deduce/generate the type with
@@ -344,10 +344,10 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 
 	identifier->callParameters->inheritTokenLocation(varDecl->assignment);
 	identifier->callParameters->inheritAstFlagsOr(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
-	identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
+	identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
 	identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
 	typeExpression->removeAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN | AST_VALUE_COMPUTED);
-	typeExpression->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
+	typeExpression->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
 
 	Ast::removeFromParent(varDecl->assignment);
 	// varDecl->assignment->release(); This is reference in 'originalParent' in case of errors, so keep it
@@ -409,7 +409,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
 	if (varNode->assignment && typeInfo->isNative() && typeInfo->sizeOf <= 8 && varNode->assignment->isConstant0())
 		return &module->bssSegment;
 	if (!varNode->assignment &&
-		(!varNode->type || !varNode->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)) &&
+		(!varNode->type || !varNode->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)) &&
 		!varNode->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS) &&
 		(varNode->typeInfo->isStruct() || varNode->typeInfo->isInterface()) &&
 		!varNode->typeInfo->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
@@ -421,7 +421,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
 // :DeduceLambdaType
 TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer* node)
 {
-	SWAG_ASSERT(node->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE));
+	SWAG_ASSERT(node->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE));
 
 	TypeInfo* result = node->deducedLambdaType;
 	if (result)
@@ -446,7 +446,7 @@ TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer*
 bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
 	const auto mpl = nodeParam->ownerFct->makePointerLambda;
-	if (!mpl || !mpl->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE))
+	if (!mpl || !mpl->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
 		return true;
 
 	auto frontType = getDeducedLambdaType(context, mpl);
@@ -587,7 +587,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	OverloadFlags overFlags = 0;
 
 	// Transform let to constant if possible
-	if (node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
+	if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
 	{
 		if (node->assignment &&
 			node->assignment->hasComputedValue() &&
@@ -595,7 +595,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			(!node->type || !node->type->typeInfo->isStruct()) &&
 			(!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
 		{
-			node->addSpecFlag(AstVarDecl::SPECFLAG_IS_LET_TO_CONST);
+			node->addSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET_TO_CONST);
 			overFlags.add(OVERLOAD_IS_LET);
 			isCompilerConstant = true;
 		}
@@ -619,7 +619,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		overFlags.add(OVERLOAD_VAR_LOCAL);
 	else
 		isLocalConstant = true;
-	if (node->hasSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN))
+	if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN))
 		overFlags.add(OVERLOAD_CONST_ASSIGN);
 	if (node->hasAttribute(ATTRIBUTE_TLS))
 		overFlags.add(OVERLOAD_VAR_TLS);
@@ -751,7 +751,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	// Evaluate type constraint
 	if (node->hasAstFlag(AST_FROM_GENERIC) && node->typeConstraint)
 	{
-		SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_TYPE));
+		SWAG_ASSERT(node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE));
 
 		auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL | CONCRETE_FUNC);
 		if (!typeRet->isBool())
@@ -791,7 +791,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		!isGeneric)
 	{
 		// A generic identifier without a type but with a default value is a generic type
-		if (node->hasAstFlag(AST_IS_GENERIC) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+		if (node->hasAstFlag(AST_IS_GENERIC) && !node->type && !node->hasAstFlag(AST_R_VALUE) && !node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
 		{
 			thisIsAGenericType = true;
 		}
@@ -857,7 +857,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			return context->report(err, Diagnostic::note(Nte(Nte0036)));
 		}
 
-		if (node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
+		if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
 		{
 			Diagnostic err{node->assignment, Err(Err0564)};
 			return context->report(err, Diagnostic::note(Nte(Nte0036)));
@@ -1002,7 +1002,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	if (!node->typeInfo || node->typeInfo == g_TypeMgr->typeInfoUndefined)
 	{
 		bool lambdaExpr = false;
-		if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && node->ownerFct->hasSpecFlag(AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
+		if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && node->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
 			lambdaExpr = true;
 		if (lambdaExpr)
 		{
@@ -1031,12 +1031,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, Err(Err0412)}));
 
 	// A 'let' for a struct make the type const
-	if (node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET) && node->typeInfo->isStruct())
+	if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET) && node->typeInfo->isStruct())
 		node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
 
 	// Determine if the call parameters cover everything (to avoid calling default initialization)
 	// i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
-	if (node->type && (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
+	if (node->type && (node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)))
 	{
 		auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
 		while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
@@ -1254,7 +1254,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			{
 				SWAG_ASSERT(assignment->children.back()->children.back()->computedValue);
 				storageOffset = assignment->children.back()->children.back()->computedValue->storageOffset;
-				node->addSpecFlag(AstVarDecl::SPECFLAG_INLINE_STORAGE);
+				node->addSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE);
 			}
 			else
 			{

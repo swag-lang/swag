@@ -42,10 +42,10 @@ namespace
 	void errorValidIfFailed(SemanticContext* context, const ErrorParam& errorParam)
 	{
 		const auto destFuncDecl = errorParam.destFuncDecl;
-		const auto msg          = FMT(Err(Err0085), destFuncDecl->validif->token.c_str(), destFuncDecl->token.c_str(), destFuncDecl->validif->token.c_str());
-		const auto err         = new Diagnostic{errorParam.errorNode, errorParam.errorNode->token, msg};
+		const auto msg          = FMT(Err(Err0085), destFuncDecl->validIf->token.c_str(), destFuncDecl->token.c_str(), destFuncDecl->validIf->token.c_str());
+		const auto err          = new Diagnostic{errorParam.errorNode, errorParam.errorNode->token, msg};
 		errorParam.addError(err);
-		errorParam.addNote(Diagnostic::hereIs(destFuncDecl->validif));
+		errorParam.addNote(Diagnostic::hereIs(destFuncDecl->validIf));
 	}
 
 	void errorMissingNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
@@ -142,7 +142,7 @@ namespace
 			if (!errorParam.destParameters)
 				continue;
 
-			if (errorParam.destParameters->children[si]->hasSpecFlag(AstVarDecl::SPECFLAG_UNNAMED))
+			if (errorParam.destParameters->children[si]->hasSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED))
 				err->remarks.push_back(FMT(Nte(Nte0089), Naming::niceParameterRank(si + 1).c_str(), errorParam.destParameters->children[si]->typeInfo->getDisplayNameC()));
 			else
 				err->remarks.push_back(FMT(Nte(Nte0090), errorParam.destParameters->children[si]->token.c_str(),
@@ -478,7 +478,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
 	const auto callParameters = oneTry.callParameters;
 	errorParam.badParamIdx    = getBadParamIdx(oneTry, callParameters);
 	if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < static_cast<int>(callParameters->children.size()))
-		errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->children[errorParam.badParamIdx]);
+		errorParam.failedParam = castAst<AstFuncCallParam>(callParameters->children[errorParam.badParamIdx]);
 	errorParam.badParamIdx += 1;
 
 	// Error node

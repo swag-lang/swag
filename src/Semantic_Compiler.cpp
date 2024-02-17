@@ -348,7 +348,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 		return true;
 
 	// Do it once (in case of inline)
-	if (node->hasSpecFlag(AstCompilerSpecFunc::SPECFLAG_AST_BLOCK))
+	if (node->hasSpecFlag(AstCompilerSpecFunc::SPEC_FLAG_AST_BLOCK))
 		return true;
 
 	const auto job        = context->baseJob;
@@ -358,7 +358,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 
 	SWAG_CHECK(executeCompilerNode(context, expression, false));
 	YIELD();
-	node->addSpecFlag(AstCompilerSpecFunc::SPECFLAG_AST_BLOCK);
+	node->addSpecFlag(AstCompilerSpecFunc::SPEC_FLAG_AST_BLOCK);
 
 	SWAG_CHECK(checkIsConstExpr(context, expression->hasComputedValue(), expression));
 
@@ -705,7 +705,7 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
 	// We can know solve function sub declarations in that block
 	if (validatedNode)
 	{
-		for (const auto n : validatedNode->subDecls)
+		for (const auto n : validatedNode->subDecl)
 			launchResolveSubDecl(context, n);
 	}
 

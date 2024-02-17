@@ -193,8 +193,8 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 	{
 		if (left->kind == AstNodeKind::FactorOp && left->tokenId == TokenId::SymAsterisk)
 		{
-			left->addSpecFlag(AstOp::SPECFLAG_FMA);
-			node->addSpecFlag(AstOp::SPECFLAG_FMA);
+			left->addSpecFlag(AstOp::SPEC_FLAG_FMA);
+			node->addSpecFlag(AstOp::SPEC_FLAG_FMA);
 		}
 	}
 
@@ -1061,7 +1061,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 		node->tokenId != TokenId::SymCircumflex)
 	{
 		SWAG_CHECK(TypeManager::promote(context, left, right));
-		if (node->hasSpecFlag(AstOp::SPECFLAG_UP))
+		if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
 		{
 			TypeManager::promote32(context, left);
 			TypeManager::promote32(context, right);

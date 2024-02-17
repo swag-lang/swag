@@ -135,7 +135,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
 	// :ClosureForceFirstParam
 	// Add a first dummy parameter in case of closure
-	if (typeInfoFunc->isClosure() && !identifier->hasSpecFlag(AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
+	if (typeInfoFunc->isClosure() && !identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM))
 	{
 		const auto fcp = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
 		Ast::removeFromParent(fcp);
@@ -144,7 +144,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 		fcp->computedValue->reg.pointer = nullptr;
 		fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
 		fcp->addAstFlag(AST_GENERATED);
-		identifier->addSpecFlag(AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM);
+		identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM);
 
 		const auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
 		node->setFlagsValueIsComputed();
@@ -560,7 +560,7 @@ namespace
 
 			// If this is not the last identifier, and it's not a function call
 			const auto back = identifier->identifierRef()->children.back();
-			if (back->kind == AstNodeKind::Identifier && !static_cast<AstIdentifier*>(back)->callParameters)
+			if (back->kind == AstNodeKind::Identifier && !castAst<AstIdentifier>(back)->callParameters)
 				return true;
 		}
 
@@ -611,7 +611,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 		(prevNode->resolvedSymbolName->kind == SymbolKind::Variable || prevNode->resolvedSymbolName->kind == SymbolKind::Function) &&
 		!prevNode->hasAstFlag(AST_FROM_UFCS))
 	{
-		if (prevNode->kind == AstNodeKind::Identifier && prevNode->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH))
+		if (prevNode->kind == AstNodeKind::Identifier && prevNode->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
 		{
 			Diagnostic                err{prevNode, FMT(Err(Err0586), prevNode->token.c_str(), symbol->name.c_str())};
 			Vector<const Diagnostic*> notes;
@@ -771,7 +771,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 						idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
 					}
 
-					idNode->addSpecFlag(AstIdentifier::SPECFLAG_FROM_USING);
+					idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
 				}
 			}
 			else
@@ -788,7 +788,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				while (newParent->parent != idRef)
 					newParent = newParent->parent;
 
-				idNode->addSpecFlag(AstIdentifier::SPECFLAG_FROM_USING);
+				idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
 
 				if (identifier->identifierExtension || dependentVar)
 					idNode->allocateIdentifierExtension();
@@ -883,7 +883,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			// Be sure it's the NAME{} syntax
 			if (identifier->callParameters &&
 				!identifier->hasAstFlag(AST_GENERATED) &&
-				!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
+				!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
 			{
 				Diagnostic err{identifier, identifier->token, Err(Err0377)};
 				return context->report(err);
@@ -943,8 +943,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
 				varNode->type       = typeNode;
 				varNode->assignment = nullptr;
-				typeNode->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
-				typeNode->addSpecFlag(AstTypeExpression::SPECFLAG_DONE_GEN);
+				typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
+				typeNode->addSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN);
 				identifier->addSemFlag(SEMFLAG_ONCE);
 				Ast::removeFromParent(identifier->parent);
 				Ast::addChildBack(typeNode, identifier->parent);
@@ -960,7 +960,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			if (canConvertStructParams)
 			{
 				if (identifier->parent->parent->kind != AstNodeKind::TypeExpression ||
-					!identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPECFLAG_DONE_GEN))
+					!identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
 				{
 					SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
 					return true;
@@ -1146,7 +1146,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 			identifier->addAstFlag(AST_SIDE_EFFECTS);
 
 			// Be sure it's () and not {}
-			if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
+			if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
 				return context->report({identifier->callParameters, FMT(Err(Err0291), identifier->token.c_str())});
 
 			// Capture syntax
@@ -1286,7 +1286,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
 					forceInline = true;
 
-				if (!identifier->hasSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE) || forceInline)
+				if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) || forceInline)
 				{
 					// Expand inline function. Do not expand an inline call inside a function marked as inline.
 					// The expansion will be done at the lowest level possible
@@ -1871,7 +1871,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 	if (matches.size() > 1 &&
 		node &&
 		node->kind == AstNodeKind::Identifier &&
-		(node->hasSpecFlag(AstIdentifier::SPECFLAG_NAME_ALIAS)))
+		(node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS)))
 	{
 		return true;
 	}

@@ -749,7 +749,7 @@ bool AstNode::isConstantFalse() const
 
 bool AstNode::isGeneratedSelf() const
 {
-	return kind == AstNodeKind::FuncDeclParam && hasSpecFlag(AstVarDecl::SPECFLAG_GENERATED_SELF);
+	return kind == AstNodeKind::FuncDeclParam && hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
 }
 
 bool AstNode::isEmptyFct()
@@ -767,7 +767,7 @@ bool AstNode::isForeign() const
 
 bool AstNode::isSilentCall() const
 {
-	return kind == AstNodeKind::Identifier && hasSpecFlag(AstIdentifier::SPECFLAG_SILENT_CALL);
+	return kind == AstNodeKind::Identifier && hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
 }
 
 bool AstNode::isPublic() const

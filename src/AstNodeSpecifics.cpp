@@ -44,7 +44,7 @@ bool AstVarDecl::isConstDecl() const
 {
 	if (kind == AstNodeKind::ConstDecl)
 		return true;
-	if (hasSpecFlag(SPECFLAG_IS_LET_TO_CONST))
+	if (hasSpecFlag(SPEC_FLAG_IS_LET_TO_CONST))
 		return true;
 	return false;
 }
@@ -108,8 +108,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 		newNode->token.text = itn->second;
 	}
 
-	newNode->genericParameters = static_cast<AstFuncCallParams*>(findChildRef(genericParameters, newNode));
-	newNode->callParameters    = static_cast<AstFuncCallParams*>(findChildRef(callParameters, newNode));
+	newNode->genericParameters = castAst<AstFuncCallParams>(findChildRef(genericParameters, newNode));
+	newNode->callParameters    = castAst<AstFuncCallParams>(findChildRef(callParameters, newNode));
 
 	if (identifierExtension)
 	{
@@ -157,7 +157,7 @@ bool AstFuncDecl::mustAutoInline() const
 		return false;
 
 	// All short functions
-	if (hasSpecFlag(SPECFLAG_SHORT_FORM))
+	if (hasSpecFlag(SPEC_FLAG_SHORT_FORM))
 		return true;
 
 	return false;
@@ -303,10 +303,10 @@ const Utf8& AstFuncDecl::getFullNameForeignImport() const
 	return token.text;
 }
 
-bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
+bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
 	// We need to duplicate sub declarations, and register the symbol in the new corresponding scope
-	for (auto f : subDecls)
+	for (auto f : subDecl)
 	{
 		ScopedLock lk(f->mutex);
 
@@ -322,24 +322,24 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 		cloneContext.parent      = nullptr; // Register in parent will be done at the end (race condition)
 		if (f->parent->kind == AstNodeKind::AttrUse)
 			f = f->parent;
-		auto subF         = f->clone(cloneContext);
-		auto subDecl      = subF->kind == AstNodeKind::AttrUse ? static_cast<AstAttrUse*>(subF)->content : subF;
-		subDecl->typeInfo = subDecl->typeInfo->clone();
+		auto subF     = f->clone(cloneContext);
+		auto sub      = subF->kind == AstNodeKind::AttrUse ? castAst<AstAttrUse>(subF)->content : subF;
+		sub->typeInfo = sub->typeInfo->clone();
 
 		// Be sure symbol is not already there. This can happen when using mixins
 		const SymbolName* sym = nullptr;
 		if (context)
-			sym = subFuncScope->symTable.find(subDecl->token.text);
+			sym = subFuncScope->symTable.find(sub->token.text);
 
 		auto symKind = SymbolKind::Invalid;
-		switch (subDecl->kind)
+		switch (sub->kind)
 		{
 		case AstNodeKind::FuncDecl:
 			{
-				const auto nodeFunc = castAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
+				const auto nodeFunc = castAst<AstFuncDecl>(sub, AstNodeKind::FuncDecl);
 				if (sym)
 				{
-					const Diagnostic err{nodeFunc, nodeFunc->tokenName, FMT(Err(Err0627), "function", subDecl->token.c_str())};
+					const Diagnostic err{nodeFunc, nodeFunc->tokenName, FMT(Err(Err0627), "function", sub->token.c_str())};
 					return context->report(err);
 				}
 
@@ -349,7 +349,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 				symKind = SymbolKind::Function;
 
 				// Sub decl reference
-				if (subDecl->hasAstFlag(AST_SPEC_SEMANTIC_HAS3))
+				if (sub->hasAstFlag(AST_SPEC_SEMANTIC_HAS3))
 					nodeFunc->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
 
 				// Function is supposed to start semantic when captured parameters have been evaluated
@@ -365,31 +365,31 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 				if (nodeFunc->makePointerLambda)
 				{
 					const int id = g_UniqueID.fetch_add(1);
-					subDecl->token.text += to_string(id);
+					sub->token.text += to_string(id);
 					const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->children.front()->children.back(), AstNodeKind::Identifier);
-					idRef->token.text = subDecl->token.text;
+					idRef->token.text = sub->token.text;
 				}
 
 				break;
 			}
 		case AstNodeKind::StructDecl:
 			{
-				const auto nodeStruct = castAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
+				const auto nodeStruct = castAst<AstStruct>(sub, AstNodeKind::StructDecl);
 				if (sym)
 				{
-					const Diagnostic err{nodeStruct, nodeStruct->tokenName, FMT(Err(Err0627), "struct", subDecl->token.c_str())};
+					const Diagnostic err{nodeStruct, nodeStruct->tokenName, FMT(Err(Err0627), "struct", sub->token.c_str())};
 					return context->report(err);
 				}
 
 				symKind               = SymbolKind::Struct;
-				const auto typeStruct = castTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
+				const auto typeStruct = castTypeInfo<TypeInfoStruct>(sub->typeInfo, TypeInfoKind::Struct);
 				typeStruct->scope     = nodeStruct->scope;
 				break;
 			}
 		case AstNodeKind::InterfaceDecl:
 			if (sym)
 			{
-				const Diagnostic err{subDecl, subDecl->token, FMT(Err(Err0627), "interface", subDecl->token.c_str())};
+				const Diagnostic err{sub, sub->token, FMT(Err(Err0627), "interface", sub->token.c_str())};
 				return context->report(err);
 			}
 
@@ -401,21 +401,21 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 			break;
 		}
 
-		subDecl->typeInfo->removeGenericFlag();
-		subDecl->typeInfo->declNode = subDecl;
+		sub->typeInfo->removeGenericFlag();
+		sub->typeInfo->declNode = sub;
 
-		subDecl->addSemFlag(SEMFLAG_FILE_JOB_PASS);
-		newFctNode->subDecls.push_back(subDecl);
+		sub->addSemFlag(SEMFLAG_FILE_JOB_PASS);
+		newFctNode->subDecl.push_back(sub);
 
 		// We need to add the parent scope of the inline function (the global one), in order for
 		// the inline content to be resolved in the same context as the original function
 		auto globalScope = f->ownerScope;
 		while (!globalScope->isGlobalOrImpl())
 			globalScope = globalScope->parentScope;
-		subDecl->addAlternativeScope(globalScope);
+		sub->addAlternativeScope(globalScope);
 
-		subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
-		subDecl->resolvedSymbolOverload = nullptr;
+		sub->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, sub, symKind);
+		sub->resolvedSymbolOverload = nullptr;
 
 		// Do it last to avoid a race condition with the file job
 		Ast::addChildBack(f->parent, subF);
@@ -442,7 +442,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 	newNode->methodParam = methodParam;
 	newNode->tokenName   = tokenName;
 
-	newNode->removeSpecFlag(SPECFLAG_FULL_RESOLVE | SPECFLAG_PARTIAL_RESOLVE | SPECFLAG_SHORT_FORM);
+	newNode->removeSpecFlag(SPEC_FLAG_FULL_RESOLVE | SPEC_FLAG_PARTIAL_RESOLVE | SPEC_FLAG_SHORT_FORM);
 
 	cloneContext.ownerFct    = newNode;
 	cloneContext.parent      = newNode;
@@ -458,7 +458,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
 	newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
 	newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
-	newNode->validif           = validif ? validif->clone(cloneContext) : nullptr;
+	newNode->validIf           = validIf ? validIf->clone(cloneContext) : nullptr;
 	newNode->nodeCounts        = nodeCounts;
 	newNode->makePointerLambda = makePointerLambda;
 
@@ -501,7 +501,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 		else
 			bodyScope->owner = newNode->content;
 
-		cloneSubDecls(nullptr, cloneContext, this, newNode, newNode);
+		cloneSubDecl(nullptr, cloneContext, this, newNode, newNode);
 	}
 	else
 	{
@@ -568,8 +568,8 @@ AstNode* AstIf::clone(CloneContext& context)
 	newNode->copyFrom(context, this);
 
 	newNode->boolExpression = findChildRef(boolExpression, newNode);
-	newNode->ifBlock        = static_cast<AstCompilerIfBlock*>(findChildRef(ifBlock, newNode));
-	newNode->elseBlock      = static_cast<AstCompilerIfBlock*>(findChildRef(elseBlock, newNode));
+	newNode->ifBlock        = castAst<AstCompilerIfBlock>(findChildRef(ifBlock, newNode));
+	newNode->elseBlock      = castAst<AstCompilerIfBlock>(findChildRef(elseBlock, newNode));
 	return newNode;
 }
 
@@ -742,7 +742,7 @@ AstNode* AstSwitch::clone(CloneContext& context)
 
 	newNode->expression = findChildRef(expression, newNode);
 	for (const auto expr : cases)
-		newNode->cases.push_back(static_cast<AstSwitchCase*>(findChildRef(expr, newNode)));
+		newNode->cases.push_back(castAst<AstSwitchCase>(findChildRef(expr, newNode)));
 	return newNode;
 }
 
@@ -793,7 +793,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
 	// We need to revaluate the call parameters of the struct initialization, because inside we can have some
 	// symbols, and we want them to be correctly found in the right function (inline).
 	// Otherwise we can have a out of frame error, because the original symbol is not in the same stack frame.
-	if (hasSpecFlag(SPECFLAG_CREATED_STRUCT_PARAMETERS))
+	if (hasSpecFlag(SPEC_FLAG_CREATED_STRUCT_PARAMETERS))
 	{
 		if (context.cloneFlags & CLONE_FORCE_OWNER_FCT)
 		{
@@ -1040,7 +1040,7 @@ AstNode* AstInit::clone(CloneContext& context)
 
 	newNode->expression = findChildRef(expression, newNode);
 	newNode->count      = findChildRef(count, newNode);
-	newNode->parameters = static_cast<AstFuncCallParams*>(findChildRef(parameters, newNode));
+	newNode->parameters = castAst<AstFuncCallParams>(findChildRef(parameters, newNode));
 	return newNode;
 }
 

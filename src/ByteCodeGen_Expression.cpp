@@ -169,7 +169,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 			return true;
 	}
 
-	if (node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
+	if (node->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
 		node->resultRegisterRc = reserveRegisterRC(context);
 	else
 		reserveLinearRegisterRC2(context, node->resultRegisterRc);
@@ -276,7 +276,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 		if (canDrop)
 		{
 			EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc[0])->b.u64 = startOffset;
-			if (!node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
+			if (!node->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
 				EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = listNode->children.size();
 		}
 		else
@@ -299,7 +299,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 		}
 
 		emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRc[0]);
-		if (!node->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
+		if (!node->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
 			EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = typeList->subTypes.size();
 	}
 
@@ -328,7 +328,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
 	}
 	else if (node->kind == AstNodeKind::ArrayPointerIndex)
 	{
-		identifierRef = static_cast<AstIdentifierRef*>(node->findParent(AstNodeKind::IdentifierRef));
+		identifierRef = castAst<AstIdentifierRef>(node->findParent(AstNodeKind::IdentifierRef));
 	}
 
 	// A reference to a segment

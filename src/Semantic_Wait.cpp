@@ -185,7 +185,7 @@ void Semantic::waitOverloadCompleted(Job* job, const SymbolOverload* overload)
 void Semantic::waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl)
 {
 	ScopedLock lk(funcDecl->funcMutex);
-	if (!funcDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_FULL_RESOLVE))
+	if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE))
 	{
 		funcDecl->dependentJobs.add(job);
 		job->setPending(JobWaitKind::SemFullResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
@@ -330,7 +330,7 @@ bool Semantic::needToWaitForSymbol(SemanticContext* context, const AstIdentifier
 		return false;
 
 	// For a name alias, we wait everything to be done...
-	if (identifier->hasSpecFlag(AstIdentifier::SPECFLAG_NAME_ALIAS))
+	if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
 		return true;
 
 	// This is enough to resolve, as we just need parameters, and that case means that some functions

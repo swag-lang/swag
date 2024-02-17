@@ -143,7 +143,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 		const auto front = sym->nodes.front();
 
 		// Remove generated symbol, except when unpacking a tuple.
-		if (front->kind != AstNodeKind::VarDecl || !front->hasSpecFlag(AstVarDecl::SPECFLAG_TUPLE_AFFECT))
+		if (front->kind != AstNodeKind::VarDecl || !front->hasSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT))
 		{
 			if (front->hasAstFlag(AST_GENERATED))
 				continue;
@@ -196,7 +196,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 			if (funcDecl->fromItfSymbol)
 				continue;
 			// If this is a lambda expression
-			if (funcDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
+			if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
 				continue;
 
 			if (front->isGeneratedSelf())

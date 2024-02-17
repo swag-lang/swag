@@ -136,7 +136,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 	}
 
 	if (identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
-		identifier->addSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE);
+		identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE);
 
 	SWAG_CHECK(eatToken());
 	SWAG_CHECK(checkIsValidUserName(identifier));
@@ -180,7 +180,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 		{
 			SWAG_CHECK(eatToken());
 			SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
-			identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
+			identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
 		}
 	}
 
@@ -204,10 +204,10 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 				identifier->addSpecFlag(serial);
 				if (token.id != TokenId::SymLeftSquare)
 					break;
-				if (serial.has(AstArrayPointerIndex::SPECFLAG_SERIAL))
-					serial.remove(AstArrayPointerIndex::SPECFLAG_SERIAL);
+				if (serial.has(AstArrayPointerIndex::SPEC_FLAG_SERIAL))
+					serial.remove(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
 				else
-					serial.add(AstArrayPointerIndex::SPECFLAG_SERIAL);
+					serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
 			}
 
 			if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
@@ -217,7 +217,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 				identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
 				identifier->inheritTokenLocation(token);
 				identifier->token.text = "";
-				identifier->addSpecFlag(AstIdentifier::SPECFLAG_SILENT_CALL);
+				identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
 				identifier->semanticFct = Semantic::resolveIdentifier;
 				SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
 			}
@@ -363,11 +363,11 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 	SWAG_VERIFY(node->ownerFct, error(node, FMT(Err(Err0501), node->token.c_str())));
 	SWAG_CHECK(eatToken());
 
-	ScopedTryCatchAssume sc(this, static_cast<AstTryCatchAssume*>(node));
+	ScopedTryCatchAssume sc(this, castAst<AstTryCatchAssume>(node));
 
 	if (token.id == TokenId::SymLeftCurly)
 	{
-		node->addSpecFlag(AstTryCatchAssume::SPECFLAG_BLOCK);
+		node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK);
 		SWAG_VERIFY(!afterDiscard, error(token, Err(Err0231)));
 		SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
@@ -377,7 +377,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 		}
 		else if (node->semanticFct == Semantic::resolveTryCatch || node->semanticFct == Semantic::resolveAssume)
 		{
-			node->ownerFct->addSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+			node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
 			node->semanticFct = nullptr;
 		}
 		else
@@ -412,7 +412,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
 	if (token.id == TokenId::IntrinsicGetErr)
 	{
 		SWAG_CHECK(doIdentifierRef(node, &dummyResult));
-		node->addSpecFlag(AstTryCatchAssume::SPECFLAG_THROW_GET_ERR);
+		node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_THROW_GET_ERR);
 	}
 	else
 		SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
@@ -468,7 +468,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 	AstNode* expr;
 	SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
 	SWAG_CHECK(eatSemiCol("[[namealias]] expression"));
-	expr->children.back()->addSpecFlag(AstIdentifier::SPECFLAG_NAME_ALIAS);
+	expr->children.back()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
 
 	node->semanticFct        = Semantic::resolveNameAlias;
 	node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);

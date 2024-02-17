@@ -108,7 +108,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 			// :AutoScope
 			// Auto scoping depending on the context
 			// We scan the parent hierarchy for an already defined type that can be used for scoping
-			if (identifierRef->hasSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPECFLAG_WITH_SCOPE))
+			if (identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE))
 			{
 				VectorNative<TypeInfoEnum*>                      typeEnum;
 				VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
@@ -173,14 +173,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 					{
 						const auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
 						id->addAstFlag(AST_GENERATED);
-						id->addSpecFlag(AstIdentifier::SPECFLAG_FROM_WITH);
+						id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
 						id->allocateIdentifierExtension();
 						id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
 						id->identifierExtension->fromAlternateVar = withNode->children.front();
 						id->inheritTokenLocation(identifierRef);
 						identifierRef->children.pop_back();
 						Ast::addChildFront(identifierRef, id);
-						identifierRef->addSpecFlag(AstIdentifierRef::SPECFLAG_WITH_SCOPE);
+						identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
 						context->baseJob->nodes.push_back(id);
 					}
 
@@ -421,7 +421,7 @@ void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope
 	as.scope = scope;
 	as.flags = flags;
 	if (scope->flags.has(SCOPE_FILE_PRIVATE))
-		as.flags.add(ALTSCOPE_FILE_PRIVATE);
+		as.flags.add(ALT_SCOPE_FILE_PRIVATE);
 	scopes.push_back(as);
 }
 
@@ -443,7 +443,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 			auto&      toProcess = context->scopesToProcess;
 			for (const auto& as : owner->extMisc()->alternativeScopes)
 			{
-				if (!hasAlternativeScope(scopes, as.scope) && as.flags.has(ALTSCOPE_USING))
+				if (!hasAlternativeScope(scopes, as.scope) && as.flags.has(ALT_SCOPE_USING))
 				{
 					addAlternativeScope(scopes, as.scope, as.flags);
 					addAlternativeScopeOnce(toProcess, as.scope, as.flags);

@@ -45,7 +45,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
 	const auto typeNode = newTypeExpression(sourceFile, varNode);
 	typeNode->inheritTokenLocation(fromNode);
-	typeNode->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
+	typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
 	varNode->type = typeNode;
 
 	SWAG_ASSERT(typeStruct->declNode);
@@ -71,7 +71,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 	const auto identifier = castAst<AstIdentifier>(typeNode->identifier->children.back(), AstNodeKind::Identifier);
 	identifier->inheritTokenLocation(fromNode);
 	identifier->callParameters = newFuncCallParams(sourceFile, identifier);
-	identifier->callParameters->addSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
+	identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
 
 	int countParams = static_cast<int>(fromNode->children.size());
 	if (parentForRef == fromNode)
@@ -86,7 +86,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 		oneChild->clone(cloneContext);
 		oneChild->addAstFlag(AST_NO_BYTECODE | AST_NO_SEMANTIC);
 		if (oneChild->kind == AstNodeKind::Identifier)
-			oneChild->addSpecFlag(AstIdentifier::SPECFLAG_NO_INLINE);
+			oneChild->addSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE);
 
 		if (oneChild->hasExtMisc() && oneChild->extMisc()->isNamed)
 		{
@@ -263,7 +263,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 	structNode->addAstFlag(AST_GENERATED);
 
 	// A capture block is packed
-	if (assignment->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_CAPTURE))
+	if (assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE))
 		structNode->packing = 1;
 
 	const auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
@@ -312,11 +312,11 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 			typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
 		}
 
-		paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !assignment->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_CAPTURE));
+		paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE));
 
 		// Special case for tuple capture. If type is null (type not compatible with tuple), put undefined,
 		// as we will catch the error later
-		if (!paramNode->type && assignment->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_CAPTURE))
+		if (!paramNode->type && assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE))
 		{
 			static AstNode fakeNode;
 			constructNode(&fakeNode);
@@ -429,7 +429,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	identifier->addAstFlag(AST_R_VALUE | AST_NO_BYTECODE);
 
 	// Be sure it's the NAME{} syntax
-	if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
+	if (!identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
 		return context->report({callP, FMT(Err(Err0377), identifier->typeInfo->name.c_str())});
 
 	auto varParent = identifier->identifierRef()->parent;
@@ -453,8 +453,8 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 		varNode->kind = AstNodeKind::ConstDecl;
 
 	const auto typeNode = newTypeExpression(sourceFile, varNode);
-	typeNode->addSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
-	typeNode->addSpecFlag(AstType::SPECFLAG_CREATED_STRUCT_PARAMETERS);
+	typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
+	typeNode->addSpecFlag(AstType::SPEC_FLAG_CREATED_STRUCT_PARAMETERS);
 	varNode->addAstFlag(AST_GENERATED);
 	varNode->type = typeNode;
 	CloneContext cloneContext;
@@ -519,7 +519,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
 		const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
 		typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
 		if (childType->hasFlag(TYPEINFO_CAN_THROW))
-			typeExprLambda->addSpecFlag(AstTypeLambda::SPECFLAG_CAN_THROW);
+			typeExprLambda->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
 
 		// Parameters
 		const auto params          = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);

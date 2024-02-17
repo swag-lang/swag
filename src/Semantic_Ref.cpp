@@ -107,7 +107,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 	node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
 	const auto funcNode = node->resolvedSymbolOverload->node;
-	SWAG_CHECK(checkCanMakeFuncPointer(context, static_cast<AstFuncDecl*>(funcNode), child));
+	SWAG_CHECK(checkCanMakeFuncPointer(context, castAst<AstFuncDecl>(funcNode), child));
 
 	const auto lambdaType = child->typeInfo->clone();
 	lambdaType->kind      = TypeInfoKind::LambdaClosure;
@@ -262,7 +262,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 	}
 
 	// Transform pointer to a reference
-	if (node->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
+	if (node->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
 	{
 		ptrFlags.add(TYPEINFO_POINTER_REF);
 	}
@@ -320,7 +320,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 
 	// Exclude upper bound if constant
 	if (node->upperBound->hasComputedValue() &&
-		node->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP) &&
+		node->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP) &&
 		!node->upperBound->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
 	{
 		if (!node->upperBound->computedValue->reg.u64)
@@ -538,7 +538,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 		SWAG_CHECK(resolveArrayPointerDeRef(context));
 	YIELD();
 
-	if (!node->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+	if (!node->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 		node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
 	// If this is not the last child of the IdentifierRef, then this is a reference, and
@@ -636,7 +636,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 	{
 	case TypeInfoKind::Pointer:
 		{
-			if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+			if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 			{
 				const Diagnostic err{arrayNode->array, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
 				return context->report(err);
@@ -671,7 +671,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 			else
 			{
 				Diagnostic err{arrayNode->array, FMT(Err(Err0260), arrayType->getDisplayNameC())};
-				if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+				if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 					err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
 				return context->report(err);
 			}
@@ -717,7 +717,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
 		if (arrayType->isTuple())
 		{
-			if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+			if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 			{
 				Diagnostic err{arrayNode->access, Err(Err0382)};
 				err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
@@ -839,7 +839,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
 	if (arrayType->isTuple())
 	{
-		if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+		if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 		{
 			Diagnostic err{arrayNode->access, Err(Err0382)};
 			err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
@@ -890,7 +890,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 	{
 	case TypeInfoKind::Pointer:
 		{
-			if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+			if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 			{
 				Diagnostic err{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
 				err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
@@ -1014,7 +1014,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
 			// Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
 			if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
-				arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL) == arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL))
+				arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL))
 			{
 				arrayNode->typeInfo = arrayType;
 				break;
@@ -1025,10 +1025,10 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 			arrayNode->structFlatParams.clear();
 			arrayNode->structFlatParams.push_back(arrayNode->access);
 
-			const auto serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL);
+			const auto serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
 			AstNode*   child  = arrayNode->array;
 			while (child->kind == AstNodeKind::ArrayPointerIndex &&
-				child->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_SERIAL) == serial)
+				child->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == serial)
 			{
 				const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
 				arrayNode->structFlatParams.push_front(arrayChild->access);
@@ -1066,7 +1066,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 	default:
 		{
 			Diagnostic err{arrayNode->array, FMT(Err(Err0260), arrayNode->array->typeInfo->getDisplayNameC())};
-			if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPECFLAG_IS_DEREF))
+			if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
 				err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
 			return context->report(err);
 		}

@@ -83,7 +83,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
 		auto typeParam = TypeManager::makeParam();
 
 		// When generating parameters for a closure call, keep the reference if we want one !
-		if (child->kind != AstNodeKind::MakePointer || !child->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
+		if (child->kind != AstNodeKind::MakePointer || !child->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
 			typeParam->typeInfo = TypeManager::concretePtrRefType(child->typeInfo, CONCRETE_FUNC);
 		else
 			typeParam->typeInfo = child->typeInfo;

@@ -13,7 +13,7 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
 	auto       low        = rangeNode->expressionLow;
 	auto       up         = rangeNode->expressionUp;
 	bool       excludeLow = false;
-	bool       excludeUp  = rangeNode->hasSpecFlag(AstRange::SPECFLAG_EXCLUDE_UP);
+	bool       excludeUp  = rangeNode->hasSpecFlag(AstRange::SPEC_FLAG_EXCLUDE_UP);
 
 	const auto typeInfo = TypeManager::concretePtrRefType(low->typeInfo);
 	if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
@@ -237,7 +237,7 @@ bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, AstNode*
 				return true;
 			}
 
-			if (context->node->hasSpecFlag(AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF))
+			if (context->node->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_IMPLICIT_KINDOF))
 			{
 				SWAG_CHECK(emitKindOf(context, left, leftTypeInfo->kind));
 				const auto rflags = reserveRegisterRC(context);
@@ -312,7 +312,7 @@ bool ByteCodeGen::emitCompareOpEqual(const ByteCodeGenContext* context, AstNode*
 			return true;
 		}
 
-		if (context->node->hasSpecFlag(AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF))
+		if (context->node->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_IMPLICIT_KINDOF))
 		{
 			SWAG_CHECK(emitKindOf(context, left, TypeInfoKind::Interface));
 			const auto rflags = reserveRegisterRC(context);
@@ -391,7 +391,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNo
 				return true;
 			}
 
-			if (context->node->hasSpecFlag(AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF))
+			if (context->node->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_IMPLICIT_KINDOF))
 			{
 				SWAG_CHECK(emitKindOf(context, left, leftTypeInfo->kind));
 				const auto rflags = reserveRegisterRC(context);
@@ -464,7 +464,7 @@ bool ByteCodeGen::emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNo
 			return true;
 		}
 
-		if (context->node->hasSpecFlag(AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF))
+		if (context->node->hasSpecFlag(AstBinaryOpNode::SPEC_FLAG_IMPLICIT_KINDOF))
 		{
 			SWAG_ASSERT(rightTypeInfo->isPointerToTypeInfo());
 			SWAG_CHECK(emitKindOf(context, left, TypeInfoKind::Interface));

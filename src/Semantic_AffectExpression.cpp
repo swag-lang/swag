@@ -54,7 +54,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
 	if (!findMpl)
 		return true;
 	const auto mpl = castAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
-	if (!mpl->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE))
+	if (!mpl->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
 		return true;
 
 	// Cannot cast from closure to lambda
@@ -139,7 +139,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 			}
 		}
 
-		if (left->kind == AstNodeKind::Identifier && left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
+		if (left->kind == AstNodeKind::Identifier && left->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING | AstIdentifier::SPEC_FLAG_FROM_WITH))
 		{
 			const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
 			hint              = "this is equivalent to [[";
@@ -151,7 +151,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 				hint += c->token.text;
 			}
 
-			if (left->hasSpecFlag(AstIdentifier::SPECFLAG_FROM_USING))
+			if (left->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
 				hint += "]] because of a [[using]]";
 			else
 				hint += "]] because of a [[with]]";

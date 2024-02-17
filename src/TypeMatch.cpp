@@ -510,7 +510,7 @@ namespace
 					if (firstChild->resolvedSymbolOverload &&
 						firstChild->resolvedSymbolOverload->node &&
 						firstChild->resolvedSymbolOverload->node->kind == AstNodeKind::FuncDeclParam &&
-						firstChild->resolvedSymbolOverload->node->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+						firstChild->resolvedSymbolOverload->node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
 						isValue = true;
 
 					if (symbolParameter->typeInfo->isKindGeneric() && isValue)

@@ -1225,7 +1225,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 
 	emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
 
-	SWAG_CHECK(emitCall(context, allParams, nullptr, static_cast<AstVarDecl*>(overload->node), node->extMisc()->additionalRegisterRC, false, true, true));
+	SWAG_CHECK(emitCall(context, allParams, nullptr, castAst<AstVarDecl>(overload->node), node->extMisc()->additionalRegisterRC, false, true, true));
 	SWAG_ASSERT(context->result == ContextResult::Done);
 	freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
 	return true;
@@ -1537,7 +1537,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
 	if (testReturn->parent->kind == AstNodeKind::FuncCallParam &&
 		testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
 		testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
-		testReturn->parent->parent->parent->parent->parent->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS) &&
+		testReturn->parent->parent->parent->parent->parent->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS) &&
 		testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl &&
 		testReturn->parent->parent->parent->typeInfo &&
 		testReturn->parent->parent->parent->typeInfo->isStruct())
@@ -2232,9 +2232,9 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 	PushNode pn(context, funcNode->content);
 
 	// Store the context in a persistent register
-	if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT) ||
-		funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_THROW) ||
-		funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_ASSUME) ||
+	if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT) ||
+		funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW) ||
+		funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME) ||
 		funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
 	{
 		SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);

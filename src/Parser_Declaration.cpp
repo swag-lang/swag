@@ -168,7 +168,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 			case AstNodeKind::CompilerDependencies:
 				break;
 			case AstNodeKind::AttrUse:
-				if (child->hasSpecFlag(AstAttrUse::SPECFLAG_GLOBAL))
+				if (child->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL))
 					break;
 				[[fallthrough]];
 			default:
@@ -522,7 +522,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 {
 	SWAG_ASSERT(subDecl->ownerFct);
 	const auto orgSubDecl = subDecl;
-	subDecl->ownerFct->subDecls.push_back(subDecl);
+	subDecl->ownerFct->subDecl.push_back(subDecl);
 	subDecl->addAstFlag(AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL);
 
 	AstAttrUse* newAttrUse = nullptr;
@@ -602,7 +602,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 	// solved, in case we make a reference to it (like in 5296, the @decltype).
 	// So we add a fake makePointerLambda which will authorise the solving of the corresponding sub-decl
 	// when it is evaluated.
-	if (orgSubDecl->kind != AstNodeKind::FuncDecl || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
+	if (orgSubDecl->kind != AstNodeKind::FuncDecl || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
 	{
 		const auto solver   = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
 		solver->semanticFct = Semantic::resolveSubDeclRef;

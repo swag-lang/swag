@@ -78,7 +78,7 @@ bool Semantic::resolveTryCatch(SemanticContext* context)
 
 	SWAG_CHECK(checkCanCatch(context));
 	SWAG_ASSERT(node->ownerFct);
-	node->ownerFct->addSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+	node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
 
 	node->setBcNotifyBefore(ByteCodeGen::emitInitStackTrace);
 	node->byteCodeFct = ByteCodeGen::emitPassThrough;
@@ -98,7 +98,7 @@ bool Semantic::resolveCatch(SemanticContext* context)
 
 	SWAG_CHECK(checkCanCatch(context));
 	SWAG_ASSERT(node->ownerFct);
-	node->ownerFct->addSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+	node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
 
 	node->allocateExtension(ExtensionKind::ByteCode);
 	node->setBcNotifyBefore(ByteCodeGen::emitInitStackTrace);
@@ -125,7 +125,7 @@ bool Semantic::resolveAssume(SemanticContext* context)
 
 	SWAG_CHECK(checkCanCatch(context));
 	SWAG_ASSERT(node->ownerFct);
-	node->ownerFct->addSpecFlag(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+	node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
 
 	node->allocateExtension(ExtensionKind::ByteCode);
 	node->setBcNotifyBefore(ByteCodeGen::emitInitStackTrace);
@@ -148,7 +148,7 @@ bool Semantic::resolveThrow(SemanticContext* context)
 	const auto type = TypeManager::concretePtrRefType(expr->typeInfo);
 
 	SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0379)}));
-	if (!type->isAny() || !node->hasSpecFlag(AstTryCatchAssume::SPECFLAG_THROW_GET_ERR))
+	if (!type->isAny() || !node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_THROW_GET_ERR))
 		SWAG_VERIFY(type->isStruct(), context->report({expr, FMT(Err(Err0380), type->getDisplayNameC())}));
 
 	if (type->isString())

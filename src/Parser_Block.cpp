@@ -19,7 +19,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 	// If with an assignment
 	if (token.id == TokenId::KwdVar || token.id == TokenId::KwdConst || token.id == TokenId::KwdLet)
 	{
-		node->addSpecFlag(AstIf::SPECFLAG_ASSIGN);
+		node->addSpecFlag(AstIf::SPEC_FLAG_ASSIGN);
 
 		const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
 		Scoped     scoped(this, newScope);
@@ -116,7 +116,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
 		// One case
 		auto caseNode            = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
-		caseNode->specFlags      = isDefault ? AstSwitchCase::SPECFLAG_IS_DEFAULT : 0;
+		caseNode->specFlags      = isDefault ? AstSwitchCase::SPEC_FLAG_IS_DEFAULT : 0;
 		caseNode->ownerSwitch    = switchNode;
 		caseNode->semanticFct    = Semantic::resolveCase;
 		const auto previousToken = token;
@@ -250,13 +250,13 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 	SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags, node));
 	if (mdfFlags & MODIFIER_BACK)
 	{
-		node->addSpecFlag(AstVisit::SPECFLAG_BACK);
+		node->addSpecFlag(AstVisit::SPEC_FLAG_BACK);
 	}
 
 	if (token.id == TokenId::SymAmpersand)
 	{
 		node->wantPointerToken = static_cast<Token>(token);
-		node->specFlags        = AstVisit::SPECFLAG_WANT_POINTER;
+		node->specFlags        = AstVisit::SPEC_FLAG_WANT_POINTER;
 		SWAG_CHECK(eatToken());
 	}
 
@@ -328,7 +328,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 	SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
 	if (mdfFlags & MODIFIER_BACK)
 	{
-		node->addSpecFlag(AstLoop::SPECFLAG_BACK);
+		node->addSpecFlag(AstLoop::SPEC_FLAG_BACK);
 	}
 
 	Utf8  name;
@@ -378,7 +378,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 	{
 		const auto var = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
 		var->token     = tokenName;
-		var->addSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
+		var->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
 		node->specificName = var;
 
 		const auto identifer   = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);

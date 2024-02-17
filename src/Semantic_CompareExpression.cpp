@@ -521,7 +521,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 	if (rightTypeInfo->isPointerToTypeInfo() &&
 		(leftTypeInfo->isAny() || leftTypeInfo->isInterface()))
 	{
-		node->addSpecFlag(AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF);
+		node->addSpecFlag(AstBinaryOpNode::SPEC_FLAG_IMPLICIT_KINDOF);
 	}
 	// Must not make types compatible for a struct, as we can compare a struct with whatever other type in a opEquals function.
 	else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())

@@ -419,7 +419,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
 							break;
 						if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
 							enumIdx++;
-						else if (child->kind == AstNodeKind::IdentifierRef && child->hasSpecFlag(AstIdentifierRef::SPECFLAG_AUTO_SCOPE))
+						else if (child->kind == AstNodeKind::IdentifierRef && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
 							enumIdx++;
 					}
 
@@ -605,7 +605,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 		{
 			if (dep.node->parent->kind == AstNodeKind::With)
 				hasWith = true;
-			dep.flags.add(okForUfcs ? ALTSCOPE_UFCS : 0);
+			dep.flags.add(okForUfcs ? ALT_SCOPE_UFCS : 0);
 			toCheck.push_back(dep);
 		}
 	}
@@ -627,7 +627,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 	{
 		for (auto& dep : toCheck)
 		{
-			if (!dep.flags.has(ALTSCOPE_UFCS))
+			if (!dep.flags.has(ALT_SCOPE_UFCS))
 				dep.node = nullptr;
 		}
 	}
@@ -770,7 +770,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
 	// A closure has always a first parameter of type *void
 	if (typeRef->isClosure() && identifier->callParameters)
 	{
-		if (!identifier->hasSpecFlag(AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
+		if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM))
 		{
 			Ast::constructNode(&context->closureFirstParam);
 			context->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
@@ -893,7 +893,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 	ScopedLock lk1(funcDecl->mutex);
 
 	// Be sure block has been solved
-	if (!funcDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE))
+	if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE))
 	{
 		funcDecl->dependentJobs.add(context->baseJob);
 		context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
@@ -901,11 +901,11 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 	}
 
 	// Execute #validif/#validifx block
-	const auto expr = funcDecl->validif->children.back();
+	const auto expr = funcDecl->validIf->children.back();
 
 	// #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
 	// #validif is evaluated once, so keep it.
-	if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
+	if (funcDecl->validIf->kind == AstNodeKind::CompilerValidIfx)
 		expr->removeAstFlag(AST_VALUE_COMPUTED);
 
 	if (!expr->hasComputedValue())
@@ -914,7 +914,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 		context->validIfParameters = oneMatch->oneOverload->callParameters;
 
 		ErrCxtStepKind type;
-		if (funcDecl->validif->kind == AstNodeKind::CompilerValidIfx)
+		if (funcDecl->validIf->kind == AstNodeKind::CompilerValidIfx)
 			type = ErrCxtStepKind::ValidIfx;
 		else
 			type = ErrCxtStepKind::ValidIf;
@@ -1319,7 +1319,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 		return true;
 
 	// Name alias with overloads (more than one match)
-	if (identifier->hasSpecFlag(AstIdentifier::SPECFLAG_NAME_ALIAS) && context->cacheMatches.size() > 1)
+	if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS) && context->cacheMatches.size() > 1)
 	{
 		identifier->resolvedSymbolName     = context->cacheMatches[0]->symbolOverload->symbol;
 		identifier->resolvedSymbolOverload = nullptr;

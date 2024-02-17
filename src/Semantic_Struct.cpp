@@ -199,7 +199,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 		auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
 
 		// Must be an 'impl' function
-		if (!childFct->hasSpecFlag(AstFuncDecl::SPECFLAG_IMPL))
+		if (!childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
 		{
 			// Cannot have the same name as a function of the interface
 			if (itfSymbol)
@@ -312,7 +312,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
 		// use resolvedUserOpSymbolOverload to store the match
 		mapItToFunc[itfSymbol]           = child;
-		mapItIdxToFunc[itfSymbol->index] = static_cast<AstFuncDecl*>(child);
+		mapItIdxToFunc[itfSymbol->index] = castAst<AstFuncDecl>(child);
 	}
 
 	// If structure is generic, then do nothing, we cannot solve
@@ -635,7 +635,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 
 	if (parent->ownerStructScope && !structNode->genericParameters)
 	{
-		const auto parentStruct = static_cast<AstStruct*>(parent->ownerStructScope->owner);
+		const auto parentStruct = castAst<AstStruct>(parent->ownerStructScope->owner);
 		if (parentStruct->genericParameters)
 			structNode->genericParameters = Ast::clone(parentStruct->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
 	}
@@ -658,7 +658,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 
 bool Semantic::preResolveStructContent(SemanticContext* context)
 {
-	const auto node = static_cast<AstStruct*>(context->node->parent);
+	const auto node = castAst<AstStruct>(context->node->parent);
 	SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl);
 
 	const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
@@ -681,9 +681,9 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 				auto funcParam      = TypeManager::makeParam();
 				funcParam->name     = param->token.text;
 				funcParam->typeInfo = param->typeInfo;
-				if (param->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_TYPE))
+				if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
 					funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
-				else if (param->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+				else if (param->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
 					funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
 				typeInfo->genericParameters.push_back(funcParam);
 				typeInfo->sizeOf += param->typeInfo->sizeOf;
@@ -821,7 +821,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	}
 
 	// Structure packing
-	if (node->hasSpecFlag(AstStruct::SPECFLAG_UNION))
+	if (node->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
 		node->packing = 0;
 	else
 	{
@@ -935,7 +935,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 			// If variable is initialized, struct is too.
 			if (!varDecl->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
 			{
-				if (varDecl->assignment || varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+				if (varDecl->assignment || varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
 					structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
 				else if (!varTypeInfo->isStruct() && !varTypeInfo->isArrayOfStruct())
 					structFlags.remove(TYPEINFO_STRUCT_ALL_UNINITIALIZED);
@@ -961,7 +961,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 				if (!varTypeInfo->hasFlag(TYPEINFO_STRUCT_EMPTY))
 					structFlags.remove(TYPEINFO_STRUCT_EMPTY);
 
-				if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+				if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
 				{
 					structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
 					if (!varDecl->type->hasComputedValue())
@@ -1104,7 +1104,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 				storageOffset += childType->sizeOf;
 
 			// Create a generic alias
-			if (!child->hasSpecFlag(AstVarDecl::SPECFLAG_AUTO_NAME))
+			if (!child->hasSpecFlag(AstVarDecl::SPEC_FLAG_AUTO_NAME))
 			{
 				// Special field name starts with 'item' followed by a number
 				bool hasItemName = false;

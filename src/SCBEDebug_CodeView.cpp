@@ -480,7 +480,7 @@ namespace
 
 		// Local variables marked as global
 		/////////////////////////////////
-		const auto funcDecl = static_cast<AstFuncDecl*>(f.node);
+		const auto funcDecl = castAst<AstFuncDecl>(f.node);
 		const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
 		for (const auto localVar : funcDecl->localGlobalVars)
 		{

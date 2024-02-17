@@ -655,7 +655,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 		}
 
 		// A structure initialized with a literal
-		if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
+		if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
 		{
 			auto varType = varDecl->type;
 			SWAG_ASSERT(varType->computedValue->storageSegment);
@@ -866,7 +866,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 		if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
 			needDrop = true;
 		if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop") }));
+			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opDrop") }));
 	}
 
 	typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
@@ -978,7 +978,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 		if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
 			needPostCopy = true;
 		if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy") }));
+			SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION), context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostCopy") }));
 	}
 
 	typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
@@ -1088,7 +1088,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
 		if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
 			needPostMove = true;
 		if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-			SWAG_VERIFY(!(structNode->hasSpecFlag(AstStruct::SPECFLAG_UNION)),
+			SWAG_VERIFY(!(structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION)),
 		            context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove") }));
 	}
 
@@ -1307,7 +1307,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 	const auto       node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 	const auto       resolved = node->resolvedSymbolOverload;
 
-	if (node->type && (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
+	if (node->type && (node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)))
 	{
 		RegisterList r0 = reserveRegisterRC(context);
 
@@ -1349,7 +1349,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 				// When generating parameters for a closure call, keep the reference if we want one !
 				auto       noRef = child->typeInfo;
 				const auto front = param->children.front();
-				if (front->kind != AstNodeKind::MakePointer || !front->hasSpecFlag(AstMakePointer::SPECFLAG_TO_REF))
+				if (front->kind != AstNodeKind::MakePointer || !front->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
 					noRef = TypeManager::concretePtrRefType(noRef);
 
 				emitAffectEqual(context, r0, child->resultRegisterRc, noRef, child);
@@ -1365,7 +1365,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
 	const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
-	if (node->type && (node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS)))
+	if (node->type && (node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)))
 	{
 		auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
 		while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)

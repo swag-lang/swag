@@ -18,7 +18,7 @@ bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeI
 	SWAG_ASSERT(regNode);
 	SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, FMT(Err(Err0477), Naming::kindName(node->ownerScope->kind).c_str())}));
 
-	const AltScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALTSCOPE_STRUCT_USING : 0;
+	const AltScopeFlags altFlags = node->hasAstFlag(AST_STRUCT_MEMBER) ? ALT_SCOPE_STRUCT_USING : 0;
 
 	typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
 	if (typeInfoVar->isStruct())
@@ -151,7 +151,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
 		return context->report({node, FMT(Err(Err0472), typeResolved->getDisplayNameC())});
 	}
 
-	node->parent->addAlternativeScope(scope, ALTSCOPE_USING);
+	node->parent->addAlternativeScope(scope, ALT_SCOPE_USING);
 
 	if (!idref->ownerFct)
 		node->parent->sourceFile->addGlobalUsing(scope);

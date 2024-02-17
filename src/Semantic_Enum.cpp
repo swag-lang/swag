@@ -349,7 +349,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 		for (size_t fev = 1; fev < enumNode->children.size(); fev++)
 		{
 			firstEnumValue = enumNode->children[fev];
-			if (firstEnumValue->kind == AstNodeKind::EnumValue && !firstEnumValue->hasSpecFlag(AstEnumValue::SPECFLAG_HAS_USING))
+			if (firstEnumValue->kind == AstNodeKind::EnumValue && !firstEnumValue->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
 				break;
 		}
 

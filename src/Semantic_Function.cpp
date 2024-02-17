@@ -39,7 +39,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 			continue;
 
 		const auto nodeExpr = castAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
-		if (!nodeExpr->hasSpecFlag(AstExpressionList::SPECFLAG_FOR_TUPLE))
+		if (!nodeExpr->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
 			continue;
 
 		if (!nodeParam->type)
@@ -83,9 +83,9 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 		funcParam->index      = index++;
 		funcParam->declNode   = nodeParam;
 		funcParam->attributes = nodeParam->attributes;
-		if (nodeParam->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_TYPE))
+		if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
 			funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
-		else if (nodeParam->hasSpecFlag(AstVarDecl::SPECFLAG_GENERIC_CONSTANT))
+		else if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
 			funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
 
 		const auto paramType     = nodeParam->typeInfo;
@@ -344,12 +344,12 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 	if (funcNode->content && funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
 	{
 		ScopedLock lk(funcNode->funcMutex);
-		funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE);
+		funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
 		funcNode->dependentJobs.setRunning();
 		return true;
 	}
 
-	if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_IMPL))
+	if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
 	{
 		bool implFor = false;
 		if (funcNode->ownerScope && funcNode->ownerScope->kind == ScopeKind::Impl)
@@ -421,7 +421,7 @@ bool Semantic::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
 	ScopedLock lk(funcNode->funcMutex);
 	computeAccess(funcNode);
-	funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE);
+	funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE | AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
 	funcNode->dependentJobs.setRunning();
 	return true;
 }
@@ -489,7 +489,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 		// the type.
 		else
 		{
-			funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
+			funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
 		}
 
 		return true;
@@ -525,8 +525,8 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
 		// :DeduceLambdaType
 		if (funcNode->makePointerLambda &&
-			(funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPECFLAG_DEP_TYPE)) &&
-			!funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA))
+			(funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE)) &&
+			!funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
 		{
 			auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
 			if (deducedType->isLambdaClosure())
@@ -550,10 +550,10 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 	if (funcNode->ownerFct)
 		funcNode->inheritAttribute(funcNode->ownerFct, ATTRIBUTE_COMPILER);
 
-	if (!funcNode->hasAstFlag(AST_FROM_GENERIC) && !funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR))
+	if (!funcNode->hasAstFlag(AST_FROM_GENERIC) && !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_CHECK_ATTR))
 	{
 		// Can be called multiple times in case of a mixin/macro inside another inlined function
-		funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_CHECK_ATTR);
+		funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_CHECK_ATTR);
 
 		if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
 			funcNode->addAttribute(ATTRIBUTE_INLINE);
@@ -704,9 +704,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 	{
 		if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
 		{
-			shortLambdaPendingTyping = funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
+			shortLambdaPendingTyping = funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
 			typeNode->typeInfo       = g_TypeMgr->typeInfoUndefined;
-			funcNode->removeSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
+			funcNode->removeSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
 		}
 	}
 
@@ -714,7 +714,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 	// In that case, symbol registration will not be done at the end of that function but once the return expression
 	// has been evaluated, and the type deduced
 	bool shortLambda = false;
-	if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED))
+	if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
 		shortLambda = true;
 
 	// :RunGeneratedExp
@@ -1048,7 +1048,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
 	// at the same time.
 	if (!funcNode->hasAstFlag(AST_IS_GENERIC) && funcNode->content && !funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
 	{
-		for (auto f : funcNode->subDecls)
+		for (auto f : funcNode->subDecl)
 		{
 			ScopedLock lk(f->mutex);
 
@@ -1060,7 +1060,7 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
 			if (f->hasExtOwner() && f->extOwner()->ownerCompilerIfBlock && f->extOwner()->ownerCompilerIfBlock->ownerFct == funcNode)
 			{
 				ScopedLock lk1(f->extOwner()->ownerCompilerIfBlock->mutex);
-				f->extOwner()->ownerCompilerIfBlock->subDecls.push_back(f);
+				f->extOwner()->ownerCompilerIfBlock->subDecl.push_back(f);
 			}
 			else
 				launchResolveSubDecl(context, f);
@@ -1322,7 +1322,7 @@ void Semantic::propagateReturn(AstNode* node)
 		else if (scanNode->kind == AstNodeKind::SwitchCase)
 		{
 			const auto sc = castAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
-			if (sc->hasSpecFlag(AstSwitchCase::SPECFLAG_IS_DEFAULT))
+			if (sc->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT))
 				sc->ownerSwitch->addSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN);
 		}
 		else if (scanNode->kind == AstNodeKind::Switch)
@@ -1430,20 +1430,20 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
 	// Deduce return type
 	const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-	bool       lateRegister = funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
+	bool       lateRegister = funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
 	if (funcReturnType->isVoid() || funcReturnType->isGeneric())
 	{
-		if (!funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE))
+		if (!funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_LATE_REGISTER_DONE))
 		{
 			// This is a short lambda without a specified return type. We now have it
 			bool tryDeduce = false;
-			if (funcNode->hasSpecFlag(AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPECFLAG_RETURN_DEFINED))
+			if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
 				tryDeduce = true;
 			if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
 				tryDeduce = true;
 			if (tryDeduce)
 			{
-				funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
+				funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
 				typeInfoFunc->returnType  = TypeManager::concreteType(node->children.front()->typeInfo, CONCRETE_FUNC);
 				typeInfoFunc->returnType  = TypeManager::promoteUntyped(typeInfoFunc->returnType);
 				const auto concreteReturn = TypeManager::concreteType(typeInfoFunc->returnType);
@@ -1459,7 +1459,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 				typeInfoFunc->forceComputeName();
 				funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
 				funcNode->returnTypeDeducedNode = node;
-				funcNode->addSpecFlag(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE);
+				funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_LATE_REGISTER_DONE);
 				lateRegister = true;
 			}
 		}
@@ -1650,7 +1650,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
 	// Register symbol now that we have inferred the return type
 	if (lateRegister)
 	{
-		funcNode->removeSpecFlag(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
+		funcNode->removeSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
 		typeInfoFunc->returnType = funcNode->returnType->typeInfo;
 		typeInfoFunc->forceComputeName();
 		SWAG_CHECK(registerFuncSymbol(context, funcNode));
@@ -1872,7 +1872,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 			cloneContext.replaceNames[FMT("#alias%d", idx++)] = alias.text;
 
 		// Replace user #mixin
-		if (funcDecl->hasSpecFlag(AstFuncDecl::SPECFLAG_SPEC_MIXIN))
+		if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN))
 		{
 			for (int i = 0; i < 10; i++)
 			{
@@ -1923,7 +1923,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 	newContent->removeAstFlag(AST_NO_SEMANTIC);
 
 	// Sub declarations in the inline block, like sub functions
-	if (!funcDecl->subDecls.empty())
+	if (!funcDecl->subDecl.empty())
 	{
 		PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
 		SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, FMT(Err(Err0279), identifier->token.c_str())}));
@@ -1932,7 +1932,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 		// This will work for compile time values, otherwise we will have an out of stack frame when generating the code
 		cloneContext.alternativeScope = inlineNode->parametersScope;
 
-		SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
+		SWAG_CHECK(funcDecl->cloneSubDecl(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
 	}
 
 	// Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
