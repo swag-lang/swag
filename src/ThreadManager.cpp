@@ -71,12 +71,12 @@ void ThreadManager::addJobNoLock(Job* job)
 	}
 
 	// Remove from waiting list
-	if (job->waitingJobIndex != -1)
+	if (job->waitingJobIndex != UINT32_MAX)
 	{
 		waitingJobs[job->waitingJobIndex]                  = waitingJobs.back();
 		waitingJobs[job->waitingJobIndex]->waitingJobIndex = job->waitingJobIndex;
 		waitingJobs.pop_back();
-		job->waitingJobIndex = -1;
+		job->waitingJobIndex = UINT32_MAX;
 	}
 
 	SWAG_ASSERT(job->waitOnJobs == 0 || (job->hasFlag(JOB_ACCEPT_PENDING_COUNT)));
@@ -186,14 +186,14 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 		job->dependentJobs.clear();
 	}
 
-	// If i am an IO job, then decrease counter
+	// If I am an IO job, then decrease counter
 	if (job->hasFlag(JOB_IS_IO))
 	{
 		SWAG_ASSERT(currentJobsIO);
 		--currentJobsIO;
 	}
 
-	// Do we need to wakeup my parent job ?
+	// Do we need to wake up my parent job ?
 	bool wakeUpParent = false;
 
 	// Only if the job is done
@@ -208,7 +208,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 	else if (job->waitingSymbolSolved && job->waitingSymbolSolved->hasFlag(SYMBOL_ATTRIBUTE_GEN))
 		wakeUpParent = true;
 
-	// Notify my parent job that i am done
+	// Notify my parent job that I am done
 	if (wakeUpParent && job->dependentJob)
 	{
 		SWAG_ASSERT(job->dependentJob->waitOnJobs);
@@ -225,7 +225,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 	if (result != JobResult::ReleaseJob)
 	{
 		waitingJobs.push_back(job);
-		job->waitingJobIndex = static_cast<int>(waitingJobs.size()) - 1;
+		job->waitingJobIndex = waitingJobs.size() - 1;
 	}
 	else if (job->jobGroup)
 	{
@@ -419,10 +419,10 @@ Job* ThreadManager::getJob(JobQueue& queue)
 	}
 	else
 	{
-		auto jobPickIndex = static_cast<int>(queue.jobs.size()) - 1;
+		auto jobPickIndex = queue.jobs.size() - 1;
 #ifdef SWAG_DEV_MODE
 		if (g_CommandLine.randomize && !debuggerMode)
-			jobPickIndex = rand() % queue.jobs.count;
+			jobPickIndex = static_cast<uint32_t>(rand()) % queue.jobs.count;
 #endif
 		job = queue.jobs[jobPickIndex];
 		if (debuggerMode && !job->hasFlag(JOB_IS_DEBUGGER))
@@ -492,8 +492,7 @@ Job* ThreadManager::getJob()
 
 Job* ThreadManager::getJob(JobThread* thread)
 {
-	const auto job = getJob();
-	if (job)
+	if (const auto job = getJob())
 	{
 		job->jobThread = thread;
 		return job;

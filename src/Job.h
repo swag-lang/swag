@@ -121,7 +121,7 @@ struct Job
 	TypeInfo*          waitingType         = nullptr;
 	JobWaitKind        waitingKind         = JobWaitKind::None;
 
-	int32_t  waitingJobIndex = -1;
+	uint32_t waitingJobIndex = UINT32_MAX;
 	uint32_t waitOnJobs      = 0;
 	JobFlags flags           = 0;
 	uint32_t affinity        = UINT32_MAX;

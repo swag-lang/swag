@@ -276,12 +276,12 @@ struct VectorNative
 		return false;
 	}
 
-	size_t capacity() const
+	uint32_t capacity() const
 	{
 		return allocated;
 	}
 
-	size_t size() const
+	uint32_t size() const
 	{
 		return count;
 	}
