@@ -66,11 +66,11 @@ namespace
 			return false;
 		}
 
-		if (node->sourceFile->isRuntimeFile)
+		if (node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 			return true;
-		if (node->sourceFile->isBootstrapFile)
+		if (node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 			return true;
-		if (!node->sourceFile->forceExport && !node->hasAttribute(ATTRIBUTE_PUBLIC))
+		if (!node->sourceFile->hasFlag(FILE_FORCE_EXPORT) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
 			return false;
 
 		return true;

@@ -84,7 +84,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
 	// Check specific hard coded attributes
 	SWAG_ASSERT(oneAttribute->typeInfo->declNode);
-	if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
+	if (oneAttribute->typeInfo->declNode->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 	{
 		if (oneAttribute->token.text == g_LangSpec->name_Complete)
 		{

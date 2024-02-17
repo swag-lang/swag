@@ -135,7 +135,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
 	}
 
 	// Register runtime function type, by name
-	if (context->sourceFile->isRuntimeFile)
+	if (context->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 	{
 		ScopedLock lk(context->sourceFile->module->mutexFile);
 		context->sourceFile->module->mapRuntimeFct[context->bc->getCallName()] = context->bc;
@@ -145,7 +145,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
 		context->bc->node->kind == AstNodeKind::FuncDecl)
 	{
 		const auto funcNode = castAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
-		if (!funcNode->sourceFile->shouldHaveError)
+		if (!funcNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
 		{
 			// Be sure that every used registers have been released
 			if (context->bc->maxReservedRegisterRC > context->bc->availableRegistersRC.size() + context->bc->staticRegs)
@@ -274,7 +274,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
 			extension->bc->typeInfoFunc = funcDecl ? castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo) : nullptr;
 			if (node->hasAstFlag(AST_DEFINED_INTRINSIC))
 				extension->bc->name = node->token.text;
-			else if (node->sourceFile->isRuntimeFile)
+			else if (node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				extension->bc->name = node->token.text;
 			else
 			{

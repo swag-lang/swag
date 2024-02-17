@@ -122,7 +122,7 @@ bool GenDoc::generateExamples()
 		helpContent += title;
 		helpContent += FMT("</h%d>", titleLevel + 1);
 
-		if (file->markDown)
+		if (file->hasFlag(FILE_MARK_DOWN))
 		{
 			if (!processMarkDownFile(file->path, titleLevel + 1))
 				return false;

@@ -729,7 +729,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 		isIntrinsic = token.text[0] == '@';
 		if (isIntrinsic)
 		{
-			SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, FMT(Err(Err0294), token.c_str())));
+			SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) || sourceFile->hasFlag(FILE_IS_RUNTIME_FILE), error(token, FMT(Err(Err0294), token.c_str())));
 		}
 		else
 		{

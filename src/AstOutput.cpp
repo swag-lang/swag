@@ -497,7 +497,7 @@ bool AstOutput::outputAttributesGlobalUsing(const OutputContext& context, Concat
 		outputUsing = false;
 	if (outputUsing)
 	{
-		for (const auto& p : node->sourceFile->globalUsings)
+		for (const auto& p : node->sourceFile->globalUsing)
 		{
 			if (p->getFullName() == "Swag")
 				continue;

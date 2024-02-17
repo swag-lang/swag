@@ -35,7 +35,7 @@ bool Semantic::canHaveAccess(const AstNode* node)
 		return false;
 	if (node->hasAstFlag(AST_FROM_GENERIC))
 		return false;
-	if (node->sourceFile->forceExport || node->sourceFile->imported)
+	if (node->sourceFile->hasFlag(FILE_FORCE_EXPORT) || node->sourceFile->imported)
 		return false;
 	if (node->token.text[0] == '@')
 		return false;
@@ -46,9 +46,9 @@ bool Semantic::canInheritAccess(const AstNode* node)
 {
 	if (!node->parent)
 		return false;
-	if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->node->sourceFile->isRuntimeFile)
+	if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 		return false;
-	if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->node->sourceFile->isBootstrapFile)
+	if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 		return false;
 
 	// Content of the function will propagate only if the function is inlined or generic
@@ -158,9 +158,9 @@ void Semantic::setDefaultAccess(AstNode* node)
 		return;
 	if (node->hasAttribute(ATTRIBUTE_ACCESS_MASK))
 		return;
-	if (node->sourceFile && node->sourceFile->isBootstrapFile)
+	if (node->sourceFile && node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 		return;
-	if (node->sourceFile && node->sourceFile->isRuntimeFile)
+	if (node->sourceFile && node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 		return;
 	if (node->hasAstFlag(AST_STRUCT_MEMBER))
 		return;
@@ -194,9 +194,9 @@ void Semantic::setDefaultAccess(AstNode* node)
 		node->addSemFlag(attributeToAccess(node->sourceFile->globalAttr));
 	else if (node->ownerStructScope && !node->hasAstFlag(AST_IN_IMPL))
 		node->addSemFlag(attributeToAccess(node->ownerStructScope->owner->attributeFlags));
-	else if (node->sourceFile && node->sourceFile->fromTests)
+	else if (node->sourceFile && node->sourceFile->hasFlag(FILE_FROM_TESTS))
 		node->addSemFlag(attributeToAccess(ATTRIBUTE_PRIVATE));
-	else if (node->sourceFile && node->sourceFile->forceExport)
+	else if (node->sourceFile && node->sourceFile->hasFlag(FILE_FORCE_EXPORT))
 		node->addSemFlag(attributeToAccess(ATTRIBUTE_PUBLIC));
 	else if (node->sourceFile && node->sourceFile->imported)
 		node->addSemFlag(attributeToAccess(ATTRIBUTE_PUBLIC));

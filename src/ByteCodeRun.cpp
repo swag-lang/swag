@@ -1253,11 +1253,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			// As code in runtime is shared between modules, we cannot cache the pointer, because we could have
 			// the cache initialized by one module, and used by another one, which is bad (because the first module
 			// could be destroyed)
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *module->mutableSegment.address(ip->b.u32);
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->mutableSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *(ip->d.pointer);
@@ -1272,11 +1272,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			// As code in runtime is shared between modules, we cannot cache the pointer, because we could have
 			// the cache initialized by one module, and used by another one, which is bad (because the first module
 			// could be destroyed)
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(module->mutableSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->mutableSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(ip->d.pointer);
@@ -1291,11 +1291,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			// As code in runtime is shared between modules, we cannot cache the pointer, because we could have
 			// the cache initialized by one module, and used by another one, which is bad (because the first module
 			// could be destroyed)
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(module->mutableSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->mutableSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(ip->d.pointer);
@@ -1310,11 +1310,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			// As code in runtime is shared between modules, we cannot cache the pointer, because we could have
 			// the cache initialized by one module, and used by another one, which is bad (because the first module
 			// could be destroyed)
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(module->mutableSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->mutableSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(ip->d.pointer);
@@ -1327,11 +1327,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *module->bssSegment.address(ip->b.u32);
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->bssSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *(ip->d.pointer);
@@ -1343,11 +1343,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(module->bssSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->bssSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(ip->d.pointer);
@@ -1359,11 +1359,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(module->bssSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->bssSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(ip->d.pointer);
@@ -1375,11 +1375,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(module->bssSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->bssSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(ip->d.pointer);
@@ -1392,11 +1392,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *module->compilerSegment.address(ip->b.u32);
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->compilerSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *(ip->d.pointer);
@@ -1408,11 +1408,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(module->compilerSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->compilerSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(ip->d.pointer);
@@ -1424,11 +1424,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(module->compilerSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->compilerSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(ip->d.pointer);
@@ -1440,11 +1440,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(module->compilerSegment.address(ip->b.u32));
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->compilerSegment.address(ip->b.u32));
 				registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(ip->d.pointer);
@@ -1457,7 +1457,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 			{
 				auto ptr = module->mutableSegment.address(ip->b.u32);
 				if (module->saveMutableValues && ip->c.pointer)
@@ -1470,7 +1470,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			}
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 				{
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->mutableSegment.address(ip->b.u32));
@@ -1490,7 +1490,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto module = context->jc.sourceFile->module;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 			{
 				auto ptr = module->bssSegment.address(ip->b.u32);
 				if (ip->c.pointer)
@@ -1512,7 +1512,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			}
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 				{
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->bssSegment.address(ip->b.u32));
@@ -1541,11 +1541,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto offset = ip->b.u32;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->constantSegment.address(offset));
 				registersRC[ip->a.u32].pointer = ip->d.pointer;
@@ -1558,11 +1558,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto offset = ip->b.u32;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].pointer = module->compilerSegment.address(offset);
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->compilerSegment.address(offset));
 				registersRC[ip->a.u32].pointer = ip->d.pointer;
@@ -2605,11 +2605,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 			auto offset = ip->b.u32;
 
 			// :SharedRuntimeBC
-			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+			if (ip->node && ip->node->sourceFile && ip->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 				registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
 			else
 			{
-				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+				SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
 				if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
 					OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->constantSegment.address(offset));
 				registersRC[ip->a.u32].pointer = ip->d.pointer;
@@ -4348,9 +4348,9 @@ namespace
 		//
 		// If we have an expansion, and the first expansion requests test error, then raise
 		// in its context to dismiss the error (like an error during a #validif for example)
-		if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
+		if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
 			err->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-		else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
+		else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
 			err->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
 			// Otherwise get the source file from the top of the bytecode stack if possible
 		else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)

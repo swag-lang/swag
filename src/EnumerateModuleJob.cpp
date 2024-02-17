@@ -21,11 +21,11 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 bool                 markDown)
 {
 	const auto file = Allocator::alloc<SourceFile>();
-	file->fromTests = theModule->kind == ModuleKind::Test;
-	file->name      = fileName;
-	file->imported  = imported;
+	file->addFlag(theModule->kind == ModuleKind::Test ? FILE_FROM_TESTS : 0);
+	file->name     = fileName;
+	file->imported = imported;
 
-	file->markDown = markDown;
+	file->addFlag(markDown ? FILE_MARK_DOWN : 0);
 	if (markDown)
 		file->buildPass = BuildPass::Syntax;
 
@@ -206,15 +206,14 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
 	}
 
 	// Add the config file, second pass
-	const auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name);
-	if (cfgModule)
+	if (const auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name))
 	{
 		auto cfgFile = theModule->path;
 		cfgFile      = ModuleDepManager::getAliasPath(cfgFile);
 		cfgFile.append(SWAG_CFG_FILE);
 		const auto writeTime = OS::getFileWriteTime(cfgFile.string().c_str());
 		const auto file      = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
-		file->isCfgFile      = true;
+		file->addFlag(FILE_IS_CFG_FILE);
 	}
 
 	// Sort files, and register them in a constant order
@@ -363,13 +362,13 @@ JobResult EnumerateModuleJob::execute()
 		enumerateModules(g_Workspace->dependenciesPath);
 
 		// If we are in script mode, then we add one single module with the script file
-		const auto parentFolder    = Path(g_CommandLine.scriptName.c_str()).parent_path();
-		const auto file            = Allocator::alloc<SourceFile>();
-		file->name                 = Path(g_CommandLine.scriptName).filename().replace_extension().string();
-		const auto scriptModule    = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
-		file->path                 = g_CommandLine.scriptName;
-		file->module               = scriptModule;
-		file->isScriptFile         = true;
+		const auto parentFolder = Path(g_CommandLine.scriptName.c_str()).parent_path();
+		const auto file         = Allocator::alloc<SourceFile>();
+		file->name              = Path(g_CommandLine.scriptName).filename().replace_extension().string();
+		const auto scriptModule = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
+		file->path              = g_CommandLine.scriptName;
+		file->module            = scriptModule;
+		file->addFlag(FILE_IS_SCRIPT_FILE);
 		scriptModule->isScriptFile = true;
 		scriptModule->addFile(file);
 		g_Workspace->runModule = scriptModule;
@@ -400,11 +399,11 @@ JobResult EnumerateModuleJob::execute()
 
 			for (const auto f : mod->files)
 			{
-				if (f->isCfgFile)
+				if (f->hasFlag(FILE_IS_CFG_FILE))
 					continue;
-				const auto newFile            = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
-				newFile->isEmbedded           = true;
-				newFile->globalUsingsEmbedded = mod->buildParameters.globalUsing;
+				const auto newFile           = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
+				newFile->addFlag(FILE_IS_EMBEDDED);
+				newFile->globalUsingEmbedded = mod->buildParameters.globalUsing;
 			}
 
 			// Add the dependencies of the embedded module too

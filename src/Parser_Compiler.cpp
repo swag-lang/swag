@@ -365,8 +365,8 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 	{
 		if (!sourceFile->imported)
 		{
-			SWAG_VERIFY(!sourceFile->forceExport, error(token, Err(Err0004)));
-			sourceFile->forceExport = true;
+			SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(token, Err(Err0004)));
+			sourceFile->addFlag(FILE_FORCE_EXPORT);
 			sourceFile->module->addExportSourceFile(sourceFile);
 		}
 
@@ -377,7 +377,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 	/////////////////////////////////
 	else if (token.text == g_LangSpec->name_generated)
 	{
-		sourceFile->isGenerated = true;
+		sourceFile->addFlag(FILE_IS_GENERATED);
 		if (sourceFile->imported)
 			sourceFile->imported->isSwag = true;
 		SWAG_CHECK(eatToken());
@@ -493,9 +493,9 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 			SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Err0435)}));
 			SWAG_CHECK(eatToken());
 			SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, FMT(Err(Err0518), token.c_str())}));
-			sourceFile->tokenHasError   = static_cast<Token>(token);
-			sourceFile->shouldHaveError = true;
-			module->shouldHaveError     = true;
+			sourceFile->tokenHasError = static_cast<Token>(token);
+			sourceFile->addFlag(FILE_SHOULD_HAVE_ERROR);
+			module->shouldHaveError = true;
 			sourceFile->shouldHaveErrorString.push_back(token.text);
 			SWAG_CHECK(eatToken());
 			SWAG_CHECK(eatSemiCol("[[#global testerror]]"));
@@ -505,9 +505,9 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 			SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Err0436)}));
 			SWAG_CHECK(eatToken());
 			SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, FMT(Err(Err0519), token.c_str())}));
-			sourceFile->tokenHasWarning   = static_cast<Token>(token);
-			sourceFile->shouldHaveWarning = true;
-			module->shouldHaveWarning     = true;
+			sourceFile->tokenHasWarning = static_cast<Token>(token);
+			sourceFile->addFlag(FILE_SHOULD_HAVE_WARNING);
+			module->shouldHaveWarning = true;
 			sourceFile->shouldHaveWarningString.push_back(token.text);
 			SWAG_CHECK(eatToken());
 			SWAG_CHECK(eatSemiCol("[[#global testwarning]]"));
@@ -549,7 +549,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 	/////////////////////////////////
 	else if (token.id == TokenId::KwdUsing)
 	{
-		SWAG_VERIFY(sourceFile->isCfgFile, context->report({sourceFile, token, Err(Err0437)}));
+		SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_CFG_FILE), context->report({sourceFile, token, Err(Err0437)}));
 
 		auto prevCount = parent->children.count;
 		SWAG_CHECK(doUsing(parent, &dummyResult));
@@ -617,7 +617,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerDependencies(AstNode* parent)
 {
-	SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Err0432)}));
+	SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE), context->report({sourceFile, token, Err(Err0432)}));
 	SWAG_VERIFY(parent->kind == AstNodeKind::File, context->report({sourceFile, token, Err(Err0433)}));
 
 	const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
@@ -649,7 +649,7 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerLoad(AstNode* parent)
 {
-	SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Err0442)}));
+	SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE), context->report({sourceFile, token, Err(Err0442)}));
 
 	// Be sure this is in a '#dependencies' block
 	auto scan = parent;
@@ -681,10 +681,10 @@ bool Parser::doCompilerLoad(AstNode* parent)
 
 bool Parser::doCompilerImport(AstNode* parent)
 {
-	SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Err0439)}));
+	SWAG_VERIFY(sourceFile->hasFlag(FILE_IS_GENERATED) || sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE), context->report({sourceFile, token, Err(Err0439)}));
 
 	// Be sure this is in a '#dependencies' block
-	if (!sourceFile->isGenerated)
+	if (!sourceFile->hasFlag(FILE_IS_GENERATED))
 	{
 		auto scan = parent;
 		while (scan)
@@ -705,7 +705,7 @@ bool Parser::doCompilerImport(AstNode* parent)
 
 	// Specific dependency stuff
 	Token tokenLocation, tokenVersion;
-	if (sourceFile->isCfgFile || sourceFile->isScriptFile)
+	if (sourceFile->hasFlag(FILE_IS_CFG_FILE) || sourceFile->hasFlag(FILE_IS_SCRIPT_FILE))
 	{
 		while (true)
 		{
@@ -736,7 +736,7 @@ bool Parser::doCompilerImport(AstNode* parent)
 	}
 
 	SWAG_CHECK(eatSemiCol("[[#import]] expression"));
-	if (sourceFile->isGenerated || sourceFile->module->kind == ModuleKind::Config)
+	if (sourceFile->hasFlag(FILE_IS_GENERATED) || sourceFile->module->kind == ModuleKind::Config)
 	{
 		if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
 			node->extOwner()->ownerCompilerIfBlock->imports.push_back(node);

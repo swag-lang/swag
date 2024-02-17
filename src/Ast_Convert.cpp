@@ -173,7 +173,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
 	// Add struct type and scope
 	Scope* rootScope;
-	if (sourceFile->fromTests)
+	if (sourceFile->hasFlag(FILE_FROM_TESTS))
 		rootScope = sourceFile->scopeFile;
 	else
 		rootScope = newParent->ownerScope;

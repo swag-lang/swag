@@ -41,7 +41,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
 	auto kind = ModuleKind::Module;
 
 	const auto parentFolder = file->path.parent_path();
-	if (file->isScriptFile)
+	if (file->hasFlag(FILE_IS_SCRIPT_FILE))
 	{
 		moduleName   = file->path.filename().replace_extension().string();
 		moduleFolder = parentFolder;
@@ -51,7 +51,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
 
 	const auto cfgModule    = Allocator::alloc<Module>();
 	cfgModule->kind         = ModuleKind::Config;
-	cfgModule->isScriptFile = file->isScriptFile;
+	cfgModule->isScriptFile = file->hasFlag(FILE_IS_SCRIPT_FILE);
 	cfgModule->setup(moduleName, moduleFolder);
 	cfgModule->addFile(file);
 
@@ -78,8 +78,8 @@ void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dir
 {
 	const auto file = Allocator::alloc<SourceFile>();
 	file->name      = fileName;
-	file->isCfgFile = true;
-	Path pathFile   = dirName;
+	file->addFlag(FILE_IS_CFG_FILE);
+	Path pathFile = dirName;
 	pathFile.append(fileName);
 	file->path = pathFile;
 
@@ -439,11 +439,10 @@ bool ModuleDepManager::execute()
 	// When this is a simple script, then register the script file as the configuration file
 	else
 	{
-		auto file          = Allocator::alloc<SourceFile>();
-		file->path         = g_CommandLine.scriptName;
-		file->name         = file->path.filename().string();
-		file->isCfgFile    = true;
-		file->isScriptFile = true;
+		auto file  = Allocator::alloc<SourceFile>();
+		file->path = g_CommandLine.scriptName;
+		file->name = file->path.filename().string();
+		file->addFlag(FILE_IS_CFG_FILE | FILE_IS_SCRIPT_FILE);
 		registerCfgFile(file);
 	}
 
@@ -540,10 +539,10 @@ bool ModuleDepManager::execute()
 			auto file = Allocator::alloc<SourceFile>();
 			cfgModule->files.push_back(file);
 
-			file->name      = cfgFileName;
-			file->isCfgFile = true;
-			file->module    = cfgModule;
-			Path pathFile   = cfgFilePath;
+			file->name = cfgFileName;
+			file->addFlag(FILE_IS_CFG_FILE);
+			file->module  = cfgModule;
+			Path pathFile = cfgFilePath;
 			pathFile.append(cfgFileName);
 			file->path = pathFile;
 

@@ -297,8 +297,8 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 	if (logGenerated &&
 		fromNode &&
 		!g_CommandLine.scriptCommand &&
-		!fromNode->sourceFile->shouldHaveError &&
-		!fromNode->sourceFile->shouldHaveWarning && g_CommandLine.output &&
+		!fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR) &&
+		!fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING) && g_CommandLine.output &&
 		fromNode->sourceFile->module->buildCfg.backendDebugInfos)
 	{
 		SWAG_CHECK(saveEmbeddedAst(content, fromNode, tmpFilePath, tmpFileName, previousLogLine));
@@ -306,16 +306,16 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
 	sourceFile = Allocator::alloc<SourceFile>();
 	sourceFile->setExternalBuffer(content);
-	sourceFile->isFromAst = true;
-	sourceFile->module    = parent->sourceFile->module;
-	sourceFile->name      = tmpFileName;
-	sourceFile->path      = tmpFilePath;
+	sourceFile->addFlag(FILE_IS_FROM_AST);
+	sourceFile->module = parent->sourceFile->module;
+	sourceFile->name   = tmpFileName;
+	sourceFile->path   = tmpFilePath;
 	sourceFile->path.append(tmpFileName);
 	if (fromNode)
 	{
 		sourceFile->fromNode          = fromNode;
-		sourceFile->shouldHaveError   = fromNode->sourceFile->shouldHaveError;
-		sourceFile->shouldHaveWarning = fromNode->sourceFile->shouldHaveWarning;
+		sourceFile->addFlag(fromNode->sourceFile->flags.mask(FILE_SHOULD_HAVE_ERROR));
+		sourceFile->addFlag(fromNode->sourceFile->flags.mask(FILE_SHOULD_HAVE_WARNING));
 	}
 
 	currentScope       = parent->ownerScope;
@@ -459,14 +459,14 @@ bool Parser::generateAst()
 	sourceFile->scopeFile->flags.add(SCOPE_FILE);
 
 	// By default, everything is internal if it comes from the test folder, or from the configuration file
-	if (sourceFile->fromTests || sourceFile->isCfgFile)
+	if (sourceFile->hasFlag(FILE_FROM_TESTS) || sourceFile->hasFlag(FILE_IS_CFG_FILE))
 		currentScope = sourceFile->scopeFile;
 	else
 		currentScope = parentScope;
 	sourceFile->astRoot->ownerScope = currentScope;
 
 	// Make a copy of all #global using of the config file
-	if (!sourceFile->isCfgFile && !sourceFile->imported && !sourceFile->isEmbedded)
+	if (!sourceFile->hasFlag(FILE_IS_CFG_FILE) && !sourceFile->imported && !sourceFile->hasFlag(FILE_IS_EMBEDDED))
 	{
 		for (const auto s : module->buildParameters.globalUsing)
 		{
@@ -478,9 +478,9 @@ bool Parser::generateAst()
 			node->sourceFile = sourceFile;
 		}
 	}
-	else if (sourceFile->isEmbedded)
+	else if (sourceFile->hasFlag(FILE_IS_EMBEDDED))
 	{
-		for (const auto s : sourceFile->globalUsingsEmbedded)
+		for (const auto s : sourceFile->globalUsingEmbedded)
 		{
 			CloneContext cxt;
 			cxt.parent       = sourceFile->astRoot;

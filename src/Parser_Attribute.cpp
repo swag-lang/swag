@@ -47,7 +47,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 	SWAG_CHECK(eatSemiCol("attribute definition"));
 
 	//////
-	if (sourceFile->isBootstrapFile || sourceFile->isRuntimeFile)
+	if (sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) || sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 	{
 		if (attrNode->token.text == g_LangSpec->name_Align)
 			typeInfo->attributeUsage = 0;

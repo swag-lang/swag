@@ -30,7 +30,7 @@ bool Parser::testIsValidUserName(const AstNode* node) const
 		return true;
 
 	// An identifier that starts with '__' is reserved for internal usage !
-	if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
+	if (!sourceFile->hasFlag(FILE_IS_GENERATED) && !sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) && !sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 	{
 		if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
 			return false;

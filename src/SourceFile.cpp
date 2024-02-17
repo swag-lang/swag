@@ -59,12 +59,12 @@ void SourceFile::setExternalBuffer(const Utf8& content)
 	externalContent = content;
 	buffer          = const_cast<char*>(externalContent.c_str());
 	bufferSize      = externalContent.length();
-	isExternal      = true;
+	addFlag(FILE_IS_EXTERNAL);
 }
 
 bool SourceFile::load()
 {
-	if (isExternal)
+	if (hasFlag(FILE_IS_EXTERNAL))
 		return true;
 	if (buffer)
 		return true;
@@ -84,9 +84,9 @@ bool SourceFile::load()
 	}
 
 	// Get file length
-	fseek(handle, 0, SEEK_END);
+	(void) fseek(handle, 0, SEEK_END);
 	bufferSize = ftell(handle);
-	fseek(handle, 0, SEEK_SET);
+	(void) fseek(handle, 0, SEEK_SET);
 
 	// Read content
 	allocBufferSize = static_cast<unsigned>(Allocator::alignSize(bufferSize + 4));
@@ -97,7 +97,7 @@ bool SourceFile::load()
 #endif
 
 	const auto result = fread(buffer, 1, bufferSize, handle);
-	fclose(handle);
+	(void) fclose(handle);
 
 	if (result != bufferSize)
 	{
@@ -129,7 +129,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
 	// This is slow, but this is ok, as getLine is not called in normal situations
 	if (allLines.empty())
 	{
-		if (isExternal && !fileForSourceLocation)
+		if (hasFlag(FILE_IS_EXTERNAL) && !fileForSourceLocation)
 		{
 			auto pz = static_cast<const char*>(buffer);
 			Utf8 line;
@@ -185,11 +185,11 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
 
 void SourceFile::addGlobalUsing(Scope* scope)
 {
-	for (const auto p : globalUsings)
+	for (const auto p : globalUsing)
 	{
 		if (p->getFullName() == scope->getFullName())
 			return;
 	}
 
-	globalUsings.push_back(scope);
+	globalUsing.push_back(scope);
 }

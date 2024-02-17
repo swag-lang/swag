@@ -201,20 +201,20 @@ void ModuleBuildJob::checkMissingErrors() const
 	{
 		for (auto file : module->files)
 		{
-			if (file->shouldHaveError && !file->numErrors)
+			if (file->hasFlag(FILE_SHOULD_HAVE_ERROR) && !file->numErrors)
 			{
 				if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
 				{
-					file->shouldHaveError = false;
+					file->removeFlag(FILE_SHOULD_HAVE_ERROR);
 					Report::report({file, file->tokenHasError, Err(Err0582)});
 				}
 			}
 
-			if (file->shouldHaveWarning && !file->numWarnings)
+			if (file->hasFlag(FILE_SHOULD_HAVE_WARNING) && !file->numWarnings)
 			{
 				if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
 				{
-					file->shouldHaveWarning = false;
+					file->removeFlag(FILE_SHOULD_HAVE_WARNING);
 					Report::report({file, file->tokenHasWarning, Err(Err0583)});
 				}
 			}
@@ -332,7 +332,7 @@ JobResult ModuleBuildJob::execute()
 			{
 				for (auto file : module->files)
 				{
-					if (file->markDown)
+					if (file->hasFlag(FILE_MARK_DOWN))
 						continue;
 
 					auto syntaxJob          = Allocator::alloc<SyntaxJob>();

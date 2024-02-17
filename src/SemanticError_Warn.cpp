@@ -77,11 +77,11 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 		return true;
 	if (!one->node || !one->node->sourceFile || !one->node->resolvedSymbolName)
 		return true;
-	if (one->node->sourceFile->isEmbedded || one->node->sourceFile->isExternal || one->node->sourceFile->imported)
+	if (one->node->sourceFile->hasFlag(FILE_IS_EMBEDDED) || one->node->sourceFile->hasFlag(FILE_IS_EXTERNAL) || one->node->sourceFile->imported)
 		return true;
-	if (one->node->sourceFile->isRuntimeFile || one->node->sourceFile->isBootstrapFile)
+	if (one->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) || one->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 		return true;
-	if (one->node->sourceFile->forceExport || one->node->sourceFile->globalAttr.has(ATTRIBUTE_PUBLIC))
+	if (one->node->sourceFile->hasFlag(FILE_FORCE_EXPORT) || one->node->sourceFile->globalAttr.has(ATTRIBUTE_PUBLIC))
 		return true;
 	const auto funcDecl = castAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
 	if (funcDecl->fromItfSymbol)
@@ -203,7 +203,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 			{
 				const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
 				Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
-				err.hint       = Nte(Nte0145);
+				err.hint        = Nte(Nte0145);
 				const auto note = Diagnostic::note(Nte(Nte0039));
 				isOk            = isOk && context->report(err, note);
 			}

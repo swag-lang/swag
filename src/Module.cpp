@@ -515,7 +515,7 @@ void Module::addFileNoLock(SourceFile* file)
 	moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
 	// If the file is flagged as '#global export', register it
-	if (file->forceExport)
+	if (file->hasFlag(FILE_FORCE_EXPORT))
 		exportSourceFiles.insert(file);
 }
 

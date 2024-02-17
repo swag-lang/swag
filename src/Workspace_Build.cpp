@@ -142,8 +142,8 @@ void Workspace::addBootstrap()
 	file->path      = g_CommandLine.exePath.parent_path();
 	file->path.append("runtime");
 	file->path.append("bootstrap.swg");
-	file->module          = bootstrapModule;
-	file->isBootstrapFile = true;
+	file->module = bootstrapModule;
+	file->addFlag(FILE_IS_BOOTSTRAP_FILE);
 	bootstrapModule->addFile(file);
 }
 
@@ -154,8 +154,8 @@ void Workspace::addRuntimeFile(const char* fileName) const
 	file->path      = g_CommandLine.exePath.parent_path();
 	file->path.append("runtime");
 	file->path.append(fileName);
-	file->module        = runtimeModule;
-	file->isRuntimeFile = true;
+	file->module = runtimeModule;
+	file->addFlag(FILE_IS_RUNTIME_FILE);
 	runtimeModule->addFile(file);
 }
 

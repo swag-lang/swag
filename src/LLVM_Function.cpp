@@ -5938,8 +5938,8 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const AstFu
 
 	// If we just have one user compile unit, then force private linkage if possible
 	else if (funcNode &&
-		!funcNode->sourceFile->isRuntimeFile &&
-		!funcNode->sourceFile->isBootstrapFile &&
+		!funcNode->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) &&
+		!funcNode->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) &&
 		!bc->isInSeg &&
 		!funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
 		numPreCompileBuffers == 2) // :SegZeroIsData

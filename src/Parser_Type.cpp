@@ -354,7 +354,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
 	// Add struct type and scope
 	Scope* rootScope;
-	if (sourceFile->fromTests)
+	if (sourceFile->hasFlag(FILE_FROM_TESTS))
 		rootScope = sourceFile->scopeFile;
 	else
 		rootScope = newParent->ownerScope;

@@ -520,7 +520,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
 	}
 
 	// We are parsing the swag module
-	if (sourceFile->isBootstrapFile)
+	if (sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 		g_Workspace->swagScope.registerType(node->typeInfo);
 
 	return true;
@@ -825,17 +825,16 @@ bool Semantic::resolveStruct(SemanticContext* context)
 		node->packing = 0;
 	else
 	{
-		auto value = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
-		if (value)
+		if (auto value = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value))
 			node->packing = value->reg.u8;
 	}
 
 	// Check 'opaque' attribute
-	if (!sourceFile->isGenerated)
+	if (!sourceFile->hasFlag(FILE_IS_GENERATED))
 	{
 		if (node->hasAttribute(ATTRIBUTE_OPAQUE))
 		{
-			SWAG_VERIFY(!sourceFile->forceExport, context->report({node, node->token, Err(Err0340)}));
+			SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), context->report({node, node->token, Err(Err0340)}));
 			SWAG_VERIFY(node->isPublic(), context->report({node, node->token, Err(Err0339)}));
 		}
 	}
@@ -1228,7 +1227,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 	}
 
 	// We are parsing the swag module
-	if (sourceFile->isBootstrapFile)
+	if (sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
 		g_Workspace->swagScope.registerType(node->typeInfo);
 
 	// Generate all functions associated with a struct

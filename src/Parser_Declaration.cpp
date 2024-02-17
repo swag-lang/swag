@@ -50,7 +50,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
 	SWAG_ASSERT(token.id == TokenId::KwdPublic || token.id == TokenId::KwdInternal);
 	SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, FMT(Err(Err0481), token.c_str())));
-	SWAG_VERIFY(!sourceFile->forceExport, error(token, FMT(Err(Err0615), token.c_str())));
+	SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(token, FMT(Err(Err0615), token.c_str())));
 
 	Scope*     newScope  = currentScope;
 	const auto tokenAttr = token;
@@ -223,7 +223,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
 	// There is only one swag namespace, defined in the bootstrap. So if we redeclared it
 	// in runtime, use the one from the bootstrap
-	if (sourceFile->isRuntimeFile && token.text == g_LangSpec->name_Swag)
+	if (sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && token.text == g_LangSpec->name_Swag)
 		currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
 	const bool scopeFilePriv = privName != nullptr;
@@ -257,7 +257,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 		}
 
 		// Be sure this is not the swag namespace, except for a runtime file
-		if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
+		if (!sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) && !sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
 			SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, FMT(Err(Err0618), token.c_str())));
 
 		// Add/Get namespace
