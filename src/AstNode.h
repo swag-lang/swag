@@ -321,8 +321,8 @@ struct AstNode
 	AstNode* findParentAttrUse(const Utf8& name) const;
 	AstNode* findParent(TokenId tkn) const;
 
-	const Token& getTokenName();
-	Utf8         getScopedName();
+	const Token& getTokenName() const;
+	Utf8         getScopedName() const;
 	void         setPassThrough();
 	void         setOwnerAttrUse(AstAttrUse* attrUse);
 	void         swap2Children();
@@ -1088,8 +1088,8 @@ struct AstMakePointer : AstNode
 	AstNode* clone(CloneContext& context);
 
 	AstFuncDecl*      lambda;
-	TypeInfoFuncAttr* deducedLambdaType = nullptr;
-	TypeInfoFuncAttr* tryLambdaType     = nullptr;
+	TypeInfoFuncAttr* deducedLambdaType;
+	TypeInfoFuncAttr* tryLambdaType;
 };
 
 struct AstRefSubDecl : AstNode

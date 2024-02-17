@@ -1004,7 +1004,7 @@ bool AstNode::isConstant1() const
 	return false;
 }
 
-const Token& AstNode::getTokenName()
+const Token& AstNode::getTokenName() const
 {
 	if (kind == AstNodeKind::FuncDecl)
 	{
@@ -1188,7 +1188,7 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
 	}
 }
 
-Utf8 AstNode::getScopedName()
+Utf8 AstNode::getScopedName() const
 {
 	auto& fullName = ownerScope->getFullName();
 	if (fullName.empty())
