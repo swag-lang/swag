@@ -17,221 +17,226 @@ void*                            g_SystemAllocatorTable = nullptr;
 void*                            g_DebugAllocatorTable  = nullptr;
 thread_local ByteCodeRunContext  g_RunContextVal;
 thread_local ByteCodeRunContext* g_RunContext = &g_RunContextVal;
-static Mutex                     g_MakeCallbackMutex;
-static uint32_t                  g_MakeCallbackCount = 0;
 
-static void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
+namespace
 {
+	Mutex    g_MakeCallbackMutex;
+	uint32_t g_MakeCallbackCount = 0;
+
+	void byteCodeRun(bool /*forCallback*/, void* byteCodePtr, va_list vaList)
+	{
 #ifdef SWAG_DEV_MODE
-	SWAG_ASSERT(reinterpret_cast<uint64_t>(byteCodePtr) != SWAG_PATCH_MARKER);
+		SWAG_ASSERT(byteCodePtr != g_SwagPatchMarker);
 #endif
-	const auto        bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(byteCodePtr));
-	TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
+		const auto        bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(byteCodePtr));
+		TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
-	VectorNative<Register*> returnRegisters;
-	VectorNative<Register*> paramRegisters;
-	VectorNative<Register>  fakeRegisters;
+		VectorNative<Register*> returnRegisters;
+		VectorNative<Register*> paramRegisters;
+		VectorNative<Register>  fakeRegisters;
 
-	for (uint32_t i = 0; i < typeFunc->numReturnRegisters(); i++)
-	{
-		auto r = va_arg(vaList, Register*);
-		returnRegisters.push_back(r);
+		for (uint32_t i = 0; i < typeFunc->numReturnRegisters(); i++)
+		{
+			auto r = va_arg(vaList, Register*);
+			returnRegisters.push_back(r);
+		}
+
+		const auto saveNode       = g_RunContext->node;
+		const auto saveSourceFile = g_RunContext->jc.sourceFile;
+
+		const auto node = bc->node ? bc->node : saveNode;
+		SWAG_ASSERT(node);
+
+		const auto module         = node->sourceFile->module;
+		bool       stackAllocated = false;
+
+		if (!g_RunContext->stack)
+		{
+			SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
+			g_RunContext->setup(node->sourceFile, node, node->extByteCode()->bc);
+			stackAllocated = true;
+		}
+		else
+		{
+			g_RunContext->jc.sourceFile = node->sourceFile;
+			g_RunContext->node          = node;
+		}
+
+		// Parameters
+		// As we have values/registers values, we need to make a copy in a temporary register
+		fakeRegisters.reserve(typeFunc->numParamsRegisters());
+		for (uint32_t i = 0; i < typeFunc->numParamsRegisters(); i++)
+		{
+			fakeRegisters.count++;
+			auto& r = fakeRegisters.back();
+			r.u64   = va_arg(vaList, uint64_t);
+			paramRegisters.push_back(&fakeRegisters.back());
+		}
+
+		const auto saveSp      = g_RunContext->sp;
+		const auto saveSpAlt   = g_RunContext->spAlt;
+		const auto saveFirstRC = g_RunContext->firstRC;
+
+		while (!paramRegisters.empty())
+		{
+			const auto r = paramRegisters.back();
+			paramRegisters.pop_back();
+			g_RunContext->push(r->pointer);
+		}
+
+		// Simulate a LocalCall
+		g_RunContext->push(g_RunContext->bp);
+		g_RunContext->push(g_RunContext->bc);
+		g_RunContext->push(g_RunContext->ip);
+		g_RunContext->oldBc   = nullptr;
+		g_RunContext->bc      = bc;
+		g_RunContext->ip      = bc->out;
+		g_RunContext->bp      = g_RunContext->sp;
+		g_RunContext->firstRC = g_RunContext->curRC;
+		ByteCodeRun::enterByteCode(g_RunContext, g_RunContext->bc);
+
+		g_ByteCodeStackTrace->push({nullptr, nullptr});
+		const auto result = module->runner.run(g_RunContext);
+
+		g_RunContext->sp            = saveSp;
+		g_RunContext->spAlt         = saveSpAlt;
+		g_RunContext->node          = saveNode;
+		g_RunContext->jc.sourceFile = saveSourceFile;
+		g_RunContext->firstRC       = saveFirstRC;
+
+		// Get result
+		for (size_t i = 0; i < returnRegisters.size(); i++)
+		{
+			const auto r = returnRegisters[i];
+			*r           = g_RunContext->registersRR[i];
+		}
+
+		if (stackAllocated)
+			g_RunContext->releaseStack();
+
+		if (!result)
+			OS::raiseException(SWAG_EXCEPTION_TO_PREV_HANDLER);
 	}
 
-	const auto saveNode       = g_RunContext->node;
-	const auto saveSourceFile = g_RunContext->jc.sourceFile;
-
-	const auto node = bc->node ? bc->node : saveNode;
-	SWAG_ASSERT(node);
-
-	const auto module         = node->sourceFile->module;
-	bool       stackAllocated = false;
-
-	if (!g_RunContext->stack)
+	void byteCodeRun(void* byteCodePtr, ...)
 	{
-		SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
-		g_RunContext->setup(node->sourceFile, node, node->extByteCode()->bc);
-		stackAllocated = true;
-	}
-	else
-	{
-		g_RunContext->jc.sourceFile = node->sourceFile;
-		g_RunContext->node          = node;
+		va_list vaList;
+		va_start(vaList, byteCodePtr);
+		byteCodeRun(false, byteCodePtr, vaList);
 	}
 
-	// Parameters
-	// As we have values/registers values, we need to make a copy in a temporary register
-	fakeRegisters.reserve(typeFunc->numParamsRegisters());
-	for (uint32_t i = 0; i < typeFunc->numParamsRegisters(); i++)
+	void byteCodeRunCB(void* byteCodePtr, ...)
 	{
-		fakeRegisters.count++;
-		auto& r = fakeRegisters.back();
-		r.u64   = va_arg(vaList, uint64_t);
-		paramRegisters.push_back(&fakeRegisters.back());
+		va_list vaList;
+		va_start(vaList, byteCodePtr);
+		byteCodeRun(true, byteCodePtr, vaList);
 	}
 
-	const auto saveSp      = g_RunContext->sp;
-	const auto saveSpAlt   = g_RunContext->spAlt;
-	const auto saveFirstRC = g_RunContext->firstRC;
+	// Callback stuff. This is tricky !
+	// The problem: we want an external library to be able to call a callback defined in swag.
+	// When swag code is native, no problem.
+	// The problem starts when that callback is bytecode, at compile time.
+	// We need a way to associate a native function that will be called by the external library to a bytecode.
+	//
+	// The only way I have found : make the native function generic (always the same parameters), and attach
+	// the address of that function to bytecode. One native callback for one specific bytecode.
+	// That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
+	// when calling @mkcallback
 
-	while (!paramRegisters.empty())
+	void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6);
+
+	struct Callback
 	{
-		const auto r = paramRegisters.back();
-		paramRegisters.pop_back();
-		g_RunContext->push(r->pointer);
-	}
-
-	// Simulate a LocalCall
-	g_RunContext->push(g_RunContext->bp);
-	g_RunContext->push(g_RunContext->bc);
-	g_RunContext->push(g_RunContext->ip);
-	g_RunContext->oldBc   = nullptr;
-	g_RunContext->bc      = bc;
-	g_RunContext->ip      = bc->out;
-	g_RunContext->bp      = g_RunContext->sp;
-	g_RunContext->firstRC = g_RunContext->curRC;
-	ByteCodeRun::enterByteCode(g_RunContext, g_RunContext->bc);
-
-	g_ByteCodeStackTrace->push({nullptr, nullptr});
-	const auto result = module->runner.run(g_RunContext);
-
-	g_RunContext->sp            = saveSp;
-	g_RunContext->spAlt         = saveSpAlt;
-	g_RunContext->node          = saveNode;
-	g_RunContext->jc.sourceFile = saveSourceFile;
-	g_RunContext->firstRC       = saveFirstRC;
-
-	// Get result
-	for (size_t i = 0; i < returnRegisters.size(); i++)
-	{
-		const auto r = returnRegisters[i];
-		*r           = g_RunContext->registersRR[i];
-	}
-
-	if (stackAllocated)
-		g_RunContext->releaseStack();
-
-	if (!result)
-		OS::raiseException(SWAG_EXCEPTION_TO_PREV_HANDLER);
-}
-
-static void byteCodeRun(void* byteCodePtr, ...)
-{
-	va_list valist;
-	va_start(valist, byteCodePtr);
-	byteCodeRun(false, byteCodePtr, valist);
-}
-
-static void byteCodeRunCB(void* byteCodePtr, ...)
-{
-	va_list valist;
-	va_start(valist, byteCodePtr);
-	byteCodeRun(true, byteCodePtr, valist);
-}
-
-// Callback stuff. This is tricky !
-// The problem: we want an external library to be able to call a callback defined in swag.
-// When swag code is native, no problem.
-// The problem starts when that callback is bytecode, at compile time.
-// We need a way to associate a native function that will be called by the external library to a bytecode.
-//
-// The only way i have found : make the native function generic (always the same parameters), and attach
-// the address of that function to bytecode. One native callback for one specific bytecode.
-// That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
-// when calling @mkcallback
-
-static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6);
-
-struct Callback
-{
-	void*  bytecode;
-	FuncCB cb;
-};
+		void*  bytecode;
+		FuncCB cb;
+	};
 
 #define DECL_CB(__idx)                                                                         \
-    static void* __callback##__idx(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6) \
+    void* __callback##__idx(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6) \
     {                                                                                          \
         return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6);                         \
     }
+
 #define USE_CB(__idx)              \
     {                              \
         nullptr, __callback##__idx \
     }
 
-// WARNING WARNING WARNING WARNING WARNING WARNING
-// WARNING WARNING WARNING WARNING WARNING WARNING
-// WARNING WARNING WARNING WARNING WARNING WARNING
-//
-// If /OPT:ICF is enabled in the linker (COMDAT FOLDING), this will not work
-// as the linker will make only one __callback function, and all pointers in
-// g_CallbackArr will be the same !!!
+	// WARNING WARNING WARNING WARNING WARNING WARNING
+	// WARNING WARNING WARNING WARNING WARNING WARNING
+	// WARNING WARNING WARNING WARNING WARNING WARNING
 
-DECL_CB(a);
-DECL_CB(b);
-DECL_CB(c);
-DECL_CB(d);
-DECL_CB(e);
-DECL_CB(f);
-DECL_CB(g);
-DECL_CB(h);
-DECL_CB(i);
-DECL_CB(aa);
-DECL_CB(ab);
-DECL_CB(ac);
-DECL_CB(ad);
-DECL_CB(ae);
-DECL_CB(af);
-DECL_CB(ag);
-DECL_CB(ah);
-DECL_CB(ai);
-DECL_CB(aaa);
-DECL_CB(aab);
-DECL_CB(aac);
-DECL_CB(aad);
-DECL_CB(aae);
-DECL_CB(aaf);
-DECL_CB(aag);
-DECL_CB(aah);
-DECL_CB(aai);
+	// If /OPT:ICF is enabled in the linker (COMDAT FOLDING), this will not work
+	// as the linker will make only one __callback function, and all pointers in
+	// g_CallbackArr will be the same !!!
 
-static Callback g_CallbackArr[] = {
-	USE_CB(a), USE_CB(b), USE_CB(c), USE_CB(d), USE_CB(e), USE_CB(f), USE_CB(g), USE_CB(h), USE_CB(i),
-	USE_CB(aa), USE_CB(ab), USE_CB(ac), USE_CB(ad), USE_CB(ae), USE_CB(af), USE_CB(ag), USE_CB(ah), USE_CB(ai),
-	USE_CB(aaa), USE_CB(aab), USE_CB(aac), USE_CB(aad), USE_CB(aae), USE_CB(aaf), USE_CB(aag), USE_CB(aah), USE_CB(aai),
-};
+	DECL_CB(a);
+	DECL_CB(b);
+	DECL_CB(c);
+	DECL_CB(d);
+	DECL_CB(e);
+	DECL_CB(f);
+	DECL_CB(g);
+	DECL_CB(h);
+	DECL_CB(i);
+	DECL_CB(aa);
+	DECL_CB(ab);
+	DECL_CB(ac);
+	DECL_CB(ad);
+	DECL_CB(ae);
+	DECL_CB(af);
+	DECL_CB(ag);
+	DECL_CB(ah);
+	DECL_CB(ai);
+	DECL_CB(aaa);
+	DECL_CB(aab);
+	DECL_CB(aac);
+	DECL_CB(aad);
+	DECL_CB(aae);
+	DECL_CB(aaf);
+	DECL_CB(aag);
+	DECL_CB(aah);
+	DECL_CB(aai);
 
-// This is the actual callback that will be called by external libraries
-static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)
-{
-	uint32_t cbIndex = UINT32_MAX;
+	Callback g_CallbackArr[] = {
+		USE_CB(a), USE_CB(b), USE_CB(c), USE_CB(d), USE_CB(e), USE_CB(f), USE_CB(g), USE_CB(h), USE_CB(i),
+		USE_CB(aa), USE_CB(ab), USE_CB(ac), USE_CB(ad), USE_CB(ae), USE_CB(af), USE_CB(ag), USE_CB(ah), USE_CB(ai),
+		USE_CB(aaa), USE_CB(aab), USE_CB(aac), USE_CB(aad), USE_CB(aae), USE_CB(aaf), USE_CB(aag), USE_CB(aah), USE_CB(aai),
+	};
 
-	// Find the slot that corresponds to the native callback, because
-	// we beed the bytecode pointer that matches 'cb'
+	// This is the actual callback that will be called by external libraries
+	void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)
 	{
-		ScopedLock lk(g_MakeCallbackMutex);
-		for (uint32_t i = 0; i < g_MakeCallbackCount; i++)
+		uint32_t cbIndex = UINT32_MAX;
+
+		// Find the slot that corresponds to the native callback, because
+		// we need the bytecode pointer that matches 'cb'
 		{
-			if (g_CallbackArr[i].cb == cb)
+			ScopedLock lk(g_MakeCallbackMutex);
+			for (uint32_t i = 0; i < g_MakeCallbackCount; i++)
 			{
-				cbIndex = i;
-				break;
+				if (g_CallbackArr[i].cb == cb)
+				{
+					cbIndex = i;
+					break;
+				}
 			}
 		}
+
+		SWAG_ASSERT(cbIndex != UINT32_MAX);
+
+		void*                   result   = nullptr;
+		const ByteCode*         bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode));
+		const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
+		SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
+
+		if (typeFunc->numReturnRegisters())
+			byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &result, p1, p2, p3, p4, p5, p6);
+		else
+			byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, p1, p2, p3, p4, p5, p6);
+
+		return result;
 	}
-
-	SWAG_ASSERT(cbIndex != UINT32_MAX);
-
-	void*                   result   = nullptr;
-	const ByteCode*         bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode));
-	const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
-	SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
-
-	if (typeFunc->numReturnRegisters())
-		byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, &result, p1, p2, p3, p4, p5, p6);
-	else
-		byteCodeRunCB(g_CallbackArr[cbIndex].bytecode, p1, p2, p3, p4, p5, p6);
-
-	return result;
 }
 
 // Runtime function called by user code
@@ -269,7 +274,7 @@ void initDefaultContext()
 	args += " ";
 	args += g_CommandLine.userArguments;
 
-	g_ProcessInfos.args.buffer = (void*) args.c_str();
+	g_ProcessInfos.args.buffer = args.data();
 	g_ProcessInfos.args.count  = static_cast<uint64_t>(args.length());
 
 	g_ProcessInfos.contextTlsId   = g_TlsContextId;

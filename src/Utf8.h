@@ -19,10 +19,6 @@ struct Utf8
 {
 	static constexpr char32_t MAX_ENCODED_UNICODE = 0x10FFFF;
 
-	char*    buffer    = nullptr;
-	uint32_t count     = 0;
-	uint32_t allocated = 0;
-
 	Utf8() = default;
 	Utf8(const char* from);
 	Utf8(const Utf8& from);
@@ -41,11 +37,13 @@ struct Utf8
 	void reserve(uint32_t newSize);
 	void resize(uint32_t newSize);
 
+	const char* c_str() const;
+	char*       data() const { return buffer; }
+
 	uint32_t    hash() const;
 	bool        empty() const;
 	uint32_t    length() const;
 	Utf8        toZeroTerminated() const;
-	const char* c_str() const;
 	uint32_t    capacity() const;
 	const char* begin() const;
 	const char* end() const;
@@ -109,6 +107,10 @@ struct Utf8
 	static Utf8        getExtension(const Utf8& name);
 	static Utf8        truncateDisplay(const char* str, int maxLen);
 	static bool        isNumber(const char* pz);
+
+	char*    buffer    = nullptr;
+	uint32_t count     = 0;
+	uint32_t allocated = 0;
 };
 
 struct HashUtf8

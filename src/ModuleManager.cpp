@@ -7,6 +7,10 @@
 #include "TypeInfo.h"
 #include "Workspace.h"
 
+#ifdef SWAG_DEV_MODE
+void* g_SwagPatchMarker = reinterpret_cast<void*>(0xAABBCCDD00112233);
+#endif
+
 ModuleManager* g_ModuleMgr = nullptr;
 
 bool ModuleManager::isModuleLoaded(const Utf8& moduleName)
@@ -24,8 +28,7 @@ bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
 void ModuleManager::resetFailedModule(const Utf8& moduleName)
 {
 	SharedLock lk(mutexLoaded);
-	const auto it = failedLoadedModules.find(moduleName);
-	if (it != failedLoadedModules.end())
+	if (const auto it = failedLoadedModules.find(moduleName); it != failedLoadedModules.end())
 		failedLoadedModules.erase(it);
 }
 
@@ -70,8 +73,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 	const auto& callName = name;
 	Ast::normalizeIdentifierName(callName);
 	const Utf8 funcName = FMT(g_LangSpec->name_globalInit, callName.c_str());
-	const auto ptr      = OS::getProcAddress(h, funcName.c_str());
-	if (ptr)
+	if (const auto ptr = OS::getProcAddress(h, funcName.c_str()))
 	{
 		using FuncCall = void(*)(void*);
 		reinterpret_cast<FuncCall>(ptr)(&g_ProcessInfos);
@@ -89,8 +91,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 {
 	SWAG_ASSERT(!moduleName.empty());
 	SharedLock lk(mutexLoaded);
-	const auto here = loadedModules.find(moduleName);
-	if (here != loadedModules.end())
+	if (const auto here = loadedModules.find(moduleName); here != loadedModules.end())
 	{
 		const auto name = funcName.toZeroTerminated();
 		return OS::getProcAddress(here->second, name.c_str());
@@ -126,11 +127,10 @@ void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, A
 		newPatch.patchAddress = patchAddress;
 		newPatch.funcDecl     = func;
 #ifdef SWAG_DEV_MODE
-		*patchAddress = reinterpret_cast<void*>(SWAG_PATCH_MARKER);
+		*patchAddress = g_SwagPatchMarker;
 #endif
 
-		const auto it = patchOffsets.find(moduleName);
-		if (it == patchOffsets.end())
+		if (const auto it = patchOffsets.find(moduleName); it == patchOffsets.end())
 			patchOffsets[moduleName] = {newPatch};
 		else
 			it->second.push_back(newPatch);
@@ -152,7 +152,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 			continue;
 
 #ifdef SWAG_DEV_MODE
-		SWAG_ASSERT(*reinterpret_cast<uint64_t*>(one.patchAddress) == SWAG_PATCH_MARKER);
+		SWAG_ASSERT(*one.patchAddress == g_SwagPatchMarker);
 #endif
 
 		auto       foreign = one.funcDecl->getFullNameForeignImport().toZeroTerminated();
