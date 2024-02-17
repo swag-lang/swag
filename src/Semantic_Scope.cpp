@@ -101,9 +101,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 		const auto startScope = identifierRef->startScope;
 		if (!startScope || oneTry == 1)
 		{
-			constexpr uint32_t collectFlags = COLLECT_ALL;
-			const auto         scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
-			auto               scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
+			constexpr CollectFlags collectFlags = COLLECT_ALL;
+			const auto             scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+			auto                   scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
 
 			// :AutoScope
 			// Auto scoping depending on the context
@@ -429,7 +429,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
                                                 VectorNative<AlternativeScope>&    scopes,
                                                 VectorNative<AlternativeScopeVar>& scopesVars,
                                                 AstNode*                           startNode,
-                                                uint32_t                           flags,
+                                                CollectFlags                       flags,
                                                 IdentifierScopeUpMode              scopeUpMode,
                                                 TokenParse*                        scopeUpValue)
 {
@@ -478,7 +478,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
 	// An inline block contains a specific scope that contains the parameters.
 	// That scope does not have a parent, so the hierarchy scan will stop at it.
-	if (startNode->kind == AstNodeKind::Inline && !(flags & COLLECT_NO_INLINE_PARAMS))
+	if (startNode->kind == AstNodeKind::Inline && !flags.has(COLLECT_NO_INLINE_PARAMS))
 	{
 		const auto inlineNode = castAst<AstInline>(startNode, AstNodeKind::Inline);
 		SWAG_ASSERT(inlineNode->parametersScope);
@@ -495,7 +495,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 				startNode = startNode->parent;
 			}
 
-			flags |= COLLECT_NO_INLINE_PARAMS;
+			flags.add(COLLECT_NO_INLINE_PARAMS);
 		}
 
 		scopeUpMode = IdentifierScopeUpMode::None;
@@ -561,7 +561,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
                                      VectorNative<AlternativeScope>&    scopes,
                                      VectorNative<AlternativeScopeVar>& scopesVars,
                                      AstNode*                           startNode,
-                                     uint32_t                           flags,
+                                     CollectFlags                       flags,
                                      IdentifierScopeUpMode              scopeUpMode,
                                      TokenParse*                        scopeUpValue)
 {
@@ -657,7 +657,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 		// Add parent scope
 		if (scope->parentScope)
 		{
-			if (scope->parentScope->kind == ScopeKind::Struct && (flags & COLLECT_NO_STRUCT))
+			if (scope->parentScope->kind == ScopeKind::Struct && flags.has(COLLECT_NO_STRUCT))
 				continue;
 
 			if (!hasAlternativeScope(scopes, scope->parentScope))

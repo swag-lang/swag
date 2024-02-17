@@ -29,9 +29,10 @@ struct FindUserOp
 	TypeInfoParam*  usingField;
 };
 
-constexpr uint32_t COLLECT_ALL              = 0x00000000;
-constexpr uint32_t COLLECT_NO_STRUCT        = 0x00000001;
-constexpr uint32_t COLLECT_NO_INLINE_PARAMS = 0x00000002;
+using CollectFlags = Flags<uint32_t>;
+constexpr CollectFlags COLLECT_ALL              = 0x00000000;
+constexpr CollectFlags COLLECT_NO_STRUCT        = 0x00000001;
+constexpr CollectFlags COLLECT_NO_INLINE_PARAMS = 0x00000002;
 
 constexpr uint32_t MIP_JUST_CHECK         = 0x00000001;
 constexpr uint32_t MIP_FOR_GHOSTING       = 0x00000002;
@@ -96,8 +97,8 @@ namespace Semantic
 	bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
 	void collectAlternativeScopes(const AstNode* startNode, VectorNative<AlternativeScope>& scopes);
 	void collectAlternativeScopeVars(const AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
-	void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
-	bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+	void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
+	bool collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
 	bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
 	bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
 

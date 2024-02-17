@@ -30,11 +30,11 @@ enum class ScopeKind : uint8_t
 };
 
 using ScopeFlags = Flags<uint8_t>;
-const ScopeFlags SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-const ScopeFlags SCOPE_FILE             = 0x00000002;
-const ScopeFlags SCOPE_AUTO_GENERATED   = 0x00000004;
-const ScopeFlags SCOPE_IMPORTED         = 0x00000008;
-const ScopeFlags SCOPE_FILE_PRIVATE     = 0x00000010;
+constexpr ScopeFlags SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+constexpr ScopeFlags SCOPE_FILE             = 0x00000002;
+constexpr ScopeFlags SCOPE_AUTO_GENERATED   = 0x00000004;
+constexpr ScopeFlags SCOPE_IMPORTED         = 0x00000008;
+constexpr ScopeFlags SCOPE_FILE_PRIVATE     = 0x00000010;
 
 struct ScopePublicSet
 {
