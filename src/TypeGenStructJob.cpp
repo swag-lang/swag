@@ -112,7 +112,7 @@ bool TypeGenStructJob::computeStruct()
 		}
 
 		// Update methods with types if generic
-		if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
+		if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS))
 		{
 			for (const auto method : realType->methods)
 			{
@@ -152,7 +152,7 @@ bool TypeGenStructJob::computeStruct()
 	// Fields
 	concreteType->fields.buffer = nullptr;
 	concreteType->fields.count  = 0;
-	if ((attributes & ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE))
+	if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS) || !realType->hasFlag(TYPEINFO_STRUCT_IS_ITABLE))
 	{
 		concreteType->fields.count = realType->fields.size();
 		if (concreteType->fields.count)
@@ -179,7 +179,7 @@ bool TypeGenStructJob::computeStruct()
 	concreteType->methods.count  = 0;
 	if (!genFlags.has(GEN_EXPORTED_TYPE_PARTIAL))
 	{
-		if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
+		if (attributes.has(ATTRIBUTE_EXPORT_TYPE_METHODS))
 		{
 			concreteType->methods.count = realType->methods.size();
 			if (concreteType->methods.count)

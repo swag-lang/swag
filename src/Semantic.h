@@ -100,7 +100,7 @@ namespace Semantic
 	bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
 	bool        canInheritAccess(const AstNode* node);
-	AstSemFlags attributeToAccess(uint64_t attribute);
+	AstSemFlags attributeToAccess(AttributeFlags attribute);
 	void        doInheritAccess(AstNode* forNode, const AstNode* node);
 	void        inheritAccess(const AstNode* node);
 	void        setNodeAccess(AstNode* node);
@@ -119,7 +119,7 @@ namespace Semantic
 	DataSegment*   getConstantSegFromContext(const AstNode* node, bool forceCompiler = false);
 	bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
 	void           inheritAttributesFromParent(AstNode* child);
-	void           inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
+	void           inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
 	void           inheritAttributesFromOwnerFunc(AstNode* child);
 	bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
 	bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);

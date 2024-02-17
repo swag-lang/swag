@@ -55,14 +55,14 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 	Scope*     newScope  = currentScope;
 	const auto tokenAttr = token;
 
-	uint32_t attr;
+	AttributeFlags attr;
 	if (token.id == TokenId::KwdPublic)
 		attr = ATTRIBUTE_PUBLIC;
 	else
 		attr = ATTRIBUTE_INTERNAL;
 
 	if (forGlobal)
-		sourceFile->globalAttr |= attr;
+		sourceFile->globalAttr.add(attr);
 	if (newScope->flags.has(SCOPE_FILE))
 		newScope = newScope->parentScope;
 

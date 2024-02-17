@@ -613,40 +613,40 @@ void Module::addByteCodeFunc(ByteCode* bc)
 		const auto flags          = bc->node->flags;
 
 		// Register for export
-		if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
-			!(attributeFlags & ATTRIBUTE_INLINE) &&
-			!(attributeFlags & ATTRIBUTE_COMPILER) &&
-			!(attributeFlags & ATTRIBUTE_INIT_FUNC) &&
-			!(attributeFlags & ATTRIBUTE_DROP_FUNC) &&
-			!(attributeFlags & ATTRIBUTE_PREMAIN_FUNC) &&
-			!(attributeFlags & ATTRIBUTE_TEST_FUNC) &&
+		if (attributeFlags.has(ATTRIBUTE_PUBLIC) &&
+			!attributeFlags.has(ATTRIBUTE_INLINE) &&
+			!attributeFlags.has(ATTRIBUTE_COMPILER) &&
+			!attributeFlags.has(ATTRIBUTE_INIT_FUNC) &&
+			!attributeFlags.has(ATTRIBUTE_DROP_FUNC) &&
+			!attributeFlags.has(ATTRIBUTE_PREMAIN_FUNC) &&
+			!attributeFlags.has(ATTRIBUTE_TEST_FUNC) &&
 			!flags.has(AST_FROM_GENERIC))
 		{
 			bc->node->ownerScope->addPublicFunc(bc->node);
 		}
 
-		if (attributeFlags & ATTRIBUTE_TEST_FUNC)
+		if (attributeFlags.has(ATTRIBUTE_TEST_FUNC))
 		{
 			if (g_CommandLine.testFilter.empty() || bc->node->sourceFile->name.containsNoCase(g_CommandLine.testFilter))
 				byteCodeTestFunc.push_back(bc);
 		}
-		else if (attributeFlags & ATTRIBUTE_INIT_FUNC)
+		else if (attributeFlags.has(ATTRIBUTE_INIT_FUNC))
 		{
 			byteCodeInitFunc.push_back(bc);
 		}
-		else if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
+		else if (attributeFlags.has(ATTRIBUTE_PREMAIN_FUNC))
 		{
 			byteCodePreMainFunc.push_back(bc);
 		}
-		else if (attributeFlags & ATTRIBUTE_DROP_FUNC)
+		else if (attributeFlags.has(ATTRIBUTE_DROP_FUNC))
 		{
 			byteCodeDropFunc.push_back(bc);
 		}
-		else if (attributeFlags & ATTRIBUTE_RUN_FUNC)
+		else if (attributeFlags.has(ATTRIBUTE_RUN_FUNC))
 		{
 			byteCodeRunFunc.push_back(bc);
 		}
-		else if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
+		else if (attributeFlags.has(ATTRIBUTE_MAIN_FUNC))
 		{
 			SWAG_ASSERT(!byteCodeMainFunc);
 			byteCodeMainFunc = bc;

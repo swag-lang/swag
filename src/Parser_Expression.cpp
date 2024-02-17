@@ -1440,9 +1440,9 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 		token.id == TokenId::SymLowerLowerEqual ||
 		token.id == TokenId::SymGreaterGreaterEqual)
 	{
-		uint8_t  opFlags     = 0;
-		uint64_t opAttrFlags = 0;
-		auto     savedtoken  = token;
+		uint8_t        opFlags     = 0;
+		AttributeFlags opAttrFlags = 0;
+		auto           savedtoken  = token;
 		SWAG_CHECK(eatToken());
 
 		// Modifiers
@@ -1455,7 +1455,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 		if (mdfFlags & MODIFIER_OVERFLOW)
 		{
 			opFlags |= AstOp::SPECFLAG_OVERFLOW;
-			opAttrFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
+			opAttrFlags.add(ATTRIBUTE_CAN_OVERFLOW_ON);
 		}
 
 		// Multiple affectation

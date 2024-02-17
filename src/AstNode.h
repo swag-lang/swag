@@ -342,10 +342,10 @@ struct AstNode
 	void addSemFlag(AstSemFlags fl) { semFlags.add(fl); }
 	void removeSemFlag(AstSemFlags fl) { semFlags.remove(fl); }
 
-	bool hasAttribute(uint64_t attr) const { return attributeFlags & attr; }
-	void addAttribute(uint64_t attr) { attributeFlags |= attr; }
-	void removeAttribute(uint64_t attr) { attributeFlags &= ~attr; }
-	void inheritAttribute(const AstNode* from, uint64_t w) { attributeFlags |= from->attributeFlags & w; }
+	bool hasAttribute(AttributeFlags attr) const { return attributeFlags.has(attr); }
+	void addAttribute(AttributeFlags attr) { attributeFlags.add(attr); }
+	void removeAttribute(AttributeFlags attr) { attributeFlags.remove(attr); }
+	void inheritAttribute(const AstNode* from, AttributeFlags w) { attributeFlags.add(from->attributeFlags.mask(w)); }
 
 	bool hasSpecFlag(uint16_t fl) const { return specFlags & fl; }
 	void addSpecFlag(uint16_t fl) { specFlags |= fl; }
@@ -452,9 +452,9 @@ struct AstNode
 	SemanticFct semanticFct;
 	ByteCodeFct byteCodeFct;
 
-	AstNodeFlags flags;
-	AstSemFlags  semFlags;
-	uint64_t     attributeFlags;
+	AstNodeFlags   flags;
+	AstSemFlags    semFlags;
+	AttributeFlags attributeFlags;
 
 	RegisterList resultRegisterRc;
 	uint16_t     safetyOn;

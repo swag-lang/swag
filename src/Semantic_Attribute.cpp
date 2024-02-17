@@ -11,11 +11,11 @@
 #include "SourceFile.h"
 #include "TypeManager.h"
 
-#define INHERIT_ATTR(__c, __f)                           \
-    do                                                   \
-    {                                                    \
-        if (!((__c)->attributeFlags & (__f)))            \
-        (__c)->attributeFlags |= attributeFlags & (__f); \
+#define INHERIT_ATTR(__c, __f)                               \
+    do                                                       \
+    {                                                        \
+        if (!(__c)->attributeFlags.has(__f))                 \
+			(__c)->attributeFlags.add(attributeFlags.mask(__f)); \
     } while(0)
 
 #define INHERIT_SAFETY(__c, __f)                                       \
@@ -216,7 +216,7 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
 	child->safetyOff |= child->parent->safetyOff;
 }
 
-void Semantic::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
+void Semantic::inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
 {
 	INHERIT_SAFETY(child, SAFETY_BOUND_CHECK);
 	INHERIT_SAFETY(child, SAFETY_OVERFLOW);
@@ -246,8 +246,8 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
 	const auto safetyOn       = child->ownerFct->safetyOn;
 	const auto safetyOff      = child->ownerFct->safetyOff;
 
-	child->addAttribute(attributeFlags & ATTRIBUTE_PRINT_BC);
-	child->addAttribute(attributeFlags & ATTRIBUTE_PRINT_GEN_BC);
+	child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_BC));
+	child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_GEN_BC));
 	inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
@@ -284,7 +284,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 		auto safetyOff      = curAttr->safetyOff;
 
 		// Inherit all simple flags
-		forNode->addAttribute(attributeFlags & ~(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_ACCESS_MASK));
+		forNode->addAttribute(attributeFlags.maskInvert(ATTRIBUTE_OPTIM_MASK | ATTRIBUTE_MATCH_MASK | ATTRIBUTE_OVERFLOW_MASK | ATTRIBUTE_ACCESS_MASK));
 
 		// Inherit some attributes and safety
 		inheritAttributesFrom(forNode, attributeFlags, safetyOn, safetyOff);
@@ -338,14 +338,14 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
 			if (typeInfo->attributeUsage & Gen)
 			{
-				flags |= ATTRIBUTE_GEN;
+				flags.add(ATTRIBUTE_GEN);
 			}
 
 			// Predefined attributes will mark some flags (to speed up detection)
 			auto it = g_LangSpec->attributesFlags.find(child->token.text);
 			if (it)
 			{
-				flags |= *it;
+				flags.add(*it);
 
 				//////
 				if (*it == ATTRIBUTE_FOREIGN)
@@ -355,7 +355,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 					SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, Err(Err0326)}));
 				}
 
-#define EXCLUSIVE(__a, __b) ((*it == (__a) && (flags & (__b))) || (*it == (__b) && (flags & (__a))))
+#define EXCLUSIVE(__a, __b) ((*it == (__a) && (flags.has(__b))) || (*it == (__b) && (flags.has(__a))))
 
 				if (EXCLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
 					return context->report({child, Err(Err0048)});
@@ -425,9 +425,9 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 				{
 					w.trim();
 					if (w == g_LangSpec->name_methods)
-						flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
+						flags.add(ATTRIBUTE_EXPORT_TYPE_METHODS);
 					else if (w == g_LangSpec->name_nozero)
-						flags |= ATTRIBUTE_EXPORT_TYPE_NO_ZERO;
+						flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
 					else
 					{
 						return context->report({child, attrParam->token, FMT(Err(Err0280), w.c_str())});
@@ -507,9 +507,9 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
 					if (text.empty())
 					{
-						flags &= ~ATTRIBUTE_OPTIM_MASK;
-						flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
-						flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
+						flags.remove(ATTRIBUTE_OPTIM_MASK);
+						flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF);
+						flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF);
 					}
 
 					for (auto& w : what)
@@ -517,13 +517,13 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 						w.trim();
 						if (w == g_LangSpec->name_bytecode)
 						{
-							flags &= ~(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
-							flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF;
+							flags.remove(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+							flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF);
 						}
 						else if (w == g_LangSpec->name_backend)
 						{
-							flags &= ~(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
-							flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
+							flags.remove(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+							flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF);
 						}
 						else
 						{
@@ -554,9 +554,9 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
 					if (text.empty())
 					{
-						flags &= ~ATTRIBUTE_MATCH_MASK;
+						flags.remove(ATTRIBUTE_MATCH_MASK);
 						if (!attrValue->reg.b)
-							flags |= ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF;
+							flags.add(ATTRIBUTE_MATCH_VALIDIF_OFF | ATTRIBUTE_MATCH_SELF_OFF);
 					}
 
 					for (auto& w : what)
@@ -565,16 +565,16 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 						if (w == g_LangSpec->name_validif)
 						{
 							if (!attrValue->reg.b)
-								flags |= ATTRIBUTE_MATCH_VALIDIF_OFF;
+								flags.add(ATTRIBUTE_MATCH_VALIDIF_OFF);
 							else
-								flags &= ~ATTRIBUTE_MATCH_VALIDIF_OFF;
+								flags.remove(ATTRIBUTE_MATCH_VALIDIF_OFF);
 						}
 						else if (w == g_LangSpec->name_self)
 						{
 							if (!attrValue->reg.b)
-								flags |= ATTRIBUTE_MATCH_SELF_OFF;
+								flags.add(ATTRIBUTE_MATCH_SELF_OFF);
 							else
-								flags &= ~ATTRIBUTE_MATCH_SELF_OFF;
+								flags.remove(ATTRIBUTE_MATCH_SELF_OFF);
 						}
 						else
 						{
@@ -607,11 +607,11 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 			{
 				auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Overflow, g_LangSpec->name_value);
 				SWAG_ASSERT(attrParam);
-				flags &= ~(ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
+				flags.remove(ATTRIBUTE_CAN_OVERFLOW_ON | ATTRIBUTE_CAN_OVERFLOW_OFF);
 				if (attrParam->value.reg.b)
-					flags |= ATTRIBUTE_CAN_OVERFLOW_ON;
+					flags.add(ATTRIBUTE_CAN_OVERFLOW_ON);
 				else
-					flags |= ATTRIBUTE_CAN_OVERFLOW_OFF;
+					flags.add(ATTRIBUTE_CAN_OVERFLOW_OFF);
 			}
 
 			// Remember attributes that's here

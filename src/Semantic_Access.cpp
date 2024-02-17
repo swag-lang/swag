@@ -140,14 +140,14 @@ void Semantic::computeAccessRec(AstNode* node)
 	}
 }
 
-AstSemFlags Semantic::attributeToAccess(uint64_t attribute)
+AstSemFlags Semantic::attributeToAccess(AttributeFlags attribute)
 {
 	AstSemFlags result = 0;
-	if (attribute & ATTRIBUTE_PRIVATE)
+	if (attribute.has(ATTRIBUTE_PRIVATE))
 		result.add(SEMFLAG_ACCESS_PRIVATE);
-	else if (attribute & ATTRIBUTE_INTERNAL)
+	else if (attribute.has(ATTRIBUTE_INTERNAL))
 		result.add(SEMFLAG_ACCESS_INTERNAL);
-	else if (attribute & ATTRIBUTE_PUBLIC)
+	else if (attribute.has(ATTRIBUTE_PUBLIC))
 		result.add(SEMFLAG_ACCESS_PUBLIC);
 	return result;
 }
@@ -190,7 +190,7 @@ void Semantic::setDefaultAccess(AstNode* node)
 		return;
 	}
 
-	if (node->sourceFile && node->sourceFile->globalAttr & ATTRIBUTE_ACCESS_MASK)
+	if (node->sourceFile && node->sourceFile->globalAttr.has(ATTRIBUTE_ACCESS_MASK))
 		node->addSemFlag(attributeToAccess(node->sourceFile->globalAttr));
 	else if (node->ownerStructScope && !node->hasAstFlag(AST_IN_IMPL))
 		node->addSemFlag(attributeToAccess(node->ownerStructScope->owner->attributeFlags));

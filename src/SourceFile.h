@@ -1,5 +1,6 @@
 #pragma once
 #include "CommandLine.h"
+#include "Flags.h"
 #include "Mutex.h"
 #include "Tokenizer.h"
 
@@ -11,6 +12,8 @@ struct Token;
 struct AstAttrUse;
 struct AstIdentifierRef;
 struct Scope;
+
+using AttributeFlags = Flags<uint64_t>;
 
 struct SourceFile
 {
@@ -42,8 +45,8 @@ struct SourceFile
 	Module*     imported              = nullptr;
 	char*       buffer                = nullptr;
 
-	uint64_t writeTime  = 0;
-	uint64_t globalAttr = 0;
+	uint64_t       writeTime  = 0;
+	AttributeFlags globalAttr = 0;
 
 	uint32_t  offsetStartBuffer = 0;
 	uint32_t  bufferSize        = 0;

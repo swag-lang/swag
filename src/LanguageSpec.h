@@ -1,8 +1,10 @@
 #pragma once
+#include "Flags.h"
 #include "LangHashTable.h"
 #include "Tokenizer.h"
 
 struct TypeInfoNative;
+using AttributeFlags = Flags<uint64_t>;
 
 struct LanguageSpec
 {
@@ -13,10 +15,10 @@ struct LanguageSpec
 	void setupAttributesFlags();
 	void setupModifiers();
 
-	LangHashTable<TokenId, 4096>   keywords;
-	LangHashTable<LiteralType, 64> nativeTypes;
-	LangHashTable<uint64_t, 256>   attributesFlags;
-	LangHashTable<uint32_t, 64>    modifiers;
+	LangHashTable<TokenId, 4096>       keywords;
+	LangHashTable<LiteralType, 64>     nativeTypes;
+	LangHashTable<AttributeFlags, 256> attributesFlags;
+	LangHashTable<uint32_t, 64>        modifiers;
 
 	Utf8 name_globalInit;
 	Utf8 name_globalDrop;

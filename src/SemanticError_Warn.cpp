@@ -81,7 +81,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 		return true;
 	if (one->node->sourceFile->isRuntimeFile || one->node->sourceFile->isBootstrapFile)
 		return true;
-	if (one->node->sourceFile->forceExport || one->node->sourceFile->globalAttr & ATTRIBUTE_PUBLIC)
+	if (one->node->sourceFile->forceExport || one->node->sourceFile->globalAttr.has(ATTRIBUTE_PUBLIC))
 		return true;
 	const auto funcDecl = castAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
 	if (funcDecl->fromItfSymbol)
