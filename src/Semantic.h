@@ -121,7 +121,7 @@ namespace Semantic
 	DataSegment*   getConstantSegFromContext(const AstNode* node, bool forceCompiler = false);
 	bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
 	void           inheritAttributesFromParent(AstNode* child);
-	void           inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
+	void           inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff);
 	void           inheritAttributesFromOwnerFunc(AstNode* child);
 	bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
 	bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);

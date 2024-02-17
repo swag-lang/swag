@@ -135,7 +135,7 @@ void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const ch
 	EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(message));
 }
 
-bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, uint16_t what)
+bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, SafetyFlags what)
 {
 	if (context->contextFlags & BCC_FLAG_NO_SAFETY)
 		return false;

@@ -21,10 +21,10 @@
 #define INHERIT_SAFETY(__c, __f)                                       \
     do                                                                 \
     {                                                                  \
-        if (!((__c)->safetyOn & (__f)) && !((__c)->safetyOff & (__f))) \
+        if (!(__c)->safetyOn.has(__f) && !(__c)->safetyOff.has(__f))   \
         {                                                              \
-            (__c)->safetyOn |= safetyOn & (__f);                       \
-            (__c)->safetyOff |= safetyOff & (__f);                     \
+            (__c)->safetyOn.add(safetyOn.mask(__f));                   \
+            (__c)->safetyOff.add(safetyOff.mask(__f));                 \
         }                                                              \
     } while(0)
 
@@ -34,12 +34,12 @@
         if (w == g_LangSpec->__name)            \
         {                                       \
             done = true;                        \
-            forNode->safetyOn &= ~(__flag);     \
-            forNode->safetyOff &= ~(__flag);    \
+            forNode->safetyOn.remove(__flag);   \
+            forNode->safetyOff.remove(__flag);  \
             if (attrValue->reg.b)               \
-                forNode->safetyOn |= (__flag);  \
+                forNode->safetyOn.add(__flag);  \
             else                                \
-                forNode->safetyOff |= (__flag); \
+                forNode->safetyOff.add(__flag); \
         }                                       \
     } while(0)
 
@@ -212,11 +212,11 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
 
 	child->inheritAttribute(child->parent, ATTRIBUTE_MATCH_MASK);
 	child->inheritAttribute(child->parent, ATTRIBUTE_OVERFLOW_MASK);
-	child->safetyOn |= child->parent->safetyOn;
-	child->safetyOff |= child->parent->safetyOff;
+	child->safetyOn.add(child->parent->safetyOn);
+	child->safetyOff.add(child->parent->safetyOff);
 }
 
-void Semantic::inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
+void Semantic::inheritAttributesFrom(AstNode* child, AttributeFlags attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff)
 {
 	INHERIT_SAFETY(child, SAFETY_BOUND_CHECK);
 	INHERIT_SAFETY(child, SAFETY_OVERFLOW);

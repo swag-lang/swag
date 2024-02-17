@@ -83,11 +83,13 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
 		buildCfg.byteCodeInline        = true;
 		buildCfg.byteCodeAutoInline    = true;
 		buildCfg.byteCodeEmitAssume    = true;
-		buildCfg.safetyGuards          = SAFETY_ALL & ~SAFETY_NAN & ~SAFETY_BOOL;
-		buildCfg.errorStackTrace       = true;
-		buildCfg.debugAllocator        = true;
-		buildCfg.backendOptimize       = BuildCfgBackendOptim::O2;
-		buildCfg.backendDebugInfos     = true;
+		buildCfg.safetyGuards          = SAFETY_ALL;
+		buildCfg.safetyGuards.remove(SAFETY_NAN);
+		buildCfg.safetyGuards.remove(SAFETY_BOOL);
+		buildCfg.errorStackTrace   = true;
+		buildCfg.debugAllocator    = true;
+		buildCfg.backendOptimize   = BuildCfgBackendOptim::O2;
+		buildCfg.backendDebugInfos = true;
 	}
 	else if (g_CommandLine.buildCfg == "release")
 	{
@@ -901,7 +903,7 @@ bool Module::mustEmitSafetyOverflow(const AstNode* node, bool compileTime) const
 	return mustEmitSafety(node, SAFETY_OVERFLOW, compileTime);
 }
 
-bool Module::mustEmitSafety(const AstNode* node, uint16_t what, bool compileTime) const
+bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileTime) const
 {
 	if (what == SAFETY_OVERFLOW)
 	{
@@ -909,16 +911,16 @@ bool Module::mustEmitSafety(const AstNode* node, uint16_t what, bool compileTime
 			return false;
 	}
 
-	if (node->safetyOff & what)
+	if (node->safetyOff.has(what))
 		return false;
-	if (node->safetyOn & what)
+	if (node->safetyOn.has(what))
 		return true;
 
 	// At compile time, we must emit safety except if the user has specifically changed it in the code
 	if (compileTime)
 		return true;
 
-	return (buildCfg.safetyGuards & what);
+	return buildCfg.safetyGuards.has(what);
 }
 
 bool Module::mustOptimizeBytecode(const AstNode* node) const

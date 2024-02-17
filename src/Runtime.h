@@ -1,20 +1,22 @@
 #pragma once
+#include "Flags.h"
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-constexpr uint64_t SAFETY_BOUND_CHECK = 0x0001;
-constexpr uint64_t SAFETY_OVERFLOW    = 0x0002;
-constexpr uint64_t SAFETY_MATH        = 0x0004;
-constexpr uint64_t SAFETY_ANY         = 0x0008;
-constexpr uint64_t SAFETY_SWITCH      = 0x0010;
-constexpr uint64_t SAFETY_BOOL        = 0x0020;
-constexpr uint64_t SAFETY_NAN         = 0x0040;
-constexpr uint64_t SAFETY_SANITY      = 0x0080;
-constexpr uint64_t SAFETY_UNREACHABLE = 0x0100;
-constexpr uint64_t SAFETY_NULL        = 0x0200;
-constexpr uint64_t SAFETY_ALL         = 0xFFFF;
+using SafetyFlags = Flags<uint16_t>;
+constexpr SafetyFlags SAFETY_BOUND_CHECK = 0x0001;
+constexpr SafetyFlags SAFETY_OVERFLOW    = 0x0002;
+constexpr SafetyFlags SAFETY_MATH        = 0x0004;
+constexpr SafetyFlags SAFETY_ANY         = 0x0008;
+constexpr SafetyFlags SAFETY_SWITCH      = 0x0010;
+constexpr SafetyFlags SAFETY_BOOL        = 0x0020;
+constexpr SafetyFlags SAFETY_NAN         = 0x0040;
+constexpr SafetyFlags SAFETY_SANITY      = 0x0080;
+constexpr SafetyFlags SAFETY_UNREACHABLE = 0x0100;
+constexpr SafetyFlags SAFETY_NULL        = 0x0200;
+constexpr SafetyFlags SAFETY_ALL         = 0xFFFF;
 
 constexpr int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
 constexpr int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
@@ -288,13 +290,13 @@ struct BuildCfg
 	bool      embeddedImports = false;
 
 	// Debug
-	uint32_t tempAllocatorCapacity      = 4 * 1024 * 1024;
-	uint32_t errorAllocatorCapacity     = 16 * 1024;
-	uint16_t safetyGuards               = SAFETY_ALL;
-	bool     debugAllocator             = true;
-	bool     debugAllocatorCaptureStack = true;
-	bool     debugAllocatorLeaks        = true;
-	bool     errorStackTrace            = true;
+	uint32_t    tempAllocatorCapacity      = 4 * 1024 * 1024;
+	uint32_t    errorAllocatorCapacity     = 16 * 1024;
+	SafetyFlags safetyGuards               = SAFETY_ALL;
+	bool        debugAllocator             = true;
+	bool        debugAllocatorCaptureStack = true;
+	bool        debugAllocatorLeaks        = true;
+	bool        errorStackTrace            = true;
 
 	// Warnings
 	SwagSlice warnAsErrors;

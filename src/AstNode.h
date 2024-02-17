@@ -42,6 +42,7 @@ using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
 using AstNodeFlags = Flags<uint64_t>;
 using AstSemFlags = Flags<uint64_t>;
 using SpecFlags = Flags<uint16_t>;
+using SafetyFlags = Flags<uint16_t>;
 
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -457,8 +458,8 @@ struct AstNode
 	AttributeFlags attributeFlags;
 
 	RegisterList resultRegisterRc;
-	uint16_t     safetyOn;
-	uint16_t     safetyOff;
+	SafetyFlags  safetyOn;
+	SafetyFlags  safetyOff;
 
 #ifdef SWAG_DEV_MODE
 	uint32_t rankId;
