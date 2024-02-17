@@ -147,7 +147,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
 	}
 
 	g_Log.setColor(LogColor::Gray);
-	for (int i = 0; i < context->getRegCount(g_ByteCodeDebugger.cxtRc); i++)
+	for (uint32_t i = 0; i < context->getRegCount(g_ByteCodeDebugger.cxtRc); i++)
 	{
 		auto& regP = context->getRegBuffer(g_ByteCodeDebugger.cxtRc)[i];
 		Utf8  str;

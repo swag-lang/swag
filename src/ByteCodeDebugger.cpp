@@ -151,9 +151,9 @@ bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
 	return false;
 }
 
-bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN) const
+bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const
 {
-	regN = arg.toInt(1);
+	regN = static_cast<uint32_t>(arg.toInt(1));
 	if (!context->getRegCount(cxtRc))
 	{
 		printCmdError("no available register");
@@ -828,7 +828,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
 
 		if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
 		{
-			int regN;
+			uint32_t regN;
 			if (!getRegIdx(context, pz + 1, regN))
 				return;
 

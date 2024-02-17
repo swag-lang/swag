@@ -86,8 +86,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
 
 SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, ByteCode* bc)
 {
-	SWAG_ASSERT(context->curRC >= 0);
-	if (--context->curRC >= 0)
+	if (--context->curRC != UINT32_MAX)
 	{
 		context->registers.count = context->registersRC.get_pop_back();
 		context->curRegistersRC  = context->registers.buffer + context->registersRC.back();

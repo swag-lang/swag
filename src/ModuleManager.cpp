@@ -73,8 +73,8 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 	const auto ptr      = OS::getProcAddress(h, funcName.c_str());
 	if (ptr)
 	{
-		using funcCall = void(*)(void*);
-		static_cast<funcCall>(ptr)(&g_ProcessInfos);
+		using FuncCall = void(*)(void*);
+		reinterpret_cast<FuncCall>(ptr)(&g_ProcessInfos);
 	}
 
 	if (!applyPatches(name, h))

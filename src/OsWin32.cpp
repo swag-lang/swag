@@ -54,10 +54,10 @@ namespace OS
 		value[length] = 0;
 
 		// Convert to UTF8
-		const std::wstring wstr{value};
-		const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), nullptr, 0, nullptr, nullptr);
+		const std::wstring wStr{value};
+		const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wStr.data(), static_cast<int>(wStr.size()), nullptr, 0, nullptr, nullptr);
 		std::string        str(sizeNeeded, 0);
-		WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), str.data(), sizeNeeded, nullptr, nullptr);
+		WideCharToMultiByte(CP_UTF8, 0, wStr.data(), static_cast<int>(wStr.size()), str.data(), sizeNeeded, nullptr, nullptr);
 
 		g_WinSdkFolder = str.c_str();
 		g_WinSdkFolder.append("Lib");
@@ -141,7 +141,7 @@ namespace OS
 		g_NativeTarget.arch = SwagTargetArch::X86_64;
 		g_NativeTarget.cpu  = llvm::sys::getHostCPUName().str().c_str();
 
-		// We do not want assert, but just reports of the CRT
+		// We do not want to assert, but just reports of the CRT
 		if (!IsDebuggerPresent())
 		{
 			_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
@@ -176,7 +176,7 @@ namespace OS
 		CHAR                chBuf[4096];
 		DWORD               exit;
 
-		const UINT errmode = GetErrorMode();
+		const UINT errMode = GetErrorMode();
 		SetErrorMode(SEM_FAILCRITICALERRORS);
 
 		// Create a pipe to receive compiler results
@@ -216,34 +216,34 @@ namespace OS
 		}
 
 		// Wait until child process exits
-		Utf8 strout;
+		Utf8 strOut;
 		bool ok  = true;
 		chBuf[0] = 0;
 		while (true)
 		{
 			PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
-			if (dwRead || !strout.empty())
+			if (dwRead || !strOut.empty())
 			{
 				const bool notLast = dwRead != 0;
 
 				// Read compiler results
 				if (notLast && ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
 				{
-					strout.append(chBuf, dwRead);
+					strOut.append(chBuf, dwRead);
 					while (dwRead == 4096)
 					{
 						if (ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
-							strout.append(chBuf, dwRead);
+							strOut.append(chBuf, dwRead);
 					}
 				}
 
 				// Process result
 				Vector<Utf8> lines;
-				Utf8::tokenize(strout, '\n', lines, true);
-				strout.clear();
+				Utf8::tokenize(strOut, '\n', lines, true);
+				strOut.clear();
 				if (notLast)
 				{
-					strout = lines.back();
+					strOut = lines.back();
 					lines.pop_back();
 				}
 
@@ -319,7 +319,7 @@ namespace OS
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
 
-		SetErrorMode(errmode);
+		SetErrorMode(errMode);
 		return ok;
 	}
 
@@ -371,7 +371,7 @@ namespace OS
 
 	void* getProcAddress(void* handle, const char* name)
 	{
-		return static_cast<void*>(GetProcAddress(static_cast<HMODULE>(handle), name));
+		return reinterpret_cast<void*>(GetProcAddress(static_cast<HMODULE>(handle), name));
 	}
 
 	uint64_t getFileWriteTime(const char* fileName)
@@ -405,19 +405,19 @@ namespace OS
 
 	void visitFiles(const char* folder, const function<void(const char*)>& user)
 	{
-		WIN32_FIND_DATAA findfile;
+		WIN32_FIND_DATAA findFile;
 		Utf8             searchPath = folder;
 		searchPath += "\\*";
-		const HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
+		const HANDLE h = FindFirstFileA(searchPath.c_str(), &findFile);
 		if (h != INVALID_HANDLE_VALUE)
 		{
 			do
 			{
-				if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 					continue;
-				user(findfile.cFileName);
+				user(findFile.cFileName);
 			}
-			while (FindNextFileA(h, &findfile));
+			while (FindNextFileA(h, &findFile));
 
 			FindClose(h);
 		}
@@ -425,22 +425,22 @@ namespace OS
 
 	void visitFolders(const char* folder, const function<void(const char*)>& user, const char* match)
 	{
-		WIN32_FIND_DATAA findfile;
+		WIN32_FIND_DATAA findFile;
 		Utf8             searchPath = folder;
 		searchPath += "\\";
 		searchPath += match;
-		const HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
+		const HANDLE h = FindFirstFileA(searchPath.c_str(), &findFile);
 		if (h != INVALID_HANDLE_VALUE)
 		{
 			do
 			{
-				if (!(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				if (!(findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 					continue;
-				if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+				if ((findFile.cFileName[0] == '.') && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
 					continue;
-				user(findfile.cFileName);
+				user(findFile.cFileName);
 			}
-			while (FindNextFileA(h, &findfile));
+			while (FindNextFileA(h, &findFile));
 
 			FindClose(h);
 		}
@@ -448,27 +448,27 @@ namespace OS
 
 	void visitFilesFolders(const char* folder, const function<void(uint64_t, const char*, bool)>& user)
 	{
-		WIN32_FIND_DATAA findfile;
+		WIN32_FIND_DATAA findFile;
 		Utf8             searchPath = folder;
 		searchPath += "\\*";
-		const HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
+		const HANDLE h = FindFirstFileA(searchPath.c_str(), &findFile);
 		if (h != INVALID_HANDLE_VALUE)
 		{
 			do
 			{
-				if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
-					if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+					if ((findFile.cFileName[0] == '.') && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
 						continue;
 				}
 
-				uint64_t writeTime = static_cast<uint64_t>(findfile.ftLastWriteTime.dwHighDateTime) << 32;
-				writeTime |= findfile.ftLastWriteTime.dwLowDateTime;
+				uint64_t writeTime = static_cast<uint64_t>(findFile.ftLastWriteTime.dwHighDateTime) << 32;
+				writeTime |= findFile.ftLastWriteTime.dwLowDateTime;
 
-				const bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
-				user(writeTime, findfile.cFileName, isFolder);
+				const bool isFolder = findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+				user(writeTime, findFile.cFileName, isFolder);
 			}
-			while (FindNextFileA(h, &findfile));
+			while (FindNextFileA(h, &findFile));
 
 			FindClose(h);
 		}
@@ -476,22 +476,22 @@ namespace OS
 
 	void visitFilesRec(const char* folder, const function<void(const char*)>& user)
 	{
-		WIN32_FIND_DATAA findfile;
+		WIN32_FIND_DATAA findFile;
 		Path             searchPath = folder;
 		searchPath += "\\*";
 
 		Path         path = folder;
-		const HANDLE h    = FindFirstFileA(searchPath.string().c_str(), &findfile);
+		const HANDLE h    = FindFirstFileA(searchPath.string().c_str(), &findFile);
 		if (h != INVALID_HANDLE_VALUE)
 		{
 			do
 			{
 				path = folder;
-				path.append(findfile.cFileName);
+				path.append(findFile.cFileName);
 
-				if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
-					if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+					if ((findFile.cFileName[0] == '.') && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
 						continue;
 					visitFilesRec(path.string().c_str(), user);
 				}
@@ -500,7 +500,7 @@ namespace OS
 					user(path.string().c_str());
 				}
 			}
-			while (FindNextFileA(h, &findfile));
+			while (FindNextFileA(h, &findFile));
 
 			FindClose(h);
 		}
@@ -512,7 +512,7 @@ namespace OS
 	struct ThreadNameInfo
 	{
 		DWORD  dwType; // Must be 0x1000.
-		LPCSTR szName; // Pointer to name (in user addr space).
+		LPCSTR szName; // Pointer to name (in user address space).
 		DWORD  dwThreadID; // Thread ID (-1=caller thread).
 		DWORD  dwFlags; // Reserved for future use, must be zero.
 	};
@@ -585,9 +585,9 @@ namespace OS
 		TCHAR   sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
 		DWORD64 displacement = 0;
 
-		const auto psym    = reinterpret_cast<SYMBOL_INFO*>(sym);
-		psym->SizeOfStruct = sizeof(SYMBOL_INFO);
-		psym->MaxNameLen   = SYM_LEN_NAME;
+		const auto ptrSymbol    = reinterpret_cast<SYMBOL_INFO*>(sym);
+		ptrSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+		ptrSymbol->MaxNameLen   = SYM_LEN_NAME;
 
 		IMAGEHLP_LINE64 line;
 		line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
@@ -600,14 +600,14 @@ namespace OS
 			for (int i = 0; i < nb; i++)
 			{
 				displacement         = 0;
-				const auto hasSymbol = SymFromAddr(GetCurrentProcess(), reinterpret_cast<ULONG64>(where[i]), &displacement, psym);
+				const auto hasSymbol = SymFromAddr(GetCurrentProcess(), reinterpret_cast<ULONG64>(where[i]), &displacement, ptrSymbol);
 				displacement         = 0;
 				const auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), reinterpret_cast<ULONG64>(where[i]), reinterpret_cast<DWORD*>(&displacement), &line);
 
 				if (hasSymbol)
 				{
 					str += Log::colorToVTS(LogColor::Name);
-					str += psym->Name;
+					str += ptrSymbol->Name;
 					if (hasLine)
 					{
 						str += Log::colorToVTS(LogColor::Location);
@@ -1001,8 +1001,8 @@ namespace OS
 		gen.emit_Ret();
 
 		// The real deal : make the call
-		using funcPtr = void(*)();
-		const auto ptr = reinterpret_cast<funcPtr>(gen.concat.firstBucket->data + startOffset);
+		using FuncPtr = void(*)();
+		const auto ptr = reinterpret_cast<FuncPtr>(gen.concat.firstBucket->data + startOffset);
 		ptr();
 
 		gen.concat.currentSP = reinterpret_cast<uint8_t*>(ptr);
@@ -1015,10 +1015,10 @@ namespace OS
 
 		if (IsClipboardFormatAvailable(CF_TEXT))
 		{
-			const auto hglob = GetClipboardData(CF_TEXT);
-			if (hglob)
+			const auto hGlob = GetClipboardData(CF_TEXT);
+			if (hGlob)
 			{
-				const auto pz     = GlobalLock(hglob);
+				const auto pz     = GlobalLock(hGlob);
 				Utf8       result = static_cast<const char*>(pz);
 				GlobalUnlock(pz);
 				return result;
@@ -1035,15 +1035,15 @@ namespace OS
 		static DWORD        dwRead      = 0;
 		static DWORD        dwReadIndex = 0;
 
-		const auto hStdin = GetStdHandle(STD_INPUT_HANDLE);
-		SetConsoleMode(hStdin, ENABLE_WINDOW_INPUT);
+		const auto hStdIn = GetStdHandle(STD_INPUT_HANDLE);
+		SetConsoleMode(hStdIn, ENABLE_WINDOW_INPUT);
 
 		while (true)
 		{
 			if (dwReadIndex >= dwRead)
 			{
 				dwReadIndex = 0;
-				if (!ReadConsoleInput(hStdin, buffer, 1024, &dwRead))
+				if (!ReadConsoleInput(hStdIn, buffer, 1024, &dwRead))
 					continue;
 			}
 

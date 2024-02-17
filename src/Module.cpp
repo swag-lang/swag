@@ -411,8 +411,8 @@ void Module::buildTypesSlice()
 		}
 		else
 		{
-			using funcCall = uint8_t* (*)();
-			const auto valPtr = static_cast<funcCall>(ptr)();
+			using FuncCall = uint8_t* (*)();
+			const auto valPtr = reinterpret_cast<FuncCall>(ptr)();
 
 			moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
 			moduleSlice[i].types.count  = *reinterpret_cast<uint64_t*>(valPtr);
@@ -1151,8 +1151,8 @@ void Module::callPreMain()
 		const auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
 		if (!ptr)
 			continue;
-		using funcCall = void(*)(SwagProcessInfos*);
-		static_cast<funcCall>(ptr)(&processInfos);
+		using FuncCall = void(*)(SwagProcessInfos*);
+		reinterpret_cast<FuncCall>(ptr)(&processInfos);
 	}
 }
 

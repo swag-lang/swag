@@ -28,7 +28,7 @@ struct ByteCodeRunContext
 	void        setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC);
 	void        releaseStack();
 	static void stackOverflow();
-	int         getRegCount(int cur);
+	uint32_t    getRegCount(uint32_t cur);
 
 	template<typename T>
 	T pop()
@@ -87,7 +87,7 @@ struct ByteCodeRunContext
 		sp -= offset;
 	}
 
-	Register* getRegBuffer(int cur)
+	Register* getRegBuffer(uint32_t cur)
 	{
 		return registers.buffer + registersRC[cur];
 	}
@@ -101,14 +101,14 @@ struct ByteCodeRunContext
 	uint8_t*             sp                        = nullptr;
 	uint8_t*             spAlt                     = nullptr;
 	uint8_t*             bp                        = nullptr;
-	int                  curRC                     = -1;
-	int                  firstRC                   = -1;
-	int                  maxRecurse                = 0;
+	uint32_t             curRC                     = UINT32_MAX;
+	uint32_t             firstRC                   = UINT32_MAX;
+	uint32_t             maxRecurse                = 0;
 	ByteCode*            bc                        = nullptr;
 
 	JobContext jc;
 
-	VectorNative<int>      registersRC;
+	VectorNative<uint32_t> registersRC;
 	VectorNative<Register> registers;
 
 	VectorNative<uint32_t> ffiPushRAParam;

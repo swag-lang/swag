@@ -166,7 +166,7 @@ struct ByteCodeDebugger
 	static void                    printLong(const Utf8& all);
 	static void                    printLong(const Vector<Utf8>& all);
 	static void                    printSeparator();
-	bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN) const;
+	bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, uint32_t& regN) const;
 	void                           printDebugContext(ByteCodeRunContext* context, bool force = false);
 	void                           computeDebugContext(ByteCodeRunContext* context);
 	Utf8                           completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const;
@@ -206,10 +206,10 @@ struct ByteCodeDebugger
 	uint8_t*             cxtStack         = nullptr;
 
 	uint32_t      lastCurRc = 0;
-	int32_t       stepRc    = 0;
+	uint32_t      stepRc    = 0;
 	DebugStepMode stepMode  = DebugStepMode::None;
 	uint32_t      cxtRc     = 0;
-	int           stepCount = 0;
+	uint32_t      stepCount = 0;
 	uint32_t      bcMode    = false;
 
 	bool forcePrintContext = false;

@@ -74,8 +74,8 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
 	internalPanicSymbol = nullptr;
 	internalPanicHint.clear();
 
-	curRC   = -1;
-	firstRC = -1;
+	curRC   = UINT32_MAX;
+	firstRC = UINT32_MAX;
 }
 
 void ByteCodeRunContext::stackOverflow()
@@ -83,9 +83,9 @@ void ByteCodeRunContext::stackOverflow()
 	OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, FMT(Err(Err0024), Utf8::toNiceSize(g_CommandLine.limitStackBC).c_str()));
 }
 
-int ByteCodeRunContext::getRegCount(int cur)
+uint32_t ByteCodeRunContext::getRegCount(uint32_t cur)
 {
 	if (static_cast<size_t>(cur) >= registersRC.size() - 1)
-		return static_cast<int>(bc->maxReservedRegisterRC);
+		return bc->maxReservedRegisterRC;
 	return registersRC[cur + 1] - registersRC[cur];
 }
