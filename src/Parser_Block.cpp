@@ -525,7 +525,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
 	node->semanticFct = Semantic::resolveBreak;
 	*result           = node;
 	SWAG_CHECK(eatToken());
-	if (token.flags & TOKENPARSE_LAST_EOL)
+	if (token.flags.has(TOKEN_PARSE_LAST_EOL))
 		return true;
 
 	if (token.id != TokenId::SymSemiColon)

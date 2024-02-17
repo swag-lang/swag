@@ -193,7 +193,7 @@ void Parser::prepareExpectTokenError()
 {
 	// If we expect a token, and the bad token is the first of the line, then
 	// it's better to display the requested token at the end of the previous line
-	if (token.flags & TOKENPARSE_LAST_EOL)
+	if (token.flags.has(TOKEN_PARSE_LAST_EOL))
 	{
 		token.startLocation = prevToken.endLocation;
 		token.endLocation   = token.startLocation;
@@ -231,7 +231,7 @@ bool Parser::eatSemiCol(const char* msg)
 {
 	SWAG_ASSERT(msg);
 
-	if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !(token.flags & TOKENPARSE_LAST_EOL))
+	if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !token.flags.has(TOKEN_PARSE_LAST_EOL))
 	{
 		if (token.id == TokenId::SymAsterisk)
 		{

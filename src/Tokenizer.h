@@ -1,4 +1,5 @@
 #pragma once
+#include "Flags.h"
 #include "Register.h"
 
 struct SourceFile;
@@ -83,16 +84,17 @@ struct Token
 	SourceLocation endLocation;
 };
 
-constexpr uint8_t TOKENPARSE_LAST_EOL           = 0x01;
-constexpr uint8_t TOKENPARSE_LAST_BLANK         = 0x02;
-constexpr uint8_t TOKENPARSE_EOL_BEFORE_COMMENT = 0x04;
+using TokenParseFlags = Flags<uint8_t>;
+constexpr TokenParseFlags TOKEN_PARSE_LAST_EOL           = 0x01;
+constexpr TokenParseFlags TOKEN_PARSE_LAST_BLANK         = 0x02;
+constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
 
 struct TokenParse : Token
 {
-	Register    literalValue;
-	TokenId     id          = TokenId::Invalid;
-	LiteralType literalType = static_cast<LiteralType>(0);
-	uint8_t     flags       = 0;
+	Register        literalValue;
+	TokenId         id          = TokenId::Invalid;
+	LiteralType     literalType = static_cast<LiteralType>(0);
+	TokenParseFlags flags       = 0;
 };
 
 struct Tokenizer

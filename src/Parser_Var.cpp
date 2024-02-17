@@ -317,10 +317,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 			SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_IN_VAR_DECL, &type));
 			Ast::removeFromParent(type);
 
-			// Ambigous {
+			// Ambiguous {
 			if (token.id == TokenId::SymLeftCurly &&
-				(token.flags & TOKENPARSE_LAST_BLANK) &&
-				!(token.flags & TOKENPARSE_LAST_EOL) &&
+				token.flags.has(TOKEN_PARSE_LAST_BLANK) &&
+				!token.flags.has(TOKEN_PARSE_LAST_EOL) &&
 				type->kind == AstNodeKind::TypeExpression)
 			{
 				const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
@@ -386,7 +386,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 		}
 	}
 
-	if (!tokenizer.comment.empty() && *result && !(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
+	if (!tokenizer.comment.empty() && *result && !token.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
 	{
 		(*result)->allocateExtension(ExtensionKind::Misc);
 

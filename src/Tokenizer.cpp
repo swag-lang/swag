@@ -169,7 +169,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 
 	token.literalType   = LiteralType::TT_MAX;
 	bool hasEol         = forceLastTokenIsEOL;
-	token.flags         = forceLastTokenIsEOL ? TOKENPARSE_LAST_EOL : 0;
+	token.flags         = forceLastTokenIsEOL ? TOKEN_PARSE_LAST_EOL : 0;
 	forceLastTokenIsEOL = false;
 
 	if (!propagateComment)
@@ -200,7 +200,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 		{
 			while (SWAG_IS_EOL(curBuffer[0]))
 				readChar();
-			token.flags |= TOKENPARSE_LAST_EOL;
+			token.flags.add(TOKEN_PARSE_LAST_EOL);
 			hasEol = true;
 			comment.clear();
 			continue;
@@ -212,7 +212,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 		{
 			while (SWAG_IS_BLANK(curBuffer[0]))
 				readChar();
-			token.flags |= TOKENPARSE_LAST_BLANK;
+			token.flags.add(TOKEN_PARSE_LAST_BLANK);
 			continue;
 		}
 
@@ -227,7 +227,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 
 				if (hasEol)
 				{
-					token.flags |= TOKENPARSE_EOL_BEFORE_COMMENT;
+					token.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
 					hasEol = false;
 				}
 
@@ -237,7 +237,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 
 				if (curBuffer[0])
 				{
-					token.flags |= TOKENPARSE_LAST_EOL;
+					token.flags.add(TOKEN_PARSE_LAST_EOL);
 					readChar();
 				}
 
@@ -249,7 +249,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 						comment += "\n";
 
 					// In case of end of line comments, skip all blanks after
-					if (!(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
+					if (!token.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
 					{
 						while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
 							readChar();
@@ -275,13 +275,13 @@ bool Tokenizer::nextToken(TokenParse& token)
 					comment.removeBack();
 
 					// In case of end of line comments, skip all blanks after
-					if (!(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))
+					if (!token.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
 					{
 						while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
 						{
 							if (SWAG_IS_EOL(curBuffer[0]))
 							{
-								token.flags |= TOKENPARSE_LAST_EOL;
+								token.flags.add(TOKEN_PARSE_LAST_EOL);
 								hasEol = true;
 							}
 

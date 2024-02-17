@@ -100,7 +100,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
 	SWAG_CHECK(doIdentifierRef(node, &dummyResult));
 
 	// Replacement parameters
-	if (token.id == TokenId::SymLeftCurly && !(token.flags & TOKENPARSE_LAST_EOL))
+	if (token.id == TokenId::SymLeftCurly && !token.flags.has(TOKEN_PARSE_LAST_EOL))
 	{
 		const auto startLoc = token.startLocation;
 		SWAG_VERIFY(node->ownerBreakable, error(token, Err(Err0445)));
