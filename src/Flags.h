@@ -10,8 +10,8 @@ struct Flags
 	{
 	}
 
-	bool         operator==(const Flags& other) const { return flags == other.flags; }
-	Flags friend operator|(Flags a, Flags b) { return a.flags | b.flags; }
+	bool                   operator==(const Flags& other) const { return flags == other.flags; }
+	constexpr Flags friend operator|(Flags a, Flags b) { return a.flags | b.flags; }
 
 	bool  has(Flags fl) const { return flags & fl.flags; }
 	Flags with(Flags fl) const { return flags | fl.flags; }
