@@ -11,7 +11,7 @@ enum class TokenId : uint16_t;
 
 namespace Naming
 {
-	Utf8 kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, uint32_t overFlags, Utf8& article);
+	Utf8 kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, OverloadFlags overFlags, Utf8& article);
 	Utf8 kindName(const SymbolOverload* overload);
 	Utf8 aKindName(const SymbolOverload* overload);
 

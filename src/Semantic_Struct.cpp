@@ -671,7 +671,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 	node->scope->owner = node;
 
 	// Add generic parameters
-	uint32_t symbolFlags = 0;
+	OverloadFlags overFlags = 0;
 	if (!node->hasAstFlag(AST_FROM_GENERIC))
 	{
 		if (node->genericParameters)
@@ -691,7 +691,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 
 			node->addAstFlag(AST_IS_GENERIC);
 			typeInfo->addFlag(TYPEINFO_GENERIC);
-			symbolFlags |= OVERLOAD_GENERIC;
+			overFlags.add(OVERLOAD_GENERIC);
 		}
 
 		typeInfo->forceComputeName();
@@ -720,7 +720,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 	toAdd.node     = node;
 	toAdd.typeInfo = node->typeInfo;
 	toAdd.kind     = symbolKind;
-	toAdd.flags    = symbolFlags | OVERLOAD_INCOMPLETE;
+	toAdd.flags    = overFlags | OVERLOAD_INCOMPLETE;
 
 	node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
 	node->resolvedSymbolName     = toAdd.symbolName;

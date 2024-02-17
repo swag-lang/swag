@@ -603,15 +603,15 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
 		typeInfo->addFlag(TYPEINFO_STRICT);
 	node->typeInfo = typeInfo;
 
-	uint32_t symbolFlags = OVERLOAD_INCOMPLETE;
+	OverloadFlags overFlags = OVERLOAD_INCOMPLETE;
 	if (node->typeInfo->isGeneric())
-		symbolFlags |= OVERLOAD_GENERIC;
+		overFlags.add(OVERLOAD_GENERIC);
 
 	AddSymbolTypeInfo toAdd;
 	toAdd.node     = node;
 	toAdd.typeInfo = node->typeInfo;
 	toAdd.kind     = SymbolKind::TypeAlias;
-	toAdd.flags    = symbolFlags;
+	toAdd.flags    = overFlags;
 
 	node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
 	SWAG_CHECK(node->resolvedSymbolOverload);
@@ -629,15 +629,15 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
 	typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_GENERIC));
 	typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_CONST));
 	typeInfo->computeName();
-	uint32_t symbolFlags = node->resolvedSymbolOverload->flags & ~OVERLOAD_INCOMPLETE;
+	OverloadFlags overFlags = node->resolvedSymbolOverload->flags.maskInvert(OVERLOAD_INCOMPLETE);
 	if (typeInfo->isGeneric())
-		symbolFlags |= OVERLOAD_GENERIC;
+		overFlags.add(OVERLOAD_GENERIC);
 
 	AddSymbolTypeInfo toAdd;
 	toAdd.node     = node;
 	toAdd.typeInfo = node->typeInfo;
 	toAdd.kind     = SymbolKind::TypeAlias;
-	toAdd.flags    = symbolFlags;
+	toAdd.flags    = overFlags;
 	SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
 	return true;
 }

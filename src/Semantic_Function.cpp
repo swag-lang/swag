@@ -480,7 +480,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 		// (because the registration was the same as an incomplete one)
 		else if (!funcNode->returnType->typeInfo->isGeneric())
 		{
-			funcNode->resolvedSymbolOverload->flags &= ~OVERLOAD_UNDEFINED;
+			funcNode->resolvedSymbolOverload->flags.remove(OVERLOAD_UNDEFINED);
 			funcNode->resolvedSymbolName->decreaseOverloadNoLock();
 		}
 
@@ -893,19 +893,19 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
 	// For a short lambda without a specified return type, we need to defer the symbol registration, as we
 	// need to infer it from the lambda expression
-	uint32_t overFlags = 0;
+	OverloadFlags overFlags = 0;
 	if (shortLambda || mustDeduceReturnType)
-		overFlags |= OVERLOAD_INCOMPLETE;
+		overFlags.add(OVERLOAD_INCOMPLETE);
 	if (shortLambdaPendingTyping)
-		overFlags |= OVERLOAD_UNDEFINED;
+		overFlags.add(OVERLOAD_UNDEFINED);
 	SWAG_CHECK(registerFuncSymbol(context, funcNode, overFlags));
 
 	return true;
 }
 
-bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
+bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, OverloadFlags overFlags)
 {
-	if (!(symbolFlags & OVERLOAD_INCOMPLETE))
+	if (!overFlags.has(OVERLOAD_INCOMPLETE))
 	{
 		SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
@@ -929,13 +929,13 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 	}
 
 	if (funcNode->hasAstFlag(AST_IS_GENERIC))
-		symbolFlags |= OVERLOAD_GENERIC;
+		overFlags.add(OVERLOAD_GENERIC);
 
 	AddSymbolTypeInfo toAdd;
 	toAdd.node     = funcNode;
 	toAdd.typeInfo = funcNode->typeInfo;
 	toAdd.kind     = SymbolKind::Function;
-	toAdd.flags    = symbolFlags;
+	toAdd.flags    = overFlags;
 
 	funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
 	funcNode->resolvedSymbolName     = toAdd.symbolName;
@@ -977,13 +977,13 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 		toAdd1.node      = funcNode->returnType;
 		toAdd1.typeInfo  = returnType;
 		toAdd1.kind      = SymbolKind::TypeAlias;
-		toAdd1.flags     = symbolFlags | OVERLOAD_RETVAL;
+		toAdd1.flags     = overFlags | OVERLOAD_RETVAL;
 		toAdd1.aliasName = &retVal;
 		funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd1);
 	}
 
 	// Register method
-	if (!(symbolFlags & OVERLOAD_INCOMPLETE) && isMethod(funcNode))
+	if (!overFlags.has(OVERLOAD_INCOMPLETE) && isMethod(funcNode))
 	{
 		const auto typeStruct = castTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
 		const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);

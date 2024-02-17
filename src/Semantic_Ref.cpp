@@ -146,7 +146,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
 	if (child->resolvedSymbolOverload)
 	{
 		ScopedLock lk(child->resolvedSymbolName->mutex);
-		child->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
+		child->resolvedSymbolOverload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
 	}
 
 	if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET))
@@ -1117,7 +1117,7 @@ bool Semantic::resolveInit(SemanticContext* context)
 		SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, FMT(Err(Err0057), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
 		const auto back = node->expression->children.back();
 		back->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
-		back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
+		back->resolvedSymbolOverload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
 	}
 	else
 	{

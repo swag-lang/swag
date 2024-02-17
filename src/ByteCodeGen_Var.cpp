@@ -51,7 +51,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 		return true;
 
 	const auto resolved = node->resolvedSymbolOverload;
-	resolved->flags |= OVERLOAD_EMITTED;
+	resolved->flags.add(OVERLOAD_EMITTED);
 
 	const auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCE_ALIAS);
 	const bool retVal   = resolved->hasFlag(OVERLOAD_RETVAL);

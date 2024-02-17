@@ -19,7 +19,7 @@ struct AddSymbolTypeInfo
 	SymbolName*    symbolName     = nullptr;
 	DataSegment*   storageSegment = nullptr;
 	Utf8*          aliasName      = nullptr;
-	uint32_t       flags          = 0;
+	OverloadFlags  flags          = 0;
 	uint32_t       storageOffset  = 0;
 	SymbolKind     kind           = SymbolKind::Invalid;
 };
@@ -44,7 +44,7 @@ struct SymTable
 	SymbolOverload* addSymbolTypeInfoNoLock(ErrorContext* context, AddSymbolTypeInfo& toAdd);
 
 	bool        acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* node, SymbolKind kind, const SymbolName* symbol) const;
-	bool        checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags) const;
+	bool        checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, OverloadFlags overFlags) const;
 	void        addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
 	static bool registerNameAlias(ErrorContext* context, const AstNode* node, SymbolName* symbol, SymbolName* otherSymbol, SymbolOverload* otherOverload);
 

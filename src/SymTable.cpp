@@ -124,13 +124,13 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 	}
 
 	// Only add an inline parameter/retval once in a given scope
-	if ((toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && !symbol->overloads.empty())
+	if ((toAdd.flags.has(OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && !symbol->overloads.empty())
 	{
 		toAdd.node->resolvedSymbolOverload = symbol->overloads[0];
 		return symbol->overloads[0];
 	}
 
-	// If symbol was registered as a place holder, and is no more, then replace its kind
+	// If symbol was registered as a placeholder, and is no more, then replace its kind
 	if (symbol->kind == SymbolKind::PlaceHolder && toAdd.kind != SymbolKind::PlaceHolder)
 		symbol->kind = toAdd.kind;
 
@@ -145,12 +145,12 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 	{
 		for (const auto resolved : symbol->overloads)
 		{
-			if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
+			if (!toAdd.flags.has(OVERLOAD_INCOMPLETE))
 			{
 				if ((resolved->hasFlag(OVERLOAD_INCOMPLETE)) && resolved->typeInfo == toAdd.typeInfo)
 				{
 					overload = resolved;
-					overload->flags &= ~OVERLOAD_INCOMPLETE;
+					overload->flags.remove(OVERLOAD_INCOMPLETE);
 					break;
 				}
 			}
@@ -159,7 +159,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 				if ((resolved->hasFlag(OVERLOAD_UNDEFINED)) && resolved->typeInfo->isSame(toAdd.typeInfo, CAST_FLAG_CAST))
 				{
 					overload = resolved;
-					overload->flags &= ~OVERLOAD_UNDEFINED;
+					overload->flags.remove(OVERLOAD_UNDEFINED);
 					break;
 				}
 			}
@@ -169,18 +169,18 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 	if (!overload)
 	{
 		// No ghosting check for an inline parameter
-		if (!(toAdd.flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)))
+		if (!toAdd.flags.has(OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL))
 		{
 			if (!checkHiddenSymbolNoLock(context, toAdd.node, toAdd.typeInfo, toAdd.kind, symbol, toAdd.flags))
 				return nullptr;
 		}
 
 		overload = symbol->addOverloadNoLock(toAdd.node, toAdd.typeInfo, toAdd.computedValue);
-		overload->flags |= toAdd.flags;
+		overload->flags.add(toAdd.flags);
 
 		// Register for dropping in end of scope, if necessary
 		if ((symbol->kind == SymbolKind::Variable) &&
-			!(toAdd.flags & (OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK)) &&
+			!toAdd.flags.has(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK) &&
 			!toAdd.computedValue)
 		{
 			addVarToDrop(overload, overload->typeInfo, toAdd.storageOffset);
@@ -188,7 +188,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 	}
 	else
 	{
-		overload->flags |= toAdd.flags;
+		overload->flags.add(toAdd.flags);
 	}
 
 	if (!toAdd.computedValue ||
@@ -200,9 +200,9 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 		overload->computedValue.storageSegment = toAdd.storageSegment;
 	}
 
-	// One less overload. When this reached zero, this means we know every types for the same symbol,
-	// and so we can wakeup all jobs waiting for that symbol to be solved
-	if (!(toAdd.flags & OVERLOAD_INCOMPLETE) && !(toAdd.flags & OVERLOAD_UNDEFINED))
+	// One less overload. When this reached zero, this means we know every type for the same symbol,
+	// and so we can wake up all jobs waiting for that symbol to be solved
+	if (!toAdd.flags.has(OVERLOAD_INCOMPLETE) && !toAdd.flags.has(OVERLOAD_UNDEFINED))
 	{
 		// For function, will be done later because we register the full
 		// symbol with the function type, and we want to compute the access
@@ -212,7 +212,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 		symbol->decreaseOverloadNoLock();
 	}
 
-	// In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
+	// In case of an incomplete function, we can wake up jobs too when every overload have been covered,
 	// because an incomplete function doesn't yet know its return type, but we don't need it in order
 	// to make a match
 	if ((symbol->overloads.size() == symbol->cptOverloadsInit) &&
@@ -323,7 +323,7 @@ bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* nod
 	return false;
 }
 
-bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, uint32_t overFlags) const
+bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, OverloadFlags overFlags) const
 {
 	auto token = &node->token;
 	if (node->kind == AstNodeKind::FuncDecl)
@@ -405,7 +405,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, Sym
 		symbol->cptOverloadsInit += 1;
 		const auto copy = Allocator::alloc<SymbolOverload>();
 		copy->from(otherOverload);
-		otherOverload->flags |= OVERLOAD_HAS_AFFECT;
+		otherOverload->flags.add(OVERLOAD_HAS_AFFECT);
 		symbol->overloads.push_back(copy);
 	}
 	else
@@ -415,7 +415,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, Sym
 		{
 			auto copy = Allocator::alloc<SymbolOverload>();
 			copy->from(o);
-			o->flags |= OVERLOAD_HAS_AFFECT;
+			o->flags.add(OVERLOAD_HAS_AFFECT);
 			symbol->overloads.push_back(copy);
 		}
 	}

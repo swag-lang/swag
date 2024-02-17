@@ -15,10 +15,12 @@ struct SourceFile;
 struct SymbolName;
 struct SymbolOverload;
 struct TypeInfoFuncAttr;
+
 enum class AstNodeKind : uint8_t;
 enum class SymbolKind : uint8_t;
 using ToConcreteFlags = Flags<uint32_t>;
 using GenExportFlags = Flags<uint32_t>;
+using OverloadFlags = Flags<uint32_t>;
 
 struct FindUserOp
 {
@@ -146,7 +148,7 @@ namespace Semantic
 	bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
 	bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
 	bool           waitForStructUserOps(SemanticContext* context, const AstNode* node);
-	bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags);
+	bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, OverloadFlags& symbolFlags);
 	bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
 	bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);
 	bool           collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
@@ -159,7 +161,7 @@ namespace Semantic
 	bool           getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
 	void           forceConstType(SemanticContext* context, AstTypeExpression* node);
 	void           setVarDeclResolve(AstVarDecl* varNode);
-	bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, CastFlags castFlags = 0);
+	bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, OverloadFlags overFlags, CastFlags castFlags = 0);
 	DataSegment*   getSegmentForVar(SemanticContext* context, const AstVarDecl* varNode);
 	bool           getDigitHex(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pzr, int& result, const char* errMsg);
 	bool           processLiteralString(SemanticContext* context);
@@ -191,7 +193,7 @@ namespace Semantic
 	void           setFuncDeclParamsIndex(const AstFuncDecl* funcNode);
 	bool           isMethod(const AstFuncDecl* funcNode);
 	void           launchResolveSubDecl(const JobContext* context, AstNode* node);
-	bool           registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
+	bool           registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, OverloadFlags overFlags = 0);
 	void           resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode);
 	Utf8           getSpecialOpSignature(const AstFuncDecl* node);
 	TypeInfo*      getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node);

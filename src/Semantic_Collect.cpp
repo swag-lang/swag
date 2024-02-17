@@ -459,7 +459,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 	return true;
 }
 
-bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags)
+bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, OverloadFlags& symbolFlags)
 {
 	auto       node     = castAst<AstVarDecl>(context->node);
 	const auto typeInfo = TypeManager::concreteType(node->typeInfo);
@@ -485,7 +485,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
 	if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
 	{
 		storageOffset = 0;
-		symbolFlags |= OVERLOAD_INCOMPLETE;
+		symbolFlags.add(OVERLOAD_INCOMPLETE);
 	}
 	else if (node->assignment && typeInfo->isAny())
 	{

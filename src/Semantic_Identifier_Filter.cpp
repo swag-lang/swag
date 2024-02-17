@@ -205,7 +205,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 		{
 			for (size_t j = 0; j < countMatches; j++)
 			{
-				if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
+				if (matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
 				{
 					curMatch->remove = true;
 					break;

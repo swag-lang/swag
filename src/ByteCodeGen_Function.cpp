@@ -1563,7 +1563,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
 	context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
 	if (node->resolvedSymbolOverload)
-		node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
+		node->resolvedSymbolOverload->flags.add(OVERLOAD_EMITTED);
 
 	// Push a var drop, except if we are in an expression (constexpr).
 	// So check that the ownerScope will be executed (the bytecode should be a parent of the scope).

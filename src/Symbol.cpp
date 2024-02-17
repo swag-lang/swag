@@ -15,7 +15,7 @@ void SymbolOverload::from(const SymbolOverload* other)
 	flags           = other->flags;
 }
 
-void SymbolOverload::setRegisters(const RegisterList& reg, uint32_t fl)
+void SymbolOverload::setRegisters(const RegisterList& reg, OverloadFlags fl)
 {
 	ScopedLock lk(symbol->mutex);
 	if (fl == OVERLOAD_HINT_REG)
@@ -25,20 +25,20 @@ void SymbolOverload::setRegisters(const RegisterList& reg, uint32_t fl)
 		if (hasFlag(OVERLOAD_PERSISTENT_REG))
 			return;
 	}
-	else if (fl & OVERLOAD_INLINE_REG)
+	else if (fl.has(OVERLOAD_INLINE_REG))
 	{
 		SWAG_ASSERT(!hasFlag(OVERLOAD_INLINE_REG) || symRegisters == reg);
 		SWAG_ASSERT(!hasFlag(OVERLOAD_PERSISTENT_REG));
-		flags &= ~OVERLOAD_HINT_REG;
+		flags.remove(OVERLOAD_HINT_REG);
 	}
 	else
 	{
 		SWAG_ASSERT(!hasFlag(OVERLOAD_PERSISTENT_REG) || symRegisters == reg);
 		SWAG_ASSERT(!hasFlag(OVERLOAD_INLINE_REG));
-		flags &= ~OVERLOAD_HINT_REG;
+		flags.remove(OVERLOAD_HINT_REG);
 	}
 
-	flags |= fl;
+	flags.add(fl);
 	symRegisters = reg;
 }
 
@@ -62,7 +62,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
 	if (computedValue)
 	{
 		overload->computedValue = *computedValue;
-		overload->flags |= OVERLOAD_COMPUTED_VALUE;
+		overload->flags.add(OVERLOAD_COMPUTED_VALUE);
 	}
 
 	overload->symbol = this;

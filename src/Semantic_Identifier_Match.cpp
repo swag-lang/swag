@@ -120,7 +120,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
 
 	ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
 	if (typeUndefinedFct->returnType->isGeneric())
-		funcDecl->resolvedSymbolOverload->flags |= OVERLOAD_INCOMPLETE;
+		funcDecl->resolvedSymbolOverload->flags.add(OVERLOAD_INCOMPLETE);
 	waitSymbolNoLock(context->baseJob, funcDecl->resolvedSymbolOverload->symbol);
 	context->baseJob->jobsToAdd.push_back(funcDecl->pendingLambdaJob);
 }
@@ -986,7 +986,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 				}
 			}
 
-			overload->flags |= OVERLOAD_USED;
+			overload->flags.add(OVERLOAD_USED);
 
 			// Be sure usage is valid
 			auto ownerFct = identifier->ownerFct;

@@ -175,7 +175,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 	// :opAffectConstExpr
 	if (node->resolvedSymbolOverload &&
 		node->resolvedSymbolOverload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
-		node->resolvedSymbolOverload->flags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
+		node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
 	{
 		const auto overload = node->resolvedSymbolOverload;
 		SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
@@ -216,7 +216,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 		toAdd.node           = node;
 		toAdd.typeInfo       = node->typeInfo;
 		toAdd.kind           = overload->symbol->kind;
-		toAdd.flags          = overload->flags & ~OVERLOAD_INCOMPLETE;
+		toAdd.flags          = overload->flags.maskInvert(OVERLOAD_INCOMPLETE);
 		toAdd.storageOffset  = node->computedValue->storageOffset;
 		toAdd.storageSegment = node->computedValue->storageSegment;
 
@@ -361,14 +361,14 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	return true;
 }
 
-bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, CastFlags castFlags)
+bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, OverloadFlags overFlags, CastFlags castFlags)
 {
 	const auto typeList  = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
 	const auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
 	node->typeInfo       = typeArray;
 
 	// For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
-	if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+	if (overFlags.has(OVERLOAD_VAR_GLOBAL))
 		SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags | CAST_FLAG_NO_COLLECT));
 	else
 		SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, castFlags));
@@ -584,7 +584,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			return context->report({node->assignment->children.front(), FMT(Err(Err0403), node->assignment->children.front()->token.c_str())});
 	}
 
-	uint32_t symbolFlags = 0;
+	OverloadFlags overFlags = 0;
 
 	// Transform let to constant if possible
 	if (node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
@@ -596,35 +596,35 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			(!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
 		{
 			node->addSpecFlag(AstVarDecl::SPECFLAG_IS_LET_TO_CONST);
-			symbolFlags |= OVERLOAD_IS_LET;
+			overFlags.add(OVERLOAD_IS_LET);
 			isCompilerConstant = true;
 		}
 		else
 		{
-			symbolFlags |= OVERLOAD_IS_LET;
+			overFlags.add(OVERLOAD_IS_LET);
 		}
 	}
 
 	if (isCompilerConstant)
-		symbolFlags |= OVERLOAD_CONSTANT;
+		overFlags.add(OVERLOAD_CONSTANT);
 	if (node->kind == AstNodeKind::FuncDeclParam)
-		symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
+		overFlags.add(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN);
 	else if (node->ownerScope->isGlobal() || node->hasAttribute(ATTRIBUTE_GLOBAL))
-		symbolFlags |= OVERLOAD_VAR_GLOBAL;
+		overFlags.add(OVERLOAD_VAR_GLOBAL);
 	else if (node->ownerScope->isGlobalOrImpl() && (node->hasAstFlag(AST_IN_IMPL)) && !node->hasAstFlag(AST_STRUCT_MEMBER))
-		symbolFlags |= OVERLOAD_VAR_GLOBAL;
+		overFlags.add(OVERLOAD_VAR_GLOBAL);
 	else if (node->ownerScope->kind == ScopeKind::Struct)
-		symbolFlags |= OVERLOAD_VAR_STRUCT;
+		overFlags.add(OVERLOAD_VAR_STRUCT);
 	else if (!isCompilerConstant)
-		symbolFlags |= OVERLOAD_VAR_LOCAL;
+		overFlags.add(OVERLOAD_VAR_LOCAL);
 	else
 		isLocalConstant = true;
 	if (node->hasSpecFlag(AstVarDecl::SPECFLAG_CONST_ASSIGN))
-		symbolFlags |= OVERLOAD_CONST_ASSIGN;
+		overFlags.add(OVERLOAD_CONST_ASSIGN);
 	if (node->hasAttribute(ATTRIBUTE_TLS))
-		symbolFlags |= OVERLOAD_VAR_TLS;
+		overFlags.add(OVERLOAD_VAR_TLS);
 	if (node->assignment)
-		symbolFlags |= OVERLOAD_VAR_HAS_ASSIGN;
+		overFlags.add(OVERLOAD_VAR_HAS_ASSIGN);
 
 	auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_FORCE_ALIAS) : nullptr;
 
@@ -652,9 +652,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			return context->report({node, Err(Err0562)});
 
 		// A constant variable must be initialized
-		if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
+		if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
 		{
-			if (symbolFlags & OVERLOAD_IS_LET)
+			if (overFlags.has(OVERLOAD_IS_LET))
 				return context->report({node, Err(Err0564)});
 			return context->report({node, Err(Err0565)});
 		}
@@ -800,11 +800,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
 			YIELD();
 
-			if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || node->assignment->hasAstFlag(AST_CONST_EXPR))
+			if (overFlags.has(OVERLOAD_VAR_GLOBAL) || overFlags.has(OVERLOAD_VAR_FUNC_PARAM) || node->assignment->hasAstFlag(AST_CONST_EXPR))
 			{
 				SWAG_CHECK(evaluateConstExpression(context, node->assignment));
 				YIELD();
-				if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+				if (overFlags.has(OVERLOAD_VAR_GLOBAL))
 					node->assignment->addAstFlag(AST_NO_BYTECODE);
 			}
 
@@ -815,7 +815,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	// A global variable or a constant must have its value computed at that point
 	if (!node->hasAstFlag(AST_FROM_GENERIC))
 	{
-		if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+		if (!isGeneric && node->assignment && (isCompilerConstant || overFlags.has(OVERLOAD_VAR_GLOBAL)))
 		{
 			if (node->assignment->typeInfo->isLambdaClosure())
 			{
@@ -849,7 +849,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
 	if (node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
 	{
-		symbolFlags |= OVERLOAD_NOT_INITIALIZED;
+		overFlags.add(OVERLOAD_NOT_INITIALIZED);
 
 		if (isCompilerConstant)
 		{
@@ -903,9 +903,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				YIELD();
 
 				// :opAffectConstExpr
-				if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
+				if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
 				{
-					symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
+					overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
 					SWAG_ASSERT(node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload);
 					if (!node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
 					{
@@ -918,8 +918,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			}
 
 			// :opAffectConstExp
-			else if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
-				symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
+			else if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
+				overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
 		}
 
 		node->typeInfo = node->type->typeInfo;
@@ -963,7 +963,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			CastFlags castFlags = 0;
 			if (!isCompilerConstant)
 				castFlags = CAST_FLAG_FORCE_UN_CONST;
-			SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, symbolFlags, castFlags));
+			SWAG_CHECK(convertTypeListToArray(context, node, isCompilerConstant, overFlags, castFlags));
 		}
 
 		// :ConcreteRef
@@ -984,7 +984,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		node->inheritAstFlagsOr(node->type, AST_IS_GENERIC);
 	if (node->hasAstFlag(AST_IS_GENERIC))
 	{
-		symbolFlags |= OVERLOAD_GENERIC;
+		overFlags.add(OVERLOAD_GENERIC);
 		if (thisIsAGenericType && node->assignment)
 		{
 			auto typeGeneric     = makeType<TypeInfoGeneric>();
@@ -1066,7 +1066,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	// and has an address
 	if (isCompilerConstant && !node->hasAstFlag(AST_FROM_GENERIC))
 	{
-		if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
+		if (overFlags.has(OVERLOAD_VAR_GLOBAL) || isLocalConstant)
 		{
 			if (node->typeInfo->isStruct() ||
 				node->typeInfo->isArray() ||
@@ -1084,7 +1084,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	// problems.
 	if (!isCompilerConstant || !node->hasAstFlag(AST_FROM_GENERIC))
 	{
-		if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
+		if (isCompilerConstant || overFlags.has(OVERLOAD_VAR_GLOBAL) || overFlags.has(OVERLOAD_VAR_LOCAL))
 		{
 			waitTypeCompleted(context->baseJob, typeInfo);
 			YIELD();
@@ -1098,19 +1098,19 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		node->addAstFlag(AST_NO_BYTECODE | AST_R_VALUE);
 		if (!isGeneric)
 		{
-			SWAG_CHECK(collectConstantAssignment(context, &storageSegment, &storageOffset, symbolFlags));
+			SWAG_CHECK(collectConstantAssignment(context, &storageSegment, &storageOffset, overFlags));
 			if (node->ownerFct)
 				node->ownerFct->localConstants.push_back(node);
 			else
 				module->addGlobalVar(node, GlobalVarKind::Constant);
 		}
 	}
-	else if (symbolFlags & OVERLOAD_VAR_STRUCT)
+	else if (overFlags.has(OVERLOAD_VAR_STRUCT))
 	{
 		storageOffset  = 0;
 		storageSegment = &module->constantSegment;
 	}
-	else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+	else if (overFlags.has(OVERLOAD_VAR_GLOBAL))
 	{
 		// Variable is still generic. Try to find default generic parameters to instantiate it
 		if (node->typeInfo->isGeneric())
@@ -1149,10 +1149,10 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		switch (storageSegment->kind)
 		{
 		case SegmentKind::Compiler:
-			symbolFlags |= OVERLOAD_VAR_COMPILER;
+			overFlags.add(OVERLOAD_VAR_COMPILER);
 			break;
 		case SegmentKind::Bss:
-			symbolFlags |= OVERLOAD_VAR_BSS;
+			overFlags.add(OVERLOAD_VAR_BSS);
 			break;
 		default:
 			break;
@@ -1161,7 +1161,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
 		{
 			storageOffset = 0;
-			symbolFlags |= OVERLOAD_INCOMPLETE;
+			overFlags.add(OVERLOAD_INCOMPLETE);
 		}
 		else
 		{
@@ -1169,7 +1169,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		}
 
 		// Register global variable
-		if (!(symbolFlags & OVERLOAD_VAR_COMPILER))
+		if (!overFlags.has(OVERLOAD_VAR_COMPILER))
 		{
 			if (node->hasAttribute(ATTRIBUTE_GLOBAL))
 			{
@@ -1178,7 +1178,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 			}
 			else
 			{
-				module->addGlobalVar(node, (symbolFlags & OVERLOAD_VAR_BSS) ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
+				module->addGlobalVar(node, overFlags.has(OVERLOAD_VAR_BSS) ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
 			}
 
 			// Register global variable in the list of global variables to drop if the variable is
@@ -1187,7 +1187,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				module->addGlobalVarToDrop(node, storageOffset, storageSegment);
 		}
 	}
-	else if (symbolFlags & OVERLOAD_VAR_LOCAL)
+	else if (overFlags.has(OVERLOAD_VAR_LOCAL))
 	{
 		// For a struct, need to wait for special functions to be found
 		if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
@@ -1218,7 +1218,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				YIELD();
 
 				if (!CallConv::returnStructByValue(typeFunc))
-					symbolFlags |= OVERLOAD_RETVAL;
+					overFlags.add(OVERLOAD_RETVAL);
 			}
 		}
 
@@ -1228,7 +1228,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		{
 			node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 			SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
-			symbolFlags |= OVERLOAD_TUPLE_UNPACK;
+			overFlags.add(OVERLOAD_TUPLE_UNPACK);
 			storageOffset = 0;
 			for (auto& c : node->assignment->children)
 			{
@@ -1238,7 +1238,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		}
 
 		// Reserve room on the stack, except for a retval
-		else if (!(symbolFlags & OVERLOAD_RETVAL))
+		else if (!overFlags.has(OVERLOAD_RETVAL))
 		{
 			auto assignment = node->assignment;
 			if (assignment && (assignment->kind == AstNodeKind::Catch || assignment->kind == AstNodeKind::Try || assignment->kind == AstNodeKind::Assume))
@@ -1275,7 +1275,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
 		node->addAstFlag(AST_R_VALUE);
 	}
-	else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
+	else if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM))
 	{
 		node->addAstFlag(AST_R_VALUE);
 		TypeManager::convertStructParamToRef(node, typeInfo);
@@ -1293,7 +1293,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 	toAdd.typeInfo       = node->typeInfo;
 	toAdd.kind           = thisIsAGenericType ? SymbolKind::GenericType : SymbolKind::Variable;
 	toAdd.computedValue  = isCompilerConstant ? node->computedValue : nullptr;
-	toAdd.flags          = symbolFlags;
+	toAdd.flags          = overFlags;
 	toAdd.storageOffset  = storageOffset;
 	toAdd.storageSegment = storageSegment;
 

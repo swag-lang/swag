@@ -20,7 +20,7 @@ bool Semantic::resolveMove(SemanticContext* context)
 	node->typeInfo    = right->typeInfo;
 	node->byteCodeFct = ByteCodeGen::emitPassThrough;
 	if (right->resolvedSymbolOverload)
-		right->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
+		right->resolvedSymbolOverload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
 
 	if (node->hasAstFlag(AST_FORCE_MOVE))
 	{
@@ -96,7 +96,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 	if (!isConst)
 	{
 		if (left->resolvedSymbolOverload)
-			left->resolvedSymbolOverload->flags |= OVERLOAD_HAS_AFFECT;
+			left->resolvedSymbolOverload->flags.add(OVERLOAD_HAS_AFFECT);
 		return true;
 	}
 

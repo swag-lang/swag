@@ -5,7 +5,7 @@
 #include "AstNode.h"
 #include "TypeInfo.h"
 
-Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
+Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeInfo* typeInfo, OverloadFlags overFlags, Utf8& article)
 {
 	if (typeInfo->isTuple())
 	{
@@ -31,59 +31,59 @@ Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeI
 		return "implicit parameter";
 	}
 
-	if (overFlags & OVERLOAD_VAR_CAPTURE)
+	if (overFlags.has(OVERLOAD_VAR_CAPTURE))
 	{
 		article = "a";
 		return "captured parameter";
 	}
 
-	if ((overFlags & OVERLOAD_VAR_FUNC_PARAM) && node->ownerFct && node->ownerFct->typeInfo->isLambda())
+	if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM) && node->ownerFct && node->ownerFct->typeInfo->isLambda())
 	{
 		article = "a";
 		return "lambda parameter";
 	}
 
-	if ((overFlags & OVERLOAD_VAR_FUNC_PARAM) && node->ownerFct && node->ownerFct->typeInfo->isClosure())
+	if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM) && node->ownerFct && node->ownerFct->typeInfo->isClosure())
 	{
 		article = "a";
 		return "closure parameter";
 	}
 
-	if (overFlags & OVERLOAD_VAR_FUNC_PARAM)
+	if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM))
 	{
 		article = "a";
-		if (overFlags & OVERLOAD_GENERIC)
+		if (overFlags.has(OVERLOAD_GENERIC))
 			return "generic parameter";
 		return "function parameter";
 	}
 
-	if (overFlags & OVERLOAD_VAR_INLINE)
+	if (overFlags.has(OVERLOAD_VAR_INLINE))
 	{
 		article = "a";
 		return "function parameter";
 	}
 
-	if (overFlags & OVERLOAD_CONSTANT)
+	if (overFlags.has(OVERLOAD_CONSTANT))
 	{
 		article = "a";
-		if (overFlags & OVERLOAD_IS_LET)
+		if (overFlags.has(OVERLOAD_IS_LET))
 			return "variable";
 		return "constant";
 	}
 
-	if (overFlags & OVERLOAD_VAR_GLOBAL)
+	if (overFlags.has(OVERLOAD_VAR_GLOBAL))
 	{
 		article = "a";
 		return "global variable";
 	}
 
-	if (overFlags & OVERLOAD_VAR_LOCAL)
+	if (overFlags.has(OVERLOAD_VAR_LOCAL))
 	{
 		article = "a";
 		return "local variable";
 	}
 
-	if (overFlags & OVERLOAD_VAR_STRUCT)
+	if (overFlags.has(OVERLOAD_VAR_STRUCT))
 	{
 		article = "a";
 		return "field";
