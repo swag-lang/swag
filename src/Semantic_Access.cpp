@@ -281,7 +281,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
 		onNode = culprit;
 
 	const auto       accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
-	const Diagnostic diag{
+	const Diagnostic err{
 		node,
 		node->getTokenName(),
 		FMT(Err(Err0426),
@@ -301,5 +301,5 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
 		note  = Diagnostic::note(onNode, onNode->token, FMT(Nte(Nte0157), accessCulprit, onNode->typeInfo->getDisplayNameC()));
 		note1 = Diagnostic::hereIs(culprit);
 	}
-	return context->report(diag, note, note1);
+	return context->report(err, note, note1);
 }

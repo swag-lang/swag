@@ -394,14 +394,14 @@ namespace
 
 		if (nodeLoc)
 		{
-			const Diagnostic diag({nodeLoc, nodeLoc->token, msg});
-			return cxt.context->report(diag);
+			const Diagnostic err({nodeLoc, nodeLoc->token, msg});
+			return cxt.context->report(err);
 		}
 
 		const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
 
-		const Diagnostic diag({loc.file, *loc.location, msg});
-		return cxt.context->report(diag);
+		const Diagnostic err({loc.file, *loc.location, msg});
+		return cxt.context->report(err);
 	}
 
 	bool checkOverflow(const Context& cxt, bool isValid, const char* msgKind, TypeInfo* type)

@@ -22,11 +22,11 @@ PushErrCxtStep::~PushErrCxtStep()
 	cxt->errCxtSteps.pop_back();
 }
 
-void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
+void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& notes)
 {
-	diag.contextNode = node;
+	diagnostic.contextNode = node;
 
-	if (diag.errorLevel == DiagnosticLevel::Error)
+	if (diagnostic.errorLevel == DiagnosticLevel::Error)
 		hasError = true;
 
 	if (!errCxtSteps.empty())
@@ -155,7 +155,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 	}
 
 	// From generated code
-	auto sourceNode = diag.sourceNode ? diag.sourceNode : diag.contextNode;
+	auto sourceNode = diagnostic.sourceNode ? diagnostic.sourceNode : diagnostic.contextNode;
 	if (sourceNode && sourceNode->hasExtMisc() && sourceNode->extMisc()->exportNode)
 		sourceNode = sourceNode->extMisc()->exportNode;
 	if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->fromNode && !sourceNode->sourceFile->fileForSourceLocation)
@@ -163,32 +163,32 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 		const auto note = Diagnostic::note(sourceNode->sourceFile->fromNode, Nte(Nte0098));
 		notes.push_back(note);
 	}
-	else if (diag.sourceFile && diag.sourceFile->isExternal && diag.sourceFile->isFromAst && sourceNode)
+	else if (diagnostic.sourceFile && diagnostic.sourceFile->isExternal && diagnostic.sourceFile->isFromAst && sourceNode)
 	{
 		const auto note = Diagnostic::note(sourceNode, Nte(Nte0098));
 		notes.push_back(note);
 	}
 }
 
-bool ErrorContext::report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes)
+bool ErrorContext::report(const Diagnostic& err, const Vector<const Diagnostic*>& notes)
 {
 	if (silentError)
 		return false;
 
-	auto copyDiag  = diag;
+	auto copyDiag  = err;
 	auto copyNotes = notes;
 	extract(copyDiag, copyNotes);
 	return Report::report(copyDiag, copyNotes);
 }
 
-bool ErrorContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+bool ErrorContext::report(const Diagnostic& err, const Diagnostic* note, const Diagnostic* note1)
 {
 	Vector<const Diagnostic*> notes;
 	if (note)
 		notes.push_back(note);
 	if (note1)
 		notes.push_back(note1);
-	return report(diag, notes);
+	return report(err, notes);
 }
 
 bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)

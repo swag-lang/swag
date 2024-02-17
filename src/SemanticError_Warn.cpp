@@ -55,7 +55,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
 		break;
 	}
 
-	const Diagnostic diag{
+	const Diagnostic err{
 		identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()),
 		DiagnosticLevel::Warning
 	};
@@ -64,11 +64,11 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
 
 	if (v && v->text.empty())
 	{
-		return context->report(diag, note1);
+		return context->report(err, note1);
 	}
 
 	const auto note2 = Diagnostic::note(v->text);
-	return context->report(diag, note1, note2);
+	return context->report(err, note1, note2);
 }
 
 bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode* one)
@@ -97,10 +97,10 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 	if (funcDecl->token.text[0] == '_')
 		return true;
 
-	Diagnostic diag{funcDecl, funcDecl->tokenName, FMT(Err(Wrn0006), "function", "function", funcDecl->token.c_str()), DiagnosticLevel::Warning};
+	Diagnostic err{funcDecl, funcDecl->tokenName, FMT(Err(Wrn0006), "function", "function", funcDecl->token.c_str()), DiagnosticLevel::Warning};
 	if (!funcDecl->isSpecialFunctionName())
-		diag.hint = FMT(Nte(Nte0082), funcDecl->token.c_str());
-	return Report::report(diag);
+		err.hint = FMT(Nte(Nte0082), funcDecl->token.c_str());
+	return Report::report(err);
 }
 
 bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* scope)
@@ -165,13 +165,13 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 			{
 				if (!overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN))
 				{
-					Diagnostic diag{front, front->token, FMT(Err(Wrn0004), sym->name.c_str()), DiagnosticLevel::Warning};
-					isOk = isOk && context->report(diag);
+					Diagnostic err{front, front->token, FMT(Err(Wrn0004), sym->name.c_str()), DiagnosticLevel::Warning};
+					isOk = isOk && context->report(err);
 				}
 				else
 				{
-					Diagnostic diag{front, front->token, FMT(Err(Wrn0003), sym->name.c_str()), DiagnosticLevel::Warning};
-					isOk = isOk && context->report(diag);
+					Diagnostic err{front, front->token, FMT(Err(Wrn0003), sym->name.c_str()), DiagnosticLevel::Warning};
+					isOk = isOk && context->report(err);
 				}
 			}
 		}
@@ -184,9 +184,9 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 		if (overload->hasFlag(OVERLOAD_VAR_LOCAL))
 		{
 			const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
-			Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
+			Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
 			const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-			isOk            = isOk && context->report(diag, note);
+			isOk            = isOk && context->report(err, note);
 		}
 		else if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
 		{
@@ -202,32 +202,32 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
 			if (front->isGeneratedSelf())
 			{
 				const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
-				Diagnostic diag{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
-				diag.hint       = Nte(Nte0145);
+				Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
+				err.hint       = Nte(Nte0145);
 				const auto note = Diagnostic::note(Nte(Nte0039));
-				isOk            = isOk && context->report(diag, note);
+				isOk            = isOk && context->report(err, note);
 			}
 			else
 			{
 				const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
-				Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
+				Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
 				const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-				isOk            = isOk && context->report(diag, note);
+				isOk            = isOk && context->report(err, note);
 			}
 		}
 		else if (overload->hasFlag(OVERLOAD_VAR_CAPTURE))
 		{
 			const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
-			Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
+			Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
 			const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-			isOk            = isOk && context->report(diag, note);
+			isOk            = isOk && context->report(err, note);
 		}
 		else if (overload->hasFlag(OVERLOAD_CONSTANT))
 		{
 			const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
-			Diagnostic diag{front, front->token, msg, DiagnosticLevel::Warning};
+			Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
 			const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-			isOk            = isOk && context->report(diag, note);
+			isOk            = isOk && context->report(err, note);
 		}
 	}
 

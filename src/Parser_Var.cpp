@@ -303,10 +303,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 			else
 				msg = FMT(Err(Err0584), token.c_str());
 
-			const Diagnostic diag{sourceFile, token, msg};
+			const Diagnostic err{sourceFile, token, msg};
 			if (token.id == TokenId::SymEqualEqual)
-				return context->report(diag, Diagnostic::note(Nte(Nte0010)));
-			return context->report(diag);
+				return context->report(err, Diagnostic::note(Nte(Nte0010)));
+			return context->report(err);
 		}
 
 		// Type
@@ -326,10 +326,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 				const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
 				if (typeExpr->identifier)
 				{
-					const Diagnostic diag{sourceFile, token, FMT(Err(Err0021), typeExpr->identifier->token.c_str())};
+					const Diagnostic err{sourceFile, token, FMT(Err(Err0021), typeExpr->identifier->token.c_str())};
 					const auto       note  = Diagnostic::note(FMT(Nte(Nte0183), typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
 					const auto       note1 = Diagnostic::note(Nte(Nte0179));
-					return context->report(diag, note, note1);
+					return context->report(err, note, note1);
 				}
 			}
 		}

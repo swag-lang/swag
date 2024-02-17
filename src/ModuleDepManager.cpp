@@ -361,9 +361,9 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
 		case CompareVersionResult::VERSION_GREATER:
 		case CompareVersionResult::VERSION_LOWER:
 			{
-				const Diagnostic diag{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+				const Diagnostic err{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
 				const auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
-				Report::report(diag, note);
+				Report::report(err, note);
 				return false;
 			}
 
@@ -573,13 +573,13 @@ bool ModuleDepManager::execute()
 		{
 			if (dep->resolvedLocation.empty())
 			{
-				Diagnostic diag{dep->node, FMT(Err(Err0061), dep->name.c_str(), dep->version.c_str())};
-				Report::report(diag);
+				Diagnostic err{dep->node, FMT(Err(Err0061), dep->name.c_str(), dep->version.c_str())};
+				Report::report(err);
 			}
 			else
 			{
-				Diagnostic diag{dep->node, FMT(Err(Err0060), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
-				Report::report(diag);
+				Diagnostic err{dep->node, FMT(Err(Err0060), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+				Report::report(err);
 			}
 			ok = false;
 		}

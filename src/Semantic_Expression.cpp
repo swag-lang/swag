@@ -17,9 +17,9 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
 	if (expression->hasSpecialFuncCall())
 	{
-		Diagnostic diag{expression, expression->token, FMT(Err(Err0042), expression->typeInfo->getDisplayNameC())};
-		diag.hint = FMT(Nte(Nte0144), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
-		return context->report(diag, note);
+		Diagnostic err{expression, expression->token, FMT(Err(Err0042), expression->typeInfo->getDisplayNameC())};
+		err.hint = FMT(Nte(Nte0144), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+		return context->report(err, note);
 	}
 
 	Utf8 message;
@@ -30,21 +30,21 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 	else
 		message = Err(Err0038);
 
-	Diagnostic diag{expression, message};
+	Diagnostic err{expression, message};
 
 	// Just keep the culprit if the culprit is the same as the full expression, and there's no
 	// specific requested error message
-	if (errMsg.empty() && note->startLocation == diag.startLocation && note->endLocation == diag.endLocation)
+	if (errMsg.empty() && note->startLocation == err.startLocation && note->endLocation == err.endLocation)
 	{
 		Vector<Utf8> parts;
-		Diagnostic::tokenizeError(diag.textMsg, parts);
-		diag.textMsg = parts[0];
-		diag.textMsg += Diagnostic::ERROR_MESSAGE_SEPARATOR;
-		diag.textMsg += note->textMsg;
+		Diagnostic::tokenizeError(err.textMsg, parts);
+		err.textMsg = parts[0];
+		err.textMsg += Diagnostic::ERROR_MESSAGE_SEPARATOR;
+		err.textMsg += note->textMsg;
 		note = nullptr;
 	}
 
-	return context->report(diag, note);
+	return context->report(err, note);
 }
 
 bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
@@ -308,9 +308,9 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 
 	if (typeInfo->isStruct())
 	{
-		Diagnostic diag{node->sourceFile, node->token, Err(Err0166)};
-		diag.addNote(expression, Diagnostic::isType(typeInfo));
-		return context->report(diag);
+		Diagnostic err{node->sourceFile, node->token, Err(Err0166)};
+		err.addNote(expression, Diagnostic::isType(typeInfo));
+		return context->report(err);
 	}
 
 	if (!typeInfo->isString() &&
@@ -321,9 +321,9 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 		!typeInfo->isNativeFloat() &&
 		!typeInfo->isLambdaClosure())
 	{
-		Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0165), typeInfo->getDisplayNameC())};
-		diag.addNote(expression, Diagnostic::isType(typeInfo));
-		return context->report(diag);
+		Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0165), typeInfo->getDisplayNameC())};
+		err.addNote(expression, Diagnostic::isType(typeInfo));
+		return context->report(err);
 	}
 
 	if (expression->hasComputedValue())
@@ -411,8 +411,8 @@ bool Semantic::resolveRange(SemanticContext* context)
 	const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
 	if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
 	{
-		const Diagnostic diag{node->expressionLow, FMT(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
-		return context->report(diag, Diagnostic::note(Nte(Nte0200)));
+		const Diagnostic err{node->expressionLow, FMT(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
+		return context->report(err, Diagnostic::note(Nte(Nte0200)));
 	}
 
 	SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CAST_FLAG_COMMUTATIVE));

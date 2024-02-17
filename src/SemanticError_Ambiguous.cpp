@@ -12,7 +12,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
 	if (!node)
 		node = context->node;
 
-	const Diagnostic diag{node, node->token, FMT(Err(Err0019), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+	const Diagnostic err{node, node->token, FMT(Err(Err0019), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
 	Vector<const Diagnostic*> notes;
 	for (const auto match : genericMatches)
@@ -23,7 +23,7 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
 		notes.push_back(note);
 	}
 
-	return context->report(diag, notes);
+	return context->report(err, notes);
 }
 
 bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags)
@@ -50,7 +50,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 		return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
 	}
 
-	const Diagnostic diag{node, node->token, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+	const Diagnostic err{node, node->token, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
 	Vector<const Diagnostic*> notes;
 	for (const auto match : matches)
@@ -84,12 +84,12 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 		notes.push_back(note);
 	}
 
-	return context->report(diag, notes);
+	return context->report(err, notes);
 }
 
 bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches)
 {
-	const Diagnostic diag{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
+	const Diagnostic err{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
 
 	Vector<const Diagnostic*> notes;
 	for (const auto& p1 : matches)
@@ -100,5 +100,5 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
 		notes.push_back(note);
 	}
 
-	return context->report(diag, notes);
+	return context->report(err, notes);
 }

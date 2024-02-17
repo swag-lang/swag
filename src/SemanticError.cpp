@@ -6,7 +6,7 @@
 #include "Naming.h"
 #include "Semantic.h"
 
-void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
+void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)
 {
 	if (!node)
 		return;
@@ -41,7 +41,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
 			{
 				const auto msg = FMT(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.c_str(), identifierRef->typeInfo->getDisplayNameC(),
 				                     overload->node->ownerStructScope->owner->token.c_str());
-				diag->remarks.push_back(msg);
+				err->remarks.push_back(msg);
 			}
 
 			for (const auto s : identifierRef->startScope->childScopes)
@@ -49,7 +49,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
 				if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
 				{
 					auto msg = FMT(Nte(Nte0136), node->token.c_str(), s->getFullName().c_str());
-					diag->remarks.push_back(msg);
+					err->remarks.push_back(msg);
 				}
 			}
 		}
@@ -65,10 +65,10 @@ bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeIn
 		text += msg;
 	}
 
-	Diagnostic diag{node, node->token, text};
+	Diagnostic err{node, node->token, text};
 	if (hintType)
-		diag.addNote(hintType, Diagnostic::isType(typeInfo));
-	return context->report(diag);
+		err.addNote(hintType, Diagnostic::isType(typeInfo));
+	return context->report(err);
 }
 
 bool SemanticError::duplicatedSymbolError(ErrorContext* context,
@@ -83,9 +83,9 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
 	if (thisKind != otherKind)
 		as = FMT("as %s", Naming::aKindName(otherKind).c_str());
 
-	const Diagnostic diag{sourceFile, token, FMT(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+	const Diagnostic err{sourceFile, token, FMT(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
 	const auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
-	return context->report(diag, note);
+	return context->report(err, note);
 }
 
 bool SemanticError::error(SemanticContext* context, const Utf8& msg)

@@ -105,14 +105,14 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 		const int maxCount = static_cast<int>(typeStruct->fields.size());
 		if (countParams > maxCount)
 		{
-			const Diagnostic diag{fromNode->children[maxCount], FMT(Err(Err0636), maxCount, countParams)};
-			return context->report(diag);
+			const Diagnostic err{fromNode->children[maxCount], FMT(Err(Err0636), maxCount, countParams)};
+			return context->report(err);
 		}
 
 		if (countParams < maxCount)
 		{
-			const Diagnostic diag{fromNode->children.back(), FMT(Err(Err0596), maxCount, countParams)};
-			return context->report(diag);
+			const Diagnostic err{fromNode->children.back(), FMT(Err(Err0596), maxCount, countParams)};
+			return context->report(err);
 		}
 	}
 

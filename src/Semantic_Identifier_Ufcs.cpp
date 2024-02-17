@@ -85,9 +85,9 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
 			SWAG_ASSERT(identifierRef->previousResolvedNode);
 			if (!node->callParameters)
 			{
-				const Diagnostic diag{node, FMT(Err(Err0540), Naming::kindName(overload).c_str())};
+				const Diagnostic err{node, FMT(Err(Err0540), Naming::kindName(overload).c_str())};
 				const auto       note = Diagnostic::hereIs(overload);
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 
 			const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
@@ -124,12 +124,12 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
 			if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
 			{
 				const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-				Diagnostic diag{
+				Diagnostic err{
 					subNode, subNode->token,
 					FMT(Err(Err0317), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())
 				};
-				diag.addNote(node->token, Nte(Nte0159));
-				return context->report(diag);
+				err.addNote(node->token, Nte(Nte0159));
+				return context->report(err);
 			}
 		}
 	}

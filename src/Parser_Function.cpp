@@ -250,14 +250,14 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 
 		if (token.id == TokenId::SymEqual)
 		{
-			const Diagnostic diag(paramNode, token, Err(Err0252));
-			return context->report(diag);
+			const Diagnostic err(paramNode, token, Err(Err0252));
+			return context->report(err);
 		}
 
 		if (token.id == TokenId::SymColon)
 		{
-			const Diagnostic diag(paramNode, token, Err(Err0701));
-			return context->report(diag);
+			const Diagnostic err(paramNode, token, Err(Err0701));
+			return context->report(err);
 		}
 	}
 	else
@@ -293,11 +293,11 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 		{
 			if (unnamedTokens.size() == parent->children.size())
 			{
-				Diagnostic diag{sourceFile, token, Err(Err0702)};
-				diag.addNote(unnamedTokens.front(), Nte(Nte0188));
+				Diagnostic err{sourceFile, token, Err(Err0702)};
+				err.addNote(unnamedTokens.front(), Nte(Nte0188));
 				for (size_t i = 1; i < unnamedTokens.size(); i++)
-					diag.addNote(unnamedTokens[i], "");
-				return context->report(diag);
+					err.addNote(unnamedTokens[i], "");
+				return context->report(err);
 			}
 
 			hasType = true;
@@ -351,11 +351,11 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 		{
 			if (unnamedTokens.size() == parent->children.size())
 			{
-				Diagnostic diag{sourceFile, token, Err(Err0214)};
-				diag.addNote(unnamedTokens.front(), Nte(Nte0162));
+				Diagnostic err{sourceFile, token, Err(Err0214)};
+				err.addNote(unnamedTokens.front(), Nte(Nte0162));
 				for (size_t i = 1; i < unnamedTokens.size(); i++)
-					diag.addNote(unnamedTokens[i], "");
-				return context->report(diag);
+					err.addNote(unnamedTokens[i], "");
+				return context->report(err);
 			}
 
 			paramNode->assignToken = token;
@@ -377,13 +377,13 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
 			if (!acceptMissingType)
 			{
 				prepareExpectTokenError();
-				const Diagnostic diag{sourceFile, token, FMT(Err(Err0571), token.c_str())};
+				const Diagnostic err{sourceFile, token, FMT(Err(Err0571), token.c_str())};
 				Diagnostic*      note;
 				if (otherVariables.empty())
 					note = Diagnostic::note(paramNode, Nte(Nte0169));
 				else
 					note = Diagnostic::note(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, Nte(Nte0168));
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 			if (hasMissingType)
 			{

@@ -130,37 +130,37 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 	{
 		auto start = node->tokenName.startLocation;
 		start.column += 7;
-		const Diagnostic diag{node->sourceFile, start, node->getTokenName().endLocation, FMT(Err(Err0164), node->token.c_str() + 7)};
-		return context->report(diag);
+		const Diagnostic err{node->sourceFile, start, node->getTokenName().endLocation, FMT(Err(Err0164), node->token.c_str() + 7)};
+		return context->report(err);
 	}
 
 	// Special function outside an impl block
 	if (!parent)
 	{
-		const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0509), node->token.c_str())};
-		return context->report(diag);
+		const Diagnostic err{node, node->getTokenName(), FMT(Err(Err0509), node->token.c_str())};
+		return context->report(err);
 	}
 
 	if (node->ownerScope->kind == ScopeKind::Impl)
 	{
-		const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0508), node->token.c_str())};
-		return context->report(diag);
+		const Diagnostic err{node, node->getTokenName(), FMT(Err(Err0508), node->token.c_str())};
+		return context->report(err);
 	}
 
 	if (node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
 	{
-		const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0427), node->token.c_str())};
+		const Diagnostic err{node, node->getTokenName(), FMT(Err(Err0427), node->token.c_str())};
 		const auto       note  = Diagnostic::note(Nte(Nte0106));
 		const auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdInternal));
-		return context->report(diag, note, note1);
+		return context->report(err, note, note1);
 	}
 
 	if (!node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && node->hasAttribute(ATTRIBUTE_PUBLIC))
 	{
-		const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0428), node->token.c_str())};
+		const Diagnostic err{node, node->getTokenName(), FMT(Err(Err0428), node->token.c_str())};
 		const auto       note  = Diagnostic::note(Nte(Nte0087));
 		const auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
-		return context->report(diag, note, note1);
+		return context->report(err, note, note1);
 	}
 
 	PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
@@ -344,16 +344,16 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 		SemanticError::findClosestMatches(node->tokenName.text, searchList, best);
 		const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
-		const Diagnostic diag{node, node->getTokenName(), FMT(Err(Err0616), name.c_str())};
+		const Diagnostic err{node, node->getTokenName(), FMT(Err(Err0616), name.c_str())};
 		if (appendMsg.empty())
 		{
 			const auto note = Diagnostic::note(Nte(Nte0058));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 		const auto note  = Diagnostic::note(node, node->getTokenName(), appendMsg);
 		const auto note1 = Diagnostic::note(Nte(Nte0058));
-		return context->report(diag, note, note1);
+		return context->report(err, note, note1);
 	}
 
 	return true;
@@ -409,7 +409,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
 
 	if (results.size() > 1)
 	{
-		const Diagnostic          diag{context->node, FMT(Err(Err0020), name.c_str())};
+		const Diagnostic          err{context->node, FMT(Err(Err0020), name.c_str())};
 		Vector<const Diagnostic*> notes;
 		notes.push_back(Diagnostic::note(context->node, FMT(Nte(Nte0144), name.c_str())));
 		for (const auto& f : results)
@@ -418,7 +418,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
 			notes.push_back(note);
 		}
 
-		return context->report(diag, notes);
+		return context->report(err, notes);
 	}
 
 	*result = results[0].symbol;
@@ -514,12 +514,12 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
 		{
 			YIELD();
 
-			Diagnostic diag{context->node, context->node->token, FMT(Err(Err0342), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
+			Diagnostic err{context->node, context->node->token, FMT(Err(Err0342), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
 			const auto note0 = Diagnostic::note(right->children.front(), FMT(Nte(Nte0166), suffix.c_str()));
 			const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode);
-			diag.hint        = FMT(Nte(Nte0144), g_LangSpec->name_opAffectLiteral.c_str());
-			diag.addNote(left->token, Diagnostic::isType(leftTypeInfo));
-			return context->report(diag, note0, note1);
+			err.hint        = FMT(Nte(Nte0144), g_LangSpec->name_opAffectLiteral.c_str());
+			err.addNote(left->token, Diagnostic::isType(leftTypeInfo));
+			return context->report(err, note0, note1);
 		}
 
 		SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectLiteral, suffix, nullptr, left, right));
@@ -538,12 +538,12 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
 		{
 			YIELD();
 
-			Diagnostic diag{right, FMT(Err(Err0642), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-			diag.hint = Diagnostic::isType(rightTypeInfo);
-			diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+			Diagnostic err{right, FMT(Err(Err0642), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
+			err.hint = Diagnostic::isType(rightTypeInfo);
+			err.addNote(left, Diagnostic::isType(leftTypeInfo));
 			const auto note  = Diagnostic::note(context->node, context->node->token, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
 			const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
-			return context->report(diag, note, note1);
+			return context->report(err, note, note1);
 		}
 
 		SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right));
@@ -580,16 +580,16 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
 		if (!opConst)
 		{
-			Diagnostic diag{left->parent->sourceFile, left->parent->token, FMT(Err(Err0344), name.c_str(), leftType->getDisplayNameC())};
-			diag.hint = FMT(Nte(Nte0144), name.c_str());
-			diag.addNote(left, Diagnostic::isType(leftType));
-			return context->report(diag, note);
+			Diagnostic err{left->parent->sourceFile, left->parent->token, FMT(Err(Err0344), name.c_str(), leftType->getDisplayNameC())};
+			err.hint = FMT(Nte(Nte0144), name.c_str());
+			err.addNote(left, Diagnostic::isType(leftType));
+			return context->report(err, note);
 		}
 
-		Diagnostic diag{left->parent->sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
-		diag.hint = FMT(Nte(Nte0144), name.c_str());
-		diag.addNote(left, Diagnostic::isType(leftType));
-		return context->report(diag, note);
+		Diagnostic err{left->parent->sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
+		err.hint = FMT(Nte(Nte0144), name.c_str());
+		err.addNote(left, Diagnostic::isType(leftType));
+		return context->report(err, note);
 	}
 
 	auto node       = context->node;
@@ -635,8 +635,8 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 				return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
 			},
 			true);
-		Diagnostic diag(left, FMT(Err(Err0556), name.c_str()));
-		return context->report(diag);
+		Diagnostic err(left, FMT(Err(Err0556), name.c_str()));
+		return context->report(err);
 	}
 
 	auto& listTryMatch = context->cacheListTryMatch;

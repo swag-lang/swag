@@ -96,11 +96,11 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 			{
 				if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
 				{
-					const Diagnostic diag{typeNode, FMT(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
+					const Diagnostic err{typeNode, FMT(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
 					const auto       note = Diagnostic::note(typeNode, FMT(Nte(Nte0022), tag->cmdLine.c_str()));
 					note->sourceFile      = nullptr;
 					note->showSourceCode  = false;
-					return context->report(diag);
+					return context->report(err);
 				}
 
 				node->typeInfo       = tag->type;
@@ -131,14 +131,14 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
 	const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
 	if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
 	{
-		const Diagnostic diag{first, FMT(Err(Err0738), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
-		return context->report(diag, Diagnostic::hereIs(typeFunc->declNode));
+		const Diagnostic err{first, FMT(Err(Err0738), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
+		return context->report(err, Diagnostic::hereIs(typeFunc->declNode));
 	}
 
 	if (typeFunc->numReturnRegisters() > 1)
 	{
-		const Diagnostic diag{first, FMT(Err(Err0737), typeFunc->returnType->getDisplayNameC())};
-		return context->report(diag, Diagnostic::hereIs(typeFunc->declNode));
+		const Diagnostic err{first, FMT(Err(Err0737), typeFunc->returnType->getDisplayNameC())};
+		return context->report(err, Diagnostic::hereIs(typeFunc->declNode));
 	}
 
 	node->typeInfo    = first->typeInfo;
@@ -197,9 +197,9 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
 
 		if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CAST_FLAG_JUST_CHECK))
 		{
-			Diagnostic diag{first, FMT(Err(Err0006), first->typeInfo->getDisplayNameC(), realType->getDisplayNameC())};
-			diag.addNote(second->token, Diagnostic::isType(realType));
-			return context->report(diag);
+			Diagnostic err{first, FMT(Err(Err0006), first->typeInfo->getDisplayNameC(), realType->getDisplayNameC())};
+			err.addNote(second->token, Diagnostic::isType(realType));
+			return context->report(err);
 		}
 	}
 

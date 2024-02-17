@@ -97,8 +97,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
 				filePath = filePath1;
 			if (!exists(filePath, err))
 			{
-				const Diagnostic diag{n->sourceFile, n->token, FMT(Err(Err0709), n->token.c_str())};
-				Report::report(diag);
+				Report::report({n->sourceFile, n->token, FMT(Err(Err0709), n->token.c_str())});
 				return false;
 			}
 		}
@@ -277,8 +276,8 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
 					                                       const auto pz = strrchr(subFileName, '.');
 					                                       if (pz && !_strcmpi(pz, ".swg"))
 					                                       {
-						                                       const auto readFileJob = Allocator::alloc<LoadSourceFileJob>();
-						                                       readFileJob->flags = JOB_IS_OPT;
+						                                       const auto readFileJob  = Allocator::alloc<LoadSourceFileJob>();
+						                                       readFileJob->flags      = JOB_IS_OPT;
 						                                       readFileJob->sourceFile = file;
 						                                       g_ThreadMgr.addJob(readFileJob);
 					                                       }

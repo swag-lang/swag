@@ -39,7 +39,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 		else
 		{
 			token.endLocation = location;
-			const Diagnostic diag{sourceFile, token, FMT(Err(Err0245), token.c_str())};
+			const Diagnostic err{sourceFile, token, FMT(Err(Err0245), token.c_str())};
 
 			Vector<Utf8> searchList{};
 			for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
@@ -52,15 +52,15 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 			Vector<Utf8> result;
 			SemanticError::findClosestMatches(token.text, searchList, result);
 			if (!result.empty())
-				return errorContext->report(diag, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
+				return errorContext->report(err, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
 
-			return errorContext->report(diag);
+			return errorContext->report(err);
 		}
 	}
 	else if (token.text[0] == '@')
 	{
 		token.endLocation = location;
-		const Diagnostic diag{sourceFile, token, FMT(Err(Err0316), token.c_str())};
+		const Diagnostic err{sourceFile, token, FMT(Err(Err0316), token.c_str())};
 
 		Vector<Utf8> searchList{};
 		for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
@@ -73,9 +73,9 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 		Vector<Utf8> result;
 		SemanticError::findClosestMatches(token.text, searchList, result);
 		if (!result.empty())
-			return errorContext->report(diag, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
+			return errorContext->report(err, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
 
-		return errorContext->report(diag);
+		return errorContext->report(err);
 	}
 	else
 	{

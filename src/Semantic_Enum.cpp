@@ -21,7 +21,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
 	// Be sure we have only one enum node
 	if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
 	{
-		const Diagnostic diag({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName->name.c_str())});
+		const Diagnostic err({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName->name.c_str())});
 		Diagnostic*      note = nullptr;
 		for (const auto p : node->resolvedSymbolName->nodes)
 		{
@@ -33,7 +33,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
 			}
 		}
 
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	typeInfo->declNode = node;
@@ -53,8 +53,8 @@ bool Semantic::resolveEnum(SemanticContext* context)
 		const auto rawType = TypeManager::concreteType(typeInfo->rawType);
 		if (!rawType->isNative() && !rawType->isString())
 		{
-			const Diagnostic diag{node->children.front(), FMT(Err(Err0269), rawType->getDisplayNameC())};
-			return context->report(diag);
+			const Diagnostic err{node->children.front(), FMT(Err(Err0269), rawType->getDisplayNameC())};
+			return context->report(err);
 		}
 
 		VectorNative<TypeInfoEnum*> collect;
@@ -72,11 +72,11 @@ bool Semantic::resolveEnum(SemanticContext* context)
 					auto it = valText.find(one->value->text);
 					if (it != valText.end())
 					{
-						const Diagnostic diag{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
+						const Diagnostic err{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
 						const auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0071));
 						const auto       val   = Ast::literalToString(rawType, *one->value);
 						const auto       note1 = Diagnostic::note(FMT(Nte(Nte0116), val.c_str()));
-						return context->report(diag, note, note1);
+						return context->report(err, note, note1);
 					}
 
 					valText[one->value->text] = one->declNode;
@@ -91,11 +91,11 @@ bool Semantic::resolveEnum(SemanticContext* context)
 					auto it = val64.find(one->value->reg.u64);
 					if (it != val64.end())
 					{
-						const Diagnostic diag{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
+						const Diagnostic err{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
 						const auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0071));
 						const auto       val   = Ast::literalToString(rawType, *one->value);
 						const auto       note1 = Diagnostic::note(FMT(Nte(Nte0116), val.c_str()));
-						return context->report(diag, note, note1);
+						return context->report(err, note, note1);
 					}
 
 					val64[one->value->reg.u64] = one->declNode;
@@ -169,16 +169,16 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 			if (typeArray->count == UINT32_MAX)
 			{
 				const auto       front = typeNode->children.front();
-				const Diagnostic diag{front, FMT(Err(Err0271), rawTypeInfo->getDisplayNameC())};
-				return context->report(diag);
+				const Diagnostic err{front, FMT(Err(Err0271), rawTypeInfo->getDisplayNameC())};
+				return context->report(err);
 			}
 
 			if (!rawTypeInfo->isConst())
 			{
 				const auto       front = typeNode->children.front();
-				const Diagnostic diag{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
+				const Diagnostic err{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
 				const auto       note = Diagnostic::note(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 
 			return true;
@@ -187,8 +187,8 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 	case TypeInfoKind::Slice:
 		{
 			const auto       front = typeNode->children.front();
-			const Diagnostic diag{front, FMT(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
-			SWAG_VERIFY(rawTypeInfo->isConst(), context->report(diag));
+			const Diagnostic err{front, FMT(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
+			SWAG_VERIFY(rawTypeInfo->isConst(), context->report(err));
 			return true;
 		}
 
@@ -221,8 +221,8 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
 	// Be sure the identifier is an enum
 	if (!node->typeInfo->isEnum())
 	{
-		const Diagnostic diag{node, FMT(Err(Err0261), node->typeInfo->getDisplayNameC())};
-		return context->report(diag, Diagnostic::hereIs(node->resolvedSymbolOverload));
+		const Diagnostic err{node, FMT(Err(Err0261), node->typeInfo->getDisplayNameC())};
+		return context->report(err, Diagnostic::hereIs(node->resolvedSymbolOverload));
 	}
 
 	const auto enumNode = castAst<AstEnum>(node->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
@@ -236,10 +236,10 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
 	const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
 	if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CAST_FLAG_EXACT))
 	{
-		const Diagnostic diag{node, FMT(Err(Err0429), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
+		const Diagnostic err{node, FMT(Err(Err0429), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
 		const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload);
 		const auto       note1 = Diagnostic::hereIs(enumNode->type);
-		return context->report(diag, note, note1);
+		return context->report(err, note, note1);
 	}
 
 	// Add a symbol in the enum scope

@@ -53,7 +53,7 @@ namespace SemanticError
 
 	void unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);
 
-	void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
+	void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes);
 	bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
 	bool duplicatedSymbolError(ErrorContext* context,
 	                           SourceFile*   sourceFile,

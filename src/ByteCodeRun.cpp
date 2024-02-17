@@ -4241,7 +4241,7 @@ namespace
 		if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
 			return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
-		Diagnostic*                   diag = nullptr;
+		Diagnostic*                   err = nullptr;
 		Vector<const Diagnostic*>     notes;
 		const SwagSourceCodeLocation* location = nullptr;
 		SwagSourceCodeLocation        tmpLoc;
@@ -4342,27 +4342,27 @@ namespace
 		endLocation.line     = location->lineEnd;
 		endLocation.column   = location->colEnd;
 
-		diag = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
+		err = new Diagnostic{&dummyFile, startLocation, endLocation, userMsg, level};
 
 		// Get the correct source file to raise the error in the correct context
 		//
 		// If we have an expansion, and the first expansion requests test error, then raise
 		// in its context to dismiss the error (like an error during a #validif for example)
 		if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
-			diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+			err->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
 		else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
-			diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
+			err->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
 			// Otherwise get the source file from the top of the bytecode stack if possible
 		else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
-			diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
+			err->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
 		else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
-			diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
+			err->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
 			// Otherwise take the current bytecode source file
 		else
-			diag->contextFile = runContext->bc->sourceFile;
+			err->contextFile = runContext->bc->sourceFile;
 
 		// Get error context
-		runContext->callerContext->extract(*diag, notes);
+		runContext->callerContext->extract(*err, notes);
 
 		if (runContext->ip != runContext->bc->out)
 			runContext->ip--;
@@ -4370,7 +4370,7 @@ namespace
 		if (!g_CommandLine.dbgCallStack)
 			notes.push_back(Diagnostic::note(Nte(Nte0192)));
 
-		Report::report(*diag, notes, runContext);
+		Report::report(*err, notes, runContext);
 
 		if (runContext->ip != runContext->bc->out)
 			runContext->ip++;

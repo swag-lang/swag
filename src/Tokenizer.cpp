@@ -27,9 +27,9 @@ bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint) cons
 {
 	token.endLocation = location;
 
-	Diagnostic diag{sourceFile, token, msg};
-	diag.hint = hint;
-	return errorContext->report(diag);
+	Diagnostic err{sourceFile, token, msg};
+	err.hint = hint;
+	return errorContext->report(err);
 }
 
 void Tokenizer::appendTokenName(TokenParse& token) const

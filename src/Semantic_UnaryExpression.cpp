@@ -28,23 +28,23 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
 	case NativeTypeKind::U32:
 	case NativeTypeKind::U64:
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0331), typeInfo->getDisplayNameC())};
-			diag.addNote(child, Diagnostic::isType(typeInfo));
-			return context->report(diag);
+			Diagnostic err{node, node->token, FMT(Err(Err0331), typeInfo->getDisplayNameC())};
+			err.addNote(child, Diagnostic::isType(typeInfo));
+			return context->report(err);
 		}
 
 	case NativeTypeKind::Any:
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
-			diag.addNote(child, Nte(Nte0032));
-			return context->report(diag);
+			Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
+			err.addNote(child, Nte(Nte0032));
+			return context->report(err);
 		}
 
 	default:
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
-			diag.addNote(child, Diagnostic::isType(typeInfo));
-			return context->report(diag);
+			Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
+			err.addNote(child, Diagnostic::isType(typeInfo));
+			return context->report(err);
 		}
 	}
 
@@ -169,16 +169,16 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
 	case NativeTypeKind::Any:
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
-			diag.addNote(child, Nte(Nte0032));
-			return context->report(diag);
+			Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
+			err.addNote(child, Nte(Nte0032));
+			return context->report(err);
 		}
 
 	default:
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
-			diag.addNote(child, Diagnostic::isType(child));
-			return context->report(diag);
+			Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
+			err.addNote(child, Diagnostic::isType(child));
+			return context->report(err);
 		}
 	}
 

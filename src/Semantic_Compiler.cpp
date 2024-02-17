@@ -116,8 +116,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 		{
 			if (realType->isTuple())
 			{
-				Diagnostic diag{node, Err(Err0043)};
-				return context->report(diag);
+				Diagnostic err{node, Err(Err0043)};
+				return context->report(err);
 			}
 
 			// It is possible to convert a complex struct to a constant static array of values if the struct
@@ -127,9 +127,9 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
 			if (node->hasSpecialFuncCall())
 			{
-				Diagnostic diag{node, FMT(Err(Err0042), realType->getDisplayNameC())};
-				diag.hint = FMT(Nte(Nte0144), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
-				return context->report(diag);
+				Diagnostic err{node, FMT(Err(Err0042), realType->getDisplayNameC())};
+				err.hint = FMT(Nte(Nte0144), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+				return context->report(err);
 			}
 
 			SymbolName* symCount   = nullptr;
@@ -147,9 +147,9 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 				}
 				else
 				{
-					Diagnostic diag{node, FMT(Err(Err0042), realType->getDisplayNameC())};
-					diag.hint = Nte(Nte0079);
-					return context->report(diag);
+					Diagnostic err{node, FMT(Err(Err0042), realType->getDisplayNameC())};
+					err.hint = Nte(Nte0079);
+					return context->report(err);
 				}
 			}
 			else
@@ -209,14 +209,14 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 						ok = true;
 					if (!ok)
 					{
-						Diagnostic diag{node, FMT(Err(Err0032), typeSliceContent->getDisplayNameC())};
-						return context->report(diag);
+						Diagnostic err{node, FMT(Err(Err0032), typeSliceContent->getDisplayNameC())};
+						return context->report(err);
 					}
 				}
 				else
 				{
-					Diagnostic diag{node, FMT(Err(Err0029), concreteType->getDisplayNameC())};
-					return context->report(diag);
+					Diagnostic err{node, FMT(Err(Err0029), concreteType->getDisplayNameC())};
+					return context->report(err);
 				}
 
 				// opPostMove
@@ -334,8 +334,8 @@ bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 	const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
 	if (!typeInfo->isBool())
 	{
-		const Diagnostic diag{expression, FMT(Err(Err0191), node->token.c_str(), typeInfo->getDisplayNameC())};
-		return context->report(diag);
+		const Diagnostic err{expression, FMT(Err(Err0191), node->token.c_str(), typeInfo->getDisplayNameC())};
+		return context->report(err);
 	}
 
 	return true;
@@ -403,8 +403,8 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
 	SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
 	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-	const Diagnostic diag{node, node->token, FMT(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
-	return context->report(diag);
+	const Diagnostic err{node, node->token, FMT(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
+	return context->report(err);
 }
 
 bool Semantic::resolveCompilerWarning(SemanticContext* context)
@@ -419,8 +419,8 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
 	SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
 	node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-	const Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
-	return context->report(diag);
+	const Diagnostic err{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
+	return context->report(err);
 }
 
 bool Semantic::resolveCompilerAssert(SemanticContext* context)

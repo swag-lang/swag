@@ -69,8 +69,8 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
 	if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
 	{
-		const Diagnostic diag{node->boolExpression, Err(Err0137)};
-		return context->report(diag);
+		const Diagnostic err{node->boolExpression, Err(Err0137)};
+		return context->report(err);
 	}
 
 	node->byteCodeFct = ByteCodeGen::emitLoop;
@@ -274,10 +274,10 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
 	if (node->hasAttribute(ATTRIBUTE_COMPLETE) && !node->expression)
 	{
-		const Diagnostic diag{node, node->token, Err(Err0483)};
+		const Diagnostic err{node, node->token, Err(Err0483)};
 		const auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
 		const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	node->byteCodeFct = ByteCodeGen::emitSwitch;
@@ -388,9 +388,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 							continue;
 						if (!valText.contains(one->value->text))
 						{
-							const Diagnostic diag{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+							const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
 							const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
-							return context->report(diag, note);
+							return context->report(err, note);
 						}
 					}
 				}
@@ -402,9 +402,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 							continue;
 						if (!val64.contains(one->value->reg.u64))
 						{
-							const Diagnostic diag{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+							const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
 							const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
-							return context->report(diag, note);
+							return context->report(err, note);
 						}
 					}
 				}
@@ -672,15 +672,15 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
 	if (!node->extraNameToken.text.empty())
 	{
-		Diagnostic diag{node, node->extraNameToken, FMT(Err(Err0704), typeInfo->getDisplayNameC())};
-		diag.addNote(node->expression, Diagnostic::isType(typeInfo));
-		return context->report(diag);
+		Diagnostic err{node, node->extraNameToken, FMT(Err(Err0704), typeInfo->getDisplayNameC())};
+		err.addNote(node->expression, Diagnostic::isType(typeInfo));
+		return context->report(err);
 	}
 
 	if (node->aliasNames.size() > 2)
 	{
-		Diagnostic diag{node, node->aliasNames[2], FMT(Err(Err0693), node->aliasNames.size())};
-		return context->report(diag);
+		Diagnostic err{node, node->aliasNames[2], FMT(Err(Err0693), node->aliasNames.size())};
+		return context->report(err);
 	}
 
 	Utf8 alias0Name = node->aliasNames.empty() ? Utf8("#alias0") : node->aliasNames[0].text;
@@ -861,9 +861,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
 	{
 		if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
 		{
-			Diagnostic diag{node, node->wantPointerToken, Err(Err0416)};
+			Diagnostic err{node, node->wantPointerToken, Err(Err0416)};
 			auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 		content += FMT("{ loop%s %s { ", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
@@ -882,9 +882,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
 	{
 		if (node->hasSpecFlag(AstVisit::SPECFLAG_WANT_POINTER))
 		{
-			Diagnostic diag{node, node->wantPointerToken, Err(Err0417)};
+			Diagnostic err{node, node->wantPointerToken, Err(Err0417)};
 			auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 		auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);

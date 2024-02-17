@@ -7,10 +7,10 @@ struct ByteCodeRunContext;
 
 namespace Report
 {
-	SourceFile* getDiagFile(const Diagnostic& diag);
+	SourceFile* getDiagFile(const Diagnostic& err);
 
-	bool report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext = nullptr);
-	bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
+	bool report(const Diagnostic& err, const Vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext = nullptr);
+	bool report(const Diagnostic& err, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
 
 	void error(const Utf8& msg);
 	void errorOS(const Utf8& msg);

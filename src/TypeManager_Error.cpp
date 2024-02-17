@@ -238,8 +238,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 				notes.push_back(Diagnostic::note(fromNode, FMT(Nte(Nte0030), toType->getDisplayNameC())));
 		}
 
-		Diagnostic diag{fromNode, msg};
-		diag.remarks = remarks;
+		Diagnostic err{fromNode, msg};
+		err.remarks = remarks;
 
 		// Add a note in case we affect to an identifier.
 		if (context->node->kind == AstNodeKind::AffectOp)
@@ -252,7 +252,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 			}
 		}
 
-		return context->report(diag, notes);
+		return context->report(err, notes);
 	}
 
 	return false;

@@ -26,14 +26,14 @@ bool Semantic::resolveMove(SemanticContext* context)
 	{
 		if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
 		{
-			const Diagnostic diag{right, FMT(Err(Err0327), right->typeInfo->getDisplayNameC())};
+			const Diagnostic err{right, FMT(Err(Err0327), right->typeInfo->getDisplayNameC())};
 			if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
 			{
 				const auto note = Diagnostic::note(Nte(Nte0059));
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 
-			return context->report(diag);
+			return context->report(err);
 		}
 	}
 
@@ -60,10 +60,10 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
 	// Cannot cast from closure to lambda
 	if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
 	{
-		Diagnostic diag{mpl, Err(Err0641)};
-		diag.addNote(node, Diagnostic::isType(node->typeInfo));
+		Diagnostic err{mpl, Err(Err0641)};
+		err.addNote(node, Diagnostic::isType(node->typeInfo));
 		const auto note = Diagnostic::note(Nte(Nte0191));
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	ScopedLock lk(mpl->lambda->mutex);
@@ -168,57 +168,57 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 	{
 		if (left == left->parent->children.back())
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-			diag.addNote(left, Diagnostic::isType(left->typeInfo));
+			Diagnostic err{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+			err.addNote(left, Diagnostic::isType(left->typeInfo));
 			const auto note1 = Diagnostic::note(Nte(Nte0059));
-			return context->report(diag, note, note1);
+			return context->report(err, note, note1);
 		}
 
 		if (left->typeInfo->isConstPointerRef())
 		{
-			Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-			diag.addNote(left, Diagnostic::isType(left->typeInfo));
-			return context->report(diag, note);
+			Diagnostic err{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+			err.addNote(left, Diagnostic::isType(left->typeInfo));
+			return context->report(err, note);
 		}
 
-		Diagnostic diag{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
-		diag.addNote(left, Diagnostic::isType(left->typeInfo));
-		return context->report(diag, note);
+		Diagnostic err{node, node->token, FMT(Err(Err0106), left->resolvedSymbolName->name.c_str())};
+		err.addNote(left, Diagnostic::isType(left->typeInfo));
+		return context->report(err, note);
 	}
 
 	if (left->resolvedSymbolOverload &&
 		left->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET) &&
 		(!left->resolvedSymbolOverload->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
 	{
-		Diagnostic diag{node, node->token, Err(Err0104)};
-		diag.addNote(left, Nte(Nte0017));
+		Diagnostic err{node, node->token, Err(Err0104)};
+		err.addNote(left, Nte(Nte0017));
 		note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	if (left->hasAstFlag(AST_L_VALUE))
 	{
-		Diagnostic diag{node, node->token, Err(Err0104)};
+		Diagnostic err{node, node->token, Err(Err0104)};
 		if (hint.empty())
 			hint = Diagnostic::isType(left);
-		diag.addNote(left, hint);
-		return context->report(diag, note);
+		err.addNote(left, hint);
+		return context->report(err, note);
 	}
 
 	if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
 	{
-		Diagnostic diag{node, node->token, Err(Err0104)};
+		Diagnostic err{node, node->token, Err(Err0104)};
 		if (hint.empty())
 			hint = Nte(Nte0158);
-		diag.addNote(left, hint);
-		return context->report(diag);
+		err.addNote(left, hint);
+		return context->report(err);
 	}
 
-	Diagnostic diag{node, node->token, Err(Err0215)};
+	Diagnostic err{node, node->token, Err(Err0215)};
 	if (hint.empty())
 		hint = Diagnostic::isType(left);
-	diag.addNote(left, hint);
-	return context->report(diag);
+	err.addNote(left, hint);
+	return context->report(err);
 }
 
 bool Semantic::resolveAffect(SemanticContext* context)
@@ -292,9 +292,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
 	// No direct operations on any, except affect any to any
 	if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
 	{
-		Diagnostic diag{node, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-		diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-		return context->report(diag);
+		Diagnostic err{node, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+		err.addNote(left, Diagnostic::isType(leftTypeInfo));
+		return context->report(err);
 	}
 
 	// Is this an array like affectation ?
@@ -343,9 +343,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
 	// For tuples, we can only affect
 	else if (forTuple)
 	{
-		const Diagnostic diag{node, node->token, FMT(Err(Err0350), node->token.c_str())};
+		const Diagnostic err{node, node->token, FMT(Err(Err0350), node->token.c_str())};
 		const auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	switch (tokenId)
@@ -397,12 +397,12 @@ bool Semantic::resolveAffect(SemanticContext* context)
 						{
 							YIELD();
 
-							Diagnostic diag{right, FMT(Err(Err0341), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-							diag.hint = Diagnostic::isType(rightTypeInfo);
-							diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+							Diagnostic err{right, FMT(Err(Err0341), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+							err.hint = Diagnostic::isType(rightTypeInfo);
+							err.addNote(left, Diagnostic::isType(leftTypeInfo));
 
 							const auto note = Diagnostic::note(node, node->token, FMT(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
-							return context->report(diag, note);
+							return context->report(err, note);
 						}
 
 						SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));
@@ -424,9 +424,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
 					{
 						if (leftTypeInfo->isTuple())
 						{
-							Diagnostic diag{node, node->token, Err(Err0216)};
-							diag.addNote(right, Diagnostic::isType(rightTypeInfo));
-							return context->report(diag);
+							Diagnostic err{node, node->token, Err(Err0216)};
+							err.addNote(right, Diagnostic::isType(rightTypeInfo));
+							return context->report(err);
 						}
 
 						SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
@@ -525,17 +525,17 @@ bool Semantic::resolveAffect(SemanticContext* context)
 			{
 				if (!leftTypeInfo->isPointerArithmetic())
 				{
-					Diagnostic diag{node, node->token, Err(Err0359)};
-					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+					Diagnostic err{node, node->token, Err(Err0359)};
+					err.addNote(left, Diagnostic::isType(leftTypeInfo));
 					const auto note = Diagnostic::note(Nte(Nte0103));
-					return context->report(diag, note);
+					return context->report(err, note);
 				}
 
 				if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
 				{
-					Diagnostic diag{node, node->token, Err(Err0358)};
-					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-					return context->report(diag);
+					Diagnostic err{node, node->token, Err(Err0358)};
+					err.addNote(left, Diagnostic::isType(leftTypeInfo));
+					return context->report(err);
 				}
 
 				rightTypeInfo = TypeManager::concreteType(right->typeInfo);

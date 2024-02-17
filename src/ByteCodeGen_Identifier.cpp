@@ -23,7 +23,7 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
 	if (context->node->isSameStackFrame(overload))
 		return true;
 
-	const Diagnostic diag{context->node, FMT(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
+	const Diagnostic err{context->node, FMT(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
 
 	Vector<const Diagnostic*> notes;
 
@@ -33,7 +33,7 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
 	if (overload->fromInlineParam)
 		notes.push_back(Diagnostic::note(overload->fromInlineParam, FMT(Nte(Nte0077), overload->symbol->name.c_str())));
 
-	return context->report(diag, notes);
+	return context->report(err, notes);
 }
 
 bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
@@ -284,8 +284,8 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 			}
 			else
 			{
-				const Diagnostic diag{node, node->token, FMT(Err(Err0181), typeInfo->getDisplayNameC())};
-				return context->report(diag);
+				const Diagnostic err{node, node->token, FMT(Err(Err0181), typeInfo->getDisplayNameC())};
+				return context->report(err);
 			}
 		}
 		else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && node->hasAstFlag(AST_FROM_UFCS | AST_TO_UFCS) && !node->hasAstFlag(AST_UFCS_FCT))

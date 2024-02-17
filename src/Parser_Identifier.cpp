@@ -48,11 +48,11 @@ bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
 	// Pour toi frangouille, ajouté le jour de ton départ
 	if (node->token.text.compareNoCase("jyb37"))
 	{
-		const Diagnostic diag{
+		const Diagnostic err{
 			node,
 			"I'm sorry, but 'JYB' is my little brother's nickname, and '37' is the age when he passed away at 1:29 AM on 11-26-2023. Please, please use another identifier. I love you, bro."
 		};
-		context->report(diag);
+		context->report(err);
 		return false;
 	}
 
@@ -169,8 +169,8 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 		{
 			if (identifierFlags & IDENTIFIER_TYPE_DECL)
 			{
-				Diagnostic diag{identifier, token, Err(Err0377)};
-				return context->report(diag);
+				Diagnostic err{identifier, token, Err(Err0377)};
+				return context->report(err);
 			}
 
 			SWAG_CHECK(eatToken());
@@ -305,10 +305,10 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
 	default:
 		if (Tokenizer::isIntrinsicReturn(token.id))
 		{
-			const Diagnostic diag{sourceFile, token, FMT(Err(Err0748), token.c_str())};
+			const Diagnostic err{sourceFile, token, FMT(Err(Err0748), token.c_str())};
 			const auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte0149));
 			const auto       note1 = Diagnostic::note(Nte(Nte0012));
-			return context->report(diag, note, note1);
+			return context->report(err, note, note1);
 		}
 
 		return error(token, FMT(Err(Err0159), token.c_str()));
@@ -480,7 +480,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
 	const auto tokenIdentifier = token;
 	eatToken();
 
-	const Diagnostic          diag{sourceFile, tokenIdentifier, FMT(Err(Err0689), tokenIdentifier.c_str())};
+	const Diagnostic          err{sourceFile, tokenIdentifier, FMT(Err(Err0689), tokenIdentifier.c_str())};
 	Vector<const Diagnostic*> notes;
 
 	if (token.id == TokenId::Identifier)
@@ -497,5 +497,5 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
 	const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
 	if (!appendMsg.empty())
 		notes.push_back(Diagnostic::note(appendMsg));
-	return context->report(diag, notes);
+	return context->report(err, notes);
 }

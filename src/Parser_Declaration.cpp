@@ -173,9 +173,9 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 				[[fallthrough]];
 			default:
 				{
-					const Diagnostic diag{sourceFile, token, Err(Err0510)};
+					const Diagnostic err{sourceFile, token, Err(Err0510)};
 					const auto       note = Diagnostic::note(child, child->token, Nte(Nte0074));
-					return context->report(diag, note);
+					return context->report(err, note);
 				}
 			}
 		}
@@ -426,17 +426,17 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 			const auto tokenDo = token;
 			if (token.id != TokenId::KwdDo)
 			{
-				const Diagnostic diag{sourceFile, token, FMT(Err(Err0533), token.c_str())};
+				const Diagnostic err{sourceFile, token, FMT(Err(Err0533), token.c_str())};
 				const auto       note = Diagnostic::note(parent, forToken, FMT(Nte(Nte0016), forToken.c_str()));
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 
 			SWAG_CHECK(eatToken());
 
 			if (token.id == TokenId::SymLeftCurly)
 			{
-				const Diagnostic diag{sourceFile, tokenDo, Err(Err0460)};
-				return context->report(diag);
+				const Diagnostic err{sourceFile, tokenDo, Err(Err0460)};
+				return context->report(err);
 			}
 		}
 
@@ -470,17 +470,17 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
 		const auto tokenDo = token;
 		if (token.id != TokenId::CompilerDo)
 		{
-			const Diagnostic diag{sourceFile, token, FMT(Err(Err0516), token.c_str())};
+			const Diagnostic err{sourceFile, token, FMT(Err(Err0516), token.c_str())};
 			const auto       note = Diagnostic::note(parent->parent, parent->parent->token, FMT(Nte(Nte0015), parent->parent->token.c_str()));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 		SWAG_CHECK(eatToken());
 
 		if (token.id == TokenId::SymLeftCurly)
 		{
-			const Diagnostic diag{sourceFile, tokenDo, Err(Err0434)};
-			return context->report(diag);
+			const Diagnostic err{sourceFile, tokenDo, Err(Err0434)};
+			return context->report(err);
 		}
 
 		if (currentScope->isGlobalOrImpl())
@@ -911,12 +911,12 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
 	case TokenId::NativeType:
 		{
-			const Diagnostic diag{sourceFile, token, Err(Err0699)};
+			const Diagnostic err{sourceFile, token, Err(Err0699)};
 			eatToken();
 			const Diagnostic* note = nullptr;
 			if (token.id == TokenId::Identifier)
 				note = Diagnostic::note(Nte(Nte0181));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 	default:

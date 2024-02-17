@@ -248,11 +248,11 @@ namespace
 			note->lineCodeMaxDigits = lineCodeMaxDigits;
 	}
 
-	void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes)
+	void reportInternal(const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)
 	{
 		if (g_CommandLine.errorOneLine)
 		{
-			const auto c = new Diagnostic{diag};
+			const auto c = new Diagnostic{err};
 			c->reportCompact();
 			g_Log.setDefaultColor();
 			return;
@@ -260,7 +260,7 @@ namespace
 
 		// Make a copy
 		Vector<Diagnostic*> notes;
-		const auto          c = new Diagnostic{diag};
+		const auto          c = new Diagnostic{err};
 		notes.push_back(c);
 		for (const auto n : inNotes)
 			notes.push_back(new Diagnostic{*n});
@@ -294,7 +294,7 @@ namespace
 		g_Log.eol();
 	}
 
-	bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& diag, Vector<const Diagnostic*>& inNotes, bool& retResult)
+	bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& err, Vector<const Diagnostic*>& inNotes, bool& retResult)
 	{
 		const auto attrWarn = attrUse->attributes.getAttribute(g_LangSpec->name_Swag_Warn);
 		if (!attrWarn)
@@ -314,7 +314,7 @@ namespace
 			{
 				retResult = true;
 				if (l == Error)
-					diag.errorLevel = DiagnosticLevel::Error;
+					err.errorLevel = DiagnosticLevel::Error;
 			}
 
 			return true;
@@ -336,7 +336,7 @@ namespace
 				{
 					retResult = true;
 					if (l == Error)
-						diag.errorLevel = DiagnosticLevel::Error;
+						err.errorLevel = DiagnosticLevel::Error;
 				}
 
 				return true;
@@ -346,16 +346,16 @@ namespace
 		return false;
 	}
 
-	bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
+	bool dealWithWarning(Diagnostic& err, Vector<const Diagnostic*>& notes)
 	{
-		if (diag.errorLevel != DiagnosticLevel::Warning)
+		if (err.errorLevel != DiagnosticLevel::Warning)
 			return true;
-		auto node = diag.contextNode ? diag.contextNode : diag.sourceNode;
+		auto node = err.contextNode ? err.contextNode : err.sourceNode;
 		if (!node)
 			return true;
 
 		// No warning if it's in a dependency
-		const auto sourceFile = Report::getDiagFile(diag);
+		const auto sourceFile = Report::getDiagFile(err);
 		if (sourceFile->imported && sourceFile->imported->kind == ModuleKind::Dependency)
 			return false;
 		const auto module = sourceFile->module;
@@ -364,7 +364,7 @@ namespace
 
 		// Get warning identifier
 		Utf8 warnMsg;
-		auto pz = diag.textMsg.c_str();
+		auto pz = err.textMsg.c_str();
 		while (*pz && *pz != '[')
 			pz++;
 		if (*pz == 0)
@@ -383,7 +383,7 @@ namespace
 			{
 				const auto attrUse   = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
 				bool       retResult = true;
-				if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
+				if (dealWithWarning(attrUse, warnMsg, err, notes, retResult))
 					return retResult;
 			}
 
@@ -395,7 +395,7 @@ namespace
 		while (attrUse)
 		{
 			bool retResult = true;
-			if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
+			if (dealWithWarning(attrUse, warnMsg, err, notes, retResult))
 				return retResult;
 			if (attrUse->hasExtOwner())
 				attrUse = attrUse->extOwner()->ownerAttrUse;
@@ -416,7 +416,7 @@ namespace
 					tk.makeLower();
 					if (tk == warnMsg)
 					{
-						diag.errorLevel = DiagnosticLevel::Error;
+						err.errorLevel = DiagnosticLevel::Error;
 						return true;
 					}
 				}
@@ -470,7 +470,7 @@ namespace
 
 		if (module->buildCfg.warnDefaultErrors)
 		{
-			diag.errorLevel = DiagnosticLevel::Error;
+			err.errorLevel = DiagnosticLevel::Error;
 			return true;
 		}
 
@@ -495,17 +495,17 @@ namespace
 		if (!dealWithWarning(*copyDiag, copyNotes))
 			return true;
 
-		auto&       diag  = *copyDiag;
+		auto&       err  = *copyDiag;
 		const auto& notes = copyNotes;
 
-		const auto sourceFile = Report::getDiagFile(diag);
+		const auto sourceFile = Report::getDiagFile(err);
 		SaveGenJob::flush(sourceFile->module);
 
-		switch (diag.errorLevel)
+		switch (err.errorLevel)
 		{
 		case DiagnosticLevel::Exception:
 			++sourceFile->module->criticalErrors;
-			diag.errorLevel = DiagnosticLevel::Panic;
+			err.errorLevel = DiagnosticLevel::Panic;
 			break;
 
 		case DiagnosticLevel::Error:
@@ -520,7 +520,7 @@ namespace
 				if (!sourceFile->shouldHaveErrorString.empty())
 				{
 					dismiss   = false;
-					auto str1 = diag.textMsg;
+					auto str1 = err.textMsg;
 					str1.makeLower();
 					for (const auto& filter : sourceFile->shouldHaveErrorString)
 					{
@@ -538,8 +538,8 @@ namespace
 				{
 					if (g_CommandLine.verboseTestErrors)
 					{
-						if (g_CommandLine.verboseErrorFilter.empty() || diag.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
-							reportInternal(diag, notes);
+						if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+							reportInternal(err, notes);
 					}
 
 					return false;
@@ -562,7 +562,7 @@ namespace
 					dismiss = false;
 					for (const auto& filter : sourceFile->shouldHaveWarningString)
 					{
-						auto str1 = diag.textMsg;
+						auto str1 = err.textMsg;
 						auto str2 = filter;
 						str1.makeLower();
 						str2.makeLower();
@@ -578,8 +578,8 @@ namespace
 				{
 					if (g_CommandLine.verboseTestErrors)
 					{
-						if (g_CommandLine.verboseErrorFilter.empty() || diag.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
-							reportInternal(diag, notes);
+						if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+							reportInternal(err, notes);
 					}
 
 					return true;
@@ -594,11 +594,11 @@ namespace
 		}
 
 		// Print error/warning
-		reportInternal(diag, notes);
+		reportInternal(err, notes);
 
 		if (runContext)
 		{
-			if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
+			if (err.errorLevel == DiagnosticLevel::Error || err.errorLevel == DiagnosticLevel::Panic)
 				runContext->debugOnFirstError = true;
 
 			if (g_CommandLine.dbgCallStack)
@@ -662,7 +662,7 @@ namespace
 			}
 		}
 
-		if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
+		if (err.errorLevel == DiagnosticLevel::Error || err.errorLevel == DiagnosticLevel::Panic)
 		{
 			if (!OS::isDebuggerAttached())
 			{
@@ -674,38 +674,38 @@ namespace
 			}
 		}
 
-		return diag.errorLevel != DiagnosticLevel::Error && diag.errorLevel != DiagnosticLevel::Panic;
+		return err.errorLevel != DiagnosticLevel::Error && err.errorLevel != DiagnosticLevel::Panic;
 	}
 }
 
-SourceFile* Report::getDiagFile(const Diagnostic& diag)
+SourceFile* Report::getDiagFile(const Diagnostic& err)
 {
-	if (!diag.sourceFile && !diag.contextFile)
+	if (!err.sourceFile && !err.contextFile)
 		return nullptr;
-	SourceFile* sourceFile = diag.contextFile;
-	if (!diag.contextFile)
-		sourceFile = diag.sourceFile;
-	if (diag.sourceNode && diag.sourceNode->sourceFile == diag.sourceFile && diag.sourceNode->ownerInline)
-		sourceFile = diag.sourceNode->ownerInline->sourceFile;
+	SourceFile* sourceFile = err.contextFile;
+	if (!err.contextFile)
+		sourceFile = err.sourceFile;
+	if (err.sourceNode && err.sourceNode->sourceFile == err.sourceFile && err.sourceNode->ownerInline)
+		sourceFile = err.sourceNode->ownerInline->sourceFile;
 	if (sourceFile->fileForSourceLocation)
 		sourceFile = sourceFile->fileForSourceLocation;
 	return sourceFile;
 }
 
-bool Report::report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext)
+bool Report::report(const Diagnostic& err, const Vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext)
 {
-	const bool result = reportInternal(diag, notes, runContext);
+	const bool result = reportInternal(err, notes, runContext);
 	return result;
 }
 
-bool Report::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+bool Report::report(const Diagnostic& err, const Diagnostic* note, const Diagnostic* note1)
 {
 	Vector<const Diagnostic*> notes;
 	if (note)
 		notes.push_back(note);
 	if (note1)
 		notes.push_back(note1);
-	return report(diag, notes);
+	return report(err, notes);
 }
 
 bool Report::error(Module* module, const Utf8& msg)
@@ -754,8 +754,8 @@ void Report::errorOS(const Utf8& msg)
 
 bool Report::internalError(AstNode* node, const char* msg)
 {
-	const Diagnostic diag{node, FMT("[compiler internal] %s", msg)};
-	report(diag);
+	const Diagnostic err{node, FMT("[compiler internal] %s", msg)};
+	report(err);
 	return false;
 }
 

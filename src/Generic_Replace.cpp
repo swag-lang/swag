@@ -110,12 +110,12 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
 					}
 				}
 
-				Diagnostic diag{errNode, errNode->token, Utf8::format(Err(Err0015), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+				Diagnostic err{errNode, errNode->token, Utf8::format(Err(Err0015), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 				if (errType && errType->isUntypedInteger())
-					diag.hint = Nte(Nte0107);
+					err.hint = Nte(Nte0107);
 				else if (errType && errType->isUntypedFloat())
-					diag.hint = Nte(Nte0107);
-				return context->report(diag);
+					err.hint = Nte(Nte0107);
+				return context->report(err);
 			}
 		}
 

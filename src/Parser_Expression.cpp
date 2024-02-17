@@ -94,8 +94,8 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 		{
 			if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP))
 			{
-				const Diagnostic diag{sourceFile, token, Err(Err0580)};
-				return context->report(diag);
+				const Diagnostic err{sourceFile, token, Err(Err0580)};
+				return context->report(err);
 			}
 
 			arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode);
@@ -1368,11 +1368,11 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
 
 	default:
 		{
-			const Diagnostic  diag{sourceFile, token, FMT(Err(Err0408), token.c_str())};
+			const Diagnostic  err{sourceFile, token, FMT(Err(Err0408), token.c_str())};
 			const Diagnostic* note = nullptr;
 			if (Tokenizer::isKeyword(token.id))
 				note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 	}
 

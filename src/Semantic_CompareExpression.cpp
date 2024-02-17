@@ -115,9 +115,9 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
 		default:
 			{
-				Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-				diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-				return context->report(diag);
+				Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+				err.addNote(left, Diagnostic::isType(leftTypeInfo));
+				return context->report(err);
 			}
 		}
 
@@ -227,9 +227,9 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 
 			default:
 				{
-					Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-					return context->report(diag);
+					Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+					err.addNote(left, Diagnostic::isType(leftTypeInfo));
+					return context->report(err);
 				}
 			}
 		}
@@ -298,9 +298,9 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
 
 			default:
 				{
-					Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-					return context->report(diag);
+					Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+					err.addNote(left, Diagnostic::isType(leftTypeInfo));
+					return context->report(err);
 				}
 			}
 		}
@@ -368,9 +368,9 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 
 			default:
 				{
-					Diagnostic diag{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-					diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-					return context->report(diag);
+					Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+					err.addNote(left, Diagnostic::isType(leftTypeInfo));
+					return context->report(err);
 				}
 			}
 		}
@@ -428,18 +428,18 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 		!leftTypeInfo->isSlice() &&
 		!leftTypeInfo->isInterface())
 	{
-		Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0242), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-		diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-		return context->report(diag);
+		Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0242), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+		err.addNote(left, Diagnostic::isType(leftTypeInfo));
+		return context->report(err);
 	}
 	else if (!rightTypeInfo->isNative() &&
 		!rightTypeInfo->isPointer() &&
 		!rightTypeInfo->isStruct() &&
 		!rightTypeInfo->isInterface())
 	{
-		Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0243), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
-		diag.addNote(right, Diagnostic::isType(rightTypeInfo));
-		return context->report(diag);
+		Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0243), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+		err.addNote(right, Diagnostic::isType(rightTypeInfo));
+		return context->report(err);
 	}
 
 	// Cannot compare tuples
@@ -447,12 +447,12 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 	{
 		if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
 		{
-			Diagnostic diag{node->sourceFile, node->token, Err(Err0241)};
+			Diagnostic err{node->sourceFile, node->token, Err(Err0241)};
 			if (leftTypeInfo->isTuple())
-				diag.addNote(left, Diagnostic::isType(leftTypeInfo));
+				err.addNote(left, Diagnostic::isType(leftTypeInfo));
 			else
-				diag.addNote(right, Diagnostic::isType(rightTypeInfo));
-			return context->report(diag);
+				err.addNote(right, Diagnostic::isType(rightTypeInfo));
+			return context->report(err);
 		}
 	}
 
@@ -462,28 +462,28 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 		// Slice can only be compared to null
 		if (leftTypeInfo->isSlice())
 		{
-			Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0238), rightTypeInfo->getDisplayNameC())};
-			diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-			diag.addNote(right, Diagnostic::isType(rightTypeInfo));
-			return context->report(diag);
+			Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0238), rightTypeInfo->getDisplayNameC())};
+			err.addNote(left, Diagnostic::isType(leftTypeInfo));
+			err.addNote(right, Diagnostic::isType(rightTypeInfo));
+			return context->report(err);
 		}
 
 		// Interface can only be compared to null ar to another interface
 		if (leftTypeInfo->isInterface() && !rightTypeInfo->isInterface() && !rightTypeInfo->isPointerToTypeInfo())
 		{
-			Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0240), rightTypeInfo->getDisplayNameC())};
-			diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-			diag.addNote(right, Diagnostic::isType(rightTypeInfo));
-			return context->report(diag);
+			Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0240), rightTypeInfo->getDisplayNameC())};
+			err.addNote(left, Diagnostic::isType(leftTypeInfo));
+			err.addNote(right, Diagnostic::isType(rightTypeInfo));
+			return context->report(err);
 		}
 
 		// Any can only be compared to null or to a type
 		if (leftTypeInfo->isAny() && !rightTypeInfo->isPointerToTypeInfo())
 		{
-			Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0239), rightTypeInfo->getDisplayNameC())};
-			diag.addNote(left, leftTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(leftTypeInfo));
-			diag.addNote(right, rightTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(rightTypeInfo));
-			return context->report(diag);
+			Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0239), rightTypeInfo->getDisplayNameC())};
+			err.addNote(left, leftTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(leftTypeInfo));
+			err.addNote(right, rightTypeInfo->isAny() ? Nte(Nte0032) : Diagnostic::isType(rightTypeInfo));
+			return context->report(err);
 		}
 	}
 
@@ -492,16 +492,16 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 	{
 		if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
 		{
-			Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-			diag.addNote(left, Diagnostic::isType(leftTypeInfo));
-			return context->report(diag);
+			Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+			err.addNote(left, Diagnostic::isType(leftTypeInfo));
+			return context->report(err);
 		}
 
 		if (leftTypeInfo->isAny())
 		{
-			Diagnostic diag{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-			diag.addNote(left, Nte(Nte0032));
-			return context->report(diag);
+			Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+			err.addNote(left, Nte(Nte0032));
+			return context->report(err);
 		}
 	}
 

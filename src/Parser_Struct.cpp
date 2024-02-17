@@ -44,9 +44,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 	{
 		if (scopeKind == ScopeKind::Enum)
 		{
-			Diagnostic diag{implNode, token, Err(Err0666)};
-			diag.addNote(kindLoc, Nte(Nte0052));
-			return context->report(diag);
+			Diagnostic err{implNode, token, Err(Err0666)};
+			err.addNote(kindLoc, Nte(Nte0052));
+			return context->report(err);
 		}
 
 		SWAG_CHECK(eatToken());
@@ -78,14 +78,14 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 	const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
 	if (scopeKind != newScope->kind)
 	{
-		const Diagnostic  diag{implNode, FMT(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
+		const Diagnostic  err{implNode, FMT(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.c_str(), Naming::kindName(newScope->kind).c_str())};
 		const auto        note  = Diagnostic::hereIs(newScope->owner);
 		const Diagnostic* note1 = nullptr;
 		if (newScope->kind == ScopeKind::Enum)
 			note1 = Diagnostic::note(FMT(Nte(Nte0043), implNode->token.c_str()));
 		else if (newScope->kind == ScopeKind::Struct)
 			note1 = Diagnostic::note(FMT(Nte(Nte0042), implNode->token.c_str()));
-		return context->report(diag, note, note1);
+		return context->report(err, note, note1);
 	}
 
 	implNode->structScope = newScope;
@@ -259,17 +259,17 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 			if (newScope->owner->kind == AstNodeKind::Impl)
 			{
 				const auto       implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-				const Diagnostic diag{
+				const Diagnostic err{
 					implNode->identifier,
 					FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())
 				};
 				const auto note = Diagnostic::hereIs(structNode);
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 			const Utf8       asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
-			const Diagnostic diag{structNode->sourceFile, token, FMT(Err(Err0626), "struct", structNode->token.c_str(), asA.c_str())};
+			const Diagnostic err{structNode->sourceFile, token, FMT(Err(Err0626), "struct", structNode->token.c_str(), asA.c_str())};
 			const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 		structNode->scope = newScope;
@@ -460,8 +460,8 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
 	case TokenId::KwdVar:
 		{
-			const Diagnostic diag{parent, token, Err(Err0672)};
-			return context->report(diag);
+			const Diagnostic err{parent, token, Err(Err0672)};
+			return context->report(err);
 		}
 
 	case TokenId::KwdMethod:

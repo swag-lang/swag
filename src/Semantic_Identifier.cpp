@@ -44,7 +44,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
 		back->resolvedSymbolName->kind != SymbolKind::Function &&
 		back->resolvedSymbolName->kind != SymbolKind::Variable)
 	{
-		const Diagnostic          diag{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+		const Diagnostic          err{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
 		Vector<const Diagnostic*> notes;
 
 		notes.push_back(Diagnostic::note(Nte(Nte0013)));
@@ -57,7 +57,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
 			notes.push_back(Diagnostic::note(node, node->kwdLoc, FMT(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
 		}
 
-		return context->report(diag, notes);
+		return context->report(err, notes);
 	}
 
 	SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
@@ -646,16 +646,16 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 		{
 			if (dep.node->isGeneratedSelf())
 			{
-				const Diagnostic diag{dependentVar, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+				const Diagnostic err{dependentVar, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
 				const auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
 				const auto       note1 = Diagnostic::note(Nte(Nte0034));
-				return context->report(diag, note, note1);
+				return context->report(err, note, note1);
 			}
 
-			const Diagnostic diag{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+			const Diagnostic err{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
 			const auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
 			const auto       note1 = Diagnostic::note(Nte(Nte0034));
-			return context->report(diag, note, note1);
+			return context->report(err, note, note1);
 		}
 
 		dependentVar     = dep.node;
@@ -719,8 +719,8 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
 						case AstNodeKind::While:
 							{
 								const auto       msg = FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.c_str(), brotherParent->token.c_str());
-								const Diagnostic diag{node, node->token, msg};
-								return context->report(diag, Diagnostic::hereIs(overload->node));
+								const Diagnostic err{node, node->token, msg};
+								return context->report(err, Diagnostic::hereIs(overload->node));
 							}
 						default:
 							break;
@@ -796,12 +796,12 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
 		{
 			if (symbolKind == SymbolKind::Variable)
 			{
-				const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0290), identifier->token.c_str(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
-				return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
+				const Diagnostic err{identifier, identifier->token, FMT(Err(Err0290), identifier->token.c_str(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+				return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
 			}
 
-			const Diagnostic diag{identifier, identifier->token, FMT(Err(Err0289), identifier->token.c_str(), Naming::aKindName(symbol->kind).c_str())};
-			return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
+			const Diagnostic err{identifier, identifier->token, FMT(Err(Err0289), identifier->token.c_str(), Naming::aKindName(symbol->kind).c_str())};
+			return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
 		}
 	}
 
@@ -838,9 +838,9 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
 					oneParam->typeInfo->isTypedVariadic() ||
 					oneParam->typeInfo->isCVariadic())
 				{
-					Diagnostic diag{oneParam, Err(Err0514)};
-					diag.hint = Diagnostic::isType(oneParam);
-					return context->report(diag);
+					Diagnostic err{oneParam, Err(Err0514)};
+					err.hint = Diagnostic::isType(oneParam);
+					return context->report(err);
 				}
 			}
 		}
@@ -866,9 +866,9 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
 			symbolKind != SymbolKind::TypeAlias)
 		{
 			const auto       firstNode = symbol->nodes.front();
-			const Diagnostic diag{genericParameters, FMT(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
+			const Diagnostic err{genericParameters, FMT(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
 			const auto       note = Diagnostic::note(node, node->token, FMT(Nte(Nte0199), node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
-			return context->report(diag, note, Diagnostic::hereIs(firstNode));
+			return context->report(err, note, Diagnostic::hereIs(firstNode));
 		}
 
 		const auto childCount = genericParameters->children.size();

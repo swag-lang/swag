@@ -52,12 +52,12 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
 	if (!typeVar->isStruct())
 	{
-		Diagnostic diag{varDecl, varDecl->token, FMT(Err(Err0384), typeVar->getDisplayNameC())};
+		Diagnostic err{varDecl, varDecl->token, FMT(Err(Err0384), typeVar->getDisplayNameC())};
 		if (varDecl->assignment)
-			diag.addNote(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
+			err.addNote(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
 		else if (varDecl->type)
-			diag.addNote(varDecl->type, Diagnostic::isType(TypeManager::concreteType(varDecl->type->typeInfo)));
-		return context->report(diag);
+			err.addNote(varDecl->type, Diagnostic::isType(TypeManager::concreteType(varDecl->type->typeInfo)));
+		return context->report(err);
 	}
 
 	const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
@@ -65,23 +65,23 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
 	if (typeStruct->fields.empty())
 	{
-		const Diagnostic diag{varDecl, varDecl->token, Err(Err0383)};
-		return context->report(diag);
+		const Diagnostic err{varDecl, varDecl->token, Err(Err0383)};
+		return context->report(err);
 	}
 
 	if (numUnpack < typeStruct->fields.size())
 	{
-		Diagnostic diag{varDecl, varDecl->token, FMT(Err(Err0728), numUnpack, typeStruct->fields.size())};
-		diag.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
+		Diagnostic err{varDecl, varDecl->token, FMT(Err(Err0728), numUnpack, typeStruct->fields.size())};
+		err.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
 		const auto note = Diagnostic::note(Nte(Nte0038));
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	if (numUnpack > typeStruct->fields.size())
 	{
-		Diagnostic diag{varDecl, varDecl->token, FMT(Err(Err0729), typeStruct->fields.size(), numUnpack)};
-		diag.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
-		return context->report(diag);
+		Diagnostic err{varDecl, varDecl->token, FMT(Err(Err0729), typeStruct->fields.size(), numUnpack)};
+		err.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
+		return context->report(err);
 	}
 
 	return true;
@@ -125,8 +125,8 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
 			varDecl->type->typeInfo->isVariadic() ||
 			varDecl->type->typeInfo->isCVariadic())
 		{
-			const Diagnostic diag{varDecl, varDecl->assignToken, Err(Err0678)};
-			return context->report(diag);
+			const Diagnostic err{varDecl, varDecl->assignToken, Err(Err0678)};
+			return context->report(err);
 		}
 	}
 
@@ -323,9 +323,9 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 	const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
 	if (identifier->callParameters)
 	{
-		Diagnostic diag{assign, Err(Err0063)};
-		diag.addNote(identifier->callParameters, Nte(Nte0164));
-		return context->report(diag);
+		Diagnostic err{assign, Err(Err0063)};
+		err.addNote(identifier->callParameters, Nte(Nte0164));
+		return context->report(err);
 	}
 
 	const auto sourceFile      = context->sourceFile;
@@ -521,8 +521,8 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 
 	if (paramIdx >= typeLambda->parameters.count)
 	{
-		const Diagnostic diag{nodeParam, FMT(Err(Err0630), typeLambda->parameters.count, nodeParam->parent->children.count)};
-		return context->report(diag);
+		const Diagnostic err{nodeParam, FMT(Err(Err0630), typeLambda->parameters.count, nodeParam->parent->children.count)};
+		return context->report(err);
 	}
 
 	mpl->deducedLambdaType = typeLambda;
@@ -637,10 +637,10 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
 	if (node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !concreteNodeType->isLambdaClosure())
 	{
-		Diagnostic diag{node, node->token, FMT(Err(Err0489), concreteNodeType->getDisplayNameC())};
+		Diagnostic err{node, node->token, FMT(Err(Err0489), concreteNodeType->getDisplayNameC())};
 		auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
 		auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		return context->report(diag, note);
+		return context->report(err, note);
 	}
 
 	// Check for missing initialization
@@ -732,9 +732,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
 			if (!ok)
 			{
-				Diagnostic diag{node, FMT(Err(Err0566), node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
+				Diagnostic err{node, FMT(Err(Err0566), node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
 				auto       note = Diagnostic::hereIs(concreteNodeType->declNode);
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 		}
 	}
@@ -756,8 +756,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL | CONCRETE_FUNC);
 		if (!typeRet->isBool())
 		{
-			Diagnostic diag{node->typeConstraint, FMT(Err(Err0398), typeRet->getDisplayNameC())};
-			return context->report(diag);
+			Diagnostic err{node->typeConstraint, FMT(Err(Err0398), typeRet->getDisplayNameC())};
+			return context->report(err);
 		}
 
 		SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0044)));
@@ -766,20 +766,20 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 		SWAG_ASSERT(node->typeConstraint->computedValue);
 		if (!node->typeConstraint->computedValue->reg.b)
 		{
-			Diagnostic diag(node->typeConstraint, FMT(Err(Err0088), node->typeInfo->getDisplayNameC()));
+			Diagnostic err(node->typeConstraint, FMT(Err(Err0088), node->typeInfo->getDisplayNameC()));
 			if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
 			{
 				auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 
 			if (node->genTypeComesFrom)
 			{
 				auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0140), node->typeInfo->getDisplayNameC()));
-				return context->report(diag, note);
+				return context->report(err, note);
 			}
 
-			return context->report(diag);
+			return context->report(err);
 		}
 	}
 
@@ -853,14 +853,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
 		if (isCompilerConstant)
 		{
-			Diagnostic diag{node->assignment, Err(Err0562)};
-			return context->report(diag, Diagnostic::note(Nte(Nte0036)));
+			Diagnostic err{node->assignment, Err(Err0562)};
+			return context->report(err, Diagnostic::note(Nte(Nte0036)));
 		}
 
 		if (node->hasSpecFlag(AstVarDecl::SPECFLAG_IS_LET))
 		{
-			Diagnostic diag{node->assignment, Err(Err0564)};
-			return context->report(diag, Diagnostic::note(Nte(Nte0036)));
+			Diagnostic err{node->assignment, Err(Err0564)};
+			return context->report(err, Diagnostic::note(Nte(Nte0036)));
 		}
 	}
 
@@ -909,10 +909,10 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 					SWAG_ASSERT(node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload);
 					if (!node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
 					{
-						Diagnostic diag{node->assignment, Err(Err0040)};
-						diag.hint = FMT(Nte(Nte0178), leftConcreteType->getDisplayNameC());
-						diag.addNote(node->assignToken, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
-						return context->report(diag);
+						Diagnostic err{node->assignment, Err(Err0040)};
+						err.hint = FMT(Nte(Nte0178), leftConcreteType->getDisplayNameC());
+						err.addNote(node->assignToken, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
+						return context->report(err);
 					}
 				}
 			}
@@ -946,12 +946,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 				auto over      = nodeWhere->resolvedSymbolOverload;
 				if (nodeWhere->kind == AstNodeKind::IdentifierRef)
 					nodeWhere = nodeWhere->children.back();
-				Diagnostic diag{nodeWhere, nodeWhere->token, Err(Err0371)};
-				return context->report(diag, Diagnostic::hereIs(over));
+				Diagnostic err{nodeWhere, nodeWhere->token, Err(Err0371)};
+				return context->report(err, Diagnostic::hereIs(over));
 			}
 
-			Diagnostic diag{node->assignment, Err(Err0386)};
-			return context->report(diag);
+			Diagnostic err{node->assignment, Err(Err0386)};
+			return context->report(err);
 		}
 
 		// We need to decide which integer/float type it is
@@ -1139,9 +1139,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
 		if (node->hasAttribute(ATTRIBUTE_PUBLIC))
 		{
-			Diagnostic diag{node, node->getTokenName(), Err(Err0479)};
+			Diagnostic err{node, node->getTokenName(), Err(Err0479)};
 			auto       note = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 
 		node->addAstFlag(AST_R_VALUE);

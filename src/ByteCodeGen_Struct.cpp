@@ -1178,8 +1178,8 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
 	{
 		if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
 		{
-			const Diagnostic diag{from, FMT(Err(Err0113), typeInfo->getDisplayNameC())};
-			return context->report(diag);
+			const Diagnostic err{from, FMT(Err(Err0113), typeInfo->getDisplayNameC())};
+			return context->report(err);
 		}
 
 		PushICFlags sf(context, BCI_POST_COPY_MOVE);

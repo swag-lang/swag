@@ -90,7 +90,7 @@ struct Parser
 	bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
 	bool eatToken(TokenId id, const char* msg);
 	void prepareExpectTokenError();
-	bool eatTokenError(TokenId id, const Utf8& err);
+	bool eatTokenError(TokenId id, const Utf8& msg);
 	bool eatSemiCol(const char* msg);
 
 	static bool testIsSingleIdentifier(AstNode* node);

@@ -413,9 +413,9 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 			const auto overload = assign->resolvedSymbolOverload;
 			if (node->type && node->type->hasSpecFlag(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
 			{
-				Diagnostic diag{assign, Err(Err0063)};
-				diag.addNote(node->type, Nte(Nte0164));
-				return context->report(diag);
+				Diagnostic err{assign, Err(Err0063)};
+				err.addNote(node->type, Nte(Nte0164));
+				return context->report(err);
 			}
 
 			// Copy from a constant
@@ -475,9 +475,9 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
 		const auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
 		if (!typeAssign->isArray() && !typeAssign->isListArray())
 		{
-			const Diagnostic diag{node->assignment, FMT(Err(Err0313), typeInfo->getDisplayNameC())};
+			const Diagnostic err{node->assignment, FMT(Err(Err0313), typeInfo->getDisplayNameC())};
 			const auto       note = Diagnostic::note(Nte(Nte0101));
-			return context->report(diag, note);
+			return context->report(err, note);
 		}
 	}
 

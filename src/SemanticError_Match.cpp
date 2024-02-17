@@ -187,9 +187,9 @@ namespace
 	bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
 	{
 		// Multiple tryMatches
-		Diagnostic                diag{node, node->token, FMT(Err(Err0613), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+		Diagnostic                err{node, node->token, FMT(Err(Err0613), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
 		Vector<const Diagnostic*> notes;
-		SemanticError::commonErrorNotes(context, tryMatches, node, &diag, notes);
+		SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 
 		int overloadIndex = 1;
 		cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes, overloadIndex);
@@ -215,7 +215,7 @@ namespace
 			notes.insert(notes.end(), notesSig.begin(), notesSig.end());
 		}
 
-		return context->report(diag, notes);
+		return context->report(err, notes);
 	}
 }
 

@@ -138,8 +138,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 				}
 				else if (tokenName.text == g_LangSpec->name_self)
 				{
-					Diagnostic diag(sourceFile, token, Err(Err0701));
-					return context->report(diag);
+					Diagnostic err(sourceFile, token, Err(Err0701));
+					return context->report(err);
 				}
 				else
 				{
@@ -287,10 +287,10 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 					tokenAmb.startLocation = lastParameter->token.startLocation;
 					tokenAmb.endLocation   = token.startLocation;
 
-					Diagnostic diag{sourceFile, tokenAmb, Err(Err0022)};
+					Diagnostic err{sourceFile, tokenAmb, Err(Err0022)};
 					auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
 					note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
-					return context->report(diag, note);
+					return context->report(err, note);
 				}
 
 				lastWasAlone  = curIsAlone;
@@ -465,8 +465,8 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
 	// Specific error messages
 	if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
 	{
-		const Diagnostic diag{sourceFile, token, FMT(Err(Err0401), token.c_str())};
-		return context->report(diag);
+		const Diagnostic err{sourceFile, token, FMT(Err(Err0401), token.c_str())};
+		return context->report(err);
 	}
 
 	const Diagnostic* note = nullptr;
@@ -479,8 +479,8 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
 	else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
 		note = Diagnostic::note(Nte(Nte0085));
 
-	const Diagnostic diag{sourceFile, token, FMT(Err(Err0400), token.c_str())};
-	return context->report(diag, note);
+	const Diagnostic err{sourceFile, token, FMT(Err(Err0400), token.c_str())};
+	return context->report(err, note);
 }
 
 bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
@@ -500,8 +500,8 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
 		if (token.id == TokenId::SymAmpersandAmpersand)
 		{
-			const Diagnostic diag{sourceFile, token, Err(Err0247)};
-			return context->report(diag);
+			const Diagnostic err{sourceFile, token, Err(Err0247)};
+			return context->report(err);
 		}
 	}
 
@@ -569,16 +569,16 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 			{
 				if (inTypeVarDecl)
 					return context->report({sourceFile, rightSquareToken, Err(Err0692)});
-				const Diagnostic diag{sourceFile, rightSquareToken, Err(Err0692)};
-				return context->report(diag);
+				const Diagnostic err{sourceFile, rightSquareToken, Err(Err0692)};
+				return context->report(err);
 			}
 			return error(rightSquareToken, Err(Err0692));
 		}
 
 		if (token.id == TokenId::SymComma)
 		{
-			const Diagnostic diag{sourceFile, token, FMT(Err(Err0402), token.c_str())};
-			return context->report(diag);
+			const Diagnostic err{sourceFile, token, FMT(Err(Err0402), token.c_str())};
+			return context->report(err);
 		}
 
 		node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
