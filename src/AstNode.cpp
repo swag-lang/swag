@@ -17,7 +17,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 	flags.add(context.forceFlags);
 	flags.remove(context.removeFlags);
 
-	specFlags.store(from->specFlags);
+	specFlags = from->specFlags;
 
 	ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
 	ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;

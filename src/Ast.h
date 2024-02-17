@@ -51,7 +51,7 @@ namespace Ast
 	AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
 	AstIdentifierRef*  newMultiIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, Parser* parser = nullptr);
 	AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
-	AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, AttributeFlags attributeFlags, Parser* parser = nullptr);
+	AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, SpecFlags specFlags, AttributeFlags attributeFlags, Parser* parser = nullptr);
 
 	bool     convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
 	bool     convertLiteralTupleToStructType(JobContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode);

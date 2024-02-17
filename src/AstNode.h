@@ -41,6 +41,7 @@ using ByteCodeFct = bool(*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
 using AstNodeFlags = Flags<uint64_t>;
 using AstSemFlags = Flags<uint64_t>;
+using SpecFlags = Flags<uint16_t>;
 
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -347,10 +348,9 @@ struct AstNode
 	void removeAttribute(AttributeFlags attr) { attributeFlags.remove(attr); }
 	void inheritAttribute(const AstNode* from, AttributeFlags w) { attributeFlags.add(from->attributeFlags.mask(w)); }
 
-	bool hasSpecFlag(uint16_t fl) const { return specFlags & fl; }
-	void addSpecFlag(uint16_t fl) { specFlags |= fl; }
-	void setSpecFlags(uint16_t fl) { specFlags = fl; }
-	void removeSpecFlag(uint16_t fl) { specFlags &= ~fl; }
+	bool hasSpecFlag(SpecFlags fl) const { return specFlags.has(fl); }
+	void addSpecFlag(SpecFlags fl) { specFlags.add(fl); }
+	void removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
 
 	struct NodeExtensionByteCode
 	{
@@ -426,7 +426,7 @@ struct AstNode
 	AstNodeResolveState bytecodeState;
 	uint8_t             padding0;
 	TokenId             tokenId;
-	atomic<uint16_t>    specFlags;
+	SpecFlags           specFlags;
 
 	mutable SharedMutex    mutex;
 	Token                  token;
@@ -469,16 +469,16 @@ struct AstNode
 
 struct AstVarDecl : AstNode
 {
-	static constexpr uint16_t SPECFLAG_CONST_ASSIGN     = 0x0001;
-	static constexpr uint16_t SPECFLAG_IS_LET_TO_CONST  = 0x0002;
-	static constexpr uint16_t SPECFLAG_INLINE_STORAGE   = 0x0004;
-	static constexpr uint16_t SPECFLAG_UNNAMED          = 0x0008;
-	static constexpr uint16_t SPECFLAG_GENERATED_SELF   = 0x0010;
-	static constexpr uint16_t SPECFLAG_GENERIC_TYPE     = 0x0020;
-	static constexpr uint16_t SPECFLAG_GENERIC_CONSTANT = 0x0040;
-	static constexpr uint16_t SPECFLAG_AUTO_NAME        = 0x0080;
-	static constexpr uint16_t SPECFLAG_IS_LET           = 0x0100;
-	static constexpr uint16_t SPECFLAG_TUPLE_AFFECT     = 0x0200;
+	static constexpr SpecFlags SPECFLAG_CONST_ASSIGN     = 0x0001;
+	static constexpr SpecFlags SPECFLAG_IS_LET_TO_CONST  = 0x0002;
+	static constexpr SpecFlags SPECFLAG_INLINE_STORAGE   = 0x0004;
+	static constexpr SpecFlags SPECFLAG_UNNAMED          = 0x0008;
+	static constexpr SpecFlags SPECFLAG_GENERATED_SELF   = 0x0010;
+	static constexpr SpecFlags SPECFLAG_GENERIC_TYPE     = 0x0020;
+	static constexpr SpecFlags SPECFLAG_GENERIC_CONSTANT = 0x0040;
+	static constexpr SpecFlags SPECFLAG_AUTO_NAME        = 0x0080;
+	static constexpr SpecFlags SPECFLAG_IS_LET           = 0x0100;
+	static constexpr SpecFlags SPECFLAG_TUPLE_AFFECT     = 0x0200;
 
 	AstNode* clone(CloneContext& context);
 	bool     isConstDecl() const;
@@ -496,8 +496,8 @@ struct AstVarDecl : AstNode
 
 struct AstIdentifierRef : AstNode
 {
-	static constexpr uint16_t SPECFLAG_AUTO_SCOPE = 0x0001;
-	static constexpr uint16_t SPECFLAG_WITH_SCOPE = 0x0002;
+	static constexpr SpecFlags SPECFLAG_AUTO_SCOPE = 0x0001;
+	static constexpr SpecFlags SPECFLAG_WITH_SCOPE = 0x0002;
 
 	AstNode* clone(CloneContext& context);
 	void     computeName();
@@ -508,12 +508,12 @@ struct AstIdentifierRef : AstNode
 
 struct AstIdentifier : AstNode
 {
-	static constexpr uint16_t SPECFLAG_NO_INLINE           = 0x0001;
-	static constexpr uint16_t SPECFLAG_FROM_WITH           = 0x0002;
-	static constexpr uint16_t SPECFLAG_FROM_USING          = 0x0004;
-	static constexpr uint16_t SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
-	static constexpr uint16_t SPECFLAG_SILENT_CALL         = 0x0010;
-	static constexpr uint16_t SPECFLAG_NAME_ALIAS          = 0x0020;
+	static constexpr SpecFlags SPECFLAG_NO_INLINE           = 0x0001;
+	static constexpr SpecFlags SPECFLAG_FROM_WITH           = 0x0002;
+	static constexpr SpecFlags SPECFLAG_FROM_USING          = 0x0004;
+	static constexpr SpecFlags SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
+	static constexpr SpecFlags SPECFLAG_SILENT_CALL         = 0x0010;
+	static constexpr SpecFlags SPECFLAG_NAME_ALIAS          = 0x0020;
 
 	struct IdentifierExtension
 	{
@@ -536,21 +536,21 @@ struct AstIdentifier : AstNode
 
 struct AstFuncDecl : AstNode
 {
-	static constexpr uint16_t SPECFLAG_THROW                = 0x0001;
-	static constexpr uint16_t SPECFLAG_PATCH                = 0x0002;
-	static constexpr uint16_t SPECFLAG_FORCE_LATE_REGISTER  = 0x0004;
-	static constexpr uint16_t SPECFLAG_LATE_REGISTER_DONE   = 0x0008;
-	static constexpr uint16_t SPECFLAG_FULL_RESOLVE         = 0x0010;
-	static constexpr uint16_t SPECFLAG_PARTIAL_RESOLVE      = 0x0020;
-	static constexpr uint16_t SPECFLAG_REG_GET_CONTEXT      = 0x0040;
-	static constexpr uint16_t SPECFLAG_SPEC_MIXIN           = 0x0080;
-	static constexpr uint16_t SPECFLAG_SHORT_FORM           = 0x0100;
-	static constexpr uint16_t SPECFLAG_SHORT_LAMBDA         = 0x0200;
-	static constexpr uint16_t SPECFLAG_RETURN_DEFINED       = 0x0400;
-	static constexpr uint16_t SPECFLAG_CHECK_ATTR           = 0x0800;
-	static constexpr uint16_t SPECFLAG_IS_LAMBDA_EXPRESSION = 0x1000;
-	static constexpr uint16_t SPECFLAG_ASSUME               = 0x2000;
-	static constexpr uint16_t SPECFLAG_IMPL                 = 0x4000;
+	static constexpr SpecFlags SPECFLAG_THROW                = 0x0001;
+	static constexpr SpecFlags SPECFLAG_PATCH                = 0x0002;
+	static constexpr SpecFlags SPECFLAG_FORCE_LATE_REGISTER  = 0x0004;
+	static constexpr SpecFlags SPECFLAG_LATE_REGISTER_DONE   = 0x0008;
+	static constexpr SpecFlags SPECFLAG_FULL_RESOLVE         = 0x0010;
+	static constexpr SpecFlags SPECFLAG_PARTIAL_RESOLVE      = 0x0020;
+	static constexpr SpecFlags SPECFLAG_REG_GET_CONTEXT      = 0x0040;
+	static constexpr SpecFlags SPECFLAG_SPEC_MIXIN           = 0x0080;
+	static constexpr SpecFlags SPECFLAG_SHORT_FORM           = 0x0100;
+	static constexpr SpecFlags SPECFLAG_SHORT_LAMBDA         = 0x0200;
+	static constexpr SpecFlags SPECFLAG_RETURN_DEFINED       = 0x0400;
+	static constexpr SpecFlags SPECFLAG_CHECK_ATTR           = 0x0800;
+	static constexpr SpecFlags SPECFLAG_IS_LAMBDA_EXPRESSION = 0x1000;
+	static constexpr SpecFlags SPECFLAG_ASSUME               = 0x2000;
+	static constexpr SpecFlags SPECFLAG_IMPL                 = 0x4000;
 
 	~AstFuncDecl();
 	AstNode*    clone(CloneContext& context);
@@ -606,7 +606,7 @@ struct AstAttrDecl : AstNode
 
 struct AstAttrUse : AstNode
 {
-	static constexpr uint16_t SPECFLAG_GLOBAL = 0x0001;
+	static constexpr SpecFlags SPECFLAG_GLOBAL = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -617,7 +617,7 @@ struct AstAttrUse : AstNode
 
 struct AstFuncCallParams : AstNode
 {
-	static constexpr uint16_t SPECFLAG_CALL_FOR_STRUCT = 0x0001;
+	static constexpr SpecFlags SPECFLAG_CALL_FOR_STRUCT = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -637,7 +637,7 @@ struct AstFuncCallParam : AstNode
 
 struct AstBinaryOpNode : AstNode
 {
-	static constexpr uint16_t SPECFLAG_IMPLICIT_KINDOF = 0x0001;
+	static constexpr SpecFlags SPECFLAG_IMPLICIT_KINDOF = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -654,7 +654,7 @@ struct AstConditionalOpNode : AstNode
 
 struct AstIf : AstNode
 {
-	static constexpr uint16_t SPECFLAG_ASSIGN = 0x0001;
+	static constexpr SpecFlags SPECFLAG_ASSIGN = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -732,7 +732,7 @@ struct AstFor : AstBreakable
 
 struct AstLoop : AstBreakable
 {
-	static constexpr uint16_t SPECFLAG_BACK = 0x0001;
+	static constexpr SpecFlags SPECFLAG_BACK = 0x0001;
 
 	~AstLoop();
 	AstNode* clone(CloneContext& context);
@@ -744,8 +744,8 @@ struct AstLoop : AstBreakable
 
 struct AstVisit : AstNode
 {
-	static constexpr uint16_t SPECFLAG_WANT_POINTER = 0x0001;
-	static constexpr uint16_t SPECFLAG_BACK         = 0x0002;
+	static constexpr SpecFlags SPECFLAG_WANT_POINTER = 0x0001;
+	static constexpr SpecFlags SPECFLAG_BACK         = 0x0002;
 
 	AstNode* clone(CloneContext& context);
 
@@ -769,9 +769,9 @@ struct AstSwitch : AstBreakable
 
 struct AstSwitchCase : AstNode
 {
-	static constexpr uint16_t SPECFLAG_IS_DEFAULT = 0x0001;
-	static constexpr uint16_t SPECFLAG_IS_FALSE   = 0x0002;
-	static constexpr uint16_t SPECFLAG_IS_TRUE    = 0x0004;
+	static constexpr SpecFlags SPECFLAG_IS_DEFAULT = 0x0001;
+	static constexpr SpecFlags SPECFLAG_IS_FALSE   = 0x0002;
+	static constexpr SpecFlags SPECFLAG_IS_TRUE    = 0x0004;
 
 	AstNode* clone(CloneContext& context);
 
@@ -796,9 +796,9 @@ struct AstSwitchCaseBlock : AstNode
 
 struct AstType : AstNode
 {
-	static constexpr uint16_t SPECFLAG_FORCE_TYPE                = 0x1000;
-	static constexpr uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS     = 0x2000;
-	static constexpr uint16_t SPECFLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
+	static constexpr SpecFlags SPECFLAG_FORCE_TYPE                = 0x1000;
+	static constexpr SpecFlags SPECFLAG_HAS_STRUCT_PARAMETERS     = 0x2000;
+	static constexpr SpecFlags SPECFLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
 };
 
 constexpr uint16_t TYPEFLAG_IS_ARRAY          = 0x0001;
@@ -818,7 +818,7 @@ constexpr uint16_t TYPEFLAG_HAS_LOC_CONST     = 0x2000;
 
 struct AstTypeExpression : AstType
 {
-	static constexpr uint16_t SPECFLAG_DONE_GEN = 0x0001;
+	static constexpr SpecFlags SPECFLAG_DONE_GEN = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -834,7 +834,7 @@ struct AstTypeExpression : AstType
 
 struct AstTypeLambda : AstType
 {
-	static constexpr uint16_t SPECFLAG_CAN_THROW = 0x0001;
+	static constexpr SpecFlags SPECFLAG_CAN_THROW = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -844,8 +844,8 @@ struct AstTypeLambda : AstType
 
 struct AstArrayPointerIndex : AstNode
 {
-	static constexpr uint16_t SPECFLAG_SERIAL   = 0x0001;
-	static constexpr uint16_t SPECFLAG_IS_DEREF = 0x0002;
+	static constexpr SpecFlags SPECFLAG_SERIAL   = 0x0001;
+	static constexpr SpecFlags SPECFLAG_IS_DEREF = 0x0002;
 
 	AstNode* clone(CloneContext& context);
 
@@ -857,7 +857,7 @@ struct AstArrayPointerIndex : AstNode
 
 struct AstArrayPointerSlicing : AstNode
 {
-	static constexpr uint16_t SPECFLAG_EXCLUDE_UP = 0x0001;
+	static constexpr SpecFlags SPECFLAG_EXCLUDE_UP = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -874,8 +874,8 @@ struct AstIntrinsicProp : AstNode
 
 struct AstExpressionList : AstNode
 {
-	static constexpr uint16_t SPECFLAG_FOR_TUPLE   = 0x0001;
-	static constexpr uint16_t SPECFLAG_FOR_CAPTURE = 0x0002;
+	static constexpr SpecFlags SPECFLAG_FOR_TUPLE   = 0x0001;
+	static constexpr SpecFlags SPECFLAG_FOR_CAPTURE = 0x0002;
 
 	AstNode* clone(CloneContext& context);
 
@@ -884,9 +884,9 @@ struct AstExpressionList : AstNode
 
 struct AstStruct : AstNode
 {
-	static constexpr uint16_t SPECFLAG_HAS_USING = 0x0001;
-	static constexpr uint16_t SPECFLAG_UNION     = 0x0002;
-	static constexpr uint16_t SPECFLAG_ANONYMOUS = 0x0004;
+	static constexpr SpecFlags SPECFLAG_HAS_USING = 0x0001;
+	static constexpr SpecFlags SPECFLAG_UNION     = 0x0002;
+	static constexpr SpecFlags SPECFLAG_ANONYMOUS = 0x0004;
 
 	~AstStruct();
 	AstNode* clone(CloneContext& context);
@@ -916,7 +916,7 @@ struct AstEnum : AstNode
 
 struct AstEnumValue : AstNode
 {
-	static constexpr uint16_t SPECFLAG_HAS_USING = 0x0001;
+	static constexpr SpecFlags SPECFLAG_HAS_USING = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -1018,7 +1018,7 @@ struct AstCompilerIfBlock : AstNode
 
 struct AstCompilerSpecFunc : AstNode
 {
-	static constexpr uint16_t SPECFLAG_AST_BLOCK = 0x0001;
+	static constexpr SpecFlags SPECFLAG_AST_BLOCK = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 };
@@ -1030,9 +1030,9 @@ struct AstNameSpace : AstNode
 
 struct AstTryCatchAssume : AstReturn
 {
-	static constexpr uint16_t SPECFLAG_BLOCK         = 0x0001;
-	static constexpr uint16_t SPECFLAG_GENERATED     = 0x0002;
-	static constexpr uint16_t SPECFLAG_THROW_GET_ERR = 0x0004;
+	static constexpr SpecFlags SPECFLAG_BLOCK         = 0x0001;
+	static constexpr SpecFlags SPECFLAG_GENERATED     = 0x0002;
+	static constexpr SpecFlags SPECFLAG_THROW_GET_ERR = 0x0004;
 
 	AstNode* clone(CloneContext& context);
 
@@ -1050,9 +1050,9 @@ struct AstAlias : AstNode
 
 struct AstCast : AstNode
 {
-	static constexpr uint16_t SPECFLAG_OVERFLOW = 0x0001;
-	static constexpr uint16_t SPECFLAG_BIT      = 0x0002;
-	static constexpr uint16_t SPECFLAG_UN_CONST = 0x0004;
+	static constexpr SpecFlags SPECFLAG_OVERFLOW = 0x0001;
+	static constexpr SpecFlags SPECFLAG_BIT      = 0x0002;
+	static constexpr SpecFlags SPECFLAG_UN_CONST = 0x0004;
 
 	AstNode* clone(CloneContext& context);
 
@@ -1061,16 +1061,16 @@ struct AstCast : AstNode
 
 struct AstOp : AstNode
 {
-	static constexpr uint16_t SPECFLAG_OVERFLOW = 0x0001;
-	static constexpr uint16_t SPECFLAG_UP       = 0x0002;
-	static constexpr uint16_t SPECFLAG_FMA      = 0x0004;
+	static constexpr SpecFlags SPECFLAG_OVERFLOW = 0x0001;
+	static constexpr SpecFlags SPECFLAG_UP       = 0x0002;
+	static constexpr SpecFlags SPECFLAG_FMA      = 0x0004;
 
 	AstNode* clone(CloneContext& context);
 };
 
 struct AstRange : AstNode
 {
-	static constexpr uint16_t SPECFLAG_EXCLUDE_UP = 0x0001;
+	static constexpr SpecFlags SPECFLAG_EXCLUDE_UP = 0x0001;
 
 	AstNode* clone(CloneContext& context);
 
@@ -1080,8 +1080,8 @@ struct AstRange : AstNode
 
 struct AstMakePointer : AstNode
 {
-	static constexpr uint16_t SPECFLAG_TO_REF   = 0x0001;
-	static constexpr uint16_t SPECFLAG_DEP_TYPE = 0x0002;
+	static constexpr SpecFlags SPECFLAG_TO_REF   = 0x0001;
+	static constexpr SpecFlags SPECFLAG_DEP_TYPE = 0x0002;
 
 	AstNode* clone(CloneContext& context);
 

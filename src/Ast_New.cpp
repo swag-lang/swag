@@ -15,12 +15,12 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
 	return node;
 }
 
-AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, AttributeFlags attributeFlags, Parser* parser)
+AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, SpecFlags specFlags, AttributeFlags attributeFlags, Parser* parser)
 {
 	const auto node   = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent);
 	node->semanticFct = Semantic::resolveAffect;
 	node->addAttribute(attributeFlags);
-	node->addSpecFlag(opFlags);
+	node->addSpecFlag(specFlags);
 	return node;
 }
 

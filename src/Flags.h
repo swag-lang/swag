@@ -3,12 +3,9 @@
 template<typename T>
 struct Flags
 {
-	T flags = 0;
+	Flags() = default;
 
-	Flags()  = default;
-	~Flags() = default;
-
-	Flags(const T other)
+	constexpr Flags(T other)
 		: flags{other}
 	{
 	}
@@ -22,4 +19,6 @@ struct Flags
 	Flags maskInvert(Flags fl) const { return flags & ~fl.flags; }
 	void  add(Flags fl) { flags |= fl.flags; }
 	void  remove(Flags fl) { flags &= ~fl.flags; }
+
+	T flags = 0;
 };

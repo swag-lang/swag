@@ -192,7 +192,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 			if (identifierFlags & IDENTIFIER_TYPE_DECL)
 				return context->report({identifier, token, Err(Err0482)});
 
-			uint16_t serial = 0;
+			SpecFlags serial = 0;
 			while (true)
 			{
 				Ast::removeFromParent(identifier);
@@ -204,7 +204,10 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 				identifier->addSpecFlag(serial);
 				if (token.id != TokenId::SymLeftSquare)
 					break;
-				serial ^= AstArrayPointerIndex::SPECFLAG_SERIAL;
+				if (serial.has(AstArrayPointerIndex::SPECFLAG_SERIAL))
+					serial.remove(AstArrayPointerIndex::SPECFLAG_SERIAL);
+				else
+					serial.add(AstArrayPointerIndex::SPECFLAG_SERIAL);
 			}
 
 			if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
