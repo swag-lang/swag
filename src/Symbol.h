@@ -79,8 +79,9 @@ enum class SymbolKind : uint8_t
 	PlaceHolder,
 };
 
-constexpr uint16_t SYMBOL_ATTRIBUTE_GEN = 0x0001;
-constexpr uint16_t SYMBOL_USED          = 0x0002;
+using SymbolFlags = Flags<uint16_t>;
+constexpr SymbolFlags SYMBOL_ATTRIBUTE_GEN = 0x0001;
+constexpr SymbolFlags SYMBOL_USED          = 0x0002;
 
 struct SymbolName
 {
@@ -93,7 +94,7 @@ struct SymbolName
 	void            addDependentJobNoLock(Job* job);
 	void            unregisterNode(const AstNode* node);
 
-	bool hasFlag(uint32_t fl) const { return flags & fl; }
+	bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
 
 	SharedMutex                   mutex;
 	VectorNative<SymbolOverload*> overloads;
@@ -106,8 +107,8 @@ struct SymbolName
 	uint32_t cptOverloads     = 0;
 	uint32_t cptOverloadsInit = 0;
 
-	uint32_t   cptIfBlock = 0;
-	uint16_t   flags      = 0;
-	SymbolKind kind       = SymbolKind::Invalid;
-	uint8_t    padding    = 0;
+	uint32_t    cptIfBlock = 0;
+	SymbolFlags flags      = 0;
+	SymbolKind  kind       = SymbolKind::Invalid;
+	uint8_t     padding    = 0;
 };

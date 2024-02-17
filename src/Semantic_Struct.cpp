@@ -714,7 +714,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
 	}
 
 	if (node->hasAttribute(ATTRIBUTE_GEN))
-		node->resolvedSymbolName->flags |= SYMBOL_ATTRIBUTE_GEN;
+		node->resolvedSymbolName->flags.add(SYMBOL_ATTRIBUTE_GEN);
 
 	AddSymbolTypeInfo toAdd;
 	toAdd.node     = node;

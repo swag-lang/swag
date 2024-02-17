@@ -41,7 +41,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
 		return;
 
 	if (funcDecl && funcDecl->resolvedSymbolName)
-		funcDecl->resolvedSymbolName->flags |= SYMBOL_USED;
+		funcDecl->resolvedSymbolName->flags.add(SYMBOL_USED);
 	if (bc)
 		bc->isUsed = true;
 

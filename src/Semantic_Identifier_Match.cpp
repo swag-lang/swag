@@ -577,11 +577,11 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
 	// Mark as used
 	if (symbol)
-		symbol->flags |= SYMBOL_USED;
+		symbol->flags.add(SYMBOL_USED);
 	if (dependentVar && dependentVar->resolvedSymbolName)
-		dependentVar->resolvedSymbolName->flags |= SYMBOL_USED;
+		dependentVar->resolvedSymbolName->flags.add(SYMBOL_USED);
 	if (dependentVar && dependentVar->resolvedSymbolOverload)
-		dependentVar->resolvedSymbolOverload->symbol->flags |= SYMBOL_USED;
+		dependentVar->resolvedSymbolOverload->symbol->flags.add(SYMBOL_USED);
 
 	auto prevNode = identifierRef->previousResolvedNode;
 

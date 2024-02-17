@@ -94,7 +94,7 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
 		{
 			SWAG_ASSERT(msg.node->resolvedSymbolName);
 			ScopedLock lk(msg.node->resolvedSymbolName->mutex);
-			msg.node->resolvedSymbolName->flags &= ~SYMBOL_ATTRIBUTE_GEN;
+			msg.node->resolvedSymbolName->flags.remove(SYMBOL_ATTRIBUTE_GEN);
 			msg.node->resolvedSymbolName->dependentJobs.setRunning();
 		}
 	}
