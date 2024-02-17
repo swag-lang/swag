@@ -36,7 +36,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 	const auto varNode = newVarDecl(sourceFile, FMT("__6tmp_%d", g_UniqueID.fetch_add(1)), fromNode->parent);
 
 	// The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
-	// Seems a little bit like a hack. Not sure this will always work.
+	// Seems a little bit like a hack. Not sure if this will always work.
 	// :ReverseLiteralStruct
 	fromNode->parent->addAstFlag(AST_REVERSE_SEMANTIC);
 
@@ -99,7 +99,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 			oneParam->autoTupleReturn = castAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
 	}
 
-	// For a tuple initialization, every parameters must be covered
+	// For a tuple initialization, every parameter must be covered
 	if (!fromType && typeStruct->isTuple())
 	{
 		const int maxCount = static_cast<int>(typeStruct->fields.size());
@@ -475,7 +475,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	typeNode->identifier->addAstFlag(AST_NO_SEMANTIC);
 	typeNode->identifier->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 
-	// If this is in a return expression, then force the identifier type to be retval
+	// If this is in a return expression, then force the identifier type to be "retval"
 	if (node->parent && node->parent->inSimpleReturn())
 		typeNode->typeFlags |= TYPEFLAG_IS_RETVAL;
 
@@ -496,7 +496,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 	identifierRef->startScope = nullptr;
 
 	// The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
-	// Seems a little bit like a hack. Not sure this will always work.
+	// Seems a little bit like a hack. Not sure if this will always work.
 	varParent->addAstFlag(AST_REVERSE_SEMANTIC);
 
 	// Add the 2 nodes to the semantic

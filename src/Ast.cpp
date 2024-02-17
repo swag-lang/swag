@@ -26,7 +26,7 @@ void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, Sou
 
 	if (parent)
 	{
-		// Count nodes (not precise). Just to have an hint on the number of bytecode instructions
+		// Count nodes (not precise). Just to have a hint on the number of bytecode instructions
 		if (parent->ownerFct)
 			parent->ownerFct->nodeCounts++;
 
@@ -347,7 +347,7 @@ Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function
 	auto result = fct(context, root);
 	if (result == Stop)
 		return Stop;
-	if (result == NoChilds)
+	if (result == NoChildren)
 		return Continue;
 
 	for (const auto child : root->children)

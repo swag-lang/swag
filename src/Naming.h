@@ -23,9 +23,9 @@ namespace Naming
 	Utf8 kindName(const TypeInfo* typeInfo);
 	Utf8 aKindName(const TypeInfo* typeInfo);
 
-	Utf8 kindName(AstNode* node, Utf8& article);
-	Utf8 kindName(AstNode* node);
-	Utf8 aKindName(AstNode* node);
+	Utf8 kindName(const AstNode* node, Utf8& article);
+	Utf8 kindName(const AstNode* node);
+	Utf8 aKindName(const AstNode* node);
 
 	Utf8 kindName(ScopeKind kind, Utf8& article);
 	Utf8 kindName(ScopeKind kind);

@@ -19,7 +19,7 @@ namespace Ast
 	{
 		Continue,
 		Stop,
-		NoChilds,
+		NoChildren,
 	};
 
 	void initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent);
@@ -61,11 +61,7 @@ namespace Ast
 	void     convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typeStruct);
 	bool     convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier);
 
-	bool generateMissingInterfaceFct(SemanticContext*            context,
-	                                 VectorNative<AstFuncDecl*>& mapItIdxToFunc,
-	                                 TypeInfoStruct*             typeStruct,
-	                                 const TypeInfoStruct*       typeBaseInterface,
-	                                 TypeInfoStruct*             typeInterface);
+	bool generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, const TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface);
 	bool generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
 
 	template<typename T>

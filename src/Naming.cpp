@@ -281,7 +281,7 @@ Utf8 Naming::aKindName(const TypeInfo* typeInfo)
 	return article;
 }
 
-Utf8 Naming::kindName(AstNode* node, Utf8& article)
+Utf8 Naming::kindName(const AstNode* node, Utf8& article)
 {
 	switch (node->kind)
 	{
@@ -344,8 +344,7 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
 	case AstNodeKind::Impl:
 		{
 			article        = "an";
-			const auto ast = castAst<AstImpl>(node, AstNodeKind::Impl);
-			if (ast->identifierFor)
+			if (const auto ast = castAst<AstImpl>(node, AstNodeKind::Impl); ast->identifierFor)
 				return "interface implementation block";
 			return "implementation block";
 		}
@@ -383,13 +382,13 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
 	return "node";
 }
 
-Utf8 Naming::kindName(AstNode* node)
+Utf8 Naming::kindName(const AstNode* node)
 {
 	Utf8 article;
 	return kindName(node, article);
 }
 
-Utf8 Naming::aKindName(AstNode* node)
+Utf8 Naming::aKindName(const AstNode* node)
 {
 	Utf8       article;
 	const auto result = kindName(node, article);

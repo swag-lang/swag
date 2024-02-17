@@ -115,7 +115,7 @@ bool AstOutput::outputFuncName(OutputContext& context, Concat& concat, const Ast
 	return true;
 }
 
-bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validif)
+bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validIf)
 {
 	ScopeExportNode sen(context, node);
 
@@ -178,11 +178,11 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 		CONCAT_FIXED_STR(concat, " assume");
 
 	// #validif must be exported
-	if (validif)
+	if (validIf)
 	{
 		context.indent++;
 		concat.addEolIndent(context.indent);
-		SWAG_CHECK(outputNode(context, concat, validif));
+		SWAG_CHECK(outputNode(context, concat, validIf));
 		context.indent--;
 	}
 
@@ -444,9 +444,9 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
 				if (done.contains(one.node))
 					continue;
 				done.insert(one.node);
-				bool hasSomehting = true;
 				concat.addIndent(context.indent);
-				SWAG_CHECK(outputAttrUse(context, concat, one.node, hasSomehting));
+				bool hasSomething = true;
+				SWAG_CHECK(outputAttrUse(context, concat, one.node, hasSomething));
 				concat.addEol();
 			}
 			else
@@ -491,12 +491,12 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
 bool AstOutput::outputAttributesGlobalUsing(const OutputContext& context, Concat& concat, const AstNode* node)
 {
 	// Global using
-	bool one         = false;
 	bool outputUsing = true;
 	if (node->hasAstFlag(AST_STRUCT_MEMBER))
 		outputUsing = false;
 	if (outputUsing)
 	{
+		bool one = false;
 		for (const auto& p : node->sourceFile->globalUsing)
 		{
 			if (p->getFullName() == "Swag")
@@ -798,8 +798,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
 	else
 	{
 		SWAG_ASSERT(node->kind == AstNodeKind::StructDecl);
-		const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
-		if (structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
+		if (const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl); structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION))
 			CONCAT_FIXED_STR(concat, "union");
 		else
 			CONCAT_FIXED_STR(concat, "struct");

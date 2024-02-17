@@ -200,18 +200,11 @@ void AstNode::release()
 	if (extension)
 		Allocator::free<NodeExtension>(extension);
 
-	// Prerelease, if we need to children to be alive
-	switch (kind)
+	// Pre-release, if we need to children to be alive
+	if (kind == AstNodeKind::FuncDecl)
 	{
-	case AstNodeKind::FuncDecl:
-		{
-			const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
-			if (funcDecl->content)
-				funcDecl->content->ownerScope->release();
-			break;
-		}
-	default:
-		break;
+		if (const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl); funcDecl->content)
+			funcDecl->content->ownerScope->release();
 	}
 
 	// Release children first
@@ -529,7 +522,7 @@ AstNode* AstNode::clone(CloneContext& context)
 				auto cloneContext        = context;
 				cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
 
-				// We need to register sub-decls
+				// We need to register sub declarations
 				// All of this is a hack, not cool
 				if (cloneContext.forceFlags.has(AST_IN_MIXIN))
 					cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
@@ -1207,8 +1200,7 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name) const
 		if (search->kind == AstNodeKind::AttrUse)
 		{
 			const auto attrDecl = castAst<AstAttrUse>(search, AstNodeKind::AttrUse);
-			const auto it       = attrDecl->attributes.getAttribute(name);
-			if (it)
+			if (const auto it = attrDecl->attributes.getAttribute(name))
 				return it->child ? it->child : it->node;
 		}
 
@@ -1279,8 +1271,7 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild) const
 
 		if (children[i]->children.count == fromChild->children[i]->children.count)
 		{
-			const auto result = children[i]->findChildRefRec(ref, fromChild->children[i]);
-			if (result)
+			if (const auto result = children[i]->findChildRefRec(ref, fromChild->children[i]))
 				return result;
 		}
 	}
