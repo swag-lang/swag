@@ -322,7 +322,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     case SwagTargetOs::Linux:
         osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin());
         break;
-    case SwagTargetOs::MacOSX:
+    case SwagTargetOs::MacOsX:
         osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin());
         break;
     default:
@@ -403,7 +403,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     modu.setDataLayout(targetMachine->createDataLayout());
 
     // Output file
-    auto targetPath = getCacheFolder(buildParameters);
+    auto targetPath = getCacheFolder();
     auto path       = targetPath;
     path.append(pp.filename);
     error_code                err;

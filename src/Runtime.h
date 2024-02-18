@@ -175,7 +175,7 @@ enum class SwagTargetOs : uint32_t
 {
     Windows,
     Linux,
-    MacOSX,
+    MacOsX,
 };
 
 enum class SwagRuntimeFlags : uint64_t

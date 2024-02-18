@@ -88,7 +88,7 @@ struct Backend
     bool                     mustCompile = true;
 
     static void setup();
-    static Path getCacheFolder(const BuildParameters& buildParameters);
+    static Path getCacheFolder();
     static Path getOutputFileName(const BackendTarget& target, const Utf8& name, BuildCfgOutputKind type);
 
     static Utf8           getObjectFileExtension(const BackendTarget& target);
@@ -96,5 +96,5 @@ struct Backend
     static BackendObjType getObjType(const BackendTarget& target);
     static const char*    getArchName(const BackendTarget& target);
     static const char*    getOsName(const BackendTarget& target);
-    static uint64_t       getRuntimeFlags(Module* module);
+    static uint64_t       getRuntimeFlags();
 };

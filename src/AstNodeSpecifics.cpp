@@ -1186,7 +1186,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
         const int  id      = g_UniqueID.fetch_add(1);
-        const Utf8 newName = "__cmpfunc" + to_string(id);
+        const Utf8 newName = R"(__cmpfunc)" + to_string(id);
 
         const auto func  = castAst<AstFuncDecl>(newNode->children.front(), AstNodeKind::FuncDecl);
         func->token.text = newName;

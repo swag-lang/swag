@@ -138,7 +138,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     emitInternalCallExt(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
 
     // Setup runtime
-    const auto rtFlags = getRuntimeFlags(module);
+    const auto rtFlags = getRuntimeFlags();
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
     emitInternalCallExt(pp, g_LangSpec->name_priv_setupRuntime, pp.pushParams);

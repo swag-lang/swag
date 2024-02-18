@@ -48,7 +48,7 @@ inline bool isOsDarwin(SwagTargetOs os)
 {
     switch (os)
     {
-    case SwagTargetOs::MacOSX:
+    case SwagTargetOs::MacOsX:
         return true;
     default:
         break;

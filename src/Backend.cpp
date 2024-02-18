@@ -58,7 +58,10 @@ void Backend::setup()
     g_CommandLine.libPaths.push_back(rtPath);
 }
 
-Path Backend::getCacheFolder(const BuildParameters& buildParameters) { return g_Workspace->cachePath; }
+Path Backend::getCacheFolder()
+{
+    return g_Workspace->cachePath;
+}
 
 void Backend::setMustCompile()
 {
@@ -211,7 +214,7 @@ BackendObjType Backend::getObjType(const BackendTarget& target)
     {
     case SwagTargetOs::Windows:
         return BackendObjType::Coff;
-    case SwagTargetOs::MacOSX:
+    case SwagTargetOs::MacOsX:
         return BackendObjType::MachO;
     case SwagTargetOs::Linux:
         return BackendObjType::Elf;
@@ -241,7 +244,7 @@ const char* Backend::getOsName(const BackendTarget& target)
         return "windows";
     case SwagTargetOs::Linux:
         return "linux";
-    case SwagTargetOs::MacOSX:
+    case SwagTargetOs::MacOsX:
         return "osx";
     }
 
@@ -249,7 +252,7 @@ const char* Backend::getOsName(const BackendTarget& target)
     return "?";
 }
 
-uint64_t Backend::getRuntimeFlags(Module* module)
+uint64_t Backend::getRuntimeFlags()
 {
     constexpr uint64_t flags = static_cast<uint64_t>(SwagRuntimeFlags::Zero);
     return flags;
@@ -405,7 +408,7 @@ bool Backend::generateOutput(const BuildParameters& buildParameters) const
     if (!mustCompile)
         return true;
 
-    const auto targetPath = getCacheFolder(buildParameters);
+    const auto targetPath = getCacheFolder();
     buildParameters.module->objFiles.reserve(numPreCompileBuffers);
     for (uint32_t i = 0; i < numPreCompileBuffers; i++)
     {

@@ -236,7 +236,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     const auto precompileIndex = buildParameters.precompileIndex;
     auto&      pp              = *static_cast<SCBE_CPU*>(perThread[ct][precompileIndex]);
 
-    auto path = getCacheFolder(buildParameters);
+    auto path = getCacheFolder();
     path.append(pp.filename);
     const auto filename = path;
 

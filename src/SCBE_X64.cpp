@@ -21,7 +21,7 @@ namespace
 
     uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
     {
-        return mod << 6 | (r & 0b111) << 3 | m & 0b111;
+        return mod << 6 | ((r & 0b111) << 3) | (m & 0b111);
     }
 
     void emit_REX(Concat& concat, CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX)
@@ -89,7 +89,7 @@ void SCBE_X64::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex,
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
     emit_REX(concat, CPUBits::B64, reg);
     concat.addU8(0x8D);
-    concat.addU8(0x05 | (reg & 0b111) << 3);
+    concat.addU8(0x05 | ((reg & 0b111)) << 3);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
@@ -99,7 +99,7 @@ void SCBE_X64::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
     emit_REX(concat, CPUBits::B64, reg);
     concat.addU8(0x8B);
-    concat.addU8(0x05 | (reg & 0b111) << 3);
+    concat.addU8(0x05 | ((reg & 0b111)) << 3);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
@@ -116,22 +116,22 @@ void SCBE_X64::emit_Symbol_GlobalString(CPURegister reg, const Utf8& str)
 void SCBE_X64::emit_Push(CPURegister reg)
 {
     if (reg < R8)
-        concat.addU8(0x50 | reg & 0b111);
+        concat.addU8(0x50 | (reg & 0b111));
     else
     {
         concat.addU8(getREX(false, false, false, true));
-        concat.addU8(0x50 | reg & 0b111);
+        concat.addU8(0x50 | (reg & 0b111));
     }
 }
 
 void SCBE_X64::emit_Pop(CPURegister reg)
 {
     if (reg < R8)
-        concat.addU8(0x58 | reg & 0b111);
+        concat.addU8(0x58 | (reg & 0b111));
     else
     {
         concat.addU8(getREX(false, false, false, true));
-        concat.addU8(0x58 | reg & 0b111);
+        concat.addU8(0x58 | (reg & 0b111));
     }
 }
 
@@ -545,7 +545,7 @@ void SCBE_X64::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force
     if (value <= 0x7FFFFFFF)
     {
         concat.addU8(0xC7);
-        concat.addU8(0xC0 | reg & 0b111);
+        concat.addU8(0xC0 | (reg & 0b111));
         concat.addU32(static_cast<uint32_t>(value));
     }
     else
@@ -635,7 +635,7 @@ void SCBE_X64::emit_SetA(CPURegister reg)
         concat.addU8(0x41);
     concat.addU8(0x0F);
     concat.addU8(0x97);
-    concat.addU8(0xC0 | reg & 0b111);
+    concat.addU8(0xC0 | (reg & 0b111));
 }
 
 void SCBE_X64::emit_SetAE(CPURegister reg)
@@ -645,7 +645,7 @@ void SCBE_X64::emit_SetAE(CPURegister reg)
         concat.addU8(0x41);
     concat.addU8(0x0F);
     concat.addU8(0x93);
-    concat.addU8(0xC0 | reg & 0b111);
+    concat.addU8(0xC0 | (reg & 0b111));
 }
 
 void SCBE_X64::emit_SetG(CPURegister reg)
@@ -655,7 +655,7 @@ void SCBE_X64::emit_SetG(CPURegister reg)
         concat.addU8(0x41);
     concat.addU8(0x0F);
     concat.addU8(0x9F);
-    concat.addU8(0xC0 | reg & 0b111);
+    concat.addU8(0xC0 | (reg & 0b111));
 }
 
 void SCBE_X64::emit_SetNE()
@@ -2176,7 +2176,7 @@ void SCBE_X64::emit_Call_Indirect(CPURegister reg)
     if (reg == R10)
         concat.addU8(0x41);
     concat.addU8(0xFF);
-    concat.addU8(0xD0 | reg & 0b111);
+    concat.addU8(0xD0 | (reg & 0b111));
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -2209,7 +2209,7 @@ void SCBE_X64::emit_NotN(CPURegister reg, CPUBits numBits)
         concat.addU8(0xF6);
     else
         concat.addU8(0xF7);
-    concat.addU8(0xD0 | reg & 0b111);
+    concat.addU8(0xD0 | (reg & 0b111));
 }
 
 void SCBE_X64::emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits)
@@ -2263,7 +2263,7 @@ void SCBE_X64::emit_NegN(CPURegister reg, CPUBits numBits)
 
     emit_REX(concat, numBits);
     concat.addU8(0xF7);
-    concat.addU8(0xD8 | reg & 0b111);
+    concat.addU8(0xD8 | (reg & 0b111));
 }
 
 void SCBE_X64::emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits)

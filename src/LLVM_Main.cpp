@@ -174,7 +174,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 
     // __setupRuntime
     {
-        auto rtFlags = builder.getInt64(getRuntimeFlags(module));
+        auto rtFlags = builder.getInt64(getRuntimeFlags());
         emitCall(buildParameters, g_LangSpec->name_priv_setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
     }
 
