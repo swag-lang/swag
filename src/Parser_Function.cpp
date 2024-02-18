@@ -230,9 +230,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
         {
             const auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->typeFlags |= TYPEFLAG_IS_SELF;
+            typeNode->typeFlags.add(TYPEFLAG_IS_SELF);
             if (paramNode->hasAstFlag(AST_DECL_USING))
-                typeNode->typeFlags |= TYPEFLAG_HAS_USING;
+                typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
@@ -240,10 +240,10 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Err(Err0470)));
             const auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
-            typeNode->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
+            typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
+            typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
             if (paramNode->hasAstFlag(AST_DECL_USING))
-                typeNode->typeFlags |= TYPEFLAG_HAS_USING;
+                typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }
@@ -453,11 +453,11 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
             paramNode->token.text = g_LangSpec->name_self;
             const auto typeNode   = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
+            typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
             if (!isItfMethod)
-                typeNode->typeFlags |= TYPEFLAG_HAS_USING;
+                typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
             if (isConstMethod)
-                typeNode->typeFlags |= TYPEFLAG_IS_CONST;
+                typeNode->typeFlags.add(TYPEFLAG_IS_CONST);
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }

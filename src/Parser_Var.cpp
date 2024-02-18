@@ -352,7 +352,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         if (type && type->kind == AstNodeKind::TypeExpression)
         {
             auto typeExpression = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
-            while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+            while (typeExpression->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
                 typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
 
             if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)

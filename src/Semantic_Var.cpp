@@ -1039,7 +1039,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+        while (typeExpression->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
             typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
         auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
 
@@ -1209,7 +1209,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (node->type && node->type->kind == AstNodeKind::TypeExpression)
         {
             auto typeExpr = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-            if (typeExpr->typeFlags & TYPEFLAG_IS_RETVAL)
+            if (typeExpr->typeFlags.has(TYPEFLAG_IS_RETVAL))
             {
                 auto ownerFct   = getFunctionForReturn(node);
                 auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);

@@ -767,7 +767,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, const AstVarDe
     }
 
     const bool isSelf = varNode->token.text == g_LangSpec->name_self;
-    if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags & TYPEFLAG_IS_CONST)
+    if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPEFLAG_IS_CONST))
     {
         CONCAT_FIXED_STR(concat, "const ");
     }
@@ -873,7 +873,7 @@ bool AstOutput::outputTypeTuple(OutputContext& context, Concat& concat, TypeInfo
 
 bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpression* node)
 {
-    if (node->typeFlags & TYPEFLAG_IS_RETVAL)
+    if (node->typeFlags.has(TYPEFLAG_IS_RETVAL))
     {
         CONCAT_FIXED_STR(concat, "retval");
         return true;
@@ -913,7 +913,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         }
     }
 
-    if (node->typeFlags & TYPEFLAG_IS_CONST)
+    if (node->typeFlags.has(TYPEFLAG_IS_CONST))
         CONCAT_FIXED_STR(concat, "const ");
 
     if (node->arrayDim == UINT8_MAX)
@@ -938,21 +938,21 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         return true;
     }
 
-    if (node->typeFlags & TYPEFLAG_IS_SLICE)
+    if (node->typeFlags.has(TYPEFLAG_IS_SLICE))
     {
         CONCAT_FIXED_STR(concat, "[..] ");
         SWAG_CHECK(outputNode(context, concat, node->children.front()));
         return true;
     }
 
-    if (node->typeFlags & TYPEFLAG_IS_PTR && node->typeFlags & TYPEFLAG_IS_PTR_ARITHMETIC)
+    if (node->typeFlags.has(TYPEFLAG_IS_PTR) && node->typeFlags.has(TYPEFLAG_IS_PTR_ARITHMETIC))
     {
         concat.addChar('^');
         SWAG_CHECK(outputNode(context, concat, node->children.front()));
         return true;
     }
 
-    if (node->typeFlags & TYPEFLAG_IS_PTR)
+    if (node->typeFlags.has(TYPEFLAG_IS_PTR))
     {
         concat.addChar('*');
         SWAG_CHECK(outputNode(context, concat, node->children.front()));

@@ -803,20 +803,21 @@ struct AstType : AstNode
     static constexpr SpecFlags SPEC_FLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
 };
 
-constexpr uint16_t TYPEFLAG_IS_ARRAY          = 0x0001;
-constexpr uint16_t TYPEFLAG_IS_SLICE          = 0x0002;
-constexpr uint16_t TYPEFLAG_IS_CONST          = 0x0004;
-constexpr uint16_t TYPEFLAG_IS_CODE           = 0x0008;
-constexpr uint16_t TYPEFLAG_FORCE_CONST       = 0x0010;
-constexpr uint16_t TYPEFLAG_IS_SELF           = 0x0020;
-constexpr uint16_t TYPEFLAG_IS_RETVAL         = 0x0040;
-constexpr uint16_t TYPEFLAG_HAS_USING         = 0x0080;
-constexpr uint16_t TYPEFLAG_IS_REF            = 0x0100;
-constexpr uint16_t TYPEFLAG_IS_MOVE_REF       = 0x0200;
-constexpr uint16_t TYPEFLAG_IS_PTR            = 0x0400;
-constexpr uint16_t TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
-constexpr uint16_t TYPEFLAG_IS_SUB_TYPE       = 0x1000;
-constexpr uint16_t TYPEFLAG_HAS_LOC_CONST     = 0x2000;
+using TypeFlags = Flags<uint16_t>;
+constexpr TypeFlags TYPEFLAG_IS_ARRAY          = 0x0001;
+constexpr TypeFlags TYPEFLAG_IS_SLICE          = 0x0002;
+constexpr TypeFlags TYPEFLAG_IS_CONST          = 0x0004;
+constexpr TypeFlags TYPEFLAG_IS_CODE           = 0x0008;
+constexpr TypeFlags TYPEFLAG_FORCE_CONST       = 0x0010;
+constexpr TypeFlags TYPEFLAG_IS_SELF           = 0x0020;
+constexpr TypeFlags TYPEFLAG_IS_RETVAL         = 0x0040;
+constexpr TypeFlags TYPEFLAG_HAS_USING         = 0x0080;
+constexpr TypeFlags TYPEFLAG_IS_REF            = 0x0100;
+constexpr TypeFlags TYPEFLAG_IS_MOVE_REF       = 0x0200;
+constexpr TypeFlags TYPEFLAG_IS_PTR            = 0x0400;
+constexpr TypeFlags TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
+constexpr TypeFlags TYPEFLAG_IS_SUB_TYPE       = 0x1000;
+constexpr TypeFlags TYPEFLAG_HAS_LOC_CONST     = 0x2000;
 
 struct AstTypeExpression : AstType
 {
@@ -830,7 +831,7 @@ struct AstTypeExpression : AstType
     TypeInfo* typeFromLiteral;
 
     LiteralType literalType;
-    uint16_t    typeFlags;
+    TypeFlags   typeFlags;
     uint8_t     arrayDim;
 };
 

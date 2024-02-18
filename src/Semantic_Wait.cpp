@@ -310,13 +310,13 @@ bool Semantic::needToCompleteSymbol(SemanticContext* context, const AstIdentifie
     if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
     {
         auto typeExprNode = castAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
-        if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+        if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
             return false;
 
         if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
         {
             typeExprNode = castAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
-            if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+            if (typeExprNode->typeFlags.has(TYPEFLAG_IS_PTR))
                 return false;
         }
     }

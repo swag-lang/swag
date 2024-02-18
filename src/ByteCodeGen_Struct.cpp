@@ -1313,7 +1313,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
         const auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto       typeId         = typeExpression;
-        while (typeId->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+        while (typeId->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
             typeId = castAst<AstTypeExpression>(typeId->children.back(), AstNodeKind::TypeExpression);
         const auto identifier = castAst<AstIdentifier>(typeId->identifier->children.back(), AstNodeKind::Identifier);
 
@@ -1368,7 +1368,7 @@ void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
     if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
+        while (typeExpression->typeFlags.has(TYPEFLAG_IS_SUB_TYPE))
             typeExpression = castAst<AstTypeExpression>(typeExpression->children.back(), AstNodeKind::TypeExpression);
         const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->children.back(), AstNodeKind::Identifier);
         if (identifier->callParameters)
