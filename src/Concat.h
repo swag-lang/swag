@@ -7,8 +7,8 @@ struct ConcatBucket
 {
     uint8_t*      data       = nullptr;
     ConcatBucket* nextBucket = nullptr;
-    int           countBytes = 0;
-    int           capacity   = 0;
+    uint32_t      countBytes = 0;
+    uint32_t      capacity   = 0;
 };
 
 struct Concat
@@ -16,7 +16,7 @@ struct Concat
     void init(int size = 32 * 1024);
     void clear();
     void release();
-    void ensureSpace(int numBytes);
+    void ensureSpace(uint32_t numBytes);
     void align(uint32_t align);
 
     bool hasEnoughSpace(uint32_t numBytes) const;
@@ -71,10 +71,10 @@ struct Concat
     {
         if (!lastBucket)
             return 0;
-        return totalCountBytes + static_cast<int>(currentSP - lastBucket->data);
+        return totalCountBytes + static_cast<uint32_t>(currentSP - lastBucket->data);
     }
 
-    uint8_t* getPtr(int seek) const
+    uint8_t* getPtr(uint32_t seek) const
     {
         SWAG_ASSERT(firstBucket);
         auto ptr = firstBucket;
@@ -82,7 +82,7 @@ struct Concat
         {
             if (ptr == lastBucket)
             {
-                SWAG_ASSERT(seek < static_cast<int>(currentSP - lastBucket->data));
+                SWAG_ASSERT(seek < static_cast<uint32_t>(currentSP - lastBucket->data));
                 return lastBucket->data + seek;
             }
 
@@ -97,7 +97,7 @@ struct Concat
     {
         if (b != lastBucket)
             return b->countBytes;
-        const auto count = static_cast<int>(currentSP - lastBucket->data);
+        const auto count = static_cast<uint32_t>(currentSP - lastBucket->data);
         SWAG_ASSERT(count <= bucketSize);
         return count;
     }
@@ -106,8 +106,8 @@ struct Concat
     ConcatBucket* lastBucket  = nullptr;
     uint8_t*      currentSP   = nullptr;
 
-    int      bucketSize      = 0;
-    int      eolCount        = 0;
+    uint32_t bucketSize      = 0;
+    uint32_t eolCount        = 0;
     uint32_t totalCountBytes = 0;
 };
 

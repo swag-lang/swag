@@ -16,7 +16,7 @@ void Concat::init(int size)
 
     bucketSize            = size;
     firstBucket           = Allocator::alloc<ConcatBucket>();
-    firstBucket->data     = bucketSize ? static_cast<uint8_t*>(Allocator::alloc(bucketSize)) : nullptr;
+    firstBucket->data     = bucketSize ? Allocator::alloc_n<uint8_t>(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
 #ifdef SWAG_STATS
@@ -61,13 +61,13 @@ void Concat::align(uint32_t align)
 
 bool Concat::hasEnoughSpace(uint32_t numBytes) const
 {
-    const auto count = static_cast<int>(currentSP - lastBucket->data);
-    return lastBucket->capacity - count >= static_cast<int>(numBytes);
+    const auto count = static_cast<uint32_t>(currentSP - lastBucket->data);
+    return lastBucket->capacity - count >= numBytes;
 }
 
-void Concat::ensureSpace(int numBytes)
+void Concat::ensureSpace(uint32_t numBytes)
 {
-    const auto count = static_cast<int>(currentSP - lastBucket->data);
+    const auto count = static_cast<uint32_t>(currentSP - lastBucket->data);
     if (count + numBytes <= lastBucket->capacity)
         return;
 
@@ -92,8 +92,8 @@ void Concat::ensureSpace(int numBytes)
     lastBucket             = newBucket;
 
     lastBucket->capacity = max(numBytes, bucketSize);
-    lastBucket->capacity = static_cast<int>(Allocator::alignSize(lastBucket->capacity));
-    lastBucket->data     = static_cast<uint8_t*>(Allocator::alloc(lastBucket->capacity));
+    lastBucket->capacity = Allocator::alignSize(lastBucket->capacity);
+    lastBucket->data     = Allocator::alloc_n<uint8_t>(lastBucket->capacity);
 
 #ifdef SWAG_STATS
     g_Stats.memConcat += sizeof(ConcatBucket);
@@ -351,12 +351,12 @@ bool Concat::flushToFile(const Path& path)
     auto bucket = firstBucket;
     while (bucket != lastBucket->nextBucket)
     {
-        fwrite(bucket->data, 1, bucketCount(bucket), f);
+        (void) fwrite(bucket->data, 1, bucketCount(bucket), f);
         bucket = bucket->nextBucket;
     }
 
-    fflush(f);
-    fclose(f);
+    (void) fflush(f);
+    (void) fclose(f);
     OS::ensureFileIsWritten(path.string().c_str());
 
     clear();

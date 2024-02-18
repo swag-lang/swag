@@ -534,7 +534,7 @@ void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
         sv.value.u64 = *reinterpret_cast<uint64_t*>(address);
         break;
     default:
-        sv.value.pointer = static_cast<uint8_t*>(Allocator::alloc(Allocator::alignSize(size)));
+        sv.value.pointer = Allocator::alloc_n<uint8_t>(size);
         std::copy_n(address, size, sv.value.pointer);
         break;
     }
@@ -548,7 +548,7 @@ void DataSegment::restoreAllValues()
     {
         if (one.second.value.u64 == 0)
         {
-            memset(one.first, 0, one.second.size);
+            std::fill_n(one.first, one.second.size, 0);
             continue;
         }
 
@@ -568,7 +568,7 @@ void DataSegment::restoreAllValues()
             break;
         default:
             std::copy_n(one.second.value.pointer, one.second.size, one.first);
-            Allocator::free(one.second.value.pointer, Allocator::alignSize(one.second.size));
+            Allocator::free_n(one.second.value.pointer, one.second.size);
             break;
         }
     }
@@ -580,7 +580,7 @@ void DataSegment::release()
 {
     deleted = true;
     for (const auto& b : buckets)
-        Allocator::free(b.buffer, Allocator::alignSize(b.size));
+        Allocator::free_n(b.buffer, b.size);
     buckets.clear();
 }
 
@@ -591,16 +591,16 @@ void DataSegment::makeLinear()
         return;
 
     Bucket h;
-    h.count  = static_cast<uint32_t>(Allocator::alignSize(totalCount));
+    h.count  = Allocator::alignSize(totalCount);
     h.size   = h.count;
-    h.buffer = static_cast<uint8_t*>(Allocator::alloc(h.count));
+    h.buffer = Allocator::alloc_n<uint8_t>(h.count);
 
     auto ptr = h.buffer;
     for (const auto& b : buckets)
     {
-        memcpy(ptr, b.buffer, b.count);
+        std::copy_n(b.buffer, b.count, ptr);
         ptr += b.count;
-        Allocator::free(b.buffer, b.count);
+        Allocator::free_n<uint8_t>(b.buffer, b.count);
     }
 
     buckets.clear();

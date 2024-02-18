@@ -22,16 +22,29 @@ struct Allocator
     }
 
     template<typename T>
+    static T* alloc_n(uint32_t n)
+    {
+        return static_cast<T*>(alloc(alignSize(n * sizeof(T))));
+    }
+
+    template<typename T>
     static void free(void* ptr)
     {
         static_cast<T*>(ptr)->~T();
         free(ptr, alignSize(sizeof(T)));
     }
 
+    template<typename T>
+    static void free_n(T* ptr, uint32_t n)
+    {
+        return free(ptr, alignSize(n * sizeof(T)));
+    }
+
     static void* alloc(size_t size, size_t align = sizeof(void*));
     static void  free(void*, size_t size);
 
-    static size_t alignSize(size_t size) { return size + 7 & ~7; }
+    static size_t   alignSize(size_t size) { return size + 7 & ~7; }
+    static uint32_t alignSize(uint32_t size) { return size + 7 & ~7; }
 
 #ifdef SWAG_CHECK_MEMORY
     static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);
