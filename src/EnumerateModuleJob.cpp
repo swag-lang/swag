@@ -206,7 +206,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     }
 
     // Add the config file, second pass
-    if (const auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name))
+    if (g_ModuleCfgMgr->getCfgModule(theModule->name))
     {
         auto cfgFile = theModule->path;
         cfgFile      = ModuleDepManager::getAliasPath(cfgFile);

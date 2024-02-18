@@ -21,20 +21,18 @@ void compileString(Module* module, const char* str, uint32_t count)
     module->compileString(text);
 }
 
-using cb = void* (*)(Module*);
-
 namespace
 {
-    cb itfTable[] = {
-        static_cast<cb>(getMessage),
-        static_cast<cb>(getBuildCfg),
-        reinterpret_cast<cb>(compileString),
+    void* g_ItfTable[] = {
+        reinterpret_cast<void*>(getMessage),
+        reinterpret_cast<void*>(getBuildCfg),
+        reinterpret_cast<void*>(compileString),
     };
 }
 
 void* getCompilerItf(Module* module)
 {
     module->compilerItf[0] = module;
-    module->compilerItf[1] = itfTable;
+    module->compilerItf[1] = g_ItfTable;
     return &module->compilerItf;
 }

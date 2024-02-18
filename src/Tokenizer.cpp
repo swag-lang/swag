@@ -71,20 +71,20 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
 
 void Tokenizer::saveState(const TokenParse& token)
 {
-    st_token               = token;
-    st_curBuffer           = curBuffer;
-    st_location            = location;
-    st_forceLastTokenIsEOL = forceLastTokenIsEOL;
-    st_comment             = comment;
+    savedToken               = token;
+    savedCurBuffer           = curBuffer;
+    savedLocation            = location;
+    savedForceLastTokenIsEOL = forceLastTokenIsEOL;
+    savedComment             = comment;
 }
 
 void Tokenizer::restoreState(TokenParse& token)
 {
-    token               = st_token;
-    curBuffer           = st_curBuffer;
-    location            = st_location;
-    forceLastTokenIsEOL = st_forceLastTokenIsEOL;
-    comment             = st_comment;
+    token               = savedToken;
+    curBuffer           = savedCurBuffer;
+    location            = savedLocation;
+    forceLastTokenIsEOL = savedForceLastTokenIsEOL;
+    comment             = savedComment;
 }
 
 uint32_t Tokenizer::peekChar(unsigned& offset) const

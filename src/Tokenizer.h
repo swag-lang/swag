@@ -150,9 +150,9 @@ struct Tokenizer
     bool          propagateComment    = false;
     bool          idLetters[256]      = {false};
 
-    TokenParse     st_token;
-    char*          st_curBuffer = nullptr;
-    SourceLocation st_location;
-    bool           st_forceLastTokenIsEOL = false;
-    Utf8           st_comment;
+    Utf8           savedComment;
+    TokenParse     savedToken;
+    SourceLocation savedLocation;
+    char*          savedCurBuffer           = nullptr;
+    bool           savedForceLastTokenIsEOL = false;
 };

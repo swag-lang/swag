@@ -258,8 +258,8 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
         break;
     }
 
-    fflush(f);
-    fclose(f);
+    (void) fflush(f);
+    (void) fclose(f);
     OS::ensureFileIsWritten(filename.string().c_str());
 
     pp.concat.release();

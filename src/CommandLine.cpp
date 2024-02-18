@@ -9,14 +9,14 @@ CommandLine g_CommandLine;
 bool CommandLine::check()
 {
     // Stack
-    limitStackRT = static_cast<uint32_t>(Allocator::alignSize(limitStackRT));
+    limitStackRT = Allocator::alignSize(limitStackRT);
     if (limitStackRT < SWAG_LIMIT_MIN_STACK || limitStackRT > SWAG_LIMIT_MAX_STACK)
     {
         Report::error(FMT(Err(Fat0006), Utf8::toNiceSize(limitStackRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
-    limitStackBC = static_cast<uint32_t>(Allocator::alignSize(limitStackBC));
+    limitStackBC = Allocator::alignSize(limitStackBC);
     if (limitStackBC < SWAG_LIMIT_MIN_STACK || limitStackBC > SWAG_LIMIT_MAX_STACK)
     {
         Report::error(FMT(Err(Fat0006), Utf8::toNiceSize(limitStackBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));

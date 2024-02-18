@@ -37,9 +37,9 @@ bool SaveGenJob::flush(Module* module)
             return false;
         }
 
-        fwrite(module->contentJobGeneratedFile[idx].c_str(), module->contentJobGeneratedFile[idx].length(), 1, h);
-        fflush(h);
-        fclose(h);
+        (void) fwrite(module->contentJobGeneratedFile[idx].c_str(), module->contentJobGeneratedFile[idx].length(), 1, h);
+        (void) fflush(h);
+        (void) fclose(h);
         module->contentJobGeneratedFile[idx].clear();
     }
 

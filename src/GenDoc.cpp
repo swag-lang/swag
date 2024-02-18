@@ -1321,7 +1321,7 @@ void GenDoc::constructPage()
         helpOutput += "<div class=\"swag-watermark\">\n";
         const time_t t = time(nullptr);
         tm           nt;
-        localtime_s(&nt, &t);
+        (void) localtime_s(&nt, &t);
         std::ostringstream oss;
         oss << std::put_time(&nt, "%d-%m-%Y");
         const string dateTime = oss.str();
@@ -1517,10 +1517,10 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
     {
         Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
-        fclose(f);
+        (void) fclose(f);
         return false;
     }
 
-    fclose(f);
+    (void) fclose(f);
     return true;
 }

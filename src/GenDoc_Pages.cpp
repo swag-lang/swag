@@ -69,11 +69,11 @@ bool GenDoc::generatePages()
         if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
         {
             Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
-            fclose(f);
+            (void) fclose(f);
             return false;
         }
 
-        fclose(f);
+        (void) fclose(f);
     }
 
     return true;

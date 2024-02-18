@@ -4417,6 +4417,4 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
             return false;
         }
     }
-
-    return true;
 }

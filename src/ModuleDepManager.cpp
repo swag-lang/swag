@@ -91,8 +91,8 @@ void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dir
         registerCfgFile(file);
 }
 
-// If there is an 'alias' file in the source folder, then we redirect the souce path with the content.
-// That way, we can have a normal "dependencies" hierarchy, but with the source code comming from elsewhere.
+// If there is an 'alias' file in the source folder, then we redirect the source path with the content.
+// That way, we can have a normal "dependencies" hierarchy, but with the source code coming from elsewhere.
 // For example the 'std' workspace
 Path ModuleDepManager::getAliasPath(const Path& srcPath)
 {
@@ -105,8 +105,8 @@ Path ModuleDepManager::getAliasPath(const Path& srcPath)
         if (!fopen_s(&f, p.string().c_str(), "rt"))
         {
             char in[MAX_PATH];
-            fgets(in, MAX_PATH, f);
-            fclose(f);
+            (void) fgets(in, MAX_PATH, f);
+            (void) fclose(f);
             return in;
         }
     }
@@ -175,7 +175,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     destPath.append(cfgFileName);
     if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
     {
-        fclose(fsrc);
+        (void) fclose(fsrc);
         return Report::report({dep->node, dep->tokenLocation, FMT(Err(Err0089), SWAG_CFG_FILE, dep->name.c_str())});
     }
 
@@ -190,9 +190,9 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
             break;
     }
 
-    fclose(fsrc);
-    fflush(fdest);
-    fclose(fdest);
+    (void) fclose(fsrc);
+    (void) fflush(fdest);
+    (void) fclose(fdest);
 
     return true;
 }
@@ -666,9 +666,9 @@ bool ModuleDepManager::execute()
                 if (!fopen_s(&f, pathSrc.string().c_str(), "wt"))
                 {
                     auto pathDst = val->fetchDep->resolvedLocation;
-                    fwrite(pathDst.string().c_str(), pathDst.string().length(), 1, f);
-                    fflush(f);
-                    fclose(f);
+                    (void) fwrite(pathDst.string().c_str(), pathDst.string().length(), 1, f);
+                    (void) fflush(f);
+                    (void) fclose(f);
                 }
 
                 fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
