@@ -1199,7 +1199,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
         node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if (node->hasAstFlag(AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
+    if (node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
     if (checkForConcrete & !node->hasAstFlag(AST_OP_AFFECT_CAST))

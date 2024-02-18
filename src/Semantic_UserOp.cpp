@@ -618,7 +618,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         literal.kind                  = AstNodeKind::Literal;
         literal.computedValue()->text = opConst ? opConst : "";
         literal.typeInfo              = opType ? opType : g_TypeMgr->typeInfoString;
-        literal.addAstFlag(AST_VALUE_COMPUTED | AST_CONST_EXPR);
+        literal.addAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR);
         symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclParams;
         genericParameters = &parameters;
@@ -733,7 +733,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         }
                         else if (makePtrL->typeInfo->isPointerNull())
                         {
-                            nodeCall->removeAstFlag(AST_VALUE_COMPUTED);
+                            nodeCall->removeAstFlag(AST_COMPUTED_VALUE);
                             makePtrL->addAstFlag(AST_NO_BYTECODE);
                             Ast::removeFromParent(makePtrL);
                             varNode->allocateExtension(ExtensionKind::Owner);

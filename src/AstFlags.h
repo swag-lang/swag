@@ -3,7 +3,7 @@
 
 using AstNodeFlags = Flags<uint64_t>;
 constexpr AstNodeFlags AST_CONST_EXPR                 = 0x00000000'00000001;
-constexpr AstNodeFlags AST_VALUE_COMPUTED             = 0x00000000'00000002;
+constexpr AstNodeFlags AST_COMPUTED_VALUE             = 0x00000000'00000002;
 constexpr AstNodeFlags AST_GLOBAL_NODE                = 0x00000000'00000004;
 constexpr AstNodeFlags AST_IN_VALIDIF                 = 0x00000000'00000008;
 constexpr AstNodeFlags AST_IN_MIXIN                   = 0x00000000'00000010;

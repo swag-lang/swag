@@ -695,21 +695,30 @@ void AstNode::allocateComputedValue()
     }
 }
 
+void AstNode::releaseComputedValue()
+{
+    if (!hasComputedValue())
+        return;
+    removeAstFlag(AST_COMPUTED_VALUE);
+    Allocator::free<ComputedValue>(computedValue());
+    extSemantic()->computedValue = nullptr;
+}
+
 void AstNode::setFlagsValueIsComputed()
 {
     allocateComputedValue();
-    addAstFlag(AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE);
+    addAstFlag(AST_CONST_EXPR | AST_COMPUTED_VALUE | AST_R_VALUE);
 }
 
 void AstNode::inheritComputedValue(const AstNode* from)
 {
     if (!from)
         return;
-    inheritAstFlagsOr(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
-    if (hasComputedValue())
+    inheritAstFlagsOr(from, AST_COMPUTED_VALUE | AST_VALUE_IS_GEN_TYPEINFO);
+    if (hasAstFlag(AST_COMPUTED_VALUE))
     {
-        addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
         SWAG_ASSERT(from->computedValue());
+        addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
         allocateExtension(ExtensionKind::Semantic);
         extSemantic()->computedValue = from->extSemantic()->computedValue;
     }
@@ -717,7 +726,13 @@ void AstNode::inheritComputedValue(const AstNode* from)
 
 bool AstNode::hasComputedValue() const
 {
-    return hasAstFlag(AST_VALUE_COMPUTED);
+    if (hasAstFlag(AST_COMPUTED_VALUE))
+    {
+        SWAG_ASSERT(computedValue());
+        return true;
+    }
+
+    return false;
 }
 
 bool AstNode::isConstantGenTypeInfo() const

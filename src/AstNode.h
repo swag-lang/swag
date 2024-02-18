@@ -291,6 +291,7 @@ struct AstNode
     void inheritOwnersAndFlags(const Parser* parser);
 
     void              allocateComputedValue();
+    void              releaseComputedValue();
     void              setFlagsValueIsComputed();
     void              inheritComputedValue(const AstNode* from);
     bool              hasComputedValue() const;

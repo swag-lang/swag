@@ -906,7 +906,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // #validif is evaluated once, so keep it.
     if (funcDecl->validIf->kind == AstNodeKind::CompilerValidIfx)
-        expr->removeAstFlag(AST_VALUE_COMPUTED);
+        expr->removeAstFlag(AST_COMPUTED_VALUE);
 
     if (!expr->hasComputedValue())
     {

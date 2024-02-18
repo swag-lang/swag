@@ -490,9 +490,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                         node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
                     else
                         node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
-                    Allocator::free<ComputedValue>(node->computedValue());
-                    node->removeAstFlag(AST_VALUE_COMPUTED);
-                    node->extSemantic()->computedValue = nullptr;
+                    node->releaseComputedValue();
                 }
             }
 

@@ -115,7 +115,7 @@ JobResult SemanticJob::execute()
         // To be sure that a bytecode job is not running on those nodes !
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
             node->bytecodeState == AstNodeResolveState::PostChildren ||
-            node->hasAstFlag(AST_VALUE_COMPUTED | AST_CONST_EXPR));
+            node->hasAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR));
 
         // Some attribute flags must propagate from parent to children, whatever
         Semantic::inheritAttributesFromParent(node);

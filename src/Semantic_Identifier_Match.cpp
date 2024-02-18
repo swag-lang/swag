@@ -232,7 +232,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                     context->baseJob->nodes.push_back(idNode);
                     context->baseJob->nodes.push_back(varNode);
-                    nodeCall->removeAstFlag(AST_VALUE_COMPUTED);
+                    nodeCall->removeAstFlag(AST_COMPUTED_VALUE);
 
                     context->result = ContextResult::NewChildren;
                     return true;
@@ -297,7 +297,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 }
                 else if (makePtrL->typeInfo->isPointerNull())
                 {
-                    nodeCall->removeAstFlag(AST_VALUE_COMPUTED);
+                    nodeCall->removeAstFlag(AST_COMPUTED_VALUE);
                     makePtrL->addAstFlag(AST_NO_BYTECODE);
                     Ast::removeFromParent(makePtrL);
                     varNode->allocateExtension(ExtensionKind::Owner);

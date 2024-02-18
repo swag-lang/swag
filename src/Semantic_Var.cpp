@@ -181,7 +181,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
 
         node->removeAstFlag(AST_NO_BYTECODE);
-        node->removeAstFlag(AST_VALUE_COMPUTED);
+        node->removeAstFlag(AST_COMPUTED_VALUE);
         node->assignment->removeAstFlag(AST_NO_BYTECODE);
         node->addAstFlag(AST_CONST_EXPR);
         node->addSemFlag(SEMFLAG_EXEC_RET_STACK);
@@ -346,7 +346,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     identifier->callParameters->inheritAstFlagsOr(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
     identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-    typeExpression->removeAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN | AST_VALUE_COMPUTED);
+    typeExpression->removeAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN | AST_COMPUTED_VALUE);
     typeExpression->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
 
     Ast::removeFromParent(varDecl->assignment);

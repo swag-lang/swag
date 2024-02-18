@@ -2536,9 +2536,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             {
                 if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                 {
-                    fromNode->removeAstFlag(AST_VALUE_COMPUTED);
-                    fromNode->removeAstFlag(AST_CONST_EXPR);
-                    fromNode->removeAstFlag(AST_NO_BYTECODE_CHILDREN);
+                    fromNode->removeAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDREN);
                     fromNode->extSemantic()->computedValue = nullptr;
                 }
             }
