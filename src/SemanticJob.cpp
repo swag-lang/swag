@@ -14,12 +14,12 @@ void SemanticJob::release()
     Allocator::free<SemanticJob>(this);
 }
 
-SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
+SemanticJob* SemanticJob::newJob(Job* depJob, SourceFile* file, AstNode* rootNode, bool run)
 {
     const auto job    = Allocator::alloc<SemanticJob>();
-    job->sourceFile   = sourceFile;
-    job->module       = sourceFile->module;
-    job->dependentJob = dependentJob;
+    job->sourceFile   = file;
+    job->module       = file->module;
+    job->dependentJob = depJob;
     job->nodes.push_back(rootNode);
     if (run)
         g_ThreadMgr.addJob(job);
@@ -114,8 +114,8 @@ JobResult SemanticJob::execute()
 
         // To be sure that a bytecode job is not running on those nodes !
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
-            node->bytecodeState == AstNodeResolveState::PostChildren ||
-            node->hasAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR));
+                    node->bytecodeState == AstNodeResolveState::PostChildren ||
+                    node->hasAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR));
 
         // Some attribute flags must propagate from parent to children, whatever
         Semantic::inheritAttributesFromParent(node);

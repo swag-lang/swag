@@ -63,8 +63,8 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         firstExpr->allocateComputedValue();
         firstExpr->addAstFlag(AST_GENERATED);
         firstExpr->computedValue()->reg.u64 = 0;
-        firstExpr->semanticFct            = Semantic::resolveLiteral;
-        literal->literalType              = LiteralType::TypeUnsigned64;
+        firstExpr->semanticFct              = Semantic::resolveLiteral;
+        literal->literalType                = LiteralType::TypeUnsigned64;
     }
     else
     {
@@ -477,8 +477,8 @@ bool Parser::doDeRef(AstNode* parent, AstNode** result)
     const auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, arrayNode);
     literal->setFlagsValueIsComputed();
     literal->computedValue()->reg.u64 = 0;
-    literal->literalType            = LiteralType::TypeSigned32;
-    literal->semanticFct            = Semantic::resolveLiteral;
+    literal->literalType              = LiteralType::TypeSigned32;
+    literal->semanticFct              = Semantic::resolveLiteral;
     literal->inheritTokenLocation(arrayNode->array->token);
     arrayNode->access = literal;
     *result           = identifierRef;
@@ -829,10 +829,10 @@ namespace
             if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
                 shuffle = true;
 
-            // If operation is not associative, then we need to shuffle
-            //
-            // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
-            //
+                // If operation is not associative, then we need to shuffle
+                //
+                // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
+                //
             else if (!isAssociative(factor->tokenId) && myPrecedence == rightPrecedence)
                 shuffle = true;
 

@@ -11,7 +11,7 @@ struct SemanticJob final : Job
 
     bool                spawnJob();
     JobResult           execute() override;
-    static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
+    static SemanticJob* newJob(Job* depJob, SourceFile* file, AstNode* rootNode, bool run);
 
     SemanticContext context;
 };

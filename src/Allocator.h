@@ -38,7 +38,6 @@ struct Allocator
     {
         return free(ptr, alignSize(n * sizeof(T)));
     }
-    
 
     template<typename T>
     static void free(void* ptr)

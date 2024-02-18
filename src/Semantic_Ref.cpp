@@ -871,7 +871,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 arrayNode->setFlagsValueIsComputed();
                 const auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, text.length()));
-                const auto idx                   = arrayAccess->computedValue()->reg.u32;
+                const auto idx                     = arrayAccess->computedValue()->reg.u32;
                 arrayNode->computedValue()->reg.u8 = text[idx];
             }
         }
@@ -926,7 +926,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                     arrayNode->setFlagsValueIsComputed();
                     arrayNode->computedValue()->storageSegment = storageSegment;
                     arrayNode->computedValue()->storageOffset  = storageOffset;
-                    arrayNode->typeInfo                      = typePtr->pointedType;
+                    arrayNode->typeInfo                        = typePtr->pointedType;
                 }
             }
         }
@@ -955,7 +955,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                     arrayNode->setFlagsValueIsComputed();
                     arrayNode->computedValue()->storageSegment = storageSegment;
                     arrayNode->computedValue()->storageOffset  = storageOffset;
-                    arrayNode->typeInfo                      = typePtr->finalType;
+                    arrayNode->typeInfo                        = typePtr->finalType;
                 }
             }
         }

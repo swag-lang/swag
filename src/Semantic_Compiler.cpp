@@ -757,8 +757,8 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         uint8_t*   addrDst;
         node->computedValue()->storageOffset  = storageSegment->reserve(stat_buf.st_size, &addrDst);
         node->computedValue()->storageSegment = storageSegment;
-        newJob->destBuffer                  = addrDst;
-        newJob->sizeBuffer                  = stat_buf.st_size;
+        newJob->destBuffer                    = addrDst;
+        newJob->sizeBuffer                    = stat_buf.st_size;
 
         newJob->module       = module;
         newJob->sourcePath   = fullFileName;
@@ -873,7 +873,7 @@ bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
     const auto node = context->node;
     node->setFlagsValueIsComputed();
     node->computedValue()->reg.b = node->children.back()->resolvedSymbolOverload != nullptr;
-    node->typeInfo             = g_TypeMgr->typeInfoBool;
+    node->typeInfo               = g_TypeMgr->typeInfoBool;
     return true;
 }
 
@@ -918,34 +918,34 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
     case TokenId::CompilerOs:
         node->setFlagsValueIsComputed();
         node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.os);
-        node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
+        node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
         node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.arch);
-        node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetArch;
+        node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetArch;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
         node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
-        node->typeInfo            = g_TypeMgr->typeInfoString;
+        node->typeInfo              = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerSwagOs:
         node->setFlagsValueIsComputed();
         node->computedValue()->reg.u64 = static_cast<uint64_t>(OS::getNativeTarget().os);
-        node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
+        node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
         node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
-        node->typeInfo            = g_TypeMgr->typeInfoString;
+        node->typeInfo              = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerLocation:

@@ -142,7 +142,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         Ast::addChildFront(identifier->callParameters, fcp);
         fcp->setFlagsValueIsComputed();
         fcp->computedValue()->reg.pointer = nullptr;
-        fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
+        fcp->typeInfo                     = g_TypeMgr->typeInfoNull;
         fcp->addAstFlag(AST_GENERATED);
         identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM);
 

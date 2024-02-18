@@ -205,7 +205,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         {
             const auto addrSrc = node->computedValue()->getStorageAddr();
             uint8_t*   addrDst;
-            const auto storageOffset            = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
+            const auto storageOffset              = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
             node->computedValue()->storageSegment = wantStorageSegment;
             node->computedValue()->storageOffset  = storageOffset;
             std::copy_n(static_cast<uint8_t*>(addrSrc), node->typeInfo->sizeOf, addrDst);

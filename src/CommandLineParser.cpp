@@ -50,7 +50,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc", "--dbg-off", nullptr, CommandLineType::Bool, &cmdLine->dbgOff, nullptr, "disable @breakpoint() instruction");
     addArg("bu sc doc", "--callstack", nullptr, CommandLineType::Bool, &cmdLine->dbgCallStack, nullptr, "display callstacks in case of errors");
 #ifndef SWAG_DEV_MODE
-    addArg("bu sc doc",           "--devmode",                  nullptr,    CommandLineType::Bool,          &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
+    addArg("bu sc doc", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif
 #ifdef SWAG_DEV_MODE
     addArg("bu sc doc", "--print-bc-ext", nullptr, CommandLineType::Bool, &cmdLine->dbgPrintBcExt, nullptr, "print more bytecode information");

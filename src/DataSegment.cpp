@@ -511,10 +511,10 @@ void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
 
     SaveValue sv;
     sv.size = size;
-    
+
     if (zero)
     {
-        sv.value.u64 = 0;
+        sv.value.u64         = 0;
         savedValues[address] = sv;
         return;
     }

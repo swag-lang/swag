@@ -91,33 +91,33 @@ void TypeManager::setup()
     typeInfoSliceRunes->computeName();
 
     memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned8)]                      = typeInfoU8;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned16)]                     = typeInfoU16;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned32)]                     = typeInfoU32;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned64)]                     = typeInfoU64;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned8)]                      = typeInfoS8;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned16)]                     = typeInfoS16;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned32)]                     = typeInfoS32;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned64)]                     = typeInfoS64;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeFloat32)]                     = typeInfoF32;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeFloat64)]                     = typeInfoF64;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeBool)]                    = typeInfoBool;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeRune)]                    = typeInfoRune;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeString)]                  = typeInfoString;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringRaw)]              = typeInfoString;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringMultiLine)]        = typeInfoString;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringEscape)]           = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned8)]             = typeInfoU8;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned16)]            = typeInfoU16;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned32)]            = typeInfoU32;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned64)]            = typeInfoU64;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned8)]               = typeInfoS8;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned16)]              = typeInfoS16;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned32)]              = typeInfoS32;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeSigned64)]              = typeInfoS64;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeFloat32)]               = typeInfoF32;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeFloat64)]               = typeInfoF64;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeBool)]                  = typeInfoBool;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeRune)]                  = typeInfoRune;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeString)]                = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringRaw)]             = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringMultiLine)]       = typeInfoString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringEscape)]          = typeInfoString;
     g_LiteralTypeToType[static_cast<int>(LiteralType::TypeStringMultiLineEscape)] = typeInfoString;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeCharacter)]               = typeInfoCharacter;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeCharacterEscape)]        = typeInfoCharacter;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeVoid)]                    = typeInfoVoid;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeNull)]                    = typeInfoNull;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeAny)]                     = typeInfoAny;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUntypedInt)]             = typeInfoUntypedInt;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUntypedFloat)]           = typeInfoUntypedFloat;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeCharacter)]             = typeInfoCharacter;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeCharacterEscape)]       = typeInfoCharacter;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeVoid)]                  = typeInfoVoid;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeNull)]                  = typeInfoNull;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeAny)]                   = typeInfoAny;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUntypedInt)]            = typeInfoUntypedInt;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUntypedFloat)]          = typeInfoUntypedFloat;
     g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUntypedBinHexa)]        = typeInfoUntypedBinHex;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeCString)]                 = typeInfoCString;
-    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeType)]                    = nullptr; // will be done with registerTypeType
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeCString)]               = typeInfoCString;
+    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeType)]                  = nullptr; // will be done with registerTypeType
 
     // Promotion matrix
 #define PR(__a, __b, __c)                                                          \
@@ -415,7 +415,7 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
 void TypeManager::registerTypeType()
 {
-    typeInfoTypeType                                            = makePointerTo(g_Workspace->swagScope.regTypeInfo, TYPEINFO_CONST);
+    typeInfoTypeType                                             = makePointerTo(g_Workspace->swagScope.regTypeInfo, TYPEINFO_CONST);
     g_LiteralTypeToType[static_cast<int>(LiteralType::TypeType)] = typeInfoTypeType;
 }
 

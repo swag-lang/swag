@@ -497,8 +497,7 @@ bool Semantic::resolveCase(SemanticContext* context)
             // switch without an expression : a case is a boolean expression
             else
             {
-                SWAG_CHECK(
-                    TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CAST_FLAG_FOR_COMPARE | CAST_FLAG_AUTO_BOOL));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CAST_FLAG_FOR_COMPARE | CAST_FLAG_AUTO_BOOL));
             }
         }
     }

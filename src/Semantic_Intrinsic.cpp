@@ -103,7 +103,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
                 return context->report(err);
             }
 
-            node->typeInfo       = tag->type;
+            node->typeInfo         = tag->type;
             *node->computedValue() = tag->value;
         }
         else
@@ -291,7 +291,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     {
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
         node->setFlagsValueIsComputed();
-        const auto typeArray         = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray           = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue()->reg.u64 = typeArray->count;
         if (node->computedValue()->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoU64;
@@ -413,7 +413,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             node->setFlagsValueIsComputed();
             if (expression->computedValue()->text.buffer == nullptr)
             {
-                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->typeInfo                        = g_TypeMgr->typeInfoNull;
                 node->computedValue()->storageSegment = nullptr;
                 node->computedValue()->storageOffset  = UINT32_MAX;
             }
@@ -445,7 +445,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             const auto slice = static_cast<SwagSlice*>(node->computedValue()->getStorageAddr());
             if (!slice->buffer)
             {
-                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->typeInfo                        = g_TypeMgr->typeInfoNull;
                 node->computedValue()->storageSegment = nullptr;
                 node->computedValue()->storageOffset  = UINT32_MAX;
             }
@@ -475,7 +475,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             node->inheritComputedValue(expression);
             if (!expression->computedValue()->storageSegment)
             {
-                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->typeInfo                        = g_TypeMgr->typeInfoNull;
                 node->computedValue()->storageSegment = nullptr;
                 node->computedValue()->storageOffset  = UINT32_MAX;
             }
@@ -498,7 +498,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 
             if (!expression->computedValue()->storageSegment)
             {
-                node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                node->typeInfo                        = g_TypeMgr->typeInfoNull;
                 node->computedValue()->storageSegment = nullptr;
                 node->computedValue()->storageOffset  = UINT32_MAX;
             }
@@ -507,7 +507,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
                 const auto any = static_cast<SwagAny*>(expression->computedValue()->getStorageAddr());
                 if (!any->value)
                 {
-                    node->typeInfo                      = g_TypeMgr->typeInfoNull;
+                    node->typeInfo                        = g_TypeMgr->typeInfoNull;
                     node->computedValue()->storageSegment = nullptr;
                     node->computedValue()->storageOffset  = UINT32_MAX;
                 }
@@ -639,12 +639,12 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     }
 
     // :SliceLiteral
-    const auto storageSegment           = getConstantSegFromContext(context->node);
+    const auto storageSegment             = getConstantSegFromContext(context->node);
     node->computedValue()->storageSegment = storageSegment;
 
     SwagSlice* slice;
     node->computedValue()->storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
-    slice->count                       = runes.size();
+    slice->count                         = runes.size();
 
     uint8_t* addrDst;
     storageSegment->reserve(runes.size() * sizeof(uint32_t), &addrDst);
@@ -723,7 +723,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 
         if (expr->hasComputedValue())
         {
-            const auto any                     = static_cast<SwagAny*>(expr->computedValue()->getStorageAddr());
+            const auto any                       = static_cast<SwagAny*>(expr->computedValue()->getStorageAddr());
             expr->computedValue()->storageOffset = expr->computedValue()->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
             node->inheritComputedValue(expr);
             node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
@@ -734,9 +734,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         {
             node->allocateComputedValue();
             node->computedValue()->storageSegment = getConstantSegFromContext(node);
-            SWAG_CHECK(
-                typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node
-                    ->typeInfo));
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
             YIELD();
             node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
             node->addAstFlag(AST_R_VALUE);
@@ -752,9 +750,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->allocateComputedValue();
         node->computedValue()->storageSegment = getConstantSegFromContext(node);
-        SWAG_CHECK(
-            typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->
-                typeInfo));
+        SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
         YIELD();
         node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
         node->addAstFlag(AST_R_VALUE);

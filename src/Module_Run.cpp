@@ -33,7 +33,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         node->allocateComputedValue();
         node->computedValue()->storageSegment = storageSegment;
         node->computedValue()->storageOffset  = storageOffset;
-        const auto addrSrc                  = runContext->bp;
+        const auto addrSrc                    = runContext->bp;
         std::copy_n(addrSrc, node->typeInfo->sizeOf, addrDst);
         return true;
     }
@@ -66,24 +66,24 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Static array
     if (realType->isArray())
     {
-        const auto storageSegment           = Semantic::getConstantSegFromContext(node);
-        uint8_t*   addrDst                  = nullptr;
-        const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
+        const auto storageSegment             = Semantic::getConstantSegFromContext(node);
+        uint8_t*   addrDst                    = nullptr;
+        const auto offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue()->storageOffset  = offsetStorage;
         node->computedValue()->storageSegment = storageSegment;
-        const auto addrSrc                  = runContext->registersRR[0].pointer;
+        const auto addrSrc                    = runContext->registersRR[0].pointer;
         std::copy_n(addrSrc, realType->sizeOf, addrDst);
         return true;
     }
 
     if (realType->isListArray())
     {
-        const auto storageSegment           = Semantic::getConstantSegFromContext(node);
-        uint8_t*   addrDst                  = nullptr;
-        const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
+        const auto storageSegment             = Semantic::getConstantSegFromContext(node);
+        uint8_t*   addrDst                    = nullptr;
+        const auto offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue()->storageOffset  = offsetStorage;
         node->computedValue()->storageSegment = storageSegment;
-        const auto addrSrc                  = runContext->registersRR[0].pointer;
+        const auto addrSrc                    = runContext->registersRR[0].pointer;
         std::copy_n(addrSrc, realType->sizeOf, addrDst);
         const auto typeList = castTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
         node->typeInfo      = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
@@ -96,12 +96,12 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         // If struct is marked as constexpr, then we can raw copy the struct content
         if (realType->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR) || node->hasSemFlag(SEMFLAG_FORCE_CONST_EXPR))
         {
-            const auto storageSegment           = Semantic::getConstantSegFromContext(node);
-            uint8_t*   addrDst                  = nullptr;
-            const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
+            const auto storageSegment             = Semantic::getConstantSegFromContext(node);
+            uint8_t*   addrDst                    = nullptr;
+            const auto offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
             node->computedValue()->storageOffset  = offsetStorage;
             node->computedValue()->storageSegment = storageSegment;
-            const auto addrSrc                  = runContext->registersRR[0].pointer;
+            const auto addrSrc                    = runContext->registersRR[0].pointer;
             std::copy_n(addrSrc, realType->sizeOf, addrDst);
             return true;
         }
@@ -161,15 +161,15 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 
         if (concreteType->isString())
         {
-            node->typeInfo            = g_TypeMgr->typeInfoString;
+            node->typeInfo              = g_TypeMgr->typeInfoString;
             node->computedValue()->text = Utf8{reinterpret_cast<const char*>(addrSrc), sizeSlice};
         }
         else
         {
             // Copy the content of the slice to the storage segment
-            const auto storageSegment           = Semantic::getConstantSegFromContext(node);
-            uint8_t*   addrDst                  = nullptr;
-            const auto offsetStorage            = storageSegment->reserve(sizeSlice, &addrDst);
+            const auto storageSegment             = Semantic::getConstantSegFromContext(node);
+            uint8_t*   addrDst                    = nullptr;
+            const auto offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
             node->computedValue()->storageOffset  = offsetStorage;
             node->computedValue()->storageSegment = storageSegment;
             std::copy_n(addrSrc, sizeSlice, addrDst);

@@ -611,7 +611,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         node->setFlagsValueIsComputed();
         node->computedValue()->storageOffset  = storageSegment->offset(ptr);
         node->computedValue()->storageSegment = storageSegment;
-        node->typeInfo                      = typeInfo;
+        node->typeInfo                        = typeInfo;
         return true;
     }
 
@@ -624,12 +624,12 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         node->computedValue()->storageOffset  = ptrSlice->buffer ? storageSegment->offset(static_cast<uint8_t*>(ptrSlice->buffer)) : UINT32_MAX;
         node->computedValue()->storageSegment = storageSegment;
         node->computedValue()->reg.u64        = ptrSlice->count;
-        const auto typeArray                = makeType<TypeInfoArray>();
-        typeArray->count                    = static_cast<uint32_t>(reinterpret_cast<SwagSlice*>(ptr)->count);
-        typeArray->totalCount               = typeArray->count;
-        typeArray->pointedType              = typeSlice->pointedType;
-        typeArray->finalType                = typeSlice->pointedType;
-        typeArray->sizeOf                   = typeArray->totalCount * typeArray->pointedType->sizeOf;
+        const auto typeArray                  = makeType<TypeInfoArray>();
+        typeArray->count                      = static_cast<uint32_t>(reinterpret_cast<SwagSlice*>(ptr)->count);
+        typeArray->totalCount                 = typeArray->count;
+        typeArray->pointedType                = typeSlice->pointedType;
+        typeArray->finalType                  = typeSlice->pointedType;
+        typeArray->sizeOf                     = typeArray->totalCount * typeArray->pointedType->sizeOf;
         typeArray->computeName();
         node->typeInfo = typeArray;
         return true;
@@ -640,7 +640,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         node->setFlagsValueIsComputed();
         node->computedValue()->storageOffset  = storageSegment->offset(ptr);
         node->computedValue()->storageSegment = storageSegment;
-        node->typeInfo                      = typeInfo;
+        node->typeInfo                        = typeInfo;
         setupIdentifierRef(context, node);
         return true;
     }
