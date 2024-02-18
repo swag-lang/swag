@@ -556,12 +556,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec1(
-                    context, nullptr, ErrCxtStepKind::Note, [oneParam]
-                    {
-                        return FMT(Nte(Nte0083), oneParam->token.c_str());
-                    },
-                    true);
+                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return FMT(Nte(Nte0083), oneParam->token.c_str()); }, true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else

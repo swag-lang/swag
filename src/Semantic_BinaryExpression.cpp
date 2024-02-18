@@ -891,12 +891,7 @@ bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* r
     const auto node = context->node;
 
     {
-        PushErrCxtStep ec(
-            context, node, ErrCxtStepKind::Note, []
-            {
-                return Nte(Nte0131);
-            },
-            true);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return Nte(Nte0131); }, true);
         SWAG_CHECK(checkIsConstExpr(context, left->hasComputedValue(), left));
         SWAG_CHECK(checkIsConstExpr(context, right->hasComputedValue(), right));
     }

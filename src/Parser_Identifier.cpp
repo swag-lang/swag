@@ -488,8 +488,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
         if (tokenIdentifier.text == "function" || tokenIdentifier.text == "fn" || tokenIdentifier.text == "def")
             notes.push_back(Diagnostic::note(Nte(Nte0040)));
     }
-
-    if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
+    else if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
     {
         notes.push_back(Diagnostic::note(Nte(Nte0053)));
     }

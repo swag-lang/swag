@@ -629,13 +629,8 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep ec(
-            context, left->parent, ErrCxtStepKind::Note, [&]
-            {
-                return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
-            },
-            true);
-        Diagnostic err(left, FMT(Err(Err0556), name.c_str()));
+        PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [&] { return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC()); }, true);
+        Diagnostic     err(left, FMT(Err(Err0556), name.c_str()));
         return context->report(err);
     }
 
@@ -662,12 +657,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         }
 
         {
-            PushErrCxtStep ec(
-                context, left->parent, ErrCxtStepKind::Note, [name, leftType]
-                {
-                    return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
-                },
-                true);
+            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC()); }, true);
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
         }
 
