@@ -77,7 +77,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
     if (forStruct)
     {
         // Be sure we have generic parameters if there's an automatic match
-        if (!genericParameters && (firstMatch.matchFlags & SymbolMatchContext::MATCH_GENERIC_AUTO))
+        if (!genericParameters && firstMatch.matchFlags & SymbolMatchContext::MATCH_GENERIC_AUTO)
         {
             SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
             const auto identifier         = castAst<AstIdentifier>(node, AstNodeKind::Identifier);

@@ -1,4 +1,6 @@
 #pragma once
+#include "Vector.h"
+#include "VectorNative.h"
 
 struct Path;
 struct SwagSlice;

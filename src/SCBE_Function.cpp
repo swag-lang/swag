@@ -34,7 +34,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
 bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && (bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC)) && (buildParameters.compileType != Test))
+    if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
         return true;
 
     int         ct              = buildParameters.compileType;
@@ -148,7 +148,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::SUB, CPUBits::B64);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
+    cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
     cpuFct->offsetStack             = offsetStack;
     cpuFct->offsetLocalStackParams  = offsetS4;
     cpuFct->frameSize               = sizeStack + sizeParamsStack;
@@ -3249,7 +3249,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
-            if (ip->hasFlag(BCI_IMM_B) && ip->hasFlag(BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && !buildParameters.isDebug())
+            if (ip->hasFlag(BCI_IMM_B) && ip->hasFlag(BCI_IMM_C) && ip->b.u8 == 0 && ip->c.u64 <= 128 && !buildParameters.isDebug())
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emit_ClearX(ip->c.u32, 0, RCX);
@@ -3557,7 +3557,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     offset += sizeOf;
                 }
 
-                pp.emit_LoadAddress_Indirect((sizeParamsStack - variadicStackSize), RAX, RSP);
+                pp.emit_LoadAddress_Indirect(sizeParamsStack - variadicStackSize, RAX, RSP);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
             }
             else
@@ -3570,7 +3570,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                 // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
-                int      idxParam          = static_cast<int>(pushRAParams.size()) - (sizeB / sizeof(Register)) - 1;
+                int      idxParam          = static_cast<int>(pushRAParams.size()) - sizeB / sizeof(Register) - 1;
                 uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                 MK_ALIGN16(variadicStackSize);
                 uint32_t offset = sizeParamsStack - variadicStackSize;
@@ -3582,7 +3582,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     offset += 8;
                 }
 
-                pp.emit_LoadAddress_Indirect((sizeParamsStack - variadicStackSize), RAX, RSP);
+                pp.emit_LoadAddress_Indirect(sizeParamsStack - variadicStackSize, RAX, RSP);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
             }
             break;

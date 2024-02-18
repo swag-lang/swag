@@ -128,7 +128,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult.has(CAST_RESULT_AUTO_MOVE_OP_AFFECT)))
+                if (!matches[j]->castFlagsResult.has(CAST_RESULT_AUTO_MOVE_OP_AFFECT))
                 {
                     matches[j]->remove = true;
                 }
@@ -140,7 +140,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult.has(CAST_RESULT_GUESS_MOVE)))
+                if (!matches[j]->castFlagsResult.has(CAST_RESULT_GUESS_MOVE))
                 {
                     matches[j]->remove = true;
                 }
@@ -152,7 +152,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT)))
+                if (!matches[j]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
                 {
                     curMatch->remove = true;
                     break;
@@ -165,7 +165,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST)))
+                if (!matches[j]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST))
                 {
                     curMatch->remove = true;
                     break;
@@ -178,7 +178,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->castFlagsResult.has(CAST_RESULT_COERCE)))
+                if (!matches[j]->castFlagsResult.has(CAST_RESULT_COERCE))
                 {
                     curMatch->remove = true;
                     break;
@@ -339,7 +339,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             {
                 if (i == j)
                     continue;
-                if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && (matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_CAPTURE)))
+                if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_CAPTURE))
                 {
                     if (curMatch->symbolOverload->node->ownerScope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
                     {
@@ -595,7 +595,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
         {
             for (size_t j = 0; j < genMatches.size(); j++)
             {
-                if (!(genMatches[j]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT)))
+                if (!genMatches[j]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
                 {
                     genMatches[i] = genMatches.back();
                     genMatches.pop_back();
@@ -777,7 +777,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->kind != SymbolKind::GenericType &&
             oneSymbol->kind != SymbolKind::Struct &&
             oneSymbol->kind != SymbolKind::Enum &&
-            (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE))) &&
+            (oneSymbol->overloads.size() != 1 || !oneSymbol->overloads[0]->hasFlag(OVERLOAD_COMPUTED_VALUE)) &&
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)
         {

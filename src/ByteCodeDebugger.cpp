@@ -162,7 +162,7 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, u
 
     if (regN >= context->getRegCount(cxtRc))
     {
-        printCmdError(FMT("invalid register number, maximum value is [[%u]]", static_cast<uint32_t>(context->getRegCount(cxtRc)) - 1));
+        printCmdError(FMT("invalid register number, maximum value is [[%u]]", context->getRegCount(cxtRc) - 1));
         return false;
     }
 

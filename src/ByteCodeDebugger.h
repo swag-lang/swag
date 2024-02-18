@@ -86,7 +86,7 @@ struct ByteCodeDebugger
     {
         SWAG_TRY
         {
-            return *(T*) (addr);
+            return *static_cast<const T*>(addr);
         }
         SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {

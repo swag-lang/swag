@@ -38,7 +38,7 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
         if (ip->node->ownerInline && !ip->node->hasAstFlag(AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {
             auto n = ip->node;
-            while (n->ownerInline && !n->hasAstFlag(AST_IN_MIXIN) && (n->ownerInline->ownerFct == n->ownerFct))
+            while (n->ownerInline && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline->ownerFct == n->ownerFct)
                 n = n->ownerInline;
             loc.file     = n->sourceFile;
             loc.location = &n->token.startLocation;
@@ -250,7 +250,7 @@ bool ByteCode::canEmit() const
     // Do we need to generate that function ?
     if (funcNode->hasAttribute(ATTRIBUTE_COMPILER))
         return false;
-    if ((funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC)) && !g_CommandLine.test)
+    if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         return false;
     if (funcNode->hasAttribute(ATTRIBUTE_FOREIGN))
         return false;
@@ -278,7 +278,7 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
                        bool                       specialCall)
 {
     bool                       same = end0 - start0 == end1 - start1;
-    ByteCodeInstruction*       ip0  = start0;
+    const ByteCodeInstruction* ip0  = start0;
     const ByteCodeInstruction* ip1  = start1;
     while (same && ip0 != end0)
     {

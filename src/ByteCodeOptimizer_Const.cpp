@@ -151,13 +151,13 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             {
             case ByteCodeOp::IntrinsicMulAddF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->a.f32 = (ip->b.f32 * ip->c.f32) + ip->d.f32;
+                ip->a.f32 = ip->b.f32 * ip->c.f32 + ip->d.f32;
                 OK();
                 break;
 
             case ByteCodeOp::IntrinsicMulAddF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                ip->a.f64 = (ip->b.f64 * ip->c.f64) + ip->d.f64;
+                ip->a.f64 = ip->b.f64 * ip->c.f64 + ip->d.f64;
                 OK();
                 break;
 
@@ -493,74 +493,74 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::CompareOpEqual8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u8 == ip->b.u8);
+                ip->b.u64 = ip->a.u8 == ip->b.u8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpEqual16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u16 == ip->b.u16);
+                ip->b.u64 = ip->a.u16 == ip->b.u16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpEqual32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u32 == ip->b.u32);
+                ip->b.u64 = ip->a.u32 == ip->b.u32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpEqual64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u64 == ip->b.u64);
+                ip->b.u64 = ip->a.u64 == ip->b.u64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpEqualF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f32 == ip->b.f32);
+                ip->b.u64 = ip->a.f32 == ip->b.f32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpEqualF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f64 == ip->b.f64);
+                ip->b.u64 = ip->a.f64 == ip->b.f64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::CompareOpNotEqual8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u8 != ip->b.u8);
+                ip->b.u64 = ip->a.u8 != ip->b.u8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpNotEqual16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u16 != ip->b.u16);
+                ip->b.u64 = ip->a.u16 != ip->b.u16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpNotEqual32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u32 != ip->b.u32);
+                ip->b.u64 = ip->a.u32 != ip->b.u32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpNotEqual64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u64 != ip->b.u64);
+                ip->b.u64 = ip->a.u64 != ip->b.u64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpNotEqualF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f32 != ip->b.f32);
+                ip->b.u64 = ip->a.f32 != ip->b.f32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpNotEqualF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f64 != ip->b.f64);
+                ip->b.u64 = ip->a.f64 != ip->b.f64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
@@ -604,244 +604,244 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::CompareOpLowerS8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s8 < ip->b.s8);
+                ip->b.u64 = ip->a.s8 < ip->b.s8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerS16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s16 < ip->b.s16);
+                ip->b.u64 = ip->a.s16 < ip->b.s16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerS32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s32 < ip->b.s32);
+                ip->b.u64 = ip->a.s32 < ip->b.s32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerS64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s64 < ip->b.s64);
+                ip->b.u64 = ip->a.s64 < ip->b.s64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerU8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u8 < ip->b.u8);
+                ip->b.u64 = ip->a.u8 < ip->b.u8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerU16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u16 < ip->b.u16);
+                ip->b.u64 = ip->a.u16 < ip->b.u16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u32 < ip->b.u32);
+                ip->b.u64 = ip->a.u32 < ip->b.u32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u64 < ip->b.u64);
+                ip->b.u64 = ip->a.u64 < ip->b.u64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f32 < ip->b.f32);
+                ip->b.u64 = ip->a.f32 < ip->b.f32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f64 < ip->b.f64);
+                ip->b.u64 = ip->a.f64 < ip->b.f64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::CompareOpLowerEqS8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s8 <= ip->b.s8);
+                ip->b.u64 = ip->a.s8 <= ip->b.s8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqS16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s16 <= ip->b.s16);
+                ip->b.u64 = ip->a.s16 <= ip->b.s16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqS32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s32 <= ip->b.s32);
+                ip->b.u64 = ip->a.s32 <= ip->b.s32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqS64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s64 <= ip->b.s64);
+                ip->b.u64 = ip->a.s64 <= ip->b.s64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqU8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u8 <= ip->b.u8);
+                ip->b.u64 = ip->a.u8 <= ip->b.u8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqU16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u16 <= ip->b.u16);
+                ip->b.u64 = ip->a.u16 <= ip->b.u16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u32 <= ip->b.u32);
+                ip->b.u64 = ip->a.u32 <= ip->b.u32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u64 <= ip->b.u64);
+                ip->b.u64 = ip->a.u64 <= ip->b.u64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f32 <= ip->b.f32);
+                ip->b.u64 = ip->a.f32 <= ip->b.f32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpLowerEqF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f64 <= ip->b.f64);
+                ip->b.u64 = ip->a.f64 <= ip->b.f64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::CompareOpGreaterS8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s8 > ip->b.s8);
+                ip->b.u64 = ip->a.s8 > ip->b.s8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterS16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s16 > ip->b.s16);
+                ip->b.u64 = ip->a.s16 > ip->b.s16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterS32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s32 > ip->b.s32);
+                ip->b.u64 = ip->a.s32 > ip->b.s32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterS64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s64 > ip->b.s64);
+                ip->b.u64 = ip->a.s64 > ip->b.s64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterU8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u8 > ip->b.u8);
+                ip->b.u64 = ip->a.u8 > ip->b.u8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterU16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u16 > ip->b.u16);
+                ip->b.u64 = ip->a.u16 > ip->b.u16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u32 > ip->b.u32);
+                ip->b.u64 = ip->a.u32 > ip->b.u32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u64 > ip->b.u64);
+                ip->b.u64 = ip->a.u64 > ip->b.u64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f32 > ip->b.f32);
+                ip->b.u64 = ip->a.f32 > ip->b.f32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f64 > ip->b.f64);
+                ip->b.u64 = ip->a.f64 > ip->b.f64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::CompareOpGreaterEqS8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s8 >= ip->b.s8);
+                ip->b.u64 = ip->a.s8 >= ip->b.s8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqS16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s16 >= ip->b.s16);
+                ip->b.u64 = ip->a.s16 >= ip->b.s16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqS32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s32 >= ip->b.s32);
+                ip->b.u64 = ip->a.s32 >= ip->b.s32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqS64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.s64 >= ip->b.s64);
+                ip->b.u64 = ip->a.s64 >= ip->b.s64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqU8:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u8 >= ip->b.u8);
+                ip->b.u64 = ip->a.u8 >= ip->b.u8;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqU16:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u16 >= ip->b.u16);
+                ip->b.u64 = ip->a.u16 >= ip->b.u16;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqU32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u32 >= ip->b.u32);
+                ip->b.u64 = ip->a.u32 >= ip->b.u32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqU64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.u64 >= ip->b.u64);
+                ip->b.u64 = ip->a.u64 >= ip->b.u64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqF32:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f32 >= ip->b.f32);
+                ip->b.u64 = ip->a.f32 >= ip->b.f32;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::CompareOpGreaterEqF64:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.u64 = (ip->a.f64 >= ip->b.f64);
+                ip->b.u64 = ip->a.f64 >= ip->b.f64;
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;

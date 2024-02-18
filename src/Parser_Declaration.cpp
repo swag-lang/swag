@@ -576,7 +576,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     Ast::removeFromParent(subDecl);
 
     // :SubDeclParent
-    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->kind != AstNodeKind::Namespace)
         newParent = newParent->parent;
 
     // Force the parent to be the new attribute, if defined

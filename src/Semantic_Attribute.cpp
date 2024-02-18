@@ -45,7 +45,7 @@
 
 bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
-    if (!checkNode || (checkNode->kind == AstNodeKind::RefSubDecl))
+    if (!checkNode || checkNode->kind == AstNodeKind::RefSubDecl)
         return true;
 
     if (checkNode->kind == AstNodeKind::Statement || checkNode->kind == AstNodeKind::StatementNoScope)
@@ -128,23 +128,23 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (!specificMsg)
     {
-        if ((typeInfo->attributeUsage & Function) && (kind == AstNodeKind::FuncDecl))
+        if (typeInfo->attributeUsage & Function && kind == AstNodeKind::FuncDecl)
             return true;
-        if ((typeInfo->attributeUsage & Struct) && (kind == AstNodeKind::StructDecl))
+        if (typeInfo->attributeUsage & Struct && kind == AstNodeKind::StructDecl)
             return true;
-        if ((typeInfo->attributeUsage & Enum) && (kind == AstNodeKind::EnumDecl))
+        if (typeInfo->attributeUsage & Enum && kind == AstNodeKind::EnumDecl)
             return true;
-        if ((typeInfo->attributeUsage & EnumValue) && (kind == AstNodeKind::EnumValue))
+        if (typeInfo->attributeUsage & EnumValue && kind == AstNodeKind::EnumValue)
             return true;
-        if ((typeInfo->attributeUsage & Variable) && (kind == AstNodeKind::VarDecl))
+        if (typeInfo->attributeUsage & Variable && kind == AstNodeKind::VarDecl)
             return true;
-        if ((typeInfo->attributeUsage & Constant) && (kind == AstNodeKind::ConstDecl))
+        if (typeInfo->attributeUsage & Constant && kind == AstNodeKind::ConstDecl)
             return true;
-        if ((typeInfo->attributeUsage & StructVariable) && isStructVar)
+        if (typeInfo->attributeUsage & StructVariable && isStructVar)
             return true;
-        if ((typeInfo->attributeUsage & GlobalVariable) && isGlobalVar)
+        if (typeInfo->attributeUsage & GlobalVariable && isGlobalVar)
             return true;
-        if ((typeInfo->attributeUsage & FunctionParameter) && isFuncParam)
+        if (typeInfo->attributeUsage & FunctionParameter && isFuncParam)
             return true;
     }
 
@@ -663,7 +663,7 @@ bool Semantic::resolveAttrDecl(SemanticContext* context)
 bool Semantic::resolveAttrUse(SemanticContext* context)
 {
     auto node = castAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || (node->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL)), context->report({node, Err(Err0485)}));
+    SWAG_VERIFY(node->content || node->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL), context->report({node, Err(Err0485)}));
     SWAG_CHECK(resolveAttrUse(context, node));
     return true;
 }

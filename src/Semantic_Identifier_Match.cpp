@@ -163,7 +163,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-        if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING)))
+        if (nodeCall->typeInfo->isLambdaClosure() && nodeCall->typeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
         {
             resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, static_cast<uint32_t>(i));
             YIELD();
@@ -695,7 +695,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             auto arrayNode = castAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             auto arrayOver = arrayNode->array->resolvedSymbolOverload;
-            if (arrayOver && (arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE)) && arrayNode->access->hasComputedValue())
+            if (arrayOver && arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasComputedValue())
             {
                 auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                 auto ptr     = static_cast<uint8_t*>(arrayOver->computedValue.getStorageAddr());
@@ -1068,7 +1068,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     identifier->addAstFlag(AST_DISCARD);
                 }
             }
-            else if (typeInfoRet->isVoid() && (identifier->hasAstFlag(AST_DISCARD)))
+            else if (typeInfoRet->isVoid() && identifier->hasAstFlag(AST_DISCARD))
             {
                 Diagnostic err{identifier, identifier->token, Err(Err0158)};
                 return context->report(err, Diagnostic::hereIs(overload));
@@ -1197,7 +1197,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         }
 
         // Be sure the call is valid
-        if ((identifier->token.text[0] != '@') && !funcDecl->isForeign())
+        if (identifier->token.text[0] != '@' && !funcDecl->isForeign())
         {
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
@@ -1273,7 +1273,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 identifier->addAstFlag(AST_DISCARD);
             }
         }
-        else if (returnType->isVoid() && (identifier->hasAstFlag(AST_DISCARD)))
+        else if (returnType->isVoid() && identifier->hasAstFlag(AST_DISCARD))
         {
             Diagnostic err{identifier, identifier->token, Err(Err0158)};
             return context->report(err, Diagnostic::hereIs(overload));
@@ -1576,7 +1576,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         if (oneOverload.symMatchContext.result != MatchResult::Ok)
         {
             if (context->bestSignatureInfos.badSignatureParameterIdx == -1 ||
-                (oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > context->bestSignatureInfos.badSignatureParameterIdx))
+                oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > context->bestSignatureInfos.badSignatureParameterIdx)
             {
                 context->bestMatchResult    = oneOverload.symMatchContext.result;
                 context->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;
@@ -1736,7 +1736,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     // to create an instance with the exact type.
     // We only test the first match here, because the filtering of matches would have remove it if some other instances
     // without autoOpCast are present.
-    if (!matches.empty() && (matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST)) && (!genericMatches.empty() || !genericMatchesSI.empty()))
+    if (!matches.empty() && matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
     {
         prevMatchesCount = 0;
         matches.clear();
@@ -1871,7 +1871,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     if (matches.size() > 1 &&
         node &&
         node->kind == AstNodeKind::Identifier &&
-        (node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS)))
+        node->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS))
     {
         return true;
     }

@@ -476,7 +476,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
     bool           resultValid = false;
     while (cpt != 8 && seek.seekBucket != buckets.size())
     {
-        while (cpt != 8 && (seek.seekRead < curBucket->count))
+        while (cpt != 8 && seek.seekRead < curBucket->count)
         {
             result |= static_cast<uint64_t>(*ptr) << shift;
             shift += 8;

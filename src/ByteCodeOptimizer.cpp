@@ -115,7 +115,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     ByteCodeOptTreeNode* treeNode = &context->tree[nodeIdx];
     treeNode->end                 = treeNode->start;
 
-    while (!ByteCode::isRet(treeNode->end) && !ByteCode::isJumpOrDyn(treeNode->end) && !(treeNode->end[1].hasFlag(BCI_START_STMT)))
+    while (!ByteCode::isRet(treeNode->end) && !ByteCode::isJumpOrDyn(treeNode->end) && !treeNode->end[1].hasFlag(BCI_START_STMT))
     {
         setContextFlags(context, treeNode->end);
         if (computeCrc)
@@ -216,7 +216,7 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
     while (true)
     {
         // Back to first instruction
-        if ((node->flags & parseCxt.doneFlag) && parseCxt.curIp == parseCxt.startIp)
+        if (node->flags & parseCxt.doneFlag && parseCxt.curIp == parseCxt.startIp)
             return;
 
         parseCxt.cb(context, parseCxt);
@@ -502,7 +502,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
                 totalInstructions += bc->numInstructions;
         }
 
-        totalInstructions /= (g_ThreadMgr.numWorkers * 4);
+        totalInstructions /= g_ThreadMgr.numWorkers * 4;
         totalInstructions = max(totalInstructions, 1);
 
         size_t startIndex = 0;

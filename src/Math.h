@@ -6,7 +6,7 @@ namespace Math
     {
         if (!v)
             return false;
-        return (v & (v - 1)) == 0;
+        return (v & v - 1) == 0;
     }
 
     inline bool addWillOverflow(int8_t x, int8_t y)
@@ -198,7 +198,7 @@ namespace Math
     inline bool mulWillOverflow(uint64_t x, uint64_t y)
     {
         const auto res = x * y;
-        if (res > 0 && (UINT64_MAX / y) < x)
+        if (res > 0 && UINT64_MAX / y < x)
             return true;
         return false;
     }

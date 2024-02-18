@@ -1064,7 +1064,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     if (typeInfoStruct->opUserPostMoveFct)
     {
         // Content must have been solved ! #validif pb
-        SWAG_ASSERT(!(typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC)));
+        SWAG_ASSERT(!typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostMove = true;
         askForByteCode(context->baseJob, typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
@@ -1088,7 +1088,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            SWAG_VERIFY(!(structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION)),
+            SWAG_VERIFY(!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_UNION),
                     context->report({ typeParam->declNode, FMT(Err(Err0732), typeStructVar->getDisplayNameC(), "opPostMove") }));
     }
 
@@ -1221,7 +1221,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         // Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
         if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !from->hasAstFlag(AST_NO_RIGHT_DROP))
         {
-            if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES)))
+            if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
@@ -1307,7 +1307,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
     const auto       node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
     const auto       resolved = node->resolvedSymbolOverload;
 
-    if (node->type && (node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)))
+    if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {
         RegisterList r0 = reserveRegisterRC(context);
 
@@ -1365,7 +1365,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
-    if (node->type && (node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)))
+    if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)

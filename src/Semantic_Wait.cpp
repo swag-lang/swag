@@ -292,9 +292,9 @@ bool Semantic::needToCompleteSymbol(SemanticContext* context, const AstIdentifie
             return true;
         // If this is a generic type, and it's from an instance, we must wait, because we will
         // have to instantiate that symbol too
-        if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->hasAstFlag(AST_FROM_GENERIC)) && symbol->overloads[0]->typeInfo->isGeneric())
+        if (identifier->ownerStructScope && identifier->ownerStructScope->owner->hasAstFlag(AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
             return true;
-        if (identifier->ownerFct && (identifier->ownerFct->hasAstFlag(AST_FROM_GENERIC)) && symbol->overloads[0]->typeInfo->isGeneric())
+        if (identifier->ownerFct && identifier->ownerFct->hasAstFlag(AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
             return true;
     }
 

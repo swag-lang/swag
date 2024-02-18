@@ -365,7 +365,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                     str += FMT(" [%d] ", idx);
                     EvaluateResult res1;
                     res1.type = typeSlice->pointedType;
-                    res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
+                    res1.addr = ptr + idx * typeSlice->pointedType->sizeOf;
                     appendTypedValue(context, str, res1, indent + 1);
                     if (str.back() != '\n')
                         str += "\n";
@@ -384,7 +384,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         else
         {
             str += FMT("(0x%016llx ", ptr);
-            str += FMT("0x%016llx)", (static_cast<void**>(addr))[1]);
+            str += FMT("0x%016llx)", static_cast<void**>(addr)[1]);
         }
         return;
     }
@@ -400,8 +400,8 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 str += "null";
             else
             {
-                str += FMT("(0x%016llx ", (static_cast<void**>(addr))[0]);
-                str += FMT("0x%016llx)", (static_cast<void**>(addr))[1]);
+                str += FMT("(0x%016llx ", static_cast<void**>(addr)[0]);
+                str += FMT("0x%016llx)", static_cast<void**>(addr)[1]);
                 EvaluateResult res1;
                 res1.type = g_Workspace->swagScope.regTypeInfo;
                 res1.addr = static_cast<void**>(addr)[1];

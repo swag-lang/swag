@@ -390,7 +390,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
 
     if (varNode->isConstDecl())
         return &module->constantSegment;
-    if (varNode->resolvedSymbolOverload && (varNode->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT)))
+    if (varNode->resolvedSymbolOverload && varNode->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT))
         return &module->constantSegment;
 
     if (varNode->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
@@ -611,7 +611,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         overFlags.add(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN);
     else if (node->ownerScope->isGlobal() || node->hasAttribute(ATTRIBUTE_GLOBAL))
         overFlags.add(OVERLOAD_VAR_GLOBAL);
-    else if (node->ownerScope->isGlobalOrImpl() && (node->hasAstFlag(AST_IN_IMPL)) && !node->hasAstFlag(AST_STRUCT_MEMBER))
+    else if (node->ownerScope->isGlobalOrImpl() && node->hasAstFlag(AST_IN_IMPL) && !node->hasAstFlag(AST_STRUCT_MEMBER))
         overFlags.add(OVERLOAD_VAR_GLOBAL);
     else if (node->ownerScope->kind == ScopeKind::Struct)
         overFlags.add(OVERLOAD_VAR_STRUCT);
@@ -897,7 +897,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
         else
         {
-            if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, CAST_FLAG_CAST))
+            if (leftConcreteType->kind != rightConcreteType->kind || !rightConcreteType->isSame(leftConcreteType, CAST_FLAG_CAST))
             {
                 SWAG_CHECK(resolveUserOpAffect(context, leftConcreteType, rightConcreteType, node->type, node->assignment));
                 YIELD();
@@ -1036,7 +1036,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
-    if (node->type && (node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS)))
+    if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)

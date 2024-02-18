@@ -124,7 +124,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     }
 
     // Only add an inline parameter/retval once in a given scope
-    if ((toAdd.flags.has(OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && !symbol->overloads.empty())
+    if (toAdd.flags.has(OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL) && !symbol->overloads.empty())
     {
         toAdd.node->resolvedSymbolOverload = symbol->overloads[0];
         return symbol->overloads[0];
@@ -147,7 +147,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         {
             if (!toAdd.flags.has(OVERLOAD_INCOMPLETE))
             {
-                if ((resolved->hasFlag(OVERLOAD_INCOMPLETE)) && resolved->typeInfo == toAdd.typeInfo)
+                if (resolved->hasFlag(OVERLOAD_INCOMPLETE) && resolved->typeInfo == toAdd.typeInfo)
                 {
                     overload = resolved;
                     overload->flags.remove(OVERLOAD_INCOMPLETE);
@@ -156,7 +156,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
             }
             else
             {
-                if ((resolved->hasFlag(OVERLOAD_UNDEFINED)) && resolved->typeInfo->isSame(toAdd.typeInfo, CAST_FLAG_CAST))
+                if (resolved->hasFlag(OVERLOAD_UNDEFINED) && resolved->typeInfo->isSame(toAdd.typeInfo, CAST_FLAG_CAST))
                 {
                     overload = resolved;
                     overload->flags.remove(OVERLOAD_UNDEFINED);
@@ -179,7 +179,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         overload->flags.add(toAdd.flags);
 
         // Register for dropping in end of scope, if necessary
-        if ((symbol->kind == SymbolKind::Variable) &&
+        if (symbol->kind == SymbolKind::Variable &&
             !toAdd.flags.has(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK) &&
             !toAdd.computedValue)
         {
@@ -215,7 +215,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // In case of an incomplete function, we can wake up jobs too when every overload have been covered,
     // because an incomplete function doesn't yet know its return type, but we don't need it in order
     // to make a match
-    if ((symbol->overloads.size() == symbol->cptOverloadsInit) &&
+    if (symbol->overloads.size() == symbol->cptOverloadsInit &&
         (symbol->kind == SymbolKind::Function || symbol->kind == SymbolKind::Struct))
     {
         symbol->dependentJobs.setRunning();

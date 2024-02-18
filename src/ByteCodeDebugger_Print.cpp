@@ -153,7 +153,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
             printSomething = true;
         }
     }
-    else if (force || (lastBc != cxtBc))
+    else if (force || lastBc != cxtBc)
     {
         printTitleNameType("=> generated", cxtBc->name, cxtBc->typeInfoFunc ? cxtBc->typeInfoFunc->getDisplayNameC() : "");
         printSomething = true;
@@ -173,7 +173,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     else if (loc.location && loc.file)
     {
         if (force ||
-            (stepLastFile != loc.file) ||
+            stepLastFile != loc.file ||
             (stepLastLocation && stepLastLocation->line != loc.location->line))
         {
             printSourceLines(context, cxtBc, loc.file, loc.location, 3);

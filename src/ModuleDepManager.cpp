@@ -439,9 +439,9 @@ bool ModuleDepManager::execute()
     // When this is a simple script, then register the script file as the configuration file
     else
     {
-        auto file  = Allocator::alloc<SourceFile>();
-        file->path = g_CommandLine.scriptName;
-        file->name = file->path.filename().string();
+        const auto file = Allocator::alloc<SourceFile>();
+        file->path      = g_CommandLine.scriptName;
+        file->name      = file->path.filename().string();
         file->addFlag(FILE_IS_CFG_FILE | FILE_IS_SCRIPT_FILE);
         registerCfgFile(file);
     }
@@ -467,7 +467,7 @@ bool ModuleDepManager::execute()
             }
         }
 
-        auto crc = strCrc.hash();
+        const auto crc = strCrc.hash();
         g_Workspace->setScriptWorkspace(FMT("%s-%08x", SWAG_SCRIPT_WORKSPACE, crc));
         g_Workspace->setupTarget();
 
@@ -523,7 +523,7 @@ bool ModuleDepManager::execute()
             break;
 
         // We have modules to parse again
-        for (auto cfgModule : pendingCfgModules)
+        for (const auto cfgModule : pendingCfgModules)
         {
             // Nothing to fetch if this is module already there
             if (cfgModule->isLocalToWorkspace)

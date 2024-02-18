@@ -102,7 +102,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             if (n1->kind != kind)
                 continue;
 
-            if (kind == AstNodeKind::FuncDecl && (collectFlags & COLLECT_TABLE_SPEC_FUNC) && !n1->isSpecialFunctionName())
+            if (kind == AstNodeKind::FuncDecl && collectFlags & COLLECT_TABLE_SPEC_FUNC && !n1->isSpecialFunctionName())
                 continue;
             if (kind == AstNodeKind::FuncDecl && !(collectFlags & COLLECT_TABLE_SPEC_FUNC) && n1->isSpecialFunctionName())
                 continue;

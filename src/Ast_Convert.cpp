@@ -145,7 +145,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
     // :SubDeclParent
     auto newParent = fromNode->parent;
-    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->kind != AstNodeKind::Namespace)
     {
         newParent = newParent->parent;
         SWAG_ASSERT(newParent);

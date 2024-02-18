@@ -346,7 +346,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
     // :SubDeclParent
     auto newParent = parent;
-    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->kind != AstNodeKind::Namespace)
     {
         newParent = newParent->parent;
         SWAG_ASSERT(newParent);
@@ -373,7 +373,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
         const auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));
-        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+        while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[tuple]] body"));
     }
@@ -677,7 +677,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         node->semanticFct = Semantic::resolveExplicitBitCast;
     }
 
-    if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
+    if (mdfFlags & MODIFIER_BIT && mdfFlags & MODIFIER_OVERFLOW)
     {
         return error(node, FMT(Err(Err0053), "bit", "over"));
     }

@@ -625,7 +625,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->reg.u64        = ptrSlice->count;
         const auto typeArray                = makeType<TypeInfoArray>();
-        typeArray->count                    = static_cast<uint32_t>((reinterpret_cast<SwagSlice*>(ptr))->count);
+        typeArray->count                    = static_cast<uint32_t>(reinterpret_cast<SwagSlice*>(ptr)->count);
         typeArray->totalCount               = typeArray->count;
         typeArray->pointedType              = typeSlice->pointedType;
         typeArray->finalType                = typeSlice->pointedType;

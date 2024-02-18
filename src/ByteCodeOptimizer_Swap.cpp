@@ -122,15 +122,15 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                         int cpt0 = 0;
                         int cpt1 = 0;
 
-                        cpt0 += (ByteCode::hasReadRegInA(ip) || ByteCode::hasWriteRegInA(ip)) ? 1 : 0;
-                        cpt0 += (ByteCode::hasReadRegInB(ip) || ByteCode::hasWriteRegInB(ip)) ? 1 : 0;
-                        cpt0 += (ByteCode::hasReadRegInC(ip) || ByteCode::hasWriteRegInC(ip)) ? 1 : 0;
-                        cpt0 += (ByteCode::hasReadRegInD(ip) || ByteCode::hasWriteRegInD(ip)) ? 1 : 0;
+                        cpt0 += ByteCode::hasReadRegInA(ip) || ByteCode::hasWriteRegInA(ip) ? 1 : 0;
+                        cpt0 += ByteCode::hasReadRegInB(ip) || ByteCode::hasWriteRegInB(ip) ? 1 : 0;
+                        cpt0 += ByteCode::hasReadRegInC(ip) || ByteCode::hasWriteRegInC(ip) ? 1 : 0;
+                        cpt0 += ByteCode::hasReadRegInD(ip) || ByteCode::hasWriteRegInD(ip) ? 1 : 0;
 
-                        cpt1 += (ByteCode::hasReadRegInA(ip + 1) || ByteCode::hasWriteRegInA(ip + 1)) ? 1 : 0;
-                        cpt1 += (ByteCode::hasReadRegInB(ip + 1) || ByteCode::hasWriteRegInB(ip + 1)) ? 1 : 0;
-                        cpt1 += (ByteCode::hasReadRegInC(ip + 1) || ByteCode::hasWriteRegInC(ip + 1)) ? 1 : 0;
-                        cpt1 += (ByteCode::hasReadRegInD(ip + 1) || ByteCode::hasWriteRegInD(ip + 1)) ? 1 : 0;
+                        cpt1 += ByteCode::hasReadRegInA(ip + 1) || ByteCode::hasWriteRegInA(ip + 1) ? 1 : 0;
+                        cpt1 += ByteCode::hasReadRegInB(ip + 1) || ByteCode::hasWriteRegInB(ip + 1) ? 1 : 0;
+                        cpt1 += ByteCode::hasReadRegInC(ip + 1) || ByteCode::hasWriteRegInC(ip + 1) ? 1 : 0;
+                        cpt1 += ByteCode::hasReadRegInD(ip + 1) || ByteCode::hasWriteRegInD(ip + 1) ? 1 : 0;
 
                         if (cpt1 <= cpt0)
                             continue;

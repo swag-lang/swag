@@ -145,15 +145,15 @@ struct TypeInfo
     bool isCode() const { return kind == TypeInfoKind::Code; }
     bool isLambdaClosure() const { return kind == TypeInfoKind::LambdaClosure; }
     bool isKindGeneric() const { return kind == TypeInfoKind::Generic; }
-    bool isNative(NativeTypeKind native) const { return (kind == TypeInfoKind::Native) && (nativeType == native); }
+    bool isNative(NativeTypeKind native) const { return kind == TypeInfoKind::Native && nativeType == native; }
     bool isAny() const { return isNative(NativeTypeKind::Any); }
     bool isString() const { return isNative(NativeTypeKind::String); }
     bool isBool() const { return isNative(NativeTypeKind::Bool); }
     bool isRune() const { return isNative(NativeTypeKind::Rune); }
     bool isVoid() const { return isNative(NativeTypeKind::Void); }
     bool isUndefined() const { return isNative(NativeTypeKind::Undefined); }
-    bool isCString() const { return (kind == TypeInfoKind::Pointer) && flags.has(TYPEINFO_C_STRING); }
-    bool isLambda() const { return (kind == TypeInfoKind::LambdaClosure) && !isClosure(); }
+    bool isCString() const { return kind == TypeInfoKind::Pointer && flags.has(TYPEINFO_C_STRING); }
+    bool isLambda() const { return kind == TypeInfoKind::LambdaClosure && !isClosure(); }
     bool isClosure() const { return flags.has(TYPEINFO_CLOSURE); }
     bool isNativeInteger() const { return flags.has(TYPEINFO_INTEGER); }
     bool isNativeIntegerUnsignedOrRune() const { return (flags.has(TYPEINFO_INTEGER) && flags.has(TYPEINFO_UNSIGNED)) || isRune(); }

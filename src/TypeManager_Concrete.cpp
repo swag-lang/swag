@@ -7,7 +7,7 @@ namespace
 {
     const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
     {
-        if (type1->kind != TypeInfoKind::Alias || (type1->flags & static_cast<uint16_t>(ExportedTypeInfoFlags::Strict)))
+        if (type1->kind != TypeInfoKind::Alias || type1->flags & static_cast<uint16_t>(ExportedTypeInfoFlags::Strict))
             return type1;
         const auto typeAlias = reinterpret_cast<const ExportedTypeInfoAlias*>(type1);
         return concreteAlias(typeAlias->rawType);
@@ -23,7 +23,7 @@ bool TypeManager::compareConcreteType(const ExportedTypeInfo* type1, const Expor
     type1 = concreteAlias(type1);
     type2 = concreteAlias(type2);
 
-    if ((type1->kind != type2->kind) || (type1->sizeOf != type2->sizeOf) || (type1->flags != type2->flags))
+    if (type1->kind != type2->kind || type1->sizeOf != type2->sizeOf || type1->flags != type2->flags)
         return false;
     if (type1->fullName.count != type2->fullName.count)
         return false;

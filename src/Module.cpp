@@ -313,7 +313,7 @@ void Module::buildModulesSlice()
         offset += sizeof(void*);
     }
 
-    SWAG_ASSERT((offset - modulesSliceOffset) == (moduleDependencies.count + 1) * sizeof(SwagModule));
+    SWAG_ASSERT(offset - modulesSliceOffset == (moduleDependencies.count + 1) * sizeof(SwagModule));
 }
 
 void Module::buildGlobalVarsToDropSlice()
@@ -375,7 +375,7 @@ void Module::buildTypesSlice()
     uint8_t*       resultPtr;
     const uint32_t numTypes = static_cast<uint32_t>(mapTypes.size());
 
-    typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ExportedTypeInfo*)), &resultPtr);
+    typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + numTypes * sizeof(ExportedTypeInfo*), &resultPtr);
     auto offset      = typesSliceOffset;
 
     // First store the number of types in the table
@@ -589,7 +589,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     const auto filter = funcDecl->parameters->computedValue->reg.u64;
     for (uint32_t i = 0; i < 64; i++)
     {
-        if (filter & (static_cast<uint64_t>(1) << i))
+        if (filter & static_cast<uint64_t>(1) << i)
         {
             ScopedLock lk(byteCodeCompilerMutex[i]);
             SWAG_ASSERT(numCompilerFunctions > 0);
@@ -944,7 +944,7 @@ bool Module::mustOptimizeBackend(const AstNode* node) const
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;
-    return (buildCfg.byteCodeOptimizeLevel > 0 || (node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_ON) && !node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_OFF)));
+    return buildCfg.byteCodeOptimizeLevel > 0 || (node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_ON) && !node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_OFF));
 }
 
 bool Module::hasBytecodeToRun() const

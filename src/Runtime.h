@@ -1,6 +1,8 @@
 #pragma once
 #include "Flags.h"
 
+struct ExportedTypeInfo;
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -81,8 +83,8 @@ using SwagSlice = struct SwagSlice
 
 struct SwagAny
 {
-    void*                    value;
-    struct ExportedTypeInfo* type;
+    void*             value;
+    ExportedTypeInfo* type;
 };
 
 struct SwagSourceCodeLocation

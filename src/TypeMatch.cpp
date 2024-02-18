@@ -35,7 +35,7 @@ namespace
             if (i >= parameters.size() && !isAfterVariadic)
             {
                 if (context.result == MatchResult::BadSignature &&
-                    (context.matchFlags & SymbolMatchContext::MATCH_UFCS) &&
+                    context.matchFlags & SymbolMatchContext::MATCH_UFCS &&
                     context.badSignatureInfos.badSignatureParameterIdx == 0)
                 {
                     return;
@@ -345,7 +345,7 @@ namespace
         if (!userGenericParams && wantedNumGenericParams)
         {
             if (myTypeInfo->isGeneric() ||
-                (context.matchFlags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
+                context.matchFlags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC ||
                 !context.genericReplaceTypes.empty())
             {
                 context.matchFlags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
@@ -635,7 +635,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
         const auto funcNode = castAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-        if (funcNode->parameters && (funcNode->parameters->hasAstFlag(AST_IS_GENERIC)))
+        if (funcNode->parameters && funcNode->parameters->hasAstFlag(AST_IS_GENERIC))
         {
             SymbolMatchContext cpyContext = context;
             matchParametersAndNamed(cpyContext, typeFunc->parameters, CAST_FLAG_DEFAULT);

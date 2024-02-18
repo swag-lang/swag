@@ -90,10 +90,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
     switch (ip->op)
     {
     case ByteCodeOp::IntrinsicMulAddF32:
-        ra.f32 = (rb.f32 * rc.f32) + rd.f32;
+        ra.f32 = rb.f32 * rc.f32 + rd.f32;
         break;
     case ByteCodeOp::IntrinsicMulAddF64:
-        ra.f64 = (rb.f64 * rc.f64) + rd.f64;
+        ra.f64 = rb.f64 * rc.f64 + rd.f64;
         break;
 
     case ByteCodeOp::IntrinsicS8x1:
@@ -276,10 +276,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.u8 = max(rb.u8, rc.u8);
             break;
         case TokenId::IntrinsicRol:
-            ra.u8 = static_cast<uint8_t>((rb.u8 << rc.u32) | (rb.u8 >> (8 - rc.u32)));
+            ra.u8 = static_cast<uint8_t>(rb.u8 << rc.u32 | rb.u8 >> 8 - rc.u32);
             break;
         case TokenId::IntrinsicRor:
-            ra.u8 = static_cast<uint8_t>((rb.u8 >> rc.u32) | (rb.u8 << (8 - rc.u32)));
+            ra.u8 = static_cast<uint8_t>(rb.u8 >> rc.u32 | rb.u8 << 8 - rc.u32);
             break;
         default:
             SWAG_ASSERT(false);
@@ -299,10 +299,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.u16 = max(rb.u16, rc.u16);
             break;
         case TokenId::IntrinsicRol:
-            ra.u16 = static_cast<uint16_t>((rb.u16 << rc.u32) | (rb.u16 >> (16 - rc.u32)));
+            ra.u16 = static_cast<uint16_t>(rb.u16 << rc.u32 | rb.u16 >> 16 - rc.u32);
             break;
         case TokenId::IntrinsicRor:
-            ra.u16 = static_cast<uint16_t>((rb.u16 >> rc.u32) | (rb.u16 << (16 - rc.u32)));
+            ra.u16 = static_cast<uint16_t>(rb.u16 >> rc.u32 | rb.u16 << 16 - rc.u32);
             break;
         default:
             SWAG_ASSERT(false);
@@ -322,10 +322,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.u32 = max(rb.u32, rc.u32);
             break;
         case TokenId::IntrinsicRol:
-            ra.u32 = (rb.u32 << rc.u32) | (rb.u32 >> (32 - rc.u32));
+            ra.u32 = rb.u32 << rc.u32 | rb.u32 >> 32 - rc.u32;
             break;
         case TokenId::IntrinsicRor:
-            ra.u32 = (rb.u32 >> rc.u32) | (rb.u32 << (32 - rc.u32));
+            ra.u32 = rb.u32 >> rc.u32 | rb.u32 << 32 - rc.u32;
             break;
         default:
             SWAG_ASSERT(false);
@@ -345,10 +345,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.u64 = max(rb.u64, rc.u64);
             break;
         case TokenId::IntrinsicRol:
-            ra.u64 = (rb.u64 << rc.u32) | (rb.u64 >> (64 - rc.u32));
+            ra.u64 = rb.u64 << rc.u32 | rb.u64 >> 64 - rc.u32;
             break;
         case TokenId::IntrinsicRor:
-            ra.u64 = (rb.u64 >> rc.u32) | (rb.u64 << (64 - rc.u32));
+            ra.u64 = rb.u64 >> rc.u32 | rb.u64 << 64 - rc.u32;
             break;
         default:
             SWAG_ASSERT(false);

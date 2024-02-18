@@ -335,7 +335,7 @@ bool Semantic::resolveType(SemanticContext* context)
         }
     }
 
-    if ((typeNode->hasSemFlag(SEMFLAG_TYPE_SOLVED)) &&
+    if (typeNode->hasSemFlag(SEMFLAG_TYPE_SOLVED) &&
         typeNode->typeInfo &&
         !typeNode->typeInfo->isUndefined())
     {
@@ -420,7 +420,7 @@ bool Semantic::resolveType(SemanticContext* context)
                 {
                     Diagnostic        err{child->sourceFile, child->token, FMT(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     const Diagnostic* note = Diagnostic::hereIs(symOver);
-                    if ((typeNode->typeFlags & TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
+                    if (typeNode->typeFlags & TYPEFLAG_IS_PTR && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
@@ -535,7 +535,7 @@ bool Semantic::resolveType(SemanticContext* context)
             }
             else if (!child->hasComputedValue() &&
                      child->resolvedSymbolOverload &&
-                     (child->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC)))
+                     child->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
             {
                 genericCount = true;
             }

@@ -442,7 +442,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
         const auto childSize = funcNode->parameters->children.size();
         for (size_t i = 0; i < childSize; i++)
         {
-            if ((i == childSize - 1) && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+            if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
                 break;
             const auto param       = funcNode->parameters->children[i];
             const auto resolved    = param->resolvedSymbolOverload;
@@ -525,7 +525,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         // :DeduceLambdaType
         if (funcNode->makePointerLambda &&
-            (funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE)) &&
+            funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE) &&
             !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
         {
             auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
@@ -649,9 +649,9 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         // Determine if function is generic
-        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+        if (funcNode->ownerStructScope && funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             funcNode->addAstFlag(AST_IS_GENERIC);
-        if (funcNode->ownerFct && (funcNode->ownerFct->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+        if (funcNode->ownerFct && funcNode->ownerFct->hasAstFlag(AST_IS_GENERIC) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             funcNode->addAstFlag(AST_IS_GENERIC);
 
         if (funcNode->parameters)
@@ -1012,7 +1012,7 @@ bool Semantic::isMethod(const AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
         !funcNode->hasAstFlag(AST_FROM_GENERIC) &&
         !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
-        (funcNode->ownerScope->kind == ScopeKind::Struct) &&
+        funcNode->ownerScope->kind == ScopeKind::Struct &&
         funcNode->ownerStructScope->owner->typeInfo->isStruct())
     {
         return true;
@@ -1221,7 +1221,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     // instead of a copy, in case the parameter to the tuple init is a local variable
     if (node->autoTupleReturn)
     {
-        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
+        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL))
         {
             node->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
             node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
@@ -1632,13 +1632,13 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // If we are returning a local variable, we can do a move
-    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         child->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 
-    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL)))
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL))
     {
         child->addAstFlag(AST_NO_BYTECODE);
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);

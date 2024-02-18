@@ -9,7 +9,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
         ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
         parseCxt.curIp            = node->end;
 
-        const uint64_t countBlock = (node->end - node->start) + 1;
+        const uint64_t countBlock = node->end - node->start + 1;
 
         // Only factorize terminal blocks
         if (!ByteCode::isRet(node->end) && node->end->op != ByteCodeOp::Jump)

@@ -156,7 +156,7 @@ namespace
                     note->endLocation.line == note1->endLocation.line &&
                     note1->canBeMerged &&
                     !note1->ranges.empty() &&
-                    (note1->errorLevel == DiagnosticLevel::Note))
+                    note1->errorLevel == DiagnosticLevel::Note)
                 {
                     for (size_t i = 0; i < note1->ranges.size(); i++)
                     {
@@ -606,7 +606,7 @@ namespace
                 const SwagContext* context = static_cast<SwagContext*>(OS::tlsGetValue(g_TlsContextId));
 
                 // Bytecode callstack
-                if (context && (context->flags & static_cast<uint64_t>(ContextFlags::ByteCode)))
+                if (context && context->flags & static_cast<uint64_t>(ContextFlags::ByteCode))
                 {
                     const auto callStack = g_ByteCodeStackTrace->log(runContext);
                     if (!callStack.empty())

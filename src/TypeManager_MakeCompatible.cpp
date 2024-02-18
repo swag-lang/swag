@@ -75,7 +75,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
                 fromNode = fromNode->children.empty() ? nullptr : fromNode->children.front();
 
-            if (fromNode && (fromNode->hasAstFlag(AST_CONST_EXPR)))
+            if (fromNode && fromNode->hasAstFlag(AST_CONST_EXPR))
             {
 #ifdef SWAG_HAS_ASSERT
                 const TypeInfoList* typeList = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);

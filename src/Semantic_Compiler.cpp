@@ -529,7 +529,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
             }
 
             // Same for a function
-            if (node->ownerFct && (node->ownerFct->hasAstFlag(AST_IS_GENERIC)))
+            if (node->ownerFct && node->ownerFct->hasAstFlag(AST_IS_GENERIC))
                 node->addAstFlag(AST_IS_GENERIC);
         }
     }

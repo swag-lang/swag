@@ -244,7 +244,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         const auto typeResolved = child->resolvedSymbolOverload->typeInfo->getConcreteAlias();
 
-        if ((child->resolvedSymbolOverload->hasFlag(OVERLOAD_CONST_ASSIGN)) &&
+        if (child->resolvedSymbolOverload->hasFlag(OVERLOAD_CONST_ASSIGN) &&
             !typeResolved->isPointerArithmetic() &&
             !typeResolved->isArray() &&
             !typeResolved->isSlice())
@@ -803,7 +803,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
         if (isConstAccess)
         {
             const auto overload = subArray->array->resolvedSymbolOverload;
-            if (overload && (overload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
+            if (overload && overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
                 SWAG_ASSERT(overload->computedValue.storageSegment);
@@ -872,7 +872,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
         if (arrayNode->access->hasComputedValue())
         {
-            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
+            if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
             {
                 arrayNode->setFlagsValueIsComputed();
                 const auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
@@ -979,7 +979,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         // Try to dereference as a constant if we can
         if (arrayNode->access->hasComputedValue())
         {
-            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
+            if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
             {
                 const auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
                 const auto  slice         = static_cast<SwagSlice*>(computedValue.getStorageAddr());

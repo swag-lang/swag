@@ -1100,7 +1100,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
         }
 
-        int  level = (static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1));
+        int  level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
         auto ref   = getTocTitleRef();
         helpContent += FMT("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
         break;
@@ -1231,7 +1231,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::Title5:
     case UserBlockKind::Title6:
     {
-        int level = (static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1));
+        int level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
         helpContent += FMT("</h%d>\n", titleLevel + level + 1);
         break;
     }

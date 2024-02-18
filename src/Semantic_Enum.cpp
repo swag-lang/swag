@@ -131,7 +131,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     }
 
     // By default, raw type is s32, except for flags and index
-    TypeInfo* rawTypeInfo = (enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX)) ? g_TypeMgr->typeInfoU32 : g_TypeMgr->typeInfoS32;
+    TypeInfo* rawTypeInfo = enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX) ? g_TypeMgr->typeInfoU32 : g_TypeMgr->typeInfoS32;
     if (!typeNode->children.empty())
         rawTypeInfo = typeNode->children[0]->typeInfo;
 
@@ -357,7 +357,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
         // Compute automatic value from previous
         const bool isFlags = enumNode->hasAttribute(ATTRIBUTE_ENUM_FLAGS);
-        if (!assignNode && (isFlags || (valNode != firstEnumValue)))
+        if (!assignNode && (isFlags || valNode != firstEnumValue))
         {
             // Compute next value
             switch (rawType->nativeType)
@@ -368,7 +368,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue->reg.u8)
                 {
                     const auto n = enumNode->computedValue->reg.u8;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
                     enumNode->computedValue->reg.u8 <<= 1;
                 }
                 else
@@ -380,7 +380,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue->reg.u16)
                 {
                     const auto n = enumNode->computedValue->reg.u16;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
                     enumNode->computedValue->reg.u16 <<= 1;
                 }
                 else
@@ -392,7 +392,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue->reg.u32)
                 {
                     const auto n = enumNode->computedValue->reg.u32;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
                     enumNode->computedValue->reg.u32 <<= 1;
                 }
                 else
@@ -404,7 +404,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue->reg.u64)
                 {
                     const auto n = enumNode->computedValue->reg.u64;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
                     enumNode->computedValue->reg.u64 <<= 1;
                 }
                 else

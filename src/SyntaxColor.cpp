@@ -28,11 +28,11 @@ namespace
         else
         {
             const float d = maxVal - minVal;
-            *s            = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
+            *s            = *l > 0.5 ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
 
             if (maxVal == r)
             {
-                *h = (g - b) / d + ((g < b) ? 6 : 0);
+                *h = (g - b) / d + (g < b ? 6 : 0);
             }
             else if (maxVal == g)
             {
@@ -71,7 +71,7 @@ namespace
         }
         else
         {
-            const float q = (l < 0.5) ? l * (1 + s) : l + s - l * s;
+            const float q = l < 0.5 ? l * (1 + s) : l + s - l * s;
             const float p = 2 * l - q;
 
             r = hueToRgb(p, q, h + 1.0f / 3);
@@ -214,7 +214,7 @@ uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum)
         rgb = hslToRgb(h, s, lum);
     }
 
-    return (rgb.r << 16) | (rgb.g << 8) | (rgb.b);
+    return rgb.r << 16 | rgb.g << 8 | rgb.b;
 }
 
 Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)

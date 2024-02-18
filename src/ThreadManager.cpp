@@ -79,7 +79,7 @@ void ThreadManager::addJobNoLock(Job* job)
         job->waitingJobIndex = UINT32_MAX;
     }
 
-    SWAG_ASSERT(job->waitOnJobs == 0 || (job->hasFlag(JOB_ACCEPT_PENDING_COUNT)));
+    SWAG_ASSERT(job->waitOnJobs == 0 || job->hasFlag(JOB_ACCEPT_PENDING_COUNT));
     job->removeFlag(JOB_ACCEPT_PENDING_COUNT);
 
     if (job->hasFlag(JOB_IS_OPT))

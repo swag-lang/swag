@@ -332,7 +332,7 @@ void Concat::addS32Str8(int value)
             *pz = '0';
         else
         {
-            const auto id = value - (10 * (value / 10));
+            const auto id = value - 10 * (value / 10);
             value /= 10;
             *pz = static_cast<char>('0' + id);
         }

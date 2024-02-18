@@ -376,7 +376,7 @@ namespace OS
 
     uint64_t getFileWriteTime(const char* fileName)
     {
-        const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+        const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if (hFile == INVALID_HANDLE_VALUE)
             return 0;
 
@@ -435,7 +435,7 @@ namespace OS
             {
                 if (!(findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
                     continue;
-                if ((findFile.cFileName[0] == '.') && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
+                if (findFile.cFileName[0] == '.' && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
                     continue;
                 user(findFile.cFileName);
             } while (FindNextFileA(h, &findFile));
@@ -456,7 +456,7 @@ namespace OS
             {
                 if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                 {
-                    if ((findFile.cFileName[0] == '.') && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
+                    if (findFile.cFileName[0] == '.' && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
                         continue;
                 }
 
@@ -488,7 +488,7 @@ namespace OS
 
                 if (findFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                 {
-                    if ((findFile.cFileName[0] == '.') && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
+                    if (findFile.cFileName[0] == '.' && (!findFile.cFileName[1] || (findFile.cFileName[1] == '.' && !findFile.cFileName[2])))
                         continue;
                     visitFilesRec(path.string().c_str(), user);
                 }
@@ -931,7 +931,7 @@ namespace OS
         const auto& cc         = typeInfoFunc->getCallConv();
         const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
-        uint32_t stackSize = static_cast<uint32_t>(max(cc.paramByRegisterCount, pushRAParam.size())) * sizeof(void*);
+        uint32_t stackSize = (max(cc.paramByRegisterCount, pushRAParam.size())) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 

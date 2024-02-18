@@ -87,7 +87,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
         // Read/write to A, and A is a constant, we store the current value in B. The constant folding pass can take care of that
         // depending on the instruction
-            if (!ip->hasFlag(BCI_IMM_B) && (flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_A) && regs.contains(ip->a.u32) &&
+            if (!ip->hasFlag(BCI_IMM_B) && flags & OPFLAG_READ_A && flags & OPFLAG_WRITE_A && regs.contains(ip->a.u32) &&
                 !(flags & OPFLAG_READ_B) && !(flags & OPFLAG_READ_VAL32_B) && !(flags & OPFLAG_READ_VAL64_B))
             {
                 context->setDirtyPass();
@@ -97,7 +97,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 break;
             }
 
-            if (!ip->hasFlag(BCI_IMM_B) && (flags & OPFLAG_WRITE_A) && (flags & OPFLAG_READ_B) && regs.contains(ip->a.u32) &&
+            if (!ip->hasFlag(BCI_IMM_B) && flags & OPFLAG_WRITE_A && flags & OPFLAG_READ_B && regs.contains(ip->a.u32) &&
                 ip->a.u32 == ip->b.u32)
             {
                 context->setDirtyPass();
@@ -109,7 +109,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
         // Read/write to A, and A is a constant, we store the current value in C. The constant folding pass can take care of that
         // depending on the instruction
-            if (!ip->hasFlag(BCI_IMM_C) && (flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_A) && regs.contains(ip->a.u32) &&
+            if (!ip->hasFlag(BCI_IMM_C) && flags & OPFLAG_READ_A && flags & OPFLAG_WRITE_A && regs.contains(ip->a.u32) &&
                 !(flags & OPFLAG_READ_C) && !(flags & OPFLAG_READ_VAL32_C) && !(flags & OPFLAG_READ_VAL64_C))
             {
                 context->setDirtyPass();
@@ -121,7 +121,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
         // Operators can read from A and write to C, with A == C.
         // In that case we want the optim to take place on A if it's immediate, so do not cancel it for C.
-            if ((flags & OPFLAG_READ_A) && (flags & OPFLAG_WRITE_C) && !ip->hasFlag(BCI_IMM_A) && regs.contains(ip->a.u32))
+            if (flags & OPFLAG_READ_A && flags & OPFLAG_WRITE_C && !ip->hasFlag(BCI_IMM_A) && regs.contains(ip->a.u32))
                 break;
 
             if (flags & OPFLAG_WRITE_A)
@@ -138,7 +138,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         if (!regs.count)
             continue;
 
-        if (!ip->hasFlag(BCI_IMM_A) && (flags & OPFLAG_READ_A) && regs.contains(ip->a.u32))
+        if (!ip->hasFlag(BCI_IMM_A) && flags & OPFLAG_READ_A && regs.contains(ip->a.u32))
         {
             if (flags & OPFLAG_IMM_A)
             {
@@ -149,7 +149,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             }
         }
 
-        if (!ip->hasFlag(BCI_IMM_B) && (flags & OPFLAG_READ_B) && regs.contains(ip->b.u32))
+        if (!ip->hasFlag(BCI_IMM_B) && flags & OPFLAG_READ_B && regs.contains(ip->b.u32))
         {
             if (flags & OPFLAG_IMM_B)
             {
@@ -167,7 +167,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             }
         }
 
-        if (!ip->hasFlag(BCI_IMM_C) && (flags & OPFLAG_READ_C) && regs.contains(ip->c.u32))
+        if (!ip->hasFlag(BCI_IMM_C) && flags & OPFLAG_READ_C && regs.contains(ip->c.u32))
         {
             if (flags & OPFLAG_IMM_C)
             {
@@ -178,7 +178,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             }
         }
 
-        if (!ip->hasFlag(BCI_IMM_D) && (flags & OPFLAG_READ_D) && regs.contains(ip->d.u32))
+        if (!ip->hasFlag(BCI_IMM_D) && flags & OPFLAG_READ_D && regs.contains(ip->d.u32))
         {
             if (flags & OPFLAG_IMM_D)
             {

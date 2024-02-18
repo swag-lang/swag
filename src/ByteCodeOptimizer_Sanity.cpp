@@ -1225,7 +1225,7 @@ namespace
                 if (vb.kind == ValueKind::Unknown)
                     rc->kind = ValueKind::Unknown;
                 else
-                    rc->reg.u64 += (vb.reg.s64 * ip->d.u64);
+                    rc->reg.u64 += vb.reg.s64 * ip->d.u64;
                 break;
             case ByteCodeOp::DecPointer64:
                 SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -2298,7 +2298,7 @@ namespace
                 SWAG_CHECK(getImmediateD(vd, cxt, ip));
                 ra->kind = vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant && vd.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
                 if (ra->kind == ValueKind::Constant)
-                    ra->reg.f32 = (vb.reg.f32 * vc.reg.f32) + vd.reg.f32;
+                    ra->reg.f32 = vb.reg.f32 * vc.reg.f32 + vd.reg.f32;
                 setConstant(cxt, ra->kind, ip, ra->reg.u32, ConstantKind::SetImmediateA);
                 break;
             case ByteCodeOp::IntrinsicMulAddF64:
@@ -2308,7 +2308,7 @@ namespace
                 SWAG_CHECK(getImmediateD(vd, cxt, ip));
                 ra->kind = vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant && vd.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown;
                 if (ra->kind == ValueKind::Constant)
-                    ra->reg.f64 = (vb.reg.f64 * vc.reg.f64) + vd.reg.f64;
+                    ra->reg.f64 = vb.reg.f64 * vc.reg.f64 + vd.reg.f64;
                 setConstant(cxt, ra->kind, ip, ra->reg.u64, ConstantKind::SetImmediateA);
                 break;
 

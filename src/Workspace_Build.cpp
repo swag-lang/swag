@@ -240,7 +240,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     if (prevNodeLocal && prevNodeLocal->kind == AstNodeKind::File)
         return nullptr;
 
-    AstNode* prevNode = nullptr;
+    const AstNode* prevNode = nullptr;
     if (!prevJob->originalNode)
         prevNode = prevNodeLocal;
     else if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
@@ -253,7 +253,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     else
         prevNode = prevNodeLocal;
 
-    AstNode* depNode = nullptr;
+    const AstNode* depNode = nullptr;
     if (depJob)
         depNode = depJob->originalNode;
 

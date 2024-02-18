@@ -560,7 +560,7 @@ struct AstFuncDecl : AstNode
     const Utf8& getFullNameForeignImport() const;
     Utf8        getDisplayName() const;
     const char* getDisplayNameC() const;
-    Utf8        getNameForUserCompiler();
+    Utf8        getNameForUserCompiler() const;
     bool        mustAutoInline() const;
     bool        mustUserInline(bool forExport = false) const;
     bool        mustInline() const;

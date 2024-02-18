@@ -31,7 +31,7 @@ struct Allocator
     static void* alloc(size_t size, size_t align = sizeof(void*));
     static void  free(void*, size_t size);
 
-    static size_t alignSize(size_t size) { return ((size + 7) & ~7); }
+    static size_t alignSize(size_t size) { return size + 7 & ~7; }
 
 #ifdef SWAG_CHECK_MEMORY
     static uint8_t* markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker);

@@ -262,21 +262,21 @@ namespace
                 cpt--;
         }
 
-        if (cpt > 0 && ((decal + range) < static_cast<int>(lineCode.length())) && lineCode[decal + range] == c2)
+        if (cpt > 0 && decal + range < static_cast<int>(lineCode.length()) && lineCode[decal + range] == c2)
         {
             range++;
         }
-        else if (cpt > 0 && (decal < static_cast<int>(lineCode.length())) && lineCode[decal] == c1)
+        else if (cpt > 0 && decal < static_cast<int>(lineCode.length()) && lineCode[decal] == c1)
         {
             startLocation.column++;
             range--;
         }
-        else if (cpt < 0 && decal && ((decal - 1) < static_cast<int>(lineCode.length())) && lineCode[decal - 1] == c1)
+        else if (cpt < 0 && decal && decal - 1 < static_cast<int>(lineCode.length()) && lineCode[decal - 1] == c1)
         {
             startLocation.column--;
             range++;
         }
-        else if (cpt < 0 && ((decal + range - 1) < static_cast<int>(lineCode.length())) && lineCode[decal + range - 1] == c2)
+        else if (cpt < 0 && decal + range - 1 < static_cast<int>(lineCode.length()) && lineCode[decal + range - 1] == c2)
         {
             range--;
         }
@@ -563,7 +563,7 @@ void Diagnostic::printRanges()
         curColumn = printRangesVerticalBars(ranges.size() - 1);
         g_Log.setColor(rangeNoteColor);
 
-        const bool notEnoughRoomRight = ((mid + 3 + static_cast<int>(unformat.length()) > static_cast<int>(g_CommandLine.errorRightColumn)) || orgNumRanges >= 2);
+        const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unformat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
         const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unformat.length()) >= 0;
 
         // Can we stick the hint before the line reference ? (must be the last one)

@@ -133,7 +133,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = UnsignedCharacter | (NearPointer64 << 8);
+        field.type          = UnsignedCharacter | NearPointer64 << 8;
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
@@ -164,7 +164,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = UnsignedCharacter | (NearPointer64 << 8);
+        field.type          = UnsignedCharacter | NearPointer64 << 8;
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_data);
         tr0->LF_FieldList.fields.reserve(2);
@@ -195,7 +195,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         SCBEDebugTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
-        field.type          = UnsignedCharacter | (NearPointer64 << 8);
+        field.type          = UnsignedCharacter | NearPointer64 << 8;
         field.value.reg.u32 = 0;
         field.name.setView(g_LangSpec->name_ptrvalue);
         tr0->LF_FieldList.fields.reserve(2);
@@ -440,7 +440,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* t
 {
     const auto simpleType = getSimpleType(typeInfo);
     if (simpleType != None)
-        return simpleType | (NearPointer64 << 8);
+        return simpleType | NearPointer64 << 8;
 
     // Pointer to something complex
     const auto tr              = addTypeRecord(pp);

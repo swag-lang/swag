@@ -226,7 +226,7 @@ void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, 
              !ip->hasFlag(BCI_IMM_A) &&
              ip->hasFlag(BCI_IMM_B) &&
              Math::isPowerOfTwo(ip->b.u64) &&
-             (ip->b.u64 < static_cast<uint64_t>(numBits)))
+             ip->b.u64 < static_cast<uint64_t>(numBits))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_Load8_Immediate(RCX, static_cast<uint8_t>(log2(ip->b.u64)));
@@ -235,7 +235,7 @@ void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, 
     else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
              !ip->hasFlag(BCI_IMM_A) &&
              ip->hasFlag(BCI_IMM_B) &&
-             (ip->b.u64 <= 0x7FFFFFFF))
+             ip->b.u64 <= 0x7FFFFFFF)
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_OpN_IndirectDst(RAX, ip->b.u64, op, numBits);

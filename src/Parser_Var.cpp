@@ -117,7 +117,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->tokenId     = identifier->tokenId;
             varNode->assignToken = assignToken;
             varNode->addAstFlag(AST_R_VALUE);
-            varNode->addSpecFlag(forLet ? (AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN) : 0);
+            varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
             if (!firstDone)
             {
@@ -165,7 +165,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
-        orgVarNode->addSpecFlag(forLet ? (AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN) : 0);
+        orgVarNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
@@ -222,7 +222,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
             varNode->addAstFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
-            varNode->addSpecFlag(forLet ? (AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN) : 0);
+            varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
             varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
@@ -246,7 +246,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode);
         varNode->assignToken = assignToken;
-        varNode->addSpecFlag(forLet ? (AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN) : 0);
+        varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
         Ast::addChildBack(varNode, type);
         varNode->type = type;

@@ -826,7 +826,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfo* to, CastFlags castFlags) const
     if (!isSame(other, castFlags))
         return false;
 
-    if ((castFlags.has(CAST_FLAG_EXACT)) || to->isLambdaClosure())
+    if (castFlags.has(CAST_FLAG_EXACT) || to->isLambdaClosure())
     {
         if (returnType && !returnType->isVoid() && !other->returnType)
             return false;

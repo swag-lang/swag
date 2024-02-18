@@ -206,7 +206,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
 
         // :SilentCall
-        if ((resolved->hasFlag(OVERLOAD_VAR_TLS)) && node->isSilentCall())
+        if (resolved->hasFlag(OVERLOAD_VAR_TLS) && node->isSilentCall())
             freeRegisterRC(context, node->parent);
 
         identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
@@ -430,7 +430,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
-        const auto persistentReg = (resolved->hasFlag(OVERLOAD_PERSISTENT_REG)) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
+        const auto persistentReg = resolved->hasFlag(OVERLOAD_PERSISTENT_REG) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
 
         if (node->isSilentCall())
         {

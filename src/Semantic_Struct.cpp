@@ -333,7 +333,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
     constexpr int  sizeOfHeader = 2 * sizeof(void*);
-    const uint32_t itableOffset = constSegment->reserve((numFctInterface * sizeof(void*)) + sizeOfHeader, reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
+    const uint32_t itableOffset = constSegment->reserve(numFctInterface * sizeof(void*) + sizeOfHeader, reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
     // :itableHeader
@@ -390,7 +390,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
 
-    VectorNative<AstNode*>& children = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->children;
+    VectorNative<AstNode*>& children = node->hasAstFlag(AST_STRUCT_COMPOUND) ? context->tmpNodes : node->content->children;
     if (node->hasAstFlag(AST_STRUCT_COMPOUND))
     {
         context->tmpNodes.clear();
@@ -847,7 +847,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     TypeInfoFlags structFlags = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
     // No need to flatten structure if it's not a compound (optim)
-    VectorNative<AstNode*>& children = (node->hasAstFlag(AST_STRUCT_COMPOUND)) ? context->tmpNodes : node->content->children;
+    VectorNative<AstNode*>& children = node->hasAstFlag(AST_STRUCT_COMPOUND) ? context->tmpNodes : node->content->children;
     if (node->hasAstFlag(AST_STRUCT_COMPOUND))
     {
         context->tmpNodes.clear();

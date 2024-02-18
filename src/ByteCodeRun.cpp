@@ -81,7 +81,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, B
     if (returnRegOnRet != UINT32_MAX)
         context->pushAlt<uint64_t>(context->registersRR[0].u64);
     context->pushAlt<uint32_t>(returnRegOnRet);
-    context->pushAlt<uint32_t>((popParamsOnRet * sizeof(void*)) + incSPPostCall);
+    context->pushAlt<uint32_t>(popParamsOnRet * sizeof(void*) + incSPPostCall);
 }
 
 SWAG_FORCE_INLINE void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, ByteCode* bc)
@@ -669,7 +669,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - IMMB_S64(ip);
         break;
     case ByteCodeOp::IncMulPointer64:
-        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + (IMMB_S64(ip) * ip->d.u64);
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + IMMB_S64(ip) * ip->d.u64;
         break;
 
     case ByteCodeOp::DeRef8:
@@ -1103,7 +1103,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::GetParam64DeRef8:
         SWAG_ASSERT(context->bp + ip->b.u64u32.low <= context->stack + g_CommandLine.limitStackBC - 8);
         registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(context->bp + ip->b.u64u32.low);
-        registersRC[ip->a.u32].u64 = *(registersRC[ip->a.u32].pointer);
+        registersRC[ip->a.u32].u64 = *registersRC[ip->a.u32].pointer;
         break;
     case ByteCodeOp::GetParam64DeRef16:
         SWAG_ASSERT(context->bp + ip->b.u64u32.low <= context->stack + g_CommandLine.limitStackBC - 8);
@@ -1260,7 +1260,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
             if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
                 OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->mutableSegment.address(ip->b.u32));
-            registersRC[ip->a.u32].u64 = *(ip->d.pointer);
+            registersRC[ip->a.u32].u64 = *ip->d.pointer;
         }
         break;
     }
@@ -1334,7 +1334,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
             if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
                 OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->bssSegment.address(ip->b.u32));
-            registersRC[ip->a.u32].u64 = *(ip->d.pointer);
+            registersRC[ip->a.u32].u64 = *ip->d.pointer;
         }
         break;
     }
@@ -1399,7 +1399,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE));
             if (OS::atomicTestNull(reinterpret_cast<void**>(&ip->d.pointer)))
                 OS::atomicSetIfNotNull(reinterpret_cast<void**>(&ip->d.pointer), module->compilerSegment.address(ip->b.u32));
-            registersRC[ip->a.u32].u64 = *(ip->d.pointer);
+            registersRC[ip->a.u32].u64 = *ip->d.pointer;
         }
         break;
     }
@@ -3358,7 +3358,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpPlusEqU8_Safe:
-        *(registersRC[ip->a.u32].pointer) += IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpPlusEqU8_SSafe:
         *(context->bp + ip->a.u32) += IMMB_S8(ip);
@@ -3500,7 +3500,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMinusEqU8_Safe:
-        *(registersRC[ip->a.u32].pointer) -= IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMinusEqU8_SSafe:
         *(context->bp + ip->a.u32) -= IMMB_S8(ip);
@@ -3642,7 +3642,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMulEqU8_Safe:
-        *(registersRC[ip->a.u32].pointer) *= IMMB_S8(ip);
+        *registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     case ByteCodeOp::AffectOpMulEqU8_SSafe:
         *(context->bp + ip->a.u32) *= IMMB_S8(ip);
@@ -3759,7 +3759,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::AffectOpDivEqU8:
-        *(registersRC[ip->a.u32].pointer) /= IMMB_U8(ip);
+        *registersRC[ip->a.u32].pointer /= IMMB_U8(ip);
         break;
     case ByteCodeOp::AffectOpDivEqU8_S:
         *(context->bp + ip->a.u32) /= IMMB_U8(ip);
@@ -3861,7 +3861,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::AffectOpModuloEqU8:
-        *(registersRC[ip->a.u32].pointer) %= IMMB_U8(ip);
+        *registersRC[ip->a.u32].pointer %= IMMB_U8(ip);
         break;
     case ByteCodeOp::AffectOpModuloEqU8_S:
         *(context->bp + ip->a.u32) %= IMMB_U8(ip);

@@ -587,23 +587,23 @@ void Utf8::append(uint32_t utf)
     else if (utf <= 0x07FF)
     {
         reserve(count + 3);
-        buffer[count++] = static_cast<char>(((utf >> 6) & 0x1F) | 0xC0);
-        buffer[count++] = static_cast<char>(((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(utf >> 6 & 0x1F | 0xC0);
+        buffer[count++] = static_cast<char>(utf >> 0 & 0x3F | 0x80);
     }
     else if (utf <= 0xFFFF)
     {
         reserve(count + 4);
-        buffer[count++] = static_cast<char>(((utf >> 12) & 0x0F) | 0xE0);
-        buffer[count++] = static_cast<char>(((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = static_cast<char>(((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(utf >> 12 & 0x0F | 0xE0);
+        buffer[count++] = static_cast<char>(utf >> 6 & 0x3F | 0x80);
+        buffer[count++] = static_cast<char>(utf >> 0 & 0x3F | 0x80);
     }
     else if (utf <= MAX_ENCODED_UNICODE)
     {
         reserve(count + 5);
-        buffer[count++] = static_cast<char>(((utf >> 18) & 0x07) | 0xF0);
-        buffer[count++] = static_cast<char>(((utf >> 12) & 0x3F) | 0x80);
-        buffer[count++] = static_cast<char>(((utf >> 6) & 0x3F) | 0x80);
-        buffer[count++] = static_cast<char>(((utf >> 0) & 0x3F) | 0x80);
+        buffer[count++] = static_cast<char>(utf >> 18 & 0x07 | 0xF0);
+        buffer[count++] = static_cast<char>(utf >> 12 & 0x3F | 0x80);
+        buffer[count++] = static_cast<char>(utf >> 6 & 0x3F | 0x80);
+        buffer[count++] = static_cast<char>(utf >> 0 & 0x3F | 0x80);
     }
     else
     {
@@ -696,7 +696,7 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
     {
         offset = 2;
         wc     = (c & 0x1F) << 6;
-        wc |= (*pz++ & 0x3F);
+        wc |= *pz++ & 0x3F;
         return pz;
     }
 
@@ -705,7 +705,7 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
         offset = 3;
         wc     = (c & 0xF) << 12;
         wc |= (*pz++ & 0x3F) << 6;
-        wc |= (*pz++ & 0x3F);
+        wc |= *pz++ & 0x3F;
         return pz;
     }
 
@@ -715,7 +715,7 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
         wc     = (c & 0x7) << 18;
         wc |= (*pz++ & 0x3F) << 12;
         wc |= (*pz++ & 0x3F) << 6;
-        wc |= (*pz++ & 0x3F);
+        wc |= *pz++ & 0x3F;
         return pz;
     }
 
@@ -726,7 +726,7 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
         wc |= (c & 0x3F) << 18;
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
-        wc |= (c & 0x3F);
+        wc |= c & 0x3F;
         return pz;
     }
 
@@ -738,7 +738,7 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
         wc |= (c & 0x3F) << 18;
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
-        wc |= (c & 0x3F);
+        wc |= c & 0x3F;
         return pz;
     }
 

@@ -834,7 +834,7 @@ bool Parser::doOperatorPrecedence(AstNode** result)
             //
             // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
             //
-        else if (!isAssociative(factor->tokenId) && (myPrecedence == rightPrecedence))
+        else if (!isAssociative(factor->tokenId) && myPrecedence == rightPrecedence)
             shuffle = true;
 
         if (shuffle)
@@ -886,17 +886,17 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
     Ast::removeFromParent(leftNode);
 
     bool isBinary = false;
-    if ((token.id == TokenId::SymPlus) ||
-        (token.id == TokenId::SymMinus) ||
-        (token.id == TokenId::SymAsterisk) ||
-        (token.id == TokenId::SymSlash) ||
-        (token.id == TokenId::SymPercent) ||
-        (token.id == TokenId::SymAmpersand) ||
-        (token.id == TokenId::SymVertical) ||
-        (token.id == TokenId::SymGreaterGreater) ||
-        (token.id == TokenId::SymLowerLower) ||
-        (token.id == TokenId::SymPlusPlus) ||
-        (token.id == TokenId::SymCircumflex))
+    if (token.id == TokenId::SymPlus ||
+        token.id == TokenId::SymMinus ||
+        token.id == TokenId::SymAsterisk ||
+        token.id == TokenId::SymSlash ||
+        token.id == TokenId::SymPercent ||
+        token.id == TokenId::SymAmpersand ||
+        token.id == TokenId::SymVertical ||
+        token.id == TokenId::SymGreaterGreater ||
+        token.id == TokenId::SymLowerLower ||
+        token.id == TokenId::SymPlusPlus ||
+        token.id == TokenId::SymCircumflex)
     {
         auto binaryNode = Ast::newNode<AstOp>(this, AstNodeKind::FactorOp, sourceFile, *parent);
 
@@ -927,13 +927,13 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         leftNode = binaryNode;
         isBinary = true;
     }
-    else if ((token.id == TokenId::SymEqualEqual) ||
-             (token.id == TokenId::SymExclamEqual) ||
-             (token.id == TokenId::SymLowerEqual) ||
-             (token.id == TokenId::SymGreaterEqual) ||
-             (token.id == TokenId::SymLower) ||
-             (token.id == TokenId::SymGreater) ||
-             (token.id == TokenId::SymLowerEqualGreater))
+    else if (token.id == TokenId::SymEqualEqual ||
+             token.id == TokenId::SymExclamEqual ||
+             token.id == TokenId::SymLowerEqual ||
+             token.id == TokenId::SymGreaterEqual ||
+             token.id == TokenId::SymLower ||
+             token.id == TokenId::SymGreater ||
+             token.id == TokenId::SymLowerEqualGreater)
     {
         auto binaryNode         = castAst<AstNode>(Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr));
         binaryNode->semanticFct = Semantic::resolveCompareExpression;
@@ -983,7 +983,7 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
 
     bool isBinary = false;
-    if ((token.id == TokenId::KwdOr) || (token.id == TokenId::KwdAnd))
+    if (token.id == TokenId::KwdOr || token.id == TokenId::KwdAnd)
     {
         const auto binaryNode   = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
         binaryNode->semanticFct = Semantic::resolveBoolExpression;

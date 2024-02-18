@@ -118,7 +118,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload &&
-        (node->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE)))
+        node->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
         if (!node->hasComputedValue())
         {
@@ -152,7 +152,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
-    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT)))
+    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT))
     {
         node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
         node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
@@ -274,8 +274,8 @@ bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, co
 
             if (grandParent->kind == AstNodeKind::TypeAlias ||
                 grandParent->kind == AstNodeKind::NameAlias ||
-                (grandParent->kind == AstNodeKind::IntrinsicDefined) ||
-                (grandParent->kind == AstNodeKind::IntrinsicLocation) ||
+                grandParent->kind == AstNodeKind::IntrinsicDefined ||
+                grandParent->kind == AstNodeKind::IntrinsicLocation ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicStringOf) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf) ||
                 (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicRunes) ||
@@ -687,7 +687,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
 bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload)
 {
-    if (!node->hasSemFlag(SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
+    if (!node->hasSemFlag(SEMFLAG_LAST_PARAM_CODE) && overload->symbol->kind == SymbolKind::Function)
     {
         node->addSemFlag(SEMFLAG_LAST_PARAM_CODE);
 
@@ -1028,7 +1028,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // Already solved
-    if ((identifier->hasAstFlag(AST_FROM_GENERIC)) &&
+    if (identifier->hasAstFlag(AST_FROM_GENERIC) &&
         identifier->typeInfo &&
         !identifier->typeInfo->isUndefined())
     {
@@ -1218,7 +1218,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             {
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
                 YIELD();
-                if ((identifier->hasSemFlag(SEMFLAG_FORCE_UFCS)) && !ufcsFirstParam)
+                if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS) && !ufcsFirstParam)
                     continue;
             }
 

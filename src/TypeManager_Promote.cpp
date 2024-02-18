@@ -27,7 +27,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, const AstNode* right)
     {
         left->typeInfo = rightTypeInfo;
     }
-    else if ((leftNative->valueInteger > 0) && rightTypeInfo->hasFlag(TYPEINFO_UNSIGNED))
+    else if (leftNative->valueInteger > 0 && rightTypeInfo->hasFlag(TYPEINFO_UNSIGNED))
     {
         if (leftNative->valueInteger <= UINT8_MAX)
             left->typeInfo = g_TypeMgr->typeInfoU8;

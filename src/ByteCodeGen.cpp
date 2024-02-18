@@ -26,7 +26,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
         const auto table = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(table);
-        SWAG_ASSERT((reinterpret_cast<void**>(table))[0]);
+        SWAG_ASSERT(reinterpret_cast<void**>(table)[0]);
         g_SystemAllocatorTable = table;
     }
 
@@ -38,7 +38,7 @@ bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode*
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
         const auto table = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(table);
-        SWAG_ASSERT((reinterpret_cast<void**>(table))[0]);
+        SWAG_ASSERT(reinterpret_cast<void**>(table)[0]);
         g_DebugAllocatorTable = table;
     }
 
@@ -203,7 +203,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
     if (node->kind == AstNodeKind::FuncDecl)
     {
         funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        if (funcDecl->content && (funcDecl->content->hasAstFlag(AST_NO_SEMANTIC)))
+        if (funcDecl->content && funcDecl->content->hasAstFlag(AST_NO_SEMANTIC))
             return;
 
         if (funcDecl->isForeign())

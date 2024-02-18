@@ -1,5 +1,5 @@
 #pragma once
-struct Utf8;
+#include "Utf8.h"
 
 struct Path : filesystem::path
 {

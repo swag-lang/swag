@@ -257,7 +257,7 @@ namespace
                 constexpr uint32_t modifiers = 0;
                 constexpr uint32_t size      = 8; // 64 bits
                 constexpr uint32_t flags     = 0;
-                const uint32_t     layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
+                const uint32_t     layout    = flags << 19 | size << 13 | modifiers << 8 | mode << 5 | kind;
                 concat.addU32(layout); // attributes
                 break;
             }

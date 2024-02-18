@@ -15,7 +15,7 @@
 bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && (bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC)) && (buildParameters.compileType != Test))
+    if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
         return true;
 
     int   ct              = buildParameters.compileType;
@@ -5076,7 +5076,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 //
                 // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
                 int idx      = 0;
-                int idxParam = static_cast<int>(pushRAParams.size()) - (sizeB / sizeof(Register)) - 1;
+                int idxParam = static_cast<int>(pushRAParams.size()) - sizeB / sizeof(Register) - 1;
                 while (idxParam >= 0)
                 {
                     SWAG_ASSERT(static_cast<uint32_t>(idx) < bc->maxSpVaargs);

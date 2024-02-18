@@ -475,7 +475,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
                 SWAG_ASSERT(hasMissingType);
                 if (!missingTypes && *hasMissingType)
                     return error(allParams->children.back(), Err(Err0691));
-                if (oneParamDone && !(*hasMissingType) && missingTypes)
+                if (oneParamDone && !*hasMissingType && missingTypes)
                     return error(allParams->children.back(), Err(Err0569));
                 *hasMissingType = *hasMissingType || missingTypes;
             }
@@ -626,7 +626,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     bool isIntrinsic     = false;
-    auto funcForCompiler = (g_TokenFlags[static_cast<int>(typeFuncId)] & TOKEN_COMPILER_FUNC);
+    auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)] & TOKEN_COMPILER_FUNC;
 
     // Name
     if (funcForCompiler)

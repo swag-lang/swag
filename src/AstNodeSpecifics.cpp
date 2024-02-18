@@ -196,7 +196,7 @@ Utf8 AstFuncDecl::getCallName()
     return extByteCode()->bc->getCallName();
 }
 
-Utf8 AstFuncDecl::getNameForUserCompiler()
+Utf8 AstFuncDecl::getNameForUserCompiler() const
 {
     if (hasAttribute(ATTRIBUTE_SHARP_FUNC))
     {

@@ -192,7 +192,7 @@ Utf8 ByteCodeStack::log(const ByteCodeRunContext* runContext) const
     {
         bool current = false;
         if (runContext && runContext->debugOn)
-            current = static_cast<size_t>(i) == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
+            current = static_cast<size_t>(i) == copySteps.size() - 1 - runContext->debugStackFrameOffset;
         str += getLogStep(i, current, copySteps[static_cast<size_t>(i)]);
 
         maxSteps--;

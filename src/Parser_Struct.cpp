@@ -348,7 +348,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
         const auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
-        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+        while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[struct]] body"));
     }
@@ -364,7 +364,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         const auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         *result         = stmt;
         SWAG_CHECK(eatToken());
-        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+        while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doStructBody(stmt, structType, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
         parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);

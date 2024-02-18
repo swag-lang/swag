@@ -56,8 +56,8 @@ using namespace std;
 ////////////////////////////
 
 #include "Allocator.h"
-#include "Vector.h"
-#include "VectorNative.h"
-#include "Utf8.h"
 #include "Map.h"
 #include "Set.h"
+#include "Utf8.h"
+#include "Vector.h"
+#include "VectorNative.h"

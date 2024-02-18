@@ -75,7 +75,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     TypeInfo*  returnType = nullptr;
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
-    if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
+    if (node->ownerInline && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
@@ -90,7 +90,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         const auto exprType = TypeManager::concretePtrRef(returnExpression->typeInfo);
 
         // Implicit cast
-        if (!(returnExpression->hasSemFlag(SEMFLAG_CAST1)))
+        if (!returnExpression->hasSemFlag(SEMFLAG_CAST1))
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
             YIELD();
@@ -113,7 +113,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         //
         // INLINE
         //
-        else if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
+        else if (node->ownerInline && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         {
             if (returnType->isStruct())
             {
@@ -185,7 +185,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 // :ReturnStructByValue
                 if (CallConv::returnStructByValue(typeFunc))
                 {
-                    if (!(typeFunc->returnType->hasFlag(TYPEINFO_STRUCT_EMPTY)))
+                    if (!typeFunc->returnType->hasFlag(TYPEINFO_STRUCT_EMPTY))
                     {
                         switch (typeFunc->returnType->sizeOf)
                         {
@@ -295,7 +295,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     YIELD();
 
     // A return inside an inline function is just a jump to the end of the block
-    if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN)))
+    if (node->ownerInline && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
     {
         node->seekJump = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
@@ -1670,7 +1670,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     uint32_t maxCallParams = typeInfoFunc->numReturnRegisters();
 
     // Sort children by parameter index
-    if (allParams && (allParams->hasAstFlag(AST_MUST_SORT_CHILDREN)))
+    if (allParams && allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
     {
         ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2)
         {
@@ -1679,7 +1679,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             return p1->indexParam < p2->indexParam;
         });
     }
-    else if (allParams && (allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS)))
+    else if (allParams && allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
     {
         SWAG_ASSERT(allParams->children.size() == 2);
         allParams->swap2Children();
@@ -2028,7 +2028,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     else if (typeInfoFunc->hasFlag(TYPEINFO_TYPED_VARIADIC))
     {
         auto typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
-        auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters());
+        auto offset       = numPushParams - numVariadic * typeVariadic->rawType->numRegisters();
 
         RegisterList r0;
         reserveLinearRegisterRC2(context, r0);
@@ -2208,7 +2208,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     const auto childSize = node->children.size();
     for (size_t i = 0; i < childSize; i++)
     {
-        if ((i == childSize - 1) && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+        if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
             break;
         const auto param                      = node->children[i];
         const auto resolved                   = param->resolvedSymbolOverload;

@@ -35,7 +35,7 @@ void operator delete(void* _Block) noexcept
 void* Allocator::alloc(size_t size, size_t align)
 {
 #ifdef SWAG_CHECK_MEMORY
-    auto result = mi_malloc_aligned(size + (3 * sizeof(uint64_t)), align);
+    auto result = mi_malloc_aligned(size + 3 * sizeof(uint64_t), align);
     result      = markDebugBlock(static_cast<uint8_t*>(result), size, MAGIC_ALLOC);
 #else
     auto result = mi_malloc(size);

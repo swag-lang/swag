@@ -1456,7 +1456,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         {
         case ByteCodeOp::Jump:
             // Next instruction is a jump to the same target
-            if (ip[1].op == ByteCodeOp::Jump && (ip->b.s32 - 1 == ip[1].b.s32))
+            if (ip[1].op == ByteCodeOp::Jump && ip->b.s32 - 1 == ip[1].b.s32)
             {
                 setNop(context, ip);
             }
@@ -1487,7 +1487,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (destIp->op == ByteCodeOp::JumpIfFalse &&
                 destIp->a.u32 == ip->a.u32 &&
                 !ip->hasFlag(BCI_IMM_A) &&
-                (destIp->b.s32 + 1) && // in case it's an empty loop
+                destIp->b.s32 + 1 && // in case it's an empty loop
                 !destIp->hasFlag(BCI_IMM_A))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
@@ -1527,7 +1527,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             if (destIp->op == ByteCodeOp::JumpIfTrue &&
                 destIp->a.u32 == ip->a.u32 &&
                 !ip->hasFlag(BCI_IMM_A) &&
-                (destIp->b.s32 + 1) && // in case it's an empty loop
+                destIp->b.s32 + 1 && // in case it's an empty loop
                 !destIp->hasFlag(BCI_IMM_A))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
@@ -1871,7 +1871,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         {
             defaultIp = destIp;
 
-            if (destIp->op == op0 && (destIp->hasFlag(BCI_IMM_C)) && destIp->b.s32 > 0 &&
+            if (destIp->op == op0 && destIp->hasFlag(BCI_IMM_C) && destIp->b.s32 > 0 &&
                 (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
             {
                 if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
@@ -1901,7 +1901,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                 continue;
             }
 
-            if (destIp->op == op1 && (destIp->hasFlag(BCI_IMM_C)) && destIp->b.s32 > 0 &&
+            if (destIp->op == op1 && destIp->hasFlag(BCI_IMM_C) && destIp->b.s32 > 0 &&
                 (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
             {
                 if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
@@ -1966,11 +1966,11 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // TargetLoweringBase::getMinimumJumpTableEntries()
         // TargetLoweringBase::isSuitableForJumpTable in llvm
 
-        const auto range    = (maxValue - minValue) + 1;
+        const auto range    = maxValue - minValue + 1;
         const auto numCases = static_cast<int64_t>(context->vecInst.size());
         if (numCases < 4)
             continue;
-        const bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && (numCases * 100 >= range * minDensity);
+        const bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && numCases * 100 >= range * minDensity;
         if (!canGen)
             continue;
 

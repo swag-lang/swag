@@ -137,7 +137,7 @@ void Stats::print() const
     g_Log.eol();
 
     g_Log.messageHeaderDot("instructions", FMT("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
-    const float pc1 = (static_cast<float>(totalOptimBC.load()) * 100.0f) / static_cast<float>(numInstructions.load());
+    const float pc1 = static_cast<float>(totalOptimBC.load()) * 100.0f / static_cast<float>(numInstructions.load());
     g_Log.messageHeaderDot("kicked", FMT("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("total", FMT("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
     g_Log.eol();

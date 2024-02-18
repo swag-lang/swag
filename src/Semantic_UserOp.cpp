@@ -68,14 +68,14 @@ Utf8 Semantic::getSpecialOpSignature(const AstFuncDecl* node)
 bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, const AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
 {
     const auto numCur = parameters->children.size();
-    if (exact && (numCur != numWanted))
+    if (exact && numCur != numWanted)
     {
         if (numCur > numWanted)
             return context->report({parameters->children[numWanted], FMT(Err(Err0638), node->token.c_str(), numWanted, numCur)});
         return context->report({parameters, FMT(Err(Err0597), node->token.c_str(), numWanted, numCur)});
     }
 
-    if (!exact && (numCur < numWanted))
+    if (!exact && numCur < numWanted)
     {
         return context->report({parameters, FMT(Err(Err0598), node->token.c_str(), numWanted, numCur)});
     }
