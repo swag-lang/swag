@@ -30,10 +30,8 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         switch (token.id)
         {
         case TokenId::Identifier:
-        {
             SWAG_CHECK(doIdentifierRef(param, &dummyResult, IDENTIFIER_NO_FCT_PARAMS));
             break;
-        }
 
         case TokenId::KwdTrue:
         case TokenId::KwdFalse:
@@ -626,7 +624,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     bool isIntrinsic     = false;
-    auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)] & TOKEN_COMPILER_FUNC;
+    auto funcForCompiler = g_TokenFlags[static_cast<int>(typeFuncId)].has(TOKEN_COMPILER_FUNC);
 
     // Name
     if (funcForCompiler)

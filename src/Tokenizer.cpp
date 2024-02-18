@@ -16,7 +16,7 @@ const char* g_TokenNames[] =
 #include "TokenIds.h"
 };
 
-const uint32_t g_TokenFlags[] =
+const TokenFlags g_TokenFlags[] =
 {
 #undef DEFINE_TOKEN_ID
 #define DEFINE_TOKEN_ID(__id, __flags) __flags,

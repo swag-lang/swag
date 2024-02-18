@@ -12,17 +12,18 @@ enum class TokenId : uint16_t
 #include "TokenIds.h"
 };
 
-extern const char*    g_TokenNames[];
-extern const uint32_t g_TokenFlags[];
+using TokenFlags = Flags<uint32_t>;
+constexpr TokenFlags TOKEN_SYM                = 0x00000001;
+constexpr TokenFlags TOKEN_INTRINSIC_NORETURN = 0x00000002;
+constexpr TokenFlags TOKEN_INTRINSIC_RETURN   = 0x00000004;
+constexpr TokenFlags TOKEN_KWD                = 0x00000008;
+constexpr TokenFlags TOKEN_COMPILER           = 0x00000010;
+constexpr TokenFlags TOKEN_LITERAL            = 0x00000020;
+constexpr TokenFlags TOKEN_COMPILER_FUNC      = 0x00000040;
+constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
 
-constexpr uint32_t TOKEN_SYM                = 0x00000001;
-constexpr uint32_t TOKEN_INTRINSIC_NORETURN = 0x00000002;
-constexpr uint32_t TOKEN_INTRINSIC_RETURN   = 0x00000004;
-constexpr uint32_t TOKEN_KWD                = 0x00000008;
-constexpr uint32_t TOKEN_COMPILER           = 0x00000010;
-constexpr uint32_t TOKEN_LITERAL            = 0x00000020;
-constexpr uint32_t TOKEN_COMPILER_FUNC      = 0x00000040;
-constexpr uint32_t TOKEN_TOP_LEVEL_INST     = 0x00000080;
+extern const char*      g_TokenNames[];
+extern const TokenFlags g_TokenFlags[];
 
 enum class LiteralType : uint8_t
 {
@@ -128,13 +129,13 @@ struct Tokenizer
 
     static TokenId tokenRelated(TokenId id);
 
-    static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_KWD; }
-    static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_SYM; }
-    static bool isLiteral(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_LITERAL; }
-    static bool isCompiler(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_COMPILER; }
-    static bool isIntrinsicReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_RETURN; }
-    static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_NORETURN; }
-    static bool isTopLevelInst(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_TOP_LEVEL_INST; }
+    static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_KWD); }
+    static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_SYM); }
+    static bool isLiteral(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_LITERAL); }
+    static bool isCompiler(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_COMPILER); }
+    static bool isIntrinsicReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_INTRINSIC_RETURN); }
+    static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_INTRINSIC_NORETURN); }
+    static bool isTopLevelInst(TokenId id) { return g_TokenFlags[static_cast<int>(id)].has(TOKEN_TOP_LEVEL_INST); }
 
     SourceLocation location;
 
