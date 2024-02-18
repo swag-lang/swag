@@ -1988,24 +1988,24 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Literal:
     {
         const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
-        if (literalNode->literalType == LiteralType::TT_STRING_RAW)
+        if (literalNode->literalType == LiteralType::TypeStringRaw)
             CONCAT_FIXED_STR(concat, "#\"");
-        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
+        else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
             CONCAT_FIXED_STR(concat, "\"");
-        else if (literalNode->literalType == LiteralType::TT_STRING_MULTILINE || literalNode->literalType == LiteralType::TT_STRING_MULTILINE_ESCAPE)
+        else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
             CONCAT_FIXED_STR(concat, "\"\"\"");
-        else if (literalNode->literalType == LiteralType::TT_CHARACTER || literalNode->literalType == LiteralType::TT_CHARACTER_ESCAPE)
+        else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
             CONCAT_FIXED_STR(concat, "`");
 
         concat.addString(node->token.text);
 
-        if (literalNode->literalType == LiteralType::TT_STRING_RAW)
+        if (literalNode->literalType == LiteralType::TypeStringRaw)
             CONCAT_FIXED_STR(concat, "\"#");
-        else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
+        else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)
             CONCAT_FIXED_STR(concat, "\"");
-        else if (literalNode->literalType == LiteralType::TT_STRING_MULTILINE || literalNode->literalType == LiteralType::TT_STRING_MULTILINE_ESCAPE)
+        else if (literalNode->literalType == LiteralType::TypeStringMultiLine || literalNode->literalType == LiteralType::TypeStringMultiLineEscape)
             CONCAT_FIXED_STR(concat, "\"\"\"");
-        else if (literalNode->literalType == LiteralType::TT_CHARACTER || literalNode->literalType == LiteralType::TT_CHARACTER_ESCAPE)
+        else if (literalNode->literalType == LiteralType::TypeCharacter || literalNode->literalType == LiteralType::TypeCharacterEscape)
             CONCAT_FIXED_STR(concat, "`");
 
         if (!node->children.empty())

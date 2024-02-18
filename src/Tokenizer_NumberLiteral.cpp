@@ -53,9 +53,9 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
     // Type
     token.id = TokenId::LiteralNumber;
     if (token.literalValue.u64 <= UINT32_MAX)
-        token.literalType = LiteralType::TT_UNTYPED_BIN_HEXA;
+        token.literalType = LiteralType::TypeUntypedBinHexa;
     else
-        token.literalType = LiteralType::TT_U64;
+        token.literalType = LiteralType::TypeUnsigned64;
 
     return true;
 }
@@ -116,9 +116,9 @@ bool Tokenizer::doHexLiteral(TokenParse& token)
     // Type
     token.id = TokenId::LiteralNumber;
     if (token.literalValue.u64 <= UINT32_MAX)
-        token.literalType = LiteralType::TT_UNTYPED_BIN_HEXA;
+        token.literalType = LiteralType::TypeUntypedBinHexa;
     else
-        token.literalType = LiteralType::TT_U64;
+        token.literalType = LiteralType::TypeUnsigned64;
 
     return true;
 }
@@ -220,7 +220,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
 
     tokenFrac.literalValue.u64     = 0;
     tokenExponent.literalValue.u64 = 0;
-    token.literalType              = LiteralType::TT_S32;
+    token.literalType              = LiteralType::TypeSigned32;
     token.id                       = TokenId::LiteralNumber;
 
     // Integer part
@@ -234,7 +234,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     // If there's a dot, then this is a floating point number
     if (hasDot)
     {
-        token.literalType = LiteralType::TT_UNTYPED_FLOAT;
+        token.literalType = LiteralType::TypeUntypedFloat;
         eatChar(c, offset);
 
         // Fraction part
@@ -252,7 +252,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     // If there's an exponent, then this is a floating point number
     if (c == 'e' || c == 'E')
     {
-        token.literalType = LiteralType::TT_UNTYPED_FLOAT;
+        token.literalType = LiteralType::TypeUntypedFloat;
         eatChar(c, offset);
         tokenExponent.startLocation = location;
 
@@ -284,7 +284,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     }
 
     // Really compute the floating point value, with as much precision as we can
-    if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
+    if (token.literalType == LiteralType::TypeUntypedFloat)
     {
         auto cpt = static_cast<unsigned>(curBuffer - startTokenName);
         auto ptr = startTokenName + cpt;
@@ -298,13 +298,13 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& token, uint32_t c)
     {
         // Can be a negative number ?
         if (token.literalValue.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
-            token.literalType = LiteralType::TT_U64;
+            token.literalType = LiteralType::TypeUnsigned64;
         else
-            token.literalType = LiteralType::TT_S64;
+            token.literalType = LiteralType::TypeSigned64;
     }
 
-    if (token.literalType == LiteralType::TT_S32)
-        token.literalType = LiteralType::TT_UNTYPED_INT;
+    if (token.literalType == LiteralType::TypeSigned32)
+        token.literalType = LiteralType::TypeUntypedInt;
 
     return true;
 }

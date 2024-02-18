@@ -89,7 +89,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             return invalidIdentifierError(token);
 
         scopeUpValue.id               = TokenId::CompilerUp;
-        scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
+        scopeUpValue.literalType      = LiteralType::TypeUntypedInt;
         scopeUpValue.literalValue.u64 = 1;
         scopeUpValue.startLocation    = upToken.startLocation;
         scopeUpValue.endLocation      = upToken.endLocation;
@@ -101,7 +101,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             if (token.id != TokenId::LiteralNumber)
                 return error(token, FMT(Err(Err0145), token.c_str()));
 
-            if (token.literalType != LiteralType::TT_UNTYPED_INT && token.literalType != LiteralType::TT_U8)
+            if (token.literalType != LiteralType::TypeUntypedInt && token.literalType != LiteralType::TypeUnsigned8)
                 return error(token, FMT(Err(Err0147), token.c_str()));
             if (token.literalValue.u64 > 255)
                 return error(token, FMT(Err(Err0602), token.literalValue.u64));

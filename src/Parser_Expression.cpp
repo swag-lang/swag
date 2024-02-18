@@ -64,7 +64,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         firstExpr->addAstFlag(AST_GENERATED);
         firstExpr->computedValue->reg.u64 = 0;
         firstExpr->semanticFct            = Semantic::resolveLiteral;
-        literal->literalType              = LiteralType::TT_U64;
+        literal->literalType              = LiteralType::TypeUnsigned64;
     }
     else
     {
@@ -477,7 +477,7 @@ bool Parser::doDeRef(AstNode* parent, AstNode** result)
     const auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, arrayNode);
     literal->setFlagsValueIsComputed();
     literal->computedValue->reg.u64 = 0;
-    literal->literalType            = LiteralType::TT_S32;
+    literal->literalType            = LiteralType::TypeSigned32;
     literal->semanticFct            = Semantic::resolveLiteral;
     literal->inheritTokenLocation(arrayNode->array->token);
     arrayNode->access = literal;

@@ -506,23 +506,23 @@ void LanguageSpec::setupKeywords()
 
 void LanguageSpec::setupNativeTypes()
 {
-    nativeTypes.add("u64", LiteralType::TT_U64);
-    nativeTypes.add("u32", LiteralType::TT_U32);
-    nativeTypes.add("u16", LiteralType::TT_U16);
-    nativeTypes.add("u8", LiteralType::TT_U8);
-    nativeTypes.add("s64", LiteralType::TT_S64);
-    nativeTypes.add("s32", LiteralType::TT_S32);
-    nativeTypes.add("s16", LiteralType::TT_S16);
-    nativeTypes.add("s8", LiteralType::TT_S8);
-    nativeTypes.add("f32", LiteralType::TT_F32);
-    nativeTypes.add("f64", LiteralType::TT_F64);
-    nativeTypes.add("bool", LiteralType::TT_BOOL);
-    nativeTypes.add("rune", LiteralType::TT_RUNE);
-    nativeTypes.add("string", LiteralType::TT_STRING);
-    nativeTypes.add("any", LiteralType::TT_ANY);
-    nativeTypes.add("void", LiteralType::TT_VOID);
-    nativeTypes.add("typeinfo", LiteralType::TT_TYPE);
-    nativeTypes.add("cstring", LiteralType::TT_CSTRING);
+    nativeTypes.add("u64", LiteralType::TypeUnsigned64);
+    nativeTypes.add("u32", LiteralType::TypeUnsigned32);
+    nativeTypes.add("u16", LiteralType::TypeUnsigned16);
+    nativeTypes.add("u8", LiteralType::TypeUnsigned8);
+    nativeTypes.add("s64", LiteralType::TypeSigned64);
+    nativeTypes.add("s32", LiteralType::TypeSigned32);
+    nativeTypes.add("s16", LiteralType::TypeSigned16);
+    nativeTypes.add("s8", LiteralType::TypeSigned8);
+    nativeTypes.add("f32", LiteralType::TypeFloat32);
+    nativeTypes.add("f64", LiteralType::TypeFloat64);
+    nativeTypes.add("bool", LiteralType::TypeBool);
+    nativeTypes.add("rune", LiteralType::TypeRune);
+    nativeTypes.add("string", LiteralType::TypeString);
+    nativeTypes.add("any", LiteralType::TypeAny);
+    nativeTypes.add("void", LiteralType::TypeVoid);
+    nativeTypes.add("typeinfo", LiteralType::TypeType);
+    nativeTypes.add("cstring", LiteralType::TypeCString);
 }
 
 void LanguageSpec::setupAttributesFlags()

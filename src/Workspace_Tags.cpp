@@ -53,7 +53,7 @@ void Workspace::setupUserTags()
             tokens[1].trim();
 
             // Get the type
-            auto         literalType = LiteralType::TT_MAX;
+            auto         literalType = LiteralType::TypeMax;
             Vector<Utf8> tokens1;
             Utf8::tokenize(tokens[0], ':', tokens1);
             if (tokens1.size() == 2)
@@ -80,7 +80,7 @@ void Workspace::setupUserTags()
 
             bool defaultType = false;
             oneTag.type      = nullptr;
-            if (literalType != LiteralType::TT_MAX)
+            if (literalType != LiteralType::TypeMax)
                 oneTag.type = TypeManager::literalTypeToType(literalType);
             else
             {
@@ -138,7 +138,7 @@ void Workspace::setupUserTags()
                 }
 
                 // Check type and value
-                if (literalType == LiteralType::TT_MAX)
+                if (literalType == LiteralType::TypeMax)
                     literalType = token.literalType;
                 oneTag.value.reg  = token.literalValue;
                 oneTag.value.text = token.text;

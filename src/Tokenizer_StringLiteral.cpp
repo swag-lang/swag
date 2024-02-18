@@ -57,11 +57,11 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
     bool multiline = false;
     bool verbatim  = false;
 
-    if (token.literalType == LiteralType::TT_STRING_MULTILINE)
+    if (token.literalType == LiteralType::TypeStringMultiLine)
     {
         multiline = true;
     }
-    else if (token.literalType != LiteralType::TT_STRING)
+    else if (token.literalType != LiteralType::TypeString)
     {
         verbatim  = true;
         multiline = true;
@@ -122,7 +122,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
         // Escape sequence
         if (!verbatim && c == '\\')
         {
-            token.literalType = multiline ? LiteralType::TT_STRING_MULTILINE_ESCAPE : LiteralType::TT_STRING_ESCAPE;
+            token.literalType = multiline ? LiteralType::TypeStringMultiLineEscape : LiteralType::TypeStringEscape;
             eatChar(c, offset);
             c = peekChar(offset);
             if (c)
@@ -173,7 +173,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
 {
     unsigned offset;
     token.id          = TokenId::LiteralCharacter;
-    token.literalType = LiteralType::TT_CHARACTER;
+    token.literalType = LiteralType::TypeCharacter;
     token.text.clear();
 
     startTokenName = curBuffer;
@@ -200,7 +200,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         // Escape sequence
         if (c == '\\')
         {
-            token.literalType = LiteralType::TT_CHARACTER_ESCAPE;
+            token.literalType = LiteralType::TypeCharacterEscape;
             eatChar(c, offset);
             c = peekChar(offset);
             if (c)

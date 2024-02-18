@@ -167,7 +167,7 @@ bool Tokenizer::nextToken(TokenParse& token)
     ++g_Stats.numTokens;
 #endif
 
-    token.literalType   = LiteralType::TT_MAX;
+    token.literalType   = LiteralType::TypeMax;
     bool hasEol         = forceLastTokenIsEOL;
     token.flags         = forceLastTokenIsEOL ? TOKEN_PARSE_LAST_EOL : 0;
     forceLastTokenIsEOL = false;
@@ -301,7 +301,7 @@ bool Tokenizer::nextToken(TokenParse& token)
             if (curBuffer[0] == '"')
             {
                 readChar();
-                token.literalType = LiteralType::TT_STRING_RAW;
+                token.literalType = LiteralType::TypeStringRaw;
                 SWAG_CHECK(doStringLiteral(token));
                 return true;
             }
@@ -363,12 +363,12 @@ bool Tokenizer::nextToken(TokenParse& token)
             {
                 readChar();
                 readChar();
-                token.literalType = LiteralType::TT_STRING_MULTILINE;
+                token.literalType = LiteralType::TypeStringMultiLine;
                 SWAG_CHECK(doStringLiteral(token));
             }
             else
             {
-                token.literalType = LiteralType::TT_STRING;
+                token.literalType = LiteralType::TypeString;
                 SWAG_CHECK(doStringLiteral(token));
             }
 

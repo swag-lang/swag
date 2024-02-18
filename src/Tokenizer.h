@@ -27,47 +27,40 @@ extern const TokenFlags g_TokenFlags[];
 
 enum class LiteralType : uint8_t
 {
-    TT_U8,
-    TT_U16,
-    TT_U32,
-    TT_U64,
-    TT_S8,
-    TT_S16,
-    TT_S32,
-    TT_S64,
-    TT_BOOL,
-    TT_STRING,
-    TT_STRING_RAW,
-    TT_STRING_MULTILINE,
-    TT_STRING_ESCAPE,
-    TT_STRING_MULTILINE_ESCAPE,
-    TT_CHARACTER,
-    TT_CHARACTER_ESCAPE,
-    TT_RUNE,
-    TT_F32,
-    TT_F64,
-    TT_NULL,
-    TT_ANY,
-    TT_VOID,
-    TT_TYPE,
-    TT_CSTRING,
-    TT_UNTYPED_BIN_HEXA,
-    TT_UNTYPED_INT,
-    TT_UNTYPED_FLOAT,
-    TT_MAX,
+    TypeUnsigned8,
+    TypeUnsigned16,
+    TypeUnsigned32,
+    TypeUnsigned64,
+    TypeSigned8,
+    TypeSigned16,
+    TypeSigned32,
+    TypeSigned64,
+    TypeBool,
+    TypeString,
+    TypeStringRaw,
+    TypeStringMultiLine,
+    TypeStringEscape,
+    TypeStringMultiLineEscape,
+    TypeCharacter,
+    TypeCharacterEscape,
+    TypeRune,
+    TypeFloat32,
+    TypeFloat64,
+    TypeNull,
+    TypeAny,
+    TypeVoid,
+    TypeType,
+    TypeCString,
+    TypeUntypedBinHexa,
+    TypeUntypedInt,
+    TypeUntypedFloat,
+    TypeMax,
 };
 
 struct SourceLocation
 {
-    bool operator==(const SourceLocation& other) const
-    {
-        return line == other.line && column == other.column;
-    }
-
-    bool operator!=(const SourceLocation& other) const
-    {
-        return line != other.line || column != other.column;
-    }
+    bool operator==(const SourceLocation& other) const { return line == other.line && column == other.column; }
+    bool operator!=(const SourceLocation& other) const { return line != other.line || column != other.column; }
 
     uint32_t line   = 0;
     uint32_t column = 0;
@@ -75,10 +68,7 @@ struct SourceLocation
 
 struct Token
 {
-    const char* c_str() const
-    {
-        return text.c_str();
-    }
+    const char* c_str() const { return text.c_str(); }
 
     Utf8           text;
     SourceLocation startLocation;

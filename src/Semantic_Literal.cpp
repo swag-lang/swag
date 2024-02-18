@@ -38,9 +38,9 @@ bool Semantic::getDigitHex(SemanticContext* context, const SourceLocation& start
 bool Semantic::processLiteralString(SemanticContext* context)
 {
     const auto node = castAst<AstLiteral>(context->node, AstNodeKind::Literal);
-    if (node->literalType != LiteralType::TT_STRING_ESCAPE &&
-        node->literalType != LiteralType::TT_STRING_MULTILINE_ESCAPE &&
-        node->literalType != LiteralType::TT_CHARACTER_ESCAPE)
+    if (node->literalType != LiteralType::TypeStringEscape &&
+        node->literalType != LiteralType::TypeStringMultiLineEscape &&
+        node->literalType != LiteralType::TypeCharacterEscape)
         return true;
 
     auto       loc = node->token.startLocation;
@@ -183,13 +183,13 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
         switch (literalType)
         {
-        case LiteralType::TT_U32:
-        case LiteralType::TT_UNTYPED_BIN_HEXA:
-        case LiteralType::TT_UNTYPED_INT:
-            literalType = LiteralType::TT_S32;
+        case LiteralType::TypeUnsigned32:
+        case LiteralType::TypeUntypedBinHexa:
+        case LiteralType::TypeUntypedInt:
+            literalType = LiteralType::TypeSigned32;
             break;
-        case LiteralType::TT_U64:
-            literalType = LiteralType::TT_S64;
+        case LiteralType::TypeUnsigned64:
+            literalType = LiteralType::TypeSigned64;
             break;
         default:
             break;
@@ -198,8 +198,8 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
     switch (literalType)
     {
-    case LiteralType::TT_CHARACTER:
-    case LiteralType::TT_CHARACTER_ESCAPE:
+    case LiteralType::TypeCharacter:
+    case LiteralType::TypeCharacterEscape:
     {
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);
@@ -246,7 +246,7 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         break;
     }
 
-    case LiteralType::TT_UNTYPED_FLOAT:
+    case LiteralType::TypeUntypedFloat:
         switch (typeSuffix->nativeType)
         {
         case NativeTypeKind::F32:
@@ -263,9 +263,9 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
         }
         break;
 
-    case LiteralType::TT_S32:
-    case LiteralType::TT_S64:
-    case LiteralType::TT_UNTYPED_INT:
+    case LiteralType::TypeSigned32:
+    case LiteralType::TypeSigned64:
+    case LiteralType::TypeUntypedInt:
         switch (typeSuffix->nativeType)
         {
         case NativeTypeKind::U8:
@@ -316,9 +316,9 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
         break;
 
-    case LiteralType::TT_U32:
-    case LiteralType::TT_U64:
-    case LiteralType::TT_UNTYPED_BIN_HEXA:
+    case LiteralType::TypeUnsigned32:
+    case LiteralType::TypeUnsigned64:
+    case LiteralType::TypeUntypedBinHexa:
         switch (typeSuffix->nativeType)
         {
         case NativeTypeKind::U8:
@@ -413,47 +413,47 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
     case TokenId::KwdTrue:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType    = LiteralType::TT_BOOL;
+        node->literalType    = LiteralType::TypeBool;
         node->literalValue.b = true;
         break;
     case TokenId::KwdFalse:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType    = LiteralType::TT_BOOL;
+        node->literalType    = LiteralType::TypeBool;
         node->literalValue.b = false;
         break;
     case TokenId::KwdNull:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType          = LiteralType::TT_NULL;
+        node->literalType          = LiteralType::TypeNull;
         node->literalValue.pointer = nullptr;
         break;
     case TokenId::CompilerFile:
         node->tokenId = TokenId::LiteralString;
-        node->literalType = LiteralType::TT_STRING;
+        node->literalType = LiteralType::TypeString;
         node->token.text  = sourceFile->path.string();
         break;
     case TokenId::CompilerModule:
         node->tokenId = TokenId::LiteralString;
-        node->literalType = LiteralType::TT_STRING;
+        node->literalType = LiteralType::TypeString;
         node->token.text  = sourceFile->module ? sourceFile->module->name : Utf8("?");
         break;
     case TokenId::CompilerLine:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TT_UNTYPED_INT;
+        node->literalType      = LiteralType::TypeUntypedInt;
         node->literalValue.u32 = node->token.startLocation.line + 1;
         break;
     case TokenId::CompilerBuildVersion:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TT_S32;
+        node->literalType      = LiteralType::TypeSigned32;
         node->literalValue.s32 = SWAG_BUILD_VERSION;
         break;
     case TokenId::CompilerBuildRevision:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TT_S32;
+        node->literalType      = LiteralType::TypeSigned32;
         node->literalValue.s32 = SWAG_BUILD_REVISION;
         break;
     case TokenId::CompilerBuildNum:
         node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TT_S32;
+        node->literalType      = LiteralType::TypeSigned32;
         node->literalValue.s32 = SWAG_BUILD_NUM;
         break;
     default:
@@ -488,7 +488,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         }
 
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
-        if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TT_UNTYPED_FLOAT)
+        if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TypeUntypedFloat)
             node->computedValue->reg.f32 = static_cast<float>(node->literalValue.f64);
         return true;
     }
