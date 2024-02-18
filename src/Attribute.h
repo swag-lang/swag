@@ -97,7 +97,7 @@ struct AttributeList
 	const ComputedValue*      getValue(const Utf8& fullName, const Utf8& parameter) const;
 	bool                      hasAttribute(const Utf8& fullName) const;
 	void                      emplace(OneAttribute& other);
-	void                      add(AttributeList& other);
+	void                      add(const AttributeList& other);
 
 	void     reset() { allAttributes.clear(); }
 	bool     empty() const { return allAttributes.empty(); }

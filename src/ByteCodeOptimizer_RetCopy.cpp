@@ -206,7 +206,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 	return true;
 }
 
-void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, const ByteCodeInstruction* ip)
 {
 	switch (ip->op)
 	{

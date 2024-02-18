@@ -467,7 +467,7 @@ SCBEDebugTypeRecord* SCBEDebug::addTypeRecord(SCBE_CPU& pp)
 	return tr;
 }
 
-Utf8 SCBEDebug::getScopedName(AstNode* node)
+Utf8 SCBEDebug::getScopedName(const AstNode* node)
 {
 	const auto nn = node->getScopedName();
 	Utf8       result;

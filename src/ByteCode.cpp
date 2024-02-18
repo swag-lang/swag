@@ -346,7 +346,7 @@ bool ByteCode::areSame(ByteCodeInstruction*       start0,
 	return same;
 }
 
-uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
+uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
 {
 	const uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
 	oldCrc               = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);

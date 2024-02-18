@@ -113,7 +113,7 @@ void AttributeList::emplace(OneAttribute& other)
 	allAttributes.emplace_back(std::move(other));
 }
 
-void AttributeList::add(AttributeList& other)
+void AttributeList::add(const AttributeList& other)
 {
 	SWAG_RACE_CONDITION_WRITE(raceCond);
 	SWAG_RACE_CONDITION_READ1(other.raceCond);
