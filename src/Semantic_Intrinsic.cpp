@@ -683,7 +683,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 
         // Need to be sure that the expression list can be casted to the equivalent array
         const auto typeArr   = makeType<TypeInfoArray>();
-        typeArr->count       = static_cast<uint32_t>(typeList->subTypes.size());
+        typeArr->count       = typeList->subTypes.size();
         typeArr->pointedType = typeList->subTypes[0]->typeInfo;
         typeArr->finalType   = typeArr->pointedType;
         typeArr->sizeOf      = typeArr->count * typeArr->finalType->sizeOf;

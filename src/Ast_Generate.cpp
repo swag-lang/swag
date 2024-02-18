@@ -96,7 +96,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
                                       TypeInfoStruct*             typeInterface)
 {
     const auto     node            = castAst<AstImpl>(context->node, AstNodeKind::Impl);
-    const uint32_t numFctInterface = static_cast<uint32_t>(typeInterface->fields.size());
+    const uint32_t numFctInterface = typeInterface->fields.size();
     const auto     typeInfo        = node->identifier->typeInfo;
 
     Vector<const Diagnostic*> notes;

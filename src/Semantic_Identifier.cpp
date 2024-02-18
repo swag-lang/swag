@@ -1179,7 +1179,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
                 OneOverload t;
                 t.overload         = over;
                 t.scope            = p.scope;
-                t.cptOverloads     = static_cast<uint32_t>(symbol->overloads.size());
+                t.cptOverloads     = symbol->overloads.size();
                 t.cptOverloadsInit = symbol->cptOverloadsInit;
                 toSolveOverload.push_back(t);
             }

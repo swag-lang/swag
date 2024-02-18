@@ -51,8 +51,8 @@ JobResult ModuleOutputJob::execute()
         backend->numPreCompileBuffers = module->buildParameters.buildCfg->backendNumCU;
         if (backend->numPreCompileBuffers == 0)
         {
-            const auto perWorker          = static_cast<uint32_t>(module->byteCodeFunc.size()) / g_ThreadMgr.numWorkers;
-            backend->numPreCompileBuffers = static_cast<uint32_t>(module->byteCodeFunc.size()) / max(perWorker, 32);
+            const auto perWorker          = module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
+            backend->numPreCompileBuffers = module->byteCodeFunc.size() / max(perWorker, 32);
         }
 
         backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 2); // :SegZeroIsData

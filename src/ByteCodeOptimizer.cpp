@@ -442,7 +442,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     }
 
     // Mark all instructions which are a jump destination
-    context->bc->numJumps = static_cast<uint32_t>(context->jumps.size());
+    context->bc->numJumps = context->jumps.size();
     for (const auto jump : context->jumps)
     {
         if (ByteCode::isJumpDyn(jump))

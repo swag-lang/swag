@@ -159,7 +159,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     // We need now the pointer to the itable
     const auto     typeInterface   = castTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
-    const uint32_t numFctInterface = static_cast<uint32_t>(typeInterface->fields.size());
+    const uint32_t numFctInterface = typeInterface->fields.size();
 
     Map<TypeInfoParam*, AstNode*> mapItToFunc;
     VectorNative<AstFuncDecl*>    mapItIdxToFunc;

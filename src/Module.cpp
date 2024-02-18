@@ -324,7 +324,7 @@ void Module::buildGlobalVarsToDropSlice()
         return;
 
     uint8_t* resultPtr;
-    globalVarsToDropSliceOffset = mutableSegment.reserve(static_cast<uint32_t>(globalVarsToDrop.size()) * sizeof(SwagGlobalVarToDrop), &resultPtr);
+    globalVarsToDropSliceOffset = mutableSegment.reserve(globalVarsToDrop.size() * sizeof(SwagGlobalVarToDrop), &resultPtr);
     globalVarsToDropSlice       = reinterpret_cast<SwagGlobalVarToDrop*>(resultPtr);
     auto offset                 = globalVarsToDropSliceOffset;
 
@@ -501,7 +501,7 @@ void Module::addFile(SourceFile* file)
 void Module::addFileNoLock(SourceFile* file)
 {
     file->module        = this;
-    file->indexInModule = static_cast<uint32_t>(files.size());
+    file->indexInModule = files.size();
     files.push_back(file);
 
     // A file scope is not registered in the list of children of

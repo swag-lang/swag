@@ -840,7 +840,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
         {
-            typeArray->count      = static_cast<uint32_t>(node->assignment->children.size());
+            typeArray->count      = node->assignment->children.size();
             typeArray->totalCount = typeArray->count;
             typeArray->sizeOf     = typeArray->count * typeArray->pointedType->sizeOf;
             typeArray->name       = FMT("[%d] %s", typeArray->count, typeArray->pointedType->getDisplayNameC());

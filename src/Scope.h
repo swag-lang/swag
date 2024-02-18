@@ -1,6 +1,6 @@
 #pragma once
-#include "Flags.h"
 #include "DependentJobs.h"
+#include "Flags.h"
 #include "Mutex.h"
 #include "SymTable.h"
 

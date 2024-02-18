@@ -254,7 +254,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto typeParam = TypeManager::makeParam();
     typeParam->name      = node->token.text;
     typeParam->typeInfo  = typeSubEnum;
-    typeParam->index     = static_cast<uint32_t>(typeEnum->values.size());
+    typeParam->index     = typeEnum->values.size();
     typeParam->declNode  = node;
     SWAG_CHECK(collectAttributes(context, node, &typeParam->attributes));
     typeEnum->values.push_back(typeParam);
@@ -457,7 +457,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
     typeParam->typeInfo = rawTypeInfo;
     typeParam->allocateComputedValue();
     *typeParam->value   = *enumNode->computedValue;
-    typeParam->index    = static_cast<uint32_t>(typeEnum->values.size());
+    typeParam->index    = typeEnum->values.size();
     typeParam->declNode = valNode;
     SWAG_CHECK(collectAttributes(context, valNode, &typeParam->attributes));
     valNode->attributes = typeParam->attributes;

@@ -13,16 +13,16 @@ thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 uint32_t ByteCodeStack::maxLevel(const ByteCodeRunContext* runContext)
 {
     if (!runContext)
-        return static_cast<uint32_t>(steps.size()) - 1;
+        return steps.size() - 1;
 
     // The last stack step can be the same as the current context. If it's not the case,
     // then it's like we have one more step.
     const auto& back = steps.back();
     if (back.bc == runContext->bc && back.ip == runContext->ip)
-        return static_cast<uint32_t>(steps.size()) - 1;
+        return steps.size() - 1;
 
     // Not the case. One more step.
-    return static_cast<uint32_t>(steps.size());
+    return steps.size();
 }
 
 Utf8 ByteCodeStack::getStepName(const AstNode* node, const ByteCodeInstruction* ip)

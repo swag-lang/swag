@@ -1,7 +1,7 @@
 #pragma once
+#include "Flags.h"
 #include "Statistics.h"
 #include "TypeInfo.h"
-#include "Flags.h"
 
 struct AstNode;
 struct SemanticContext;

@@ -193,7 +193,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Instantiate generic interfaces
     structNode->allocateExtension(ExtensionKind::Owner);
     cloneContext.ownerStructScope   = structNode->scope;
-    newType->cptRemainingInterfaces = static_cast<uint32_t>(genericStructType->interfaces.size());
+    newType->cptRemainingInterfaces = genericStructType->interfaces.size();
     for (const auto itf : genericStructType->interfaces)
     {
         auto typeItf = itf->clone();

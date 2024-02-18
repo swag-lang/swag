@@ -348,7 +348,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, int& start, int& end) const
 {
-    const auto size            = static_cast<uint32_t>(buildParameters.module->byteCodeFuncToGen.size());
+    const auto size            = buildParameters.module->byteCodeFuncToGen.size();
     const auto precompileIndex = buildParameters.precompileIndex;
 
     SWAG_ASSERT(numPreCompileBuffers > 1);

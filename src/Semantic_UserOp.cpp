@@ -654,7 +654,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                 t->genericParameters = genericParameters;
                 t->callParameters    = left->parent;
                 t->dependentVar      = nullptr;
-                t->cptOverloads      = static_cast<uint32_t>(symbol->overloads.size());
+                t->cptOverloads      = symbol->overloads.size();
                 t->cptOverloadsInit  = symbol->cptOverloadsInit;
                 t->ufcs              = true;
                 listTryMatch.push_back(t);

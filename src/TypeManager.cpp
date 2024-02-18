@@ -221,7 +221,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         typeArray->pointedType = solidifyUntyped(typeList->subTypes.front()->typeInfo);
         finalType              = typeArray->pointedType;
         typeArray->sizeOf      = typeList->sizeOf;
-        typeArray->count       = static_cast<uint32_t>(typeList->subTypes.size());
+        typeArray->count       = typeList->subTypes.size();
         typeArray->totalCount  = typeArray->count;
         if (isCompilerConstant)
             typeArray->addFlag(TYPEINFO_CONST);

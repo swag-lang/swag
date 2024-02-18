@@ -872,7 +872,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
     if (hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         if (argIdx < 2)
-            return static_cast<uint32_t>(parameters.size()) - 1;
+            return parameters.size() - 1;
         argIdx -= 2;
     }
 
@@ -882,7 +882,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
         if (argNo >= parameters.size())
         {
             SWAG_ASSERT(flags.has(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
-            return static_cast<uint32_t>(parameters.size()) - 1;
+            return parameters.size() - 1;
         }
 
         const auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
@@ -978,7 +978,7 @@ void TypeInfoStruct::flattenUsingFields()
     ScopedLock lk(mutexCache);
     if (!flattenFields.empty())
         return;
-    flattenFields.reserve(static_cast<uint32_t>(fields.size()));
+    flattenFields.reserve(fields.size());
     for (const auto p : fields)
         flatten(flattenFields, p);
 }

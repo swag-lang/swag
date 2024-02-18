@@ -1172,7 +1172,7 @@ bool Semantic::resolveInit(SemanticContext* context)
                         t->genericParameters = nullptr;
                         t->callParameters    = node->parameters;
                         t->dependentVar      = nullptr;
-                        t->cptOverloads      = static_cast<uint32_t>(symbol->overloads.size());
+                        t->cptOverloads      = symbol->overloads.size();
                         listTryMatch.push_back(t);
                     }
                 }

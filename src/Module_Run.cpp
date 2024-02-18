@@ -319,7 +319,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
             g_RunContext->push(r);
 
         if (!foreignCall)
-            ByteCodeRun::localCallNoTrace(g_RunContext, bc, static_cast<uint32_t>(params->callParams.size()));
+            ByteCodeRun::localCallNoTrace(g_RunContext, bc, params->callParams.size());
     }
     else if (!foreignCall)
     {

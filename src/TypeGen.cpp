@@ -278,7 +278,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
         if (concreteType->parameters.count)
         {
-            const uint32_t count = static_cast<uint32_t>(realType->parameters.size());
+            const uint32_t count = realType->parameters.size();
             uint32_t       storageArray;
             const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
                                                                                     &concreteType->parameters.buffer, storageArray));
@@ -304,7 +304,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
         concreteType->values.count  = realType->values.size();
         if (concreteType->values.count)
         {
-            const uint32_t count = static_cast<uint32_t>(realType->values.size());
+            const uint32_t count = realType->values.size();
             uint32_t       storageArray;
             const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
                                                                                     &concreteType->values.buffer, storageArray));
