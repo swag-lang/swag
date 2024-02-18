@@ -44,9 +44,9 @@ CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32
     sym.value      = value;
     sym.sectionIdx = sectionIdx;
     SWAG_ASSERT(allSymbols.size() < UINT32_MAX);
-    sym.index = static_cast<uint32_t>(allSymbols.size());
+    sym.index = allSymbols.size();
     allSymbols.emplace_back(std::move(sym));
-    mapSymbols[name] = static_cast<uint32_t>(allSymbols.size()) - 1;
+    mapSymbols[name] = allSymbols.size() - 1;
     return &allSymbols.back();
 }
 

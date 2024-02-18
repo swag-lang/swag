@@ -401,7 +401,7 @@ namespace
         const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
         if (iter.second)
         {
-            checkSymIndex = static_cast<uint32_t>(arrFileNames.size());
+            checkSymIndex = arrFileNames.size();
             arrFileNames.push_back(stringTable.length());
             iter.first->second = checkSymIndex;
             stringTable += sourceFile->path.string();
@@ -446,7 +446,7 @@ namespace
         // Compute file name index in the checksum table
         const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
 
-        const auto numLines = static_cast<uint32_t>(lines.size());
+        const auto numLines = lines.size();
         concat.addU32(checkSymIndex); // File index in checksum buffer (in bytes!)
         concat.addU32(numLines); // NumLines
         concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)

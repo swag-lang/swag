@@ -517,7 +517,7 @@ bool TypeGen::genExportedAttributes(JobContext*    context,
         // Parameters
         if (!one.parameters.empty())
         {
-            count = static_cast<uint32_t>(one.parameters.size());
+            count = one.parameters.size();
             uint32_t storageOffsetParams;
             auto     ptrStorageAllParams = static_cast<uint8_t*>(genExportedSlice(context, count * sizeof(ExportedAttributeParameter), storageSegment, curOffsetAttributes,
                                                                               &ptrParamsAttribute->buffer, storageOffsetParams));

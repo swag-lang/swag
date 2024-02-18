@@ -82,7 +82,7 @@ namespace
 
         *pp.patchSymbolTableOffset = concat.totalCount();
         SWAG_ASSERT(pp.allSymbols.size() <= UINT32_MAX);
-        *pp.patchSymbolTableCount = static_cast<uint32_t>(pp.allSymbols.size());
+        *pp.patchSymbolTableCount = pp.allSymbols.size();
 
         pp.stringTableOffset = 4;
         for (auto& symbol : pp.allSymbols)
@@ -389,7 +389,7 @@ void SCBE_Coff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog
 bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& coffTable, uint32_t* sectionFlags, uint16_t* count)
 {
     SWAG_ASSERT(coffTable.table.size() < UINT32_MAX);
-    const auto tableSize = static_cast<uint32_t>(coffTable.table.size());
+    const auto tableSize = coffTable.table.size();
     if (tableSize > 0xFFFF)
     {
         *count = 0xFFFF;

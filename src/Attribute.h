@@ -101,7 +101,7 @@ struct AttributeList
 
     void     reset() { allAttributes.clear(); }
     bool     empty() const { return allAttributes.empty(); }
-    uint32_t size() const { return static_cast<uint32_t>(allAttributes.size()); }
+    uint32_t size() const { return allAttributes.size(); }
 
     AttributeList& operator=(const AttributeList& other)
     {

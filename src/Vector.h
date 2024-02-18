@@ -13,6 +13,8 @@ struct Vector : vector<T, StdAllocator<T>>
     {
     }
 
+    uint32_t size() const { return static_cast<uint32_t>(vector<T, StdAllocator<T>>::size()); }
+
     bool contains(const T& value)
     {
         for (auto& it : *this)

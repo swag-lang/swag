@@ -647,7 +647,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     slice->count                       = runes.size();
 
     uint8_t* addrDst;
-    storageSegment->reserve(static_cast<uint32_t>(runes.size()) * sizeof(uint32_t), &addrDst);
+    storageSegment->reserve(runes.size() * sizeof(uint32_t), &addrDst);
     slice->buffer = addrDst;
 
     // Setup array

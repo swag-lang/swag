@@ -1000,7 +1000,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         tkn0.erase(tkn0.begin());
         if (tkn0.back().empty())
             tkn0.erase(tkn0.end());
-        tableColCount = static_cast<uint32_t>(tkn0.size());
+        tableColCount = tkn0.size();
 
         // Header ?
         if (user.lines.size() > 2)

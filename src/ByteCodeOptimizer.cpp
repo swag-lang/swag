@@ -37,7 +37,7 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
     context->tree.push_back(newNode);
     context->nextTreeNode++;
 
-    const uint32_t pos       = static_cast<uint32_t>(context->tree.size()) - 1;
+    const uint32_t pos       = context->tree.size() - 1;
     context->mapInstNode[ip] = pos;
     return pos;
 }
