@@ -503,47 +503,50 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
     return true;
 }
 
-void DataSegment::saveValue(void* address, uint32_t size, bool zero)
+void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
 {
     ScopedLock lk(mutex);
-    const auto it = savedValues.find(address);
-    if (it != savedValues.end())
+    if (const auto it = savedValues.find(address); it != savedValues.end())
         return;
 
+    SaveValue sv;
+    sv.size = size;
+    
     if (zero)
     {
-        savedValues[address] = {nullptr, size};
+        sv.value.u64 = 0;
+        savedValues[address] = sv;
         return;
     }
 
     switch (size)
     {
     case 1:
-        savedValues[address] = {reinterpret_cast<void*>(static_cast<size_t>(*static_cast<uint8_t*>(address))), size};
+        sv.value.u8 = *address;
         break;
     case 2:
-        savedValues[address] = {reinterpret_cast<void*>(static_cast<size_t>(*static_cast<uint16_t*>(address))), size};
+        sv.value.u16 = *reinterpret_cast<uint16_t*>(address);
         break;
     case 4:
-        savedValues[address] = {reinterpret_cast<void*>(static_cast<size_t>(*static_cast<uint32_t*>(address))), size};
+        sv.value.u32 = *reinterpret_cast<uint32_t*>(address);
         break;
     case 8:
-        savedValues[address] = {reinterpret_cast<void*>(*static_cast<uint64_t*>(address)), size};
+        sv.value.u64 = *reinterpret_cast<uint64_t*>(address);
         break;
     default:
-        const auto buf = Allocator::alloc(Allocator::alignSize(size));
-        memcpy(buf, address, size);
-        savedValues[address] = {buf, size};
+        sv.value.pointer = static_cast<uint8_t*>(Allocator::alloc(Allocator::alignSize(size)));
+        std::copy_n(address, size, sv.value.pointer);
         break;
     }
+    savedValues[address] = sv;
 }
 
 void DataSegment::restoreAllValues()
 {
     ScopedLock lk(mutex);
-    for (auto& one : savedValues)
+    for (const auto& one : savedValues)
     {
-        if (one.second.ptr == nullptr)
+        if (one.second.value.u64 == 0)
         {
             memset(one.first, 0, one.second.size);
             continue;
@@ -552,20 +555,20 @@ void DataSegment::restoreAllValues()
         switch (one.second.size)
         {
         case 1:
-            *static_cast<uint8_t*>(one.first) = *reinterpret_cast<uint8_t*>(&one.second.ptr);
+            *one.first = one.second.value.u8;
             break;
         case 2:
-            *static_cast<uint16_t*>(one.first) = *reinterpret_cast<uint16_t*>(&one.second.ptr);
+            *reinterpret_cast<uint16_t*>(one.first) = one.second.value.u16;
             break;
         case 4:
-            *static_cast<uint32_t*>(one.first) = *reinterpret_cast<uint32_t*>(&one.second.ptr);
+            *reinterpret_cast<uint32_t*>(one.first) = one.second.value.u32;
             break;
         case 8:
-            *static_cast<uint64_t*>(one.first) = *reinterpret_cast<uint64_t*>(&one.second.ptr);
+            *reinterpret_cast<uint64_t*>(one.first) = one.second.value.u64;
             break;
         default:
-            memcpy(one.first, one.second.ptr, one.second.size);
-            Allocator::free(one.second.ptr, Allocator::alignSize(one.second.size));
+            std::copy_n(one.second.value.pointer, one.second.size, one.first);
+            Allocator::free(one.second.value.pointer, Allocator::alignSize(one.second.size));
             break;
         }
     }

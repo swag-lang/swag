@@ -1,5 +1,6 @@
 #pragma once
 #include "RaceCondition.h"
+#include "Register.h"
 
 struct AstFuncDecl;
 struct ComputedValue;
@@ -64,7 +65,7 @@ struct DataSegment
 
     struct SaveValue
     {
-        void*    ptr;
+        Register value;
         uint32_t size;
     };
 
@@ -94,7 +95,7 @@ struct DataSegment
     void     doPatchMethods(JobContext* context);
 
     bool readU64(Seek& seek, uint64_t& result);
-    void saveValue(void* address, uint32_t size, bool zero);
+    void saveValue(uint8_t* address, uint32_t size, bool zero);
     void restoreAllValues();
 
     SharedMutex mutex;
@@ -111,7 +112,7 @@ struct DataSegment
 
     VectorNative<InitPtrRef>             initPtr;
     Map<uint32_t, Utf8>                  initFuncPtr;
-    Map<void*, SaveValue>                savedValues;
+    Map<uint8_t*, SaveValue>             savedValues;
     Vector<PatchPtrRef>                  patchPtr;
     Vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
