@@ -246,9 +246,9 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Reverse loop
-    uint32_t mdfFlags = 0;
+    ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags, node));
-    if (mdfFlags & MODIFIER_BACK)
+    if (mdfFlags.has(MODIFIER_BACK))
     {
         node->addSpecFlag(AstVisit::SPEC_FLAG_BACK);
     }
@@ -324,9 +324,9 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     }
 
     // Reverse loop
-    uint32_t mdfFlags = 0;
+    ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
-    if (mdfFlags & MODIFIER_BACK)
+    if (mdfFlags.has(MODIFIER_BACK))
     {
         node->addSpecFlag(AstLoop::SPEC_FLAG_BACK);
     }

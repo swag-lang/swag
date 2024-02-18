@@ -1195,14 +1195,14 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     return true;
 }
 
-bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     bool acceptMissingType = false;
     bool deduceMissingType = false;
 
     // We accept missing types if lambda is in a function call, because we can deduce them from the called
     // function parameters
-    if (exprFlags & EXPR_FLAG_IN_CALL)
+    if (exprFlags.has(EXPR_FLAG_IN_CALL))
         acceptMissingType = true;
 
         // We accept missing types if lambda is in an affectation, because we can deduce them from the
@@ -1215,7 +1215,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
 
     // We accept missing types if lambda is in a variable declaration with a type, because we can deduce them from the
     // type
-    else if (exprFlags & EXPR_FLAG_IN_VAR_DECL_WITH_TYPE)
+    else if (exprFlags.has(EXPR_FLAG_IN_VAR_DECL_WITH_TYPE))
     {
         acceptMissingType = true;
         deduceMissingType = true;

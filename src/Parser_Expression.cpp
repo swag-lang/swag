@@ -203,7 +203,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     switch (token.id)
     {
@@ -378,7 +378,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
 
     case TokenId::CompilerType:
     {
-        if (exprFlags & EXPR_FLAG_SIMPLE)
+        if (exprFlags.has(EXPR_FLAG_SIMPLE))
             return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         eatToken();
         SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
@@ -394,7 +394,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:
     case TokenId::SymAmpersand:
-        if (exprFlags & EXPR_FLAG_SIMPLE)
+        if (exprFlags.has(EXPR_FLAG_SIMPLE))
             return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         break;
@@ -404,7 +404,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         break;
 
     case TokenId::SymLeftSquare:
-        if (exprFlags & (EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
+        if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
         {
             tokenizer.saveState(token);
             SWAG_CHECK(doExpressionListArray(parent, result));
@@ -424,10 +424,10 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
 
     case TokenId::KwdFunc:
     case TokenId::KwdClosure:
-        if (exprFlags & EXPR_FLAG_SIMPLE)
+        if (exprFlags.has(EXPR_FLAG_SIMPLE))
             return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
 
-        if (exprFlags & EXPR_FLAG_TYPEOF)
+        if (exprFlags.has(EXPR_FLAG_TYPEOF))
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         else
             SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
@@ -485,7 +485,7 @@ bool Parser::doDeRef(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     AstNode* exprNode;
 
@@ -560,7 +560,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     return true;
 }
 
-bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     switch (token.id)
     {
@@ -590,7 +590,7 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
     return doPrimaryExpression(parent, exprFlags, result);
 }
 
-bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node)
+bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& mdfFlags, AstNode* node)
 {
     const auto opId = tokenId;
 
@@ -613,8 +613,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_UP), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_UP;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_UP), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_UP);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -635,8 +635,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_OVERFLOW), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_OVERFLOW;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_OVERFLOW), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_OVERFLOW);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -651,8 +651,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_LEFT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_NO_LEFT_DROP;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_LEFT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_NO_LEFT_DROP);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -668,8 +668,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_BACK), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_BACK;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BACK), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_BACK);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -684,8 +684,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_BIT), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_BIT;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_BIT);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -700,8 +700,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_UN_CONST), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_UN_CONST;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_UN_CONST);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -716,8 +716,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, FMT(Err(Err0070), token.c_str())));
-            mdfFlags |= MODIFIER_MOVE;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(token, FMT(Err(Err0070), token.c_str())));
+            mdfFlags.add(MODIFIER_MOVE);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -732,9 +732,9 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, uint32_t& mdfFla
                 return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, FMT(Err(Err0070), g_LangSpec->name_move.c_str())));
-            mdfFlags |= MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP;
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_RIGHT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(token, FMT(Err(Err0070), g_LangSpec->name_move.c_str())));
+            mdfFlags.add(MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -808,77 +808,77 @@ namespace
 
         return false;
     }
-}
 
-bool Parser::doOperatorPrecedence(AstNode** result)
-{
-    auto factor = *result;
-    if (factor->kind != AstNodeKind::FactorOp && factor->kind != AstNodeKind::BinaryOp)
-        return true;
-
-    auto left = factor->children[0];
-    SWAG_CHECK(doOperatorPrecedence(&left));
-    auto right = factor->children[1];
-    SWAG_CHECK(doOperatorPrecedence(&right));
-
-    if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
+    bool doOperatorPrecedence(AstNode** result)
     {
-        const auto myPrecedence    = getPrecedence(factor->tokenId);
-        const auto rightPrecedence = getPrecedence(right->tokenId);
+        auto factor = *result;
+        if (factor->kind != AstNodeKind::FactorOp && factor->kind != AstNodeKind::BinaryOp)
+            return true;
 
-        bool shuffle = false;
-        if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
-            shuffle = true;
+        auto left = factor->children[0];
+        SWAG_CHECK(doOperatorPrecedence(&left));
+        auto right = factor->children[1];
+        SWAG_CHECK(doOperatorPrecedence(&right));
+
+        if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
+        {
+            const auto myPrecedence    = getPrecedence(factor->tokenId);
+            const auto rightPrecedence = getPrecedence(right->tokenId);
+
+            bool shuffle = false;
+            if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
+                shuffle = true;
 
             // If operation is not associative, then we need to shuffle
             //
             // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
             //
-        else if (!isAssociative(factor->tokenId) && myPrecedence == rightPrecedence)
-            shuffle = true;
+            else if (!isAssociative(factor->tokenId) && myPrecedence == rightPrecedence)
+                shuffle = true;
 
-        if (shuffle)
-        {
-            //   *
-            //  / \
-            // A   +
-            //    / \
-            //   B   C
+            if (shuffle)
+            {
+                //   *
+                //  / \
+                // A   +
+                //    / \
+                //   B   C
 
-            //     +
-            //    / \
-            //   *   C
-            //  / \
-            // A   B
-            const auto atom = factor->hasAstFlag(AST_IN_ATOMIC_EXPR);
-            factor->removeAstFlag(AST_IN_ATOMIC_EXPR);
+                //     +
+                //    / \
+                //   *   C
+                //  / \
+                // A   B
+                const auto atom = factor->hasAstFlag(AST_IN_ATOMIC_EXPR);
+                factor->removeAstFlag(AST_IN_ATOMIC_EXPR);
 
-            const auto leftRight = right->children[0];
-            Ast::removeFromParent(right);
-            if (factor->parent && factor == factor->parent->children.front())
-                Ast::addChildFront(factor->parent, right);
-            else
-                Ast::addChildBack(factor->parent, right);
-            Ast::removeFromParent(leftRight);
+                const auto leftRight = right->children[0];
+                Ast::removeFromParent(right);
+                if (factor->parent && factor == factor->parent->children.front())
+                    Ast::addChildFront(factor->parent, right);
+                else
+                    Ast::addChildBack(factor->parent, right);
+                Ast::removeFromParent(leftRight);
 
-            Ast::removeFromParent(factor);
-            Ast::addChildBack(factor, leftRight);
+                Ast::removeFromParent(factor);
+                Ast::addChildBack(factor, leftRight);
 
-            Ast::addChildFront(right, factor);
-            SWAG_CHECK(doOperatorPrecedence(&right));
+                Ast::addChildFront(right, factor);
+                SWAG_CHECK(doOperatorPrecedence(&right));
 
-            factor = right; // new root
+                factor = right; // new root
 
-            if (atom)
-                factor->addAstFlag(AST_IN_ATOMIC_EXPR);
+                if (atom)
+                    factor->addAstFlag(AST_IN_ATOMIC_EXPR);
+            }
         }
-    }
 
-    *result = factor;
-    return true;
+        *result = factor;
+        return true;
+    }
 }
 
-bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_ASSERT(parent);
@@ -908,15 +908,15 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
         SWAG_CHECK(eatToken());
 
         // Modifiers
-        uint32_t mdfFlags = 0;
+        ModifierFlags mdfFlags = 0;
         SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->tokenId, mdfFlags));
-        if (mdfFlags & MODIFIER_OVERFLOW)
+        if (mdfFlags.has(MODIFIER_OVERFLOW))
         {
             binaryNode->addSpecFlag(AstOp::SPEC_FLAG_OVERFLOW);
             binaryNode->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
         }
 
-        if (mdfFlags & MODIFIER_UP)
+        if (mdfFlags.has(MODIFIER_UP))
         {
             binaryNode->addSpecFlag(AstOp::SPEC_FLAG_UP);
         }
@@ -954,20 +954,20 @@ bool Parser::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** 
     return true;
 }
 
-bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doCompareExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(&parent, exprFlags, &leftNode));
     Ast::removeFromParent(leftNode);
 
-    if (exprFlags & EXPR_FLAG_STOP_AFFECT && token.id == TokenId::SymEqual)
+    if (exprFlags.has(EXPR_FLAG_STOP_AFFECT) && token.id == TokenId::SymEqual)
     {
         Ast::addChildBack(parent, leftNode);
         *result = leftNode;
         return true;
     }
 
-    if (!(exprFlags & EXPR_FLAG_NAMED_PARAM) || leftNode->kind != AstNodeKind::IdentifierRef)
+    if (!exprFlags.has(EXPR_FLAG_NAMED_PARAM) || leftNode->kind != AstNodeKind::IdentifierRef)
         SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Err0674), Nte(Nte0086)));
 
     Ast::addChildBack(parent, leftNode);
@@ -975,7 +975,7 @@ bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     return true;
 }
 
-bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doBoolExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doCompareExpression(parent, exprFlags, &leftNode));
@@ -1009,13 +1009,13 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     return true;
 }
 
-bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    uint32_t mdfFlags = 0;
+    ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(forToken, tokenId, mdfFlags));
 
     // no drop left
-    if (mdfFlags & MODIFIER_NO_LEFT_DROP)
+    if (mdfFlags.has(MODIFIER_NO_LEFT_DROP))
     {
         const auto exprNode   = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
         *result               = exprNode;
@@ -1026,7 +1026,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
     }
 
     // move
-    if (mdfFlags & MODIFIER_MOVE)
+    if (mdfFlags.has(MODIFIER_MOVE))
     {
         auto exprNode         = Ast::newNode<AstNode>(this, AstNodeKind::Move, sourceFile, parent);
         *result               = exprNode;
@@ -1036,7 +1036,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
         result = &dummyResult;
 
         // no drop right
-        if (mdfFlags & MODIFIER_NO_RIGHT_DROP)
+        if (mdfFlags.has(MODIFIER_NO_RIGHT_DROP))
         {
             exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
             *result               = exprNode;
@@ -1051,7 +1051,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
     return true;
 }
 
-bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     AstNode* boolExpression = nullptr;
     switch (token.id)
@@ -1254,7 +1254,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doInitializationExpression(const TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doInitializationExpression(const TokenParse& forToken, AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     // var x: type = undefined => not initialized
     if (token.id == TokenId::KwdUndefined)
@@ -1287,7 +1287,7 @@ void Parser::isForceTakeAddress(AstNode* node)
     }
 }
 
-bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, const AstWith* withNode)
+bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, const AstWith* withNode)
 {
     switch (token.id)
     {
@@ -1446,13 +1446,13 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         SWAG_CHECK(eatToken());
 
         // Modifiers
-        uint32_t mdfFlags = 0;
+        ModifierFlags mdfFlags = 0;
         if (savedtoken.id != TokenId::SymEqual)
         {
             SWAG_CHECK(doModifiers(savedtoken, savedtoken.id, mdfFlags));
         }
 
-        if (mdfFlags & MODIFIER_OVERFLOW)
+        if (mdfFlags.has(MODIFIER_OVERFLOW))
         {
             opFlags.add(AstOp::SPEC_FLAG_OVERFLOW);
             opAttrFlags.add(ATTRIBUTE_CAN_OVERFLOW_ON);

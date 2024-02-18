@@ -73,7 +73,7 @@ bool Parser::checkIsIdentifier(const TokenParse& tokenParse, const char* msg) co
     return invalidIdentifierError(tokenParse, msg);
 }
 
-bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
+bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 {
     TokenParse scopeUpValue;
 
@@ -151,7 +151,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             identifier->token.text = parent->ownerStructScope->name;
     }
 
-    if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_GEN_PARAMS))
+    if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && !identifierFlags.has(IDENTIFIER_NO_GEN_PARAMS))
     {
         // Generic arguments
         if (token.id == TokenId::SymQuote)
@@ -163,11 +163,11 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     }
 
     // Function call parameters
-    if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS))
+    if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS))
     {
         if (token.id == TokenId::SymLeftParen)
         {
-            if (identifierFlags & IDENTIFIER_TYPE_DECL)
+            if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
             {
                 Diagnostic err{identifier, token, Err(Err0377)};
                 return context->report(err);
@@ -187,9 +187,9 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Array index
     if (token.id == TokenId::SymLeftSquare)
     {
-        if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
+        if (!identifierFlags.has(IDENTIFIER_NO_PARAMS))
         {
-            if (identifierFlags & IDENTIFIER_TYPE_DECL)
+            if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
                 return context->report({identifier, token, Err(Err0482)});
 
             SpecFlags serial = 0;
@@ -210,7 +210,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
                     serial.add(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
             }
 
-            if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
+            if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && !identifierFlags.has(IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
             {
                 // :SilentCall
                 SWAG_CHECK(eatToken());
@@ -227,7 +227,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     return true;
 }
 
-bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
+bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags)
 {
     const auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
     *result                  = identifierRef;

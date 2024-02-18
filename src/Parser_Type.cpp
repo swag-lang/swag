@@ -407,9 +407,9 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     return true;
 }
 
-bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+    const bool inTypeVarDecl = exprFlags.has(EXPR_FLAG_IN_VAR_DECL);
 
     // This is a @typeof
     if (token.id == TokenId::IntrinsicDeclType)
@@ -483,9 +483,9 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     return context->report(err, note);
 }
 
-bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+    const bool inTypeVarDecl = exprFlags.has(EXPR_FLAG_IN_VAR_DECL);
 
     const auto node = Ast::newTypeExpression(sourceFile, parent, this);
     *result         = node;
@@ -565,7 +565,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, leftSquareToken.startLocation));
         if (token.flags.has(TOKEN_PARSE_LAST_EOL))
         {
-            if (exprFlags & EXPR_FLAG_TYPE_EXPR)
+            if (exprFlags.has(EXPR_FLAG_TYPE_EXPR))
             {
                 if (inTypeVarDecl)
                     return context->report({sourceFile, rightSquareToken, Err(Err0692)});
@@ -601,7 +601,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     return true;
 }
 
-bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
+bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
     // Code
     if (token.id == TokenId::KwdCode)
@@ -647,7 +647,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
     {
         SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
-        SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags & EXPR_FLAG_IN_VAR_DECL));
+        SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));
         return true;
     }
 
@@ -663,26 +663,26 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Cast modifiers
-    uint32_t mdfFlags = 0;
+    ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
-    if (mdfFlags & MODIFIER_OVERFLOW)
+    if (mdfFlags.has(MODIFIER_OVERFLOW))
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
         node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
     }
 
-    if (mdfFlags & MODIFIER_BIT)
+    if (mdfFlags.has(MODIFIER_BIT))
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
         node->semanticFct = Semantic::resolveExplicitBitCast;
     }
 
-    if (mdfFlags & MODIFIER_BIT && mdfFlags & MODIFIER_OVERFLOW)
+    if (mdfFlags.has(MODIFIER_BIT) && mdfFlags.has(MODIFIER_OVERFLOW))
     {
         return error(node, FMT(Err(Err0053), "bit", "over"));
     }
 
-    if (mdfFlags & MODIFIER_UN_CONST)
+    if (mdfFlags.has(MODIFIER_UN_CONST))
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
     }
