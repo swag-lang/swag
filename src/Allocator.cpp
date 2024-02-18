@@ -7,29 +7,31 @@ constexpr uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
 constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
-void* operator new(size_t _Size)
+void* operator new(size_t size)
 {
-    _Size = Allocator::alignSize(static_cast<int>(_Size) + 2 * sizeof(uint64_t));
-
-    const auto p = static_cast<uint64_t*>(Allocator::alloc(_Size, 2 * sizeof(uint64_t)));
-    *p           = _Size;
+    size         = Allocator::alignSize(static_cast<int>(size) + 2 * sizeof(uint64_t));
+    const auto p = static_cast<uint64_t*>(Allocator::alloc(size, 2 * sizeof(uint64_t)));
+    *p           = size;
 
 #ifdef SWAG_STATS
-    g_Stats.memNew += _Size;
+    g_Stats.memNew += size;
 #endif
+
     return p + 2;
 }
 
-void operator delete(void* _Block) noexcept
+void operator delete(void* block) noexcept
 {
-    if (!_Block)
+    if (!block)
         return;
-    auto p = static_cast<uint64_t*>(_Block);
+    auto p = static_cast<uint64_t*>(block);
     p -= 2;
+
 #ifdef SWAG_STATS
     g_Stats.memNew -= *p;
 #endif
-    return Allocator::free(p, *p);
+
+    Allocator::free(p, *p);
 }
 
 void* Allocator::alloc(size_t size, size_t align)
@@ -70,7 +72,7 @@ void Allocator::free(void* ptr, size_t size)
 #ifdef SWAG_CHECK_MEMORY
 uint8_t* Allocator::markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64_t marker)
 {
-    memset(blockAddr + 2 * sizeof(uint64_t), marker & 0xFF, userSize);
+    memset(blockAddr + 2 * sizeof(uint64_t), static_cast<uint8_t>(marker), userSize);
     *reinterpret_cast<uint64_t*>(blockAddr) = marker;
     blockAddr += sizeof(uint64_t);
     *reinterpret_cast<uint64_t*>(blockAddr) = userSize;
