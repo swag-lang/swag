@@ -330,7 +330,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
 				str += FMT(" [%d] ", idx);
 				EvaluateResult res1;
 				res1.type = typeArray->pointedType;
-				res1.addr = static_cast<uint8_t*>(addr) + (idx * typeArray->pointedType->sizeOf);
+				res1.addr = static_cast<uint8_t*>(addr) + static_cast<size_t>(idx * typeArray->pointedType->sizeOf);
 				appendTypedValue(context, str, res1, indent + 1);
 				if (str.back() != '\n')
 					str += "\n";
