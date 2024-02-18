@@ -706,7 +706,7 @@ void AstNode::inheritComputedValue(const AstNode* from)
     if (!from)
         return;
     inheritAstFlagsOr(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
-    if (hasAstFlag(AST_VALUE_COMPUTED))
+    if (hasComputedValue())
     {
         addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
         SWAG_ASSERT(from->computedValue());
@@ -733,12 +733,12 @@ ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 
 bool AstNode::isConstantTrue() const
 {
-    return hasAstFlag(AST_VALUE_COMPUTED) && computedValue()->reg.b;
+    return hasComputedValue() && computedValue()->reg.b;
 }
 
 bool AstNode::isConstantFalse() const
 {
-    return hasAstFlag(AST_VALUE_COMPUTED) && !computedValue()->reg.b;
+    return hasComputedValue() && !computedValue()->reg.b;
 }
 
 bool AstNode::isGeneratedSelf() const
@@ -944,7 +944,7 @@ bool AstNode::isConstant0() const
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
         return false;
-    if (!hasAstFlag(AST_VALUE_COMPUTED))
+    if (!hasComputedValue())
         return false;
 
     switch (typeInfo->sizeOf)
@@ -969,7 +969,7 @@ bool AstNode::isConstant1() const
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
         return false;
-    if (!hasAstFlag(AST_VALUE_COMPUTED))
+    if (!hasComputedValue())
         return false;
 
     switch (typeInfo->nativeType)
