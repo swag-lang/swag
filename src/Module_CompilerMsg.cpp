@@ -6,7 +6,7 @@
 #include "Semantic.h"
 #include "ThreadManager.h"
 
-bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
+bool Module::postCompilerMessage(CompilerMessage& msg)
 {
     // We can decide to filter the message only if all #message functions have been registered
     if (numCompilerFunctions == 0)

@@ -222,7 +222,7 @@ bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
     msg.concrete.name.buffer = funcNode->token.text.buffer;
     msg.concrete.name.count  = funcNode->token.text.length();
     msg.typeInfo             = typeInfo;
-    SWAG_CHECK(module->postCompilerMessage(context, msg));
+    SWAG_CHECK(module->postCompilerMessage(msg));
 
     return true;
 }

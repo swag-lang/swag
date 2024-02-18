@@ -66,7 +66,7 @@ void Workspace::cleanPublic(const Path& basePath)
     }
 }
 
-void Workspace::cleanScript(bool all)
+void Workspace::cleanScript()
 {
     setupCachePath();
     error_code err;
@@ -78,15 +78,14 @@ void Workspace::cleanScript(bool all)
         return;
 
     // Clean all folders of the form 'SWAG_SCRIPT_WORKSPACE-??'
-    OS::visitFolders(
-        cacheFolder.string().c_str(), [&](const char* folder)
-        {
-            auto path = cacheFolder;
-            path.append(folder);
-            g_Log.messageHeaderCentered("Cleaning", path.string().c_str());
-            cleanFolderContent(path);
-        },
-        FMT("%s-*", SWAG_SCRIPT_WORKSPACE).c_str());
+    OS::visitFolders(cacheFolder.string().c_str(), [&](const char* folder)
+                     {
+                         auto path = cacheFolder;
+                         path.append(folder);
+                         g_Log.messageHeaderCentered("Cleaning", path.string().c_str());
+                         cleanFolderContent(path);
+                     },
+                     FMT("%s-*", SWAG_SCRIPT_WORKSPACE).c_str());
 }
 
 void Workspace::cleanCommand()
@@ -94,7 +93,7 @@ void Workspace::cleanCommand()
     // Clear scripts cache
     if (g_CommandLine.scriptMode)
     {
-        cleanScript(true);
+        cleanScript();
         g_Log.messageHeaderCentered("Done", "");
         return;
     }

@@ -166,7 +166,7 @@ namespace OS
         return g_NativeTarget;
     }
 
-    bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors)
+    bool doProcess(Module* /*module*/, const Utf8& cmdline, const string& currentDirectory, uint32_t& numErrors)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;

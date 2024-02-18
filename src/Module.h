@@ -154,7 +154,7 @@ struct Module
     void        removeFile(SourceFile* file);
     SourceFile* findFile(const Utf8& fileName);
 
-    void startBuilding(const BuildParameters& bp) const;
+    void startBuilding() const;
     void printBC();
 
     bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, const ExecuteNodeParams* params);
@@ -171,7 +171,7 @@ struct Module
 
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob);
-    bool postCompilerMessage(JobContext* context, CompilerMessage& msg);
+    bool postCompilerMessage(CompilerMessage& msg);
     bool prepareCompilerMessages(const JobContext* context, uint32_t pass);
     bool flushCompilerMessages(JobContext* context, uint32_t pass, Job* job);
 

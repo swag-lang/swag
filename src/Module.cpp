@@ -883,7 +883,7 @@ uint32_t Module::getHasBeenBuilt()
     return hasBeenBuilt;
 }
 
-void Module::startBuilding(const BuildParameters& bp) const
+void Module::startBuilding() const
 {
     if (!backend->mustCompile)
     {

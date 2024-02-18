@@ -279,7 +279,7 @@ namespace
     }
 
 #else
-    int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
+    int exceptionHandler(Job* /*job*/, SWAG_LPEXCEPTION_POINTERS /*args*/)
     {
         OS::errorBox("[Developer Mode]", "Hardware exception raised !");
         return EXCEPTION_CONTINUE_EXECUTION;

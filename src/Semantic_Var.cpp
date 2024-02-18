@@ -249,7 +249,7 @@ bool Semantic::sendCompilerMsgGlobalVar(SemanticContext* context)
     msg.concrete.name.buffer = node->token.text.buffer;
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;
-    SWAG_CHECK(module->postCompilerMessage(context, msg));
+    SWAG_CHECK(module->postCompilerMessage(msg));
 
     return true;
 }

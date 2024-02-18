@@ -72,7 +72,7 @@ struct Workspace
     void        setupTarget();
 
     static void cleanPublic(const Path& basePath);
-    void        cleanScript(bool all);
+    void        cleanScript();
     void        cleanCommand();
     void        newModule(const Utf8& moduleName) const;
     void        newCommand();

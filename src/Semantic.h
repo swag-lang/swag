@@ -229,8 +229,8 @@ namespace Semantic
     bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child);
     bool resolveUnaryOpInvert(SemanticContext* context, AstNode* child);
     bool resolveUnaryOp(SemanticContext* context);
-    bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, GenExportFlags flags = 0);
-    bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, GenExportFlags flags = 0);
+    bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, GenExportFlags genFlags = 0);
+    bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, GenExportFlags genFlags = 0);
     bool resolveType(SemanticContext* context);
     bool resolveTypeLambdaClosure(SemanticContext* context);
     bool resolveVarDeclAfterType(SemanticContext* context);

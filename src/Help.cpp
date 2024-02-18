@@ -153,7 +153,7 @@ void help(const CommandLineParser& cmdParser, const Utf8& cmd)
     }
 }
 
-void help(CommandLineParser& cmdParser)
+void help()
 {
     printVersion();
 

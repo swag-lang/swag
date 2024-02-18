@@ -14,7 +14,7 @@
 bool g_Exiting = false;
 
 extern void help(const CommandLineParser& cmdParser, const Utf8& cmd);
-extern void help(CommandLineParser& cmdParser);
+extern void help();
 
 int main(int argc, const char* argv[])
 {
@@ -28,7 +28,7 @@ int main(int argc, const char* argv[])
     // Log default help
     if (argc <= 1)
     {
-        help(cmdParser);
+        help();
         OS::exit(0);
     }
 

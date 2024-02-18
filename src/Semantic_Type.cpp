@@ -97,12 +97,12 @@ bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;
     msg.node                 = node;
-    SWAG_CHECK(module->postCompilerMessage(context, msg));
+    SWAG_CHECK(module->postCompilerMessage(msg));
 
     if (node->hasAttribute(ATTRIBUTE_GEN))
     {
         msg.concrete.kind = CompilerMsgKind::AttributeGen;
-        SWAG_CHECK(module->postCompilerMessage(context, msg));
+        SWAG_CHECK(module->postCompilerMessage(msg));
     }
 
     return true;

@@ -34,7 +34,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
 
     // Now that we have the workspace name, we can clean dependencies and temp
     if (g_CommandLine.cleanDep)
-        cleanScript(false);
+        cleanScript();
 }
 
 void Workspace::scriptCommand()
