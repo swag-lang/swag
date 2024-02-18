@@ -180,6 +180,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             const Diagnostic err{sourceFile, start, start, diagMsg};
             return context->report(err);
         }
+        
         const Diagnostic err{sourceFile, token, diagMsg};
         const auto       note = Diagnostic::note(sourceFile, start, start, FMT(Nte(Nte0180), related.c_str()));
         return context->report(err, note);
@@ -297,8 +298,9 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     if (logGenerated &&
         fromNode &&
         !g_CommandLine.scriptCommand &&
+        g_CommandLine.output &&
         !fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR) &&
-        !fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING) && g_CommandLine.output &&
+        !fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING) &&
         fromNode->sourceFile->module->buildCfg.backendDebugInfos)
     {
         SWAG_CHECK(saveEmbeddedAst(content, fromNode, tmpFilePath, tmpFileName, previousLogLine));
