@@ -3,113 +3,113 @@
 
 union Register
 {
-	uint8_t* pointer = nullptr;
-	uint64_t u64;
-	int64_t  s64;
-	uint32_t u32;
-	int32_t  s32;
-	uint16_t u16;
-	int16_t  s16;
-	uint8_t  u8;
-	int8_t   s8;
-	float    f32;
-	double   f64;
-	uint32_t ch;
-	bool     b;
+    uint8_t* pointer = nullptr;
+    uint64_t u64;
+    int64_t  s64;
+    uint32_t u32;
+    int32_t  s32;
+    uint16_t u16;
+    int16_t  s16;
+    uint8_t  u8;
+    int8_t   s8;
+    float    f32;
+    double   f64;
+    uint32_t ch;
+    bool     b;
 
-	struct
-	{
-		uint32_t low;
-		uint32_t high;
-	}            u64u32;
+    struct
+    {
+        uint32_t low;
+        uint32_t high;
+    }            u64u32;
 
-	Register() = default;
+    Register() = default;
 
-	Register(uint64_t val)
-		: u64{val}
-	{
-	}
+    Register(uint64_t val)
+        : u64{val}
+    {
+    }
 };
 
 struct RegisterList
 {
-	static constexpr int MAX_STATIC    = 2;
-	static constexpr int MAX_REGISTERS = 256;
+    static constexpr int MAX_STATIC    = 2;
+    static constexpr int MAX_REGISTERS = 256;
 
-	uint32_t oneResult[MAX_STATIC] = {0};
-	uint8_t  countResults          = 0;
-	bool     cannotFree            = false;
+    uint32_t oneResult[MAX_STATIC] = {0};
+    uint8_t  countResults          = 0;
+    bool     cannotFree            = false;
 
-	RegisterList() = default;
+    RegisterList() = default;
 
-	RegisterList(uint32_t r)
-	{
-		SWAG_ASSERT(r < MAX_REGISTERS);
-		oneResult[0] = static_cast<uint8_t>(r);
-		countResults = 1;
-	}
+    RegisterList(uint32_t r)
+    {
+        SWAG_ASSERT(r < MAX_REGISTERS);
+        oneResult[0] = static_cast<uint8_t>(r);
+        countResults = 1;
+    }
 
-	uint32_t size() const
-	{
-		return countResults;
-	}
+    uint32_t size() const
+    {
+        return countResults;
+    }
 
-	uint32_t operator[](int index) const
-	{
-		SWAG_ASSERT(index < countResults);
-		return oneResult[index];
-	}
+    uint32_t operator[](int index) const
+    {
+        SWAG_ASSERT(index < countResults);
+        return oneResult[index];
+    }
 
-	RegisterList& operator=(uint32_t r)
-	{
-		SWAG_ASSERT(r < MAX_REGISTERS);
-		oneResult[0] = static_cast<uint8_t>(r);
-		countResults = 1;
-		cannotFree   = false;
-		return *this;
-	}
+    RegisterList& operator=(uint32_t r)
+    {
+        SWAG_ASSERT(r < MAX_REGISTERS);
+        oneResult[0] = static_cast<uint8_t>(r);
+        countResults = 1;
+        cannotFree   = false;
+        return *this;
+    }
 
-	void operator+=(const RegisterList& other)
-	{
-		SWAG_ASSERT(cannotFree == other.cannotFree);
-		for (uint32_t i = 0; i < other.size(); i++)
-			*this += other[i];
-	}
+    void operator+=(const RegisterList& other)
+    {
+        SWAG_ASSERT(cannotFree == other.cannotFree);
+        for (uint32_t i = 0; i < other.size(); i++)
+            *this += other[i];
+    }
 
-	void operator+=(uint32_t r)
-	{
-		SWAG_ASSERT(!cannotFree);
-		SWAG_ASSERT(r < MAX_REGISTERS);
-		SWAG_ASSERT(countResults < MAX_STATIC);
-		oneResult[countResults++] = static_cast<uint8_t>(r);
-	}
+    void operator+=(uint32_t r)
+    {
+        SWAG_ASSERT(!cannotFree);
+        SWAG_ASSERT(r < MAX_REGISTERS);
+        SWAG_ASSERT(countResults < MAX_STATIC);
+        oneResult[countResults++] = static_cast<uint8_t>(r);
+    }
 
-	void clear()
-	{
-		countResults = 0;
-		cannotFree   = false;
-	}
+    void clear()
+    {
+        countResults = 0;
+        cannotFree   = false;
+    }
 
-	bool operator==(const RegisterList& other) const
-	{
-		return isSame(other);
-	}
+    bool operator==(const RegisterList& other) const
+    {
+        return isSame(other);
+    }
 
-	bool isSame(const RegisterList& other) const
-	{
-		if (countResults != other.countResults)
-			return false;
-		for (int i = 0; i < countResults; i++)
-		{
-			if (oneResult[i] != other.oneResult[i])
-				return false;
-		}
+    bool isSame(const RegisterList& other) const
+    {
+        if (countResults != other.countResults)
+            return false;
+        for (int i = 0; i < countResults; i++)
+        {
+            if (oneResult[i] != other.oneResult[i])
+                return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	operator uint32_t() const
-	{
-		return (*this)[0];
-	}
+    operator uint32_t() const
+    {
+        return (*this)[0];
+    }
 };

@@ -7,74 +7,74 @@
 
 bool GenDoc::generatePages()
 {
-	Vector<Path> files;
-	for (const auto file : module->files)
-		files.push_back(file->path);
+    Vector<Path> files;
+    for (const auto file : module->files)
+        files.push_back(file->path);
 
-	// Import additional pages
-	const Utf8   morePages(module->buildCfg.genDoc.morePages);
-	Vector<Utf8> pages;
-	Utf8::tokenize(morePages, ';', pages);
-	for (auto& addPage : pages)
-	{
-		Path path = module->path;
-		path.append(addPage.c_str());
+    // Import additional pages
+    const Utf8   morePages(module->buildCfg.genDoc.morePages);
+    Vector<Utf8> pages;
+    Utf8::tokenize(morePages, ';', pages);
+    for (auto& addPage : pages)
+    {
+        Path path = module->path;
+        path.append(addPage.c_str());
 
-		path = absolute(path);
-		error_code err;
-		const auto path1 = canonical(path, err);
-		if (!err)
-			path = path1;
+        path = absolute(path);
+        error_code err;
+        const auto path1 = canonical(path, err);
+        if (!err)
+            path = path1;
 
-		if (!exists(path, err))
-			Report::errorOS(FMT(Err(Err0092), path.string().c_str()));
-		else
-			files.push_back(path);
-	}
+        if (!exists(path, err))
+            Report::errorOS(FMT(Err(Err0092), path.string().c_str()));
+        else
+            files.push_back(path);
+    }
 
-	// Process all files
-	for (const auto& path : files)
-	{
-		auto filePath = g_Workspace->targetPath;
-		filePath.append(path.filename().string());
+    // Process all files
+    for (const auto& path : files)
+    {
+        auto filePath = g_Workspace->targetPath;
+        filePath.append(path.filename().string());
 
-		Utf8 extName = getFileExtension(module);
-		filePath.replace_extension(extName.c_str());
+        Utf8 extName = getFileExtension(module);
+        filePath.replace_extension(extName.c_str());
 
-		fullFileName = filePath.string();
+        fullFileName = filePath.string();
 
-		// Write for output
-		FILE* f = nullptr;
-		if (fopen_s(&f, fullFileName.c_str(), "wb"))
-		{
-			Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
-			return false;
-		}
+        // Write for output
+        FILE* f = nullptr;
+        if (fopen_s(&f, fullFileName.c_str(), "wb"))
+        {
+            Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
+            return false;
+        }
 
-		helpContent.clear();
-		helpToc.clear();
-		if (path.extension() == ".md")
-		{
-			if (!processMarkDownFile(path, 0))
-				return false;
-		}
-		else
-		{
-			if (!processSourceFile(path, 0))
-				return false;
-		}
-		constructPage();
+        helpContent.clear();
+        helpToc.clear();
+        if (path.extension() == ".md")
+        {
+            if (!processMarkDownFile(path, 0))
+                return false;
+        }
+        else
+        {
+            if (!processSourceFile(path, 0))
+                return false;
+        }
+        constructPage();
 
-		// Write and close file
-		if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
-		{
-			Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
-			fclose(f);
-			return false;
-		}
+        // Write and close file
+        if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
+        {
+            Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
+            fclose(f);
+            return false;
+        }
 
-		fclose(f);
-	}
+        fclose(f);
+    }
 
-	return true;
+    return true;
 }

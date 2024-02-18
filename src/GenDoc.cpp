@@ -9,18 +9,18 @@
 
 namespace
 {
-	const char* START_NOTE      = "> NOTE:";
-	const char* START_TIP       = "> TIP:";
-	const char* START_WARNING   = "> WARNING:";
-	const char* START_ATTENTION = "> ATTENTION:";
-	const char* START_EXAMPLE   = "> EXAMPLE:";
+    const char* START_NOTE      = "> NOTE:";
+    const char* START_TIP       = "> TIP:";
+    const char* START_WARNING   = "> WARNING:";
+    const char* START_ATTENTION = "> ATTENTION:";
+    const char* START_EXAMPLE   = "> EXAMPLE:";
 }
 
 void GenDoc::outputStyles()
 {
-	helpOutput += "<style>\n";
+    helpOutput += "<style>\n";
 
-	helpOutput += "\n\
+    helpOutput += "\n\
         .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }\n\
         .left       { display: block; overflow-y: scroll; width: 500px; }\n\
         .left-page  { margin: 10px; }\n\
@@ -38,15 +38,15 @@ void GenDoc::outputStyles()
             .right-page { margin:  10px; }\n\
         }\n";
 
-	// Layout
-	if (docKind != BuildCfgDocKind::Pages)
-	{
-		helpOutput += "\n\
+    // Layout
+    if (docKind != BuildCfgDocKind::Pages)
+    {
+        helpOutput += "\n\
             .container { height: 100vh; }\n\
             .right     { overflow-y: scroll; }\n";
-	}
+    }
 
-	helpOutput += "\n\
+    helpOutput += "\n\
         html { font-family: ui-sans-serif, system-ui, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif; }\n\
         body { margin: 0px; line-height: 1.3em; }\n\
         \n\
@@ -106,1237 +106,1237 @@ void GenDoc::outputStyles()
         .code-block a { color: inherit; }\n\
         \n";
 
-	const float    lum        = module->buildCfg.genDoc.syntaxColorLum;
-	const uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxFunction, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxConstant, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxIntrinsic, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxType, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxKeyword, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxLogic, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
-	helpOutput += FMT("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
+    const float    lum        = module->buildCfg.genDoc.syntaxColorLum;
+    const uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_FUNCTION, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxFunction, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_CONSTANT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxConstant, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_INTRINSIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxIntrinsic, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_TYPE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxType, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_KEYWORD, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxKeyword, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_LOGIC, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxLogic, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_NUMBER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxNumber, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_STRING, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxString, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_ATTRIBUTE, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxAttribute, lum));
+    helpOutput += FMT("    .%s { color: #%x; }\n", SYN_INVALID, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxInvalid, lum));
 
-	helpOutput += "</style>\n";
+    helpOutput += "</style>\n";
 }
 
 Utf8 GenDoc::toRef(Utf8 str)
 {
-	str.replace(".", "_");
-	str.replace(" ", "_");
-	if (SWAG_IS_DIGIT(str[0]))
-		return "_" + str;
-	return str;
+    str.replace(".", "_");
+    str.replace(" ", "_");
+    if (SWAG_IS_DIGIT(str[0]))
+        return "_" + str;
+    return str;
 }
 
 const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink)
 {
-	name.clear();
-	link.clear();
+    name.clear();
+    link.clear();
 
-	if (*pz != '[')
-		return nullptr;
-	pz++;
+    if (*pz != '[')
+        return nullptr;
+    pz++;
 
-	while (*pz && *pz != ']')
-		name += *pz++;
-	if (*pz != ']')
-		return nullptr;
+    while (*pz && *pz != ']')
+        name += *pz++;
+    if (*pz != ']')
+        return nullptr;
 
-	if (!acceptLink)
-		return pz + 1;
+    if (!acceptLink)
+        return pz + 1;
 
-	pz++;
-	if (*pz != '(')
-		return pz;
-	pz++;
+    pz++;
+    if (*pz != '(')
+        return pz;
+    pz++;
 
-	while (*pz && *pz != ')')
-		link += *pz++;
-	if (*pz != ')')
-		return nullptr;
-	return pz + 1;
+    while (*pz && *pz != ')')
+        link += *pz++;
+    if (*pz != ')')
+        return nullptr;
+    return pz + 1;
 }
 
 Utf8 GenDoc::findReference(const Utf8& name)
 {
-	const auto it = collectInvert.find(name);
-	if (it != collectInvert.end())
-		return FMT("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
+    const auto it = collectInvert.find(name);
+    if (it != collectInvert.end())
+        return FMT("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
 
-	Vector<Utf8> tkns;
-	Utf8::tokenize(name, '.', tkns);
-	if (tkns.size() <= 1)
-		return "";
+    Vector<Utf8> tkns;
+    Utf8::tokenize(name, '.', tkns);
+    if (tkns.size() <= 1)
+        return "";
 
-	if (tkns[0] == "Swag")
-	{
-		return FMT("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
-	}
+    if (tkns[0] == "Swag")
+    {
+        return FMT("<a href=\"swag.runtime.php#%s\">%s</a>", toRef(name).c_str(), name.c_str());
+    }
 
-	return "";
+    return "";
 }
 
 void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 {
-	if (code.empty())
-		return;
+    if (code.empty())
+        return;
 
-	// Remove trailing eol
-	auto repl = code;
-	repl.trim();
-	while (repl.length() && repl[0] == '\n')
-	{
-		repl.remove(0, 1);
-		repl.trim();
-	}
-	while (repl.length() && repl.back() == '\n')
-	{
-		repl.removeBack();
-		repl.trim();
-	}
-	if (repl.empty())
-		return;
+    // Remove trailing eol
+    auto repl = code;
+    repl.trim();
+    while (repl.length() && repl[0] == '\n')
+    {
+        repl.remove(0, 1);
+        repl.trim();
+    }
+    while (repl.length() && repl.back() == '\n')
+    {
+        repl.removeBack();
+        repl.trim();
+    }
+    if (repl.empty())
+        return;
 
-	if (flags & GENDOC_CODE_BLOCK)
-	{
-		helpContent += "<div class=\"code-block\">";
-	}
+    if (flags & GENDOC_CODE_BLOCK)
+    {
+        helpContent += "<div class=\"code-block\">";
+    }
 
-	// Kind of a hack for now... Try to keep references, but try to keep <> also...
-	if (code.find("<a href") == -1)
-	{
-		repl.replace("<", "&lt;");
-		repl.replace(">", "&gt;");
-	}
+    // Kind of a hack for now... Try to keep references, but try to keep <> also...
+    if (code.find("<a href") == -1)
+    {
+        repl.replace("<", "&lt;");
+        repl.replace(">", "&gt;");
+    }
 
-	// Syntax coloration
-	Utf8 codeText;
-	if (flags & GENDOC_CODE_SYNTAX_COL)
-	{
-		SyntaxColorContext cxt;
-		cxt.mode = SyntaxColorMode::ForDoc;
-		codeText = syntaxColor(repl, cxt);
-	}
-	else
-	{
-		codeText = FMT("<span class=\"%s\">", SYN_CODE);
-		codeText += repl;
-		codeText += "</span>";
-	}
+    // Syntax coloration
+    Utf8 codeText;
+    if (flags & GENDOC_CODE_SYNTAX_COL)
+    {
+        SyntaxColorContext cxt;
+        cxt.mode = SyntaxColorMode::ForDoc;
+        codeText = syntaxColor(repl, cxt);
+    }
+    else
+    {
+        codeText = FMT("<span class=\"%s\">", SYN_CODE);
+        codeText += repl;
+        codeText += "</span>";
+    }
 
-	// References
-	if (!(flags & GENDOC_CODE_REFS))
-		repl = std::move(codeText);
-	else
-	{
-		repl.clear();
-		const char* pz = codeText.c_str();
-		while (*pz)
-		{
-			if (SWAG_IS_ALPHA(*pz) || *pz == '_')
-			{
-				Utf8 nameToRef;
-				while (SWAG_IS_AL_NUM(*pz) || *pz == '_' || *pz == '.')
-					nameToRef += *pz++;
+    // References
+    if (!(flags & GENDOC_CODE_REFS))
+        repl = std::move(codeText);
+    else
+    {
+        repl.clear();
+        const char* pz = codeText.c_str();
+        while (*pz)
+        {
+            if (SWAG_IS_ALPHA(*pz) || *pz == '_')
+            {
+                Utf8 nameToRef;
+                while (SWAG_IS_AL_NUM(*pz) || *pz == '_' || *pz == '.')
+                    nameToRef += *pz++;
 
-				auto ref = findReference(nameToRef);
-				if (ref.empty())
-					repl += nameToRef;
-				else
-					repl += ref;
-			}
-			else
-			{
-				repl += *pz++;
-			}
-		}
-	}
+                auto ref = findReference(nameToRef);
+                if (ref.empty())
+                    repl += nameToRef;
+                else
+                    repl += ref;
+            }
+            else
+            {
+                repl += *pz++;
+            }
+        }
+    }
 
-	helpContent += repl;
+    helpContent += repl;
 
-	if (flags & GENDOC_CODE_BLOCK)
-	{
-		helpContent += "</div>\n";
-	}
+    if (flags & GENDOC_CODE_BLOCK)
+    {
+        helpContent += "</div>\n";
+    }
 }
 
 void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc)
 {
-	// Remove trailing '\r'
-	for (auto& l : lines)
-	{
-		if (!l.length())
-			continue;
-		if (l.back() == '\r')
-			l.removeBack();
-		l.replace("\\|", "&vert;");
-	}
+    // Remove trailing '\r'
+    for (auto& l : lines)
+    {
+        if (!l.length())
+            continue;
+        if (l.back() == '\r')
+            l.removeBack();
+        l.replace("\\|", "&vert;");
+    }
 
-	int start = 0;
-	while (start < static_cast<int>(lines.size()))
-	{
-		auto blk = new UserBlock;
+    int start = 0;
+    while (start < static_cast<int>(lines.size()))
+    {
+        auto blk = new UserBlock;
 
-		// Start of a block
-		for (; start < static_cast<int>(lines.size()); start++)
-		{
-			auto line = lines[start];
-			line.trim();
+        // Start of a block
+        for (; start < static_cast<int>(lines.size()); start++)
+        {
+            auto line = lines[start];
+            line.trim();
 
-			// Zap blank lines
-			if (line.empty())
-				continue;
+            // Zap blank lines
+            if (line.empty())
+                continue;
 
-			if (lines[start].startsWith("    ") || lines[start].startsWith("\t"))
-			{
-				blk->kind = UserBlockKind::CodeAuto;
-			}
-			else if (line.startsWith("---"))
-			{
-				blk->kind = UserBlockKind::ParagraphRaw;
-				start++;
-			}
-			else if (line.startsWith("```swag"))
-			{
-				blk->kind = UserBlockKind::CodeSwag;
-				start++;
-			}
-			else if (line.startsWith("```"))
-			{
-				blk->kind = UserBlockKind::CodeRaw;
-				start++;
-			}
-			else if (line.startsWith(START_NOTE))
-			{
-				blk->kind = UserBlockKind::BlockquoteNote;
-			}
-			else if (line.startsWith(START_TIP))
-			{
-				blk->kind = UserBlockKind::BlockquoteTip;
-			}
-			else if (line.startsWith(START_WARNING))
-			{
-				blk->kind = UserBlockKind::BlockquoteWarning;
-			}
-			else if (line.startsWith(START_ATTENTION))
-			{
-				blk->kind = UserBlockKind::BlockquoteAttention;
-			}
-			else if (line.startsWith(START_EXAMPLE))
-			{
-				blk->kind = UserBlockKind::BlockquoteExample;
-			}
-			else if (line.startsWith(">"))
-			{
-				blk->kind = UserBlockKind::Blockquote;
-			}
-			else if (line.startsWith("|"))
-			{
-				blk->kind = UserBlockKind::Table;
-			}
-			else if (line.startsWith("* "))
-			{
-				blk->kind = UserBlockKind::List;
-			}
-			else if (line.length() > 1 && SWAG_IS_DIGIT(line[0]) && line[1] == '.')
-			{
-				blk->kind = UserBlockKind::OrderedList;
-			}
-			else if (line.startsWith("+ "))
-			{
-				blk->kind = UserBlockKind::DescriptionList;
-			}
-			else if (line.startsWith("# "))
-			{
-				blk->kind = UserBlockKind::Title1;
-			}
-			else if (line.startsWith("## "))
-			{
-				blk->kind = UserBlockKind::Title2;
-			}
-			else if (line.startsWith("### "))
-			{
-				blk->kind = UserBlockKind::Title3;
-			}
-			else if (line.startsWith("#### "))
-			{
-				blk->kind = UserBlockKind::Title4;
-			}
-			else if (line.startsWith("##### "))
-			{
-				blk->kind = UserBlockKind::Title5;
-			}
-			else if (line.startsWith("###### "))
-			{
-				blk->kind = UserBlockKind::Title6;
-			}
-			else
-			{
-				blk->kind = UserBlockKind::Paragraph;
-				blk->lines.push_back(lines[start++]);
-			}
+            if (lines[start].startsWith("    ") || lines[start].startsWith("\t"))
+            {
+                blk->kind = UserBlockKind::CodeAuto;
+            }
+            else if (line.startsWith("---"))
+            {
+                blk->kind = UserBlockKind::ParagraphRaw;
+                start++;
+            }
+            else if (line.startsWith("```swag"))
+            {
+                blk->kind = UserBlockKind::CodeSwag;
+                start++;
+            }
+            else if (line.startsWith("```"))
+            {
+                blk->kind = UserBlockKind::CodeRaw;
+                start++;
+            }
+            else if (line.startsWith(START_NOTE))
+            {
+                blk->kind = UserBlockKind::BlockquoteNote;
+            }
+            else if (line.startsWith(START_TIP))
+            {
+                blk->kind = UserBlockKind::BlockquoteTip;
+            }
+            else if (line.startsWith(START_WARNING))
+            {
+                blk->kind = UserBlockKind::BlockquoteWarning;
+            }
+            else if (line.startsWith(START_ATTENTION))
+            {
+                blk->kind = UserBlockKind::BlockquoteAttention;
+            }
+            else if (line.startsWith(START_EXAMPLE))
+            {
+                blk->kind = UserBlockKind::BlockquoteExample;
+            }
+            else if (line.startsWith(">"))
+            {
+                blk->kind = UserBlockKind::Blockquote;
+            }
+            else if (line.startsWith("|"))
+            {
+                blk->kind = UserBlockKind::Table;
+            }
+            else if (line.startsWith("* "))
+            {
+                blk->kind = UserBlockKind::List;
+            }
+            else if (line.length() > 1 && SWAG_IS_DIGIT(line[0]) && line[1] == '.')
+            {
+                blk->kind = UserBlockKind::OrderedList;
+            }
+            else if (line.startsWith("+ "))
+            {
+                blk->kind = UserBlockKind::DescriptionList;
+            }
+            else if (line.startsWith("# "))
+            {
+                blk->kind = UserBlockKind::Title1;
+            }
+            else if (line.startsWith("## "))
+            {
+                blk->kind = UserBlockKind::Title2;
+            }
+            else if (line.startsWith("### "))
+            {
+                blk->kind = UserBlockKind::Title3;
+            }
+            else if (line.startsWith("#### "))
+            {
+                blk->kind = UserBlockKind::Title4;
+            }
+            else if (line.startsWith("##### "))
+            {
+                blk->kind = UserBlockKind::Title5;
+            }
+            else if (line.startsWith("###### "))
+            {
+                blk->kind = UserBlockKind::Title6;
+            }
+            else
+            {
+                blk->kind = UserBlockKind::Paragraph;
+                blk->lines.push_back(lines[start++]);
+            }
 
-			break;
-		}
+            break;
+        }
 
-		// The short description (first line) can end with '.'.
-		if (shortDesc && !blk->lines.empty() && blocks.empty() && !blk->lines[0].empty() && blk->lines[0].back() == '.')
-		{
-			blocks.push_back(blk);
-			continue;
-		}
+        // The short description (first line) can end with '.'.
+        if (shortDesc && !blk->lines.empty() && blocks.empty() && !blk->lines[0].empty() && blk->lines[0].back() == '.')
+        {
+            blocks.push_back(blk);
+            continue;
+        }
 
-		for (; start < static_cast<int>(lines.size()); start++)
-		{
-			const bool lastLine = start == static_cast<int>(lines.size()) - 1;
-			auto       line     = lines[start];
-			line.trim();
+        for (; start < static_cast<int>(lines.size()); start++)
+        {
+            const bool lastLine = start == static_cast<int>(lines.size()) - 1;
+            auto       line     = lines[start];
+            line.trim();
 
-			bool mustEnd = false;
-			switch (blk->kind)
-			{
-			case UserBlockKind::Title1:
-			case UserBlockKind::Title2:
-			case UserBlockKind::Title3:
-			case UserBlockKind::Title4:
-			case UserBlockKind::Title5:
-			case UserBlockKind::Title6:
-				line.remove(0, 2 + (static_cast<int>(blk->kind) - static_cast<int>(UserBlockKind::Title1))); // #<blank>
-				blk->lines.push_back(line);
-				mustEnd = true;
-				start++;
-				break;
+            bool mustEnd = false;
+            switch (blk->kind)
+            {
+            case UserBlockKind::Title1:
+            case UserBlockKind::Title2:
+            case UserBlockKind::Title3:
+            case UserBlockKind::Title4:
+            case UserBlockKind::Title5:
+            case UserBlockKind::Title6:
+                line.remove(0, 2 + (static_cast<int>(blk->kind) - static_cast<int>(UserBlockKind::Title1))); // #<blank>
+                blk->lines.push_back(line);
+                mustEnd = true;
+                start++;
+                break;
 
-			case UserBlockKind::ParagraphRaw:
-				if (line.startsWith("---"))
-				{
-					mustEnd = true;
-					start++;
-				}
-				else
-					blk->lines.push_back(lines[start]);
-				break;
+            case UserBlockKind::ParagraphRaw:
+                if (line.startsWith("---"))
+                {
+                    mustEnd = true;
+                    start++;
+                }
+                else
+                    blk->lines.push_back(lines[start]);
+                break;
 
-			case UserBlockKind::CodeSwag:
-			case UserBlockKind::CodeRaw:
-				if (line.startsWith("```"))
-				{
-					mustEnd = true;
-					start++;
-				}
-				else
-					blk->lines.push_back(lines[start]);
-				break;
+            case UserBlockKind::CodeSwag:
+            case UserBlockKind::CodeRaw:
+                if (line.startsWith("```"))
+                {
+                    mustEnd = true;
+                    start++;
+                }
+                else
+                    blk->lines.push_back(lines[start]);
+                break;
 
-			case UserBlockKind::CodeAuto:
-				if (lines[start].startsWith("    "))
-				{
-					line = lines[start];
-					line.remove(0, 4);
-					blk->lines.push_back(line);
-				}
-				else if (lines[start].startsWith("\t"))
-				{
-					line = lines[start];
-					line.remove(0, 1);
-					blk->lines.push_back(line);
-				}
-				else
-				{
-					mustEnd = true;
-				}
-				break;
+            case UserBlockKind::CodeAuto:
+                if (lines[start].startsWith("    "))
+                {
+                    line = lines[start];
+                    line.remove(0, 4);
+                    blk->lines.push_back(line);
+                }
+                else if (lines[start].startsWith("\t"))
+                {
+                    line = lines[start];
+                    line.remove(0, 1);
+                    blk->lines.push_back(line);
+                }
+                else
+                {
+                    mustEnd = true;
+                }
+                break;
 
-			case UserBlockKind::Paragraph:
-				if (line.empty())
-					mustEnd = true;
-				else if (line.startsWith("---"))
-					mustEnd = true;
-				else if (line.startsWith("```"))
-					mustEnd = true;
-				else if (line.startsWith(">"))
-					mustEnd = true;
-				else if (line.startsWith("|"))
-					mustEnd = true;
-				else if (line.startsWith("* "))
-					mustEnd = true;
-				else if (line.startsWith("# "))
-					mustEnd = true;
-				else if (line.startsWith("## "))
-					mustEnd = true;
-				else if (line.startsWith("### "))
-					mustEnd = true;
-				else
-					blk->lines.push_back(lines[start]);
-				break;
+            case UserBlockKind::Paragraph:
+                if (line.empty())
+                    mustEnd = true;
+                else if (line.startsWith("---"))
+                    mustEnd = true;
+                else if (line.startsWith("```"))
+                    mustEnd = true;
+                else if (line.startsWith(">"))
+                    mustEnd = true;
+                else if (line.startsWith("|"))
+                    mustEnd = true;
+                else if (line.startsWith("* "))
+                    mustEnd = true;
+                else if (line.startsWith("# "))
+                    mustEnd = true;
+                else if (line.startsWith("## "))
+                    mustEnd = true;
+                else if (line.startsWith("### "))
+                    mustEnd = true;
+                else
+                    blk->lines.push_back(lines[start]);
+                break;
 
-			case UserBlockKind::Table:
-				if (!line.startsWith("|"))
-					mustEnd = true;
-				else
-					blk->lines.push_back(lines[start]);
-				break;
+            case UserBlockKind::Table:
+                if (!line.startsWith("|"))
+                    mustEnd = true;
+                else
+                    blk->lines.push_back(lines[start]);
+                break;
 
-			case UserBlockKind::List:
-				if (!line.startsWith("* "))
-					mustEnd = true;
-				else
-				{
-					line.remove(0, 2); // *<blank>
-					line.trim();
-					blk->lines.push_back(line);
-				}
-				break;
+            case UserBlockKind::List:
+                if (!line.startsWith("* "))
+                    mustEnd = true;
+                else
+                {
+                    line.remove(0, 2); // *<blank>
+                    line.trim();
+                    blk->lines.push_back(line);
+                }
+                break;
 
-			case UserBlockKind::OrderedList:
-				if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
-					mustEnd = true;
-				else
-				{
-					line.remove(0, 2); // <digit><dot>
-					line.trim();
-					blk->lines.push_back(line);
-				}
-				break;
+            case UserBlockKind::OrderedList:
+                if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
+                    mustEnd = true;
+                else
+                {
+                    line.remove(0, 2); // <digit><dot>
+                    line.trim();
+                    blk->lines.push_back(line);
+                }
+                break;
 
-			case UserBlockKind::DescriptionList:
-				{
-					line.remove(0, 2); // +<blank>
-					line.trim();
-					auto title = line;
-					start++;
+            case UserBlockKind::DescriptionList:
+            {
+                line.remove(0, 2); // +<blank>
+                line.trim();
+                auto title = line;
+                start++;
 
-					for (; start < static_cast<int>(lines.size()); start++)
-					{
-						auto line1 = lines[start];
-						if (line1.startsWith("    "))
-						{
-							line1.remove(0, 4);
-							blk->lines.push_back(line1);
-							continue;
-						}
+                for (; start < static_cast<int>(lines.size()); start++)
+                {
+                    auto line1 = lines[start];
+                    if (line1.startsWith("    "))
+                    {
+                        line1.remove(0, 4);
+                        blk->lines.push_back(line1);
+                        continue;
+                    }
 
-						if (line1.startsWith("\t"))
-						{
-							line1.remove(0, 1);
-							blk->lines.push_back(line1);
-							continue;
-						}
+                    if (line1.startsWith("\t"))
+                    {
+                        line1.remove(0, 1);
+                        blk->lines.push_back(line1);
+                        continue;
+                    }
 
-						line1.trim();
-						if (line1.empty())
-						{
-							blk->lines.push_back(lines[start]);
-							continue;
-						}
+                    line1.trim();
+                    if (line1.empty())
+                    {
+                        blk->lines.push_back(lines[start]);
+                        continue;
+                    }
 
-						break;
-					}
+                    break;
+                }
 
-					computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
-					blk->lines.clear();
-					blk->lines.push_back(title);
-					mustEnd = true;
-				}
-				break;
+                computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                blk->lines.clear();
+                blk->lines.push_back(title);
+                mustEnd = true;
+            }
+            break;
 
-			case UserBlockKind::Blockquote:
-				if (line.startsWith(">"))
-				{
-					auto line1 = line;
-					line1.remove(0, 1);
-					blk->lines.push_back(line1);
-				}
+            case UserBlockKind::Blockquote:
+                if (line.startsWith(">"))
+                {
+                    auto line1 = line;
+                    line1.remove(0, 1);
+                    blk->lines.push_back(line1);
+                }
 
-				if (!line.startsWith(">") || lastLine)
-				{
-					if (!lastLine)
-						mustEnd = true;
-					computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
-					blk->lines.clear();
-				}
+                if (!line.startsWith(">") || lastLine)
+                {
+                    if (!lastLine)
+                        mustEnd = true;
+                    computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                    blk->lines.clear();
+                }
 
-				break;
+                break;
 
-			case UserBlockKind::BlockquoteNote:
-			case UserBlockKind::BlockquoteTip:
-			case UserBlockKind::BlockquoteWarning:
-			case UserBlockKind::BlockquoteAttention:
-			case UserBlockKind::BlockquoteExample:
-				if (line.startsWith(">"))
-				{
-					auto line1 = line;
-					line1.remove(0, 1);
-					blk->lines.push_back(line1);
-				}
+            case UserBlockKind::BlockquoteNote:
+            case UserBlockKind::BlockquoteTip:
+            case UserBlockKind::BlockquoteWarning:
+            case UserBlockKind::BlockquoteAttention:
+            case UserBlockKind::BlockquoteExample:
+                if (line.startsWith(">"))
+                {
+                    auto line1 = line;
+                    line1.remove(0, 1);
+                    blk->lines.push_back(line1);
+                }
 
-				if (!line.startsWith(">") || lastLine)
-				{
-					if (!lastLine)
-						mustEnd = true;
-					if (blk->kind == UserBlockKind::BlockquoteNote)
-						blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_NOTE)) - 1);
-					else if (blk->kind == UserBlockKind::BlockquoteTip)
-						blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_TIP)) - 1);
-					else if (blk->kind == UserBlockKind::BlockquoteWarning)
-						blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_WARNING)) - 1);
-					else if (blk->kind == UserBlockKind::BlockquoteAttention)
-						blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_ATTENTION)) - 1);
-					else if (blk->kind == UserBlockKind::BlockquoteExample)
-						blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_EXAMPLE)) - 1);
-					else
-						SWAG_ASSERT(false);
-					computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
-					blk->lines.clear();
-				}
+                if (!line.startsWith(">") || lastLine)
+                {
+                    if (!lastLine)
+                        mustEnd = true;
+                    if (blk->kind == UserBlockKind::BlockquoteNote)
+                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_NOTE)) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteTip)
+                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_TIP)) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteWarning)
+                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_WARNING)) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteAttention)
+                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_ATTENTION)) - 1);
+                    else if (blk->kind == UserBlockKind::BlockquoteExample)
+                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_EXAMPLE)) - 1);
+                    else
+                        SWAG_ASSERT(false);
+                    computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                    blk->lines.clear();
+                }
 
-				break;
+                break;
 
-			default:
-				SWAG_ASSERT(false);
-				break;
-			}
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
 
-			if (mustEnd)
-				break;
-		}
+            if (mustEnd)
+                break;
+        }
 
-		if (!blk->lines.empty() || !blk->subBlocks.empty())
-			blocks.push_back(blk);
-		else
-			delete blk;
-	}
+        if (!blk->lines.empty() || !blk->subBlocks.empty())
+            blocks.push_back(blk);
+        else
+            delete blk;
+    }
 }
 
 void GenDoc::computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc)
 {
-	if (txt.empty())
-		return;
+    if (txt.empty())
+        return;
 
-	Vector<Utf8> lines;
-	Utf8::tokenize(txt, '\n', lines);
-	computeUserComments(result, lines, shortDesc);
+    Vector<Utf8> lines;
+    Utf8::tokenize(txt, '\n', lines);
+    computeUserComments(result, lines, shortDesc);
 }
 
 void GenDoc::computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc)
 {
-	computeUserBlocks(result.blocks, lines, shortDesc);
+    computeUserBlocks(result.blocks, lines, shortDesc);
 
-	// First block is the "short description"
-	if (shortDesc && !result.blocks.empty() && result.blocks[0]->kind == UserBlockKind::Paragraph)
-	{
-		result.shortDesc = std::move(*result.blocks[0]);
-		result.blocks.erase(result.blocks.begin());
-		result.shortDesc.lines[0].trim();
-		if (result.shortDesc.lines.back().back() != '.')
-			result.shortDesc.lines.back() += '.';
-	}
+    // First block is the "short description"
+    if (shortDesc && !result.blocks.empty() && result.blocks[0]->kind == UserBlockKind::Paragraph)
+    {
+        result.shortDesc = std::move(*result.blocks[0]);
+        result.blocks.erase(result.blocks.begin());
+        result.shortDesc.lines[0].trim();
+        if (result.shortDesc.lines.back().back() != '.')
+            result.shortDesc.lines.back() += '.';
+    }
 }
 
 Utf8 GenDoc::getFormattedText(const Utf8& user)
 {
-	if (user.empty())
-		return "";
+    if (user.empty())
+        return "";
 
-	int  inCodeMode       = 0;
-	bool inBoldMode       = false;
-	bool inItalicMode     = false;
-	bool inBoldItalicMode = false;
-	bool inStrikeMode     = false;
+    int  inCodeMode       = 0;
+    bool inBoldMode       = false;
+    bool inItalicMode     = false;
+    bool inBoldItalicMode = false;
+    bool inStrikeMode     = false;
 
-	Utf8 result;
+    Utf8 result;
 
-	auto pz = user.c_str();
-	while (*pz)
-	{
-		char prevC = pz == user.c_str() ? 0 : pz[-1];
+    auto pz = user.c_str();
+    while (*pz)
+    {
+        char prevC = pz == user.c_str() ? 0 : pz[-1];
 
-		// Escape char
-		if (*pz == '\\')
-		{
-			if (pz[1] == 0)
-			{
-				result += "<br/>";
-				pz++;
-			}
-			else
-			{
-				pz++;
-				result += *pz++;
-			}
+        // Escape char
+        if (*pz == '\\')
+        {
+            if (pz[1] == 0)
+            {
+                result += "<br/>";
+                pz++;
+            }
+            else
+            {
+                pz++;
+                result += *pz++;
+            }
 
-			continue;
-		}
+            continue;
+        }
 
-		// Replace some characters for HTML
-		if (*pz == '<')
-		{
-			result += "&lt;";
-			pz++;
-			continue;
-		}
+        // Replace some characters for HTML
+        if (*pz == '<')
+        {
+            result += "&lt;";
+            pz++;
+            continue;
+        }
 
-		if (*pz == '>')
-		{
-			result += "&gt;";
-			pz++;
-			continue;
-		}
+        if (*pz == '>')
+        {
+            result += "&gt;";
+            pz++;
+            continue;
+        }
 
-		// image ![](link)
-		if (*pz == '!' && pz[1] == '[' && !inCodeMode)
-		{
-			Utf8 name;
-			Utf8 link;
-			auto ppz = tokenizeReference(pz + 1, name, link);
-			if (ppz && !link.empty())
-			{
-				result += FMT("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
-				pz = ppz;
-				continue;
-			}
+        // image ![](link)
+        if (*pz == '!' && pz[1] == '[' && !inCodeMode)
+        {
+            Utf8 name;
+            Utf8 link;
+            auto ppz = tokenizeReference(pz + 1, name, link);
+            if (ppz && !link.empty())
+            {
+                result += FMT("<img src=\"%s\" alt=\"%s\">", link.c_str(), name.c_str());
+                pz = ppz;
+                continue;
+            }
 
-			result += *pz++;
-			continue;
-		}
+            result += *pz++;
+            continue;
+        }
 
-		// [[reference]] to create an html link to the current document
-		if (*pz == '[' && pz[1] == '[' && !inCodeMode)
-		{
-			Utf8 name, link;
-			auto ppz = tokenizeReference(pz + 1, name, link, false);
-			if (ppz && ppz[0] == ']')
-			{
-				auto ref = findReference(name);
-				if (!ref.empty())
-				{
-					result += ref;
-					pz = ppz + 1;
-					continue;
-				}
-			}
+        // [[reference]] to create an html link to the current document
+        if (*pz == '[' && pz[1] == '[' && !inCodeMode)
+        {
+            Utf8 name, link;
+            auto ppz = tokenizeReference(pz + 1, name, link, false);
+            if (ppz && ppz[0] == ']')
+            {
+                auto ref = findReference(name);
+                if (!ref.empty())
+                {
+                    result += ref;
+                    pz = ppz + 1;
+                    continue;
+                }
+            }
 
-			result += *pz++;
-			result += *pz++;
-			continue;
-		}
+            result += *pz++;
+            result += *pz++;
+            continue;
+        }
 
-		// [reference] to create an html link to the current document
-		if (*pz == '[' && pz[1] != '[' && !inCodeMode)
-		{
-			Utf8 name, link;
-			auto ppz = tokenizeReference(pz, name, link);
-			if (ppz && !link.empty())
-			{
-				result += FMT("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
-				pz = ppz;
-				continue;
-			}
+        // [reference] to create an html link to the current document
+        if (*pz == '[' && pz[1] != '[' && !inCodeMode)
+        {
+            Utf8 name, link;
+            auto ppz = tokenizeReference(pz, name, link);
+            if (ppz && !link.empty())
+            {
+                result += FMT("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
+                pz = ppz;
+                continue;
+            }
 
-			result += *pz++;
-			continue;
-		}
+            result += *pz++;
+            continue;
+        }
 
-		// Italic
-		if (prevC != '*' && pz[0] == '*' && pz[1] != '*' && !inCodeMode)
-		{
-			if ((!inItalicMode && !SWAG_IS_BLANK(pz[1])) || inItalicMode)
-			{
-				inItalicMode = !inItalicMode;
-				if (inItalicMode)
-					result += "<i>";
-				else
-					result += "</i>";
-				pz += 1;
-				continue;
-			}
-		}
+        // Italic
+        if (prevC != '*' && pz[0] == '*' && pz[1] != '*' && !inCodeMode)
+        {
+            if ((!inItalicMode && !SWAG_IS_BLANK(pz[1])) || inItalicMode)
+            {
+                inItalicMode = !inItalicMode;
+                if (inItalicMode)
+                    result += "<i>";
+                else
+                    result += "</i>";
+                pz += 1;
+                continue;
+            }
+        }
 
-		// Bold
-		if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] != '*' && !inCodeMode)
-		{
-			if ((!inBoldMode && !SWAG_IS_BLANK(pz[2])) || inBoldMode)
-			{
-				inBoldMode = !inBoldMode;
-				if (inBoldMode)
-					result += "<b>";
-				else
-					result += "</b>";
-				pz += 2;
-				continue;
-			}
-		}
+        // Bold
+        if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] != '*' && !inCodeMode)
+        {
+            if ((!inBoldMode && !SWAG_IS_BLANK(pz[2])) || inBoldMode)
+            {
+                inBoldMode = !inBoldMode;
+                if (inBoldMode)
+                    result += "<b>";
+                else
+                    result += "</b>";
+                pz += 2;
+                continue;
+            }
+        }
 
-		// Bold+Italic
-		if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] == '*' && pz[3] != '*' && !inCodeMode)
-		{
-			if ((!inBoldItalicMode && !SWAG_IS_BLANK(pz[3])) || inBoldItalicMode)
-			{
-				inBoldItalicMode = !inBoldItalicMode;
-				if (inBoldItalicMode)
-					result += "<b><i>";
-				else
-					result += "</i></b>";
-				pz += 3;
-				continue;
-			}
-		}
+        // Bold+Italic
+        if (prevC != '*' && pz[0] == '*' && pz[1] == '*' && pz[2] == '*' && pz[3] != '*' && !inCodeMode)
+        {
+            if ((!inBoldItalicMode && !SWAG_IS_BLANK(pz[3])) || inBoldItalicMode)
+            {
+                inBoldItalicMode = !inBoldItalicMode;
+                if (inBoldItalicMode)
+                    result += "<b><i>";
+                else
+                    result += "</i></b>";
+                pz += 3;
+                continue;
+            }
+        }
 
-		// Strike through
-		if (prevC != '~' && pz[0] == '~' && pz[1] == '~' && pz[2] != '~' && !inCodeMode)
-		{
-			if ((!inStrikeMode && !SWAG_IS_BLANK(pz[2])) || inStrikeMode)
-			{
-				inStrikeMode = !inStrikeMode;
-				if (inStrikeMode)
-					result += "<span class=\"strikethrough-text\">";
-				else
-					result += "</span>";
-				pz += 2;
-				continue;
-			}
-		}
+        // Strike through
+        if (prevC != '~' && pz[0] == '~' && pz[1] == '~' && pz[2] != '~' && !inCodeMode)
+        {
+            if ((!inStrikeMode && !SWAG_IS_BLANK(pz[2])) || inStrikeMode)
+            {
+                inStrikeMode = !inStrikeMode;
+                if (inStrikeMode)
+                    result += "<span class=\"strikethrough-text\">";
+                else
+                    result += "</span>";
+                pz += 2;
+                continue;
+            }
+        }
 
-		// 'word'
-		if (*pz == '\'' && inCodeMode != 2)
-		{
-			if (inCodeMode)
-			{
-				inCodeMode = 0;
-				result += "</span>";
-				pz++;
-				continue;
-			}
+        // 'word'
+        if (*pz == '\'' && inCodeMode != 2)
+        {
+            if (inCodeMode)
+            {
+                inCodeMode = 0;
+                result += "</span>";
+                pz++;
+                continue;
+            }
 
-			auto pz1 = pz + 1;
-			while (*pz1 && !SWAG_IS_BLANK(*pz1) && *pz1 != '\'')
-				pz1++;
-			if (*pz1 == '\'')
-			{
-				inCodeMode = 1;
-				result += "<span class=\"code-inline\">";
-				pz++;
-				continue;
-			}
+            auto pz1 = pz + 1;
+            while (*pz1 && !SWAG_IS_BLANK(*pz1) && *pz1 != '\'')
+                pz1++;
+            if (*pz1 == '\'')
+            {
+                inCodeMode = 1;
+                result += "<span class=\"code-inline\">";
+                pz++;
+                continue;
+            }
 
-			result += *pz++;
-			continue;
-		}
+            result += *pz++;
+            continue;
+        }
 
-		// embedded code line
-		if (*pz == '`' && inCodeMode != 1)
-		{
-			if (inCodeMode)
-				inCodeMode = 0;
-			else
-				inCodeMode = 2;
-			if (inCodeMode)
-				result += "<span class=\"code-inline\">";
-			else
-				result += "</span>";
-			pz++;
-			continue;
-		}
+        // embedded code line
+        if (*pz == '`' && inCodeMode != 1)
+        {
+            if (inCodeMode)
+                inCodeMode = 0;
+            else
+                inCodeMode = 2;
+            if (inCodeMode)
+                result += "<span class=\"code-inline\">";
+            else
+                result += "</span>";
+            pz++;
+            continue;
+        }
 
-		result += *pz++;
-	}
+        result += *pz++;
+    }
 
-	// Be sure it's closed
-	if (inBoldMode)
-		result += "</b>";
-	if (inItalicMode)
-		result += "</i>";
-	if (inStrikeMode)
-		result += "</span>";
-	if (inBoldItalicMode)
-		result += "</i></b>";
-	if (inCodeMode)
-		result += "</code>";
+    // Be sure it's closed
+    if (inBoldMode)
+        result += "</b>";
+    if (inItalicMode)
+        result += "</i>";
+    if (inStrikeMode)
+        result += "</span>";
+    if (inBoldItalicMode)
+        result += "</i></b>";
+    if (inCodeMode)
+        result += "</code>";
 
-	return result;
+    return result;
 }
 
 void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDescTd)
 {
-	if (user.lines.empty() && user.subBlocks.empty())
-		return;
+    if (user.lines.empty() && user.subBlocks.empty())
+        return;
 
-	int               startLine     = 0;
-	int               tableColCount = 0;
-	VectorNative<int> tableAlignCols;
+    int               startLine     = 0;
+    int               tableColCount = 0;
+    VectorNative<int> tableAlignCols;
 
-	switch (user.kind)
-	{
-	case UserBlockKind::CodeSwag:
-	case UserBlockKind::CodeRaw:
-	case UserBlockKind::CodeAuto:
-		{
-			Utf8 block;
-			for (auto& l : user.lines)
-			{
-				block += l;
-				block += "\n";
-			}
+    switch (user.kind)
+    {
+    case UserBlockKind::CodeSwag:
+    case UserBlockKind::CodeRaw:
+    case UserBlockKind::CodeAuto:
+    {
+        Utf8 block;
+        for (auto& l : user.lines)
+        {
+            block += l;
+            block += "\n";
+        }
 
-			uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
-			if (user.kind != UserBlockKind::CodeSwag)
-				flags &= ~GENDOC_CODE_SYNTAX_COL;
+        uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
+        if (user.kind != UserBlockKind::CodeSwag)
+            flags &= ~GENDOC_CODE_SYNTAX_COL;
 
-			outputCode(block, flags);
-			return;
-		}
+        outputCode(block, flags);
+        return;
+    }
 
-	case UserBlockKind::ParagraphRaw:
-		helpContent += "<p style=\"white-space: break-spaces\">";
-		break;
+    case UserBlockKind::ParagraphRaw:
+        helpContent += "<p style=\"white-space: break-spaces\">";
+        break;
 
-	case UserBlockKind::Blockquote:
-		helpContent += "<div class=\"blockquote blockquote-default\">\n";
-		for (auto sub : user.subBlocks)
-			outputUserBlock(*sub, titleLevel, false);
-		break;
+    case UserBlockKind::Blockquote:
+        helpContent += "<div class=\"blockquote blockquote-default\">\n";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+        break;
 
-	case UserBlockKind::BlockquoteNote:
-		{
-			helpContent += "<div class=\"blockquote blockquote-note\">\n";
-			helpContent += "<div class=\"blockquote-title-block\">";
-			Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
-			helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
-			Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleNote};
-			helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
-			helpContent += "</div>";
-			for (auto sub : user.subBlocks)
-				outputUserBlock(*sub, titleLevel, false);
-		}
-		break;
-	case UserBlockKind::BlockquoteTip:
-		{
-			helpContent += "<div class=\"blockquote blockquote-tip\">\n";
-			helpContent += "<div class=\"blockquote-title-block\">";
-			Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
-			helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
-			Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleTip};
-			helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
-			helpContent += "</div>";
-			for (auto sub : user.subBlocks)
-				outputUserBlock(*sub, titleLevel, false);
-		}
-		break;
-	case UserBlockKind::BlockquoteWarning:
-		{
-			helpContent += "<div class=\"blockquote blockquote-warning\">\n";
-			helpContent += "<div class=\"blockquote-title-block\">";
-			Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
-			helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
-			Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleWarning};
-			helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
-			helpContent += "</div>";
-			for (auto sub : user.subBlocks)
-				outputUserBlock(*sub, titleLevel, false);
-		}
-		break;
-	case UserBlockKind::BlockquoteAttention:
-		{
-			helpContent += "<div class=\"blockquote blockquote-attention\">\n";
-			helpContent += "<div class=\"blockquote-title-block\">";
-			Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
-			helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
-			Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
-			helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
-			helpContent += "</div>";
-			for (auto sub : user.subBlocks)
-				outputUserBlock(*sub, titleLevel, false);
-		}
-		break;
-	case UserBlockKind::BlockquoteExample:
-		{
-			helpContent += "<div class=\"blockquote blockquote-example\">\n";
-			helpContent += "<div class=\"blockquote-title-block\">";
-			Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconExample};
-			helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
-			Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleExample};
-			helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
-			helpContent += "</div>";
-			for (auto sub : user.subBlocks)
-				outputUserBlock(*sub, titleLevel, false);
-		}
-		break;
+    case UserBlockKind::BlockquoteNote:
+    {
+        helpContent += "<div class=\"blockquote blockquote-note\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
+        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleNote};
+        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
+        helpContent += "</div>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+    }
+    break;
+    case UserBlockKind::BlockquoteTip:
+    {
+        helpContent += "<div class=\"blockquote blockquote-tip\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
+        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleTip};
+        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
+        helpContent += "</div>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+    }
+    break;
+    case UserBlockKind::BlockquoteWarning:
+    {
+        helpContent += "<div class=\"blockquote blockquote-warning\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
+        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleWarning};
+        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
+        helpContent += "</div>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+    }
+    break;
+    case UserBlockKind::BlockquoteAttention:
+    {
+        helpContent += "<div class=\"blockquote blockquote-attention\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
+        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
+        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
+        helpContent += "</div>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+    }
+    break;
+    case UserBlockKind::BlockquoteExample:
+    {
+        helpContent += "<div class=\"blockquote blockquote-example\">\n";
+        helpContent += "<div class=\"blockquote-title-block\">";
+        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconExample};
+        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
+        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleExample};
+        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
+        helpContent += "</div>";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+    }
+    break;
 
-	case UserBlockKind::Paragraph:
-		if (!shortDescTd)
-			helpContent += "<p>";
-		break;
+    case UserBlockKind::Paragraph:
+        if (!shortDescTd)
+            helpContent += "<p>";
+        break;
 
-	case UserBlockKind::List:
-		helpContent += "<ul>\n";
-		break;
-	case UserBlockKind::OrderedList:
-		helpContent += "<ol>\n";
-		break;
+    case UserBlockKind::List:
+        helpContent += "<ul>\n";
+        break;
+    case UserBlockKind::OrderedList:
+        helpContent += "<ol>\n";
+        break;
 
-	case UserBlockKind::DescriptionList:
-		helpContent += "<div class=\"description-list-title\"><p>";
-		helpContent += getFormattedText(user.lines[0]);
-		helpContent += "</p></div>\n";
-		helpContent += "<div class=\"description-list-block\">\n";
-		for (auto sub : user.subBlocks)
-			outputUserBlock(*sub, titleLevel, false);
-		helpContent += "</div>\n";
-		startLine = 1;
-		break;
+    case UserBlockKind::DescriptionList:
+        helpContent += "<div class=\"description-list-title\"><p>";
+        helpContent += getFormattedText(user.lines[0]);
+        helpContent += "</p></div>\n";
+        helpContent += "<div class=\"description-list-block\">\n";
+        for (auto sub : user.subBlocks)
+            outputUserBlock(*sub, titleLevel, false);
+        helpContent += "</div>\n";
+        startLine = 1;
+        break;
 
-	case UserBlockKind::Table:
-		{
-			helpContent += "<table class=\"table-markdown\">\n";
+    case UserBlockKind::Table:
+    {
+        helpContent += "<table class=\"table-markdown\">\n";
 
-			Vector<Utf8> tkn0;
-			Utf8::tokenize(user.lines[0], '|', tkn0, true, true);
-			tkn0.erase(tkn0.begin());
-			if (tkn0.back().empty())
-				tkn0.erase(tkn0.end());
-			tableColCount = static_cast<uint32_t>(tkn0.size());
+        Vector<Utf8> tkn0;
+        Utf8::tokenize(user.lines[0], '|', tkn0, true, true);
+        tkn0.erase(tkn0.begin());
+        if (tkn0.back().empty())
+            tkn0.erase(tkn0.end());
+        tableColCount = static_cast<uint32_t>(tkn0.size());
 
-			// Header ?
-			if (user.lines.size() > 2)
-			{
-				Vector<Utf8> tkn1;
-				Utf8::tokenize(user.lines[1], '|', tkn1, true, true);
-				tkn1.erase(tkn1.begin());
-				if (tkn1.back().empty())
-					tkn1.erase(tkn1.end());
+        // Header ?
+        if (user.lines.size() > 2)
+        {
+            Vector<Utf8> tkn1;
+            Utf8::tokenize(user.lines[1], '|', tkn1, true, true);
+            tkn1.erase(tkn1.begin());
+            if (tkn1.back().empty())
+                tkn1.erase(tkn1.end());
 
-				bool hasHeader = true;
-				for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
-				{
-					if (it >= static_cast<int>(tkn1.size()))
-					{
-						hasHeader = false;
-						break;
-					}
+            bool hasHeader = true;
+            for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
+            {
+                if (it >= static_cast<int>(tkn1.size()))
+                {
+                    hasHeader = false;
+                    break;
+                }
 
-					auto alignStr = tkn1[it];
-					if (alignStr.length() < 3)
-					{
-						hasHeader = false;
-						break;
-					}
+                auto alignStr = tkn1[it];
+                if (alignStr.length() < 3)
+                {
+                    hasHeader = false;
+                    break;
+                }
 
-					int alignCol = -1;
-					if (alignStr[0] == ':' && alignStr.back() == '-')
-						alignCol = 0;
-					else if (alignStr[0] == '-' && alignStr.back() == '-')
-						alignCol = 0;
-					else if (alignStr[0] == ':' && alignStr.back() == ':')
-						alignCol = 1;
-					else if (alignStr[0] == '-' && alignStr.back() == ':')
-						alignCol = 2;
-					if (alignCol == -1)
-					{
-						hasHeader = false;
-						break;
-					}
+                int alignCol = -1;
+                if (alignStr[0] == ':' && alignStr.back() == '-')
+                    alignCol = 0;
+                else if (alignStr[0] == '-' && alignStr.back() == '-')
+                    alignCol = 0;
+                else if (alignStr[0] == ':' && alignStr.back() == ':')
+                    alignCol = 1;
+                else if (alignStr[0] == '-' && alignStr.back() == ':')
+                    alignCol = 2;
+                if (alignCol == -1)
+                {
+                    hasHeader = false;
+                    break;
+                }
 
-					while (alignStr.length() && (alignStr[0] == '-' || alignStr[0] == ':'))
-						alignStr.remove(0, 1);
-					if (alignStr.length())
-					{
-						hasHeader = false;
-						break;
-					}
+                while (alignStr.length() && (alignStr[0] == '-' || alignStr[0] == ':'))
+                    alignStr.remove(0, 1);
+                if (alignStr.length())
+                {
+                    hasHeader = false;
+                    break;
+                }
 
-					tableAlignCols.push_back(alignCol);
-				}
+                tableAlignCols.push_back(alignCol);
+            }
 
-				if (!hasHeader)
-					tableAlignCols.clear();
-				else
-				{
-					helpContent += "<tr>";
-					for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
-					{
-						switch (tableAlignCols[it])
-						{
-						case 0:
-							helpContent += FMT("<th style=\"text-align: left;\">");
-							break;
-						case 1:
-							helpContent += FMT("<th style=\"text-align: center;\">");
-							break;
-						case 2:
-							helpContent += FMT("<th style=\"text-align: right;\">");
-							break;
-						default:
-							break;
-						}
+            if (!hasHeader)
+                tableAlignCols.clear();
+            else
+            {
+                helpContent += "<tr>";
+                for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
+                {
+                    switch (tableAlignCols[it])
+                    {
+                    case 0:
+                        helpContent += FMT("<th style=\"text-align: left;\">");
+                        break;
+                    case 1:
+                        helpContent += FMT("<th style=\"text-align: center;\">");
+                        break;
+                    case 2:
+                        helpContent += FMT("<th style=\"text-align: right;\">");
+                        break;
+                    default:
+                        break;
+                    }
 
-						helpContent += getFormattedText(tkn0[it]);
-						helpContent += "</th>";
-					}
+                    helpContent += getFormattedText(tkn0[it]);
+                    helpContent += "</th>";
+                }
 
-					helpContent += "</tr>";
-					startLine = 2;
-				}
-			}
-		}
-		break;
+                helpContent += "</tr>";
+                startLine = 2;
+            }
+        }
+    }
+    break;
 
-	case UserBlockKind::Title1:
-	case UserBlockKind::Title2:
-	case UserBlockKind::Title3:
-	case UserBlockKind::Title4:
-	case UserBlockKind::Title5:
-	case UserBlockKind::Title6:
-		{
-			// Update toc
-			if (docKind == BuildCfgDocKind::Examples)
-			{
-				int myTitleLevel = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
-				addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
-			}
+    case UserBlockKind::Title1:
+    case UserBlockKind::Title2:
+    case UserBlockKind::Title3:
+    case UserBlockKind::Title4:
+    case UserBlockKind::Title5:
+    case UserBlockKind::Title6:
+    {
+        // Update toc
+        if (docKind == BuildCfgDocKind::Examples)
+        {
+            int myTitleLevel = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
+            addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
+        }
 
-			int  level = (static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1));
-			auto ref   = getTocTitleRef();
-			helpContent += FMT("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
-			break;
-		}
-	}
+        int  level = (static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1));
+        auto ref   = getTocTitleRef();
+        helpContent += FMT("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
+        break;
+    }
+    }
 
-	for (int i = startLine; i < static_cast<int>(user.lines.size()); i++)
-	{
-		auto line = user.lines[i];
-		line.trim();
+    for (int i = startLine; i < static_cast<int>(user.lines.size()); i++)
+    {
+        auto line = user.lines[i];
+        line.trim();
 
-		if (user.kind == UserBlockKind::Table)
-		{
-			Vector<Utf8> tkn;
-			Utf8::tokenize(line, '|', tkn);
+        if (user.kind == UserBlockKind::Table)
+        {
+            Vector<Utf8> tkn;
+            Utf8::tokenize(line, '|', tkn);
 
-			if (tkn.back().empty())
-				tkn.pop_back();
-			while (static_cast<int>(tkn.size()) < tableColCount)
-				tkn.push_back("");
-			while (static_cast<int>(tkn.size()) > tableColCount)
-				tkn.pop_back();
+            if (tkn.back().empty())
+                tkn.pop_back();
+            while (static_cast<int>(tkn.size()) < tableColCount)
+                tkn.push_back("");
+            while (static_cast<int>(tkn.size()) > tableColCount)
+                tkn.pop_back();
 
-			helpContent += "<tr>";
-			for (int it = 0; it < static_cast<int>(tkn.size()); it++)
-			{
-				auto& t = tkn[it];
+            helpContent += "<tr>";
+            for (int it = 0; it < static_cast<int>(tkn.size()); it++)
+            {
+                auto& t = tkn[it];
 
-				if (it < static_cast<int>(tableAlignCols.size()))
-				{
-					switch (tableAlignCols[it])
-					{
-					case 0:
-						helpContent += FMT("<td style=\"text-align: left;\">");
-						break;
-					case 1:
-						helpContent += FMT("<td style=\"text-align: center;\">");
-						break;
-					case 2:
-						helpContent += FMT("<td style=\"text-align: right;\">");
-						break;
-					default:
-						break;
-					}
-				}
-				else
-				{
-					helpContent += "<td>";
-				}
+                if (it < static_cast<int>(tableAlignCols.size()))
+                {
+                    switch (tableAlignCols[it])
+                    {
+                    case 0:
+                        helpContent += FMT("<td style=\"text-align: left;\">");
+                        break;
+                    case 1:
+                        helpContent += FMT("<td style=\"text-align: center;\">");
+                        break;
+                    case 2:
+                        helpContent += FMT("<td style=\"text-align: right;\">");
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                else
+                {
+                    helpContent += "<td>";
+                }
 
-				helpContent += getFormattedText(t);
-				helpContent += "</td>";
-			}
-			helpContent += "</tr>\n";
-		}
-		else if (user.kind == UserBlockKind::List || user.kind == UserBlockKind::OrderedList)
-		{
-			helpContent += "<li>";
-			helpContent += getFormattedText(line);
-			helpContent += "</li>\n";
-		}
-		else if (user.kind == UserBlockKind::ParagraphRaw)
-		{
-			helpContent += user.lines[i];
+                helpContent += getFormattedText(t);
+                helpContent += "</td>";
+            }
+            helpContent += "</tr>\n";
+        }
+        else if (user.kind == UserBlockKind::List || user.kind == UserBlockKind::OrderedList)
+        {
+            helpContent += "<li>";
+            helpContent += getFormattedText(line);
+            helpContent += "</li>\n";
+        }
+        else if (user.kind == UserBlockKind::ParagraphRaw)
+        {
+            helpContent += user.lines[i];
 
-			// Add one line break after each line, except the last line from a raw block, because we do
-			// not want one useless empty line
-			if (i != static_cast<int>(user.lines.size()) - 1)
-				helpContent += "\n";
-		}
-		else if (user.kind == UserBlockKind::Paragraph)
-		{
-			if (line.empty())
-				helpContent += "</p><p>";
-			else
-			{
-				helpContent += getFormattedText(user.lines[i]);
-				helpContent += " ";
-			}
-		}
-		else if (user.kind == UserBlockKind::Title1 ||
-			user.kind == UserBlockKind::Title2 ||
-			user.kind == UserBlockKind::Title3 ||
-			user.kind == UserBlockKind::Title4 ||
-			user.kind == UserBlockKind::Title5 ||
-			user.kind == UserBlockKind::Title6)
-		{
-			helpContent += getFormattedText(user.lines[i]);
-			helpContent += " ";
-		}
-		else
-		{
-			helpContent += getFormattedText(user.lines[i]);
-			helpContent += " ";
-		}
-	}
+            // Add one line break after each line, except the last line from a raw block, because we do
+            // not want one useless empty line
+            if (i != static_cast<int>(user.lines.size()) - 1)
+                helpContent += "\n";
+        }
+        else if (user.kind == UserBlockKind::Paragraph)
+        {
+            if (line.empty())
+                helpContent += "</p><p>";
+            else
+            {
+                helpContent += getFormattedText(user.lines[i]);
+                helpContent += " ";
+            }
+        }
+        else if (user.kind == UserBlockKind::Title1 ||
+                 user.kind == UserBlockKind::Title2 ||
+                 user.kind == UserBlockKind::Title3 ||
+                 user.kind == UserBlockKind::Title4 ||
+                 user.kind == UserBlockKind::Title5 ||
+                 user.kind == UserBlockKind::Title6)
+        {
+            helpContent += getFormattedText(user.lines[i]);
+            helpContent += " ";
+        }
+        else
+        {
+            helpContent += getFormattedText(user.lines[i]);
+            helpContent += " ";
+        }
+    }
 
-	switch (user.kind)
-	{
-	case UserBlockKind::ParagraphRaw:
-		helpContent += "</p>\n";
-		break;
-	case UserBlockKind::Paragraph:
-		if (!shortDescTd)
-			helpContent += "</p>\n";
-		break;
-	case UserBlockKind::Blockquote:
-	case UserBlockKind::BlockquoteNote:
-	case UserBlockKind::BlockquoteTip:
-	case UserBlockKind::BlockquoteWarning:
-	case UserBlockKind::BlockquoteAttention:
-	case UserBlockKind::BlockquoteExample:
-		helpContent += "</div>\n";
-		break;
-	case UserBlockKind::List:
-		helpContent += "</ul>\n";
-		break;
-	case UserBlockKind::OrderedList:
-		helpContent += "</ol>\n";
-		break;
-	case UserBlockKind::Table:
-		helpContent += "</table>\n";
-		break;
-	case UserBlockKind::Title1:
-	case UserBlockKind::Title2:
-	case UserBlockKind::Title3:
-	case UserBlockKind::Title4:
-	case UserBlockKind::Title5:
-	case UserBlockKind::Title6:
-		{
-			int level = (static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1));
-			helpContent += FMT("</h%d>\n", titleLevel + level + 1);
-			break;
-		}
-	default:
-		break;
-	}
+    switch (user.kind)
+    {
+    case UserBlockKind::ParagraphRaw:
+        helpContent += "</p>\n";
+        break;
+    case UserBlockKind::Paragraph:
+        if (!shortDescTd)
+            helpContent += "</p>\n";
+        break;
+    case UserBlockKind::Blockquote:
+    case UserBlockKind::BlockquoteNote:
+    case UserBlockKind::BlockquoteTip:
+    case UserBlockKind::BlockquoteWarning:
+    case UserBlockKind::BlockquoteAttention:
+    case UserBlockKind::BlockquoteExample:
+        helpContent += "</div>\n";
+        break;
+    case UserBlockKind::List:
+        helpContent += "</ul>\n";
+        break;
+    case UserBlockKind::OrderedList:
+        helpContent += "</ol>\n";
+        break;
+    case UserBlockKind::Table:
+        helpContent += "</table>\n";
+        break;
+    case UserBlockKind::Title1:
+    case UserBlockKind::Title2:
+    case UserBlockKind::Title3:
+    case UserBlockKind::Title4:
+    case UserBlockKind::Title5:
+    case UserBlockKind::Title6:
+    {
+        int level = (static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1));
+        helpContent += FMT("</h%d>\n", titleLevel + level + 1);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void GenDoc::outputUserComment(const UserComment& user, int titleLevel)
 {
-	for (auto& b : user.blocks)
-		outputUserBlock(*b, titleLevel);
+    for (auto& b : user.blocks)
+        outputUserBlock(*b, titleLevel);
 }
 
 void GenDoc::constructPage()
 {
-	helpOutput.clear();
-	helpOutput += "<!DOCTYPE html>\n";
-	helpOutput += "<html>\n";
+    helpOutput.clear();
+    helpOutput += "<!DOCTYPE html>\n";
+    helpOutput += "<html>\n";
 
-	// Head
-	/////////////////////////////////////
-	helpOutput += "<head>\n";
-	helpOutput += "<meta charset=\"UTF-8\">\n";
-	helpOutput += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
-	helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
+    // Head
+    /////////////////////////////////////
+    helpOutput += "<head>\n";
+    helpOutput += "<meta charset=\"UTF-8\">\n";
+    helpOutput += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
+    helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
-	// User start of the <head> section
-	const auto startHead = Utf8{module->buildCfg.genDoc.startHead};
-	helpOutput += startHead;
+    // User start of the <head> section
+    const auto startHead = Utf8{module->buildCfg.genDoc.startHead};
+    helpOutput += startHead;
 
-	// Page title
-	if (!titleContent.empty())
-		helpOutput += FMT("<title>%s</title>\n", titleContent.c_str());
+    // Page title
+    if (!titleContent.empty())
+        helpOutput += FMT("<title>%s</title>\n", titleContent.c_str());
 
-	// User icon
-	const auto icon = Utf8{module->buildCfg.genDoc.icon};
-	if (!icon.empty())
-		helpOutput += FMT("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
+    // User icon
+    const auto icon = Utf8{module->buildCfg.genDoc.icon};
+    if (!icon.empty())
+        helpOutput += FMT("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
 
-	// User css ref
-	const Utf8 css{module->buildCfg.genDoc.css};
-	if (!css.empty())
-		helpOutput += FMT("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
+    // User css ref
+    const Utf8 css{module->buildCfg.genDoc.css};
+    if (!css.empty())
+        helpOutput += FMT("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
 
-	// Font awesome reference
-	if (module->buildCfg.genDoc.hasFontAwesome)
-		helpOutput += "<script src=\"https://kit.fontawesome.com/f76be2b3ee.js\" crossorigin=\"anonymous\"></script>\n";
+    // Font awesome reference
+    if (module->buildCfg.genDoc.hasFontAwesome)
+        helpOutput += "<script src=\"https://kit.fontawesome.com/f76be2b3ee.js\" crossorigin=\"anonymous\"></script>\n";
 
-	// Predefined <style> section
-	if (module->buildCfg.genDoc.hasStyleSection)
-		outputStyles();
+    // Predefined <style> section
+    if (module->buildCfg.genDoc.hasStyleSection)
+        outputStyles();
 
-	// User end of the <head> section
-	const auto endHead = Utf8{module->buildCfg.genDoc.endHead};
-	helpOutput += endHead;
+    // User end of the <head> section
+    const auto endHead = Utf8{module->buildCfg.genDoc.endHead};
+    helpOutput += endHead;
 
-	helpOutput += "\n</head>\n";
+    helpOutput += "\n</head>\n";
 
-	// Body
-	/////////////////////////////////////
+    // Body
+    /////////////////////////////////////
 
-	helpOutput += "<body>\n";
+    helpOutput += "<body>\n";
 
-	// User start of the <body> section
-	const auto startBody = Utf8{module->buildCfg.genDoc.startBody};
-	helpOutput += startBody;
+    // User start of the <body> section
+    const auto startBody = Utf8{module->buildCfg.genDoc.startBody};
+    helpOutput += startBody;
 
-	helpOutput += "\n<div class=\"container\">\n";
+    helpOutput += "\n<div class=\"container\">\n";
 
-	if (docKind != BuildCfgDocKind::Pages)
-	{
-		helpOutput += "<div class=\"left\">\n";
-		helpOutput += "<div class=\"left-page\">\n";
-		helpOutput += helpToc;
-		helpOutput += "</div>\n";
-		helpOutput += "</div>\n";
-	}
+    if (docKind != BuildCfgDocKind::Pages)
+    {
+        helpOutput += "<div class=\"left\">\n";
+        helpOutput += "<div class=\"left-page\">\n";
+        helpOutput += helpToc;
+        helpOutput += "</div>\n";
+        helpOutput += "</div>\n";
+    }
 
-	helpOutput += "<div class=\"right\">\n";
-	helpOutput += "<div class=\"right-page\">\n";
-	helpOutput += helpContent;
+    helpOutput += "<div class=\"right\">\n";
+    helpOutput += "<div class=\"right-page\">\n";
+    helpOutput += helpContent;
 
-	// Watermark
-	if (module->buildCfg.genDoc.hasSwagWatermark)
-	{
-		helpOutput += "<div class=\"swag-watermark\">\n";
-		const time_t t = time(nullptr);
-		tm           nt;
-		localtime_s(&nt, &t);
-		std::ostringstream oss;
-		oss << std::put_time(&nt, "%d-%m-%Y");
-		const string dateTime = oss.str();
-		helpOutput += FMT("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION,
-		                  SWAG_BUILD_NUM);
-		helpOutput += "</div>\n";
-	}
+    // Watermark
+    if (module->buildCfg.genDoc.hasSwagWatermark)
+    {
+        helpOutput += "<div class=\"swag-watermark\">\n";
+        const time_t t = time(nullptr);
+        tm           nt;
+        localtime_s(&nt, &t);
+        std::ostringstream oss;
+        oss << std::put_time(&nt, "%d-%m-%Y");
+        const string dateTime = oss.str();
+        helpOutput += FMT("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION,
+                          SWAG_BUILD_NUM);
+        helpOutput += "</div>\n";
+    }
 
-	helpOutput += "</div>\n";
-	helpOutput += "</div>\n";
+    helpOutput += "</div>\n";
+    helpOutput += "</div>\n";
 
-	helpOutput += "</div>\n";
+    helpOutput += "</div>\n";
 
-	// A script to restore the scroll on load/refresh
-	helpOutput += R"(
+    // A script to restore the scroll on load/refresh
+    helpOutput += R"(
     <script> 
 		function getOffsetTop(element, parent) {
 			let offsetTop = 0;
@@ -1363,164 +1363,164 @@ void GenDoc::constructPage()
         });
     </script>\n)";
 
-	// User end of the <body> section
-	const auto endBody = Utf8{module->buildCfg.genDoc.endBody};
-	helpOutput += endBody;
+    // User end of the <body> section
+    const auto endBody = Utf8{module->buildCfg.genDoc.endBody};
+    helpOutput += endBody;
 
-	helpOutput += "</body>\n";
-	helpOutput += "</html>\n";
+    helpOutput += "</body>\n";
+    helpOutput += "</html>\n";
 }
 
 Utf8 GenDoc::getTocTitleRef() const
 {
-	Utf8 ref;
-	for (const auto& o : titleRefStack)
-	{
-		ref += o;
-		ref += "_";
-	}
+    Utf8 ref;
+    for (const auto& o : titleRefStack)
+    {
+        ref += o;
+        ref += "_";
+    }
 
-	if (!ref.empty())
-		ref.removeBack();
+    if (!ref.empty())
+        ref.removeBack();
 
-	return ref;
+    return ref;
 }
 
 void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
 {
-	if (tocLastTitleLevel < titleLevel)
-	{
-		while (tocLastTitleLevel < titleLevel)
-		{
-			helpToc += "<ul>\n";
-			tocLastTitleLevel++;
-			if (tocLastTitleLevel != titleLevel)
-				titleRefStack.push_back("");
-		}
-	}
-	else if (tocLastTitleLevel > titleLevel)
-	{
-		while (tocLastTitleLevel > titleLevel)
-		{
-			helpToc += "</ul>\n";
-			tocLastTitleLevel--;
-			titleRefStack.pop_back();
-		}
+    if (tocLastTitleLevel < titleLevel)
+    {
+        while (tocLastTitleLevel < titleLevel)
+        {
+            helpToc += "<ul>\n";
+            tocLastTitleLevel++;
+            if (tocLastTitleLevel != titleLevel)
+                titleRefStack.push_back("");
+        }
+    }
+    else if (tocLastTitleLevel > titleLevel)
+    {
+        while (tocLastTitleLevel > titleLevel)
+        {
+            helpToc += "</ul>\n";
+            tocLastTitleLevel--;
+            titleRefStack.pop_back();
+        }
 
-		if (!titleRefStack.empty())
-			titleRefStack.pop_back();
-	}
-	else if (tocLastTitleLevel == titleLevel)
-	{
-		if (!titleRefStack.empty())
-			titleRefStack.pop_back();
-	}
+        if (!titleRefStack.empty())
+            titleRefStack.pop_back();
+    }
+    else if (tocLastTitleLevel == titleLevel)
+    {
+        if (!titleRefStack.empty())
+            titleRefStack.pop_back();
+    }
 
-	titleRefStack.push_back(toRef(name));
-	const auto ref = getTocTitleRef();
-	helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
+    titleRefStack.push_back(toRef(name));
+    const auto ref = getTocTitleRef();
+    helpToc += FMT("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
 Utf8 GenDoc::getFileExtension(const Module* module)
 {
-	Utf8 extName{module->buildCfg.genDoc.outputExtension};
-	if (!g_CommandLine.docExtension.empty())
-		extName = g_CommandLine.docExtension;
-	if (extName.empty())
-		extName = ".html";
-	return extName;
+    Utf8 extName{module->buildCfg.genDoc.outputExtension};
+    if (!g_CommandLine.docExtension.empty())
+        extName = g_CommandLine.docExtension;
+    if (extName.empty())
+        extName = ".html";
+    return extName;
 }
 
 bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
 {
-	module  = mdl;
-	docKind = kind;
-	SWAG_ASSERT(module);
+    module  = mdl;
+    docKind = kind;
+    SWAG_ASSERT(module);
 
-	// Setup runtime module documentation
-	if (module == g_Workspace->runtimeModule)
-	{
-		setSlice(module->buildCfg.genDoc.outputName, "swag.runtime");
-		setSlice(module->buildCfg.genDoc.outputExtension, ".php");
-		setSlice(module->buildCfg.genDoc.titleContent, "Swag Runtime");
-		setSlice(module->buildCfg.genDoc.css, "css/style.css");
-		setSlice(module->buildCfg.genDoc.icon, "favicon.ico");
-		setSlice(module->buildCfg.genDoc.startHead, "<?php include('common/start-head.php'); ?>");
-		setSlice(module->buildCfg.genDoc.endHead, "<?php include('common/end-head.php'); ?>");
-		setSlice(module->buildCfg.genDoc.startBody, "<?php include('common/start-body.php'); ?>");
-		setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
-	}
+    // Setup runtime module documentation
+    if (module == g_Workspace->runtimeModule)
+    {
+        setSlice(module->buildCfg.genDoc.outputName, "swag.runtime");
+        setSlice(module->buildCfg.genDoc.outputExtension, ".php");
+        setSlice(module->buildCfg.genDoc.titleContent, "Swag Runtime");
+        setSlice(module->buildCfg.genDoc.css, "css/style.css");
+        setSlice(module->buildCfg.genDoc.icon, "favicon.ico");
+        setSlice(module->buildCfg.genDoc.startHead, "<?php include('common/start-head.php'); ?>");
+        setSlice(module->buildCfg.genDoc.endHead, "<?php include('common/end-head.php'); ?>");
+        setSlice(module->buildCfg.genDoc.startBody, "<?php include('common/start-body.php'); ?>");
+        setSlice(module->buildCfg.repoPath, "https://github.com/swag-lang/swag/blob/master/bin/runtime");
+    }
 
-	titleToc = Utf8{module->buildCfg.genDoc.titleToc};
-	if (titleToc.empty())
-		titleToc = "Table of Contents";
-	titleContent = Utf8{module->buildCfg.genDoc.titleContent};
-	if (titleContent.empty())
-		titleContent = FMT("Module %s", module->name.c_str());
+    titleToc = Utf8{module->buildCfg.genDoc.titleToc};
+    if (titleToc.empty())
+        titleToc = "Table of Contents";
+    titleContent = Utf8{module->buildCfg.genDoc.titleContent};
+    if (titleContent.empty())
+        titleContent = FMT("Module %s", module->name.c_str());
 
-	if (docKind == BuildCfgDocKind::Pages)
-	{
-		if (!generatePages())
-			return false;
-		return true;
-	}
+    if (docKind == BuildCfgDocKind::Pages)
+    {
+        if (!generatePages())
+            return false;
+        return true;
+    }
 
-	// Output filename
-	auto       filePath = g_Workspace->targetPath;
-	const Utf8 fileName{module->buildCfg.genDoc.outputName};
-	if (fileName.empty())
-	{
-		filePath.append(g_Workspace->workspacePath.filename().string().c_str());
-		filePath += ".";
-		filePath += module->name.c_str();
-	}
-	else
-	{
-		filePath.append(fileName.c_str());
-	}
+    // Output filename
+    auto       filePath = g_Workspace->targetPath;
+    const Utf8 fileName{module->buildCfg.genDoc.outputName};
+    if (fileName.empty())
+    {
+        filePath.append(g_Workspace->workspacePath.filename().string().c_str());
+        filePath += ".";
+        filePath += module->name.c_str();
+    }
+    else
+    {
+        filePath.append(fileName.c_str());
+    }
 
-	const auto extName = getFileExtension(module);
-	filePath += extName.c_str();
+    const auto extName = getFileExtension(module);
+    filePath += extName.c_str();
 
-	fullFileName = filePath.string();
-	fullFileName.makeLower();
+    fullFileName = filePath.string();
+    fullFileName.makeLower();
 
-	// Write for output
-	FILE* f = nullptr;
-	if (fopen_s(&f, fullFileName.c_str(), "wb"))
-	{
-		Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
-		return false;
-	}
+    // Write for output
+    FILE* f = nullptr;
+    if (fopen_s(&f, fullFileName.c_str(), "wb"))
+    {
+        Report::errorOS(FMT(Err(Err0096), fullFileName.c_str()));
+        return false;
+    }
 
-	// Titles
-	helpToc += FMT("<h2>%s</h2>\n", titleToc.c_str());
-	helpContent += FMT("<h1>%s</h1>\n", titleContent.c_str());
+    // Titles
+    helpToc += FMT("<h2>%s</h2>\n", titleToc.c_str());
+    helpContent += FMT("<h1>%s</h1>\n", titleContent.c_str());
 
-	switch (docKind)
-	{
-	case BuildCfgDocKind::Api:
-		if (!generateApi())
-			return false;
-		break;
-	case BuildCfgDocKind::Examples:
-		if (!generateExamples())
-			return false;
-		break;
-	default:
-		break;
-	}
+    switch (docKind)
+    {
+    case BuildCfgDocKind::Api:
+        if (!generateApi())
+            return false;
+        break;
+    case BuildCfgDocKind::Examples:
+        if (!generateExamples())
+            return false;
+        break;
+    default:
+        break;
+    }
 
-	constructPage();
+    constructPage();
 
-	// Write file
-	if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
-	{
-		Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
-		fclose(f);
-		return false;
-	}
+    // Write file
+    if (fwrite(helpOutput.c_str(), 1, helpOutput.length(), f) != helpOutput.length())
+    {
+        Report::errorOS(FMT(Err(Err0099), fullFileName.c_str()));
+        fclose(f);
+        return false;
+    }
 
-	fclose(f);
-	return true;
+    fclose(f);
+    return true;
 }

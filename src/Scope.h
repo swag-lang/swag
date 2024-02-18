@@ -10,23 +10,23 @@ struct AstDefer;
 
 enum class ScopeKind : uint8_t
 {
-	Invalid,
-	Module,
-	File,
-	Namespace,
-	Enum,
-	Struct,
-	Impl,
-	Function,
-	FunctionBody,
-	TypeLambda,
-	Attribute,
-	Statement,
-	EmptyStatement,
-	Breakable,
-	TypeList,
-	Inline,
-	Macro,
+    Invalid,
+    Module,
+    File,
+    Namespace,
+    Enum,
+    Struct,
+    Impl,
+    Function,
+    FunctionBody,
+    TypeLambda,
+    Attribute,
+    Statement,
+    EmptyStatement,
+    Breakable,
+    TypeList,
+    Inline,
+    Macro,
 };
 
 using ScopeFlags = Flags<uint8_t>;
@@ -38,57 +38,57 @@ constexpr ScopeFlags SCOPE_FILE_PRIVATE     = 0x00000010;
 
 struct ScopePublicSet
 {
-	Set<AstNode*> publicFunc;
-	Set<AstNode*> publicAttr;
-	Set<AstNode*> publicNodes;
+    Set<AstNode*> publicFunc;
+    Set<AstNode*> publicAttr;
+    Set<AstNode*> publicNodes;
 };
 
 struct Scope
 {
-	Scope();
-	void release();
-	void addPublicFunc(AstNode* node);
-	void addPublicAttribute(AstNode* node);
-	void addPublicNode(AstNode* node);
-	void allocPublicSet();
+    Scope();
+    void release();
+    void addPublicFunc(AstNode* node);
+    void addPublicAttribute(AstNode* node);
+    void addPublicNode(AstNode* node);
+    void allocPublicSet();
 
-	static void makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
-	const Utf8& getFullName();
-	Utf8        getDisplayFullName();
-	static void collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
-	Scope*      getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
-	void        addChildNoLock(Scope* child);
-	void        removeChildNoLock(Scope* child);
-	bool        isParentOf(const Scope* child);
-	bool        isSameOrParentOf(const Scope* child) const;
-	bool        isGlobal() const;
-	bool        isTopLevel() const;
-	bool        isGlobalOrImpl() const;
+    static void makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
+    const Utf8& getFullName();
+    Utf8        getDisplayFullName();
+    static void collectScopeFromToExcluded(Scope* src, const Scope* to, VectorNative<Scope*>& result);
+    Scope*      getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
+    void        addChildNoLock(Scope* child);
+    void        removeChildNoLock(Scope* child);
+    bool        isParentOf(const Scope* child);
+    bool        isSameOrParentOf(const Scope* child) const;
+    bool        isGlobal() const;
+    bool        isTopLevel() const;
+    bool        isGlobalOrImpl() const;
 
-	SharedMutex             mutex;
-	SymTable                symTable;
-	Utf8                    name;
-	Utf8                    fullname;
-	VectorNative<Scope*>    childScopes;
-	DependentJobs           dependentJobs;
-	VectorNative<AstDefer*> deferredNodes;
-	VectorNative<AstNode*>  doneDefer;
-	VectorNative<AstNode*>  doneDrop;
+    SharedMutex             mutex;
+    SymTable                symTable;
+    Utf8                    name;
+    Utf8                    fullname;
+    VectorNative<Scope*>    childScopes;
+    DependentJobs           dependentJobs;
+    VectorNative<AstDefer*> deferredNodes;
+    VectorNative<AstNode*>  doneDefer;
+    VectorNative<AstNode*>  doneDrop;
 
-	ScopePublicSet* publicSet            = nullptr;
-	AstNode*        owner                = nullptr;
-	Scope*          parentScope          = nullptr;
-	Scope*          hieScope             = nullptr;
-	SymbolName*     symbolOpAffect       = nullptr;
-	SymbolName*     symbolOpAffectSuffix = nullptr;
-	SymbolName*     symbolOpCast         = nullptr;
+    ScopePublicSet* publicSet            = nullptr;
+    AstNode*        owner                = nullptr;
+    Scope*          parentScope          = nullptr;
+    Scope*          hieScope             = nullptr;
+    SymbolName*     symbolOpAffect       = nullptr;
+    SymbolName*     symbolOpAffectSuffix = nullptr;
+    SymbolName*     symbolOpCast         = nullptr;
 
-	uint32_t indexInParent  = UINT32_MAX;
-	uint32_t startStackSize = 0;
-	uint32_t backendStart   = 0;
-	uint32_t backendEnd     = 0;
+    uint32_t indexInParent  = UINT32_MAX;
+    uint32_t startStackSize = 0;
+    uint32_t backendStart   = 0;
+    uint32_t backendEnd     = 0;
 
-	ScopeKind  kind  = ScopeKind::Invalid;
-	ScopeFlags flags = 0;
-	uint8_t    padding[6];
+    ScopeKind  kind  = ScopeKind::Invalid;
+    ScopeFlags flags = 0;
+    uint8_t    padding[6];
 };

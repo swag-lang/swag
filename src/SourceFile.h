@@ -32,49 +32,49 @@ constexpr FileFlags FILE_MARK_DOWN           = 0x00001000;
 
 struct SourceFile
 {
-	void release() const;
-	bool checkFormat();
-	bool load();
-	Utf8 getLine(uint32_t lineNo, bool* eof = nullptr);
-	void setExternalBuffer(const Utf8& content);
-	void addGlobalUsing(Scope* scope);
+    void release() const;
+    bool checkFormat();
+    bool load();
+    Utf8 getLine(uint32_t lineNo, bool* eof = nullptr);
+    void setExternalBuffer(const Utf8& content);
+    void addGlobalUsing(Scope* scope);
 
-	bool hasFlag(FileFlags fl) const { return flags.has(fl); }
-	void addFlag(FileFlags fl) { flags.add(fl); }
-	void removeFlag(FileFlags fl) { flags.remove(fl); }
+    bool hasFlag(FileFlags fl) const { return flags.has(fl); }
+    void addFlag(FileFlags fl) { flags.add(fl); }
+    void removeFlag(FileFlags fl) { flags.remove(fl); }
 
-	SharedMutex            mutex;
-	Vector<Utf8>           allLines;
-	VectorNative<Scope*>   globalUsing;
-	VectorNative<AstNode*> globalUsingEmbedded;
-	Utf8                   name;
-	Path                   path;
-	Utf8                   externalContent;
-	Vector<Utf8>           shouldHaveErrorString;
-	Vector<Utf8>           shouldHaveWarningString;
-	Token                  tokenHasError;
-	Token                  tokenHasWarning;
+    SharedMutex            mutex;
+    Vector<Utf8>           allLines;
+    VectorNative<Scope*>   globalUsing;
+    VectorNative<AstNode*> globalUsingEmbedded;
+    Utf8                   name;
+    Path                   path;
+    Utf8                   externalContent;
+    Vector<Utf8>           shouldHaveErrorString;
+    Vector<Utf8>           shouldHaveWarningString;
+    Token                  tokenHasError;
+    Token                  tokenHasWarning;
 
-	Module*     module                = nullptr;
-	AstNode*    astRoot               = nullptr;
-	AstAttrUse* astAttrUse            = nullptr;
-	SourceFile* fileForSourceLocation = nullptr;
-	Scope*      scopeFile             = nullptr;
-	AstNode*    fromNode              = nullptr;
-	Module*     imported              = nullptr;
-	char*       buffer                = nullptr;
+    Module*     module                = nullptr;
+    AstNode*    astRoot               = nullptr;
+    AstAttrUse* astAttrUse            = nullptr;
+    SourceFile* fileForSourceLocation = nullptr;
+    Scope*      scopeFile             = nullptr;
+    AstNode*    fromNode              = nullptr;
+    Module*     imported              = nullptr;
+    char*       buffer                = nullptr;
 
-	uint64_t       writeTime  = 0;
-	AttributeFlags globalAttr = 0;
+    uint64_t       writeTime  = 0;
+    AttributeFlags globalAttr = 0;
 
-	FileFlags flags             = 0;
-	uint32_t  offsetStartBuffer = 0;
-	uint32_t  bufferSize        = 0;
-	uint32_t  allocBufferSize   = 0;
-	uint32_t  offsetGetLine     = 0;
-	uint32_t  numErrors         = 0;
-	uint32_t  numWarnings       = 0;
-	uint32_t  indexInModule     = UINT32_MAX;
-	uint32_t  privateId         = 0;
-	BuildPass buildPass         = BuildPass::Full;
+    FileFlags flags             = 0;
+    uint32_t  offsetStartBuffer = 0;
+    uint32_t  bufferSize        = 0;
+    uint32_t  allocBufferSize   = 0;
+    uint32_t  offsetGetLine     = 0;
+    uint32_t  numErrors         = 0;
+    uint32_t  numWarnings       = 0;
+    uint32_t  indexInModule     = UINT32_MAX;
+    uint32_t  privateId         = 0;
+    BuildPass buildPass         = BuildPass::Full;
 };

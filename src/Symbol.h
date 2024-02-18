@@ -44,39 +44,39 @@ constexpr OverloadFlags OVERLOAD_UNDEFINED        = 0x10000000;
 
 struct SymbolOverload
 {
-	void from(const SymbolOverload* other);
-	void setRegisters(const RegisterList& reg, OverloadFlags fl);
+    void from(const SymbolOverload* other);
+    void setRegisters(const RegisterList& reg, OverloadFlags fl);
 
-	bool hasFlag(OverloadFlags fl) const { return flags.has(fl); }
+    bool hasFlag(OverloadFlags fl) const { return flags.has(fl); }
 
-	ComputedValue computedValue;
-	RegisterList  symRegisters;
+    ComputedValue computedValue;
+    RegisterList  symRegisters;
 
-	TypeInfo*   typeInfo        = nullptr;
-	AstNode*    node            = nullptr;
-	SymbolName* symbol          = nullptr;
-	AstNode*    fromInlineParam = nullptr;
+    TypeInfo*   typeInfo        = nullptr;
+    AstNode*    node            = nullptr;
+    SymbolName* symbol          = nullptr;
+    AstNode*    fromInlineParam = nullptr;
 
-	uint32_t      storageIndex = 0;
-	OverloadFlags flags        = 0;
+    uint32_t      storageIndex = 0;
+    OverloadFlags flags        = 0;
 };
 
 enum class SymbolKind : uint8_t
 {
-	Invalid,
-	Variable,
-	TypeAlias,
-	NameAlias,
-	Namespace,
-	Enum,
-	EnumValue,
-	Function,
-	Attribute,
-	Struct,
-	Interface,
-	GenericType,
-	Label,
-	PlaceHolder,
+    Invalid,
+    Variable,
+    TypeAlias,
+    NameAlias,
+    Namespace,
+    Enum,
+    EnumValue,
+    Function,
+    Attribute,
+    Struct,
+    Interface,
+    GenericType,
+    Label,
+    PlaceHolder,
 };
 
 using SymbolFlags = Flags<uint16_t>;
@@ -85,30 +85,30 @@ constexpr SymbolFlags SYMBOL_USED          = 0x0002;
 
 struct SymbolName
 {
-	SymbolOverload* findOverload(const TypeInfo* typeInfo);
-	Utf8            getFullName() const;
+    SymbolOverload* findOverload(const TypeInfo* typeInfo);
+    Utf8            getFullName() const;
 
-	SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
-	void            decreaseOverloadNoLock();
-	void            addDependentJob(Job* job);
-	void            addDependentJobNoLock(Job* job);
-	void            unregisterNode(const AstNode* node);
+    SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, const ComputedValue* computedValue);
+    void            decreaseOverloadNoLock();
+    void            addDependentJob(Job* job);
+    void            addDependentJobNoLock(Job* job);
+    void            unregisterNode(const AstNode* node);
 
-	bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
+    bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
 
-	SharedMutex                   mutex;
-	VectorNative<SymbolOverload*> overloads;
-	Utf8                          name;
-	DependentJobs                 dependentJobs;
-	VectorNative<AstNode*>        nodes;
+    SharedMutex                   mutex;
+    VectorNative<SymbolOverload*> overloads;
+    Utf8                          name;
+    DependentJobs                 dependentJobs;
+    VectorNative<AstNode*>        nodes;
 
-	SymTable* ownerTable = nullptr;
+    SymTable* ownerTable = nullptr;
 
-	uint32_t cptOverloads     = 0;
-	uint32_t cptOverloadsInit = 0;
+    uint32_t cptOverloads     = 0;
+    uint32_t cptOverloadsInit = 0;
 
-	uint32_t    cptIfBlock = 0;
-	SymbolFlags flags      = 0;
-	SymbolKind  kind       = SymbolKind::Invalid;
-	uint8_t     padding    = 0;
+    uint32_t    cptIfBlock = 0;
+    SymbolFlags flags      = 0;
+    SymbolKind  kind       = SymbolKind::Invalid;
+    uint8_t     padding    = 0;
 };

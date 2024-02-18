@@ -2,5 +2,5 @@
 
 namespace LLVM
 {
-	void setup();
+    void setup();
 } // namespace LLVM

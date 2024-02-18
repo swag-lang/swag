@@ -42,10 +42,10 @@ enum class ByteCodeOp : uint16_t
 
 struct ByteCodeOpDesc
 {
-	uint32_t    flags;
-	uint32_t    nameLen;
-	const char* name;
-	const char* display;
+    uint32_t    flags;
+    uint32_t    nameLen;
+    const char* name;
+    const char* display;
 };
 
 extern ByteCodeOpDesc g_ByteCodeOpDesc[];

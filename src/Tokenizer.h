@@ -26,62 +26,62 @@ constexpr uint32_t TOKEN_TOP_LEVEL_INST     = 0x00000080;
 
 enum class LiteralType : uint8_t
 {
-	TT_U8,
-	TT_U16,
-	TT_U32,
-	TT_U64,
-	TT_S8,
-	TT_S16,
-	TT_S32,
-	TT_S64,
-	TT_BOOL,
-	TT_STRING,
-	TT_STRING_RAW,
-	TT_STRING_MULTILINE,
-	TT_STRING_ESCAPE,
-	TT_STRING_MULTILINE_ESCAPE,
-	TT_CHARACTER,
-	TT_CHARACTER_ESCAPE,
-	TT_RUNE,
-	TT_F32,
-	TT_F64,
-	TT_NULL,
-	TT_ANY,
-	TT_VOID,
-	TT_TYPE,
-	TT_CSTRING,
-	TT_UNTYPED_BIN_HEXA,
-	TT_UNTYPED_INT,
-	TT_UNTYPED_FLOAT,
-	TT_MAX,
+    TT_U8,
+    TT_U16,
+    TT_U32,
+    TT_U64,
+    TT_S8,
+    TT_S16,
+    TT_S32,
+    TT_S64,
+    TT_BOOL,
+    TT_STRING,
+    TT_STRING_RAW,
+    TT_STRING_MULTILINE,
+    TT_STRING_ESCAPE,
+    TT_STRING_MULTILINE_ESCAPE,
+    TT_CHARACTER,
+    TT_CHARACTER_ESCAPE,
+    TT_RUNE,
+    TT_F32,
+    TT_F64,
+    TT_NULL,
+    TT_ANY,
+    TT_VOID,
+    TT_TYPE,
+    TT_CSTRING,
+    TT_UNTYPED_BIN_HEXA,
+    TT_UNTYPED_INT,
+    TT_UNTYPED_FLOAT,
+    TT_MAX,
 };
 
 struct SourceLocation
 {
-	bool operator==(const SourceLocation& other) const
-	{
-		return line == other.line && column == other.column;
-	}
+    bool operator==(const SourceLocation& other) const
+    {
+        return line == other.line && column == other.column;
+    }
 
-	bool operator!=(const SourceLocation& other) const
-	{
-		return line != other.line || column != other.column;
-	}
+    bool operator!=(const SourceLocation& other) const
+    {
+        return line != other.line || column != other.column;
+    }
 
-	uint32_t line   = 0;
-	uint32_t column = 0;
+    uint32_t line   = 0;
+    uint32_t column = 0;
 };
 
 struct Token
 {
-	const char* c_str() const
-	{
-		return text.c_str();
-	}
+    const char* c_str() const
+    {
+        return text.c_str();
+    }
 
-	Utf8           text;
-	SourceLocation startLocation;
-	SourceLocation endLocation;
+    Utf8           text;
+    SourceLocation startLocation;
+    SourceLocation endLocation;
 };
 
 using TokenParseFlags = Flags<uint8_t>;
@@ -91,68 +91,68 @@ constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
 
 struct TokenParse : Token
 {
-	Register        literalValue;
-	TokenId         id          = TokenId::Invalid;
-	LiteralType     literalType = static_cast<LiteralType>(0);
-	TokenParseFlags flags       = 0;
+    Register        literalValue;
+    TokenId         id          = TokenId::Invalid;
+    LiteralType     literalType = static_cast<LiteralType>(0);
+    TokenParseFlags flags       = 0;
 };
 
 struct Tokenizer
 {
-	bool        error(TokenParse& token, const Utf8& msg, const Utf8& hint = "") const;
-	static void trimMultilineString(Utf8& text);
-	void        appendTokenName(TokenParse& token) const;
+    bool        error(TokenParse& token, const Utf8& msg, const Utf8& hint = "") const;
+    static void trimMultilineString(Utf8& text);
+    void        appendTokenName(TokenParse& token) const;
 
-	uint32_t readChar();
-	uint32_t peekChar(unsigned& offset) const;
-	void     processChar(uint32_t c, unsigned offset);
-	void     eatChar(uint32_t c, unsigned offset);
+    uint32_t readChar();
+    uint32_t peekChar(unsigned& offset) const;
+    void     processChar(uint32_t c, unsigned offset);
+    void     eatChar(uint32_t c, unsigned offset);
 
-	bool doMultiLineComment(TokenParse& token);
-	bool doIdentifier(TokenParse& token);
-	bool doNumberLiteral(TokenParse& token, uint32_t c);
-	bool doHexLiteral(TokenParse& token);
-	bool doBinLiteral(TokenParse& token);
-	bool doIntFloatLiteral(TokenParse& token, uint32_t c);
-	bool doIntLiteral(TokenParse& token, uint32_t c);
-	bool doFloatLiteral(TokenParse& token, uint32_t c);
-	bool doSymbol(TokenParse& token, uint32_t c);
-	bool doCharacterLiteral(TokenParse& token);
-	bool doStringLiteral(TokenParse& token);
+    bool doMultiLineComment(TokenParse& token);
+    bool doIdentifier(TokenParse& token);
+    bool doNumberLiteral(TokenParse& token, uint32_t c);
+    bool doHexLiteral(TokenParse& token);
+    bool doBinLiteral(TokenParse& token);
+    bool doIntFloatLiteral(TokenParse& token, uint32_t c);
+    bool doIntLiteral(TokenParse& token, uint32_t c);
+    bool doFloatLiteral(TokenParse& token, uint32_t c);
+    bool doSymbol(TokenParse& token, uint32_t c);
+    bool doCharacterLiteral(TokenParse& token);
+    bool doStringLiteral(TokenParse& token);
 
-	void saveState(const TokenParse& token);
-	void restoreState(TokenParse& token);
+    void saveState(const TokenParse& token);
+    void restoreState(TokenParse& token);
 
-	void setup(ErrorContext* errorCxt, SourceFile* file);
-	bool nextToken(TokenParse& token);
+    void setup(ErrorContext* errorCxt, SourceFile* file);
+    bool nextToken(TokenParse& token);
 
-	static TokenId tokenRelated(TokenId id);
+    static TokenId tokenRelated(TokenId id);
 
-	static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_KWD; }
-	static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_SYM; }
-	static bool isLiteral(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_LITERAL; }
-	static bool isCompiler(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_COMPILER; }
-	static bool isIntrinsicReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_RETURN; }
-	static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_NORETURN; }
-	static bool isTopLevelInst(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_TOP_LEVEL_INST; }
+    static bool isKeyword(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_KWD; }
+    static bool isSymbol(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_SYM; }
+    static bool isLiteral(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_LITERAL; }
+    static bool isCompiler(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_COMPILER; }
+    static bool isIntrinsicReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_RETURN; }
+    static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_INTRINSIC_NORETURN; }
+    static bool isTopLevelInst(TokenId id) { return g_TokenFlags[static_cast<int>(id)] & TOKEN_TOP_LEVEL_INST; }
 
-	SourceLocation location;
+    SourceLocation location;
 
-	Utf8          comment;
-	ErrorContext* errorContext        = nullptr;
-	char*         curBuffer           = nullptr;
-	char*         endBuffer           = nullptr;
-	SourceFile*   sourceFile          = nullptr;
-	char*         startTokenName      = nullptr;
-	bool          forceLastTokenIsEOL = false;
-	bool          realAppendName      = false;
-	bool          trackComments       = false;
-	bool          propagateComment    = false;
-	bool          idLetters[256]      = {false};
+    Utf8          comment;
+    ErrorContext* errorContext        = nullptr;
+    char*         curBuffer           = nullptr;
+    char*         endBuffer           = nullptr;
+    SourceFile*   sourceFile          = nullptr;
+    char*         startTokenName      = nullptr;
+    bool          forceLastTokenIsEOL = false;
+    bool          realAppendName      = false;
+    bool          trackComments       = false;
+    bool          propagateComment    = false;
+    bool          idLetters[256]      = {false};
 
-	TokenParse     st_token;
-	char*          st_curBuffer = nullptr;
-	SourceLocation st_location;
-	bool           st_forceLastTokenIsEOL = false;
-	Utf8           st_comment;
+    TokenParse     st_token;
+    char*          st_curBuffer = nullptr;
+    SourceLocation st_location;
+    bool           st_forceLastTokenIsEOL = false;
+    Utf8           st_comment;
 };

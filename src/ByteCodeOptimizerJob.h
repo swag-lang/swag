@@ -5,11 +5,11 @@ struct ByteCode;
 
 struct ByteCodeOptimizerJob final : Job
 {
-	JobResult execute() override;
+    JobResult execute() override;
 
-	void release() override { Allocator::free<ByteCodeOptimizerJob>(this); }
+    void release() override { Allocator::free<ByteCodeOptimizerJob>(this); }
 
-	ByteCodeOptContext optContext;
-	int                startIndex;
-	int                endIndex;
+    ByteCodeOptContext optContext;
+    int                startIndex;
+    int                endIndex;
 };

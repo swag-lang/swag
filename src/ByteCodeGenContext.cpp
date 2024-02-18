@@ -4,56 +4,56 @@
 
 void ByteCodeGenContext::release() const
 {
-	if (allParamsTmp)
-	{
-		allParamsTmp->children.clear();
-		allParamsTmp->release();
-	}
+    if (allParamsTmp)
+    {
+        allParamsTmp->children.clear();
+        allParamsTmp->release();
+    }
 }
 
 void ByteCodeGenContext::allocateTempCallParams()
 {
-	if (!allParamsTmp)
-		allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-	allParamsTmp->children.clear();
+    if (!allParamsTmp)
+        allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+    allParamsTmp->children.clear();
 }
 
 void ByteCodeGenContext::setNoLocation()
 {
-	noLocation = true;
+    noLocation = true;
 }
 
 void ByteCodeGenContext::restoreNoLocation()
 {
-	noLocation = false;
+    noLocation = false;
 }
 
 void ByteCodeGenContext::pushLocation(SourceLocation* loc)
 {
-	stackForceLocation.push_back(loc);
-	forceLocation = loc;
+    stackForceLocation.push_back(loc);
+    forceLocation = loc;
 }
 
 void ByteCodeGenContext::popLocation()
 {
-	stackForceLocation.pop_back();
-	if (!stackForceLocation.empty())
-		forceLocation = stackForceLocation.back();
-	else
-		forceLocation = nullptr;
+    stackForceLocation.pop_back();
+    if (!stackForceLocation.empty())
+        forceLocation = stackForceLocation.back();
+    else
+        forceLocation = nullptr;
 }
 
 void ByteCodeGenContext::pushNode(AstNode* myNode)
 {
-	stackForceNode.push_back(myNode);
-	forceNode = myNode;
+    stackForceNode.push_back(myNode);
+    forceNode = myNode;
 }
 
 void ByteCodeGenContext::popNode()
 {
-	stackForceNode.pop_back();
-	if (!stackForceNode.empty())
-		forceNode = stackForceNode.back();
-	else
-		forceNode = nullptr;
+    stackForceNode.pop_back();
+    if (!stackForceNode.empty())
+        forceNode = stackForceNode.back();
+    else
+        forceNode = nullptr;
 }

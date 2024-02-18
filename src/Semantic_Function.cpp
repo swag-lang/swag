@@ -14,1985 +14,1985 @@
 
 void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 {
-	node->allocateComputedValue();
-	node->computedValue->storageOffset = node->ownerScope->startStackSize;
-	node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-	setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+    node->allocateComputedValue();
+    node->computedValue->storageOffset = node->ownerScope->startStackSize;
+    node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
+    setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
 }
 
 bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
-	if (!parameters || funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
-		return true;
+    if (!parameters || funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+        return true;
 
-	bool     defaultValueDone = false;
-	uint32_t index            = 0;
+    bool     defaultValueDone = false;
+    uint32_t index            = 0;
 
-	// If we have a tuple as a default parameter, without a user defined type, then we need to convert it to a tuple struct
-	// and wait for the type to be solved.
-	for (const auto param : parameters->children)
-	{
-		const auto nodeParam = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
-		if (!nodeParam->assignment)
-			continue;
-		if (nodeParam->assignment->kind != AstNodeKind::ExpressionList)
-			continue;
+    // If we have a tuple as a default parameter, without a user defined type, then we need to convert it to a tuple struct
+    // and wait for the type to be solved.
+    for (const auto param : parameters->children)
+    {
+        const auto nodeParam = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
+        if (!nodeParam->assignment)
+            continue;
+        if (nodeParam->assignment->kind != AstNodeKind::ExpressionList)
+            continue;
 
-		const auto nodeExpr = castAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
-		if (!nodeExpr->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
-			continue;
+        const auto nodeExpr = castAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
+        if (!nodeExpr->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE))
+            continue;
 
-		if (!nodeParam->type)
-		{
-			nodeParam->addSemFlag(SEMFLAG_TUPLE_CONVERT);
-			SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
-			SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
-			context->result = ContextResult::NewChildren;
-			context->baseJob->nodes.push_back(nodeParam->type);
-			return true;
-		}
+        if (!nodeParam->type)
+        {
+            nodeParam->addSemFlag(SEMFLAG_TUPLE_CONVERT);
+            SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
+            SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
+            context->result = ContextResult::NewChildren;
+            context->baseJob->nodes.push_back(nodeParam->type);
+            return true;
+        }
 
-		if (nodeParam->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
-		{
-			SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
-			nodeParam->typeInfo                         = nodeParam->type->typeInfo;
-			nodeParam->resolvedSymbolOverload->typeInfo = nodeParam->typeInfo;
-		}
-	}
+        if (nodeParam->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
+        {
+            SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
+            nodeParam->typeInfo                         = nodeParam->type->typeInfo;
+            nodeParam->resolvedSymbolOverload->typeInfo = nodeParam->typeInfo;
+        }
+    }
 
-	if (forGenerics)
-	{
-		typeInfo->genericParameters.clear();
-		typeInfo->genericParameters.reserve(static_cast<int>(parameters->children.size()));
-		typeInfo->addFlag(TYPEINFO_GENERIC);
-	}
-	else
-	{
-		typeInfo->parameters.clear();
-		typeInfo->parameters.reserve(static_cast<int>(parameters->children.size()));
-	}
+    if (forGenerics)
+    {
+        typeInfo->genericParameters.clear();
+        typeInfo->genericParameters.reserve(static_cast<int>(parameters->children.size()));
+        typeInfo->addFlag(TYPEINFO_GENERIC);
+    }
+    else
+    {
+        typeInfo->parameters.clear();
+        typeInfo->parameters.reserve(static_cast<int>(parameters->children.size()));
+    }
 
-	AstNode* firstParamWithDef = nullptr;
-	auto     sourceFile        = context->sourceFile;
-	for (const auto param : parameters->children)
-	{
-		auto nodeParam        = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
-		auto funcParam        = TypeManager::makeParam();
-		funcParam->name       = param->token.text;
-		funcParam->typeInfo   = param->typeInfo;
-		funcParam->index      = index++;
-		funcParam->declNode   = nodeParam;
-		funcParam->attributes = nodeParam->attributes;
-		if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
-			funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
-		else if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
-			funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
+    AstNode* firstParamWithDef = nullptr;
+    auto     sourceFile        = context->sourceFile;
+    for (const auto param : parameters->children)
+    {
+        auto nodeParam        = castAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
+        auto funcParam        = TypeManager::makeParam();
+        funcParam->name       = param->token.text;
+        funcParam->typeInfo   = param->typeInfo;
+        funcParam->index      = index++;
+        funcParam->declNode   = nodeParam;
+        funcParam->attributes = nodeParam->attributes;
+        if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
+            funcParam->flags |= TYPEINFOPARAM_GENERIC_TYPE;
+        else if (nodeParam->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
+            funcParam->flags |= TYPEINFOPARAM_GENERIC_CONSTANT;
 
-		const auto paramType     = nodeParam->typeInfo;
-		auto       paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
+        const auto paramType     = nodeParam->typeInfo;
+        auto       paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
 
-		// Code is only valid for a macro or mixin
-		if (paramType->isCode())
-			SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0456)}));
+        // Code is only valid for a macro or mixin
+        if (paramType->isCode())
+            SWAG_VERIFY(funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, Err(Err0456)}));
 
-		// Not everything is possible for types for attributes
-		if (param->ownerScope->kind == ScopeKind::Attribute)
-		{
-			SWAG_VERIFY(!funcParam->typeInfo->isAny(), context->report({nodeParam, FMT(Err(Err0393), funcParam->typeInfo->getDisplayNameC())}));
+        // Not everything is possible for types for attributes
+        if (param->ownerScope->kind == ScopeKind::Attribute)
+        {
+            SWAG_VERIFY(!funcParam->typeInfo->isAny(), context->report({nodeParam, FMT(Err(Err0393), funcParam->typeInfo->getDisplayNameC())}));
 
-			if (!funcParam->typeInfo->isNative() &&
-				!funcParam->typeInfo->isEnum() &&
-				!funcParam->typeInfo->isPointerToTypeInfo() &&
-				!funcParam->typeInfo->isTypedVariadic())
-			{
-				return context->report({nodeParam, FMT(Err(Err0393), funcParam->typeInfo->getDisplayNameC())});
-			}
+            if (!funcParam->typeInfo->isNative() &&
+                !funcParam->typeInfo->isEnum() &&
+                !funcParam->typeInfo->isPointerToTypeInfo() &&
+                !funcParam->typeInfo->isTypedVariadic())
+            {
+                return context->report({nodeParam, FMT(Err(Err0393), funcParam->typeInfo->getDisplayNameC())});
+            }
 
-			if (funcParam->typeInfo->isTypedVariadic())
-			{
-				const auto typeVar = castTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
-				SWAG_VERIFY(!typeVar->isAny(), context->report({paramNodeType, FMT(Err(Err0393), funcParam->typeInfo->getDisplayNameC())}));
-			}
-		}
+            if (funcParam->typeInfo->isTypedVariadic())
+            {
+                const auto typeVar = castTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
+                SWAG_VERIFY(!typeVar->isAny(), context->report({paramNodeType, FMT(Err(Err0393), funcParam->typeInfo->getDisplayNameC())}));
+            }
+        }
 
-		parameters->inheritAstFlagsOr(nodeParam->type, AST_IS_GENERIC);
+        parameters->inheritAstFlagsOr(nodeParam->type, AST_IS_GENERIC);
 
-		// Variadic must be the last one
-		if (paramType->isVariadic())
-		{
-			SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
-			typeInfo->addFlag(TYPEINFO_VARIADIC);
-			if (index != parameters->children.size())
-				return context->report({nodeParam, Err(Err0513)});
-		}
-		else if (paramType->isTypedVariadic())
-		{
-			SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
-			typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
-			if (index != parameters->children.size())
-				return context->report({nodeParam, Err(Err0513)});
-		}
-		else if (paramType->isCVariadic())
-		{
-			SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
-			typeInfo->addFlag(TYPEINFO_C_VARIADIC);
-			if (index != parameters->children.size())
-				return context->report({nodeParam, Err(Err0513)});
-		}
+        // Variadic must be the last one
+        if (paramType->isVariadic())
+        {
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
+            typeInfo->addFlag(TYPEINFO_VARIADIC);
+            if (index != parameters->children.size())
+                return context->report({nodeParam, Err(Err0513)});
+        }
+        else if (paramType->isTypedVariadic())
+        {
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
+            typeInfo->addFlag(TYPEINFO_TYPED_VARIADIC);
+            if (index != parameters->children.size())
+                return context->report({nodeParam, Err(Err0513)});
+        }
+        else if (paramType->isCVariadic())
+        {
+            SWAG_VERIFY(!funcNode->hasAttribute(ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Err(Err0745)}));
+            typeInfo->addFlag(TYPEINFO_C_VARIADIC);
+            if (index != parameters->children.size())
+                return context->report({nodeParam, Err(Err0513)});
+        }
 
-		// Default parameter value
-		if (nodeParam->assignment)
-		{
-			if (!defaultValueDone)
-			{
-				defaultValueDone               = true;
-				typeInfo->firstDefaultValueIdx = index - 1;
-				firstParamWithDef              = nodeParam;
-			}
+        // Default parameter value
+        if (nodeParam->assignment)
+        {
+            if (!defaultValueDone)
+            {
+                defaultValueDone               = true;
+                typeInfo->firstDefaultValueIdx = index - 1;
+                firstParamWithDef              = nodeParam;
+            }
 
-			if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
-			{
-				switch (nodeParam->assignment->tokenId)
-				{
-				case TokenId::CompilerCallerLocation:
-				case TokenId::CompilerCallerFunction:
-				case TokenId::CompilerBuildCfg:
-				case TokenId::CompilerOs:
-				case TokenId::CompilerArch:
-				case TokenId::CompilerCpu:
-				case TokenId::CompilerSwagOs:
-				case TokenId::CompilerBackend:
-					break;
+            if (nodeParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
+            {
+                switch (nodeParam->assignment->tokenId)
+                {
+                case TokenId::CompilerCallerLocation:
+                case TokenId::CompilerCallerFunction:
+                case TokenId::CompilerBuildCfg:
+                case TokenId::CompilerOs:
+                case TokenId::CompilerArch:
+                case TokenId::CompilerCpu:
+                case TokenId::CompilerSwagOs:
+                case TokenId::CompilerBackend:
+                    break;
 
-				default:
-					context->report({nodeParam->assignment, FMT(Err(Err0250), nodeParam->assignment->token.c_str())});
-					break;
-				}
-			}
-		}
-		else if (!nodeParam->typeInfo->isCode())
-		{
-			if (defaultValueDone)
-			{
-				Diagnostic err{nodeParam, FMT(Err(Err0547), Naming::niceParameterRank(static_cast<int>(index)).c_str())};
-				err.addNote(firstParamWithDef, Nte(Nte0170));
-				return context->report(err);
-			}
-		}
+                default:
+                    context->report({nodeParam->assignment, FMT(Err(Err0250), nodeParam->assignment->token.c_str())});
+                    break;
+                }
+            }
+        }
+        else if (!nodeParam->typeInfo->isCode())
+        {
+            if (defaultValueDone)
+            {
+                Diagnostic err{nodeParam, FMT(Err(Err0547), Naming::niceParameterRank(static_cast<int>(index)).c_str())};
+                err.addNote(firstParamWithDef, Nte(Nte0170));
+                return context->report(err);
+            }
+        }
 
-		if (forGenerics)
-			typeInfo->genericParameters.push_back(funcParam);
-		else
-			typeInfo->parameters.push_back(funcParam);
-	}
+        if (forGenerics)
+            typeInfo->genericParameters.push_back(funcParam);
+        else
+            typeInfo->parameters.push_back(funcParam);
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
-	const auto node = context->node;
-	node->inheritAstFlagsOr(AST_IS_GENERIC);
-	node->byteCodeFct = ByteCodeGen::emitFuncDeclParams;
-	return true;
+    const auto node = context->node;
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->byteCodeFct = ByteCodeGen::emitFuncDeclParams;
+    return true;
 }
 
 bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
 {
-	const auto sourceFile = context->sourceFile;
-	const auto module     = sourceFile->module;
+    const auto sourceFile = context->sourceFile;
+    const auto module     = sourceFile->module;
 
-	// Filter what we send
-	if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
-		return true;
-	if (sourceFile->imported && !sourceFile->hasFlag(FILE_IS_EMBEDDED))
-		return true;
-	if (!context->node->ownerScope->isGlobalOrImpl())
-		return true;
-	if (context->node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
-		return true;
-	if (context->node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
-		return true;
+    // Filter what we send
+    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
+        return true;
+    if (sourceFile->imported && !sourceFile->hasFlag(FILE_IS_EMBEDDED))
+        return true;
+    if (!context->node->ownerScope->isGlobalOrImpl())
+        return true;
+    if (context->node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
+        return true;
+    if (context->node->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
+        return true;
 
-	const auto funcNode = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-	const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    const auto funcNode = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-	CompilerMessage msg;
-	msg.concrete.kind        = CompilerMsgKind::SemFunctions;
-	msg.concrete.name.buffer = funcNode->token.text.buffer;
-	msg.concrete.name.count  = funcNode->token.text.length();
-	msg.typeInfo             = typeInfo;
-	SWAG_CHECK(module->postCompilerMessage(context, msg));
+    CompilerMessage msg;
+    msg.concrete.kind        = CompilerMsgKind::SemFunctions;
+    msg.concrete.name.buffer = funcNode->token.text.buffer;
+    msg.concrete.name.count  = funcNode->token.text.length();
+    msg.typeInfo             = typeInfo;
+    SWAG_CHECK(module->postCompilerMessage(context, msg));
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveFuncDeclAfterSI(SemanticContext* context)
 {
-	const auto saveNode = context->node;
-	if (context->node->parent->kind == AstNodeKind::Inline)
-	{
-		const auto node = castAst<AstInline>(context->node->parent, AstNodeKind::Inline);
-		context->node   = node->func;
-	}
-	else
-	{
-		const auto node = castAst<AstFuncDecl>(context->node->parent, AstNodeKind::FuncDecl);
-		SWAG_ASSERT(node->content == context->node);
-		context->node = node;
-	}
+    const auto saveNode = context->node;
+    if (context->node->parent->kind == AstNodeKind::Inline)
+    {
+        const auto node = castAst<AstInline>(context->node->parent, AstNodeKind::Inline);
+        context->node   = node->func;
+    }
+    else
+    {
+        const auto node = castAst<AstFuncDecl>(context->node->parent, AstNodeKind::FuncDecl);
+        SWAG_ASSERT(node->content == context->node);
+        context->node = node;
+    }
 
-	resolveFuncDecl(context);
-	resolveScopedStmtAfter(context);
-	context->node = saveNode;
-	return true;
+    resolveFuncDecl(context);
+    resolveScopedStmtAfter(context);
+    context->node = saveNode;
+    return true;
 }
 
 bool Semantic::resolveFuncDecl(SemanticContext* context)
 {
-	const auto sourceFile = context->sourceFile;
-	const auto module     = sourceFile->module;
-	auto       funcNode   = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-	const auto typeInfo   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    const auto sourceFile = context->sourceFile;
+    const auto module     = sourceFile->module;
+    auto       funcNode   = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto typeInfo   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-	// Only one main per module !
-	if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
-	{
-		ScopedLock lk(sourceFile->module->mutexFile);
-		if (sourceFile->module->mainIsDefined)
-		{
-			const Diagnostic err{funcNode, Err(Err0005)};
-			const auto       note = Diagnostic::note(module->mainIsDefined, module->mainIsDefined->getTokenName(), Nte(Nte0071));
-			return context->report(err, note);
-		}
+    // Only one main per module !
+    if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
+    {
+        ScopedLock lk(sourceFile->module->mutexFile);
+        if (sourceFile->module->mainIsDefined)
+        {
+            const Diagnostic err{funcNode, Err(Err0005)};
+            const auto       note = Diagnostic::note(module->mainIsDefined, module->mainIsDefined->getTokenName(), Nte(Nte0071));
+            return context->report(err, note);
+        }
 
-		sourceFile->module->mainIsDefined = funcNode;
-	}
+        sourceFile->module->mainIsDefined = funcNode;
+    }
 
-	// No semantic on a generic function, or a macro
-	if (funcNode->hasAstFlag(AST_IS_GENERIC))
-	{
-		if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED))
-			funcNode->ownerScope->addPublicNode(funcNode);
-		return true;
-	}
+    // No semantic on a generic function, or a macro
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+    {
+        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED))
+            funcNode->ownerScope->addPublicNode(funcNode);
+        return true;
+    }
 
-	// Check that there is no 'hole' in alias names
-	if (funcNode->aliasMask && funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
-	{
-		auto       mask = funcNode->aliasMask;
-		const auto maxN = OS::bitCountLz(funcNode->aliasMask);
-		for (uint32_t n = 0; n < 32 - maxN; n++)
-		{
-			if ((mask & 1) == 0)
-				return context->report({funcNode, funcNode->tokenName, FMT(Err(Err0587), funcNode->token.c_str(), n)});
-			mask >>= 1;
-		}
-	}
+    // Check that there is no 'hole' in alias names
+    if (funcNode->aliasMask && funcNode->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+    {
+        auto       mask = funcNode->aliasMask;
+        const auto maxN = OS::bitCountLz(funcNode->aliasMask);
+        for (uint32_t n = 0; n < 32 - maxN; n++)
+        {
+            if ((mask & 1) == 0)
+                return context->report({funcNode, funcNode->tokenName, FMT(Err(Err0587), funcNode->token.c_str(), n)});
+            mask >>= 1;
+        }
+    }
 
-	if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
-	{
-		if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
-			funcNode->ownerScope->addPublicNode(funcNode);
-		SWAG_CHECK(setFullResolve(context, funcNode));
-		return true;
-	}
+    if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
+    {
+        if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && !funcNode->hasAstFlag(AST_GENERATED) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
+            funcNode->ownerScope->addPublicNode(funcNode);
+        SWAG_CHECK(setFullResolve(context, funcNode));
+        return true;
+    }
 
-	// An inline function will not have bytecode, so need to register public by hand now
-	if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
-		funcNode->ownerScope->addPublicNode(funcNode);
+    // An inline function will not have bytecode, so need to register public by hand now
+    if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC) && funcNode->hasAttribute(ATTRIBUTE_INLINE) && !funcNode->hasAstFlag(AST_FROM_GENERIC))
+        funcNode->ownerScope->addPublicNode(funcNode);
 
-	funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
-	typeInfo->stackSize   = funcNode->stackSize;
+    funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
+    typeInfo->stackSize   = funcNode->stackSize;
 
-	// Check attributes
-	if (funcNode->isForeign() && funcNode->content)
-	{
-		const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Foreign);
-		const auto note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		return context->report({funcNode, funcNode->getTokenName(), Err(Err0682)}, note);
-	}
+    // Check attributes
+    if (funcNode->isForeign() && funcNode->content)
+    {
+        const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Foreign);
+        const auto note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+        return context->report({funcNode, funcNode->getTokenName(), Err(Err0682)}, note);
+    }
 
-	if (!funcNode->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
-	{
-		if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC))
-		{
-			SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, Err(Err0448)}));
-		}
-	}
+    if (!funcNode->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
+    {
+        if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC))
+        {
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, Err(Err0448)}));
+        }
+    }
 
-	// Can be null for intrinsics etc...
-	if (funcNode->content)
-		funcNode->content->setBcNotifyBefore(ByteCodeGen::emitBeforeFuncDeclContent);
+    // Can be null for intrinsics etc...
+    if (funcNode->content)
+        funcNode->content->setBcNotifyBefore(ByteCodeGen::emitBeforeFuncDeclContent);
 
-	// Do we have a return value
-	if (funcNode->content && funcNode->returnType && !funcNode->returnType->typeInfo->isVoid())
-	{
-		if (!funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
-		{
-			if (!funcNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
-			{
-				if (funcNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-					return context->report({funcNode->returnType, FMT(Err(Err0578), funcNode->getDisplayNameC())});
-				return context->report({funcNode->returnType, FMT(Err(Err0579), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
-			}
-		}
-	}
+    // Do we have a return value
+    if (funcNode->content && funcNode->returnType && !funcNode->returnType->typeInfo->isVoid())
+    {
+        if (!funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
+        {
+            if (!funcNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
+            {
+                if (funcNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
+                    return context->report({funcNode->returnType, FMT(Err(Err0578), funcNode->getDisplayNameC())});
+                return context->report({funcNode->returnType, FMT(Err(Err0579), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
+            }
+        }
+    }
 
-	// Content semantic can have been disabled (#validif). In that case, we're not done yet, so
-	// do not set the FULL_RESOLVE flag and do not generate bytecode
-	if (funcNode->content && funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
-	{
-		ScopedLock lk(funcNode->funcMutex);
-		funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
-		funcNode->dependentJobs.setRunning();
-		return true;
-	}
+    // Content semantic can have been disabled (#validif). In that case, we're not done yet, so
+    // do not set the FULL_RESOLVE flag and do not generate bytecode
+    if (funcNode->content && funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
+    {
+        ScopedLock lk(funcNode->funcMutex);
+        funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
+        funcNode->dependentJobs.setRunning();
+        return true;
+    }
 
-	if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
-	{
-		bool implFor = false;
-		if (funcNode->ownerScope && funcNode->ownerScope->kind == ScopeKind::Impl)
-		{
-			const auto implNode = castAst<AstImpl>(funcNode->ownerScope->owner, AstNodeKind::Impl);
-			if (implNode->identifierFor)
-			{
-				const auto forId = implNode->identifier->children.back();
-				implFor          = true;
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
+    {
+        bool implFor = false;
+        if (funcNode->ownerScope && funcNode->ownerScope->kind == ScopeKind::Impl)
+        {
+            const auto implNode = castAst<AstImpl>(funcNode->ownerScope->owner, AstNodeKind::Impl);
+            if (implNode->identifierFor)
+            {
+                const auto forId = implNode->identifier->children.back();
+                implFor          = true;
 
-				// Be sure interface has been fully solved
-				{
-					ScopedLock lk(forId->mutex);
-					ScopedLock lk1(forId->resolvedSymbolName->mutex);
-					if (forId->resolvedSymbolName->cptOverloads)
-					{
-						waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName);
-						return true;
-					}
-				}
+                // Be sure interface has been fully solved
+                {
+                    ScopedLock lk(forId->mutex);
+                    ScopedLock lk1(forId->resolvedSymbolName->mutex);
+                    if (forId->resolvedSymbolName->cptOverloads)
+                    {
+                        waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName);
+                        return true;
+                    }
+                }
 
-				{
-					const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload->typeInfo, TypeInfoKind::Interface);
-					const auto typeInterface     = castTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
-					ScopedLock lk(typeInterface->mutex);
+                {
+                    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload->typeInfo, TypeInfoKind::Interface);
+                    const auto typeInterface     = castTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
+                    ScopedLock lk(typeInterface->mutex);
 
-					// We need to search the function (as a variable) in the interface
-					// If not found, then this is a normal function...
-					const auto symbolName = typeInterface->findChildByNameNoLock(funcNode->token.text); // O(n) !
-					if (symbolName)
-					{
-						funcNode->fromItfSymbol = symbolName;
-					}
-				}
-			}
-		}
+                    // We need to search the function (as a variable) in the interface
+                    // If not found, then this is a normal function...
+                    const auto symbolName = typeInterface->findChildByNameNoLock(funcNode->token.text); // O(n) !
+                    if (symbolName)
+                    {
+                        funcNode->fromItfSymbol = symbolName;
+                    }
+                }
+            }
+        }
 
-		// Be sure 'impl' is justified
-		SWAG_VERIFY(implFor, context->report({funcNode->sourceFile, funcNode->implLoc, funcNode->implLoc, Err(Err0667)}));
-	}
+        // Be sure 'impl' is justified
+        SWAG_VERIFY(implFor, context->report({funcNode->sourceFile, funcNode->implLoc, funcNode->implLoc, Err(Err0667)}));
+    }
 
-	// Warnings
-	SWAG_CHECK(SemanticError::warnUnusedVariables(context, funcNode->scope));
+    // Warnings
+    SWAG_CHECK(SemanticError::warnUnusedVariables(context, funcNode->scope));
 
-	// Now the full function has been solved, so we wakeup jobs depending on that
-	SWAG_CHECK(setFullResolve(context, funcNode));
+    // Now the full function has been solved, so we wakeup jobs depending on that
+    SWAG_CHECK(setFullResolve(context, funcNode));
 
-	// Ask for bytecode
-	bool genByteCode = true;
-	if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
-		genByteCode = false;
-	if (funcNode->token.text[0] == '@' && !funcNode->hasAstFlag(AST_DEFINED_INTRINSIC))
-		genByteCode = false;
-	if (funcNode->isForeign())
-		genByteCode = false;
-	if (funcNode->hasAstFlag(AST_IS_GENERIC))
-		genByteCode = false;
-	if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
-		genByteCode = false;
-	if (!funcNode->content)
-		genByteCode = false;
-	if (genByteCode)
-		ByteCodeGen::askForByteCode(context->baseJob, funcNode, 0);
+    // Ask for bytecode
+    bool genByteCode = true;
+    if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+        genByteCode = false;
+    if (funcNode->token.text[0] == '@' && !funcNode->hasAstFlag(AST_DEFINED_INTRINSIC))
+        genByteCode = false;
+    if (funcNode->isForeign())
+        genByteCode = false;
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+        genByteCode = false;
+    if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
+        genByteCode = false;
+    if (!funcNode->content)
+        genByteCode = false;
+    if (genByteCode)
+        ByteCodeGen::askForByteCode(context->baseJob, funcNode, 0);
 
-	return true;
+    return true;
 }
 
 bool Semantic::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
-	ScopedLock lk(funcNode->funcMutex);
-	computeAccess(funcNode);
-	funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE | AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
-	funcNode->dependentJobs.setRunning();
-	return true;
+    ScopedLock lk(funcNode->funcMutex);
+    computeAccess(funcNode);
+    funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE | AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE);
+    funcNode->dependentJobs.setRunning();
+    return true;
 }
 
 void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
 {
-	if (funcNode->parameters)
-	{
-		uint32_t storageIndex = 0;
-		if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
-		{
-			const auto param       = funcNode->parameters->children.back();
-			const auto resolved    = param->resolvedSymbolOverload;
-			resolved->storageIndex = 0; // Always the first one
-			storageIndex += 2;
-		}
+    if (funcNode->parameters)
+    {
+        uint32_t storageIndex = 0;
+        if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+        {
+            const auto param       = funcNode->parameters->children.back();
+            const auto resolved    = param->resolvedSymbolOverload;
+            resolved->storageIndex = 0; // Always the first one
+            storageIndex += 2;
+        }
 
-		const auto childSize = funcNode->parameters->children.size();
-		for (size_t i = 0; i < childSize; i++)
-		{
-			if ((i == childSize - 1) && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
-				break;
-			const auto param       = funcNode->parameters->children[i];
-			const auto resolved    = param->resolvedSymbolOverload;
-			resolved->storageIndex = storageIndex;
+        const auto childSize = funcNode->parameters->children.size();
+        for (size_t i = 0; i < childSize; i++)
+        {
+            if ((i == childSize - 1) && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+                break;
+            const auto param       = funcNode->parameters->children[i];
+            const auto resolved    = param->resolvedSymbolOverload;
+            resolved->storageIndex = storageIndex;
 
-			const auto typeParam    = TypeManager::concreteType(resolved->typeInfo);
-			const auto numRegisters = typeParam->numRegisters();
-			storageIndex += numRegisters;
-		}
-	}
+            const auto typeParam    = TypeManager::concreteType(resolved->typeInfo);
+            const auto numRegisters = typeParam->numRegisters();
+            storageIndex += numRegisters;
+        }
+    }
 }
 
 bool Semantic::resolveFuncDeclType(SemanticContext* context)
 {
-	auto typeNode = context->node;
-	auto funcNode = castAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
+    auto typeNode = context->node;
+    auto funcNode = castAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
 
-	// This is a lambda that was waiting for a match.
-	// We are now awake, so everything has been done already
-	if (funcNode->pendingLambdaJob)
-	{
-		setFuncDeclParamsIndex(funcNode);
-		funcNode->pendingLambdaJob = nullptr;
+    // This is a lambda that was waiting for a match.
+    // We are now awake, so everything has been done already
+    if (funcNode->pendingLambdaJob)
+    {
+        setFuncDeclParamsIndex(funcNode);
+        funcNode->pendingLambdaJob = nullptr;
 
-		ScopedLock lk(funcNode->resolvedSymbolName->mutex);
+        ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 
-		// We were not a short lambda, so just wakeup our dependencies
-		if (!funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
-		{
-			funcNode->resolvedSymbolName->dependentJobs.setRunning();
-		}
+        // We were not a short lambda, so just wakeup our dependencies
+        if (!funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
+        {
+            funcNode->resolvedSymbolName->dependentJobs.setRunning();
+        }
 
-		// We were a short lambda, and the return type is now valid
-		// So we just wake up our dependencies, by decreasing the count
-		// (because the registration was the same as an incomplete one)
-		else if (!funcNode->returnType->typeInfo->isGeneric())
-		{
-			funcNode->resolvedSymbolOverload->flags.remove(OVERLOAD_UNDEFINED);
-			funcNode->resolvedSymbolName->decreaseOverloadNoLock();
-		}
+        // We were a short lambda, and the return type is now valid
+        // So we just wake up our dependencies, by decreasing the count
+        // (because the registration was the same as an incomplete one)
+        else if (!funcNode->returnType->typeInfo->isGeneric())
+        {
+            funcNode->resolvedSymbolOverload->flags.remove(OVERLOAD_UNDEFINED);
+            funcNode->resolvedSymbolName->decreaseOverloadNoLock();
+        }
 
-		// Return type is generic. We must evaluate the content to deduce it, so we
-		// pass to short lambda mode again, so that the return evaluation will update
-		// the type.
-		else
-		{
-			funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
-		}
+        // Return type is generic. We must evaluate the content to deduce it, so we
+        // pass to short lambda mode again, so that the return evaluation will update
+        // the type.
+        else
+        {
+            funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// If this is a #message function, we must have a flag mask as parameters
-	if (funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
-	{
-		auto parameters = funcNode->parameters;
-		auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-		SWAG_VERIFY(paramType->isEnum(), context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
-		paramType->computeScopedName();
-		SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
-		SWAG_CHECK(evaluateConstExpression(context, parameters));
-		YIELD();
-		funcNode->parameters->addAstFlag(AST_NO_BYTECODE);
-	}
+    // If this is a #message function, we must have a flag mask as parameters
+    if (funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
+    {
+        auto parameters = funcNode->parameters;
+        auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+        SWAG_VERIFY(paramType->isEnum(), context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
+        paramType->computeScopedName();
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
+        SWAG_CHECK(evaluateConstExpression(context, parameters));
+        YIELD();
+        funcNode->parameters->addAstFlag(AST_NO_BYTECODE);
+    }
 
-	// Return type
-	if (!typeNode->children.empty())
-	{
-		auto front         = typeNode->children.front();
-		typeNode->typeInfo = front->typeInfo;
-		if (typeNode->typeInfo->getConcreteAlias()->isVoid())
-		{
-			Diagnostic err{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0369)};
-			return context->report(err);
-		}
-	}
-	else
-	{
-		typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
+    // Return type
+    if (!typeNode->children.empty())
+    {
+        auto front         = typeNode->children.front();
+        typeNode->typeInfo = front->typeInfo;
+        if (typeNode->typeInfo->getConcreteAlias()->isVoid())
+        {
+            Diagnostic err{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0369)};
+            return context->report(err);
+        }
+    }
+    else
+    {
+        typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
 
-		// :DeduceLambdaType
-		if (funcNode->makePointerLambda &&
-			(funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE)) &&
-			!funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
-		{
-			auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
-			if (deducedType->isLambdaClosure())
-			{
-				auto typeFct       = castTypeInfo<TypeInfoFuncAttr>(deducedType, TypeInfoKind::LambdaClosure);
-				typeNode->typeInfo = typeFct->returnType;
-			}
-		}
-	}
+        // :DeduceLambdaType
+        if (funcNode->makePointerLambda &&
+            (funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE)) &&
+            !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+        {
+            auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
+            if (deducedType->isLambdaClosure())
+            {
+                auto typeFct       = castTypeInfo<TypeInfoFuncAttr>(deducedType, TypeInfoKind::LambdaClosure);
+                typeNode->typeInfo = typeFct->returnType;
+            }
+        }
+    }
 
-	// Collect function attributes
-	auto       typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-	ScopedLock lkT(typeInfo->mutex);
+    // Collect function attributes
+    auto       typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    ScopedLock lkT(typeInfo->mutex);
 
-	SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChildren);
-	SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
+    SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChildren);
+    SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
 
-	// Check attributes
-	if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
-		funcNode->addAstFlag(AST_CONST_EXPR);
-	if (funcNode->ownerFct)
-		funcNode->inheritAttribute(funcNode->ownerFct, ATTRIBUTE_COMPILER);
+    // Check attributes
+    if (funcNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
+        funcNode->addAstFlag(AST_CONST_EXPR);
+    if (funcNode->ownerFct)
+        funcNode->inheritAttribute(funcNode->ownerFct, ATTRIBUTE_COMPILER);
 
-	if (!funcNode->hasAstFlag(AST_FROM_GENERIC) && !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_CHECK_ATTR))
-	{
-		// Can be called multiple times in case of a mixin/macro inside another inlined function
-		funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_CHECK_ATTR);
+    if (!funcNode->hasAstFlag(AST_FROM_GENERIC) && !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_CHECK_ATTR))
+    {
+        // Can be called multiple times in case of a mixin/macro inside another inlined function
+        funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_CHECK_ATTR);
 
-		if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
-			funcNode->addAttribute(ATTRIBUTE_INLINE);
-		if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
-			funcNode->addAttribute(ATTRIBUTE_INLINE | ATTRIBUTE_MACRO);
+        if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
+            funcNode->addAttribute(ATTRIBUTE_INLINE);
+        if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
+            funcNode->addAttribute(ATTRIBUTE_INLINE | ATTRIBUTE_MACRO);
 
-		if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-		{
-			if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
-			{
-				Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0224), funcNode->getDisplayNameC())};
-				auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
-				return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
-			}
+        if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
+        {
+            if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
+            {
+                Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0224), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
+                return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
+            }
 
-			if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
-			{
-				Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0225), funcNode->getDisplayNameC())};
-				auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
-				return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
-			}
+            if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
+            {
+                Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0225), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
+                return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
+            }
 
-			if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
-			{
-				Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0223), funcNode->getDisplayNameC())};
-				auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
-				return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
-			}
+            if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
+            {
+                Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0223), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
+                return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
+            }
 
-			if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-			{
-				Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0226), funcNode->getDisplayNameC())};
-				auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
-				return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
-			}
+            if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+            {
+                Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0226), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+                return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
+            }
 
-			if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
-			{
-				Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0222), funcNode->getDisplayNameC())};
-				auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
-				return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
-			}
-		}
-	}
+            if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
+            {
+                Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0222), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+                return context->report(err, Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute")));
+            }
+        }
+    }
 
-	if (funcNode->hasAttribute(ATTRIBUTE_COMPLETE) &&
-		funcNode->token.text != g_LangSpec->name_opAffect &&
-		funcNode->token.text != g_LangSpec->name_opAffectLiteral)
-	{
-		Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0488), funcNode->token.c_str())};
-		auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-		auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		return context->report(err, note);
-	}
+    if (funcNode->hasAttribute(ATTRIBUTE_COMPLETE) &&
+        funcNode->token.text != g_LangSpec->name_opAffect &&
+        funcNode->token.text != g_LangSpec->name_opAffectLiteral)
+    {
+        Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0488), funcNode->token.c_str())};
+        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+        return context->report(err, note);
+    }
 
-	if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) &&
-		funcNode->token.text != g_LangSpec->name_opAffect &&
-		funcNode->token.text != g_LangSpec->name_opAffectLiteral &&
-		funcNode->token.text != g_LangSpec->name_opCast)
-	{
-		Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0490), funcNode->token.c_str())};
-		auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
-		auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		context->report(err, note);
-	}
+    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) &&
+        funcNode->token.text != g_LangSpec->name_opAffect &&
+        funcNode->token.text != g_LangSpec->name_opAffectLiteral &&
+        funcNode->token.text != g_LangSpec->name_opCast)
+    {
+        Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0490), funcNode->token.c_str())};
+        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
+        auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+        context->report(err, note);
+    }
 
-	if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !funcNode->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
-	{
-		Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0487), funcNode->token.c_str())};
-		auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
-		auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		return context->report(err, note);
-	}
+    if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !funcNode->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+    {
+        Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0487), funcNode->token.c_str())};
+        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+        auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+        return context->report(err, note);
+    }
 
-	// Implicit attribute cannot be used on a generic function
-	// This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
-	if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
-	{
-		bool ok = false;
-		if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->children.size() <= 1)
-			ok = true;
-		if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
-			ok = true;
-		if (!ok)
-		{
-			Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0486), funcNode->getDisplayNameC())};
-			auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
-			auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-			return context->report(err, note);
-		}
-	}
+    // Implicit attribute cannot be used on a generic function
+    // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
+    if (funcNode->hasAttribute(ATTRIBUTE_IMPLICIT) && funcNode->hasAstFlag(AST_IS_GENERIC | AST_FROM_GENERIC))
+    {
+        bool ok = false;
+        if (funcNode->token.text == g_LangSpec->name_opAffectLiteral && funcNode->genericParameters->children.size() <= 1)
+            ok = true;
+        if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
+            ok = true;
+        if (!ok)
+        {
+            Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0486), funcNode->getDisplayNameC())};
+            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
+            auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+            return context->report(err, note);
+        }
+    }
 
-	if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
-	{
-		// Determine if function is generic
-		if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-			funcNode->addAstFlag(AST_IS_GENERIC);
-		if (funcNode->ownerFct && (funcNode->ownerFct->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-			funcNode->addAstFlag(AST_IS_GENERIC);
+    if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
+    {
+        // Determine if function is generic
+        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+            funcNode->addAstFlag(AST_IS_GENERIC);
+        if (funcNode->ownerFct && (funcNode->ownerFct->hasAstFlag(AST_IS_GENERIC)) && !funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+            funcNode->addAstFlag(AST_IS_GENERIC);
 
-		if (funcNode->parameters)
-			funcNode->inheritAstFlagsOr(funcNode->parameters, AST_IS_GENERIC);
+        if (funcNode->parameters)
+            funcNode->inheritAstFlagsOr(funcNode->parameters, AST_IS_GENERIC);
 
-		if (funcNode->genericParameters)
-		{
-			if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
-			{
-				auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
-				auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-				Diagnostic err{funcNode->genericParameters, FMT(Err(Err0687), funcNode->token.c_str())};
-				return context->report(err, note);
-			}
+        if (funcNode->genericParameters)
+        {
+            if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
+            {
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+                auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+                Diagnostic err{funcNode->genericParameters, FMT(Err(Err0687), funcNode->token.c_str())};
+                return context->report(err, note);
+            }
 
-			funcNode->addAstFlag(AST_IS_GENERIC);
-		}
+            funcNode->addAstFlag(AST_IS_GENERIC);
+        }
 
-		if (funcNode->hasAstFlag(AST_IS_GENERIC))
-			typeInfo->addFlag(TYPEINFO_GENERIC);
+        if (funcNode->hasAstFlag(AST_IS_GENERIC))
+            typeInfo->addFlag(TYPEINFO_GENERIC);
 
-		if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_IS_GENERIC))
-		{
-			auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
-			auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-			Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0684), funcNode->token.c_str())};
-			return context->report(err, note);
-		}
+        if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_IS_GENERIC))
+        {
+            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+            auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+            Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0684), funcNode->token.c_str())};
+            return context->report(err, note);
+        }
 
-		SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
-		YIELD();
-		SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
-		YIELD();
-	}
-	else
-	{
-		for (auto t : typeInfo->parameters)
-		{
-			if (t->typeInfo->isGeneric())
-			{
-				t->typeInfo = funcNode->parameters->children[t->index]->typeInfo;
-			}
-		}
-	}
+        SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
+        YIELD();
+        SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
+        YIELD();
+    }
+    else
+    {
+        for (auto t : typeInfo->parameters)
+        {
+            if (t->typeInfo->isGeneric())
+            {
+                t->typeInfo = funcNode->parameters->children[t->index]->typeInfo;
+            }
+        }
+    }
 
-	// If a lambda function will wait for a match, then no need to deduce the return type
-	// It will be done in the same way as parameters
-	bool shortLambdaPendingTyping = false;
-	if (!funcNode->hasAstFlag(AST_IS_GENERIC))
-	{
-		if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
-		{
-			shortLambdaPendingTyping = funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
-			typeNode->typeInfo       = g_TypeMgr->typeInfoUndefined;
-			funcNode->removeSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
-		}
-	}
+    // If a lambda function will wait for a match, then no need to deduce the return type
+    // It will be done in the same way as parameters
+    bool shortLambdaPendingTyping = false;
+    if (!funcNode->hasAstFlag(AST_IS_GENERIC))
+    {
+        if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
+        {
+            shortLambdaPendingTyping = funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
+            typeNode->typeInfo       = g_TypeMgr->typeInfoUndefined;
+            funcNode->removeSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
+        }
+    }
 
-	// Short lambda without a return type we must deduced
-	// In that case, symbol registration will not be done at the end of that function but once the return expression
-	// has been evaluated, and the type deduced
-	bool shortLambda = false;
-	if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
-		shortLambda = true;
+    // Short lambda without a return type we must deduced
+    // In that case, symbol registration will not be done at the end of that function but once the return expression
+    // has been evaluated, and the type deduced
+    bool shortLambda = false;
+    if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
+        shortLambda = true;
 
-	// :RunGeneratedExp
-	bool mustDeduceReturnType = false;
-	if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
-		mustDeduceReturnType = true;
+    // :RunGeneratedExp
+    bool mustDeduceReturnType = false;
+    if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
+        mustDeduceReturnType = true;
 
-	// No semantic on content if function is generic
-	if (funcNode->hasAstFlag(AST_IS_GENERIC))
-	{
-		shortLambda = false;
-		funcNode->content->addAstFlag(AST_NO_SEMANTIC);
-	}
+    // No semantic on content if function is generic
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+    {
+        shortLambda = false;
+        funcNode->content->addAstFlag(AST_NO_SEMANTIC);
+    }
 
-	// Macro will not evaluate its content before being inline
-	if (funcNode->hasAttribute(ATTRIBUTE_MACRO) && !shortLambda)
-		funcNode->content->addAstFlag(AST_NO_SEMANTIC);
+    // Macro will not evaluate its content before being inline
+    if (funcNode->hasAttribute(ATTRIBUTE_MACRO) && !shortLambda)
+        funcNode->content->addAstFlag(AST_NO_SEMANTIC);
 
-	// Register symbol
-	typeInfo->returnType = typeNode->typeInfo;
+    // Register symbol
+    typeInfo->returnType = typeNode->typeInfo;
 
-	// Be sure this is a valid return type
-	if (!typeInfo->returnType->isNative() &&
-		!typeInfo->returnType->isListTuple() &&
-		!typeInfo->returnType->isListArray() &&
-		!typeInfo->returnType->isStruct() &&
-		!typeInfo->returnType->isGeneric() &&
-		!typeInfo->returnType->isAlias() &&
-		!typeInfo->returnType->isLambdaClosure() &&
-		!typeInfo->returnType->isSlice() &&
-		!typeInfo->returnType->isEnum() &&
-		!typeInfo->returnType->isInterface() &&
-		!typeInfo->returnType->isArray() &&
-		!typeInfo->returnType->isPointer())
-	{
-		return context->report({typeNode->children.front(), FMT(Err(Err0368), typeInfo->returnType->getDisplayNameC())});
-	}
+    // Be sure this is a valid return type
+    if (!typeInfo->returnType->isNative() &&
+        !typeInfo->returnType->isListTuple() &&
+        !typeInfo->returnType->isListArray() &&
+        !typeInfo->returnType->isStruct() &&
+        !typeInfo->returnType->isGeneric() &&
+        !typeInfo->returnType->isAlias() &&
+        !typeInfo->returnType->isLambdaClosure() &&
+        !typeInfo->returnType->isSlice() &&
+        !typeInfo->returnType->isEnum() &&
+        !typeInfo->returnType->isInterface() &&
+        !typeInfo->returnType->isArray() &&
+        !typeInfo->returnType->isPointer())
+    {
+        return context->report({typeNode->children.front(), FMT(Err(Err0368), typeInfo->returnType->getDisplayNameC())});
+    }
 
-	typeInfo->name.clear();
-	typeInfo->displayName.clear();
-	typeInfo->computeWhateverNameNoLock(COMPUTE_NAME);
+    typeInfo->name.clear();
+    typeInfo->displayName.clear();
+    typeInfo->computeWhateverNameNoLock(COMPUTE_NAME);
 
-	// Special functions registration
-	if (funcNode->parameters && funcNode->parameters->children.size() == 1)
-	{
-		if (funcNode->token.text == g_LangSpec->name_opInit)
-		{
-			auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-			auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-			ScopedLock lk(typeStruct->mutex);
-			typeStruct->opUserInitFct = funcNode;
-		}
-		else if (funcNode->token.text == g_LangSpec->name_opDrop)
-		{
-			auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-			auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-			ScopedLock lk(typeStruct->mutex);
-			typeStruct->opUserDropFct = funcNode;
-			SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0102), typeStruct->getDisplayNameC())}));
-		}
-		else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
-		{
-			auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-			auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-			ScopedLock lk(typeStruct->mutex);
-			typeStruct->opUserPostCopyFct = funcNode;
-			SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0103), typeStruct->name.c_str())}));
-		}
-		else if (funcNode->token.text == g_LangSpec->name_opPostMove)
-		{
-			auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-			auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-			ScopedLock lk(typeStruct->mutex);
-			typeStruct->opUserPostMoveFct = funcNode;
-		}
-	}
+    // Special functions registration
+    if (funcNode->parameters && funcNode->parameters->children.size() == 1)
+    {
+        if (funcNode->token.text == g_LangSpec->name_opInit)
+        {
+            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            ScopedLock lk(typeStruct->mutex);
+            typeStruct->opUserInitFct = funcNode;
+        }
+        else if (funcNode->token.text == g_LangSpec->name_opDrop)
+        {
+            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            ScopedLock lk(typeStruct->mutex);
+            typeStruct->opUserDropFct = funcNode;
+            SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0102), typeStruct->getDisplayNameC())}));
+        }
+        else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
+        {
+            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            ScopedLock lk(typeStruct->mutex);
+            typeStruct->opUserPostCopyFct = funcNode;
+            SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0103), typeStruct->name.c_str())}));
+        }
+        else if (funcNode->token.text == g_LangSpec->name_opPostMove)
+        {
+            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            ScopedLock lk(typeStruct->mutex);
+            typeStruct->opUserPostMoveFct = funcNode;
+        }
+    }
 
-	// If this is a lambda waiting for a match to know the types of its parameters, need to wait
-	// Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
-	if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
-	{
-		if (!funcNode->hasAstFlag(AST_IS_GENERIC))
-		{
-			funcNode->pendingLambdaJob = context->baseJob;
-			context->baseJob->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
-		}
-	}
+    // If this is a lambda waiting for a match to know the types of its parameters, need to wait
+    // Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
+    if (funcNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
+    {
+        if (!funcNode->hasAstFlag(AST_IS_GENERIC))
+        {
+            funcNode->pendingLambdaJob = context->baseJob;
+            context->baseJob->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
+        }
+    }
 
-	// Set storageIndex of each parameters
-	setFuncDeclParamsIndex(funcNode);
+    // Set storageIndex of each parameters
+    setFuncDeclParamsIndex(funcNode);
 
-	// To avoid ambiguity, we do not want a function to declare a generic type 'T' if the struct
-	// has the same generic parameter name (this is useless and implicit)
-	if (funcNode->genericParameters && funcNode->ownerStructScope)
-	{
-		auto structDecl = castAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
-		if (structDecl->typeInfo->isGeneric())
-		{
-			for (auto c : funcNode->genericParameters->children)
-			{
-				if (!c->resolvedSymbolOverload)
-					continue;
+    // To avoid ambiguity, we do not want a function to declare a generic type 'T' if the struct
+    // has the same generic parameter name (this is useless and implicit)
+    if (funcNode->genericParameters && funcNode->ownerStructScope)
+    {
+        auto structDecl = castAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
+        if (structDecl->typeInfo->isGeneric())
+        {
+            for (auto c : funcNode->genericParameters->children)
+            {
+                if (!c->resolvedSymbolOverload)
+                    continue;
 
-				for (auto sc : structDecl->genericParameters->children)
-				{
-					if (!sc->resolvedSymbolOverload)
-						continue;
+                for (auto sc : structDecl->genericParameters->children)
+                {
+                    if (!sc->resolvedSymbolOverload)
+                        continue;
 
-					if (c->resolvedSymbolOverload->node->token.text == sc->resolvedSymbolOverload->node->token.text)
-					{
-						Diagnostic err{c, FMT(Err(Err0114), c->resolvedSymbolOverload->node->token.c_str())};
-						auto       note = Diagnostic::note(sc->resolvedSymbolOverload->node, Nte(Nte0073));
-						return context->report(err, note);
-					}
-				}
-			}
-		}
-	}
+                    if (c->resolvedSymbolOverload->node->token.text == sc->resolvedSymbolOverload->node->token.text)
+                    {
+                        Diagnostic err{c, FMT(Err(Err0114), c->resolvedSymbolOverload->node->token.c_str())};
+                        auto       note = Diagnostic::note(sc->resolvedSymbolOverload->node, Nte(Nte0073));
+                        return context->report(err, note);
+                    }
+                }
+            }
+        }
+    }
 
-	// Do we have capture parameters ? If it's the case, then we need to register all symbols as variables in the function scope
-	if (funcNode->captureParameters)
-	{
-		uint32_t storageOffset = 0;
-		for (auto c : funcNode->captureParameters->children)
-		{
-			Utf8 name = c->token.text;
-			if (c->kind == AstNodeKind::MakePointer)
-				name = c->children.front()->token.text;
+    // Do we have capture parameters ? If it's the case, then we need to register all symbols as variables in the function scope
+    if (funcNode->captureParameters)
+    {
+        uint32_t storageOffset = 0;
+        for (auto c : funcNode->captureParameters->children)
+        {
+            Utf8 name = c->token.text;
+            if (c->kind == AstNodeKind::MakePointer)
+                name = c->children.front()->token.text;
 
-			AddSymbolTypeInfo toAdd;
-			toAdd.node      = c;
-			toAdd.typeInfo  = c->typeInfo;
-			toAdd.kind      = SymbolKind::Variable;
-			toAdd.flags     = OVERLOAD_VAR_CAPTURE;
-			toAdd.aliasName = &name;
+            AddSymbolTypeInfo toAdd;
+            toAdd.node      = c;
+            toAdd.typeInfo  = c->typeInfo;
+            toAdd.kind      = SymbolKind::Variable;
+            toAdd.flags     = OVERLOAD_VAR_CAPTURE;
+            toAdd.aliasName = &name;
 
-			auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd);
-			if (!overload)
-				return false;
-			c->resolvedSymbolOverload             = overload;
-			overload->computedValue.storageOffset = storageOffset;
-			storageOffset += overload->typeInfo->sizeOf;
-		}
-	}
+            auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd);
+            if (!overload)
+                return false;
+            c->resolvedSymbolOverload             = overload;
+            overload->computedValue.storageOffset = storageOffset;
+            storageOffset += overload->typeInfo->sizeOf;
+        }
+    }
 
-	// Register runtime libc function type, by name
-	if (funcNode->sourceFile && funcNode->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && funcNode->isEmptyFct())
-	{
-		ScopedLock lk(funcNode->sourceFile->module->mutexFile);
-		funcNode->sourceFile->module->mapRuntimeFctTypes[funcNode->token.text] = typeInfo;
-	}
+    // Register runtime libc function type, by name
+    if (funcNode->sourceFile && funcNode->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && funcNode->isEmptyFct())
+    {
+        ScopedLock lk(funcNode->sourceFile->module->mutexFile);
+        funcNode->sourceFile->module->mapRuntimeFctTypes[funcNode->token.text] = typeInfo;
+    }
 
-	// We should never reference an empty function
-	// So consider this is a placeholder. This will generate an error in case the empty function is not replaced by a
-	// real function at some point.
-	if (funcNode->isEmptyFct() && !funcNode->isForeign() && funcNode->token.text[0] != '@')
-	{
-		ScopedLock lk(funcNode->resolvedSymbolName->mutex);
+    // We should never reference an empty function
+    // So consider this is a placeholder. This will generate an error in case the empty function is not replaced by a
+    // real function at some point.
+    if (funcNode->isEmptyFct() && !funcNode->isForeign() && funcNode->token.text[0] != '@')
+    {
+        ScopedLock lk(funcNode->resolvedSymbolName->mutex);
 
-		// We need to be sure that we only have empty functions, and not a real one.
-		// As we can have multiple times the same empty function prototype, count them.
-		size_t cptEmpty = 0;
-		for (auto n : funcNode->resolvedSymbolName->nodes)
-		{
-			if (!n->isEmptyFct())
-				break;
-			cptEmpty++;
-		}
+        // We need to be sure that we only have empty functions, and not a real one.
+        // As we can have multiple times the same empty function prototype, count them.
+        size_t cptEmpty = 0;
+        for (auto n : funcNode->resolvedSymbolName->nodes)
+        {
+            if (!n->isEmptyFct())
+                break;
+            cptEmpty++;
+        }
 
-		if (cptEmpty == funcNode->resolvedSymbolName->nodes.size() && funcNode->resolvedSymbolName->cptOverloads == 1)
-		{
-			funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
-			return true;
-		}
-	}
+        if (cptEmpty == funcNode->resolvedSymbolName->nodes.size() && funcNode->resolvedSymbolName->cptOverloads == 1)
+        {
+            funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
+            return true;
+        }
+    }
 
-	// For a short lambda without a specified return type, we need to defer the symbol registration, as we
-	// need to infer it from the lambda expression
-	OverloadFlags overFlags = 0;
-	if (shortLambda || mustDeduceReturnType)
-		overFlags.add(OVERLOAD_INCOMPLETE);
-	if (shortLambdaPendingTyping)
-		overFlags.add(OVERLOAD_UNDEFINED);
-	SWAG_CHECK(registerFuncSymbol(context, funcNode, overFlags));
+    // For a short lambda without a specified return type, we need to defer the symbol registration, as we
+    // need to infer it from the lambda expression
+    OverloadFlags overFlags = 0;
+    if (shortLambda || mustDeduceReturnType)
+        overFlags.add(OVERLOAD_INCOMPLETE);
+    if (shortLambdaPendingTyping)
+        overFlags.add(OVERLOAD_UNDEFINED);
+    SWAG_CHECK(registerFuncSymbol(context, funcNode, overFlags));
 
-	return true;
+    return true;
 }
 
 bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, OverloadFlags overFlags)
 {
-	if (!overFlags.has(OVERLOAD_INCOMPLETE))
-	{
-		SWAG_CHECK(checkFuncPrototype(context, funcNode));
+    if (!overFlags.has(OVERLOAD_INCOMPLETE))
+    {
+        SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
-		// The function wants to return something, but has the 'Swag.CalleeReturn' attribute
-		if (!funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
-		{
-			const auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
-			const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-			const Diagnostic err{funcNode->returnType->children.front(), Err(Err0697)};
-			return context->report(err, note);
-		}
+        // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
+        if (!funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
+        {
+            const auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+            const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+            const Diagnostic err{funcNode->returnType->children.front(), Err(Err0697)};
+            return context->report(err, note);
+        }
 
-		// The function returns nothing but has the 'Swag.Discardable' attribute
-		if (funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_DISCARDABLE))
-		{
-			const auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
-			const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-			const Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0573), funcNode->token.c_str())};
-			return context->report(err, note);
-		}
-	}
+        // The function returns nothing but has the 'Swag.Discardable' attribute
+        if (funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_DISCARDABLE))
+        {
+            const auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
+            const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+            const Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0573), funcNode->token.c_str())};
+            return context->report(err, note);
+        }
+    }
 
-	if (funcNode->hasAstFlag(AST_IS_GENERIC))
-		overFlags.add(OVERLOAD_GENERIC);
+    if (funcNode->hasAstFlag(AST_IS_GENERIC))
+        overFlags.add(OVERLOAD_GENERIC);
 
-	AddSymbolTypeInfo toAdd;
-	toAdd.node     = funcNode;
-	toAdd.typeInfo = funcNode->typeInfo;
-	toAdd.kind     = SymbolKind::Function;
-	toAdd.flags    = overFlags;
+    AddSymbolTypeInfo toAdd;
+    toAdd.node     = funcNode;
+    toAdd.typeInfo = funcNode->typeInfo;
+    toAdd.kind     = SymbolKind::Function;
+    toAdd.flags    = overFlags;
 
-	funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-	funcNode->resolvedSymbolName     = toAdd.symbolName;
-	SWAG_CHECK(funcNode->resolvedSymbolOverload);
+    funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
+    funcNode->resolvedSymbolName     = toAdd.symbolName;
+    SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
-	// Be sure an overloaded function has the attribute
-	if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
-	{
-		SharedLock lk(funcNode->ownerScope->symTable.mutex);
-		if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
-		{
-			AstFuncDecl* other = nullptr;
-			for (const auto n : funcNode->resolvedSymbolName->nodes)
-			{
-				if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
-				{
-					if (!n->hasAstFlag(AST_FROM_GENERIC))
-					{
-						other = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-					}
-				}
-			}
+    // Be sure an overloaded function has the attribute
+    if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
+    {
+        SharedLock lk(funcNode->ownerScope->symTable.mutex);
+        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
+        {
+            AstFuncDecl* other = nullptr;
+            for (const auto n : funcNode->resolvedSymbolName->nodes)
+            {
+                if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
+                {
+                    if (!n->hasAstFlag(AST_FROM_GENERIC))
+                    {
+                        other = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+                    }
+                }
+            }
 
-			if (other)
-			{
-				const Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0655), funcNode->token.c_str())};
-				return context->report(err, Diagnostic::hereIs(other));
-			}
-		}
-	}
+            if (other)
+            {
+                const Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0655), funcNode->token.c_str())};
+                return context->report(err, Diagnostic::hereIs(other));
+            }
+        }
+    }
 
-	// If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
-	// named retval for "var result: retval{xx, xxx}" syntax
-	const auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
-	if (returnType->isStruct())
-	{
-		Utf8              retVal = g_LangSpec->name_retval;
-		AddSymbolTypeInfo toAdd1;
-		toAdd1.node      = funcNode->returnType;
-		toAdd1.typeInfo  = returnType;
-		toAdd1.kind      = SymbolKind::TypeAlias;
-		toAdd1.flags     = overFlags | OVERLOAD_RETVAL;
-		toAdd1.aliasName = &retVal;
-		funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd1);
-	}
+    // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
+    // named retval for "var result: retval{xx, xxx}" syntax
+    const auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
+    if (returnType->isStruct())
+    {
+        Utf8              retVal = g_LangSpec->name_retval;
+        AddSymbolTypeInfo toAdd1;
+        toAdd1.node      = funcNode->returnType;
+        toAdd1.typeInfo  = returnType;
+        toAdd1.kind      = SymbolKind::TypeAlias;
+        toAdd1.flags     = overFlags | OVERLOAD_RETVAL;
+        toAdd1.aliasName = &retVal;
+        funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd1);
+    }
 
-	// Register method
-	if (!overFlags.has(OVERLOAD_INCOMPLETE) && isMethod(funcNode))
-	{
-		const auto typeStruct = castTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-		const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-		SWAG_ASSERT(funcNode->methodParam);
+    // Register method
+    if (!overFlags.has(OVERLOAD_INCOMPLETE) && isMethod(funcNode))
+    {
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+        const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+        SWAG_ASSERT(funcNode->methodParam);
 
-		if (!typeFunc->attributes.empty())
-		{
-			ScopedLock lk(typeStruct->mutex);
-			funcNode->methodParam->attributes = typeFunc->attributes;
-		}
+        if (!typeFunc->attributes.empty())
+        {
+            ScopedLock lk(typeStruct->mutex);
+            funcNode->methodParam->attributes = typeFunc->attributes;
+        }
 
-		decreaseMethodCount(funcNode, typeStruct);
-	}
+        decreaseMethodCount(funcNode, typeStruct);
+    }
 
-	resolveSubDecls(context, funcNode);
-	return true;
+    resolveSubDecls(context, funcNode);
+    return true;
 }
 
 bool Semantic::isMethod(const AstFuncDecl* funcNode)
 {
-	if (funcNode->ownerStructScope &&
-		funcNode->parent->kind != AstNodeKind::CompilerAst &&
-		funcNode->parent->kind != AstNodeKind::CompilerRun &&
-		funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
-		funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
-		funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
-		!funcNode->hasAstFlag(AST_FROM_GENERIC) &&
-		!funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
-		(funcNode->ownerScope->kind == ScopeKind::Struct) &&
-		funcNode->ownerStructScope->owner->typeInfo->isStruct())
-	{
-		return true;
-	}
+    if (funcNode->ownerStructScope &&
+        funcNode->parent->kind != AstNodeKind::CompilerAst &&
+        funcNode->parent->kind != AstNodeKind::CompilerRun &&
+        funcNode->parent->kind != AstNodeKind::CompilerRunExpression &&
+        funcNode->parent->kind != AstNodeKind::CompilerValidIf &&
+        funcNode->parent->kind != AstNodeKind::CompilerValidIfx &&
+        !funcNode->hasAstFlag(AST_FROM_GENERIC) &&
+        !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
+        (funcNode->ownerScope->kind == ScopeKind::Struct) &&
+        funcNode->ownerStructScope->owner->typeInfo->isStruct())
+    {
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 void Semantic::launchResolveSubDecl(const JobContext* context, AstNode* node)
 {
-	if (node->hasAstFlag(AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
-		return;
+    if (node->hasAstFlag(AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
+        return;
 
-	// If SEMFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
-	// because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
-	// If SEMFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
-	// file job will trigger the resolve itself
-	node->removeAstFlag(AST_NO_SEMANTIC);
-	if (node->hasSemFlag(SEMFLAG_FILE_JOB_PASS))
-	{
-		SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, node, true);
-	}
+    // If SEMFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
+    // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
+    // If SEMFLAG_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
+    // file job will trigger the resolve itself
+    node->removeAstFlag(AST_NO_SEMANTIC);
+    if (node->hasSemFlag(SEMFLAG_FILE_JOB_PASS))
+    {
+        SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, node, true);
+    }
 }
 
 void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
 {
-	if (!funcNode)
-		return;
+    if (!funcNode)
+        return;
 
-	// If we have sub declarations, then now we can solve them, except for a generic function.
-	// Because for a generic function, the sub declarations will be cloned and solved after instantiation.
-	// Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instantiation
-	// at the same time.
-	if (!funcNode->hasAstFlag(AST_IS_GENERIC) && funcNode->content && !funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
-	{
-		for (auto f : funcNode->subDecl)
-		{
-			ScopedLock lk(f->mutex);
+    // If we have sub declarations, then now we can solve them, except for a generic function.
+    // Because for a generic function, the sub declarations will be cloned and solved after instantiation.
+    // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instantiation
+    // at the same time.
+    if (!funcNode->hasAstFlag(AST_IS_GENERIC) && funcNode->content && !funcNode->content->hasAstFlag(AST_NO_SEMANTIC))
+    {
+        for (auto f : funcNode->subDecl)
+        {
+            ScopedLock lk(f->mutex);
 
-			// Disabled by #if block
-			if (f->hasSemFlag(SEMFLAG_DISABLED))
-				continue;
-			f->addSemFlag(SEMFLAG_DISABLED); // To avoid multiple resolutions
+            // Disabled by #if block
+            if (f->hasSemFlag(SEMFLAG_DISABLED))
+                continue;
+            f->addSemFlag(SEMFLAG_DISABLED); // To avoid multiple resolutions
 
-			if (f->hasExtOwner() && f->extOwner()->ownerCompilerIfBlock && f->extOwner()->ownerCompilerIfBlock->ownerFct == funcNode)
-			{
-				ScopedLock lk1(f->extOwner()->ownerCompilerIfBlock->mutex);
-				f->extOwner()->ownerCompilerIfBlock->subDecl.push_back(f);
-			}
-			else
-				launchResolveSubDecl(context, f);
-		}
-	}
+            if (f->hasExtOwner() && f->extOwner()->ownerCompilerIfBlock && f->extOwner()->ownerCompilerIfBlock->ownerFct == funcNode)
+            {
+                ScopedLock lk1(f->extOwner()->ownerCompilerIfBlock->mutex);
+                f->extOwner()->ownerCompilerIfBlock->subDecl.push_back(f);
+            }
+            else
+                launchResolveSubDecl(context, f);
+        }
+    }
 }
 
 bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 {
-	const auto node = castAst<AstFuncCallParams>(context->node, AstNodeKind::FuncCallParams);
-	node->inheritAstFlagsOr(AST_IS_GENERIC);
-	node->inheritAstFlagsAnd(AST_CONST_EXPR);
+    const auto node = castAst<AstFuncCallParams>(context->node, AstNodeKind::FuncCallParams);
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
-	// Check capture types
-	for (auto c : node->children)
-	{
-		auto typeField = c->typeInfo;
+    // Check capture types
+    for (auto c : node->children)
+    {
+        auto typeField = c->typeInfo;
 
-		if (typeField->isArray())
-		{
-			const auto typeArray = castTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);
-			typeField            = typeArray->finalType;
-		}
+        if (typeField->isArray())
+        {
+            const auto typeArray = castTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);
+            typeField            = typeArray->finalType;
+        }
 
-		if (typeField->isPointer())
-			continue;
-		if (typeField->isNative())
-			continue;
-		if (typeField->isSlice())
-			continue;
-		if (typeField->isInterface())
-			continue;
-		if (typeField->isLambda())
-			continue;
+        if (typeField->isPointer())
+            continue;
+        if (typeField->isNative())
+            continue;
+        if (typeField->isSlice())
+            continue;
+        if (typeField->isInterface())
+            continue;
+        if (typeField->isLambda())
+            continue;
 
-		if (typeField->isStruct())
-		{
-			SWAG_CHECK(waitForStructUserOps(context, c));
-			YIELD();
-			const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
-			if (!typeStruct->isPlainOldData())
-				return context->report({c, FMT(Err(Err0233), c->token.c_str())});
-			continue;
-		}
+        if (typeField->isStruct())
+        {
+            SWAG_CHECK(waitForStructUserOps(context, c));
+            YIELD();
+            const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
+            if (!typeStruct->isPlainOldData())
+                return context->report({c, FMT(Err(Err0233), c->token.c_str())});
+            continue;
+        }
 
-		const auto aKindName = Naming::aKindName(typeField);
-		return context->report({c, FMT(Err(Err0232), c->token.c_str(), aKindName.c_str(), aKindName.c_str())});
-	}
+        const auto aKindName = Naming::aKindName(typeField);
+        return context->report({c, FMT(Err(Err0232), c->token.c_str(), aKindName.c_str(), aKindName.c_str())});
+    }
 
-	// As this is the capture block resolved in the right context, we can now evaluate the corresponding closure
-	const auto mpl = castAst<AstMakePointer>(node->parent, AstNodeKind::MakePointerLambda);
-	SWAG_ASSERT(mpl->lambda);
+    // As this is the capture block resolved in the right context, we can now evaluate the corresponding closure
+    const auto mpl = castAst<AstMakePointer>(node->parent, AstNodeKind::MakePointerLambda);
+    SWAG_ASSERT(mpl->lambda);
 
-	ScopedLock lk(mpl->lambda->mutex);
-	if (mpl->lambda->hasAstFlag(AST_SPEC_SEMANTIC1))
-	{
-		mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC1);
-		launchResolveSubDecl(context, mpl->lambda);
-	}
+    ScopedLock lk(mpl->lambda->mutex);
+    if (mpl->lambda->hasAstFlag(AST_SPEC_SEMANTIC1))
+    {
+        mpl->lambda->removeAstFlag(AST_SPEC_SEMANTIC1);
+        launchResolveSubDecl(context, mpl->lambda);
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 {
-	const auto node = context->node;
-	node->inheritAstFlagsOr(AST_IS_GENERIC);
-	node->inheritAstFlagsAnd(AST_CONST_EXPR);
+    const auto node = context->node;
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
 
-	if (node->hasAstFlag(AST_IS_GENERIC))
-		return true;
+    if (node->hasAstFlag(AST_IS_GENERIC))
+        return true;
 
-	for (auto c : node->children)
-	{
-		if (c->hasComputedValue())
-			continue;
+    for (auto c : node->children)
+    {
+        if (c->hasComputedValue())
+            continue;
 
-		const auto symbol = c->children.front()->resolvedSymbolName;
-		if (!symbol)
-			continue;
+        const auto symbol = c->children.front()->resolvedSymbolName;
+        if (!symbol)
+            continue;
 
-		if (symbol->kind == SymbolKind::Variable ||
-			symbol->kind == SymbolKind::Namespace ||
-			symbol->kind == SymbolKind::Attribute)
-		{
-			return context->report({c, FMT(Err(Err0303), Naming::aKindName(symbol->kind).c_str(), symbol->name.c_str())});
-		}
-	}
+        if (symbol->kind == SymbolKind::Variable ||
+            symbol->kind == SymbolKind::Namespace ||
+            symbol->kind == SymbolKind::Attribute)
+        {
+            return context->report({c, FMT(Err(Err0303), Naming::aKindName(symbol->kind).c_str(), symbol->name.c_str())});
+        }
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
-	const auto node = context->node;
-	node->inheritAstFlagsOr(AST_IS_GENERIC);
-	node->inheritAstFlagsAnd(AST_CONST_EXPR);
-	return true;
+    const auto node = context->node;
+    node->inheritAstFlagsOr(AST_IS_GENERIC);
+    node->inheritAstFlagsAnd(AST_CONST_EXPR);
+    return true;
 }
 
 bool Semantic::resolveFuncCallParam(SemanticContext* context)
 {
-	auto       node  = castAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
-	const auto child = node->children.front();
-	node->typeInfo   = child->typeInfo;
+    auto       node  = castAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
+    const auto child = node->children.front();
+    node->typeInfo   = child->typeInfo;
 
-	SWAG_VERIFY(!node->typeInfo->isCVariadic(), context->report({node, Err(Err0588)}));
+    SWAG_VERIFY(!node->typeInfo->isCVariadic(), context->report({node, Err(Err0588)}));
 
-	// Force const if necessary
-	// func([.., ...]) must be const
-	if (child->kind == AstNodeKind::ExpressionList)
-	{
-		const auto typeList = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-		if (typeList->isListArray())
-			node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
-	}
+    // Force const if necessary
+    // func([.., ...]) must be const
+    if (child->kind == AstNodeKind::ExpressionList)
+    {
+        const auto typeList = castTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+        if (typeList->isListArray())
+            node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
+    }
 
-	node->byteCodeFct = ByteCodeGen::emitFuncCallParam;
+    node->byteCodeFct = ByteCodeGen::emitFuncCallParam;
 
-	// Can be called for generic parameters in type definition, in that case, we are a type, so no
-	// test for concrete must be done
-	bool checkForConcrete = true;
-	if (node->parent->hasAstFlag(AST_NO_BYTECODE))
-		checkForConcrete = false;
-	if (checkForConcrete)
-	{
-		SWAG_CHECK(checkIsConcreteOrType(context, child));
-		YIELD();
-		node->typeInfo = child->typeInfo;
-		node->addAstFlag(AST_R_VALUE);
-	}
+    // Can be called for generic parameters in type definition, in that case, we are a type, so no
+    // test for concrete must be done
+    bool checkForConcrete = true;
+    if (node->parent->hasAstFlag(AST_NO_BYTECODE))
+        checkForConcrete = false;
+    if (checkForConcrete)
+    {
+        SWAG_CHECK(checkIsConcreteOrType(context, child));
+        YIELD();
+        node->typeInfo = child->typeInfo;
+        node->addAstFlag(AST_R_VALUE);
+    }
 
-	node->inheritComputedValue(child);
-	node->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
-	if (node->children.front()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-		node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
+    node->inheritComputedValue(child);
+    node->inheritAstFlagsOr(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
+    if (node->children.front()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
+        node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 
-	// Inherit the original type in case of computed values, in order to make the cast if necessary
-	if (node->hasAstFlag(AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
-		node->castedTypeInfo = child->castedTypeInfo;
+    // Inherit the original type in case of computed values, in order to make the cast if necessary
+    if (node->hasAstFlag(AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
+        node->castedTypeInfo = child->castedTypeInfo;
 
-	if (checkForConcrete & !node->hasAstFlag(AST_OP_AFFECT_CAST))
-	{
-		SWAG_CHECK(evaluateConstExpression(context, node));
-		YIELD();
-	}
+    if (checkForConcrete & !node->hasAstFlag(AST_OP_AFFECT_CAST))
+    {
+        SWAG_CHECK(evaluateConstExpression(context, node));
+        YIELD();
+    }
 
-	node->resolvedSymbolName     = child->resolvedSymbolName;
-	node->resolvedSymbolOverload = child->resolvedSymbolOverload;
+    node->resolvedSymbolName     = child->resolvedSymbolName;
+    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
-	if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
-	{
-		node->allocateExtension(ExtensionKind::Misc);
-		node->extMisc()->resolvedUserOpSymbolOverload = child->extMisc()->resolvedUserOpSymbolOverload;
-	}
+    if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
+    {
+        node->allocateExtension(ExtensionKind::Misc);
+        node->extMisc()->resolvedUserOpSymbolOverload = child->extMisc()->resolvedUserOpSymbolOverload;
+    }
 
-	// If the call has been generated because of a 'return tuple', then we force a move
-	// instead of a copy, in case the parameter to the tuple init is a local variable
-	if (node->autoTupleReturn)
-	{
-		if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
-		{
-			node->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
-			node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
-		}
-	}
+    // If the call has been generated because of a 'return tuple', then we force a move
+    // instead of a copy, in case the parameter to the tuple init is a local variable
+    if (node->autoTupleReturn)
+    {
+        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
+        {
+            node->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
+            node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
+        }
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveRetVal(SemanticContext* context)
 {
-	auto       node    = context->node;
-	const auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
+    auto       node    = context->node;
+    const auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-	SWAG_VERIFY(fctDecl, context->report({node, Err(Err0469)}));
-	SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Err(Err0469)}));
+    SWAG_VERIFY(fctDecl, context->report({node, Err(Err0469)}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Err(Err0469)}));
 
-	const auto fct     = castAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
-	const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
-	SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isVoid(), context->report({node, Err(Err0167)}));
+    const auto fct     = castAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
+    const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isVoid(), context->report({node, Err(Err0167)}));
 
-	// :WaitForPOD
-	if (typeFct->returnType->isStruct())
-	{
-		waitStructGenerated(context->baseJob, typeFct->returnType);
-		YIELD();
-	}
+    // :WaitForPOD
+    if (typeFct->returnType->isStruct())
+    {
+        waitStructGenerated(context->baseJob, typeFct->returnType);
+        YIELD();
+    }
 
-	// If this is a simple return type, remove the retval stuff.
-	// Variable will behaves normally, in the stack
-	if (!CallConv::returnByStackAddress(typeFct))
-	{
-		auto parentNode = node;
-		if (parentNode->kind == AstNodeKind::Identifier)
-			parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
-		const auto typeExpr = castAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
-		typeExpr->typeFlags &= ~TYPEFLAG_IS_RETVAL;
-	}
+    // If this is a simple return type, remove the retval stuff.
+    // Variable will behaves normally, in the stack
+    if (!CallConv::returnByStackAddress(typeFct))
+    {
+        auto parentNode = node;
+        if (parentNode->kind == AstNodeKind::Identifier)
+            parentNode = parentNode->findParent(AstNodeKind::TypeExpression);
+        const auto typeExpr = castAst<AstTypeExpression>(parentNode, AstNodeKind::TypeExpression);
+        typeExpr->typeFlags &= ~TYPEFLAG_IS_RETVAL;
+    }
 
-	node->typeInfo = typeFct->returnType;
-	return true;
+    node->typeInfo = typeFct->returnType;
+    return true;
 }
 
 void Semantic::propagateReturn(AstNode* node)
 {
-	auto stopFct = node->ownerFct ? node->ownerFct->parent : nullptr;
-	if (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
-		stopFct = node->ownerInline->parent;
-	SWAG_ASSERT(stopFct);
+    auto stopFct = node->ownerFct ? node->ownerFct->parent : nullptr;
+    if (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+        stopFct = node->ownerInline->parent;
+    SWAG_ASSERT(stopFct);
 
-	AstNode* scanNode = node;
+    AstNode* scanNode = node;
 
-	// Search if we are in an infinite loop
-	auto breakable = node->ownerBreakable;
-	while (breakable)
-	{
-		if (breakable->kind == AstNodeKind::Loop)
-		{
-			const auto loopNode = castAst<AstLoop>(breakable, AstNodeKind::Loop);
-			if (!loopNode->expression)
-				loopNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
-			break;
-		}
+    // Search if we are in an infinite loop
+    auto breakable = node->ownerBreakable;
+    while (breakable)
+    {
+        if (breakable->kind == AstNodeKind::Loop)
+        {
+            const auto loopNode = castAst<AstLoop>(breakable, AstNodeKind::Loop);
+            if (!loopNode->expression)
+                loopNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
+            break;
+        }
 
-		if (breakable->kind == AstNodeKind::While)
-		{
-			const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
-			if (whileNode->boolExpression->hasComputedValue() && whileNode->boolExpression->computedValue->reg.b)
-				whileNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
-			break;
-		}
+        if (breakable->kind == AstNodeKind::While)
+        {
+            const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
+            if (whileNode->boolExpression->hasComputedValue() && whileNode->boolExpression->computedValue->reg.b)
+                whileNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
+            break;
+        }
 
-		if (breakable->kind == AstNodeKind::For)
-		{
-			const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
-			if (forNode->boolExpression->hasComputedValue() && forNode->boolExpression->computedValue->reg.b)
-				forNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
-			break;
-		}
+        if (breakable->kind == AstNodeKind::For)
+        {
+            const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
+            if (forNode->boolExpression->hasComputedValue() && forNode->boolExpression->computedValue->reg.b)
+                forNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
+            break;
+        }
 
-		breakable = breakable->ownerBreakable;
-	}
+        breakable = breakable->ownerBreakable;
+    }
 
-	// Propagate the return in the corresponding scope
-	while (scanNode && scanNode != stopFct)
-	{
-		if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
-			break;
-		scanNode->addSemFlag(SEMFLAG_SCOPE_HAS_RETURN);
-		if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
-		{
-			const auto ifNode = castAst<AstIf>(scanNode->parent, AstNodeKind::If);
-			if (ifNode->elseBlock != scanNode)
-				break;
-			if (!ifNode->ifBlock->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
-				break;
-		}
-		else if (scanNode->kind == AstNodeKind::SwitchCase)
-		{
-			const auto sc = castAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
-			if (sc->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT))
-				sc->ownerSwitch->addSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN);
-		}
-		else if (scanNode->kind == AstNodeKind::Switch)
-		{
-			if (!scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
-				break;
-		}
-		else if (scanNode->kind == AstNodeKind::While ||
-			scanNode->kind == AstNodeKind::Loop ||
-			scanNode->kind == AstNodeKind::For)
-		{
-			break;
-		}
+    // Propagate the return in the corresponding scope
+    while (scanNode && scanNode != stopFct)
+    {
+        if (scanNode->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN) && !scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
+            break;
+        scanNode->addSemFlag(SEMFLAG_SCOPE_HAS_RETURN);
+        if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
+        {
+            const auto ifNode = castAst<AstIf>(scanNode->parent, AstNodeKind::If);
+            if (ifNode->elseBlock != scanNode)
+                break;
+            if (!ifNode->ifBlock->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
+                break;
+        }
+        else if (scanNode->kind == AstNodeKind::SwitchCase)
+        {
+            const auto sc = castAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
+            if (sc->hasSpecFlag(AstSwitchCase::SPEC_FLAG_IS_DEFAULT))
+                sc->ownerSwitch->addSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN);
+        }
+        else if (scanNode->kind == AstNodeKind::Switch)
+        {
+            if (!scanNode->hasSemFlag(SEMFLAG_SCOPE_FORCE_HAS_RETURN))
+                break;
+        }
+        else if (scanNode->kind == AstNodeKind::While ||
+                 scanNode->kind == AstNodeKind::Loop ||
+                 scanNode->kind == AstNodeKind::For)
+        {
+            break;
+        }
 
-		scanNode = scanNode->parent;
-	}
+        scanNode = scanNode->parent;
+    }
 
-	// To tell that the function as at least one return (this will change the error message)
-	while (scanNode && scanNode != stopFct)
-	{
-		if (scanNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-			break;
-		scanNode->addSemFlag(SEMFLAG_FCT_HAS_RETURN);
-		scanNode = scanNode->parent;
-	}
+    // To tell that the function as at least one return (this will change the error message)
+    while (scanNode && scanNode != stopFct)
+    {
+        if (scanNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
+            break;
+        scanNode->addSemFlag(SEMFLAG_FCT_HAS_RETURN);
+        scanNode = scanNode->parent;
+    }
 }
 
 AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
 {
-	// For a return inside an inline block, take the inlined function, except for a mixin or
-	// if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
-	auto funcNode = node->ownerFct;
-	if (node->ownerInline && node->ownerInline->isParentOf(node))
-	{
-		if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !node->hasAstFlag(AST_IN_MIXIN))
-		{
-			if (node->kind == AstNodeKind::Return)
-				node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);
-			funcNode = node->ownerInline->func;
-		}
-	}
+    // For a return inside an inline block, take the inlined function, except for a mixin or
+    // if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
+    auto funcNode = node->ownerFct;
+    if (node->ownerInline && node->ownerInline->isParentOf(node))
+    {
+        if (!node->ownerInline->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !node->hasAstFlag(AST_IN_MIXIN))
+        {
+            if (node->kind == AstNodeKind::Return)
+                node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);
+            funcNode = node->ownerInline->func;
+        }
+    }
 
-	return funcNode;
+    return funcNode;
 }
 
 bool Semantic::resolveReturn(SemanticContext* context)
 {
-	SWAG_CHECK(SemanticError::warnUnreachableCode(context));
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
 
-	const auto node     = castAst<AstReturn>(context->node, AstNodeKind::Return);
-	const auto funcNode = getFunctionForReturn(node);
+    const auto node     = castAst<AstReturn>(context->node, AstNodeKind::Return);
+    const auto funcNode = getFunctionForReturn(node);
 
-	node->byteCodeFct         = ByteCodeGen::emitReturn;
-	node->resolvedFuncDecl    = funcNode;
-	const auto funcReturnType = TypeManager::concreteType(funcNode->returnType->typeInfo);
+    node->byteCodeFct         = ByteCodeGen::emitReturn;
+    node->resolvedFuncDecl    = funcNode;
+    const auto funcReturnType = TypeManager::concreteType(funcNode->returnType->typeInfo);
 
-	// As the type of the function is deduced from the return type, be sure they match in case
-	// of multiple returns
-	if (funcNode->returnTypeDeducedNode)
-	{
-		// We return nothing, but the previous return had something
-		if (node->children.empty())
-		{
-			if (!funcReturnType->isVoid())
-			{
-				const Diagnostic err{node, FMT(Err(Err0576), funcReturnType->getDisplayNameC())};
-				const auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode->children.front(), Nte(Nte0072));
-				return context->report(err, note);
-			}
+    // As the type of the function is deduced from the return type, be sure they match in case
+    // of multiple returns
+    if (funcNode->returnTypeDeducedNode)
+    {
+        // We return nothing, but the previous return had something
+        if (node->children.empty())
+        {
+            if (!funcReturnType->isVoid())
+            {
+                const Diagnostic err{node, FMT(Err(Err0576), funcReturnType->getDisplayNameC())};
+                const auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode->children.front(), Nte(Nte0072));
+                return context->report(err, note);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		const auto child     = node->children[0];
-		const auto childType = TypeManager::concreteType(child->typeInfo);
+        const auto child     = node->children[0];
+        const auto childType = TypeManager::concreteType(child->typeInfo);
 
-		// We try to return something, but the previous return had nothing
-		if (funcReturnType->isVoid() && !childType->isVoid())
-		{
-			const Diagnostic err{child, FMT(Err(Err0622), childType->getDisplayNameC())};
-			const auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode, Nte(Nte0072));
-			return context->report(err, note);
-		}
+        // We try to return something, but the previous return had nothing
+        if (funcReturnType->isVoid() && !childType->isVoid())
+        {
+            const Diagnostic err{child, FMT(Err(Err0622), childType->getDisplayNameC())};
+            const auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode, Nte(Nte0072));
+            return context->report(err, note);
+        }
 
-		const CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT;
-		if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
-		{
-			const Diagnostic err{child, FMT(Err(Err0621), funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
-			const auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode->children.front(), Nte(Nte0072));
-			return context->report(err, note);
-		}
-	}
+        const CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT;
+        if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, castFlags))
+        {
+            const Diagnostic err{child, FMT(Err(Err0621), funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
+            const auto       note = Diagnostic::note(funcNode->returnTypeDeducedNode->children.front(), Nte(Nte0072));
+            return context->report(err, note);
+        }
+    }
 
-	// Nothing to return
-	if (funcNode->returnType->typeInfo->isVoid() && node->children.empty())
-	{
-		if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
-		{
-			funcNode->returnType->typeInfo  = g_TypeMgr->typeInfoVoid;
-			funcNode->returnTypeDeducedNode = node;
-		}
+    // Nothing to return
+    if (funcNode->returnType->typeInfo->isVoid() && node->children.empty())
+    {
+        if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
+        {
+            funcNode->returnType->typeInfo  = g_TypeMgr->typeInfoVoid;
+            funcNode->returnTypeDeducedNode = node;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// Deduce return type
-	const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-	bool       lateRegister = funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
-	if (funcReturnType->isVoid() || funcReturnType->isGeneric())
-	{
-		if (!funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_LATE_REGISTER_DONE))
-		{
-			// This is a short lambda without a specified return type. We now have it
-			bool tryDeduce = false;
-			if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
-				tryDeduce = true;
-			if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
-				tryDeduce = true;
-			if (tryDeduce)
-			{
-				funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
-				typeInfoFunc->returnType  = TypeManager::concreteType(node->children.front()->typeInfo, CONCRETE_FUNC);
-				typeInfoFunc->returnType  = TypeManager::promoteUntyped(typeInfoFunc->returnType);
-				const auto concreteReturn = TypeManager::concreteType(typeInfoFunc->returnType);
-				if (concreteReturn->isListTuple())
-				{
-					SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->children.front(), &funcNode->returnType));
-					Ast::setForceConstType(funcNode->returnType);
-					context->baseJob->nodes.push_back(funcNode->returnType);
-					context->result = ContextResult::NewChildren;
-					return true;
-				}
+    // Deduce return type
+    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    bool       lateRegister = funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
+    if (funcReturnType->isVoid() || funcReturnType->isGeneric())
+    {
+        if (!funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_LATE_REGISTER_DONE))
+        {
+            // This is a short lambda without a specified return type. We now have it
+            bool tryDeduce = false;
+            if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
+                tryDeduce = true;
+            if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
+                tryDeduce = true;
+            if (tryDeduce)
+            {
+                funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
+                typeInfoFunc->returnType  = TypeManager::concreteType(node->children.front()->typeInfo, CONCRETE_FUNC);
+                typeInfoFunc->returnType  = TypeManager::promoteUntyped(typeInfoFunc->returnType);
+                const auto concreteReturn = TypeManager::concreteType(typeInfoFunc->returnType);
+                if (concreteReturn->isListTuple())
+                {
+                    SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->children.front(), &funcNode->returnType));
+                    Ast::setForceConstType(funcNode->returnType);
+                    context->baseJob->nodes.push_back(funcNode->returnType);
+                    context->result = ContextResult::NewChildren;
+                    return true;
+                }
 
-				typeInfoFunc->forceComputeName();
-				funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
-				funcNode->returnTypeDeducedNode = node;
-				funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_LATE_REGISTER_DONE);
-				lateRegister = true;
-			}
-		}
-	}
+                typeInfoFunc->forceComputeName();
+                funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
+                funcNode->returnTypeDeducedNode = node;
+                funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_LATE_REGISTER_DONE);
+                lateRegister = true;
+            }
+        }
+    }
 
-	if (node->children.empty())
-	{
-		const Diagnostic err{node, FMT(Err(Err0577), funcNode->returnType->typeInfo->getDisplayNameC())};
-		const auto       note = Diagnostic::note(funcNode->returnType->children.front(), FMT(Nte(Nte0007), typeInfoFunc->returnType->getDisplayNameC()));
-		return context->report(err, note);
-	}
+    if (node->children.empty())
+    {
+        const Diagnostic err{node, FMT(Err(Err0577), funcNode->returnType->typeInfo->getDisplayNameC())};
+        const auto       note = Diagnostic::note(funcNode->returnType->children.front(), FMT(Nte(Nte0007), typeInfoFunc->returnType->getDisplayNameC()));
+        return context->report(err, note);
+    }
 
-	auto returnType = funcNode->returnType->typeInfo;
+    auto returnType = funcNode->returnType->typeInfo;
 
-	// Check types
-	auto child = node->children[0];
-	SWAG_CHECK(checkIsConcreteOrType(context, child));
-	YIELD();
+    // Check types
+    auto child = node->children[0];
+    SWAG_CHECK(checkIsConcreteOrType(context, child));
+    YIELD();
 
-	const auto concreteType = TypeManager::concreteType(child->typeInfo);
+    const auto concreteType = TypeManager::concreteType(child->typeInfo);
 
-	// No return value in a #run block
-	if (!concreteType->isVoid())
-	{
-		if (funcNode->hasAttribute(ATTRIBUTE_RUN_FUNC |
-			ATTRIBUTE_RUN_GENERATED_FUNC |
-			ATTRIBUTE_MAIN_FUNC |
-			ATTRIBUTE_INIT_FUNC |
-			ATTRIBUTE_DROP_FUNC |
-			ATTRIBUTE_PREMAIN_FUNC |
-			ATTRIBUTE_TEST_FUNC))
-		{
-			if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-				return context->report({child, FMT(Err(Err0696), funcNode->getDisplayNameC())});
-		}
-	}
+    // No return value in a #run block
+    if (!concreteType->isVoid())
+    {
+        if (funcNode->hasAttribute(ATTRIBUTE_RUN_FUNC |
+                                   ATTRIBUTE_RUN_GENERATED_FUNC |
+                                   ATTRIBUTE_MAIN_FUNC |
+                                   ATTRIBUTE_INIT_FUNC |
+                                   ATTRIBUTE_DROP_FUNC |
+                                   ATTRIBUTE_PREMAIN_FUNC |
+                                   ATTRIBUTE_TEST_FUNC))
+        {
+            if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
+                return context->report({child, FMT(Err(Err0696), funcNode->getDisplayNameC())});
+        }
+    }
 
-	// Be sure we do not specify a return value, and the function does not have a return type
-	// (better error message than just letting the makeCompatibles do its job)
-	if (returnType->isVoid() && !concreteType->isVoid())
-	{
-		const Diagnostic  err{child, FMT(Err(Err0623), concreteType->getDisplayNameC(), funcNode->token.c_str(), concreteType->name.c_str())};
-		const Diagnostic* note = nullptr;
+    // Be sure we do not specify a return value, and the function does not have a return type
+    // (better error message than just letting the makeCompatibles do its job)
+    if (returnType->isVoid() && !concreteType->isVoid())
+    {
+        const Diagnostic  err{child, FMT(Err(Err0623), concreteType->getDisplayNameC(), funcNode->token.c_str(), concreteType->name.c_str())};
+        const Diagnostic* note = nullptr;
 
-		if (node->ownerInline && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
-			note = Diagnostic::note(funcNode, funcNode->getTokenName(), FMT(Nte(Nte0118), node->ownerInline->func->token.c_str(), funcNode->token.c_str()));
+        if (node->ownerInline && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+            note = Diagnostic::note(funcNode, funcNode->getTokenName(), FMT(Nte(Nte0118), node->ownerInline->func->token.c_str(), funcNode->token.c_str()));
 
-		return context->report(err, note);
-	}
+        return context->report(err, note);
+    }
 
-	// :WaitForPOD
-	if (returnType && returnType->isStruct())
-	{
-		waitAllStructSpecialMethods(context->baseJob, returnType);
-		YIELD();
-	}
+    // :WaitForPOD
+    if (returnType && returnType->isStruct())
+    {
+        waitAllStructSpecialMethods(context->baseJob, returnType);
+        YIELD();
+    }
 
-	// If returning retval, then returning nothing, as we will change the return parameter value in place
-	if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL))
-	{
-		node->typeInfo = child->typeInfo;
-	}
-	else
-	{
-		// If we are returning an interface, be sure they are defined before casting
-		if (returnType->isInterface())
-		{
-			waitAllStructInterfaces(context->baseJob, child->typeInfo);
-			YIELD();
-		}
+    // If returning retval, then returning nothing, as we will change the return parameter value in place
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL))
+    {
+        node->typeInfo = child->typeInfo;
+    }
+    else
+    {
+        // If we are returning an interface, be sure they are defined before casting
+        if (returnType->isInterface())
+        {
+            waitAllStructInterfaces(context->baseJob, child->typeInfo);
+            YIELD();
+        }
 
-		const CastFlags castFlags = CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT | CAST_FLAG_PTR_REF | CAST_FLAG_ACCEPT_PENDING;
+        const CastFlags castFlags = CAST_FLAG_UN_CONST | CAST_FLAG_AUTO_OP_CAST | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT | CAST_FLAG_PTR_REF | CAST_FLAG_ACCEPT_PENDING;
 
-		if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
-		{
-			PushErrCxtStep ec{
-				context, funcNode, ErrCxtStepKind::Note, []
-				{
-					return Nte(Nte0134);
-				},
-				true
-			};
-			SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
-			YIELD();
-		}
-		else if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-		{
-			PushErrCxtStep ec{
-				context, funcNode, ErrCxtStepKind::Note, [returnType]
-				{
-					return FMT(Nte(Nte0007), returnType->getDisplayNameC());
-				},
-				true
-			};
-			SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
-			YIELD();
-		}
-		else
-		{
-			auto nodeErr = funcNode->returnType;
-			if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->children.empty())
-				nodeErr = funcNode->returnType->children.front();
-			PushErrCxtStep ec{
-				context, nodeErr, ErrCxtStepKind::Note, [returnType]
-				{
-					return FMT(Nte(Nte0007), returnType->getDisplayNameC());
-				}
-			};
-			SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
-			YIELD();
-		}
-	}
+        if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
+        {
+            PushErrCxtStep ec{
+                context, funcNode, ErrCxtStepKind::Note, []
+                {
+                    return Nte(Nte0134);
+                },
+                true
+            };
+            SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+            YIELD();
+        }
+        else if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
+        {
+            PushErrCxtStep ec{
+                context, funcNode, ErrCxtStepKind::Note, [returnType]
+                {
+                    return FMT(Nte(Nte0007), returnType->getDisplayNameC());
+                },
+                true
+            };
+            SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+            YIELD();
+        }
+        else
+        {
+            auto nodeErr = funcNode->returnType;
+            if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->children.empty())
+                nodeErr = funcNode->returnType->children.front();
+            PushErrCxtStep ec{
+                context, nodeErr, ErrCxtStepKind::Note, [returnType]
+                {
+                    return FMT(Nte(Nte0007), returnType->getDisplayNameC());
+                }
+            };
+            SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+            YIELD();
+        }
+    }
 
-	if (child->kind == AstNodeKind::ExpressionList)
-	{
-		child->addAstFlag(AST_TRANSIENT);
-	}
+    if (child->kind == AstNodeKind::ExpressionList)
+    {
+        child->addAstFlag(AST_TRANSIENT);
+    }
 
-	const auto childType = TypeManager::concreteType(child->typeInfo);
-	if (!returnType->isPointerRef() && childType->isPointerRef())
-		setUnRef(child);
+    const auto childType = TypeManager::concreteType(child->typeInfo);
+    if (!returnType->isPointerRef() && childType->isPointerRef())
+        setUnRef(child);
 
-	// When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
-	if (returnType && (returnType->isStruct() || returnType->isArrayOfStruct()))
-	{
-		SWAG_CHECK(waitForStructUserOps(context, funcNode->returnType));
-		YIELD();
-	}
+    // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
+    if (returnType && (returnType->isStruct() || returnType->isArrayOfStruct()))
+    {
+        SWAG_CHECK(waitForStructUserOps(context, funcNode->returnType));
+        YIELD();
+    }
 
-	// :opAffectParam
-	if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
-	{
-		const auto overload = child->extMisc()->resolvedUserOpSymbolOverload;
-		if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectLiteral)
-		{
-			SWAG_ASSERT(child->castedTypeInfo);
-			child->extMisc()->resolvedUserOpSymbolOverload = nullptr;
-			child->castedTypeInfo                          = nullptr;
+    // :opAffectParam
+    if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
+    {
+        const auto overload = child->extMisc()->resolvedUserOpSymbolOverload;
+        if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectLiteral)
+        {
+            SWAG_ASSERT(child->castedTypeInfo);
+            child->extMisc()->resolvedUserOpSymbolOverload = nullptr;
+            child->castedTypeInfo                          = nullptr;
 
-			const auto varNode = Ast::newVarDecl(context->sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
-			varNode->inheritTokenLocation(child);
+            const auto varNode = Ast::newVarDecl(context->sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
+            varNode->inheritTokenLocation(child);
 
-			const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode);
-			typeExpr->typeInfo  = child->typeInfo;
-			typeExpr->addAstFlag(AST_NO_SEMANTIC);
-			varNode->type = typeExpr;
+            const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode);
+            typeExpr->typeInfo  = child->typeInfo;
+            typeExpr->addAstFlag(AST_NO_SEMANTIC);
+            varNode->type = typeExpr;
 
-			CloneContext cloneContext;
-			cloneContext.parent      = varNode;
-			cloneContext.parentScope = child->ownerScope;
-			varNode->assignment      = child->clone(cloneContext);
+            CloneContext cloneContext;
+            cloneContext.parent      = varNode;
+            cloneContext.parentScope = child->ownerScope;
+            varNode->assignment      = child->clone(cloneContext);
 
-			Ast::removeFromParent(child);
+            Ast::removeFromParent(child);
 
-			Ast::removeFromParent(varNode);
-			const auto idRef = Ast::newIdentifierRef(context->sourceFile, varNode->token.text, node);
-			Ast::addChildBack(node, varNode);
+            Ast::removeFromParent(varNode);
+            const auto idRef = Ast::newIdentifierRef(context->sourceFile, varNode->token.text, node);
+            Ast::addChildBack(node, varNode);
 
-			idRef->allocateExtension(ExtensionKind::Misc);
-			idRef->extMisc()->exportNode = child;
-			idRef->allocateExtension(ExtensionKind::Owner);
-			idRef->extOwner()->nodesToFree.push_back(child);
+            idRef->allocateExtension(ExtensionKind::Misc);
+            idRef->extMisc()->exportNode = child;
+            idRef->allocateExtension(ExtensionKind::Owner);
+            idRef->extOwner()->nodesToFree.push_back(child);
 
-			context->baseJob->nodes.push_back(node->children.front());
-			context->baseJob->nodes.push_back(varNode);
-			varNode->addSemFlag(SEMFLAG_ONCE);
-			context->result = ContextResult::NewChildren;
-			return true;
-		}
-	}
+            context->baseJob->nodes.push_back(node->children.front());
+            context->baseJob->nodes.push_back(varNode);
+            varNode->addSemFlag(SEMFLAG_ONCE);
+            context->result = ContextResult::NewChildren;
+            return true;
+        }
+    }
 
-	// If we are returning a local variable, we can do a move
-	if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
-	{
-		child->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
-		node->forceNoDrop.push_back(child->resolvedSymbolOverload);
-	}
+    // If we are returning a local variable, we can do a move
+    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL)))
+    {
+        child->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
+        node->forceNoDrop.push_back(child->resolvedSymbolOverload);
+    }
 
-	if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL)))
-	{
-		child->addAstFlag(AST_NO_BYTECODE);
-		node->forceNoDrop.push_back(child->resolvedSymbolOverload);
-	}
+    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL)))
+    {
+        child->addAstFlag(AST_NO_BYTECODE);
+        node->forceNoDrop.push_back(child->resolvedSymbolOverload);
+    }
 
-	// Propagate return so that we can detect if some paths are missing one
-	propagateReturn(node);
+    // Propagate return so that we can detect if some paths are missing one
+    propagateReturn(node);
 
-	// Register symbol now that we have inferred the return type
-	if (lateRegister)
-	{
-		funcNode->removeSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
-		typeInfoFunc->returnType = funcNode->returnType->typeInfo;
-		typeInfoFunc->forceComputeName();
-		SWAG_CHECK(registerFuncSymbol(context, funcNode));
-	}
+    // Register symbol now that we have inferred the return type
+    if (lateRegister)
+    {
+        funcNode->removeSpecFlag(AstFuncDecl::SPEC_FLAG_FORCE_LATE_REGISTER);
+        typeInfoFunc->returnType = funcNode->returnType->typeInfo;
+        typeInfoFunc->forceComputeName();
+        SWAG_CHECK(registerFuncSymbol(context, funcNode));
+    }
 
-	return true;
+    return true;
 }
 
 uint32_t Semantic::getMaxStackSize(AstNode* node)
 {
-	auto decSP = node->ownerScope->startStackSize;
+    auto decSP = node->ownerScope->startStackSize;
 
-	if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
-	{
-		auto p = node;
-		while (p->parent && p->parent->kind != AstNodeKind::File)
-			p = p->parent;
-		SWAG_ASSERT(p);
-		ScopedLock mk(p->mutex);
-		p->allocateExtensionNoLock(ExtensionKind::Misc);
-		decSP = max(decSP, p->extMisc()->stackSize);
-		return decSP;
-	}
+    if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
+    {
+        auto p = node;
+        while (p->parent && p->parent->kind != AstNodeKind::File)
+            p = p->parent;
+        SWAG_ASSERT(p);
+        ScopedLock mk(p->mutex);
+        p->allocateExtensionNoLock(ExtensionKind::Misc);
+        decSP = max(decSP, p->extMisc()->stackSize);
+        return decSP;
+    }
 
-	if (node->ownerFct)
-		decSP = max(decSP, node->ownerFct->stackSize);
-	return decSP;
+    if (node->ownerFct)
+        decSP = max(decSP, node->ownerFct->stackSize);
+    return decSP;
 }
 
 void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 {
-	size = max(size, 1);
-	size = static_cast<uint32_t>(TypeManager::align(size, sizeof(void*)));
+    size = max(size, 1);
+    size = static_cast<uint32_t>(TypeManager::align(size, sizeof(void*)));
 
-	if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
-	{
-		auto p = node;
-		while (p->parent && p->parent->kind != AstNodeKind::File)
-			p = p->parent;
-		SWAG_ASSERT(p);
-		ScopedLock mk(p->mutex);
-		p->allocateExtensionNoLock(ExtensionKind::Misc);
-		p->extMisc()->stackSize = max(p->extMisc()->stackSize, size);
-	}
-	else if (node->ownerFct)
-	{
-		node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
-	}
+    if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
+    {
+        auto p = node;
+        while (p->parent && p->parent->kind != AstNodeKind::File)
+            p = p->parent;
+        SWAG_ASSERT(p);
+        ScopedLock mk(p->mutex);
+        p->allocateExtensionNoLock(ExtensionKind::Misc);
+        p->extMisc()->stackSize = max(p->extMisc()->stackSize, size);
+    }
+    else if (node->ownerFct)
+    {
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
+    }
 }
 
 bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
-	CloneContext cloneContext;
+    CloneContext cloneContext;
 
-	// Be sure this is not recursive
-	uint32_t cpt         = 0;
-	auto     ownerInline = identifier->ownerInline;
-	while (ownerInline)
-	{
-		if (ownerInline->func == funcDecl)
-		{
-			cpt++;
-			if (g_CommandLine.limitInlineLevel && cpt > g_CommandLine.limitInlineLevel)
-			{
-				const Diagnostic err{identifier, identifier->token, FMT(Err(Err0605), identifier->token.c_str(), g_CommandLine.limitInlineLevel)};
-				return context->report(err);
-			}
-		}
+    // Be sure this is not recursive
+    uint32_t cpt         = 0;
+    auto     ownerInline = identifier->ownerInline;
+    while (ownerInline)
+    {
+        if (ownerInline->func == funcDecl)
+        {
+            cpt++;
+            if (g_CommandLine.limitInlineLevel && cpt > g_CommandLine.limitInlineLevel)
+            {
+                const Diagnostic err{identifier, identifier->token, FMT(Err(Err0605), identifier->token.c_str(), g_CommandLine.limitInlineLevel)};
+                return context->report(err);
+            }
+        }
 
-		ownerInline = ownerInline->ownerInline;
-	}
+        ownerInline = ownerInline->ownerInline;
+    }
 
-	// The content will be inline in its separated syntax block
-	const auto inlineNode      = Ast::newInline(identifier->sourceFile, identifier);
-	inlineNode->attributeFlags = funcDecl->attributeFlags;
-	inlineNode->func           = funcDecl;
-	inlineNode->scope          = identifier->ownerScope;
-	inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
+    // The content will be inline in its separated syntax block
+    const auto inlineNode      = Ast::newInline(identifier->sourceFile, identifier);
+    inlineNode->attributeFlags = funcDecl->attributeFlags;
+    inlineNode->func           = funcDecl;
+    inlineNode->scope          = identifier->ownerScope;
+    inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
 
-	if (identifier->hasExtOwner() && identifier->extOwner()->ownerTryCatchAssume)
-	{
-		inlineNode->allocateExtension(ExtensionKind::Owner);
-		inlineNode->extOwner()->ownerTryCatchAssume = identifier->extOwner()->ownerTryCatchAssume;
-	}
+    if (identifier->hasExtOwner() && identifier->extOwner()->ownerTryCatchAssume)
+    {
+        inlineNode->allocateExtension(ExtensionKind::Owner);
+        inlineNode->extOwner()->ownerTryCatchAssume = identifier->extOwner()->ownerTryCatchAssume;
+    }
 
-	if (funcDecl->hasExtMisc())
-	{
-		SharedLock lk1(funcDecl->extMisc()->mutexAltScopes);
-		if (!funcDecl->extMisc()->alternativeScopes.empty() || !funcDecl->extMisc()->alternativeScopesVars.empty())
-		{
-			inlineNode->allocateExtension(ExtensionKind::Misc);
-			ScopedLock lk(inlineNode->extMisc()->mutexAltScopes);
-			inlineNode->extMisc()->alternativeScopes     = funcDecl->extMisc()->alternativeScopes;
-			inlineNode->extMisc()->alternativeScopesVars = funcDecl->extMisc()->alternativeScopesVars;
-		}
-	}
+    if (funcDecl->hasExtMisc())
+    {
+        SharedLock lk1(funcDecl->extMisc()->mutexAltScopes);
+        if (!funcDecl->extMisc()->alternativeScopes.empty() || !funcDecl->extMisc()->alternativeScopesVars.empty())
+        {
+            inlineNode->allocateExtension(ExtensionKind::Misc);
+            ScopedLock lk(inlineNode->extMisc()->mutexAltScopes);
+            inlineNode->extMisc()->alternativeScopes     = funcDecl->extMisc()->alternativeScopes;
+            inlineNode->extMisc()->alternativeScopesVars = funcDecl->extMisc()->alternativeScopesVars;
+        }
+    }
 
-	// Try/Assume
-	if (inlineNode->hasExtOwner() &&
-		inlineNode->extOwner()->ownerTryCatchAssume &&
-		inlineNode->func->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
-	{
-		switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
-		{
-		case AstNodeKind::Try:
-			inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);
-			break;
-		case AstNodeKind::TryCatch:
-			inlineNode->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-			break;
-		case AstNodeKind::Catch:
-			inlineNode->setBcNotifyAfter(ByteCodeGen::emitCatch);
-			break;
-		case AstNodeKind::Assume:
-			inlineNode->setBcNotifyAfter(ByteCodeGen::emitAssume);
-			break;
-		default:
-			break;
-		}
+    // Try/Assume
+    if (inlineNode->hasExtOwner() &&
+        inlineNode->extOwner()->ownerTryCatchAssume &&
+        inlineNode->func->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
+    {
+        switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
+        {
+        case AstNodeKind::Try:
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);
+            break;
+        case AstNodeKind::TryCatch:
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
+            break;
+        case AstNodeKind::Catch:
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitCatch);
+            break;
+        case AstNodeKind::Assume:
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitAssume);
+            break;
+        default:
+            break;
+        }
 
-		// Reset emit from the modifier if it exists, as the inline block will deal with that
-		if (identifier->hasExtByteCode())
-		{
-			const auto extension = identifier->extByteCode();
-			if (extension->byteCodeAfterFct == ByteCodeGen::emitTry)
-				extension->byteCodeAfterFct = nullptr;
-			else if (extension->byteCodeAfterFct == ByteCodeGen::emitTryCatch)
-				extension->byteCodeAfterFct = nullptr;
-			else if (extension->byteCodeAfterFct == ByteCodeGen::emitCatch)
-				extension->byteCodeAfterFct = nullptr;
-			else if (extension->byteCodeAfterFct == ByteCodeGen::emitAssume)
-				extension->byteCodeAfterFct = nullptr;
-		}
-	}
+        // Reset emit from the modifier if it exists, as the inline block will deal with that
+        if (identifier->hasExtByteCode())
+        {
+            const auto extension = identifier->extByteCode();
+            if (extension->byteCodeAfterFct == ByteCodeGen::emitTry)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGen::emitTryCatch)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGen::emitCatch)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGen::emitAssume)
+                extension->byteCodeAfterFct = nullptr;
+        }
+    }
 
-	// We need to add the parent scope of the inline function (the global one), in order for
-	// the inline content to be resolved in the same context as the original function
-	auto globalScope = funcDecl->ownerScope;
-	while (!globalScope->isGlobalOrImpl())
-		globalScope = globalScope->parentScope;
-	inlineNode->addAlternativeScope(globalScope);
+    // We need to add the parent scope of the inline function (the global one), in order for
+    // the inline content to be resolved in the same context as the original function
+    auto globalScope = funcDecl->ownerScope;
+    while (!globalScope->isGlobalOrImpl())
+        globalScope = globalScope->parentScope;
+    inlineNode->addAlternativeScope(globalScope);
 
-	// We also need to add all alternatives scopes (using), in case the function relies on them to
-	// be solved
-	const AstNode* parentNode = funcDecl;
-	while (parentNode)
-	{
-		if (parentNode->hasExtMisc())
-			inlineNode->addAlternativeScopes(parentNode->extMisc());
-		parentNode = parentNode->parent;
-	}
+    // We also need to add all alternatives scopes (using), in case the function relies on them to
+    // be solved
+    const AstNode* parentNode = funcDecl;
+    while (parentNode)
+    {
+        if (parentNode->hasExtMisc())
+            inlineNode->addAlternativeScopes(parentNode->extMisc());
+        parentNode = parentNode->parent;
+    }
 
-	// If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
-	// so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
-	// they are other stuff here)
-	if (funcDecl->genericParameters)
-	{
-		Scope* scope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
-		inlineNode->addAlternativeScope(scope);
-		for (const auto child : funcDecl->genericParameters->children)
-		{
-			const auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);
-			symName->addOverloadNoLock(child, child->typeInfo, &child->resolvedSymbolOverload->computedValue);
-			symName->cptOverloads = 0; // Simulate a done resolution
-		}
-	}
+    // If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
+    // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
+    // they are other stuff here)
+    if (funcDecl->genericParameters)
+    {
+        Scope* scope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
+        inlineNode->addAlternativeScope(scope);
+        for (const auto child : funcDecl->genericParameters->children)
+        {
+            const auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);
+            symName->addOverloadNoLock(child, child->typeInfo, &child->resolvedSymbolOverload->computedValue);
+            symName->cptOverloads = 0; // Simulate a done resolution
+        }
+    }
 
-	// A mixin behave exactly like if it is in the caller scope, so do not create a sub-scope for them
-	Scope* newScope = identifier->ownerScope;
-	if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
-	{
-		newScope          = Ast::newScope(inlineNode, FMT("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
-		inlineNode->scope = newScope;
-	}
+    // A mixin behave exactly like if it is in the caller scope, so do not create a sub-scope for them
+    Scope* newScope = identifier->ownerScope;
+    if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
+    {
+        newScope          = Ast::newScope(inlineNode, FMT("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        inlineNode->scope = newScope;
+    }
 
-	// Create a scope that will contain all parameters.
-	// Parameters are specific to each inline block, that's why we create it even for mixins
-	inlineNode->parametersScope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
+    // Create a scope that will contain all parameters.
+    // Parameters are specific to each inline block, that's why we create it even for mixins
+    inlineNode->parametersScope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
 
-	// Clone the function body
-	cloneContext.parent         = inlineNode;
-	cloneContext.ownerInline    = inlineNode;
-	cloneContext.ownerFct       = identifier->ownerFct;
-	cloneContext.ownerBreakable = identifier->ownerBreakable;
-	cloneContext.parentScope    = newScope;
-	cloneContext.forceFlags.add(identifier->flags.mask(AST_NO_BACKEND));
-	cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));
-	cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
-	cloneContext.removeFlags.add(AST_R_VALUE);
-	cloneContext.cloneFlags |= CLONE_FORCE_OWNER_FCT;
+    // Clone the function body
+    cloneContext.parent         = inlineNode;
+    cloneContext.ownerInline    = inlineNode;
+    cloneContext.ownerFct       = identifier->ownerFct;
+    cloneContext.ownerBreakable = identifier->ownerBreakable;
+    cloneContext.parentScope    = newScope;
+    cloneContext.forceFlags.add(identifier->flags.mask(AST_NO_BACKEND));
+    cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));
+    cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
+    cloneContext.removeFlags.add(AST_R_VALUE);
+    cloneContext.cloneFlags |= CLONE_FORCE_OWNER_FCT;
 
-	// Here we inline a call in a global declaration, like a variable/constant initialization
-	// We do not want the function to be the original one, in case of local variables, because we
-	// do not want to change the stackSize of the original function because of local variables.
-	if (!cloneContext.ownerFct)
-	{
-		identifier->addAstFlag(AST_SPEC_STACK_SIZE);
-		if (identifier->kind == AstNodeKind::Identifier)
-			identifier->parent->addAstFlag(AST_SPEC_STACK_SIZE);
-		cloneContext.forceFlags.add(AST_SPEC_STACK_SIZE);
-	}
+    // Here we inline a call in a global declaration, like a variable/constant initialization
+    // We do not want the function to be the original one, in case of local variables, because we
+    // do not want to change the stackSize of the original function because of local variables.
+    if (!cloneContext.ownerFct)
+    {
+        identifier->addAstFlag(AST_SPEC_STACK_SIZE);
+        if (identifier->kind == AstNodeKind::Identifier)
+            identifier->parent->addAstFlag(AST_SPEC_STACK_SIZE);
+        cloneContext.forceFlags.add(AST_SPEC_STACK_SIZE);
+    }
 
-	// Register all aliases
-	if (identifier->kind == AstNodeKind::Identifier)
-	{
-		// Replace user aliases of the form #alias?
-		// Can come from the identifier itself (for visit) or from call parameters (for macros/mixins)
-		const auto id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+    // Register all aliases
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        // Replace user aliases of the form #alias?
+        // Can come from the identifier itself (for visit) or from call parameters (for macros/mixins)
+        const auto id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
 
-		int idx = 0;
-		if (id->identifierExtension)
-		{
-			for (const auto& alias : id->identifierExtension->aliasNames)
-				cloneContext.replaceNames[FMT("#alias%d", idx++)] = alias.text;
-		}
+        int idx = 0;
+        if (id->identifierExtension)
+        {
+            for (const auto& alias : id->identifierExtension->aliasNames)
+                cloneContext.replaceNames[FMT("#alias%d", idx++)] = alias.text;
+        }
 
-		idx = 0;
-		for (const auto& alias : id->callParameters->aliasNames)
-			cloneContext.replaceNames[FMT("#alias%d", idx++)] = alias.text;
+        idx = 0;
+        for (const auto& alias : id->callParameters->aliasNames)
+            cloneContext.replaceNames[FMT("#alias%d", idx++)] = alias.text;
 
-		// Replace user #mixin
-		if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN))
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				cloneContext.replaceNames[FMT("#mixin%d", i)] = FMT("__mixin%d", g_UniqueID.fetch_add(1));
-			}
-		}
+        // Replace user #mixin
+        if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                cloneContext.replaceNames[FMT("#mixin%d", i)] = FMT("__mixin%d", g_UniqueID.fetch_add(1));
+            }
+        }
 
-		for (const auto child : id->callParameters->children)
-		{
-			const auto param = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-			if (!param->resolvedParameter)
-				continue;
+        for (const auto child : id->callParameters->children)
+        {
+            const auto param = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+            if (!param->resolvedParameter)
+                continue;
 
-			// Transmit code type
-			if (param->typeInfo->isCode())
-			{
-				AddSymbolTypeInfo toAdd;
-				toAdd.node      = param;
-				toAdd.typeInfo  = param->typeInfo;
-				toAdd.kind      = SymbolKind::Variable;
-				toAdd.aliasName = &param->resolvedParameter->name;
+            // Transmit code type
+            if (param->typeInfo->isCode())
+            {
+                AddSymbolTypeInfo toAdd;
+                toAdd.node      = param;
+                toAdd.typeInfo  = param->typeInfo;
+                toAdd.kind      = SymbolKind::Variable;
+                toAdd.aliasName = &param->resolvedParameter->name;
 
-				inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
-			}
-		}
-	}
+                inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+            }
+        }
+    }
 
-	// Clone !
-	const auto newContent = funcDecl->content->clone(cloneContext);
+    // Clone !
+    const auto newContent = funcDecl->content->clone(cloneContext);
 
-	if (newContent->hasExtByteCode())
-	{
-		newContent->extByteCode()->byteCodeBeforeFct = nullptr;
-		if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
-			newContent->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
-	}
+    if (newContent->hasExtByteCode())
+    {
+        newContent->extByteCode()->byteCodeBeforeFct = nullptr;
+        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
+            newContent->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+    }
 
-	if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
-	{
-		if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->children.front()->extension)
-		{
-			const auto front = newContent->children.front();
-			if (front->hasExtByteCode())
-				front->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
-		}
-	}
+    if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::TryCatch || newContent->kind == AstNodeKind::Assume)
+    {
+        if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN) && newContent->children.front()->extension)
+        {
+            const auto front = newContent->children.front();
+            if (front->hasExtByteCode())
+                front->extByteCode()->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+        }
+    }
 
-	newContent->removeAstFlag(AST_NO_SEMANTIC);
+    newContent->removeAstFlag(AST_NO_SEMANTIC);
 
-	// Sub declarations in the inline block, like sub functions
-	if (!funcDecl->subDecl.empty())
-	{
-		PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
-		SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, FMT(Err(Err0279), identifier->token.c_str())}));
+    // Sub declarations in the inline block, like sub functions
+    if (!funcDecl->subDecl.empty())
+    {
+        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
+        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, FMT(Err(Err0279), identifier->token.c_str())}));
 
-		// Authorize a sub function to access inline parameters, if possible
-		// This will work for compile time values, otherwise we will have an out of stack frame when generating the code
-		cloneContext.alternativeScope = inlineNode->parametersScope;
+        // Authorize a sub function to access inline parameters, if possible
+        // This will work for compile time values, otherwise we will have an out of stack frame when generating the code
+        cloneContext.alternativeScope = inlineNode->parametersScope;
 
-		SWAG_CHECK(funcDecl->cloneSubDecl(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
-	}
+        SWAG_CHECK(funcDecl->cloneSubDecl(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
+    }
 
-	// Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
-	// for something else, like a loop node for example (opCount). In that case, we let the specific node
-	// deal with the (re)evaluation.
-	if (identifier->kind == AstNodeKind::Identifier)
-	{
-		// Do not reevaluate function parameters
-		const auto castId = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
-		if (castId->callParameters)
-			castId->callParameters->addAstFlag(AST_NO_SEMANTIC);
+    // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
+    // for something else, like a loop node for example (opCount). In that case, we let the specific node
+    // deal with the (re)evaluation.
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        // Do not reevaluate function parameters
+        const auto castId = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+        if (castId->callParameters)
+            castId->callParameters->addAstFlag(AST_NO_SEMANTIC);
 
-		identifier->semanticState = AstNodeResolveState::Enter;
-		identifier->bytecodeState = AstNodeResolveState::Enter;
-	}
+        identifier->semanticState = AstNodeResolveState::Enter;
+        identifier->bytecodeState = AstNodeResolveState::Enter;
+    }
 
-	// Check used aliases
-	// Error if an alias has been defined, but not 'eaten' by the function
-	if (identifier->kind == AstNodeKind::Identifier)
-	{
-		if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
-		{
-			PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
-			const auto     id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
-			for (auto& val : cloneContext.replaceNames | views::values)
-			{
-				auto it = cloneContext.usedReplaceNames.find(val);
-				if (it == cloneContext.usedReplaceNames.end())
-				{
-					if (id->identifierExtension)
-					{
-						for (auto& alias : id->identifierExtension->aliasNames)
-						{
-							if (alias.text == val)
-							{
-								const Diagnostic err{id, alias, FMT(Err(Err0746), alias.c_str())};
-								return context->report(err);
-							}
-						}
-					}
+    // Check used aliases
+    // Error if an alias has been defined, but not 'eaten' by the function
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
+        {
+            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::Inline, nullptr);
+            const auto     id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+            for (auto& val : cloneContext.replaceNames | views::values)
+            {
+                auto it = cloneContext.usedReplaceNames.find(val);
+                if (it == cloneContext.usedReplaceNames.end())
+                {
+                    if (id->identifierExtension)
+                    {
+                        for (auto& alias : id->identifierExtension->aliasNames)
+                        {
+                            if (alias.text == val)
+                            {
+                                const Diagnostic err{id, alias, FMT(Err(Err0746), alias.c_str())};
+                                return context->report(err);
+                            }
+                        }
+                    }
 
-					for (auto& alias : id->callParameters->aliasNames)
-					{
-						if (alias.text == val)
-						{
-							const Diagnostic err{id, alias, FMT(Err(Err0746), alias.c_str())};
-							return context->report(err);
-						}
-					}
-				}
-			}
-		}
-	}
+                    for (auto& alias : id->callParameters->aliasNames)
+                    {
+                        if (alias.text == val)
+                        {
+                            const Diagnostic err{id, alias, FMT(Err(Err0746), alias.c_str())};
+                            return context->report(err);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
-	SWAG_CHECK(makeInline(static_cast<JobContext*>(context), funcDecl, identifier));
-	context->result = ContextResult::NewChildren;
-	return true;
+    SWAG_CHECK(makeInline(static_cast<JobContext*>(context), funcDecl, identifier));
+    context->result = ContextResult::NewChildren;
+    return true;
 }

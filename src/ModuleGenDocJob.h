@@ -5,8 +5,8 @@
 
 struct ModuleGenDocJob final : Job
 {
-	JobResult execute() override;
+    JobResult execute() override;
 
-	BuildCfgDocKind docKind;
-	GenDoc          genDoc;
+    BuildCfgDocKind docKind;
+    GenDoc          genDoc;
 };

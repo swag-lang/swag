@@ -28,103 +28,103 @@ constexpr JobFlags JOB_IS_DEBUGGER          = 0x00000200;
 
 enum class ContextResult
 {
-	Done,
-	Pending,
-	NewChildren,
-	NewChildren1,
+    Done,
+    Pending,
+    NewChildren,
+    NewChildren1,
 };
 
 struct JobContext : ErrorContext
 {
-	void reset()
-	{
-		baseJob           = nullptr;
-		validIfParameters = nullptr;
-		result            = ContextResult::Done;
-		ErrorContext::reset();
-	}
+    void reset()
+    {
+        baseJob           = nullptr;
+        validIfParameters = nullptr;
+        result            = ContextResult::Done;
+        ErrorContext::reset();
+    }
 
-	Job*     baseJob           = nullptr;
-	AstNode* validIfParameters = nullptr;
+    Job*     baseJob           = nullptr;
+    AstNode* validIfParameters = nullptr;
 
-	ContextResult result = ContextResult::Done;
+    ContextResult result = ContextResult::Done;
 };
 
 enum class JobResult
 {
-	Continue,
-	ReleaseJob,
-	KeepJobAlive,
+    Continue,
+    ReleaseJob,
+    KeepJobAlive,
 };
 
 enum class JobWaitKind
 {
-	None,
-	SemByteCodeGenerated,
-	SemByteCodeResolved,
-	SemFullResolve,
-	SemPartialResolve,
-	GenExportedType,
-	GenExportedType1,
-	PendingLambdaTyping,
-	LoadFile,
-	AskBcWaitResolve,
-	MakeInline,
-	EmitInit,
-	EmitDrop,
-	EmitPostMove,
-	EmitPostCopy,
-	WaitSymbol,
-	WaitInterfacesFor,
-	WaitInterfaces,
-	WaitInterfacesReg,
-	WaitMethods,
-	WaitSpecialMethods,
-	DepDone,
-	WaitDepDoneExec,
-	WaitStructSymbol,
+    None,
+    SemByteCodeGenerated,
+    SemByteCodeResolved,
+    SemFullResolve,
+    SemPartialResolve,
+    GenExportedType,
+    GenExportedType1,
+    PendingLambdaTyping,
+    LoadFile,
+    AskBcWaitResolve,
+    MakeInline,
+    EmitInit,
+    EmitDrop,
+    EmitPostMove,
+    EmitPostCopy,
+    WaitSymbol,
+    WaitInterfacesFor,
+    WaitInterfaces,
+    WaitInterfacesReg,
+    WaitMethods,
+    WaitSpecialMethods,
+    DepDone,
+    WaitDepDoneExec,
+    WaitStructSymbol,
 };
 
 struct Job
 {
-	virtual JobResult execute() = 0;
-	virtual void      release();
-	virtual           ~Job() = default;
+    virtual JobResult execute() = 0;
+    virtual void      release();
+    virtual           ~Job() = default;
 
-	void addDependentJob(Job* job);
-	void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
-	void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
+    void addDependentJob(Job* job);
+    void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);
+    void setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* node, TypeInfo* typeInfo);
 
-	bool hasFlag(JobFlags fl) const { return flags.has(fl); }
-	void addFlag(JobFlags fl) { flags.add(fl); }
-	void removeFlag(JobFlags fl) { flags.remove(fl); }
+    bool hasFlag(JobFlags fl) const { return flags.has(fl); }
+    void addFlag(JobFlags fl) { flags.add(fl); }
+    void removeFlag(JobFlags fl) { flags.remove(fl); }
 
-	SharedMutex            executeMutex;
-	SharedMutex            mutexDependent;
-	DependentJobs          dependentJobs;
-	VectorNative<AstNode*> nodes;
-	VectorNative<Job*>     jobsToAdd;
+    SharedMutex            executeMutex;
+    SharedMutex            mutexDependent;
+    DependentJobs          dependentJobs;
+    VectorNative<AstNode*> nodes;
+    VectorNative<Job*>     jobsToAdd;
 
-	JobThread*  jobThread    = nullptr;
-	AstNode*    originalNode = nullptr;
-	SourceFile* sourceFile   = nullptr;
-	Module*     module       = nullptr;
-	Job*        dependentJob = nullptr;
-	Job*        wakeUpBy     = nullptr;
-	JobContext* baseContext  = nullptr;
-	JobGroup*   jobGroup     = nullptr;
+    JobThread*  jobThread    = nullptr;
+    AstNode*    originalNode = nullptr;
+    SourceFile* sourceFile   = nullptr;
+    Module*     module       = nullptr;
+    Job*        dependentJob = nullptr;
+    Job*        wakeUpBy     = nullptr;
+    JobContext* baseContext  = nullptr;
+    JobGroup*   jobGroup     = nullptr;
 
-	VectorNative<Job*> waitingJobs;
-	SymbolName*        waitingSymbolSolved = nullptr;
-	AstNode*           waitingNode         = nullptr;
-	AstNode*           waitingHintNode     = nullptr;
-	TypeInfo*          waitingType         = nullptr;
-	JobWaitKind        waitingKind         = JobWaitKind::None;
+    VectorNative<Job*> waitingJobs;
+    SymbolName*        waitingSymbolSolved = nullptr;
+    AstNode*           waitingNode         = nullptr;
+    AstNode*           waitingHintNode     = nullptr;
+    TypeInfo*          waitingType         = nullptr;
+    JobWaitKind        waitingKind         = JobWaitKind::None;
 
-	uint32_t waitingJobIndex = UINT32_MAX;
-	uint32_t waitOnJobs      = 0;
-	JobFlags flags           = 0;
-	uint32_t affinity        = UINT32_MAX;
+    uint32_t waitingJobIndex = UINT32_MAX;
+    uint32_t waitOnJobs      = 0;
+    JobFlags flags           = 0;
+    uint32_t affinity        = UINT32_MAX;
 };
 
 #define YIELD()                                     \

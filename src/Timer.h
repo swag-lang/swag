@@ -3,33 +3,33 @@
 
 struct Timer
 {
-	explicit Timer(atomic<uint64_t>* dest, bool force = false)
-		: destValue{dest}
-	{
-		start(force);
-	}
+    explicit Timer(atomic<uint64_t>* dest, bool force = false)
+        : destValue{dest}
+    {
+        start(force);
+    }
 
-	~Timer()
-	{
-		stop();
-	}
+    ~Timer()
+    {
+        stop();
+    }
 
-	void start(bool force)
-	{
+    void start(bool force)
+    {
 #ifdef SWAG_STATS
-		timeBefore = OS::timerNow();
+        timeBefore = OS::timerNow();
 #else
         if (force)
             timeBefore = OS::timerNow();
 #endif
-	}
+    }
 
-	void stop() const
-	{
-		if (timeBefore)
-			*destValue += OS::timerNow() - timeBefore;
-	}
+    void stop() const
+    {
+        if (timeBefore)
+            *destValue += OS::timerNow() - timeBefore;
+    }
 
-	atomic<uint64_t>* destValue;
-	uint64_t          timeBefore = 0;
+    atomic<uint64_t>* destValue;
+    uint64_t          timeBefore = 0;
 };

@@ -6,380 +6,380 @@ Log g_Log;
 
 void Log::lock()
 {
-	mutexAccess.lock();
+    mutexAccess.lock();
 }
 
 void Log::unlock()
 {
-	mutexAccess.unlock();
+    mutexAccess.unlock();
 }
 
 Utf8 Log::colorToVTS(LogColor color)
 {
-	if (!g_CommandLine.logColors)
-		return "";
+    if (!g_CommandLine.logColors)
+        return "";
 
-	switch (color)
-	{
-	case LogColor::Bold:
-		return "\x1b[1m";
-	case LogColor::UnBold:
-		return "\x1b[22m";
-	case LogColor::Underline:
-		return "\x1b[4m";
-	case LogColor::UnUnderline:
-		return "\x1b[24m";
+    switch (color)
+    {
+    case LogColor::Bold:
+        return "\x1b[1m";
+    case LogColor::UnBold:
+        return "\x1b[22m";
+    case LogColor::Underline:
+        return "\x1b[4m";
+    case LogColor::UnUnderline:
+        return "\x1b[24m";
 
-	case LogColor::Black:
-		return "\x1b[30m";
+    case LogColor::Black:
+        return "\x1b[30m";
 
-	case LogColor::DarkRed:
-		return "\x1b[31m";
-	case LogColor::DarkGreen:
-		return "\x1b[32m";
-	case LogColor::DarkYellow:
-		return "\x1b[33m";
-	case LogColor::DarkBlue:
-		return "\x1b[34m";
-	case LogColor::DarkMagenta:
-		return "\x1b[35m";
-	case LogColor::DarkCyan:
-		return "\x1b[36m";
-	case LogColor::LegitGray:
-		return "\x1b[37m";
-	case LogColor::Gray:
-		return FMT("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
+    case LogColor::DarkRed:
+        return "\x1b[31m";
+    case LogColor::DarkGreen:
+        return "\x1b[32m";
+    case LogColor::DarkYellow:
+        return "\x1b[33m";
+    case LogColor::DarkBlue:
+        return "\x1b[34m";
+    case LogColor::DarkMagenta:
+        return "\x1b[35m";
+    case LogColor::DarkCyan:
+        return "\x1b[36m";
+    case LogColor::LegitGray:
+        return "\x1b[37m";
+    case LogColor::Gray:
+        return FMT("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
 
-	case LogColor::Red:
-		return "\x1b[91m";
-	case LogColor::Green:
-		return "\x1b[92m";
-	case LogColor::Yellow:
-		return "\x1b[93m";
-	case LogColor::Blue:
-		return "\x1b[94m";
-	case LogColor::Magenta:
-		return "\x1b[95m";
-	case LogColor::Cyan:
-		return "\x1b[96m";
-	case LogColor::White:
-		return "\x1b[97m";
+    case LogColor::Red:
+        return "\x1b[91m";
+    case LogColor::Green:
+        return "\x1b[92m";
+    case LogColor::Yellow:
+        return "\x1b[93m";
+    case LogColor::Blue:
+        return "\x1b[94m";
+    case LogColor::Magenta:
+        return "\x1b[95m";
+    case LogColor::Cyan:
+        return "\x1b[96m";
+    case LogColor::White:
+        return "\x1b[97m";
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
 
-	return "";
+    return "";
 }
 
 void Log::setDefaultColor()
 {
-	setColor(LogColor::LegitGray);
+    setColor(LogColor::LegitGray);
 }
 
 void Log::setColor(LogColor color)
 {
-	print(colorToVTS(color));
+    print(colorToVTS(color));
 }
 
 void Log::print(LogSymbol symbol)
 {
-	switch (symbol)
-	{
-	case LogSymbol::VerticalLine:
-	case LogSymbol::VerticalLineDot:
-		if (g_CommandLine.logAscii)
-			print("|");
-		else
-			print("\xe2\x94\x82");
-		break;
+    switch (symbol)
+    {
+    case LogSymbol::VerticalLine:
+    case LogSymbol::VerticalLineDot:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x82");
+        break;
 
-	case LogSymbol::VerticalLineUp:
-		if (g_CommandLine.logAscii)
-			print("|");
-		else
-			print("\xe2\x95\xb5");
-		break;
+    case LogSymbol::VerticalLineUp:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x95\xb5");
+        break;
 
-	case LogSymbol::DotCenter:
-		if (g_CommandLine.logAscii)
-			print(".");
-		else
-			print("\xc2\xb7");
-		break;
+    case LogSymbol::DotCenter:
+        if (g_CommandLine.logAscii)
+            print(".");
+        else
+            print("\xc2\xb7");
+        break;
 
-	case LogSymbol::DotList:
-		if (g_CommandLine.logAscii)
-			print("*");
-		else
-			print("\xE2\x80\xa2");
-		break;
+    case LogSymbol::DotList:
+        if (g_CommandLine.logAscii)
+            print("*");
+        else
+            print("\xE2\x80\xa2");
+        break;
 
-	case LogSymbol::HorizontalLine:
-		if (g_CommandLine.logAscii)
-			print("-");
-		else
-			print("\xe2\x94\x80");
-		break;
+    case LogSymbol::HorizontalLine:
+        if (g_CommandLine.logAscii)
+            print("-");
+        else
+            print("\xe2\x94\x80");
+        break;
 
-	case LogSymbol::HorizontalLine2:
-		if (g_CommandLine.logAscii)
-			print("=");
-		else
-			print("\xe2\x95\x90");
-		break;
+    case LogSymbol::HorizontalLine2:
+        if (g_CommandLine.logAscii)
+            print("=");
+        else
+            print("\xe2\x95\x90");
+        break;
 
-	case LogSymbol::HorizontalLineMidVert:
-		if (g_CommandLine.logAscii)
-			print("-");
-		else
-			print("\xe2\x94\xac");
-		break;
+    case LogSymbol::HorizontalLineMidVert:
+        if (g_CommandLine.logAscii)
+            print("-");
+        else
+            print("\xe2\x94\xac");
+        break;
 
-	case LogSymbol::HorizontalLine2MidVert:
-		if (g_CommandLine.logAscii)
-			print("=");
-		else
-			print("\xe2\x95\xa4");
-		break;
+    case LogSymbol::HorizontalLine2MidVert:
+        if (g_CommandLine.logAscii)
+            print("=");
+        else
+            print("\xe2\x95\xa4");
+        break;
 
-	case LogSymbol::DownRight:
-		if (g_CommandLine.logAscii)
-			print("|");
-		else
-			print("\xe2\x94\x94");
-		break;
+    case LogSymbol::DownRight:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x94");
+        break;
 
-	case LogSymbol::DownLeft:
-		if (g_CommandLine.logAscii)
-			print("|");
-		else
-			print("\xe2\x94\x98");
-		break;
+    case LogSymbol::DownLeft:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x98");
+        break;
 
-	case LogSymbol::UpRight:
-		if (g_CommandLine.logAscii)
-			print("|");
-		else
-			print("\xe2\x94\x8c");
-		break;
+    case LogSymbol::UpRight:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x8c");
+        break;
 
-	case LogSymbol::RightDown:
-		if (g_CommandLine.logAscii)
-			print("|");
-		else
-			print("\xe2\x94\x90");
-		break;
-	}
+    case LogSymbol::RightDown:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x90");
+        break;
+    }
 }
 
 Utf8 Log::removeFormat(const char* message)
 {
-	Utf8 m;
-	auto pz = message;
-	while (*pz)
-	{
-		if (*pz == '\x1b')
-		{
-			while (*pz != 'm')
-				pz++;
-			pz++;
-		}
-		else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
-		{
-			pz += 2;
-		}
-		else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
-		{
-			pz += 2;
-		}
-		else
-			m += *pz++;
-	}
+    Utf8 m;
+    auto pz = message;
+    while (*pz)
+    {
+        if (*pz == '\x1b')
+        {
+            while (*pz != 'm')
+                pz++;
+            pz++;
+        }
+        else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
+        {
+            pz += 2;
+        }
+        else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
+        {
+            pz += 2;
+        }
+        else
+            m += *pz++;
+    }
 
-	return m;
+    return m;
 }
 
 Utf8 Log::format(const char* message)
 {
-	Utf8 m;
-	auto pz = message;
-	while (*pz)
-	{
-		if (*pz == '\x1b')
-		{
-			curColor.clear();
-			while (*pz != 'm')
-				curColor += *pz++;
-			curColor += *pz++;
-			m += curColor;
-		}
-		else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
-		{
-			if (g_CommandLine.logColors == false)
-				m += "'";
-			else if (curColor == colorToVTS(LogColor::White))
-				m += colorToVTS(LogColor::Gray);
-			else
-				m += colorToVTS(LogColor::Bold);
-			pz += 2;
-		}
-		else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
-		{
-			m += curColor;
-			if (g_CommandLine.logColors == false)
-				m += "'";
-			else
-			{
-				m += colorToVTS(LogColor::UnBold);
-				m += colorToVTS(LogColor::UnUnderline);
-			}
-			pz += 2;
-		}
-		else
-			m += *pz++;
-	}
+    Utf8 m;
+    auto pz = message;
+    while (*pz)
+    {
+        if (*pz == '\x1b')
+        {
+            curColor.clear();
+            while (*pz != 'm')
+                curColor += *pz++;
+            curColor += *pz++;
+            m += curColor;
+        }
+        else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
+        {
+            if (g_CommandLine.logColors == false)
+                m += "'";
+            else if (curColor == colorToVTS(LogColor::White))
+                m += colorToVTS(LogColor::Gray);
+            else
+                m += colorToVTS(LogColor::Bold);
+            pz += 2;
+        }
+        else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
+        {
+            m += curColor;
+            if (g_CommandLine.logColors == false)
+                m += "'";
+            else
+            {
+                m += colorToVTS(LogColor::UnBold);
+                m += colorToVTS(LogColor::UnUnderline);
+            }
+            pz += 2;
+        }
+        else
+            m += *pz++;
+    }
 
-	return m;
+    return m;
 }
 
 void Log::print(const char* message, bool raw)
 {
-	if (storeMode)
-	{
-		storeLine += message;
-		if (storeLine.back() == '\n')
-			eol();
-		return;
-	}
+    if (storeMode)
+    {
+        storeLine += message;
+        if (storeLine.back() == '\n')
+            eol();
+        return;
+    }
 
-	if (raw)
-		cout << message;
-	else
-		cout << format(message).c_str();
+    if (raw)
+        cout << message;
+    else
+        cout << format(message).c_str();
 }
 
 void Log::print(const Utf8& message, bool raw)
 {
-	print(message.c_str(), raw);
+    print(message.c_str(), raw);
 }
 
 void Log::print(const char* message, LogColor color)
 {
-	setColor(color);
-	print(message);
+    setColor(color);
+    print(message);
 }
 
 void Log::eol()
 {
-	if (storeMode)
-	{
-		store.push_back(storeLine);
-		storeLine.clear();
-	}
-	else
-		cout << "\n";
+    if (storeMode)
+    {
+        store.push_back(storeLine);
+        storeLine.clear();
+    }
+    else
+        cout << "\n";
 }
 
 constexpr int CENTER_COLUMN = 24;
 
 void Log::printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
 {
-	setColor(headerColor);
-	print(header);
+    setColor(headerColor);
+    print(header);
 
-	auto size = header.length();
-	while (size < CENTER_COLUMN)
-	{
-		print(dot);
-		size++;
-	}
+    auto size = header.length();
+    while (size < CENTER_COLUMN)
+    {
+        print(dot);
+        size++;
+    }
 
-	print(" ");
-	setColor(msgColor);
+    print(" ");
+    setColor(msgColor);
 
-	if (!message.empty())
-	{
-		print(message);
-		if (message.back() != '\n')
-			eol();
-	}
+    if (!message.empty())
+    {
+        print(message);
+        if (message.back() != '\n')
+            eol();
+    }
 }
 
 void Log::printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
 {
-	setColor(headerColor);
-	auto size = header.length();
-	while (size < CENTER_COLUMN)
-	{
-		print(" ");
-		size++;
-	}
+    setColor(headerColor);
+    auto size = header.length();
+    while (size < CENTER_COLUMN)
+    {
+        print(" ");
+        size++;
+    }
 
-	print(header);
-	print(" ");
-	setColor(msgColor);
-	print(message);
-	if (!message.length() || message.back() != '\n')
-		eol();
+    print(header);
+    print(" ");
+    setColor(msgColor);
+    print(message);
+    if (!message.length() || message.back() != '\n')
+        eol();
 }
 
 void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
 {
-	if (g_CommandLine.silent)
-		return;
+    if (g_CommandLine.silent)
+        return;
 
-	lock();
-	printHeaderCentered(header, message, headerColor, msgColor);
-	setDefaultColor();
-	unlock();
+    lock();
+    printHeaderCentered(header, message, headerColor, msgColor);
+    setDefaultColor();
+    unlock();
 }
 
 void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
 {
-	if (g_CommandLine.silent)
-		return;
+    if (g_CommandLine.silent)
+        return;
 
-	lock();
-	printHeaderDot(header, message, headerColor, msgColor, dot);
-	setDefaultColor();
-	unlock();
+    lock();
+    printHeaderDot(header, message, headerColor, msgColor, dot);
+    setDefaultColor();
+    unlock();
 }
 
 void Log::messageInfo(const Utf8& message)
 {
-	if (g_CommandLine.silent)
-		return;
+    if (g_CommandLine.silent)
+        return;
 
-	lock();
-	setColor(LogColor::Gray);
-	print(message);
-	if (message.back() != '\n')
-		eol();
-	setDefaultColor();
-	unlock();
+    lock();
+    setColor(LogColor::Gray);
+    print(message);
+    if (message.back() != '\n')
+        eol();
+    setDefaultColor();
+    unlock();
 }
 
 void Log::messageVerbose(const Utf8& message)
 {
-	if (g_CommandLine.silent || !g_CommandLine.verbose)
-		return;
+    if (g_CommandLine.silent || !g_CommandLine.verbose)
+        return;
 
-	lock();
-	setColor(LogColor::DarkCyan);
-	print(message);
-	if (message.back() != '\n')
-		eol();
-	setDefaultColor();
-	unlock();
+    lock();
+    setColor(LogColor::DarkCyan);
+    print(message);
+    if (message.back() != '\n')
+        eol();
+    setDefaultColor();
+    unlock();
 }
 
 void Log::setStoreMode(bool mode)
 {
-	storeMode = mode;
-	if (mode)
-	{
-		storeLine.clear();
-		store.clear();
-	}
+    storeMode = mode;
+    if (mode)
+    {
+        storeLine.clear();
+        store.clear();
+    }
 }

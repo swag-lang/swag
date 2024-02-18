@@ -3,5 +3,5 @@
 
 struct ModuleSemanticJob final : Job
 {
-	JobResult execute() override;
+    JobResult execute() override;
 };

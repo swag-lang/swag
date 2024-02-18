@@ -14,1103 +14,1103 @@
 
 bool Semantic::resolveIf(SemanticContext* context)
 {
-	const auto module = context->sourceFile->module;
-	const auto node   = castAst<AstIf>(context->node, AstNodeKind::If);
-	SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
+    const auto module = context->sourceFile->module;
+    const auto node   = castAst<AstIf>(context->node, AstNodeKind::If);
+    SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-	// :ConcreteRef
-	node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
+    // :ConcreteRef
+    node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
-	// Do not generate backend if 'if' is constant, and has already been evaluated
-	if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
-	{
-		node->boolExpression->addAstFlag(AST_NO_BYTECODE);
-		if (node->boolExpression->computedValue->reg.b)
-		{
-			if (node->elseBlock)
-				node->elseBlock->addAstFlag(AST_NO_BYTECODE);
-		}
-		else
-		{
-			node->ifBlock->addAstFlag(AST_NO_BYTECODE);
-		}
+    // Do not generate backend if 'if' is constant, and has already been evaluated
+    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
+    {
+        node->boolExpression->addAstFlag(AST_NO_BYTECODE);
+        if (node->boolExpression->computedValue->reg.b)
+        {
+            if (node->elseBlock)
+                node->elseBlock->addAstFlag(AST_NO_BYTECODE);
+        }
+        else
+        {
+            node->ifBlock->addAstFlag(AST_NO_BYTECODE);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	node->byteCodeFct = ByteCodeGen::emitIf;
-	node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitIfAfterExpr);
-	node->ifBlock->setBcNotifyAfter(ByteCodeGen::emitIfAfterIf, ByteCodeGen::emitLeaveScope);
+    node->byteCodeFct = ByteCodeGen::emitIf;
+    node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitIfAfterExpr);
+    node->ifBlock->setBcNotifyAfter(ByteCodeGen::emitIfAfterIf, ByteCodeGen::emitLeaveScope);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveWhile(SemanticContext* context)
 {
-	const auto module = context->sourceFile->module;
-	const auto node   = castAst<AstWhile>(context->node, AstNodeKind::While);
-	SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
+    const auto module = context->sourceFile->module;
+    const auto node   = castAst<AstWhile>(context->node, AstNodeKind::While);
+    SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-	// :ConcreteRef
-	node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
+    // :ConcreteRef
+    node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
-	// Do not evaluate while if it's constant and false
-	if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
-	{
-		if (!node->boolExpression->computedValue->reg.b)
-		{
-			node->boolExpression->addAstFlag(AST_NO_BYTECODE);
-			node->block->addAstFlag(AST_NO_BYTECODE);
-			return true;
-		}
-	}
+    // Do not evaluate while if it's constant and false
+    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
+    {
+        if (!node->boolExpression->computedValue->reg.b)
+        {
+            node->boolExpression->addAstFlag(AST_NO_BYTECODE);
+            node->block->addAstFlag(AST_NO_BYTECODE);
+            return true;
+        }
+    }
 
-	if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
-	{
-		const Diagnostic err{node->boolExpression, Err(Err0137)};
-		return context->report(err);
-	}
+    if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
+    {
+        const Diagnostic err{node->boolExpression, Err(Err0137)};
+        return context->report(err);
+    }
 
-	node->byteCodeFct = ByteCodeGen::emitLoop;
-	node->boolExpression->setBcNotifyBefore(ByteCodeGen::emitWhileBeforeExpr);
-	node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitWhileAfterExpr);
-	node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
+    node->byteCodeFct = ByteCodeGen::emitLoop;
+    node->boolExpression->setBcNotifyBefore(ByteCodeGen::emitWhileBeforeExpr);
+    node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitWhileAfterExpr);
+    node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
-	// :SpecPropagateReturn
-	if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
-		propagateReturn(node->parent);
+    // :SpecPropagateReturn
+    if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
+        propagateReturn(node->parent);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveInlineBefore(SemanticContext* context)
 {
-	const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
 
-	ErrorCxtStep expNode;
-	expNode.node = node->parent;
-	expNode.type = ErrCxtStepKind::Inline;
-	context->errCxtSteps.push_back(expNode);
+    ErrorCxtStep expNode;
+    expNode.node = node->parent;
+    expNode.type = ErrCxtStepKind::Inline;
+    context->errCxtSteps.push_back(expNode);
 
-	if (node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
-		return true;
-	node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
+    if (node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
+        return true;
+    node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
 
-	const auto func         = node->func;
-	const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto func         = node->func;
+    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
-	// :DirectInlineLocalVar
-	// For a return by copy, need to reserve room on the stack for the return result
-	if (CallConv::returnNeedsStack(typeInfoFunc))
-	{
-		node->addAstFlag(AST_TRANSIENT);
-		allocateOnStack(node, func->returnType->typeInfo);
-	}
+    // :DirectInlineLocalVar
+    // For a return by copy, need to reserve room on the stack for the return result
+    if (CallConv::returnNeedsStack(typeInfoFunc))
+    {
+        node->addAstFlag(AST_TRANSIENT);
+        allocateOnStack(node, func->returnType->typeInfo);
+    }
 
-	node->scope->startStackSize = node->ownerScope->startStackSize;
+    node->scope->startStackSize = node->ownerScope->startStackSize;
 
-	// If we inline a throwable function, be sure the top level function is informed
-	if (typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW))
-		node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
+    // If we inline a throwable function, be sure the top level function is informed
+    if (typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW))
+        node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
 
-	// Register all function parameters as inline symbols
-	if (func->parameters)
-	{
-		const AstIdentifier* identifier = nullptr;
-		if (node->parent->kind == AstNodeKind::Identifier)
-			identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-		for (size_t i = 0; i < func->parameters->children.size(); i++)
-		{
-			const auto funcParam = func->parameters->children[i];
+    // Register all function parameters as inline symbols
+    if (func->parameters)
+    {
+        const AstIdentifier* identifier = nullptr;
+        if (node->parent->kind == AstNodeKind::Identifier)
+            identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        for (size_t i = 0; i < func->parameters->children.size(); i++)
+        {
+            const auto funcParam = func->parameters->children[i];
 
-			// If the call parameter of the inlined function is constant, then we register it in a specific
-			// constant scope, not in the caller (for mixins)/inline scope.
-			// This is a separated scope because mixins do not have their own scope, and we must have a
-			// different symbol registration for each constant value
-			// :InlineUsingParam
-			bool              isConstant   = false;
-			AstFuncCallParam* orgCallParam = nullptr;
-			if (identifier && identifier->callParameters)
-			{
-				for (const auto& child : identifier->callParameters->children)
-				{
-					const auto callParam = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-					if (callParam->indexParam != static_cast<int>(i))
-						continue;
-					orgCallParam = callParam;
-					if (!callParam->hasComputedValue())
-						continue;
-					AddSymbolTypeInfo toAdd;
-					toAdd.node                = callParam;
-					toAdd.typeInfo            = funcParam->typeInfo;
-					toAdd.kind                = SymbolKind::Variable;
-					toAdd.computedValue       = callParam->computedValue;
-					toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
-					toAdd.storageOffset       = callParam->computedValue->storageOffset;
-					toAdd.storageSegment      = callParam->computedValue->storageSegment;
-					toAdd.aliasName           = &funcParam->token.text;
-					const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
-					overload->fromInlineParam = orgCallParam;
-					isConstant                = true;
-					break;
-				}
-			}
+            // If the call parameter of the inlined function is constant, then we register it in a specific
+            // constant scope, not in the caller (for mixins)/inline scope.
+            // This is a separated scope because mixins do not have their own scope, and we must have a
+            // different symbol registration for each constant value
+            // :InlineUsingParam
+            bool              isConstant   = false;
+            AstFuncCallParam* orgCallParam = nullptr;
+            if (identifier && identifier->callParameters)
+            {
+                for (const auto& child : identifier->callParameters->children)
+                {
+                    const auto callParam = castAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+                    if (callParam->indexParam != static_cast<int>(i))
+                        continue;
+                    orgCallParam = callParam;
+                    if (!callParam->hasComputedValue())
+                        continue;
+                    AddSymbolTypeInfo toAdd;
+                    toAdd.node                = callParam;
+                    toAdd.typeInfo            = funcParam->typeInfo;
+                    toAdd.kind                = SymbolKind::Variable;
+                    toAdd.computedValue       = callParam->computedValue;
+                    toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
+                    toAdd.storageOffset       = callParam->computedValue->storageOffset;
+                    toAdd.storageSegment      = callParam->computedValue->storageSegment;
+                    toAdd.aliasName           = &funcParam->token.text;
+                    const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+                    overload->fromInlineParam = orgCallParam;
+                    isConstant                = true;
+                    break;
+                }
+            }
 
-			if (!isConstant)
-			{
-				SWAG_ASSERT(node->parametersScope);
-				AddSymbolTypeInfo toAdd;
-				toAdd.node                = funcParam;
-				toAdd.typeInfo            = funcParam->typeInfo;
-				toAdd.kind                = SymbolKind::Variable;
-				toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
-				const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
-				overload->fromInlineParam = orgCallParam;
-			}
-		}
-	}
+            if (!isConstant)
+            {
+                SWAG_ASSERT(node->parametersScope);
+                AddSymbolTypeInfo toAdd;
+                toAdd.node                = funcParam;
+                toAdd.typeInfo            = funcParam->typeInfo;
+                toAdd.kind                = SymbolKind::Variable;
+                toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
+                const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+                overload->fromInlineParam = orgCallParam;
+            }
+        }
+    }
 
-	// Sub declarations in an inline block have access to the 'parametersScope', so we must start resolving
-	// them only when we have are filling the parameters
-	resolveSubDecls(context, node->ownerFct);
+    // Sub declarations in an inline block have access to the 'parametersScope', so we must start resolving
+    // them only when we have are filling the parameters
+    resolveSubDecls(context, node->ownerFct);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveInlineAfter(SemanticContext* context)
 {
-	const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
-	const auto fct  = node->func;
+    const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto fct  = node->func;
 
-	// No need to check missing return for inline only, because the function has already been
-	// checked as a separated function
-	if (fct->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
-	{
-		if (fct->returnType && !fct->returnType->typeInfo->isVoid())
-		{
-			if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
-			{
-				if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-					return context->report({fct->returnType, FMT(Err(Err0578), fct->getDisplayNameC())});
-				return context->report({fct->returnType, FMT(Err(Err0579), fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
-			}
-		}
-	}
+    // No need to check missing return for inline only, because the function has already been
+    // checked as a separated function
+    if (fct->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+    {
+        if (fct->returnType && !fct->returnType->typeInfo->isVoid())
+        {
+            if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
+            {
+                if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
+                    return context->report({fct->returnType, FMT(Err(Err0578), fct->getDisplayNameC())});
+                return context->report({fct->returnType, FMT(Err(Err0579), fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
+            }
+        }
+    }
 
-	context->errCxtSteps.pop_back();
-	return true;
+    context->errCxtSteps.pop_back();
+    return true;
 }
 
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
-	const auto node                  = castAst<AstFor>(context->node, AstNodeKind::For);
-	node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
-	return true;
+    const auto node                  = castAst<AstFor>(context->node, AstNodeKind::For);
+    node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    return true;
 }
 
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
-	const auto node                  = castAst<AstLoop>(context->node, AstNodeKind::Loop);
-	node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
-	return true;
+    const auto node                  = castAst<AstLoop>(context->node, AstNodeKind::Loop);
+    node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    return true;
 }
 
 bool Semantic::resolveFor(SemanticContext* context)
 {
-	const auto node = castAst<AstFor>(context->node, AstNodeKind::For);
-	SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
+    const auto node = castAst<AstFor>(context->node, AstNodeKind::For);
+    SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-	SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression));
-	node->byteCodeFct = ByteCodeGen::emitLoop;
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression));
+    node->byteCodeFct = ByteCodeGen::emitLoop;
 
-	node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
-	node->boolExpression->setBcNotifyBefore(ByteCodeGen::emitForBeforeExpr);
-	node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitForAfterExpr);
-	node->postExpression->setBcNotifyBefore(ByteCodeGen::emitForBeforePost);
-	node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
+    node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
+    node->boolExpression->setBcNotifyBefore(ByteCodeGen::emitForBeforeExpr);
+    node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitForAfterExpr);
+    node->postExpression->setBcNotifyBefore(ByteCodeGen::emitForBeforePost);
+    node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
-	// :SpecPropagateReturn
-	if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
-		propagateReturn(node->parent);
+    // :SpecPropagateReturn
+    if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
+        propagateReturn(node->parent);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
 {
-	const auto node       = context->node;
-	const auto switchNode = castAst<AstSwitch>(node->parent, AstNodeKind::Switch);
-	const auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
+    const auto node       = context->node;
+    const auto switchNode = castAst<AstSwitch>(node->parent, AstNodeKind::Switch);
+    const auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
 
-	// For a switch on an enum, force a 'using' for each case
-	if (typeInfo->isEnum())
-	{
-		// :AutoScope
-		const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-		for (const auto switchCase : switchNode->cases)
-		{
-			switchCase->addAlternativeScope(typeEnum->scope);
-		}
-	}
+    // For a switch on an enum, force a 'using' for each case
+    if (typeInfo->isEnum())
+    {
+        // :AutoScope
+        const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        for (const auto switchCase : switchNode->cases)
+        {
+            switchCase->addAlternativeScope(typeEnum->scope);
+        }
+    }
 
-	// Auto convert to the underlying type if necessary
-	else
-	{
-		SWAG_CHECK(makeIntrinsicKindof(context, node));
-		YIELD();
-	}
+    // Auto convert to the underlying type if necessary
+    else
+    {
+        SWAG_CHECK(makeIntrinsicKindof(context, node));
+        YIELD();
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveSwitch(SemanticContext* context)
 {
-	auto node = castAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    auto node = castAst<AstSwitch>(context->node, AstNodeKind::Switch);
 
-	// Deal with complete
-	SWAG_CHECK(collectAttributes(context, node, nullptr));
+    // Deal with complete
+    SWAG_CHECK(collectAttributes(context, node, nullptr));
 
-	if (node->hasAttribute(ATTRIBUTE_COMPLETE) && !node->expression)
-	{
-		const Diagnostic err{node, node->token, Err(Err0483)};
-		const auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-		const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-		return context->report(err, note);
-	}
+    if (node->hasAttribute(ATTRIBUTE_COMPLETE) && !node->expression)
+    {
+        const Diagnostic err{node, node->token, Err(Err0483)};
+        const auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+        return context->report(err, note);
+    }
 
-	node->byteCodeFct = ByteCodeGen::emitSwitch;
-	if (!node->expression)
-	{
-		node->setBcNotifyBefore(ByteCodeGen::emitBeforeSwitch);
-		return true;
-	}
+    node->byteCodeFct = ByteCodeGen::emitSwitch;
+    if (!node->expression)
+    {
+        node->setBcNotifyBefore(ByteCodeGen::emitBeforeSwitch);
+        return true;
+    }
 
-	node->expression->setBcNotifyAfter(ByteCodeGen::emitSwitchAfterExpr);
+    node->expression->setBcNotifyAfter(ByteCodeGen::emitSwitchAfterExpr);
 
-	SWAG_CHECK(checkIsConcrete(context, node->expression));
+    SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-	node->expression->typeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_FUNC | CONCRETE_ALIAS);
-	node->typeInfo             = node->expression->typeInfo;
+    node->expression->typeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_FUNC | CONCRETE_ALIAS);
+    node->typeInfo             = node->expression->typeInfo;
 
-	const auto typeSwitch = TypeManager::concreteType(node->typeInfo);
+    const auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
-	switch (typeSwitch->kind)
-	{
-	case TypeInfoKind::Slice:
-	case TypeInfoKind::Array:
-	case TypeInfoKind::Interface:
-		return context->report({node->expression, FMT(Err(Err0169), typeSwitch->getDisplayNameC())});
-	default:
-		break;
-	}
+    switch (typeSwitch->kind)
+    {
+    case TypeInfoKind::Slice:
+    case TypeInfoKind::Array:
+    case TypeInfoKind::Interface:
+        return context->report({node->expression, FMT(Err(Err0169), typeSwitch->getDisplayNameC())});
+    default:
+        break;
+    }
 
-	SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Err(Err0076)}));
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Err(Err0076)}));
 
-	// Collect constant expressions, to avoid double definitions
-	VectorNative<AstNode*> valDef;
-	VectorNative<uint64_t> val64;
-	Vector<Utf8>           valText;
-	for (const auto switchCase : node->cases)
-	{
-		for (auto expr : switchCase->expressions)
-		{
-			if (expr->hasComputedValue())
-			{
-				const auto typeExpr = TypeManager::concreteType(expr->typeInfo);
-				if (typeExpr->isString())
-				{
-					const int idx = valText.find(expr->computedValue->text);
-					if (idx != -1)
-					{
-						const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
-						return context->report({expr, FMT(Err(Err0011), expr->computedValue->text.c_str())}, note);
-					}
+    // Collect constant expressions, to avoid double definitions
+    VectorNative<AstNode*> valDef;
+    VectorNative<uint64_t> val64;
+    Vector<Utf8>           valText;
+    for (const auto switchCase : node->cases)
+    {
+        for (auto expr : switchCase->expressions)
+        {
+            if (expr->hasComputedValue())
+            {
+                const auto typeExpr = TypeManager::concreteType(expr->typeInfo);
+                if (typeExpr->isString())
+                {
+                    const int idx = valText.find(expr->computedValue->text);
+                    if (idx != -1)
+                    {
+                        const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
+                        return context->report({expr, FMT(Err(Err0011), expr->computedValue->text.c_str())}, note);
+                    }
 
-					valText.push_back(expr->computedValue->text);
-					valDef.push_back(expr);
-				}
-				else
-				{
-					auto value = expr->computedValue->reg.u64;
-					if (expr->isConstantGenTypeInfo())
-						value = expr->computedValue->storageOffset;
+                    valText.push_back(expr->computedValue->text);
+                    valDef.push_back(expr);
+                }
+                else
+                {
+                    auto value = expr->computedValue->reg.u64;
+                    if (expr->isConstantGenTypeInfo())
+                        value = expr->computedValue->storageOffset;
 
-					const int idx = val64.find(value);
-					if (idx != -1)
-					{
-						const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
-						if (expr->isConstantGenTypeInfo())
-							return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
-						if (expr->typeInfo->isEnum())
-							return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
-						if (typeExpr->isNativeInteger())
-							return context->report({expr, FMT(Err(Err0009), expr->computedValue->reg.u64)}, note);
-						return context->report({expr, FMT(Err(Err0010), expr->computedValue->reg.f64)}, note);
-					}
+                    const int idx = val64.find(value);
+                    if (idx != -1)
+                    {
+                        const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
+                        if (expr->isConstantGenTypeInfo())
+                            return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
+                        if (expr->typeInfo->isEnum())
+                            return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
+                        if (typeExpr->isNativeInteger())
+                            return context->report({expr, FMT(Err(Err0009), expr->computedValue->reg.u64)}, note);
+                        return context->report({expr, FMT(Err(Err0010), expr->computedValue->reg.f64)}, note);
+                    }
 
-					val64.push_back(expr->computedValue->reg.u64);
-					valDef.push_back(expr);
-				}
-			}
-			else if (node->hasAttribute(ATTRIBUTE_COMPLETE))
-			{
-				return checkIsConstExpr(context, expr->hasComputedValue(), expr, Err(Err0035));
-			}
-		}
-	}
+                    val64.push_back(expr->computedValue->reg.u64);
+                    valDef.push_back(expr);
+                }
+            }
+            else if (node->hasAttribute(ATTRIBUTE_COMPLETE))
+            {
+                return checkIsConstExpr(context, expr->hasComputedValue(), expr, Err(Err0035));
+            }
+        }
+    }
 
-	if (node->hasAttribute(ATTRIBUTE_COMPLETE))
-	{
-		// No default for a complete switch
-		auto back = node->cases.back();
-		if (back->expressions.empty())
-		{
-			const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-			const auto note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-			return context->report({back, back->token, Err(Err0663)}, note);
-		}
+    if (node->hasAttribute(ATTRIBUTE_COMPLETE))
+    {
+        // No default for a complete switch
+        auto back = node->cases.back();
+        if (back->expressions.empty())
+        {
+            const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+            const auto note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
+            return context->report({back, back->token, Err(Err0663)}, note);
+        }
 
-		// When a switch is marked as complete, be sure every definitions have been covered
-		if (node->typeInfo->isEnum())
-		{
-			const auto                  typeEnum0 = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-			VectorNative<TypeInfoEnum*> collect;
-			typeEnum0->collectEnums(collect);
-			for (const auto typeEnum : collect)
-			{
-				if (typeSwitch->isString())
-				{
-					for (const auto one : typeEnum->values)
-					{
-						if (!one->value)
-							continue;
-						if (!valText.contains(one->value->text))
-						{
-							const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
-							const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
-							return context->report(err, note);
-						}
-					}
-				}
-				else
-				{
-					for (const auto one : typeEnum->values)
-					{
-						if (!one->value)
-							continue;
-						if (!val64.contains(one->value->reg.u64))
-						{
-							const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
-							const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
-							return context->report(err, note);
-						}
-					}
-				}
-			}
-		}
+        // When a switch is marked as complete, be sure every definitions have been covered
+        if (node->typeInfo->isEnum())
+        {
+            const auto                  typeEnum0 = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            VectorNative<TypeInfoEnum*> collect;
+            typeEnum0->collectEnums(collect);
+            for (const auto typeEnum : collect)
+            {
+                if (typeSwitch->isString())
+                {
+                    for (const auto one : typeEnum->values)
+                    {
+                        if (!one->value)
+                            continue;
+                        if (!valText.contains(one->value->text))
+                        {
+                            const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
+                            return context->report(err, note);
+                        }
+                    }
+                }
+                else
+                {
+                    for (const auto one : typeEnum->values)
+                    {
+                        if (!one->value)
+                            continue;
+                        if (!val64.contains(one->value->reg.u64))
+                        {
+                            const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
+                            return context->report(err, note);
+                        }
+                    }
+                }
+            }
+        }
 
-		// Add a safety test in a switch default to catch runtime invalid values
-		const auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
-		caseNode->addAstFlag(AST_GENERATED);
-		caseNode->specFlags   = AstSwitchCase::SPEC_FLAG_IS_DEFAULT;
-		caseNode->ownerSwitch = node;
-		node->cases.push_back(caseNode);
-		caseNode->byteCodeFct = ByteCodeGen::emitSafetySwitchDefault;
-	}
+        // Add a safety test in a switch default to catch runtime invalid values
+        const auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
+        caseNode->addAstFlag(AST_GENERATED);
+        caseNode->specFlags   = AstSwitchCase::SPEC_FLAG_IS_DEFAULT;
+        caseNode->ownerSwitch = node;
+        node->cases.push_back(caseNode);
+        caseNode->byteCodeFct = ByteCodeGen::emitSafetySwitchDefault;
+    }
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveCase(SemanticContext* context)
 {
-	const auto node = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
-	for (const auto oneExpression : node->expressions)
-	{
-		oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
+    const auto node = castAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    for (const auto oneExpression : node->expressions)
+    {
+        oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-		// Range
-		if (oneExpression->kind == AstNodeKind::Range)
-		{
-			auto rangeNode = castAst<AstRange>(oneExpression, AstNodeKind::Range);
-			if (node->ownerSwitch->expression)
-			{
-				const auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
-				if (typeInfo->isStruct())
-				{
-					SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
-					YIELD();
-					SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
-					YIELD();
-				}
-				else
-				{
-					SWAG_CHECK(TypeManager::promote32(context, node->ownerSwitch->expression));
-					SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionLow));
-					SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionUp));
-					SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
-					SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
-				}
-			}
-			else
-			{
-				return context->report({rangeNode, Err(Err0506)});
-			}
-		}
+        // Range
+        if (oneExpression->kind == AstNodeKind::Range)
+        {
+            auto rangeNode = castAst<AstRange>(oneExpression, AstNodeKind::Range);
+            if (node->ownerSwitch->expression)
+            {
+                const auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                if (typeInfo->isStruct())
+                {
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
+                    YIELD();
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
+                    YIELD();
+                }
+                else
+                {
+                    SWAG_CHECK(TypeManager::promote32(context, node->ownerSwitch->expression));
+                    SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionLow));
+                    SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionUp));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CAST_FLAG_FOR_COMPARE | CAST_FLAG_TRY_COERCE));
+                }
+            }
+            else
+            {
+                return context->report({rangeNode, Err(Err0506)});
+            }
+        }
 
-		// Single expression
-		else
-		{
-			SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
-			YIELD();
+        // Single expression
+        else
+        {
+            SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
+            YIELD();
 
-			// switch with an expression : compare case with the switch expression
-			if (node->ownerSwitch->expression)
-			{
-				auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
-				if (typeInfo->isStruct())
-				{
-					SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
-					YIELD();
-				}
-				else
-				{
-					PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]
-					{
-						return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
-					});
-					const auto typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
-					SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
-				}
+            // switch with an expression : compare case with the switch expression
+            if (node->ownerSwitch->expression)
+            {
+                auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                if (typeInfo->isStruct())
+                {
+                    SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
+                    YIELD();
+                }
+                else
+                {
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]
+                    {
+                        return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
+                    });
+                    const auto typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
+                }
 
-				// If the switch expression is constant, and the expression is constant too, then we can do the
-				// compare right now
-				if (node->ownerSwitch->expression->hasComputedValue() && oneExpression->hasComputedValue())
-				{
-					SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
-					if (node->computedValue->reg.b)
-						node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
-					else
-						node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
-					Allocator::free<ComputedValue>(node->computedValue);
-					node->removeAstFlag(AST_VALUE_COMPUTED);
-					node->computedValue = nullptr;
-				}
-			}
+                // If the switch expression is constant, and the expression is constant too, then we can do the
+                // compare right now
+                if (node->ownerSwitch->expression->hasComputedValue() && oneExpression->hasComputedValue())
+                {
+                    SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
+                    if (node->computedValue->reg.b)
+                        node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
+                    else
+                        node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
+                    Allocator::free<ComputedValue>(node->computedValue);
+                    node->removeAstFlag(AST_VALUE_COMPUTED);
+                    node->computedValue = nullptr;
+                }
+            }
 
-			// switch without an expression : a case is a boolean expression
-			else
-			{
-				SWAG_CHECK(
-					TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CAST_FLAG_FOR_COMPARE | CAST_FLAG_AUTO_BOOL));
-			}
-		}
-	}
+            // switch without an expression : a case is a boolean expression
+            else
+            {
+                SWAG_CHECK(
+                    TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CAST_FLAG_FOR_COMPARE | CAST_FLAG_AUTO_BOOL));
+            }
+        }
+    }
 
-	if (node->ownerSwitch->expression)
-		node->typeInfo = node->ownerSwitch->expression->typeInfo;
+    if (node->ownerSwitch->expression)
+        node->typeInfo = node->ownerSwitch->expression->typeInfo;
 
-	if (!node->expressions.empty())
-		node->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
-	node->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
-	node->block->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
+    if (!node->expressions.empty())
+        node->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
+    node->block->setBcNotifyBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
+    node->block->setBcNotifyAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveLoop(SemanticContext* context)
 {
-	const auto module = context->sourceFile->module;
-	const auto node   = castAst<AstLoop>(context->node, AstNodeKind::Loop);
+    const auto module = context->sourceFile->module;
+    const auto node   = castAst<AstLoop>(context->node, AstNodeKind::Loop);
 
-	if (node->expression)
-	{
-		// No range
-		if (node->expression->kind != AstNodeKind::Range)
-		{
-			const auto typeInfo = TypeManager::concretePtrRef(node->expression->typeInfo);
-			if (!typeInfo->isEnum())
-				SWAG_CHECK(checkIsConcrete(context, node->expression));
+    if (node->expression)
+    {
+        // No range
+        if (node->expression->kind != AstNodeKind::Range)
+        {
+            const auto typeInfo = TypeManager::concretePtrRef(node->expression->typeInfo);
+            if (!typeInfo->isEnum())
+                SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-			{
-				PushErrCxtStep ec(
-					context, node, ErrCxtStepKind::Note, []
-					{
-						return Nte(Nte0021);
-					},
-					true);
-				SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
-				YIELD();
-			}
+            {
+                PushErrCxtStep ec(
+                    context, node, ErrCxtStepKind::Note, []
+                    {
+                        return Nte(Nte0021);
+                    },
+                    true);
+                SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
+                YIELD();
+            }
 
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CAST_FLAG_TRY_COERCE));
-			node->typeInfo = node->expression->typeInfo;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CAST_FLAG_TRY_COERCE));
+            node->typeInfo = node->expression->typeInfo;
 
-			// Do not evaluate loop if it's constant and 0
-			if (module->mustOptimizeBytecode(node) && node->expression->hasComputedValue())
-			{
-				if (!node->expression->computedValue->reg.u64)
-				{
-					node->addAstFlag(AST_NO_BYTECODE);
-					node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-					return true;
-				}
-			}
-		}
+            // Do not evaluate loop if it's constant and 0
+            if (module->mustOptimizeBytecode(node) && node->expression->hasComputedValue())
+            {
+                if (!node->expression->computedValue->reg.u64)
+                {
+                    node->addAstFlag(AST_NO_BYTECODE);
+                    node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+                    return true;
+                }
+            }
+        }
 
-		// Range
-		else
-		{
-			const auto rangeNode = castAst<AstRange>(node->expression, AstNodeKind::Range);
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CAST_FLAG_TRY_COERCE));
-			SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CAST_FLAG_TRY_COERCE));
-		}
+        // Range
+        else
+        {
+            const auto rangeNode = castAst<AstRange>(node->expression, AstNodeKind::Range);
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CAST_FLAG_TRY_COERCE));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CAST_FLAG_TRY_COERCE));
+        }
 
-		node->expression->allocateExtension(ExtensionKind::ByteCode);
-		node->expression->setBcNotifyAfter(ByteCodeGen::emitLoopAfterExpr);
-	}
+        node->expression->allocateExtension(ExtensionKind::ByteCode);
+        node->expression->setBcNotifyAfter(ByteCodeGen::emitLoopAfterExpr);
+    }
 
-	node->byteCodeFct = ByteCodeGen::emitLoop;
-	node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
-	node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
-	if (!node->expression)
-		node->block->setBcNotifyBefore(ByteCodeGen::emitLoopBeforeBlock);
+    node->byteCodeFct = ByteCodeGen::emitLoop;
+    node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
+    node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
+    if (!node->expression)
+        node->block->setBcNotifyBefore(ByteCodeGen::emitLoopBeforeBlock);
 
-	// :SpecPropagateReturn
-	if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
-		propagateReturn(node->parent);
+    // :SpecPropagateReturn
+    if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
+        propagateReturn(node->parent);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveVisit(SemanticContext* context)
 {
-	auto job        = context->baseJob;
-	auto sourceFile = context->sourceFile;
-	auto node       = castAst<AstVisit>(context->node, AstNodeKind::Visit);
+    auto job        = context->baseJob;
+    auto sourceFile = context->sourceFile;
+    auto node       = castAst<AstVisit>(context->node, AstNodeKind::Visit);
 
-	auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+    auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-	if (!typeInfo->isEnum())
-		SWAG_CHECK(checkIsConcrete(context, node->expression));
-	if (typeInfo->isListArray())
-		typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), node->expression->hasAstFlag(AST_CONST_EXPR));
+    if (!typeInfo->isEnum())
+        SWAG_CHECK(checkIsConcrete(context, node->expression));
+    if (typeInfo->isListArray())
+        typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), node->expression->hasAstFlag(AST_CONST_EXPR));
 
-	// Be sure that aliases are not defined elsewhere
-	for (const auto& c : node->aliasNames)
-	{
-		auto id   = createTmpId(context, node, c.text);
-		id->token = c;
-		SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_ZERO_GHOSTING));
-		YIELD();
-	}
+    // Be sure that aliases are not defined elsewhere
+    for (const auto& c : node->aliasNames)
+    {
+        auto id   = createTmpId(context, node, c.text);
+        id->token = c;
+        SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_ZERO_GHOSTING));
+        YIELD();
+    }
 
-	// Struct type : convert to a opVisit call
-	AstNode* newExpression = nullptr;
-	if (typeInfo->isStruct())
-	{
-		SWAG_VERIFY(!typeInfo->isTuple(), context->report({node->expression, Err(Err0171)}));
+    // Struct type : convert to a opVisit call
+    AstNode* newExpression = nullptr;
+    if (typeInfo->isStruct())
+    {
+        SWAG_VERIFY(!typeInfo->isTuple(), context->report({node->expression, Err(Err0171)}));
 
-		AstIdentifierRef* identifierRef = nullptr;
-		AstIdentifier*    callVisit     = nullptr;
-		AstVarDecl*       varNode       = nullptr;
+        AstIdentifierRef* identifierRef = nullptr;
+        AstIdentifier*    callVisit     = nullptr;
+        AstVarDecl*       varNode       = nullptr;
 
-		if (node->expression->kind != AstNodeKind::IdentifierRef)
-		{
-			varNode = Ast::newVarDecl(sourceFile, FMT("__9tmp_%d", g_UniqueID.fetch_add(1)), node);
-			varNode->addAstFlag(AST_GENERATED);
-			newExpression       = Ast::clone(node->expression, varNode);
-			varNode->assignment = newExpression;
+        if (node->expression->kind != AstNodeKind::IdentifierRef)
+        {
+            varNode = Ast::newVarDecl(sourceFile, FMT("__9tmp_%d", g_UniqueID.fetch_add(1)), node);
+            varNode->addAstFlag(AST_GENERATED);
+            newExpression       = Ast::clone(node->expression, varNode);
+            varNode->assignment = newExpression;
 
-			Ast::removeFromParent(node->expression);
-			identifierRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, node);
-			newExpression = identifierRef;
-		}
-		else
-		{
-			identifierRef = castAst<AstIdentifierRef>(Ast::cloneRaw(node->expression, node));
-			newExpression = identifierRef;
-		}
+            Ast::removeFromParent(node->expression);
+            identifierRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, node);
+            newExpression = identifierRef;
+        }
+        else
+        {
+            identifierRef = castAst<AstIdentifierRef>(Ast::cloneRaw(node->expression, node));
+            newExpression = identifierRef;
+        }
 
-		callVisit = Ast::newIdentifier(sourceFile, FMT("opVisit%s", node->extraNameToken.c_str()), identifierRef, identifierRef);
-		callVisit->allocateIdentifierExtension();
-		callVisit->identifierExtension->aliasNames = node->aliasNames;
-		callVisit->inheritTokenLocation(node);
+        callVisit = Ast::newIdentifier(sourceFile, FMT("opVisit%s", node->extraNameToken.c_str()), identifierRef, identifierRef);
+        callVisit->allocateIdentifierExtension();
+        callVisit->identifierExtension->aliasNames = node->aliasNames;
+        callVisit->inheritTokenLocation(node);
 
-		// Generic parameters
-		callVisit->genericParameters = Ast::newFuncCallGenParams(sourceFile, callVisit);
-		callVisit->genericParameters->addAstFlag(AST_NO_BYTECODE);
+        // Generic parameters
+        callVisit->genericParameters = Ast::newFuncCallGenParams(sourceFile, callVisit);
+        callVisit->genericParameters->addAstFlag(AST_NO_BYTECODE);
 
-		auto child0      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
-		child0->typeInfo = g_TypeMgr->typeInfoBool;
-		child0->setFlagsValueIsComputed();
-		child0->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER);
-		child0->addAstFlag(AST_NO_SEMANTIC);
+        auto child0      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
+        child0->typeInfo = g_TypeMgr->typeInfoBool;
+        child0->setFlagsValueIsComputed();
+        child0->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER);
+        child0->addAstFlag(AST_NO_SEMANTIC);
 
-		auto child1      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
-		child1->typeInfo = g_TypeMgr->typeInfoBool;
-		child1->setFlagsValueIsComputed();
-		child1->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK);
-		child1->addAstFlag(AST_NO_SEMANTIC);
+        auto child1      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
+        child1->typeInfo = g_TypeMgr->typeInfoBool;
+        child1->setFlagsValueIsComputed();
+        child1->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK);
+        child1->addAstFlag(AST_NO_SEMANTIC);
 
-		// Call with arguments
-		callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit);
+        // Call with arguments
+        callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit);
 
-		Ast::removeFromParent(node->block);
-		Ast::addChildBack(node, node->block);
-		node->expression->addAstFlag(AST_NO_BYTECODE);
+        Ast::removeFromParent(node->block);
+        Ast::addChildBack(node, node->block);
+        node->expression->addAstFlag(AST_NO_BYTECODE);
 
-		job->nodes.pop_back();
-		job->nodes.push_back(newExpression);
-		job->nodes.push_back(node->block);
-		if (varNode)
-			job->nodes.push_back(varNode);
-		job->nodes.push_back(node);
-		return true;
-	}
+        job->nodes.pop_back();
+        job->nodes.push_back(newExpression);
+        job->nodes.push_back(node->block);
+        if (varNode)
+            job->nodes.push_back(varNode);
+        job->nodes.push_back(node);
+        return true;
+    }
 
-	if (!node->extraNameToken.text.empty())
-	{
-		Diagnostic err{node, node->extraNameToken, FMT(Err(Err0704), typeInfo->getDisplayNameC())};
-		err.addNote(node->expression, Diagnostic::isType(typeInfo));
-		return context->report(err);
-	}
+    if (!node->extraNameToken.text.empty())
+    {
+        Diagnostic err{node, node->extraNameToken, FMT(Err(Err0704), typeInfo->getDisplayNameC())};
+        err.addNote(node->expression, Diagnostic::isType(typeInfo));
+        return context->report(err);
+    }
 
-	if (node->aliasNames.size() > 2)
-	{
-		Diagnostic err{node, node->aliasNames[2], FMT(Err(Err0693), node->aliasNames.size())};
-		return context->report(err);
-	}
+    if (node->aliasNames.size() > 2)
+    {
+        Diagnostic err{node, node->aliasNames[2], FMT(Err(Err0693), node->aliasNames.size())};
+        return context->report(err);
+    }
 
-	Utf8 alias0Name = node->aliasNames.empty() ? Utf8("#alias0") : node->aliasNames[0].text;
-	Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("#alias1") : node->aliasNames[1].text;
-	Utf8 content;
+    Utf8 alias0Name = node->aliasNames.empty() ? Utf8("#alias0") : node->aliasNames[0].text;
+    Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("#alias1") : node->aliasNames[1].text;
+    Utf8 content;
 
-	// Get back the expression string
-	auto& concat = context->tmpConcat;
-	concat.init(1024);
-	AstOutput::OutputContext outputContext;
-	SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));
-	concat.addU8(0);
-	SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
+    // Get back the expression string
+    auto& concat = context->tmpConcat;
+    concat.init(1024);
+    AstOutput::OutputContext outputContext;
+    SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));
+    concat.addU8(0);
+    SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
-	AstNode* newVar        = nullptr;
-	size_t   firstAliasVar = 0;
-	int      id            = g_UniqueID.fetch_add(1);
+    AstNode* newVar        = nullptr;
+    size_t   firstAliasVar = 0;
+    int      id            = g_UniqueID.fetch_add(1);
 
-	Utf8 visitBack;
-	if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
-	{
-		visitBack += ",";
-		visitBack += g_LangSpec->name_back;
-	}
+    Utf8 visitBack;
+    if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
+    {
+        visitBack += ",";
+        visitBack += g_LangSpec->name_back;
+    }
 
-	// Multi dimensional array
-	if (typeInfo->isArray() && castTypeInfo<TypeInfoArray>(typeInfo)->pointedType->isArray())
-	{
-		auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-		auto pointedType = typeArray->finalType;
+    // Multi dimensional array
+    if (typeInfo->isArray() && castTypeInfo<TypeInfoArray>(typeInfo)->pointedType->isArray())
+    {
+        auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto pointedType = typeArray->finalType;
 
-		auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-		varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
-		varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
-		Ast::clone(node->expression, varDecl->assignment);
-		varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
-		newVar = varDecl;
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
+        Ast::clone(node->expression, varDecl->assignment);
+        varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
+        newVar = varDecl;
 
-		firstAliasVar = 2;
-		content += "{ ";
-		content += FMT("let __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
-		content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
-		if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u + #index; ", id);
-		}
-		else if (pointedType->isStruct())
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = ref &__addr%u[#index]; ", id);
-		}
-		else
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u[#index]; ", id);
-		}
+        firstAliasVar = 2;
+        content += "{ ";
+        content += FMT("let __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
+        content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
+        if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u + #index; ", id);
+        }
+        else if (pointedType->isStruct())
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = ref &__addr%u[#index]; ", id);
+        }
+        else
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u[#index]; ", id);
+        }
 
-		content += "let ";
-		content += alias1Name;
-		content += " = #index;}}";
-	}
+        content += "let ";
+        content += alias1Name;
+        content += " = #index;}}";
+    }
 
-	// One dimensional array
-	else if (typeInfo->isArray())
-	{
-		auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-		auto pointedType = typeArray->pointedType;
+    // One dimensional array
+    else if (typeInfo->isArray())
+    {
+        auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto pointedType = typeArray->pointedType;
 
-		auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
-		varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
-		varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
-		Ast::clone(node->expression, varDecl->assignment);
-		varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
-		newVar = varDecl;
+        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
+        varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        Ast::clone(node->expression, varDecl->assignment);
+        varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
+        newVar = varDecl;
 
-		firstAliasVar = 1;
-		content += "{ ";
-		content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
-		if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u + #index; ", id);
-		}
-		else if (pointedType->isStruct())
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = ref &__addr%u[#index]; ", id);
-		}
-		else
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u[#index]; ", id);
-		}
+        firstAliasVar = 1;
+        content += "{ ";
+        content += FMT("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
+        if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u + #index; ", id);
+        }
+        else if (pointedType->isStruct())
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = ref &__addr%u[#index]; ", id);
+        }
+        else
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u[#index]; ", id);
+        }
 
-		content += "let ";
-		content += alias1Name;
-		content += " = #index;}}";
-	}
+        content += "let ";
+        content += alias1Name;
+        content += " = #index;}}";
+    }
 
-	// Slice
-	else if (typeInfo->isSlice())
-	{
-		auto typeSlice   = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-		auto pointedType = typeSlice->pointedType;
+    // Slice
+    else if (typeInfo->isSlice())
+    {
+        auto typeSlice   = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto pointedType = typeSlice->pointedType;
 
-		auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-		varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
-		varDecl->assignment = Ast::clone(node->expression, varDecl);
-		newVar              = varDecl;
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->assignment = Ast::clone(node->expression, varDecl);
+        newVar              = varDecl;
 
-		firstAliasVar = 1;
-		content += "{ ";
-		content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
-		content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
-		if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u + #index; ", id);
-		}
-		else if (pointedType->isStruct())
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = ref &__addr%u[#index]; ", id);
-		}
-		else
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u[#index]; ", id);
-		}
+        firstAliasVar = 1;
+        content += "{ ";
+        content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
+        content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
+        if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u + #index; ", id);
+        }
+        else if (pointedType->isStruct())
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = ref &__addr%u[#index]; ", id);
+        }
+        else
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u[#index]; ", id);
+        }
 
-		content += "let ";
-		content += alias1Name;
-		content += " = #index;}}";
-	}
+        content += "let ";
+        content += alias1Name;
+        content += " = #index;}}";
+    }
 
-	// String
-	else if (typeInfo->isString())
-	{
-		auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-		varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
-		varDecl->assignment = Ast::clone(node->expression, varDecl);
-		newVar              = varDecl;
+    // String
+    else if (typeInfo->isString())
+    {
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
+        varDecl->assignment = Ast::clone(node->expression, varDecl);
+        newVar              = varDecl;
 
-		firstAliasVar = 1;
-		content += "{ ";
-		content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
-		content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
-		if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u + #index; ", id);
-		}
-		else
-		{
-			content += "let ";
-			content += alias0Name;
-			content += FMT(" = __addr%u[#index]; ", id);
-		}
+        firstAliasVar = 1;
+        content += "{ ";
+        content += FMT("let __addr%u = @dataof(__tmp%u); ", id, id);
+        content += FMT("loop%s __tmp%u { ", visitBack.c_str(), id);
+        if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u + #index; ", id);
+        }
+        else
+        {
+            content += "let ";
+            content += alias0Name;
+            content += FMT(" = __addr%u[#index]; ", id);
+        }
 
-		content += "let ";
-		content += alias1Name;
-		content += " = #index;}}";
-	}
+        content += "let ";
+        content += alias1Name;
+        content += " = #index;}}";
+    }
 
-	// Variadic
-	else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
-	{
-		if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-		{
-			Diagnostic err{node, node->wantPointerToken, Err(Err0416)};
-			auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
-			return context->report(err, note);
-		}
+    // Variadic
+    else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
+    {
+        if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        {
+            Diagnostic err{node, node->wantPointerToken, Err(Err0416)};
+            auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            return context->report(err, note);
+        }
 
-		content += FMT("{ loop%s %s { ", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
-		firstAliasVar = 0;
-		content += "let ";
-		content += alias0Name;
-		content += FMT(" = %s[#index]; ", reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += FMT("{ loop%s %s { ", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
+        firstAliasVar = 0;
+        content += "let ";
+        content += alias0Name;
+        content += FMT(" = %s[#index]; ", reinterpret_cast<const char*>(concat.firstBucket->data));
 
-		content += "let ";
-		content += alias1Name;
-		content += " = #index;}}";
-	}
+        content += "let ";
+        content += alias1Name;
+        content += " = #index;}}";
+    }
 
-	// Enum
-	else if (typeInfo->isEnum())
-	{
-		if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
-		{
-			Diagnostic err{node, node->wantPointerToken, Err(Err0417)};
-			auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
-			return context->report(err, note);
-		}
+    // Enum
+    else if (typeInfo->isEnum())
+    {
+        if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
+        {
+            Diagnostic err{node, node->wantPointerToken, Err(Err0417)};
+            auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            return context->report(err, note);
+        }
 
-		auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-		content += FMT("{ let __addr%u = @typeof(%s); ", id, reinterpret_cast<const char*>(concat.firstBucket->data));
-		content += FMT("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
-		firstAliasVar = 1;
-		content += "let ";
-		content += alias0Name;
-		content += " = dref cast(const* ";
-		content += typeInfo->name;
-		content += FMT(") __addr%u.values[#index].value; ", id);
+        auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        content += FMT("{ let __addr%u = @typeof(%s); ", id, reinterpret_cast<const char*>(concat.firstBucket->data));
+        content += FMT("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
+        firstAliasVar = 1;
+        content += "let ";
+        content += alias0Name;
+        content += " = dref cast(const* ";
+        content += typeInfo->name;
+        content += FMT(") __addr%u.values[#index].value; ", id);
 
-		content += "let ";
-		content += alias1Name;
-		content += " = #index;}}";
-	}
+        content += "let ";
+        content += alias1Name;
+        content += " = #index;}}";
+    }
 
-	else
-	{
-		// Special error in case of a pointer
-		if (typeInfo->isPointer())
-		{
-			auto typePtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-			if (typePtr->pointedType->isEnum() ||
-				typePtr->pointedType->isVariadic() ||
-				typePtr->pointedType->isTypedVariadic() ||
-				typePtr->pointedType->isSlice() ||
-				typePtr->pointedType->isArray() ||
-				typePtr->pointedType->isStruct() ||
-				typePtr->pointedType->isString())
-			{
-				return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
-			}
+    else
+    {
+        // Special error in case of a pointer
+        if (typeInfo->isPointer())
+        {
+            auto typePtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            if (typePtr->pointedType->isEnum() ||
+                typePtr->pointedType->isVariadic() ||
+                typePtr->pointedType->isTypedVariadic() ||
+                typePtr->pointedType->isSlice() ||
+                typePtr->pointedType->isArray() ||
+                typePtr->pointedType->isStruct() ||
+                typePtr->pointedType->isString())
+            {
+                return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
+            }
 
-			return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
-		}
+            return context->report({node->expression, FMT(Err(Err0415), typeInfo->getDisplayNameC())});
+        }
 
-		return context->report({node->expression, FMT(Err(Err0418), typeInfo->getDisplayNameC())});
-	}
+        return context->report({node->expression, FMT(Err(Err0418), typeInfo->getDisplayNameC())});
+    }
 
-	node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+    node->expression->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-	Parser parser;
-	parser.setup(context, context->sourceFile->module, context->sourceFile);
-	SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
+    Parser parser;
+    parser.setup(context, context->sourceFile->module, context->sourceFile);
+    SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::EmbeddedInstruction, false));
 
-	newExpression = node->children.back();
-	if (newVar)
-	{
-		Ast::removeFromParent(newVar);
-		Ast::addChildFront(newExpression, newVar);
-		newVar->inheritOwners(newExpression);
-	}
+    newExpression = node->children.back();
+    if (newVar)
+    {
+        Ast::removeFromParent(newVar);
+        Ast::addChildFront(newExpression, newVar);
+        newVar->inheritOwners(newExpression);
+    }
 
-	// In case of error (like an already defined identifier), we need to set the correct location of declared
-	// variables
-	size_t                                 countVar   = 0;
-	size_t                                 countAlias = 0;
-	Ast::visit(newExpression, [&](AstNode* x)
-	{
-		if (countAlias >= node->aliasNames.size())
-			return;
-		if (x->kind == AstNodeKind::VarDecl)
-		{
-			if (countVar == firstAliasVar)
-			{
-				x->token.startLocation = node->aliasNames[countAlias].startLocation;
-				x->token.endLocation   = node->aliasNames[countAlias].endLocation;
-				countAlias++;
-				firstAliasVar++;
-			}
+    // In case of error (like an already defined identifier), we need to set the correct location of declared
+    // variables
+    size_t                                 countVar   = 0;
+    size_t                                 countAlias = 0;
+    Ast::visit(newExpression, [&](AstNode* x)
+    {
+        if (countAlias >= node->aliasNames.size())
+            return;
+        if (x->kind == AstNodeKind::VarDecl)
+        {
+            if (countVar == firstAliasVar)
+            {
+                x->token.startLocation = node->aliasNames[countAlias].startLocation;
+                x->token.endLocation   = node->aliasNames[countAlias].endLocation;
+                countAlias++;
+                firstAliasVar++;
+            }
 
-			countVar++;
-		}
-	});
+            countVar++;
+        }
+    });
 
-	// First child is the let in the statement, and first child of this is the loop node
-	auto loopNode            = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
-	loopNode->ownerBreakable = node->ownerBreakable;
-	Ast::removeFromParent(node->block);
-	Ast::addChildBack(loopNode->block, node->block);
-	SWAG_ASSERT(node->block);
-	Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x)
-	{
-		if (!x->ownerBreakable)
-			x->ownerBreakable = loopNode;
-		else if (x->ownerBreakable->isParentOf(loopNode))
-		{
-			if (x->tokenId == TokenId::KwdBreak)
-				x->ownerBreakable->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
-			else if (x->tokenId == TokenId::KwdContinue)
-				x->ownerBreakable->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
-			x->ownerBreakable = loopNode;
-		}
-		if (x->kind == AstNodeKind::Visit)
-			return Ast::VisitResult::Stop;
-		return Ast::VisitResult::Continue;
-	});
-	node->block->removeAstFlag(AST_NO_SEMANTIC);
-	loopNode->block->token.endLocation = node->block->token.endLocation;
+    // First child is the let in the statement, and first child of this is the loop node
+    auto loopNode            = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
+    loopNode->ownerBreakable = node->ownerBreakable;
+    Ast::removeFromParent(node->block);
+    Ast::addChildBack(loopNode->block, node->block);
+    SWAG_ASSERT(node->block);
+    Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x)
+    {
+        if (!x->ownerBreakable)
+            x->ownerBreakable = loopNode;
+        else if (x->ownerBreakable->isParentOf(loopNode))
+        {
+            if (x->tokenId == TokenId::KwdBreak)
+                x->ownerBreakable->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
+            else if (x->tokenId == TokenId::KwdContinue)
+                x->ownerBreakable->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
+            x->ownerBreakable = loopNode;
+        }
+        if (x->kind == AstNodeKind::Visit)
+            return Ast::VisitResult::Stop;
+        return Ast::VisitResult::Continue;
+    });
+    node->block->removeAstFlag(AST_NO_SEMANTIC);
+    loopNode->block->token.endLocation = node->block->token.endLocation;
 
-	// Re-root the parent scope of the user block so that it points to the scope of the loop block
-	auto ownerScope = node->block->ownerScope;
-	ownerScope->parentScope->removeChildNoLock(ownerScope);
-	ownerScope->parentScope = loopNode->block->children.front()->ownerScope;
-	ownerScope->parentScope->addChildNoLock(ownerScope);
+    // Re-root the parent scope of the user block so that it points to the scope of the loop block
+    auto ownerScope = node->block->ownerScope;
+    ownerScope->parentScope->removeChildNoLock(ownerScope);
+    ownerScope->parentScope = loopNode->block->children.front()->ownerScope;
+    ownerScope->parentScope->addChildNoLock(ownerScope);
 
-	job->nodes.pop_back();
-	job->nodes.push_back(newExpression);
-	job->nodes.push_back(node);
+    job->nodes.pop_back();
+    job->nodes.push_back(newExpression);
+    job->nodes.push_back(node);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveIndex(SemanticContext* context)
 {
-	auto node = context->node;
+    auto node = context->node;
 
-	auto ownerBreakable = node->ownerBreakable;
-	while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
-		ownerBreakable = ownerBreakable->ownerBreakable;
-	SWAG_VERIFY(ownerBreakable, context->report({node, Err(Err0441)}));
+    auto ownerBreakable = node->ownerBreakable;
+    while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
+        ownerBreakable = ownerBreakable->ownerBreakable;
+    SWAG_VERIFY(ownerBreakable, context->report({node, Err(Err0441)}));
 
-	ownerBreakable->breakableFlags.add(BREAKABLE_NEED_INDEX);
+    ownerBreakable->breakableFlags.add(BREAKABLE_NEED_INDEX);
 
-	// Take the type from the expression
-	if (ownerBreakable->kind == AstNodeKind::Loop)
-	{
-		const auto loopNode = castAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
-		if (loopNode->expression && loopNode->expression->typeInfo->isNativeInteger())
-			node->typeInfo = loopNode->expression->typeInfo;
-	}
+    // Take the type from the expression
+    if (ownerBreakable->kind == AstNodeKind::Loop)
+    {
+        const auto loopNode = castAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
+        if (loopNode->expression && loopNode->expression->typeInfo->isNativeInteger())
+            node->typeInfo = loopNode->expression->typeInfo;
+    }
 
-	if (!node->typeInfo)
-		node->typeInfo = g_TypeMgr->typeInfoU64;
-	node->byteCodeFct = ByteCodeGen::emitIndex;
-	return true;
+    if (!node->typeInfo)
+        node->typeInfo = g_TypeMgr->typeInfoU64;
+    node->byteCodeFct = ByteCodeGen::emitIndex;
+    return true;
 }
 
 bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
-	const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
+    const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
-	if (node->ownerBreakable == node->altSubstBreakable)
-		node->defaultSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-	else
-		node->altSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+    if (node->ownerBreakable == node->altSubstBreakable)
+        node->defaultSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+    else
+        node->altSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveBreak(SemanticContext* context)
 {
-	auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Break);
+    auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
-	// Label has been defined : search the corresponding ScopeBreakable node
-	if (!node->label.text.empty())
-	{
-		auto breakable = node->ownerBreakable;
-		while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
-			breakable = breakable->ownerBreakable;
-		SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, FMT(Err(Err0722), node->label.text.c_str())}));
-		node->ownerBreakable = breakable;
-	}
+    // Label has been defined : search the corresponding ScopeBreakable node
+    if (!node->label.text.empty())
+    {
+        auto breakable = node->ownerBreakable;
+        while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
+            breakable = breakable->ownerBreakable;
+        SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, FMT(Err(Err0722), node->label.text.c_str())}));
+        node->ownerBreakable = breakable;
+    }
 
-	SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0455)}));
-	node->ownerBreakable->breakList.push_back(node);
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0455)}));
+    node->ownerBreakable->breakList.push_back(node);
 
-	SWAG_CHECK(SemanticError::warnUnreachableCode(context));
-	node->byteCodeFct = ByteCodeGen::emitBreak;
-	return true;
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
+    node->byteCodeFct = ByteCodeGen::emitBreak;
+    return true;
 }
 
 bool Semantic::resolveUnreachable(SemanticContext* context)
 {
-	const auto node = context->node;
-	SWAG_CHECK(SemanticError::warnUnreachableCode(context));
-	node->byteCodeFct = ByteCodeGen::emitUnreachable;
-	return true;
+    const auto node = context->node;
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
+    node->byteCodeFct = ByteCodeGen::emitUnreachable;
+    return true;
 }
 
 bool Semantic::resolveFallThrough(SemanticContext* context)
 {
-	auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-	SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Err(Err0463)}));
-	node->ownerBreakable->fallThroughList.push_back(node);
+    auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
+    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Err(Err0463)}));
+    node->ownerBreakable->fallThroughList.push_back(node);
 
-	// Be sure we are in a case
-	auto parent = node->parent;
-	while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
-		parent = parent->parent;
-	SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0462)}));
-	node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-	SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0462)}));
+    // Be sure we are in a case
+    auto parent = node->parent;
+    while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
+        parent = parent->parent;
+    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0462)}));
+    node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+    SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0462)}));
 
-	// 'fallthrough' cannot be used on the last case, this has no sens
-	const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-	SWAG_VERIFY(node->switchCase->caseIndex < static_cast<int>(switchBlock->cases.size()) - 1, context->report({node, Err(Err0461)}));
+    // 'fallthrough' cannot be used on the last case, this has no sens
+    const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
+    SWAG_VERIFY(node->switchCase->caseIndex < static_cast<int>(switchBlock->cases.size()) - 1, context->report({node, Err(Err0461)}));
 
-	SWAG_CHECK(SemanticError::warnUnreachableCode(context));
-	node->byteCodeFct = ByteCodeGen::emitFallThrough;
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
+    node->byteCodeFct = ByteCodeGen::emitFallThrough;
 
-	return true;
+    return true;
 }
 
 bool Semantic::resolveContinue(SemanticContext* context)
 {
-	auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
-	SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0459)}));
+    auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0459)}));
 
-	auto checkBreakable = node->ownerBreakable;
-	while (checkBreakable && !checkBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_CONTINUE))
-		checkBreakable = checkBreakable->ownerBreakable;
-	SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0459)}));
-	checkBreakable->continueList.push_back(node);
-	node->ownerBreakable = checkBreakable;
+    auto checkBreakable = node->ownerBreakable;
+    while (checkBreakable && !checkBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_CONTINUE))
+        checkBreakable = checkBreakable->ownerBreakable;
+    SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0459)}));
+    checkBreakable->continueList.push_back(node);
+    node->ownerBreakable = checkBreakable;
 
-	SWAG_CHECK(SemanticError::warnUnreachableCode(context));
-	node->byteCodeFct = ByteCodeGen::emitContinue;
-	return true;
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
+    node->byteCodeFct = ByteCodeGen::emitContinue;
+    return true;
 }
 
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
-	const auto node = castAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
-	node->block->setBcNotifyBefore(ByteCodeGen::emitLabelBeforeBlock);
-	node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
-	return true;
+    const auto node = castAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
+    node->block->setBcNotifyBefore(ByteCodeGen::emitLabelBeforeBlock);
+    node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
+    return true;
 }

@@ -4,14 +4,14 @@
 
 struct ModulePrepOutputStage1Job final : Job
 {
-	JobResult execute() override;
+    JobResult execute() override;
 
-	BuildParameters buildParameters;
+    BuildParameters buildParameters;
 };
 
 struct ModulePrepOutputStage2Job final : Job
 {
-	JobResult execute() override;
+    JobResult execute() override;
 
-	BuildParameters buildParameters;
+    BuildParameters buildParameters;
 };

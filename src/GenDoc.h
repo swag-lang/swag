@@ -14,115 +14,115 @@ static constexpr uint32_t GENDOC_CODE_SYNTAX_COL = 0x00000004;
 
 struct GenDoc
 {
-	enum class UserBlockKind
-	{
-		Paragraph,
-		ParagraphRaw,
-		CodeSwag,
-		CodeRaw,
-		CodeAuto,
-		Blockquote,
-		BlockquoteNote,
-		BlockquoteTip,
-		BlockquoteWarning,
-		BlockquoteAttention,
-		BlockquoteExample,
-		Table,
-		List,
-		OrderedList,
-		DescriptionList,
-		Title1,
-		Title2,
-		Title3,
-		Title4,
-		Title5,
-		Title6,
-	};
+    enum class UserBlockKind
+    {
+        Paragraph,
+        ParagraphRaw,
+        CodeSwag,
+        CodeRaw,
+        CodeAuto,
+        Blockquote,
+        BlockquoteNote,
+        BlockquoteTip,
+        BlockquoteWarning,
+        BlockquoteAttention,
+        BlockquoteExample,
+        Table,
+        List,
+        OrderedList,
+        DescriptionList,
+        Title1,
+        Title2,
+        Title3,
+        Title4,
+        Title5,
+        Title6,
+    };
 
-	struct UserBlock
-	{
-		UserBlockKind      kind = UserBlockKind::Paragraph;
-		Vector<UserBlock*> subBlocks;
-		Vector<Utf8>       lines;
-	};
+    struct UserBlock
+    {
+        UserBlockKind      kind = UserBlockKind::Paragraph;
+        Vector<UserBlock*> subBlocks;
+        Vector<Utf8>       lines;
+    };
 
-	struct UserComment
-	{
-		UserBlock          shortDesc;
-		Vector<UserBlock*> blocks;
-	};
+    struct UserComment
+    {
+        UserBlock          shortDesc;
+        Vector<UserBlock*> blocks;
+    };
 
-	void               constructPage();
-	static Utf8        toRef(Utf8 str);
-	Utf8               getTocTitleRef() const;
-	void               addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
-	static Utf8        getFileExtension(const Module* module);
-	bool               generate(Module* mdl, BuildCfgDocKind kind);
-	void               outputStyles();
-	Utf8               findReference(const Utf8& name);
-	static void        computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
-	static void        computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc);
-	static void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
-	static const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink = true);
-	Utf8               getFormattedText(const Utf8& user);
-	void               outputCode(const Utf8& code, uint32_t flags);
-	void               outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
-	void               outputUserComment(const UserComment& user, int titleLevel = 1);
+    void               constructPage();
+    static Utf8        toRef(Utf8 str);
+    Utf8               getTocTitleRef() const;
+    void               addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
+    static Utf8        getFileExtension(const Module* module);
+    bool               generate(Module* mdl, BuildCfgDocKind kind);
+    void               outputStyles();
+    Utf8               findReference(const Utf8& name);
+    static void        computeUserComments(UserComment& result, const Utf8& txt, bool shortDesc = true);
+    static void        computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc);
+    static void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
+    static const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink = true);
+    Utf8               getFormattedText(const Utf8& user);
+    void               outputCode(const Utf8& code, uint32_t flags);
+    void               outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
+    void               outputUserComment(const UserComment& user, int titleLevel = 1);
 
-	Module*         module = nullptr;
-	BuildCfgDocKind docKind;
-	Concat          concat;
-	Utf8            helpOutput;
-	Utf8            helpToc;
-	Utf8            helpContent;
-	Utf8            helpCode;
-	Utf8            fullFileName;
-	MapUtf8<Utf8>   collectInvert;
-	int             tocLastTitleLevel = 0;
+    Module*         module = nullptr;
+    BuildCfgDocKind docKind;
+    Concat          concat;
+    Utf8            helpOutput;
+    Utf8            helpToc;
+    Utf8            helpContent;
+    Utf8            helpCode;
+    Utf8            fullFileName;
+    MapUtf8<Utf8>   collectInvert;
+    int             tocLastTitleLevel = 0;
 
-	// Pages
-	///////////////////////////////////
+    // Pages
+    ///////////////////////////////////
 
-	bool generatePages();
+    bool generatePages();
 
-	// Examples
-	///////////////////////////////////
+    // Examples
+    ///////////////////////////////////
 
-	bool generateExamples();
-	void addTitle(const Utf8& title, int level);
-	bool processMarkDownFile(const Path& fileName, int titleLevel);
-	bool processSourceFile(const Path& fileName, int titleLevel);
+    bool generateExamples();
+    void addTitle(const Utf8& title, int level);
+    bool processMarkDownFile(const Path& fileName, int titleLevel);
+    bool processSourceFile(const Path& fileName, int titleLevel);
 
-	// Api
-	///////////////////////////////////
+    // Api
+    ///////////////////////////////////
 
-	struct OneRef
-	{
-		Utf8                   category;
-		Utf8                   tocName;
-		Utf8                   fullName;
-		Utf8                   displayName;
-		VectorNative<AstNode*> nodes;
-	};
+    struct OneRef
+    {
+        Utf8                   category;
+        Utf8                   tocName;
+        Utf8                   fullName;
+        Utf8                   displayName;
+        VectorNative<AstNode*> nodes;
+    };
 
-	bool        generateApi();
-	void        collectNode(AstNode* node);
-	void        collectScopes(Scope* root);
-	static Utf8 getDocComment(const AstNode* node);
-	Utf8        getOutputNode(AstNode* node);
-	void        outputType(AstNode* node);
-	void        outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
-	void        outputTitle(OneRef& c);
-	void        generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
-	void        generateTocSection(AstNodeKind kind, const char* sectionName);
-	void        generateToc();
-	void        generateContent();
+    bool        generateApi();
+    void        collectNode(AstNode* node);
+    void        collectScopes(Scope* root);
+    static Utf8 getDocComment(const AstNode* node);
+    Utf8        getOutputNode(AstNode* node);
+    void        outputType(AstNode* node);
+    void        outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags);
+    void        outputTitle(OneRef& c);
+    void        generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes);
+    void        generateTocSection(AstNodeKind kind, const char* sectionName);
+    void        generateToc();
+    void        generateContent();
 
-	Utf8                            titleToc;
-	Utf8                            titleContent;
-	AstOutput                       output;
-	AstOutput::OutputContext        outputCxt;
-	MapUtf8<VectorNative<AstNode*>> collect;
-	Vector<OneRef>                  allNodes;
-	Vector<Utf8>                    titleRefStack;
+    Utf8                            titleToc;
+    Utf8                            titleContent;
+    AstOutput                       output;
+    AstOutput::OutputContext        outputCxt;
+    MapUtf8<VectorNative<AstNode*>> collect;
+    Vector<OneRef>                  allNodes;
+    Vector<Utf8>                    titleRefStack;
 };

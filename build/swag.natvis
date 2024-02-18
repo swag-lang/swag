@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?> 
+<?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-  
+
     <Type Name="VectorNative&lt;*&gt;">
-      <DisplayString>{{ count={count} }}</DisplayString>
-      <Expand>
-        <Item Name="[count]">count</Item>
-        <ArrayItems>
-          <Size>count</Size>
-          <ValuePointer>buffer</ValuePointer>
-        </ArrayItems>
-      </Expand>
+        <DisplayString>{{ count={count} }}</DisplayString>
+        <Expand>
+            <Item Name="[count]">count</Item>
+            <ArrayItems>
+                <Size>count</Size>
+                <ValuePointer>buffer</ValuePointer>
+            </ArrayItems>
+        </Expand>
     </Type>
 
-  <Type Name="Utf8">
-    <DisplayString>{{ buffer={buffer} }}</DisplayString>
-  </Type>
+    <Type Name="Utf8">
+        <DisplayString>{{ buffer={buffer} }}</DisplayString>
+    </Type>
 
-  <Type Name="Scope">
-    <DisplayString>{{ kind={kind}, name={name} }}</DisplayString>
-    <Expand>
-      <Item Name="[kind]">kind</Item>
-      <Item Name="[name]">name</Item>
-      <Item Name="[parent]">parentScope</Item>
-	  <Item Name="[owner]">owner</Item>
-      <Item Name="[childs]">childScopes</Item>
-    </Expand>
-  </Type>
-    
-  <Type Name="AstNode">
-    <DisplayString>{{ kind={kind}, name={name} }}</DisplayString>
-    <Expand>
-      <Item Name="[kind]">kind</Item>
-      <Item Name="[name]">token.text</Item>
-      <Item Name="[childs]">childs</Item>
-      <Item Name="[ownerScope]">ownerScope</Item>
-      <Item Name="[typeinfo]">typeInfo</Item>
-      <Item Name="[parent]">parent</Item>
-    </Expand>
-  </Type>
+    <Type Name="Scope">
+        <DisplayString>{{ kind={kind}, name={name} }}</DisplayString>
+        <Expand>
+            <Item Name="[kind]">kind</Item>
+            <Item Name="[name]">name</Item>
+            <Item Name="[parent]">parentScope</Item>
+            <Item Name="[owner]">owner</Item>
+            <Item Name="[childs]">childScopes</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="AstNode">
+        <DisplayString>{{ kind={kind}, name={name} }}</DisplayString>
+        <Expand>
+            <Item Name="[kind]">kind</Item>
+            <Item Name="[name]">token.text</Item>
+            <Item Name="[childs]">childs</Item>
+            <Item Name="[ownerScope]">ownerScope</Item>
+            <Item Name="[typeinfo]">typeInfo</Item>
+            <Item Name="[parent]">parent</Item>
+        </Expand>
+    </Type>
 
 </AutoVisualizer>

@@ -7,14 +7,14 @@ struct ByteCode;
 
 struct BackendFunctionBodyJob final : Job
 {
-	JobResult execute() override;
+    JobResult execute() override;
 
-	void release() override
-	{
-		Allocator::free<BackendFunctionBodyJob>(this);
-	}
+    void release() override
+    {
+        Allocator::free<BackendFunctionBodyJob>(this);
+    }
 
-	BuildParameters         buildParameters;
-	VectorNative<ByteCode*> byteCodeFunc;
-	Backend*                backend = nullptr;
+    BuildParameters         buildParameters;
+    VectorNative<ByteCode*> byteCodeFunc;
+    Backend*                backend = nullptr;
 };

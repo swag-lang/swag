@@ -6,7 +6,7 @@
 enum ErrorID
 {
 #include "ErrorList.h"
-	MAX_ERRORS,
+    MAX_ERRORS,
 };
 
 extern Utf8 g_E[MAX_ERRORS];

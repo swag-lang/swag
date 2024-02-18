@@ -5,11 +5,11 @@ struct DataSegment;
 
 struct ComputedValue
 {
-	bool  operator==(const ComputedValue& from) const;
-	void* getStorageAddr() const;
+    bool  operator==(const ComputedValue& from) const;
+    void* getStorageAddr() const;
 
-	Utf8         text;
-	Register     reg;
-	DataSegment* storageSegment = nullptr;
-	uint32_t     storageOffset  = UINT32_MAX;
+    Utf8         text;
+    Register     reg;
+    DataSegment* storageSegment = nullptr;
+    uint32_t     storageOffset  = UINT32_MAX;
 };

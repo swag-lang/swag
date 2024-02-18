@@ -11,698 +11,698 @@
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
-	const auto node   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
-	*result           = node;
-	node->semanticFct = Semantic::resolveTypeLambdaClosure;
+    const auto node   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
+    *result           = node;
+    node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
-	if (inTypeVarDecl)
-	{
-		const auto  newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
-		Scoped      scoped(this, newScope);
-		ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
-		SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
-	}
-	else
-	{
-		SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
-	}
+    if (inTypeVarDecl)
+    {
+        const auto  newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
+        Scoped      scoped(this, newScope);
+        ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
+        SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
+    }
+    else
+    {
+        SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
+    }
 
-	return true;
+    return true;
 }
 
 bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool inTypeVarDecl)
 {
-	AstTypeExpression* firstAddedType = nullptr;
-	AstNode*           params         = nullptr;
+    AstTypeExpression* firstAddedType = nullptr;
+    AstNode*           params         = nullptr;
 
-	switch (token.id)
-	{
-	case TokenId::KwdClosure:
-		node->kind = AstNodeKind::TypeClosure;
-		SWAG_CHECK(eatToken());
+    switch (token.id)
+    {
+    case TokenId::KwdClosure:
+        node->kind = AstNodeKind::TypeClosure;
+        SWAG_CHECK(eatToken());
 
-	// :ClosureForceFirstParam
-	// A closure always has at least one parameter : the capture context
-		params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-		node->parameters         = params;
-		firstAddedType           = Ast::newTypeExpression(sourceFile, params);
-		firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-		firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
-		break;
+    // :ClosureForceFirstParam
+    // A closure always has at least one parameter : the capture context
+        params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters         = params;
+        firstAddedType           = Ast::newTypeExpression(sourceFile, params);
+        firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+        firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
+        break;
 
-	case TokenId::KwdFunc:
-		node->kind = AstNodeKind::TypeLambda;
-		SWAG_CHECK(eatToken());
-		break;
+    case TokenId::KwdFunc:
+        node->kind = AstNodeKind::TypeLambda;
+        SWAG_CHECK(eatToken());
+        break;
 
-	default:
-		SWAG_ASSERT(false);
-		break;
-	}
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
 
-	// If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
-	if (inTypeVarDecl && firstAddedType)
-	{
-		Utf8 nameVar;
-		if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
-		{
-			firstAddedType->token.text = g_LangSpec->name_self;
-			nameVar                    = g_LangSpec->name_self;
-		}
-		else
-		{
-			nameVar = FMT("__%d", g_UniqueID.fetch_add(1));
-		}
+    // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression
+    if (inTypeVarDecl && firstAddedType)
+    {
+        Utf8 nameVar;
+        if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
+        {
+            firstAddedType->token.text = g_LangSpec->name_self;
+            nameVar                    = g_LangSpec->name_self;
+        }
+        else
+        {
+            nameVar = FMT("__%d", g_UniqueID.fetch_add(1));
+        }
 
-		auto param = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
-		if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
-			param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
+        auto param = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
+        if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
+            param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
 
-		param->allocateExtension(ExtensionKind::Misc);
-		param->extMisc()->exportNode = firstAddedType;
+        param->allocateExtension(ExtensionKind::Misc);
+        param->extMisc()->exportNode = firstAddedType;
 
-		param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+        param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-		Ast::removeFromParent(firstAddedType);
-		Ast::addChildBack(param, firstAddedType);
-		param->type = firstAddedType;
-		param->inheritTokenLocation(firstAddedType);
-	}
+        Ast::removeFromParent(firstAddedType);
+        Ast::addChildBack(param, firstAddedType);
+        param->type = firstAddedType;
+        param->inheritTokenLocation(firstAddedType);
+    }
 
-	auto startLoc = token.startLocation;
-	SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of parameters"));
-	if (token.id != TokenId::SymRightParen)
-	{
-		if (!params)
-		{
-			params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-			node->parameters = params;
-		}
+    auto startLoc = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of parameters"));
+    if (token.id != TokenId::SymRightParen)
+    {
+        if (!params)
+        {
+            params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+            node->parameters = params;
+        }
 
-		AstVarDecl* lastParameter = nullptr;
-		bool        lastWasAlone  = false;
-		bool        curIsAlone    = false;
-		bool        thisIsAType   = false;
-		while (true)
-		{
-			curIsAlone = true;
+        AstVarDecl* lastParameter = nullptr;
+        bool        lastWasAlone  = false;
+        bool        curIsAlone    = false;
+        bool        thisIsAType   = false;
+        while (true)
+        {
+            curIsAlone = true;
 
-			Token constToken;
-			bool  isConst = false;
-			if (token.id == TokenId::CompilerType)
-			{
-				thisIsAType = true;
-				curIsAlone  = false;
-				SWAG_CHECK(eatToken());
-				SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0527), token.c_str())));
-			}
+            Token constToken;
+            bool  isConst = false;
+            if (token.id == TokenId::CompilerType)
+            {
+                thisIsAType = true;
+                curIsAlone  = false;
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0527), token.c_str())));
+            }
 
-			if (token.id == TokenId::KwdConst)
-			{
-				curIsAlone = false;
-				constToken = static_cast<Token>(token);
-				isConst    = true;
-				SWAG_CHECK(eatToken());
-			}
+            if (token.id == TokenId::KwdConst)
+            {
+                curIsAlone = false;
+                constToken = static_cast<Token>(token);
+                isConst    = true;
+                SWAG_CHECK(eatToken());
+            }
 
-			// Accept a parameter name
-			AstNode* namedParam = nullptr;
-			if (token.id == TokenId::Identifier)
-			{
-				auto tokenName = token;
-				tokenizer.saveState(token);
-				SWAG_CHECK(eatToken());
-				if (token.id != TokenId::SymColon)
-				{
-					tokenizer.restoreState(token);
-				}
-				else if (tokenName.text == g_LangSpec->name_self)
-				{
-					Diagnostic err(sourceFile, token, Err(Err0701));
-					return context->report(err);
-				}
-				else
-				{
-					SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Err0690)));
-					SWAG_VERIFY(!isConst, error(constToken, Err(Err0662)));
+            // Accept a parameter name
+            AstNode* namedParam = nullptr;
+            if (token.id == TokenId::Identifier)
+            {
+                auto tokenName = token;
+                tokenizer.saveState(token);
+                SWAG_CHECK(eatToken());
+                if (token.id != TokenId::SymColon)
+                {
+                    tokenizer.restoreState(token);
+                }
+                else if (tokenName.text == g_LangSpec->name_self)
+                {
+                    Diagnostic err(sourceFile, token, Err(Err0701));
+                    return context->report(err);
+                }
+                else
+                {
+                    SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Err0690)));
+                    SWAG_VERIFY(!isConst, error(constToken, Err(Err0662)));
 
-					namedParam        = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
-					namedParam->token = static_cast<Token>(tokenName);
-					SWAG_CHECK(eatToken());
-					curIsAlone  = false;
-					thisIsAType = false;
-					params->allocateExtension(ExtensionKind::Owner);
-					params->extOwner()->nodesToFree.push_back(namedParam);
-				}
-			}
-			else
-			{
-				thisIsAType = true;
-				curIsAlone  = false;
-			}
+                    namedParam        = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+                    namedParam->token = static_cast<Token>(tokenName);
+                    SWAG_CHECK(eatToken());
+                    curIsAlone  = false;
+                    thisIsAType = false;
+                    params->allocateExtension(ExtensionKind::Owner);
+                    params->extOwner()->nodesToFree.push_back(namedParam);
+                }
+            }
+            else
+            {
+                thisIsAType = true;
+                curIsAlone  = false;
+            }
 
-			AstTypeExpression* typeExpr = nullptr;
+            AstTypeExpression* typeExpr = nullptr;
 
-			// self
-			if (token.text == g_LangSpec->name_self)
-			{
-				curIsAlone = false;
-				SWAG_VERIFY(currentStructScope, error(token, Err(Err0470)));
-				typeExpr = Ast::newTypeExpression(sourceFile, params);
-				typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
-				typeExpr->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
-				typeExpr->token.endLocation = token.endLocation;
-				SWAG_CHECK(eatToken());
-				typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
-				if (token.id == TokenId::SymEqual)
-					return error(token, Err(Err0252));
-			}
-			// ...
-			else if (token.id == TokenId::SymDotDotDot)
-			{
-				curIsAlone                  = false;
-				typeExpr                    = Ast::newTypeExpression(sourceFile, params);
-				typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
-				typeExpr->token.endLocation = token.endLocation;
-				SWAG_CHECK(eatToken());
-				if (token.id == TokenId::SymEqual)
-					return error(token, Err(Err0678));
-			}
-			// cvarargs
-			else if (token.id == TokenId::KwdCVarArgs)
-			{
-				curIsAlone                  = false;
-				typeExpr                    = Ast::newTypeExpression(sourceFile, params);
-				typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
-				typeExpr->token.endLocation = token.endLocation;
-				SWAG_CHECK(eatToken());
-				if (token.id == TokenId::SymEqual)
-					return error(token, Err(Err0678));
-			}
-			else
-			{
-				SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
-				typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
+            // self
+            if (token.text == g_LangSpec->name_self)
+            {
+                curIsAlone = false;
+                SWAG_VERIFY(currentStructScope, error(token, Err(Err0470)));
+                typeExpr = Ast::newTypeExpression(sourceFile, params);
+                typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
+                typeExpr->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
+                typeExpr->token.endLocation = token.endLocation;
+                SWAG_CHECK(eatToken());
+                typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
+                if (token.id == TokenId::SymEqual)
+                    return error(token, Err(Err0252));
+            }
+            // ...
+            else if (token.id == TokenId::SymDotDotDot)
+            {
+                curIsAlone                  = false;
+                typeExpr                    = Ast::newTypeExpression(sourceFile, params);
+                typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
+                typeExpr->token.endLocation = token.endLocation;
+                SWAG_CHECK(eatToken());
+                if (token.id == TokenId::SymEqual)
+                    return error(token, Err(Err0678));
+            }
+            // cvarargs
+            else if (token.id == TokenId::KwdCVarArgs)
+            {
+                curIsAlone                  = false;
+                typeExpr                    = Ast::newTypeExpression(sourceFile, params);
+                typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
+                typeExpr->token.endLocation = token.endLocation;
+                SWAG_CHECK(eatToken());
+                if (token.id == TokenId::SymEqual)
+                    return error(token, Err(Err0678));
+            }
+            else
+            {
+                SWAG_CHECK(doTypeExpression(params, EXPR_FLAG_NONE, reinterpret_cast<AstNode**>(&typeExpr)));
+                typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
 
-				// type...
-				if (token.id == TokenId::SymDotDotDot)
-				{
-					curIsAlone = false;
-					Ast::removeFromParent(typeExpr);
-					auto newTypeExpression               = Ast::newTypeExpression(sourceFile, params);
-					newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
-					newTypeExpression->token.endLocation = token.endLocation;
-					SWAG_CHECK(eatToken());
-					Ast::addChildBack(newTypeExpression, typeExpr);
-					if (token.id == TokenId::SymEqual)
-						return error(token, Err(Err0678));
-					typeExpr = newTypeExpression;
-				}
-				else if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
-				{
-					thisIsAType = true;
-					curIsAlone  = false;
-				}
-			}
+                // type...
+                if (token.id == TokenId::SymDotDotDot)
+                {
+                    curIsAlone = false;
+                    Ast::removeFromParent(typeExpr);
+                    auto newTypeExpression               = Ast::newTypeExpression(sourceFile, params);
+                    newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
+                    newTypeExpression->token.endLocation = token.endLocation;
+                    SWAG_CHECK(eatToken());
+                    Ast::addChildBack(newTypeExpression, typeExpr);
+                    if (token.id == TokenId::SymEqual)
+                        return error(token, Err(Err0678));
+                    typeExpr = newTypeExpression;
+                }
+                else if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
+                {
+                    thisIsAType = true;
+                    curIsAlone  = false;
+                }
+            }
 
-			// We have a name
-			if (namedParam)
-			{
-				typeExpr->allocateExtension(ExtensionKind::Misc);
-				typeExpr->extMisc()->isNamed = namedParam;
-			}
+            // We have a name
+            if (namedParam)
+            {
+                typeExpr->allocateExtension(ExtensionKind::Misc);
+                typeExpr->extMisc()->isNamed = namedParam;
+            }
 
-			SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Err0253)));
+            SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Err0253)));
 
-			// If we are in a type declaration, generate a variable and not just a type
-			if (inTypeVarDecl)
-			{
-				auto nameVar = namedParam ? namedParam->token.text : FMT("__%d", g_UniqueID.fetch_add(1));
-				auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
-				if (!namedParam)
-					param->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
+            // If we are in a type declaration, generate a variable and not just a type
+            if (inTypeVarDecl)
+            {
+                auto nameVar = namedParam ? namedParam->token.text : FMT("__%d", g_UniqueID.fetch_add(1));
+                auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
+                if (!namedParam)
+                    param->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
 
-				param->allocateExtension(ExtensionKind::Misc);
-				param->extMisc()->exportNode = typeExpr;
-				param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+                param->allocateExtension(ExtensionKind::Misc);
+                param->extMisc()->exportNode = typeExpr;
+                param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-				Ast::removeFromParent(typeExpr);
-				Ast::addChildBack(param, typeExpr);
-				param->type = typeExpr;
-				if (namedParam)
-					param->inheritTokenLocation(namedParam);
-				else
-					param->inheritTokenLocation(typeExpr);
+                Ast::removeFromParent(typeExpr);
+                Ast::addChildBack(param, typeExpr);
+                param->type = typeExpr;
+                if (namedParam)
+                    param->inheritTokenLocation(namedParam);
+                else
+                    param->inheritTokenLocation(typeExpr);
 
-				if (namedParam)
-				{
-					param->allocateExtension(ExtensionKind::Misc);
-					param->extMisc()->isNamed = namedParam;
-				}
+                if (namedParam)
+                {
+                    param->allocateExtension(ExtensionKind::Misc);
+                    param->extMisc()->isNamed = namedParam;
+                }
 
-				if (token.id == TokenId::SymEqual)
-				{
-					thisIsAType = false;
-					curIsAlone  = false;
-					SWAG_CHECK(eatToken());
-					SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
+                if (token.id == TokenId::SymEqual)
+                {
+                    thisIsAType = false;
+                    curIsAlone  = false;
+                    SWAG_CHECK(eatToken());
+                    SWAG_CHECK(doAssignmentExpression(param, &param->assignment));
 
-					// Used to automatically solve enums
-					typeExpr->allocateExtension(ExtensionKind::Semantic);
-					typeExpr->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
+                    // Used to automatically solve enums
+                    typeExpr->allocateExtension(ExtensionKind::Semantic);
+                    typeExpr->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
 
-					// If we did not have specified a name, then this was not a type, but a name
-					// ex: func(x = 1)
-					if (!namedParam)
-					{
-						param->token.text = param->type->token.text;
-						Ast::removeFromParent(param->type);
-						param->type = nullptr;
-					}
-				}
+                    // If we did not have specified a name, then this was not a type, but a name
+                    // ex: func(x = 1)
+                    if (!namedParam)
+                    {
+                        param->token.text = param->type->token.text;
+                        Ast::removeFromParent(param->type);
+                        param->type = nullptr;
+                    }
+                }
 
-				if (lastWasAlone && !curIsAlone && !thisIsAType)
-				{
-					Token tokenAmb         = param->token;
-					tokenAmb.startLocation = lastParameter->token.startLocation;
-					tokenAmb.endLocation   = token.startLocation;
+                if (lastWasAlone && !curIsAlone && !thisIsAType)
+                {
+                    Token tokenAmb         = param->token;
+                    tokenAmb.startLocation = lastParameter->token.startLocation;
+                    tokenAmb.endLocation   = token.startLocation;
 
-					Diagnostic err{sourceFile, tokenAmb, Err(Err0022)};
-					auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
-					note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
-					return context->report(err, note);
-				}
+                    Diagnostic err{sourceFile, tokenAmb, Err(Err0022)};
+                    auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
+                    note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
+                    return context->report(err, note);
+                }
 
-				lastWasAlone  = curIsAlone;
-				lastParameter = param;
-			}
+                lastWasAlone  = curIsAlone;
+                lastParameter = param;
+            }
 
-			if (token.id != TokenId::SymComma)
-				break;
-			SWAG_CHECK(eatToken());
-			SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0131)));
-		}
-	}
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0131)));
+        }
+    }
 
-	SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the lambda parameters"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the lambda parameters"));
 
-	if (token.id == TokenId::SymMinusGreat)
-	{
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &node->returnType));
-	}
+    if (token.id == TokenId::SymMinusGreat)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &node->returnType));
+    }
 
-	if (token.id == TokenId::KwdThrow)
-	{
-		SWAG_CHECK(eatToken());
-		node->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
-	}
+    if (token.id == TokenId::KwdThrow)
+    {
+        SWAG_CHECK(eatToken());
+        node->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
+    }
 
-	return true;
+    return true;
 }
 
 bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion)
 {
-	const auto structNode = Ast::newStructDecl(sourceFile, parent, this);
-	structNode->addAstFlag(AST_INTERNAL | AST_GENERATED);
-	structNode->originalParent = parent;
-	structNode->allocateExtension(ExtensionKind::Semantic);
-	structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
-	structNode->addSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
-	if (isUnion)
-		structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
-	structNode->allocateExtension(ExtensionKind::Misc);
-	structNode->extMisc()->exportNode = structNode;
+    const auto structNode = Ast::newStructDecl(sourceFile, parent, this);
+    structNode->addAstFlag(AST_INTERNAL | AST_GENERATED);
+    structNode->originalParent = parent;
+    structNode->allocateExtension(ExtensionKind::Semantic);
+    structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
+    structNode->addSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
+    if (isUnion)
+        structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
+    structNode->allocateExtension(ExtensionKind::Misc);
+    structNode->extMisc()->exportNode = structNode;
 
-	const auto contentNode = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
-	structNode->content    = contentNode;
-	contentNode->allocateExtension(ExtensionKind::Semantic);
-	contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
+    const auto contentNode = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
+    structNode->content    = contentNode;
+    contentNode->allocateExtension(ExtensionKind::Semantic);
+    contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
-	// Name
-	Utf8 name = sourceFile->scopeFile->name + "_tpl3_";
-	name += FMT("%d", g_UniqueID.fetch_add(1));
-	structNode->token.text = std::move(name);
+    // Name
+    Utf8 name = sourceFile->scopeFile->name + "_tpl3_";
+    name += FMT("%d", g_UniqueID.fetch_add(1));
+    structNode->token.text = std::move(name);
 
-	// :SubDeclParent
-	auto newParent = parent;
-	while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
-	{
-		newParent = newParent->parent;
-		SWAG_ASSERT(newParent);
-	}
+    // :SubDeclParent
+    auto newParent = parent;
+    while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    {
+        newParent = newParent->parent;
+        SWAG_ASSERT(newParent);
+    }
 
-	// Add struct type and scope
-	Scope* rootScope;
-	if (sourceFile->hasFlag(FILE_FROM_TESTS))
-		rootScope = sourceFile->scopeFile;
-	else
-		rootScope = newParent->ownerScope;
-	structNode->content->addAlternativeScope(currentScope);
-	SWAG_ASSERT(parent);
-	structNode->allocateExtension(ExtensionKind::Misc);
-	structNode->extMisc()->alternativeNode = parent;
+    // Add struct type and scope
+    Scope* rootScope;
+    if (sourceFile->hasFlag(FILE_FROM_TESTS))
+        rootScope = sourceFile->scopeFile;
+    else
+        rootScope = newParent->ownerScope;
+    structNode->content->addAlternativeScope(currentScope);
+    SWAG_ASSERT(parent);
+    structNode->allocateExtension(ExtensionKind::Misc);
+    structNode->extMisc()->alternativeNode = parent;
 
-	const auto newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
-	structNode->scope   = newScope;
+    const auto newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
+    structNode->scope   = newScope;
 
-	{
-		ScopedSelfStruct sf(this, parent->ownerStructScope);
-		Scoped           sc(this, structNode->scope);
-		ScopedStruct     ss(this, structNode->scope);
+    {
+        ScopedSelfStruct sf(this, parent->ownerStructScope);
+        Scoped           sc(this, structNode->scope);
+        ScopedStruct     ss(this, structNode->scope);
 
-		const auto startLoc = token.startLocation;
-		SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));
-		while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
-			SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
-		SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[tuple]] body"));
-	}
+        const auto startLoc = token.startLocation;
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));
+        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+            SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[tuple]] body"));
+    }
 
-	// Reference to that struct
-	const auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
-	*result          = idRef;
+    // Reference to that struct
+    const auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
+    *result          = idRef;
 
-	idRef->children.back()->addAstFlag(AST_GENERATED);
-	Ast::removeFromParent(structNode);
-	Ast::addChildBack(newParent, structNode);
-	structNode->inheritOwners(newParent);
+    idRef->children.back()->addAstFlag(AST_GENERATED);
+    Ast::removeFromParent(structNode);
+    Ast::addChildBack(newParent, structNode);
+    structNode->inheritOwners(newParent);
 
-	const auto typeInfo  = makeType<TypeInfoStruct>();
-	typeInfo->declNode   = structNode;
-	typeInfo->name       = structNode->token.text;
-	typeInfo->structName = structNode->token.text;
-	typeInfo->scope      = newScope;
-	typeInfo->addFlag(TYPEINFO_STRUCT_IS_TUPLE);
-	structNode->typeInfo   = typeInfo;
-	structNode->ownerScope = rootScope;
-	rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
+    const auto typeInfo  = makeType<TypeInfoStruct>();
+    typeInfo->declNode   = structNode;
+    typeInfo->name       = structNode->token.text;
+    typeInfo->structName = structNode->token.text;
+    typeInfo->scope      = newScope;
+    typeInfo->addFlag(TYPEINFO_STRUCT_IS_TUPLE);
+    structNode->typeInfo   = typeInfo;
+    structNode->ownerScope = rootScope;
+    rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
 
-	Ast::visit(structNode->content, [&](AstNode* n)
-	{
-		n->inheritOwners(structNode);
-		n->ownerStructScope = newScope;
-		n->ownerScope       = newScope;
-	});
+    Ast::visit(structNode->content, [&](AstNode* n)
+    {
+        n->inheritOwners(structNode);
+        n->ownerStructScope = newScope;
+        n->ownerScope       = newScope;
+    });
 
-	return true;
+    return true;
 }
 
 bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-	const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+    const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
-	// This is a @typeof
-	if (token.id == TokenId::IntrinsicDeclType)
-	{
-		SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-		return true;
-	}
+    // This is a @typeof
+    if (token.id == TokenId::IntrinsicDeclType)
+    {
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+        return true;
+    }
 
-	if (token.id == TokenId::NativeType)
-	{
-		node->literalType       = token.literalType;
-		node->token.endLocation = token.endLocation;
-		SWAG_CHECK(eatToken());
-		return true;
-	}
+    if (token.id == TokenId::NativeType)
+    {
+        node->literalType       = token.literalType;
+        node->token.endLocation = token.endLocation;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
 
-	if (token.id == TokenId::Identifier)
-	{
-		SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
-		if (inTypeVarDecl)
-			node->identifier->children.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-		node->token.endLocation = node->identifier->token.endLocation;
-		return true;
-	}
+    if (token.id == TokenId::Identifier)
+    {
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
+        if (inTypeVarDecl)
+            node->identifier->children.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+        node->token.endLocation = node->identifier->token.endLocation;
+        return true;
+    }
 
-	if (token.id == TokenId::KwdStruct)
-	{
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false));
-		return true;
-	}
+    if (token.id == TokenId::KwdStruct)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false));
+        return true;
+    }
 
-	if (token.id == TokenId::KwdUnion)
-	{
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true));
-		return true;
-	}
+    if (token.id == TokenId::KwdUnion)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, true));
+        return true;
+    }
 
-	if (token.id == TokenId::SymLeftCurly)
-	{
-		SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false));
-		return true;
-	}
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags & TYPEFLAG_IS_CONST, false));
+        return true;
+    }
 
-	if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
-	{
-		SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
-		SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
-		return true;
-	}
+    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
+    {
+        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
+        SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
+        return true;
+    }
 
-	// Specific error messages
-	if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
-	{
-		const Diagnostic err{sourceFile, token, FMT(Err(Err0401), token.c_str())};
-		return context->report(err);
-	}
+    // Specific error messages
+    if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
+    {
+        const Diagnostic err{sourceFile, token, FMT(Err(Err0401), token.c_str())};
+        return context->report(err);
+    }
 
-	const Diagnostic* note = nullptr;
-	if (token.id == TokenId::SymLeftParen)
-		note = Diagnostic::note(Nte(Nte0084));
-	else if (token.id == TokenId::SymDotDotDot)
-		note = Diagnostic::note(Nte(Nte0138));
-	else if (Tokenizer::isKeyword(token.id))
-		note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
-	else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
-		note = Diagnostic::note(Nte(Nte0085));
+    const Diagnostic* note = nullptr;
+    if (token.id == TokenId::SymLeftParen)
+        note = Diagnostic::note(Nte(Nte0084));
+    else if (token.id == TokenId::SymDotDotDot)
+        note = Diagnostic::note(Nte(Nte0138));
+    else if (Tokenizer::isKeyword(token.id))
+        note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
+    else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
+        note = Diagnostic::note(Nte(Nte0085));
 
-	const Diagnostic err{sourceFile, token, FMT(Err(Err0400), token.c_str())};
-	return context->report(err, note);
+    const Diagnostic err{sourceFile, token, FMT(Err(Err0400), token.c_str())};
+    return context->report(err, note);
 }
 
 bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-	const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+    const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
-	const auto node = Ast::newTypeExpression(sourceFile, parent, this);
-	*result         = node;
-	node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+    const auto node = Ast::newTypeExpression(sourceFile, parent, this);
+    *result         = node;
+    node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
-	// Const keyword
-	if (token.id == TokenId::KwdConst)
-	{
-		node->locConst = token.startLocation;
-		node->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST;
-		SWAG_CHECK(eatToken());
+    // Const keyword
+    if (token.id == TokenId::KwdConst)
+    {
+        node->locConst = token.startLocation;
+        node->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST;
+        SWAG_CHECK(eatToken());
 
-		if (token.id == TokenId::SymAmpersandAmpersand)
-		{
-			const Diagnostic err{sourceFile, token, Err(Err0247)};
-			return context->report(err);
-		}
-	}
+        if (token.id == TokenId::SymAmpersandAmpersand)
+        {
+            const Diagnostic err{sourceFile, token, Err(Err0247)};
+            return context->report(err);
+        }
+    }
 
-	// MoveRef
-	if (token.id == TokenId::SymAmpersandAmpersand)
-	{
-		node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
-		node->typeFlags |= TYPEFLAG_IS_REF;
-		node->typeFlags |= TYPEFLAG_IS_MOVE_REF;
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
-		return true;
-	}
+    // MoveRef
+    if (token.id == TokenId::SymAmpersandAmpersand)
+    {
+        node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
+        node->typeFlags |= TYPEFLAG_IS_REF;
+        node->typeFlags |= TYPEFLAG_IS_MOVE_REF;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
+    }
 
-	// Reference
-	if (token.id == TokenId::SymAmpersand)
-	{
-		node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
-		node->typeFlags |= TYPEFLAG_IS_REF;
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
-		return true;
-	}
+    // Reference
+    if (token.id == TokenId::SymAmpersand)
+    {
+        node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
+        node->typeFlags |= TYPEFLAG_IS_REF;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
+    }
 
-	// Array or slice of something
-	if (token.id == TokenId::SymLeftSquare)
-	{
-		const auto leftSquareToken = token;
+    // Array or slice of something
+    if (token.id == TokenId::SymLeftSquare)
+    {
+        const auto leftSquareToken = token;
 
-		SWAG_CHECK(eatToken());
-		while (true)
-		{
-			// Slice
-			if (token.id == TokenId::SymDotDot)
-			{
-				node->typeFlags |= TYPEFLAG_IS_SLICE;
-				SWAG_CHECK(eatToken());
-				break;
-			}
+        SWAG_CHECK(eatToken());
+        while (true)
+        {
+            // Slice
+            if (token.id == TokenId::SymDotDot)
+            {
+                node->typeFlags |= TYPEFLAG_IS_SLICE;
+                SWAG_CHECK(eatToken());
+                break;
+            }
 
-			node->typeFlags |= TYPEFLAG_IS_ARRAY;
+            node->typeFlags |= TYPEFLAG_IS_ARRAY;
 
-			// Size of array can be nothing
-			if (token.id == TokenId::SymRightSquare)
-			{
-				node->arrayDim = UINT8_MAX;
-				break;
-			}
+            // Size of array can be nothing
+            if (token.id == TokenId::SymRightSquare)
+            {
+                node->arrayDim = UINT8_MAX;
+                break;
+            }
 
-			if (node->arrayDim == 254)
-				return error(token, Err(Err0603));
-			node->arrayDim++;
-			SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-			if (token.id != TokenId::SymComma)
-				break;
-			SWAG_CHECK(eatToken());
-			SWAG_VERIFY(token.id != TokenId::SymRightSquare, error(token, Err(Err0122)));
-		}
+            if (node->arrayDim == 254)
+                return error(token, Err(Err0603));
+            node->arrayDim++;
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightSquare, error(token, Err(Err0122)));
+        }
 
-		auto rightSquareToken = token;
-		SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, leftSquareToken.startLocation));
-		if (token.flags.has(TOKEN_PARSE_LAST_EOL))
-		{
-			if (exprFlags & EXPR_FLAG_TYPE_EXPR)
-			{
-				if (inTypeVarDecl)
-					return context->report({sourceFile, rightSquareToken, Err(Err0692)});
-				const Diagnostic err{sourceFile, rightSquareToken, Err(Err0692)};
-				return context->report(err);
-			}
-			return error(rightSquareToken, Err(Err0692));
-		}
+        auto rightSquareToken = token;
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, leftSquareToken.startLocation));
+        if (token.flags.has(TOKEN_PARSE_LAST_EOL))
+        {
+            if (exprFlags & EXPR_FLAG_TYPE_EXPR)
+            {
+                if (inTypeVarDecl)
+                    return context->report({sourceFile, rightSquareToken, Err(Err0692)});
+                const Diagnostic err{sourceFile, rightSquareToken, Err(Err0692)};
+                return context->report(err);
+            }
+            return error(rightSquareToken, Err(Err0692));
+        }
 
-		if (token.id == TokenId::SymComma)
-		{
-			const Diagnostic err{sourceFile, token, FMT(Err(Err0402), token.c_str())};
-			return context->report(err);
-		}
+        if (token.id == TokenId::SymComma)
+        {
+            const Diagnostic err{sourceFile, token, FMT(Err(Err0402), token.c_str())};
+            return context->report(err);
+        }
 
-		node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
-		SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
-		return true;
-	}
+        node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
+    }
 
-	// Pointers
-	if (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
-	{
-		node->typeFlags |= TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
-		if (token.id == TokenId::SymCircumflex)
-			node->typeFlags |= TYPEFLAG_IS_PTR_ARITHMETIC;
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
-		return true;
-	}
+    // Pointers
+    if (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
+    {
+        node->typeFlags |= TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
+        if (token.id == TokenId::SymCircumflex)
+            node->typeFlags |= TYPEFLAG_IS_PTR_ARITHMETIC;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
+    }
 
-	SWAG_CHECK(doSingleTypeExpression(node, parent, exprFlags, &dummyResult));
-	return true;
+    SWAG_CHECK(doSingleTypeExpression(node, parent, exprFlags, &dummyResult));
+    return true;
 }
 
 bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-	// Code
-	if (token.id == TokenId::KwdCode)
-	{
-		const auto node = Ast::newTypeExpression(sourceFile, parent, this);
-		*result         = node;
-		node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-		node->typeInfo = g_TypeMgr->typeInfoCode;
-		node->typeFlags |= TYPEFLAG_IS_CODE;
-		SWAG_CHECK(eatToken());
-		return true;
-	}
+    // Code
+    if (token.id == TokenId::KwdCode)
+    {
+        const auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        *result         = node;
+        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+        node->typeInfo = g_TypeMgr->typeInfoCode;
+        node->typeFlags |= TYPEFLAG_IS_CODE;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
 
-	// retval
-	if (token.id == TokenId::KwdRetVal)
-	{
-		const auto node   = Ast::newTypeExpression(sourceFile, parent, this);
-		*result           = node;
-		node->semanticFct = Semantic::resolveRetVal;
-		node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-		node->typeFlags |= TYPEFLAG_IS_RETVAL;
+    // retval
+    if (token.id == TokenId::KwdRetVal)
+    {
+        const auto node   = Ast::newTypeExpression(sourceFile, parent, this);
+        *result           = node;
+        node->semanticFct = Semantic::resolveRetVal;
+        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+        node->typeFlags |= TYPEFLAG_IS_RETVAL;
 
-		// retval type can be followed by structure initializer, like a normal struct
-		// In that case, we want the identifier pipeline to be called on it (to check
-		// parameters like a normal struct).
-		// So we create an identifier, that will be matched with the type alias automatically
-		// created in the function.
-		SWAG_CHECK(eatToken());
-		if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
-		{
-			node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
-			const auto id    = castAst<AstIdentifier>(node->identifier->children.back(), AstNodeKind::Identifier);
-			SWAG_CHECK(eatToken());
-			SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
-			id->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-			id->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
-		}
+        // retval type can be followed by structure initializer, like a normal struct
+        // In that case, we want the identifier pipeline to be called on it (to check
+        // parameters like a normal struct).
+        // So we create an identifier, that will be matched with the type alias automatically
+        // created in the function.
+        SWAG_CHECK(eatToken());
+        if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
+        {
+            node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
+            const auto id    = castAst<AstIdentifier>(node->identifier->children.back(), AstNodeKind::Identifier);
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
+            id->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+            id->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	// This is a lambda
-	if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
-	{
-		SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
-		SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags & EXPR_FLAG_IN_VAR_DECL));
-		return true;
-	}
+    // This is a lambda
+    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
+    {
+        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
+        SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags & EXPR_FLAG_IN_VAR_DECL));
+        return true;
+    }
 
-	SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
-	return true;
+    SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
+    return true;
 }
 
 bool Parser::doCast(AstNode* parent, AstNode** result)
 {
-	const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
-	*result           = node;
-	node->semanticFct = Semantic::resolveExplicitCast;
-	SWAG_CHECK(eatToken());
+    const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
+    *result           = node;
+    node->semanticFct = Semantic::resolveExplicitCast;
+    SWAG_CHECK(eatToken());
 
-	// Cast modifiers
-	uint32_t mdfFlags = 0;
-	SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
-	if (mdfFlags & MODIFIER_OVERFLOW)
-	{
-		node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
-		node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
-	}
+    // Cast modifiers
+    uint32_t mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
+    if (mdfFlags & MODIFIER_OVERFLOW)
+    {
+        node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
+        node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
+    }
 
-	if (mdfFlags & MODIFIER_BIT)
-	{
-		node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
-		node->semanticFct = Semantic::resolveExplicitBitCast;
-	}
+    if (mdfFlags & MODIFIER_BIT)
+    {
+        node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
+        node->semanticFct = Semantic::resolveExplicitBitCast;
+    }
 
-	if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
-	{
-		return error(node, FMT(Err(Err0053), "bit", "over"));
-	}
+    if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
+    {
+        return error(node, FMT(Err(Err0053), "bit", "over"));
+    }
 
-	if (mdfFlags & MODIFIER_UN_CONST)
-	{
-		node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
-	}
+    if (mdfFlags & MODIFIER_UN_CONST)
+    {
+        node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
+    }
 
-	const auto startLoc = token.startLocation;
-	SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
-	SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-	SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
+    const auto startLoc = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
+    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
 
-	SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
-	return true;
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    return true;
 }
 
 bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
-	const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
-	*result           = node;
-	node->semanticFct = Semantic::resolveExplicitAutoCast;
+    const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
+    *result           = node;
+    node->semanticFct = Semantic::resolveExplicitAutoCast;
 
-	SWAG_CHECK(eatToken());
-	SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
-	return true;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    return true;
 }
