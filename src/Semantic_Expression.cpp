@@ -262,7 +262,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
     {
         node->children.clear();
 
-        if (expression->computedValue->reg.b)
+        if (expression->computedValue()->reg.b)
         {
             node->inheritComputedValue(ifTrue);
             node->children.push_back(ifTrue);
@@ -328,27 +328,27 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         bool notNull = true;
         if (typeInfo->isString())
         {
-            notNull = expression->computedValue->text.buffer != nullptr;
+            notNull = expression->computedValue()->text.buffer != nullptr;
         }
         else if (typeInfo->isInterface())
         {
-            notNull = expression->computedValue->storageSegment != nullptr;
+            notNull = expression->computedValue()->storageSegment != nullptr;
         }
         else
         {
             switch (typeInfo->sizeOf)
             {
             case 1:
-                notNull = expression->computedValue->reg.u8 != 0;
+                notNull = expression->computedValue()->reg.u8 != 0;
                 break;
             case 2:
-                notNull = expression->computedValue->reg.u16 != 0;
+                notNull = expression->computedValue()->reg.u16 != 0;
                 break;
             case 4:
-                notNull = expression->computedValue->reg.u32 != 0;
+                notNull = expression->computedValue()->reg.u32 != 0;
                 break;
             case 8:
-                notNull = expression->computedValue->reg.u64 != 0;
+                notNull = expression->computedValue()->reg.u64 != 0;
                 break;
             default:
                 break;

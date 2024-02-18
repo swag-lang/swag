@@ -92,7 +92,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
 bool Semantic::valueEqualsTo(const ComputedValue* value, AstNode* node)
 {
     node->allocateComputedValue();
-    return valueEqualsTo(value, node->computedValue, node->typeInfo, node->flags);
+    return valueEqualsTo(value, node->computedValue(), node->typeInfo, node->flags);
 }
 
 bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, const TypeInfo* typeInfo, AstNodeFlags flags)

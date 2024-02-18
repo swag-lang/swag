@@ -15,7 +15,7 @@
 void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 {
     node->allocateComputedValue();
-    node->computedValue->storageOffset = node->ownerScope->startStackSize;
+    node->computedValue()->storageOffset = node->ownerScope->startStackSize;
     node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
     setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
 }
@@ -1289,7 +1289,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::While)
         {
             const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
-            if (whileNode->boolExpression->hasComputedValue() && whileNode->boolExpression->computedValue->reg.b)
+            if (whileNode->boolExpression->hasComputedValue() && whileNode->boolExpression->computedValue()->reg.b)
                 whileNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
             break;
         }
@@ -1297,7 +1297,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::For)
         {
             const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
-            if (forNode->boolExpression->hasComputedValue() && forNode->boolExpression->computedValue->reg.b)
+            if (forNode->boolExpression->hasComputedValue() && forNode->boolExpression->computedValue()->reg.b)
                 forNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
             break;
         }

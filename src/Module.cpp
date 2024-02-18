@@ -586,7 +586,7 @@ void Module::addCompilerFunc(ByteCode* bc)
     SWAG_ASSERT(funcDecl->parameters->hasComputedValue());
 
     // Register the function in all the corresponding buckets
-    const auto filter = funcDecl->parameters->computedValue->reg.u64;
+    const auto filter = funcDecl->parameters->computedValue()->reg.u64;
     for (uint32_t i = 0; i < 64; i++)
     {
         if (filter & static_cast<uint64_t>(1) << i)

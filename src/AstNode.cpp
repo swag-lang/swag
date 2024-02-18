@@ -102,6 +102,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         allocateExtension(ExtensionKind::Semantic);
         extSemantic()->semanticBeforeFct = from->extSemantic()->semanticBeforeFct;
         extSemantic()->semanticAfterFct  = from->extSemantic()->semanticAfterFct;
+
+        if (from->extSemantic()->computedValue)
+        {
+            extSemantic()->computedValue  = Allocator::alloc<ComputedValue>();
+            *extSemantic()->computedValue = *from->extSemantic()->computedValue;
+        }
     }
 
     if (from->hasExtByteCode())
@@ -109,12 +115,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         allocateExtension(ExtensionKind::ByteCode);
         extByteCode()->byteCodeBeforeFct = from->extByteCode()->byteCodeBeforeFct;
         extByteCode()->byteCodeAfterFct  = from->extByteCode()->byteCodeAfterFct;
-    }
-
-    if (from->computedValue)
-    {
-        computedValue  = Allocator::alloc<ComputedValue>();
-        *computedValue = *from->computedValue;
     }
 
     token.text = from->token.text;
@@ -685,9 +685,10 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
 
 void AstNode::allocateComputedValue()
 {
-    if (!computedValue)
+    allocateExtension(ExtensionKind::Semantic);
+    if (!extSemantic()->computedValue)
     {
-        computedValue = Allocator::alloc<ComputedValue>();
+        extSemantic()->computedValue = Allocator::alloc<ComputedValue>();
 #ifdef SWAG_STATS
         g_Stats.memNodesLiteral += sizeof(ComputedValue);
 #endif
@@ -708,8 +709,9 @@ void AstNode::inheritComputedValue(const AstNode* from)
     if (hasAstFlag(AST_VALUE_COMPUTED))
     {
         addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
-        SWAG_ASSERT(from->computedValue);
-        computedValue = from->computedValue;
+        SWAG_ASSERT(from->computedValue());
+        allocateExtension(ExtensionKind::Semantic);
+        extSemantic()->computedValue = from->extSemantic()->computedValue;
     }
 }
 
@@ -725,19 +727,18 @@ bool AstNode::isConstantGenTypeInfo() const
 
 ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 {
-    SWAG_ASSERT(computedValue);
     SWAG_ASSERT(isConstantGenTypeInfo());
-    return static_cast<ExportedTypeInfo*>(computedValue->getStorageAddr());
+    return static_cast<ExportedTypeInfo*>(computedValue()->getStorageAddr());
 }
 
 bool AstNode::isConstantTrue() const
 {
-    return hasAstFlag(AST_VALUE_COMPUTED) && computedValue->reg.b;
+    return hasAstFlag(AST_VALUE_COMPUTED) && computedValue()->reg.b;
 }
 
 bool AstNode::isConstantFalse() const
 {
-    return hasAstFlag(AST_VALUE_COMPUTED) && !computedValue->reg.b;
+    return hasAstFlag(AST_VALUE_COMPUTED) && !computedValue()->reg.b;
 }
 
 bool AstNode::isGeneratedSelf() const
@@ -949,13 +950,13 @@ bool AstNode::isConstant0() const
     switch (typeInfo->sizeOf)
     {
     case 1:
-        return computedValue->reg.u8 == 0;
+        return computedValue()->reg.u8 == 0;
     case 2:
-        return computedValue->reg.u16 == 0;
+        return computedValue()->reg.u16 == 0;
     case 4:
-        return computedValue->reg.u32 == 0;
+        return computedValue()->reg.u32 == 0;
     case 8:
-        return computedValue->reg.u64 == 0;
+        return computedValue()->reg.u64 == 0;
     default:
         break;
     }
@@ -975,21 +976,21 @@ bool AstNode::isConstant1() const
     {
     case NativeTypeKind::U8:
     case NativeTypeKind::S8:
-        return computedValue->reg.u8 == 1;
+        return computedValue()->reg.u8 == 1;
     case NativeTypeKind::U16:
     case NativeTypeKind::S16:
-        return computedValue->reg.u16 == 1;
+        return computedValue()->reg.u16 == 1;
     case NativeTypeKind::U32:
     case NativeTypeKind::S32:
     case NativeTypeKind::Rune:
-        return computedValue->reg.u32 == 1;
+        return computedValue()->reg.u32 == 1;
     case NativeTypeKind::U64:
     case NativeTypeKind::S64:
-        return computedValue->reg.u64 == 1;
+        return computedValue()->reg.u64 == 1;
     case NativeTypeKind::F32:
-        return computedValue->reg.f32 == 1;
+        return computedValue()->reg.f32 == 1;
     case NativeTypeKind::F64:
-        return computedValue->reg.f64 == 1;
+        return computedValue()->reg.f64 == 1;
     default:
         break;
     }

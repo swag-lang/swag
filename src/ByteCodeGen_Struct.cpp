@@ -658,9 +658,9 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
         if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
         {
             auto varType = varDecl->type;
-            SWAG_ASSERT(varType->computedValue->storageSegment);
-            SWAG_ASSERT(varType->computedValue->storageOffset != 0xFFFFFFFF);
-            emitMakeSegPointer(&cxt, varType->computedValue->storageSegment, varType->computedValue->storageOffset, 1);
+            SWAG_ASSERT(varType->computedValue()->storageSegment);
+            SWAG_ASSERT(varType->computedValue()->storageOffset != 0xFFFFFFFF);
+            emitMakeSegPointer(&cxt, varType->computedValue()->storageSegment, varType->computedValue()->storageOffset, 1);
             emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             continue;
         }
@@ -673,9 +673,9 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
                 if (varDecl->assignment->kind == AstNodeKind::ExpressionList)
                 {
                     auto exprList = castAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
-                    SWAG_ASSERT(exprList->computedValue->storageSegment);
-                    SWAG_ASSERT(exprList->computedValue->storageOffset != UINT32_MAX);
-                    emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
+                    SWAG_ASSERT(exprList->computedValue()->storageSegment);
+                    SWAG_ASSERT(exprList->computedValue()->storageOffset != UINT32_MAX);
+                    emitMakeSegPointer(&cxt, exprList->computedValue()->storageSegment, exprList->computedValue()->storageOffset, 1);
                     emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
                 }
                 else
@@ -684,10 +684,10 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
                     if (varDecl->assignment->typeInfo->isString())
                     {
                         auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
-                        auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
+                        auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue()->text);
                         SWAG_ASSERT(storageOffset != UINT32_MAX);
                         emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
-                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
+                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue()->text.length();
                         RegisterList r1;
                         r1 += 1;
                         r1 += 2;
@@ -697,7 +697,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
                     {
                         RegisterList r1 = 1;
                         inst            = EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1);
-                        inst->b.u64     = varDecl->assignment->computedValue->reg.u64;
+                        inst->b.u64     = varDecl->assignment->computedValue()->reg.u64;
                         emitCopyArray(&cxt, typeVar, r0, r1, varDecl->assignment);
                     }
                 }
@@ -705,10 +705,10 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
             else if (typeVar->isString())
             {
                 auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
-                auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
+                auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue()->text);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
-                EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
+                EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue()->text.length();
                 EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
@@ -716,11 +716,11 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
             else if (typeVar->isStruct() &&
                      varDecl->resolvedSymbolOverload &&
                      varDecl->resolvedSymbolOverload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
-                     varDecl->computedValue &&
-                     varDecl->computedValue->storageSegment)
+                     varDecl->computedValue() &&
+                     varDecl->computedValue()->storageSegment)
             {
-                auto storageSegment = varDecl->computedValue->storageSegment;
-                auto storageOffset  = varDecl->computedValue->storageOffset;
+                auto storageSegment = varDecl->computedValue()->storageSegment;
+                auto storageOffset  = varDecl->computedValue()->storageOffset;
                 SWAG_ASSERT(storageSegment);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
@@ -731,19 +731,19 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u8;
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u8;
                     EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
                     break;
                 case 2:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u16;
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u16;
                     EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
                     break;
                 case 4:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue->reg.u32;
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u32;
                     EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
                     break;
                 case 8:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue->reg.u64;
+                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u64;
                     EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                     break;
                 default:
@@ -1207,7 +1207,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         {
             if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
             {
-                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->children.back()->computedValue->storageOffset)
+                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->children.back()->computedValue()->storageOffset)
                 {
                     mustReinit        = false;
                     toDrop.typeStruct = nullptr;
@@ -1390,7 +1390,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     if (!node->count)
         numToInit = 1;
     else if (node->count->hasComputedValue())
-        numToInit = node->count->computedValue->reg.u64;
+        numToInit = node->count->computedValue()->reg.u64;
     else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
@@ -1443,7 +1443,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
                 break;
             }
 
-            if (child->computedValue->reg.u64)
+            if (child->computedValue()->reg.u64)
             {
                 justClear = false;
                 break;
@@ -1655,7 +1655,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
     if (!node->count)
         numToDo = 1;
     else if (node->count->hasComputedValue())
-        numToDo = node->count->computedValue->reg.u64;
+        numToDo = node->count->computedValue()->reg.u64;
     else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));

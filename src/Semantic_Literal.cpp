@@ -45,10 +45,10 @@ bool Semantic::processLiteralString(SemanticContext* context)
 
     auto       loc = node->token.startLocation;
     Utf8       result;
-    const auto len = node->computedValue->text.length();
+    const auto len = node->computedValue()->text.length();
     result.reserve(len);
 
-    const auto start = static_cast<const char*>(node->computedValue->text.buffer);
+    const auto start = static_cast<const char*>(node->computedValue()->text.buffer);
     auto       pz    = start;
     while (pz - start < len)
     {
@@ -161,7 +161,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
         return context->report({node->sourceFile, loc, FMT(Err(Err0275), c)});
     }
 
-    node->computedValue->text = result;
+    node->computedValue()->text = result;
     return true;
 }
 
@@ -462,8 +462,8 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 
     node->typeInfo = TypeManager::literalTypeToType(node->literalType, node->literalValue);
     node->setFlagsValueIsComputed();
-    node->computedValue->reg  = node->literalValue;
-    node->computedValue->text = node->token.text;
+    node->computedValue()->reg  = node->literalValue;
+    node->computedValue()->text = node->token.text;
     node->addAstFlag(AST_R_VALUE);
 
     SWAG_CHECK(processLiteralString(context));
@@ -479,7 +479,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         // Convert to unsigned int for a character without suffix
         if (node->tokenId == TokenId::LiteralCharacter)
         {
-            auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, g_TypeMgr->typeInfoCharacter, false);
+            auto errMsg = checkLiteralValue(*node->computedValue(), node->literalType, node->literalValue, g_TypeMgr->typeInfoCharacter, false);
             if (!errMsg.empty())
                 return context->report({node, errMsg});
             node->typeInfo    = g_TypeMgr->typeInfoCharacter;
@@ -489,7 +489,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
         if (node->typeInfo->isNative(NativeTypeKind::F32) && node->literalType == LiteralType::TypeUntypedFloat)
-            node->computedValue->reg.f32 = static_cast<float>(node->literalValue.f64);
+            node->computedValue()->reg.f32 = static_cast<float>(node->literalValue.f64);
         return true;
     }
 
@@ -542,7 +542,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         }
     }
 
-    const auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffixType, negApplied);
+    const auto errMsg = checkLiteralValue(*node->computedValue(), node->literalType, node->literalValue, suffixType, negApplied);
     if (!errMsg.empty())
     {
         const Diagnostic  err{node, node->token, errMsg};

@@ -26,7 +26,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
     {
         node->boolExpression->addAstFlag(AST_NO_BYTECODE);
-        if (node->boolExpression->computedValue->reg.b)
+        if (node->boolExpression->computedValue()->reg.b)
         {
             if (node->elseBlock)
                 node->elseBlock->addAstFlag(AST_NO_BYTECODE);
@@ -59,7 +59,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
     // Do not evaluate while if it's constant and false
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
     {
-        if (!node->boolExpression->computedValue->reg.b)
+        if (!node->boolExpression->computedValue()->reg.b)
         {
             node->boolExpression->addAstFlag(AST_NO_BYTECODE);
             node->block->addAstFlag(AST_NO_BYTECODE);
@@ -67,7 +67,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
         }
     }
 
-    if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
+    if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue()->reg.b)
     {
         const Diagnostic err{node->boolExpression, Err(Err0137)};
         return context->report(err);
@@ -146,10 +146,10 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                     toAdd.node                = callParam;
                     toAdd.typeInfo            = funcParam->typeInfo;
                     toAdd.kind                = SymbolKind::Variable;
-                    toAdd.computedValue       = callParam->computedValue;
+                    toAdd.computedValue       = callParam->computedValue();
                     toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
-                    toAdd.storageOffset       = callParam->computedValue->storageOffset;
-                    toAdd.storageSegment      = callParam->computedValue->storageSegment;
+                    toAdd.storageOffset       = callParam->computedValue()->storageOffset;
+                    toAdd.storageSegment      = callParam->computedValue()->storageSegment;
                     toAdd.aliasName           = &funcParam->token.text;
                     const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                     overload->fromInlineParam = orgCallParam;
@@ -321,21 +321,21 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                 const auto typeExpr = TypeManager::concreteType(expr->typeInfo);
                 if (typeExpr->isString())
                 {
-                    const int idx = valText.find(expr->computedValue->text);
+                    const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
                         const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
-                        return context->report({expr, FMT(Err(Err0011), expr->computedValue->text.c_str())}, note);
+                        return context->report({expr, FMT(Err(Err0011), expr->computedValue()->text.c_str())}, note);
                     }
 
-                    valText.push_back(expr->computedValue->text);
+                    valText.push_back(expr->computedValue()->text);
                     valDef.push_back(expr);
                 }
                 else
                 {
-                    auto value = expr->computedValue->reg.u64;
+                    auto value = expr->computedValue()->reg.u64;
                     if (expr->isConstantGenTypeInfo())
-                        value = expr->computedValue->storageOffset;
+                        value = expr->computedValue()->storageOffset;
 
                     const int idx = val64.find(value);
                     if (idx != -1)
@@ -346,11 +346,11 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (expr->typeInfo->isEnum())
                             return context->report({expr, FMT(Err(Err0011), expr->token.c_str())}, note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, FMT(Err(Err0009), expr->computedValue->reg.u64)}, note);
-                        return context->report({expr, FMT(Err(Err0010), expr->computedValue->reg.f64)}, note);
+                            return context->report({expr, FMT(Err(Err0009), expr->computedValue()->reg.u64)}, note);
+                        return context->report({expr, FMT(Err(Err0010), expr->computedValue()->reg.f64)}, note);
                     }
 
-                    val64.push_back(expr->computedValue->reg.u64);
+                    val64.push_back(expr->computedValue()->reg.u64);
                     valDef.push_back(expr);
                 }
             }
@@ -486,13 +486,13 @@ bool Semantic::resolveCase(SemanticContext* context)
                 if (node->ownerSwitch->expression->hasComputedValue() && oneExpression->hasComputedValue())
                 {
                     SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
-                    if (node->computedValue->reg.b)
+                    if (node->computedValue()->reg.b)
                         node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_TRUE);
                     else
                         node->addSpecFlag(AstSwitchCase::SPEC_FLAG_IS_FALSE);
-                    Allocator::free<ComputedValue>(node->computedValue);
+                    Allocator::free<ComputedValue>(node->computedValue());
                     node->removeAstFlag(AST_VALUE_COMPUTED);
-                    node->computedValue = nullptr;
+                    node->extSemantic()->computedValue = nullptr;
                 }
             }
 
@@ -542,7 +542,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
             // Do not evaluate loop if it's constant and 0
             if (module->mustOptimizeBytecode(node) && node->expression->hasComputedValue())
             {
-                if (!node->expression->computedValue->reg.u64)
+                if (!node->expression->computedValue()->reg.u64)
                 {
                     node->addAstFlag(AST_NO_BYTECODE);
                     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
@@ -637,13 +637,13 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto child0      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child0->typeInfo = g_TypeMgr->typeInfoBool;
         child0->setFlagsValueIsComputed();
-        child0->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER);
+        child0->computedValue()->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER);
         child0->addAstFlag(AST_NO_SEMANTIC);
 
         auto child1      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child1->typeInfo = g_TypeMgr->typeInfoBool;
         child1->setFlagsValueIsComputed();
-        child1->computedValue->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK);
+        child1->computedValue()->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK);
         child1->addAstFlag(AST_NO_SEMANTIC);
 
         // Call with arguments

@@ -20,8 +20,8 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
     if (typeInfo->isAny() && node->hasComputedValue())
     {
-        const auto any                     = static_cast<SwagAny*>(node->computedValue->getStorageAddr());
-        node->computedValue->storageOffset = node->computedValue->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
+        const auto any                       = static_cast<SwagAny*>(node->computedValue()->getStorageAddr());
+        node->computedValue()->storageOffset = node->computedValue()->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
         node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
         node->typeInfo = g_TypeMgr->typeInfoTypeType;
     }
@@ -30,13 +30,11 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
         SWAG_CHECK(checkIsConcrete(context, node));
 
         node->allocateComputedValue();
-        node->computedValue->storageSegment = getConstantSegFromContext(node);
-        auto& typeGen                       = node->sourceFile->module->typeGen;
+        node->computedValue()->storageSegment = getConstantSegFromContext(node);
+        auto& typeGen                         = node->sourceFile->module->typeGen;
 
         TypeInfo* resultTypeInfo = nullptr;
-        SWAG_CHECK(
-            typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &
-                resultTypeInfo));
+        SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &resultTypeInfo));
         YIELD();
 
         node->typeInfo = resultTypeInfo;
@@ -542,7 +540,7 @@ bool Semantic::resolveType(SemanticContext* context)
             else
             {
                 SWAG_CHECK(checkIsConstExpr(context, child->hasComputedValue(), child, Err(Err0036)));
-                count = child->computedValue->reg.u32;
+                count = child->computedValue()->reg.u32;
             }
 
             const auto childType = TypeManager::concreteType(child->typeInfo);
@@ -688,22 +686,22 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
         switch (node->typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            node->computedValue->reg.s64 = node->computedValue->reg.s8;
+            node->computedValue()->reg.s64 = node->computedValue()->reg.s8;
             break;
         case NativeTypeKind::S16:
-            node->computedValue->reg.s64 = node->computedValue->reg.s16;
+            node->computedValue()->reg.s64 = node->computedValue()->reg.s16;
             break;
         case NativeTypeKind::S32:
-            node->computedValue->reg.s64 = node->computedValue->reg.s32;
+            node->computedValue()->reg.s64 = node->computedValue()->reg.s32;
             break;
         case NativeTypeKind::U8:
-            node->computedValue->reg.u64 = node->computedValue->reg.u8;
+            node->computedValue()->reg.u64 = node->computedValue()->reg.u8;
             break;
         case NativeTypeKind::U16:
-            node->computedValue->reg.u64 = node->computedValue->reg.u16;
+            node->computedValue()->reg.u64 = node->computedValue()->reg.u16;
             break;
         case NativeTypeKind::U32:
-            node->computedValue->reg.u64 = node->computedValue->reg.u32;
+            node->computedValue()->reg.u64 = node->computedValue()->reg.u32;
             break;
         default:
             break;
@@ -813,9 +811,9 @@ bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, 
     auto&      typeGen    = module->typeGen;
 
     node->allocateComputedValue();
-    node->computedValue->reg.pointer    = reinterpret_cast<uint8_t*>(typeInfo);
-    node->computedValue->storageSegment = getConstantSegFromContext(node);
-    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, genFlags.with(GEN_EXPORTED_TYPE_SHOULD_WAIT), resultTypeInfo));
+    node->computedValue()->reg.pointer    = reinterpret_cast<uint8_t*>(typeInfo);
+    node->computedValue()->storageSegment = getConstantSegFromContext(node);
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, genFlags.with(GEN_EXPORTED_TYPE_SHOULD_WAIT), resultTypeInfo));
     YIELD();
     node->setFlagsValueIsComputed();
     node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);

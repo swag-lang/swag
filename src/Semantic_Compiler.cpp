@@ -366,7 +366,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     node->extOwner()->nodesToFree.append(node->children);
     node->children.clear();
 
-    if (!expression->computedValue->text.empty())
+    if (!expression->computedValue()->text.empty())
     {
         CompilerAstKind kind;
         if (node->ownerScope->kind == ScopeKind::Struct)
@@ -380,7 +380,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 
         Parser parser;
         parser.setup(context, context->sourceFile->module, context->sourceFile);
-        SWAG_CHECK(parser.constructEmbeddedAst(expression->computedValue->text, node, expression, kind, true));
+        SWAG_CHECK(parser.constructEmbeddedAst(expression->computedValue()->text, node, expression, kind, true));
 
         job->nodes.pop_back();
         for (int i = static_cast<int>(node->children.size()) - 1; i >= 0; i--)
@@ -403,7 +403,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-    const Diagnostic err{node, node->token, FMT(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
+    const Diagnostic err{node, node->token, FMT(Err(Err0001), msg->computedValue()->text.c_str()), DiagnosticLevel::Error};
     return context->report(err);
 }
 
@@ -419,7 +419,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-    const Diagnostic err{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
+    const Diagnostic err{node, node->token, msg->computedValue()->text, DiagnosticLevel::Warning};
     return context->report(err);
 }
 
@@ -438,7 +438,7 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CAST_FLAG_AUTO_BOOL));
     node->addAstFlag(AST_NO_BYTECODE);
 
-    if (!expr->computedValue->reg.b)
+    if (!expr->computedValue()->reg.b)
         return context->report({node, node->token, Err(Err0045)});
     return true;
 }
@@ -561,43 +561,43 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            g_Log.print(expr->computedValue->reg.b ? "true" : "false");
+            g_Log.print(expr->computedValue()->reg.b ? "true" : "false");
             break;
         case NativeTypeKind::S8:
-            g_Log.print(to_string(expr->computedValue->reg.s8));
+            g_Log.print(to_string(expr->computedValue()->reg.s8));
             break;
         case NativeTypeKind::S16:
-            g_Log.print(to_string(expr->computedValue->reg.s16));
+            g_Log.print(to_string(expr->computedValue()->reg.s16));
             break;
         case NativeTypeKind::S32:
-            g_Log.print(to_string(expr->computedValue->reg.s32));
+            g_Log.print(to_string(expr->computedValue()->reg.s32));
             break;
         case NativeTypeKind::S64:
-            g_Log.print(to_string(expr->computedValue->reg.s64));
+            g_Log.print(to_string(expr->computedValue()->reg.s64));
             break;
         case NativeTypeKind::U8:
-            g_Log.print(to_string(expr->computedValue->reg.u8));
+            g_Log.print(to_string(expr->computedValue()->reg.u8));
             break;
         case NativeTypeKind::U16:
-            g_Log.print(to_string(expr->computedValue->reg.u16));
+            g_Log.print(to_string(expr->computedValue()->reg.u16));
             break;
         case NativeTypeKind::U32:
-            g_Log.print(to_string(expr->computedValue->reg.u32));
+            g_Log.print(to_string(expr->computedValue()->reg.u32));
             break;
         case NativeTypeKind::U64:
-            g_Log.print(to_string(expr->computedValue->reg.u64));
+            g_Log.print(to_string(expr->computedValue()->reg.u64));
             break;
         case NativeTypeKind::F32:
-            g_Log.print(to_string(expr->computedValue->reg.f32));
+            g_Log.print(to_string(expr->computedValue()->reg.f32));
             break;
         case NativeTypeKind::F64:
-            g_Log.print(to_string(expr->computedValue->reg.f64));
+            g_Log.print(to_string(expr->computedValue()->reg.f64));
             break;
         case NativeTypeKind::Rune:
-            g_Log.print(to_string(expr->computedValue->reg.ch));
+            g_Log.print(to_string(expr->computedValue()->reg.ch));
             break;
         case NativeTypeKind::String:
-            g_Log.print(expr->computedValue->text);
+            g_Log.print(expr->computedValue()->text);
             break;
         default:
             g_Log.print(FMT("<%s>", typeInfo->getDisplayNameC()));
@@ -690,7 +690,7 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
 
     node->boolExpression->addAstFlag(AST_NO_BYTECODE);
     AstCompilerIfBlock* validatedNode;
-    if (node->boolExpression->computedValue->reg.b)
+    if (node->boolExpression->computedValue()->reg.b)
     {
         validatedNode = node->ifBlock;
         if (node->elseBlock)
@@ -727,7 +727,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     {
         node->addSemFlag(SEMFLAG_LOAD);
 
-        const auto filename = back->computedValue->text;
+        const auto filename = back->computedValue()->text;
 
         // Search first in the same folder as the source file
         Path fullFileName = node->sourceFile->path.parent_path();
@@ -749,14 +749,14 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
 
         struct stat stat_buf;
         const int   rc = stat(fullFileName.string().c_str(), &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, FMT(Err(Err0097), back->computedValue->text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, FMT(Err(Err0097), back->computedValue()->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         const auto newJob         = Allocator::alloc<LoadFileJob>();
         const auto storageSegment = getConstantSegFromContext(node);
         uint8_t*   addrDst;
-        node->computedValue->storageOffset  = storageSegment->reserve(stat_buf.st_size, &addrDst);
-        node->computedValue->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = storageSegment->reserve(stat_buf.st_size, &addrDst);
+        node->computedValue()->storageSegment = storageSegment;
         newJob->destBuffer                  = addrDst;
         newJob->sizeBuffer                  = stat_buf.st_size;
 
@@ -863,7 +863,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         locNode = locNode->resolvedSymbolOverload->node;
 
     node->setFlagsValueIsComputed();
-    ByteCodeGen::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
+    ByteCodeGen::computeSourceLocation(context, locNode, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
     SWAG_CHECK(setupIdentifierRef(context, node));
     return true;
 }
@@ -872,7 +872,7 @@ bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
     const auto node = context->node;
     node->setFlagsValueIsComputed();
-    node->computedValue->reg.b = node->children.back()->resolvedSymbolOverload != nullptr;
+    node->computedValue()->reg.b = node->children.back()->resolvedSymbolOverload != nullptr;
     node->typeInfo             = g_TypeMgr->typeInfoBool;
     return true;
 }
@@ -905,10 +905,10 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         switch (g_CommandLine.backendGenType)
         {
         case BackendGenType::SCBE:
-            node->computedValue->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::SCBE);
+            node->computedValue()->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::SCBE);
             break;
         case BackendGenType::LLVM:
-            node->computedValue->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::LLVM);
+            node->computedValue()->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::LLVM);
             break;
         }
         node->typeInfo = g_Workspace->swagScope.regTypeInfoBackend;
@@ -917,41 +917,41 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 
     case TokenId::CompilerOs:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.os);
+        node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.os);
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerArch:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.arch);
+        node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.arch);
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetArch;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = getCompilerFunctionString(node, node->tokenId);
+        node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerSwagOs:
         node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = static_cast<uint64_t>(OS::getNativeTarget().os);
+        node->computedValue()->reg.u64 = static_cast<uint64_t>(OS::getNativeTarget().os);
         node->typeInfo               = g_Workspace->swagScope.regTypeInfoTargetOs;
         SWAG_ASSERT(node->typeInfo);
         return true;
 
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = getCompilerFunctionString(node, node->tokenId);
+        node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerLocation:
         node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
         node->setFlagsValueIsComputed();
-        ByteCodeGen::computeSourceLocation(context, node, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
+        ByteCodeGen::computeSourceLocation(context, node, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
 

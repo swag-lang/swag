@@ -24,11 +24,11 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
         switch (fromType->nativeType)
         {
         case NativeTypeKind::F32:
-            return context->report({fromNode, FMT(Err(Saf0021), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
+            return context->report({fromNode, FMT(Err(Saf0021), fromNode->computedValue()->reg.f32, toType->getDisplayNameC())});
         case NativeTypeKind::F64:
-            return context->report({fromNode, FMT(Err(Saf0021), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
+            return context->report({fromNode, FMT(Err(Saf0021), fromNode->computedValue()->reg.f64, toType->getDisplayNameC())});
         default:
-            return context->report({fromNode, FMT(Err(Saf0019), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+            return context->report({fromNode, FMT(Err(Saf0019), fromNode->computedValue()->reg.s64, toType->getDisplayNameC())});
         }
     }
 
@@ -36,20 +36,20 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
         {
-            return context->report({fromNode, FMT(Err(Saf0022), fromNode->token.c_str(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, FMT(Err(Saf0022), fromNode->token.c_str(), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
         }
     }
 
     switch (fromType->nativeType)
     {
     case NativeTypeKind::F32:
-        return context->report({fromNode, FMT(Err(Saf0025), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
+        return context->report({fromNode, FMT(Err(Saf0025), fromNode->computedValue()->reg.f32, toType->getDisplayNameC())});
     case NativeTypeKind::F64:
-        return context->report({fromNode, FMT(Err(Saf0025), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
+        return context->report({fromNode, FMT(Err(Saf0025), fromNode->computedValue()->reg.f64, toType->getDisplayNameC())});
     default:
         if (fromType->isNativeIntegerSigned())
-            return context->report({fromNode, FMT(Err(Saf0024), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
-        return context->report({fromNode, FMT(Err(Saf0023), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, FMT(Err(Saf0024), fromNode->computedValue()->reg.s64, toType->getDisplayNameC())});
+        return context->report({fromNode, FMT(Err(Saf0023), fromNode->computedValue()->reg.u64, toType->getDisplayNameC())});
     }
 }
 
@@ -68,48 +68,48 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     auto msg1 = ByteCodeGen::safetyMsg(SafetyMsg::CastNeg, toType, fromType);
 
     // Negative value to unsigned type
-    if (fromType->isNativeIntegerSigned() && toType->isNativeIntegerUnsignedOrRune() && fromNode->computedValue->reg.s64 < 0)
+    if (fromType->isNativeIntegerSigned() && toType->isNativeIntegerUnsignedOrRune() && fromNode->computedValue()->reg.s64 < 0)
         return context->report({fromNode ? fromNode : context->node, msg1});
 
     switch (toType->nativeType)
     {
     case NativeTypeKind::U8:
-        if (fromNode->computedValue->reg.u64 > UINT8_MAX)
+        if (fromNode->computedValue()->reg.u64 > UINT8_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U16:
-        if (fromNode->computedValue->reg.u64 > UINT16_MAX)
+        if (fromNode->computedValue()->reg.u64 > UINT16_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
-        if (fromNode->computedValue->reg.u64 > UINT32_MAX)
+        if (fromNode->computedValue()->reg.u64 > UINT32_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U64:
         if (fromType->isNativeIntegerSigned())
         {
-            if (fromNode->computedValue->reg.u64 > INT64_MAX)
+            if (fromNode->computedValue()->reg.u64 > INT64_MAX)
                 return context->report({fromNode ? fromNode : context->node, msg});
         }
         break;
 
     case NativeTypeKind::S8:
-        if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
+        if (fromNode->computedValue()->reg.s64 < INT8_MIN || fromNode->computedValue()->reg.s64 > INT8_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S16:
-        if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
+        if (fromNode->computedValue()->reg.s64 < INT16_MIN || fromNode->computedValue()->reg.s64 > INT16_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S32:
-        if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
+        if (fromNode->computedValue()->reg.s64 < INT32_MIN || fromNode->computedValue()->reg.s64 > INT32_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S64:
         if (!fromType->isNativeIntegerSigned())
         {
-            if (fromNode->computedValue->reg.u64 > INT64_MAX)
+            if (fromNode->computedValue()->reg.u64 > INT64_MAX)
                 return context->report({fromNode ? fromNode : context->node, msg});
         }
         break;

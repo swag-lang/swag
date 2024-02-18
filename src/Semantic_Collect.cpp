@@ -189,7 +189,7 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
 
         if (varDecl->assignment)
         {
-            const auto value = varDecl->assignment->computedValue;
+            const auto value = varDecl->assignment->computedValue();
             if (typeInfo->isString())
             {
                 SWAG_ASSERT(value);
@@ -232,7 +232,7 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
         if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
         {
             const auto varType = varDecl->type;
-            const auto srcAddr = varType->computedValue->getStorageAddr();
+            const auto srcAddr = varType->computedValue()->getStorageAddr();
             std::copy_n(static_cast<uint8_t*>(srcAddr), typeInfo->sizeOf, ptrDest);
         }
     }
@@ -291,7 +291,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
             }
             else
             {
-                SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
+                SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue(), typeInfo, assignment));
             }
 
             continue;
@@ -302,7 +302,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
         if (child->hasExtMisc() && child->extMisc()->castOffset)
             offset = baseOffset + child->extMisc()->castOffset - 1;
 
-        SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue, typeInfo, assignment));
+        SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue(), typeInfo, assignment));
 
         offset += child->typeInfo->sizeOf;
     }
@@ -326,12 +326,12 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
     if (node->assignment)
     {
         node->assignment->allocateComputedValue();
-        value = node->assignment->computedValue;
+        value = node->assignment->computedValue();
     }
     else
     {
         node->allocateComputedValue();
-        value = node->computedValue;
+        value = node->computedValue();
     }
 
     if (typeInfo->isArray())
@@ -351,16 +351,16 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
                     switch (typeArr->finalType->sizeOf)
                     {
                     case 1:
-                        *addrDst = node->assignment->computedValue->reg.u8;
+                        *addrDst = node->assignment->computedValue()->reg.u8;
                         break;
                     case 2:
-                        *reinterpret_cast<uint16_t*>(addrDst) = node->assignment->computedValue->reg.u16;
+                        *reinterpret_cast<uint16_t*>(addrDst) = node->assignment->computedValue()->reg.u16;
                         break;
                     case 4:
-                        *reinterpret_cast<uint32_t*>(addrDst) = node->assignment->computedValue->reg.u32;
+                        *reinterpret_cast<uint32_t*>(addrDst) = node->assignment->computedValue()->reg.u32;
                         break;
                     case 8:
-                        *reinterpret_cast<uint64_t*>(addrDst) = node->assignment->computedValue->reg.u64;
+                        *reinterpret_cast<uint64_t*>(addrDst) = node->assignment->computedValue()->reg.u64;
                         break;
                     default:
                         return Report::internalError(node->assignment, "invalid size constant collectAssignment");
@@ -490,9 +490,9 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     else if (node->assignment && typeInfo->isAny())
     {
         node->assignment->setFlagsValueIsComputed();
-        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
-        node->assignment->computedValue->storageOffset  = storageOffset;
-        node->assignment->computedValue->storageSegment = storageSegment;
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, node->assignment->computedValue(), node->assignment->typeInfo, node->assignment));
+        node->assignment->computedValue()->storageOffset  = storageOffset;
+        node->assignment->computedValue()->storageSegment = storageSegment;
     }
 
     // :SliceLiteral
@@ -514,8 +514,8 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         const auto assignType = TypeManager::concreteType(assignNode->typeInfo);
         assignNode->setFlagsValueIsComputed();
         SWAG_CHECK(collectConstantSlice(context, assignNode, assignType, storageSegment, storageOffset));
-        assignNode->computedValue->storageOffset  = storageOffset;
-        assignNode->computedValue->storageSegment = storageSegment;
+        assignNode->computedValue()->storageOffset  = storageOffset;
+        assignNode->computedValue()->storageSegment = storageSegment;
     }
     else if (node->assignment && typeInfo->isInterface() && node->assignment->castedTypeInfo && node->assignment->castedTypeInfo->isPointerNull())
     {
@@ -526,13 +526,13 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     }
     else if (node->assignment && node->assignment->hasComputedValue())
     {
-        storageOffset  = node->assignment->computedValue->storageOffset;
-        storageSegment = node->assignment->computedValue->storageSegment;
+        storageOffset  = node->assignment->computedValue()->storageOffset;
+        storageSegment = node->assignment->computedValue()->storageSegment;
     }
     else if (node->hasComputedValue())
     {
-        storageOffset  = node->computedValue->storageOffset;
-        storageSegment = node->computedValue->storageSegment;
+        storageOffset  = node->computedValue()->storageOffset;
+        storageSegment = node->computedValue()->storageSegment;
     }
     else if (typeInfo->isArray() || typeInfo->isStruct())
     {
@@ -541,7 +541,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     }
 
     node->inheritComputedValue(node->assignment);
-    SWAG_ASSERT(node->computedValue);
+    SWAG_ASSERT(node->computedValue());
 
     *storageSegmentResult = storageSegment;
     *storageOffsetResult  = storageOffset;
@@ -557,7 +557,7 @@ bool Semantic::collectConstantSlice(SemanticContext* context, AstNode* assignNod
         storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
 
         uint32_t storageOffsetValues;
-        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue, assignNode->typeInfo, assignNode));
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffsetValues, assignNode->computedValue(), assignNode->typeInfo, assignNode));
         storageSegment->addInitPtr(storageOffset, storageOffsetValues, storageSegment->kind);
 
         const auto typeList = castTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
@@ -574,7 +574,7 @@ bool Semantic::collectConstantSlice(SemanticContext* context, AstNode* assignNod
     else
     {
         SWAG_ASSERT(assignType->isSlice());
-        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignType, assignNode));
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue(), assignType, assignNode));
     }
 
     return true;
@@ -592,8 +592,8 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         else
         {
             // :BackPtrOffset
-            node->computedValue->storageOffset  = storageSegment->offset(*reinterpret_cast<uint8_t**>(ptr));
-            node->computedValue->storageSegment = storageSegment;
+            node->computedValue()->storageOffset  = storageSegment->offset(*reinterpret_cast<uint8_t**>(ptr));
+            node->computedValue()->storageSegment = storageSegment;
             setupIdentifierRef(context, node);
             node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
         }
@@ -609,8 +609,8 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     if (typeInfo->isArray())
     {
         node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = storageSegment->offset(ptr);
-        node->computedValue->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = storageSegment->offset(ptr);
+        node->computedValue()->storageSegment = storageSegment;
         node->typeInfo                      = typeInfo;
         return true;
     }
@@ -621,9 +621,9 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         const auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         const auto ptrSlice  = reinterpret_cast<SwagSlice*>(ptr);
         node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = ptrSlice->buffer ? storageSegment->offset(static_cast<uint8_t*>(ptrSlice->buffer)) : UINT32_MAX;
-        node->computedValue->storageSegment = storageSegment;
-        node->computedValue->reg.u64        = ptrSlice->count;
+        node->computedValue()->storageOffset  = ptrSlice->buffer ? storageSegment->offset(static_cast<uint8_t*>(ptrSlice->buffer)) : UINT32_MAX;
+        node->computedValue()->storageSegment = storageSegment;
+        node->computedValue()->reg.u64        = ptrSlice->count;
         const auto typeArray                = makeType<TypeInfoArray>();
         typeArray->count                    = static_cast<uint32_t>(reinterpret_cast<SwagSlice*>(ptr)->count);
         typeArray->totalCount               = typeArray->count;
@@ -638,8 +638,8 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     if (typeInfo->isStruct())
     {
         node->setFlagsValueIsComputed();
-        node->computedValue->storageOffset  = storageSegment->offset(ptr);
-        node->computedValue->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = storageSegment->offset(ptr);
+        node->computedValue()->storageSegment = storageSegment;
         node->typeInfo                      = typeInfo;
         setupIdentifierRef(context, node);
         return true;
@@ -654,7 +654,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
     {
         const auto slice = reinterpret_cast<SwagSlice*>(ptr);
         node->setFlagsValueIsComputed();
-        node->computedValue->text = Utf8{static_cast<const char*>(slice->buffer), static_cast<uint32_t>(slice->count)};
+        node->computedValue()->text = Utf8{static_cast<const char*>(slice->buffer), static_cast<uint32_t>(slice->count)};
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoString;
         break;
@@ -662,81 +662,81 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
 
     case NativeTypeKind::Any:
         node->setFlagsValueIsComputed();
-        node->computedValue->storageSegment = storageSegment;
-        node->computedValue->storageOffset  = storageSegment->offset(ptr);
+        node->computedValue()->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = storageSegment->offset(ptr);
         break;
 
     case NativeTypeKind::S8:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS8;
-        node->computedValue->reg.s8 = *reinterpret_cast<int8_t*>(ptr);
+        node->computedValue()->reg.s8 = *reinterpret_cast<int8_t*>(ptr);
         break;
     case NativeTypeKind::U8:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU8;
-        node->computedValue->reg.u8 = *ptr;
+        node->computedValue()->reg.u8 = *ptr;
         break;
     case NativeTypeKind::S16:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS16;
-        node->computedValue->reg.s16 = *reinterpret_cast<int16_t*>(ptr);
+        node->computedValue()->reg.s16 = *reinterpret_cast<int16_t*>(ptr);
         break;
     case NativeTypeKind::U16:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU16;
-        node->computedValue->reg.u16 = *reinterpret_cast<uint16_t*>(ptr);
+        node->computedValue()->reg.u16 = *reinterpret_cast<uint16_t*>(ptr);
         break;
     case NativeTypeKind::S32:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS32;
-        node->computedValue->reg.s32 = *reinterpret_cast<int32_t*>(ptr);
+        node->computedValue()->reg.s32 = *reinterpret_cast<int32_t*>(ptr);
         break;
     case NativeTypeKind::U32:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU32;
-        node->computedValue->reg.u32 = *reinterpret_cast<uint32_t*>(ptr);
+        node->computedValue()->reg.u32 = *reinterpret_cast<uint32_t*>(ptr);
         break;
     case NativeTypeKind::F32:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoF32;
-        node->computedValue->reg.f32 = *reinterpret_cast<float*>(ptr);
+        node->computedValue()->reg.f32 = *reinterpret_cast<float*>(ptr);
         break;
     case NativeTypeKind::Rune:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoRune;
-        node->computedValue->reg.ch = *reinterpret_cast<uint32_t*>(ptr);
+        node->computedValue()->reg.ch = *reinterpret_cast<uint32_t*>(ptr);
         break;
     case NativeTypeKind::S64:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoS64;
-        node->computedValue->reg.s64 = *reinterpret_cast<int64_t*>(ptr);
+        node->computedValue()->reg.s64 = *reinterpret_cast<int64_t*>(ptr);
         break;
     case NativeTypeKind::U64:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoU64;
-        node->computedValue->reg.u64 = *reinterpret_cast<uint64_t*>(ptr);
+        node->computedValue()->reg.u64 = *reinterpret_cast<uint64_t*>(ptr);
         break;
     case NativeTypeKind::F64:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoF64;
-        node->computedValue->reg.f64 = *reinterpret_cast<double*>(ptr);
+        node->computedValue()->reg.f64 = *reinterpret_cast<double*>(ptr);
         break;
     case NativeTypeKind::Bool:
         node->setFlagsValueIsComputed();
         if (!node->typeInfo)
             node->typeInfo = g_TypeMgr->typeInfoBool;
-        node->computedValue->reg.b = *reinterpret_cast<bool*>(ptr);
+        node->computedValue()->reg.b = *reinterpret_cast<bool*>(ptr);
         break;
 
     default:

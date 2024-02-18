@@ -1558,7 +1558,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
 
     // Store in RR0 the address of the stack to store the result
     const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
-    inst->b.u64     = node->computedValue->storageOffset;
+    inst->b.u64     = node->computedValue()->storageOffset;
     EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
     context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
@@ -1568,7 +1568,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     // Push a var drop, except if we are in an expression (constexpr).
     // So check that the ownerScope will be executed (the bytecode should be a parent of the scope).
     if (context->bc->node->isParentOf(node->ownerScope->owner))
-        node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
+        node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue()->storageOffset);
 
     if (node->hasAstFlag(AST_DISCARD))
         freeRegisterRC(context, node->resultRegisterRc);
@@ -2125,9 +2125,9 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 else if (returnType->isStruct())
                 {
                     SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
-                    SWAG_ASSERT(node->computedValue);
-                    EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, node->computedValue->storageOffset, node->resultRegisterRc);
-                    EMIT_INST2(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc, node->computedValue->storageOffset);
+                    SWAG_ASSERT(node->computedValue());
+                    EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, node->computedValue()->storageOffset, node->resultRegisterRc);
+                    EMIT_INST2(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc, node->computedValue()->storageOffset);
                 }
             }
             else

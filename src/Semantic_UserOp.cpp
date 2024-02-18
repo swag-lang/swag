@@ -610,13 +610,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     literal.sourceFile = left->sourceFile;
     literal.inheritTokenLocation(left);
     literal.inheritOwners(left);
-    literal.computedValue = &cValue;
+    literal.allocateExtension(ExtensionKind::Semantic);
+    literal.extSemantic()->computedValue = &cValue;
 
     if (opConst || opType)
     {
-        literal.kind                = AstNodeKind::Literal;
-        literal.computedValue->text = opConst ? opConst : "";
-        literal.typeInfo            = opType ? opType : g_TypeMgr->typeInfoString;
+        literal.kind                  = AstNodeKind::Literal;
+        literal.computedValue()->text = opConst ? opConst : "";
+        literal.typeInfo              = opType ? opType : g_TypeMgr->typeInfoString;
         literal.addAstFlag(AST_VALUE_COMPUTED | AST_CONST_EXPR);
         symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclParams;

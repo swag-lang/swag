@@ -44,7 +44,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
             // Remove assert(true)
             SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
             const auto param = identifier->callParameters->children.front();
-            if (param->hasComputedValue() && param->computedValue->reg.b)
+            if (param->hasComputedValue() && param->computedValue()->reg.b)
                 identifier->addAstFlag(AST_NO_BYTECODE);
         }
         break;
@@ -141,7 +141,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         Ast::removeFromParent(fcp);
         Ast::addChildFront(identifier->callParameters, fcp);
         fcp->setFlagsValueIsComputed();
-        fcp->computedValue->reg.pointer = nullptr;
+        fcp->computedValue()->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
         fcp->addAstFlag(AST_GENERATED);
         identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM);
@@ -678,8 +678,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             if (prevNode->typeInfo->isStruct() || prevNode->typeInfo->isPointer())
             {
-                auto ptr = static_cast<uint8_t*>(prevNode->computedValue->getStorageAddr());
-                if (derefConstant(context, ptr, overload, prevNode->computedValue->storageSegment))
+                auto ptr = static_cast<uint8_t*>(prevNode->computedValue()->getStorageAddr());
+                if (derefConstant(context, ptr, overload, prevNode->computedValue()->storageSegment))
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
@@ -699,7 +699,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                 auto ptr     = static_cast<uint8_t*>(arrayOver->computedValue.getStorageAddr());
-                ptr += arrayNode->access->computedValue->reg.u64 * typePtr->finalType->sizeOf;
+                ptr += arrayNode->access->computedValue()->reg.u64 * typePtr->finalType->sizeOf;
                 if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
@@ -867,7 +867,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         SWAG_CHECK(setupIdentifierRef(context, identifier));
         identifier->setFlagsValueIsComputed();
         identifier->addAstFlag(AST_R_VALUE);
-        *identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
+        *identifier->computedValue() = identifier->resolvedSymbolOverload->computedValue;
         break;
 
     case SymbolKind::Struct:
@@ -1006,7 +1006,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (overload->node->isConstantGenTypeInfo())
                 identifier->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
             identifier->setFlagsValueIsComputed();
-            *identifier->computedValue = overload->computedValue;
+            *identifier->computedValue() = overload->computedValue;
 
             // If constant is inside an expression, everything before should be constant too.
             // Otherwise, that means that we reference a constant threw a variable

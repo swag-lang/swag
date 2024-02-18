@@ -73,7 +73,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     if (child->hasComputedValue())
     {
         res.type  = child->typeInfo;
-        res.value = child->computedValue;
+        res.value = child->computedValue();
         return true;
     }
 

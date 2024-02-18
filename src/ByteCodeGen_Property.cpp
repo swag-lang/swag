@@ -53,13 +53,13 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 
     // Reference to the interface concrete type info
     const auto childItf = params->children[2];
-    SWAG_ASSERT(childItf->computedValue);
-    SWAG_ASSERT(childItf->computedValue->storageSegment);
-    SWAG_ASSERT(childItf->computedValue->storageOffset != UINT32_MAX);
+    SWAG_ASSERT(childItf->computedValue());
+    SWAG_ASSERT(childItf->computedValue()->storageSegment);
+    SWAG_ASSERT(childItf->computedValue()->storageOffset != UINT32_MAX);
 
-    const auto constSegment = childItf->computedValue->storageSegment;
+    const auto constSegment = childItf->computedValue()->storageSegment;
     const auto r0           = reserveRegisterRC(context);
-    emitMakeSegPointer(context, constSegment, childItf->computedValue->storageOffset, r0);
+    emitMakeSegPointer(context, constSegment, childItf->computedValue()->storageOffset, r0);
 
     // Copy object pointer to first result register
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->children[0]->resultRegisterRc);

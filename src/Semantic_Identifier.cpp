@@ -123,13 +123,13 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
         if (!node->hasComputedValue())
         {
             node->setFlagsValueIsComputed();
-            *node->computedValue = node->resolvedSymbolOverload->computedValue;
+            *node->computedValue() = node->resolvedSymbolOverload->computedValue;
         }
 
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
         // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
-        if (!node->computedValue->storageSegment || node->computedValue->storageOffset == 0xFFFFFFFF)
+        if (!node->computedValue()->storageSegment || node->computedValue()->storageOffset == 0xFFFFFFFF)
             node->removeAstFlag(AST_L_VALUE);
     }
 
@@ -880,7 +880,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             st.typeInfoReplace = oneParam->typeInfo;
             st.fromNode        = oneParam;
             symMatchContext.genericParametersCallTypes.push_back(st);
-            symMatchContext.genericParametersCallValues.push_back(oneParam->computedValue);
+            symMatchContext.genericParametersCallValues.push_back(oneParam->computedValue());
         }
     }
 
@@ -928,7 +928,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     }
 
     // Result
-    if (!expr->computedValue->reg.b)
+    if (!expr->computedValue()->reg.b)
     {
         oneMatch->remove                              = true;
         oneMatch->oneOverload->symMatchContext.result = MatchResult::ValidIfFailed;

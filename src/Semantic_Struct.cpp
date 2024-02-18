@@ -88,34 +88,34 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     // Make a concrete type for the given struct
     auto& typeGen = module->typeGen;
     back->allocateComputedValue();
-    back->computedValue->storageSegment = getConstantSegFromContext(back);
-    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeStruct, back->computedValue->storageSegment, &back->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
+    back->computedValue()->storageSegment = getConstantSegFromContext(back);
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeStruct, back->computedValue()->storageSegment, &back->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     YIELD();
 
     // Make a concrete type for the given interface
     first->allocateComputedValue();
-    first->computedValue->storageSegment = getConstantSegFromContext(first);
-    SWAG_CHECK(typeGen.genExportedTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
+    first->computedValue()->storageSegment = getConstantSegFromContext(first);
+    SWAG_CHECK(typeGen.genExportedTypeInfo(context, first->typeInfo, first->computedValue()->storageSegment, &first->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     YIELD();
 
     const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
     const auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
     SWAG_ASSERT(typeParamItf);
 
-    const auto constSegment = back->computedValue->storageSegment;
+    const auto constSegment = back->computedValue()->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
     auto itable = reinterpret_cast<void**>(constSegment->address(typeParamItf->offset));
 
     // :itableHeader
     // Move back to concrete type, and initialize it
     itable--;
-    *itable = constSegment->address(back->computedValue->storageOffset);
-    constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue->storageOffset, constSegment->kind);
+    *itable = constSegment->address(back->computedValue()->storageOffset);
+    constSegment->addInitPtr(typeParamItf->offset - sizeof(void*), back->computedValue()->storageOffset, constSegment->kind);
 
     // Move back to interface type, and initialize it
     itable--;
-    *itable = constSegment->address(first->computedValue->storageOffset);
-    constSegment->addInitPtr(typeParamItf->offset - 2 * sizeof(void*), first->computedValue->storageOffset, constSegment->kind);
+    *itable = constSegment->address(first->computedValue()->storageOffset);
+    constSegment->addInitPtr(typeParamItf->offset - 2 * sizeof(void*), first->computedValue()->storageOffset, constSegment->kind);
 
     return true;
 }
@@ -794,8 +794,8 @@ bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDec
     }
 
     // Result
-    SWAG_ASSERT(expr->computedValue);
-    if (!expr->computedValue->reg.b)
+    SWAG_ASSERT(expr->computedValue());
+    if (!expr->computedValue()->reg.b)
     {
         const Diagnostic err{structDecl->validif, structDecl->validif->token, FMT(Err(Err0084), structDecl->typeInfo->getDisplayNameC())};
         return context->report(err);
@@ -968,8 +968,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     {
                         auto constSegment = getConstantSegFromContext(varDecl);
                         varDecl->type->setFlagsValueIsComputed();
-                        varDecl->type->computedValue->storageSegment = constSegment;
-                        SWAG_CHECK(collectAssignment(context, constSegment, varDecl->type->computedValue->storageOffset, varDecl));
+                        varDecl->type->computedValue()->storageSegment = constSegment;
+                        SWAG_CHECK(collectAssignment(context, constSegment, varDecl->type->computedValue()->storageOffset, varDecl));
                     }
                 }
 
@@ -1010,16 +1010,16 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     if (typeParam)
                     {
                         typeParam->allocateComputedValue();
-                        typeParam->value->reg = varDecl->assignment->computedValue->reg;
+                        typeParam->value->reg = varDecl->assignment->computedValue()->reg;
                     }
                 }
-                else if (!typeInfoAssignment->isNative() || varDecl->assignment->computedValue->reg.u64)
+                else if (!typeInfoAssignment->isNative() || varDecl->assignment->computedValue()->reg.u64)
                 {
                     structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
                     if (typeParam)
                     {
                         typeParam->allocateComputedValue();
-                        typeParam->value->reg = varDecl->assignment->computedValue->reg;
+                        typeParam->value->reg = varDecl->assignment->computedValue()->reg;
                     }
                 }
 

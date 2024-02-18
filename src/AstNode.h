@@ -353,6 +353,8 @@ struct AstNode
     void addSpecFlag(SpecFlags fl) { specFlags.add(fl); }
     void removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
 
+    ComputedValue* computedValue() const { return extension && extension->semantic ? extension->semantic->computedValue : nullptr; }
+
     struct NodeExtensionByteCode
     {
         ByteCodeNotifyFct      byteCodeBeforeFct = nullptr;
@@ -364,8 +366,9 @@ struct AstNode
 
     struct NodeExtensionSemantic
     {
-        SemanticFct semanticBeforeFct = nullptr;
-        SemanticFct semanticAfterFct  = nullptr;
+        SemanticFct    semanticBeforeFct = nullptr;
+        SemanticFct    semanticAfterFct  = nullptr;
+        ComputedValue* computedValue     = nullptr;
     };
 
     struct NodeExtensionOwner
@@ -432,7 +435,6 @@ struct AstNode
     mutable SharedMutex    mutex;
     Token                  token;
     VectorNative<AstNode*> children;
-    ComputedValue*         computedValue;
 
     Scope*        ownerScope;
     Scope*        ownerStructScope;

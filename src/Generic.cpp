@@ -94,7 +94,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
                 if (firstMatch.genericParametersCallValues[i])
                 {
                     callParam->allocateComputedValue();
-                    *callParam->computedValue = *firstMatch.genericParametersCallValues[i];
+                    *callParam->computedValue() = *firstMatch.genericParametersCallValues[i];
                 }
             }
         }
@@ -194,8 +194,8 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
             context.genericReplaceTypes[genTypeName] = st;
             context.genericParametersCallTypes[i]    = st;
-            context.genericReplaceValues[genName]    = genNode->computedValue;
-            context.genericParametersCallValues[i]   = genNode->computedValue;
+            context.genericReplaceValues[genName]    = genNode->computedValue();
+            context.genericParametersCallValues[i]   = genNode->computedValue();
         }
         else
         {

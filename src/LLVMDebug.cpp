@@ -782,38 +782,38 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
                 switch (typeInfo->nativeType)
                 {
                 case NativeTypeKind::S8:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s32, true);
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s32, true);
                     break;
                 case NativeTypeKind::S16:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s16, true);
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s16, true);
                     break;
                 case NativeTypeKind::S32:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s32, true);
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s32, true);
                     break;
                 case NativeTypeKind::S64:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s64, true);
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s64, true);
                     break;
                 case NativeTypeKind::U8:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s32, false);
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s32, false);
                     break;
                 case NativeTypeKind::U16:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue->reg.s16, false);
+                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s16, false);
                     break;
                 case NativeTypeKind::U32:
                 case NativeTypeKind::Rune:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s32, false);
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s32, false);
                     break;
                 case NativeTypeKind::U64:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue->reg.s64, false);
+                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s64, false);
                     break;
                 case NativeTypeKind::F32:
-                    constant = llvm::ConstantFP::get(F32_TY(), node->computedValue->reg.f32);
+                    constant = llvm::ConstantFP::get(F32_TY(), node->computedValue()->reg.f32);
                     break;
                 case NativeTypeKind::F64:
-                    constant = llvm::ConstantFP::get(F64_TY(), node->computedValue->reg.f64);
+                    constant = llvm::ConstantFP::get(F64_TY(), node->computedValue()->reg.f64);
                     break;
                 case NativeTypeKind::Bool:
-                    constant = llvm::ConstantInt::get(I1_TY(), node->computedValue->reg.b, false);
+                    constant = llvm::ConstantInt::get(I1_TY(), node->computedValue()->reg.b, false);
                     break;
                 default:
                     break;

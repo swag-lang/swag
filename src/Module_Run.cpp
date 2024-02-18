@@ -31,8 +31,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         uint8_t*   addrDst;
         const auto storageOffset = storageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
         node->allocateComputedValue();
-        node->computedValue->storageSegment = storageSegment;
-        node->computedValue->storageOffset  = storageOffset;
+        node->computedValue()->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = storageOffset;
         const auto addrSrc                  = runContext->bp;
         std::copy_n(addrSrc, node->typeInfo->sizeOf, addrDst);
         return true;
@@ -56,10 +56,10 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         SWAG_ASSERT(node->resultRegisterRc.size() == 2);
         const auto     pz  = reinterpret_cast<const char*>(runContext->registersRR[0].pointer);
         const uint32_t len = runContext->registersRR[1].u32;
-        node->computedValue->text.reserve(len + 1);
-        node->computedValue->text.count = len;
-        std::copy_n(pz, len, node->computedValue->text.buffer);
-        node->computedValue->text.buffer[len] = 0;
+        node->computedValue()->text.reserve(len + 1);
+        node->computedValue()->text.count = len;
+        std::copy_n(pz, len, node->computedValue()->text.buffer);
+        node->computedValue()->text.buffer[len] = 0;
         return true;
     }
 
@@ -69,8 +69,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         const auto storageSegment           = Semantic::getConstantSegFromContext(node);
         uint8_t*   addrDst                  = nullptr;
         const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
-        node->computedValue->storageOffset  = offsetStorage;
-        node->computedValue->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = offsetStorage;
+        node->computedValue()->storageSegment = storageSegment;
         const auto addrSrc                  = runContext->registersRR[0].pointer;
         std::copy_n(addrSrc, realType->sizeOf, addrDst);
         return true;
@@ -81,8 +81,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         const auto storageSegment           = Semantic::getConstantSegFromContext(node);
         uint8_t*   addrDst                  = nullptr;
         const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
-        node->computedValue->storageOffset  = offsetStorage;
-        node->computedValue->storageSegment = storageSegment;
+        node->computedValue()->storageOffset  = offsetStorage;
+        node->computedValue()->storageSegment = storageSegment;
         const auto addrSrc                  = runContext->registersRR[0].pointer;
         std::copy_n(addrSrc, realType->sizeOf, addrDst);
         const auto typeList = castTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
@@ -99,8 +99,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             const auto storageSegment           = Semantic::getConstantSegFromContext(node);
             uint8_t*   addrDst                  = nullptr;
             const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
-            node->computedValue->storageOffset  = offsetStorage;
-            node->computedValue->storageSegment = storageSegment;
+            node->computedValue()->storageOffset  = offsetStorage;
+            node->computedValue()->storageSegment = storageSegment;
             const auto addrSrc                  = runContext->registersRR[0].pointer;
             std::copy_n(addrSrc, realType->sizeOf, addrDst);
             return true;
@@ -162,7 +162,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (concreteType->isString())
         {
             node->typeInfo            = g_TypeMgr->typeInfoString;
-            node->computedValue->text = Utf8{reinterpret_cast<const char*>(addrSrc), sizeSlice};
+            node->computedValue()->text = Utf8{reinterpret_cast<const char*>(addrSrc), sizeSlice};
         }
         else
         {
@@ -170,8 +170,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             const auto storageSegment           = Semantic::getConstantSegFromContext(node);
             uint8_t*   addrDst                  = nullptr;
             const auto offsetStorage            = storageSegment->reserve(sizeSlice, &addrDst);
-            node->computedValue->storageOffset  = offsetStorage;
-            node->computedValue->storageSegment = storageSegment;
+            node->computedValue()->storageOffset  = offsetStorage;
+            node->computedValue()->storageSegment = storageSegment;
             std::copy_n(addrSrc, sizeSlice, addrDst);
 
             // Then transform the returned type to a static array
@@ -206,16 +206,16 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         switch (realType->sizeOf)
         {
         case 1:
-            node->computedValue->reg.u64 = runContext->registersRR[0].u8;
+            node->computedValue()->reg.u64 = runContext->registersRR[0].u8;
             return true;
         case 2:
-            node->computedValue->reg.u64 = runContext->registersRR[0].u16;
+            node->computedValue()->reg.u64 = runContext->registersRR[0].u16;
             return true;
         case 4:
-            node->computedValue->reg.u64 = runContext->registersRR[0].u32;
+            node->computedValue()->reg.u64 = runContext->registersRR[0].u32;
             return true;
         case 8:
-            node->computedValue->reg.u64 = runContext->registersRR[0].u64;
+            node->computedValue()->reg.u64 = runContext->registersRR[0].u64;
             return true;
         default:
             break;
@@ -230,8 +230,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (offset != UINT32_MAX)
         {
             node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
-            node->computedValue->storageOffset  = offset;
-            node->computedValue->storageSegment = &module->compilerSegment;
+            node->computedValue()->storageOffset  = offset;
+            node->computedValue()->storageSegment = &module->compilerSegment;
             return true;
         }
 
@@ -239,8 +239,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (offset != UINT32_MAX)
         {
             node->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
-            node->computedValue->storageOffset  = offset;
-            node->computedValue->storageSegment = &module->constantSegment;
+            node->computedValue()->storageOffset  = offset;
+            node->computedValue()->storageSegment = &module->constantSegment;
             return true;
         }
     }

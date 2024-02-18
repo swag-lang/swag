@@ -195,19 +195,19 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         node->addAstFlag(AST_NO_BYTECODE);
         node->assignment->addAstFlag(AST_NO_BYTECODE);
 
-        SWAG_ASSERT(node->computedValue->storageSegment);
-        SWAG_ASSERT(node->computedValue->storageOffset != UINT32_MAX);
+        SWAG_ASSERT(node->computedValue()->storageSegment);
+        SWAG_ASSERT(node->computedValue()->storageOffset != UINT32_MAX);
 
         const auto wantStorageSegment = getConstantSegFromContext(node);
 
         // Copy value from compiler segment to real requested segment
-        if (node->computedValue->storageSegment != wantStorageSegment)
+        if (node->computedValue()->storageSegment != wantStorageSegment)
         {
-            const auto addrSrc = node->computedValue->getStorageAddr();
+            const auto addrSrc = node->computedValue()->getStorageAddr();
             uint8_t*   addrDst;
             const auto storageOffset            = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
-            node->computedValue->storageSegment = wantStorageSegment;
-            node->computedValue->storageOffset  = storageOffset;
+            node->computedValue()->storageSegment = wantStorageSegment;
+            node->computedValue()->storageOffset  = storageOffset;
             std::copy_n(static_cast<uint8_t*>(addrSrc), node->typeInfo->sizeOf, addrDst);
         }
 
@@ -217,8 +217,8 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         toAdd.typeInfo       = node->typeInfo;
         toAdd.kind           = overload->symbol->kind;
         toAdd.flags          = overload->flags.maskInvert(OVERLOAD_INCOMPLETE);
-        toAdd.storageOffset  = node->computedValue->storageOffset;
-        toAdd.storageSegment = node->computedValue->storageSegment;
+        toAdd.storageOffset  = node->computedValue()->storageOffset;
+        toAdd.storageSegment = node->computedValue()->storageSegment;
 
         node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     }
@@ -763,8 +763,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0044)));
         SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
         YIELD();
-        SWAG_ASSERT(node->typeConstraint->computedValue);
-        if (!node->typeConstraint->computedValue->reg.b)
+        SWAG_ASSERT(node->typeConstraint->hasComputedValue());
+        if (!node->typeConstraint->computedValue()->reg.b)
         {
             Diagnostic err(node->typeConstraint, FMT(Err(Err0088), node->typeInfo->getDisplayNameC()));
             if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
@@ -1252,8 +1252,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 assignment->children.back()->children.back()->kind == AstNodeKind::Inline &&
                 assignment->children.back()->children.back()->hasAstFlag(AST_TRANSIENT))
             {
-                SWAG_ASSERT(assignment->children.back()->children.back()->computedValue);
-                storageOffset = assignment->children.back()->children.back()->computedValue->storageOffset;
+                SWAG_ASSERT(assignment->children.back()->children.back()->computedValue());
+                storageOffset = assignment->children.back()->children.back()->computedValue()->storageOffset;
                 node->addSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE);
             }
             else
@@ -1292,7 +1292,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     toAdd.node           = node;
     toAdd.typeInfo       = node->typeInfo;
     toAdd.kind           = thisIsAGenericType ? SymbolKind::GenericType : SymbolKind::Variable;
-    toAdd.computedValue  = isCompilerConstant ? node->computedValue : nullptr;
+    toAdd.computedValue  = isCompilerConstant ? node->computedValue() : nullptr;
     toAdd.flags          = overFlags;
     toAdd.storageOffset  = storageOffset;
     toAdd.storageSegment = storageSegment;

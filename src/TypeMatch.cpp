@@ -495,12 +495,12 @@ namespace
                             uint32_t     storageOffset  = UINT32_MAX;
                             DataSegment* storageSegment = Semantic::getConstantSegFromContext(firstChild);
                             firstChild->setFlagsValueIsComputed();
-                            Semantic::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
+                            Semantic::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue(), firstChild->typeInfo, firstChild);
 
-                            const auto typeList                       = castTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
-                            firstChild->computedValue->reg.u64        = typeList->subTypes.size();
-                            firstChild->computedValue->storageOffset  = storageOffset;
-                            firstChild->computedValue->storageSegment = storageSegment;
+                            const auto typeList                         = castTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
+                            firstChild->computedValue()->reg.u64        = typeList->subTypes.size();
+                            firstChild->computedValue()->storageOffset  = storageOffset;
+                            firstChild->computedValue()->storageSegment = storageSegment;
                             callParameter->inheritComputedValue(firstChild);
                         }
                     }
@@ -545,7 +545,7 @@ namespace
                                 context.badSignatureInfos.badNode               = callParameter;
                                 context.badSignatureInfos.badGenMatch           = symbolParameter->name;
                                 context.badSignatureInfos.badGenValue1          = it1->second;
-                                context.badSignatureInfos.badGenValue2          = callParameter->computedValue;
+                                context.badSignatureInfos.badGenValue2          = callParameter->computedValue();
                                 context.badSignatureInfos.badSignatureGivenType = typeInfo;
                                 context.result                                  = MatchResult::MismatchGenericValue;
                                 return;

@@ -379,7 +379,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 for (auto c : id->callParameters->children)
                 {
                     auto ptr       = c->getConstantGenTypeInfo();
-                    auto typeChild = context->sourceFile->module->typeGen.getRealType(c->computedValue->storageSegment, ptr);
+                    auto typeChild = context->sourceFile->module->typeGen.getRealType(c->computedValue()->storageSegment, ptr);
                     SWAG_ASSERT(typeChild);
                     Scope* scope;
                     switch (typeChild->kind)
@@ -727,7 +727,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
                 attrParam.token      = one->token;
                 attrParam.token.text = param->resolvedParameter->name;
                 attrParam.typeInfo   = param->resolvedParameter->typeInfo;
-                attrParam.value      = *param->computedValue;
+                attrParam.value      = *param->computedValue();
                 oneAttribute.parameters.emplace_back(std::move(attrParam));
             }
         }
@@ -746,7 +746,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             AttributeParameter attrParam;
             attrParam.token    = param->token;
             attrParam.typeInfo = param->typeInfo;
-            attrParam.value    = *param->assignment->computedValue;
+            attrParam.value    = *param->assignment->computedValue();
             oneAttribute.parameters.emplace_back(std::move(attrParam));
         }
 

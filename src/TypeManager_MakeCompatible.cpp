@@ -91,8 +91,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                     {
                         const auto constSegment = Semantic::getConstantSegFromContext(exprList);
                         exprList->allocateComputedValue();
-                        exprList->computedValue->storageSegment = constSegment;
-                        SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo, exprList));
+                        exprList->computedValue()->storageSegment = constSegment;
+                        SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, exprList->computedValue()->storageSegment, exprList->computedValue()->storageOffset, nullptr, fromNode->typeInfo, exprList));
                     }
                 }
             }

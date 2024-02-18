@@ -32,10 +32,10 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 param->typeInfo           = genParam->typeInfo;
                 varDecl->genTypeComesFrom = genParam;
 
-                if (genParam->computedValue)
+                if (genParam->computedValue())
                 {
                     param->allocateComputedValue();
-                    *param->value = *genParam->computedValue;
+                    *param->value = *genParam->computedValue();
                     if (genParam->hasComputedValue() && !genParam->isConstantGenTypeInfo())
                         param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
                 }
@@ -128,14 +128,14 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
             if (param->value)
             {
                 nodeParam->allocateComputedValue();
-                *nodeParam->computedValue = *param->value;
+                *nodeParam->computedValue() = *param->value;
 
                 // :SliceLiteral
                 if (param->typeInfo->isListArray() && nodeParam->typeInfo->isSlice())
                 {
                     SwagSlice* slice;
-                    const auto storageSegment               = nodeParam->computedValue->storageSegment;
-                    nodeParam->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
+                    const auto storageSegment               = nodeParam->computedValue()->storageSegment;
+                    nodeParam->computedValue()->storageOffset = storageSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&slice));
                     const auto typeList                     = castTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
                     slice->buffer                           = storageSegment->address(param->value->storageOffset);
                     slice->count                            = typeList->subTypes.size();

@@ -54,19 +54,19 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-            if (child->computedValue->reg.s8 <= INT8_MIN)
-                return context->report({child, FMT(Err(Err0424), child->computedValue->reg.s8, -child->computedValue->reg.s8, "s8")});
-            child->computedValue->reg.s64 = -child->computedValue->reg.s8;
+            if (child->computedValue()->reg.s8 <= INT8_MIN)
+                return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s8, -child->computedValue()->reg.s8, "s8")});
+            child->computedValue()->reg.s64 = -child->computedValue()->reg.s8;
             break;
         case NativeTypeKind::S16:
-            if (child->computedValue->reg.s16 <= INT16_MIN)
-                return context->report({child, FMT(Err(Err0424), child->computedValue->reg.s16, -child->computedValue->reg.s16, "s16")});
-            child->computedValue->reg.s64 = -child->computedValue->reg.s16;
+            if (child->computedValue()->reg.s16 <= INT16_MIN)
+                return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s16, -child->computedValue()->reg.s16, "s16")});
+            child->computedValue()->reg.s64 = -child->computedValue()->reg.s16;
             break;
         case NativeTypeKind::S32:
-            if (child->computedValue->reg.s32 <= INT32_MIN)
-                return context->report({child, FMT(Err(Err0424), child->computedValue->reg.s32, -child->computedValue->reg.s32, "s32")});
-            child->computedValue->reg.s64 = -child->computedValue->reg.s32;
+            if (child->computedValue()->reg.s32 <= INT32_MIN)
+                return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s32, -child->computedValue()->reg.s32, "s32")});
+            child->computedValue()->reg.s64 = -child->computedValue()->reg.s32;
             if (typeInfo->isUntypedInteger())
             {
                 auto native          = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
@@ -77,13 +77,13 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
             }
             break;
         case NativeTypeKind::S64:
-            if (child->computedValue->reg.s64 <= INT64_MIN)
-                return context->report({child, FMT(Err(Err0423), child->computedValue->reg.s64, -child->computedValue->reg.s64)});
-            child->computedValue->reg.s64 = -child->computedValue->reg.s64;
+            if (child->computedValue()->reg.s64 <= INT64_MIN)
+                return context->report({child, FMT(Err(Err0423), child->computedValue()->reg.s64, -child->computedValue()->reg.s64)});
+            child->computedValue()->reg.s64 = -child->computedValue()->reg.s64;
             break;
 
         case NativeTypeKind::F32:
-            child->computedValue->reg.f32 = -child->computedValue->reg.f32;
+            child->computedValue()->reg.f32 = -child->computedValue()->reg.f32;
             if (typeInfo->isUntypedFloat())
             {
                 auto native        = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
@@ -95,7 +95,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
 
             break;
         case NativeTypeKind::F64:
-            child->computedValue->reg.f64 = -child->computedValue->reg.f64;
+            child->computedValue()->reg.f64 = -child->computedValue()->reg.f64;
             break;
         default:
             break;
@@ -123,24 +123,24 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            child->computedValue->reg.b = !child->computedValue->reg.b;
+            child->computedValue()->reg.b = !child->computedValue()->reg.b;
             break;
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            child->computedValue->reg.b = child->computedValue->reg.u8 ? false : true;
+            child->computedValue()->reg.b = child->computedValue()->reg.u8 ? false : true;
             break;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            child->computedValue->reg.b = child->computedValue->reg.u16 ? false : true;
+            child->computedValue()->reg.b = child->computedValue()->reg.u16 ? false : true;
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            child->computedValue->reg.b = child->computedValue->reg.u32 ? false : true;
+            child->computedValue()->reg.b = child->computedValue()->reg.u32 ? false : true;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            child->computedValue->reg.b = child->computedValue->reg.u64 ? false : true;
+            child->computedValue()->reg.b = child->computedValue()->reg.u64 ? false : true;
             break;
         default:
             break;
@@ -189,25 +189,25 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            child->computedValue->reg.u64 = child->computedValue->reg.u8;
-            child->computedValue->reg.u8 = ~child->computedValue->reg.u8;
+            child->computedValue()->reg.u64 = child->computedValue()->reg.u8;
+            child->computedValue()->reg.u8 = ~child->computedValue()->reg.u8;
             break;
 
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            child->computedValue->reg.u64 = child->computedValue->reg.u16;
-            child->computedValue->reg.u16 = ~child->computedValue->reg.u16;
+            child->computedValue()->reg.u64 = child->computedValue()->reg.u16;
+            child->computedValue()->reg.u16 = ~child->computedValue()->reg.u16;
             break;
 
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-            child->computedValue->reg.u64 = child->computedValue->reg.u32;
-            child->computedValue->reg.u32 = ~child->computedValue->reg.u32;
+            child->computedValue()->reg.u64 = child->computedValue()->reg.u32;
+            child->computedValue()->reg.u32 = ~child->computedValue()->reg.u32;
             break;
 
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            child->computedValue->reg.u64 = ~child->computedValue->reg.u64;
+            child->computedValue()->reg.u64 = ~child->computedValue()->reg.u64;
             break;
 
         default:

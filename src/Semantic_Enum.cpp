@@ -291,9 +291,9 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue, assignNode->typeInfo, assignNode));
-            enumNode->computedValue->storageOffset  = storageOffset;
-            enumNode->computedValue->storageSegment = storageSegment;
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageSegment, storageOffset, assignNode->computedValue(), assignNode->typeInfo, assignNode));
+            enumNode->computedValue()->storageOffset  = storageOffset;
+            enumNode->computedValue()->storageSegment = storageSegment;
         }
         else if (rawTypeInfo->isSlice())
         {
@@ -304,14 +304,14 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
             SWAG_CHECK(collectConstantSlice(context, assignNode, assignType, storageSegment, storageOffset));
-            enumNode->computedValue->storageOffset  = storageOffset;
-            enumNode->computedValue->storageSegment = storageSegment;
+            enumNode->computedValue()->storageOffset  = storageOffset;
+            enumNode->computedValue()->storageSegment = storageSegment;
         }
         else
         {
             SWAG_CHECK(checkIsConstExpr(context, assignNode->hasComputedValue(), assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
-            enumNode->computedValue = assignNode->computedValue;
+            enumNode->extSemantic()->computedValue = assignNode->computedValue();
         }
     }
     else
@@ -363,73 +363,73 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
             switch (rawType->nativeType)
             {
             case NativeTypeKind::U8:
-                if (enumNode->computedValue->reg.u8 == UINT8_MAX)
+                if (enumNode->computedValue()->reg.u8 == UINT8_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue->reg.u8)
+                if (isFlags && enumNode->computedValue()->reg.u8)
                 {
-                    const auto n = enumNode->computedValue->reg.u8;
+                    const auto n = enumNode->computedValue()->reg.u8;
                     SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue->reg.u8 <<= 1;
+                    enumNode->computedValue()->reg.u8 <<= 1;
                 }
                 else
-                    enumNode->computedValue->reg.u8++;
+                    enumNode->computedValue()->reg.u8++;
                 break;
             case NativeTypeKind::U16:
-                if (enumNode->computedValue->reg.u16 == UINT16_MAX)
+                if (enumNode->computedValue()->reg.u16 == UINT16_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue->reg.u16)
+                if (isFlags && enumNode->computedValue()->reg.u16)
                 {
-                    const auto n = enumNode->computedValue->reg.u16;
+                    const auto n = enumNode->computedValue()->reg.u16;
                     SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue->reg.u16 <<= 1;
+                    enumNode->computedValue()->reg.u16 <<= 1;
                 }
                 else
-                    enumNode->computedValue->reg.u16++;
+                    enumNode->computedValue()->reg.u16++;
                 break;
             case NativeTypeKind::U32:
-                if (enumNode->computedValue->reg.u32 == UINT32_MAX)
+                if (enumNode->computedValue()->reg.u32 == UINT32_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue->reg.u32)
+                if (isFlags && enumNode->computedValue()->reg.u32)
                 {
-                    const auto n = enumNode->computedValue->reg.u32;
+                    const auto n = enumNode->computedValue()->reg.u32;
                     SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue->reg.u32 <<= 1;
+                    enumNode->computedValue()->reg.u32 <<= 1;
                 }
                 else
-                    enumNode->computedValue->reg.u32++;
+                    enumNode->computedValue()->reg.u32++;
                 break;
             case NativeTypeKind::U64:
-                if (enumNode->computedValue->reg.u64 == UINT64_MAX)
+                if (enumNode->computedValue()->reg.u64 == UINT64_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue->reg.u64)
+                if (isFlags && enumNode->computedValue()->reg.u64)
                 {
-                    const auto n = enumNode->computedValue->reg.u64;
+                    const auto n = enumNode->computedValue()->reg.u64;
                     SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue->reg.u64 <<= 1;
+                    enumNode->computedValue()->reg.u64 <<= 1;
                 }
                 else
-                    enumNode->computedValue->reg.u64++;
+                    enumNode->computedValue()->reg.u64++;
                 break;
 
             case NativeTypeKind::S8:
-                if (enumNode->computedValue->reg.s8 <= INT8_MIN || enumNode->computedValue->reg.s8 >= INT8_MAX)
+                if (enumNode->computedValue()->reg.s8 <= INT8_MIN || enumNode->computedValue()->reg.s8 >= INT8_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue->reg.s8++;
+                enumNode->computedValue()->reg.s8++;
                 break;
             case NativeTypeKind::S16:
-                if (enumNode->computedValue->reg.s16 <= INT16_MIN || enumNode->computedValue->reg.s16 >= INT16_MAX)
+                if (enumNode->computedValue()->reg.s16 <= INT16_MIN || enumNode->computedValue()->reg.s16 >= INT16_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue->reg.s16++;
+                enumNode->computedValue()->reg.s16++;
                 break;
             case NativeTypeKind::S32:
-                if (enumNode->computedValue->reg.s32 <= INT32_MIN || enumNode->computedValue->reg.s32 >= INT32_MAX)
+                if (enumNode->computedValue()->reg.s32 <= INT32_MIN || enumNode->computedValue()->reg.s32 >= INT32_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue->reg.s32++;
+                enumNode->computedValue()->reg.s32++;
                 break;
             case NativeTypeKind::S64:
-                if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
+                if (enumNode->computedValue()->reg.s64 <= INT64_MIN || enumNode->computedValue()->reg.s64 >= INT64_MAX)
                     return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue->reg.s64++;
+                enumNode->computedValue()->reg.s64++;
                 break;
             default:
                 break;
@@ -444,7 +444,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
     toAdd.node                      = valNode;
     toAdd.typeInfo                  = valNode->typeInfo;
     toAdd.kind                      = SymbolKind::EnumValue;
-    toAdd.computedValue             = enumNode->computedValue;
+    toAdd.computedValue             = enumNode->computedValue();
     toAdd.storageOffset             = storageOffset;
     toAdd.storageSegment            = storageSegment;
     valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd);
@@ -456,7 +456,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
     typeParam->name     = valNode->token.text;
     typeParam->typeInfo = rawTypeInfo;
     typeParam->allocateComputedValue();
-    *typeParam->value   = *enumNode->computedValue;
+    *typeParam->value   = *enumNode->computedValue();
     typeParam->index    = typeEnum->values.size();
     typeParam->declNode = valNode;
     SWAG_CHECK(collectAttributes(context, valNode, &typeParam->attributes));

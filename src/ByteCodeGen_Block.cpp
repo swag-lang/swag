@@ -34,8 +34,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     if (CallConv::returnByStackAddress(typeInfoFunc))
     {
         auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
-        inst->b.u64 = node->computedValue->storageOffset;
-        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue->storageOffset);
+        inst->b.u64 = node->computedValue()->storageOffset;
+        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue()->storageOffset);
     }
 
     AstNode* allParams        = nullptr;
@@ -460,7 +460,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             if (loopNode->expression->hasComputedValue())
             {
                 const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
-                inst->b.u64     = loopNode->expression->computedValue->reg.u64;
+                inst->b.u64     = loopNode->expression->computedValue()->reg.u64;
             }
             else
             {
@@ -489,7 +489,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         const auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRc);
         if (loopNode->expression->hasComputedValue())
         {
-            inst->c.u64 = loopNode->expression->computedValue->reg.u64;
+            inst->c.u64 = loopNode->expression->computedValue()->reg.u64;
             inst->addFlag(BCI_IMM_C);
         }
 
@@ -500,16 +500,16 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     const auto rangeNode = castAst<AstRange>(loopNode->expression, AstNodeKind::Range);
     if (rangeNode->expressionLow->hasComputedValue() && rangeNode->expressionUp->hasComputedValue())
     {
-        if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue->reg.s64 > rangeNode->expressionUp->computedValue->reg.s64)
+        if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue()->reg.s64 > rangeNode->expressionUp->computedValue()->reg.s64)
         {
-            Diagnostic err{rangeNode->expressionLow, FMT(Err(Err0363), rangeNode->expressionLow->computedValue->reg.s64, rangeNode->expressionUp->computedValue->reg.s64)};
+            Diagnostic err{rangeNode->expressionLow, FMT(Err(Err0363), rangeNode->expressionLow->computedValue()->reg.s64, rangeNode->expressionUp->computedValue()->reg.s64)};
             err.addNote(rangeNode->expressionUp, Nte(Nte0172));
             return context->report(err);
         }
 
-        if (rangeNode->expressionLow->typeInfo->isNativeIntegerUnsigned() && rangeNode->expressionLow->computedValue->reg.u64 > rangeNode->expressionUp->computedValue->reg.u64)
+        if (rangeNode->expressionLow->typeInfo->isNativeIntegerUnsigned() && rangeNode->expressionLow->computedValue()->reg.u64 > rangeNode->expressionUp->computedValue()->reg.u64)
         {
-            Diagnostic err{rangeNode->expressionLow, FMT(Err(Err0362), rangeNode->expressionLow->computedValue->reg.u64, rangeNode->expressionUp->computedValue->reg.u64)};
+            Diagnostic err{rangeNode->expressionLow, FMT(Err(Err0362), rangeNode->expressionLow->computedValue()->reg.u64, rangeNode->expressionUp->computedValue()->reg.u64)};
             err.addNote(rangeNode->expressionUp, Nte(Nte0172));
             return context->report(err);
         }
@@ -517,7 +517,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
         {
             auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
-            inst->b.u64 = rangeNode->expressionUp->computedValue->reg.u64 + 1;
+            inst->b.u64 = rangeNode->expressionUp->computedValue()->reg.u64 + 1;
             if (rangeNode->hasSpecFlag(AstRange::SPEC_FLAG_EXCLUDE_UP))
                 inst->b.u64--;
 
@@ -528,13 +528,13 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             loopNode->seekJumpExpression = context->bc->numInstructions;
 
             inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-            inst->c.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
+            inst->c.u64 = rangeNode->expressionLow->computedValue()->reg.u64 - 1;
             inst->addFlag(BCI_IMM_C);
             return true;
         }
 
         auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
-        inst->b.u64 = rangeNode->expressionLow->computedValue->reg.u64 - 1;
+        inst->b.u64 = rangeNode->expressionLow->computedValue()->reg.u64 - 1;
 
         loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
         loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
@@ -543,7 +543,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         loopNode->seekJumpExpression = context->bc->numInstructions;
 
         inst        = EMIT_INST1(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex);
-        inst->c.u64 = rangeNode->expressionUp->computedValue->reg.u64;
+        inst->c.u64 = rangeNode->expressionUp->computedValue()->reg.u64;
         if (!rangeNode->hasSpecFlag(AstRange::SPEC_FLAG_EXCLUDE_UP))
             inst->c.u64++;
         inst->addFlag(BCI_IMM_C);
