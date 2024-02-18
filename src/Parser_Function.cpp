@@ -1065,10 +1065,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         else
         {
             {
-                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []
-                {
-                    return Nte(Nte0011);
-                });
+                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return Nte(Nte0011); });
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
             }
 

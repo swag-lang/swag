@@ -163,10 +163,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(err, note, note1);
     }
 
-    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
-    {
-        return getSpecialOpSignature(node);
-    });
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node] { return getSpecialOpSignature(node); });
 
     const auto parameters = node->parameters;
     TypeInfo*  typeStruct = nullptr;

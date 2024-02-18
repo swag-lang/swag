@@ -304,17 +304,11 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     uint64_t maxBound = 0;
 
     {
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
-        {
-            return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC());
-        });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node] { return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC()); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->lowerBound, CAST_FLAG_TRY_COERCE));
     }
     {
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
-        {
-            return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC());
-        });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node] { return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC()); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->upperBound, CAST_FLAG_TRY_COERCE));
     }
 
