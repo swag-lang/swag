@@ -45,7 +45,7 @@ struct VectorNative
     {
         if (!buffer)
             return;
-        Allocator::free(buffer, Allocator::alignSize(allocated * sizeof(T)));
+        Allocator::free_n_aligned(buffer, allocated);
         buffer    = nullptr;
         count     = 0;
         allocated = 0;
@@ -57,15 +57,13 @@ struct VectorNative
             return;
 
         const auto oldAllocated = allocated;
-        allocated *= 2;
-        allocated = max(allocated, 4);
-        allocated = max(allocated, newCapacity);
-        T* newPtr = static_cast<T*>(Allocator::alloc(Allocator::alignSize(allocated * sizeof(T))));
-        SWAG_ASSERT(newPtr);
+        allocated               = max(allocated*2, 4);
+        allocated               = max(allocated, newCapacity);
+        auto newPtr             = Allocator::alloc_n_aligned<T>(allocated);
         if (copy && count)
             std::copy_n(buffer, count, newPtr);
         if (buffer)
-            Allocator::free(buffer, Allocator::alignSize(oldAllocated * sizeof(T)));
+            Allocator::free_n_aligned(buffer, oldAllocated);
         buffer = newPtr;
     }
 

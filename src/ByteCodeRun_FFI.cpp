@@ -37,7 +37,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         g_ModuleMgr->resetFailedModule(moduleName);
         if (!g_ModuleMgr->loadModule(moduleName))
         {
-            // Not sure why. Probably an hidden bug somewhere.
+            // Not sure why. Probably an hidden problem somewhere.
             // Give this other tries.
             bool lastChance = false;
             for (int i = 0; i < 10; i++)

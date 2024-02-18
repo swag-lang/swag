@@ -2846,7 +2846,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         if (!count)
             break;
         auto size                      = Allocator::alignSize(count + 1);
-        registersRC[ip->a.u32].pointer = static_cast<uint8_t*>(Allocator::alloc(size));
+        registersRC[ip->a.u32].pointer = Allocator::alloc_n<uint8_t>(size);
         context->bc->autoFree.push_back({static_cast<void*>(registersRC[ip->a.u32].pointer), size});
         memcpy(registersRC[ip->a.u32].pointer, ptr, count + 1);
         registersRC[ip->a.u32].pointer[count] = 0;

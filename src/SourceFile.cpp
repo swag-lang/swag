@@ -89,8 +89,8 @@ bool SourceFile::load()
     (void) fseek(handle, 0, SEEK_SET);
 
     // Read content
-    allocBufferSize = static_cast<unsigned>(Allocator::alignSize(bufferSize + 4));
-    buffer          = static_cast<char*>(Allocator::alloc(allocBufferSize));
+    allocBufferSize = Allocator::alignSize(bufferSize + 4);
+    buffer          = Allocator::alloc_n<char>(allocBufferSize);
 
 #ifdef SWAG_STATS
     g_Stats.memFileBuffer += allocBufferSize;

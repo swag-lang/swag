@@ -148,8 +148,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         Bucket bucket;
         bucket.size = max(size, granularity);
         granularity *= 2;
-        bucket.size   = static_cast<uint32_t>(Allocator::alignSize(bucket.size));
-        bucket.buffer = static_cast<uint8_t*>(Allocator::alloc(bucket.size));
+        bucket.size   = Allocator::alignSize(bucket.size);
+        bucket.buffer = Allocator::alloc_n<uint8_t>(bucket.size);
 #ifdef SWAG_STATS
         g_Stats.memSeg += bucket.size;
 #endif
@@ -568,7 +568,7 @@ void DataSegment::restoreAllValues()
             break;
         default:
             std::copy_n(one.second.value.pointer, one.second.size, one.first);
-            Allocator::free_n(one.second.value.pointer, one.second.size);
+            Allocator::free(one.second.value.pointer, one.second.size);
             break;
         }
     }
@@ -580,7 +580,7 @@ void DataSegment::release()
 {
     deleted = true;
     for (const auto& b : buckets)
-        Allocator::free_n(b.buffer, b.size);
+        Allocator::free(b.buffer, b.size);
     buckets.clear();
 }
 
@@ -600,7 +600,7 @@ void DataSegment::makeLinear()
     {
         std::copy_n(b.buffer, b.count, ptr);
         ptr += b.count;
-        Allocator::free_n<uint8_t>(b.buffer, b.count);
+        Allocator::free(b.buffer, b.count);
     }
 
     buckets.clear();

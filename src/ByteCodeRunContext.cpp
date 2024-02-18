@@ -47,7 +47,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodeBC)
         }
         else
         {
-            stack = static_cast<uint8_t*>(Allocator::alloc(g_CommandLine.limitStackBC));
+            stack = Allocator::alloc_n<uint8_t>(g_CommandLine.limitStackBC);
 #ifdef SWAG_STATS
             g_Stats.memBcStack += g_CommandLine.limitStackBC;
 #endif
