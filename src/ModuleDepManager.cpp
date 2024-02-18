@@ -185,7 +185,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     {
         const auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);
         if (numRead)
-            fwrite(buffer, 1, numRead, fdest);
+            (void) fwrite(buffer, 1, numRead, fdest);
         if (numRead != sizeof(buffer))
             break;
     }
@@ -321,9 +321,9 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
         {
         // If the dependency requests a bigger version, then we will have to fetch the dependency configuration from the
         // remote path.
-        case CompareVersionResult::VERSION_GREATER:
-        case CompareVersionResult::REVISION_GREATER:
-        case CompareVersionResult::BUILDNUM_GREATER:
+        case CompareVersionResult::VersionGreater:
+        case CompareVersionResult::RevisionGreater:
+        case CompareVersionResult::BuildNumGreater:
             if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
             {
                 cfgModule->mustFetchDep = true;
@@ -335,7 +335,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
         // If the dependency does not specify something, that means that we don't know if we are up to date.
         // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
         // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
-        case CompareVersionResult::EQUAL:
+        case CompareVersionResult::Equal:
             if (g_CommandLine.computeDep)
             {
                 if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
@@ -358,8 +358,8 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
         const auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->fetchDep->verNum, cfgModule->fetchDep->revNum, cfgModule->fetchDep->buildNum);
         switch (cmp)
         {
-        case CompareVersionResult::VERSION_GREATER:
-        case CompareVersionResult::VERSION_LOWER:
+        case CompareVersionResult::VersionGreater:
+        case CompareVersionResult::VersionLower:
         {
             const Diagnostic err{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
             const auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
@@ -367,8 +367,8 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             return false;
         }
 
-        case CompareVersionResult::REVISION_GREATER:
-        case CompareVersionResult::BUILDNUM_GREATER:
+        case CompareVersionResult::RevisionGreater:
+        case CompareVersionResult::BuildNumGreater:
             cfgModule->fetchDep = dep;
             if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
             {
@@ -377,7 +377,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             }
             break;
 
-        case CompareVersionResult::EQUAL:
+        case CompareVersionResult::Equal:
             // If version is more specific, then take it
             if ((cfgModule->fetchDep->verNum == UINT32_MAX && dep->verNum != UINT32_MAX) ||
                 (cfgModule->fetchDep->revNum == UINT32_MAX && dep->revNum != UINT32_MAX) ||
@@ -400,21 +400,21 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
 CompareVersionResult ModuleDepManager::compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum)
 {
     if (depVer != UINT32_MAX && modVer != UINT32_MAX && depVer > modVer)
-        return CompareVersionResult::VERSION_GREATER;
+        return CompareVersionResult::VersionGreater;
     if (depVer != UINT32_MAX && modVer != UINT32_MAX && depVer < modVer)
-        return CompareVersionResult::VERSION_LOWER;
+        return CompareVersionResult::VersionLower;
 
     if (depRev != UINT32_MAX && modRev != UINT32_MAX && depRev < modRev)
-        return CompareVersionResult::REVISION_LOWER;
+        return CompareVersionResult::RevisionLower;
     if (depRev != UINT32_MAX && modRev != UINT32_MAX && depRev > modRev)
-        return CompareVersionResult::REVISION_GREATER;
+        return CompareVersionResult::RevisionGreater;
 
     if (devBuildNum != UINT32_MAX && modBuildNum != UINT32_MAX && devBuildNum > modBuildNum)
-        return CompareVersionResult::BUILDNUM_GREATER;
+        return CompareVersionResult::BuildNumGreater;
     if (devBuildNum != UINT32_MAX && modBuildNum != UINT32_MAX && devBuildNum < modBuildNum)
-        return CompareVersionResult::BUILDNUM_LOWER;
+        return CompareVersionResult::BuildNumLower;
 
-    return CompareVersionResult::EQUAL;
+    return CompareVersionResult::Equal;
 }
 
 bool ModuleDepManager::execute()
@@ -568,7 +568,7 @@ bool ModuleDepManager::execute()
 
         // Verify that all fetch dep match with the corresponding module
         auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
-        if (cmp != CompareVersionResult::EQUAL)
+        if (cmp != CompareVersionResult::Equal)
         {
             if (dep->resolvedLocation.empty())
             {
@@ -589,7 +589,7 @@ bool ModuleDepManager::execute()
         {
             cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion,
                                   module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
-            if (cmp != CompareVersionResult::EQUAL)
+            if (cmp != CompareVersionResult::Equal)
                 module->mustFetchDep = true;
             else if (g_CommandLine.getDepCmd && g_CommandLine.getDepForce)
                 module->mustFetchDep = true;

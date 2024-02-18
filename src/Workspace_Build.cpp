@@ -168,13 +168,13 @@ void Workspace::addRuntime()
     runtimeModule->setup("runtime", "");
     modules.push_back(runtimeModule);
 
-    addRuntimeFile("runtime.swg");
-    addRuntimeFile("runtime_err.swg");
-    addRuntimeFile("runtime_str.swg");
-    addRuntimeFile("runtime_windows.swg");
-    addRuntimeFile("systemallocator.swg");
-    addRuntimeFile("scratchallocator.swg");
-    addRuntimeFile("debugallocator.swg");
+    addRuntimeFile(R"(runtime.swg)");
+    addRuntimeFile(R"(runtime_err.swg)");
+    addRuntimeFile(R"(runtime_str.swg)");
+    addRuntimeFile(R"(runtime_windows.swg)");
+    addRuntimeFile(R"(systemallocator.swg)");
+    addRuntimeFile(R"(scratchallocator.swg)");
+    addRuntimeFile(R"(debugallocator.swg)");
 }
 
 Utf8 Workspace::getTargetFullName(const Utf8& buildCfg, const BackendTarget& target)
@@ -182,7 +182,7 @@ Utf8 Workspace::getTargetFullName(const Utf8& buildCfg, const BackendTarget& tar
     return buildCfg + "-" + Backend::getOsName(target) + "-" + Backend::getArchName(target);
 }
 
-Path Workspace::getTargetPath(const Utf8& buildCfg, const BackendTarget& target) const
+Path Workspace::getTargetPath() const
 {
     Path p = workspacePath;
     p.append(SWAG_OUTPUT_FOLDER);
@@ -193,7 +193,7 @@ Path Workspace::getTargetPath(const Utf8& buildCfg, const BackendTarget& target)
 void Workspace::setupTarget()
 {
     // Target directory
-    targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
+    targetPath = getTargetPath();
     if (g_CommandLine.verbosePath)
         g_Log.messageVerbose(FMT("target path is [[%s]]", targetPath.string().c_str()));
 
@@ -835,11 +835,9 @@ bool Workspace::build()
         else if (g_Workspace->numErrors.load())
             g_Log.messageHeaderCentered("Done", FMT("%d errors", g_Workspace->numErrors.load()), LogColor::Green, LogColor::Red);
         else if (g_Workspace->numWarnings.load() == 1)
-            g_Log.messageHeaderCentered("Done", FMT("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
-                                        LogColor::Magenta);
+            g_Log.messageHeaderCentered("Done", FMT("%.3fs (%d warning)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
         else if (g_Workspace->numWarnings.load())
-            g_Log.messageHeaderCentered("Done", FMT("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green,
-                                        LogColor::Magenta);
+            g_Log.messageHeaderCentered("Done", FMT("%.3fs (%d warnings)", OS::timerToSeconds(g_Workspace->totalTime.load()), g_Workspace->numWarnings.load()), LogColor::Green, LogColor::Magenta);
         else
             g_Log.messageHeaderCentered("Done", FMT("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
     }

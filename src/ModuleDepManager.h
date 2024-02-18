@@ -7,13 +7,13 @@ struct Utf8;
 
 enum class CompareVersionResult
 {
-    VERSION_LOWER,
-    VERSION_GREATER,
-    REVISION_LOWER,
-    REVISION_GREATER,
-    BUILDNUM_LOWER,
-    BUILDNUM_GREATER,
-    EQUAL,
+    VersionLower,
+    VersionGreater,
+    RevisionLower,
+    RevisionGreater,
+    BuildNumLower,
+    BuildNumGreater,
+    Equal,
 };
 
 struct ModuleDepManager

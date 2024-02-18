@@ -531,7 +531,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
     while (bucket != pp.concat.lastBucket->nextBucket)
     {
         const auto count = pp.concat.bucketCount(bucket);
-        fwrite(bucket->data, count, 1, f);
+        (void) fwrite(bucket->data, count, 1, f);
         SWAG_IF_ASSERT(totalCount += count);
         bucket = bucket->nextBucket;
     }
@@ -545,7 +545,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
     {
         SWAG_IF_ASSERT(totalCount += oneB.count);
         SWAG_IF_ASSERT(subTotal += oneB.count);
-        fwrite(oneB.buffer, oneB.count, 1, f);
+        (void) fwrite(oneB.buffer, oneB.count, 1, f);
     }
     SWAG_ASSERT(subTotal == pp.stringSegment.totalCount);
 
@@ -558,7 +558,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
-            fwrite(oneB.buffer, oneB.count, 1, f);
+            (void) fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchGSCount || *pp.patchGSCount == 0);
         SWAG_ASSERT(subTotal == pp.globalSegment.totalCount);
@@ -570,7 +570,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
-            fwrite(oneB.buffer, oneB.count, 1, f);
+            (void) fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchCSCount || *pp.patchCSCount == 0);
         SWAG_ASSERT(subTotal == module->constantSegment.totalCount);
@@ -582,7 +582,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
-            fwrite(oneB.buffer, oneB.count, 1, f);
+            (void) fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchMSCount || *pp.patchMSCount == 0);
         SWAG_ASSERT(subTotal == module->mutableSegment.totalCount);
@@ -594,7 +594,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
-            fwrite(oneB.buffer, oneB.count, 1, f);
+            (void) fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchTLSCount || *pp.patchTLSCount == 0);
         SWAG_ASSERT(subTotal == module->tlsSegment.totalCount);
@@ -604,7 +604,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         while (bucket != pp.postConcat.lastBucket->nextBucket)
         {
             const auto count = pp.postConcat.bucketCount(bucket);
-            fwrite(bucket->data, count, 1, f);
+            (void) fwrite(bucket->data, count, 1, f);
             bucket = bucket->nextBucket;
         }
     }
