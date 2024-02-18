@@ -204,7 +204,7 @@ void Stats::print() const
             !m->tlsSegment.totalCount)
             continue;
 
-        g_Log.messageHeaderDot(FMT("%s", m->name.c_str()), "");
+        g_Log.messageHeaderDot(FMT("%s", m->name.c_str()), "", LogColor::Header);
 
         Utf8 mdlStr;
         g_Log.print("func total: ", LogColor::Header);

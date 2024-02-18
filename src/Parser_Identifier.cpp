@@ -30,7 +30,9 @@ bool Parser::testIsValidUserName(const AstNode* node) const
         return true;
 
     // An identifier that starts with '__' is reserved for internal usage !
-    if (!sourceFile->hasFlag(FILE_IS_GENERATED) && !sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) && !sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (!sourceFile->hasFlag(FILE_IS_GENERATED) &&
+        !sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) &&
+        !sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
             return false;
@@ -100,7 +102,6 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
             if (token.id != TokenId::LiteralNumber)
                 return error(token, FMT(Err(Err0145), token.c_str()));
-
             if (token.literalType != LiteralType::TypeUntypedInt && token.literalType != LiteralType::TypeUnsigned8)
                 return error(token, FMT(Err(Err0147), token.c_str()));
             if (token.literalValue.u64 > 255)
@@ -271,7 +272,6 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
     default:
         if (Tokenizer::isKeyword(token.id))
             return invalidIdentifierError(token);
-
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
         break;
     }
