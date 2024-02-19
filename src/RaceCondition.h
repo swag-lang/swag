@@ -36,5 +36,5 @@ struct RaceCondition
 #define SWAG_RACE_CONDITION_WRITE1(__x) do {} while(0)
 #define SWAG_RACE_CONDITION_READ(__x) do {} while(0)
 #define SWAG_RACE_CONDITION_READ1(__x) do {} while(0)
-#define SWAG_RACE_CONDITION_INSTANCE(__x)
+#define SWAG_RACE_CONDITION_INSTANCE(__x) using __dummy##__x = int
 #endif

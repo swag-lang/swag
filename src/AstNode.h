@@ -503,12 +503,11 @@ struct AstVarDecl : AstNode
     AttributeList attributes;
     Utf8          publicName;
     TokenParse    assignToken;
-
-    AstNode*    type;
-    AstNode*    assignment;
-    AstNode*    typeConstraint;
-    AstAttrUse* attrUse;
-    AstNode*    genTypeComesFrom;
+    AstNode*      type;
+    AstNode*      assignment;
+    AstNode*      typeConstraint;
+    AstAttrUse*   attrUse;
+    AstNode*      genTypeComesFrom;
 };
 
 struct AstIdentifierRef : AstNode
@@ -628,8 +627,7 @@ struct AstAttrUse : AstNode
     AstNode* clone(CloneContext& context);
 
     AttributeList attributes;
-
-    AstNode* content;
+    AstNode*      content;
 };
 
 struct AstFuncCallParams : AstNode
@@ -648,8 +646,7 @@ struct AstFuncCallParam : AstNode
     AstReturn*     autoTupleReturn;
     TypeInfoParam* resolvedParameter;
     AstNode*       specUfcsNode;
-
-    int indexParam = 0;
+    int            indexParam = 0;
 };
 
 struct AstBinaryOpNode : AstNode
@@ -678,20 +675,17 @@ struct AstIf : AstNode
     AstNode*            boolExpression;
     AstCompilerIfBlock* ifBlock;
     AstCompilerIfBlock* elseBlock;
-
-    uint32_t seekJumpExpression;
-    uint32_t seekJumpAfterIf;
+    uint32_t            seekJumpExpression;
+    uint32_t            seekJumpAfterIf;
 };
 
 struct AstBreakContinue : AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    Token label;
-
+    Token          label;
     AstSwitchCase* switchCase;
-
-    int jumpInstruction;
+    int            jumpInstruction;
 };
 
 using BreakableFlags = Flags<uint32_t>;
@@ -709,14 +703,12 @@ struct AstBreakable : AstNode
     VectorNative<AstBreakContinue*> breakList;
     VectorNative<AstBreakContinue*> continueList;
     VectorNative<AstBreakContinue*> fallThroughList;
-
-    uint32_t       registerIndex;
-    BreakableFlags breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
-
-    uint32_t seekJumpBeforeContinue;
-    uint32_t seekJumpBeforeExpression;
-    uint32_t seekJumpExpression;
-    uint32_t seekJumpAfterBlock;
+    BreakableFlags                  breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
+    uint32_t                        registerIndex;
+    uint32_t                        seekJumpBeforeContinue;
+    uint32_t                        seekJumpBeforeExpression;
+    uint32_t                        seekJumpExpression;
+    uint32_t                        seekJumpAfterBlock;
 };
 
 struct AstScopeBreakable : AstBreakable
@@ -744,7 +736,6 @@ struct AstFor : AstBreakable
     AstNode* boolExpression;
     AstNode* postExpression;
     AstNode* block;
-
     uint32_t seekJumpToExpression = 0;
 };
 
@@ -770,9 +761,8 @@ struct AstVisit : AstNode
     Vector<Token> aliasNames;
     Token         extraNameToken;
     Token         wantPointerToken;
-
-    AstNode* expression;
-    AstNode* block;
+    AstNode*      expression;
+    AstNode*      block;
 };
 
 struct AstSwitch : AstBreakable
@@ -781,8 +771,7 @@ struct AstSwitch : AstBreakable
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstSwitchCase*> cases;
-
-    AstNode* expression;
+    AstNode*                     expression;
 };
 
 struct AstSwitchCase : AstNode
@@ -794,11 +783,9 @@ struct AstSwitchCase : AstNode
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstNode*> expressions;
-
-    AstNode*   block;
-    AstSwitch* ownerSwitch;
-
-    int caseIndex = 0;
+    AstNode*               block;
+    AstSwitch*             ownerSwitch;
+    int                    caseIndex;
 };
 
 struct AstSwitchCaseBlock : AstNode
@@ -807,9 +794,8 @@ struct AstSwitchCaseBlock : AstNode
     AstNode* clone(CloneContext& context);
 
     AstSwitchCase* ownerCase;
-
-    uint32_t seekStart;
-    uint32_t seekJumpNextCase;
+    uint32_t       seekStart;
+    uint32_t       seekJumpNextCase;
 };
 
 struct AstType : AstNode
@@ -842,12 +828,11 @@ struct AstTypeExpression : AstType
     AstNode* clone(CloneContext& context);
 
     SourceLocation locConst;
+    AstNode*       identifier;
+    TypeInfo*      typeFromLiteral;
 
-    AstNode*  identifier;
-    TypeInfo* typeFromLiteral;
-
-    LiteralType literalType;
     TypeFlags   typeFlags;
+    LiteralType literalType;
     uint8_t     arrayDim;
 };
 
@@ -869,9 +854,8 @@ struct AstArrayPointerIndex : AstNode
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstNode*> structFlatParams;
-
-    AstNode* array;
-    AstNode* access;
+    AstNode*               array;
+    AstNode*               access;
 };
 
 struct AstArrayPointerSlicing : AstNode
@@ -912,15 +896,13 @@ struct AstStruct : AstNode
 
     DependentJobs dependentJobs;
     Token         tokenName;
-
-    AstNode* genericParameters;
-    AstNode* content;
-    Scope*   scope;
-    AstNode* originalGeneric;
-    AstNode* originalParent;
-    AstNode* validif;
-
-    uint32_t packing = sizeof(uint64_t);
+    AstNode*      genericParameters;
+    AstNode*      content;
+    Scope*        scope;
+    AstNode*      originalGeneric;
+    AstNode*      originalParent;
+    AstNode*      validif;
+    uint32_t      packing = sizeof(uint64_t);
 };
 
 struct AstEnum : AstNode
@@ -975,10 +957,8 @@ struct AstReturn : AstNode
     AstNode* clone(CloneContext& context);
 
     VectorNative<SymbolOverload*> forceNoDrop;
-
-    AstFuncDecl* resolvedFuncDecl;
-
-    uint32_t seekJump;
+    AstFuncDecl*                  resolvedFuncDecl;
+    uint32_t                      seekJump;
 };
 
 struct AstCompilerMacro : AstNode
@@ -1002,25 +982,15 @@ struct AstInline : AstNode
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstReturn*> returnList;
-
-    AstFuncDecl* func;
-    Scope*       scope;
-    Scope*       parametersScope;
+    AstFuncDecl*             func;
+    Scope*                   scope;
+    Scope*                   parametersScope;
 };
 
 struct AstCompilerIfBlock : AstNode
 {
     AstNode* clone(CloneContext& context);
-
-    void addSymbol(AstNode* node, SymbolName* symbolName)
-    {
-        ScopedLock lk(mutex);
-        symbols.push_back({node, symbolName});
-    }
-
-    VectorNative<AstCompilerIfBlock*>         blocks;
-    VectorNative<pair<AstNode*, SymbolName*>> symbols;
-    VectorNative<TypeInfoStruct*>             interfacesCount;
+    void     addSymbol(AstNode* node, SymbolName* symbolName);
 
     struct MethodCount
     {
@@ -1029,10 +999,13 @@ struct AstCompilerIfBlock : AstNode
         int             methodIdx;
     };
 
-    VectorNative<MethodCount> methodsCount;
-    VectorNative<AstNode*>    subDecl;
-    VectorNative<AstNode*>    imports;
-    VectorNative<AstNode*>    includes;
+    VectorNative<AstCompilerIfBlock*>         blocks;
+    VectorNative<pair<AstNode*, SymbolName*>> symbols;
+    VectorNative<TypeInfoStruct*>             interfacesCount;
+    VectorNative<MethodCount>                 methodsCount;
+    VectorNative<AstNode*>                    subDecl;
+    VectorNative<AstNode*>                    imports;
+    VectorNative<AstNode*>                    includes;
 };
 
 struct AstCompilerSpecFunc : AstNode
@@ -1056,8 +1029,7 @@ struct AstTryCatchAssume : AstReturn
     AstNode* clone(CloneContext& context);
 
     RegisterList regInit;
-
-    uint32_t seekInsideJump;
+    uint32_t     seekInsideJump;
 };
 
 struct AstAlias : AstNode
@@ -1112,6 +1084,7 @@ struct AstMakePointer : AstNode
 struct AstRefSubDecl : AstNode
 {
     AstNode* clone(CloneContext& context);
+
     AstNode* refSubDecl;
 };
 
@@ -1142,7 +1115,6 @@ struct AstLiteral : AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    Register literalValue;
-
+    Register    literalValue;
     LiteralType literalType;
 };

@@ -1134,6 +1134,12 @@ AstNode* AstInline::clone(CloneContext& context)
     return newNode;
 }
 
+void AstCompilerIfBlock::addSymbol(AstNode* node, SymbolName* symbolName)
+{
+    ScopedLock lk(mutex);
+    symbols.push_back({node, symbolName});
+}
+
 AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstCompilerIfBlock>();
