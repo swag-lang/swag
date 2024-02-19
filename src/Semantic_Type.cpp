@@ -18,7 +18,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     // This has no sens to do a switch on an 'any'. So instead of raising an error,
     // we imply the usage of '@kindof'. That way we have a switch on the underlying type.
     const auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
-    if (typeInfo->isAny() && node->hasComputedValue())
+    if (typeInfo->isAny() && node->hasFlagComputedValue())
     {
         const auto any                       = static_cast<SwagAny*>(node->computedValue()->getStorageAddr());
         node->computedValue()->storageOffset = node->computedValue()->storageSegment->offset(reinterpret_cast<uint8_t*>(any->type));
@@ -112,7 +112,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
     if (node->hasAstFlag(AST_R_VALUE))
         return true;
-    if (node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE))
+    if (node->hasFlagComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE))
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
@@ -310,7 +310,7 @@ bool Semantic::resolveType(SemanticContext* context)
             const auto child = typeNode->children[i];
             SWAG_CHECK(evaluateConstExpression(context, child));
             YIELD();
-            if (child->hasComputedValue())
+            if (child->hasFlagComputedValue())
                 child->addAstFlag(AST_NO_BYTECODE);
         }
     }
@@ -531,7 +531,7 @@ bool Semantic::resolveType(SemanticContext* context)
             {
                 genericCount = true;
             }
-            else if (!child->hasComputedValue() &&
+            else if (!child->hasFlagComputedValue() &&
                      child->resolvedSymbolOverload &&
                      child->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
             {
@@ -539,7 +539,7 @@ bool Semantic::resolveType(SemanticContext* context)
             }
             else
             {
-                SWAG_CHECK(checkIsConstExpr(context, child->hasComputedValue(), child, Err(Err0036)));
+                SWAG_CHECK(checkIsConstExpr(context, child->hasFlagComputedValue(), child, Err(Err0036)));
                 count = child->computedValue()->reg.u32;
             }
 
@@ -681,7 +681,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
 
-    if (node->hasComputedValue() && node->typeInfo->isNative())
+    if (node->hasFlagComputedValue() && node->typeInfo->isNative())
     {
         switch (node->typeInfo->nativeType)
         {

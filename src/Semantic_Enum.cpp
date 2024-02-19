@@ -287,7 +287,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         {
             SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
-            SWAG_ASSERT(!assignNode->hasComputedValue());
+            SWAG_ASSERT(!assignNode->hasFlagComputedValue());
 
             assignNode->setFlagsValueIsComputed();
             storageSegment = getConstantSegFromContext(assignNode);
@@ -309,7 +309,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         }
         else
         {
-            SWAG_CHECK(checkIsConstExpr(context, assignNode->hasComputedValue(), assignNode));
+            SWAG_CHECK(checkIsConstExpr(context, assignNode->hasFlagComputedValue(), assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CAST_FLAG_CONCRETE_ENUM));
             enumNode->extSemantic()->computedValue = assignNode->computedValue();
         }

@@ -21,7 +21,7 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
 
     // Invert test if lower bound is greater than upper bound
     bool orderIsDefined = false;
-    if (low->hasComputedValue() && up->hasComputedValue())
+    if (low->hasFlagComputedValue() && up->hasFlagComputedValue())
     {
         orderIsDefined = true;
 

@@ -780,7 +780,7 @@ bool Semantic::solveValidIf(SemanticContext* context, const AstStruct* structDec
     // Execute #validif/#validifx block
     const auto expr = structDecl->validif->children.back();
 
-    if (!expr->hasComputedValue())
+    if (!expr->hasFlagComputedValue())
     {
         const auto node            = context->node;
         context->validIfParameters = structDecl->genericParameters;
@@ -964,7 +964,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (varDecl->type && varDecl->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
                 {
                     structFlags.add(TYPEINFO_STRUCT_HAS_INIT_VALUES);
-                    if (!varDecl->type->hasComputedValue())
+                    if (!varDecl->type->hasFlagComputedValue())
                     {
                         auto constSegment = getConstantSegFromContext(varDecl);
                         varDecl->type->setFlagsValueIsComputed();

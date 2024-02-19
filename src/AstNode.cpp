@@ -743,7 +743,7 @@ void AstNode::allocateComputedValue()
 
 void AstNode::releaseComputedValue()
 {
-    if (!hasComputedValue())
+    if (!hasFlagComputedValue())
         return;
     removeAstFlag(AST_COMPUTED_VALUE);
     Allocator::free<ComputedValue>(computedValue());
@@ -763,18 +763,18 @@ void AstNode::inheritComputedValue(const AstNode* from)
     inheritAstFlagsOr(from, AST_COMPUTED_VALUE | AST_VALUE_IS_GEN_TYPEINFO);
     if (hasAstFlag(AST_COMPUTED_VALUE))
     {
-        SWAG_ASSERT(from->computedValue());
+        SWAG_ASSERT(from->hasComputedValue());
         addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
         allocateExtension(ExtensionKind::Semantic);
-        extSemantic()->computedValue = from->extSemantic()->computedValue;
+        extSemantic()->computedValue = from->computedValue();
     }
 }
 
-bool AstNode::hasComputedValue() const
+bool AstNode::hasFlagComputedValue() const
 {
     if (hasAstFlag(AST_COMPUTED_VALUE))
     {
-        SWAG_ASSERT(computedValue());
+        SWAG_ASSERT(hasComputedValue());
         return true;
     }
 
@@ -794,12 +794,12 @@ ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 
 bool AstNode::isConstantTrue() const
 {
-    return hasComputedValue() && computedValue()->reg.b;
+    return hasFlagComputedValue() && computedValue()->reg.b;
 }
 
 bool AstNode::isConstantFalse() const
 {
-    return hasComputedValue() && !computedValue()->reg.b;
+    return hasFlagComputedValue() && !computedValue()->reg.b;
 }
 
 bool AstNode::isGeneratedSelf() const
@@ -1005,7 +1005,7 @@ bool AstNode::isConstant0() const
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
         return false;
-    if (!hasComputedValue())
+    if (!hasFlagComputedValue())
         return false;
 
     switch (typeInfo->sizeOf)
@@ -1030,7 +1030,7 @@ bool AstNode::isConstant1() const
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
         return false;
-    if (!hasComputedValue())
+    if (!hasFlagComputedValue())
         return false;
 
     switch (typeInfo->nativeType)

@@ -590,7 +590,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
     {
         if (node->assignment &&
-            node->assignment->hasComputedValue() &&
+            node->assignment->hasFlagComputedValue() &&
             !node->assignment->typeInfo->isLambdaClosure() &&
             (!node->type || !node->type->typeInfo->isStruct()) &&
             (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
@@ -648,7 +648,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     if (!node->assignment && (!node->type || !concreteNodeType->isStruct()))
     {
         // A constant must be initialized
-        if (isCompilerConstant && !node->hasComputedValue())
+        if (isCompilerConstant && !node->hasFlagComputedValue())
             return context->report({node, Err(Err0562)});
 
         // A constant variable must be initialized
@@ -763,7 +763,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0044)));
         SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
         YIELD();
-        SWAG_ASSERT(node->typeConstraint->hasComputedValue());
+        SWAG_ASSERT(node->typeConstraint->hasFlagComputedValue());
         if (!node->typeConstraint->computedValue()->reg.b)
         {
             Diagnostic err(node->typeConstraint, FMT(Err(Err0088), node->typeInfo->getDisplayNameC()));

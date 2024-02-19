@@ -32,11 +32,11 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 param->typeInfo           = genParam->typeInfo;
                 varDecl->genTypeComesFrom = genParam;
 
-                if (genParam->computedValue())
+                if (genParam->hasComputedValue())
                 {
                     param->allocateComputedValue();
                     *param->value = *genParam->computedValue();
-                    if (genParam->hasComputedValue() && !genParam->isConstantGenTypeInfo())
+                    if (genParam->hasFlagComputedValue() && !genParam->isConstantGenTypeInfo())
                         param->flags |= TYPEINFOPARAM_DEFINED_VALUE;
                 }
             }

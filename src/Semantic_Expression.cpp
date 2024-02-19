@@ -258,7 +258,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
         node->typeInfo = ifTrue->typeInfo;
 
     // Constant expression
-    if (expression->hasComputedValue())
+    if (expression->hasFlagComputedValue())
     {
         node->children.clear();
 
@@ -323,7 +323,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         return context->report(err);
     }
 
-    if (expression->hasComputedValue())
+    if (expression->hasFlagComputedValue())
     {
         bool notNull = true;
         if (typeInfo->isString())

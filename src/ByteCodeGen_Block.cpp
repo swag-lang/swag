@@ -457,7 +457,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     {
         if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
         {
-            if (loopNode->expression->hasComputedValue())
+            if (loopNode->expression->hasFlagComputedValue())
             {
                 const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
                 inst->b.u64     = loopNode->expression->computedValue()->reg.u64;
@@ -487,7 +487,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         loopNode->seekJumpExpression = context->bc->numInstructions;
 
         const auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRc);
-        if (loopNode->expression->hasComputedValue())
+        if (loopNode->expression->hasFlagComputedValue())
         {
             inst->c.u64 = loopNode->expression->computedValue()->reg.u64;
             inst->addFlag(BCI_IMM_C);
@@ -498,7 +498,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
     // Static range
     const auto rangeNode = castAst<AstRange>(loopNode->expression, AstNodeKind::Range);
-    if (rangeNode->expressionLow->hasComputedValue() && rangeNode->expressionUp->hasComputedValue())
+    if (rangeNode->expressionLow->hasFlagComputedValue() && rangeNode->expressionUp->hasFlagComputedValue())
     {
         if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue()->reg.s64 > rangeNode->expressionUp->computedValue()->reg.s64)
         {

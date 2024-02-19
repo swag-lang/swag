@@ -774,7 +774,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
         auto       nameU = node->getScopedName();
         const auto name  = nameU.c_str();
 
-        if (node->hasComputedValue())
+        if (node->hasFlagComputedValue())
         {
             llvm::Constant* constant = nullptr;
             if (typeInfo->isNative())

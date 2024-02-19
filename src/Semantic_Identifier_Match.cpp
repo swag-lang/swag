@@ -44,7 +44,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
                 // Remove assert(true)
                 SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
                 const auto param = identifier->callParameters->children.front();
-                if (param->hasComputedValue() && param->computedValue()->reg.b)
+                if (param->hasFlagComputedValue() && param->computedValue()->reg.b)
                     identifier->addAstFlag(AST_NO_BYTECODE);
             }
             break;
@@ -209,7 +209,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
                 // We need to create a temporary variable to store the value, in order to have an address.
-                if (front->hasComputedValue() || nodeCall->typeInfo->isListArray())
+                if (front->hasFlagComputedValue() || nodeCall->typeInfo->isListArray())
                 {
                     const auto varNode = Ast::newVarDecl(sourceFile, FMT("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
                     varNode->inheritTokenLocation(nodeCall);
@@ -456,7 +456,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 !typeParam->isListArray() &&
                 !typeParam->isAny() &&
                 !typeParam->isClosure() &&
-                funcParam->assignment->hasComputedValue())
+                funcParam->assignment->hasFlagComputedValue())
                 continue;
 
             bool covered = false;
@@ -674,7 +674,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         identifier->addAstFlag(AST_L_VALUE);
 
         // Direct reference to a constexpr typeinfo
-        if (prevNode->hasComputedValue())
+        if (prevNode->hasFlagComputedValue())
         {
             if (prevNode->typeInfo->isStruct() || prevNode->typeInfo->isPointer())
             {
@@ -695,7 +695,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             auto arrayNode = castAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
             auto arrayOver = arrayNode->array->resolvedSymbolOverload;
-            if (arrayOver && arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasComputedValue())
+            if (arrayOver && arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasFlagComputedValue())
             {
                 auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
                 auto ptr     = static_cast<uint8_t*>(arrayOver->computedValue.getStorageAddr());
@@ -1029,7 +1029,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 for (uint32_t i = 0; i < childIdx; i++)
                 {
                     auto brother = checkParent->children[i];
-                    if (!brother->hasComputedValue() &&
+                    if (!brother->hasFlagComputedValue() &&
                         brother->resolvedSymbolOverload &&
                         brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
                     {

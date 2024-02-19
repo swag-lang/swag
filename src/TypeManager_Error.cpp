@@ -55,7 +55,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, c
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
-    if (!fromNode || !fromNode->hasComputedValue())
+    if (!fromNode || !fromNode->hasFlagComputedValue())
         return true;
     if (castFlags.has(CAST_FLAG_JUST_CHECK))
         return true;

@@ -23,7 +23,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
-    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
+    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasFlagComputedValue())
     {
         node->boolExpression->addAstFlag(AST_NO_BYTECODE);
         if (node->boolExpression->computedValue()->reg.b)
@@ -57,7 +57,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
     // Do not evaluate while if it's constant and false
-    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
+    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasFlagComputedValue())
     {
         if (!node->boolExpression->computedValue()->reg.b)
         {
@@ -67,7 +67,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
         }
     }
 
-    if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue()->reg.b)
+    if (node->boolExpression->hasFlagComputedValue() && node->boolExpression->computedValue()->reg.b)
     {
         const Diagnostic err{node->boolExpression, Err(Err0137)};
         return context->report(err);
@@ -140,7 +140,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                     if (callParam->indexParam != static_cast<int>(i))
                         continue;
                     orgCallParam = callParam;
-                    if (!callParam->hasComputedValue())
+                    if (!callParam->hasFlagComputedValue())
                         continue;
                     AddSymbolTypeInfo toAdd;
                     toAdd.node                = callParam;
@@ -316,7 +316,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         for (auto expr : switchCase->expressions)
         {
-            if (expr->hasComputedValue())
+            if (expr->hasFlagComputedValue())
             {
                 const auto typeExpr = TypeManager::concreteType(expr->typeInfo);
                 if (typeExpr->isString())
@@ -356,7 +356,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
             }
             else if (node->hasAttribute(ATTRIBUTE_COMPLETE))
             {
-                return checkIsConstExpr(context, expr->hasComputedValue(), expr, Err(Err0035));
+                return checkIsConstExpr(context, expr->hasFlagComputedValue(), expr, Err(Err0035));
             }
         }
     }
@@ -483,7 +483,7 @@ bool Semantic::resolveCase(SemanticContext* context)
 
                 // If the switch expression is constant, and the expression is constant too, then we can do the
                 // compare right now
-                if (node->ownerSwitch->expression->hasComputedValue() && oneExpression->hasComputedValue())
+                if (node->ownerSwitch->expression->hasFlagComputedValue() && oneExpression->hasFlagComputedValue())
                 {
                     SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
                     if (node->computedValue()->reg.b)
@@ -537,7 +537,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
             node->typeInfo = node->expression->typeInfo;
 
             // Do not evaluate loop if it's constant and 0
-            if (module->mustOptimizeBytecode(node) && node->expression->hasComputedValue())
+            if (module->mustOptimizeBytecode(node) && node->expression->hasFlagComputedValue())
             {
                 if (!node->expression->computedValue()->reg.u64)
                 {

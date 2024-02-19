@@ -194,8 +194,8 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
             context.genericReplaceTypes[genTypeName] = st;
             context.genericParametersCallTypes[i]    = st;
-            context.genericReplaceValues[genName]    = genNode->computedValue();
-            context.genericParametersCallValues[i]   = genNode->computedValue();
+            context.genericReplaceValues[genName]    = genNode->safeComputedValue();
+            context.genericParametersCallValues[i]   = genNode->safeComputedValue();
         }
         else
         {

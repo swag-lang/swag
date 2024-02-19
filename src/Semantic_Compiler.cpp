@@ -63,7 +63,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
 bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
-    if (node->hasComputedValue())
+    if (node->hasFlagComputedValue())
         return true;
 
     if (onlyConstExpr)
@@ -92,7 +92,7 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
 bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
-    if (node->hasComputedValue())
+    if (node->hasFlagComputedValue())
         return true;
 
     auto sourceFile = context->sourceFile;
@@ -317,7 +317,7 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
     YIELD();
 
     context->node->inheritComputedValue(expression);
-    if (context->node->hasComputedValue())
+    if (context->node->hasFlagComputedValue())
         context->node->removeAstFlag(AST_NO_BYTECODE);
 
     context->node->typeInfo = expression->typeInfo;
@@ -360,7 +360,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     YIELD();
     node->addSpecFlag(AstCompilerSpecFunc::SPEC_FLAG_AST_BLOCK);
 
-    SWAG_CHECK(checkIsConstExpr(context, expression->hasComputedValue(), expression));
+    SWAG_CHECK(checkIsConstExpr(context, expression->hasFlagComputedValue(), expression));
 
     node->allocateExtension(ExtensionKind::Owner);
     node->extOwner()->nodesToFree.append(node->children);
@@ -400,7 +400,7 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     const auto msg = node->children.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
     const Diagnostic err{node, node->token, FMT(Err(Err0001), msg->computedValue()->text.c_str()), DiagnosticLevel::Error};
@@ -416,7 +416,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     const auto msg = node->children.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasFlagComputedValue(), msg, FMT(Err(Err0034), node->token.c_str())));
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
     const Diagnostic err{node, node->token, msg->computedValue()->text, DiagnosticLevel::Warning};
@@ -719,7 +719,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     const auto module = context->sourceFile->module;
     auto       back   = node->children[0];
 
-    SWAG_CHECK(checkIsConstExpr(context, back->hasComputedValue(), back, Err(Err0030)));
+    SWAG_CHECK(checkIsConstExpr(context, back->hasFlagComputedValue(), back, Err(Err0030)));
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, FMT(Err(Err0192), back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 

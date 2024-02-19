@@ -48,7 +48,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         }
     }
 
-    if (child->hasComputedValue() && !child->hasSemFlag(SEMFLAG_NEG_EATEN))
+    if (child->hasFlagComputedValue() && !child->hasSemFlag(SEMFLAG_NEG_EATEN))
     {
         context->node->addSemFlag(child->semFlags.mask(SEMFLAG_LITERAL_SUFFIX));
         switch (typeInfo->nativeType)
@@ -117,7 +117,7 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
     SWAG_CHECK(checkTypeIsNative(context, context->node, typeInfo));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CAST_FLAG_AUTO_BOOL));
 
-    if (child->hasComputedValue())
+    if (child->hasFlagComputedValue())
     {
         context->node->addSemFlag(child->semFlags.mask(SEMFLAG_LITERAL_SUFFIX));
         switch (typeInfo->nativeType)
@@ -182,7 +182,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
         }
     }
 
-    if (child->hasComputedValue())
+    if (child->hasFlagComputedValue())
     {
         context->node->addSemFlag(child->semFlags.mask(SEMFLAG_LITERAL_SUFFIX));
         switch (typeInfo->nativeType)

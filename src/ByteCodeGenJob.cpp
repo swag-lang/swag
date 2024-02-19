@@ -169,7 +169,7 @@ JobResult ByteCodeGenJob::execute()
                         break;
                     }
 
-                    if (!node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDREN))
+                    if (!node->hasFlagComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDREN))
                     {
                         for (int i = static_cast<int>(node->children.size()) - 1; i >= 0; i--)
                         {
@@ -190,7 +190,7 @@ JobResult ByteCodeGenJob::execute()
                     }
 
                 // Computed constexpr value. Just emit the result
-                    if (node->hasComputedValue())
+                    if (node->hasFlagComputedValue())
                     {
                         if (!ByteCodeGen::emitComputedValue(&context))
                             return leaveJob(originalNode);

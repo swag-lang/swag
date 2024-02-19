@@ -44,7 +44,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = fromNode->computedValue()->reg.u8;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -64,7 +64,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = fromNode->computedValue()->reg.u16;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -85,7 +85,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = fromNode->computedValue()->reg.u32;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -105,7 +105,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = fromNode->computedValue()->reg.u64;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -124,7 +124,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = fromNode->computedValue()->reg.f32 != 0;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -143,7 +143,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = fromNode->computedValue()->reg.f64 != 0;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -162,7 +162,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
-                        if (fromNode->hasComputedValue())
+                        if (fromNode->hasFlagComputedValue())
                         {
                             fromNode->computedValue()->reg.b = true;
                             fromNode->typeInfo               = g_TypeMgr->typeInfoBool;
@@ -219,7 +219,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
             case NativeTypeKind::U16:
             case NativeTypeKind::U32:
             case NativeTypeKind::U64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
@@ -229,7 +229,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                 return true;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
@@ -240,7 +240,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                 return true;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                     {
@@ -251,7 +251,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                 return true;
 
             case NativeTypeKind::String:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     uint32_t ch;
                     if (fromNode->computedValue()->text.toChar32(ch))
@@ -289,7 +289,7 @@ bool TypeManager::castToNativeRune(SemanticContext* context, TypeInfo* fromType,
                 break;
 
             case NativeTypeKind::String:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     uint32_t ch;
                     if (fromNode->computedValue()->text.toChar32(ch))
@@ -325,7 +325,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < 0)
                     {
@@ -349,7 +349,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             case NativeTypeKind::U16:
             case NativeTypeKind::U32:
             case NativeTypeKind::U64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > UINT8_MAX)
                     {
@@ -371,7 +371,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -390,7 +390,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -425,7 +425,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             case NativeTypeKind::U32:
             case NativeTypeKind::U64:
             {
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoU8;
@@ -458,7 +458,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU8;
         switch (fromType->nativeType)
@@ -528,7 +528,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < 0)
                     {
@@ -552,7 +552,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::U8:
             case NativeTypeKind::U32:
             case NativeTypeKind::U64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > UINT16_MAX)
                     {
@@ -574,7 +574,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -592,7 +592,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -625,7 +625,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::U32:
             case NativeTypeKind::U64:
             {
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoU16;
@@ -658,7 +658,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU16;
         switch (fromType->nativeType)
@@ -728,7 +728,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < 0)
                     {
@@ -752,7 +752,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::U8:
             case NativeTypeKind::U16:
             case NativeTypeKind::U64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > UINT32_MAX)
                     {
@@ -764,7 +764,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -782,7 +782,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -816,7 +816,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::U16:
             case NativeTypeKind::U64:
             {
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoU32;
@@ -853,7 +853,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU32;
         switch (fromType->nativeType)
@@ -933,7 +933,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < 0)
                     {
@@ -955,7 +955,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -967,7 +967,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= -SAFETY_ZERO_EPSILON)
                     {
@@ -1000,7 +1000,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::U8:
             case NativeTypeKind::U16:
             case NativeTypeKind::U32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoU64;
@@ -1038,7 +1038,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU64;
         switch (fromType->nativeType)
@@ -1121,7 +1121,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                     break;
                 }
 
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > INT8_MAX)
                     {
@@ -1135,7 +1135,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < INT8_MIN || fromNode->computedValue()->reg.s64 > INT8_MAX)
                     {
@@ -1157,7 +1157,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= static_cast<float>(INT8_MIN) - 0.5f)
                     {
@@ -1175,7 +1175,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= static_cast<double>(INT8_MIN) - 0.5)
                     {
@@ -1214,7 +1214,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoS8;
@@ -1245,7 +1245,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS8;
         switch (fromType->nativeType)
@@ -1327,7 +1327,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                     break;
                 }
 
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > INT16_MAX)
                     {
@@ -1340,7 +1340,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < INT16_MIN || fromNode->computedValue()->reg.s64 > INT16_MAX)
                     {
@@ -1362,7 +1362,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= static_cast<float>(INT16_MIN) - 0.5f)
                     {
@@ -1380,7 +1380,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= static_cast<double>(INT16_MIN) - 0.5)
                     {
@@ -1419,7 +1419,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::S8:
             case NativeTypeKind::S32:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoS16;
@@ -1453,7 +1453,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS16;
         switch (fromType->nativeType)
@@ -1534,7 +1534,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                     break;
                 }
 
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > INT32_MAX)
                     {
@@ -1546,7 +1546,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 [[fallthrough]];
 
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.s64 < INT32_MIN || fromNode->computedValue()->reg.s64 > INT32_MAX)
                     {
@@ -1568,7 +1568,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= static_cast<float>(INT32_MIN) - 0.5f)
                     {
@@ -1587,7 +1587,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= static_cast<double>(INT32_MIN) - 0.5)
                     {
@@ -1622,7 +1622,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::S8:
             case NativeTypeKind::S16:
             case NativeTypeKind::S64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoS32;
@@ -1658,7 +1658,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS32;
         switch (fromType->nativeType)
@@ -1725,7 +1725,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         switch (fromType->nativeType)
         {
             case NativeTypeKind::U64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.u64 > INT64_MAX)
                     {
@@ -1737,7 +1737,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F32:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f32 <= static_cast<float>(INT64_MIN) - 0.5f)
                     {
@@ -1755,7 +1755,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 break;
 
             case NativeTypeKind::F64:
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (fromNode->computedValue()->reg.f64 <= static_cast<double>(INT64_MIN) - 0.5)
                     {
@@ -1790,7 +1790,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             case NativeTypeKind::S16:
             case NativeTypeKind::S32:
             {
-                if (fromNode && fromNode->hasComputedValue())
+                if (fromNode && fromNode->hasFlagComputedValue())
                 {
                     if (!castFlags.has(CAST_FLAG_JUST_CHECK))
                         fromNode->typeInfo = g_TypeMgr->typeInfoS64;
@@ -1827,7 +1827,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS64;
         switch (fromType->nativeType)
@@ -1924,7 +1924,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoF32;
         switch (fromType->nativeType)
@@ -2023,7 +2023,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        const bool canChange = fromNode && fromNode->hasComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
+        const bool canChange = fromNode && fromNode->hasFlagComputedValue() && !castFlags.has(CAST_FLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoF64;
         switch (fromType->nativeType)
@@ -2181,7 +2181,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     // Automatic cast has been done
     if (castFlags.has(CAST_FLAG_COERCE))
     {
-        if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK) && !fromNode->hasComputedValue())
+        if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK) && !fromNode->hasFlagComputedValue())
         {
             fromNode->typeInfo = toType;
             if (!fromNode->castedTypeInfo)
@@ -2395,7 +2395,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            if (fromNode->hasComputedValue())
+            if (fromNode->hasFlagComputedValue())
                 fromNode->computedValue()->text.release();
             fromNode->typeInfo       = toType;
             fromNode->castedTypeInfo = g_TypeMgr->typeInfoNull;
@@ -2530,7 +2530,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         }
 
         // From a constant
-        if (fromNode && fromNode->hasComputedValue())
+        if (fromNode && fromNode->hasFlagComputedValue())
         {
             if (toType->isPointerRef())
             {
@@ -3330,7 +3330,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
                 fromNode->typeInfo       = toTypeSlice;
 
                 // Need to make a slice literal from the string
-                if (fromNode->hasComputedValue())
+                if (fromNode->hasFlagComputedValue())
                 {
                     const auto storageSegment = Semantic::getConstantSegFromContext(fromNode);
                     uint8_t*   addrString;

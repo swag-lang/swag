@@ -112,7 +112,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
             node->addAstFlag(AST_IS_CONST);
     }
 
-    if (childBack->hasComputedValue())
+    if (childBack->hasFlagComputedValue())
         node->inheritComputedValue(childBack);
     node->inheritAstFlagsOr(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GEN_TYPEINFO | AST_SIDE_EFFECTS);
 
@@ -120,7 +120,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     if (node->resolvedSymbolOverload &&
         node->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
-        if (!node->hasComputedValue())
+        if (!node->hasFlagComputedValue())
         {
             node->setFlagsValueIsComputed();
             *node->computedValue() = node->resolvedSymbolOverload->computedValue;
@@ -880,7 +880,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             st.typeInfoReplace = oneParam->typeInfo;
             st.fromNode        = oneParam;
             symMatchContext.genericParametersCallTypes.push_back(st);
-            symMatchContext.genericParametersCallValues.push_back(oneParam->computedValue());
+            symMatchContext.genericParametersCallValues.push_back(oneParam->safeComputedValue());
         }
     }
 
@@ -908,7 +908,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     if (funcDecl->validIf->kind == AstNodeKind::CompilerValidIfx)
         expr->removeAstFlag(AST_COMPUTED_VALUE);
 
-    if (!expr->hasComputedValue())
+    if (!expr->hasFlagComputedValue())
     {
         const auto node            = context->node;
         context->validIfParameters = oneMatch->oneOverload->callParameters;

@@ -70,7 +70,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     }
 
     // This has been evaluated to a constant
-    if (child->hasComputedValue())
+    if (child->hasFlagComputedValue())
     {
         res.type  = child->typeInfo;
         res.value = child->computedValue();

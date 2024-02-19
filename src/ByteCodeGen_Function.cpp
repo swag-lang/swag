@@ -1402,7 +1402,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
         return true;
     }
 
-    SWAG_ASSERT(defaultParam->assignment->hasComputedValue());
+    SWAG_ASSERT(defaultParam->assignment->hasFlagComputedValue());
     SWAG_CHECK(emitLiteral(context, defaultParam->assignment, defaultParam->typeInfo, regList));
     return true;
 }

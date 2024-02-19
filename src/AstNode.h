@@ -290,11 +290,16 @@ struct AstNode
     void inheritOwners(const AstNode* op);
     void inheritOwnersAndFlags(const Parser* parser);
 
-    void              allocateComputedValue();
-    void              releaseComputedValue();
-    void              setFlagsValueIsComputed();
-    void              inheritComputedValue(const AstNode* from);
-    bool              hasComputedValue() const;
+    void allocateComputedValue();
+    void releaseComputedValue();
+    void setFlagsValueIsComputed();
+    void inheritComputedValue(const AstNode* from);
+    bool hasFlagComputedValue() const;
+
+    ComputedValue* safeComputedValue() const { return hasExtSemantic() ? extSemantic()->computedValue : nullptr; }
+    ComputedValue* computedValue() const { return extSemantic()->computedValue; }
+    bool           hasComputedValue() const { return safeComputedValue() != nullptr; }
+
     bool              isConstantGenTypeInfo() const;
     ExportedTypeInfo* getConstantGenTypeInfo() const;
     bool              isConstantTrue() const;
@@ -352,8 +357,6 @@ struct AstNode
     bool hasSpecFlag(SpecFlags fl) const { return specFlags.has(fl); }
     void addSpecFlag(SpecFlags fl) { specFlags.add(fl); }
     void removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
-
-    ComputedValue* computedValue() const { return extension && extension->semantic ? extension->semantic->computedValue : nullptr; }
 
     struct NodeExtensionByteCode
     {

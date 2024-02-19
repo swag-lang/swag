@@ -25,7 +25,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         return true;
     }
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -170,7 +170,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 
 #define CMP3(__a, __b) ((__a) < (__b) ? -1 : ((__a) > (__b) ? 1 : 0))
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->typeInfo = g_TypeMgr->typeInfoS32;
         node->setFlagsValueIsComputed();
@@ -248,7 +248,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
     const auto node         = context->node;
     const auto leftTypeInfo = left->typeInfo;
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -319,7 +319,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
     const auto node         = context->node;
     const auto leftTypeInfo = left->typeInfo;
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
         if (leftTypeInfo->isPointer())
@@ -550,7 +550,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         case TokenId::SymExclamEqual:
             SWAG_CHECK(resolveCompOpEqual(context, left, right));
             YIELD();
-            if (node->hasComputedValue())
+            if (node->hasFlagComputedValue())
                 node->computedValue()->reg.b = !node->computedValue()->reg.b;
             break;
         case TokenId::SymLower:
@@ -558,7 +558,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
             break;
         case TokenId::SymLowerEqual:
             SWAG_CHECK(resolveCompOpGreater(context, left, right));
-            if (node->hasComputedValue())
+            if (node->hasFlagComputedValue())
                 node->computedValue()->reg.b = !node->computedValue()->reg.b;
             break;
         case TokenId::SymGreater:
@@ -566,7 +566,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
             break;
         case TokenId::SymGreaterEqual:
             SWAG_CHECK(resolveCompOpLower(context, left, right));
-            if (node->hasComputedValue())
+            if (node->hasFlagComputedValue())
                 node->computedValue()->reg.b = !node->computedValue()->reg.b;
             break;
         case TokenId::SymLowerEqualGreater:

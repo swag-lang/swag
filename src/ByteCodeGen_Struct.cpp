@@ -1389,7 +1389,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     uint64_t numToInit = 0;
     if (!node->count)
         numToInit = 1;
-    else if (node->count->hasComputedValue())
+    else if (node->count->hasFlagComputedValue())
         numToInit = node->count->computedValue()->reg.u64;
     else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {
@@ -1437,7 +1437,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
     {
         for (const auto child : parameters->children)
         {
-            if (!child->hasComputedValue())
+            if (!child->hasFlagComputedValue())
             {
                 justClear = false;
                 break;
@@ -1654,7 +1654,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
     uint64_t numToDo = 0;
     if (!node->count)
         numToDo = 1;
-    else if (node->count->hasComputedValue())
+    else if (node->count->hasFlagComputedValue())
         numToDo = node->count->computedValue()->reg.u64;
     else if (!node->count->hasSemFlag(SEMFLAG_CAST1))
     {

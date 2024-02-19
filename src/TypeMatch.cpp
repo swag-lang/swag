@@ -490,7 +490,7 @@ namespace
                     if (firstChild->kind == AstNodeKind::ExpressionList)
                     {
                         isValue = true;
-                        if (!firstChild->hasComputedValue())
+                        if (!firstChild->hasFlagComputedValue())
                         {
                             uint32_t     storageOffset  = UINT32_MAX;
                             DataSegment* storageSegment = Semantic::getConstantSegFromContext(firstChild);
@@ -505,7 +505,7 @@ namespace
                         }
                     }
 
-                    if (firstChild->hasComputedValue() && !firstChild->isConstantGenTypeInfo())
+                    if (firstChild->hasFlagComputedValue() && !firstChild->isConstantGenTypeInfo())
                         isValue = true;
                     if (firstChild->resolvedSymbolOverload &&
                         firstChild->resolvedSymbolOverload->node &&

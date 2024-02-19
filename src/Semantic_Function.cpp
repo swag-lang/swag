@@ -1135,7 +1135,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 
     for (auto c : node->children)
     {
-        if (c->hasComputedValue())
+        if (c->hasFlagComputedValue())
             continue;
 
         const auto symbol = c->children.front()->resolvedSymbolName;
@@ -1289,7 +1289,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::While)
         {
             const auto whileNode = castAst<AstWhile>(breakable, AstNodeKind::While);
-            if (whileNode->boolExpression->hasComputedValue() && whileNode->boolExpression->computedValue()->reg.b)
+            if (whileNode->boolExpression->hasFlagComputedValue() && whileNode->boolExpression->computedValue()->reg.b)
                 whileNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
             break;
         }
@@ -1297,7 +1297,7 @@ void Semantic::propagateReturn(AstNode* node)
         if (breakable->kind == AstNodeKind::For)
         {
             const auto forNode = castAst<AstFor>(breakable, AstNodeKind::For);
-            if (forNode->boolExpression->hasComputedValue() && forNode->boolExpression->computedValue()->reg.b)
+            if (forNode->boolExpression->hasFlagComputedValue() && forNode->boolExpression->computedValue()->reg.b)
                 forNode->breakableFlags.add(BREAKABLE_RETURN_IN_INFINITE_LOOP);
             break;
         }

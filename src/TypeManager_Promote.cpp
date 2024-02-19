@@ -58,22 +58,22 @@ bool TypeManager::promote32(SemanticContext* context, AstNode* left)
     switch (typeInfo->nativeType)
     {
         case NativeTypeKind::S8:
-            if (left->hasComputedValue())
+            if (left->hasFlagComputedValue())
                 left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
             SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CAST_FLAG_TRY_COERCE));
             break;
         case NativeTypeKind::S16:
-            if (left->hasComputedValue())
+            if (left->hasFlagComputedValue())
                 left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
             SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CAST_FLAG_TRY_COERCE));
             break;
         case NativeTypeKind::U8:
-            if (left->hasComputedValue())
+            if (left->hasFlagComputedValue())
                 left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
             SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
             break;
         case NativeTypeKind::U16:
-            if (left->hasComputedValue())
+            if (left->hasFlagComputedValue())
                 left->computedValue()->reg.u64 = left->computedValue()->reg.u32;
             SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
             break;
@@ -120,7 +120,7 @@ bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* 
         return true;
 
     left->typeInfo = newLeftTypeInfo;
-    if (!left->hasComputedValue())
+    if (!left->hasFlagComputedValue())
     {
         left->castedTypeInfo = leftTypeInfo;
         return true;

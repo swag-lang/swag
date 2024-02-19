@@ -189,7 +189,7 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
 
         if (varDecl->assignment)
         {
-            const auto value = varDecl->assignment->computedValue();
+            const auto value = varDecl->assignment->safeComputedValue();
             if (typeInfo->isString())
             {
                 SWAG_ASSERT(value);
@@ -291,7 +291,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
             }
             else
             {
-                SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue(), typeInfo, assignment));
+                SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->safeComputedValue(), typeInfo, assignment));
             }
 
             continue;
@@ -302,7 +302,7 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
         if (child->hasExtMisc() && child->extMisc()->castOffset)
             offset = baseOffset + child->extMisc()->castOffset - 1;
 
-        SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->computedValue(), typeInfo, assignment));
+        SWAG_CHECK(storeToSegment(context, storageSegment, offset, child->safeComputedValue(), typeInfo, assignment));
 
         offset += child->typeInfo->sizeOf;
     }
@@ -339,7 +339,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
         const auto typeArr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
         // Already computed in the constant storageSegment for an array
-        if (node->assignment && node->assignment->hasComputedValue())
+        if (node->assignment && node->assignment->hasFlagComputedValue())
         {
             if (!value->storageSegment)
             {
@@ -524,12 +524,12 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         itr->data     = nullptr;
         itr->itable   = nullptr;
     }
-    else if (node->assignment && node->assignment->hasComputedValue())
+    else if (node->assignment && node->assignment->hasFlagComputedValue())
     {
         storageOffset  = node->assignment->computedValue()->storageOffset;
         storageSegment = node->assignment->computedValue()->storageSegment;
     }
-    else if (node->hasComputedValue())
+    else if (node->hasFlagComputedValue())
     {
         storageOffset  = node->computedValue()->storageOffset;
         storageSegment = node->computedValue()->storageSegment;

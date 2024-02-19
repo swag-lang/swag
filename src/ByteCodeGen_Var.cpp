@@ -27,7 +27,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
                     return true;
                 }
 
-                if (node->assignment->hasComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
+                if (node->assignment->hasFlagComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
                 {
                     SWAG_CHECK(skipNodes(context, node));
                     return true;

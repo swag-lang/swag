@@ -13,7 +13,7 @@
 
 bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
-    if (!arrayAccess->hasComputedValue())
+    if (!arrayAccess->hasFlagComputedValue())
         return true;
 
     if (maxCount == 0)
@@ -283,7 +283,7 @@ bool Semantic::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
     context->node = arrayNode;
     YIELD();
 
-    if (upperNode->hasComputedValue())
+    if (upperNode->hasFlagComputedValue())
     {
         upperNode->computedValue()->reg.u64 -= 1;
         upperNode->byteCodeFct = ByteCodeGen::emitLiteral;
@@ -313,7 +313,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // Exclude upper bound if constant
-    if (node->upperBound->hasComputedValue() &&
+    if (node->upperBound->hasFlagComputedValue() &&
         node->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP) &&
         !node->upperBound->hasSemFlag(SEMFLAG_ASSIGN_COMPUTED))
     {
@@ -351,7 +351,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     else if (typeVar->isString())
     {
         node->typeInfo = typeVar;
-        if (node->array->hasComputedValue())
+        if (node->array->hasFlagComputedValue())
             maxBound = node->array->computedValue()->text.length() - 1;
     }
 
@@ -414,7 +414,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // startBound <= endBound
-    if (node->lowerBound->hasComputedValue() && node->upperBound->hasComputedValue())
+    if (node->lowerBound->hasFlagComputedValue() && node->upperBound->hasFlagComputedValue())
     {
         if (node->lowerBound->computedValue()->reg.u64 > node->upperBound->computedValue()->reg.u64)
         {
@@ -425,7 +425,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     }
 
     // endBound < maxBound
-    if (maxBound && node->upperBound->hasComputedValue())
+    if (maxBound && node->upperBound->hasFlagComputedValue())
     {
         if (node->upperBound->computedValue()->reg.u64 > maxBound)
         {
@@ -446,7 +446,7 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
 
-    if (front->hasComputedValue())
+    if (front->hasFlagComputedValue())
     {
         const Diagnostic err(node, node->token, Err(Err0464));
         return context->report(err);
@@ -769,7 +769,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
     const auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
     const auto typePtr   = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
 
-    if (!arrayNode->typeInfo->isArray() && arrayNode->access->hasComputedValue())
+    if (!arrayNode->typeInfo->isArray() && arrayNode->access->hasFlagComputedValue())
     {
         bool     isConstAccess = true;
         uint64_t offsetAccess  = arrayNode->access->computedValue()->reg.u64 * typePtr->finalType->sizeOf;
@@ -780,7 +780,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
         while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
         {
             subArray      = castAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
-            isConstAccess = isConstAccess && subArray->access->hasComputedValue();
+            isConstAccess = isConstAccess && subArray->access->hasFlagComputedValue();
             if (isConstAccess)
             {
                 if (subArray->array->typeInfo->kind != TypeInfoKind::Array)
@@ -806,9 +806,9 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
                 return true;
             }
 
-            if (subArray->array->hasComputedValue())
+            if (subArray->array->hasFlagComputedValue())
             {
-                SWAG_ASSERT(subArray->array->hasComputedValue());
+                SWAG_ASSERT(subArray->array->hasFlagComputedValue());
                 SWAG_ASSERT(subArray->array->computedValue()->storageOffset != UINT32_MAX);
                 SWAG_ASSERT(subArray->array->computedValue()->storageSegment);
                 *storageOffset  = subArray->array->computedValue()->storageOffset + static_cast<uint32_t>(offsetAccess);
@@ -864,7 +864,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     if (arrayType->isString())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        if (arrayNode->access->hasComputedValue())
+        if (arrayNode->access->hasFlagComputedValue())
         {
             if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
             {
@@ -905,7 +905,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             setupIdentifierRef(context, arrayNode);
 
             // Try to dereference as a constant if we can
-            if (arrayNode->array->hasComputedValue() && arrayNode->access->hasComputedValue())
+            if (arrayNode->array->hasFlagComputedValue() && arrayNode->access->hasFlagComputedValue())
             {
                 const auto storageSegment = arrayNode->array->computedValue()->storageSegment;
                 if (!storageSegment)
@@ -971,7 +971,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             setupIdentifierRef(context, arrayNode);
 
             // Try to dereference as a constant if we can
-            if (arrayNode->access->hasComputedValue())
+            if (arrayNode->access->hasFlagComputedValue())
             {
                 if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
                 {
@@ -1078,11 +1078,11 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
     SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, FMT(Err(Err0194), node->token.c_str(), countTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, count, CAST_FLAG_TRY_COERCE));
 
-    if (!count->hasComputedValue() || count->computedValue()->reg.u64 > 1)
+    if (!count->hasFlagComputedValue() || count->computedValue()->reg.u64 > 1)
     {
         if (!expression->typeInfo->isPointerArithmetic())
         {
-            if (count->hasComputedValue())
+            if (count->hasFlagComputedValue())
             {
                 Diagnostic err{expression, FMT(Err(Err0197), node->token.c_str(), expression->typeInfo->getDisplayNameC())};
                 err.addNote(count, FMT(Nte(Nte0127), count->computedValue()->reg.u64));

@@ -95,7 +95,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            if (left->hasComputedValue() || right->hasComputedValue())
+            if (left->hasFlagComputedValue() || right->hasFlagComputedValue())
                 return context->report(err, Diagnostic::note(Nte(Nte0037)));
             return context->report(err);
         }
@@ -108,7 +108,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     }
 
     node->typeInfo = leftTypeInfo;
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -268,7 +268,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
     }
 
     node->typeInfo = leftTypeInfo;
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -386,7 +386,7 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
     }
 
     node->typeInfo = leftTypeInfo;
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -517,7 +517,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
     }
 
     node->typeInfo = leftTypeInfo;
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -626,7 +626,7 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
     }
 
     node->typeInfo = leftTypeInfo;
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -703,7 +703,7 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
         }
     }
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -751,7 +751,7 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
             right->release();
         }
         // something | 0xff (type) => 0xff (type)
-        else if (right->hasComputedValue())
+        else if (right->hasFlagComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && right->computedValue()->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && right->computedValue()->reg.u16 == 0xFFFF) ||
@@ -763,7 +763,7 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
             }
         }
         // 0xff (type) | something => 0xff (type)
-        else if (left->hasComputedValue())
+        else if (left->hasFlagComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && left->computedValue()->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && left->computedValue()->reg.u16 == 0xFFFF) ||
@@ -813,7 +813,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
         }
     }
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -855,7 +855,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
         }
 
         // something & 0xFF (type) => something
-        else if (right->hasComputedValue())
+        else if (right->hasFlagComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && right->computedValue()->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && right->computedValue()->reg.u16 == 0xFFFF) ||
@@ -869,7 +869,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
         }
 
         // 0xFF (type) & something => something
-        else if (left->hasComputedValue())
+        else if (left->hasFlagComputedValue())
         {
             if ((leftTypeInfo->sizeOf == 1 && left->computedValue()->reg.u8 == 0xFF) ||
                 (leftTypeInfo->sizeOf == 2 && left->computedValue()->reg.u16 == 0xFFFF) ||
@@ -892,8 +892,8 @@ bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* r
 
     {
         PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return Nte(Nte0131); }, true);
-        SWAG_CHECK(checkIsConstExpr(context, left->hasComputedValue(), left));
-        SWAG_CHECK(checkIsConstExpr(context, right->hasComputedValue(), right));
+        SWAG_CHECK(checkIsConstExpr(context, left->hasFlagComputedValue(), left));
+        SWAG_CHECK(checkIsConstExpr(context, right->hasFlagComputedValue(), right));
     }
 
     if (!left->typeInfo->isString())
@@ -941,7 +941,7 @@ bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* righ
         }
     }
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -1172,7 +1172,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
         return context->report(err, note);
     }
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -1250,7 +1250,7 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
         return context->report(err, note);
     }
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -1422,7 +1422,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
     node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
-    if (left->hasComputedValue() && right->hasComputedValue())
+    if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
         switch (node->tokenId)
