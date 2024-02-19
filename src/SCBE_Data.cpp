@@ -8,9 +8,9 @@ bool SCBE::buildRelocationSegment(const BuildParameters& buildParameters, DataSe
     if (!dataSegment->totalCount)
         return true;
 
-    const int     ct              = buildParameters.compileType;
+    const auto    ct              = buildParameters.compileType;
     const auto    precompileIndex = buildParameters.precompileIndex;
-    auto&         pp              = *static_cast<SCBE_CPU*>(perThread[ct][precompileIndex]);
+    auto&         pp              = encoder<SCBE_CPU>(ct, precompileIndex);
     CPURelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);

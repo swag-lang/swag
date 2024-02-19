@@ -23,7 +23,7 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
+    auto&      pp              = encoder<SCBE_CPU>(ct, precompileIndex);
 
     if (precompileIndex == 0)
     {
@@ -76,6 +76,7 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
         pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // Constant stuff needed to convert U64 to F64 (code from clang)
+        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
             offset                                  = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
             pp.symCst_U64F64                        = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
@@ -86,6 +87,10 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
             *reinterpret_cast<uint32_t*>(addr + 12) = 0x00000000;
             *reinterpret_cast<uint64_t*>(addr + 16) = 0x4330000000000000;
             *reinterpret_cast<uint64_t*>(addr + 24) = 0x4530000000000000;
+        }
+        else
+        {
+            SWAG_ASSERT(false);
         }
     }
     else
@@ -119,9 +124,18 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     const auto objFileType     = getObjType(g_CommandLine.target);
 
     SWAG_ASSERT(module == buildParameters.module);
-    allocatePerObj<SCBE_X64>(buildParameters);
 
-    auto& pp     = encoder<SCBE_X64>(ct, precompileIndex);
+    switch (g_CommandLine.target.arch)
+    {
+        case SwagTargetArch::X86_64:
+            allocatePerObj<SCBE_X64>(buildParameters);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+    }
+
+    auto& pp     = encoder<SCBE_CPU>(ct, precompileIndex);
     auto& concat = pp.concat;
 
     // Message
@@ -234,7 +248,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<SCBE_CPU*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<SCBE_CPU>(ct, precompileIndex);
 
     auto path = getCacheFolder();
     path.append(pp.filename);

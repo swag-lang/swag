@@ -4,11 +4,11 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
+void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     const auto     typeFunc   = cpuFct->typeFunc;
     const auto&    cc         = typeFunc->getCallConv();
-    const uint32_t paramStack = SCBE_X64::getParamStackOffset(cpuFct, paramIdx);
+    const uint32_t paramStack = SCBE_CPU::getParamStackOffset(cpuFct, paramIdx);
     auto           typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);

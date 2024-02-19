@@ -103,7 +103,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t sizeParamsStack = max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
 
     // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
-    // We want to be sure to have the room to flatten the array of variadics (make all params contiguous). That's
+    // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
     // why we multiply by 2.
     sizeParamsStack *= 2;
 
@@ -141,7 +141,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
         {
             pp.emitLoad64Immediate(RAX, sizeStack + sizeParamsStack);
-            pp.emitCall("__chkstk");
+            pp.emitCall(R"(__chkstk)");
         }
     }
 
@@ -166,7 +166,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     while (iReg < min(cc.paramByRegisterCount, numTotalRegs))
     {
         auto     typeParam   = typeFunc->registerIdxToType(iReg);
-        uint32_t stackOffset = SCBE_X64::getParamStackOffset(cpuFct, iReg);
+        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, iReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
             pp.emitStoreF64Indirect(stackOffset, cc.paramByRegisterFloat[iReg], RDI);
         else
@@ -181,12 +181,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Save pointer to return value if this is a return by copy
     if (CallConv::returnByAddress(typeFunc) && iReg < cc.paramByRegisterCount)
     {
-        uint32_t stackOffset = SCBE_X64::getParamStackOffset(cpuFct, iReg);
+        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, iReg);
         pp.emitStore64Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
         iReg++;
     }
 
-    // Save C variadics
+    // Save C variadic
     if (typeFunc->isFctCVariadic())
     {
         while (iReg < cc.paramByRegisterCount)
@@ -206,7 +206,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     auto                                   ip = bc->out;
     VectorNative<uint32_t>                 pushRAParams;
     VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
-    for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
+    for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
             continue;
@@ -2876,35 +2876,35 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::ClearRR8:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 pp.emitStore8Immediate(ip->c.u32, 0, RAX);
                 break;
             }
             case ByteCodeOp::ClearRR16:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 pp.emitStore16Immediate(ip->c.u32, 0, RAX);
                 break;
             }
             case ByteCodeOp::ClearRR32:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 pp.emitStore32Immediate(ip->c.u32, 0, RAX);
                 break;
             }
             case ByteCodeOp::ClearRR64:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 pp.emitStore64Immediate(ip->c.u32, 0, RAX);
                 break;
             }
             case ByteCodeOp::ClearRRX:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
 
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
@@ -3342,11 +3342,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicCVaStart:
             {
-                int stackOffset = 0;
-                int paramIdx    = typeFunc->numParamsRegisters();
+                uint32_t paramIdx = typeFunc->numParamsRegisters();
                 if (CallConv::returnByAddress(typeFunc))
                     paramIdx += 1;
-                stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
+                uint32_t stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
                 pp.emitLoadAddressIndirect(stackOffset, RAX, RDI);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitStore64Indirect(0, RAX, RCX);
@@ -3465,7 +3464,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CopyRARBtoRR2:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitStore64Indirect(0, RCX, RAX);
@@ -3482,14 +3481,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::SaveRRtoRA:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             }
             case ByteCodeOp::CopyRRtoRA:
             {
-                int stackOffset = SCBE_X64::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad64Indirect(stackOffset, RAX, RDI);
                 if (ip->b.u64)
                 {

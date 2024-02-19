@@ -321,7 +321,7 @@ struct TypeInfoFuncAttr final : TypeInfo
     bool            isFctVariadic() const;
     bool            isFctCVariadic() const;
     uint32_t        registerIdxToParamIdx(uint32_t argIdx);
-    TypeInfo*       registerIdxToType(int argIdx);
+    TypeInfo*       registerIdxToType(uint32_t argIdx);
     uint32_t        numParamsRegisters();
     uint32_t        numReturnRegisters() const;
     uint32_t        numTotalRegisters();

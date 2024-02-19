@@ -894,7 +894,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
     }
 }
 
-TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
+TypeInfo* TypeInfoFuncAttr::registerIdxToType(uint32_t argIdx)
 {
     const auto argNo = registerIdxToParamIdx(argIdx);
     if (argNo >= parameters.size())
