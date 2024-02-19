@@ -825,7 +825,7 @@ bool Workspace::build()
     }
 
     // Results
-    if (!g_CommandLine.scriptCommand)
+    if (!g_CommandLine.scriptCommand || !g_CommandLine.scriptRun)
     {
         if (g_Workspace->skippedModules.load() > 0)
             g_Log.messageHeaderCentered("Skipped modules", FMT("%d", g_Workspace->skippedModules.load()));
