@@ -42,6 +42,7 @@ struct Stats
     atomic<size_t> memNodes           = 0;
     atomic<size_t> memNodesExt        = 0;
     atomic<size_t> memNodesLiteral    = 0;
+    atomic<size_t> memIdentifiersExt  = 0;
     atomic<size_t> memScopes          = 0;
     atomic<size_t> memSeg             = 0;
     atomic<size_t> memConcat          = 0;

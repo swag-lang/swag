@@ -93,6 +93,9 @@ void AstIdentifier::allocateIdentifierExtension()
     if (identifierExtension)
         return;
     identifierExtension = Allocator::alloc<IdentifierExtension>();
+#ifdef SWAG_STATS
+    g_Stats.memIdentifiersExt += sizeof(IdentifierExtension);
+#endif
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)

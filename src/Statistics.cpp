@@ -168,17 +168,19 @@ void Stats::print() const
     g_Log.messageHeaderDot("mem allocated", FMT("%s", Utf8::toNiceSize(allocatedMemory.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.eol();
     g_Log.messageHeaderDot("mem utf8", FMT("%s", Utf8::toNiceSize(memUtf8.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem c str", FMT("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem new", FMT("%s", Utf8::toNiceSize(memNew.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem std", FMT("%s", Utf8::toNiceSize(memStd.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.eol();
-
-    g_Log.messageHeaderDot("mem nodes", FMT("%s", Utf8::toNiceSize(memNodes.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem nodes ext", FMT("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast nodes", FMT("%s", Utf8::toNiceSize(memNodes.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast nodes ext", FMT("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast nodes literal", FMT("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("mem ast identifiers ext", FMT("%s", Utf8::toNiceSize(memIdentifiersExt.load()).c_str()), LogColor::Header, LogColor::Value);
+    g_Log.eol();
     g_Log.messageHeaderDot("mem concat", FMT("%s", Utf8::toNiceSize(memConcat.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem types", FMT("%s", Utf8::toNiceSize(memTypes.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem params", FMT("%s", Utf8::toNiceSize(memParams.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem files", FMT("%s", Utf8::toNiceSize(memFileBuffer.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem nodes literal", FMT("%s", Utf8::toNiceSize(memNodesLiteral.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem scopes", FMT("%s", Utf8::toNiceSize(memScopes.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem seg", FMT("%s", Utf8::toNiceSize(memSeg.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem bc instr", FMT("%s", Utf8::toNiceSize(memInstructions.load()).c_str()), LogColor::Header, LogColor::Value);
@@ -186,7 +188,6 @@ void Stats::print() const
     g_Log.messageHeaderDot("mem sym table", FMT("%s", Utf8::toNiceSize(memSymTable.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem sym name", FMT("%s", Utf8::toNiceSize(memSymName.load()).c_str()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem sym over", FMT("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("mem c str", FMT("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), LogColor::Header, LogColor::Value);
     if (g_CommandLine.backendGenType == BackendGenType::SCBE)
         g_Log.messageHeaderDot("mem x64 dbg", FMT("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), LogColor::Header, LogColor::Value);
 
