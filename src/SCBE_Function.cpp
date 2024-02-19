@@ -219,7 +219,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         if (ip->hasFlag(BCI_JUMP_DEST))
             pp.getOrCreateLabel(i);
 
-        if (ip->flags & (BCI_START_STMT | BCI_JUMP_DEST))
+        if (ip->hasFlag(BCI_START_STMT | BCI_JUMP_DEST))
             pp.clearInstructionCache();
 
         switch (ip->op)

@@ -114,7 +114,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             continue;
         if (ip->op == ByteCodeOp::SetImmediate32 || ip->op == ByteCodeOp::SetImmediate64)
             continue;
-        if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B | BCI_IMM_C)))
+        if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B | BCI_IMM_C))
             continue;
 
         auto       node       = ip->node;

@@ -288,8 +288,8 @@ bool ByteCode::areSame(const ByteCodeInstruction* start0,
             break;
         }
 
-        const uint32_t flags0 = ip0->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
-        const uint32_t flags1 = ip1->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+        const InstructionFlags flags0 = ip0->flags.maskInvert(BCI_JUMP_DEST | BCI_START_STMT);
+        const InstructionFlags flags1 = ip1->flags.maskInvert(BCI_JUMP_DEST | BCI_START_STMT);
         if (flags0 != flags1)
         {
             same = false;
@@ -348,9 +348,9 @@ bool ByteCode::areSame(const ByteCodeInstruction* start0,
 
 uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
 {
-    const uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
-    oldCrc               = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);
-    oldCrc               = Crc32::compute2(reinterpret_cast<const uint8_t*>(&flags), oldCrc);
+    const InstructionFlags flags = ip->flags.mask(BCI_JUMP_DEST | BCI_START_STMT);
+    oldCrc                       = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);
+    oldCrc                       = Crc32::compute2(reinterpret_cast<const uint8_t*>(&flags), oldCrc);
 
     if (hasSomethingInC(ip))
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->c.pointer), oldCrc);

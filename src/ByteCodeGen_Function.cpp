@@ -1450,7 +1450,7 @@ void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNati
             i += 1;
         }
 
-        inst->flags |= forVariadic ? BCI_VARIADIC : 0;
+        inst->flags.add(forVariadic ? BCI_VARIADIC : 0);
     }
 
     // Closure context

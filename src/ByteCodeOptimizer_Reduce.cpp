@@ -287,7 +287,7 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
                 ip[0].c.u32 = ip[0].a.u32;
                 ip[0].a.u32 = ip[0].b.u32;
                 ip[0].b.u32 = 1;
-                ip[0].flags |= BCI_IMM_B | BCI_CANT_OVERFLOW;
+                ip[0].addFlag(BCI_IMM_B | BCI_CANT_OVERFLOW);
                 setNop(context, ip + 1);
                 break;
             }
@@ -300,7 +300,7 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
                 ip[0].c.u32 = ip[0].a.u32;
                 ip[0].a.u32 = ip[0].b.u32;
                 ip[0].b.u32 = 1;
-                ip[0].flags |= BCI_IMM_B | BCI_CANT_OVERFLOW;
+                ip[0].addFlag(BCI_IMM_B | BCI_CANT_OVERFLOW);
                 setNop(context, ip + 1);
                 break;
             }
@@ -895,7 +895,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             {
                 ip[0].b.u64 = ip[0].a.u64;
                 ip[0].a.u64 = ip[1].a.u64;
-                ip[0].flags |= ip[0].hasFlag(BCI_IMM_A) ? BCI_IMM_B : 0;
+                ip[0].flags.add(ip[0].hasFlag(BCI_IMM_A) ? BCI_IMM_B : 0);
                 ip[0].removeFlag(BCI_IMM_A);
                 SET_OP(ip, ByteCodeOp::CopyRBtoRRRet);
                 if (!ip[1].hasFlag(BCI_START_STMT))
@@ -6286,7 +6286,7 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
 
 void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->dynFlags & BCID_SAFETY_OF)
+    if (ip->dynFlags.has(BCID_SAFETY_OF))
         return;
 
     switch (ip->op)
@@ -6519,7 +6519,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
         ipn++;
     }
 
-    if ((ip[0].flags & ~BCI_START_STMT) != (ipn->flags & ~BCI_START_STMT))
+    if (ip[0].flags.maskInvert(BCI_START_STMT) != ipn->flags.maskInvert(BCI_START_STMT))
         return;
     if (ByteCode::hasSomethingInA(ip) && ip[0].a.u64 != ipn->a.u64)
         return;

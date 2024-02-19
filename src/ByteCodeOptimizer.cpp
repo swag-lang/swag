@@ -50,11 +50,11 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
         ip->node->sourceFile->module &&
         ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
     {
-        ip->dynFlags |= BCID_SAFETY_OF;
+        ip->dynFlags.add(BCID_SAFETY_OF);
     }
     else
     {
-        ip->dynFlags &= ~BCID_SAFETY_OF;
+        ip->dynFlags.remove(BCID_SAFETY_OF);
     }
 
     if (ip->node && ip->node->hasOwnerInline())

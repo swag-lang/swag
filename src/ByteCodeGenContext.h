@@ -1,5 +1,6 @@
 #pragma once
 #include "AstNode.h"
+#include "ByteCodeInstruction.h"
 #include "Job.h"
 
 static constexpr uint32_t BCC_FLAG_NO_LOCATION  = 0x00000001;
@@ -35,8 +36,8 @@ struct ByteCodeGenContext : JobContext
     uint32_t contextFlags  = 0;
     uint32_t tryCatchScope = 0;
 
-    uint16_t instructionsFlags = 0;
-    bool     noLocation        = false;
+    InstructionFlags instructionsFlags = 0;
+    bool             noLocation        = false;
 };
 
 struct PushLocation
@@ -100,11 +101,11 @@ struct PushContextFlags
 
 struct PushICFlags
 {
-    PushICFlags(ByteCodeGenContext* bc, uint16_t flags)
+    PushICFlags(ByteCodeGenContext* bc, InstructionFlags flags)
     {
         savedBc    = bc;
         savedFlags = bc->instructionsFlags;
-        bc->instructionsFlags |= flags;
+        bc->instructionsFlags.add(flags);
     }
 
     ~PushICFlags()
@@ -113,5 +114,5 @@ struct PushICFlags
     }
 
     ByteCodeGenContext* savedBc;
-    uint16_t            savedFlags;
+    InstructionFlags    savedFlags;
 };

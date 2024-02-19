@@ -209,7 +209,7 @@
     jmpAddState = nullptr;                            \
     if (__expr0)                                      \
     {                                                 \
-        ip->dynFlags |= BCID_SAN_PASS;                \
+        ip->dynFlags.add(BCID_SAN_PASS);              \
         if (__expr1)                                  \
             ip += ip->b.s32 + 1;                      \
         else                                          \
@@ -585,12 +585,12 @@ namespace
         auto ip = STATE()->ip;
         while (ip->op != ByteCodeOp::End)
         {
-            if (ip->dynFlags & BCID_SAN_PASS)
+            if (ip->dynFlags.has(BCID_SAN_PASS))
                 return true;
 
             if (ip->hasFlag(BCI_SAFETY))
             {
-                ip->dynFlags |= BCID_SAN_PASS;
+                ip->dynFlags.add(BCID_SAN_PASS);
                 ip++;
                 continue;
             }
@@ -816,7 +816,7 @@ namespace
                     break;
 
                 case ByteCodeOp::Jump:
-                    ip->dynFlags |= BCID_SAN_PASS;
+                    ip->dynFlags.add(BCID_SAN_PASS);
                     ip += ip->b.s32 + 1;
                     continue;
 
@@ -2369,7 +2369,7 @@ namespace
                     return false;
             }
 
-            ip->dynFlags |= BCID_SAN_PASS;
+            ip->dynFlags.add(BCID_SAN_PASS);
             ip++;
         }
 
@@ -2415,8 +2415,10 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         if (over->computedValue.storageOffset + over->typeInfo->sizeOf > state->stackValue.count)
             continue;
 
-        for (uint32_t i                                                       = 0; i < over->typeInfo->sizeOf; i++)
+        for (uint32_t i = 0; i < over->typeInfo->sizeOf; i++)
+        {
             state->stackValue[i + over->computedValue.storageOffset].overload = over;
+        }
     }
 
     cxt.states.emplace_back(state);
@@ -2428,7 +2430,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         if (i == cxt.states.size() - 1)
             break;
         for (uint32_t j = 0; j < cxt.bc->numInstructions; j++)
-            cxt.bc->out[j].dynFlags &= ~BCID_SAN_PASS;
+            cxt.bc->out[j].dynFlags.remove(BCID_SAN_PASS);
     }
 
     for (const auto s : cxt.states)
