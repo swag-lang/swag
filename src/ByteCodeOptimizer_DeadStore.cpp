@@ -11,13 +11,13 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
         const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
         uint32_t regScan = UINT32_MAX;
-        if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+        if (flags.has(OPFLAG_WRITE_A) && !flags.has(OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
             regScan = ip->a.u32;
-        if (flags & OPFLAG_WRITE_B && !(flags & (OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+        if (flags.has(OPFLAG_WRITE_B) && !flags.has(OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
             regScan = ip->b.u32;
-        if (flags & OPFLAG_WRITE_C && !(flags & (OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D)))
+        if (flags.has(OPFLAG_WRITE_C) && !flags.has(OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D))
             regScan = ip->c.u32;
-        if (flags & OPFLAG_WRITE_D && !(flags & (OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C)))
+        if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
             regScan = ip->d.u32;
 
         if (regScan == UINT32_MAX)
@@ -32,7 +32,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 return;
 
             const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
-            if (flags1 & OPFLAG_READ_A && !ip1->hasFlag(BCI_IMM_A))
+            if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
             {
                 if (ip1->a.u32 == regScan)
                 {
@@ -42,7 +42,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_READ_B && !ip1->hasFlag(BCI_IMM_B))
+            if (flags1.has(OPFLAG_READ_B) && !ip1->hasFlag(BCI_IMM_B))
             {
                 if (ip1->b.u32 == regScan)
                 {
@@ -52,7 +52,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_READ_C && !ip1->hasFlag(BCI_IMM_C))
+            if (flags1.has(OPFLAG_READ_C) && !ip1->hasFlag(BCI_IMM_C))
             {
                 if (ip1->c.u32 == regScan)
                 {
@@ -62,7 +62,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_READ_D && !ip1->hasFlag(BCI_IMM_D))
+            if (flags1.has(OPFLAG_READ_D) && !ip1->hasFlag(BCI_IMM_D))
             {
                 if (ip1->d.u32 == regScan)
                 {
@@ -72,7 +72,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_WRITE_A)
+            if (flags1.has(OPFLAG_WRITE_A))
             {
                 if (ip1->a.u32 == regScan)
                 {
@@ -81,7 +81,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_WRITE_B)
+            if (flags1.has(OPFLAG_WRITE_B))
             {
                 if (ip1->b.u32 == regScan)
                 {
@@ -90,7 +90,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_WRITE_C)
+            if (flags1.has(OPFLAG_WRITE_C))
             {
                 if (ip1->c.u32 == regScan)
                 {
@@ -99,7 +99,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                 }
             }
 
-            if (flags1 & OPFLAG_WRITE_D)
+            if (flags1.has(OPFLAG_WRITE_D))
             {
                 if (ip1->d.u32 == regScan)
                 {

@@ -59,7 +59,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
     Utf8       str   = g_ByteCodeOpDesc[static_cast<int>(ip->op)].display;
     const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
-    if (ip->hasFlag(BCI_IMM_A) || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
+    if (ip->hasFlag(BCI_IMM_A) || flags.has(OPFLAG_READ_VAL32_A) || flags.has(OPFLAG_READ_VAL64_A))
     {
         str.replace("_rau8_", FMT("%u", ip->a.u8));
         str.replace("_rau16_", FMT("%u", ip->a.u16));
@@ -77,7 +77,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_ral32_", FMT("%u", ip->a.u64u32.low));
     }
 
-    if (ip->hasFlag(BCI_IMM_B) || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
+    if (ip->hasFlag(BCI_IMM_B) || flags.has(OPFLAG_READ_VAL32_B) || flags.has(OPFLAG_READ_VAL64_B))
     {
         str.replace("_rbu8_", FMT("%u", ip->b.u8));
         str.replace("_rbu16_", FMT("%u", ip->b.u16));
@@ -95,7 +95,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rbl32_", FMT("%u", ip->b.u64u32.low));
     }
 
-    if (ip->hasFlag(BCI_IMM_C) || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
+    if (ip->hasFlag(BCI_IMM_C) || flags.has(OPFLAG_READ_VAL32_C) || flags.has(OPFLAG_READ_VAL64_C))
     {
         str.replace("_rcu8_", FMT("%u", ip->c.u8));
         str.replace("_rcu16_", FMT("%u", ip->c.u16));
@@ -113,7 +113,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rcl32_", FMT("%u", ip->c.u64u32.low));
     }
 
-    if (ip->hasFlag(BCI_IMM_D) || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
+    if (ip->hasFlag(BCI_IMM_D) || flags.has(OPFLAG_READ_VAL32_D) || flags.has(OPFLAG_READ_VAL64_D))
     {
         str.replace("_rdu8_", FMT("%u", ip->d.u8));
         str.replace("_rdu16_", FMT("%u", ip->d.u16));
@@ -131,7 +131,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdl32_", FMT("%u", ip->d.u64u32.low));
     }
 
-    if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
+    if (flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A))
     {
         const auto ra = FMT("r%u", ip->a.u32);
         str.replace("_ra_", ra);
@@ -147,7 +147,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_raf64_", ra);
     }
 
-    if (flags & (OPFLAG_READ_B | OPFLAG_WRITE_B))
+    if (flags.has(OPFLAG_READ_B | OPFLAG_WRITE_B))
     {
         const auto rb = FMT("r%u", ip->b.u32);
         str.replace("_rb_", rb);
@@ -163,7 +163,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rbf64_", rb);
     }
 
-    if (flags & (OPFLAG_READ_C | OPFLAG_WRITE_C))
+    if (flags.has(OPFLAG_READ_C | OPFLAG_WRITE_C))
     {
         const auto rc = FMT("r%u", ip->c.u32);
         str.replace("_rc_", rc);
@@ -179,7 +179,7 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rcf64_", rc);
     }
 
-    if (flags & (OPFLAG_READ_D | OPFLAG_WRITE_D))
+    if (flags.has(OPFLAG_READ_D | OPFLAG_WRITE_D))
     {
         const auto rd = FMT("r%u", ip->d.u32);
         str.replace("_rd_", rd);
@@ -255,14 +255,14 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
     // Parameters
     const auto opFlags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
-    line.instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A,
-                                      opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->hasFlag(BCI_IMM_A));
-    line.instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B,
-                                      opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->hasFlag(BCI_IMM_B));
-    line.instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C,
-                                      opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->hasFlag(BCI_IMM_C));
-    line.instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D,
-                                      opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->hasFlag(BCI_IMM_D));
+    line.instRef += getInstructionReg("A", ip->a, opFlags.has(OPFLAG_WRITE_A), opFlags.has(OPFLAG_READ_A),
+                                      opFlags.has(OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->hasFlag(BCI_IMM_A));
+    line.instRef += getInstructionReg("B", ip->b, opFlags.has(OPFLAG_WRITE_B), opFlags.has(OPFLAG_READ_B),
+                                      opFlags.has(OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->hasFlag(BCI_IMM_B));
+    line.instRef += getInstructionReg("C", ip->c, opFlags.has(OPFLAG_WRITE_C), opFlags.has(OPFLAG_READ_C),
+                                      opFlags.has(OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->hasFlag(BCI_IMM_C));
+    line.instRef += getInstructionReg("D", ip->d, opFlags.has(OPFLAG_WRITE_D), opFlags.has(OPFLAG_READ_D),
+                                      opFlags.has(OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->hasFlag(BCI_IMM_D));
     line.instRef.trim();
 
     // Flags

@@ -38,13 +38,13 @@ namespace
                 i--;
             }
 
-            while (i && *pz != '\n')
+            while (i && SWAG_IS_NOT_EOL(*pz))
             {
                 copyText += *pz++;
                 i--;
             }
 
-            if (*pz == '\n')
+            if (SWAG_IS_EOL(*pz))
             {
                 copyText += *pz++;
                 i--;
