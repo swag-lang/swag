@@ -1134,7 +1134,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
 
     // Leave all scopes
     const Scope* topScope;
-    if (node->ownerInline() && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
+    if (node->hasOwnerInline() && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the

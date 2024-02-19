@@ -57,7 +57,7 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
         ip->dynFlags &= ~BCID_SAFETY_OF;
     }
 
-    if (ip->node && ip->node->ownerInline())
+    if (ip->node && ip->node->hasOwnerInline())
         context->contextBcFlags |= OCF_HAS_INLINE;
 
     switch (ip->op)

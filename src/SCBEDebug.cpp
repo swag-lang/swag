@@ -534,7 +534,7 @@ void SCBEDebug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteC
     SWAG_ASSERT(!cpuFct->dbgLines.empty());
 
     AstFuncDecl* inlined = nullptr;
-    if (ip->node && ip->node->ownerInline())
+    if (ip->node && ip->node->hasOwnerInline())
         inlined = ip->node->ownerInline()->func;
 
     if (cpuFct->dbgLines.back().sourceFile != loc.file || inlined != cpuFct->dbgLines.back().inlined)

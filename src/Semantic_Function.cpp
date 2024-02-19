@@ -1234,7 +1234,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
 bool Semantic::resolveRetVal(SemanticContext* context)
 {
     auto       node    = context->node;
-    const auto fctDecl = node->ownerInline() ? node->ownerInline()->func : node->ownerFct;
+    const auto fctDecl = node->hasOwnerInline() ? node->ownerInline()->func : node->ownerFct;
 
     SWAG_VERIFY(fctDecl, context->report({node, Err(Err0469)}));
     SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Err(Err0469)}));
@@ -1355,7 +1355,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
     // For a return inside an inline block, take the inlined function, except for a mixin or
     // if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
     auto funcNode = node->ownerFct;
-    if (node->ownerInline() && node->ownerInline()->isParentOf(node))
+    if (node->hasOwnerInline() && node->ownerInline()->isParentOf(node))
     {
         if (!node->ownerInline()->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !node->hasAstFlag(AST_IN_MIXIN))
         {
@@ -1504,7 +1504,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         const Diagnostic  err{child, FMT(Err(Err0623), concreteType->getDisplayNameC(), funcNode->token.c_str(), concreteType->name.c_str())};
         const Diagnostic* note = nullptr;
 
-        if (node->ownerInline() && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+        if (node->hasOwnerInline() && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
             note = Diagnostic::note(funcNode, funcNode->getTokenName(), FMT(Nte(Nte0118), node->ownerInline()->func->token.c_str(), funcNode->token.c_str()));
 
         return context->report(err, note);
@@ -1690,7 +1690,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
     // Be sure this is not recursive
     uint32_t cpt         = 0;
-    auto     ownerInline = identifier->ownerInline();
+    auto     ownerInline = identifier->safeOwnerInline();
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
@@ -1703,7 +1703,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
             }
         }
 
-        ownerInline = ownerInline->ownerInline();
+        ownerInline = ownerInline->safeOwnerInline();
     }
 
     // The content will be inline in its separated syntax block

@@ -1243,7 +1243,7 @@ void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverloa
     {
         const auto overload = node->resolvedSymbolOverload;
         SWAG_ASSERT(overload);
-        if (overload->node->ownerInline() && overload->node->ownerInline()->resultRegisterRc.countResults)
+        if (overload->node->hasOwnerInline() && overload->node->ownerInline()->resultRegisterRc.countResults)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline()->resultRegisterRc);
         else
             EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);

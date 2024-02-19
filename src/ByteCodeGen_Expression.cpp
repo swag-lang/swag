@@ -199,7 +199,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         bool     canDrop      = true;
         if (parentReturn)
         {
-            if (node->ownerInline())
+            if (node->hasOwnerInline())
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline()->resultRegisterRc);
             else
             {

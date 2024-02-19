@@ -355,7 +355,6 @@ struct AstNode
     void removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
 
     ComputedValue* computedValue() const { return extension && extension->semantic ? extension->semantic->computedValue : nullptr; }
-    AstInline*     ownerInline() const { return extension && extension->owner ? extension->owner->ownerInline : nullptr; }
 
     struct NodeExtensionByteCode
     {
@@ -427,6 +426,10 @@ struct AstNode
     NodeExtensionSemantic* extSemantic() const { return extension->semantic; }
     NodeExtensionOwner*    extOwner() const { return extension->owner; }
     NodeExtensionMisc*     extMisc() const { return extension->misc; }
+
+    AstInline* ownerInline() const { return extension->owner->ownerInline; }
+    AstInline* safeOwnerInline() const { return extension && extension->owner ? extension->owner->ownerInline : nullptr; }
+    bool       hasOwnerInline() const { return extension && extension->owner && extension->owner->ownerInline; }
 
     AstNodeKind         kind;
     AstNodeResolveState semanticState;

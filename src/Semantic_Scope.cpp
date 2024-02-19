@@ -41,7 +41,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     {
         // Be sure this is correct
         SWAG_CHECK(resolveRetVal(context));
-        const auto fctDecl = node->ownerInline() ? node->ownerInline()->func : node->ownerFct;
+        const auto fctDecl = node->hasOwnerInline() ? node->ownerInline()->func : node->ownerFct;
         SWAG_ASSERT(fctDecl);
         const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(typeFct->returnType->isStruct());
@@ -74,7 +74,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 node->addSemFlag(SEMFLAG_FORCE_SCOPE);
                 node->typeInfo                      = g_TypeMgr->typeInfoVoid;
                 identifierRef->previousResolvedNode = node;
-                if (node->ownerInline())
+                if (node->hasOwnerInline())
                     identifierRef->startScope = node->ownerInline()->parametersScope;
                 else
                     identifierRef->startScope = node->ownerFct->scope;

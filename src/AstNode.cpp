@@ -122,10 +122,10 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         allocateExtension(ExtensionKind::Owner);
         extOwner()->ownerInline = context.ownerInline;
     }
-    else if(from->hasExtOwner() && from->extOwner()->ownerInline)
+    else if(from->safeOwnerInline())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerInline = from->extOwner()->ownerInline;
+        extOwner()->ownerInline = from->ownerInline();
     }
     
     token.text = from->token.text;
@@ -660,7 +660,7 @@ void AstNode::inheritOwners(const AstNode* op)
         extOwner()->ownerCompilerIfBlock = nullptr;
     }
 
-    if (op->ownerInline())
+    if (op->hasOwnerInline())
     {
         allocateExtension(ExtensionKind::Owner);
         extOwner()->ownerInline = op->ownerInline();
@@ -1127,7 +1127,7 @@ bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
         return true;
     if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
         return true;
-    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !ownerInline())
+    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !hasOwnerInline())
         return false;
     if (overload->hasFlag(OVERLOAD_VAR_INLINE) && ownerInline()->ownerFct != ownerFct)
         return false;

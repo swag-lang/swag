@@ -556,7 +556,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 break;
             }
 
-            if (!lastBreakIp->node->ownerInline() && ip->node->ownerInline())
+            if (!lastBreakIp->node->hasOwnerInline() && ip->node->hasOwnerInline())
             {
                 // Can only step into a mixin if we come from a not inlined block
                 if (!ip->node->hasAstFlag(AST_IN_MIXIN))

@@ -204,7 +204,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         while (inlined)
         {
             g_ByteCodeDebugger.printTitleNameType("inlined", inlined->func->getScopedName(), inlined->func->typeInfo->getDisplayNameC());
-            inlined = inlined->ownerInline();
+            inlined = inlined->safeOwnerInline();
         }
 
         g_ByteCodeDebugger.printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
@@ -551,7 +551,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         if (arg.split.size() == 2)
             offset = arg.split[1].toInt();
 
-        const auto inl = g_ByteCodeDebugger.lastBreakIp->node->ownerInline();
+        const auto inl = g_ByteCodeDebugger.lastBreakIp->node->safeOwnerInline();
         if (inl)
         {
             const auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
@@ -594,7 +594,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         {
             toLogBc->printName();
 
-            const auto inl = g_ByteCodeDebugger.lastBreakIp->node->ownerInline();
+            const auto inl = g_ByteCodeDebugger.lastBreakIp->node->safeOwnerInline();
             if (inl)
             {
                 const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);

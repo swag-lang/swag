@@ -13,7 +13,7 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     auto node = context->node;
 
     // For a try/throw inside an inline block, take the original function, except if it is flagged with 'Swag.CalleeReturn'
-    if (node->ownerInline())
+    if (node->hasOwnerInline())
     {
         if (!node->ownerInline()->func->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !node->hasAstFlag(AST_IN_MIXIN))
             node->addSemFlag(SEMFLAG_EMBEDDED_RETURN);

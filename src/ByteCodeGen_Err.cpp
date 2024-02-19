@@ -68,7 +68,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     }
 
     TypeInfo* returnType = nullptr;
-    if (node->ownerInline())
+    if (node->hasOwnerInline())
         returnType = TypeManager::concreteType(node->ownerInline()->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
         returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
@@ -78,7 +78,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     {
         if (returnType->isStruct())
         {
-            if (node->ownerInline())
+            if (node->hasOwnerInline())
                 node->regInit = node->ownerInline()->resultRegisterRc;
             else if (!context->node->hasSemFlag(SEMFLAG_TRY_2))
             {
@@ -92,7 +92,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             SWAG_CHECK(emitInit(context, returnType, node->regInit, 1, nullptr, nullptr));
             YIELD();
 
-            if (!node->ownerInline())
+            if (!node->hasOwnerInline())
                 freeRegisterRC(context, node->regInit);
         }
         else if (returnType->isArray())
@@ -100,7 +100,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             const auto typeArr = castTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
             if (!typeArr->finalType->isStruct())
             {
-                if (node->ownerInline())
+                if (node->hasOwnerInline())
                 {
                     EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline()->resultRegisterRc)->b.u64 = typeArr->sizeOf;
                 }
@@ -117,7 +117,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
                 if (!context->node->hasSemFlag(SEMFLAG_TRY_2))
                 {
                     reserveRegisterRC(context, node->regInit, 1);
-                    if (node->ownerInline())
+                    if (node->hasOwnerInline())
                         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline()->resultRegisterRc);
                     else
                         EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
@@ -134,7 +134,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         }
         else if (returnType->numRegisters() == 1)
         {
-            if (node->ownerInline())
+            if (node->hasOwnerInline())
             {
                 EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline()->resultRegisterRc[0]);
             }
@@ -148,7 +148,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         }
         else if (returnType->numRegisters() == 2)
         {
-            if (node->ownerInline())
+            if (node->hasOwnerInline())
             {
                 EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline()->resultRegisterRc[0]);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline()->resultRegisterRc[1]);
@@ -168,7 +168,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
     }
 
     // Return from function
-    if (node->ownerInline())
+    if (node->hasOwnerInline())
     {
         node->seekJump = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
@@ -194,9 +194,9 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
     if (defer->deferKind == DeferKind::NoError)
         return true;
 
-    if (node->ownerInline())
+    if (node->hasOwnerInline())
     {
-        while (node->ownerInline())
+        while (node->hasOwnerInline())
             node = node->ownerInline();
 
         auto hasCatch = node;
@@ -275,7 +275,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 
     // try in a top level function is equivalent to assume
     const AstFuncDecl* parentFct = nullptr;
-    if (node->ownerInline() && tryNode->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+    if (node->hasOwnerInline() && tryNode->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         parentFct = node->ownerInline()->func;
     else
         parentFct = node->ownerFct;

@@ -264,7 +264,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     // Flags
     line.flags += ip->hasFlag(BCI_SAFETY) ? "S" : ".";
     line.flags += ip->hasFlag(BCI_TRY_CATCH) ? "E" : ".";
-    line.flags += ip->node && ip->node->ownerInline() ? "I" : ".";
+    line.flags += ip->node && ip->node->hasOwnerInline() ? "I" : ".";
     line.flags += " ";
     line.flags += ip->hasFlag(BCI_IMM_A) ? "A" : ".";
     line.flags += ip->hasFlag(BCI_IMM_B) ? "B" : ".";
@@ -361,7 +361,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         g_Log.setColor(LogColor::CurInstruction);
     else if (forDbg)
         g_Log.setColor(LogColor::Default);
-    else if (ip->node && ip->node->ownerInline())
+    else if (ip->node && ip->node->hasOwnerInline())
         g_Log.setColor(LogColor::Gray);
     else
         g_Log.setColor(LogColor::White);

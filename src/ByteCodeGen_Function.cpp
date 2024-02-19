@@ -75,7 +75,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     TypeInfo*  returnType = nullptr;
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
-    if (node->ownerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+    if (node->hasOwnerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         returnType = TypeManager::concreteType(node->ownerInline()->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
@@ -113,7 +113,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         //
         // INLINE
         //
-        else if (node->ownerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+        else if (node->hasOwnerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         {
             if (returnType->isStruct())
             {
@@ -295,7 +295,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     YIELD();
 
     // A return inside an inline function is just a jump to the end of the block
-    if (node->ownerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+    if (node->hasOwnerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
     {
         node->seekJump = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
@@ -1507,7 +1507,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
         // Must be the last expression in the return expression (no deref !)
         if (node->parent->kind != AstNodeKind::IdentifierRef || node == node->parent->children.back())
         {
-            if (node->ownerInline())
+            if (node->hasOwnerInline())
             {
                 SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerInline()->func->typeInfo, TypeInfoKind::FuncAttr));
                 SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
