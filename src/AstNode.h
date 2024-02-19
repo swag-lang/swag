@@ -427,9 +427,9 @@ struct AstNode
     NodeExtensionOwner*    extOwner() const { return extension->owner; }
     NodeExtensionMisc*     extMisc() const { return extension->misc; }
 
-    AstInline* ownerInline() const { return extension->owner->ownerInline; }
-    AstInline* safeOwnerInline() const { return extension && extension->owner ? extension->owner->ownerInline : nullptr; }
-    bool       hasOwnerInline() const { return extension && extension->owner && extension->owner->ownerInline; }
+    AstInline* ownerInline() const { return extOwner()->ownerInline; }
+    AstInline* safeOwnerInline() const { return hasExtOwner() ? extOwner()->ownerInline : nullptr; }
+    bool       hasOwnerInline() const { return safeOwnerInline() != nullptr; }
 
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
