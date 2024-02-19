@@ -411,8 +411,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
 
         if (!(f->flags & TYPEINFOPARAM_AUTO_NAME))
         {
-            Utf8 n                              = FMT("item%d", idx);
-            toAdd.aliasName                     = n;
+            toAdd.aliasName                     = FMT("item%d", idx);
             f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd);
         }
 

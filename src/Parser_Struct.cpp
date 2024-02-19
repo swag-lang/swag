@@ -138,7 +138,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         ScopedLock lk(newScope->symTable.mutex);
-        Utf8       itfName  = implNode->identifier->children.back()->token.text;
+        const Utf8 itfName  = implNode->identifier->children.back()->token.text;
         const auto symbol   = newScope->symTable.findNoLock(itfName);
         Scope*     subScope = nullptr;
         if (!symbol)

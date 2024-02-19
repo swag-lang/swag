@@ -120,12 +120,12 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 
 namespace
 {
-    bool optimizePassDeadStoreDupScan(ByteCodeOptContext*  context,
-                                      uint32_t             curNode,
-                                      ByteCodeOptTreeNode* node,
-                                      ByteCodeInstruction* ip,
-                                      ByteCodeInstruction* ipScan,
-                                      bool&                canRemove)
+    bool optimizePassDeadStoreDupScan(ByteCodeOptContext*        context,
+                                      uint32_t                   curNode,
+                                      ByteCodeOptTreeNode*       node,
+                                      ByteCodeInstruction*       ip,
+                                      const ByteCodeInstruction* ipScan,
+                                      bool&                      canRemove)
     {
         node->mark = context->mark;
 

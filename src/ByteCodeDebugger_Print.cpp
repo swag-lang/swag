@@ -51,8 +51,8 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
             }
 
             // Erase the message
-            fputs(FMT("\x1B[%dD", strlen(MSG)), stdout);
-            fputs(FMT("\x1B[%dX", strlen(MSG)), stdout);
+            (void) fputs(FMT("\x1B[%dD", strlen(MSG)), stdout);
+            (void) fputs(FMT("\x1B[%dX", strlen(MSG)), stdout);
         }
 
         cpt++;

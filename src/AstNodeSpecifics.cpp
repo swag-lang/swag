@@ -914,7 +914,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     if (identifierFor)
     {
         const auto baseScope     = cloneContext.ownerStructScope;
-        auto       itfName       = children.front()->token.text;
+        const auto itfName       = children.front()->token.text;
         cloneContext.parentScope = Ast::newScope(newNode, itfName, ScopeKind::Impl, baseScope);
         newNode->scope           = cloneContext.parentScope;
 

@@ -176,7 +176,7 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         concat.addU16(NUM_SECTIONS_X); // .NumberOfSections
 
     time_t now;
-    time(&now);
+    (void) time(&now);
     // concat.addU32((uint32_t)(now & 0xFFFFFFFF)); // .TimeDateStamp
     concat.addU32(0);
 

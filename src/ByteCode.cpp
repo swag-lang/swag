@@ -270,7 +270,7 @@ bool ByteCode::canEmit() const
     return true;
 }
 
-bool ByteCode::areSame(ByteCodeInstruction*       start0,
+bool ByteCode::areSame(const ByteCodeInstruction* start0,
                        const ByteCodeInstruction* end0,
                        const ByteCodeInstruction* start1,
                        const ByteCodeInstruction* end1,

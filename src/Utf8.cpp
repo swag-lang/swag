@@ -757,7 +757,7 @@ Utf8 Utf8::format(const char* format, ...)
     Utf8 vec;
     vec.resize(static_cast<int>(len));
     va_start(args, format);
-    vsnprintf(vec.buffer, len + 1, format, args);
+    (void) vsnprintf(vec.buffer, len + 1, format, args);
     va_end(args);
     return vec;
 }

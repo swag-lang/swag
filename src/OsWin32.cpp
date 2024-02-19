@@ -955,10 +955,10 @@ namespace OS
             VectorNative<uint16_t>    unwind;
 
             // Fake emit in order to compute the unwind infos
-            gen.emit_Push(RDI);
+            gen.emitPush(RDI);
             unwindRegs.push_back(RDI);
             unwindOffsetRegs.push_back(gen.concat.totalCount());
-            gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+            gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
             const auto sizeProlog = gen.concat.totalCount();
             SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
@@ -979,22 +979,22 @@ namespace OS
         const auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
         SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
-        gen.emit_Push(RDI);
-        gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-        gen.emit_Load64_Immediate(RDI, reinterpret_cast<uint64_t>(context->sp), true);
-        gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-        gen.emit_Load64_Immediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), true);
-        gen.emit_Call_Indirect(RAX);
+        gen.emitPush(RDI);
+        gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+        gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->sp), true);
+        gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
+        gen.emitLoad64Immediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), true);
+        gen.emitCallIndirect(RAX);
 
         if (!returnType->isVoid() && !retCopyAddr)
         {
-            gen.emit_Load64_Immediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), true);
-            gen.emit_Call_Result(typeInfoFunc, 0);
+            gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), true);
+            gen.emitCallResult(typeInfoFunc, 0);
         }
 
-        gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
-        gen.emit_Pop(RDI);
-        gen.emit_Ret();
+        gen.emitOpNImmediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
+        gen.emitPop(RDI);
+        gen.emitRet();
 
         // The real deal : make the call
         using FuncPtr = void(*)();

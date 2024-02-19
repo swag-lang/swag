@@ -972,7 +972,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     const auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     if (returnType->isStruct())
     {
-        Utf8              retVal = g_LangSpec->name_retval;
+        const Utf8        retVal = g_LangSpec->name_retval;
         AddSymbolTypeInfo toAdd1;
         toAdd1.node      = funcNode->returnType;
         toAdd1.typeInfo  = returnType;
