@@ -19,15 +19,15 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
         g_Log.print(FMT("#%d: ", i + 1));
         switch (bkp.type)
         {
-        case DebugBkpType::FuncName:
-            g_Log.print(FMT("function with a match on [[%s]]", bkp.name.c_str()));
-            break;
-        case DebugBkpType::FileLine:
-            g_Log.print(FMT("file %s, line [[%d]]", bkp.name.c_str(), bkp.line));
-            break;
-        case DebugBkpType::InstructionIndex:
-            g_Log.print(FMT("instruction [[%d]]", bkp.line));
-            break;
+            case DebugBkpType::FuncName:
+                g_Log.print(FMT("function with a match on [[%s]]", bkp.name.c_str()));
+                break;
+            case DebugBkpType::FileLine:
+                g_Log.print(FMT("file %s, line [[%d]]", bkp.name.c_str(), bkp.line));
+                break;
+            case DebugBkpType::InstructionIndex:
+                g_Log.print(FMT("instruction [[%d]]", bkp.line));
+                break;
         }
 
         if (bkp.disabled)
@@ -49,80 +49,80 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 
         switch (bkp.type)
         {
-        case DebugBkpType::FuncName:
-        {
-            if (context->ip == context->bc->out && testNameFilter(context->bc->getPrintName(), bkp.name))
+            case DebugBkpType::FuncName:
             {
-                if (!bkp.autoDisabled)
+                if (context->ip == context->bc->out && testNameFilter(context->bc->getPrintName(), bkp.name))
                 {
-                    printMsgBkp(FMT("breakpoint hit #%d function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
-                    stepMode          = DebugStepMode::None;
-                    context->debugOn  = true;
-                    forcePrintContext = true;
-                    bkp.autoDisabled  = true;
-                    if (bkp.autoRemove)
-                        breakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    return;
+                    if (!bkp.autoDisabled)
+                    {
+                        printMsgBkp(FMT("breakpoint hit #%d function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
+                        stepMode          = DebugStepMode::None;
+                        context->debugOn  = true;
+                        forcePrintContext = true;
+                        bkp.autoDisabled  = true;
+                        if (bkp.autoRemove)
+                            breakpoints.erase(it);
+                        else
+                            bkp.autoDisabled = true;
+                        return;
+                    }
                 }
+                else
+                {
+                    bkp.autoDisabled = false;
+                }
+                break;
             }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-            break;
-        }
 
-        case DebugBkpType::FileLine:
-        {
-            const auto loc = ByteCode::getLocation(context->bc, context->ip, true);
-            if (loc.file && loc.location && loc.file->name == bkp.name && loc.location->line + 1 == bkp.line)
+            case DebugBkpType::FileLine:
             {
-                if (!bkp.autoDisabled)
+                const auto loc = ByteCode::getLocation(context->bc, context->ip, true);
+                if (loc.file && loc.location && loc.file->name == bkp.name && loc.location->line + 1 == bkp.line)
                 {
-                    printMsgBkp(FMT("breakpoint hit #%d at line [[%d]]", idxBkp, bkp.line));
-                    stepMode          = DebugStepMode::None;
-                    context->debugOn  = true;
-                    forcePrintContext = true;
-                    if (bkp.autoRemove)
-                        breakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    return;
+                    if (!bkp.autoDisabled)
+                    {
+                        printMsgBkp(FMT("breakpoint hit #%d at line [[%d]]", idxBkp, bkp.line));
+                        stepMode          = DebugStepMode::None;
+                        context->debugOn  = true;
+                        forcePrintContext = true;
+                        if (bkp.autoRemove)
+                            breakpoints.erase(it);
+                        else
+                            bkp.autoDisabled = true;
+                        return;
+                    }
                 }
+                else
+                {
+                    bkp.autoDisabled = false;
+                }
+                break;
             }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-            break;
-        }
 
-        case DebugBkpType::InstructionIndex:
-        {
-            const uint32_t offset = static_cast<uint32_t>(context->ip - context->bc->out);
-            if (offset == bkp.line && context->bc == bkp.bc)
+            case DebugBkpType::InstructionIndex:
             {
-                if (!bkp.autoDisabled)
+                const uint32_t offset = static_cast<uint32_t>(context->ip - context->bc->out);
+                if (offset == bkp.line && context->bc == bkp.bc)
                 {
-                    printMsgBkp(FMT("breakpoint hit #%d at instruction [[%d]]", idxBkp, bkp.line));
-                    stepMode          = DebugStepMode::None;
-                    context->debugOn  = true;
-                    forcePrintContext = true;
-                    if (bkp.autoRemove)
-                        breakpoints.erase(it);
-                    else
-                        bkp.autoDisabled = true;
-                    return;
+                    if (!bkp.autoDisabled)
+                    {
+                        printMsgBkp(FMT("breakpoint hit #%d at instruction [[%d]]", idxBkp, bkp.line));
+                        stepMode          = DebugStepMode::None;
+                        context->debugOn  = true;
+                        forcePrintContext = true;
+                        if (bkp.autoRemove)
+                            breakpoints.erase(it);
+                        else
+                            bkp.autoDisabled = true;
+                        return;
+                    }
                 }
+                else
+                {
+                    bkp.autoDisabled = false;
+                }
+                break;
             }
-            else
-            {
-                bkp.autoDisabled = false;
-            }
-            break;
-        }
         }
     }
 }

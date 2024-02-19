@@ -150,16 +150,16 @@ llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBui
     {
         switch (numBits)
         {
-        case 8:
-            return builder.getInt8(ip->a.u8);
-        case 16:
-            return builder.getInt16(ip->a.u16);
-        case 32:
-            return builder.getInt32(ip->a.u32);
-        case 64:
-            return builder.getInt64(ip->a.u64);
-        default:
-            break;
+            case 8:
+                return builder.getInt8(ip->a.u8);
+            case 16:
+                return builder.getInt16(ip->a.u16);
+            case 32:
+                return builder.getInt32(ip->a.u32);
+            case 64:
+                return builder.getInt64(ip->a.u64);
+            default:
+                break;
         }
     }
 

@@ -79,17 +79,17 @@ void BackendLinker::getArgumentsCoff(const BuildParameters& buildParameters, Vec
 
     switch (outputKind)
     {
-    case BuildCfgOutputKind::Executable:
-        arguments.push_back(FMT("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
-        break;
-    case BuildCfgOutputKind::DynamicLib:
-        arguments.push_back("/DLL");
-        break;
-    case BuildCfgOutputKind::StaticLib:
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case BuildCfgOutputKind::Executable:
+            arguments.push_back(FMT("/STACK:%d,%d", g_CommandLine.limitStackRT, g_CommandLine.limitStackRT));
+            break;
+        case BuildCfgOutputKind::DynamicLib:
+            arguments.push_back("/DLL");
+            break;
+        case BuildCfgOutputKind::StaticLib:
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     const auto outFileName = Backend::getOutputFileName(g_CommandLine.target, buildParameters.module->name, outputKind);

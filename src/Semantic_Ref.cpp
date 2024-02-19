@@ -628,136 +628,136 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
     switch (arrayType->kind)
     {
-    case TypeInfoKind::Pointer:
-    {
-        if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
+        case TypeInfoKind::Pointer:
         {
-            const Diagnostic err{arrayNode->array, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
-            return context->report(err);
-        }
-
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typePtr = castTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-
-        if (typePtr->pointedType->isVoid())
-        {
-            Diagnostic err{arrayNode->access, Err(Err0421)};
-            err.addNote(arrayNode->array, Diagnostic::isType(typePtr));
-            return context->report(err);
-        }
-
-        arrayNode->typeInfo = typePtr->pointedType;
-        arrayNode->addAstFlag(AST_ARRAY_POINTER_REF);
-        arrayNode->array->addAstFlag(AST_ARRAY_POINTER_REF);
-        arrayNode->byteCodeFct = ByteCodeGen::emitPointerRef;
-        break;
-    }
-
-    case TypeInfoKind::Native:
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        if (arrayType->nativeType == NativeTypeKind::String)
-        {
-            arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
-            arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
-            arrayNode->addAstFlag(AST_IS_CONST);
-        }
-        else
-        {
-            Diagnostic err{arrayNode->array, FMT(Err(Err0260), arrayType->getDisplayNameC())};
-            if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
-            return context->report(err);
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Array:
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typeArray   = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
-        arrayNode->typeInfo    = typeArray->pointedType;
-        arrayNode->byteCodeFct = ByteCodeGen::emitArrayRef;
-
-        // Try to dereference as a constant if we can
-        uint32_t     storageOffset  = UINT32_MAX;
-        DataSegment* storageSegment = nullptr;
-        SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
-        if (storageSegment)
-        {
-            arrayNode->setFlagsValueIsComputed();
-            arrayNode->computedValue()->storageOffset  = storageOffset;
-            arrayNode->computedValue()->storageSegment = storageSegment;
-        }
-        else
-        {
-            SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, typeArray->count));
-        }
-        break;
-    }
-
-    case TypeInfoKind::Slice:
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typePtr     = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
-        arrayNode->typeInfo    = typePtr->pointedType;
-        arrayNode->byteCodeFct = ByteCodeGen::emitSliceRef;
-        break;
-    }
-
-    case TypeInfoKind::Struct:
-        arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
-
-        if (arrayType->isTuple())
-        {
-            if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
+            if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
             {
-                Diagnostic err{arrayNode->access, Err(Err0382)};
-                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
+                const Diagnostic err{arrayNode->array, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
                 return context->report(err);
             }
 
-            Diagnostic err{arrayNode->access, Err(Err0382)};
-            err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-            return context->report(err);
-        }
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typePtr = castTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
 
-        arrayNode->typeInfo = arrayType;
-
-    // In fact we are taking the address of an operator [] call result
-        if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
-        {
-            SWAG_CHECK(resolveArrayPointerDeRef(context));
-            YIELD();
-            arrayNode->typeInfo = TypeManager::concreteType(arrayNode->typeInfo);
-        }
-
-    // Only the top level ArrayPointerIndex node will deal with the call
-        if (arrayNode->parent->kind != AstNodeKind::ArrayPointerIndex)
-        {
-            // Flatten all indexes. self and value will be set before the call later
-            // Can be already done, so do not overwrite
-            // :StructFlatParamsDone
-            if (arrayNode->structFlatParams.empty())
+            if (typePtr->pointedType->isVoid())
             {
-                arrayNode->structFlatParams.push_back(arrayNode->access);
+                Diagnostic err{arrayNode->access, Err(Err0421)};
+                err.addNote(arrayNode->array, Diagnostic::isType(typePtr));
+                return context->report(err);
+            }
 
-                AstNode* child = arrayNode->array;
-                while (child->kind == AstNodeKind::ArrayPointerIndex)
+            arrayNode->typeInfo = typePtr->pointedType;
+            arrayNode->addAstFlag(AST_ARRAY_POINTER_REF);
+            arrayNode->array->addAstFlag(AST_ARRAY_POINTER_REF);
+            arrayNode->byteCodeFct = ByteCodeGen::emitPointerRef;
+            break;
+        }
+
+        case TypeInfoKind::Native:
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            if (arrayType->nativeType == NativeTypeKind::String)
+            {
+                arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
+                arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
+                arrayNode->addAstFlag(AST_IS_CONST);
+            }
+            else
+            {
+                Diagnostic err{arrayNode->array, FMT(Err(Err0260), arrayType->getDisplayNameC())};
+                if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
+                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
+                return context->report(err);
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::Array:
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typeArray   = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+            arrayNode->typeInfo    = typeArray->pointedType;
+            arrayNode->byteCodeFct = ByteCodeGen::emitArrayRef;
+
+            // Try to dereference as a constant if we can
+            uint32_t     storageOffset  = UINT32_MAX;
+            DataSegment* storageSegment = nullptr;
+            SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
+            if (storageSegment)
+            {
+                arrayNode->setFlagsValueIsComputed();
+                arrayNode->computedValue()->storageOffset  = storageOffset;
+                arrayNode->computedValue()->storageSegment = storageSegment;
+            }
+            else
+            {
+                SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, typeArray->count));
+            }
+            break;
+        }
+
+        case TypeInfoKind::Slice:
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typePtr     = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+            arrayNode->typeInfo    = typePtr->pointedType;
+            arrayNode->byteCodeFct = ByteCodeGen::emitSliceRef;
+            break;
+        }
+
+        case TypeInfoKind::Struct:
+            arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
+
+            if (arrayType->isTuple())
+            {
+                if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
                 {
-                    const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
-                    arrayNode->structFlatParams.push_front(arrayChild->access);
-                    child = arrayChild->array;
+                    Diagnostic err{arrayNode->access, Err(Err0382)};
+                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
+                    return context->report(err);
+                }
+
+                Diagnostic err{arrayNode->access, Err(Err0382)};
+                err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+                return context->report(err);
+            }
+
+            arrayNode->typeInfo = arrayType;
+
+        // In fact we are taking the address of an operator [] call result
+            if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
+            {
+                SWAG_CHECK(resolveArrayPointerDeRef(context));
+                YIELD();
+                arrayNode->typeInfo = TypeManager::concreteType(arrayNode->typeInfo);
+            }
+
+        // Only the top level ArrayPointerIndex node will deal with the call
+            if (arrayNode->parent->kind != AstNodeKind::ArrayPointerIndex)
+            {
+                // Flatten all indexes. self and value will be set before the call later
+                // Can be already done, so do not overwrite
+                // :StructFlatParamsDone
+                if (arrayNode->structFlatParams.empty())
+                {
+                    arrayNode->structFlatParams.push_back(arrayNode->access);
+
+                    AstNode* child = arrayNode->array;
+                    while (child->kind == AstNodeKind::ArrayPointerIndex)
+                    {
+                        const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                        arrayNode->structFlatParams.push_front(arrayChild->access);
+                        child = arrayChild->array;
+                    }
                 }
             }
-        }
-        break;
+            break;
 
-    default:
-    {
-        return context->report({arrayNode->array, FMT(Err(Err0260), arrayType->getDisplayNameC())});
-    }
+        default:
+        {
+            return context->report({arrayNode->array, FMT(Err(Err0260), arrayType->getDisplayNameC())});
+        }
     }
 
     return true;
@@ -882,188 +882,188 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
     switch (arrayType->kind)
     {
-    case TypeInfoKind::Pointer:
-    {
-        if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
+        case TypeInfoKind::Pointer:
         {
-            Diagnostic err{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
-            err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-            return context->report(err, Diagnostic::note(Nte(Nte0103)));
-        }
-
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typePtr = castTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-
-        if (typePtr->pointedType->isVoid())
-        {
-            Diagnostic err{arrayNode->access, Err(Err0421)};
-            err.addNote(arrayNode->array, Diagnostic::isType(typePtr));
-            return context->report(err);
-        }
-
-        arrayNode->typeInfo = typePtr->pointedType;
-        setupIdentifierRef(context, arrayNode);
-
-        // Try to dereference as a constant if we can
-        if (arrayNode->array->hasComputedValue() && arrayNode->access->hasComputedValue())
-        {
-            const auto storageSegment = arrayNode->array->computedValue()->storageSegment;
-            if (!storageSegment)
+            if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
             {
-                const Diagnostic err{arrayNode, Err(Err0599)};
+                Diagnostic err{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
+                err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+                return context->report(err, Diagnostic::note(Nte(Nte0103)));
+            }
+
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typePtr = castTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+
+            if (typePtr->pointedType->isVoid())
+            {
+                Diagnostic err{arrayNode->access, Err(Err0421)};
+                err.addNote(arrayNode->array, Diagnostic::isType(typePtr));
                 return context->report(err);
             }
 
-            const auto storageOffset = arrayNode->array->computedValue()->storageOffset;
-            SWAG_ASSERT(storageOffset != UINT32_MAX);
+            arrayNode->typeInfo = typePtr->pointedType;
+            setupIdentifierRef(context, arrayNode);
 
-            const auto offset = arrayNode->access->computedValue()->reg.u32 * typePtr->pointedType->sizeOf;
-            const auto ptr    = storageSegment->address(storageOffset + offset);
-            if (!derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
+            // Try to dereference as a constant if we can
+            if (arrayNode->array->hasComputedValue() && arrayNode->access->hasComputedValue())
             {
-                if (typePtr->pointedType->isStruct())
+                const auto storageSegment = arrayNode->array->computedValue()->storageSegment;
+                if (!storageSegment)
                 {
-                    arrayNode->setFlagsValueIsComputed();
-                    arrayNode->computedValue()->storageSegment = storageSegment;
-                    arrayNode->computedValue()->storageOffset  = storageOffset;
-                    arrayNode->typeInfo                        = typePtr->pointedType;
+                    const Diagnostic err{arrayNode, Err(Err0599)};
+                    return context->report(err);
+                }
+
+                const auto storageOffset = arrayNode->array->computedValue()->storageOffset;
+                SWAG_ASSERT(storageOffset != UINT32_MAX);
+
+                const auto offset = arrayNode->access->computedValue()->reg.u32 * typePtr->pointedType->sizeOf;
+                const auto ptr    = storageSegment->address(storageOffset + offset);
+                if (!derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
+                {
+                    if (typePtr->pointedType->isStruct())
+                    {
+                        arrayNode->setFlagsValueIsComputed();
+                        arrayNode->computedValue()->storageSegment = storageSegment;
+                        arrayNode->computedValue()->storageOffset  = storageOffset;
+                        arrayNode->typeInfo                        = typePtr->pointedType;
+                    }
                 }
             }
-        }
 
-        break;
-    }
-
-    case TypeInfoKind::Array:
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typePtr  = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
-        arrayNode->typeInfo = typePtr->pointedType;
-        setupIdentifierRef(context, arrayNode);
-
-        // Try to dereference as a constant if we can
-        uint32_t     storageOffset  = UINT32_MAX;
-        DataSegment* storageSegment = nullptr;
-        SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
-        if (storageSegment)
-        {
-            const auto ptr = storageSegment->address(storageOffset);
-            if (!derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
-            {
-                if (typePtr->finalType->isStruct())
-                {
-                    arrayNode->setFlagsValueIsComputed();
-                    arrayNode->computedValue()->storageSegment = storageSegment;
-                    arrayNode->computedValue()->storageOffset  = storageOffset;
-                    arrayNode->typeInfo                        = typePtr->finalType;
-                }
-            }
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Slice:
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typeSlice = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
-        arrayNode->typeInfo  = typeSlice->pointedType;
-        setupIdentifierRef(context, arrayNode);
-
-        // Try to dereference as a constant if we can
-        if (arrayNode->access->hasComputedValue())
-        {
-            if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
-            {
-                const auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
-                const auto  slice         = static_cast<SwagSlice*>(computedValue.getStorageAddr());
-                SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
-
-                auto ptr = static_cast<uint8_t*>(slice->buffer);
-                ptr += arrayNode->access->computedValue()->reg.u64 * typeSlice->pointedType->sizeOf;
-                derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr);
-            }
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Variadic:
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        arrayNode->typeInfo = g_TypeMgr->typeInfoAny;
-        break;
-
-    case TypeInfoKind::TypedVariadic:
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
-        const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
-        arrayNode->typeInfo     = typeVariadic->rawType;
-        setupIdentifierRef(context, arrayNode);
-        break;
-    }
-
-    case TypeInfoKind::Struct:
-    {
-        arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
-
-        // Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
-        if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
-            arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL))
-        {
-            arrayNode->typeInfo = arrayType;
             break;
         }
 
-        // Flatten all operator parameters : self, then all indexes
-        // :StructFlatParamsDone
-        arrayNode->structFlatParams.clear();
-        arrayNode->structFlatParams.push_back(arrayNode->access);
-
-        const auto serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
-        AstNode*   child  = arrayNode->array;
-        while (child->kind == AstNodeKind::ArrayPointerIndex &&
-               child->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == serial)
+        case TypeInfoKind::Array:
         {
-            const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
-            arrayNode->structFlatParams.push_front(arrayChild->access);
-            child = arrayChild->array;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typePtr  = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+            arrayNode->typeInfo = typePtr->pointedType;
+            setupIdentifierRef(context, arrayNode);
+
+            // Try to dereference as a constant if we can
+            uint32_t     storageOffset  = UINT32_MAX;
+            DataSegment* storageSegment = nullptr;
+            SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
+            if (storageSegment)
+            {
+                const auto ptr = storageSegment->address(storageOffset);
+                if (!derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
+                {
+                    if (typePtr->finalType->isStruct())
+                    {
+                        arrayNode->setFlagsValueIsComputed();
+                        arrayNode->computedValue()->storageSegment = storageSegment;
+                        arrayNode->computedValue()->storageOffset  = storageOffset;
+                        arrayNode->typeInfo                        = typePtr->finalType;
+                    }
+                }
+            }
+
+            break;
         }
 
-        // Self in first position
-        arrayNode->structFlatParams.push_front(arrayNode->array);
-
-        // Resolve call
-        SymbolName* symbol = nullptr;
-        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array, &symbol));
-        if (!symbol)
+        case TypeInfoKind::Slice:
         {
-            YIELD();
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typeSlice = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+            arrayNode->typeInfo  = typeSlice->pointedType;
+            setupIdentifierRef(context, arrayNode);
 
-            if (arrayNode->array->token.text.empty())
+            // Try to dereference as a constant if we can
+            if (arrayNode->access->hasComputedValue())
             {
-                Diagnostic err{arrayNode->access, FMT(Err(Err0259), arrayType->getDisplayNameC())};
+                if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+                {
+                    const auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
+                    const auto  slice         = static_cast<SwagSlice*>(computedValue.getStorageAddr());
+                    SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
+
+                    auto ptr = static_cast<uint8_t*>(slice->buffer);
+                    ptr += arrayNode->access->computedValue()->reg.u64 * typeSlice->pointedType->sizeOf;
+                    derefConstantValue(context, arrayNode, typeSlice->pointedType, computedValue.storageSegment, ptr);
+                }
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::Variadic:
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            arrayNode->typeInfo = g_TypeMgr->typeInfoAny;
+            break;
+
+        case TypeInfoKind::TypedVariadic:
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
+            const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
+            arrayNode->typeInfo     = typeVariadic->rawType;
+            setupIdentifierRef(context, arrayNode);
+            break;
+        }
+
+        case TypeInfoKind::Struct:
+        {
+            arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
+
+            // Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
+            if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
+                arrayNode->parent->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL))
+            {
+                arrayNode->typeInfo = arrayType;
+                break;
+            }
+
+            // Flatten all operator parameters : self, then all indexes
+            // :StructFlatParamsDone
+            arrayNode->structFlatParams.clear();
+            arrayNode->structFlatParams.push_back(arrayNode->access);
+
+            const auto serial = arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL);
+            AstNode*   child  = arrayNode->array;
+            while (child->kind == AstNodeKind::ArrayPointerIndex &&
+                   child->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_SERIAL) == serial)
+            {
+                const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                arrayNode->structFlatParams.push_front(arrayChild->access);
+                child = arrayChild->array;
+            }
+
+            // Self in first position
+            arrayNode->structFlatParams.push_front(arrayNode->array);
+
+            // Resolve call
+            SymbolName* symbol = nullptr;
+            SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array, &symbol));
+            if (!symbol)
+            {
+                YIELD();
+
+                if (arrayNode->array->token.text.empty())
+                {
+                    Diagnostic err{arrayNode->access, FMT(Err(Err0259), arrayType->getDisplayNameC())};
+                    err.hint = FMT(Nte(Nte0144), g_LangSpec->name_opIndex.c_str());
+                    err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+                    return context->report(err);
+                }
+
+                Diagnostic err{arrayNode->access, FMT(Err(Err0258), arrayNode->array->token.c_str(), arrayType->getDisplayNameC())};
                 err.hint = FMT(Nte(Nte0144), g_LangSpec->name_opIndex.c_str());
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(err);
             }
 
-            Diagnostic err{arrayNode->access, FMT(Err(Err0258), arrayNode->array->token.c_str(), arrayType->getDisplayNameC())};
-            err.hint = FMT(Nte(Nte0144), g_LangSpec->name_opIndex.c_str());
-            err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-            return context->report(err);
+            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams));
+            break;
         }
 
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams));
-        break;
-    }
-
-    default:
-    {
-        Diagnostic err{arrayNode->array, FMT(Err(Err0260), arrayNode->array->typeInfo->getDisplayNameC())};
-        if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-            err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
-        return context->report(err);
-    }
+        default:
+        {
+            Diagnostic err{arrayNode->array, FMT(Err(Err0260), arrayNode->array->typeInfo->getDisplayNameC())};
+            if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
+                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte0112));
+            return context->report(err);
+        }
     }
 
     return true;

@@ -123,54 +123,54 @@ void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, 
 {
     switch (fmt.bitCount)
     {
-    case 8:
-    default:
-        if (fmt.isSigned)
-            result = FMT("%4d ", getAddrValue<int8_t>(addr));
-        else if (!fmt.isHexa)
-            result = FMT("%3u ", getAddrValue<uint8_t>(addr));
-        else if (fmt.print0X)
-            result = FMT("0x%02llx ", getAddrValue<uint8_t>(addr));
-        else
-            result = FMT("%02llx ", getAddrValue<uint8_t>(addr));
-        break;
+        case 8:
+        default:
+            if (fmt.isSigned)
+                result = FMT("%4d ", getAddrValue<int8_t>(addr));
+            else if (!fmt.isHexa)
+                result = FMT("%3u ", getAddrValue<uint8_t>(addr));
+            else if (fmt.print0X)
+                result = FMT("0x%02llx ", getAddrValue<uint8_t>(addr));
+            else
+                result = FMT("%02llx ", getAddrValue<uint8_t>(addr));
+            break;
 
-    case 16:
-        if (fmt.isSigned)
-            result = FMT("%6d ", getAddrValue<int16_t>(addr));
-        else if (!fmt.isHexa)
-            result = FMT("%5u ", getAddrValue<uint16_t>(addr));
-        else if (fmt.print0X)
-            result = FMT("0x%04llx ", getAddrValue<uint16_t>(addr));
-        else
-            result = FMT("%04llx ", getAddrValue<uint16_t>(addr));
-        break;
+        case 16:
+            if (fmt.isSigned)
+                result = FMT("%6d ", getAddrValue<int16_t>(addr));
+            else if (!fmt.isHexa)
+                result = FMT("%5u ", getAddrValue<uint16_t>(addr));
+            else if (fmt.print0X)
+                result = FMT("0x%04llx ", getAddrValue<uint16_t>(addr));
+            else
+                result = FMT("%04llx ", getAddrValue<uint16_t>(addr));
+            break;
 
-    case 32:
-        if (fmt.isFloat)
-            result = FMT("%16.5g ", getAddrValue<float>(addr));
-        else if (fmt.isSigned)
-            result = FMT("%11d ", getAddrValue<int32_t>(addr));
-        else if (!fmt.isHexa)
-            result = FMT("%10u ", getAddrValue<uint32_t>(addr));
-        else if (fmt.print0X)
-            result = FMT("0x%08llx ", getAddrValue<uint32_t>(addr));
-        else
-            result = FMT("%08llx ", getAddrValue<uint32_t>(addr));
-        break;
+        case 32:
+            if (fmt.isFloat)
+                result = FMT("%16.5g ", getAddrValue<float>(addr));
+            else if (fmt.isSigned)
+                result = FMT("%11d ", getAddrValue<int32_t>(addr));
+            else if (!fmt.isHexa)
+                result = FMT("%10u ", getAddrValue<uint32_t>(addr));
+            else if (fmt.print0X)
+                result = FMT("0x%08llx ", getAddrValue<uint32_t>(addr));
+            else
+                result = FMT("%08llx ", getAddrValue<uint32_t>(addr));
+            break;
 
-    case 64:
-        if (fmt.isFloat)
-            result = FMT("%16.5g ", getAddrValue<double>(addr));
-        else if (fmt.isSigned)
-            result = FMT("%21lld ", getAddrValue<int64_t>(addr));
-        else if (!fmt.isHexa)
-            result = FMT("%20llu ", getAddrValue<uint64_t>(addr));
-        else if (fmt.print0X)
-            result = FMT("0x%016llx ", getAddrValue<uint64_t>(addr));
-        else
-            result = FMT("%016llx ", getAddrValue<uint64_t>(addr));
-        break;
+        case 64:
+            if (fmt.isFloat)
+                result = FMT("%16.5g ", getAddrValue<double>(addr));
+            else if (fmt.isSigned)
+                result = FMT("%21lld ", getAddrValue<int64_t>(addr));
+            else if (!fmt.isHexa)
+                result = FMT("%20llu ", getAddrValue<uint64_t>(addr));
+            else if (fmt.print0X)
+                result = FMT("0x%016llx ", getAddrValue<uint64_t>(addr));
+            else
+                result = FMT("%016llx ", getAddrValue<uint64_t>(addr));
+            break;
     }
 }
 
@@ -393,95 +393,95 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     {
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::Any:
-        {
-            auto ptr = static_cast<uint8_t**>(addr)[0];
-            if (ptr == nullptr)
-                str += "null";
-            else
+            case NativeTypeKind::Any:
             {
-                str += FMT("(0x%016llx ", static_cast<void**>(addr)[0]);
-                str += FMT("0x%016llx)", static_cast<void**>(addr)[1]);
-                EvaluateResult res1;
-                res1.type = g_Workspace->swagScope.regTypeInfo;
-                res1.addr = static_cast<void**>(addr)[1];
-                appendTypedValue(context, str, res1, indent + 1);
-                if (str.back() != '\n')
-                    str += "\n";
-            }
-            return;
-        }
-
-        case NativeTypeKind::String:
-        {
-            void*    ptr;
-            uint64_t len;
-
-            if (res.value)
-            {
-                ptr = res.value->text.buffer;
-                len = res.value->text.length();
-            }
-            else
-            {
-                ptr = static_cast<void**>(addr)[0];
-                len = static_cast<uint64_t*>(addr)[1];
+                auto ptr = static_cast<uint8_t**>(addr)[0];
+                if (ptr == nullptr)
+                    str += "null";
+                else
+                {
+                    str += FMT("(0x%016llx ", static_cast<void**>(addr)[0]);
+                    str += FMT("0x%016llx)", static_cast<void**>(addr)[1]);
+                    EvaluateResult res1;
+                    res1.type = g_Workspace->swagScope.regTypeInfo;
+                    res1.addr = static_cast<void**>(addr)[1];
+                    appendTypedValue(context, str, res1, indent + 1);
+                    if (str.back() != '\n')
+                        str += "\n";
+                }
+                return;
             }
 
-            if (!ptr)
-                str += "null";
-            else
+            case NativeTypeKind::String:
             {
-                Utf8 str1;
-                str1.resize(static_cast<int>(len));
-                memcpy(str1.buffer, ptr, len);
-                str += "\"";
-                str += str1;
-                str += "\"";
+                void*    ptr;
+                uint64_t len;
+
+                if (res.value)
+                {
+                    ptr = res.value->text.buffer;
+                    len = res.value->text.length();
+                }
+                else
+                {
+                    ptr = static_cast<void**>(addr)[0];
+                    len = static_cast<uint64_t*>(addr)[1];
+                }
+
+                if (!ptr)
+                    str += "null";
+                else
+                {
+                    Utf8 str1;
+                    str1.resize(static_cast<int>(len));
+                    memcpy(str1.buffer, ptr, len);
+                    str += "\"";
+                    str += str1;
+                    str += "\"";
+                }
+
+                return;
             }
 
-            return;
-        }
+            case NativeTypeKind::Bool:
+                str += FMT("%s", *static_cast<bool*>(addr) ? "true" : "false");
+                return;
 
-        case NativeTypeKind::Bool:
-            str += FMT("%s", *static_cast<bool*>(addr) ? "true" : "false");
-            return;
+            case NativeTypeKind::S8:
+                str += FMT("%d", *static_cast<int8_t*>(addr));
+                return;
+            case NativeTypeKind::S16:
+                str += FMT("%d", *static_cast<int16_t*>(addr));
+                return;
+            case NativeTypeKind::S32:
+                str += FMT("%d", *static_cast<int32_t*>(addr));
+                return;
+            case NativeTypeKind::S64:
+                str += FMT("%lld", *static_cast<int64_t*>(addr));
+                return;
 
-        case NativeTypeKind::S8:
-            str += FMT("%d", *static_cast<int8_t*>(addr));
-            return;
-        case NativeTypeKind::S16:
-            str += FMT("%d", *static_cast<int16_t*>(addr));
-            return;
-        case NativeTypeKind::S32:
-            str += FMT("%d", *static_cast<int32_t*>(addr));
-            return;
-        case NativeTypeKind::S64:
-            str += FMT("%lld", *static_cast<int64_t*>(addr));
-            return;
+            case NativeTypeKind::U8:
+                str += FMT("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
+                return;
+            case NativeTypeKind::U16:
+                str += FMT("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
+                return;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                str += FMT("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
+                return;
+            case NativeTypeKind::U64:
+                str += FMT("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
+                return;
 
-        case NativeTypeKind::U8:
-            str += FMT("%u (0x%x)", *static_cast<uint8_t*>(addr), *static_cast<uint8_t*>(addr));
-            return;
-        case NativeTypeKind::U16:
-            str += FMT("%u (0x%x)", *static_cast<uint16_t*>(addr), *static_cast<uint16_t*>(addr));
-            return;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            str += FMT("%u (0x%x)", *static_cast<uint32_t*>(addr), *static_cast<uint32_t*>(addr));
-            return;
-        case NativeTypeKind::U64:
-            str += FMT("%llu (0x%llx)", *static_cast<uint64_t*>(addr), *static_cast<uint64_t*>(addr));
-            return;
-
-        case NativeTypeKind::F32:
-            str += FMT("%f", *static_cast<float*>(addr));
-            return;
-        case NativeTypeKind::F64:
-            str += FMT("%lf", *static_cast<double*>(addr));
-            return;
-        default:
-            break;
+            case NativeTypeKind::F32:
+                str += FMT("%f", *static_cast<float*>(addr));
+                return;
+            case NativeTypeKind::F64:
+                str += FMT("%lf", *static_cast<double*>(addr));
+                return;
+            default:
+                break;
         }
     }
 

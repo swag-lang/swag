@@ -22,12 +22,12 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     const auto kindLoc = token;
     switch (token.id)
     {
-    case TokenId::KwdEnum:
-        scopeKind = ScopeKind::Enum;
-        SWAG_CHECK(eatToken());
-        break;
-    default:
-        break;
+        case TokenId::KwdEnum:
+            scopeKind = ScopeKind::Enum;
+            SWAG_CHECK(eatToken());
+            break;
+        default:
+            break;
     }
 
     // Identifier
@@ -298,11 +298,11 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         auto symbolKind = SymbolKind::Struct;
         switch (structType)
         {
-        case SyntaxStructType::Interface:
-            symbolKind = SymbolKind::Interface;
-            break;
-        default:
-            break;
+            case SyntaxStructType::Interface:
+                symbolKind = SymbolKind::Interface;
+                break;
+            default:
+                break;
         }
 
         structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(context, structNode, symbolKind);
@@ -373,191 +373,191 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
     switch (token.id)
     {
-    case TokenId::CompilerAssert:
-        SWAG_CHECK(doCompilerAssert(parent, result));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
-    case TokenId::CompilerRun:
-        SWAG_CHECK(doCompilerRunEmbedded(parent, result));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
-    case TokenId::CompilerPrint:
-        SWAG_CHECK(doCompilerPrint(parent, result));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
-    case TokenId::CompilerError:
-        SWAG_CHECK(doCompilerError(parent, result));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
-    case TokenId::CompilerWarning:
-        SWAG_CHECK(doCompilerWarning(parent, result));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
-    case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
-    case TokenId::CompilerIf:
-        SWAG_CHECK(doCompilerIfFor(parent, result, structType == SyntaxStructType::Interface ? AstNodeKind::InterfaceDecl : AstNodeKind::StructDecl));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        break;
+        case TokenId::CompilerAssert:
+            SWAG_CHECK(doCompilerAssert(parent, result));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
+        case TokenId::CompilerRun:
+            SWAG_CHECK(doCompilerRunEmbedded(parent, result));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
+        case TokenId::CompilerPrint:
+            SWAG_CHECK(doCompilerPrint(parent, result));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
+        case TokenId::CompilerError:
+            SWAG_CHECK(doCompilerError(parent, result));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
+        case TokenId::CompilerWarning:
+            SWAG_CHECK(doCompilerWarning(parent, result));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
+        case TokenId::CompilerAst:
+            SWAG_CHECK(doCompilerAst(parent, result));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
+        case TokenId::CompilerIf:
+            SWAG_CHECK(doCompilerIfFor(parent, result, structType == SyntaxStructType::Interface ? AstNodeKind::InterfaceDecl : AstNodeKind::StructDecl));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            break;
 
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doStructBody(parent, structType, &dummyResult));
-        break;
+        case TokenId::SymLeftCurly:
+            SWAG_CHECK(doStructBody(parent, structType, &dummyResult));
+            break;
 
-    case TokenId::SymAttrStart:
-    {
-        AstAttrUse* attrUse;
-        SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
-        SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
-        parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
-        if (attrUse->content)
-            attrUse->content->setOwnerAttrUse(attrUse);
-        break;
-    }
-
-    // Sub definitions
-    case TokenId::KwdEnum:
-        SWAG_CHECK(doEnum(parent, result));
-        break;
-    case TokenId::KwdStruct:
-    case TokenId::KwdUnion:
-    case TokenId::KwdInterface:
-        SWAG_CHECK(doStruct(parent, result));
-        break;
-
-    // A user alias
-    case TokenId::KwdTypeAlias:
-        SWAG_CHECK(doTypeAlias(parent, result));
-        break;
-    case TokenId::KwdNameAlias:
-        SWAG_CHECK(doNameAlias(parent, result));
-        break;
-
-    // Using on a struct member
-    case TokenId::KwdUsing:
-    {
-        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Err0478)}));
-        SWAG_CHECK(eatToken());
-        const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
-        structNode->addSpecFlag(AstStruct::SPEC_FLAG_HAS_USING);
-        AstNode* varDecl;
-        SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
-        varDecl->addAstFlag(AST_DECL_USING);
-        *result = varDecl;
-        break;
-    }
-
-    case TokenId::KwdConst:
-    {
-        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl, true));
-        break;
-    }
-
-    case TokenId::KwdVar:
-    {
-        const Diagnostic err{parent, token, Err(Err0672)};
-        return context->report(err);
-    }
-
-    case TokenId::KwdMethod:
-    case TokenId::KwdFunc:
-    {
-        SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Err0503)));
-
-        const auto kind = token.id;
-        SWAG_CHECK(eatToken());
-
-        SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Err0685)));
-
-        const bool isMethod      = kind == TokenId::KwdMethod;
-        bool       isConstMethod = false;
-
-        if (token.id == TokenId::KwdConst)
+        case TokenId::SymAttrStart:
         {
-            SWAG_VERIFY(isMethod, error(token, Err(Err0458)));
-            isConstMethod = true;
+            AstAttrUse* attrUse;
+            SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
+            SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
+            parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            if (attrUse->content)
+                attrUse->content->setOwnerAttrUse(attrUse);
+            break;
+        }
+
+        // Sub definitions
+        case TokenId::KwdEnum:
+            SWAG_CHECK(doEnum(parent, result));
+            break;
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::KwdInterface:
+            SWAG_CHECK(doStruct(parent, result));
+            break;
+
+        // A user alias
+        case TokenId::KwdTypeAlias:
+            SWAG_CHECK(doTypeAlias(parent, result));
+            break;
+        case TokenId::KwdNameAlias:
+            SWAG_CHECK(doNameAlias(parent, result));
+            break;
+
+        // Using on a struct member
+        case TokenId::KwdUsing:
+        {
+            ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Err0478)}));
             SWAG_CHECK(eatToken());
+            const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+            structNode->addSpecFlag(AstStruct::SPEC_FLAG_HAS_USING);
+            AstNode* varDecl;
+            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
+            varDecl->addAstFlag(AST_DECL_USING);
+            *result = varDecl;
+            break;
         }
 
-        const auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
-
-        SWAG_CHECK(checkIsValidUserName(funcNode));
-        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.c_str())));
-        SWAG_CHECK(eatToken());
-
-        const auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
-
+        case TokenId::KwdConst:
         {
-            Scoped scoped(this, scope);
-            SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, nullptr, isMethod, isConstMethod, true));
-        }
-
-        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        const auto  varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
-        varNode->inheritTokenLocation(funcNode->token);
-        Semantic::setVarDeclResolve(varNode);
-        varNode->addAstFlag(AST_R_VALUE);
-
-        const auto typeNode   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
-        typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
-        varNode->type         = typeNode;
-        varNode->type->inheritTokenLocation(funcNode->token);
-        Ast::removeFromParent(funcNode->parameters);
-        Ast::addChildFront(typeNode, funcNode->parameters);
-        typeNode->parameters = funcNode->parameters;
-        if (typeNode->parameters)
-            typeNode->parameters->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-
-        if (token.id == TokenId::SymMinusGreat)
-        {
+            ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
-
-            const auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
-            retNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
-            funcNode->returnType = retNode;
-            funcNode->returnType->allocateExtension(ExtensionKind::Misc);
-            funcNode->returnType->extMisc()->exportNode = typeNode->returnType;
-
-            CloneContext cloneContext;
-            cloneContext.parent = retNode;
-            typeNode->returnType->clone(cloneContext);
+            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl, true));
+            break;
         }
 
-        if (token.id == TokenId::KwdThrow)
+        case TokenId::KwdVar:
         {
+            const Diagnostic err{parent, token, Err(Err0672)};
+            return context->report(err);
+        }
+
+        case TokenId::KwdMethod:
+        case TokenId::KwdFunc:
+        {
+            SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Err0503)));
+
+            const auto kind = token.id;
             SWAG_CHECK(eatToken());
-            typeNode->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
-            funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_THROW);
-        }
 
-        varNode->allocateExtension(ExtensionKind::Misc);
-        varNode->extMisc()->exportNode = funcNode;
+            SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Err0685)));
 
-        if (!tokenizer.comment.empty())
-        {
+            const bool isMethod      = kind == TokenId::KwdMethod;
+            bool       isConstMethod = false;
+
+            if (token.id == TokenId::KwdConst)
+            {
+                SWAG_VERIFY(isMethod, error(token, Err(Err0458)));
+                isConstMethod = true;
+                SWAG_CHECK(eatToken());
+            }
+
+            const auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
+
+            SWAG_CHECK(checkIsValidUserName(funcNode));
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.c_str())));
+            SWAG_CHECK(eatToken());
+
+            const auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
+
+            {
+                Scoped scoped(this, scope);
+                SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, nullptr, isMethod, isConstMethod, true));
+            }
+
+            ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            const auto  varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
+            varNode->inheritTokenLocation(funcNode->token);
+            Semantic::setVarDeclResolve(varNode);
+            varNode->addAstFlag(AST_R_VALUE);
+
+            const auto typeNode   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
+            typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
+            varNode->type         = typeNode;
+            varNode->type->inheritTokenLocation(funcNode->token);
+            Ast::removeFromParent(funcNode->parameters);
+            Ast::addChildFront(typeNode, funcNode->parameters);
+            typeNode->parameters = funcNode->parameters;
+            if (typeNode->parameters)
+                typeNode->parameters->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+
+            if (token.id == TokenId::SymMinusGreat)
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
+
+                const auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+                retNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
+                funcNode->returnType = retNode;
+                funcNode->returnType->allocateExtension(ExtensionKind::Misc);
+                funcNode->returnType->extMisc()->exportNode = typeNode->returnType;
+
+                CloneContext cloneContext;
+                cloneContext.parent = retNode;
+                typeNode->returnType->clone(cloneContext);
+            }
+
+            if (token.id == TokenId::KwdThrow)
+            {
+                SWAG_CHECK(eatToken());
+                typeNode->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
+                funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_THROW);
+            }
+
             varNode->allocateExtension(ExtensionKind::Misc);
-            varNode->extMisc()->docComment = std::move(tokenizer.comment);
+            varNode->extMisc()->exportNode = funcNode;
+
+            if (!tokenizer.comment.empty())
+            {
+                varNode->allocateExtension(ExtensionKind::Misc);
+                varNode->extMisc()->docComment = std::move(tokenizer.comment);
+            }
+
+            SWAG_CHECK(eatSemiCol("interface function definition"));
+            *result = varNode;
+            break;
         }
 
-        SWAG_CHECK(eatSemiCol("interface function definition"));
-        *result = varNode;
-        break;
-    }
-
-    // A normal declaration
-    default:
-    {
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, FMT(Err(Err0293), token.c_str())));
-        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
-        break;
-    }
+        // A normal declaration
+        default:
+        {
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, FMT(Err(Err0293), token.c_str())));
+            ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
+            break;
+        }
     }
 
     return true;

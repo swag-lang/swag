@@ -37,27 +37,27 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
     switch (token.id)
     {
-    case TokenId::KwdClosure:
-        node->kind = AstNodeKind::TypeClosure;
-        SWAG_CHECK(eatToken());
+        case TokenId::KwdClosure:
+            node->kind = AstNodeKind::TypeClosure;
+            SWAG_CHECK(eatToken());
 
-    // :ClosureForceFirstParam
-    // A closure always has at least one parameter : the capture context
-        params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters         = params;
-        firstAddedType           = Ast::newTypeExpression(sourceFile, params);
-        firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-        firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
-        break;
+        // :ClosureForceFirstParam
+        // A closure always has at least one parameter : the capture context
+            params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+            node->parameters         = params;
+            firstAddedType           = Ast::newTypeExpression(sourceFile, params);
+            firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+            firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
+            break;
 
-    case TokenId::KwdFunc:
-        node->kind = AstNodeKind::TypeLambda;
-        SWAG_CHECK(eatToken());
-        break;
+        case TokenId::KwdFunc:
+            node->kind = AstNodeKind::TypeLambda;
+            SWAG_CHECK(eatToken());
+            break;
 
-    default:
-        SWAG_ASSERT(false);
-        break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     // If we are in a type declaration, then this must be a FuncDeclParam and not a TypeExpression

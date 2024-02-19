@@ -150,86 +150,86 @@ JobResult ByteCodeGenJob::execute()
 
             switch (node->bytecodeState)
             {
-            case AstNodeResolveState::Enter:
-                if (node->hasExtByteCode() && node->extByteCode()->byteCodeBeforeFct)
-                {
-                    if (!node->extByteCode()->byteCodeBeforeFct(&context))
-                        return leaveJob(originalNode);
-                    if (context.result == ContextResult::Pending)
-                        return JobResult::KeepJobAlive;
-                    if (context.result == ContextResult::NewChildren)
-                        continue;
-                }
-
-                node->bytecodeState = AstNodeResolveState::ProcessingChildren;
-
-                if (node->hasAstFlag(AST_NO_BYTECODE))
-                {
-                    nodes.pop_back();
-                    break;
-                }
-
-                if (!node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDREN))
-                {
-                    for (int i = static_cast<int>(node->children.size()) - 1; i >= 0; i--)
+                case AstNodeResolveState::Enter:
+                    if (node->hasExtByteCode() && node->extByteCode()->byteCodeBeforeFct)
                     {
-                        auto child           = node->children[i];
-                        child->bytecodeState = AstNodeResolveState::Enter;
-                        nodes.push_back(child);
+                        if (!node->extByteCode()->byteCodeBeforeFct(&context))
+                            return leaveJob(originalNode);
+                        if (context.result == ContextResult::Pending)
+                            return JobResult::KeepJobAlive;
+                        if (context.result == ContextResult::NewChildren)
+                            continue;
                     }
 
-                    break;
-                }
-                [[fallthrough]];
+                    node->bytecodeState = AstNodeResolveState::ProcessingChildren;
 
-            case AstNodeResolveState::ProcessingChildren:
-                if (node->hasAstFlag(AST_NO_BYTECODE))
-                {
+                    if (node->hasAstFlag(AST_NO_BYTECODE))
+                    {
+                        nodes.pop_back();
+                        break;
+                    }
+
+                    if (!node->hasComputedValue() && !node->hasAstFlag(AST_NO_BYTECODE_CHILDREN))
+                    {
+                        for (int i = static_cast<int>(node->children.size()) - 1; i >= 0; i--)
+                        {
+                            auto child           = node->children[i];
+                            child->bytecodeState = AstNodeResolveState::Enter;
+                            nodes.push_back(child);
+                        }
+
+                        break;
+                    }
+                    [[fallthrough]];
+
+                case AstNodeResolveState::ProcessingChildren:
+                    if (node->hasAstFlag(AST_NO_BYTECODE))
+                    {
+                        nodes.pop_back();
+                        break;
+                    }
+
+                // Computed constexpr value. Just emit the result
+                    if (node->hasComputedValue())
+                    {
+                        if (!ByteCodeGen::emitComputedValue(&context))
+                            return leaveJob(originalNode);
+                    }
+                    else if (node->byteCodeFct)
+                    {
+                        if (!node->byteCodeFct(&context))
+                            return leaveJob(originalNode);
+                        if (context.result == ContextResult::Pending)
+                            return JobResult::KeepJobAlive;
+                        if (context.result == ContextResult::NewChildren)
+                            continue;
+                    }
+
+                    node->bytecodeState = AstNodeResolveState::PostChildren;
+                    [[fallthrough]];
+
+                case AstNodeResolveState::PostChildren:
+                    if (node->hasAstFlag(AST_NO_BYTECODE))
+                    {
+                        nodes.pop_back();
+                        break;
+                    }
+
+                    if (node->hasExtByteCode() && node->extByteCode()->byteCodeAfterFct)
+                    {
+                        if (!node->extByteCode()->byteCodeAfterFct(&context))
+                            return leaveJob(originalNode);
+                        if (context.result == ContextResult::Pending)
+                            return JobResult::KeepJobAlive;
+                        if (context.result == ContextResult::NewChildren)
+                            continue;
+                    }
+
                     nodes.pop_back();
                     break;
-                }
 
-            // Computed constexpr value. Just emit the result
-                if (node->hasComputedValue())
-                {
-                    if (!ByteCodeGen::emitComputedValue(&context))
-                        return leaveJob(originalNode);
-                }
-                else if (node->byteCodeFct)
-                {
-                    if (!node->byteCodeFct(&context))
-                        return leaveJob(originalNode);
-                    if (context.result == ContextResult::Pending)
-                        return JobResult::KeepJobAlive;
-                    if (context.result == ContextResult::NewChildren)
-                        continue;
-                }
-
-                node->bytecodeState = AstNodeResolveState::PostChildren;
-                [[fallthrough]];
-
-            case AstNodeResolveState::PostChildren:
-                if (node->hasAstFlag(AST_NO_BYTECODE))
-                {
-                    nodes.pop_back();
+                default:
                     break;
-                }
-
-                if (node->hasExtByteCode() && node->extByteCode()->byteCodeAfterFct)
-                {
-                    if (!node->extByteCode()->byteCodeAfterFct(&context))
-                        return leaveJob(originalNode);
-                    if (context.result == ContextResult::Pending)
-                        return JobResult::KeepJobAlive;
-                    if (context.result == ContextResult::NewChildren)
-                        continue;
-                }
-
-                nodes.pop_back();
-                break;
-
-            default:
-                break;
             }
         }
 

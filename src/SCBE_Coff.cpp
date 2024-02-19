@@ -107,33 +107,33 @@ namespace
             concat.addU32(symbol.value); // .Value
             switch (symbol.kind)
             {
-            case CPUSymbolKind::Function:
-                concat.addU16(pp.sectionIndexText); // .SectionNumber
-                concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
-                concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-                concat.addU8(0); // .NumberOfAuxSymbols
-                break;
-            case CPUSymbolKind::Extern:
-                concat.addU16(0); // .SectionNumber
-                concat.addU16(0); // .Type
-                concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-                concat.addU8(0); // .NumberOfAuxSymbols
-                break;
-            case CPUSymbolKind::Custom:
-                concat.addU16(symbol.sectionIdx); // .SectionNumber
-                concat.addU16(0); // .Type
-                concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
-                concat.addU8(0); // .NumberOfAuxSymbols
-                break;
-            case CPUSymbolKind::GlobalString:
-                concat.addU16(pp.sectionIndexSS); // .SectionNumber
-                concat.addU16(0); // .Type
-                concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
-                concat.addU8(0); // .NumberOfAuxSymbols
-                break;
-            default:
-                SWAG_ASSERT(false);
-                break;
+                case CPUSymbolKind::Function:
+                    concat.addU16(pp.sectionIndexText); // .SectionNumber
+                    concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
+                    concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+                    concat.addU8(0); // .NumberOfAuxSymbols
+                    break;
+                case CPUSymbolKind::Extern:
+                    concat.addU16(0); // .SectionNumber
+                    concat.addU16(0); // .Type
+                    concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+                    concat.addU8(0); // .NumberOfAuxSymbols
+                    break;
+                case CPUSymbolKind::Custom:
+                    concat.addU16(symbol.sectionIdx); // .SectionNumber
+                    concat.addU16(0); // .Type
+                    concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
+                    concat.addU8(0); // .NumberOfAuxSymbols
+                    break;
+                case CPUSymbolKind::GlobalString:
+                    concat.addU16(pp.sectionIndexSS); // .SectionNumber
+                    concat.addU16(0); // .Type
+                    concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
+                    concat.addU8(0); // .NumberOfAuxSymbols
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
             }
         }
 

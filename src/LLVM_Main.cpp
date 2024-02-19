@@ -81,15 +81,15 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     const char* entryPoint = nullptr;
     switch (g_CommandLine.target.os)
     {
-    case SwagTargetOs::Windows:
-        if (buildParameters.buildCfg->backendSubKind == BuildCfgBackendSubKind::Console)
-            entryPoint = "mainCRTStartup";
-        else
-            entryPoint = "WinMainCRTStartup";
-        break;
-    default:
-        entryPoint = "main";
-        break;
+        case SwagTargetOs::Windows:
+            if (buildParameters.buildCfg->backendSubKind == BuildCfgBackendSubKind::Console)
+                entryPoint = "mainCRTStartup";
+            else
+                entryPoint = "WinMainCRTStartup";
+            break;
+        default:
+            entryPoint = "main";
+            break;
     }
 
     // void mainCRTStartup()

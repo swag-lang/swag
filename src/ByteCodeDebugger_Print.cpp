@@ -270,21 +270,21 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext* context, const
         {
             switch (bkp.type)
             {
-            case DebugBkpType::FuncName:
-            {
-                const auto loc = ByteCode::getLocation(bc, bc->out);
-                if (context->bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
-                    hasBkp = &bkp;
-                break;
-            }
+                case DebugBkpType::FuncName:
+                {
+                    const auto loc = ByteCode::getLocation(bc, bc->out);
+                    if (context->bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
+                        hasBkp = &bkp;
+                    break;
+                }
 
-            case DebugBkpType::FileLine:
-                if (file->name == bkp.name && startLine + lineIdx + 1 == bkp.line)
-                    hasBkp = &bkp;
-                break;
+                case DebugBkpType::FileLine:
+                    if (file->name == bkp.name && startLine + lineIdx + 1 == bkp.line)
+                        hasBkp = &bkp;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
 
@@ -415,20 +415,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     int perLine = 8;
     switch (fmt.bitCount)
     {
-    case 8:
-        perLine = 16;
-        break;
-    case 16:
-        perLine = 8;
-        break;
-    case 32:
-        perLine = 8;
-        break;
-    case 64:
-        perLine = 4;
-        break;
-    default:
-        break;
+        case 8:
+            perLine = 16;
+            break;
+        case 16:
+            perLine = 8;
+            break;
+        case 32:
+            perLine = 8;
+            break;
+        case 64:
+            perLine = 4;
+            break;
+        default:
+            break;
     }
 
     auto addrB = reinterpret_cast<const uint8_t*>(addrVal);

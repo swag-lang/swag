@@ -15,32 +15,32 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
 
     switch (sizeOf)
     {
-    case 1:
-        SWAG_ASSERT(!toAdd);
-        if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_Extend_U8U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
-        else
-            pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
-        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
-        return;
-    case 2:
-        SWAG_ASSERT(!toAdd);
-        if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_Extend_U16U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
-        else
-            pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
-        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
-        return;
-    case 4:
-        SWAG_ASSERT(!toAdd);
-        if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_CopyN(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx), CPUBits::B32);
-        else
-            pp.emit_Load32_Indirect(paramStack, RAX, RDI);
-        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
-        return;
-    default:
-        break;
+        case 1:
+            SWAG_ASSERT(!toAdd);
+            if (paramIdx < cpuFct->numScratchRegs)
+                pp.emit_Extend_U8U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
+            else
+                pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
+            pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
+            return;
+        case 2:
+            SWAG_ASSERT(!toAdd);
+            if (paramIdx < cpuFct->numScratchRegs)
+                pp.emit_Extend_U16U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
+            else
+                pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
+            pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
+            return;
+        case 4:
+            SWAG_ASSERT(!toAdd);
+            if (paramIdx < cpuFct->numScratchRegs)
+                pp.emit_CopyN(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx), CPUBits::B32);
+            else
+                pp.emit_Load32_Indirect(paramStack, RAX, RDI);
+            pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
+            return;
+        default:
+            break;
     }
 
     SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
@@ -59,21 +59,21 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
         {
             switch (deRefSize)
             {
-            case 1:
-                pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
-                break;
-            case 2:
-                pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
-                break;
-            case 4:
-                pp.emit_Load32_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
-                break;
-            case 8:
-                pp.emit_Load64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
-                break;
-            default:
-                pp.emit_LoadAddress_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
-                break;
+                case 1:
+                    pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    break;
+                case 2:
+                    pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    break;
+                case 4:
+                    pp.emit_Load32_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    break;
+                case 8:
+                    pp.emit_Load64_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    break;
+                default:
+                    pp.emit_LoadAddress_Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    break;
             }
 
             pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -90,21 +90,21 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, int reg, uint32
 
         switch (deRefSize)
         {
-        case 1:
-            pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
-            break;
-        case 2:
-            pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
-            break;
-        case 4:
-            pp.emit_Load32_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
-            break;
-        case 8:
-            pp.emit_Load64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
-            break;
-        default:
-            pp.emit_OpN_Immediate(RAX, toAdd, CPUOp::ADD, CPUBits::B64);
-            break;
+            case 1:
+                pp.emit_LoadU8U64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
+                break;
+            case 2:
+                pp.emit_LoadU16U64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
+                break;
+            case 4:
+                pp.emit_Load32_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
+                break;
+            case 8:
+                pp.emit_Load64_Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
+                break;
+            default:
+                pp.emit_OpN_Immediate(RAX, toAdd, CPUOp::ADD, CPUBits::B64);
+                break;
         }
 
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -183,14 +183,14 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, ui
     {
         switch (idxReg)
         {
-        case 0:
-            pp.emit_LoadAddress_Indirect(offsetRT, RDX, RDI);
-            break;
-        case 1:
-            pp.emit_LoadAddress_Indirect(offsetRT + sizeof(Register), R8, RDI);
-            break;
-        default:
-            break;
+            case 0:
+                pp.emit_LoadAddress_Indirect(offsetRT, RDX, RDI);
+                break;
+            case 1:
+                pp.emit_LoadAddress_Indirect(offsetRT + sizeof(Register), R8, RDI);
+                break;
+            default:
+                break;
         }
     }
 

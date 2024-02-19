@@ -50,33 +50,33 @@ namespace
 
         switch (result)
         {
-        case MatchResult::ValidIfFailed:
-            note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
-            break;
-        case MatchResult::TooManyParameters:
-            note = Diagnostic::note(node, node->token, "too many arguments");
-            break;
-        case MatchResult::TooManyGenericParameters:
-            note = Diagnostic::note(node, node->token, "too many generic arguments");
-            break;
-        case MatchResult::NotEnoughParameters:
-            note = Diagnostic::note(node, node->token, "not enough arguments");
-            break;
-        case MatchResult::NotEnoughGenericParameters:
-            note = Diagnostic::note(node, node->token, "not enough generic arguments");
-            break;
-        case MatchResult::BadSignature:
-            if (tryResult[0]->ufcs && paramIdx == 0)
-                note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
-            else
-                note = Diagnostic::note(node, node->token, FMT("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
-            break;
-        case MatchResult::BadGenericSignature:
-            note = Diagnostic::note(node, node->token, FMT("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
+            case MatchResult::ValidIfFailed:
+                note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
+                break;
+            case MatchResult::TooManyParameters:
+                note = Diagnostic::note(node, node->token, "too many arguments");
+                break;
+            case MatchResult::TooManyGenericParameters:
+                note = Diagnostic::note(node, node->token, "too many generic arguments");
+                break;
+            case MatchResult::NotEnoughParameters:
+                note = Diagnostic::note(node, node->token, "not enough arguments");
+                break;
+            case MatchResult::NotEnoughGenericParameters:
+                note = Diagnostic::note(node, node->token, "not enough generic arguments");
+                break;
+            case MatchResult::BadSignature:
+                if (tryResult[0]->ufcs && paramIdx == 0)
+                    note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
+                else
+                    note = Diagnostic::note(node, node->token, FMT("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+                break;
+            case MatchResult::BadGenericSignature:
+                note = Diagnostic::note(node, node->token, FMT("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
         }
 
         Concat                   concat;
@@ -240,20 +240,20 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             const auto& one = *oneMatch;
             switch (one.symMatchContext.result)
             {
-            case MatchResult::BadSignature:
-            case MatchResult::DuplicatedNamedParameter:
-            case MatchResult::InvalidNamedParameter:
-            case MatchResult::MissingNamedParameter:
-            case MatchResult::MissingParameters:
-            case MatchResult::NotEnoughParameters:
-            case MatchResult::TooManyParameters:
-            case MatchResult::ValidIfFailed:
-            case MatchResult::NotEnoughGenericParameters:
-            case MatchResult::CannotDeduceGenericType:
-                n.push_back(oneMatch);
-                break;
-            default:
-                break;
+                case MatchResult::BadSignature:
+                case MatchResult::DuplicatedNamedParameter:
+                case MatchResult::InvalidNamedParameter:
+                case MatchResult::MissingNamedParameter:
+                case MatchResult::MissingParameters:
+                case MatchResult::NotEnoughParameters:
+                case MatchResult::TooManyParameters:
+                case MatchResult::ValidIfFailed:
+                case MatchResult::NotEnoughGenericParameters:
+                case MatchResult::CannotDeduceGenericType:
+                    n.push_back(oneMatch);
+                    break;
+                default:
+                    break;
             }
         }
         if (!n.empty())

@@ -139,12 +139,12 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
 
         switch (objFileType)
         {
-        case BackendObjType::Coff:
-            SCBE_Coff::emitHeader(buildParameters, pp);
-            break;
-        default:
-            Report::internalError(module, "SCBE::prepareOutput, unsupported output");
-            break;
+            case BackendObjType::Coff:
+                SCBE_Coff::emitHeader(buildParameters, pp);
+                break;
+            default:
+                Report::internalError(module, "SCBE::prepareOutput, unsupported output");
+                break;
         }
 
         createRuntime(buildParameters);
@@ -197,12 +197,12 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
         // Emit
         switch (objFileType)
         {
-        case BackendObjType::Coff:
-            SCBE_Coff::emitPostFunc(buildParameters, pp);
-            break;
-        default:
-            Report::internalError(module, "SCBE::prepareOutput, unsupported output");
-            break;
+            case BackendObjType::Coff:
+                SCBE_Coff::emitPostFunc(buildParameters, pp);
+                break;
+            default:
+                Report::internalError(module, "SCBE::prepareOutput, unsupported output");
+                break;
         }
 
         pp.pass = BackendPreCompilePass::GenerateObj;
@@ -250,12 +250,12 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     const auto objFileType = getObjType(g_CommandLine.target);
     switch (objFileType)
     {
-    case BackendObjType::Coff:
-        SCBE_Coff::saveFileBuffer(f, buildParameters, pp);
-        break;
-    default:
-        Report::internalError(module, "SCBE::saveObjFile, unsupported output");
-        break;
+        case BackendObjType::Coff:
+            SCBE_Coff::saveFileBuffer(f, buildParameters, pp);
+            break;
+        default:
+            Report::internalError(module, "SCBE::saveObjFile, unsupported output");
+            break;
     }
 
     (void) fflush(f);

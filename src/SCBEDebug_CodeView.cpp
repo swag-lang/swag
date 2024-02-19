@@ -103,55 +103,55 @@ namespace
         SWAG_ASSERT(valueType->isNative());
         switch (valueType->nativeType)
         {
-        case NativeTypeKind::Bool:
-        case NativeTypeKind::U8:
-        case NativeTypeKind::S8:
-            concat.addU16(LF_CHAR);
-            concat.addU8(val.reg.u8);
-            break;
+            case NativeTypeKind::Bool:
+            case NativeTypeKind::U8:
+            case NativeTypeKind::S8:
+                concat.addU16(LF_CHAR);
+                concat.addU8(val.reg.u8);
+                break;
 
-        case NativeTypeKind::S16:
-            concat.addU16(LF_SHORT);
-            concat.addS16(val.reg.s16);
-            break;
-        case NativeTypeKind::U16:
-            concat.addU16(LF_USHORT);
-            concat.addU16(val.reg.u16);
-            break;
+            case NativeTypeKind::S16:
+                concat.addU16(LF_SHORT);
+                concat.addS16(val.reg.s16);
+                break;
+            case NativeTypeKind::U16:
+                concat.addU16(LF_USHORT);
+                concat.addU16(val.reg.u16);
+                break;
 
-        case NativeTypeKind::S32:
-            concat.addU16(LF_LONG);
-            concat.addS32(val.reg.s32);
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            concat.addU16(LF_ULONG);
-            concat.addU32(val.reg.u32);
-            break;
+            case NativeTypeKind::S32:
+                concat.addU16(LF_LONG);
+                concat.addS32(val.reg.s32);
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                concat.addU16(LF_ULONG);
+                concat.addU32(val.reg.u32);
+                break;
 
-        case NativeTypeKind::S64:
-            concat.addU16(LF_QUADWORD);
-            concat.addS64(val.reg.s64);
-            break;
-        case NativeTypeKind::U64:
-            concat.addU16(LF_UQUADWORD);
-            concat.addU64(val.reg.u64);
-            break;
+            case NativeTypeKind::S64:
+                concat.addU16(LF_QUADWORD);
+                concat.addS64(val.reg.s64);
+                break;
+            case NativeTypeKind::U64:
+                concat.addU16(LF_UQUADWORD);
+                concat.addU64(val.reg.u64);
+                break;
 
-        case NativeTypeKind::F32:
-            concat.addU16(LF_REAL32);
-            concat.addF32(val.reg.f32);
-            break;
-        case NativeTypeKind::F64:
-            concat.addU16(LF_REAL64);
-            concat.addF64(val.reg.f64);
-            break;
+            case NativeTypeKind::F32:
+                concat.addU16(LF_REAL32);
+                concat.addF32(val.reg.f32);
+                break;
+            case NativeTypeKind::F64:
+                concat.addU16(LF_REAL64);
+                concat.addF64(val.reg.f64);
+                break;
 
-        default:
-            // Should never happen, but it's better to not assert
-            concat.addU16(LF_UQUADWORD);
-            concat.addU64(val.reg.u64);
-            break;
+            default:
+                // Should never happen, but it's better to not assert
+                concat.addU16(LF_UQUADWORD);
+                concat.addU64(val.reg.u64);
+                break;
         }
     }
 
@@ -168,120 +168,120 @@ namespace
             emitStartRecord(pp, f->kind);
             switch (f->kind)
             {
-            case LF_ARGLIST:
-                concat.addU32(f->LF_ArgList.count);
-                for (const unsigned int arg : f->LF_ArgList.args)
-                    concat.addU32(arg);
-                break;
+                case LF_ARGLIST:
+                    concat.addU32(f->LF_ArgList.count);
+                    for (const unsigned int arg : f->LF_ArgList.args)
+                        concat.addU32(arg);
+                    break;
 
-            // lfProc
-            case LF_PROCEDURE:
-                concat.addU32(f->LF_Procedure.returnType);
-                concat.addU8(0); // calling convention
-                concat.addU8(0); // attributes
-                concat.addU16(f->LF_Procedure.numArgs); // #params
-                concat.addU32(f->LF_Procedure.argsType); // @argstype
-                break;
+                // lfProc
+                case LF_PROCEDURE:
+                    concat.addU32(f->LF_Procedure.returnType);
+                    concat.addU8(0); // calling convention
+                    concat.addU8(0); // attributes
+                    concat.addU16(f->LF_Procedure.numArgs); // #params
+                    concat.addU32(f->LF_Procedure.argsType); // @argstype
+                    break;
 
-            // lfMFunc
-            case LF_MFUNCTION:
-                concat.addU32(f->LF_MFunction.returnType);
-                concat.addU32(f->LF_MFunction.structType);
-                concat.addU32(f->LF_MFunction.thisType);
-                concat.addU8(0); // calling convention
-                concat.addU8(0); // attributes
-                concat.addU16(f->LF_MFunction.numArgs); // #params
-                concat.addU32(f->LF_MFunction.argsType); // @argstype
-                concat.addU32(0); // thisAdjust
-                break;
+                // lfMFunc
+                case LF_MFUNCTION:
+                    concat.addU32(f->LF_MFunction.returnType);
+                    concat.addU32(f->LF_MFunction.structType);
+                    concat.addU32(f->LF_MFunction.thisType);
+                    concat.addU8(0); // calling convention
+                    concat.addU8(0); // attributes
+                    concat.addU16(f->LF_MFunction.numArgs); // #params
+                    concat.addU32(f->LF_MFunction.argsType); // @argstype
+                    concat.addU32(0); // thisAdjust
+                    break;
 
-            // lfFuncId
-            case LF_FUNC_ID:
-                concat.addU32(0); // ParentScope
-                concat.addU32(f->LF_FuncId.type); // @type
-                emitTruncatedString(pp, f->node->token.text);
-                break;
+                // lfFuncId
+                case LF_FUNC_ID:
+                    concat.addU32(0); // ParentScope
+                    concat.addU32(f->LF_FuncId.type); // @type
+                    emitTruncatedString(pp, f->node->token.text);
+                    break;
 
-            // lfMFuncId
-            case LF_MFUNC_ID:
-                concat.addU32(f->LF_MFuncId.parentType);
-                concat.addU32(f->LF_MFuncId.type);
-                emitTruncatedString(pp, f->node->token.text);
-                break;
+                // lfMFuncId
+                case LF_MFUNC_ID:
+                    concat.addU32(f->LF_MFuncId.parentType);
+                    concat.addU32(f->LF_MFuncId.type);
+                    emitTruncatedString(pp, f->node->token.text);
+                    break;
 
-            case LF_ARRAY:
-                concat.addU32(f->LF_Array.elementType);
-                concat.addU32(f->LF_Array.indexType);
-                concat.addU16(LF_ULONG);
-                concat.addU32(f->LF_Array.sizeOf);
-                emitTruncatedString(pp, "");
-                break;
+                case LF_ARRAY:
+                    concat.addU32(f->LF_Array.elementType);
+                    concat.addU32(f->LF_Array.indexType);
+                    concat.addU16(LF_ULONG);
+                    concat.addU32(f->LF_Array.sizeOf);
+                    emitTruncatedString(pp, "");
+                    break;
 
-            case LF_DERIVED:
-                concat.addU32(static_cast<uint16_t>(f->LF_DerivedList.derived.size()));
-                for (const auto& p : f->LF_DerivedList.derived)
-                    concat.addU32(p);
-                break;
+                case LF_DERIVED:
+                    concat.addU32(static_cast<uint16_t>(f->LF_DerivedList.derived.size()));
+                    for (const auto& p : f->LF_DerivedList.derived)
+                        concat.addU32(p);
+                    break;
 
-            case LF_FIELDLIST:
-                for (auto& p : f->LF_FieldList.fields)
-                {
-                    concat.addU16(p.kind);
-                    concat.addU16(0x03); // private = 1, protected = 2, public = 3
-                    switch (p.kind)
+                case LF_FIELDLIST:
+                    for (auto& p : f->LF_FieldList.fields)
                     {
-                    case LF_MEMBER:
-                        concat.addU32(p.type);
-                        concat.addU16(LF_ULONG);
-                        concat.addU32(p.value.reg.u32);
-                        break;
-                    case LF_ONEMETHOD:
-                        concat.addU32(p.type);
-                        break;
-                    case LF_ENUMERATE:
-                        emitEmbeddedValue(pp, p.valueType, p.value);
-                        break;
-                    default:
-                        break;
+                        concat.addU16(p.kind);
+                        concat.addU16(0x03); // private = 1, protected = 2, public = 3
+                        switch (p.kind)
+                        {
+                            case LF_MEMBER:
+                                concat.addU32(p.type);
+                                concat.addU16(LF_ULONG);
+                                concat.addU32(p.value.reg.u32);
+                                break;
+                            case LF_ONEMETHOD:
+                                concat.addU32(p.type);
+                                break;
+                            case LF_ENUMERATE:
+                                emitEmbeddedValue(pp, p.valueType, p.value);
+                                break;
+                            default:
+                                break;
+                        }
+                        emitTruncatedString(pp, p.name);
                     }
-                    emitTruncatedString(pp, p.name);
+                    break;
+
+                // https://llvm.org/docs/PDB/CodeViewTypes.html#lf-pointer-0x1002
+                case LF_POINTER:
+                {
+                    concat.addU32(f->LF_Pointer.pointeeType);
+                    constexpr uint32_t kind      = 0x0C; // Near64
+                    const uint32_t     mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
+                    constexpr uint32_t modifiers = 0;
+                    constexpr uint32_t size      = 8; // 64 bits
+                    constexpr uint32_t flags     = 0;
+                    const uint32_t     layout    = flags << 19 | size << 13 | modifiers << 8 | mode << 5 | kind;
+                    concat.addU32(layout); // attributes
+                    break;
                 }
-                break;
 
-            // https://llvm.org/docs/PDB/CodeViewTypes.html#lf-pointer-0x1002
-            case LF_POINTER:
-            {
-                concat.addU32(f->LF_Pointer.pointeeType);
-                constexpr uint32_t kind      = 0x0C; // Near64
-                const uint32_t     mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
-                constexpr uint32_t modifiers = 0;
-                constexpr uint32_t size      = 8; // 64 bits
-                constexpr uint32_t flags     = 0;
-                const uint32_t     layout    = flags << 19 | size << 13 | modifiers << 8 | mode << 5 | kind;
-                concat.addU32(layout); // attributes
-                break;
-            }
+                case LF_ENUM:
+                    concat.addU16(f->LF_Enum.count);
+                    concat.addU16(0); // properties
+                    concat.addU32(f->LF_Enum.underlyingType);
+                    concat.addU32(f->LF_Enum.fieldList);
+                    emitTruncatedString(pp, f->name);
+                    break;
 
-            case LF_ENUM:
-                concat.addU16(f->LF_Enum.count);
-                concat.addU16(0); // properties
-                concat.addU32(f->LF_Enum.underlyingType);
-                concat.addU32(f->LF_Enum.fieldList);
-                emitTruncatedString(pp, f->name);
-                break;
-
-            case LF_STRUCTURE:
-                concat.addU16(f->LF_Structure.memberCount);
-                concat.addU16(f->LF_Structure.forward ? 0x80 : 0); // properties
-                concat.addU32(f->LF_Structure.fieldList); // field
-                concat.addU32(f->LF_Structure.derivedList); // derivedFrom
-                concat.addU32(0); // vTableShape
-                concat.addU16(LF_ULONG); // LF_ULONG
-                concat.addU32(f->LF_Structure.sizeOf);
-                emitTruncatedString(pp, f->name);
-                break;
-            default:
-                break;
+                case LF_STRUCTURE:
+                    concat.addU16(f->LF_Structure.memberCount);
+                    concat.addU16(f->LF_Structure.forward ? 0x80 : 0); // properties
+                    concat.addU32(f->LF_Structure.fieldList); // field
+                    concat.addU32(f->LF_Structure.derivedList); // derivedFrom
+                    concat.addU32(0); // vTableShape
+                    concat.addU16(LF_ULONG); // LF_ULONG
+                    concat.addU32(f->LF_Structure.sizeOf);
+                    emitTruncatedString(pp, f->name);
+                    break;
+                default:
+                    break;
             }
 
             emitEndRecord(pp, false);
@@ -311,24 +311,24 @@ namespace
             concat.addU32(SCBEDebug::getOrCreateType(pp, node->typeInfo));
             switch (node->typeInfo->sizeOf)
             {
-            case 1:
-                concat.addU16(LF_CHAR);
-                concat.addU8(node->computedValue()->reg.u8);
-                break;
-            case 2:
-                concat.addU16(LF_USHORT);
-                concat.addU16(node->computedValue()->reg.u16);
-                break;
-            case 4:
-                concat.addU16(LF_ULONG);
-                concat.addU32(node->computedValue()->reg.u32);
-                break;
-            case 8:
-                concat.addU16(LF_QUADWORD);
-                concat.addU64(node->computedValue()->reg.u64);
-                break;
-            default:
-                break;
+                case 1:
+                    concat.addU16(LF_CHAR);
+                    concat.addU8(node->computedValue()->reg.u8);
+                    break;
+                case 2:
+                    concat.addU16(LF_USHORT);
+                    concat.addU16(node->computedValue()->reg.u16);
+                    break;
+                case 4:
+                    concat.addU16(LF_ULONG);
+                    concat.addU32(node->computedValue()->reg.u32);
+                    break;
+                case 8:
+                    concat.addU16(LF_QUADWORD);
+                    concat.addU64(node->computedValue()->reg.u64);
+                    break;
+                default:
+                    break;
             }
 
             emitTruncatedString(pp, name);
@@ -669,12 +669,12 @@ namespace
                         SCBEDebugTypeIndex typeIdx;
                         switch (typeParam->kind)
                         {
-                        case TypeInfoKind::Array:
-                            typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
-                            break;
-                        default:
-                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                            break;
+                            case TypeInfoKind::Array:
+                                typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
+                                break;
+                            default:
+                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                                break;
                         }
 
                         //////////
@@ -709,38 +709,38 @@ namespace
                         SCBEDebugTypeIndex typeIdx;
                         switch (typeParam->kind)
                         {
-                        case TypeInfoKind::Struct:
-                            if (CallConv::structParamByValue(typeFunc, typeParam))
-                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                            else
-                                typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
-                            break;
-
-                        case TypeInfoKind::Pointer:
-                        {
-                            if (typeParam->isAutoConstPointerRef())
-                            {
-                                const auto typeRef = TypeManager::concretePtrRefType(typeParam);
-                                if (CallConv::structParamByValue(typeFunc, typeRef))
-                                    typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
-                                else
+                            case TypeInfoKind::Struct:
+                                if (CallConv::structParamByValue(typeFunc, typeParam))
                                     typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                            }
-                            else
+                                else
+                                    typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
+                                break;
+
+                            case TypeInfoKind::Pointer:
                             {
-                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                                if (typeParam->isAutoConstPointerRef())
+                                {
+                                    const auto typeRef = TypeManager::concretePtrRefType(typeParam);
+                                    if (CallConv::structParamByValue(typeFunc, typeRef))
+                                        typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
+                                    else
+                                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                                }
+                                else
+                                {
+                                    typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                                }
+
+                                break;
                             }
 
-                            break;
-                        }
+                            case TypeInfoKind::Array:
+                                typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
+                                break;
 
-                        case TypeInfoKind::Array:
-                            typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
-                            break;
-
-                        default:
-                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                            break;
+                            default:
+                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                                break;
                         }
 
                         //////////

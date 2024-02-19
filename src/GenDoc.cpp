@@ -401,206 +401,206 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             bool mustEnd = false;
             switch (blk->kind)
             {
-            case UserBlockKind::Title1:
-            case UserBlockKind::Title2:
-            case UserBlockKind::Title3:
-            case UserBlockKind::Title4:
-            case UserBlockKind::Title5:
-            case UserBlockKind::Title6:
-                line.remove(0, 2 + (static_cast<int>(blk->kind) - static_cast<int>(UserBlockKind::Title1))); // #<blank>
-                blk->lines.push_back(line);
-                mustEnd = true;
-                start++;
-                break;
-
-            case UserBlockKind::ParagraphRaw:
-                if (line.startsWith("---"))
-                {
+                case UserBlockKind::Title1:
+                case UserBlockKind::Title2:
+                case UserBlockKind::Title3:
+                case UserBlockKind::Title4:
+                case UserBlockKind::Title5:
+                case UserBlockKind::Title6:
+                    line.remove(0, 2 + (static_cast<int>(blk->kind) - static_cast<int>(UserBlockKind::Title1))); // #<blank>
+                    blk->lines.push_back(line);
                     mustEnd = true;
                     start++;
-                }
-                else
-                    blk->lines.push_back(lines[start]);
-                break;
+                    break;
 
-            case UserBlockKind::CodeSwag:
-            case UserBlockKind::CodeRaw:
-                if (line.startsWith("```"))
-                {
-                    mustEnd = true;
-                    start++;
-                }
-                else
-                    blk->lines.push_back(lines[start]);
-                break;
-
-            case UserBlockKind::CodeAuto:
-                if (lines[start].startsWith("    "))
-                {
-                    line = lines[start];
-                    line.remove(0, 4);
-                    blk->lines.push_back(line);
-                }
-                else if (lines[start].startsWith("\t"))
-                {
-                    line = lines[start];
-                    line.remove(0, 1);
-                    blk->lines.push_back(line);
-                }
-                else
-                {
-                    mustEnd = true;
-                }
-                break;
-
-            case UserBlockKind::Paragraph:
-                if (line.empty())
-                    mustEnd = true;
-                else if (line.startsWith("---"))
-                    mustEnd = true;
-                else if (line.startsWith("```"))
-                    mustEnd = true;
-                else if (line.startsWith(">"))
-                    mustEnd = true;
-                else if (line.startsWith("|"))
-                    mustEnd = true;
-                else if (line.startsWith("* "))
-                    mustEnd = true;
-                else if (line.startsWith("# "))
-                    mustEnd = true;
-                else if (line.startsWith("## "))
-                    mustEnd = true;
-                else if (line.startsWith("### "))
-                    mustEnd = true;
-                else
-                    blk->lines.push_back(lines[start]);
-                break;
-
-            case UserBlockKind::Table:
-                if (!line.startsWith("|"))
-                    mustEnd = true;
-                else
-                    blk->lines.push_back(lines[start]);
-                break;
-
-            case UserBlockKind::List:
-                if (!line.startsWith("* "))
-                    mustEnd = true;
-                else
-                {
-                    line.remove(0, 2); // *<blank>
-                    line.trim();
-                    blk->lines.push_back(line);
-                }
-                break;
-
-            case UserBlockKind::OrderedList:
-                if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
-                    mustEnd = true;
-                else
-                {
-                    line.remove(0, 2); // <digit><dot>
-                    line.trim();
-                    blk->lines.push_back(line);
-                }
-                break;
-
-            case UserBlockKind::DescriptionList:
-            {
-                line.remove(0, 2); // +<blank>
-                line.trim();
-                auto title = line;
-                start++;
-
-                for (; start < static_cast<int>(lines.size()); start++)
-                {
-                    auto line1 = lines[start];
-                    if (line1.startsWith("    "))
+                case UserBlockKind::ParagraphRaw:
+                    if (line.startsWith("---"))
                     {
-                        line1.remove(0, 4);
-                        blk->lines.push_back(line1);
-                        continue;
+                        mustEnd = true;
+                        start++;
+                    }
+                    else
+                        blk->lines.push_back(lines[start]);
+                    break;
+
+                case UserBlockKind::CodeSwag:
+                case UserBlockKind::CodeRaw:
+                    if (line.startsWith("```"))
+                    {
+                        mustEnd = true;
+                        start++;
+                    }
+                    else
+                        blk->lines.push_back(lines[start]);
+                    break;
+
+                case UserBlockKind::CodeAuto:
+                    if (lines[start].startsWith("    "))
+                    {
+                        line = lines[start];
+                        line.remove(0, 4);
+                        blk->lines.push_back(line);
+                    }
+                    else if (lines[start].startsWith("\t"))
+                    {
+                        line = lines[start];
+                        line.remove(0, 1);
+                        blk->lines.push_back(line);
+                    }
+                    else
+                    {
+                        mustEnd = true;
+                    }
+                    break;
+
+                case UserBlockKind::Paragraph:
+                    if (line.empty())
+                        mustEnd = true;
+                    else if (line.startsWith("---"))
+                        mustEnd = true;
+                    else if (line.startsWith("```"))
+                        mustEnd = true;
+                    else if (line.startsWith(">"))
+                        mustEnd = true;
+                    else if (line.startsWith("|"))
+                        mustEnd = true;
+                    else if (line.startsWith("* "))
+                        mustEnd = true;
+                    else if (line.startsWith("# "))
+                        mustEnd = true;
+                    else if (line.startsWith("## "))
+                        mustEnd = true;
+                    else if (line.startsWith("### "))
+                        mustEnd = true;
+                    else
+                        blk->lines.push_back(lines[start]);
+                    break;
+
+                case UserBlockKind::Table:
+                    if (!line.startsWith("|"))
+                        mustEnd = true;
+                    else
+                        blk->lines.push_back(lines[start]);
+                    break;
+
+                case UserBlockKind::List:
+                    if (!line.startsWith("* "))
+                        mustEnd = true;
+                    else
+                    {
+                        line.remove(0, 2); // *<blank>
+                        line.trim();
+                        blk->lines.push_back(line);
+                    }
+                    break;
+
+                case UserBlockKind::OrderedList:
+                    if (line.length() < 2 || !SWAG_IS_DIGIT(line[0]) || line[1] != '.')
+                        mustEnd = true;
+                    else
+                    {
+                        line.remove(0, 2); // <digit><dot>
+                        line.trim();
+                        blk->lines.push_back(line);
+                    }
+                    break;
+
+                case UserBlockKind::DescriptionList:
+                {
+                    line.remove(0, 2); // +<blank>
+                    line.trim();
+                    auto title = line;
+                    start++;
+
+                    for (; start < static_cast<int>(lines.size()); start++)
+                    {
+                        auto line1 = lines[start];
+                        if (line1.startsWith("    "))
+                        {
+                            line1.remove(0, 4);
+                            blk->lines.push_back(line1);
+                            continue;
+                        }
+
+                        if (line1.startsWith("\t"))
+                        {
+                            line1.remove(0, 1);
+                            blk->lines.push_back(line1);
+                            continue;
+                        }
+
+                        line1.trim();
+                        if (line1.empty())
+                        {
+                            blk->lines.push_back(lines[start]);
+                            continue;
+                        }
+
+                        break;
                     }
 
-                    if (line1.startsWith("\t"))
+                    computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                    blk->lines.clear();
+                    blk->lines.push_back(title);
+                    mustEnd = true;
+                }
+                break;
+
+                case UserBlockKind::Blockquote:
+                    if (line.startsWith(">"))
                     {
+                        auto line1 = line;
                         line1.remove(0, 1);
                         blk->lines.push_back(line1);
-                        continue;
                     }
 
-                    line1.trim();
-                    if (line1.empty())
+                    if (!line.startsWith(">") || lastLine)
                     {
-                        blk->lines.push_back(lines[start]);
-                        continue;
+                        if (!lastLine)
+                            mustEnd = true;
+                        computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                        blk->lines.clear();
                     }
 
                     break;
-                }
 
-                computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
-                blk->lines.clear();
-                blk->lines.push_back(title);
-                mustEnd = true;
-            }
-            break;
+                case UserBlockKind::BlockquoteNote:
+                case UserBlockKind::BlockquoteTip:
+                case UserBlockKind::BlockquoteWarning:
+                case UserBlockKind::BlockquoteAttention:
+                case UserBlockKind::BlockquoteExample:
+                    if (line.startsWith(">"))
+                    {
+                        auto line1 = line;
+                        line1.remove(0, 1);
+                        blk->lines.push_back(line1);
+                    }
 
-            case UserBlockKind::Blockquote:
-                if (line.startsWith(">"))
-                {
-                    auto line1 = line;
-                    line1.remove(0, 1);
-                    blk->lines.push_back(line1);
-                }
+                    if (!line.startsWith(">") || lastLine)
+                    {
+                        if (!lastLine)
+                            mustEnd = true;
+                        if (blk->kind == UserBlockKind::BlockquoteNote)
+                            blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_NOTE)) - 1);
+                        else if (blk->kind == UserBlockKind::BlockquoteTip)
+                            blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_TIP)) - 1);
+                        else if (blk->kind == UserBlockKind::BlockquoteWarning)
+                            blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_WARNING)) - 1);
+                        else if (blk->kind == UserBlockKind::BlockquoteAttention)
+                            blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_ATTENTION)) - 1);
+                        else if (blk->kind == UserBlockKind::BlockquoteExample)
+                            blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_EXAMPLE)) - 1);
+                        else
+                            SWAG_ASSERT(false);
+                        computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
+                        blk->lines.clear();
+                    }
 
-                if (!line.startsWith(">") || lastLine)
-                {
-                    if (!lastLine)
-                        mustEnd = true;
-                    computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
-                    blk->lines.clear();
-                }
+                    break;
 
-                break;
-
-            case UserBlockKind::BlockquoteNote:
-            case UserBlockKind::BlockquoteTip:
-            case UserBlockKind::BlockquoteWarning:
-            case UserBlockKind::BlockquoteAttention:
-            case UserBlockKind::BlockquoteExample:
-                if (line.startsWith(">"))
-                {
-                    auto line1 = line;
-                    line1.remove(0, 1);
-                    blk->lines.push_back(line1);
-                }
-
-                if (!line.startsWith(">") || lastLine)
-                {
-                    if (!lastLine)
-                        mustEnd = true;
-                    if (blk->kind == UserBlockKind::BlockquoteNote)
-                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_NOTE)) - 1);
-                    else if (blk->kind == UserBlockKind::BlockquoteTip)
-                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_TIP)) - 1);
-                    else if (blk->kind == UserBlockKind::BlockquoteWarning)
-                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_WARNING)) - 1);
-                    else if (blk->kind == UserBlockKind::BlockquoteAttention)
-                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_ATTENTION)) - 1);
-                    else if (blk->kind == UserBlockKind::BlockquoteExample)
-                        blk->lines[0].remove(0, static_cast<uint32_t>(strlen(START_EXAMPLE)) - 1);
-                    else
-                        SWAG_ASSERT(false);
-                    computeUserBlocks(blk->subBlocks, blk->lines, shortDesc);
-                    blk->lines.clear();
-                }
-
-                break;
-
-            default:
-                SWAG_ASSERT(false);
-                break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
             }
 
             if (mustEnd)
@@ -873,238 +873,238 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     switch (user.kind)
     {
-    case UserBlockKind::CodeSwag:
-    case UserBlockKind::CodeRaw:
-    case UserBlockKind::CodeAuto:
-    {
-        Utf8 block;
-        for (auto& l : user.lines)
+        case UserBlockKind::CodeSwag:
+        case UserBlockKind::CodeRaw:
+        case UserBlockKind::CodeAuto:
         {
-            block += l;
-            block += "\n";
-        }
-
-        uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
-        if (user.kind != UserBlockKind::CodeSwag)
-            flags &= ~GENDOC_CODE_SYNTAX_COL;
-
-        outputCode(block, flags);
-        return;
-    }
-
-    case UserBlockKind::ParagraphRaw:
-        helpContent += "<p style=\"white-space: break-spaces\">";
-        break;
-
-    case UserBlockKind::Blockquote:
-        helpContent += "<div class=\"blockquote blockquote-default\">\n";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-        break;
-
-    case UserBlockKind::BlockquoteNote:
-    {
-        helpContent += "<div class=\"blockquote blockquote-note\">\n";
-        helpContent += "<div class=\"blockquote-title-block\">";
-        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
-        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
-        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleNote};
-        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
-        helpContent += "</div>";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-    }
-    break;
-    case UserBlockKind::BlockquoteTip:
-    {
-        helpContent += "<div class=\"blockquote blockquote-tip\">\n";
-        helpContent += "<div class=\"blockquote-title-block\">";
-        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
-        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
-        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleTip};
-        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
-        helpContent += "</div>";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-    }
-    break;
-    case UserBlockKind::BlockquoteWarning:
-    {
-        helpContent += "<div class=\"blockquote blockquote-warning\">\n";
-        helpContent += "<div class=\"blockquote-title-block\">";
-        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
-        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
-        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleWarning};
-        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
-        helpContent += "</div>";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-    }
-    break;
-    case UserBlockKind::BlockquoteAttention:
-    {
-        helpContent += "<div class=\"blockquote blockquote-attention\">\n";
-        helpContent += "<div class=\"blockquote-title-block\">";
-        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
-        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
-        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
-        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
-        helpContent += "</div>";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-    }
-    break;
-    case UserBlockKind::BlockquoteExample:
-    {
-        helpContent += "<div class=\"blockquote blockquote-example\">\n";
-        helpContent += "<div class=\"blockquote-title-block\">";
-        Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconExample};
-        helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
-        Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleExample};
-        helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
-        helpContent += "</div>";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-    }
-    break;
-
-    case UserBlockKind::Paragraph:
-        if (!shortDescTd)
-            helpContent += "<p>";
-        break;
-
-    case UserBlockKind::List:
-        helpContent += "<ul>\n";
-        break;
-    case UserBlockKind::OrderedList:
-        helpContent += "<ol>\n";
-        break;
-
-    case UserBlockKind::DescriptionList:
-        helpContent += "<div class=\"description-list-title\"><p>";
-        helpContent += getFormattedText(user.lines[0]);
-        helpContent += "</p></div>\n";
-        helpContent += "<div class=\"description-list-block\">\n";
-        for (auto sub : user.subBlocks)
-            outputUserBlock(*sub, titleLevel, false);
-        helpContent += "</div>\n";
-        startLine = 1;
-        break;
-
-    case UserBlockKind::Table:
-    {
-        helpContent += "<table class=\"table-markdown\">\n";
-
-        Vector<Utf8> tkn0;
-        Utf8::tokenize(user.lines[0], '|', tkn0, true, true);
-        tkn0.erase(tkn0.begin());
-        if (tkn0.back().empty())
-            tkn0.erase(tkn0.end());
-        tableColCount = tkn0.size();
-
-        // Header ?
-        if (user.lines.size() > 2)
-        {
-            Vector<Utf8> tkn1;
-            Utf8::tokenize(user.lines[1], '|', tkn1, true, true);
-            tkn1.erase(tkn1.begin());
-            if (tkn1.back().empty())
-                tkn1.erase(tkn1.end());
-
-            bool hasHeader = true;
-            for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
+            Utf8 block;
+            for (auto& l : user.lines)
             {
-                if (it >= static_cast<int>(tkn1.size()))
-                {
-                    hasHeader = false;
-                    break;
-                }
-
-                auto alignStr = tkn1[it];
-                if (alignStr.length() < 3)
-                {
-                    hasHeader = false;
-                    break;
-                }
-
-                int alignCol = -1;
-                if (alignStr[0] == ':' && alignStr.back() == '-')
-                    alignCol = 0;
-                else if (alignStr[0] == '-' && alignStr.back() == '-')
-                    alignCol = 0;
-                else if (alignStr[0] == ':' && alignStr.back() == ':')
-                    alignCol = 1;
-                else if (alignStr[0] == '-' && alignStr.back() == ':')
-                    alignCol = 2;
-                if (alignCol == -1)
-                {
-                    hasHeader = false;
-                    break;
-                }
-
-                while (alignStr.length() && (alignStr[0] == '-' || alignStr[0] == ':'))
-                    alignStr.remove(0, 1);
-                if (alignStr.length())
-                {
-                    hasHeader = false;
-                    break;
-                }
-
-                tableAlignCols.push_back(alignCol);
+                block += l;
+                block += "\n";
             }
 
-            if (!hasHeader)
-                tableAlignCols.clear();
-            else
+            uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
+            if (user.kind != UserBlockKind::CodeSwag)
+                flags &= ~GENDOC_CODE_SYNTAX_COL;
+
+            outputCode(block, flags);
+            return;
+        }
+
+        case UserBlockKind::ParagraphRaw:
+            helpContent += "<p style=\"white-space: break-spaces\">";
+            break;
+
+        case UserBlockKind::Blockquote:
+            helpContent += "<div class=\"blockquote blockquote-default\">\n";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+            break;
+
+        case UserBlockKind::BlockquoteNote:
+        {
+            helpContent += "<div class=\"blockquote blockquote-note\">\n";
+            helpContent += "<div class=\"blockquote-title-block\">";
+            Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconNote};
+            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-info-circle\"></i> " : quoteIcon.c_str());
+            Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleNote};
+            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Note" : quoteTitle.c_str());
+            helpContent += "</div>";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+        }
+        break;
+        case UserBlockKind::BlockquoteTip:
+        {
+            helpContent += "<div class=\"blockquote blockquote-tip\">\n";
+            helpContent += "<div class=\"blockquote-title-block\">";
+            Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconTip};
+            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-lightbulb-o\"></i> " : quoteIcon.c_str());
+            Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleTip};
+            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Tip" : quoteTitle.c_str());
+            helpContent += "</div>";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+        }
+        break;
+        case UserBlockKind::BlockquoteWarning:
+        {
+            helpContent += "<div class=\"blockquote blockquote-warning\">\n";
+            helpContent += "<div class=\"blockquote-title-block\">";
+            Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconWarning};
+            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-exclamation-triangle\"></i> " : quoteIcon.c_str());
+            Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleWarning};
+            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Warning" : quoteTitle.c_str());
+            helpContent += "</div>";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+        }
+        break;
+        case UserBlockKind::BlockquoteAttention:
+        {
+            helpContent += "<div class=\"blockquote blockquote-attention\">\n";
+            helpContent += "<div class=\"blockquote-title-block\">";
+            Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconAttention};
+            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-ban\"></i> " : quoteIcon.c_str());
+            Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleAttention};
+            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Attention" : quoteTitle.c_str());
+            helpContent += "</div>";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+        }
+        break;
+        case UserBlockKind::BlockquoteExample:
+        {
+            helpContent += "<div class=\"blockquote blockquote-example\">\n";
+            helpContent += "<div class=\"blockquote-title-block\">";
+            Utf8 quoteIcon{module->buildCfg.genDoc.quoteIconExample};
+            helpContent += FMT("%s ", quoteIcon.empty() ? "<i class=\"fa fa-magnifying-glass\"></i> " : quoteIcon.c_str());
+            Utf8 quoteTitle{module->buildCfg.genDoc.quoteTitleExample};
+            helpContent += FMT("<span class=\"blockquote-title\">%s</span>", quoteTitle.empty() ? "Example" : quoteTitle.c_str());
+            helpContent += "</div>";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+        }
+        break;
+
+        case UserBlockKind::Paragraph:
+            if (!shortDescTd)
+                helpContent += "<p>";
+            break;
+
+        case UserBlockKind::List:
+            helpContent += "<ul>\n";
+            break;
+        case UserBlockKind::OrderedList:
+            helpContent += "<ol>\n";
+            break;
+
+        case UserBlockKind::DescriptionList:
+            helpContent += "<div class=\"description-list-title\"><p>";
+            helpContent += getFormattedText(user.lines[0]);
+            helpContent += "</p></div>\n";
+            helpContent += "<div class=\"description-list-block\">\n";
+            for (auto sub : user.subBlocks)
+                outputUserBlock(*sub, titleLevel, false);
+            helpContent += "</div>\n";
+            startLine = 1;
+            break;
+
+        case UserBlockKind::Table:
+        {
+            helpContent += "<table class=\"table-markdown\">\n";
+
+            Vector<Utf8> tkn0;
+            Utf8::tokenize(user.lines[0], '|', tkn0, true, true);
+            tkn0.erase(tkn0.begin());
+            if (tkn0.back().empty())
+                tkn0.erase(tkn0.end());
+            tableColCount = tkn0.size();
+
+            // Header ?
+            if (user.lines.size() > 2)
             {
-                helpContent += "<tr>";
+                Vector<Utf8> tkn1;
+                Utf8::tokenize(user.lines[1], '|', tkn1, true, true);
+                tkn1.erase(tkn1.begin());
+                if (tkn1.back().empty())
+                    tkn1.erase(tkn1.end());
+
+                bool hasHeader = true;
                 for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
                 {
-                    switch (tableAlignCols[it])
+                    if (it >= static_cast<int>(tkn1.size()))
                     {
-                    case 0:
-                        helpContent += FMT("<th style=\"text-align: left;\">");
-                        break;
-                    case 1:
-                        helpContent += FMT("<th style=\"text-align: center;\">");
-                        break;
-                    case 2:
-                        helpContent += FMT("<th style=\"text-align: right;\">");
-                        break;
-                    default:
+                        hasHeader = false;
                         break;
                     }
 
-                    helpContent += getFormattedText(tkn0[it]);
-                    helpContent += "</th>";
+                    auto alignStr = tkn1[it];
+                    if (alignStr.length() < 3)
+                    {
+                        hasHeader = false;
+                        break;
+                    }
+
+                    int alignCol = -1;
+                    if (alignStr[0] == ':' && alignStr.back() == '-')
+                        alignCol = 0;
+                    else if (alignStr[0] == '-' && alignStr.back() == '-')
+                        alignCol = 0;
+                    else if (alignStr[0] == ':' && alignStr.back() == ':')
+                        alignCol = 1;
+                    else if (alignStr[0] == '-' && alignStr.back() == ':')
+                        alignCol = 2;
+                    if (alignCol == -1)
+                    {
+                        hasHeader = false;
+                        break;
+                    }
+
+                    while (alignStr.length() && (alignStr[0] == '-' || alignStr[0] == ':'))
+                        alignStr.remove(0, 1);
+                    if (alignStr.length())
+                    {
+                        hasHeader = false;
+                        break;
+                    }
+
+                    tableAlignCols.push_back(alignCol);
                 }
 
-                helpContent += "</tr>";
-                startLine = 2;
+                if (!hasHeader)
+                    tableAlignCols.clear();
+                else
+                {
+                    helpContent += "<tr>";
+                    for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
+                    {
+                        switch (tableAlignCols[it])
+                        {
+                            case 0:
+                                helpContent += FMT("<th style=\"text-align: left;\">");
+                                break;
+                            case 1:
+                                helpContent += FMT("<th style=\"text-align: center;\">");
+                                break;
+                            case 2:
+                                helpContent += FMT("<th style=\"text-align: right;\">");
+                                break;
+                            default:
+                                break;
+                        }
+
+                        helpContent += getFormattedText(tkn0[it]);
+                        helpContent += "</th>";
+                    }
+
+                    helpContent += "</tr>";
+                    startLine = 2;
+                }
             }
         }
-    }
-    break;
-
-    case UserBlockKind::Title1:
-    case UserBlockKind::Title2:
-    case UserBlockKind::Title3:
-    case UserBlockKind::Title4:
-    case UserBlockKind::Title5:
-    case UserBlockKind::Title6:
-    {
-        // Update toc
-        if (docKind == BuildCfgDocKind::Examples)
-        {
-            int myTitleLevel = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
-            addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
-        }
-
-        int  level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
-        auto ref   = getTocTitleRef();
-        helpContent += FMT("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
         break;
-    }
+
+        case UserBlockKind::Title1:
+        case UserBlockKind::Title2:
+        case UserBlockKind::Title3:
+        case UserBlockKind::Title4:
+        case UserBlockKind::Title5:
+        case UserBlockKind::Title6:
+        {
+            // Update toc
+            if (docKind == BuildCfgDocKind::Examples)
+            {
+                int myTitleLevel = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
+                addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
+            }
+
+            int  level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
+            auto ref   = getTocTitleRef();
+            helpContent += FMT("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
+            break;
+        }
     }
 
     for (int i = startLine; i < static_cast<int>(user.lines.size()); i++)
@@ -1133,17 +1133,17 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 {
                     switch (tableAlignCols[it])
                     {
-                    case 0:
-                        helpContent += FMT("<td style=\"text-align: left;\">");
-                        break;
-                    case 1:
-                        helpContent += FMT("<td style=\"text-align: center;\">");
-                        break;
-                    case 2:
-                        helpContent += FMT("<td style=\"text-align: right;\">");
-                        break;
-                    default:
-                        break;
+                        case 0:
+                            helpContent += FMT("<td style=\"text-align: left;\">");
+                            break;
+                        case 1:
+                            helpContent += FMT("<td style=\"text-align: center;\">");
+                            break;
+                        case 2:
+                            helpContent += FMT("<td style=\"text-align: right;\">");
+                            break;
+                        default:
+                            break;
                     }
                 }
                 else
@@ -1200,43 +1200,43 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
     switch (user.kind)
     {
-    case UserBlockKind::ParagraphRaw:
-        helpContent += "</p>\n";
-        break;
-    case UserBlockKind::Paragraph:
-        if (!shortDescTd)
+        case UserBlockKind::ParagraphRaw:
             helpContent += "</p>\n";
-        break;
-    case UserBlockKind::Blockquote:
-    case UserBlockKind::BlockquoteNote:
-    case UserBlockKind::BlockquoteTip:
-    case UserBlockKind::BlockquoteWarning:
-    case UserBlockKind::BlockquoteAttention:
-    case UserBlockKind::BlockquoteExample:
-        helpContent += "</div>\n";
-        break;
-    case UserBlockKind::List:
-        helpContent += "</ul>\n";
-        break;
-    case UserBlockKind::OrderedList:
-        helpContent += "</ol>\n";
-        break;
-    case UserBlockKind::Table:
-        helpContent += "</table>\n";
-        break;
-    case UserBlockKind::Title1:
-    case UserBlockKind::Title2:
-    case UserBlockKind::Title3:
-    case UserBlockKind::Title4:
-    case UserBlockKind::Title5:
-    case UserBlockKind::Title6:
-    {
-        int level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
-        helpContent += FMT("</h%d>\n", titleLevel + level + 1);
-        break;
-    }
-    default:
-        break;
+            break;
+        case UserBlockKind::Paragraph:
+            if (!shortDescTd)
+                helpContent += "</p>\n";
+            break;
+        case UserBlockKind::Blockquote:
+        case UserBlockKind::BlockquoteNote:
+        case UserBlockKind::BlockquoteTip:
+        case UserBlockKind::BlockquoteWarning:
+        case UserBlockKind::BlockquoteAttention:
+        case UserBlockKind::BlockquoteExample:
+            helpContent += "</div>\n";
+            break;
+        case UserBlockKind::List:
+            helpContent += "</ul>\n";
+            break;
+        case UserBlockKind::OrderedList:
+            helpContent += "</ol>\n";
+            break;
+        case UserBlockKind::Table:
+            helpContent += "</table>\n";
+            break;
+        case UserBlockKind::Title1:
+        case UserBlockKind::Title2:
+        case UserBlockKind::Title3:
+        case UserBlockKind::Title4:
+        case UserBlockKind::Title5:
+        case UserBlockKind::Title6:
+        {
+            int level = static_cast<int>(user.kind) - static_cast<int>(UserBlockKind::Title1);
+            helpContent += FMT("</h%d>\n", titleLevel + level + 1);
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -1499,16 +1499,16 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
 
     switch (docKind)
     {
-    case BuildCfgDocKind::Api:
-        if (!generateApi())
-            return false;
-        break;
-    case BuildCfgDocKind::Examples:
-        if (!generateExamples())
-            return false;
-        break;
-    default:
-        break;
+        case BuildCfgDocKind::Api:
+            if (!generateApi())
+                return false;
+            break;
+        case BuildCfgDocKind::Examples:
+            if (!generateExamples())
+                return false;
+            break;
+        default:
+            break;
     }
 
     constructPage();

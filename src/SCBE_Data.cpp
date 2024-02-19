@@ -24,22 +24,22 @@ bool SCBE::buildRelocationSegment(const BuildParameters& buildParameters, DataSe
             fromSegment = me;
         switch (fromSegment)
         {
-        case SegmentKind::Constant:
-            sym = pp.symCSIndex;
-            break;
-        case SegmentKind::Tls:
-            sym = pp.symTLSIndex;
-            break;
-        case SegmentKind::Bss:
-            sym = pp.symBSIndex;
-            break;
-        case SegmentKind::Data:
-            sym = pp.symMSIndex;
-            break;
-        default:
-            SWAG_ASSERT(false);
-            sym = 0;
-            break;
+            case SegmentKind::Constant:
+                sym = pp.symCSIndex;
+                break;
+            case SegmentKind::Tls:
+                sym = pp.symTLSIndex;
+                break;
+            case SegmentKind::Bss:
+                sym = pp.symBSIndex;
+                break;
+            case SegmentKind::Data:
+                sym = pp.symMSIndex;
+                break;
+            default:
+                SWAG_ASSERT(false);
+                sym = 0;
+                break;
         }
 
         *reinterpret_cast<uint64_t*>(dataSegment->address(k.patchOffset)) = k.fromOffset;

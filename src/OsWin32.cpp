@@ -284,29 +284,29 @@ namespace OS
             {
                 switch (exit)
                 {
-                case 0:
-                case static_cast<DWORD>(-666):
-                    break;
-                case STATUS_ACCESS_VIOLATION:
-                    g_Log.lock();
-                    g_Log.setColor(LogColor::Red);
-                    numErrors++;
-                    cout << cmdline.c_str();
-                    cout << ": access violation during process execution\n";
-                    g_Log.setDefaultColor();
-                    g_Log.unlock();
-                    ok = false;
-                    break;
-                default:
-                    g_Log.lock();
-                    g_Log.setColor(LogColor::Red);
-                    numErrors++;
-                    cout << cmdline.c_str();
-                    cout << ": process execution failed\n";
-                    g_Log.setDefaultColor();
-                    g_Log.unlock();
-                    ok = false;
-                    break;
+                    case 0:
+                    case static_cast<DWORD>(-666):
+                        break;
+                    case STATUS_ACCESS_VIOLATION:
+                        g_Log.lock();
+                        g_Log.setColor(LogColor::Red);
+                        numErrors++;
+                        cout << cmdline.c_str();
+                        cout << ": access violation during process execution\n";
+                        g_Log.setDefaultColor();
+                        g_Log.unlock();
+                        ok = false;
+                        break;
+                    default:
+                        g_Log.lock();
+                        g_Log.setColor(LogColor::Red);
+                        numErrors++;
+                        cout << cmdline.c_str();
+                        cout << ": process execution failed\n";
+                        g_Log.setDefaultColor();
+                        g_Log.unlock();
+                        ok = false;
+                        break;
                 }
                 break;
             }
@@ -652,16 +652,16 @@ namespace OS
         const auto result = MessageBoxA(nullptr, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
         switch (result)
         {
-        case IDCANCEL:
-            exit(-1);
-            break;
-        case IDTRYAGAIN:
-            DebugBreak();
-            break;
-        case IDCONTINUE:
-            break;
-        default:
-            break;
+            case IDCANCEL:
+                exit(-1);
+                break;
+            case IDTRYAGAIN:
+                DebugBreak();
+                break;
+            case IDCONTINUE:
+                break;
+            default:
+                break;
         }
     }
 
@@ -1054,40 +1054,40 @@ namespace OS
 
                 switch (evt.Event.KeyEvent.wVirtualKeyCode)
                 {
-                case VK_RETURN:
-                    return Key::Return;
-                case VK_LEFT:
-                    return Key::Left;
-                case VK_RIGHT:
-                    return Key::Right;
-                case VK_UP:
-                    return Key::Up;
-                case VK_DOWN:
-                    return Key::Down;
-                case VK_HOME:
-                    return Key::Home;
-                case VK_END:
-                    return Key::End;
-                case VK_DELETE:
-                    return Key::Delete;
-                case VK_BACK:
-                    return Key::Back;
-                case VK_TAB:
-                    return Key::Tab;
-                case VK_ESCAPE:
-                    return Key::Escape;
-                case VK_CONTROL:
-                    continue;
+                    case VK_RETURN:
+                        return Key::Return;
+                    case VK_LEFT:
+                        return Key::Left;
+                    case VK_RIGHT:
+                        return Key::Right;
+                    case VK_UP:
+                        return Key::Up;
+                    case VK_DOWN:
+                        return Key::Down;
+                    case VK_HOME:
+                        return Key::Home;
+                    case VK_END:
+                        return Key::End;
+                    case VK_DELETE:
+                        return Key::Delete;
+                    case VK_BACK:
+                        return Key::Back;
+                    case VK_TAB:
+                        return Key::Tab;
+                    case VK_ESCAPE:
+                        return Key::Escape;
+                    case VK_CONTROL:
+                        continue;
 
-                default:
-                    if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
-                        return Key::PasteFromClipboard;
+                    default:
+                        if (ctrl && evt.Event.KeyEvent.wVirtualKeyCode == 'V')
+                            return Key::PasteFromClipboard;
 
-                    c = static_cast<int>(static_cast<unsigned>(evt.Event.KeyEvent.uChar.AsciiChar));
-                    if (c >= ' ' && c <= 127)
-                        return Key::Ascii;
+                        c = static_cast<int>(static_cast<unsigned>(evt.Event.KeyEvent.uChar.AsciiChar));
+                        if (c >= ' ' && c <= 127)
+                            return Key::Ascii;
 
-                    continue;
+                        continue;
                 }
             }
         }

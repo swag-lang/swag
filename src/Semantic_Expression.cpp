@@ -338,20 +338,20 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         {
             switch (typeInfo->sizeOf)
             {
-            case 1:
-                notNull = expression->computedValue()->reg.u8 != 0;
-                break;
-            case 2:
-                notNull = expression->computedValue()->reg.u16 != 0;
-                break;
-            case 4:
-                notNull = expression->computedValue()->reg.u32 != 0;
-                break;
-            case 8:
-                notNull = expression->computedValue()->reg.u64 != 0;
-                break;
-            default:
-                break;
+                case 1:
+                    notNull = expression->computedValue()->reg.u8 != 0;
+                    break;
+                case 2:
+                    notNull = expression->computedValue()->reg.u16 != 0;
+                    break;
+                case 4:
+                    notNull = expression->computedValue()->reg.u32 != 0;
+                    break;
+                case 8:
+                    notNull = expression->computedValue()->reg.u64 != 0;
+                    break;
+                default:
+                    break;
             }
         }
 

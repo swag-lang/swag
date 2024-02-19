@@ -150,38 +150,38 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     switch (typeInfo->attributeUsage & MaskType)
     {
-    case Enum:
-        specificMsg = "an enum";
-        break;
-    case EnumValue:
-        specificMsg = "an enum value";
-        break;
-    case StructVariable:
-        specificMsg = "a struct variable";
-        break;
-    case GlobalVariable:
-        specificMsg = "a global variable";
-        break;
-    case Variable:
-        specificMsg = "a variable";
-        break;
-    case Struct:
-        specificMsg = "a struct";
-        break;
-    case Function:
-        specificMsg = "a function";
-        break;
-    case FunctionParameter:
-        specificMsg = "a function parameter";
-        break;
-    case File:
-        specificMsg = "a file";
-        break;
-    case Constant:
-        specificMsg = "a constant";
-        break;
-    default:
-        break;
+        case Enum:
+            specificMsg = "an enum";
+            break;
+        case EnumValue:
+            specificMsg = "an enum value";
+            break;
+        case StructVariable:
+            specificMsg = "a struct variable";
+            break;
+        case GlobalVariable:
+            specificMsg = "a global variable";
+            break;
+        case Variable:
+            specificMsg = "a variable";
+            break;
+        case Struct:
+            specificMsg = "a struct";
+            break;
+        case Function:
+            specificMsg = "a function";
+            break;
+        case FunctionParameter:
+            specificMsg = "a function parameter";
+            break;
+        case File:
+            specificMsg = "a file";
+            break;
+        case Constant:
+            specificMsg = "a constant";
+            break;
+        default:
+            break;
     }
 
     if (specificMsg)
@@ -384,26 +384,26 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     Scope* scope;
                     switch (typeChild->kind)
                     {
-                    case TypeInfoKind::Namespace:
-                    {
-                        auto typeInfo1 = castTypeInfo<TypeInfoNamespace>(typeChild, typeChild->kind);
-                        scope          = typeInfo1->scope;
-                        break;
-                    }
-                    case TypeInfoKind::Enum:
-                    {
-                        auto typeInfo1 = castTypeInfo<TypeInfoEnum>(typeChild, typeChild->kind);
-                        scope          = typeInfo1->scope;
-                        break;
-                    }
-                    case TypeInfoKind::Struct:
-                    {
-                        auto typeInfo1 = castTypeInfo<TypeInfoStruct>(typeChild, typeChild->kind);
-                        scope          = typeInfo1->scope;
-                        break;
-                    }
-                    default:
-                        return context->report({c, FMT(Err(Err0472), typeChild->getDisplayNameC())});
+                        case TypeInfoKind::Namespace:
+                        {
+                            auto typeInfo1 = castTypeInfo<TypeInfoNamespace>(typeChild, typeChild->kind);
+                            scope          = typeInfo1->scope;
+                            break;
+                        }
+                        case TypeInfoKind::Enum:
+                        {
+                            auto typeInfo1 = castTypeInfo<TypeInfoEnum>(typeChild, typeChild->kind);
+                            scope          = typeInfo1->scope;
+                            break;
+                        }
+                        case TypeInfoKind::Struct:
+                        {
+                            auto typeInfo1 = castTypeInfo<TypeInfoStruct>(typeChild, typeChild->kind);
+                            scope          = typeInfo1->scope;
+                            break;
+                        }
+                        default:
+                            return context->report({c, FMT(Err(Err0472), typeChild->getDisplayNameC())});
                     }
 
                     forNode->addAlternativeScope(scope);

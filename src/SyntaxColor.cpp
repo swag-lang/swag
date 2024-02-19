@@ -90,66 +90,66 @@ namespace
     {
         switch (mode)
         {
-        case SyntaxColorMode::ForLog:
-        {
-            if (color == SyntaxColor::SyntaxDefault)
-                color = SyntaxColor::SyntaxCode;
-            const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
-            return FMT("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
-        }
-
-        case SyntaxColorMode::ForDoc:
-        {
-            const char* colorName = nullptr;
-            switch (color)
+            case SyntaxColorMode::ForLog:
             {
-            case SyntaxColor::SyntaxDefault:
-                return "</span>";
-            case SyntaxColor::SyntaxCode:
-                colorName = SYN_CODE;
-                break;
-            case SyntaxColor::SyntaxComment:
-                colorName = SYN_COMMENT;
-                break;
-            case SyntaxColor::SyntaxCompiler:
-                colorName = SYN_COMPILER;
-                break;
-            case SyntaxColor::SyntaxFunction:
-                colorName = SYN_FUNCTION;
-                break;
-            case SyntaxColor::SyntaxConstant:
-                colorName = SYN_CONSTANT;
-                break;
-            case SyntaxColor::SyntaxIntrinsic:
-                colorName = SYN_INTRINSIC;
-                break;
-            case SyntaxColor::SyntaxType:
-                colorName = SYN_TYPE;
-                break;
-            case SyntaxColor::SyntaxKeyword:
-                colorName = SYN_KEYWORD;
-                break;
-            case SyntaxColor::SyntaxLogic:
-                colorName = SYN_LOGIC;
-                break;
-            case SyntaxColor::SyntaxNumber:
-                colorName = SYN_NUMBER;
-                break;
-            case SyntaxColor::SyntaxString:
-                colorName = SYN_STRING;
-                break;
-            case SyntaxColor::SyntaxAttribute:
-                colorName = SYN_ATTRIBUTE;
-                break;
-            case SyntaxColor::SyntaxInvalid:
-                colorName = SYN_INVALID;
-                break;
+                if (color == SyntaxColor::SyntaxDefault)
+                    color = SyntaxColor::SyntaxCode;
+                const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
+                return FMT("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
             }
 
-            if (colorName)
-                return FMT("<span class=\"%s\">", colorName);
-            break;
-        }
+            case SyntaxColorMode::ForDoc:
+            {
+                const char* colorName = nullptr;
+                switch (color)
+                {
+                    case SyntaxColor::SyntaxDefault:
+                        return "</span>";
+                    case SyntaxColor::SyntaxCode:
+                        colorName = SYN_CODE;
+                        break;
+                    case SyntaxColor::SyntaxComment:
+                        colorName = SYN_COMMENT;
+                        break;
+                    case SyntaxColor::SyntaxCompiler:
+                        colorName = SYN_COMPILER;
+                        break;
+                    case SyntaxColor::SyntaxFunction:
+                        colorName = SYN_FUNCTION;
+                        break;
+                    case SyntaxColor::SyntaxConstant:
+                        colorName = SYN_CONSTANT;
+                        break;
+                    case SyntaxColor::SyntaxIntrinsic:
+                        colorName = SYN_INTRINSIC;
+                        break;
+                    case SyntaxColor::SyntaxType:
+                        colorName = SYN_TYPE;
+                        break;
+                    case SyntaxColor::SyntaxKeyword:
+                        colorName = SYN_KEYWORD;
+                        break;
+                    case SyntaxColor::SyntaxLogic:
+                        colorName = SYN_LOGIC;
+                        break;
+                    case SyntaxColor::SyntaxNumber:
+                        colorName = SYN_NUMBER;
+                        break;
+                    case SyntaxColor::SyntaxString:
+                        colorName = SYN_STRING;
+                        break;
+                    case SyntaxColor::SyntaxAttribute:
+                        colorName = SYN_ATTRIBUTE;
+                        break;
+                    case SyntaxColor::SyntaxInvalid:
+                        colorName = SYN_INVALID;
+                        break;
+                }
+
+                if (colorName)
+                    return FMT("<span class=\"%s\">", colorName);
+                break;
+            }
         }
 
         SWAG_ASSERT(false);
@@ -162,49 +162,49 @@ uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum)
     RgbColor rgb;
     switch (color)
     {
-    case SyntaxColor::SyntaxCode:
-        rgb = {0xCC, 0xCC, 0xCC};
-        break;
-    case SyntaxColor::SyntaxComment:
-        rgb = {0x6A, 0x99, 0x55};
-        break;
-    case SyntaxColor::SyntaxCompiler:
-        rgb = {0xAA, 0xAA, 0xAA};
-        break;
-    case SyntaxColor::SyntaxFunction:
-        rgb = {0xFF, 0x74, 0x11};
-        break;
-    case SyntaxColor::SyntaxConstant:
-        rgb = {0x4E, 0xC9, 0xB0};
-        break;
-    case SyntaxColor::SyntaxIntrinsic:
-        rgb = {0xdc, 0xdc, 0xaa};
-        break;
-    case SyntaxColor::SyntaxType:
-        rgb = {0xf6, 0xcc, 0x86};
-        break;
-    case SyntaxColor::SyntaxKeyword:
-        rgb = {0x56, 0x9c, 0xd6};
-        break;
-    case SyntaxColor::SyntaxLogic:
-        rgb = {0xd8, 0xa0, 0xdf};
-        break;
-    case SyntaxColor::SyntaxNumber:
-        rgb = {0xb5, 0xce, 0xa8};
-        break;
-    case SyntaxColor::SyntaxString:
-        rgb = {0xce, 0x91, 0x78};
-        break;
-    case SyntaxColor::SyntaxAttribute:
-        rgb = {0xaa, 0xaa, 0xaa};
-        break;
-    case SyntaxColor::SyntaxInvalid:
-        rgb = {0xFF, 0x47, 0x47};
-        break;
-    default:
-        rgb = {0x00, 0x00, 0x00};
-        SWAG_ASSERT(false);
-        break;
+        case SyntaxColor::SyntaxCode:
+            rgb = {0xCC, 0xCC, 0xCC};
+            break;
+        case SyntaxColor::SyntaxComment:
+            rgb = {0x6A, 0x99, 0x55};
+            break;
+        case SyntaxColor::SyntaxCompiler:
+            rgb = {0xAA, 0xAA, 0xAA};
+            break;
+        case SyntaxColor::SyntaxFunction:
+            rgb = {0xFF, 0x74, 0x11};
+            break;
+        case SyntaxColor::SyntaxConstant:
+            rgb = {0x4E, 0xC9, 0xB0};
+            break;
+        case SyntaxColor::SyntaxIntrinsic:
+            rgb = {0xdc, 0xdc, 0xaa};
+            break;
+        case SyntaxColor::SyntaxType:
+            rgb = {0xf6, 0xcc, 0x86};
+            break;
+        case SyntaxColor::SyntaxKeyword:
+            rgb = {0x56, 0x9c, 0xd6};
+            break;
+        case SyntaxColor::SyntaxLogic:
+            rgb = {0xd8, 0xa0, 0xdf};
+            break;
+        case SyntaxColor::SyntaxNumber:
+            rgb = {0xb5, 0xce, 0xa8};
+            break;
+        case SyntaxColor::SyntaxString:
+            rgb = {0xce, 0x91, 0x78};
+            break;
+        case SyntaxColor::SyntaxAttribute:
+            rgb = {0xaa, 0xaa, 0xaa};
+            break;
+        case SyntaxColor::SyntaxInvalid:
+            rgb = {0xFF, 0x47, 0x47};
+            break;
+        default:
+            rgb = {0x00, 0x00, 0x00};
+            SWAG_ASSERT(false);
+            break;
     }
 
     if (lum > 0)
@@ -483,126 +483,126 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
             {
                 switch (*it)
                 {
-                case TokenId::KwdReserved:
-                    result += getColor(mode, SyntaxColor::SyntaxInvalid);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    break;
-
-                case TokenId::KwdUsing:
-                case TokenId::KwdWith:
-                case TokenId::KwdCast:
-                case TokenId::KwdAutoCast:
-                case TokenId::KwdDeRef:
-                case TokenId::KwdRef:
-                case TokenId::KwdMoveRef:
-                case TokenId::KwdRetVal:
-                case TokenId::KwdTry:
-                case TokenId::KwdCatch:
-                case TokenId::KwdTryCatch:
-                case TokenId::KwdAssume:
-                case TokenId::KwdThrow:
-                case TokenId::KwdDiscard:
-
-                case TokenId::KwdVar:
-                case TokenId::KwdLet:
-                case TokenId::KwdConst:
-                case TokenId::KwdUndefined:
-
-                case TokenId::KwdEnum:
-                case TokenId::KwdStruct:
-                case TokenId::KwdUnion:
-                case TokenId::KwdImpl:
-                case TokenId::KwdInterface:
-                case TokenId::KwdFunc:
-                case TokenId::KwdClosure:
-                case TokenId::KwdMethod:
-                case TokenId::KwdNamespace:
-                case TokenId::KwdTypeAlias:
-                case TokenId::KwdNameAlias:
-                case TokenId::KwdAttr:
-
-                case TokenId::KwdTrue:
-                case TokenId::KwdFalse:
-                case TokenId::KwdNull:
-
-                case TokenId::KwdPublic:
-                case TokenId::KwdInternal:
-                case TokenId::KwdPrivate:
-                    result += getColor(mode, SyntaxColor::SyntaxKeyword);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    break;
-
-                case TokenId::KwdCode:
-                case TokenId::KwdCVarArgs:
-                case TokenId::NativeType:
-                case TokenId::CompilerType:
-                    result += getColor(mode, SyntaxColor::SyntaxType);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    break;
-
-                case TokenId::KwdIf:
-                case TokenId::KwdElse:
-                case TokenId::KwdElif:
-                case TokenId::KwdFor:
-                case TokenId::KwdWhile:
-                case TokenId::KwdSwitch:
-                case TokenId::KwdDefer:
-                case TokenId::KwdLoop:
-                case TokenId::KwdVisit:
-                case TokenId::KwdBreak:
-                case TokenId::KwdFallThrough:
-                case TokenId::KwdUnreachable:
-                case TokenId::KwdReturn:
-                case TokenId::KwdCase:
-                case TokenId::KwdContinue:
-                case TokenId::KwdDefault:
-                case TokenId::KwdAnd:
-                case TokenId::KwdOr:
-                case TokenId::KwdOrElse:
-                case TokenId::KwdTo:
-                case TokenId::KwdUntil:
-                case TokenId::KwdDo:
-                    result += getColor(mode, SyntaxColor::SyntaxLogic);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    break;
-
-                case TokenId::CompilerDependencies:
-                case TokenId::CompilerRun:
-                case TokenId::CompilerAst:
-                case TokenId::CompilerFuncMessage:
-                case TokenId::CompilerFuncDrop:
-                case TokenId::CompilerFuncInit:
-                case TokenId::CompilerFuncMain:
-                case TokenId::CompilerFuncPreMain:
-                case TokenId::CompilerFuncTest:
-                    result += getColor(mode, SyntaxColor::SyntaxFunction);
-                    result += identifier;
-                    result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    break;
-
-                default:
-                    if (identifier[0] == '@')
-                    {
-                        result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                    case TokenId::KwdReserved:
+                        result += getColor(mode, SyntaxColor::SyntaxInvalid);
                         result += identifier;
                         result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    }
-                    else if (identifier[0] == '#')
-                    {
-                        result += getColor(mode, SyntaxColor::SyntaxCompiler);
+                        break;
+
+                    case TokenId::KwdUsing:
+                    case TokenId::KwdWith:
+                    case TokenId::KwdCast:
+                    case TokenId::KwdAutoCast:
+                    case TokenId::KwdDeRef:
+                    case TokenId::KwdRef:
+                    case TokenId::KwdMoveRef:
+                    case TokenId::KwdRetVal:
+                    case TokenId::KwdTry:
+                    case TokenId::KwdCatch:
+                    case TokenId::KwdTryCatch:
+                    case TokenId::KwdAssume:
+                    case TokenId::KwdThrow:
+                    case TokenId::KwdDiscard:
+
+                    case TokenId::KwdVar:
+                    case TokenId::KwdLet:
+                    case TokenId::KwdConst:
+                    case TokenId::KwdUndefined:
+
+                    case TokenId::KwdEnum:
+                    case TokenId::KwdStruct:
+                    case TokenId::KwdUnion:
+                    case TokenId::KwdImpl:
+                    case TokenId::KwdInterface:
+                    case TokenId::KwdFunc:
+                    case TokenId::KwdClosure:
+                    case TokenId::KwdMethod:
+                    case TokenId::KwdNamespace:
+                    case TokenId::KwdTypeAlias:
+                    case TokenId::KwdNameAlias:
+                    case TokenId::KwdAttr:
+
+                    case TokenId::KwdTrue:
+                    case TokenId::KwdFalse:
+                    case TokenId::KwdNull:
+
+                    case TokenId::KwdPublic:
+                    case TokenId::KwdInternal:
+                    case TokenId::KwdPrivate:
+                        result += getColor(mode, SyntaxColor::SyntaxKeyword);
                         result += identifier;
                         result += getColor(mode, SyntaxColor::SyntaxDefault);
-                    }
-                    else
-                    {
-                        result += identifier;
-                    }
+                        break;
 
-                    break;
+                    case TokenId::KwdCode:
+                    case TokenId::KwdCVarArgs:
+                    case TokenId::NativeType:
+                    case TokenId::CompilerType:
+                        result += getColor(mode, SyntaxColor::SyntaxType);
+                        result += identifier;
+                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        break;
+
+                    case TokenId::KwdIf:
+                    case TokenId::KwdElse:
+                    case TokenId::KwdElif:
+                    case TokenId::KwdFor:
+                    case TokenId::KwdWhile:
+                    case TokenId::KwdSwitch:
+                    case TokenId::KwdDefer:
+                    case TokenId::KwdLoop:
+                    case TokenId::KwdVisit:
+                    case TokenId::KwdBreak:
+                    case TokenId::KwdFallThrough:
+                    case TokenId::KwdUnreachable:
+                    case TokenId::KwdReturn:
+                    case TokenId::KwdCase:
+                    case TokenId::KwdContinue:
+                    case TokenId::KwdDefault:
+                    case TokenId::KwdAnd:
+                    case TokenId::KwdOr:
+                    case TokenId::KwdOrElse:
+                    case TokenId::KwdTo:
+                    case TokenId::KwdUntil:
+                    case TokenId::KwdDo:
+                        result += getColor(mode, SyntaxColor::SyntaxLogic);
+                        result += identifier;
+                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        break;
+
+                    case TokenId::CompilerDependencies:
+                    case TokenId::CompilerRun:
+                    case TokenId::CompilerAst:
+                    case TokenId::CompilerFuncMessage:
+                    case TokenId::CompilerFuncDrop:
+                    case TokenId::CompilerFuncInit:
+                    case TokenId::CompilerFuncMain:
+                    case TokenId::CompilerFuncPreMain:
+                    case TokenId::CompilerFuncTest:
+                        result += getColor(mode, SyntaxColor::SyntaxFunction);
+                        result += identifier;
+                        result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        break;
+
+                    default:
+                        if (identifier[0] == '@')
+                        {
+                            result += getColor(mode, SyntaxColor::SyntaxIntrinsic);
+                            result += identifier;
+                            result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        }
+                        else if (identifier[0] == '#')
+                        {
+                            result += getColor(mode, SyntaxColor::SyntaxCompiler);
+                            result += identifier;
+                            result += getColor(mode, SyntaxColor::SyntaxDefault);
+                        }
+                        else
+                        {
+                            result += identifier;
+                        }
+
+                        break;
                 }
             }
             else if (identifier[0] == '@')

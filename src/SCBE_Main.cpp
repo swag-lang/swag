@@ -66,15 +66,15 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     const char* entryPoint = nullptr;
     switch (g_CommandLine.target.os)
     {
-    case SwagTargetOs::Windows:
-        if (buildParameters.buildCfg->backendSubKind == BuildCfgBackendSubKind::Console)
-            entryPoint = "mainCRTStartup";
-        else
-            entryPoint = "WinMainCRTStartup";
-        break;
-    default:
-        SWAG_ASSERT(false);
-        return;
+        case SwagTargetOs::Windows:
+            if (buildParameters.buildCfg->backendSubKind == BuildCfgBackendSubKind::Console)
+                entryPoint = "mainCRTStartup";
+            else
+                entryPoint = "WinMainCRTStartup";
+            break;
+        default:
+            SWAG_ASSERT(false);
+            return;
     }
 
     const auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;

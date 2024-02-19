@@ -43,14 +43,14 @@ bool Semantic::setUnRef(AstNode* node)
 
     switch (node->kind)
     {
-    case AstNodeKind::IdentifierRef:
-    case AstNodeKind::NoDrop:
-    case AstNodeKind::Move:
-    case AstNodeKind::FuncCallParam:
-        setUnRef(node->children.back());
-        break;
-    default:
-        break;
+        case AstNodeKind::IdentifierRef:
+        case AstNodeKind::NoDrop:
+        case AstNodeKind::Move:
+        case AstNodeKind::FuncCallParam:
+            setUnRef(node->children.back());
+            break;
+        default:
+            break;
     }
 
     return true;
@@ -174,31 +174,31 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
 
     switch (state)
     {
-    case AstNodeResolveState::Enter:
-        if (node->kind == AstNodeKind::IdentifierRef)
-        {
-            const auto idRef              = castAst<AstIdentifierRef>(node);
-            idRef->startScope             = nullptr;
-            idRef->resolvedSymbolName     = nullptr;
-            idRef->resolvedSymbolOverload = nullptr;
-            idRef->previousResolvedNode   = nullptr;
+        case AstNodeResolveState::Enter:
+            if (node->kind == AstNodeKind::IdentifierRef)
+            {
+                const auto idRef              = castAst<AstIdentifierRef>(node);
+                idRef->startScope             = nullptr;
+                idRef->resolvedSymbolName     = nullptr;
+                idRef->resolvedSymbolOverload = nullptr;
+                idRef->previousResolvedNode   = nullptr;
+                break;
+            }
             break;
-        }
-        break;
 
-    case AstNodeResolveState::PostChildren:
-        if (node->kind == AstNodeKind::FuncDecl ||
-            node->kind == AstNodeKind::StructDecl ||
-            node->kind == AstNodeKind::EnumDecl ||
-            node->kind == AstNodeKind::TypeAlias ||
-            node->kind == AstNodeKind::ConstDecl)
-        {
-            SWAG_CHECK(checkAccess(context, node));
-        }
-        break;
+        case AstNodeResolveState::PostChildren:
+            if (node->kind == AstNodeKind::FuncDecl ||
+                node->kind == AstNodeKind::StructDecl ||
+                node->kind == AstNodeKind::EnumDecl ||
+                node->kind == AstNodeKind::TypeAlias ||
+                node->kind == AstNodeKind::ConstDecl)
+            {
+                SWAG_CHECK(checkAccess(context, node));
+            }
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return true;

@@ -68,44 +68,44 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
     Utf8 str;
     switch (nameType)
     {
-    case COMPUTE_NAME:
-        if (name.empty())
-        {
-            computeWhateverName(str, nameType);
-            SWAG_RACE_CONDITION_WRITE(raceName);
-            name = std::move(str);
-        }
-        return name;
+        case COMPUTE_NAME:
+            if (name.empty())
+            {
+                computeWhateverName(str, nameType);
+                SWAG_RACE_CONDITION_WRITE(raceName);
+                name = std::move(str);
+            }
+            return name;
 
-    case COMPUTE_DISPLAY_NAME:
-        if (displayName.empty())
-        {
-            computeWhateverName(str, nameType);
-            SWAG_RACE_CONDITION_WRITE(raceName);
-            displayName = std::move(str);
-        }
-        return displayName;
+        case COMPUTE_DISPLAY_NAME:
+            if (displayName.empty())
+            {
+                computeWhateverName(str, nameType);
+                SWAG_RACE_CONDITION_WRITE(raceName);
+                displayName = std::move(str);
+            }
+            return displayName;
 
-    case COMPUTE_SCOPED_NAME:
-        if (scopedName.empty())
-        {
-            computeWhateverName(str, nameType);
-            SWAG_RACE_CONDITION_WRITE(raceName);
-            scopedName = std::move(str);
-        }
-        return scopedName;
+        case COMPUTE_SCOPED_NAME:
+            if (scopedName.empty())
+            {
+                computeWhateverName(str, nameType);
+                SWAG_RACE_CONDITION_WRITE(raceName);
+                scopedName = std::move(str);
+            }
+            return scopedName;
 
-    case COMPUTE_SCOPED_NAME_EXPORT:
-        if (scopedNameExport.empty())
-        {
-            computeWhateverName(str, nameType);
-            SWAG_RACE_CONDITION_WRITE(raceName);
-            scopedNameExport = std::move(str);
-        }
-        return scopedNameExport;
+        case COMPUTE_SCOPED_NAME_EXPORT:
+            if (scopedNameExport.empty())
+            {
+                computeWhateverName(str, nameType);
+                SWAG_RACE_CONDITION_WRITE(raceName);
+                scopedNameExport = std::move(str);
+            }
+            return scopedNameExport;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     SWAG_ASSERT(false);
@@ -116,19 +116,19 @@ void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     switch (nameType)
     {
-    case COMPUTE_NAME:
-    case COMPUTE_DISPLAY_NAME:
-        resName = name;
-        break;
+        case COMPUTE_NAME:
+        case COMPUTE_DISPLAY_NAME:
+            resName = name;
+            break;
 
-    case COMPUTE_SCOPED_NAME:
-    case COMPUTE_SCOPED_NAME_EXPORT:
-        computeScopedName(resName);
-        resName += name;
-        break;
+        case COMPUTE_SCOPED_NAME:
+        case COMPUTE_SCOPED_NAME_EXPORT:
+            computeScopedName(resName);
+            resName += name;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

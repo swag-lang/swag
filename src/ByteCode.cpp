@@ -178,42 +178,42 @@ bool ByteCode::isDoingNothing() const
 
     switch (numInstructions)
     {
-    case 2:
-        if (out[0].op == ByteCodeOp::Ret)
-            return true;
-        break;
+        case 2:
+            if (out[0].op == ByteCodeOp::Ret)
+                return true;
+            break;
 
-    case 3:
-        if (out[0].op == ByteCodeOp::GetParam64 &&
-            out[1].op == ByteCodeOp::Ret)
-            return true;
+        case 3:
+            if (out[0].op == ByteCodeOp::GetParam64 &&
+                out[1].op == ByteCodeOp::Ret)
+                return true;
 
-        if (out[0].op == ByteCodeOp::DecSPBP &&
-            out[1].op == ByteCodeOp::Ret)
-        {
-            return true;
-        }
+            if (out[0].op == ByteCodeOp::DecSPBP &&
+                out[1].op == ByteCodeOp::Ret)
+            {
+                return true;
+            }
 
-        if (out[0].op == ByteCodeOp::SetBP &&
-            out[1].op == ByteCodeOp::Ret)
-        {
-            return true;
-        }
+            if (out[0].op == ByteCodeOp::SetBP &&
+                out[1].op == ByteCodeOp::Ret)
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    case 4:
-        if (out[0].op == ByteCodeOp::ClearRA &&
-            out[1].op == ByteCodeOp::InternalSetErr &&
-            out[2].op == ByteCodeOp::Ret)
-        {
-            return true;
-        }
+        case 4:
+            if (out[0].op == ByteCodeOp::ClearRA &&
+                out[1].op == ByteCodeOp::InternalSetErr &&
+                out[2].op == ByteCodeOp::Ret)
+            {
+                return true;
+            }
 
-        break;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return false;
@@ -420,23 +420,23 @@ uint32_t ByteCode::getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint
 {
     switch (inst->op)
     {
-    case ByteCodeOp::SetZeroAtPointer8:
-        offset = inst->b.u32;
-        return 1;
-    case ByteCodeOp::SetZeroAtPointer16:
-        offset = inst->b.u32;
-        return 2;
-    case ByteCodeOp::SetZeroAtPointer32:
-        offset = inst->b.u32;
-        return 4;
-    case ByteCodeOp::SetZeroAtPointer64:
-        offset = inst->b.u32;
-        return 8;
-    case ByteCodeOp::SetZeroAtPointerX:
-        offset = inst->c.u32;
-        return inst->b.u32;
-    default:
-        break;
+        case ByteCodeOp::SetZeroAtPointer8:
+            offset = inst->b.u32;
+            return 1;
+        case ByteCodeOp::SetZeroAtPointer16:
+            offset = inst->b.u32;
+            return 2;
+        case ByteCodeOp::SetZeroAtPointer32:
+            offset = inst->b.u32;
+            return 4;
+        case ByteCodeOp::SetZeroAtPointer64:
+            offset = inst->b.u32;
+            return 8;
+        case ByteCodeOp::SetZeroAtPointerX:
+            offset = inst->c.u32;
+            return inst->b.u32;
+        default:
+            break;
     }
 
     return 0;
@@ -446,23 +446,23 @@ uint32_t ByteCode::getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t
 {
     switch (inst->op)
     {
-    case ByteCodeOp::SetZeroStack8:
-        offset = inst->a.u32;
-        return 1;
-    case ByteCodeOp::SetZeroStack16:
-        offset = inst->a.u32;
-        return 2;
-    case ByteCodeOp::SetZeroStack32:
-        offset = inst->a.u32;
-        return 4;
-    case ByteCodeOp::SetZeroStack64:
-        offset = inst->a.u32;
-        return 8;
-    case ByteCodeOp::SetZeroStackX:
-        offset = inst->a.u32;
-        return inst->b.u32;
-    default:
-        break;
+        case ByteCodeOp::SetZeroStack8:
+            offset = inst->a.u32;
+            return 1;
+        case ByteCodeOp::SetZeroStack16:
+            offset = inst->a.u32;
+            return 2;
+        case ByteCodeOp::SetZeroStack32:
+            offset = inst->a.u32;
+            return 4;
+        case ByteCodeOp::SetZeroStack64:
+            offset = inst->a.u32;
+            return 8;
+        case ByteCodeOp::SetZeroStackX:
+            offset = inst->a.u32;
+            return inst->b.u32;
+        default:
+            break;
     }
 
     return 0;

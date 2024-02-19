@@ -98,16 +98,16 @@ namespace
 
         switch (identifierRef->startScope->owner->kind)
         {
-        case AstNodeKind::StructDecl:
-        case AstNodeKind::InterfaceDecl:
-        case AstNodeKind::EnumDecl:
-        {
-            const auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
-            notes.push_back(note);
-            break;
-        }
-        default:
-            break;
+            case AstNodeKind::StructDecl:
+            case AstNodeKind::InterfaceDecl:
+            case AstNodeKind::EnumDecl:
+            {
+                const auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
+                notes.push_back(note);
+                break;
+            }
+            default:
+                break;
         }
 
         return err;
@@ -168,26 +168,26 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     Diagnostic* err;
     switch (searchFor)
     {
-    case IdentifierSearchFor::Function:
-        if (node->token.text[0] == '#')
-            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0706), node->token.c_str())};
-        else if (node->token.text[0] == '@')
-            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0721), node->token.c_str())};
-        else
-            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0712), node->token.c_str())};
-        break;
-    case IdentifierSearchFor::Attribute:
-        err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0705), node->token.c_str())};
-        break;
-    case IdentifierSearchFor::Type:
-        err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0727), node->token.c_str())};
-        break;
-    case IdentifierSearchFor::Struct:
-        err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0726), node->token.c_str())};
-        break;
-    default:
-        err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0717), node->token.c_str())};
-        break;
+        case IdentifierSearchFor::Function:
+            if (node->token.text[0] == '#')
+                err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0706), node->token.c_str())};
+            else if (node->token.text[0] == '@')
+                err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0721), node->token.c_str())};
+            else
+                err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0712), node->token.c_str())};
+            break;
+        case IdentifierSearchFor::Attribute:
+            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0705), node->token.c_str())};
+            break;
+        case IdentifierSearchFor::Type:
+            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0727), node->token.c_str())};
+            break;
+        case IdentifierSearchFor::Struct:
+            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0726), node->token.c_str())};
+            break;
+        default:
+            err = new Diagnostic{node->sourceFile, node->token, FMT(Err(Err0717), node->token.c_str())};
+            break;
     }
 
     Vector<const Diagnostic*> notes;

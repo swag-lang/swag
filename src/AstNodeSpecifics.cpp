@@ -334,71 +334,71 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
         auto symKind = SymbolKind::Invalid;
         switch (sub->kind)
         {
-        case AstNodeKind::FuncDecl:
-        {
-            const auto nodeFunc = castAst<AstFuncDecl>(sub, AstNodeKind::FuncDecl);
-            if (sym)
+            case AstNodeKind::FuncDecl:
             {
-                const Diagnostic err{nodeFunc, nodeFunc->tokenName, FMT(Err(Err0627), "function", sub->token.c_str())};
-                return context->report(err);
+                const auto nodeFunc = castAst<AstFuncDecl>(sub, AstNodeKind::FuncDecl);
+                if (sym)
+                {
+                    const Diagnostic err{nodeFunc, nodeFunc->tokenName, FMT(Err(Err0627), "function", sub->token.c_str())};
+                    return context->report(err);
+                }
+
+                nodeFunc->content->removeAstFlag(AST_NO_SEMANTIC);
+                if (cloneContext.alternativeScope)
+                    nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
+                symKind = SymbolKind::Function;
+
+                // Sub decl reference
+                if (sub->hasAstFlag(AST_SPEC_SEMANTIC_HAS3))
+                    nodeFunc->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
+
+                // Function is supposed to start semantic when captured parameters have been evaluated
+                // So no semantic on it now
+                if (nodeFunc->captureParameters)
+                    nodeFunc->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1);
+
+                // If function is linked to a makePointerLambda, then we make a unique name for the function, and change the
+                // corresponding reference.
+                // This way, even if the lambda is used inside a mixin, we won't have any name collisions if the mixin is included multiple times
+                // in the same scope.
+                // Example 4506.
+                if (nodeFunc->makePointerLambda)
+                {
+                    const int id = g_UniqueID.fetch_add(1);
+                    sub->token.text += to_string(id);
+                    const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->children.front()->children.back(), AstNodeKind::Identifier);
+                    idRef->token.text = sub->token.text;
+                }
+
+                break;
             }
-
-            nodeFunc->content->removeAstFlag(AST_NO_SEMANTIC);
-            if (cloneContext.alternativeScope)
-                nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
-            symKind = SymbolKind::Function;
-
-            // Sub decl reference
-            if (sub->hasAstFlag(AST_SPEC_SEMANTIC_HAS3))
-                nodeFunc->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
-
-            // Function is supposed to start semantic when captured parameters have been evaluated
-            // So no semantic on it now
-            if (nodeFunc->captureParameters)
-                nodeFunc->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1);
-
-            // If function is linked to a makePointerLambda, then we make a unique name for the function, and change the
-            // corresponding reference.
-            // This way, even if the lambda is used inside a mixin, we won't have any name collisions if the mixin is included multiple times
-            // in the same scope.
-            // Example 4506.
-            if (nodeFunc->makePointerLambda)
+            case AstNodeKind::StructDecl:
             {
-                const int id = g_UniqueID.fetch_add(1);
-                sub->token.text += to_string(id);
-                const auto idRef  = castAst<AstIdentifier>(nodeFunc->makePointerLambda->children.front()->children.back(), AstNodeKind::Identifier);
-                idRef->token.text = sub->token.text;
+                const auto nodeStruct = castAst<AstStruct>(sub, AstNodeKind::StructDecl);
+                if (sym)
+                {
+                    const Diagnostic err{nodeStruct, nodeStruct->tokenName, FMT(Err(Err0627), "struct", sub->token.c_str())};
+                    return context->report(err);
+                }
+
+                symKind               = SymbolKind::Struct;
+                const auto typeStruct = castTypeInfo<TypeInfoStruct>(sub->typeInfo, TypeInfoKind::Struct);
+                typeStruct->scope     = nodeStruct->scope;
+                break;
             }
+            case AstNodeKind::InterfaceDecl:
+                if (sym)
+                {
+                    const Diagnostic err{sub, sub->token, FMT(Err(Err0627), "interface", sub->token.c_str())};
+                    return context->report(err);
+                }
 
-            break;
-        }
-        case AstNodeKind::StructDecl:
-        {
-            const auto nodeStruct = castAst<AstStruct>(sub, AstNodeKind::StructDecl);
-            if (sym)
-            {
-                const Diagnostic err{nodeStruct, nodeStruct->tokenName, FMT(Err(Err0627), "struct", sub->token.c_str())};
-                return context->report(err);
-            }
+                symKind = SymbolKind::Interface;
+                break;
 
-            symKind               = SymbolKind::Struct;
-            const auto typeStruct = castTypeInfo<TypeInfoStruct>(sub->typeInfo, TypeInfoKind::Struct);
-            typeStruct->scope     = nodeStruct->scope;
-            break;
-        }
-        case AstNodeKind::InterfaceDecl:
-            if (sym)
-            {
-                const Diagnostic err{sub, sub->token, FMT(Err(Err0627), "interface", sub->token.c_str())};
-                return context->report(err);
-            }
-
-            symKind = SymbolKind::Interface;
-            break;
-
-        default:
-            SWAG_ASSERT(false);
-            break;
+            default:
+                SWAG_ASSERT(false);
+                break;
         }
 
         sub->typeInfo->removeGenericFlag();

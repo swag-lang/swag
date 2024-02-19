@@ -1148,14 +1148,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         storageSegment = getSegmentForVar(context, node);
         switch (storageSegment->kind)
         {
-        case SegmentKind::Compiler:
-            overFlags.add(OVERLOAD_VAR_COMPILER);
-            break;
-        case SegmentKind::Bss:
-            overFlags.add(OVERLOAD_VAR_BSS);
-            break;
-        default:
-            break;
+            case SegmentKind::Compiler:
+                overFlags.add(OVERLOAD_VAR_COMPILER);
+                break;
+            case SegmentKind::Bss:
+                overFlags.add(OVERLOAD_VAR_BSS);
+                break;
+            default:
+                break;
         }
 
         if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)

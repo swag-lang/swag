@@ -232,20 +232,20 @@ bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, T
 
     switch (typeInfo->sizeOf)
     {
-    case 1:
-        EMIT_INST2(context, ByteCodeOp::DeRef8, r0, r0);
-        break;
-    case 2:
-        EMIT_INST2(context, ByteCodeOp::DeRef16, r0, r0);
-        break;
-    case 4:
-        EMIT_INST2(context, ByteCodeOp::DeRef32, r0, r0);
-        break;
-    case 8:
-        EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
-        break;
-    default:
-        return Report::internalError(context->node, "emitTypeDeRef, size not supported");
+        case 1:
+            EMIT_INST2(context, ByteCodeOp::DeRef8, r0, r0);
+            break;
+        case 2:
+            EMIT_INST2(context, ByteCodeOp::DeRef16, r0, r0);
+            break;
+        case 4:
+            EMIT_INST2(context, ByteCodeOp::DeRef32, r0, r0);
+            break;
+        case 8:
+            EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
+            break;
+        default:
+            return Report::internalError(context->node, "emitTypeDeRef, size not supported");
     }
 
     SWAG_CHECK(emitSafetyValue(context, r0, typeInfo));
@@ -622,21 +622,21 @@ void ByteCodeGen::emitSetZeroAtPointer(const ByteCodeGenContext* context, uint64
 {
     switch (sizeOf)
     {
-    case 1:
-        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer8, registerIndex);
-        break;
-    case 2:
-        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer16, registerIndex);
-        break;
-    case 4:
-        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer32, registerIndex);
-        break;
-    case 8:
-        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, registerIndex);
-        break;
-    default:
-        EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, registerIndex)->b.u64 = sizeOf;
-        break;
+        case 1:
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer8, registerIndex);
+            break;
+        case 2:
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer16, registerIndex);
+            break;
+        case 4:
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer32, registerIndex);
+            break;
+        case 8:
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointer64, registerIndex);
+            break;
+        default:
+            EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, registerIndex)->b.u64 = sizeOf;
+            break;
     }
 }
 
@@ -644,21 +644,21 @@ void ByteCodeGen::emitSetZeroStack(const ByteCodeGenContext* context, uint32_t o
 {
     switch (sizeOf)
     {
-    case 1:
-        EMIT_INST1(context, ByteCodeOp::SetZeroStack8, offset);
-        break;
-    case 2:
-        EMIT_INST1(context, ByteCodeOp::SetZeroStack16, offset);
-        break;
-    case 4:
-        EMIT_INST1(context, ByteCodeOp::SetZeroStack32, offset);
-        break;
-    case 8:
-        EMIT_INST1(context, ByteCodeOp::SetZeroStack64, offset);
-        break;
-    default:
-        EMIT_INST1(context, ByteCodeOp::SetZeroStackX, offset)->b.u64 = sizeOf;
-        break;
+        case 1:
+            EMIT_INST1(context, ByteCodeOp::SetZeroStack8, offset);
+            break;
+        case 2:
+            EMIT_INST1(context, ByteCodeOp::SetZeroStack16, offset);
+            break;
+        case 4:
+            EMIT_INST1(context, ByteCodeOp::SetZeroStack32, offset);
+            break;
+        case 8:
+            EMIT_INST1(context, ByteCodeOp::SetZeroStack64, offset);
+            break;
+        default:
+            EMIT_INST1(context, ByteCodeOp::SetZeroStackX, offset)->b.u64 = sizeOf;
+            break;
     }
 }
 
@@ -666,24 +666,24 @@ void ByteCodeGen::emitMemCpy(const ByteCodeGenContext* context, uint32_t r0, uin
 {
     switch (sizeOf)
     {
-    case 1:
-        EMIT_INST2(context, ByteCodeOp::MemCpy8, r0, r1);
-        break;
-    case 2:
-        EMIT_INST2(context, ByteCodeOp::MemCpy16, r0, r1);
-        break;
-    case 4:
-        EMIT_INST2(context, ByteCodeOp::MemCpy32, r0, r1);
-        break;
-    case 8:
-        EMIT_INST2(context, ByteCodeOp::MemCpy64, r0, r1);
-        break;
-    default:
-    {
-        const auto inst = EMIT_INST2(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
-        inst->addFlag(BCI_IMM_C);
-        inst->c.u64 = sizeOf;
-        break;
-    }
+        case 1:
+            EMIT_INST2(context, ByteCodeOp::MemCpy8, r0, r1);
+            break;
+        case 2:
+            EMIT_INST2(context, ByteCodeOp::MemCpy16, r0, r1);
+            break;
+        case 4:
+            EMIT_INST2(context, ByteCodeOp::MemCpy32, r0, r1);
+            break;
+        case 8:
+            EMIT_INST2(context, ByteCodeOp::MemCpy64, r0, r1);
+            break;
+        default:
+        {
+            const auto inst = EMIT_INST2(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
+            inst->addFlag(BCI_IMM_C);
+            inst->c.u64 = sizeOf;
+            break;
+        }
     }
 }

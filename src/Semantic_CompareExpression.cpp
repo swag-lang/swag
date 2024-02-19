@@ -83,42 +83,42 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-            node->computedValue()->reg.b = left->computedValue()->reg.b == right->computedValue()->reg.b;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue()->reg.b = left->computedValue()->reg.f32 == right->computedValue()->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue()->reg.b = left->computedValue()->reg.f64 == right->computedValue()->reg.f64;
-            break;
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            node->computedValue()->reg.b = left->computedValue()->reg.u8 == right->computedValue()->reg.u8;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            node->computedValue()->reg.b = left->computedValue()->reg.u16 == right->computedValue()->reg.u16;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue()->reg.b = left->computedValue()->reg.u32 == right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            node->computedValue()->reg.b = left->computedValue()->reg.u64 == right->computedValue()->reg.u64;
-            break;
-        case NativeTypeKind::String:
-            node->computedValue()->reg.b = left->computedValue()->text == right->computedValue()->text;
-            break;
+            case NativeTypeKind::Bool:
+                node->computedValue()->reg.b = left->computedValue()->reg.b == right->computedValue()->reg.b;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue()->reg.b = left->computedValue()->reg.f32 == right->computedValue()->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue()->reg.b = left->computedValue()->reg.f64 == right->computedValue()->reg.f64;
+                break;
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                node->computedValue()->reg.b = left->computedValue()->reg.u8 == right->computedValue()->reg.u8;
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                node->computedValue()->reg.b = left->computedValue()->reg.u16 == right->computedValue()->reg.u16;
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue()->reg.b = left->computedValue()->reg.u32 == right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                node->computedValue()->reg.b = left->computedValue()->reg.u64 == right->computedValue()->reg.u64;
+                break;
+            case NativeTypeKind::String:
+                node->computedValue()->reg.b = left->computedValue()->text == right->computedValue()->text;
+                break;
 
-        default:
-        {
-            Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(err);
-        }
+            default:
+            {
+                Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                return context->report(err);
+            }
         }
 
         return true;
@@ -190,47 +190,47 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
         {
             switch (leftTypeInfo->nativeType)
             {
-            case NativeTypeKind::Bool:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.b, right->computedValue()->reg.b);
-                break;
-            case NativeTypeKind::F32:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.f32, right->computedValue()->reg.f32);
-                break;
-            case NativeTypeKind::F64:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.f64, right->computedValue()->reg.f64);
-                break;
-            case NativeTypeKind::S8:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s8, right->computedValue()->reg.s8);
-                break;
-            case NativeTypeKind::S16:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s16, right->computedValue()->reg.s16);
-                break;
-            case NativeTypeKind::S32:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s32, right->computedValue()->reg.s32);
-                break;
-            case NativeTypeKind::S64:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s64, right->computedValue()->reg.s64);
-                break;
-            case NativeTypeKind::U8:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u8, right->computedValue()->reg.u8);
-                break;
-            case NativeTypeKind::U16:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u16, right->computedValue()->reg.u16);
-                break;
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Rune:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u32, right->computedValue()->reg.u32);
-                break;
-            case NativeTypeKind::U64:
-                node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u64, right->computedValue()->reg.u64);
-                break;
+                case NativeTypeKind::Bool:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.b, right->computedValue()->reg.b);
+                    break;
+                case NativeTypeKind::F32:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.f32, right->computedValue()->reg.f32);
+                    break;
+                case NativeTypeKind::F64:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.f64, right->computedValue()->reg.f64);
+                    break;
+                case NativeTypeKind::S8:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s8, right->computedValue()->reg.s8);
+                    break;
+                case NativeTypeKind::S16:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s16, right->computedValue()->reg.s16);
+                    break;
+                case NativeTypeKind::S32:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s32, right->computedValue()->reg.s32);
+                    break;
+                case NativeTypeKind::S64:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.s64, right->computedValue()->reg.s64);
+                    break;
+                case NativeTypeKind::U8:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u8, right->computedValue()->reg.u8);
+                    break;
+                case NativeTypeKind::U16:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u16, right->computedValue()->reg.u16);
+                    break;
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u32, right->computedValue()->reg.u32);
+                    break;
+                case NativeTypeKind::U64:
+                    node->computedValue()->reg.s32 = CMP3(left->computedValue()->reg.u64, right->computedValue()->reg.u64);
+                    break;
 
-            default:
-            {
-                Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-                err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(err);
-            }
+                default:
+                {
+                    Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    return context->report(err);
+                }
             }
         }
     }
@@ -261,47 +261,47 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
         {
             switch (leftTypeInfo->nativeType)
             {
-            case NativeTypeKind::Bool:
-                node->computedValue()->reg.b = left->computedValue()->reg.b < right->computedValue()->reg.b;
-                break;
-            case NativeTypeKind::F32:
-                node->computedValue()->reg.b = left->computedValue()->reg.f32 < right->computedValue()->reg.f32;
-                break;
-            case NativeTypeKind::F64:
-                node->computedValue()->reg.b = left->computedValue()->reg.f64 < right->computedValue()->reg.f64;
-                break;
-            case NativeTypeKind::S8:
-                node->computedValue()->reg.b = left->computedValue()->reg.s8 < right->computedValue()->reg.s8;
-                break;
-            case NativeTypeKind::S16:
-                node->computedValue()->reg.b = left->computedValue()->reg.s16 < right->computedValue()->reg.s16;
-                break;
-            case NativeTypeKind::S32:
-                node->computedValue()->reg.b = left->computedValue()->reg.s32 < right->computedValue()->reg.s32;
-                break;
-            case NativeTypeKind::S64:
-                node->computedValue()->reg.b = left->computedValue()->reg.s64 < right->computedValue()->reg.s64;
-                break;
-            case NativeTypeKind::U8:
-                node->computedValue()->reg.b = left->computedValue()->reg.u8 < right->computedValue()->reg.u8;
-                break;
-            case NativeTypeKind::U16:
-                node->computedValue()->reg.b = left->computedValue()->reg.u16 < right->computedValue()->reg.u16;
-                break;
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Rune:
-                node->computedValue()->reg.b = left->computedValue()->reg.u32 < right->computedValue()->reg.u32;
-                break;
-            case NativeTypeKind::U64:
-                node->computedValue()->reg.b = left->computedValue()->reg.u64 < right->computedValue()->reg.u64;
-                break;
+                case NativeTypeKind::Bool:
+                    node->computedValue()->reg.b = left->computedValue()->reg.b < right->computedValue()->reg.b;
+                    break;
+                case NativeTypeKind::F32:
+                    node->computedValue()->reg.b = left->computedValue()->reg.f32 < right->computedValue()->reg.f32;
+                    break;
+                case NativeTypeKind::F64:
+                    node->computedValue()->reg.b = left->computedValue()->reg.f64 < right->computedValue()->reg.f64;
+                    break;
+                case NativeTypeKind::S8:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s8 < right->computedValue()->reg.s8;
+                    break;
+                case NativeTypeKind::S16:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s16 < right->computedValue()->reg.s16;
+                    break;
+                case NativeTypeKind::S32:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s32 < right->computedValue()->reg.s32;
+                    break;
+                case NativeTypeKind::S64:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s64 < right->computedValue()->reg.s64;
+                    break;
+                case NativeTypeKind::U8:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u8 < right->computedValue()->reg.u8;
+                    break;
+                case NativeTypeKind::U16:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u16 < right->computedValue()->reg.u16;
+                    break;
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u32 < right->computedValue()->reg.u32;
+                    break;
+                case NativeTypeKind::U64:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u64 < right->computedValue()->reg.u64;
+                    break;
 
-            default:
-            {
-                Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-                err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(err);
-            }
+                default:
+                {
+                    Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    return context->report(err);
+                }
             }
         }
     }
@@ -331,47 +331,47 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
         {
             switch (leftTypeInfo->nativeType)
             {
-            case NativeTypeKind::Bool:
-                node->computedValue()->reg.b = left->computedValue()->reg.b > right->computedValue()->reg.b;
-                break;
-            case NativeTypeKind::F32:
-                node->computedValue()->reg.b = left->computedValue()->reg.f32 > right->computedValue()->reg.f32;
-                break;
-            case NativeTypeKind::F64:
-                node->computedValue()->reg.b = left->computedValue()->reg.f64 > right->computedValue()->reg.f64;
-                break;
-            case NativeTypeKind::S8:
-                node->computedValue()->reg.b = left->computedValue()->reg.s8 > right->computedValue()->reg.s8;
-                break;
-            case NativeTypeKind::S16:
-                node->computedValue()->reg.b = left->computedValue()->reg.s16 > right->computedValue()->reg.s16;
-                break;
-            case NativeTypeKind::S32:
-                node->computedValue()->reg.b = left->computedValue()->reg.s32 > right->computedValue()->reg.s32;
-                break;
-            case NativeTypeKind::S64:
-                node->computedValue()->reg.b = left->computedValue()->reg.s64 > right->computedValue()->reg.s64;
-                break;
-            case NativeTypeKind::U8:
-                node->computedValue()->reg.b = left->computedValue()->reg.u8 > right->computedValue()->reg.u8;
-                break;
-            case NativeTypeKind::U16:
-                node->computedValue()->reg.b = left->computedValue()->reg.u16 > right->computedValue()->reg.u16;
-                break;
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Rune:
-                node->computedValue()->reg.b = left->computedValue()->reg.u32 > right->computedValue()->reg.u32;
-                break;
-            case NativeTypeKind::U64:
-                node->computedValue()->reg.b = left->computedValue()->reg.u64 > right->computedValue()->reg.u64;
-                break;
+                case NativeTypeKind::Bool:
+                    node->computedValue()->reg.b = left->computedValue()->reg.b > right->computedValue()->reg.b;
+                    break;
+                case NativeTypeKind::F32:
+                    node->computedValue()->reg.b = left->computedValue()->reg.f32 > right->computedValue()->reg.f32;
+                    break;
+                case NativeTypeKind::F64:
+                    node->computedValue()->reg.b = left->computedValue()->reg.f64 > right->computedValue()->reg.f64;
+                    break;
+                case NativeTypeKind::S8:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s8 > right->computedValue()->reg.s8;
+                    break;
+                case NativeTypeKind::S16:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s16 > right->computedValue()->reg.s16;
+                    break;
+                case NativeTypeKind::S32:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s32 > right->computedValue()->reg.s32;
+                    break;
+                case NativeTypeKind::S64:
+                    node->computedValue()->reg.b = left->computedValue()->reg.s64 > right->computedValue()->reg.s64;
+                    break;
+                case NativeTypeKind::U8:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u8 > right->computedValue()->reg.u8;
+                    break;
+                case NativeTypeKind::U16:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u16 > right->computedValue()->reg.u16;
+                    break;
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u32 > right->computedValue()->reg.u32;
+                    break;
+                case NativeTypeKind::U64:
+                    node->computedValue()->reg.b = left->computedValue()->reg.u64 > right->computedValue()->reg.u64;
+                    break;
 
-            default:
-            {
-                Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-                err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(err);
-            }
+                default:
+                {
+                    Diagnostic err{context->node, context->node->token, FMT(Err(Err0244), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    return context->report(err);
+                }
             }
         }
     }
@@ -543,37 +543,37 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
 
     switch (node->tokenId)
     {
-    case TokenId::SymEqualEqual:
-        SWAG_CHECK(resolveCompOpEqual(context, left, right));
-        YIELD();
-        break;
-    case TokenId::SymExclamEqual:
-        SWAG_CHECK(resolveCompOpEqual(context, left, right));
-        YIELD();
-        if (node->hasComputedValue())
-            node->computedValue()->reg.b = !node->computedValue()->reg.b;
-        break;
-    case TokenId::SymLower:
-        SWAG_CHECK(resolveCompOpLower(context, left, right));
-        break;
-    case TokenId::SymLowerEqual:
-        SWAG_CHECK(resolveCompOpGreater(context, left, right));
-        if (node->hasComputedValue())
-            node->computedValue()->reg.b = !node->computedValue()->reg.b;
-        break;
-    case TokenId::SymGreater:
-        SWAG_CHECK(resolveCompOpGreater(context, left, right));
-        break;
-    case TokenId::SymGreaterEqual:
-        SWAG_CHECK(resolveCompOpLower(context, left, right));
-        if (node->hasComputedValue())
-            node->computedValue()->reg.b = !node->computedValue()->reg.b;
-        break;
-    case TokenId::SymLowerEqualGreater:
-        SWAG_CHECK(resolveCompOp3Way(context, left, right));
-        break;
-    default:
-        return Report::internalError(context->node, "resolveCompareExpression, token not supported");
+        case TokenId::SymEqualEqual:
+            SWAG_CHECK(resolveCompOpEqual(context, left, right));
+            YIELD();
+            break;
+        case TokenId::SymExclamEqual:
+            SWAG_CHECK(resolveCompOpEqual(context, left, right));
+            YIELD();
+            if (node->hasComputedValue())
+                node->computedValue()->reg.b = !node->computedValue()->reg.b;
+            break;
+        case TokenId::SymLower:
+            SWAG_CHECK(resolveCompOpLower(context, left, right));
+            break;
+        case TokenId::SymLowerEqual:
+            SWAG_CHECK(resolveCompOpGreater(context, left, right));
+            if (node->hasComputedValue())
+                node->computedValue()->reg.b = !node->computedValue()->reg.b;
+            break;
+        case TokenId::SymGreater:
+            SWAG_CHECK(resolveCompOpGreater(context, left, right));
+            break;
+        case TokenId::SymGreaterEqual:
+            SWAG_CHECK(resolveCompOpLower(context, left, right));
+            if (node->hasComputedValue())
+                node->computedValue()->reg.b = !node->computedValue()->reg.b;
+            break;
+        case TokenId::SymLowerEqualGreater:
+            SWAG_CHECK(resolveCompOp3Way(context, left, right));
+            break;
+        default:
+            return Report::internalError(context->node, "resolveCompareExpression, token not supported");
     }
 
     return true;

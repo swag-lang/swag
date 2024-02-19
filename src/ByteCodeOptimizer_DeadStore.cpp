@@ -145,61 +145,61 @@ namespace
                 {
                     switch (ip->op)
                     {
-                    case ByteCodeOp::ClearRA:
-                        if (ipScan->a.u32 == ip->a.u32)
-                        {
-                            canRemove = true;
-                            return true;
-                        }
-                        break;
+                        case ByteCodeOp::ClearRA:
+                            if (ipScan->a.u32 == ip->a.u32)
+                            {
+                                canRemove = true;
+                                return true;
+                            }
+                            break;
 
-                    case ByteCodeOp::SetImmediate32:
-                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
-                        {
-                            canRemove = true;
-                            return true;
-                        }
-                        break;
-                    case ByteCodeOp::SetImmediate64:
-                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
-                        {
-                            canRemove = true;
-                            return true;
-                        }
-                        break;
+                        case ByteCodeOp::SetImmediate32:
+                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
+                            {
+                                canRemove = true;
+                                return true;
+                            }
+                            break;
+                        case ByteCodeOp::SetImmediate64:
+                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
+                            {
+                                canRemove = true;
+                                return true;
+                            }
+                            break;
 
-                    case ByteCodeOp::MakeStackPointer:
-                    case ByteCodeOp::MakeConstantSegPointer:
-                    case ByteCodeOp::MakeCompilerSegPointer:
-                    case ByteCodeOp::MakeBssSegPointer:
-                    case ByteCodeOp::MakeMutableSegPointer:
-                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
-                        {
-                            canRemove = true;
-                            return true;
-                        }
-                        break;
+                        case ByteCodeOp::MakeStackPointer:
+                        case ByteCodeOp::MakeConstantSegPointer:
+                        case ByteCodeOp::MakeCompilerSegPointer:
+                        case ByteCodeOp::MakeBssSegPointer:
+                        case ByteCodeOp::MakeMutableSegPointer:
+                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
+                            {
+                                canRemove = true;
+                                return true;
+                            }
+                            break;
 
-                    case ByteCodeOp::GetParam8:
-                    case ByteCodeOp::GetParam16:
-                    case ByteCodeOp::GetParam32:
-                    case ByteCodeOp::GetParam64:
-                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
-                        {
-                            canRemove = true;
-                            return true;
-                        }
-                        break;
+                        case ByteCodeOp::GetParam8:
+                        case ByteCodeOp::GetParam16:
+                        case ByteCodeOp::GetParam32:
+                        case ByteCodeOp::GetParam64:
+                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
+                            {
+                                canRemove = true;
+                                return true;
+                            }
+                            break;
 
-                    case ByteCodeOp::GetIncParam64:
-                        if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64 && ipScan->d.u64 == ip->d.u64)
-                        {
-                            canRemove = true;
-                            return true;
-                        }
-                        break;
-                    default:
-                        break;
+                        case ByteCodeOp::GetIncParam64:
+                            if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64 && ipScan->d.u64 == ip->d.u64)
+                            {
+                                canRemove = true;
+                                return true;
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
 
@@ -244,23 +244,23 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
         const auto ip = parseCxt.curIp;
         switch (ip->op)
         {
-        case ByteCodeOp::GetParam8:
-        case ByteCodeOp::GetParam16:
-        case ByteCodeOp::GetParam32:
-        case ByteCodeOp::GetParam64:
-        case ByteCodeOp::MakeStackPointer:
-        case ByteCodeOp::MakeConstantSegPointer:
-        case ByteCodeOp::MakeCompilerSegPointer:
-        case ByteCodeOp::MakeBssSegPointer:
-        case ByteCodeOp::MakeMutableSegPointer:
-        case ByteCodeOp::ClearRA:
-        case ByteCodeOp::SetImmediate32:
-        case ByteCodeOp::SetImmediate64:
-        case ByteCodeOp::GetIncParam64:
-            break;
+            case ByteCodeOp::GetParam8:
+            case ByteCodeOp::GetParam16:
+            case ByteCodeOp::GetParam32:
+            case ByteCodeOp::GetParam64:
+            case ByteCodeOp::MakeStackPointer:
+            case ByteCodeOp::MakeConstantSegPointer:
+            case ByteCodeOp::MakeCompilerSegPointer:
+            case ByteCodeOp::MakeBssSegPointer:
+            case ByteCodeOp::MakeMutableSegPointer:
+            case ByteCodeOp::ClearRA:
+            case ByteCodeOp::SetImmediate32:
+            case ByteCodeOp::SetImmediate64:
+            case ByteCodeOp::GetIncParam64:
+                break;
 
-        default:
-            return;
+            default:
+                return;
         }
 
         ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];

@@ -298,12 +298,12 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
     switch (typeSwitch->kind)
     {
-    case TypeInfoKind::Slice:
-    case TypeInfoKind::Array:
-    case TypeInfoKind::Interface:
-        return context->report({node->expression, FMT(Err(Err0169), typeSwitch->getDisplayNameC())});
-    default:
-        break;
+        case TypeInfoKind::Slice:
+        case TypeInfoKind::Array:
+        case TypeInfoKind::Interface:
+            return context->report({node->expression, FMT(Err(Err0169), typeSwitch->getDisplayNameC())});
+        default:
+            break;
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Err(Err0076)}));

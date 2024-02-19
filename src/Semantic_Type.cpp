@@ -685,26 +685,26 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     {
         switch (node->typeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            node->computedValue()->reg.s64 = node->computedValue()->reg.s8;
-            break;
-        case NativeTypeKind::S16:
-            node->computedValue()->reg.s64 = node->computedValue()->reg.s16;
-            break;
-        case NativeTypeKind::S32:
-            node->computedValue()->reg.s64 = node->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::U8:
-            node->computedValue()->reg.u64 = node->computedValue()->reg.u8;
-            break;
-        case NativeTypeKind::U16:
-            node->computedValue()->reg.u64 = node->computedValue()->reg.u16;
-            break;
-        case NativeTypeKind::U32:
-            node->computedValue()->reg.u64 = node->computedValue()->reg.u32;
-            break;
-        default:
-            break;
+            case NativeTypeKind::S8:
+                node->computedValue()->reg.s64 = node->computedValue()->reg.s8;
+                break;
+            case NativeTypeKind::S16:
+                node->computedValue()->reg.s64 = node->computedValue()->reg.s16;
+                break;
+            case NativeTypeKind::S32:
+                node->computedValue()->reg.s64 = node->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::U8:
+                node->computedValue()->reg.u64 = node->computedValue()->reg.u8;
+                break;
+            case NativeTypeKind::U16:
+                node->computedValue()->reg.u64 = node->computedValue()->reg.u16;
+                break;
+            case NativeTypeKind::U32:
+                node->computedValue()->reg.u64 = node->computedValue()->reg.u32;
+                break;
+            default:
+                break;
         }
     }
 

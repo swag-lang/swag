@@ -184,56 +184,56 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
     switch (scopeType->kind)
     {
-    case TypeInfoKind::Enum:
-    {
-        identifierRef->startScope = castTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
-        node->typeInfo            = typeInfo;
-        break;
-    }
-    case TypeInfoKind::Pointer:
-    {
-        const auto typePointer = castTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
-        const auto subType     = TypeManager::concreteType(typePointer->pointedType);
-        if (subType->isStruct() || subType->isInterface())
-            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
-        node->typeInfo = typeInfo;
-        break;
-    }
+        case TypeInfoKind::Enum:
+        {
+            identifierRef->startScope = castTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
+            node->typeInfo            = typeInfo;
+            break;
+        }
+        case TypeInfoKind::Pointer:
+        {
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
+            const auto subType     = TypeManager::concreteType(typePointer->pointedType);
+            if (subType->isStruct() || subType->isInterface())
+                identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+            node->typeInfo = typeInfo;
+            break;
+        }
 
-    case TypeInfoKind::TypeListArray:
-    case TypeInfoKind::TypeListTuple:
-        identifierRef->startScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
-        node->typeInfo = typeInfo;
-        break;
+        case TypeInfoKind::TypeListArray:
+        case TypeInfoKind::TypeListTuple:
+            identifierRef->startScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
+            node->typeInfo = typeInfo;
+            break;
 
-    case TypeInfoKind::Interface:
-    case TypeInfoKind::Struct:
-        identifierRef->startScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
-        node->typeInfo = typeInfo;
-        break;
+        case TypeInfoKind::Interface:
+        case TypeInfoKind::Struct:
+            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
+            node->typeInfo = typeInfo;
+            break;
 
-    case TypeInfoKind::Array:
-    {
-        const auto typeArray = castTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
-        const auto subType   = TypeManager::concreteType(typeArray->finalType);
-        if (subType->isStruct())
-            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
-        node->typeInfo = typeInfo;
-        break;
-    }
+        case TypeInfoKind::Array:
+        {
+            const auto typeArray = castTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
+            const auto subType   = TypeManager::concreteType(typeArray->finalType);
+            if (subType->isStruct())
+                identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+            node->typeInfo = typeInfo;
+            break;
+        }
 
-    case TypeInfoKind::Slice:
-    {
-        const auto typeSlice = castTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
-        const auto subType   = TypeManager::concreteType(typeSlice->pointedType);
-        if (subType->isStruct())
-            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
-        node->typeInfo = typeInfo;
-        break;
-    }
+        case TypeInfoKind::Slice:
+        {
+            const auto typeSlice = castTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
+            const auto subType   = TypeManager::concreteType(typeSlice->pointedType);
+            if (subType->isStruct())
+                identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+            node->typeInfo = typeInfo;
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return true;
@@ -553,13 +553,13 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
     const auto kind = overload->symbol->kind;
     switch (kind)
     {
-    case SymbolKind::Enum:
-    case SymbolKind::Struct:
-    case SymbolKind::TypeAlias:
-    case SymbolKind::Interface:
-        return true;
-    default:
-        break;
+        case SymbolKind::Enum:
+        case SymbolKind::Struct:
+        case SymbolKind::TypeAlias:
+        case SymbolKind::Interface:
+            return true;
+        default:
+            break;
     }
 
     const auto                  symbol   = overload->symbol;
@@ -713,17 +713,17 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         const auto brotherParent = brother->parent;
                         switch (brotherParent->kind)
                         {
-                        case AstNodeKind::Loop:
-                        case AstNodeKind::If:
-                        case AstNodeKind::CompilerIf:
-                        case AstNodeKind::While:
-                        {
-                            const auto       msg = FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.c_str(), brotherParent->token.c_str());
-                            const Diagnostic err{node, node->token, msg};
-                            return context->report(err, Diagnostic::hereIs(overload->node));
-                        }
-                        default:
-                            break;
+                            case AstNodeKind::Loop:
+                            case AstNodeKind::If:
+                            case AstNodeKind::CompilerIf:
+                            case AstNodeKind::While:
+                            {
+                                const auto       msg = FMT(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.c_str(), brotherParent->token.c_str());
+                                const Diagnostic err{node, node->token, msg};
+                                return context->report(err, Diagnostic::hereIs(overload->node));
+                            }
+                            default:
+                                break;
                         }
 
                         const auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);

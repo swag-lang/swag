@@ -27,14 +27,14 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 {
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::TypeListArray:
-        typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), true);
-        break;
-    case TypeInfoKind::TypeListTuple:
-        typeInfo = TypeManager::convertTypeListToStruct(context, castTypeInfo<TypeInfoList>(typeInfo), true);
-        break;
-    default:
-        break;
+        case TypeInfoKind::TypeListArray:
+            typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), true);
+            break;
+        case TypeInfoKind::TypeListTuple:
+            typeInfo = TypeManager::convertTypeListToStruct(context, castTypeInfo<TypeInfoList>(typeInfo), true);
+            break;
+        default:
+            break;
     }
 
     if (!genFlags.has(GEN_EXPORTED_TYPE_FORCE_NO_SCOPE))
@@ -93,46 +93,46 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
     TypeInfoStruct* typeStruct = nullptr;
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::Native:
-        typeStruct = swagScope.regTypeInfoNative;
-        break;
-    case TypeInfoKind::Pointer:
-        typeStruct = swagScope.regTypeInfoPointer;
-        break;
-    case TypeInfoKind::Struct:
-    case TypeInfoKind::Interface:
-        typeStruct = swagScope.regTypeInfoStruct;
-        break;
-    case TypeInfoKind::FuncAttr:
-    case TypeInfoKind::LambdaClosure:
-        typeStruct = swagScope.regTypeInfoFunc;
-        break;
-    case TypeInfoKind::Enum:
-        typeStruct = swagScope.regTypeInfoEnum;
-        break;
-    case TypeInfoKind::Variadic:
-    case TypeInfoKind::TypedVariadic:
-    case TypeInfoKind::CVariadic:
-        typeStruct = swagScope.regTypeInfoVariadic;
-        break;
-    case TypeInfoKind::Array:
-        typeStruct = swagScope.regTypeInfoArray;
-        break;
-    case TypeInfoKind::Slice:
-        typeStruct = swagScope.regTypeInfoSlice;
-        break;
-    case TypeInfoKind::Generic:
-    case TypeInfoKind::Code:
-        typeStruct = swagScope.regTypeInfoGeneric;
-        break;
-    case TypeInfoKind::Alias:
-        typeStruct = swagScope.regTypeInfoAlias;
-        break;
-    case TypeInfoKind::Namespace:
-        typeStruct = swagScope.regTypeInfoNamespace;
-        break;
-    default:
-        return context->report({context->node, FMT(Err(Err0372), typeInfo->getDisplayNameC())});
+        case TypeInfoKind::Native:
+            typeStruct = swagScope.regTypeInfoNative;
+            break;
+        case TypeInfoKind::Pointer:
+            typeStruct = swagScope.regTypeInfoPointer;
+            break;
+        case TypeInfoKind::Struct:
+        case TypeInfoKind::Interface:
+            typeStruct = swagScope.regTypeInfoStruct;
+            break;
+        case TypeInfoKind::FuncAttr:
+        case TypeInfoKind::LambdaClosure:
+            typeStruct = swagScope.regTypeInfoFunc;
+            break;
+        case TypeInfoKind::Enum:
+            typeStruct = swagScope.regTypeInfoEnum;
+            break;
+        case TypeInfoKind::Variadic:
+        case TypeInfoKind::TypedVariadic:
+        case TypeInfoKind::CVariadic:
+            typeStruct = swagScope.regTypeInfoVariadic;
+            break;
+        case TypeInfoKind::Array:
+            typeStruct = swagScope.regTypeInfoArray;
+            break;
+        case TypeInfoKind::Slice:
+            typeStruct = swagScope.regTypeInfoSlice;
+            break;
+        case TypeInfoKind::Generic:
+        case TypeInfoKind::Code:
+            typeStruct = swagScope.regTypeInfoGeneric;
+            break;
+        case TypeInfoKind::Alias:
+            typeStruct = swagScope.regTypeInfoAlias;
+            break;
+        case TypeInfoKind::Namespace:
+            typeStruct = swagScope.regTypeInfoNamespace;
+            break;
+        default:
+            return context->report({context->node, FMT(Err(Err0372), typeInfo->getDisplayNameC())});
     }
 
     // Build concrete structure content
@@ -210,145 +210,145 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
 
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::Native:
-    {
-        const auto concreteType  = reinterpret_cast<ExportedTypeInfoNative*>(exportedTypeInfoValue);
-        concreteType->nativeKind = typeInfo->nativeType;
-        break;
-    }
-
-    case TypeInfoKind::Pointer:
-    {
-        const auto concreteType = reinterpret_cast<ExportedTypeInfoPointer*>(exportedTypeInfoValue);
-        const auto realType     = castTypeInfo<TypeInfoPointer>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
-        break;
-    }
-
-    case TypeInfoKind::Alias:
-    {
-        const auto concreteType = reinterpret_cast<ExportedTypeInfoAlias*>(exportedTypeInfoValue);
-        const auto realType     = castTypeInfo<TypeInfoAlias>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
-        break;
-    }
-
-    case TypeInfoKind::Struct:
-    case TypeInfoKind::Interface:
-    {
-        SWAG_CHECK(genExportedStruct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, genFlags));
-        break;
-    }
-
-    case TypeInfoKind::LambdaClosure:
-    case TypeInfoKind::FuncAttr:
-    {
-        const auto concreteType = reinterpret_cast<ExportedTypeInfoFunc*>(exportedTypeInfoValue);
-        const auto realType     = castTypeInfo<TypeInfoFuncAttr>(typeInfo);
-
-        SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
-
-        // Generics
-        concreteType->generics.buffer = nullptr;
-        concreteType->generics.count  = realType->genericParameters.size();
-        if (concreteType->generics.count)
+        case TypeInfoKind::Native:
         {
-            const uint32_t count = static_cast<uint32_t>(concreteType->generics.count);
-            uint32_t       storageArray;
-            const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
-                                                                                    &concreteType->generics.buffer, storageArray));
-            for (size_t param = 0; param < concreteType->generics.count; param++)
-            {
-                SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], genFlags));
-                storageArray += sizeof(ExportedTypeValue);
-            }
+            const auto concreteType  = reinterpret_cast<ExportedTypeInfoNative*>(exportedTypeInfoValue);
+            concreteType->nativeKind = typeInfo->nativeType;
+            break;
         }
 
-        // Parameters
-        concreteType->parameters.buffer = nullptr;
-        concreteType->parameters.count  = realType->parameters.size();
-
-        // Do not count the first generated parameter of a closure
-        int firstParam = 0;
-        if (realType->isClosure())
+        case TypeInfoKind::Pointer:
         {
-            concreteType->parameters.count--;
-            firstParam = 1;
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoPointer*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoPointer>(typeInfo);
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
+            break;
         }
 
-        if (concreteType->parameters.count)
+        case TypeInfoKind::Alias:
         {
-            const uint32_t count = realType->parameters.size();
-            uint32_t       storageArray;
-            const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
-                                                                                    &concreteType->parameters.buffer, storageArray));
-            for (size_t param = firstParam; param < realType->parameters.size(); param++)
-            {
-                SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], genFlags));
-                storageArray += sizeof(ExportedTypeValue);
-            }
-        }
-
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->returnType, exportedTypeInfoValue, storageSegment, storageOffset, realType->returnType, genFlags));
-        break;
-    }
-
-    case TypeInfoKind::Enum:
-    {
-        const auto concreteType = reinterpret_cast<ExportedTypeInfoEnum*>(exportedTypeInfoValue);
-        const auto realType     = castTypeInfo<TypeInfoEnum>(typeInfo);
-
-        SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
-
-        concreteType->values.buffer = nullptr;
-        concreteType->values.count  = realType->values.size();
-        if (concreteType->values.count)
-        {
-            const uint32_t count = realType->values.size();
-            uint32_t       storageArray;
-            const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
-                                                                                    &concreteType->values.buffer, storageArray));
-            for (size_t param = 0; param < concreteType->values.count; param++)
-            {
-                SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], genFlags));
-                storageArray += sizeof(ExportedTypeValue);
-            }
-        }
-
-        concreteType->rawType = nullptr;
-        if (realType->rawType)
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoAlias*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoAlias>(typeInfo);
             SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
-        break;
-    }
+            break;
+        }
 
-    case TypeInfoKind::Array:
-    {
-        const auto concreteType  = reinterpret_cast<ExportedTypeInfoArray*>(exportedTypeInfoValue);
-        const auto realType      = castTypeInfo<TypeInfoArray>(typeInfo);
-        concreteType->count      = realType->count;
-        concreteType->totalCount = realType->totalCount;
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->finalType, exportedTypeInfoValue, storageSegment, storageOffset, realType->finalType, genFlags));
-        break;
-    }
+        case TypeInfoKind::Struct:
+        case TypeInfoKind::Interface:
+        {
+            SWAG_CHECK(genExportedStruct(context, typeName, exportedTypeInfoValue, typeInfo, storageSegment, storageOffset, genFlags));
+            break;
+        }
 
-    case TypeInfoKind::Slice:
-    {
-        const auto concreteType = reinterpret_cast<ExportedTypeInfoSlice*>(exportedTypeInfoValue);
-        const auto realType     = castTypeInfo<TypeInfoSlice>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
-        break;
-    }
+        case TypeInfoKind::LambdaClosure:
+        case TypeInfoKind::FuncAttr:
+        {
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoFunc*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoFuncAttr>(typeInfo);
 
-    case TypeInfoKind::TypedVariadic:
-    {
-        const auto concreteType = reinterpret_cast<ExportedTypeInfoVariadic*>(exportedTypeInfoValue);
-        const auto realType     = castTypeInfo<TypeInfoVariadic>(typeInfo);
-        SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
-        break;
-    }
-    default:
-        break;
+            SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
+
+            // Generics
+            concreteType->generics.buffer = nullptr;
+            concreteType->generics.count  = realType->genericParameters.size();
+            if (concreteType->generics.count)
+            {
+                const uint32_t count = static_cast<uint32_t>(concreteType->generics.count);
+                uint32_t       storageArray;
+                const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
+                                                                                        &concreteType->generics.buffer, storageArray));
+                for (size_t param = 0; param < concreteType->generics.count; param++)
+                {
+                    SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], genFlags));
+                    storageArray += sizeof(ExportedTypeValue);
+                }
+            }
+
+            // Parameters
+            concreteType->parameters.buffer = nullptr;
+            concreteType->parameters.count  = realType->parameters.size();
+
+            // Do not count the first generated parameter of a closure
+            int firstParam = 0;
+            if (realType->isClosure())
+            {
+                concreteType->parameters.count--;
+                firstParam = 1;
+            }
+
+            if (concreteType->parameters.count)
+            {
+                const uint32_t count = realType->parameters.size();
+                uint32_t       storageArray;
+                const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
+                                                                                        &concreteType->parameters.buffer, storageArray));
+                for (size_t param = firstParam; param < realType->parameters.size(); param++)
+                {
+                    SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], genFlags));
+                    storageArray += sizeof(ExportedTypeValue);
+                }
+            }
+
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->returnType, exportedTypeInfoValue, storageSegment, storageOffset, realType->returnType, genFlags));
+            break;
+        }
+
+        case TypeInfoKind::Enum:
+        {
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoEnum*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoEnum>(typeInfo);
+
+            SWAG_CHECK(genExportedAttributes(context, realType->attributes, exportedTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, genFlags));
+
+            concreteType->values.buffer = nullptr;
+            concreteType->values.count  = realType->values.size();
+            if (concreteType->values.count)
+            {
+                const uint32_t count = realType->values.size();
+                uint32_t       storageArray;
+                const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
+                                                                                        &concreteType->values.buffer, storageArray));
+                for (size_t param = 0; param < concreteType->values.count; param++)
+                {
+                    SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], genFlags));
+                    storageArray += sizeof(ExportedTypeValue);
+                }
+            }
+
+            concreteType->rawType = nullptr;
+            if (realType->rawType)
+                SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
+            break;
+        }
+
+        case TypeInfoKind::Array:
+        {
+            const auto concreteType  = reinterpret_cast<ExportedTypeInfoArray*>(exportedTypeInfoValue);
+            const auto realType      = castTypeInfo<TypeInfoArray>(typeInfo);
+            concreteType->count      = realType->count;
+            concreteType->totalCount = realType->totalCount;
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->finalType, exportedTypeInfoValue, storageSegment, storageOffset, realType->finalType, genFlags));
+            break;
+        }
+
+        case TypeInfoKind::Slice:
+        {
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoSlice*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoSlice>(typeInfo);
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->pointedType, exportedTypeInfoValue, storageSegment, storageOffset, realType->pointedType, genFlags));
+            break;
+        }
+
+        case TypeInfoKind::TypedVariadic:
+        {
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoVariadic*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoVariadic>(typeInfo);
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
+            break;
+        }
+        default:
+            break;
     }
 
     return true;

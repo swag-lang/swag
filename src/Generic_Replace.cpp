@@ -179,155 +179,155 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
     // When type is a compound, we do substitution in the raw type
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::TypedVariadic:
-    {
-        auto       typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        const auto newType      = replaceGenericTypes(replaceTypes, typeVariadic->rawType);
-        if (newType != typeVariadic->rawType)
+        case TypeInfoKind::TypedVariadic:
         {
-            typeVariadic          = castTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
-            typeVariadic->rawType = newType;
-            typeVariadic->removeGenericFlag();
-            typeVariadic->forceComputeName();
-            return typeVariadic;
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Alias:
-    {
-        auto       typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-        const auto newType   = replaceGenericTypes(replaceTypes, typeAlias->rawType);
-        if (newType != typeAlias->rawType)
-        {
-            typeAlias          = castTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
-            typeAlias->rawType = newType;
-            typeAlias->removeGenericFlag();
-            typeAlias->forceComputeName();
-            return typeAlias;
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Pointer:
-    {
-        auto       typePointer = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        const auto newType     = replaceGenericTypes(replaceTypes, typePointer->pointedType);
-        if (newType != typePointer->pointedType)
-        {
-            auto newFlags = typePointer->flags;
-            newFlags.remove(TYPEINFO_GENERIC);
-            newFlags.add(TYPEINFO_FROM_GENERIC);
-            typePointer = g_TypeMgr->makePointerTo(newType, newFlags);
-            return typePointer;
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Array:
-    {
-        auto       typeArray      = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        const auto newPointedType = replaceGenericTypes(replaceTypes, typeArray->pointedType);
-        TypeInfo*  newFinalType   = newPointedType;
-        if (typeArray->pointedType != typeArray->finalType)
-            newFinalType = replaceGenericTypes(replaceTypes, typeArray->finalType);
-        if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
-        {
-            typeArray              = castTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
-            typeArray->pointedType = newPointedType;
-            typeArray->finalType   = newFinalType;
-            if (typeArray->count)
-                typeArray->removeGenericFlag();
-            typeArray->sizeOf = typeArray->count * newPointedType->sizeOf;
-            typeArray->forceComputeName();
-            return typeArray;
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::Slice:
-    {
-        auto       typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        const auto newType   = replaceGenericTypes(replaceTypes, typeSlice->pointedType);
-        if (newType != typeSlice->pointedType)
-        {
-            typeSlice              = castTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
-            typeSlice->pointedType = newType;
-            typeSlice->removeGenericFlag();
-            typeSlice->forceComputeName();
-            return typeSlice;
-        }
-
-        break;
-    }
-
-    case TypeInfoKind::LambdaClosure:
-    case TypeInfoKind::FuncAttr:
-    {
-        TypeInfoFuncAttr* newLambda  = nullptr;
-        const auto        typeLambda = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-
-        auto newType = replaceGenericTypes(replaceTypes, typeLambda->returnType);
-        if (newType != typeLambda->returnType)
-        {
-            newLambda = castTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
-            newLambda->removeGenericFlag();
-            newLambda->returnType   = newType;
-            newLambda->replaceTypes = replaceTypes;
-        }
-
-        const auto numParams = typeLambda->parameters.size();
-        for (size_t idx = 0; idx < numParams; idx++)
-        {
-            const auto param = typeLambda->parameters[idx];
-            newType          = replaceGenericTypes(replaceTypes, param->typeInfo);
-
-            // If generic parameter is a closure, but the instantiated type is a lambda, then a conversion will
-            // take place.
-            // But we want to be sure that the closure stays a closure in order for the conversion to take place.
-            // So transform the replaced lambda type by a closure one.
-            if (param->typeInfo->isClosure() && newType->isLambda())
+            auto       typeVariadic = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+            const auto newType      = replaceGenericTypes(replaceTypes, typeVariadic->rawType);
+            if (newType != typeVariadic->rawType)
             {
-                newType         = newType->clone();
-                newType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-                newType->addFlag(TYPEINFO_CLOSURE);
-
-                auto newParam         = TypeManager::makeParam();
-                newParam->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-                const auto newTypeFct = castTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
-                newTypeFct->parameters.push_front(newParam);
+                typeVariadic          = castTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
+                typeVariadic->rawType = newType;
+                typeVariadic->removeGenericFlag();
+                typeVariadic->forceComputeName();
+                return typeVariadic;
             }
 
-            if (newType != param->typeInfo)
+            break;
+        }
+
+        case TypeInfoKind::Alias:
+        {
+            auto       typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+            const auto newType   = replaceGenericTypes(replaceTypes, typeAlias->rawType);
+            if (newType != typeAlias->rawType)
             {
-                if (!newLambda)
+                typeAlias          = castTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
+                typeAlias->rawType = newType;
+                typeAlias->removeGenericFlag();
+                typeAlias->forceComputeName();
+                return typeAlias;
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::Pointer:
+        {
+            auto       typePointer = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            const auto newType     = replaceGenericTypes(replaceTypes, typePointer->pointedType);
+            if (newType != typePointer->pointedType)
+            {
+                auto newFlags = typePointer->flags;
+                newFlags.remove(TYPEINFO_GENERIC);
+                newFlags.add(TYPEINFO_FROM_GENERIC);
+                typePointer = g_TypeMgr->makePointerTo(newType, newFlags);
+                return typePointer;
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::Array:
+        {
+            auto       typeArray      = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            const auto newPointedType = replaceGenericTypes(replaceTypes, typeArray->pointedType);
+            TypeInfo*  newFinalType   = newPointedType;
+            if (typeArray->pointedType != typeArray->finalType)
+                newFinalType = replaceGenericTypes(replaceTypes, typeArray->finalType);
+            if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
+            {
+                typeArray              = castTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
+                typeArray->pointedType = newPointedType;
+                typeArray->finalType   = newFinalType;
+                if (typeArray->count)
+                    typeArray->removeGenericFlag();
+                typeArray->sizeOf = typeArray->count * newPointedType->sizeOf;
+                typeArray->forceComputeName();
+                return typeArray;
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::Slice:
+        {
+            auto       typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            const auto newType   = replaceGenericTypes(replaceTypes, typeSlice->pointedType);
+            if (newType != typeSlice->pointedType)
+            {
+                typeSlice              = castTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
+                typeSlice->pointedType = newType;
+                typeSlice->removeGenericFlag();
+                typeSlice->forceComputeName();
+                return typeSlice;
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::LambdaClosure:
+        case TypeInfoKind::FuncAttr:
+        {
+            TypeInfoFuncAttr* newLambda  = nullptr;
+            const auto        typeLambda = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+
+            auto newType = replaceGenericTypes(replaceTypes, typeLambda->returnType);
+            if (newType != typeLambda->returnType)
+            {
+                newLambda = castTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
+                newLambda->removeGenericFlag();
+                newLambda->returnType   = newType;
+                newLambda->replaceTypes = replaceTypes;
+            }
+
+            const auto numParams = typeLambda->parameters.size();
+            for (size_t idx = 0; idx < numParams; idx++)
+            {
+                const auto param = typeLambda->parameters[idx];
+                newType          = replaceGenericTypes(replaceTypes, param->typeInfo);
+
+                // If generic parameter is a closure, but the instantiated type is a lambda, then a conversion will
+                // take place.
+                // But we want to be sure that the closure stays a closure in order for the conversion to take place.
+                // So transform the replaced lambda type by a closure one.
+                if (param->typeInfo->isClosure() && newType->isLambda())
                 {
-                    newLambda = castTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                    newLambda->removeGenericFlag();
-                    newLambda->replaceTypes = replaceTypes;
+                    newType         = newType->clone();
+                    newType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
+                    newType->addFlag(TYPEINFO_CLOSURE);
+
+                    auto newParam         = TypeManager::makeParam();
+                    newParam->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+                    const auto newTypeFct = castTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
+                    newTypeFct->parameters.push_front(newParam);
                 }
 
-                const auto newParam = newLambda->parameters[idx];
-                newParam->typeInfo  = newType;
-                newParam->flags |= TYPEINFOPARAM_FROM_GENERIC;
+                if (newType != param->typeInfo)
+                {
+                    if (!newLambda)
+                    {
+                        newLambda = castTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                        newLambda->removeGenericFlag();
+                        newLambda->replaceTypes = replaceTypes;
+                    }
+
+                    const auto newParam = newLambda->parameters[idx];
+                    newParam->typeInfo  = newType;
+                    newParam->flags |= TYPEINFOPARAM_FROM_GENERIC;
+                }
             }
+
+            if (newLambda)
+            {
+                newLambda->forceComputeName();
+                return newLambda;
+            }
+
+            break;
         }
 
-        if (newLambda)
-        {
-            newLambda->forceComputeName();
-            return newLambda;
-        }
-
-        break;
-    }
-
-    default:
-        break;
+        default:
+            break;
     }
 
     return typeInfo;

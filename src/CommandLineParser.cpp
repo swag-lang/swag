@@ -108,40 +108,40 @@ namespace
     {
         switch (oneArg->type)
         {
-        case CommandLineType::Bool:
-            value = "true|false";
-            if (*static_cast<bool*>(oneArg->buffer))
-                defaultValue += "true";
-            else
-                defaultValue += "false";
-            break;
-        case CommandLineType::Int:
-            value = "<integer>";
-            defaultValue = to_string(*static_cast<int*>(oneArg->buffer));
-            break;
-        case CommandLineType::String:
-            value = "<string>";
-            defaultValue = *static_cast<Utf8*>(oneArg->buffer);
-            break;
-        case CommandLineType::StringPath:
-            value = "<path>";
-            defaultValue = static_cast<Path*>(oneArg->buffer)->string();
-            break;
-        case CommandLineType::StringSet:
-            value = "<string>";
-            break;
-        case CommandLineType::EnumInt:
-        {
-            value = oneArg->param;
-            Vector<Utf8> tokens;
-            Utf8::tokenize(oneArg->param, '|', tokens);
-            defaultValue = tokens[*static_cast<int*>(oneArg->buffer)];
-            break;
-        }
-        case CommandLineType::EnumString:
-            value = oneArg->param;
-            defaultValue = *static_cast<Utf8*>(oneArg->buffer);
-            break;
+            case CommandLineType::Bool:
+                value = "true|false";
+                if (*static_cast<bool*>(oneArg->buffer))
+                    defaultValue += "true";
+                else
+                    defaultValue += "false";
+                break;
+            case CommandLineType::Int:
+                value = "<integer>";
+                defaultValue = to_string(*static_cast<int*>(oneArg->buffer));
+                break;
+            case CommandLineType::String:
+                value = "<string>";
+                defaultValue = *static_cast<Utf8*>(oneArg->buffer);
+                break;
+            case CommandLineType::StringPath:
+                value = "<path>";
+                defaultValue = static_cast<Path*>(oneArg->buffer)->string();
+                break;
+            case CommandLineType::StringSet:
+                value = "<string>";
+                break;
+            case CommandLineType::EnumInt:
+            {
+                value = oneArg->param;
+                Vector<Utf8> tokens;
+                Utf8::tokenize(oneArg->param, '|', tokens);
+                defaultValue = tokens[*static_cast<int*>(oneArg->buffer)];
+                break;
+            }
+            case CommandLineType::EnumString:
+                value = oneArg->param;
+                defaultValue = *static_cast<Utf8*>(oneArg->buffer);
+                break;
         }
     }
 }
@@ -318,139 +318,139 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
         switch (arg->type)
         {
-        case CommandLineType::EnumInt:
-        {
-            Vector<Utf8> tokens;
-            Utf8::tokenize(arg->param, '|', tokens);
-
-            int index = 0;
-            for (const auto& one : tokens)
+            case CommandLineType::EnumInt:
             {
-                if (one == argument)
+                Vector<Utf8> tokens;
+                Utf8::tokenize(arg->param, '|', tokens);
+
+                int index = 0;
+                for (const auto& one : tokens)
                 {
-                    *static_cast<int*>(arg->buffer) = index;
-                    break;
+                    if (one == argument)
+                    {
+                        *static_cast<int*>(arg->buffer) = index;
+                        break;
+                    }
+
+                    index++;
                 }
 
-                index++;
-            }
-
-            if (index == static_cast<int>(tokens.size()))
-            {
-                Report::error(FMT(Err(Fat0005), it->first.c_str(), arg->param));
-                result = false;
-                continue;
-            }
-        }
-        break;
-
-        case CommandLineType::EnumString:
-        {
-            Vector<Utf8> tokens;
-            Utf8::tokenize(arg->param, '|', tokens);
-
-            int index = 0;
-            for (const auto& one : tokens)
-            {
-                if (one == argument)
+                if (index == static_cast<int>(tokens.size()))
                 {
-                    *static_cast<Utf8*>(arg->buffer) = one;
-                    break;
+                    Report::error(FMT(Err(Fat0005), it->first.c_str(), arg->param));
+                    result = false;
+                    continue;
+                }
+            }
+            break;
+
+            case CommandLineType::EnumString:
+            {
+                Vector<Utf8> tokens;
+                Utf8::tokenize(arg->param, '|', tokens);
+
+                int index = 0;
+                for (const auto& one : tokens)
+                {
+                    if (one == argument)
+                    {
+                        *static_cast<Utf8*>(arg->buffer) = one;
+                        break;
+                    }
+
+                    index++;
                 }
 
-                index++;
-            }
-
-            if (index == static_cast<int>(tokens.size()))
-            {
-                Report::error(FMT(Err(Fat0005), it->first.c_str(), arg->param));
-                result = false;
-                continue;
-            }
-        }
-        break;
-
-        case CommandLineType::Bool:
-            if (argument == "true" || argument.empty())
-                *static_cast<bool*>(arg->buffer) = true;
-            else if (argument == "false")
-                *static_cast<bool*>(arg->buffer) = false;
-            else
-            {
-                Report::error(FMT(Err(Fat0001), it->first.c_str(), argument.c_str()));
-                result = false;
-                continue;
-            }
-            break;
-
-        case CommandLineType::String:
-        {
-            if (argument.empty())
-            {
-                Report::error(FMT(Err(Fat0002), it->first.c_str(), argument.c_str()));
-                result = false;
-                continue;
-            }
-
-            *static_cast<Utf8*>(arg->buffer) = argument;
-            break;
-        }
-
-        case CommandLineType::StringPath:
-        {
-            if (argument.empty())
-            {
-                Report::error(FMT(Err(Fat0002), it->first.c_str(), argument.c_str()));
-                result = false;
-                continue;
-            }
-
-            *static_cast<Path*>(arg->buffer) = argument;
-            break;
-        }
-
-        case CommandLineType::StringSet:
-        {
-            if (argument.empty())
-            {
-                Report::error(FMT(Err(Fat0002), it->first.c_str(), argument.c_str()));
-                result = false;
-                continue;
-            }
-
-            static_cast<SetUtf8*>(arg->buffer)->insert(argument);
-            break;
-        }
-
-        case CommandLineType::Int:
-        {
-            pz               = argument.c_str();
-            bool thisIsAnInt = !argument.empty();
-
-            while (*pz)
-            {
-                if (!isdigit(*pz))
+                if (index == static_cast<int>(tokens.size()))
                 {
-                    thisIsAnInt = false;
-                    break;
+                    Report::error(FMT(Err(Fat0005), it->first.c_str(), arg->param));
+                    result = false;
+                    continue;
                 }
-
-                pz++;
             }
+            break;
 
-            if (!thisIsAnInt)
+            case CommandLineType::Bool:
+                if (argument == "true" || argument.empty())
+                    *static_cast<bool*>(arg->buffer) = true;
+                else if (argument == "false")
+                    *static_cast<bool*>(arg->buffer) = false;
+                else
+                {
+                    Report::error(FMT(Err(Fat0001), it->first.c_str(), argument.c_str()));
+                    result = false;
+                    continue;
+                }
+                break;
+
+            case CommandLineType::String:
             {
                 if (argument.empty())
-                    Report::error(FMT(Err(Fat0004), it->first.c_str()));
-                else
-                    Report::error(FMT(Err(Fat0003), it->first.c_str(), argument.c_str()));
-                result = false;
-                continue;
+                {
+                    Report::error(FMT(Err(Fat0002), it->first.c_str(), argument.c_str()));
+                    result = false;
+                    continue;
+                }
+
+                *static_cast<Utf8*>(arg->buffer) = argument;
+                break;
             }
 
-            *static_cast<int*>(arg->buffer) = argument.toInt();
-            break;
-        }
+            case CommandLineType::StringPath:
+            {
+                if (argument.empty())
+                {
+                    Report::error(FMT(Err(Fat0002), it->first.c_str(), argument.c_str()));
+                    result = false;
+                    continue;
+                }
+
+                *static_cast<Path*>(arg->buffer) = argument;
+                break;
+            }
+
+            case CommandLineType::StringSet:
+            {
+                if (argument.empty())
+                {
+                    Report::error(FMT(Err(Fat0002), it->first.c_str(), argument.c_str()));
+                    result = false;
+                    continue;
+                }
+
+                static_cast<SetUtf8*>(arg->buffer)->insert(argument);
+                break;
+            }
+
+            case CommandLineType::Int:
+            {
+                pz               = argument.c_str();
+                bool thisIsAnInt = !argument.empty();
+
+                while (*pz)
+                {
+                    if (!isdigit(*pz))
+                    {
+                        thisIsAnInt = false;
+                        break;
+                    }
+
+                    pz++;
+                }
+
+                if (!thisIsAnInt)
+                {
+                    if (argument.empty())
+                        Report::error(FMT(Err(Fat0004), it->first.c_str()));
+                    else
+                        Report::error(FMT(Err(Fat0003), it->first.c_str(), argument.c_str()));
+                    result = false;
+                    continue;
+                }
+
+                *static_cast<int*>(arg->buffer) = argument.toInt();
+                break;
+            }
         }
     }
 
@@ -478,65 +478,65 @@ Utf8 CommandLineParser::buildString() const
         result += Log::colorToVTS(LogColor::Header);
         switch (oneArg->type)
         {
-        case CommandLineType::String:
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-            result += *static_cast<Utf8*>(oneArg->buffer);
-            break;
+            case CommandLineType::String:
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+                result += *static_cast<Utf8*>(oneArg->buffer);
+                break;
 
-        case CommandLineType::StringPath:
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-            result += static_cast<Path*>(oneArg->buffer)->string();
-            break;
+            case CommandLineType::StringPath:
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+                result += static_cast<Path*>(oneArg->buffer)->string();
+                break;
 
-        case CommandLineType::EnumInt:
-        {
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-
-            Vector<Utf8> tokens;
-            Utf8::tokenize(oneArg->param, '|', tokens);
-            const int idx = *static_cast<int*>(oneArg->buffer);
-            result += tokens[idx];
-            break;
-        }
-
-        case CommandLineType::StringSet:
-        {
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-            const auto all = static_cast<SetUtf8*>(oneArg->buffer);
-            for (auto& one : *all)
+            case CommandLineType::EnumInt:
             {
-                result += one;
-                result += " ";
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+
+                Vector<Utf8> tokens;
+                Utf8::tokenize(oneArg->param, '|', tokens);
+                const int idx = *static_cast<int*>(oneArg->buffer);
+                result += tokens[idx];
+                break;
             }
-            break;
-        }
 
-        case CommandLineType::EnumString:
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-            result += *static_cast<Utf8*>(oneArg->buffer);
-            break;
+            case CommandLineType::StringSet:
+            {
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+                const auto all = static_cast<SetUtf8*>(oneArg->buffer);
+                for (auto& one : *all)
+                {
+                    result += one;
+                    result += " ";
+                }
+                break;
+            }
 
-        case CommandLineType::Int:
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-            result += to_string(*static_cast<int*>(oneArg->buffer));
-            break;
+            case CommandLineType::EnumString:
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+                result += *static_cast<Utf8*>(oneArg->buffer);
+                break;
 
-        case CommandLineType::Bool:
-        {
-            result += oneArg->longName + ":";
-            result += Log::colorToVTS(LogColor::Value);
-            if (*static_cast<bool*>(oneArg->buffer) == true)
-                result += "true";
-            else
-                result += "false";
-            break;
-        }
+            case CommandLineType::Int:
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+                result += to_string(*static_cast<int*>(oneArg->buffer));
+                break;
+
+            case CommandLineType::Bool:
+            {
+                result += oneArg->longName + ":";
+                result += Log::colorToVTS(LogColor::Value);
+                if (*static_cast<bool*>(oneArg->buffer) == true)
+                    result += "true";
+                else
+                    result += "false";
+                break;
+            }
         }
 
         result += "\n";

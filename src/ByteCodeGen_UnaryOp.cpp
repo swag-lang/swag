@@ -17,22 +17,22 @@ bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeIn
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-        EMIT_INST2(context, ByteCodeOp::NegS32, rt, r0);
-        return true;
-    case NativeTypeKind::S64:
-        EMIT_INST2(context, ByteCodeOp::NegS64, rt, r0);
-        return true;
-    case NativeTypeKind::F32:
-        EMIT_INST2(context, ByteCodeOp::NegF32, rt, r0);
-        return true;
-    case NativeTypeKind::F64:
-        EMIT_INST2(context, ByteCodeOp::NegF64, rt, r0);
-        return true;
-    default:
-        return Report::internalError(context->node, "emitUnaryOpMinus, type not supported");
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+            EMIT_INST2(context, ByteCodeOp::NegS32, rt, r0);
+            return true;
+        case NativeTypeKind::S64:
+            EMIT_INST2(context, ByteCodeOp::NegS64, rt, r0);
+            return true;
+        case NativeTypeKind::F32:
+            EMIT_INST2(context, ByteCodeOp::NegF32, rt, r0);
+            return true;
+        case NativeTypeKind::F64:
+            EMIT_INST2(context, ByteCodeOp::NegF64, rt, r0);
+            return true;
+        default:
+            return Report::internalError(context->node, "emitUnaryOpMinus, type not supported");
     }
 }
 
@@ -44,24 +44,24 @@ bool ByteCodeGen::emitUnaryOpInvert(const ByteCodeGenContext* context, const Typ
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::U8:
-        EMIT_INST2(context, ByteCodeOp::InvertU8, rt, r0);
-        return true;
-    case NativeTypeKind::S16:
-    case NativeTypeKind::U16:
-        EMIT_INST2(context, ByteCodeOp::InvertU16, rt, r0);
-        return true;
-    case NativeTypeKind::S32:
-    case NativeTypeKind::U32:
-        EMIT_INST2(context, ByteCodeOp::InvertU32, rt, r0);
-        return true;
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U64:
-        EMIT_INST2(context, ByteCodeOp::InvertU64, rt, r0);
-        return true;
-    default:
-        return Report::internalError(context->node, "emitUnaryOpInvert, type not supported");
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            EMIT_INST2(context, ByteCodeOp::InvertU8, rt, r0);
+            return true;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            EMIT_INST2(context, ByteCodeOp::InvertU16, rt, r0);
+            return true;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+            EMIT_INST2(context, ByteCodeOp::InvertU32, rt, r0);
+            return true;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+            EMIT_INST2(context, ByteCodeOp::InvertU64, rt, r0);
+            return true;
+        default:
+            return Report::internalError(context->node, "emitUnaryOpInvert, type not supported");
     }
 }
 
@@ -88,26 +88,26 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
 
             switch (node->tokenId)
             {
-            case TokenId::SymExclam:
-            {
-                SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
-                SWAG_ASSERT(context->result == ContextResult::Done);
-                const auto rt = reserveRegisterRC(context);
-                EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRc);
-                freeRegisterRC(context, node->resultRegisterRc);
-                node->resultRegisterRc = rt;
-                break;
-            }
+                case TokenId::SymExclam:
+                {
+                    SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
+                    SWAG_ASSERT(context->result == ContextResult::Done);
+                    const auto rt = reserveRegisterRC(context);
+                    EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRc);
+                    freeRegisterRC(context, node->resultRegisterRc);
+                    node->resultRegisterRc = rt;
+                    break;
+                }
 
-            case TokenId::SymMinus:
-                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRc, node->resultRegisterRc));
-                break;
-            case TokenId::SymTilde:
-                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRc, node->resultRegisterRc));
-                break;
+                case TokenId::SymMinus:
+                    SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRc, node->resultRegisterRc));
+                    break;
+                case TokenId::SymTilde:
+                    SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRc, node->resultRegisterRc));
+                    break;
 
-            default:
-                return Report::internalError(context->node, "emitUnaryOp, invalid token op");
+                default:
+                    return Report::internalError(context->node, "emitUnaryOp, invalid token op");
             }
 
             node->addSemFlag(SEMFLAG_EMIT_OP);

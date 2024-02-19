@@ -503,94 +503,94 @@ namespace
 
         switch (err.errorLevel)
         {
-        case DiagnosticLevel::Exception:
-            ++sourceFile->module->criticalErrors;
-            err.errorLevel = DiagnosticLevel::Panic;
-            break;
+            case DiagnosticLevel::Exception:
+                ++sourceFile->module->criticalErrors;
+                err.errorLevel = DiagnosticLevel::Panic;
+                break;
 
-        case DiagnosticLevel::Error:
-        case DiagnosticLevel::Panic:
-            sourceFile->numErrors++;
-            ++sourceFile->module->numErrors;
+            case DiagnosticLevel::Error:
+            case DiagnosticLevel::Panic:
+                sourceFile->numErrors++;
+                ++sourceFile->module->numErrors;
 
-        // Do not raise an error if we are waiting for one, during tests
-            if (sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
-            {
-                bool dismiss = true;
-                if (!sourceFile->shouldHaveErrorString.empty())
+            // Do not raise an error if we are waiting for one, during tests
+                if (sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
                 {
-                    dismiss   = false;
-                    auto str1 = err.textMsg;
-                    str1.makeLower();
-                    for (const auto& filter : sourceFile->shouldHaveErrorString)
+                    bool dismiss = true;
+                    if (!sourceFile->shouldHaveErrorString.empty())
                     {
-                        auto str2 = filter;
-                        str2.makeLower();
-                        if (str1.find(str2) != -1)
-                        {
-                            dismiss = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (dismiss)
-                {
-                    if (g_CommandLine.verboseTestErrors)
-                    {
-                        if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
-                            reportInternal(err, notes);
-                    }
-
-                    return false;
-                }
-            }
-
-            ++g_Workspace->numErrors;
-            break;
-
-        case DiagnosticLevel::Warning:
-            sourceFile->numWarnings++;
-            ++sourceFile->module->numWarnings;
-
-        // Do not raise a warning if we are waiting for one, during tests
-            if (sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
-            {
-                bool dismiss = true;
-                if (!sourceFile->shouldHaveWarningString.empty())
-                {
-                    dismiss = false;
-                    for (const auto& filter : sourceFile->shouldHaveWarningString)
-                    {
+                        dismiss   = false;
                         auto str1 = err.textMsg;
-                        auto str2 = filter;
                         str1.makeLower();
-                        str2.makeLower();
-                        if (str1.find(str2) != -1)
+                        for (const auto& filter : sourceFile->shouldHaveErrorString)
                         {
-                            dismiss = true;
-                            break;
+                            auto str2 = filter;
+                            str2.makeLower();
+                            if (str1.find(str2) != -1)
+                            {
+                                dismiss = true;
+                                break;
+                            }
                         }
                     }
+
+                    if (dismiss)
+                    {
+                        if (g_CommandLine.verboseTestErrors)
+                        {
+                            if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+                                reportInternal(err, notes);
+                        }
+
+                        return false;
+                    }
                 }
 
-                if (dismiss)
+                ++g_Workspace->numErrors;
+                break;
+
+            case DiagnosticLevel::Warning:
+                sourceFile->numWarnings++;
+                ++sourceFile->module->numWarnings;
+
+            // Do not raise a warning if we are waiting for one, during tests
+                if (sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
                 {
-                    if (g_CommandLine.verboseTestErrors)
+                    bool dismiss = true;
+                    if (!sourceFile->shouldHaveWarningString.empty())
                     {
-                        if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
-                            reportInternal(err, notes);
+                        dismiss = false;
+                        for (const auto& filter : sourceFile->shouldHaveWarningString)
+                        {
+                            auto str1 = err.textMsg;
+                            auto str2 = filter;
+                            str1.makeLower();
+                            str2.makeLower();
+                            if (str1.find(str2) != -1)
+                            {
+                                dismiss = true;
+                                break;
+                            }
+                        }
                     }
 
-                    return true;
+                    if (dismiss)
+                    {
+                        if (g_CommandLine.verboseTestErrors)
+                        {
+                            if (g_CommandLine.verboseErrorFilter.empty() || err.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+                                reportInternal(err, notes);
+                        }
+
+                        return true;
+                    }
                 }
-            }
 
-            ++g_Workspace->numWarnings;
-            break;
+                ++g_Workspace->numWarnings;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         // Print error/warning

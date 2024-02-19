@@ -17,30 +17,30 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
     // Check following instruction
     switch (token.id)
     {
-    case TokenId::SymLeftCurly:
-    case TokenId::KwdFunc:
-    case TokenId::KwdMethod:
-    case TokenId::KwdAttr:
-    case TokenId::KwdVar:
-    case TokenId::KwdLet:
-    case TokenId::KwdConst:
-    case TokenId::KwdEnum:
-    case TokenId::KwdStruct:
-    case TokenId::KwdUnion:
-    case TokenId::KwdImpl:
-    case TokenId::KwdInterface:
-    case TokenId::KwdTypeAlias:
-    case TokenId::KwdNameAlias:
-    case TokenId::KwdNamespace:
-        break;
-    case TokenId::SymAttrStart:
-        return error(token, FMT(Err(Err0494), tokenAttr.c_str(), tokenAttr.c_str()));
-    case TokenId::KwdPublic:
-    case TokenId::KwdPrivate:
-    case TokenId::KwdInternal:
-        return error(token, FMT(Err(Err0012), token.c_str(), tokenAttr.c_str()));
-    default:
-        return error(token, FMT(Err(Err0480), tokenAttr.c_str(), token.c_str(), token.c_str()));
+        case TokenId::SymLeftCurly:
+        case TokenId::KwdFunc:
+        case TokenId::KwdMethod:
+        case TokenId::KwdAttr:
+        case TokenId::KwdVar:
+        case TokenId::KwdLet:
+        case TokenId::KwdConst:
+        case TokenId::KwdEnum:
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::KwdImpl:
+        case TokenId::KwdInterface:
+        case TokenId::KwdTypeAlias:
+        case TokenId::KwdNameAlias:
+        case TokenId::KwdNamespace:
+            break;
+        case TokenId::SymAttrStart:
+            return error(token, FMT(Err(Err0494), tokenAttr.c_str(), tokenAttr.c_str()));
+        case TokenId::KwdPublic:
+        case TokenId::KwdPrivate:
+        case TokenId::KwdInternal:
+            return error(token, FMT(Err(Err0012), token.c_str(), tokenAttr.c_str()));
+        default:
+            return error(token, FMT(Err(Err0480), tokenAttr.c_str(), token.c_str(), token.c_str()));
     }
 
     return true;
@@ -133,23 +133,23 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     switch (token.id)
     {
-    case TokenId::KwdNamespace:
-        SWAG_CHECK(doNamespace(parent, result, false, true));
-        return true;
+        case TokenId::KwdNamespace:
+            SWAG_CHECK(doNamespace(parent, result, false, true));
+            return true;
 
-    case TokenId::KwdVar:
-    {
-        AstNode* varNode;
-        SWAG_CHECK(doVarDecl(parent, &varNode));
+        case TokenId::KwdVar:
+        {
+            AstNode* varNode;
+            SWAG_CHECK(doVarDecl(parent, &varNode));
 
-        const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
-        *result           = node;
-        node->semanticFct = Semantic::resolveUsing;
-        Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
-        return true;
-    }
-    default:
-        break;
+            const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+            *result           = node;
+            node->semanticFct = Semantic::resolveUsing;
+            Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
+            return true;
+        }
+        default:
+            break;
     }
 
     // We must ensure that no job can be run before the using
@@ -159,24 +159,24 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         {
             switch (child->kind)
             {
-            case AstNodeKind::CompilerImport:
-            case AstNodeKind::CompilerAssert:
-            case AstNodeKind::CompilerForeignLib:
-            case AstNodeKind::Using:
-            case AstNodeKind::IdentifierRef:
-            case AstNodeKind::Namespace:
-            case AstNodeKind::CompilerDependencies:
-                break;
-            case AstNodeKind::AttrUse:
-                if (child->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL))
+                case AstNodeKind::CompilerImport:
+                case AstNodeKind::CompilerAssert:
+                case AstNodeKind::CompilerForeignLib:
+                case AstNodeKind::Using:
+                case AstNodeKind::IdentifierRef:
+                case AstNodeKind::Namespace:
+                case AstNodeKind::CompilerDependencies:
                     break;
-                [[fallthrough]];
-            default:
-            {
-                const Diagnostic err{sourceFile, token, Err(Err0510)};
-                const auto       note = Diagnostic::note(child, child->token, Nte(Nte0074));
-                return context->report(err, note);
-            }
+                case AstNodeKind::AttrUse:
+                    if (child->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL))
+                        break;
+                    [[fallthrough]];
+                default:
+                {
+                    const Diagnostic err{sourceFile, token, Err(Err0510)};
+                    const auto       note = Diagnostic::note(child, child->token, Nte(Nte0074));
+                    return context->report(err, note);
+                }
             }
         }
     }
@@ -242,18 +242,18 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
         switch (token.id)
         {
-        case TokenId::Identifier:
-            break;
-        case TokenId::SymLeftCurly:
-            if (!privName)
-                return error(token, FMT(Err(Err0079), "{"));
-            break;
-        case TokenId::SymSemiColon:
-            return error(token, FMT(Err(Err0079), ";"));
-        default:
-            if (!privName)
-                return error(token, FMT(Err(Err0330), token.c_str()));
-            break;
+            case TokenId::Identifier:
+                break;
+            case TokenId::SymLeftCurly:
+                if (!privName)
+                    return error(token, FMT(Err(Err0079), "{"));
+                break;
+            case TokenId::SymSemiColon:
+                return error(token, FMT(Err(Err0079), ";"));
+            default:
+                if (!privName)
+                    return error(token, FMT(Err(Err0330), token.c_str()));
+                break;
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
@@ -501,18 +501,18 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     switch (kind)
     {
-    case AstNodeKind::Statement:
-        return doStatement(parent, result);
-    case AstNodeKind::EnumDecl:
-        return doEnumContent(parent, &dummyResult);
-    case AstNodeKind::StructDecl:
-        return doStructBody(parent, SyntaxStructType::Struct, &dummyResult);
-    case AstNodeKind::InterfaceDecl:
-        return doStructBody(parent, SyntaxStructType::Interface, &dummyResult);
+        case AstNodeKind::Statement:
+            return doStatement(parent, result);
+        case AstNodeKind::EnumDecl:
+            return doEnumContent(parent, &dummyResult);
+        case AstNodeKind::StructDecl:
+            return doStructBody(parent, SyntaxStructType::Struct, &dummyResult);
+        case AstNodeKind::InterfaceDecl:
+            return doStructBody(parent, SyntaxStructType::Interface, &dummyResult);
 
-    default:
-        SWAG_ASSERT(false);
-        break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     return true;
@@ -636,90 +636,90 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
 {
     switch (token.id)
     {
-    case TokenId::KwdReturn:
-        SWAG_CHECK(doReturn(parent, result));
-        SWAG_CHECK(eatSemiCol("return expression"));
-        break;
-    case TokenId::KwdIf:
-        SWAG_CHECK(doIf(parent, result));
-        break;
-    case TokenId::KwdWhile:
-        SWAG_CHECK(doWhile(parent, result));
-        break;
-    case TokenId::KwdFor:
-        SWAG_CHECK(doFor(parent, result));
-        break;
-    case TokenId::KwdSwitch:
-        SWAG_CHECK(doSwitch(parent, result));
-        break;
-    case TokenId::KwdLoop:
-        SWAG_CHECK(doLoop(parent, result));
-        break;
-    case TokenId::KwdVisit:
-        SWAG_CHECK(doVisit(parent, result));
-        break;
-    case TokenId::KwdTry:
-    case TokenId::KwdCatch:
-    case TokenId::KwdTryCatch:
-    case TokenId::KwdAssume:
-        SWAG_CHECK(doTryCatchAssume(parent, result));
-        break;
-    case TokenId::KwdThrow:
-        SWAG_CHECK(doThrow(parent, result));
-        break;
-    case TokenId::KwdDiscard:
-        SWAG_CHECK(doDiscard(parent, result));
-        break;
-    case TokenId::IntrinsicInit:
-        SWAG_CHECK(doInit(parent, result));
-        break;
-    case TokenId::IntrinsicDrop:
-    case TokenId::IntrinsicPostCopy:
-    case TokenId::IntrinsicPostMove:
-        SWAG_CHECK(doDropCopyMove(parent, result));
-        break;
+        case TokenId::KwdReturn:
+            SWAG_CHECK(doReturn(parent, result));
+            SWAG_CHECK(eatSemiCol("return expression"));
+            break;
+        case TokenId::KwdIf:
+            SWAG_CHECK(doIf(parent, result));
+            break;
+        case TokenId::KwdWhile:
+            SWAG_CHECK(doWhile(parent, result));
+            break;
+        case TokenId::KwdFor:
+            SWAG_CHECK(doFor(parent, result));
+            break;
+        case TokenId::KwdSwitch:
+            SWAG_CHECK(doSwitch(parent, result));
+            break;
+        case TokenId::KwdLoop:
+            SWAG_CHECK(doLoop(parent, result));
+            break;
+        case TokenId::KwdVisit:
+            SWAG_CHECK(doVisit(parent, result));
+            break;
+        case TokenId::KwdTry:
+        case TokenId::KwdCatch:
+        case TokenId::KwdTryCatch:
+        case TokenId::KwdAssume:
+            SWAG_CHECK(doTryCatchAssume(parent, result));
+            break;
+        case TokenId::KwdThrow:
+            SWAG_CHECK(doThrow(parent, result));
+            break;
+        case TokenId::KwdDiscard:
+            SWAG_CHECK(doDiscard(parent, result));
+            break;
+        case TokenId::IntrinsicInit:
+            SWAG_CHECK(doInit(parent, result));
+            break;
+        case TokenId::IntrinsicDrop:
+        case TokenId::IntrinsicPostCopy:
+        case TokenId::IntrinsicPostMove:
+            SWAG_CHECK(doDropCopyMove(parent, result));
+            break;
 
-    case TokenId::CompilerUp:
-    case TokenId::CompilerSelf:
-    case TokenId::Identifier:
-    case TokenId::SymLeftParen:
-    case TokenId::KwdDeRef:
-    case TokenId::KwdMoveRef:
-        SWAG_CHECK(doAffectExpression(parent, result, withNode));
-        break;
+        case TokenId::CompilerUp:
+        case TokenId::CompilerSelf:
+        case TokenId::Identifier:
+        case TokenId::SymLeftParen:
+        case TokenId::KwdDeRef:
+        case TokenId::KwdMoveRef:
+            SWAG_CHECK(doAffectExpression(parent, result, withNode));
+            break;
 
-    case TokenId::IntrinsicGetContext:
-    case TokenId::IntrinsicGetProcessInfos:
-    case TokenId::IntrinsicDbgAlloc:
-    case TokenId::IntrinsicSysAlloc:
-        SWAG_CHECK(doAffectExpression(parent, result));
-        break;
+        case TokenId::IntrinsicGetContext:
+        case TokenId::IntrinsicGetProcessInfos:
+        case TokenId::IntrinsicDbgAlloc:
+        case TokenId::IntrinsicSysAlloc:
+            SWAG_CHECK(doAffectExpression(parent, result));
+            break;
 
-    case TokenId::IntrinsicPrint:
-    case TokenId::IntrinsicAssert:
-    case TokenId::IntrinsicBcBreakpoint:
-    case TokenId::IntrinsicPanic:
-    case TokenId::IntrinsicCompilerError:
-    case TokenId::IntrinsicCompilerWarning:
-    case TokenId::IntrinsicFree:
-    case TokenId::IntrinsicMemCpy:
-    case TokenId::IntrinsicMemMove:
-    case TokenId::IntrinsicMemSet:
-    case TokenId::IntrinsicSetContext:
-    case TokenId::IntrinsicAtomicAdd:
-    case TokenId::IntrinsicAtomicAnd:
-    case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXor:
-    case TokenId::IntrinsicAtomicXchg:
-    case TokenId::IntrinsicAtomicCmpXchg:
-    case TokenId::InternalSetErr:
-    case TokenId::IntrinsicCVaStart:
-    case TokenId::IntrinsicCVaEnd:
-    case TokenId::IntrinsicCVaArg:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
-    default:
-        break;
+        case TokenId::IntrinsicPrint:
+        case TokenId::IntrinsicAssert:
+        case TokenId::IntrinsicBcBreakpoint:
+        case TokenId::IntrinsicPanic:
+        case TokenId::IntrinsicCompilerError:
+        case TokenId::IntrinsicCompilerWarning:
+        case TokenId::IntrinsicFree:
+        case TokenId::IntrinsicMemCpy:
+        case TokenId::IntrinsicMemMove:
+        case TokenId::IntrinsicMemSet:
+        case TokenId::IntrinsicSetContext:
+        case TokenId::IntrinsicAtomicAdd:
+        case TokenId::IntrinsicAtomicAnd:
+        case TokenId::IntrinsicAtomicOr:
+        case TokenId::IntrinsicAtomicXor:
+        case TokenId::IntrinsicAtomicXchg:
+        case TokenId::IntrinsicAtomicCmpXchg:
+        case TokenId::InternalSetErr:
+        case TokenId::IntrinsicCVaStart:
+        case TokenId::IntrinsicCVaEnd:
+        case TokenId::IntrinsicCVaArg:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
+        default:
+            break;
     }
 
     return true;
@@ -729,200 +729,200 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
-    case TokenId::KwdReturn:
-    case TokenId::KwdIf:
-    case TokenId::KwdWhile:
-    case TokenId::KwdFor:
-    case TokenId::KwdSwitch:
-    case TokenId::KwdLoop:
-    case TokenId::KwdVisit:
-    case TokenId::KwdTry:
-    case TokenId::KwdCatch:
-    case TokenId::KwdTryCatch:
-    case TokenId::KwdAssume:
-    case TokenId::KwdThrow:
-    case TokenId::KwdDiscard:
-    case TokenId::KwdDeRef:
+        case TokenId::KwdReturn:
+        case TokenId::KwdIf:
+        case TokenId::KwdWhile:
+        case TokenId::KwdFor:
+        case TokenId::KwdSwitch:
+        case TokenId::KwdLoop:
+        case TokenId::KwdVisit:
+        case TokenId::KwdTry:
+        case TokenId::KwdCatch:
+        case TokenId::KwdTryCatch:
+        case TokenId::KwdAssume:
+        case TokenId::KwdThrow:
+        case TokenId::KwdDiscard:
+        case TokenId::KwdDeRef:
 
-    case TokenId::CompilerUp:
-    case TokenId::SymLeftParen:
-    case TokenId::CompilerSelf:
+        case TokenId::CompilerUp:
+        case TokenId::SymLeftParen:
+        case TokenId::CompilerSelf:
 
-    case TokenId::IntrinsicAtomicAdd:
-    case TokenId::IntrinsicAtomicAnd:
-    case TokenId::IntrinsicAtomicCmpXchg:
-    case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXchg:
-    case TokenId::IntrinsicAtomicXor:
+        case TokenId::IntrinsicAtomicAdd:
+        case TokenId::IntrinsicAtomicAnd:
+        case TokenId::IntrinsicAtomicCmpXchg:
+        case TokenId::IntrinsicAtomicOr:
+        case TokenId::IntrinsicAtomicXchg:
+        case TokenId::IntrinsicAtomicXor:
 
-    case TokenId::IntrinsicAssert:
-    case TokenId::IntrinsicBcBreakpoint:
-    case TokenId::IntrinsicCVaArg:
-    case TokenId::IntrinsicCVaEnd:
-    case TokenId::IntrinsicCVaStart:
-    case TokenId::IntrinsicDrop:
-    case TokenId::IntrinsicCompilerError:
-    case TokenId::IntrinsicCompilerWarning:
-    case TokenId::IntrinsicFree:
-    case TokenId::IntrinsicGetContext:
-    case TokenId::IntrinsicInit:
-    case TokenId::IntrinsicMemCpy:
-    case TokenId::IntrinsicMemMove:
-    case TokenId::IntrinsicMemSet:
-    case TokenId::IntrinsicPanic:
-    case TokenId::IntrinsicPostCopy:
-    case TokenId::IntrinsicPostMove:
-    case TokenId::IntrinsicPrint:
-    case TokenId::IntrinsicSetContext:
-    case TokenId::InternalSetErr:
-    case TokenId::IntrinsicGetProcessInfos:
-    case TokenId::IntrinsicDbgAlloc:
-    case TokenId::IntrinsicSysAlloc:
-        SWAG_CHECK(doLeftInstruction(parent, result));
-        break;
+        case TokenId::IntrinsicAssert:
+        case TokenId::IntrinsicBcBreakpoint:
+        case TokenId::IntrinsicCVaArg:
+        case TokenId::IntrinsicCVaEnd:
+        case TokenId::IntrinsicCVaStart:
+        case TokenId::IntrinsicDrop:
+        case TokenId::IntrinsicCompilerError:
+        case TokenId::IntrinsicCompilerWarning:
+        case TokenId::IntrinsicFree:
+        case TokenId::IntrinsicGetContext:
+        case TokenId::IntrinsicInit:
+        case TokenId::IntrinsicMemCpy:
+        case TokenId::IntrinsicMemMove:
+        case TokenId::IntrinsicMemSet:
+        case TokenId::IntrinsicPanic:
+        case TokenId::IntrinsicPostCopy:
+        case TokenId::IntrinsicPostMove:
+        case TokenId::IntrinsicPrint:
+        case TokenId::IntrinsicSetContext:
+        case TokenId::InternalSetErr:
+        case TokenId::IntrinsicGetProcessInfos:
+        case TokenId::IntrinsicDbgAlloc:
+        case TokenId::IntrinsicSysAlloc:
+            SWAG_CHECK(doLeftInstruction(parent, result));
+            break;
 
-    case TokenId::Identifier:
-        SWAG_CHECK(doLeftInstruction(parent, result));
-        break;
+        case TokenId::Identifier:
+            SWAG_CHECK(doLeftInstruction(parent, result));
+            break;
 
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
-        break;
-    case TokenId::SymSemiColon:
-        SWAG_CHECK(eatToken());
-        break;
-    case TokenId::KwdUsing:
-        SWAG_CHECK(doUsing(parent, result));
-        break;
-    case TokenId::KwdWith:
-        SWAG_CHECK(doWith(parent, result));
-        break;
-    case TokenId::KwdVar:
-    case TokenId::KwdLet:
-    case TokenId::KwdConst:
-        SWAG_CHECK(doVarDecl(parent, result));
-        break;
-    case TokenId::KwdDefer:
-        SWAG_CHECK(doDefer(parent, result));
-        break;
-    case TokenId::KwdBreak:
-        SWAG_CHECK(doBreak(parent, result));
-        break;
-    case TokenId::KwdFallThrough:
-        SWAG_CHECK(doFallThrough(parent, result));
-        break;
-    case TokenId::KwdUnreachable:
-        SWAG_CHECK(doUnreachable(parent, result));
-        break;
-    case TokenId::KwdContinue:
-        SWAG_CHECK(doContinue(parent, result));
-        break;
-    case TokenId::CompilerAssert:
-        SWAG_CHECK(doCompilerAssert(parent, result));
-        break;
-    case TokenId::CompilerMacro:
-        SWAG_CHECK(doCompilerMacro(parent, result));
-        break;
-    case TokenId::CompilerMixin:
-        SWAG_CHECK(doCompilerMixin(parent, result));
-        break;
-    case TokenId::CompilerIf:
-        SWAG_CHECK(doCompilerIf(parent, result));
-        break;
-    case TokenId::CompilerPrint:
-        SWAG_CHECK(doCompilerPrint(parent, result));
-        break;
-    case TokenId::CompilerError:
-        SWAG_CHECK(doCompilerError(parent, result));
-        break;
-    case TokenId::CompilerWarning:
-        SWAG_CHECK(doCompilerWarning(parent, result));
-        break;
-    case TokenId::CompilerRun:
-        SWAG_CHECK(doCompilerRunEmbedded(parent, result));
-        break;
-    case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result));
-        break;
-    case TokenId::SymAttrStart:
-    {
-        AstAttrUse* attrUse;
-        SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
-        *result = attrUse;
-        // We do not want a #[] to create a new scope when inside a function
-        if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
-        else
-            SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
-        if (attrUse->content)
-            attrUse->content->setOwnerAttrUse(attrUse);
-        break;
-    }
+        case TokenId::SymLeftCurly:
+            SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
+            break;
+        case TokenId::SymSemiColon:
+            SWAG_CHECK(eatToken());
+            break;
+        case TokenId::KwdUsing:
+            SWAG_CHECK(doUsing(parent, result));
+            break;
+        case TokenId::KwdWith:
+            SWAG_CHECK(doWith(parent, result));
+            break;
+        case TokenId::KwdVar:
+        case TokenId::KwdLet:
+        case TokenId::KwdConst:
+            SWAG_CHECK(doVarDecl(parent, result));
+            break;
+        case TokenId::KwdDefer:
+            SWAG_CHECK(doDefer(parent, result));
+            break;
+        case TokenId::KwdBreak:
+            SWAG_CHECK(doBreak(parent, result));
+            break;
+        case TokenId::KwdFallThrough:
+            SWAG_CHECK(doFallThrough(parent, result));
+            break;
+        case TokenId::KwdUnreachable:
+            SWAG_CHECK(doUnreachable(parent, result));
+            break;
+        case TokenId::KwdContinue:
+            SWAG_CHECK(doContinue(parent, result));
+            break;
+        case TokenId::CompilerAssert:
+            SWAG_CHECK(doCompilerAssert(parent, result));
+            break;
+        case TokenId::CompilerMacro:
+            SWAG_CHECK(doCompilerMacro(parent, result));
+            break;
+        case TokenId::CompilerMixin:
+            SWAG_CHECK(doCompilerMixin(parent, result));
+            break;
+        case TokenId::CompilerIf:
+            SWAG_CHECK(doCompilerIf(parent, result));
+            break;
+        case TokenId::CompilerPrint:
+            SWAG_CHECK(doCompilerPrint(parent, result));
+            break;
+        case TokenId::CompilerError:
+            SWAG_CHECK(doCompilerError(parent, result));
+            break;
+        case TokenId::CompilerWarning:
+            SWAG_CHECK(doCompilerWarning(parent, result));
+            break;
+        case TokenId::CompilerRun:
+            SWAG_CHECK(doCompilerRunEmbedded(parent, result));
+            break;
+        case TokenId::CompilerAst:
+            SWAG_CHECK(doCompilerAst(parent, result));
+            break;
+        case TokenId::SymAttrStart:
+        {
+            AstAttrUse* attrUse;
+            SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
+            *result = attrUse;
+            // We do not want a #[] to create a new scope when inside a function
+            if (token.id == TokenId::SymLeftCurly)
+                SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
+            else
+                SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
+            if (attrUse->content)
+                attrUse->content->setOwnerAttrUse(attrUse);
+            break;
+        }
 
-    case TokenId::KwdEnum:
-        SWAG_CHECK(doEnum(parent, result));
-        break;
+        case TokenId::KwdEnum:
+            SWAG_CHECK(doEnum(parent, result));
+            break;
 
-    case TokenId::KwdMethod:
-    case TokenId::KwdFunc:
-    {
-        AstNode* subFunc;
-        SWAG_CHECK(doFuncDecl(parent, &subFunc));
-        *result = subFunc;
-        registerSubDecl(subFunc);
-        break;
-    }
+        case TokenId::KwdMethod:
+        case TokenId::KwdFunc:
+        {
+            AstNode* subFunc;
+            SWAG_CHECK(doFuncDecl(parent, &subFunc));
+            *result = subFunc;
+            registerSubDecl(subFunc);
+            break;
+        }
 
-    case TokenId::KwdStruct:
-    case TokenId::KwdUnion:
-    case TokenId::KwdInterface:
-    {
-        AstNode* subDecl;
-        SWAG_CHECK(doStruct(parent, &subDecl));
-        *result = subDecl;
-        registerSubDecl(subDecl);
-        break;
-    }
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::KwdInterface:
+        {
+            AstNode* subDecl;
+            SWAG_CHECK(doStruct(parent, &subDecl));
+            *result = subDecl;
+            registerSubDecl(subDecl);
+            break;
+        }
 
-    case TokenId::CompilerScope:
-        SWAG_CHECK(doCompilerScopeBreakable(parent, result));
-        break;
-    case TokenId::KwdTypeAlias:
-        SWAG_CHECK(doTypeAlias(parent, result));
-        break;
-    case TokenId::KwdNameAlias:
-        SWAG_CHECK(doNameAlias(parent, result));
-        break;
+        case TokenId::CompilerScope:
+            SWAG_CHECK(doCompilerScopeBreakable(parent, result));
+            break;
+        case TokenId::KwdTypeAlias:
+            SWAG_CHECK(doTypeAlias(parent, result));
+            break;
+        case TokenId::KwdNameAlias:
+            SWAG_CHECK(doNameAlias(parent, result));
+            break;
 
-    case TokenId::KwdPublic:
-    case TokenId::KwdInternal:
-    case TokenId::KwdPrivate:
-        return error(token, FMT(Err(Err0481), token.c_str()));
+        case TokenId::KwdPublic:
+        case TokenId::KwdInternal:
+        case TokenId::KwdPrivate:
+            return error(token, FMT(Err(Err0481), token.c_str()));
 
-    case TokenId::SymDot:
-    {
-        const auto withNode = parent->findParent(AstNodeKind::With);
-        SWAG_VERIFY(withNode, error(token, Err(Err0507)));
-        Token tokenDot = token;
-        eatToken();
-        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0367), token.c_str())));
-        return doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With));
-    }
+        case TokenId::SymDot:
+        {
+            const auto withNode = parent->findParent(AstNodeKind::With);
+            SWAG_VERIFY(withNode, error(token, Err(Err0507)));
+            Token tokenDot = token;
+            eatToken();
+            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0367), token.c_str())));
+            return doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With));
+        }
 
-    case TokenId::NativeType:
-    {
-        const Diagnostic err{sourceFile, token, Err(Err0699)};
-        eatToken();
-        const Diagnostic* note = nullptr;
-        if (token.id == TokenId::Identifier)
-            note = Diagnostic::note(Nte(Nte0181));
-        return context->report(err, note);
-    }
+        case TokenId::NativeType:
+        {
+            const Diagnostic err{sourceFile, token, Err(Err0699)};
+            eatToken();
+            const Diagnostic* note = nullptr;
+            if (token.id == TokenId::Identifier)
+                note = Diagnostic::note(Nte(Nte0181));
+            return context->report(err, note);
+        }
 
-    default:
-        if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, FMT(Err(Err0748), token.c_str()));
-        return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
+        default:
+            if (Tokenizer::isIntrinsicReturn(token.id))
+                return error(token, FMT(Err(Err0748), token.c_str()));
+            return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 
     return true;
@@ -939,114 +939,114 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
 
     switch (token.id)
     {
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doGlobalCurlyStatement(parent, result));
-        break;
-    case TokenId::SymSemiColon:
-        SWAG_CHECK(eatToken());
-        break;
-    case TokenId::KwdVar:
-    case TokenId::KwdConst:
-        SWAG_CHECK(doVarDecl(parent, result));
-        break;
-    case TokenId::KwdTypeAlias:
-        SWAG_CHECK(doTypeAlias(parent, result));
-        break;
-    case TokenId::KwdNameAlias:
-        SWAG_CHECK(doNameAlias(parent, result));
-        break;
-    case TokenId::KwdPublic:
-    case TokenId::KwdInternal:
-        SWAG_CHECK(doPublicInternal(parent, result, false));
-        break;
-    case TokenId::KwdPrivate:
-        SWAG_CHECK(doPrivate(parent, result));
-        break;
-    case TokenId::KwdNamespace:
-        SWAG_CHECK(doNamespace(parent, result));
-        break;
-    case TokenId::KwdEnum:
-        SWAG_CHECK(doEnum(parent, result));
-        break;
-    case TokenId::KwdImpl:
-        SWAG_CHECK(doImpl(parent, result));
-        break;
-    case TokenId::KwdStruct:
-    case TokenId::KwdUnion:
-    case TokenId::KwdInterface:
-        SWAG_CHECK(doStruct(parent, result));
-        break;
-    case TokenId::KwdAttr:
-        SWAG_CHECK(doAttrDecl(parent, result));
-        break;
-    case TokenId::KwdUsing:
-        SWAG_CHECK(doUsing(parent, result));
-        break;
-    case TokenId::SymAttrStart:
-    {
-        AstAttrUse* attrUse;
-        SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
-        *result = attrUse;
-        SWAG_CHECK(doTopLevelInstruction(attrUse, &attrUse->content));
-        if (attrUse->content)
-            attrUse->content->setOwnerAttrUse(attrUse);
-        break;
-    }
-    case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result));
-        break;
-    case TokenId::KwdFunc:
-    case TokenId::KwdMethod:
-    case TokenId::CompilerFuncTest:
-    case TokenId::CompilerFuncInit:
-    case TokenId::CompilerFuncDrop:
-    case TokenId::CompilerFuncPreMain:
-    case TokenId::CompilerFuncMain:
-    case TokenId::CompilerFuncMessage:
-        SWAG_CHECK(doFuncDecl(parent, result));
-        break;
-    case TokenId::CompilerRun:
-        SWAG_CHECK(doCompilerRunTopLevel(parent, result));
-        break;
-    case TokenId::CompilerIf:
-        SWAG_CHECK(doCompilerIf(parent, result));
-        break;
-    case TokenId::CompilerAssert:
-        SWAG_CHECK(doCompilerAssert(parent, result));
-        break;
-    case TokenId::CompilerError:
-        SWAG_CHECK(doCompilerError(parent, result));
-        break;
-    case TokenId::CompilerWarning:
-        SWAG_CHECK(doCompilerWarning(parent, result));
-        break;
-    case TokenId::CompilerPrint:
-        SWAG_CHECK(doCompilerPrint(parent, result));
-        break;
-    case TokenId::CompilerDependencies:
-        SWAG_CHECK(doCompilerDependencies(parent));
-        break;
-    case TokenId::CompilerImport:
-        SWAG_CHECK(doCompilerImport(parent));
-        break;
-    case TokenId::CompilerLoad:
-        SWAG_CHECK(doCompilerLoad(parent));
-        break;
-    case TokenId::CompilerPlaceHolder:
-        SWAG_CHECK(doCompilerPlaceHolder(parent));
-        break;
-    case TokenId::CompilerGlobal:
-        SWAG_CHECK(doCompilerGlobal(parent, result));
-        break;
-    case TokenId::CompilerForeignLib:
-        SWAG_CHECK(doCompilerForeignLib(parent, result));
-        break;
-    case TokenId::Identifier:
-        SWAG_CHECK(doTopLevelIdentifier(parent, result));
-        break;
+        case TokenId::SymLeftCurly:
+            SWAG_CHECK(doGlobalCurlyStatement(parent, result));
+            break;
+        case TokenId::SymSemiColon:
+            SWAG_CHECK(eatToken());
+            break;
+        case TokenId::KwdVar:
+        case TokenId::KwdConst:
+            SWAG_CHECK(doVarDecl(parent, result));
+            break;
+        case TokenId::KwdTypeAlias:
+            SWAG_CHECK(doTypeAlias(parent, result));
+            break;
+        case TokenId::KwdNameAlias:
+            SWAG_CHECK(doNameAlias(parent, result));
+            break;
+        case TokenId::KwdPublic:
+        case TokenId::KwdInternal:
+            SWAG_CHECK(doPublicInternal(parent, result, false));
+            break;
+        case TokenId::KwdPrivate:
+            SWAG_CHECK(doPrivate(parent, result));
+            break;
+        case TokenId::KwdNamespace:
+            SWAG_CHECK(doNamespace(parent, result));
+            break;
+        case TokenId::KwdEnum:
+            SWAG_CHECK(doEnum(parent, result));
+            break;
+        case TokenId::KwdImpl:
+            SWAG_CHECK(doImpl(parent, result));
+            break;
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::KwdInterface:
+            SWAG_CHECK(doStruct(parent, result));
+            break;
+        case TokenId::KwdAttr:
+            SWAG_CHECK(doAttrDecl(parent, result));
+            break;
+        case TokenId::KwdUsing:
+            SWAG_CHECK(doUsing(parent, result));
+            break;
+        case TokenId::SymAttrStart:
+        {
+            AstAttrUse* attrUse;
+            SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
+            *result = attrUse;
+            SWAG_CHECK(doTopLevelInstruction(attrUse, &attrUse->content));
+            if (attrUse->content)
+                attrUse->content->setOwnerAttrUse(attrUse);
+            break;
+        }
+        case TokenId::CompilerAst:
+            SWAG_CHECK(doCompilerAst(parent, result));
+            break;
+        case TokenId::KwdFunc:
+        case TokenId::KwdMethod:
+        case TokenId::CompilerFuncTest:
+        case TokenId::CompilerFuncInit:
+        case TokenId::CompilerFuncDrop:
+        case TokenId::CompilerFuncPreMain:
+        case TokenId::CompilerFuncMain:
+        case TokenId::CompilerFuncMessage:
+            SWAG_CHECK(doFuncDecl(parent, result));
+            break;
+        case TokenId::CompilerRun:
+            SWAG_CHECK(doCompilerRunTopLevel(parent, result));
+            break;
+        case TokenId::CompilerIf:
+            SWAG_CHECK(doCompilerIf(parent, result));
+            break;
+        case TokenId::CompilerAssert:
+            SWAG_CHECK(doCompilerAssert(parent, result));
+            break;
+        case TokenId::CompilerError:
+            SWAG_CHECK(doCompilerError(parent, result));
+            break;
+        case TokenId::CompilerWarning:
+            SWAG_CHECK(doCompilerWarning(parent, result));
+            break;
+        case TokenId::CompilerPrint:
+            SWAG_CHECK(doCompilerPrint(parent, result));
+            break;
+        case TokenId::CompilerDependencies:
+            SWAG_CHECK(doCompilerDependencies(parent));
+            break;
+        case TokenId::CompilerImport:
+            SWAG_CHECK(doCompilerImport(parent));
+            break;
+        case TokenId::CompilerLoad:
+            SWAG_CHECK(doCompilerLoad(parent));
+            break;
+        case TokenId::CompilerPlaceHolder:
+            SWAG_CHECK(doCompilerPlaceHolder(parent));
+            break;
+        case TokenId::CompilerGlobal:
+            SWAG_CHECK(doCompilerGlobal(parent, result));
+            break;
+        case TokenId::CompilerForeignLib:
+            SWAG_CHECK(doCompilerForeignLib(parent, result));
+            break;
+        case TokenId::Identifier:
+            SWAG_CHECK(doTopLevelIdentifier(parent, result));
+            break;
 
-    default:
-        return invalidTokenError(InvalidTokenError::TopLevelInstruction);
+        default:
+            return invalidTokenError(InvalidTokenError::TopLevelInstruction);
     }
 
     return true;

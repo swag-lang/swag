@@ -22,29 +22,29 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
 
     switch (kind)
     {
-    case SegmentKind::Compiler:
-        name = "compiler segment";
-        break;
-    case SegmentKind::Tls:
-        name = "tls segment";
-        break;
-    case SegmentKind::Data:
-        name = "data segment";
-        break;
-    case SegmentKind::Bss:
-        name = "bss segment";
-        break;
-    case SegmentKind::Constant:
-        name = "constant segment";
-        break;
-    case SegmentKind::Global:
-        name = "global segment";
-        break;
-    case SegmentKind::String:
-        name = "string segment";
-        break;
-    default:
-        break;
+        case SegmentKind::Compiler:
+            name = "compiler segment";
+            break;
+        case SegmentKind::Tls:
+            name = "tls segment";
+            break;
+        case SegmentKind::Data:
+            name = "data segment";
+            break;
+        case SegmentKind::Bss:
+            name = "bss segment";
+            break;
+        case SegmentKind::Constant:
+            name = "constant segment";
+            break;
+        case SegmentKind::Global:
+            name = "global segment";
+            break;
+        case SegmentKind::String:
+            name = "string segment";
+            break;
+        default:
+            break;
     }
 }
 
@@ -249,52 +249,52 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* t
     ScopedLock lk(mutex);
     switch (typeInfo->sizeOf)
     {
-    case 1:
-    {
-        const auto it = storedValues8.find(computedValue.reg.u8);
-        if (it != storedValues8.end())
+        case 1:
         {
-            *resultPtr = it->second.addr;
-            return it->second.offset;
+            const auto it = storedValues8.find(computedValue.reg.u8);
+            if (it != storedValues8.end())
+            {
+                *resultPtr = it->second.addr;
+                return it->second.offset;
+            }
+            break;
         }
-        break;
-    }
 
-    case 2:
-    {
-        const auto it = storedValues16.find(computedValue.reg.u16);
-        if (it != storedValues16.end())
+        case 2:
         {
-            *resultPtr = it->second.addr;
-            return it->second.offset;
+            const auto it = storedValues16.find(computedValue.reg.u16);
+            if (it != storedValues16.end())
+            {
+                *resultPtr = it->second.addr;
+                return it->second.offset;
+            }
+            break;
         }
-        break;
-    }
 
-    case 4:
-    {
-        const auto it = storedValues32.find(computedValue.reg.u32);
-        if (it != storedValues32.end())
+        case 4:
         {
-            *resultPtr = it->second.addr;
-            return it->second.offset;
+            const auto it = storedValues32.find(computedValue.reg.u32);
+            if (it != storedValues32.end())
+            {
+                *resultPtr = it->second.addr;
+                return it->second.offset;
+            }
+            break;
         }
-        break;
-    }
 
-    case 8:
-    {
-        const auto it = storedValues64.find(computedValue.reg.u64);
-        if (it != storedValues64.end())
+        case 8:
         {
-            *resultPtr = it->second.addr;
-            return it->second.offset;
+            const auto it = storedValues64.find(computedValue.reg.u64);
+            if (it != storedValues64.end())
+            {
+                *resultPtr = it->second.addr;
+                return it->second.offset;
+            }
+            break;
         }
-        break;
-    }
 
-    default:
-        break;
+        default:
+            break;
     }
 
     uint8_t*   addr;
@@ -303,24 +303,24 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* t
 
     switch (typeInfo->sizeOf)
     {
-    case 1:
-        *addr = computedValue.reg.u8;
-        storedValues8[computedValue.reg.u8] = {storageOffset, addr};
-        break;
-    case 2:
-        *reinterpret_cast<uint16_t*>(addr) = computedValue.reg.u16;
-        storedValues16[computedValue.reg.u16] = {storageOffset, addr};
-        break;
-    case 4:
-        *reinterpret_cast<uint32_t*>(addr) = computedValue.reg.u32;
-        storedValues32[computedValue.reg.u32] = {storageOffset, addr};
-        break;
-    case 8:
-        *reinterpret_cast<uint64_t*>(addr) = computedValue.reg.u64;
-        storedValues64[computedValue.reg.u64] = {storageOffset, addr};
-        break;
-    default:
-        break;
+        case 1:
+            *addr = computedValue.reg.u8;
+            storedValues8[computedValue.reg.u8] = {storageOffset, addr};
+            break;
+        case 2:
+            *reinterpret_cast<uint16_t*>(addr) = computedValue.reg.u16;
+            storedValues16[computedValue.reg.u16] = {storageOffset, addr};
+            break;
+        case 4:
+            *reinterpret_cast<uint32_t*>(addr) = computedValue.reg.u32;
+            storedValues32[computedValue.reg.u32] = {storageOffset, addr};
+            break;
+        case 8:
+            *reinterpret_cast<uint64_t*>(addr) = computedValue.reg.u64;
+            storedValues64[computedValue.reg.u64] = {storageOffset, addr};
+            break;
+        default:
+            break;
     }
 
     return storageOffset;
@@ -521,22 +521,22 @@ void DataSegment::saveValue(uint8_t* address, uint32_t size, bool zero)
 
     switch (size)
     {
-    case 1:
-        sv.value.u8 = *address;
-        break;
-    case 2:
-        sv.value.u16 = *reinterpret_cast<uint16_t*>(address);
-        break;
-    case 4:
-        sv.value.u32 = *reinterpret_cast<uint32_t*>(address);
-        break;
-    case 8:
-        sv.value.u64 = *reinterpret_cast<uint64_t*>(address);
-        break;
-    default:
-        sv.value.pointer = Allocator::alloc_n<uint8_t>(size);
-        std::copy_n(address, size, sv.value.pointer);
-        break;
+        case 1:
+            sv.value.u8 = *address;
+            break;
+        case 2:
+            sv.value.u16 = *reinterpret_cast<uint16_t*>(address);
+            break;
+        case 4:
+            sv.value.u32 = *reinterpret_cast<uint32_t*>(address);
+            break;
+        case 8:
+            sv.value.u64 = *reinterpret_cast<uint64_t*>(address);
+            break;
+        default:
+            sv.value.pointer = Allocator::alloc_n<uint8_t>(size);
+            std::copy_n(address, size, sv.value.pointer);
+            break;
     }
     savedValues[address] = sv;
 }
@@ -554,22 +554,22 @@ void DataSegment::restoreAllValues()
 
         switch (one.second.size)
         {
-        case 1:
-            *one.first = one.second.value.u8;
-            break;
-        case 2:
-            *reinterpret_cast<uint16_t*>(one.first) = one.second.value.u16;
-            break;
-        case 4:
-            *reinterpret_cast<uint32_t*>(one.first) = one.second.value.u32;
-            break;
-        case 8:
-            *reinterpret_cast<uint64_t*>(one.first) = one.second.value.u64;
-            break;
-        default:
-            std::copy_n(one.second.value.pointer, one.second.size, one.first);
-            Allocator::free(one.second.value.pointer, one.second.size);
-            break;
+            case 1:
+                *one.first = one.second.value.u8;
+                break;
+            case 2:
+                *reinterpret_cast<uint16_t*>(one.first) = one.second.value.u16;
+                break;
+            case 4:
+                *reinterpret_cast<uint32_t*>(one.first) = one.second.value.u32;
+                break;
+            case 8:
+                *reinterpret_cast<uint64_t*>(one.first) = one.second.value.u64;
+                break;
+            default:
+                std::copy_n(one.second.value.pointer, one.second.size, one.first);
+                Allocator::free(one.second.value.pointer, one.second.size);
+                break;
         }
     }
 

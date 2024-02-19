@@ -369,39 +369,39 @@ bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
     {
         switch (node->kind)
         {
-        case AstNodeKind::Loop:
-        {
-            const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
-            if (loopNode->expression)
+            case AstNodeKind::Loop:
             {
-                if (loopNode->expression->kind == AstNodeKind::Range)
+                const auto loopNode = castAst<AstLoop>(node, AstNodeKind::Loop);
+                if (loopNode->expression)
                 {
-                    const auto rangeNode = castAst<AstRange>(loopNode->expression, AstNodeKind::Range);
-                    freeRegisterRC(context, rangeNode->expressionLow);
-                    freeRegisterRC(context, rangeNode->expressionUp);
+                    if (loopNode->expression->kind == AstNodeKind::Range)
+                    {
+                        const auto rangeNode = castAst<AstRange>(loopNode->expression, AstNodeKind::Range);
+                        freeRegisterRC(context, rangeNode->expressionLow);
+                        freeRegisterRC(context, rangeNode->expressionUp);
+                    }
+                    else
+                    {
+                        freeRegisterRC(context, loopNode->expression);
+                    }
                 }
-                else
-                {
-                    freeRegisterRC(context, loopNode->expression);
-                }
+                break;
             }
-            break;
-        }
 
-        case AstNodeKind::While:
-        {
-            const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
-            freeRegisterRC(context, whileNode->boolExpression);
-            break;
-        }
-        case AstNodeKind::For:
-        {
-            const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
-            freeRegisterRC(context, forNode->boolExpression);
-            break;
-        }
-        default:
-            break;
+            case AstNodeKind::While:
+            {
+                const auto whileNode = castAst<AstWhile>(node, AstNodeKind::While);
+                freeRegisterRC(context, whileNode->boolExpression);
+                break;
+            }
+            case AstNodeKind::For:
+            {
+                const auto forNode = castAst<AstFor>(node, AstNodeKind::For);
+                freeRegisterRC(context, forNode->boolExpression);
+                break;
+            }
+            default:
+                break;
         }
     }
 
@@ -1204,15 +1204,15 @@ bool ByteCodeGen::emitLeaveScope(ByteCodeGenContext* context)
 
     switch (node->kind)
     {
-    case AstNodeKind::CompilerMacro:
-    {
-        const auto macroNode = castAst<AstCompilerMacro>(node, AstNodeKind::CompilerMacro);
-        SWAG_CHECK(computeLeaveScope(context, macroNode->scope));
-        break;
-    }
-    default:
-        SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
-        break;
+        case AstNodeKind::CompilerMacro:
+        {
+            const auto macroNode = castAst<AstCompilerMacro>(node, AstNodeKind::CompilerMacro);
+            SWAG_CHECK(computeLeaveScope(context, macroNode->scope));
+            break;
+        }
+        default:
+            SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
+            break;
     }
 
     return true;

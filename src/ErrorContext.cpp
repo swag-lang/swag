@@ -43,34 +43,34 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
 
             switch (exp.type)
             {
-            case ErrCxtStepKind::Generic:
-                if (exp.node && exp.node->kind == AstNodeKind::VarDecl) // Can happen with automatic call of opIndexSuffix
-                {
-                    exp.hide = true;
-                }
-                else
-                {
-                    exp.hide    = doneGeneric;
-                    doneGeneric = true;
-                }
-                break;
+                case ErrCxtStepKind::Generic:
+                    if (exp.node && exp.node->kind == AstNodeKind::VarDecl) // Can happen with automatic call of opIndexSuffix
+                    {
+                        exp.hide = true;
+                    }
+                    else
+                    {
+                        exp.hide    = doneGeneric;
+                        doneGeneric = true;
+                    }
+                    break;
 
-            case ErrCxtStepKind::Inline:
-                exp.hide = doneInline;
-                doneInline = true;
-                break;
+                case ErrCxtStepKind::Inline:
+                    exp.hide = doneInline;
+                    doneInline = true;
+                    break;
 
-            case ErrCxtStepKind::CompileTime:
-                exp.hide = doneCompTime;
-                doneCompTime = true;
-                break;
+                case ErrCxtStepKind::CompileTime:
+                    exp.hide = doneCompTime;
+                    doneCompTime = true;
+                    break;
 
-            case ErrCxtStepKind::Note:
-                exp.hide = msg.empty();
-                break;
+                case ErrCxtStepKind::Note:
+                    exp.hide = msg.empty();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
 
@@ -100,44 +100,44 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             const Diagnostic* note = nullptr;
             switch (exp.type)
             {
-            case ErrCxtStepKind::Note:
-                break;
-            case ErrCxtStepKind::Export:
-                msg = FMT(Nte(Nte0097), name.c_str());
-                break;
-            case ErrCxtStepKind::Generic:
-                msg = FMT(Nte(Nte0095), name.c_str());
-                exp.locIsToken = true;
-                break;
-            case ErrCxtStepKind::Inline:
-                msg = FMT(Nte(Nte0096), name.c_str());
-                exp.locIsToken = true;
-                break;
-            case ErrCxtStepKind::CompileTime:
-                msg = FMT(Nte(Nte0091), name.c_str());
-                exp.locIsToken = true;
-                break;
-            case ErrCxtStepKind::ValidIf:
-                if (exp.node->kind == AstNodeKind::StructDecl)
-                    msg = FMT(Nte(Nte0092), name.c_str());
-                else
-                    msg = FMT(Nte(Nte0093), name.c_str());
-                exp.locIsToken = true;
-                break;
-            case ErrCxtStepKind::ValidIfx:
-                msg = FMT(Nte(Nte0094), name.c_str());
-                exp.locIsToken = true;
-                break;
-            case ErrCxtStepKind::HereIs:
-            {
-                ScopedLock lk(exp.node->mutex);
-                note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
-                if (!note)
-                    continue;
-                break;
-            }
-            default:
-                break;
+                case ErrCxtStepKind::Note:
+                    break;
+                case ErrCxtStepKind::Export:
+                    msg = FMT(Nte(Nte0097), name.c_str());
+                    break;
+                case ErrCxtStepKind::Generic:
+                    msg = FMT(Nte(Nte0095), name.c_str());
+                    exp.locIsToken = true;
+                    break;
+                case ErrCxtStepKind::Inline:
+                    msg = FMT(Nte(Nte0096), name.c_str());
+                    exp.locIsToken = true;
+                    break;
+                case ErrCxtStepKind::CompileTime:
+                    msg = FMT(Nte(Nte0091), name.c_str());
+                    exp.locIsToken = true;
+                    break;
+                case ErrCxtStepKind::ValidIf:
+                    if (exp.node->kind == AstNodeKind::StructDecl)
+                        msg = FMT(Nte(Nte0092), name.c_str());
+                    else
+                        msg = FMT(Nte(Nte0093), name.c_str());
+                    exp.locIsToken = true;
+                    break;
+                case ErrCxtStepKind::ValidIfx:
+                    msg = FMT(Nte(Nte0094), name.c_str());
+                    exp.locIsToken = true;
+                    break;
+                case ErrCxtStepKind::HereIs:
+                {
+                    ScopedLock lk(exp.node->mutex);
+                    note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
+                    if (!note)
+                        continue;
+                    break;
+                }
+                default:
+                    break;
             }
 
             if (!note)

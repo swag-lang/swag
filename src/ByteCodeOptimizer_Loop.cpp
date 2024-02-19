@@ -36,22 +36,22 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             // Constant expression
             switch (ipScan->op)
             {
-            case ByteCodeOp::GetParam8:
-            case ByteCodeOp::GetParam16:
-            case ByteCodeOp::GetParam32:
-            case ByteCodeOp::GetParam64:
-            case ByteCodeOp::GetParam64x2:
-            case ByteCodeOp::GetIncParam64:
-            case ByteCodeOp::MakeStackPointer:
-            case ByteCodeOp::MakeCompilerSegPointer:
-            case ByteCodeOp::MakeConstantSegPointer:
-            case ByteCodeOp::MakeBssSegPointer:
-            case ByteCodeOp::MakeMutableSegPointer:
-            case ByteCodeOp::MakeLambda:
-                context->vecInst.push_back(ipScan);
-                break;
-            default:
-                break;
+                case ByteCodeOp::GetParam8:
+                case ByteCodeOp::GetParam16:
+                case ByteCodeOp::GetParam32:
+                case ByteCodeOp::GetParam64:
+                case ByteCodeOp::GetParam64x2:
+                case ByteCodeOp::GetIncParam64:
+                case ByteCodeOp::MakeStackPointer:
+                case ByteCodeOp::MakeCompilerSegPointer:
+                case ByteCodeOp::MakeConstantSegPointer:
+                case ByteCodeOp::MakeBssSegPointer:
+                case ByteCodeOp::MakeMutableSegPointer:
+                case ByteCodeOp::MakeLambda:
+                    context->vecInst.push_back(ipScan);
+                    break;
+                default:
+                    break;
             }
 
             if (ByteCode::hasWriteRegInA(ipScan))

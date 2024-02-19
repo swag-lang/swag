@@ -197,26 +197,26 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 
     switch (ip->op)
     {
-    case ByteCodeOp::IntrinsicS8x1:
-    case ByteCodeOp::IntrinsicS16x1:
-    case ByteCodeOp::IntrinsicS32x1:
-    case ByteCodeOp::IntrinsicS64x1:
-    case ByteCodeOp::IntrinsicF32x1:
-    case ByteCodeOp::IntrinsicF64x1:
-    case ByteCodeOp::IntrinsicS8x2:
-    case ByteCodeOp::IntrinsicS16x2:
-    case ByteCodeOp::IntrinsicS32x2:
-    case ByteCodeOp::IntrinsicS64x2:
-    case ByteCodeOp::IntrinsicU8x2:
-    case ByteCodeOp::IntrinsicU16x2:
-    case ByteCodeOp::IntrinsicU32x2:
-    case ByteCodeOp::IntrinsicU64x2:
-    case ByteCodeOp::IntrinsicF32x2:
-    case ByteCodeOp::IntrinsicF64x2:
-        str.replace("_w0_", g_TokenNames[ip->d.u32]);
-        break;
-    default:
-        break;
+        case ByteCodeOp::IntrinsicS8x1:
+        case ByteCodeOp::IntrinsicS16x1:
+        case ByteCodeOp::IntrinsicS32x1:
+        case ByteCodeOp::IntrinsicS64x1:
+        case ByteCodeOp::IntrinsicF32x1:
+        case ByteCodeOp::IntrinsicF64x1:
+        case ByteCodeOp::IntrinsicS8x2:
+        case ByteCodeOp::IntrinsicS16x2:
+        case ByteCodeOp::IntrinsicS32x2:
+        case ByteCodeOp::IntrinsicS64x2:
+        case ByteCodeOp::IntrinsicU8x2:
+        case ByteCodeOp::IntrinsicU16x2:
+        case ByteCodeOp::IntrinsicU32x2:
+        case ByteCodeOp::IntrinsicU64x2:
+        case ByteCodeOp::IntrinsicF32x2:
+        case ByteCodeOp::IntrinsicF64x2:
+            str.replace("_w0_", g_TokenNames[ip->d.u32]);
+            break;
+        default:
+            break;
     }
 
     str.trim();
@@ -287,52 +287,52 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
     switch (ip->op)
     {
-    case ByteCodeOp::InternalPanic:
-        if (ip->d.pointer)
+        case ByteCodeOp::InternalPanic:
+            if (ip->d.pointer)
+            {
+                line.pretty += Utf8::truncateDisplay(reinterpret_cast<const char*>(ip->d.pointer), 30);
+                line.pretty += " ";
+            }
+            break;
+
+        case ByteCodeOp::MakeLambda:
         {
-            line.pretty += Utf8::truncateDisplay(reinterpret_cast<const char*>(ip->d.pointer), 30);
+            const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
+            SWAG_ASSERT(funcNode);
+            line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
+            line.pretty += "/";
+            line.pretty += funcNode->token.text;
             line.pretty += " ";
+            break;
         }
-        break;
 
-    case ByteCodeOp::MakeLambda:
-    {
-        const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
-        SWAG_ASSERT(funcNode);
-        line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
-        line.pretty += "/";
-        line.pretty += funcNode->token.text;
-        line.pretty += " ";
-        break;
-    }
-
-    case ByteCodeOp::ForeignCall:
-    case ByteCodeOp::ForeignCallPop:
-    {
-        const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
-        line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
-        line.pretty += " ";
-        break;
-    }
-
-    case ByteCodeOp::LocalCall:
-    case ByteCodeOp::LocalCallPop:
-    case ByteCodeOp::LocalCallPopParam:
-    case ByteCodeOp::LocalCallPopRC:
-    {
-        const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
-        SWAG_ASSERT(bc);
-        line.pretty += bc->name;
-        if (bc->node && bc->node->typeInfo)
+        case ByteCodeOp::ForeignCall:
+        case ByteCodeOp::ForeignCallPop:
         {
+            const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
+            line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
             line.pretty += " ";
-            line.pretty += bc->node->typeInfo->name;
+            break;
         }
-        line.pretty += " ";
-        break;
-    }
-    default:
-        break;
+
+        case ByteCodeOp::LocalCall:
+        case ByteCodeOp::LocalCallPop:
+        case ByteCodeOp::LocalCallPopParam:
+        case ByteCodeOp::LocalCallPopRC:
+        {
+            const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
+            SWAG_ASSERT(bc);
+            line.pretty += bc->name;
+            if (bc->node && bc->node->typeInfo)
+            {
+                line.pretty += " ";
+                line.pretty += bc->node->typeInfo->name;
+            }
+            line.pretty += " ";
+            break;
+        }
+        default:
+            break;
     }
 
     // DevMode
@@ -414,25 +414,25 @@ namespace
         {
             switch (what)
             {
-            case RankStr::Rank:
-                len = max(len, line.rank.length());
-                break;
-            case RankStr::Name:
-                len = max(len, line.name.length());
-                break;
-            case RankStr::InstRef:
-                len = max(len, line.instRef.length());
-                break;
-            case RankStr::Flags:
-                len = max(len, line.flags.length());
-                break;
-            case RankStr::Pretty:
-                len = max(len, line.pretty.length());
-                break;
+                case RankStr::Rank:
+                    len = max(len, line.rank.length());
+                    break;
+                case RankStr::Name:
+                    len = max(len, line.name.length());
+                    break;
+                case RankStr::InstRef:
+                    len = max(len, line.instRef.length());
+                    break;
+                case RankStr::Flags:
+                    len = max(len, line.flags.length());
+                    break;
+                case RankStr::Pretty:
+                    len = max(len, line.pretty.length());
+                    break;
 #ifdef SWAG_DEV_MODE
-            case RankStr::DevMode:
-                len = max(len, line.devMode.length());
-                break;
+                case RankStr::DevMode:
+                    len = max(len, line.devMode.length());
+                    break;
 #endif
             }
         }
@@ -444,29 +444,29 @@ namespace
             Utf8* str = nullptr;
             switch (what)
             {
-            case RankStr::Rank:
-                str = &line.rank;
-                break;
-            case RankStr::Name:
-                str = &line.name;
-                break;
-            case RankStr::InstRef:
-                str = &line.instRef;
-                break;
-            case RankStr::Flags:
-                str = &line.flags;
-                break;
-            case RankStr::Pretty:
-                str = &line.pretty;
-                break;
+                case RankStr::Rank:
+                    str = &line.rank;
+                    break;
+                case RankStr::Name:
+                    str = &line.name;
+                    break;
+                case RankStr::InstRef:
+                    str = &line.instRef;
+                    break;
+                case RankStr::Flags:
+                    str = &line.flags;
+                    break;
+                case RankStr::Pretty:
+                    str = &line.pretty;
+                    break;
 #ifdef SWAG_DEV_MODE
-            case RankStr::DevMode:
-                str = &line.devMode;
-                break;
+                case RankStr::DevMode:
+                    str = &line.devMode;
+                    break;
 #endif
-            default:
-                SWAG_ASSERT(false);
-                break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
             }
 
             if (alignLeft)

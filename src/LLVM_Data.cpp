@@ -119,21 +119,21 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     llvm::GlobalVariable* gVar    = nullptr;
     switch (me)
     {
-    case SegmentKind::Data:
-        name = "__initMutableSeg";
-        gVar = pp.mutableSeg;
-        break;
-    case SegmentKind::Constant:
-        name = "__initConstantSeg";
-        gVar = pp.constantSeg;
-        break;
-    case SegmentKind::Tls:
-        name = "__initTlsSeg";
-        gVar = pp.tlsSeg;
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case SegmentKind::Data:
+            name = "__initMutableSeg";
+            gVar = pp.mutableSeg;
+            break;
+        case SegmentKind::Constant:
+            name = "__initConstantSeg";
+            gVar = pp.constantSeg;
+            break;
+        case SegmentKind::Tls:
+            name = "__initTlsSeg";
+            gVar = pp.tlsSeg;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     llvm::Function*   fct = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, name, modu);

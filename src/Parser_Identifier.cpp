@@ -235,45 +235,45 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
 
     switch (token.id)
     {
-    case TokenId::CompilerLocation:
-        SWAG_CHECK(doCompilerSpecialValue(identifierRef, &dummyResult));
-        break;
-    case TokenId::IntrinsicLocation:
-        SWAG_CHECK(doIntrinsicLocation(identifierRef, &dummyResult));
-        break;
+        case TokenId::CompilerLocation:
+            SWAG_CHECK(doCompilerSpecialValue(identifierRef, &dummyResult));
+            break;
+        case TokenId::IntrinsicLocation:
+            SWAG_CHECK(doIntrinsicLocation(identifierRef, &dummyResult));
+            break;
 
-    case TokenId::IntrinsicSpread:
-    case TokenId::IntrinsicSizeOf:
-    case TokenId::IntrinsicAlignOf:
-    case TokenId::IntrinsicOffsetOf:
-    case TokenId::IntrinsicTypeOf:
-    case TokenId::IntrinsicKindOf:
-    case TokenId::IntrinsicDeclType:
-    case TokenId::IntrinsicCountOf:
-    case TokenId::IntrinsicDataOf:
-    case TokenId::IntrinsicStringOf:
-    case TokenId::IntrinsicNameOf:
-    case TokenId::IntrinsicRunes:
-    case TokenId::IntrinsicMakeAny:
-    case TokenId::IntrinsicMakeSlice:
-    case TokenId::IntrinsicMakeString:
-    case TokenId::IntrinsicMakeInterface:
-    case TokenId::IntrinsicMakeCallback:
-    case TokenId::IntrinsicIsConstExpr:
-    case TokenId::IntrinsicCVaStart:
-    case TokenId::IntrinsicCVaEnd:
-    case TokenId::IntrinsicCVaArg:
-        SWAG_CHECK(doIntrinsicProp(identifierRef, &dummyResult));
-        break;
+        case TokenId::IntrinsicSpread:
+        case TokenId::IntrinsicSizeOf:
+        case TokenId::IntrinsicAlignOf:
+        case TokenId::IntrinsicOffsetOf:
+        case TokenId::IntrinsicTypeOf:
+        case TokenId::IntrinsicKindOf:
+        case TokenId::IntrinsicDeclType:
+        case TokenId::IntrinsicCountOf:
+        case TokenId::IntrinsicDataOf:
+        case TokenId::IntrinsicStringOf:
+        case TokenId::IntrinsicNameOf:
+        case TokenId::IntrinsicRunes:
+        case TokenId::IntrinsicMakeAny:
+        case TokenId::IntrinsicMakeSlice:
+        case TokenId::IntrinsicMakeString:
+        case TokenId::IntrinsicMakeInterface:
+        case TokenId::IntrinsicMakeCallback:
+        case TokenId::IntrinsicIsConstExpr:
+        case TokenId::IntrinsicCVaStart:
+        case TokenId::IntrinsicCVaEnd:
+        case TokenId::IntrinsicCVaArg:
+            SWAG_CHECK(doIntrinsicProp(identifierRef, &dummyResult));
+            break;
 
-    case TokenId::NativeType:
-        return invalidIdentifierError(token);
-
-    default:
-        if (Tokenizer::isKeyword(token.id))
+        case TokenId::NativeType:
             return invalidIdentifierError(token);
-        SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
-        break;
+
+        default:
+            if (Tokenizer::isKeyword(token.id))
+                return invalidIdentifierError(token);
+            SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
+            break;
     }
 
     while (token.id == TokenId::SymDot && !token.flags.has(TOKEN_PARSE_LAST_EOL))
@@ -293,25 +293,25 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     AstNode* idRef;
     switch (token.id)
     {
-    case TokenId::Identifier:
-        SWAG_CHECK(doIdentifierRef(parent, &idRef));
-        break;
-    case TokenId::KwdTry:
-    case TokenId::KwdCatch:
-    case TokenId::KwdTryCatch:
-    case TokenId::KwdAssume:
-        SWAG_CHECK(doTryCatchAssume(parent, &idRef, true));
-        break;
-    default:
-        if (Tokenizer::isIntrinsicReturn(token.id))
-        {
-            const Diagnostic err{sourceFile, token, FMT(Err(Err0748), token.c_str())};
-            const auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte0149));
-            const auto       note1 = Diagnostic::note(Nte(Nte0012));
-            return context->report(err, note, note1);
-        }
+        case TokenId::Identifier:
+            SWAG_CHECK(doIdentifierRef(parent, &idRef));
+            break;
+        case TokenId::KwdTry:
+        case TokenId::KwdCatch:
+        case TokenId::KwdTryCatch:
+        case TokenId::KwdAssume:
+            SWAG_CHECK(doTryCatchAssume(parent, &idRef, true));
+            break;
+        default:
+            if (Tokenizer::isIntrinsicReturn(token.id))
+            {
+                const Diagnostic err{sourceFile, token, FMT(Err(Err0748), token.c_str())};
+                const auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte0149));
+                const auto       note1 = Diagnostic::note(Nte(Nte0012));
+                return context->report(err, note, note1);
+            }
 
-        return error(token, FMT(Err(Err0159), token.c_str()));
+            return error(token, FMT(Err(Err0159), token.c_str()));
     }
 
     *result = idRef;

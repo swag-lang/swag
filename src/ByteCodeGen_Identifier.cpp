@@ -549,20 +549,20 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             ByteCodeInstruction* inst = nullptr;
             switch (typeInfo->sizeOf)
             {
-            case 1:
-                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack8, node->resultRegisterRc);
-                break;
-            case 2:
-                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack16, node->resultRegisterRc);
-                break;
-            case 4:
-                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack32, node->resultRegisterRc);
-                break;
-            case 8:
-                inst = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRc);
-                break;
-            default:
-                break;
+                case 1:
+                    inst = EMIT_INST1(context, ByteCodeOp::GetFromStack8, node->resultRegisterRc);
+                    break;
+                case 2:
+                    inst = EMIT_INST1(context, ByteCodeOp::GetFromStack16, node->resultRegisterRc);
+                    break;
+                case 4:
+                    inst = EMIT_INST1(context, ByteCodeOp::GetFromStack32, node->resultRegisterRc);
+                    break;
+                case 8:
+                    inst = EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRc);
+                    break;
+                default:
+                    break;
             }
 
             inst->b.u64 = resolved->computedValue.storageOffset;

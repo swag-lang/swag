@@ -287,168 +287,168 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
 
         switch (key)
         {
-        //////////////////////////////////
-        case OS::Key::Left:
-            if (!cursorX)
-                continue;
-            if (ctrl)
-            {
-                if (isblank(line[cursorX - 1]))
+            //////////////////////////////////
+            case OS::Key::Left:
+                if (!cursorX)
+                    continue;
+                if (ctrl)
                 {
-                    while (cursorX && isblank(line[cursorX - 1]))
-                        MOVE_LEFT();
+                    if (isblank(line[cursorX - 1]))
+                    {
+                        while (cursorX && isblank(line[cursorX - 1]))
+                            MOVE_LEFT();
+                    }
+                    else
+                    {
+                        while (cursorX && (isalnum(line[cursorX - 1]) || line[cursorX - 1] == '_' || isdigit(line[cursorX - 1])))
+                            MOVE_LEFT();
+                    }
                 }
                 else
+                    MOVE_LEFT();
+                continue;
+
+            //////////////////////////////////
+            case OS::Key::Right:
+                if (cursorX == line.count)
+                    continue;
+                if (ctrl)
                 {
-                    while (cursorX && (isalnum(line[cursorX - 1]) || line[cursorX - 1] == '_' || isdigit(line[cursorX - 1])))
-                        MOVE_LEFT();
+                    if (isblank(line[cursorX]))
+                    {
+                        while (cursorX != line.count && isblank(line[cursorX]))
+                            MOVE_RIGHT();
+                    }
+                    else
+                    {
+                        while (cursorX != line.count && (isalnum(line[cursorX]) || line[cursorX] == '_' || isdigit(line[cursorX])))
+                            MOVE_RIGHT();
+                    }
                 }
-            }
-            else
+                else
+                    MOVE_RIGHT();
+                continue;
+
+            //////////////////////////////////
+            case OS::Key::Home:
+                if (cursorX)
+                    (void) fputs(FMT("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
+                cursorX = 0;
+                continue;
+
+            //////////////////////////////////
+            case OS::Key::End:
+                if (cursorX != line.count)
+                    (void) fputs(FMT("\x1B[%dC", line.count - cursorX), stdout); // Move the cursor to the end of line
+                cursorX = line.count;
+                continue;
+
+            //////////////////////////////////
+            case OS::Key::Delete:
+                if (cursorX == line.count)
+                    continue;
+                (void) fputs("\x1B[1P", stdout); // Delete the character
+                line.remove(cursorX, 1);
+                continue;
+
+            //////////////////////////////////
+            case OS::Key::Back:
+                if (!cursorX)
+                    continue;
                 MOVE_LEFT();
-            continue;
-
-        //////////////////////////////////
-        case OS::Key::Right:
-            if (cursorX == line.count)
+                (void) fputs("\x1B[1P", stdout); // Delete the character
+                line.remove(cursorX, 1);
                 continue;
-            if (ctrl)
-            {
-                if (isblank(line[cursorX]))
-                {
-                    while (cursorX != line.count && isblank(line[cursorX]))
-                        MOVE_RIGHT();
-                }
-                else
-                {
-                    while (cursorX != line.count && (isalnum(line[cursorX]) || line[cursorX] == '_' || isdigit(line[cursorX])))
-                        MOVE_RIGHT();
-                }
-            }
-            else
-                MOVE_RIGHT();
-            continue;
 
-        //////////////////////////////////
-        case OS::Key::Home:
-            if (cursorX)
-                (void) fputs(FMT("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
-            cursorX = 0;
-            continue;
-
-        //////////////////////////////////
-        case OS::Key::End:
-            if (cursorX != line.count)
-                (void) fputs(FMT("\x1B[%dC", line.count - cursorX), stdout); // Move the cursor to the end of line
-            cursorX = line.count;
-            continue;
-
-        //////////////////////////////////
-        case OS::Key::Delete:
-            if (cursorX == line.count)
-                continue;
-            (void) fputs("\x1B[1P", stdout); // Delete the character
-            line.remove(cursorX, 1);
-            continue;
-
-        //////////////////////////////////
-        case OS::Key::Back:
-            if (!cursorX)
-                continue;
-            MOVE_LEFT();
-            (void) fputs("\x1B[1P", stdout); // Delete the character
-            line.remove(cursorX, 1);
-            continue;
-
-        //////////////////////////////////
-        case OS::Key::Up:
-            if (debugCmdHistoryIndex == 0)
-                continue;
-            if (cursorX) // Move the cursor at 0
-                (void) fputs(FMT("\x1B[%dD", cursorX), stdout);
-            (void) fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
-            line = debugCmdHistory[--debugCmdHistoryIndex];
-            (void) fputs(line, stdout); // Insert command from history
-            cursorX = line.count;
-            break;
-
-        //////////////////////////////////
-        case OS::Key::Down:
-            if (debugCmdHistoryIndex == debugCmdHistory.size())
-                continue;
-            if (cursorX) // Move the cursor at 0
-                (void) fputs(FMT("\x1B[%dD", cursorX), stdout);
-            (void) fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
-            debugCmdHistoryIndex++;
-            if (debugCmdHistoryIndex != debugCmdHistory.size())
-            {
-                line = debugCmdHistory[debugCmdHistoryIndex];
+            //////////////////////////////////
+            case OS::Key::Up:
+                if (debugCmdHistoryIndex == 0)
+                    continue;
+                if (cursorX) // Move the cursor at 0
+                    (void) fputs(FMT("\x1B[%dD", cursorX), stdout);
+                (void) fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
+                line = debugCmdHistory[--debugCmdHistoryIndex];
                 (void) fputs(line, stdout); // Insert command from history
                 cursorX = line.count;
-            }
-            else
-            {
+                break;
+
+            //////////////////////////////////
+            case OS::Key::Down:
+                if (debugCmdHistoryIndex == debugCmdHistory.size())
+                    continue;
+                if (cursorX) // Move the cursor at 0
+                    (void) fputs(FMT("\x1B[%dD", cursorX), stdout);
+                (void) fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
+                debugCmdHistoryIndex++;
+                if (debugCmdHistoryIndex != debugCmdHistory.size())
+                {
+                    line = debugCmdHistory[debugCmdHistoryIndex];
+                    (void) fputs(line, stdout); // Insert command from history
+                    cursorX = line.count;
+                }
+                else
+                {
+                    line.clear();
+                    cursorX = 0;
+                }
+                break;
+
+            //////////////////////////////////
+            case OS::Key::Escape:
+                if (cursorX) // Move the cursor at 0
+                    (void) fputs(FMT("\x1B[%dD", cursorX), stdout);
+                (void) fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
                 line.clear();
                 cursorX = 0;
-            }
-            break;
+                break;
 
-        //////////////////////////////////
-        case OS::Key::Escape:
-            if (cursorX) // Move the cursor at 0
-                (void) fputs(FMT("\x1B[%dD", cursorX), stdout);
-            (void) fputs(FMT("\x1B[%dX", line.count), stdout); // Erase the current command
-            line.clear();
-            cursorX = 0;
-            break;
-
-        //////////////////////////////////
-        case OS::Key::PasteFromClipboard:
-        {
-            Utf8 str = OS::getClipboardString();
-            (void) fputs(FMT("\x1B[%d@", str.length()), stdout); // Insert n blanks and shift right
-            for (const auto cc : str)
+            //////////////////////////////////
+            case OS::Key::PasteFromClipboard:
             {
-                (void) fputc(cc, stdout);
-                line.insert(cursorX, cc);
+                Utf8 str = OS::getClipboardString();
+                (void) fputs(FMT("\x1B[%d@", str.length()), stdout); // Insert n blanks and shift right
+                for (const auto cc : str)
+                {
+                    (void) fputc(cc, stdout);
+                    line.insert(cursorX, cc);
+                    cursorX++;
+                }
+
+                break;
+            }
+
+            //////////////////////////////////
+            case OS::Key::Ascii:
+                (void) fputs("\x1B[1@", stdout); // Insert n blanks and shift right
+                (void) fputc(c, stdout);
+                line.insert(cursorX, static_cast<char>(c));
                 cursorX++;
-            }
+                break;
 
-            break;
-        }
-
-        //////////////////////////////////
-        case OS::Key::Ascii:
-            (void) fputs("\x1B[1@", stdout); // Insert n blanks and shift right
-            (void) fputc(c, stdout);
-            line.insert(cursorX, static_cast<char>(c));
-            cursorX++;
-            break;
-
-        //////////////////////////////////
-        case OS::Key::Tab:
-        {
-            if (!cxtIp || !cxtIp->node || !cxtIp->node->sourceFile)
-                continue;
-            if (cursorX != line.count)
-                continue;
-
-            Utf8 toComplete;
-            auto n = completion(context, line, toComplete);
-            if (!n.empty() && n != toComplete)
+            //////////////////////////////////
+            case OS::Key::Tab:
             {
-                n.remove(0, toComplete.length());
-                (void) fputs(n, stdout);
-                line += n;
-                cursorX += n.length();
-                continue;
+                if (!cxtIp || !cxtIp->node || !cxtIp->node->sourceFile)
+                    continue;
+                if (cursorX != line.count)
+                    continue;
+
+                Utf8 toComplete;
+                auto n = completion(context, line, toComplete);
+                if (!n.empty() && n != toComplete)
+                {
+                    n.remove(0, toComplete.length());
+                    (void) fputs(n, stdout);
+                    line += n;
+                    cursorX += n.length();
+                    continue;
+                }
+
+                break;
             }
 
-            break;
-        }
-
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -472,189 +472,189 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     switch (stepMode)
     {
-    case DebugStepMode::ToNextBreakpoint:
-        zapCurrentIp = true;
-        break;
-
-    case DebugStepMode::NextInstructionStepIn:
-        stepCount--;
-        if (stepCount <= 0)
-        {
-            stepCount        = 0;
-            context->debugOn = true;
-            stepMode         = DebugStepMode::None;
-            bcMode           = true;
-        }
-        else
-            zapCurrentIp = true;
-        break;
-
-    case DebugStepMode::NextInstructionStepOut:
-        // If inside a sub function
-        if (context->curRC > stepRc)
-        {
+        case DebugStepMode::ToNextBreakpoint:
             zapCurrentIp = true;
             break;
-        }
 
-        stepCount--;
-        if (stepCount <= 0)
-        {
-            stepCount        = 0;
-            context->debugOn = true;
-            stepMode         = DebugStepMode::None;
-            bcMode           = true;
-        }
-        else
-            zapCurrentIp = true;
-        break;
-
-    case DebugStepMode::NextLineStepIn:
-    {
-        bcMode         = false;
-        const auto loc = ByteCode::getLocation(context->bc, ip, true);
-        if (!loc.file || !loc.location)
-        {
-            zapCurrentIp = true;
-            break;
-        }
-
-        if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
-        {
-            zapCurrentIp = true;
-        }
-        else
-        {
+        case DebugStepMode::NextInstructionStepIn:
             stepCount--;
             if (stepCount <= 0)
             {
+                stepCount        = 0;
                 context->debugOn = true;
                 stepMode         = DebugStepMode::None;
+                bcMode           = true;
             }
             else
-            {
-                zapCurrentIp           = true;
-                stepLastLocation->line = loc.location->line;
-            }
-        }
-        break;
-    }
-    case DebugStepMode::NextLineStepOut:
-    {
-        bcMode = false;
-
-        // If inside a sub function
-        if (context->curRC > stepRc)
-        {
-            zapCurrentIp = true;
+                zapCurrentIp = true;
             break;
-        }
 
-        if (!ip->node)
-        {
-            zapCurrentIp = true;
-            break;
-        }
-
-        if (!lastBreakIp->node->ownerInline && ip->node->ownerInline)
-        {
-            // Can only step into a mixin if we come from a not inlined block
-            if (!ip->node->hasAstFlag(AST_IN_MIXIN))
+        case DebugStepMode::NextInstructionStepOut:
+            // If inside a sub function
+            if (context->curRC > stepRc)
             {
                 zapCurrentIp = true;
                 break;
             }
 
-            const auto loc = ByteCode::getLocation(context->bc, ip, true);
-            if (loc.file != stepLastFile)
-            {
-                zapCurrentIp = true;
-                break;
-            }
-        }
-
-        if (lastBreakIp->node->ownerInline)
-        {
-            // If i am still in an inline, but not in a mixin block, and was in a mixin block, zap
-            if (ip->node->ownerInline &&
-                lastBreakIp->node->hasAstFlag(AST_IN_MIXIN) &&
-                !ip->node->hasAstFlag(AST_IN_MIXIN))
-            {
-                zapCurrentIp = true;
-                break;
-            }
-
-            const auto loc = ByteCode::getLocation(context->bc, ip, true);
-            if (loc.file != stepLastFile)
-            {
-                zapCurrentIp = true;
-                break;
-            }
-        }
-
-        const auto loc = ByteCode::getLocation(context->bc, ip, true);
-        if (!loc.file || !loc.location)
-        {
-            zapCurrentIp = true;
-            break;
-        }
-
-        if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
-        {
-            zapCurrentIp = true;
-        }
-        else
-        {
             stepCount--;
             if (stepCount <= 0)
             {
+                stepCount        = 0;
                 context->debugOn = true;
                 stepMode         = DebugStepMode::None;
+                bcMode           = true;
+            }
+            else
+                zapCurrentIp = true;
+            break;
+
+        case DebugStepMode::NextLineStepIn:
+        {
+            bcMode         = false;
+            const auto loc = ByteCode::getLocation(context->bc, ip, true);
+            if (!loc.file || !loc.location)
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
+            {
+                zapCurrentIp = true;
             }
             else
             {
-                stepLastLocation->line = loc.location->line;
-                zapCurrentIp           = true;
+                stepCount--;
+                if (stepCount <= 0)
+                {
+                    context->debugOn = true;
+                    stepMode         = DebugStepMode::None;
+                }
+                else
+                {
+                    zapCurrentIp           = true;
+                    stepLastLocation->line = loc.location->line;
+                }
             }
-        }
-        break;
-    }
-    case DebugStepMode::FinishedFunction:
-    {
-        // Top level function, break on ret
-        if (context->curRC == 0 && stepRc == UINT32_MAX && ByteCode::isRet(ip))
-        {
-            stepMode = DebugStepMode::None;
             break;
         }
-
-        // We are in a sub function
-        if (context->curRC > stepRc)
+        case DebugStepMode::NextLineStepOut:
         {
-            zapCurrentIp = true;
+            bcMode = false;
+
+            // If inside a sub function
+            if (context->curRC > stepRc)
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            if (!ip->node)
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            if (!lastBreakIp->node->ownerInline && ip->node->ownerInline)
+            {
+                // Can only step into a mixin if we come from a not inlined block
+                if (!ip->node->hasAstFlag(AST_IN_MIXIN))
+                {
+                    zapCurrentIp = true;
+                    break;
+                }
+
+                const auto loc = ByteCode::getLocation(context->bc, ip, true);
+                if (loc.file != stepLastFile)
+                {
+                    zapCurrentIp = true;
+                    break;
+                }
+            }
+
+            if (lastBreakIp->node->ownerInline)
+            {
+                // If i am still in an inline, but not in a mixin block, and was in a mixin block, zap
+                if (ip->node->ownerInline &&
+                    lastBreakIp->node->hasAstFlag(AST_IN_MIXIN) &&
+                    !ip->node->hasAstFlag(AST_IN_MIXIN))
+                {
+                    zapCurrentIp = true;
+                    break;
+                }
+
+                const auto loc = ByteCode::getLocation(context->bc, ip, true);
+                if (loc.file != stepLastFile)
+                {
+                    zapCurrentIp = true;
+                    break;
+                }
+            }
+
+            const auto loc = ByteCode::getLocation(context->bc, ip, true);
+            if (!loc.file || !loc.location)
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            if (stepLastFile == loc.file && stepLastLocation && stepLastLocation->line == loc.location->line)
+            {
+                zapCurrentIp = true;
+            }
+            else
+            {
+                stepCount--;
+                if (stepCount <= 0)
+                {
+                    context->debugOn = true;
+                    stepMode         = DebugStepMode::None;
+                }
+                else
+                {
+                    stepLastLocation->line = loc.location->line;
+                    zapCurrentIp           = true;
+                }
+            }
             break;
         }
-
-        // If last break was in an inline block, and we are in a sub inline block
-        if (lastBreakIp->node->ownerInline && lastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        case DebugStepMode::FinishedFunction:
         {
-            zapCurrentIp = true;
+            // Top level function, break on ret
+            if (context->curRC == 0 && stepRc == UINT32_MAX && ByteCode::isRet(ip))
+            {
+                stepMode = DebugStepMode::None;
+                break;
+            }
+
+            // We are in a sub function
+            if (context->curRC > stepRc)
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            // If last break was in an inline block, and we are in a sub inline block
+            if (lastBreakIp->node->ownerInline && lastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            // We are in the same inline block
+            if (ip->node->ownerInline && lastBreakIp->node->ownerInline == ip->node->ownerInline)
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            context->debugOn = true;
+            stepMode         = DebugStepMode::None;
             break;
         }
-
-        // We are in the same inline block
-        if (ip->node->ownerInline && lastBreakIp->node->ownerInline == ip->node->ownerInline)
-        {
-            zapCurrentIp = true;
+        default:
             break;
-        }
-
-        context->debugOn = true;
-        stepMode         = DebugStepMode::None;
-        break;
-    }
-    default:
-        break;
     }
 
     return !zapCurrentIp;

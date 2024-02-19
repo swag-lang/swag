@@ -104,27 +104,27 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, const Byt
 {
     switch (ip->op)
     {
-    case ByteCodeOp::PushRAParam:
-        context->vecReg.push_back(ip->a.u32);
-        break;
-    case ByteCodeOp::PushRAParam2:
-        context->vecReg.push_back(ip->a.u32);
-        context->vecReg.push_back(ip->b.u32);
-        break;
-    case ByteCodeOp::PushRAParam3:
-        context->vecReg.push_back(ip->a.u32);
-        context->vecReg.push_back(ip->b.u32);
-        context->vecReg.push_back(ip->c.u32);
-        break;
-    case ByteCodeOp::PushRAParam4:
-        context->vecReg.push_back(ip->a.u32);
-        context->vecReg.push_back(ip->b.u32);
-        context->vecReg.push_back(ip->c.u32);
-        context->vecReg.push_back(ip->d.u32);
-        break;
+        case ByteCodeOp::PushRAParam:
+            context->vecReg.push_back(ip->a.u32);
+            break;
+        case ByteCodeOp::PushRAParam2:
+            context->vecReg.push_back(ip->a.u32);
+            context->vecReg.push_back(ip->b.u32);
+            break;
+        case ByteCodeOp::PushRAParam3:
+            context->vecReg.push_back(ip->a.u32);
+            context->vecReg.push_back(ip->b.u32);
+            context->vecReg.push_back(ip->c.u32);
+            break;
+        case ByteCodeOp::PushRAParam4:
+            context->vecReg.push_back(ip->a.u32);
+            context->vecReg.push_back(ip->b.u32);
+            context->vecReg.push_back(ip->c.u32);
+            context->vecReg.push_back(ip->d.u32);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -210,45 +210,45 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, const Byte
 {
     switch (ip->op)
     {
-    case ByteCodeOp::MakeStackPointer:
-    case ByteCodeOp::MakeBssSegPointer:
-    case ByteCodeOp::MakeMutableSegPointer:
-    case ByteCodeOp::MakeCompilerSegPointer:
-        context->mapRegReg.set(ip->a.u32, ip->b.u32);
-        break;
-    case ByteCodeOp::InternalGetTlsPtr:
-        context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
-        break;
-
-    case ByteCodeOp::GetParam64:
-
-        // If the next instruction changes the value, then we can do the optim (this is in fact a GetIncParam64)
-        if (ip[1].op == ByteCodeOp::IncPointer64 && ip[1].a.u32 == ip[1].c.u32 && ip[0].a.u32 == ip[1].a.u32)
+        case ByteCodeOp::MakeStackPointer:
+        case ByteCodeOp::MakeBssSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
+        case ByteCodeOp::MakeCompilerSegPointer:
+            context->mapRegReg.set(ip->a.u32, ip->b.u32);
+            break;
+        case ByteCodeOp::InternalGetTlsPtr:
+            context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
             break;
 
-    // If parameter is a simple native, then this is a copy, so this is safe
-        if (context->bc->typeInfoFunc)
-        {
-            const auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
-            if (param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isBool())
+        case ByteCodeOp::GetParam64:
+
+            // If the next instruction changes the value, then we can do the optim (this is in fact a GetIncParam64)
+            if (ip[1].op == ByteCodeOp::IncPointer64 && ip[1].a.u32 == ip[1].c.u32 && ip[0].a.u32 == ip[1].a.u32)
                 break;
+
+        // If parameter is a simple native, then this is a copy, so this is safe
+            if (context->bc->typeInfoFunc)
+            {
+                const auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
+                if (param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isBool())
+                    break;
+            }
+
+            context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
+            break;
+
+        default:
+        {
+            if (ByteCode::hasWriteRegInA(ip))
+                context->mapRegReg.remove(ip->a.u32);
+            if (ByteCode::hasWriteRegInB(ip))
+                context->mapRegReg.remove(ip->b.u32);
+            if (ByteCode::hasWriteRegInC(ip))
+                context->mapRegReg.remove(ip->c.u32);
+            if (ByteCode::hasWriteRegInD(ip))
+                context->mapRegReg.remove(ip->d.u32);
+            break;
         }
-
-        context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
-        break;
-
-    default:
-    {
-        if (ByteCode::hasWriteRegInA(ip))
-            context->mapRegReg.remove(ip->a.u32);
-        if (ByteCode::hasWriteRegInB(ip))
-            context->mapRegReg.remove(ip->b.u32);
-        if (ByteCode::hasWriteRegInC(ip))
-            context->mapRegReg.remove(ip->c.u32);
-        if (ByteCode::hasWriteRegInD(ip))
-            context->mapRegReg.remove(ip->d.u32);
-        break;
-    }
     }
 }
 

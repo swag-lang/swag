@@ -189,19 +189,19 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     {
                         switch (typeFunc->returnType->sizeOf)
                         {
-                        case 1:
-                            EMIT_INST2(context, ByteCodeOp::DeRef8, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
-                            break;
-                        case 2:
-                            EMIT_INST2(context, ByteCodeOp::DeRef16, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
-                            break;
-                        case 3:
-                        case 4:
-                            EMIT_INST2(context, ByteCodeOp::DeRef32, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
-                            break;
-                        default:
-                            EMIT_INST2(context, ByteCodeOp::DeRef64, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
-                            break;
+                            case 1:
+                                EMIT_INST2(context, ByteCodeOp::DeRef8, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
+                                break;
+                            case 2:
+                                EMIT_INST2(context, ByteCodeOp::DeRef16, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
+                                break;
+                            case 3:
+                            case 4:
+                                EMIT_INST2(context, ByteCodeOp::DeRef32, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
+                                break;
+                            default:
+                                EMIT_INST2(context, ByteCodeOp::DeRef64, returnExpression->resultRegisterRc, returnExpression->resultRegisterRc);
+                                break;
                         }
 
                         EMIT_INST1(context, ByteCodeOp::CopyRAtoRR, returnExpression->resultRegisterRc);
@@ -370,812 +370,812 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         PushICFlags ic(context, BCI_SAFETY);
         switch (node->tokenId)
         {
-        case TokenId::IntrinsicAbs:
-        {
-            auto t0 = TypeManager::concreteType(callParams->children[0]->typeInfo);
-            emitSafetyNeg(context, callParams->children[0]->resultRegisterRc, t0, true);
-            break;
-        }
-        case TokenId::IntrinsicSqrt:
-        {
-            auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
-            auto re     = reserveRegisterRC(context);
-            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterEqF32 : ByteCodeOp::CompareOpGreaterEqF64;
-            auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
-            inst->b.f64 = 0;
-            inst->addFlag(BCI_IMM_B);
-            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicSqrt, t0));
-            freeRegisterRC(context, re);
-            break;
-        }
-        case TokenId::IntrinsicLog:
-        {
-            auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
-            auto re     = reserveRegisterRC(context);
-            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
-            auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
-            inst->b.f64 = 0;
-            inst->addFlag(BCI_IMM_B);
-            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog, t0));
-            freeRegisterRC(context, re);
-            break;
-        }
-        case TokenId::IntrinsicLog2:
-        {
-            auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
-            auto re     = reserveRegisterRC(context);
-            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
-            auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
-            inst->b.f64 = 0;
-            inst->addFlag(BCI_IMM_B);
-            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog2, t0));
-            freeRegisterRC(context, re);
-            break;
-        }
-        case TokenId::IntrinsicLog10:
-        {
-            auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
-            auto re     = reserveRegisterRC(context);
-            auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
-            auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
-            inst->b.f64 = 0;
-            inst->addFlag(BCI_IMM_B);
-            emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
-            freeRegisterRC(context, re);
-            break;
-        }
-        case TokenId::IntrinsicASin:
-        case TokenId::IntrinsicACos:
-        {
-            auto t0  = TypeManager::concreteType(callParams->children[0]->typeInfo);
-            auto msg = node->tokenId == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
-            auto re  = reserveRegisterRC(context);
-            if (t0->nativeType == NativeTypeKind::F32)
+            case TokenId::IntrinsicAbs:
             {
-                auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->children[0]->resultRegisterRc, 0, re);
-                inst->b.f32 = -1;
-                inst->addFlag(BCI_IMM_B);
-                emitAssert(context, re, msg);
-                inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF32, callParams->children[0]->resultRegisterRc, 0, re);
-                inst->b.f32 = 1;
-                inst->addFlag(BCI_IMM_B);
-                emitAssert(context, re, msg);
+                auto t0 = TypeManager::concreteType(callParams->children[0]->typeInfo);
+                emitSafetyNeg(context, callParams->children[0]->resultRegisterRc, t0, true);
+                break;
             }
-            else
+            case TokenId::IntrinsicSqrt:
             {
-                auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->children[0]->resultRegisterRc, 0, re);
-                inst->b.f64 = -1;
+                auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
+                auto re     = reserveRegisterRC(context);
+                auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterEqF32 : ByteCodeOp::CompareOpGreaterEqF64;
+                auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
+                inst->b.f64 = 0;
                 inst->addFlag(BCI_IMM_B);
-                emitAssert(context, re, msg);
-                inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF64, callParams->children[0]->resultRegisterRc, 0, re);
-                inst->b.f64 = 1;
-                inst->addFlag(BCI_IMM_B);
-                emitAssert(context, re, msg);
+                emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicSqrt, t0));
+                freeRegisterRC(context, re);
+                break;
             }
-            freeRegisterRC(context, re);
-            break;
-        }
-        default:
-            break;
+            case TokenId::IntrinsicLog:
+            {
+                auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
+                auto re     = reserveRegisterRC(context);
+                auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+                auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
+                inst->b.f64 = 0;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog, t0));
+                freeRegisterRC(context, re);
+                break;
+            }
+            case TokenId::IntrinsicLog2:
+            {
+                auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
+                auto re     = reserveRegisterRC(context);
+                auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+                auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
+                inst->b.f64 = 0;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog2, t0));
+                freeRegisterRC(context, re);
+                break;
+            }
+            case TokenId::IntrinsicLog10:
+            {
+                auto t0     = TypeManager::concreteType(callParams->children[0]->typeInfo);
+                auto re     = reserveRegisterRC(context);
+                auto op     = t0->nativeType == NativeTypeKind::F32 ? ByteCodeOp::CompareOpGreaterF32 : ByteCodeOp::CompareOpGreaterF64;
+                auto inst   = EMIT_INST3(context, op, callParams->children[0]->resultRegisterRc, 0, re);
+                inst->b.f64 = 0;
+                inst->addFlag(BCI_IMM_B);
+                emitAssert(context, re, safetyMsg(SafetyMsg::IntrinsicLog10, t0));
+                freeRegisterRC(context, re);
+                break;
+            }
+            case TokenId::IntrinsicASin:
+            case TokenId::IntrinsicACos:
+            {
+                auto t0  = TypeManager::concreteType(callParams->children[0]->typeInfo);
+                auto msg = node->tokenId == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
+                auto re  = reserveRegisterRC(context);
+                if (t0->nativeType == NativeTypeKind::F32)
+                {
+                    auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF32, callParams->children[0]->resultRegisterRc, 0, re);
+                    inst->b.f32 = -1;
+                    inst->addFlag(BCI_IMM_B);
+                    emitAssert(context, re, msg);
+                    inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF32, callParams->children[0]->resultRegisterRc, 0, re);
+                    inst->b.f32 = 1;
+                    inst->addFlag(BCI_IMM_B);
+                    emitAssert(context, re, msg);
+                }
+                else
+                {
+                    auto inst   = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqF64, callParams->children[0]->resultRegisterRc, 0, re);
+                    inst->b.f64 = -1;
+                    inst->addFlag(BCI_IMM_B);
+                    emitAssert(context, re, msg);
+                    inst        = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqF64, callParams->children[0]->resultRegisterRc, 0, re);
+                    inst->b.f64 = 1;
+                    inst->addFlag(BCI_IMM_B);
+                    emitAssert(context, re, msg);
+                }
+                freeRegisterRC(context, re);
+                break;
+            }
+            default:
+                break;
         }
     }
 
     switch (node->tokenId)
     {
-    case TokenId::IntrinsicCompilerError:
-    {
-        auto child0 = callParams->children.front();
-        auto child1 = callParams->children.back();
-        EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerError, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicCompilerWarning:
-    {
-        auto child0 = callParams->children.front();
-        auto child1 = callParams->children.back();
-        EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerWarning, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicPanic:
-    {
-        auto child0 = callParams->children.front();
-        auto child1 = callParams->children.back();
-        EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicAssert:
-    {
-        auto child0 = callParams->children.front();
-        emitAssert(context, child0->resultRegisterRc, "assertion failed");
-        freeRegisterRC(context, child0);
-        break;
-    }
-    case TokenId::IntrinsicBcBreakpoint:
-    {
-        EMIT_INST0(context, ByteCodeOp::IntrinsicBcBreakpoint);
-        break;
-    }
-    case TokenId::IntrinsicAlloc:
-    {
-        auto child0            = callParams->children.front();
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST2(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRc, child0->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        break;
-    }
-    case TokenId::IntrinsicFree:
-    {
-        auto child0 = callParams->children.front();
-        EMIT_INST1(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        break;
-    }
-    case TokenId::IntrinsicRealloc:
-    {
-        auto child0            = callParams->children.front();
-        auto child1            = callParams->children.back();
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST3(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicMemCpy:
-    {
-        auto childDest = callParams->children[0];
-        auto childSrc  = callParams->children[1];
-        auto childSize = callParams->children[2];
-        EMIT_INST3(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRc, childSrc->resultRegisterRc, childSize->resultRegisterRc);
-        freeRegisterRC(context, childDest);
-        freeRegisterRC(context, childSrc);
-        freeRegisterRC(context, childSize);
-        break;
-    }
-    case TokenId::IntrinsicMemMove:
-    {
-        auto childDest = callParams->children[0];
-        auto childSrc  = callParams->children[1];
-        auto childSize = callParams->children[2];
-        EMIT_INST3(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRc, childSrc->resultRegisterRc, childSize->resultRegisterRc);
-        freeRegisterRC(context, childDest);
-        freeRegisterRC(context, childSrc);
-        freeRegisterRC(context, childSize);
-        break;
-    }
-    case TokenId::IntrinsicMemSet:
-    {
-        auto childDest  = callParams->children[0];
-        auto childValue = callParams->children[1];
-        auto childSize  = callParams->children[2];
-        EMIT_INST3(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRc, childValue->resultRegisterRc, childSize->resultRegisterRc);
-        freeRegisterRC(context, childDest);
-        freeRegisterRC(context, childValue);
-        freeRegisterRC(context, childSize);
-        break;
-    }
-    case TokenId::IntrinsicMemCmp:
-    {
-        auto childDest         = callParams->children[0];
-        auto childSrc          = callParams->children[1];
-        auto childSize         = callParams->children[2];
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST4(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRc, childDest->resultRegisterRc, childSrc->resultRegisterRc, childSize->resultRegisterRc);
-        freeRegisterRC(context, childDest);
-        freeRegisterRC(context, childSrc);
-        freeRegisterRC(context, childSize);
-        break;
-    }
-    case TokenId::IntrinsicStrLen:
-    {
-        auto childSrc          = callParams->children[0];
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST2(context, ByteCodeOp::IntrinsicStrLen, node->resultRegisterRc, childSrc->resultRegisterRc);
-        freeRegisterRC(context, childSrc);
-        break;
-    }
-    case TokenId::IntrinsicStrCmp:
-    {
-        auto childSrc0         = callParams->children[0];
-        auto childSrc1         = callParams->children[1];
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST3(context, ByteCodeOp::IntrinsicStrCmp, node->resultRegisterRc, childSrc0->resultRegisterRc, childSrc1->resultRegisterRc);
-        freeRegisterRC(context, childSrc0);
-        freeRegisterRC(context, childSrc1);
-        break;
-    }
-    case TokenId::IntrinsicTypeCmp:
-    {
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto child2            = callParams->children[2];
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        freeRegisterRC(context, child2);
-        break;
-    }
-    case TokenId::IntrinsicRtFlags:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST1(context, ByteCodeOp::IntrinsicRtFlags, node->resultRegisterRc);
-        break;
-    }
-    case TokenId::IntrinsicStringCmp:
-    {
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        node->resultRegisterRc = child1->resultRegisterRc[1];
-        EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc[0], child1->resultRegisterRc[1]);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1->resultRegisterRc[0]);
-        break;
-    }
-    case TokenId::IntrinsicItfTableOf:
-    {
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        node->resultRegisterRc = reserveRegisterRC(context);
-        EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicDbgAlloc:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        EMIT_INST1(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRc);
-        break;
-    }
-    case TokenId::IntrinsicSysAlloc:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        EMIT_INST1(context, ByteCodeOp::IntrinsicSysAlloc, node->resultRegisterRc);
-        break;
-    }
-    case TokenId::IntrinsicGetContext:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        SWAG_ASSERT(node->identifierRef() == node->parent);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRc);
-        break;
-    }
-    case TokenId::IntrinsicSetContext:
-    {
-        auto childDest = callParams->children[0];
-        EMIT_INST1(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRc);
-        freeRegisterRC(context, childDest);
-        break;
-    }
-    case TokenId::IntrinsicGetProcessInfos:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        SWAG_ASSERT(node->identifierRef() == node->parent);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        EMIT_INST1(context, ByteCodeOp::IntrinsicGetProcessInfos, node->resultRegisterRc);
-        break;
-    }
-    case TokenId::IntrinsicArguments:
-    {
-        reserveLinearRegisterRC2(context, node->resultRegisterRc);
-        node->parent->resultRegisterRc = node->resultRegisterRc;
-        EMIT_INST2(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRc[0], node->resultRegisterRc[1]);
-        break;
-    }
-    case TokenId::IntrinsicModules:
-    {
-        reserveLinearRegisterRC2(context, node->resultRegisterRc);
-        node->parent->resultRegisterRc = node->resultRegisterRc;
-        EMIT_INST2(context, ByteCodeOp::IntrinsicModules, node->resultRegisterRc[0], node->resultRegisterRc[1]);
-        break;
-    }
-    case TokenId::IntrinsicGvtd:
-    {
-        reserveLinearRegisterRC2(context, node->resultRegisterRc);
-        node->parent->resultRegisterRc = node->resultRegisterRc;
-        EMIT_INST2(context, ByteCodeOp::IntrinsicGvtd, node->resultRegisterRc[0], node->resultRegisterRc[1]);
-        break;
-    }
-    case TokenId::IntrinsicCompiler:
-    {
-        reserveLinearRegisterRC2(context, node->resultRegisterRc);
-        node->parent->resultRegisterRc = node->resultRegisterRc;
-        EMIT_INST2(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRc[0], node->resultRegisterRc[1]);
-        emitPostCallUfcs(context);
-        break;
-    }
-    case TokenId::IntrinsicIsByteCode:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        EMIT_INST1(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRc);
-        break;
-    }
-    case TokenId::IntrinsicGetErr:
-    {
-        reserveRegisterRC(context, node->resultRegisterRc, 2);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRc[0], node->resultRegisterRc[1]);
-        break;
-    }
-    case TokenId::IntrinsicAtomicAdd:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicCompilerError:
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            auto child0 = callParams->children.front();
+            auto child1 = callParams->children.back();
+            EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerError, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAdd invalid type");
         }
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicAtomicAnd:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicCompilerWarning:
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            auto child0 = callParams->children.front();
+            auto child1 = callParams->children.back();
+            EMIT_INST3(context, ByteCodeOp::IntrinsicCompilerWarning, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAnd invalid type");
         }
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicAtomicOr:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicPanic:
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            auto child0 = callParams->children.front();
+            auto child1 = callParams->children.back();
+            EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicOr invalid type");
         }
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-    case TokenId::IntrinsicAtomicXor:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicAssert:
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            auto child0 = callParams->children.front();
+            emitAssert(context, child0->resultRegisterRc, "assertion failed");
+            freeRegisterRC(context, child0);
             break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXor invalid type");
         }
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-
-    case TokenId::IntrinsicAtomicXchg:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicBcBreakpoint:
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            EMIT_INST0(context, ByteCodeOp::IntrinsicBcBreakpoint);
             break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXchg invalid type");
         }
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-
-    case TokenId::IntrinsicAtomicCmpXchg:
-    {
-        node->resultRegisterRc = reserveRegisterRC(context);
-        auto child0            = callParams->children[0];
-        auto child1            = callParams->children[1];
-        auto child2            = callParams->children[2];
-        auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicAlloc:
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS8, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+            auto child0            = callParams->children.front();
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST2(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRc, child0->resultRegisterRc);
+            freeRegisterRC(context, child0);
             break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS16, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS32, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicCmpXchg invalid type");
         }
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        freeRegisterRC(context, child2);
-        break;
-    }
-
-    case TokenId::IntrinsicPow:
-    case TokenId::IntrinsicATan2:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto child0                             = callParams->children[0];
-        auto child1                             = callParams->children[1];
-        auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicFree:
         {
-        case NativeTypeKind::F32:
-            op = ByteCodeOp::IntrinsicF32x2;
+            auto child0 = callParams->children.front();
+            EMIT_INST1(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRc);
+            freeRegisterRC(context, child0);
             break;
-        case NativeTypeKind::F64:
-            op = ByteCodeOp::IntrinsicF64x2;
+        }
+        case TokenId::IntrinsicRealloc:
+        {
+            auto child0            = callParams->children.front();
+            auto child1            = callParams->children.back();
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicPow invalid type");
+        }
+        case TokenId::IntrinsicMemCpy:
+        {
+            auto childDest = callParams->children[0];
+            auto childSrc  = callParams->children[1];
+            auto childSize = callParams->children[2];
+            EMIT_INST3(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRc, childSrc->resultRegisterRc, childSize->resultRegisterRc);
+            freeRegisterRC(context, childDest);
+            freeRegisterRC(context, childSrc);
+            freeRegisterRC(context, childSize);
+            break;
+        }
+        case TokenId::IntrinsicMemMove:
+        {
+            auto childDest = callParams->children[0];
+            auto childSrc  = callParams->children[1];
+            auto childSize = callParams->children[2];
+            EMIT_INST3(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRc, childSrc->resultRegisterRc, childSize->resultRegisterRc);
+            freeRegisterRC(context, childDest);
+            freeRegisterRC(context, childSrc);
+            freeRegisterRC(context, childSize);
+            break;
+        }
+        case TokenId::IntrinsicMemSet:
+        {
+            auto childDest  = callParams->children[0];
+            auto childValue = callParams->children[1];
+            auto childSize  = callParams->children[2];
+            EMIT_INST3(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRc, childValue->resultRegisterRc, childSize->resultRegisterRc);
+            freeRegisterRC(context, childDest);
+            freeRegisterRC(context, childValue);
+            freeRegisterRC(context, childSize);
+            break;
+        }
+        case TokenId::IntrinsicMemCmp:
+        {
+            auto childDest         = callParams->children[0];
+            auto childSrc          = callParams->children[1];
+            auto childSize         = callParams->children[2];
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRc, childDest->resultRegisterRc, childSrc->resultRegisterRc, childSize->resultRegisterRc);
+            freeRegisterRC(context, childDest);
+            freeRegisterRC(context, childSrc);
+            freeRegisterRC(context, childSize);
+            break;
+        }
+        case TokenId::IntrinsicStrLen:
+        {
+            auto childSrc          = callParams->children[0];
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST2(context, ByteCodeOp::IntrinsicStrLen, node->resultRegisterRc, childSrc->resultRegisterRc);
+            freeRegisterRC(context, childSrc);
+            break;
+        }
+        case TokenId::IntrinsicStrCmp:
+        {
+            auto childSrc0         = callParams->children[0];
+            auto childSrc1         = callParams->children[1];
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicStrCmp, node->resultRegisterRc, childSrc0->resultRegisterRc, childSrc1->resultRegisterRc);
+            freeRegisterRC(context, childSrc0);
+            freeRegisterRC(context, childSrc1);
+            break;
+        }
+        case TokenId::IntrinsicTypeCmp:
+        {
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto child2            = callParams->children[2];
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            freeRegisterRC(context, child2);
+            break;
+        }
+        case TokenId::IntrinsicRtFlags:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST1(context, ByteCodeOp::IntrinsicRtFlags, node->resultRegisterRc);
+            break;
+        }
+        case TokenId::IntrinsicStringCmp:
+        {
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            node->resultRegisterRc = child1->resultRegisterRc[1];
+            EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, child0->resultRegisterRc[0], child0->resultRegisterRc[1], child1->resultRegisterRc[0], child1->resultRegisterRc[1]);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1->resultRegisterRc[0]);
+            break;
+        }
+        case TokenId::IntrinsicItfTableOf:
+        {
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            node->resultRegisterRc = reserveRegisterRC(context);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            break;
+        }
+        case TokenId::IntrinsicDbgAlloc:
+        {
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            EMIT_INST1(context, ByteCodeOp::IntrinsicDbgAlloc, node->resultRegisterRc);
+            break;
+        }
+        case TokenId::IntrinsicSysAlloc:
+        {
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            EMIT_INST1(context, ByteCodeOp::IntrinsicSysAlloc, node->resultRegisterRc);
+            break;
+        }
+        case TokenId::IntrinsicGetContext:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            SWAG_ASSERT(node->identifierRef() == node->parent);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRc);
+            break;
+        }
+        case TokenId::IntrinsicSetContext:
+        {
+            auto childDest = callParams->children[0];
+            EMIT_INST1(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRc);
+            freeRegisterRC(context, childDest);
+            break;
+        }
+        case TokenId::IntrinsicGetProcessInfos:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            SWAG_ASSERT(node->identifierRef() == node->parent);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            EMIT_INST1(context, ByteCodeOp::IntrinsicGetProcessInfos, node->resultRegisterRc);
+            break;
+        }
+        case TokenId::IntrinsicArguments:
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRc);
+            node->parent->resultRegisterRc = node->resultRegisterRc;
+            EMIT_INST2(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+            break;
+        }
+        case TokenId::IntrinsicModules:
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRc);
+            node->parent->resultRegisterRc = node->resultRegisterRc;
+            EMIT_INST2(context, ByteCodeOp::IntrinsicModules, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+            break;
+        }
+        case TokenId::IntrinsicGvtd:
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRc);
+            node->parent->resultRegisterRc = node->resultRegisterRc;
+            EMIT_INST2(context, ByteCodeOp::IntrinsicGvtd, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+            break;
+        }
+        case TokenId::IntrinsicCompiler:
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRc);
+            node->parent->resultRegisterRc = node->resultRegisterRc;
+            EMIT_INST2(context, ByteCodeOp::IntrinsicCompiler, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+            emitPostCallUfcs(context);
+            break;
+        }
+        case TokenId::IntrinsicIsByteCode:
+        {
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            EMIT_INST1(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRc);
+            break;
+        }
+        case TokenId::IntrinsicGetErr:
+        {
+            reserveRegisterRC(context, node->resultRegisterRc, 2);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRc[0], node->resultRegisterRc[1]);
+            break;
+        }
+        case TokenId::IntrinsicAtomicAdd:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAdd invalid type");
+            }
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            break;
+        }
+        case TokenId::IntrinsicAtomicAnd:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicAnd invalid type");
+            }
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            break;
+        }
+        case TokenId::IntrinsicAtomicOr:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicOr invalid type");
+            }
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            break;
+        }
+        case TokenId::IntrinsicAtomicXor:
+        {
+            node->resultRegisterRc = reserveRegisterRC(context);
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXor invalid type");
+            }
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            break;
         }
 
-        auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-
-    case TokenId::IntrinsicBitCountNz:
-    case TokenId::IntrinsicBitCountTz:
-    case TokenId::IntrinsicBitCountLz:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto child                              = callParams->children[0];
-        auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicAtomicXchg:
         {
-        case NativeTypeKind::U8:
-            op = ByteCodeOp::IntrinsicS8x1;
+            node->resultRegisterRc = reserveRegisterRC(context);
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS8, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS16, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS32, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    EMIT_INST3(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicXchg invalid type");
+            }
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        case NativeTypeKind::U16:
-            op = ByteCodeOp::IntrinsicS16x1;
-            break;
-        case NativeTypeKind::U32:
-            op = ByteCodeOp::IntrinsicS32x1;
-            break;
-        case NativeTypeKind::U64:
-            op = ByteCodeOp::IntrinsicS64x1;
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicBitCount invalid type");
         }
 
-        auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
-        freeRegisterRC(context, child);
-        break;
-    }
-
-    case TokenId::IntrinsicRol:
-    case TokenId::IntrinsicRor:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto child0                             = callParams->children[0];
-        auto child1                             = callParams->children[1];
-        auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicAtomicCmpXchg:
         {
-        case NativeTypeKind::U8:
-            op = ByteCodeOp::IntrinsicU8x2;
+            node->resultRegisterRc = reserveRegisterRC(context);
+            auto child0            = callParams->children[0];
+            auto child1            = callParams->children[1];
+            auto child2            = callParams->children[2];
+            auto typeInfo          = TypeManager::concreteType(child1->typeInfo);
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS8, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS16, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS32, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    EMIT_INST4(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRc, child1->resultRegisterRc, child2->resultRegisterRc, node->resultRegisterRc);
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicAtomicCmpXchg invalid type");
+            }
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            freeRegisterRC(context, child2);
             break;
-        case NativeTypeKind::U16:
-            op = ByteCodeOp::IntrinsicU16x2;
-            break;
-        case NativeTypeKind::U32:
-            op = ByteCodeOp::IntrinsicU32x2;
-            break;
-        case NativeTypeKind::U64:
-            op = ByteCodeOp::IntrinsicU64x2;
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicRol/IntrinsicRor invalid type");
         }
 
-        auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-
-    case TokenId::IntrinsicByteSwap:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto child                              = callParams->children[0];
-        auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicPow:
+        case TokenId::IntrinsicATan2:
         {
-        case NativeTypeKind::U16:
-            op = ByteCodeOp::IntrinsicS16x1;
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto child0                             = callParams->children[0];
+            auto child1                             = callParams->children[1];
+            auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::F32:
+                    op = ByteCodeOp::IntrinsicF32x2;
+                    break;
+                case NativeTypeKind::F64:
+                    op = ByteCodeOp::IntrinsicF64x2;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicPow invalid type");
+            }
+
+            auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
+            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        case NativeTypeKind::U32:
-            op = ByteCodeOp::IntrinsicS32x1;
-            break;
-        case NativeTypeKind::U64:
-            op = ByteCodeOp::IntrinsicS64x1;
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicByteSwap invalid type");
         }
 
-        auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
-        freeRegisterRC(context, child);
-        break;
-    }
-
-    case TokenId::IntrinsicMulAdd:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto typeInfo                           = TypeManager::concreteType(callParams->children[0]->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicBitCountNz:
+        case TokenId::IntrinsicBitCountTz:
+        case TokenId::IntrinsicBitCountLz:
         {
-        case NativeTypeKind::F32:
-            op = ByteCodeOp::IntrinsicMulAddF32;
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto child                              = callParams->children[0];
+            auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::U8:
+                    op = ByteCodeOp::IntrinsicS8x1;
+                    break;
+                case NativeTypeKind::U16:
+                    op = ByteCodeOp::IntrinsicS16x1;
+                    break;
+                case NativeTypeKind::U32:
+                    op = ByteCodeOp::IntrinsicS32x1;
+                    break;
+                case NativeTypeKind::U64:
+                    op = ByteCodeOp::IntrinsicS64x1;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicBitCount invalid type");
+            }
+
+            auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
+            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            freeRegisterRC(context, child);
             break;
-        case NativeTypeKind::F64:
-            op = ByteCodeOp::IntrinsicMulAddF64;
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicMulAdd invalid type");
         }
 
-        EMIT_INST4(context, op, node->resultRegisterRc, callParams->children[0]->resultRegisterRc, callParams->children[1]->resultRegisterRc, callParams->children[2]->resultRegisterRc);
-        freeRegisterRC(context, callParams->children[0]);
-        freeRegisterRC(context, callParams->children[1]);
-        freeRegisterRC(context, callParams->children[2]);
-        break;
-    }
-
-    case TokenId::IntrinsicMin:
-    case TokenId::IntrinsicMax:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto child0                             = callParams->children[0];
-        auto child1                             = callParams->children[1];
-        auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicRol:
+        case TokenId::IntrinsicRor:
         {
-        case NativeTypeKind::S8:
-            op = ByteCodeOp::IntrinsicS8x2;
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto child0                             = callParams->children[0];
+            auto child1                             = callParams->children[1];
+            auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::U8:
+                    op = ByteCodeOp::IntrinsicU8x2;
+                    break;
+                case NativeTypeKind::U16:
+                    op = ByteCodeOp::IntrinsicU16x2;
+                    break;
+                case NativeTypeKind::U32:
+                    op = ByteCodeOp::IntrinsicU32x2;
+                    break;
+                case NativeTypeKind::U64:
+                    op = ByteCodeOp::IntrinsicU64x2;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicRol/IntrinsicRor invalid type");
+            }
+
+            auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
+            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
             break;
-        case NativeTypeKind::S16:
-            op = ByteCodeOp::IntrinsicS16x2;
-            break;
-        case NativeTypeKind::S32:
-            op = ByteCodeOp::IntrinsicS32x2;
-            break;
-        case NativeTypeKind::S64:
-            op = ByteCodeOp::IntrinsicS64x2;
-            break;
-        case NativeTypeKind::U8:
-            op = ByteCodeOp::IntrinsicU8x2;
-            break;
-        case NativeTypeKind::U16:
-            op = ByteCodeOp::IntrinsicU16x2;
-            break;
-        case NativeTypeKind::U32:
-            op = ByteCodeOp::IntrinsicU32x2;
-            break;
-        case NativeTypeKind::U64:
-            op = ByteCodeOp::IntrinsicU64x2;
-            break;
-        case NativeTypeKind::F32:
-            op = ByteCodeOp::IntrinsicF32x2;
-            break;
-        case NativeTypeKind::F64:
-            op = ByteCodeOp::IntrinsicF64x2;
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, IntrinsicMin/Max invalid type");
         }
 
-        auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
-        freeRegisterRC(context, child0);
-        freeRegisterRC(context, child1);
-        break;
-    }
-
-    case TokenId::IntrinsicAbs:
-    case TokenId::IntrinsicSqrt:
-    case TokenId::IntrinsicSin:
-    case TokenId::IntrinsicCos:
-    case TokenId::IntrinsicTan:
-    case TokenId::IntrinsicSinh:
-    case TokenId::IntrinsicCosh:
-    case TokenId::IntrinsicTanh:
-    case TokenId::IntrinsicASin:
-    case TokenId::IntrinsicACos:
-    case TokenId::IntrinsicATan:
-    case TokenId::IntrinsicLog:
-    case TokenId::IntrinsicLog2:
-    case TokenId::IntrinsicLog10:
-    case TokenId::IntrinsicFloor:
-    case TokenId::IntrinsicCeil:
-    case TokenId::IntrinsicTrunc:
-    case TokenId::IntrinsicRound:
-    case TokenId::IntrinsicExp:
-    case TokenId::IntrinsicExp2:
-    {
-        node->resultRegisterRc                  = reserveRegisterRC(context);
-        node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
-        node->parent->resultRegisterRc          = node->resultRegisterRc;
-        auto child                              = callParams->children[0];
-        auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->isNative());
-        auto op = ByteCodeOp::End;
-        switch (typeInfo->nativeType)
+        case TokenId::IntrinsicByteSwap:
         {
-        case NativeTypeKind::S8:
-            op = ByteCodeOp::IntrinsicS8x1;
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto child                              = callParams->children[0];
+            auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::U16:
+                    op = ByteCodeOp::IntrinsicS16x1;
+                    break;
+                case NativeTypeKind::U32:
+                    op = ByteCodeOp::IntrinsicS32x1;
+                    break;
+                case NativeTypeKind::U64:
+                    op = ByteCodeOp::IntrinsicS64x1;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicByteSwap invalid type");
+            }
+
+            auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
+            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            freeRegisterRC(context, child);
             break;
-        case NativeTypeKind::S16:
-            op = ByteCodeOp::IntrinsicS16x1;
-            break;
-        case NativeTypeKind::S32:
-            op = ByteCodeOp::IntrinsicS32x1;
-            break;
-        case NativeTypeKind::S64:
-            op = ByteCodeOp::IntrinsicS64x1;
-            break;
-        case NativeTypeKind::F32:
-            op = ByteCodeOp::IntrinsicF32x1;
-            break;
-        case NativeTypeKind::F64:
-            op = ByteCodeOp::IntrinsicF64x1;
-            break;
-        default:
-            return Report::internalError(context->node, "emitIntrinsic, math intrinsic invalid type");
         }
 
-        auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-        inst->d.u32 = static_cast<uint32_t>(node->tokenId);
-        freeRegisterRC(context, child);
-        break;
-    }
+        case TokenId::IntrinsicMulAdd:
+        {
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto typeInfo                           = TypeManager::concreteType(callParams->children[0]->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::F32:
+                    op = ByteCodeOp::IntrinsicMulAddF32;
+                    break;
+                case NativeTypeKind::F64:
+                    op = ByteCodeOp::IntrinsicMulAddF64;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicMulAdd invalid type");
+            }
 
-    default:
-        return Report::internalError(context->node, "emitIntrinsic, unknown intrinsic");
+            EMIT_INST4(context, op, node->resultRegisterRc, callParams->children[0]->resultRegisterRc, callParams->children[1]->resultRegisterRc, callParams->children[2]->resultRegisterRc);
+            freeRegisterRC(context, callParams->children[0]);
+            freeRegisterRC(context, callParams->children[1]);
+            freeRegisterRC(context, callParams->children[2]);
+            break;
+        }
+
+        case TokenId::IntrinsicMin:
+        case TokenId::IntrinsicMax:
+        {
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto child0                             = callParams->children[0];
+            auto child1                             = callParams->children[1];
+            auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                    op = ByteCodeOp::IntrinsicS8x2;
+                    break;
+                case NativeTypeKind::S16:
+                    op = ByteCodeOp::IntrinsicS16x2;
+                    break;
+                case NativeTypeKind::S32:
+                    op = ByteCodeOp::IntrinsicS32x2;
+                    break;
+                case NativeTypeKind::S64:
+                    op = ByteCodeOp::IntrinsicS64x2;
+                    break;
+                case NativeTypeKind::U8:
+                    op = ByteCodeOp::IntrinsicU8x2;
+                    break;
+                case NativeTypeKind::U16:
+                    op = ByteCodeOp::IntrinsicU16x2;
+                    break;
+                case NativeTypeKind::U32:
+                    op = ByteCodeOp::IntrinsicU32x2;
+                    break;
+                case NativeTypeKind::U64:
+                    op = ByteCodeOp::IntrinsicU64x2;
+                    break;
+                case NativeTypeKind::F32:
+                    op = ByteCodeOp::IntrinsicF32x2;
+                    break;
+                case NativeTypeKind::F64:
+                    op = ByteCodeOp::IntrinsicF64x2;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, IntrinsicMin/Max invalid type");
+            }
+
+            auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
+            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            freeRegisterRC(context, child0);
+            freeRegisterRC(context, child1);
+            break;
+        }
+
+        case TokenId::IntrinsicAbs:
+        case TokenId::IntrinsicSqrt:
+        case TokenId::IntrinsicSin:
+        case TokenId::IntrinsicCos:
+        case TokenId::IntrinsicTan:
+        case TokenId::IntrinsicSinh:
+        case TokenId::IntrinsicCosh:
+        case TokenId::IntrinsicTanh:
+        case TokenId::IntrinsicASin:
+        case TokenId::IntrinsicACos:
+        case TokenId::IntrinsicATan:
+        case TokenId::IntrinsicLog:
+        case TokenId::IntrinsicLog2:
+        case TokenId::IntrinsicLog10:
+        case TokenId::IntrinsicFloor:
+        case TokenId::IntrinsicCeil:
+        case TokenId::IntrinsicTrunc:
+        case TokenId::IntrinsicRound:
+        case TokenId::IntrinsicExp:
+        case TokenId::IntrinsicExp2:
+        {
+            node->resultRegisterRc                  = reserveRegisterRC(context);
+            node->identifierRef()->resultRegisterRc = node->resultRegisterRc;
+            node->parent->resultRegisterRc          = node->resultRegisterRc;
+            auto child                              = callParams->children[0];
+            auto typeInfo                           = TypeManager::concreteType(child->typeInfo);
+            SWAG_ASSERT(typeInfo->isNative());
+            auto op = ByteCodeOp::End;
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                    op = ByteCodeOp::IntrinsicS8x1;
+                    break;
+                case NativeTypeKind::S16:
+                    op = ByteCodeOp::IntrinsicS16x1;
+                    break;
+                case NativeTypeKind::S32:
+                    op = ByteCodeOp::IntrinsicS32x1;
+                    break;
+                case NativeTypeKind::S64:
+                    op = ByteCodeOp::IntrinsicS64x1;
+                    break;
+                case NativeTypeKind::F32:
+                    op = ByteCodeOp::IntrinsicF32x1;
+                    break;
+                case NativeTypeKind::F64:
+                    op = ByteCodeOp::IntrinsicF64x1;
+                    break;
+                default:
+                    return Report::internalError(context->node, "emitIntrinsic, math intrinsic invalid type");
+            }
+
+            auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
+            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            freeRegisterRC(context, child);
+            break;
+        }
+
+        default:
+            return Report::internalError(context->node, "emitIntrinsic, unknown intrinsic");
     }
 
     if (node->hasAstFlag(AST_DISCARD))
@@ -1341,62 +1341,62 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
     {
         switch (defaultParam->assignment->tokenId)
         {
-        case TokenId::CompilerCallerLocation:
-        {
-            regList = reserveRegisterRC(context);
-            uint32_t     storageOffset;
-            DataSegment* storageSegment;
-            computeSourceLocation(context, node, &storageOffset, &storageSegment);
-            emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
-            break;
-        }
+            case TokenId::CompilerCallerLocation:
+            {
+                regList = reserveRegisterRC(context);
+                uint32_t     storageOffset;
+                DataSegment* storageSegment;
+                computeSourceLocation(context, node, &storageOffset, &storageSegment);
+                emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
+                break;
+            }
 
-        case TokenId::CompilerOs:
-        {
-            regList         = reserveRegisterRC(context);
-            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = static_cast<uint64_t>(g_CommandLine.target.os);
-            break;
-        }
-        case TokenId::CompilerArch:
-        {
-            regList         = reserveRegisterRC(context);
-            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = static_cast<uint64_t>(g_CommandLine.target.arch);
-            break;
-        }
+            case TokenId::CompilerOs:
+            {
+                regList         = reserveRegisterRC(context);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
+                inst->b.u64     = static_cast<uint64_t>(g_CommandLine.target.os);
+                break;
+            }
+            case TokenId::CompilerArch:
+            {
+                regList         = reserveRegisterRC(context);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
+                inst->b.u64     = static_cast<uint64_t>(g_CommandLine.target.arch);
+                break;
+            }
 
-        case TokenId::CompilerSwagOs:
-        {
-            regList         = reserveRegisterRC(context);
-            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = static_cast<uint64_t>(OS::getNativeTarget().os);
-            break;
-        }
+            case TokenId::CompilerSwagOs:
+            {
+                regList         = reserveRegisterRC(context);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
+                inst->b.u64     = static_cast<uint64_t>(OS::getNativeTarget().os);
+                break;
+            }
 
-        case TokenId::CompilerBackend:
-        {
-            regList         = reserveRegisterRC(context);
-            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
-            inst->b.u64     = static_cast<uint64_t>(g_CommandLine.backendGenType);
-            break;
-        }
+            case TokenId::CompilerBackend:
+            {
+                regList         = reserveRegisterRC(context);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[0]);
+                inst->b.u64     = static_cast<uint64_t>(g_CommandLine.backendGenType);
+                break;
+            }
 
-        case TokenId::CompilerCallerFunction:
-        case TokenId::CompilerBuildCfg:
-        case TokenId::CompilerCpu:
-        {
-            reserveLinearRegisterRC2(context, regList);
-            const auto str            = Semantic::getCompilerFunctionString(node, defaultParam->assignment->tokenId);
-            const auto storageSegment = Semantic::getConstantSegFromContext(context->node);
-            const auto storageOffset  = storageSegment->addString(str);
-            SWAG_ASSERT(storageOffset != UINT32_MAX);
-            emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
-            break;
-        }
-        default:
-            return Report::internalError(defaultParam->assignment, "emitDefaultParamValue, invalid compiler function");
+            case TokenId::CompilerCallerFunction:
+            case TokenId::CompilerBuildCfg:
+            case TokenId::CompilerCpu:
+            {
+                reserveLinearRegisterRC2(context, regList);
+                const auto str            = Semantic::getCompilerFunctionString(node, defaultParam->assignment->tokenId);
+                const auto storageSegment = Semantic::getConstantSegFromContext(context->node);
+                const auto storageOffset  = storageSegment->addString(str);
+                SWAG_ASSERT(storageOffset != UINT32_MAX);
+                emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
+                break;
+            }
+            default:
+                return Report::internalError(defaultParam->assignment, "emitDefaultParamValue, invalid compiler function");
         }
 
         return true;
@@ -1877,24 +1877,24 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 {
                     switch (param->typeInfo->nativeType)
                     {
-                    case NativeTypeKind::S8:
-                        EMIT_INST2(context, ByteCodeOp::CastS8S32, param->resultRegisterRc, param->resultRegisterRc);
-                        break;
-                    case NativeTypeKind::S16:
-                        EMIT_INST2(context, ByteCodeOp::CastS16S32, param->resultRegisterRc, param->resultRegisterRc);
-                        break;
-                    case NativeTypeKind::U8:
-                    case NativeTypeKind::Bool:
-                        EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRc)->b.u64 = 0x000000FF;
-                        break;
-                    case NativeTypeKind::U16:
-                        EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRc)->b.u64 = 0x0000FFFF;
-                        break;
-                    case NativeTypeKind::F32:
-                        EMIT_INST2(context, ByteCodeOp::CastF32F64, param->resultRegisterRc, param->resultRegisterRc);
-                        break;
-                    default:
-                        break;
+                        case NativeTypeKind::S8:
+                            EMIT_INST2(context, ByteCodeOp::CastS8S32, param->resultRegisterRc, param->resultRegisterRc);
+                            break;
+                        case NativeTypeKind::S16:
+                            EMIT_INST2(context, ByteCodeOp::CastS16S32, param->resultRegisterRc, param->resultRegisterRc);
+                            break;
+                        case NativeTypeKind::U8:
+                        case NativeTypeKind::Bool:
+                            EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRc)->b.u64 = 0x000000FF;
+                            break;
+                        case NativeTypeKind::U16:
+                            EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRc)->b.u64 = 0x0000FFFF;
+                            break;
+                        case NativeTypeKind::F32:
+                            EMIT_INST2(context, ByteCodeOp::CastF32F64, param->resultRegisterRc, param->resultRegisterRc);
+                            break;
+                        default:
+                            break;
                     }
                 }
 
@@ -2167,15 +2167,15 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // The emitIdentifier will have to know the register where the result of func() is stored
     switch (node->parent->kind)
     {
-    // To avoid a double release of the register in emitLoop... sight...
-    case AstNodeKind::While:
-        break;
-    // Because resultRegisterRC is used to store the result
-    case AstNodeKind::ConditionalExpression:
-        break;
-    default:
-        node->parent->resultRegisterRc = node->resultRegisterRc;
-        break;
+        // To avoid a double release of the register in emitLoop... sight...
+        case AstNodeKind::While:
+            break;
+        // Because resultRegisterRC is used to store the result
+        case AstNodeKind::ConditionalExpression:
+            break;
+        default:
+            node->parent->resultRegisterRc = node->resultRegisterRc;
+            break;
     }
 
     return true;

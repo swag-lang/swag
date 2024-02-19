@@ -154,18 +154,18 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 
                 switch (resolved->typeInfo->sizeOf)
                 {
-                case 1:
-                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x000000FF;
-                    break;
-                case 2:
-                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x0000FFFF;
-                    break;
-                case 4:
-                    if (!resolved->typeInfo->isNativeFloat())
-                        EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0xFFFFFFFF;
-                    break;
-                default:
-                    break;
+                    case 1:
+                        EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x000000FF;
+                        break;
+                    case 2:
+                        EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x0000FFFF;
+                        break;
+                    case 4:
+                        if (!resolved->typeInfo->isNativeFloat())
+                            EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0xFFFFFFFF;
+                        break;
+                    default:
+                        break;
                 }
             }
 

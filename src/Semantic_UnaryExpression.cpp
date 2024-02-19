@@ -15,37 +15,37 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-        break;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+            break;
 
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0331), typeInfo->getDisplayNameC())};
-        err.addNote(child, Diagnostic::isType(typeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0331), typeInfo->getDisplayNameC())};
+            err.addNote(child, Diagnostic::isType(typeInfo));
+            return context->report(err);
+        }
 
-    case NativeTypeKind::Any:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
-        err.addNote(child, Nte(Nte0032));
-        return context->report(err);
-    }
+        case NativeTypeKind::Any:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
+            err.addNote(child, Nte(Nte0032));
+            return context->report(err);
+        }
 
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
-        err.addNote(child, Diagnostic::isType(typeInfo));
-        return context->report(err);
-    }
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0332), typeInfo->getDisplayNameC())};
+            err.addNote(child, Diagnostic::isType(typeInfo));
+            return context->report(err);
+        }
     }
 
     if (child->hasComputedValue() && !child->hasSemFlag(SEMFLAG_NEG_EATEN))
@@ -53,52 +53,52 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         context->node->addSemFlag(child->semFlags.mask(SEMFLAG_LITERAL_SUFFIX));
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            if (child->computedValue()->reg.s8 <= INT8_MIN)
-                return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s8, -child->computedValue()->reg.s8, "s8")});
-            child->computedValue()->reg.s64 = -child->computedValue()->reg.s8;
-            break;
-        case NativeTypeKind::S16:
-            if (child->computedValue()->reg.s16 <= INT16_MIN)
-                return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s16, -child->computedValue()->reg.s16, "s16")});
-            child->computedValue()->reg.s64 = -child->computedValue()->reg.s16;
-            break;
-        case NativeTypeKind::S32:
-            if (child->computedValue()->reg.s32 <= INT32_MIN)
-                return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s32, -child->computedValue()->reg.s32, "s32")});
-            child->computedValue()->reg.s64 = -child->computedValue()->reg.s32;
-            if (typeInfo->isUntypedInteger())
-            {
-                auto native          = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
-                native               = castTypeInfo<TypeInfoNative>(native->clone());
-                native->valueInteger = -native->valueInteger;
-                child->typeInfo      = TypeManager::resolveUntypedType(native, *reinterpret_cast<uint32_t*>(&native->valueInteger));
-                op->typeInfo         = child->typeInfo;
-            }
-            break;
-        case NativeTypeKind::S64:
-            if (child->computedValue()->reg.s64 <= INT64_MIN)
-                return context->report({child, FMT(Err(Err0423), child->computedValue()->reg.s64, -child->computedValue()->reg.s64)});
-            child->computedValue()->reg.s64 = -child->computedValue()->reg.s64;
-            break;
+            case NativeTypeKind::S8:
+                if (child->computedValue()->reg.s8 <= INT8_MIN)
+                    return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s8, -child->computedValue()->reg.s8, "s8")});
+                child->computedValue()->reg.s64 = -child->computedValue()->reg.s8;
+                break;
+            case NativeTypeKind::S16:
+                if (child->computedValue()->reg.s16 <= INT16_MIN)
+                    return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s16, -child->computedValue()->reg.s16, "s16")});
+                child->computedValue()->reg.s64 = -child->computedValue()->reg.s16;
+                break;
+            case NativeTypeKind::S32:
+                if (child->computedValue()->reg.s32 <= INT32_MIN)
+                    return context->report({child, FMT(Err(Err0424), child->computedValue()->reg.s32, -child->computedValue()->reg.s32, "s32")});
+                child->computedValue()->reg.s64 = -child->computedValue()->reg.s32;
+                if (typeInfo->isUntypedInteger())
+                {
+                    auto native          = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
+                    native               = castTypeInfo<TypeInfoNative>(native->clone());
+                    native->valueInteger = -native->valueInteger;
+                    child->typeInfo      = TypeManager::resolveUntypedType(native, *reinterpret_cast<uint32_t*>(&native->valueInteger));
+                    op->typeInfo         = child->typeInfo;
+                }
+                break;
+            case NativeTypeKind::S64:
+                if (child->computedValue()->reg.s64 <= INT64_MIN)
+                    return context->report({child, FMT(Err(Err0423), child->computedValue()->reg.s64, -child->computedValue()->reg.s64)});
+                child->computedValue()->reg.s64 = -child->computedValue()->reg.s64;
+                break;
 
-        case NativeTypeKind::F32:
-            child->computedValue()->reg.f32 = -child->computedValue()->reg.f32;
-            if (typeInfo->isUntypedFloat())
-            {
-                auto native        = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
-                native             = castTypeInfo<TypeInfoNative>(native->clone());
-                native->valueFloat = -native->valueFloat;
-                child->typeInfo    = TypeManager::resolveUntypedType(typeInfo, *reinterpret_cast<uint32_t*>(&native->valueFloat));
-                op->typeInfo       = child->typeInfo;
-            }
+            case NativeTypeKind::F32:
+                child->computedValue()->reg.f32 = -child->computedValue()->reg.f32;
+                if (typeInfo->isUntypedFloat())
+                {
+                    auto native        = castTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind);
+                    native             = castTypeInfo<TypeInfoNative>(native->clone());
+                    native->valueFloat = -native->valueFloat;
+                    child->typeInfo    = TypeManager::resolveUntypedType(typeInfo, *reinterpret_cast<uint32_t*>(&native->valueFloat));
+                    op->typeInfo       = child->typeInfo;
+                }
 
-            break;
-        case NativeTypeKind::F64:
-            child->computedValue()->reg.f64 = -child->computedValue()->reg.f64;
-            break;
-        default:
-            break;
+                break;
+            case NativeTypeKind::F64:
+                child->computedValue()->reg.f64 = -child->computedValue()->reg.f64;
+                break;
+            default:
+                break;
         }
     }
 
@@ -122,28 +122,28 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
         context->node->addSemFlag(child->semFlags.mask(SEMFLAG_LITERAL_SUFFIX));
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-            child->computedValue()->reg.b = !child->computedValue()->reg.b;
-            break;
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            child->computedValue()->reg.b = child->computedValue()->reg.u8 ? false : true;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            child->computedValue()->reg.b = child->computedValue()->reg.u16 ? false : true;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            child->computedValue()->reg.b = child->computedValue()->reg.u32 ? false : true;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            child->computedValue()->reg.b = child->computedValue()->reg.u64 ? false : true;
-            break;
-        default:
-            break;
+            case NativeTypeKind::Bool:
+                child->computedValue()->reg.b = !child->computedValue()->reg.b;
+                break;
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                child->computedValue()->reg.b = child->computedValue()->reg.u8 ? false : true;
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                child->computedValue()->reg.b = child->computedValue()->reg.u16 ? false : true;
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                child->computedValue()->reg.b = child->computedValue()->reg.u32 ? false : true;
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                child->computedValue()->reg.b = child->computedValue()->reg.u64 ? false : true;
+                break;
+            default:
+                break;
         }
     }
 
@@ -157,29 +157,29 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-        break;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+            break;
 
-    case NativeTypeKind::Any:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
-        err.addNote(child, Nte(Nte0032));
-        return context->report(err);
-    }
+        case NativeTypeKind::Any:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
+            err.addNote(child, Nte(Nte0032));
+            return context->report(err);
+        }
 
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
-        err.addNote(child, Diagnostic::isType(child));
-        return context->report(err);
-    }
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0345), typeInfo->getDisplayNameC())};
+            err.addNote(child, Diagnostic::isType(child));
+            return context->report(err);
+        }
     }
 
     if (child->hasComputedValue())
@@ -187,31 +187,31 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
         context->node->addSemFlag(child->semFlags.mask(SEMFLAG_LITERAL_SUFFIX));
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            child->computedValue()->reg.u64 = child->computedValue()->reg.u8;
-            child->computedValue()->reg.u8 = ~child->computedValue()->reg.u8;
-            break;
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                child->computedValue()->reg.u64 = child->computedValue()->reg.u8;
+                child->computedValue()->reg.u8 = ~child->computedValue()->reg.u8;
+                break;
 
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            child->computedValue()->reg.u64 = child->computedValue()->reg.u16;
-            child->computedValue()->reg.u16 = ~child->computedValue()->reg.u16;
-            break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                child->computedValue()->reg.u64 = child->computedValue()->reg.u16;
+                child->computedValue()->reg.u16 = ~child->computedValue()->reg.u16;
+                break;
 
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-            child->computedValue()->reg.u64 = child->computedValue()->reg.u32;
-            child->computedValue()->reg.u32 = ~child->computedValue()->reg.u32;
-            break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+                child->computedValue()->reg.u64 = child->computedValue()->reg.u32;
+                child->computedValue()->reg.u32 = ~child->computedValue()->reg.u32;
+                break;
 
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            child->computedValue()->reg.u64 = ~child->computedValue()->reg.u64;
-            break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                child->computedValue()->reg.u64 = ~child->computedValue()->reg.u64;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -246,17 +246,17 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
     {
         switch (op->tokenId)
         {
-        case TokenId::SymExclam:
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "!", nullptr, child, nullptr));
-            break;
-        case TokenId::SymMinus:
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "-", nullptr, child, nullptr));
-            break;
-        case TokenId::SymTilde:
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "~", nullptr, child, nullptr));
-            break;
-        default:
-            break;
+            case TokenId::SymExclam:
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "!", nullptr, child, nullptr));
+                break;
+            case TokenId::SymMinus:
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "-", nullptr, child, nullptr));
+                break;
+            case TokenId::SymTilde:
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "~", nullptr, child, nullptr));
+                break;
+            default:
+                break;
         }
 
         op->typeInfo = typeInfo;
@@ -274,20 +274,20 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
 
     switch (op->tokenId)
     {
-    case TokenId::SymExclam:
-        SWAG_CHECK(resolveUnaryOpExclam(context, child));
-        context->node->typeInfo = g_TypeMgr->typeInfoBool;
-        break;
-    case TokenId::SymMinus:
-        SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
-        SWAG_CHECK(resolveUnaryOpMinus(context, op, child));
-        break;
-    case TokenId::SymTilde:
-        SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
-        SWAG_CHECK(resolveUnaryOpInvert(context, child));
-        break;
-    default:
-        break;
+        case TokenId::SymExclam:
+            SWAG_CHECK(resolveUnaryOpExclam(context, child));
+            context->node->typeInfo = g_TypeMgr->typeInfoBool;
+            break;
+        case TokenId::SymMinus:
+            SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
+            SWAG_CHECK(resolveUnaryOpMinus(context, op, child));
+            break;
+        case TokenId::SymTilde:
+            SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
+            SWAG_CHECK(resolveUnaryOpInvert(context, child));
+            break;
+        default:
+            break;
     }
 
     op->inheritComputedValue(child);

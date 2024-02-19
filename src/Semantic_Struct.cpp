@@ -258,55 +258,55 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         {
             switch (bi.matchResult)
             {
-            case MatchResult::BadSignature:
-            {
-                const Diagnostic err{childFct, childFct->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                const auto       note = Diagnostic::note(childFct->parameters->children[bi.badSignatureNum2],
-                                                   FMT(Nte(Nte0102), childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                const auto note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
-                                                    FMT(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
-                return context->report(err, note, note1);
-            }
+                case MatchResult::BadSignature:
+                {
+                    const Diagnostic err{childFct, childFct->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
+                    const auto       note = Diagnostic::note(childFct->parameters->children[bi.badSignatureNum2],
+                                                       FMT(Nte(Nte0102), childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                    const auto note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
+                                                        FMT(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                    return context->report(err, note, note1);
+                }
 
-            case MatchResult::MissingReturnType:
-            {
-                Diagnostic err{child, child->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                err.hint        = Nte(Nte0018);
-                const auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, FMT(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
-                return context->report(err, note);
-            }
+                case MatchResult::MissingReturnType:
+                {
+                    Diagnostic err{child, child->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
+                    err.hint        = Nte(Nte0018);
+                    const auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, FMT(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
+                    return context->report(err, note);
+                }
 
-            case MatchResult::NoReturnType:
-            {
-                const Diagnostic err{childFct->returnType, FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                const auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0124));
-                return context->report(err, note);
-            }
+                case MatchResult::NoReturnType:
+                {
+                    const Diagnostic err{childFct->returnType, FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
+                    const auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0124));
+                    return context->report(err, note);
+                }
 
-            case MatchResult::MismatchReturnType:
-            {
-                Diagnostic err{childFct->returnType, FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                err.hint        = Diagnostic::isType(childFct->returnType->typeInfo);
-                const auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, FMT(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
-                return context->report(err, note);
-            }
+                case MatchResult::MismatchReturnType:
+                {
+                    Diagnostic err{childFct->returnType, FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
+                    err.hint        = Diagnostic::isType(childFct->returnType->typeInfo);
+                    const auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, FMT(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
+                    return context->report(err, note);
+                }
 
-            case MatchResult::MismatchThrow:
-            {
-                Diagnostic err{child, child->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                err.hint          = Nte(Nte0099);
-                const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
-                note->canBeMerged = false;
-                return context->report(err, note);
-            }
+                case MatchResult::MismatchThrow:
+                {
+                    Diagnostic err{child, child->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
+                    err.hint          = Nte(Nte0099);
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
+                    note->canBeMerged = false;
+                    return context->report(err, note);
+                }
 
-            default:
-            {
-                const Diagnostic err{child, child->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                const auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
-                note->canBeMerged     = false;
-                return context->report(err, note);
-            }
+                default:
+                {
+                    const Diagnostic err{child, child->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
+                    const auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
+                    note->canBeMerged     = false;
+                    return context->report(err, note);
+                }
             }
         }
 
@@ -593,21 +593,21 @@ bool Semantic::resolveImpl(SemanticContext* context)
 
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::Struct:
-    {
-        const auto structNode = castAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
-        SWAG_CHECK(checkImplScopes(context, node, node->structScope, structNode->scope));
-        break;
-    }
-    case TypeInfoKind::Enum:
-    {
-        const auto enumNode = castAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
-        SWAG_CHECK(checkImplScopes(context, node, node->structScope, enumNode->scope));
-        break;
-    }
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case TypeInfoKind::Struct:
+        {
+            const auto structNode = castAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+            SWAG_CHECK(checkImplScopes(context, node, node->structScope, structNode->scope));
+            break;
+        }
+        case TypeInfoKind::Enum:
+        {
+            const auto enumNode = castAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
+            SWAG_CHECK(checkImplScopes(context, node, node->structScope, enumNode->scope));
+            break;
+        }
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     return true;
@@ -701,16 +701,16 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     auto symbolKind = SymbolKind::Struct;
     switch (node->kind)
     {
-    case AstNodeKind::StructDecl:
-        symbolKind = SymbolKind::Struct;
-        break;
-    case AstNodeKind::InterfaceDecl:
-        symbolKind = SymbolKind::Interface;
-        typeInfo->kind = TypeInfoKind::Interface;
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case AstNodeKind::StructDecl:
+            symbolKind = SymbolKind::Struct;
+            break;
+        case AstNodeKind::InterfaceDecl:
+            symbolKind = SymbolKind::Interface;
+            typeInfo->kind = TypeInfoKind::Interface;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     if (node->hasAttribute(ATTRIBUTE_GEN))
@@ -736,37 +736,37 @@ void Semantic::flattenStructChildren(SemanticContext* context, AstNode* parent, 
     {
         switch (child->kind)
         {
-        case AstNodeKind::IdentifierRef:
-        case AstNodeKind::Identifier:
-        case AstNodeKind::Inline:
-        case AstNodeKind::Statement:
-        case AstNodeKind::CompilerIfBlock:
-        case AstNodeKind::CompilerAst:
-        case AstNodeKind::CompilerAssert:
-            flattenStructChildren(context, child, result);
-            continue;
+            case AstNodeKind::IdentifierRef:
+            case AstNodeKind::Identifier:
+            case AstNodeKind::Inline:
+            case AstNodeKind::Statement:
+            case AstNodeKind::CompilerIfBlock:
+            case AstNodeKind::CompilerAst:
+            case AstNodeKind::CompilerAssert:
+                flattenStructChildren(context, child, result);
+                continue;
 
-        case AstNodeKind::CompilerIf:
-        {
-            const AstIf* compilerIf = castAst<AstIf>(child, AstNodeKind::CompilerIf);
-            if (!compilerIf->ifBlock->hasAstFlag(AST_NO_SEMANTIC))
-                flattenStructChildren(context, compilerIf->ifBlock, result);
-            else if (compilerIf->elseBlock)
-                flattenStructChildren(context, compilerIf->elseBlock, result);
-            continue;
-        }
+            case AstNodeKind::CompilerIf:
+            {
+                const AstIf* compilerIf = castAst<AstIf>(child, AstNodeKind::CompilerIf);
+                if (!compilerIf->ifBlock->hasAstFlag(AST_NO_SEMANTIC))
+                    flattenStructChildren(context, compilerIf->ifBlock, result);
+                else if (compilerIf->elseBlock)
+                    flattenStructChildren(context, compilerIf->elseBlock, result);
+                continue;
+            }
 
-        case AstNodeKind::AttrUse:
-        {
-            const AstAttrUse* attrUse = castAst<AstAttrUse>(child, AstNodeKind::AttrUse);
-            if (attrUse->content->kind == AstNodeKind::Statement)
-                flattenStructChildren(context, attrUse->content, result);
-            else
-                result.push_back(attrUse->content);
-            continue;
-        }
-        default:
-            break;
+            case AstNodeKind::AttrUse:
+            {
+                const AstAttrUse* attrUse = castAst<AstAttrUse>(child, AstNodeKind::AttrUse);
+                if (attrUse->content->kind == AstNodeKind::Statement)
+                    flattenStructChildren(context, attrUse->content, result);
+                else
+                    result.push_back(attrUse->content);
+                continue;
+            }
+            default:
+                break;
         }
 
         result.push_back(child);

@@ -57,40 +57,40 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
             SWAG_ASSERT(value->value);
             switch (typeEnum->rawType->nativeType)
             {
-            case NativeTypeKind::U8:
-                if (value->value->reg.u8 == 0 && reg.u8 == 0)
-                    ok = true;
-                else if (value->value->reg.u8 == 0)
+                case NativeTypeKind::U8:
+                    if (value->value->reg.u8 == 0 && reg.u8 == 0)
+                        ok = true;
+                    else if (value->value->reg.u8 == 0)
+                        break;
+                    else if ((value->value->reg.u8 & reg.u8) == value->value->reg.u8)
+                        ok = true;
                     break;
-                else if ((value->value->reg.u8 & reg.u8) == value->value->reg.u8)
-                    ok = true;
-                break;
-            case NativeTypeKind::U16:
-                if (value->value->reg.u16 == 0 && reg.u16 == 0)
-                    ok = true;
-                else if (value->value->reg.u16 == 0)
+                case NativeTypeKind::U16:
+                    if (value->value->reg.u16 == 0 && reg.u16 == 0)
+                        ok = true;
+                    else if (value->value->reg.u16 == 0)
+                        break;
+                    else if ((value->value->reg.u16 & reg.u16) == value->value->reg.u16)
+                        ok = true;
                     break;
-                else if ((value->value->reg.u16 & reg.u16) == value->value->reg.u16)
-                    ok = true;
-                break;
-            case NativeTypeKind::U32:
-                if (value->value->reg.u32 == 0 && reg.u32 == 0)
-                    ok = true;
-                else if (value->value->reg.u32 == 0)
+                case NativeTypeKind::U32:
+                    if (value->value->reg.u32 == 0 && reg.u32 == 0)
+                        ok = true;
+                    else if (value->value->reg.u32 == 0)
+                        break;
+                    else if ((value->value->reg.u32 & reg.u32) == value->value->reg.u32)
+                        ok = true;
                     break;
-                else if ((value->value->reg.u32 & reg.u32) == value->value->reg.u32)
-                    ok = true;
-                break;
-            case NativeTypeKind::U64:
-                if (value->value->reg.u64 == 0 && reg.u64 == 0)
-                    ok = true;
-                else if (value->value->reg.u64 == 0)
+                case NativeTypeKind::U64:
+                    if (value->value->reg.u64 == 0 && reg.u64 == 0)
+                        ok = true;
+                    else if (value->value->reg.u64 == 0)
+                        break;
+                    else if ((value->value->reg.u64 & reg.u64) == value->value->reg.u64)
+                        ok = true;
                     break;
-                else if ((value->value->reg.u64 & reg.u64) == value->value->reg.u64)
-                    ok = true;
-                break;
-            default:
-                break;
+                default:
+                    break;
             }
 
             if (ok)
@@ -119,35 +119,35 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
                 bool ok = false;
                 switch (typeEnum->rawType->nativeType)
                 {
-                case NativeTypeKind::S8:
-                case NativeTypeKind::U8:
-                    if (value->value->reg.u8 == reg.u8)
-                        ok = true;
-                    break;
-                case NativeTypeKind::S16:
-                case NativeTypeKind::U16:
-                    if (value->value->reg.u16 == reg.u16)
-                        ok = true;
-                    break;
-                case NativeTypeKind::S32:
-                case NativeTypeKind::U32:
-                case NativeTypeKind::Rune:
-                case NativeTypeKind::F32:
-                    if (value->value->reg.u32 == reg.u32)
-                        ok = true;
-                    break;
-                case NativeTypeKind::S64:
-                case NativeTypeKind::U64:
-                case NativeTypeKind::F64:
-                    if (value->value->reg.u64 == reg.u64)
-                        ok = true;
-                    break;
-                case NativeTypeKind::String:
-                    if (value->value->text == text)
-                        ok = true;
-                    break;
-                default:
-                    break;
+                    case NativeTypeKind::S8:
+                    case NativeTypeKind::U8:
+                        if (value->value->reg.u8 == reg.u8)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::S16:
+                    case NativeTypeKind::U16:
+                        if (value->value->reg.u16 == reg.u16)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::S32:
+                    case NativeTypeKind::U32:
+                    case NativeTypeKind::Rune:
+                    case NativeTypeKind::F32:
+                        if (value->value->reg.u32 == reg.u32)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::S64:
+                    case NativeTypeKind::U64:
+                    case NativeTypeKind::F64:
+                        if (value->value->reg.u64 == reg.u64)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::String:
+                        if (value->value->text == text)
+                            ok = true;
+                        break;
+                    default:
+                        break;
                 }
 
                 if (ok)
@@ -181,64 +181,64 @@ Utf8 Ast::literalToString(const TypeInfo* typeInfo, const ComputedValue& value)
     SWAG_ASSERT(typeInfo->isNative());
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::U8:
-        result = FMT("%u", reg.u8);
-        break;
-    case NativeTypeKind::U16:
-        result = FMT("%u", reg.u16);
-        break;
-    case NativeTypeKind::U32:
-        result = FMT("%u", reg.u32);
-        break;
-    case NativeTypeKind::Rune:
-        if (reg.ch < 32)
-            result += FMT("\\x%02x", reg.ch);
-        else if (reg.ch > 127 && reg.ch <= 255)
-            result += FMT("\\x%02x", reg.ch);
-        else
-            result += reg.ch;
-        break;
-    case NativeTypeKind::U64:
-        result = FMT("%llu", reg.u64);
-        break;
-    case NativeTypeKind::S8:
-        result = FMT("%d", reg.s8);
-        break;
-    case NativeTypeKind::S16:
-        result = FMT("%d", reg.s16);
-        break;
-    case NativeTypeKind::S32:
-        result = FMT("%d", reg.s32);
-        break;
-    case NativeTypeKind::S64:
-        result = FMT("%lld", reg.s64);
-        break;
-    case NativeTypeKind::F32:
-        result = Utf8::toStringF64(reg.f32);
-        break;
-    case NativeTypeKind::F64:
-        result = Utf8::toStringF64(reg.f64);
-        break;
-    case NativeTypeKind::Bool:
-        result = reg.b ? "true" : "false";
-        return result;
-    case NativeTypeKind::String:
-    {
-        for (const auto c : value.text)
-        {
-            if (c < 32)
-                result += FMT("\\x%02x", c);
-            else if (static_cast<uint8_t>(c) > 127)
-                result += FMT("\\x%02x", c);
+        case NativeTypeKind::U8:
+            result = FMT("%u", reg.u8);
+            break;
+        case NativeTypeKind::U16:
+            result = FMT("%u", reg.u16);
+            break;
+        case NativeTypeKind::U32:
+            result = FMT("%u", reg.u32);
+            break;
+        case NativeTypeKind::Rune:
+            if (reg.ch < 32)
+                result += FMT("\\x%02x", reg.ch);
+            else if (reg.ch > 127 && reg.ch <= 255)
+                result += FMT("\\x%02x", reg.ch);
             else
-                result += c;
-        }
+                result += reg.ch;
+            break;
+        case NativeTypeKind::U64:
+            result = FMT("%llu", reg.u64);
+            break;
+        case NativeTypeKind::S8:
+            result = FMT("%d", reg.s8);
+            break;
+        case NativeTypeKind::S16:
+            result = FMT("%d", reg.s16);
+            break;
+        case NativeTypeKind::S32:
+            result = FMT("%d", reg.s32);
+            break;
+        case NativeTypeKind::S64:
+            result = FMT("%lld", reg.s64);
+            break;
+        case NativeTypeKind::F32:
+            result = Utf8::toStringF64(reg.f32);
+            break;
+        case NativeTypeKind::F64:
+            result = Utf8::toStringF64(reg.f64);
+            break;
+        case NativeTypeKind::Bool:
+            result = reg.b ? "true" : "false";
+            return result;
+        case NativeTypeKind::String:
+        {
+            for (const auto c : value.text)
+            {
+                if (c < 32)
+                    result += FMT("\\x%02x", c);
+                else if (static_cast<uint8_t>(c) > 127)
+                    result += FMT("\\x%02x", c);
+                else
+                    result += c;
+            }
 
-        return result;
-    }
-    default:
-        SWAG_ASSERT(false);
-        return "";
+            return result;
+        }
+        default:
+            SWAG_ASSERT(false);
+            return "";
     }
 
     return result;
@@ -392,29 +392,29 @@ void Ast::normalizeIdentifierName(const Utf8& name)
     {
         switch (*pz)
         {
-        case '\'':
-        case '.':
-        case '(':
-        case ')':
-        case '-':
-        case ',':
-        case ' ':
-            *pz = '_';
-            break;
+            case '\'':
+            case '.':
+            case '(':
+            case ')':
+            case '-':
+            case ',':
+            case ' ':
+                *pz = '_';
+                break;
 
-        case '&':
-            *pz = 'R';
-            break;
-        case '*':
-        case '>':
-            *pz = 'P';
-            break;
-        case '[':
-        case ']':
-            *pz = 'A';
-            break;
-        default:
-            break;
+            case '&':
+                *pz = 'R';
+                break;
+            case '*':
+            case '>':
+                *pz = 'P';
+                break;
+            case '[':
+            case ']':
+                *pz = 'A';
+                break;
+            default:
+                break;
         }
 
         pz++;

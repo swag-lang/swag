@@ -72,90 +72,90 @@ bool Semantic::processLiteralString(SemanticContext* context)
 
         switch (c)
         {
-        case '0':
-            result.append('\0');
-            continue;
-        case 'a':
-            result.append('\a');
-            continue;
-        case 'b':
-            result.append('\b');
-            continue;
-        case '\\':
-            result.append('\\');
-            continue;
-        case 't':
-            result.append('\t');
-            continue;
-        case 'n':
-            result.append('\n');
-            continue;
-        case 'f':
-            result.append('\f');
-            continue;
-        case 'r':
-            result.append('\r');
-            continue;
-        case 'v':
-            result.append('\v');
-            continue;
-        case '\'':
-            result.append('\'');
-            continue;
-        case '\"':
-            result.append('\"');
-            continue;
-        case '`':
-            result.append('`');
-            continue;
-        case 'x':
-        {
-            int        c1, c2;
-            auto       msg = Err(Err0278);
-            const auto pzs = pz;
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
-            const char32_t cw = (c1 << 4) + c2;
-            result.append(static_cast<char>(cw));
-            loc.column += 2;
-            continue;
-        }
-        case 'u':
-        {
-            int        c1, c2, c3, c4;
-            auto       msg = Err(Err0277);
-            const auto pzs = pz;
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c3, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c4, msg));
-            const char32_t cw = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
-            result.append(cw);
-            loc.column += 4;
-            continue;
-        }
-        case 'U':
-        {
-            int        c1, c2, c3, c4, c5, c6, c7, c8;
-            auto       msg = Err(Err0276);
-            const auto pzs = pz;
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c3, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c4, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c5, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c6, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c7, msg));
-            SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c8, msg));
-            const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
-            if (cw > Utf8::MAX_ENCODED_UNICODE)
-                return context->report({node->sourceFile, loc, FMT(Err(Err0405), cw)});
-            result.append(cw);
-            loc.column += 8;
-            continue;
-        }
-        default:
-            break;
+            case '0':
+                result.append('\0');
+                continue;
+            case 'a':
+                result.append('\a');
+                continue;
+            case 'b':
+                result.append('\b');
+                continue;
+            case '\\':
+                result.append('\\');
+                continue;
+            case 't':
+                result.append('\t');
+                continue;
+            case 'n':
+                result.append('\n');
+                continue;
+            case 'f':
+                result.append('\f');
+                continue;
+            case 'r':
+                result.append('\r');
+                continue;
+            case 'v':
+                result.append('\v');
+                continue;
+            case '\'':
+                result.append('\'');
+                continue;
+            case '\"':
+                result.append('\"');
+                continue;
+            case '`':
+                result.append('`');
+                continue;
+            case 'x':
+            {
+                int        c1, c2;
+                auto       msg = Err(Err0278);
+                const auto pzs = pz;
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
+                const char32_t cw = (c1 << 4) + c2;
+                result.append(static_cast<char>(cw));
+                loc.column += 2;
+                continue;
+            }
+            case 'u':
+            {
+                int        c1, c2, c3, c4;
+                auto       msg = Err(Err0277);
+                const auto pzs = pz;
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c3, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c4, msg));
+                const char32_t cw = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
+                result.append(cw);
+                loc.column += 4;
+                continue;
+            }
+            case 'U':
+            {
+                int        c1, c2, c3, c4, c5, c6, c7, c8;
+                auto       msg = Err(Err0276);
+                const auto pzs = pz;
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c1, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c2, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c3, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c4, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c5, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c6, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c7, msg));
+                SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c8, msg));
+                const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
+                if (cw > Utf8::MAX_ENCODED_UNICODE)
+                    return context->report({node->sourceFile, loc, FMT(Err(Err0405), cw)});
+                result.append(cw);
+                loc.column += 8;
+                continue;
+            }
+            default:
+                break;
         }
 
         return context->report({node->sourceFile, loc, FMT(Err(Err0275), c)});
@@ -171,200 +171,200 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
     {
         switch (typeSuffix->nativeType)
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-            computedValue.reg.s64 = -computedValue.reg.s64;
-            break;
-        default:
-            break;
+            case NativeTypeKind::S8:
+            case NativeTypeKind::S16:
+            case NativeTypeKind::S32:
+            case NativeTypeKind::S64:
+                computedValue.reg.s64 = -computedValue.reg.s64;
+                break;
+            default:
+                break;
         }
 
         switch (literalType)
         {
-        case LiteralType::TypeUnsigned32:
-        case LiteralType::TypeUntypedBinHexa:
-        case LiteralType::TypeUntypedInt:
-            literalType = LiteralType::TypeSigned32;
-            break;
-        case LiteralType::TypeUnsigned64:
-            literalType = LiteralType::TypeSigned64;
-            break;
-        default:
-            break;
+            case LiteralType::TypeUnsigned32:
+            case LiteralType::TypeUntypedBinHexa:
+            case LiteralType::TypeUntypedInt:
+                literalType = LiteralType::TypeSigned32;
+                break;
+            case LiteralType::TypeUnsigned64:
+                literalType = LiteralType::TypeSigned64;
+                break;
+            default:
+                break;
         }
     }
 
     switch (literalType)
     {
-    case LiteralType::TypeCharacter:
-    case LiteralType::TypeCharacterEscape:
-    {
-        VectorNative<uint32_t> uni;
-        computedValue.text.toUni32(uni);
-        if (uni.size() != 1)
-            return FMT(Err(Err0236), computedValue.text.c_str());
+        case LiteralType::TypeCharacter:
+        case LiteralType::TypeCharacterEscape:
+        {
+            VectorNative<uint32_t> uni;
+            computedValue.text.toUni32(uni);
+            if (uni.size() != 1)
+                return FMT(Err(Err0236), computedValue.text.c_str());
 
-        if (typeSuffix->isUntypedInteger())
-        {
-            computedValue.reg.u64 = uni[0];
+            if (typeSuffix->isUntypedInteger())
+            {
+                computedValue.reg.u64 = uni[0];
+            }
+            else
+            {
+                switch (typeSuffix->nativeType)
+                {
+                    case NativeTypeKind::Rune:
+                        computedValue.reg.ch = uni[0];
+                        break;
+
+                    case NativeTypeKind::U8:
+                        if (uni[0] > UINT8_MAX)
+                            return FMT(Err(Err0607), uni[0]);
+                        computedValue.reg.u8 = static_cast<uint8_t>(uni[0]);
+                        break;
+
+                    case NativeTypeKind::U16:
+                        if (uni[0] > UINT16_MAX)
+                            return FMT(Err(Err0606), uni[0]);
+                        computedValue.reg.u16 = static_cast<uint16_t>(uni[0]);
+                        break;
+
+                    case NativeTypeKind::U32:
+                        computedValue.reg.u32 = uni[0];
+                        break;
+
+                    case NativeTypeKind::U64:
+                        computedValue.reg.u64 = uni[0];
+                        break;
+
+                    default:
+                        return FMT(Err(Err0235), typeSuffix->getDisplayNameC());
+                }
+            }
+
+            break;
         }
-        else
-        {
+
+        case LiteralType::TypeUntypedFloat:
             switch (typeSuffix->nativeType)
             {
-            case NativeTypeKind::Rune:
-                computedValue.reg.ch = uni[0];
-                break;
-
-            case NativeTypeKind::U8:
-                if (uni[0] > UINT8_MAX)
-                    return FMT(Err(Err0607), uni[0]);
-                computedValue.reg.u8 = static_cast<uint8_t>(uni[0]);
-                break;
-
-            case NativeTypeKind::U16:
-                if (uni[0] > UINT16_MAX)
-                    return FMT(Err(Err0606), uni[0]);
-                computedValue.reg.u16 = static_cast<uint16_t>(uni[0]);
-                break;
-
-            case NativeTypeKind::U32:
-                computedValue.reg.u32 = uni[0];
-                break;
-
-            case NativeTypeKind::U64:
-                computedValue.reg.u64 = uni[0];
-                break;
-
-            default:
-                return FMT(Err(Err0235), typeSuffix->getDisplayNameC());
+                case NativeTypeKind::F32:
+                    computedValue.reg.f32 = static_cast<float>(literalValue.f64);
+                    if (negApplied)
+                        computedValue.reg.f32 = -computedValue.reg.f32;
+                    break;
+                case NativeTypeKind::F64:
+                    if (negApplied)
+                        computedValue.reg.f64 = -computedValue.reg.f64;
+                    break;
+                default:
+                    return FMT(Err(Err0321), typeSuffix->getDisplayNameC());
             }
-        }
-
-        break;
-    }
-
-    case LiteralType::TypeUntypedFloat:
-        switch (typeSuffix->nativeType)
-        {
-        case NativeTypeKind::F32:
-            computedValue.reg.f32 = static_cast<float>(literalValue.f64);
-            if (negApplied)
-                computedValue.reg.f32 = -computedValue.reg.f32;
             break;
-        case NativeTypeKind::F64:
-            if (negApplied)
-                computedValue.reg.f64 = -computedValue.reg.f64;
+
+        case LiteralType::TypeSigned32:
+        case LiteralType::TypeSigned64:
+        case LiteralType::TypeUntypedInt:
+            switch (typeSuffix->nativeType)
+            {
+                case NativeTypeKind::U8:
+                    if (computedValue.reg.u64 > UINT8_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u8"));
+                    break;
+                case NativeTypeKind::U16:
+                    if (computedValue.reg.u64 > UINT16_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u16"));
+                    break;
+                case NativeTypeKind::U32:
+                    if (computedValue.reg.u64 > UINT32_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u32"));
+                    break;
+                case NativeTypeKind::U64:
+                    break;
+
+                case NativeTypeKind::S8:
+                    if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
+                        return FMT(Err(Err0425), computedValue.reg.s64, "s8");
+                    break;
+                case NativeTypeKind::S16:
+                    if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
+                        return FMT(Err(Err0425), computedValue.reg.s64, "s16");
+                    break;
+                case NativeTypeKind::S32:
+                    if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
+                        return FMT(Err(Err0425), computedValue.reg.s64, "s32");
+                    break;
+                case NativeTypeKind::S64:
+                    break;
+
+                case NativeTypeKind::Rune:
+                    if (computedValue.reg.u64 > UINT32_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "rune"));
+                    break;
+
+                case NativeTypeKind::F32:
+                    computedValue.reg.f32 = static_cast<float>(computedValue.reg.s64);
+                    break;
+                case NativeTypeKind::F64:
+                    computedValue.reg.f64 = static_cast<double>(computedValue.reg.s64);
+                    break;
+
+                default:
+                    return FMT(Err(Err0318), computedValue.reg.u64);
+            }
+
+            break;
+
+        case LiteralType::TypeUnsigned32:
+        case LiteralType::TypeUnsigned64:
+        case LiteralType::TypeUntypedBinHexa:
+            switch (typeSuffix->nativeType)
+            {
+                case NativeTypeKind::U8:
+                    if (computedValue.reg.u64 > UINT8_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u8"));
+                    break;
+                case NativeTypeKind::U16:
+                    if (computedValue.reg.u64 > UINT16_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u16"));
+                    break;
+                case NativeTypeKind::U32:
+                    if (computedValue.reg.u64 > UINT32_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u32"));
+                    break;
+                case NativeTypeKind::U64:
+                    break;
+
+                case NativeTypeKind::S8:
+                    if (computedValue.reg.u64 > UINT8_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s8"));
+                    break;
+                case NativeTypeKind::S16:
+                    if (computedValue.reg.u64 > UINT16_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s16"));
+                    break;
+                case NativeTypeKind::S32:
+                    if (computedValue.reg.u64 > UINT32_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s32"));
+                    break;
+                case NativeTypeKind::S64:
+                    if (computedValue.reg.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s64"));
+                    break;
+
+                case NativeTypeKind::Rune:
+                    if (computedValue.reg.u64 > UINT32_MAX)
+                        return FMT(FMT(Err(Err0425), computedValue.reg.u64, "rune"));
+                    break;
+
+                default:
+                    return FMT(Err(Err0318), computedValue.reg.u64);
+            }
+
             break;
         default:
-            return FMT(Err(Err0321), typeSuffix->getDisplayNameC());
-        }
-        break;
-
-    case LiteralType::TypeSigned32:
-    case LiteralType::TypeSigned64:
-    case LiteralType::TypeUntypedInt:
-        switch (typeSuffix->nativeType)
-        {
-        case NativeTypeKind::U8:
-            if (computedValue.reg.u64 > UINT8_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u8"));
             break;
-        case NativeTypeKind::U16:
-            if (computedValue.reg.u64 > UINT16_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u16"));
-            break;
-        case NativeTypeKind::U32:
-            if (computedValue.reg.u64 > UINT32_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u32"));
-            break;
-        case NativeTypeKind::U64:
-            break;
-
-        case NativeTypeKind::S8:
-            if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
-                return FMT(Err(Err0425), computedValue.reg.s64, "s8");
-            break;
-        case NativeTypeKind::S16:
-            if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
-                return FMT(Err(Err0425), computedValue.reg.s64, "s16");
-            break;
-        case NativeTypeKind::S32:
-            if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
-                return FMT(Err(Err0425), computedValue.reg.s64, "s32");
-            break;
-        case NativeTypeKind::S64:
-            break;
-
-        case NativeTypeKind::Rune:
-            if (computedValue.reg.u64 > UINT32_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "rune"));
-            break;
-
-        case NativeTypeKind::F32:
-            computedValue.reg.f32 = static_cast<float>(computedValue.reg.s64);
-            break;
-        case NativeTypeKind::F64:
-            computedValue.reg.f64 = static_cast<double>(computedValue.reg.s64);
-            break;
-
-        default:
-            return FMT(Err(Err0318), computedValue.reg.u64);
-        }
-
-        break;
-
-    case LiteralType::TypeUnsigned32:
-    case LiteralType::TypeUnsigned64:
-    case LiteralType::TypeUntypedBinHexa:
-        switch (typeSuffix->nativeType)
-        {
-        case NativeTypeKind::U8:
-            if (computedValue.reg.u64 > UINT8_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u8"));
-            break;
-        case NativeTypeKind::U16:
-            if (computedValue.reg.u64 > UINT16_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u16"));
-            break;
-        case NativeTypeKind::U32:
-            if (computedValue.reg.u64 > UINT32_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "u32"));
-            break;
-        case NativeTypeKind::U64:
-            break;
-
-        case NativeTypeKind::S8:
-            if (computedValue.reg.u64 > UINT8_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s8"));
-            break;
-        case NativeTypeKind::S16:
-            if (computedValue.reg.u64 > UINT16_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s16"));
-            break;
-        case NativeTypeKind::S32:
-            if (computedValue.reg.u64 > UINT32_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s32"));
-            break;
-        case NativeTypeKind::S64:
-            if (computedValue.reg.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "s64"));
-            break;
-
-        case NativeTypeKind::Rune:
-            if (computedValue.reg.u64 > UINT32_MAX)
-                return FMT(FMT(Err(Err0425), computedValue.reg.u64, "rune"));
-            break;
-
-        default:
-            return FMT(Err(Err0318), computedValue.reg.u64);
-        }
-
-        break;
-    default:
-        break;
     }
 
     return "";
@@ -411,53 +411,53 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 
     switch (node->tokenId)
     {
-    case TokenId::KwdTrue:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType    = LiteralType::TypeBool;
-        node->literalValue.b = true;
-        break;
-    case TokenId::KwdFalse:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType    = LiteralType::TypeBool;
-        node->literalValue.b = false;
-        break;
-    case TokenId::KwdNull:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType          = LiteralType::TypeNull;
-        node->literalValue.pointer = nullptr;
-        break;
-    case TokenId::CompilerFile:
-        node->tokenId = TokenId::LiteralString;
-        node->literalType = LiteralType::TypeString;
-        node->token.text  = sourceFile->path.string();
-        break;
-    case TokenId::CompilerModule:
-        node->tokenId = TokenId::LiteralString;
-        node->literalType = LiteralType::TypeString;
-        node->token.text  = sourceFile->module ? sourceFile->module->name : Utf8("?");
-        break;
-    case TokenId::CompilerLine:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TypeUntypedInt;
-        node->literalValue.u32 = node->token.startLocation.line + 1;
-        break;
-    case TokenId::CompilerBuildVersion:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TypeSigned32;
-        node->literalValue.s32 = SWAG_BUILD_VERSION;
-        break;
-    case TokenId::CompilerBuildRevision:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TypeSigned32;
-        node->literalValue.s32 = SWAG_BUILD_REVISION;
-        break;
-    case TokenId::CompilerBuildNum:
-        node->tokenId = TokenId::LiteralNumber;
-        node->literalType      = LiteralType::TypeSigned32;
-        node->literalValue.s32 = SWAG_BUILD_NUM;
-        break;
-    default:
-        break;
+        case TokenId::KwdTrue:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType    = LiteralType::TypeBool;
+            node->literalValue.b = true;
+            break;
+        case TokenId::KwdFalse:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType    = LiteralType::TypeBool;
+            node->literalValue.b = false;
+            break;
+        case TokenId::KwdNull:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType          = LiteralType::TypeNull;
+            node->literalValue.pointer = nullptr;
+            break;
+        case TokenId::CompilerFile:
+            node->tokenId = TokenId::LiteralString;
+            node->literalType = LiteralType::TypeString;
+            node->token.text  = sourceFile->path.string();
+            break;
+        case TokenId::CompilerModule:
+            node->tokenId = TokenId::LiteralString;
+            node->literalType = LiteralType::TypeString;
+            node->token.text  = sourceFile->module ? sourceFile->module->name : Utf8("?");
+            break;
+        case TokenId::CompilerLine:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType      = LiteralType::TypeUntypedInt;
+            node->literalValue.u32 = node->token.startLocation.line + 1;
+            break;
+        case TokenId::CompilerBuildVersion:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType      = LiteralType::TypeSigned32;
+            node->literalValue.s32 = SWAG_BUILD_VERSION;
+            break;
+        case TokenId::CompilerBuildRevision:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType      = LiteralType::TypeSigned32;
+            node->literalValue.s32 = SWAG_BUILD_REVISION;
+            break;
+        case TokenId::CompilerBuildNum:
+            node->tokenId = TokenId::LiteralNumber;
+            node->literalType      = LiteralType::TypeSigned32;
+            node->literalValue.s32 = SWAG_BUILD_NUM;
+            break;
+        default:
+            break;
     }
 
     node->typeInfo = TypeManager::literalTypeToType(node->literalType, node->literalValue);
@@ -507,20 +507,20 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 
     switch (suffixType->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Rune:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-        break;
-    default:
-        return context->report({suffix, FMT(Err(Err0320), suffix->typeInfo->getDisplayNameC())});
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Rune:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+            break;
+        default:
+            return context->report({suffix, FMT(Err(Err0320), suffix->typeInfo->getDisplayNameC())});
     }
 
     // Check if this is in fact a negative literal. This is important to know now, in order
@@ -530,15 +530,15 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
         switch (suffix->typeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-            node->addSemFlag(SEMFLAG_NEG_EATEN);
-            negApplied = true;
-            break;
-        default:
-            break;
+            case NativeTypeKind::S8:
+            case NativeTypeKind::S16:
+            case NativeTypeKind::S32:
+            case NativeTypeKind::S64:
+                node->addSemFlag(SEMFLAG_NEG_EATEN);
+                negApplied = true;
+                break;
+            default:
+                break;
         }
     }
 

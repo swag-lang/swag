@@ -18,20 +18,20 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, const TypeIn
 {
     switch (kind)
     {
-    case EmitOpUserKind::Init:
-        emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, pushParam, offset, numParams);
-        break;
-    case EmitOpUserKind::Drop:
-        emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, pushParam, offset, numParams);
-        break;
-    case EmitOpUserKind::PostCopy:
-        emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, pushParam, offset, numParams);
-        break;
-    case EmitOpUserKind::PostMove:
-        emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams);
-        break;
-    default:
-        break;
+        case EmitOpUserKind::Init:
+            emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, pushParam, offset, numParams);
+            break;
+        case EmitOpUserKind::Drop:
+            emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, pushParam, offset, numParams);
+            break;
+        case EmitOpUserKind::PostCopy:
+            emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, pushParam, offset, numParams);
+            break;
+        case EmitOpUserKind::PostMove:
+            emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams);
+            break;
+        default:
+            break;
     }
 }
 
@@ -115,164 +115,164 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
         switch (kind)
         {
-        case EmitOpUserKind::Init:
-        {
-            if (typeInfoStruct->opInit)
-                continue;
-
-            // Need to be sure that function has been solved
+            case EmitOpUserKind::Init:
             {
-                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
-                if (symbol && symbol->cptOverloads)
-                {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
-                    return;
-                }
-            }
+                if (typeInfoStruct->opInit)
+                    continue;
 
-            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-            // generic struct
-            if (!symbol && typeInfoStruct->opUserInitFct)
+                // Need to be sure that function has been solved
+                {
+                    ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                    symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
+                        return;
+                    }
+                }
+
+                // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+                // generic struct
+                if (!symbol && typeInfoStruct->opUserInitFct)
+                {
+                    ScopedLock lockTable(typeInfoStruct->opUserInitFct->ownerScope->symTable.mutex);
+                    symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
+                        return;
+                    }
+                }
+
+                if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->hasAttribute(ATTRIBUTE_FOREIGN))
+                    continue;
+                resOp   = &typeInfoStruct->opInit;
+                addName = ".opInit";
+                break;
+            }
+            case EmitOpUserKind::Drop:
             {
-                ScopedLock lockTable(typeInfoStruct->opUserInitFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
-                if (symbol && symbol->cptOverloads)
+                if (typeInfoStruct->opDrop)
+                    continue;
+
+                // Need to be sure that function has been solved
                 {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
-                    return;
+                    ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                    symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
+                        return;
+                    }
                 }
+
+                // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+                // generic struct
+                if (!symbol && typeInfoStruct->opUserDropFct)
+                {
+                    ScopedLock lockTable(typeInfoStruct->opUserDropFct->ownerScope->symTable.mutex);
+                    symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
+                        return;
+                    }
+                }
+
+                if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->hasAttribute(ATTRIBUTE_FOREIGN))
+                    continue;
+                if (typeInfoStruct->opUserDropFct)
+                    needDrop = true;
+                resOp   = &typeInfoStruct->opDrop;
+                addName = ".opDropGenerated";
+                break;
             }
-
-            if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->hasAttribute(ATTRIBUTE_FOREIGN))
-                continue;
-            resOp   = &typeInfoStruct->opInit;
-            addName = ".opInit";
-            break;
-        }
-        case EmitOpUserKind::Drop:
-        {
-            if (typeInfoStruct->opDrop)
-                continue;
-
-            // Need to be sure that function has been solved
+            case EmitOpUserKind::PostCopy:
             {
-                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
-                if (symbol && symbol->cptOverloads)
-                {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
-                    return;
-                }
-            }
+                if (typeInfoStruct->opPostCopy)
+                    continue;
+                if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
+                    continue;
 
-            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-            // generic struct
-            if (!symbol && typeInfoStruct->opUserDropFct)
+                // Need to be sure that function has been solved
+                {
+                    ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                    symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
+                        return;
+                    }
+                }
+
+                // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+                // generic struct
+                if (!symbol && typeInfoStruct->opUserPostCopyFct)
+                {
+                    ScopedLock lockTable(typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.mutex);
+                    symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
+                        return;
+                    }
+                }
+
+                if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->hasAttribute(ATTRIBUTE_FOREIGN))
+                    continue;
+                if (typeInfoStruct->opUserPostCopyFct)
+                    needPostCopy = true;
+                resOp   = &typeInfoStruct->opPostCopy;
+                addName = ".opPostCopyGenerated";
+                break;
+            }
+            case EmitOpUserKind::PostMove:
             {
-                ScopedLock lockTable(typeInfoStruct->opUserDropFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
-                if (symbol && symbol->cptOverloads)
+                if (typeInfoStruct->opPostMove)
+                    continue;
+
+                // Need to be sure that function has been solved
                 {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
-                    return;
+                    ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
+                    symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
+                        return;
+                    }
                 }
-            }
 
-            if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->hasAttribute(ATTRIBUTE_FOREIGN))
-                continue;
-            if (typeInfoStruct->opUserDropFct)
-                needDrop = true;
-            resOp   = &typeInfoStruct->opDrop;
-            addName = ".opDropGenerated";
-            break;
-        }
-        case EmitOpUserKind::PostCopy:
-        {
-            if (typeInfoStruct->opPostCopy)
-                continue;
-            if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY))
-                continue;
-
-            // Need to be sure that function has been solved
-            {
-                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
-                if (symbol && symbol->cptOverloads)
+                // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
+                // generic struct
+                if (!symbol && typeInfoStruct->opUserPostMoveFct)
                 {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
-                    return;
+                    ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
+                    symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
+                    if (symbol && symbol->cptOverloads)
+                    {
+                        symbol->addDependentJob(context->baseJob);
+                        context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
+                        return;
+                    }
                 }
+
+                if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->hasAttribute(ATTRIBUTE_FOREIGN))
+                    continue;
+                if (typeInfoStruct->opUserPostMoveFct)
+                    needPostMove = true;
+                resOp   = &typeInfoStruct->opPostMove;
+                addName = ".opPostMoveGenerated";
+                break;
             }
-
-            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-            // generic struct
-            if (!symbol && typeInfoStruct->opUserPostCopyFct)
-            {
-                ScopedLock lockTable(typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
-                if (symbol && symbol->cptOverloads)
-                {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
-                    return;
-                }
-            }
-
-            if (typeInfoStruct->opUserPostCopyFct && typeInfoStruct->opUserPostCopyFct->hasAttribute(ATTRIBUTE_FOREIGN))
-                continue;
-            if (typeInfoStruct->opUserPostCopyFct)
-                needPostCopy = true;
-            resOp   = &typeInfoStruct->opPostCopy;
-            addName = ".opPostCopyGenerated";
-            break;
-        }
-        case EmitOpUserKind::PostMove:
-        {
-            if (typeInfoStruct->opPostMove)
-                continue;
-
-            // Need to be sure that function has been solved
-            {
-                ScopedLock lockTable(typeInfoStruct->scope->symTable.mutex);
-                symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
-                if (symbol && symbol->cptOverloads)
-                {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
-                    return;
-                }
-            }
-
-            // For generic function, symbol is not registered in the scope of the instantiated struct, but in the
-            // generic struct
-            if (!symbol && typeInfoStruct->opUserPostMoveFct)
-            {
-                ScopedLock lockTable(typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.mutex);
-                symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
-                if (symbol && symbol->cptOverloads)
-                {
-                    symbol->addDependentJob(context->baseJob);
-                    context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
-                    return;
-                }
-            }
-
-            if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->hasAttribute(ATTRIBUTE_FOREIGN))
-                continue;
-            if (typeInfoStruct->opUserPostMoveFct)
-                needPostMove = true;
-            resOp   = &typeInfoStruct->opPostMove;
-            addName = ".opPostMoveGenerated";
-            break;
-        }
-        default:
-            break;
+            default:
+                break;
         }
 
         // Be sure sub structs are generated too
@@ -300,29 +300,29 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
         switch (kind)
         {
-        case EmitOpUserKind::Drop:
-            if (!needDrop)
-            {
-                typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
-                continue;
-            }
-            break;
-        case EmitOpUserKind::PostCopy:
-            if (!needPostCopy)
-            {
-                typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
-                continue;
-            }
-            break;
-        case EmitOpUserKind::PostMove:
-            if (!needPostMove)
-            {
-                typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_MOVE);
-                continue;
-            }
-            break;
-        default:
-            break;
+            case EmitOpUserKind::Drop:
+                if (!needDrop)
+                {
+                    typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_DROP);
+                    continue;
+                }
+                break;
+            case EmitOpUserKind::PostCopy:
+                if (!needPostCopy)
+                {
+                    typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_COPY);
+                    continue;
+                }
+                break;
+            case EmitOpUserKind::PostMove:
+                if (!needPostMove)
+                {
+                    typeInfoStruct->addFlag(TYPEINFO_STRUCT_NO_POST_MOVE);
+                    continue;
+                }
+                break;
+            default:
+                break;
         }
 
         const auto sourceFile = context->sourceFile;
@@ -339,74 +339,74 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 
         switch (kind)
         {
-        case EmitOpUserKind::Init:
-            // Export generated function if necessary
-            if (!structNode->hasAstFlag(AST_FROM_GENERIC))
-            {
-                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-                funcNode->typeInfo   = opInit->typeInfoFunc;
-                funcNode->ownerScope = structNode->scope;
-                funcNode->token.text = g_LangSpec->name_opInitGenerated;
-                if (typeInfoStruct->opUserInitFct)
-                    typeInfoStruct->opUserInitFct->removeAttribute(ATTRIBUTE_PUBLIC);
-                funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extByteCode()->bc = opInit;
-                opInit->node                = funcNode;
-            }
-            break;
+            case EmitOpUserKind::Init:
+                // Export generated function if necessary
+                if (!structNode->hasAstFlag(AST_FROM_GENERIC))
+                {
+                    const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                    funcNode->typeInfo   = opInit->typeInfoFunc;
+                    funcNode->ownerScope = structNode->scope;
+                    funcNode->token.text = g_LangSpec->name_opInitGenerated;
+                    if (typeInfoStruct->opUserInitFct)
+                        typeInfoStruct->opUserInitFct->removeAttribute(ATTRIBUTE_PUBLIC);
+                    funcNode->allocateExtension(ExtensionKind::ByteCode);
+                    funcNode->extByteCode()->bc = opInit;
+                    opInit->node                = funcNode;
+                }
+                break;
 
-        case EmitOpUserKind::Drop:
-            // Export generated function if necessary
-            if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
-            {
-                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-                funcNode->typeInfo   = opInit->typeInfoFunc;
-                funcNode->ownerScope = structNode->scope;
-                funcNode->token.text = g_LangSpec->name_opDropGenerated;
-                funcNode->addAttribute(ATTRIBUTE_PUBLIC);
-                if (typeInfoStruct->opUserDropFct)
-                    typeInfoStruct->opUserDropFct->removeAttribute(ATTRIBUTE_PUBLIC);
-                funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extByteCode()->bc = opInit;
-                opInit->node                = funcNode;
-            }
-            break;
+            case EmitOpUserKind::Drop:
+                // Export generated function if necessary
+                if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
+                {
+                    const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                    funcNode->typeInfo   = opInit->typeInfoFunc;
+                    funcNode->ownerScope = structNode->scope;
+                    funcNode->token.text = g_LangSpec->name_opDropGenerated;
+                    funcNode->addAttribute(ATTRIBUTE_PUBLIC);
+                    if (typeInfoStruct->opUserDropFct)
+                        typeInfoStruct->opUserDropFct->removeAttribute(ATTRIBUTE_PUBLIC);
+                    funcNode->allocateExtension(ExtensionKind::ByteCode);
+                    funcNode->extByteCode()->bc = opInit;
+                    opInit->node                = funcNode;
+                }
+                break;
 
-        case EmitOpUserKind::PostCopy:
-            // Export generated function if necessary
-            if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
-            {
-                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-                funcNode->typeInfo   = opInit->typeInfoFunc;
-                funcNode->ownerScope = structNode->scope;
-                funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
-                funcNode->addAttribute(ATTRIBUTE_PUBLIC);
-                if (typeInfoStruct->opUserPostCopyFct)
-                    typeInfoStruct->opUserPostCopyFct->removeAttribute(ATTRIBUTE_PUBLIC);
-                funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extByteCode()->bc = opInit;
-                opInit->node                = funcNode;
-            }
-            break;
+            case EmitOpUserKind::PostCopy:
+                // Export generated function if necessary
+                if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
+                {
+                    const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                    funcNode->typeInfo   = opInit->typeInfoFunc;
+                    funcNode->ownerScope = structNode->scope;
+                    funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
+                    funcNode->addAttribute(ATTRIBUTE_PUBLIC);
+                    if (typeInfoStruct->opUserPostCopyFct)
+                        typeInfoStruct->opUserPostCopyFct->removeAttribute(ATTRIBUTE_PUBLIC);
+                    funcNode->allocateExtension(ExtensionKind::ByteCode);
+                    funcNode->extByteCode()->bc = opInit;
+                    opInit->node                = funcNode;
+                }
+                break;
 
-        case EmitOpUserKind::PostMove:
-            // Export generated function if necessary
-            if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
-            {
-                const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
-                funcNode->typeInfo   = opInit->typeInfoFunc;
-                funcNode->ownerScope = structNode->scope;
-                funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
-                funcNode->addAttribute(ATTRIBUTE_PUBLIC);
-                if (typeInfoStruct->opUserPostMoveFct)
-                    typeInfoStruct->opUserPostMoveFct->removeAttribute(ATTRIBUTE_PUBLIC);
-                funcNode->allocateExtension(ExtensionKind::ByteCode);
-                funcNode->extByteCode()->bc = opInit;
-                opInit->node                = funcNode;
-            }
-            break;
-        default:
-            break;
+            case EmitOpUserKind::PostMove:
+                // Export generated function if necessary
+                if (structNode->hasAttribute(ATTRIBUTE_PUBLIC) && !structNode->hasAstFlag(AST_FROM_GENERIC))
+                {
+                    const auto funcNode  = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                    funcNode->typeInfo   = opInit->typeInfoFunc;
+                    funcNode->ownerScope = structNode->scope;
+                    funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
+                    funcNode->addAttribute(ATTRIBUTE_PUBLIC);
+                    if (typeInfoStruct->opUserPostMoveFct)
+                        typeInfoStruct->opUserPostMoveFct->removeAttribute(ATTRIBUTE_PUBLIC);
+                    funcNode->allocateExtension(ExtensionKind::ByteCode);
+                    funcNode->extByteCode()->bc = opInit;
+                    opInit->node                = funcNode;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -489,24 +489,24 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
 
             switch (kind)
             {
-            case EmitOpUserKind::Init:
-                if (!typeStructVar->opInit && !typeStructVar->opUserInitFct)
-                    continue;
-                break;
-            case EmitOpUserKind::Drop:
-                if (!typeStructVar->opDrop && !typeStructVar->opUserDropFct)
-                    continue;
-                break;
-            case EmitOpUserKind::PostCopy:
-                if (!typeStructVar->opPostCopy && !typeStructVar->opUserPostCopyFct)
-                    continue;
-                break;
-            case EmitOpUserKind::PostMove:
-                if (!typeStructVar->opPostMove && !typeStructVar->opUserPostMoveFct)
-                    continue;
-                break;
-            default:
-                break;
+                case EmitOpUserKind::Init:
+                    if (!typeStructVar->opInit && !typeStructVar->opUserInitFct)
+                        continue;
+                    break;
+                case EmitOpUserKind::Drop:
+                    if (!typeStructVar->opDrop && !typeStructVar->opUserDropFct)
+                        continue;
+                    break;
+                case EmitOpUserKind::PostCopy:
+                    if (!typeStructVar->opPostCopy && !typeStructVar->opUserPostCopyFct)
+                        continue;
+                    break;
+                case EmitOpUserKind::PostMove:
+                    if (!typeStructVar->opPostMove && !typeStructVar->opUserPostMoveFct)
+                        continue;
+                    break;
+                default:
+                    break;
             }
 
             emitOpCallUserArrayOfStruct(context, typeVar, kind, true, typeParam->offset);
@@ -730,24 +730,24 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
             {
                 switch (typeVar->sizeOf)
                 {
-                case 1:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u8;
-                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
-                    break;
-                case 2:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u16;
-                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
-                    break;
-                case 4:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u32;
-                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
-                    break;
-                case 8:
-                    EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u64;
-                    EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
-                    break;
-                default:
-                    return Report::internalError(varDecl, "generateStructInit, invalid native type sizeof");
+                    case 1:
+                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u8;
+                        EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
+                        break;
+                    case 2:
+                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u16;
+                        EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
+                        break;
+                    case 4:
+                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u32;
+                        EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
+                        break;
+                    case 8:
+                        EMIT_INST1(&cxt, ByteCodeOp::SetImmediate64, 1)->b.u64 = varDecl->assignment->computedValue()->reg.u64;
+                        EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
+                        break;
+                    default:
+                        return Report::internalError(varDecl, "generateStructInit, invalid native type sizeof");
                 }
             }
 
@@ -1670,29 +1670,29 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
     bool somethingToDo = false;
     switch (node->kind)
     {
-    case AstNodeKind::Drop:
-        generateStructAlloc(context, typeStruct);
-        YIELD();
-        generateStruct_opDrop(context, typeStruct);
-        YIELD();
-        somethingToDo = typeStruct->opDrop || typeStruct->opUserDropFct;
-        break;
-    case AstNodeKind::PostCopy:
-        generateStructAlloc(context, typeStruct);
-        YIELD();
-        generateStruct_opPostCopy(context, typeStruct);
-        YIELD();
-        somethingToDo = typeStruct->opPostCopy || typeStruct->opUserPostCopyFct;
-        break;
-    case AstNodeKind::PostMove:
-        generateStructAlloc(context, typeStruct);
-        YIELD();
-        generateStruct_opPostMove(context, typeStruct);
-        YIELD();
-        somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
-        break;
-    default:
-        break;
+        case AstNodeKind::Drop:
+            generateStructAlloc(context, typeStruct);
+            YIELD();
+            generateStruct_opDrop(context, typeStruct);
+            YIELD();
+            somethingToDo = typeStruct->opDrop || typeStruct->opUserDropFct;
+            break;
+        case AstNodeKind::PostCopy:
+            generateStructAlloc(context, typeStruct);
+            YIELD();
+            generateStruct_opPostCopy(context, typeStruct);
+            YIELD();
+            somethingToDo = typeStruct->opPostCopy || typeStruct->opUserPostCopyFct;
+            break;
+        case AstNodeKind::PostMove:
+            generateStructAlloc(context, typeStruct);
+            YIELD();
+            generateStruct_opPostMove(context, typeStruct);
+            YIELD();
+            somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
+            break;
+        default:
+            break;
     }
 
     if (somethingToDo)
@@ -1713,17 +1713,17 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 
         switch (node->kind)
         {
-        case AstNodeKind::Drop:
-            emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, false);
-            break;
-        case AstNodeKind::PostCopy:
-            emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, false);
-            break;
-        case AstNodeKind::PostMove:
-            emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, false);
-            break;
-        default:
-            break;
+            case AstNodeKind::Drop:
+                emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, false);
+                break;
+            case AstNodeKind::PostCopy:
+                emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, false);
+                break;
+            case AstNodeKind::PostMove:
+                emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, false);
+                break;
+            default:
+                break;
         }
 
         if (numToDo != 1)

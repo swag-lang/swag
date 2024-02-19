@@ -18,110 +18,110 @@ const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fr
     {
         switch (msg)
         {
-        case SafetyMsg::CastAnyNull:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0002), toType->name.c_str());
-            break;
-        case SafetyMsg::CastAny:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0001), toType->name.c_str());
-            break;
-        case SafetyMsg::NullCheck:
-            g_TypedMsg[m][0][0] = Err(Saf0017);
-            break;
-        case SafetyMsg::ErrCheck:
-            g_TypedMsg[m][0][0] = Err(Saf0018);
-            break;
-        case SafetyMsg::InvalidBool:
-            g_TypedMsg[m][0][0] = Err(Saf0003);
-            break;
-        case SafetyMsg::InvalidFloat:
-            g_TypedMsg[m][0][0] = Err(Saf0016);
-            break;
-        case SafetyMsg::NotZero:
-            g_TypedMsg[m][0][0] = Err(Saf0015);
-            break;
-        case SafetyMsg::BadSlicingDown:
-            g_TypedMsg[m][0][0] = Err(Saf0006);
-            break;
-        case SafetyMsg::BadSlicingUp:
-            g_TypedMsg[m][0][0] = Err(Saf0007);
-            break;
-        case SafetyMsg::BadRangeDown:
-            g_TypedMsg[m][0][0] = Err(Saf0005);
-            break;
-        case SafetyMsg::IndexRange:
-            g_TypedMsg[m][0][0] = Err(Saf0004);
-            break;
-        case SafetyMsg::SwitchComplete:
-            g_TypedMsg[m][0][0] = Err(Saf0028);
-            break;
-        case SafetyMsg::CastTruncated:
-            SWAG_ASSERT(toType && fromType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
-            break;
-        case SafetyMsg::CastNeg:
-            SWAG_ASSERT(toType && fromType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
-            break;
-        case SafetyMsg::Plus:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "+", toType->name.c_str());
-            break;
-        case SafetyMsg::Minus:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
-            break;
-        case SafetyMsg::Mul:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "*", toType->name.c_str());
-            break;
-        case SafetyMsg::PlusEq:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "+=", toType->name.c_str());
-            break;
-        case SafetyMsg::MinusEq:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-=", toType->name.c_str());
-            break;
-        case SafetyMsg::MulEq:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "*=", toType->name.c_str());
-            break;
-        case SafetyMsg::Neg:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicAbs:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0008), toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicSqrt:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0014), toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicLog:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0011), toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicLog2:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0013), toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicLog10:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0012), toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicASin:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0010), toType->name.c_str());
-            break;
-        case SafetyMsg::IntrinsicACos:
-            SWAG_ASSERT(toType);
-            g_TypedMsg[m][i][j] = FMT(Err(Saf0009), toType->name.c_str());
-            break;
-        default:
-            break;
+            case SafetyMsg::CastAnyNull:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0002), toType->name.c_str());
+                break;
+            case SafetyMsg::CastAny:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0001), toType->name.c_str());
+                break;
+            case SafetyMsg::NullCheck:
+                g_TypedMsg[m][0][0] = Err(Saf0017);
+                break;
+            case SafetyMsg::ErrCheck:
+                g_TypedMsg[m][0][0] = Err(Saf0018);
+                break;
+            case SafetyMsg::InvalidBool:
+                g_TypedMsg[m][0][0] = Err(Saf0003);
+                break;
+            case SafetyMsg::InvalidFloat:
+                g_TypedMsg[m][0][0] = Err(Saf0016);
+                break;
+            case SafetyMsg::NotZero:
+                g_TypedMsg[m][0][0] = Err(Saf0015);
+                break;
+            case SafetyMsg::BadSlicingDown:
+                g_TypedMsg[m][0][0] = Err(Saf0006);
+                break;
+            case SafetyMsg::BadSlicingUp:
+                g_TypedMsg[m][0][0] = Err(Saf0007);
+                break;
+            case SafetyMsg::BadRangeDown:
+                g_TypedMsg[m][0][0] = Err(Saf0005);
+                break;
+            case SafetyMsg::IndexRange:
+                g_TypedMsg[m][0][0] = Err(Saf0004);
+                break;
+            case SafetyMsg::SwitchComplete:
+                g_TypedMsg[m][0][0] = Err(Saf0028);
+                break;
+            case SafetyMsg::CastTruncated:
+                SWAG_ASSERT(toType && fromType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0027), fromType->name.c_str(), toType->name.c_str());
+                break;
+            case SafetyMsg::CastNeg:
+                SWAG_ASSERT(toType && fromType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0020), fromType->name.c_str(), toType->name.c_str());
+                break;
+            case SafetyMsg::Plus:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "+", toType->name.c_str());
+                break;
+            case SafetyMsg::Minus:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
+                break;
+            case SafetyMsg::Mul:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "*", toType->name.c_str());
+                break;
+            case SafetyMsg::PlusEq:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "+=", toType->name.c_str());
+                break;
+            case SafetyMsg::MinusEq:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-=", toType->name.c_str());
+                break;
+            case SafetyMsg::MulEq:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "*=", toType->name.c_str());
+                break;
+            case SafetyMsg::Neg:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0026), "-", toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicAbs:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0008), toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicSqrt:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0014), toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicLog:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0011), toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicLog2:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0013), toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicLog10:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0012), toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicASin:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0010), toType->name.c_str());
+                break;
+            case SafetyMsg::IntrinsicACos:
+                SWAG_ASSERT(toType);
+                g_TypedMsg[m][i][j] = FMT(Err(Saf0009), toType->name.c_str());
+                break;
+            default:
+                break;
         }
     }
 
@@ -283,40 +283,40 @@ void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeIn
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    {
-        const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual8, r0, 0, re);
-        inst->b.s64     = INT8_MIN;
-        inst->addFlag(BCI_IMM_B);
-        emitAssert(context, re, forAbs ? msg : msg1);
-        break;
-    }
-    case NativeTypeKind::S16:
-    {
-        const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual16, r0, 0, re);
-        inst->b.s64     = INT16_MIN;
-        inst->addFlag(BCI_IMM_B);
-        emitAssert(context, re, forAbs ? msg : msg1);
-        break;
-    }
-    case NativeTypeKind::S32:
-    {
-        const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual32, r0, 0, re);
-        inst->b.s64     = INT32_MIN;
-        inst->addFlag(BCI_IMM_B);
-        emitAssert(context, re, forAbs ? msg : msg1);
-        break;
-    }
-    case NativeTypeKind::S64:
-    {
-        const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, 0, re);
-        inst->b.s64     = INT64_MIN;
-        inst->addFlag(BCI_IMM_B);
-        emitAssert(context, re, forAbs ? msg : msg1);
-        break;
-    }
-    default:
-        break;
+        case NativeTypeKind::S8:
+        {
+            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual8, r0, 0, re);
+            inst->b.s64     = INT8_MIN;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, forAbs ? msg : msg1);
+            break;
+        }
+        case NativeTypeKind::S16:
+        {
+            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual16, r0, 0, re);
+            inst->b.s64     = INT16_MIN;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, forAbs ? msg : msg1);
+            break;
+        }
+        case NativeTypeKind::S32:
+        {
+            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual32, r0, 0, re);
+            inst->b.s64     = INT32_MIN;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, forAbs ? msg : msg1);
+            break;
+        }
+        case NativeTypeKind::S64:
+        {
+            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, 0, re);
+            inst->b.s64     = INT64_MIN;
+            inst->addFlag(BCI_IMM_B);
+            emitAssert(context, re, forAbs ? msg : msg1);
+            break;
+        }
+        default:
+            break;
     }
 
     freeRegisterRC(context, re);
@@ -477,692 +477,692 @@ void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* 
 
     switch (typeInfo->nativeType)
     {
-    // To S8
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::S8:
-        switch (fromTypeInfo->nativeType)
-        {
+        // To S8
+        ////////////////////////////////////////////////////
+        case NativeTypeKind::S8:
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::U8:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU8, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U16:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S16:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT8_MIN;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT8_MIN;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT8_MIN;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(INT8_MIN) - 0.5f;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(INT8_MAX) + 0.5f;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT8_MIN) - 0.5;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT8_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To S16
+        ////////////////////////////////////////////////////
+        case NativeTypeKind::S16:
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::S32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT16_MIN;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT16_MIN;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U16:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(INT16_MIN) - 0.5f;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(INT16_MAX) + 0.5f;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT16_MIN) - 0.5;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT16_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To S32
+        ////////////////////////////////////////////////////
+        case NativeTypeKind::S32:
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT32_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT32_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT32_MIN;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.s64 = INT32_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(INT32_MIN) - 0.5f;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(INT32_MAX) + 0.5f;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT32_MIN) - 0.5;
+                    emitAssert(context, re, msg);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT32_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To S64
+        ////////////////////////////////////////////////////
+        case NativeTypeKind::S64:
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = INT64_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(INT64_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To U8
+        ////////////////////////////////////////////////////
         case NativeTypeKind::U8:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU8, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
 
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::S16:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U16:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT8_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(UINT8_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(UINT8_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To U16
+        ////////////////////////////////////////////////////
         case NativeTypeKind::U16:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
 
+                case NativeTypeKind::S16:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::S32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT16_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = UINT16_MAX + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(UINT16_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To U32
+        ////////////////////////////////////////////////////
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
 
+                case NativeTypeKind::S16:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::S32:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT32_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::U64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = UINT32_MAX;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = static_cast<float>(UINT32_MAX) + 0.5f;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(UINT32_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        // To U64
+        ////////////////////////////////////////////////////
         case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT8_MAX;
-            emitAssert(context, re, msg);
+            switch (fromTypeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::S16:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::S32:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::S64:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.u64 = 0;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::F32:
+                {
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f32 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+                    break;
+                }
+
+                case NativeTypeKind::F64:
+                {
+                    auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = -SAFETY_ZERO_EPSILON;
+                    emitAssert(context, re, msg1);
+
+                    inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
+                    inst->addFlag(BCI_IMM_B);
+                    inst->b.f64 = static_cast<double>(UINT64_MAX) + 0.5;
+                    emitAssert(context, re, msg);
+                    break;
+                }
+                default:
+                    break;
+            }
             break;
-        }
-
-        case NativeTypeKind::S16:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT8_MIN;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT8_MIN;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT8_MIN;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(INT8_MIN) - 0.5f;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(INT8_MAX) + 0.5f;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT8_MIN) - 0.5;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT8_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
         default:
             break;
-        }
-        break;
-
-    // To S16
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::S16:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT16_MIN;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT16_MIN;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U16:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(INT16_MIN) - 0.5f;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(INT16_MAX) + 0.5f;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT16_MIN) - 0.5;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT16_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-
-    // To S32
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::S32:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT32_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT32_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT32_MIN;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.s64 = INT32_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(INT32_MIN) - 0.5f;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(INT32_MAX) + 0.5f;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT32_MIN) - 0.5;
-            emitAssert(context, re, msg);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT32_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-
-    // To S64
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::S64:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = INT64_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(INT64_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-
-    // To U8
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::U8:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S8:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S16:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U16:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(UINT8_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(UINT8_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-
-    // To U16
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::U16:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S8:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S16:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT16_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = UINT16_MAX + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(UINT16_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-
-    // To U32
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::U32:
-    case NativeTypeKind::Rune:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S8:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S16:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S32:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT32_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::U64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = UINT32_MAX;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = static_cast<float>(UINT32_MAX) + 0.5f;
-            emitAssert(context, re, msg);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(UINT32_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-
-    // To U64
-    ////////////////////////////////////////////////////
-    case NativeTypeKind::U64:
-        switch (fromTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S8:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS8, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S16:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS16, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S32:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::S64:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterEqS64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.u64 = 0;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::F32:
-        {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF32, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f32 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-            break;
-        }
-
-        case NativeTypeKind::F64:
-        {
-            auto inst = EMIT_INST3(context, ByteCodeOp::CompareOpGreaterF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = -SAFETY_ZERO_EPSILON;
-            emitAssert(context, re, msg1);
-
-            inst = EMIT_INST3(context, ByteCodeOp::CompareOpLowerF64, exprNode->resultRegisterRc, 0, re);
-            inst->addFlag(BCI_IMM_B);
-            inst->b.f64 = static_cast<double>(UINT64_MAX) + 0.5;
-            emitAssert(context, re, msg);
-            break;
-        }
-        default:
-            break;
-        }
-        break;
-    default:
-        break;
     }
 
     freeRegisterRC(context, re);

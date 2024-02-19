@@ -205,20 +205,20 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     {
         switch (realType->sizeOf)
         {
-        case 1:
-            node->computedValue()->reg.u64 = runContext->registersRR[0].u8;
-            return true;
-        case 2:
-            node->computedValue()->reg.u64 = runContext->registersRR[0].u16;
-            return true;
-        case 4:
-            node->computedValue()->reg.u64 = runContext->registersRR[0].u32;
-            return true;
-        case 8:
-            node->computedValue()->reg.u64 = runContext->registersRR[0].u64;
-            return true;
-        default:
-            break;
+            case 1:
+                node->computedValue()->reg.u64 = runContext->registersRR[0].u8;
+                return true;
+            case 2:
+                node->computedValue()->reg.u64 = runContext->registersRR[0].u16;
+                return true;
+            case 4:
+                node->computedValue()->reg.u64 = runContext->registersRR[0].u32;
+                return true;
+            case 8:
+                node->computedValue()->reg.u64 = runContext->registersRR[0].u64;
+                return true;
+            default:
+                break;
         }
     }
 

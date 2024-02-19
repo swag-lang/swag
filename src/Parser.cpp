@@ -48,45 +48,45 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 {
     switch (token.id)
     {
-    case TokenId::SymAmpersandAmpersand:
-        if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, FMT(Err(Err0323), "and", "&&"));
-        break;
-    case TokenId::SymVerticalVertical:
-        if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, FMT(Err(Err0323), "or", "||"));
-        break;
-    case TokenId::KwdElse:
-        if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Err(Err0665));
-        break;
-    case TokenId::KwdElif:
-        if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Err(Err0664));
-        break;
-    case TokenId::CompilerElse:
-        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0657));
-        break;
-    case TokenId::CompilerElseIf:
-        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0656));
-        break;
-    case TokenId::SymRightParen:
-        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0660));
-        break;
-    case TokenId::SymRightCurly:
-        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0673));
-        break;
-    case TokenId::SymRightSquare:
-        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Err0661));
-        break;
+        case TokenId::SymAmpersandAmpersand:
+            if (kind == InvalidTokenError::EmbeddedInstruction)
+                return error(token, FMT(Err(Err0323), "and", "&&"));
+            break;
+        case TokenId::SymVerticalVertical:
+            if (kind == InvalidTokenError::EmbeddedInstruction)
+                return error(token, FMT(Err(Err0323), "or", "||"));
+            break;
+        case TokenId::KwdElse:
+            if (kind == InvalidTokenError::EmbeddedInstruction)
+                return error(token, Err(Err0665));
+            break;
+        case TokenId::KwdElif:
+            if (kind == InvalidTokenError::EmbeddedInstruction)
+                return error(token, Err(Err0664));
+            break;
+        case TokenId::CompilerElse:
+            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+                return error(token, Err(Err0657));
+            break;
+        case TokenId::CompilerElseIf:
+            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+                return error(token, Err(Err0656));
+            break;
+        case TokenId::SymRightParen:
+            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+                return error(token, Err(Err0660));
+            break;
+        case TokenId::SymRightCurly:
+            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+                return error(token, Err(Err0673));
+            break;
+        case TokenId::SymRightSquare:
+            if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+                return error(token, Err(Err0661));
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     Utf8 msg;
@@ -94,55 +94,55 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
     switch (kind)
     {
-    case InvalidTokenError::TopLevelInstruction:
-        msg = FMT(Err(Err0381), token.c_str());
-        note = Nte(Nte0167);
-        break;
-    case InvalidTokenError::EmbeddedInstruction:
-        msg = FMT(Err(Err0262), token.c_str());
-        break;
-    case InvalidTokenError::LeftExpression:
-        msg = FMT(Err(Err0283), token.c_str());
-        break;
-    case InvalidTokenError::PrimaryExpression:
+        case InvalidTokenError::TopLevelInstruction:
+            msg = FMT(Err(Err0381), token.c_str());
+            note = Nte(Nte0167);
+            break;
+        case InvalidTokenError::EmbeddedInstruction:
+            msg = FMT(Err(Err0262), token.c_str());
+            break;
+        case InvalidTokenError::LeftExpression:
+            msg = FMT(Err(Err0283), token.c_str());
+            break;
+        case InvalidTokenError::PrimaryExpression:
 
-        // Bad character syntax as an expression
-        if (token.id == TokenId::SymQuote)
-        {
-            const auto startToken = token;
-            eatToken();
-            const auto inToken = token;
-            eatToken();
+            // Bad character syntax as an expression
             if (token.id == TokenId::SymQuote)
             {
-                const Diagnostic err{sourceFile, startToken.startLocation, token.endLocation, FMT(Err(Err0237), inToken.c_str())};
-                return context->report(err);
+                const auto startToken = token;
+                eatToken();
+                const auto inToken = token;
+                eatToken();
+                if (token.id == TokenId::SymQuote)
+                {
+                    const Diagnostic err{sourceFile, startToken.startLocation, token.endLocation, FMT(Err(Err0237), inToken.c_str())};
+                    return context->report(err);
+                }
+
+                token = startToken;
             }
 
-            token = startToken;
-        }
+            msg = FMT(Err(Err0283), token.c_str());
+            if (parent)
+            {
+                if (Tokenizer::isKeyword(parent->tokenId))
+                {
+                    const Utf8 forWhat = FMT("[[%s]]", parent->token.c_str());
+                    msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
+                }
+                else if (Tokenizer::isCompiler(parent->tokenId))
+                {
+                    const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.c_str());
+                    msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
+                }
+                else if (Tokenizer::isSymbol(parent->tokenId))
+                {
+                    const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.c_str());
+                    msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
+                }
+            }
 
-        msg = FMT(Err(Err0283), token.c_str());
-        if (parent)
-        {
-            if (Tokenizer::isKeyword(parent->tokenId))
-            {
-                const Utf8 forWhat = FMT("[[%s]]", parent->token.c_str());
-                msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
-            }
-            else if (Tokenizer::isCompiler(parent->tokenId))
-            {
-                const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.c_str());
-                msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
-            }
-            else if (Tokenizer::isSymbol(parent->tokenId))
-            {
-                const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.c_str());
-                msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
-            }
-        }
-
-        break;
+            break;
     }
 
     return error(token, msg, note.empty() ? nullptr : note.c_str());
@@ -362,25 +362,25 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
             break;
         switch (kind)
         {
-        case CompilerAstKind::TopLevelInstruction:
-        case CompilerAstKind::MissingInterfaceMtd:
-            SWAG_CHECK(doTopLevelInstruction(parent, result));
-            break;
-        case CompilerAstKind::StructVarDecl:
-            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
-            break;
-        case CompilerAstKind::EnumValue:
-            SWAG_CHECK(doEnumValue(parent, result));
-            break;
-        case CompilerAstKind::EmbeddedInstruction:
-            SWAG_CHECK(doEmbeddedInstruction(parent, result));
-            break;
-        case CompilerAstKind::Expression:
-            SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, result));
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
+            case CompilerAstKind::TopLevelInstruction:
+            case CompilerAstKind::MissingInterfaceMtd:
+                SWAG_CHECK(doTopLevelInstruction(parent, result));
+                break;
+            case CompilerAstKind::StructVarDecl:
+                SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
+                break;
+            case CompilerAstKind::EnumValue:
+                SWAG_CHECK(doEnumValue(parent, result));
+                break;
+            case CompilerAstKind::EmbeddedInstruction:
+                SWAG_CHECK(doEmbeddedInstruction(parent, result));
+                break;
+            case CompilerAstKind::Expression:
+                SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, result));
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
         }
     }
 

@@ -79,32 +79,32 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-    case NativeTypeKind::Rune:
-        break;
-    case NativeTypeKind::String:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        if (left->hasComputedValue() || right->hasComputedValue())
-            return context->report(err, Diagnostic::note(Nte(Nte0037)));
-        return context->report(err);
-    }
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+        case NativeTypeKind::Rune:
+            break;
+        case NativeTypeKind::String:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            if (left->hasComputedValue() || right->hasComputedValue())
+                return context->report(err, Diagnostic::note(Nte(Nte0037)));
+            return context->report(err);
+        }
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -114,59 +114,59 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S16:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S32:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s64 + right->computedValue()->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U16:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U32:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::Rune:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            if (addWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 + right->computedValue()->reg.u64;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue()->reg.f32 = left->computedValue()->reg.f32 + right->computedValue()->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue()->reg.f64 = left->computedValue()->reg.f64 + right->computedValue()->reg.f64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBinaryOpPlus, type not supported");
+            case NativeTypeKind::S8:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S16:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S32:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s64 + right->computedValue()->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U16:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U32:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::Rune:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                if (addWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 + right->computedValue()->reg.u64;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue()->reg.f32 = left->computedValue()->reg.f32 + right->computedValue()->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue()->reg.f64 = left->computedValue()->reg.f64 + right->computedValue()->reg.f64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBinaryOpPlus, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -247,24 +247,24 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -274,59 +274,59 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S16:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S32:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s64 - right->computedValue()->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U16:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U32:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::Rune:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            if (subWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 - right->computedValue()->reg.u64;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue()->reg.f32 = left->computedValue()->reg.f32 - right->computedValue()->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue()->reg.f64 = left->computedValue()->reg.f64 - right->computedValue()->reg.f64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBinaryOpMinus, type not supported");
+            case NativeTypeKind::S8:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S16:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S32:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s64 - right->computedValue()->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U16:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U32:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::Rune:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                if (subWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 - right->computedValue()->reg.u64;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue()->reg.f32 = left->computedValue()->reg.f32 - right->computedValue()->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue()->reg.f64 = left->computedValue()->reg.f64 - right->computedValue()->reg.f64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBinaryOpMinus, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -365,24 +365,24 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -392,59 +392,59 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 * right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S16:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 * right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S32:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 * right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s64 * right->computedValue()->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U16:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U32:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::Rune:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
-                return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 * right->computedValue()->reg.u64;
-            break;
-        case NativeTypeKind::F32:
-            node->computedValue()->reg.f32 = left->computedValue()->reg.f32 * right->computedValue()->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            node->computedValue()->reg.f64 = left->computedValue()->reg.f64 * right->computedValue()->reg.f64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBinaryOpMul, type not supported");
+            case NativeTypeKind::S8:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 * right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S16:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 * right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S32:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 * right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s64 * right->computedValue()->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U16:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U32:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::Rune:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 * right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
+                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 * right->computedValue()->reg.u64;
+                break;
+            case NativeTypeKind::F32:
+                node->computedValue()->reg.f32 = left->computedValue()->reg.f32 * right->computedValue()->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                node->computedValue()->reg.f64 = left->computedValue()->reg.f64 * right->computedValue()->reg.f64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBinaryOpMul, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -496,24 +496,24 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -523,43 +523,43 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-            if (right->computedValue()->reg.s32 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            if (right->computedValue()->reg.s64 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s64 / right->computedValue()->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-        case NativeTypeKind::U16:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            if (right->computedValue()->reg.u32 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 / right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            if (right->computedValue()->reg.u64 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 / right->computedValue()->reg.u64;
-            break;
-        case NativeTypeKind::F32:
-            if (right->computedValue()->reg.f32 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.f32 = left->computedValue()->reg.f32 / right->computedValue()->reg.f32;
-            break;
-        case NativeTypeKind::F64:
-            if (right->computedValue()->reg.f64 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.f64 = left->computedValue()->reg.f64 / right->computedValue()->reg.f64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBinaryOpDiv, type not supported");
+            case NativeTypeKind::S8:
+            case NativeTypeKind::S16:
+            case NativeTypeKind::S32:
+                if (right->computedValue()->reg.s32 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                if (right->computedValue()->reg.s64 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s64 / right->computedValue()->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+            case NativeTypeKind::U16:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                if (right->computedValue()->reg.u32 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 / right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                if (right->computedValue()->reg.u64 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 / right->computedValue()->reg.u64;
+                break;
+            case NativeTypeKind::F32:
+                if (right->computedValue()->reg.f32 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.f32 = left->computedValue()->reg.f32 / right->computedValue()->reg.f32;
+                break;
+            case NativeTypeKind::F64:
+                if (right->computedValue()->reg.f64 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.f64 = left->computedValue()->reg.f64 / right->computedValue()->reg.f64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBinaryOpDiv, type not supported");
         }
     }
     else if (right->isConstant0())
@@ -600,29 +600,29 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        if (rightTypeInfo->isNativeFloat())
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
         {
-            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
-            err.addNote(right, Diagnostic::isType(rightTypeInfo));
+            if (rightTypeInfo->isNativeFloat())
+            {
+                Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+                err.addNote(right, Diagnostic::isType(rightTypeInfo));
+                return context->report(err);
+            }
+
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
             return context->report(err);
         }
-
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
     }
 
     node->typeInfo = leftTypeInfo;
@@ -632,33 +632,33 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-            if (right->computedValue()->reg.s32 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 % right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-            if (right->computedValue()->reg.s64 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s64 % right->computedValue()->reg.s64;
-            break;
-        case NativeTypeKind::U8:
-        case NativeTypeKind::U16:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            if (right->computedValue()->reg.u32 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 % right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::U64:
-            if (right->computedValue()->reg.u64 == 0)
-                return context->report({right, Err(Err0062)});
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 % right->computedValue()->reg.u64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBinaryOpModulo, type not supported");
+            case NativeTypeKind::S8:
+            case NativeTypeKind::S16:
+            case NativeTypeKind::S32:
+                if (right->computedValue()->reg.s32 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 % right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+                if (right->computedValue()->reg.s64 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s64 % right->computedValue()->reg.s64;
+                break;
+            case NativeTypeKind::U8:
+            case NativeTypeKind::U16:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                if (right->computedValue()->reg.u32 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 % right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::U64:
+                if (right->computedValue()->reg.u64 == 0)
+                    return context->report({right, Err(Err0062)});
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 % right->computedValue()->reg.u64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBinaryOpModulo, type not supported");
         }
     }
     else if (right->isConstant0())
@@ -684,23 +684,23 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::Bool:
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::Bool:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     if (left->hasComputedValue() && right->hasComputedValue())
@@ -709,29 +709,29 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-            node->computedValue()->reg.b = left->computedValue()->reg.b || right->computedValue()->reg.b;
-            break;
+            case NativeTypeKind::Bool:
+                node->computedValue()->reg.b = left->computedValue()->reg.b || right->computedValue()->reg.b;
+                break;
 
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u8 | right->computedValue()->reg.u8;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u16 | right->computedValue()->reg.u16;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 | right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 | right->computedValue()->reg.u64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBitmaskOr, type not supported");
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u8 | right->computedValue()->reg.u8;
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u16 | right->computedValue()->reg.u16;
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 | right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 | right->computedValue()->reg.u64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBitmaskOr, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -794,23 +794,23 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::Bool:
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::Bool:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     if (left->hasComputedValue() && right->hasComputedValue())
@@ -819,29 +819,29 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-            node->computedValue()->reg.b = left->computedValue()->reg.b && right->computedValue()->reg.b;
-            break;
+            case NativeTypeKind::Bool:
+                node->computedValue()->reg.b = left->computedValue()->reg.b && right->computedValue()->reg.b;
+                break;
 
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u8 & right->computedValue()->reg.u8;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u16 & right->computedValue()->reg.u16;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u32 & right->computedValue()->reg.u32;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            node->computedValue()->reg.u64 = left->computedValue()->reg.u64 & right->computedValue()->reg.u64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBitmaskAnd, type not supported");
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u8 & right->computedValue()->reg.u8;
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u16 & right->computedValue()->reg.u16;
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u32 & right->computedValue()->reg.u32;
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                node->computedValue()->reg.u64 = left->computedValue()->reg.u64 & right->computedValue()->reg.u64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBitmaskAnd, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -922,23 +922,23 @@ bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* righ
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::Bool:
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Rune:
-        break;
-    default:
-    {
-        Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-        return context->report(err);
-    }
+        case NativeTypeKind::Bool:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Rune:
+            break;
+        default:
+        {
+            Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(err);
+        }
     }
 
     if (left->hasComputedValue() && right->hasComputedValue())
@@ -947,26 +947,26 @@ bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* righ
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            node->computedValue()->reg.s8 = left->computedValue()->reg.s8 ^ right->computedValue()->reg.s8;
-            break;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            node->computedValue()->reg.s16 = left->computedValue()->reg.s16 ^ right->computedValue()->reg.s16;
-            break;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s32 ^ right->computedValue()->reg.s32;
-            break;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-            node->computedValue()->reg.s64 = left->computedValue()->reg.s64 ^ right->computedValue()->reg.s64;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveXor, type not supported");
+            case NativeTypeKind::Bool:
+            case NativeTypeKind::S8:
+            case NativeTypeKind::U8:
+                node->computedValue()->reg.s8 = left->computedValue()->reg.s8 ^ right->computedValue()->reg.s8;
+                break;
+            case NativeTypeKind::S16:
+            case NativeTypeKind::U16:
+                node->computedValue()->reg.s16 = left->computedValue()->reg.s16 ^ right->computedValue()->reg.s16;
+                break;
+            case NativeTypeKind::S32:
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s32 ^ right->computedValue()->reg.s32;
+                break;
+            case NativeTypeKind::S64:
+            case NativeTypeKind::U64:
+                node->computedValue()->reg.s64 = left->computedValue()->reg.s64 ^ right->computedValue()->reg.s64;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveXor, type not supported");
         }
     }
 
@@ -1072,14 +1072,14 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     {
         switch (node->tokenId)
         {
-        case TokenId::SymPlus:
-        case TokenId::SymAsterisk:
-            swap(left, right);
-            swap(leftTypeInfo, rightTypeInfo);
-            node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
-            break;
-        default:
-            break;
+            case TokenId::SymPlus:
+            case TokenId::SymAsterisk:
+                swap(left, right);
+                swap(leftTypeInfo, rightTypeInfo);
+                node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
+                break;
+            default:
+                break;
         }
     }
 
@@ -1099,45 +1099,45 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 
     switch (node->tokenId)
     {
-    case TokenId::SymPlus:
-        SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
-        break;
-    case TokenId::SymMinus:
-        SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
-        break;
-    case TokenId::SymAsterisk:
-        SWAG_CHECK(resolveBinaryOpMul(context, left, right));
-        break;
-    case TokenId::SymSlash:
-        SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
-        break;
-    case TokenId::SymPercent:
-        SWAG_CHECK(resolveBinaryOpModulo(context, left, right));
-        break;
-    case TokenId::SymPlusPlus:
-        SWAG_CHECK(resolveAppend(context, left, right));
-        break;
+        case TokenId::SymPlus:
+            SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
+            break;
+        case TokenId::SymMinus:
+            SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
+            break;
+        case TokenId::SymAsterisk:
+            SWAG_CHECK(resolveBinaryOpMul(context, left, right));
+            break;
+        case TokenId::SymSlash:
+            SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
+            break;
+        case TokenId::SymPercent:
+            SWAG_CHECK(resolveBinaryOpModulo(context, left, right));
+            break;
+        case TokenId::SymPlusPlus:
+            SWAG_CHECK(resolveAppend(context, left, right));
+            break;
 
-    case TokenId::SymVertical:
-    case TokenId::SymAmpersand:
-    case TokenId::SymCircumflex:
-        if (!leftTypeInfo->isStruct())
-        {
-            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
-            node->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
-        }
+        case TokenId::SymVertical:
+        case TokenId::SymAmpersand:
+        case TokenId::SymCircumflex:
+            if (!leftTypeInfo->isStruct())
+            {
+                SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CAST_FLAG_TRY_COERCE));
+                node->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
+            }
 
-        if (node->tokenId == TokenId::SymVertical)
-            SWAG_CHECK(resolveBitmaskOr(context, left, right));
-        else if (node->tokenId == TokenId::SymAmpersand)
-            SWAG_CHECK(resolveBitmaskAnd(context, left, right));
-        else
-            SWAG_CHECK(resolveXor(context, left, right));
-        break;
+            if (node->tokenId == TokenId::SymVertical)
+                SWAG_CHECK(resolveBitmaskOr(context, left, right));
+            else if (node->tokenId == TokenId::SymAmpersand)
+                SWAG_CHECK(resolveBitmaskAnd(context, left, right));
+            else
+                SWAG_CHECK(resolveXor(context, left, right));
+            break;
 
-    default:
-        return Report::internalError(context->node, "resolveFactorExpression, token not supported");
+        default:
+            return Report::internalError(context->node, "resolveFactorExpression, token not supported");
     }
 
     // :SpecFuncConstExpr
@@ -1178,34 +1178,34 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, true);
-            break;
-        case NativeTypeKind::S16:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, true);
-            break;
-        case NativeTypeKind::S32:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, true);
-            break;
-        case NativeTypeKind::S64:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, true);
-            break;
+            case NativeTypeKind::S8:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, true);
+                break;
+            case NativeTypeKind::S16:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, true);
+                break;
+            case NativeTypeKind::S32:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, true);
+                break;
+            case NativeTypeKind::S64:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, true);
+                break;
 
-        case NativeTypeKind::U8:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, false);
-            break;
-        case NativeTypeKind::U16:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, false);
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, false);
-            break;
-        case NativeTypeKind::U64:
-            ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, false);
-            break;
-        default:
-            return Report::internalError(context->node, "resolveShiftLeft, type not supported");
+            case NativeTypeKind::U8:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, false);
+                break;
+            case NativeTypeKind::U16:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, false);
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, false);
+                break;
+            case NativeTypeKind::U64:
+                ByteCodeRun::executeLeftShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, false);
+                break;
+            default:
+                return Report::internalError(context->node, "resolveShiftLeft, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -1256,34 +1256,34 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeTypeKind::S8:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, true);
-            break;
-        case NativeTypeKind::S16:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, true);
-            break;
-        case NativeTypeKind::S32:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, true);
-            break;
-        case NativeTypeKind::S64:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, true);
-            break;
+            case NativeTypeKind::S8:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, true);
+                break;
+            case NativeTypeKind::S16:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, true);
+                break;
+            case NativeTypeKind::S32:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, true);
+                break;
+            case NativeTypeKind::S64:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, true);
+                break;
 
-        case NativeTypeKind::U8:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, false);
-            break;
-        case NativeTypeKind::U16:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, false);
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, false);
-            break;
-        case NativeTypeKind::U64:
-            ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, false);
-            break;
-        default:
-            return Report::internalError(context->node, "resolveShiftRight, type not supported");
+            case NativeTypeKind::U8:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 8, false);
+                break;
+            case NativeTypeKind::U16:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 16, false);
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Rune:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 32, false);
+                break;
+            case NativeTypeKind::U64:
+                ByteCodeRun::executeRightShift(&node->computedValue()->reg, left->computedValue()->reg, right->computedValue()->reg, 64, false);
+                break;
+            default:
+                return Report::internalError(context->node, "resolveShiftRight, type not supported");
         }
     }
     else if (module->mustOptimizeBytecode(node))
@@ -1348,14 +1348,14 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
 
     switch (node->tokenId)
     {
-    case TokenId::SymLowerLower:
-        SWAG_CHECK(resolveShiftLeft(context, left, right));
-        break;
-    case TokenId::SymGreaterGreater:
-        SWAG_CHECK(resolveShiftRight(context, left, right));
-        break;
-    default:
-        return Report::internalError(context->node, "resolveShiftExpression, token not supported");
+        case TokenId::SymLowerLower:
+            SWAG_CHECK(resolveShiftLeft(context, left, right));
+            break;
+        case TokenId::SymGreaterGreater:
+            SWAG_CHECK(resolveShiftRight(context, left, right));
+            break;
+        default:
+            return Report::internalError(context->node, "resolveShiftExpression, token not supported");
     }
 
     // :SpecFuncConstExpr
@@ -1409,14 +1409,14 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
     // fails. So we need to do some work once the left part has been emitted
     switch (node->tokenId)
     {
-    case TokenId::KwdAnd:
-        left->setBcNotifyAfter(ByteCodeGen::emitLogicalAndAfterLeft);
-        break;
-    case TokenId::KwdOr:
-        left->setBcNotifyAfter(ByteCodeGen::emitLogicalOrAfterLeft);
-        break;
-    default:
-        break;
+        case TokenId::KwdAnd:
+            left->setBcNotifyAfter(ByteCodeGen::emitLogicalAndAfterLeft);
+            break;
+        case TokenId::KwdOr:
+            left->setBcNotifyAfter(ByteCodeGen::emitLogicalOrAfterLeft);
+            break;
+        default:
+            break;
     }
 
     node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
@@ -1427,14 +1427,14 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
         node->setFlagsValueIsComputed();
         switch (node->tokenId)
         {
-        case TokenId::KwdAnd:
-            node->computedValue()->reg.b = left->computedValue()->reg.b && right->computedValue()->reg.b;
-            break;
-        case TokenId::KwdOr:
-            node->computedValue()->reg.b = left->computedValue()->reg.b || right->computedValue()->reg.b;
-            break;
-        default:
-            return Report::internalError(context->node, "resolveBoolExpression, token not supported");
+            case TokenId::KwdAnd:
+                node->computedValue()->reg.b = left->computedValue()->reg.b && right->computedValue()->reg.b;
+                break;
+            case TokenId::KwdOr:
+                node->computedValue()->reg.b = left->computedValue()->reg.b || right->computedValue()->reg.b;
+                break;
+            default:
+                return Report::internalError(context->node, "resolveBoolExpression, token not supported");
         }
     }
     else if (node->tokenId == TokenId::KwdAnd)

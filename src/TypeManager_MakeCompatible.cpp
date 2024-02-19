@@ -256,49 +256,49 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
         switch (toType->kind)
         {
-        // Cast to pointer
-        case TypeInfoKind::Pointer:
-            if (toType->isPointerRef())
-                SWAG_CHECK(castToPointerRef(context, toType, fromType, fromNode, castFlags));
-            else
-                SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
-            break;
+            // Cast to pointer
+            case TypeInfoKind::Pointer:
+                if (toType->isPointerRef())
+                    SWAG_CHECK(castToPointerRef(context, toType, fromType, fromNode, castFlags));
+                else
+                    SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
+                break;
 
-        // Cast to native type
-        case TypeInfoKind::Native:
-            SWAG_CHECK(castToNative(context, toType, fromType, toNode, fromNode, castFlags));
-            break;
+            // Cast to native type
+            case TypeInfoKind::Native:
+                SWAG_CHECK(castToNative(context, toType, fromType, toNode, fromNode, castFlags));
+                break;
 
-        // Cast to enum
-        case TypeInfoKind::Enum:
-            SWAG_CHECK(castToEnum(context, toType, fromType, toNode, fromNode, castFlags));
-            break;
+            // Cast to enum
+            case TypeInfoKind::Enum:
+                SWAG_CHECK(castToEnum(context, toType, fromType, toNode, fromNode, castFlags));
+                break;
 
-        // Cast to array
-        case TypeInfoKind::Array:
-            SWAG_CHECK(castToArray(context, toType, fromType, fromNode, castFlags));
-            break;
+            // Cast to array
+            case TypeInfoKind::Array:
+                SWAG_CHECK(castToArray(context, toType, fromType, fromNode, castFlags));
+                break;
 
-        // Cast to slice
-        case TypeInfoKind::Slice:
-            SWAG_CHECK(castToSlice(context, toType, fromType, fromNode, castFlags));
-            break;
+            // Cast to slice
+            case TypeInfoKind::Slice:
+                SWAG_CHECK(castToSlice(context, toType, fromType, fromNode, castFlags));
+                break;
 
-        // Cast to interface
-        case TypeInfoKind::Interface:
-            SWAG_CHECK(castToInterface(context, toType, fromType, fromNode, castFlags));
-            break;
+            // Cast to interface
+            case TypeInfoKind::Interface:
+                SWAG_CHECK(castToInterface(context, toType, fromType, fromNode, castFlags));
+                break;
 
-        // Cast to lambda
-        case TypeInfoKind::LambdaClosure:
-            if (toType->isClosure())
-                SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
-            else
-                SWAG_CHECK(castToLambda(context, toType, fromType, fromNode, castFlags));
-            break;
+            // Cast to lambda
+            case TypeInfoKind::LambdaClosure:
+                if (toType->isClosure())
+                    SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
+                else
+                    SWAG_CHECK(castToLambda(context, toType, fromType, fromNode, castFlags));
+                break;
 
-        default:
-            return castError(context, toType, fromType, fromNode, castFlags);
+            default:
+                return castError(context, toType, fromType, fromNode, castFlags);
         }
     }
 

@@ -160,45 +160,45 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
     switch (rawTypeInfo->kind)
     {
-    case TypeInfoKind::Generic:
-        return true;
+        case TypeInfoKind::Generic:
+            return true;
 
-    case TypeInfoKind::Array:
-    {
-        const auto typeArray = castTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-        if (typeArray->count == UINT32_MAX)
+        case TypeInfoKind::Array:
         {
-            const auto       front = typeNode->children.front();
-            const Diagnostic err{front, FMT(Err(Err0271), rawTypeInfo->getDisplayNameC())};
-            return context->report(err);
+            const auto typeArray = castTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
+            if (typeArray->count == UINT32_MAX)
+            {
+                const auto       front = typeNode->children.front();
+                const Diagnostic err{front, FMT(Err(Err0271), rawTypeInfo->getDisplayNameC())};
+                return context->report(err);
+            }
+
+            if (!rawTypeInfo->isConst())
+            {
+                const auto       front = typeNode->children.front();
+                const Diagnostic err{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
+                const auto       note = Diagnostic::note(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
+                return context->report(err, note);
+            }
+
+            return true;
         }
 
-        if (!rawTypeInfo->isConst())
+        case TypeInfoKind::Slice:
         {
             const auto       front = typeNode->children.front();
-            const Diagnostic err{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
-            const auto       note = Diagnostic::note(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
-            return context->report(err, note);
+            const Diagnostic err{front, FMT(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
+            SWAG_VERIFY(rawTypeInfo->isConst(), context->report(err));
+            return true;
         }
 
-        return true;
-    }
+        case TypeInfoKind::Native:
+            if (rawTypeInfo->nativeType == NativeTypeKind::Any)
+                return context->report({typeNode->children.front(), FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
+            return true;
 
-    case TypeInfoKind::Slice:
-    {
-        const auto       front = typeNode->children.front();
-        const Diagnostic err{front, FMT(Err(Err0272), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report(err));
-        return true;
-    }
-
-    case TypeInfoKind::Native:
-        if (rawTypeInfo->nativeType == NativeTypeKind::Any)
-            return context->report({typeNode->children.front(), FMT(Err(Err0273), rawTypeInfo->getDisplayNameC())});
-        return true;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     if (rawTypeInfo->isCString())
@@ -318,25 +318,25 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
     {
         switch (rawTypeInfo->kind)
         {
-        case TypeInfoKind::Native:
-            switch (rawTypeInfo->nativeType)
-            {
-            case NativeTypeKind::Bool:
-            case NativeTypeKind::Rune:
-            case NativeTypeKind::String:
-            case NativeTypeKind::F32:
-            case NativeTypeKind::F64:
+            case TypeInfoKind::Native:
+                switch (rawTypeInfo->nativeType)
+                {
+                    case NativeTypeKind::Bool:
+                    case NativeTypeKind::Rune:
+                    case NativeTypeKind::String:
+                    case NativeTypeKind::F32:
+                    case NativeTypeKind::F64:
+                        return context->report({valNode, FMT(Err(Err0567), valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
+                    default:
+                        break;
+                }
+                break;
+
+            case TypeInfoKind::Slice:
                 return context->report({valNode, FMT(Err(Err0567), valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
+
             default:
                 break;
-            }
-            break;
-
-        case TypeInfoKind::Slice:
-            return context->report({valNode, FMT(Err(Err0567), valNode->token.c_str(), rawTypeInfo->getDisplayNameC())});
-
-        default:
-            break;
         }
     }
 
@@ -362,77 +362,77 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
             // Compute next value
             switch (rawType->nativeType)
             {
-            case NativeTypeKind::U8:
-                if (enumNode->computedValue()->reg.u8 == UINT8_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue()->reg.u8)
-                {
-                    const auto n = enumNode->computedValue()->reg.u8;
-                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue()->reg.u8 <<= 1;
-                }
-                else
-                    enumNode->computedValue()->reg.u8++;
-                break;
-            case NativeTypeKind::U16:
-                if (enumNode->computedValue()->reg.u16 == UINT16_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue()->reg.u16)
-                {
-                    const auto n = enumNode->computedValue()->reg.u16;
-                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue()->reg.u16 <<= 1;
-                }
-                else
-                    enumNode->computedValue()->reg.u16++;
-                break;
-            case NativeTypeKind::U32:
-                if (enumNode->computedValue()->reg.u32 == UINT32_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue()->reg.u32)
-                {
-                    const auto n = enumNode->computedValue()->reg.u32;
-                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue()->reg.u32 <<= 1;
-                }
-                else
-                    enumNode->computedValue()->reg.u32++;
-                break;
-            case NativeTypeKind::U64:
-                if (enumNode->computedValue()->reg.u64 == UINT64_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                if (isFlags && enumNode->computedValue()->reg.u64)
-                {
-                    const auto n = enumNode->computedValue()->reg.u64;
-                    SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
-                    enumNode->computedValue()->reg.u64 <<= 1;
-                }
-                else
-                    enumNode->computedValue()->reg.u64++;
-                break;
+                case NativeTypeKind::U8:
+                    if (enumNode->computedValue()->reg.u8 == UINT8_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    if (isFlags && enumNode->computedValue()->reg.u8)
+                    {
+                        const auto n = enumNode->computedValue()->reg.u8;
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                        enumNode->computedValue()->reg.u8 <<= 1;
+                    }
+                    else
+                        enumNode->computedValue()->reg.u8++;
+                    break;
+                case NativeTypeKind::U16:
+                    if (enumNode->computedValue()->reg.u16 == UINT16_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    if (isFlags && enumNode->computedValue()->reg.u16)
+                    {
+                        const auto n = enumNode->computedValue()->reg.u16;
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                        enumNode->computedValue()->reg.u16 <<= 1;
+                    }
+                    else
+                        enumNode->computedValue()->reg.u16++;
+                    break;
+                case NativeTypeKind::U32:
+                    if (enumNode->computedValue()->reg.u32 == UINT32_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    if (isFlags && enumNode->computedValue()->reg.u32)
+                    {
+                        const auto n = enumNode->computedValue()->reg.u32;
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                        enumNode->computedValue()->reg.u32 <<= 1;
+                    }
+                    else
+                        enumNode->computedValue()->reg.u32++;
+                    break;
+                case NativeTypeKind::U64:
+                    if (enumNode->computedValue()->reg.u64 == UINT64_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    if (isFlags && enumNode->computedValue()->reg.u64)
+                    {
+                        const auto n = enumNode->computedValue()->reg.u64;
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, FMT(Err(Err0551), valNode->token.c_str())}));
+                        enumNode->computedValue()->reg.u64 <<= 1;
+                    }
+                    else
+                        enumNode->computedValue()->reg.u64++;
+                    break;
 
-            case NativeTypeKind::S8:
-                if (enumNode->computedValue()->reg.s8 <= INT8_MIN || enumNode->computedValue()->reg.s8 >= INT8_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue()->reg.s8++;
-                break;
-            case NativeTypeKind::S16:
-                if (enumNode->computedValue()->reg.s16 <= INT16_MIN || enumNode->computedValue()->reg.s16 >= INT16_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue()->reg.s16++;
-                break;
-            case NativeTypeKind::S32:
-                if (enumNode->computedValue()->reg.s32 <= INT32_MIN || enumNode->computedValue()->reg.s32 >= INT32_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue()->reg.s32++;
-                break;
-            case NativeTypeKind::S64:
-                if (enumNode->computedValue()->reg.s64 <= INT64_MIN || enumNode->computedValue()->reg.s64 >= INT64_MAX)
-                    return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
-                enumNode->computedValue()->reg.s64++;
-                break;
-            default:
-                break;
+                case NativeTypeKind::S8:
+                    if (enumNode->computedValue()->reg.s8 <= INT8_MIN || enumNode->computedValue()->reg.s8 >= INT8_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    enumNode->computedValue()->reg.s8++;
+                    break;
+                case NativeTypeKind::S16:
+                    if (enumNode->computedValue()->reg.s16 <= INT16_MIN || enumNode->computedValue()->reg.s16 >= INT16_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    enumNode->computedValue()->reg.s16++;
+                    break;
+                case NativeTypeKind::S32:
+                    if (enumNode->computedValue()->reg.s32 <= INT32_MIN || enumNode->computedValue()->reg.s32 >= INT32_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    enumNode->computedValue()->reg.s32++;
+                    break;
+                case NativeTypeKind::S64:
+                    if (enumNode->computedValue()->reg.s64 <= INT64_MIN || enumNode->computedValue()->reg.s64 >= INT64_MAX)
+                        return context->report({valNode, FMT(Err(Err0608), valNode->token.c_str(), rawType->getDisplayNameC())});
+                    enumNode->computedValue()->reg.s64++;
+                    break;
+                default:
+                    break;
             }
         }
     }

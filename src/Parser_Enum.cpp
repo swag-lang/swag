@@ -107,37 +107,37 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 
     switch (token.id)
     {
-    case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result));
-        break;
-    case TokenId::CompilerAssert:
-        SWAG_CHECK(doCompilerAssert(parent, result));
-        break;
-    case TokenId::CompilerIf:
-        SWAG_CHECK(doCompilerIfFor(parent, result, AstNodeKind::EnumDecl));
-        break;
+        case TokenId::CompilerAst:
+            SWAG_CHECK(doCompilerAst(parent, result));
+            break;
+        case TokenId::CompilerAssert:
+            SWAG_CHECK(doCompilerAssert(parent, result));
+            break;
+        case TokenId::CompilerIf:
+            SWAG_CHECK(doCompilerIfFor(parent, result, AstNodeKind::EnumDecl));
+            break;
 
-    case TokenId::SymAttrStart:
-    {
-        AstAttrUse* attrUse;
-        SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
-        SWAG_CHECK(doEnumContent(attrUse, &attrUse->content));
-        if (attrUse->content)
-            attrUse->content->setOwnerAttrUse(attrUse);
-        break;
-    }
+        case TokenId::SymAttrStart:
+        {
+            AstAttrUse* attrUse;
+            SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
+            SWAG_CHECK(doEnumContent(attrUse, &attrUse->content));
+            if (attrUse->content)
+                attrUse->content->setOwnerAttrUse(attrUse);
+            break;
+        }
 
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doEnumContent(parent, &dummyResult));
-        break;
+        case TokenId::SymLeftCurly:
+            SWAG_CHECK(doEnumContent(parent, &dummyResult));
+            break;
 
-    case TokenId::KwdUsing:
-        SWAG_CHECK(doSubEnumValue(parent, result));
-        break;
+        case TokenId::KwdUsing:
+            SWAG_CHECK(doSubEnumValue(parent, result));
+            break;
 
-    default:
-        SWAG_CHECK(doEnumValue(parent, result));
-        break;
+        default:
+            SWAG_CHECK(doEnumValue(parent, result));
+            break;
     }
 
     return true;

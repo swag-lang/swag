@@ -319,34 +319,34 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
                                          cfgModule->buildCfg.moduleBuildNum);
         switch (cmp)
         {
-        // If the dependency requests a bigger version, then we will have to fetch the dependency configuration from the
-        // remote path.
-        case CompareVersionResult::VersionGreater:
-        case CompareVersionResult::RevisionGreater:
-        case CompareVersionResult::BuildNumGreater:
-            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
-            {
-                cfgModule->mustFetchDep = true;
-                pendingCfgModules.insert(cfgModule);
-            }
-
-            break;
-
-        // If the dependency does not specify something, that means that we don't know if we are up to date.
-        // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
-        // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
-        case CompareVersionResult::Equal:
-            if (g_CommandLine.computeDep)
-            {
-                if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
+            // If the dependency requests a bigger version, then we will have to fetch the dependency configuration from the
+            // remote path.
+            case CompareVersionResult::VersionGreater:
+            case CompareVersionResult::RevisionGreater:
+            case CompareVersionResult::BuildNumGreater:
+                if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
                 {
+                    cfgModule->mustFetchDep = true;
                     pendingCfgModules.insert(cfgModule);
                 }
-            }
-            break;
 
-        default:
-            break;
+                break;
+
+            // If the dependency does not specify something, that means that we don't know if we are up to date.
+            // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
+            // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
+            case CompareVersionResult::Equal:
+                if (g_CommandLine.computeDep)
+                {
+                    if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
+                    {
+                        pendingCfgModules.insert(cfgModule);
+                    }
+                }
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -358,39 +358,39 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
         const auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->fetchDep->verNum, cfgModule->fetchDep->revNum, cfgModule->fetchDep->buildNum);
         switch (cmp)
         {
-        case CompareVersionResult::VersionGreater:
-        case CompareVersionResult::VersionLower:
-        {
-            const Diagnostic err{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            const auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
-            Report::report(err, note);
-            return false;
-        }
-
-        case CompareVersionResult::RevisionGreater:
-        case CompareVersionResult::BuildNumGreater:
-            cfgModule->fetchDep = dep;
-            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
+            case CompareVersionResult::VersionGreater:
+            case CompareVersionResult::VersionLower:
             {
-                cfgModule->mustFetchDep = true;
-                pendingCfgModules.insert(cfgModule);
+                const Diagnostic err{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+                const auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
+                Report::report(err, note);
+                return false;
             }
-            break;
 
-        case CompareVersionResult::Equal:
-            // If version is more specific, then take it
-            if ((cfgModule->fetchDep->verNum == UINT32_MAX && dep->verNum != UINT32_MAX) ||
-                (cfgModule->fetchDep->revNum == UINT32_MAX && dep->revNum != UINT32_MAX) ||
-                (cfgModule->fetchDep->buildNum == UINT32_MAX && dep->buildNum != UINT32_MAX))
-            {
+            case CompareVersionResult::RevisionGreater:
+            case CompareVersionResult::BuildNumGreater:
                 cfgModule->fetchDep = dep;
-                pendingCfgModules.insert(cfgModule);
-            }
+                if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
+                {
+                    cfgModule->mustFetchDep = true;
+                    pendingCfgModules.insert(cfgModule);
+                }
+                break;
 
-            break;
+            case CompareVersionResult::Equal:
+                // If version is more specific, then take it
+                if ((cfgModule->fetchDep->verNum == UINT32_MAX && dep->verNum != UINT32_MAX) ||
+                    (cfgModule->fetchDep->revNum == UINT32_MAX && dep->revNum != UINT32_MAX) ||
+                    (cfgModule->fetchDep->buildNum == UINT32_MAX && dep->buildNum != UINT32_MAX))
+                {
+                    cfgModule->fetchDep = dep;
+                    pendingCfgModules.insert(cfgModule);
+                }
 
-        default:
-            break;
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -639,45 +639,45 @@ bool ModuleDepManager::execute()
             Job* fetchJob = nullptr;
             switch (val->fetchDep->fetchKind)
             {
-            // Copy from the disk, elsewhere
-            case DependencyFetchKind::Disk:
-                fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
-                break;
+                // Copy from the disk, elsewhere
+                case DependencyFetchKind::Disk:
+                    fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
+                    break;
 
-            // This is a dependency to the swag compiler std workspace
-            // No need to make a copy, as we already have the source tree with the compiler
-            // So we create a special dependency file named SWAG_ALIAS_FILENAME which will trick the compiler
-            // That file will contain the path to the corresponding module location
-            case DependencyFetchKind::Swag:
-            {
-                error_code err;
-                auto       pathSrc = g_Workspace->dependenciesPath;
-                pathSrc.append(val->name.c_str());
-                if (!exists(pathSrc, err) && !create_directories(pathSrc, err))
+                // This is a dependency to the swag compiler std workspace
+                // No need to make a copy, as we already have the source tree with the compiler
+                // So we create a special dependency file named SWAG_ALIAS_FILENAME which will trick the compiler
+                // That file will contain the path to the corresponding module location
+                case DependencyFetchKind::Swag:
                 {
-                    Report::errorOS(FMT(Err(Err0100), pathSrc.string().c_str()));
-                    ok = false;
-                    continue;
+                    error_code err;
+                    auto       pathSrc = g_Workspace->dependenciesPath;
+                    pathSrc.append(val->name.c_str());
+                    if (!exists(pathSrc, err) && !create_directories(pathSrc, err))
+                    {
+                        Report::errorOS(FMT(Err(Err0100), pathSrc.string().c_str()));
+                        ok = false;
+                        continue;
+                    }
+
+                    pathSrc.append(SWAG_ALIAS_FILENAME);
+
+                    FILE* f = nullptr;
+                    if (!fopen_s(&f, pathSrc.string().c_str(), "wt"))
+                    {
+                        auto pathDst = val->fetchDep->resolvedLocation;
+                        (void) fwrite(pathDst.string().c_str(), pathDst.string().length(), 1, f);
+                        (void) fflush(f);
+                        (void) fclose(f);
+                    }
+
+                    fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
+
+                    static_cast<FetchModuleFileSystemJob*>(fetchJob)->collectSourceFiles = false;
+                    break;
                 }
-
-                pathSrc.append(SWAG_ALIAS_FILENAME);
-
-                FILE* f = nullptr;
-                if (!fopen_s(&f, pathSrc.string().c_str(), "wt"))
-                {
-                    auto pathDst = val->fetchDep->resolvedLocation;
-                    (void) fwrite(pathDst.string().c_str(), pathDst.string().length(), 1, f);
-                    (void) fflush(f);
-                    (void) fclose(f);
-                }
-
-                fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
-
-                static_cast<FetchModuleFileSystemJob*>(fetchJob)->collectSourceFiles = false;
-                break;
-            }
-            default:
-                break;
+                default:
+                    break;
             }
 
             SWAG_ASSERT(fetchJob);

@@ -57,28 +57,28 @@ bool TypeManager::promote32(SemanticContext* context, AstNode* left)
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::S8:
-        if (left->hasComputedValue())
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CAST_FLAG_TRY_COERCE));
-        break;
-    case NativeTypeKind::S16:
-        if (left->hasComputedValue())
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CAST_FLAG_TRY_COERCE));
-        break;
-    case NativeTypeKind::U8:
-        if (left->hasComputedValue())
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
-        break;
-    case NativeTypeKind::U16:
-        if (left->hasComputedValue())
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u32;
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
-        break;
-    default:
-        break;
+        case NativeTypeKind::S8:
+            if (left->hasComputedValue())
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
+            SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CAST_FLAG_TRY_COERCE));
+            break;
+        case NativeTypeKind::S16:
+            if (left->hasComputedValue())
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
+            SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoS32, nullptr, left, CAST_FLAG_TRY_COERCE));
+            break;
+        case NativeTypeKind::U8:
+            if (left->hasComputedValue())
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
+            SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
+            break;
+        case NativeTypeKind::U16:
+            if (left->hasComputedValue())
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u32;
+            SWAG_CHECK(makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, left, CAST_FLAG_TRY_COERCE));
+            break;
+        default:
+            break;
     }
 
     return true;
@@ -129,78 +129,78 @@ bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* 
     const auto newLeft = newLeftTypeInfo->nativeType;
     switch (leftTypeInfo->nativeType)
     {
-    case NativeTypeKind::U8:
-        if (newLeft == NativeTypeKind::U32)
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
-        else if (newLeft == NativeTypeKind::U64)
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
-        else if (newLeft == NativeTypeKind::F32)
-            left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.u8);
-        else if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u8);
-        break;
-    case NativeTypeKind::U16:
-        if (newLeft == NativeTypeKind::U32)
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u16;
-        else if (newLeft == NativeTypeKind::U64)
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u16;
-        else if (newLeft == NativeTypeKind::F32)
-            left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.u16);
-        else if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u16);
-        break;
-    case NativeTypeKind::U32:
-        if (newLeft == NativeTypeKind::U64)
-            left->computedValue()->reg.u64 = left->computedValue()->reg.u32;
-        else if (newLeft == NativeTypeKind::F32)
-            left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.u32);
-        else if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u32);
-        break;
-    case NativeTypeKind::U64:
-        if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u64);
-        break;
-    case NativeTypeKind::S8:
-        if (newLeft == NativeTypeKind::S32)
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
-        else if (newLeft == NativeTypeKind::S64)
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
-        else if (newLeft == NativeTypeKind::F32)
-            left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.s8);
-        else if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s8);
-        break;
-    case NativeTypeKind::S16:
-        if (newLeft == NativeTypeKind::S32)
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
-        else if (newLeft == NativeTypeKind::S64)
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
-        else if (newLeft == NativeTypeKind::F32)
-            left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.s16);
-        else if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s16);
-        break;
-    case NativeTypeKind::S32:
-        if (newLeft == NativeTypeKind::S64)
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s32;
-        else if (newLeft == NativeTypeKind::S64)
-            left->computedValue()->reg.s64 = left->computedValue()->reg.s32;
-        else if (newLeft == NativeTypeKind::F32)
-            left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.s32);
-        else if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s32);
-        break;
-    case NativeTypeKind::S64:
-        if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s64);
-        break;
-    case NativeTypeKind::F32:
-        if (newLeft == NativeTypeKind::F64)
-            left->computedValue()->reg.f64 = left->computedValue()->reg.f32;
-        break;
-    default:
-        break;
+        case NativeTypeKind::U8:
+            if (newLeft == NativeTypeKind::U32)
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
+            else if (newLeft == NativeTypeKind::U64)
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u8;
+            else if (newLeft == NativeTypeKind::F32)
+                left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.u8);
+            else if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u8);
+            break;
+        case NativeTypeKind::U16:
+            if (newLeft == NativeTypeKind::U32)
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u16;
+            else if (newLeft == NativeTypeKind::U64)
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u16;
+            else if (newLeft == NativeTypeKind::F32)
+                left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.u16);
+            else if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u16);
+            break;
+        case NativeTypeKind::U32:
+            if (newLeft == NativeTypeKind::U64)
+                left->computedValue()->reg.u64 = left->computedValue()->reg.u32;
+            else if (newLeft == NativeTypeKind::F32)
+                left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.u32);
+            else if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u32);
+            break;
+        case NativeTypeKind::U64:
+            if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.u64);
+            break;
+        case NativeTypeKind::S8:
+            if (newLeft == NativeTypeKind::S32)
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
+            else if (newLeft == NativeTypeKind::S64)
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s8;
+            else if (newLeft == NativeTypeKind::F32)
+                left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.s8);
+            else if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s8);
+            break;
+        case NativeTypeKind::S16:
+            if (newLeft == NativeTypeKind::S32)
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
+            else if (newLeft == NativeTypeKind::S64)
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s16;
+            else if (newLeft == NativeTypeKind::F32)
+                left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.s16);
+            else if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s16);
+            break;
+        case NativeTypeKind::S32:
+            if (newLeft == NativeTypeKind::S64)
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s32;
+            else if (newLeft == NativeTypeKind::S64)
+                left->computedValue()->reg.s64 = left->computedValue()->reg.s32;
+            else if (newLeft == NativeTypeKind::F32)
+                left->computedValue()->reg.f32 = static_cast<float>(left->computedValue()->reg.s32);
+            else if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s32);
+            break;
+        case NativeTypeKind::S64:
+            if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = static_cast<double>(left->computedValue()->reg.s64);
+            break;
+        case NativeTypeKind::F32:
+            if (newLeft == NativeTypeKind::F64)
+                left->computedValue()->reg.f64 = left->computedValue()->reg.f32;
+            break;
+        default:
+            break;
     }
 
     return true;

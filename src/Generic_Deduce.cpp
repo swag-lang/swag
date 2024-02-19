@@ -14,261 +14,261 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 {
     switch (wantedTypeInfo->kind)
     {
-    case TypeInfoKind::Struct:
-    {
-        const auto wantedStruct = castTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
-        if (callTypeInfo->isStruct())
+        case TypeInfoKind::Struct:
         {
-            const auto callStruct = castTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
-            if (!callStruct->genericParameters.empty())
+            const auto wantedStruct = castTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+            if (callTypeInfo->isStruct())
             {
-                const auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
-                for (size_t idx = 0; idx < num; idx++)
+                const auto callStruct = castTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
+                if (!callStruct->genericParameters.empty())
                 {
-                    wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
-                    callTypeInfos.push_back(callStruct->genericParameters[idx]->typeInfo);
-                }
-            }
-            else
-            {
-                const auto num = min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
-                for (size_t idx = 0; idx < num; idx++)
-                {
-                    wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
-                    callTypeInfos.push_back(callStruct->deducedGenericParameters[idx]);
-                }
-            }
-        }
-        else if (callTypeInfo->isListTuple())
-        {
-            const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
-            const auto num      = min(wantedStruct->genericParameters.size(), callList->subTypes.size());
-            for (size_t idx = 0; idx < num; idx++)
-            {
-                // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of
-                // fields is irrelevant, as we can write {b: 2, a: 1} too.
-                //
-                // We have a generic parameter. We search in the struct the field that correspond to that type, in
-                // order to get the corresponding field name. Then we will search for the name in the typelist (if
-                // specified).
-                const auto p       = wantedStruct->genericParameters[idx];
-                Utf8       nameVar = p->name;
-                for (size_t idx1 = 0; idx1 < wantedStruct->fields.size(); idx1++)
-                {
-                    if (wantedStruct->fields[idx1]->typeInfo->name == wantedStruct->genericParameters[idx]->typeInfo->name)
+                    const auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
+                    for (size_t idx = 0; idx < num; idx++)
                     {
-                        nameVar = wantedStruct->fields[idx1]->name;
-                        break;
+                        wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
+                        callTypeInfos.push_back(callStruct->genericParameters[idx]->typeInfo);
                     }
                 }
-
-                // Then the corresponding field name is searched in the typelist in case the user has specified one.
-                const auto p1        = callList->subTypes[idx];
-                auto       typeField = p1->typeInfo;
-                for (const auto& subType : callList->subTypes)
+                else
                 {
-                    if (nameVar == subType->name)
+                    const auto num = min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
+                    for (size_t idx = 0; idx < num; idx++)
                     {
-                        typeField = subType->typeInfo;
-                        break;
+                        wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
+                        callTypeInfos.push_back(callStruct->deducedGenericParameters[idx]);
                     }
                 }
-
-                wantedTypeInfos.push_back(p->typeInfo);
-                callTypeInfos.push_back(typeField);
             }
+            else if (callTypeInfo->isListTuple())
+            {
+                const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
+                const auto num      = min(wantedStruct->genericParameters.size(), callList->subTypes.size());
+                for (size_t idx = 0; idx < num; idx++)
+                {
+                    // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of
+                    // fields is irrelevant, as we can write {b: 2, a: 1} too.
+                    //
+                    // We have a generic parameter. We search in the struct the field that correspond to that type, in
+                    // order to get the corresponding field name. Then we will search for the name in the typelist (if
+                    // specified).
+                    const auto p       = wantedStruct->genericParameters[idx];
+                    Utf8       nameVar = p->name;
+                    for (size_t idx1 = 0; idx1 < wantedStruct->fields.size(); idx1++)
+                    {
+                        if (wantedStruct->fields[idx1]->typeInfo->name == wantedStruct->genericParameters[idx]->typeInfo->name)
+                        {
+                            nameVar = wantedStruct->fields[idx1]->name;
+                            break;
+                        }
+                    }
+
+                    // Then the corresponding field name is searched in the typelist in case the user has specified one.
+                    const auto p1        = callList->subTypes[idx];
+                    auto       typeField = p1->typeInfo;
+                    for (const auto& subType : callList->subTypes)
+                    {
+                        if (nameVar == subType->name)
+                        {
+                            typeField = subType->typeInfo;
+                            break;
+                        }
+                    }
+
+                    wantedTypeInfos.push_back(p->typeInfo);
+                    callTypeInfos.push_back(typeField);
+                }
+            }
+
+            break;
         }
 
-        break;
-    }
-
-    case TypeInfoKind::Pointer:
-    {
-        const auto wantedPointer = castTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
-        if (wantedPointer->isPointerTo(TypeInfoKind::Struct) && callTypeInfo->isPointerTo(TypeInfoKind::Struct))
+        case TypeInfoKind::Pointer:
         {
-            // Because of using var cast, we can have here *A and *B with a match.
-            // But we do not want A and B to match in generic replacement.
-            // So we check they are the same.
-            const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
-            if (wantedPointer->pointedType->isSame(callPointer->pointedType, CAST_FLAG_CAST))
+            const auto wantedPointer = castTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
+            if (wantedPointer->isPointerTo(TypeInfoKind::Struct) && callTypeInfo->isPointerTo(TypeInfoKind::Struct))
             {
+                // Because of using var cast, we can have here *A and *B with a match.
+                // But we do not want A and B to match in generic replacement.
+                // So we check they are the same.
+                const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
+                if (wantedPointer->pointedType->isSame(callPointer->pointedType, CAST_FLAG_CAST))
+                {
+                    wantedTypeInfos.push_back(wantedPointer->pointedType);
+                    callTypeInfos.push_back(callPointer->pointedType);
+                }
+            }
+            else if (callTypeInfo->isStruct())
+            {
+                // Because of using var cast, we can have here *A and *B with a match.
+                // But we do not want A and B to match in generic replacement.
+                // So we check they are the same.
+                if (wantedPointer->pointedType->isSame(callTypeInfo, CAST_FLAG_CAST))
+                {
+                    wantedTypeInfos.push_back(wantedPointer->pointedType);
+                    callTypeInfos.push_back(callTypeInfo);
+                }
+            }
+            else if (callTypeInfo->isPointer())
+            {
+                const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
                 wantedTypeInfos.push_back(wantedPointer->pointedType);
                 callTypeInfos.push_back(callPointer->pointedType);
             }
-        }
-        else if (callTypeInfo->isStruct())
-        {
-            // Because of using var cast, we can have here *A and *B with a match.
-            // But we do not want A and B to match in generic replacement.
-            // So we check they are the same.
-            if (wantedPointer->pointedType->isSame(callTypeInfo, CAST_FLAG_CAST))
+            else
             {
                 wantedTypeInfos.push_back(wantedPointer->pointedType);
                 callTypeInfos.push_back(callTypeInfo);
             }
-        }
-        else if (callTypeInfo->isPointer())
-        {
-            const auto callPointer = castTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
-            wantedTypeInfos.push_back(wantedPointer->pointedType);
-            callTypeInfos.push_back(callPointer->pointedType);
-        }
-        else
-        {
-            wantedTypeInfos.push_back(wantedPointer->pointedType);
-            callTypeInfos.push_back(callTypeInfo);
-        }
-        break;
-    }
-
-    case TypeInfoKind::Array:
-    {
-        const auto wantedArray = castTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
-
-        uint32_t count = 0;
-        if (callTypeInfo->isArray())
-        {
-            const auto callArray = castTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
-            wantedTypeInfos.push_back(wantedArray->finalType);
-            callTypeInfos.push_back(callArray->finalType);
-            count = callArray->count;
-        }
-        else if (callTypeInfo->isListArray())
-        {
-            const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
-            wantedTypeInfos.push_back(wantedArray->finalType);
-            callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
-            count = callList->subTypes.count;
-        }
-        else
-        {
-            SWAG_ASSERT(false);
+            break;
         }
 
-        // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
-        if (wantedArray->isGeneric() && wantedArray->hasFlag(TYPEINFO_GENERIC_COUNT))
+        case TypeInfoKind::Array:
         {
-            SWAG_ASSERT(wantedArray->sizeNode);
-            SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName);
-            const auto typeSize = wantedArray->sizeNode->typeInfo;
+            const auto wantedArray = castTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
 
-            ComputedValue* cv = Allocator::alloc<ComputedValue>();
-            cv->reg.s64       = count;
-
-            // Constant already defined ?
-            const auto& cstName = wantedArray->sizeNode->resolvedSymbolName->name;
-            const auto  it      = context.genericReplaceValues.find(cstName);
-            if (it != context.genericReplaceValues.end())
+            uint32_t count = 0;
+            if (callTypeInfo->isArray())
             {
-                if (!Semantic::valueEqualsTo(it->second, cv, typeSize, 0))
+                const auto callArray = castTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+                wantedTypeInfos.push_back(wantedArray->finalType);
+                callTypeInfos.push_back(callArray->finalType);
+                count = callArray->count;
+            }
+            else if (callTypeInfo->isListArray())
+            {
+                const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+                wantedTypeInfos.push_back(wantedArray->finalType);
+                callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
+                count = callList->subTypes.count;
+            }
+            else
+            {
+                SWAG_ASSERT(false);
+            }
+
+            // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
+            if (wantedArray->isGeneric() && wantedArray->hasFlag(TYPEINFO_GENERIC_COUNT))
+            {
+                SWAG_ASSERT(wantedArray->sizeNode);
+                SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName);
+                const auto typeSize = wantedArray->sizeNode->typeInfo;
+
+                ComputedValue* cv = Allocator::alloc<ComputedValue>();
+                cv->reg.s64       = count;
+
+                // Constant already defined ?
+                const auto& cstName = wantedArray->sizeNode->resolvedSymbolName->name;
+                const auto  it      = context.genericReplaceValues.find(cstName);
+                if (it != context.genericReplaceValues.end())
                 {
-                    context.badSignatureInfos.badNode               = callParameter;
-                    context.badSignatureInfos.badGenMatch           = cstName;
-                    context.badSignatureInfos.badGenValue1          = it->second;
-                    context.badSignatureInfos.badGenValue2          = cv;
-                    context.badSignatureInfos.badSignatureGivenType = typeSize;
-                    context.result                                  = MatchResult::MismatchGenericValue;
-                    break;
+                    if (!Semantic::valueEqualsTo(it->second, cv, typeSize, 0))
+                    {
+                        context.badSignatureInfos.badNode               = callParameter;
+                        context.badSignatureInfos.badGenMatch           = cstName;
+                        context.badSignatureInfos.badGenValue1          = it->second;
+                        context.badSignatureInfos.badGenValue2          = cv;
+                        context.badSignatureInfos.badSignatureGivenType = typeSize;
+                        context.result                                  = MatchResult::MismatchGenericValue;
+                        break;
+                    }
+
+                    Allocator::free<ComputedValue>(cv);
+                }
+                else
+                {
+                    context.genericReplaceValues[cstName] = cv;
                 }
 
-                Allocator::free<ComputedValue>(cv);
+                GenericReplaceType st;
+                st.typeInfoGeneric                          = typeSize;
+                st.typeInfoReplace                          = typeSize;
+                st.fromNode                                 = wantedArray->sizeNode;
+                context.genericReplaceTypes[typeSize->name] = st;
+            }
+
+            break;
+        }
+
+        case TypeInfoKind::Slice:
+        {
+            const auto wantedSlice = castTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
+            if (callTypeInfo->isSlice())
+            {
+                const auto callSlice = castTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
+                wantedTypeInfos.push_back(wantedSlice->pointedType);
+                callTypeInfos.push_back(callSlice->pointedType);
+            }
+            else if (callTypeInfo->isArray())
+            {
+                const auto callArray = castTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+                wantedTypeInfos.push_back(wantedSlice->pointedType);
+                callTypeInfos.push_back(callArray->pointedType);
+            }
+            else if (callTypeInfo->isListArray())
+            {
+                const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+                wantedTypeInfos.push_back(wantedSlice->pointedType);
+                callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
             }
             else
             {
-                context.genericReplaceValues[cstName] = cv;
+                wantedTypeInfos.push_back(wantedSlice->pointedType);
+                callTypeInfos.push_back(callTypeInfo);
             }
-
-            GenericReplaceType st;
-            st.typeInfoGeneric                          = typeSize;
-            st.typeInfoReplace                          = typeSize;
-            st.fromNode                                 = wantedArray->sizeNode;
-            context.genericReplaceTypes[typeSize->name] = st;
+            break;
         }
 
-        break;
-    }
+        case TypeInfoKind::LambdaClosure:
+        {
+            const auto wantedLambda = castTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
+            const auto callLambda   = castTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
 
-    case TypeInfoKind::Slice:
-    {
-        const auto wantedSlice = castTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
-        if (callTypeInfo->isSlice())
-        {
-            const auto callSlice = castTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
-            wantedTypeInfos.push_back(wantedSlice->pointedType);
-            callTypeInfos.push_back(callSlice->pointedType);
-        }
-        else if (callTypeInfo->isArray())
-        {
-            const auto callArray = castTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
-            wantedTypeInfos.push_back(wantedSlice->pointedType);
-            callTypeInfos.push_back(callArray->pointedType);
-        }
-        else if (callTypeInfo->isListArray())
-        {
-            const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
-            wantedTypeInfos.push_back(wantedSlice->pointedType);
-            callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
-        }
-        else
-        {
-            wantedTypeInfos.push_back(wantedSlice->pointedType);
-            callTypeInfos.push_back(callTypeInfo);
-        }
-        break;
-    }
-
-    case TypeInfoKind::LambdaClosure:
-    {
-        const auto wantedLambda = castTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
-        const auto callLambda   = castTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
-
-        if (wantedLambda->returnType && wantedLambda->returnType->isGeneric())
-        {
-            if (!callLambda->returnType->isUndefined() && !callLambda->returnType->isGeneric())
+            if (wantedLambda->returnType && wantedLambda->returnType->isGeneric())
             {
-                wantedTypeInfos.push_back(wantedLambda->returnType);
-                callTypeInfos.push_back(callLambda->returnType);
-            }
-            else
-            {
-                const AstFuncDecl* decl = castAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
-                if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
+                if (!callLambda->returnType->isUndefined() && !callLambda->returnType->isGeneric())
                 {
-                    const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
-                    if (tt != wantedLambda)
-                        Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
-                    return;
+                    wantedTypeInfos.push_back(wantedLambda->returnType);
+                    callTypeInfos.push_back(callLambda->returnType);
                 }
+                else
+                {
+                    const AstFuncDecl* decl = castAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
+                    if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
+                    {
+                        const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
+                        if (tt != wantedLambda)
+                            Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
+                        return;
+                    }
 
-                SWAG_ASSERT(!callLambda->returnType->isGeneric());
+                    SWAG_ASSERT(!callLambda->returnType->isGeneric());
+                }
             }
-        }
 
-        const auto num = wantedLambda->parameters.size();
-        for (size_t idx = 0; idx < num; idx++)
-        {
-            if (wantedLambda->isClosure() && !idx)
-                continue;
-
-            TypeInfoParam* callParam;
-            if (wantedLambda->isClosure() && callLambda->isLambda())
-                callParam = callLambda->parameters[idx - 1];
-            else
-                callParam = callLambda->parameters[idx];
-
-            const TypeInfoParam* wantedParam = wantedLambda->parameters[idx];
-            if (wantedParam->typeInfo->isGeneric() && !callParam->typeInfo->isUndefined())
+            const auto num = wantedLambda->parameters.size();
+            for (size_t idx = 0; idx < num; idx++)
             {
-                wantedTypeInfos.push_back(wantedParam->typeInfo);
-                callTypeInfos.push_back(callParam->typeInfo);
-            }
-        }
-        break;
-    }
+                if (wantedLambda->isClosure() && !idx)
+                    continue;
 
-    default:
-        break;
+                TypeInfoParam* callParam;
+                if (wantedLambda->isClosure() && callLambda->isLambda())
+                    callParam = callLambda->parameters[idx - 1];
+                else
+                    callParam = callLambda->parameters[idx];
+
+                const TypeInfoParam* wantedParam = wantedLambda->parameters[idx];
+                if (wantedParam->typeInfo->isGeneric() && !callParam->typeInfo->isUndefined())
+                {
+                    wantedTypeInfos.push_back(wantedParam->typeInfo);
+                    callTypeInfos.push_back(callParam->typeInfo);
+                }
+            }
+            break;
+        }
+
+        default:
+            break;
     }
 }
 

@@ -12,18 +12,18 @@ bool Semantic::canHaveGlobalAccess(const AstNode* node)
 {
     switch (node->kind)
     {
-    case AstNodeKind::AttrDecl:
-    case AstNodeKind::FuncDecl:
-    case AstNodeKind::ConstDecl:
-    case AstNodeKind::VarDecl:
-    case AstNodeKind::EnumDecl:
-    case AstNodeKind::InterfaceDecl:
-    case AstNodeKind::StructDecl:
-    case AstNodeKind::TypeAlias:
-    case AstNodeKind::NameAlias:
-        return true;
-    default:
-        return false;
+        case AstNodeKind::AttrDecl:
+        case AstNodeKind::FuncDecl:
+        case AstNodeKind::ConstDecl:
+        case AstNodeKind::VarDecl:
+        case AstNodeKind::EnumDecl:
+        case AstNodeKind::InterfaceDecl:
+        case AstNodeKind::StructDecl:
+        case AstNodeKind::TypeAlias:
+        case AstNodeKind::NameAlias:
+            return true;
+        default:
+            return false;
     }
 }
 

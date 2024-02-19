@@ -33,15 +33,15 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         {
             switch (node->tokenId)
             {
-            case TokenId::KwdTrue:
-            case TokenId::KwdFalse:
-                return error(token, FMT(Err(Err0703), "[[bool]] literals"));
-            case TokenId::LiteralString:
-                return error(token, FMT(Err(Err0703), "[[string]] literals"));
-            case TokenId::KwdNull:
-                return error(token, FMT(Err(Err0703), "[[null]]"));
-            default:
-                return error(token, FMT(Err(Err0703), "that kind of literal"));
+                case TokenId::KwdTrue:
+                case TokenId::KwdFalse:
+                    return error(token, FMT(Err(Err0703), "[[bool]] literals"));
+                case TokenId::LiteralString:
+                    return error(token, FMT(Err(Err0703), "[[string]] literals"));
+                case TokenId::KwdNull:
+                    return error(token, FMT(Err(Err0703), "[[null]]"));
+                default:
+                    return error(token, FMT(Err(Err0703), "that kind of literal"));
             }
         }
     }
@@ -207,238 +207,238 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
 {
     switch (token.id)
     {
-    case TokenId::CompilerCallerFunction:
-    case TokenId::CompilerCallerLocation:
-    case TokenId::CompilerBuildCfg:
-    case TokenId::CompilerOs:
-    case TokenId::CompilerArch:
-    case TokenId::CompilerCpu:
-    case TokenId::CompilerSwagOs:
-    case TokenId::CompilerBackend:
-        SWAG_CHECK(doCompilerSpecialValue(parent, result));
-        break;
+        case TokenId::CompilerCallerFunction:
+        case TokenId::CompilerCallerLocation:
+        case TokenId::CompilerBuildCfg:
+        case TokenId::CompilerOs:
+        case TokenId::CompilerArch:
+        case TokenId::CompilerCpu:
+        case TokenId::CompilerSwagOs:
+        case TokenId::CompilerBackend:
+            SWAG_CHECK(doCompilerSpecialValue(parent, result));
+            break;
 
-    case TokenId::CompilerLocation:
-    case TokenId::IntrinsicLocation:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
+        case TokenId::CompilerLocation:
+        case TokenId::IntrinsicLocation:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
 
-    case TokenId::IntrinsicDefined:
-        SWAG_CHECK(doIntrinsicDefined(parent, result));
-        break;
+        case TokenId::IntrinsicDefined:
+            SWAG_CHECK(doIntrinsicDefined(parent, result));
+            break;
 
-    case TokenId::CompilerInclude:
-        SWAG_CHECK(doCompilerInclude(parent, result));
-        break;
+        case TokenId::CompilerInclude:
+            SWAG_CHECK(doCompilerInclude(parent, result));
+            break;
 
-    case TokenId::CompilerSelf:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
+        case TokenId::CompilerSelf:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
 
-    case TokenId::SymLeftParen:
-    {
-        const auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(startLoc, token.endLocation, Err(Err0679)));
-        AstNode* expr;
-        SWAG_CHECK(doExpression(parent, exprFlags, &expr));
-        *result = expr;
-        expr->addAstFlag(AST_IN_ATOMIC_EXPR);
-        if (parent)
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, FMT("to end the [[%s]] expression", parent->token.c_str())));
-        else
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
-        break;
-    }
-
-    case TokenId::KwdTrue:
-    case TokenId::KwdFalse:
-    case TokenId::KwdNull:
-    case TokenId::CompilerFile:
-    case TokenId::CompilerModule:
-    case TokenId::CompilerLine:
-    case TokenId::CompilerBuildVersion:
-    case TokenId::CompilerBuildRevision:
-    case TokenId::CompilerBuildNum:
-    case TokenId::LiteralNumber:
-    case TokenId::LiteralString:
-    case TokenId::LiteralCharacter:
-        SWAG_CHECK(doLiteral(parent, result));
-        break;
-
-    case TokenId::KwdTry:
-    case TokenId::KwdCatch:
-    case TokenId::KwdTryCatch:
-    case TokenId::KwdAssume:
-        SWAG_CHECK(doTryCatchAssume(parent, result));
-        break;
-    case TokenId::CompilerUp:
-    case TokenId::Identifier:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
-    case TokenId::SymDot:
-    {
-        SWAG_CHECK(eatToken());
-        AstNode* idref;
-        SWAG_CHECK(doIdentifierRef(parent, &idref));
-        *result = idref;
-        castAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE);
-        break;
-    }
-
-    case TokenId::IntrinsicIndex:
-        SWAG_CHECK(doIndex(parent, result));
-        break;
-
-    case TokenId::IntrinsicHasTag:
-    case TokenId::IntrinsicGetTag:
-    case TokenId::IntrinsicSafety:
-        SWAG_CHECK(doIntrinsicTag(parent, result));
-        break;
-
-    case TokenId::IntrinsicSpread:
-    case TokenId::IntrinsicSizeOf:
-    case TokenId::IntrinsicAlignOf:
-    case TokenId::IntrinsicOffsetOf:
-    case TokenId::IntrinsicKindOf:
-    case TokenId::IntrinsicCountOf:
-    case TokenId::IntrinsicDataOf:
-    case TokenId::IntrinsicStringOf:
-    case TokenId::IntrinsicNameOf:
-    case TokenId::IntrinsicRunes:
-    case TokenId::IntrinsicMakeAny:
-    case TokenId::IntrinsicMakeSlice:
-    case TokenId::IntrinsicMakeString:
-    case TokenId::IntrinsicMakeCallback:
-    case TokenId::IntrinsicMakeInterface:
-    case TokenId::IntrinsicAlloc:
-    case TokenId::IntrinsicRealloc:
-    case TokenId::IntrinsicGetContext:
-    case TokenId::IntrinsicGetProcessInfos:
-    case TokenId::IntrinsicArguments:
-    case TokenId::IntrinsicModules:
-    case TokenId::IntrinsicGvtd:
-    case TokenId::IntrinsicCompiler:
-    case TokenId::IntrinsicIsByteCode:
-    case TokenId::IntrinsicGetErr:
-    case TokenId::IntrinsicMemCmp:
-    case TokenId::IntrinsicStrLen:
-    case TokenId::IntrinsicStrCmp:
-    case TokenId::IntrinsicStringCmp:
-    case TokenId::IntrinsicTypeCmp:
-    case TokenId::IntrinsicAtomicAdd:
-    case TokenId::IntrinsicAtomicAnd:
-    case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXor:
-    case TokenId::IntrinsicAtomicXchg:
-    case TokenId::IntrinsicAtomicCmpXchg:
-    case TokenId::IntrinsicIsConstExpr:
-    case TokenId::IntrinsicCVaArg:
-    case TokenId::IntrinsicTypeOf:
-    case TokenId::IntrinsicItfTableOf:
-    case TokenId::IntrinsicDbgAlloc:
-    case TokenId::IntrinsicSysAlloc:
-    case TokenId::IntrinsicRtFlags:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
-
-    case TokenId::IntrinsicSqrt:
-    case TokenId::IntrinsicSin:
-    case TokenId::IntrinsicCos:
-    case TokenId::IntrinsicTan:
-    case TokenId::IntrinsicSinh:
-    case TokenId::IntrinsicCosh:
-    case TokenId::IntrinsicTanh:
-    case TokenId::IntrinsicASin:
-    case TokenId::IntrinsicACos:
-    case TokenId::IntrinsicATan:
-    case TokenId::IntrinsicATan2:
-    case TokenId::IntrinsicLog:
-    case TokenId::IntrinsicLog2:
-    case TokenId::IntrinsicLog10:
-    case TokenId::IntrinsicFloor:
-    case TokenId::IntrinsicCeil:
-    case TokenId::IntrinsicTrunc:
-    case TokenId::IntrinsicRound:
-    case TokenId::IntrinsicAbs:
-    case TokenId::IntrinsicExp:
-    case TokenId::IntrinsicExp2:
-    case TokenId::IntrinsicPow:
-    case TokenId::IntrinsicMin:
-    case TokenId::IntrinsicMax:
-    case TokenId::IntrinsicBitCountNz:
-    case TokenId::IntrinsicBitCountTz:
-    case TokenId::IntrinsicBitCountLz:
-    case TokenId::IntrinsicByteSwap:
-    case TokenId::IntrinsicRol:
-    case TokenId::IntrinsicRor:
-    case TokenId::IntrinsicMulAdd:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
-
-    case TokenId::CompilerType:
-    {
-        if (exprFlags.has(EXPR_FLAG_SIMPLE))
-            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
-        eatToken();
-        SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-        (*result)->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
-        break;
-    }
-
-    case TokenId::KwdConst:
-    case TokenId::KwdCode:
-    case TokenId::KwdStruct:
-    case TokenId::KwdUnion:
-    case TokenId::NativeType:
-    case TokenId::SymAsterisk:
-    case TokenId::SymCircumflex:
-    case TokenId::SymAmpersand:
-        if (exprFlags.has(EXPR_FLAG_SIMPLE))
-            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
-        SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-        break;
-
-    case TokenId::SymLeftCurly:
-        SWAG_CHECK(doExpressionListTuple(parent, result));
-        break;
-
-    case TokenId::SymLeftSquare:
-        if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
+        case TokenId::SymLeftParen:
         {
-            tokenizer.saveState(token);
-            SWAG_CHECK(doExpressionListArray(parent, result));
-            if (token.id != TokenId::SymRightParen && token.id != TokenId::SymRightCurly && token.id != TokenId::SymComma)
-            {
-                tokenizer.restoreState(token);
-                Ast::removeFromParent(parent->children.back());
-                SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
-            }
-        }
-        else
-        {
-            SWAG_CHECK(doExpressionListArray(parent, result));
+            const auto startLoc = token.startLocation;
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(startLoc, token.endLocation, Err(Err0679)));
+            AstNode* expr;
+            SWAG_CHECK(doExpression(parent, exprFlags, &expr));
+            *result = expr;
+            expr->addAstFlag(AST_IN_ATOMIC_EXPR);
+            if (parent)
+                SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, FMT("to end the [[%s]] expression", parent->token.c_str())));
+            else
+                SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
+            break;
         }
 
-        break;
+        case TokenId::KwdTrue:
+        case TokenId::KwdFalse:
+        case TokenId::KwdNull:
+        case TokenId::CompilerFile:
+        case TokenId::CompilerModule:
+        case TokenId::CompilerLine:
+        case TokenId::CompilerBuildVersion:
+        case TokenId::CompilerBuildRevision:
+        case TokenId::CompilerBuildNum:
+        case TokenId::LiteralNumber:
+        case TokenId::LiteralString:
+        case TokenId::LiteralCharacter:
+            SWAG_CHECK(doLiteral(parent, result));
+            break;
 
-    case TokenId::KwdFunc:
-    case TokenId::KwdClosure:
-        if (exprFlags.has(EXPR_FLAG_SIMPLE))
-            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+        case TokenId::KwdTry:
+        case TokenId::KwdCatch:
+        case TokenId::KwdTryCatch:
+        case TokenId::KwdAssume:
+            SWAG_CHECK(doTryCatchAssume(parent, result));
+            break;
+        case TokenId::CompilerUp:
+        case TokenId::Identifier:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
+        case TokenId::SymDot:
+        {
+            SWAG_CHECK(eatToken());
+            AstNode* idref;
+            SWAG_CHECK(doIdentifierRef(parent, &idref));
+            *result = idref;
+            castAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE);
+            break;
+        }
 
-        if (exprFlags.has(EXPR_FLAG_TYPEOF))
+        case TokenId::IntrinsicIndex:
+            SWAG_CHECK(doIndex(parent, result));
+            break;
+
+        case TokenId::IntrinsicHasTag:
+        case TokenId::IntrinsicGetTag:
+        case TokenId::IntrinsicSafety:
+            SWAG_CHECK(doIntrinsicTag(parent, result));
+            break;
+
+        case TokenId::IntrinsicSpread:
+        case TokenId::IntrinsicSizeOf:
+        case TokenId::IntrinsicAlignOf:
+        case TokenId::IntrinsicOffsetOf:
+        case TokenId::IntrinsicKindOf:
+        case TokenId::IntrinsicCountOf:
+        case TokenId::IntrinsicDataOf:
+        case TokenId::IntrinsicStringOf:
+        case TokenId::IntrinsicNameOf:
+        case TokenId::IntrinsicRunes:
+        case TokenId::IntrinsicMakeAny:
+        case TokenId::IntrinsicMakeSlice:
+        case TokenId::IntrinsicMakeString:
+        case TokenId::IntrinsicMakeCallback:
+        case TokenId::IntrinsicMakeInterface:
+        case TokenId::IntrinsicAlloc:
+        case TokenId::IntrinsicRealloc:
+        case TokenId::IntrinsicGetContext:
+        case TokenId::IntrinsicGetProcessInfos:
+        case TokenId::IntrinsicArguments:
+        case TokenId::IntrinsicModules:
+        case TokenId::IntrinsicGvtd:
+        case TokenId::IntrinsicCompiler:
+        case TokenId::IntrinsicIsByteCode:
+        case TokenId::IntrinsicGetErr:
+        case TokenId::IntrinsicMemCmp:
+        case TokenId::IntrinsicStrLen:
+        case TokenId::IntrinsicStrCmp:
+        case TokenId::IntrinsicStringCmp:
+        case TokenId::IntrinsicTypeCmp:
+        case TokenId::IntrinsicAtomicAdd:
+        case TokenId::IntrinsicAtomicAnd:
+        case TokenId::IntrinsicAtomicOr:
+        case TokenId::IntrinsicAtomicXor:
+        case TokenId::IntrinsicAtomicXchg:
+        case TokenId::IntrinsicAtomicCmpXchg:
+        case TokenId::IntrinsicIsConstExpr:
+        case TokenId::IntrinsicCVaArg:
+        case TokenId::IntrinsicTypeOf:
+        case TokenId::IntrinsicItfTableOf:
+        case TokenId::IntrinsicDbgAlloc:
+        case TokenId::IntrinsicSysAlloc:
+        case TokenId::IntrinsicRtFlags:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
+
+        case TokenId::IntrinsicSqrt:
+        case TokenId::IntrinsicSin:
+        case TokenId::IntrinsicCos:
+        case TokenId::IntrinsicTan:
+        case TokenId::IntrinsicSinh:
+        case TokenId::IntrinsicCosh:
+        case TokenId::IntrinsicTanh:
+        case TokenId::IntrinsicASin:
+        case TokenId::IntrinsicACos:
+        case TokenId::IntrinsicATan:
+        case TokenId::IntrinsicATan2:
+        case TokenId::IntrinsicLog:
+        case TokenId::IntrinsicLog2:
+        case TokenId::IntrinsicLog10:
+        case TokenId::IntrinsicFloor:
+        case TokenId::IntrinsicCeil:
+        case TokenId::IntrinsicTrunc:
+        case TokenId::IntrinsicRound:
+        case TokenId::IntrinsicAbs:
+        case TokenId::IntrinsicExp:
+        case TokenId::IntrinsicExp2:
+        case TokenId::IntrinsicPow:
+        case TokenId::IntrinsicMin:
+        case TokenId::IntrinsicMax:
+        case TokenId::IntrinsicBitCountNz:
+        case TokenId::IntrinsicBitCountTz:
+        case TokenId::IntrinsicBitCountLz:
+        case TokenId::IntrinsicByteSwap:
+        case TokenId::IntrinsicRol:
+        case TokenId::IntrinsicRor:
+        case TokenId::IntrinsicMulAdd:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            break;
+
+        case TokenId::CompilerType:
+        {
+            if (exprFlags.has(EXPR_FLAG_SIMPLE))
+                return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+            eatToken();
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
-        else
-            SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
-        break;
+            (*result)->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
+            break;
+        }
 
-    case TokenId::KwdCast:
-        SWAG_CHECK(doCast(parent, result));
-        break;
+        case TokenId::KwdConst:
+        case TokenId::KwdCode:
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::NativeType:
+        case TokenId::SymAsterisk:
+        case TokenId::SymCircumflex:
+        case TokenId::SymAmpersand:
+            if (exprFlags.has(EXPR_FLAG_SIMPLE))
+                return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+            SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
+            break;
 
-    default:
-        return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+        case TokenId::SymLeftCurly:
+            SWAG_CHECK(doExpressionListTuple(parent, result));
+            break;
+
+        case TokenId::SymLeftSquare:
+            if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
+            {
+                tokenizer.saveState(token);
+                SWAG_CHECK(doExpressionListArray(parent, result));
+                if (token.id != TokenId::SymRightParen && token.id != TokenId::SymRightCurly && token.id != TokenId::SymComma)
+                {
+                    tokenizer.restoreState(token);
+                    Ast::removeFromParent(parent->children.back());
+                    SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
+                }
+            }
+            else
+            {
+                SWAG_CHECK(doExpressionListArray(parent, result));
+            }
+
+            break;
+
+        case TokenId::KwdFunc:
+        case TokenId::KwdClosure:
+            if (exprFlags.has(EXPR_FLAG_SIMPLE))
+                return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+
+            if (exprFlags.has(EXPR_FLAG_TYPEOF))
+                SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
+            else
+                SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
+            break;
+
+        case TokenId::KwdCast:
+            SWAG_CHECK(doCast(parent, result));
+            break;
+
+        default:
+            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
     }
 
     return true;
@@ -564,27 +564,27 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
 {
     switch (token.id)
     {
-    case TokenId::KwdCast:
-        SWAG_CHECK(doCast(parent, result));
-        return true;
-    case TokenId::KwdAutoCast:
-        SWAG_CHECK(doAutoCast(parent, result));
-        return true;
-    case TokenId::SymMinus:
-    case TokenId::SymExclam:
-    case TokenId::SymTilde:
-    {
-        const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::SingleOp, sourceFile, parent);
-        *result           = node;
-        node->semanticFct = Semantic::resolveUnaryOp;
-        node->token       = static_cast<Token>(token);
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id != prevToken.id, error(token, FMT(Err(Err0071), token.c_str())));
-        SWAG_VERIFY(token.id != TokenId::KwdDeRef, error(token, FMT(Err(Err0282), prevToken.c_str(), token.c_str(), prevToken.c_str())));
-        return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
-    }
-    default:
-        break;
+        case TokenId::KwdCast:
+            SWAG_CHECK(doCast(parent, result));
+            return true;
+        case TokenId::KwdAutoCast:
+            SWAG_CHECK(doAutoCast(parent, result));
+            return true;
+        case TokenId::SymMinus:
+        case TokenId::SymExclam:
+        case TokenId::SymTilde:
+        {
+            const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::SingleOp, sourceFile, parent);
+            *result           = node;
+            node->semanticFct = Semantic::resolveUnaryOp;
+            node->token       = static_cast<Token>(token);
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != prevToken.id, error(token, FMT(Err(Err0071), token.c_str())));
+            SWAG_VERIFY(token.id != TokenId::KwdDeRef, error(token, FMT(Err(Err0282), prevToken.c_str(), token.c_str(), prevToken.c_str())));
+            return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
+        }
+        default:
+            break;
     }
 
     return doPrimaryExpression(parent, exprFlags, result);
@@ -603,14 +603,14 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::SymPlus:
-            case TokenId::SymMinus:
-            case TokenId::SymAsterisk:
-            case TokenId::SymSlash:
-            case TokenId::SymPercent:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::SymPlus:
+                case TokenId::SymMinus:
+                case TokenId::SymAsterisk:
+                case TokenId::SymSlash:
+                case TokenId::SymPercent:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_UP), error(token, FMT(Err(Err0070), token.c_str())));
@@ -623,16 +623,16 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::SymPlus:
-            case TokenId::SymMinus:
-            case TokenId::SymAsterisk:
-            case TokenId::SymPlusEqual:
-            case TokenId::SymMinusEqual:
-            case TokenId::SymAsteriskEqual:
-            case TokenId::KwdCast:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::SymPlus:
+                case TokenId::SymMinus:
+                case TokenId::SymAsterisk:
+                case TokenId::SymPlusEqual:
+                case TokenId::SymMinusEqual:
+                case TokenId::SymAsteriskEqual:
+                case TokenId::KwdCast:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_OVERFLOW), error(token, FMT(Err(Err0070), token.c_str())));
@@ -645,10 +645,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::SymEqual:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::SymEqual:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_LEFT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
@@ -661,11 +661,11 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::KwdLoop:
-            case TokenId::KwdVisit:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::KwdLoop:
+                case TokenId::KwdVisit:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_BACK), error(token, FMT(Err(Err0070), token.c_str())));
@@ -678,10 +678,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::KwdCast:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::KwdCast:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(token, FMT(Err(Err0070), token.c_str())));
@@ -694,10 +694,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::KwdCast:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::KwdCast:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(token, FMT(Err(Err0070), token.c_str())));
@@ -710,10 +710,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::SymEqual:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::SymEqual:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(token, FMT(Err(Err0070), token.c_str())));
@@ -726,10 +726,10 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
         {
             switch (opId)
             {
-            case TokenId::SymEqual:
-                break;
-            default:
-                return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
+                case TokenId::SymEqual:
+                    break;
+                default:
+                    return error(token, FMT(Err(Err0694), token.c_str(), forNode.c_str()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_RIGHT_DROP), error(token, FMT(Err(Err0070), token.c_str())));
@@ -751,40 +751,40 @@ namespace
     {
         switch (id)
         {
-        case TokenId::SymTilde:
-            return 0;
-        case TokenId::SymAsterisk:
-        case TokenId::SymSlash:
-        case TokenId::SymPercent:
-            return 1;
-        case TokenId::SymPlus:
-        case TokenId::SymMinus:
-            return 2;
-        case TokenId::SymGreaterGreater:
-        case TokenId::SymLowerLower:
-            return 3;
-        case TokenId::SymAmpersand:
-            return 4;
-        case TokenId::SymVertical:
-            return 5;
-        case TokenId::SymCircumflex:
-            return 6;
-        case TokenId::SymLowerEqualGreater:
-            return 7;
-        case TokenId::SymEqualEqual:
-        case TokenId::SymExclamEqual:
-            return 8;
-        case TokenId::SymLower:
-        case TokenId::SymLowerEqual:
-        case TokenId::SymGreater:
-        case TokenId::SymGreaterEqual:
-            return 9;
-        case TokenId::KwdAnd:
-            return 10;
-        case TokenId::KwdOr:
-            return 11;
-        default:
-            break;
+            case TokenId::SymTilde:
+                return 0;
+            case TokenId::SymAsterisk:
+            case TokenId::SymSlash:
+            case TokenId::SymPercent:
+                return 1;
+            case TokenId::SymPlus:
+            case TokenId::SymMinus:
+                return 2;
+            case TokenId::SymGreaterGreater:
+            case TokenId::SymLowerLower:
+                return 3;
+            case TokenId::SymAmpersand:
+                return 4;
+            case TokenId::SymVertical:
+                return 5;
+            case TokenId::SymCircumflex:
+                return 6;
+            case TokenId::SymLowerEqualGreater:
+                return 7;
+            case TokenId::SymEqualEqual:
+            case TokenId::SymExclamEqual:
+                return 8;
+            case TokenId::SymLower:
+            case TokenId::SymLowerEqual:
+            case TokenId::SymGreater:
+            case TokenId::SymGreaterEqual:
+                return 9;
+            case TokenId::KwdAnd:
+                return 10;
+            case TokenId::KwdOr:
+                return 11;
+            default:
+                break;
         }
 
         return -1;
@@ -794,16 +794,16 @@ namespace
     {
         switch (id)
         {
-        case TokenId::SymPlus:
-        case TokenId::SymAsterisk:
-        case TokenId::SymVertical:
-        case TokenId::SymCircumflex:
-        case TokenId::SymPlusPlus:
-        case TokenId::KwdAnd:
-        case TokenId::KwdOr:
-            return true;
-        default:
-            break;
+            case TokenId::SymPlus:
+            case TokenId::SymAsterisk:
+            case TokenId::SymVertical:
+            case TokenId::SymCircumflex:
+            case TokenId::SymPlusPlus:
+            case TokenId::KwdAnd:
+            case TokenId::KwdOr:
+                return true;
+            default:
+                break;
         }
 
         return false;
@@ -1056,78 +1056,78 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
     AstNode* boolExpression = nullptr;
     switch (token.id)
     {
-    case TokenId::CompilerRun:
-    {
-        ScopedFlags sf(this, AST_IN_RUN_BLOCK);
-        const auto  node  = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRunExpression, sourceFile, nullptr);
-        node->semanticFct = Semantic::resolveCompilerRun;
-        SWAG_CHECK(eatToken());
-
-        // :RunGeneratedExp
-        if (token.id == TokenId::SymLeftCurly)
+        case TokenId::CompilerRun:
         {
-            *result = node;
+            ScopedFlags sf(this, AST_IN_RUN_BLOCK);
+            const auto  node  = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRunExpression, sourceFile, nullptr);
+            node->semanticFct = Semantic::resolveCompilerRun;
+            SWAG_CHECK(eatToken());
 
-            node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-            node->allocateExtension(ExtensionKind::Semantic);
-            node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+            // :RunGeneratedExp
+            if (token.id == TokenId::SymLeftCurly)
+            {
+                *result = node;
 
-            AstNode* funcNode;
-            SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
-            funcNode->addAttribute(ATTRIBUTE_COMPILER);
+                node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+                node->allocateExtension(ExtensionKind::Semantic);
+                node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
 
-            const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
-            idRef->token.startLocation      = node->token.startLocation;
-            idRef->token.endLocation        = node->token.endLocation;
-            const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
-            identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
-            identifier->token.startLocation = node->token.startLocation;
-            identifier->token.endLocation   = node->token.endLocation;
-            return true;
+                AstNode* funcNode;
+                SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
+                funcNode->addAttribute(ATTRIBUTE_COMPILER);
+
+                const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+                idRef->token.startLocation      = node->token.startLocation;
+                idRef->token.endLocation        = node->token.endLocation;
+                const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
+                identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
+                identifier->token.startLocation = node->token.startLocation;
+                identifier->token.endLocation   = node->token.endLocation;
+                return true;
+            }
+
+            SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
+            boolExpression = node;
+            break;
+        }
+        case TokenId::CompilerMixin:
+        {
+            const auto node   = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, nullptr);
+            node->semanticFct = Semantic::resolveCompilerMixin;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
+            boolExpression = node;
+            break;
+        }
+        case TokenId::CompilerCode:
+        {
+            const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerCode, sourceFile, nullptr);
+            SWAG_CHECK(eatToken());
+            if (token.id == TokenId::SymLeftCurly)
+                SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
+            else
+                SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
+            const auto typeCode = makeType<TypeInfoCode>();
+            typeCode->content   = node->children.front();
+            typeCode->content->addAstFlag(AST_NO_SEMANTIC);
+            node->typeInfo = typeCode;
+            node->addAstFlag(AST_NO_BYTECODE);
+            boolExpression = node;
+            break;
         }
 
-        SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
-        boolExpression = node;
-        break;
-    }
-    case TokenId::CompilerMixin:
-    {
-        const auto node   = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, nullptr);
-        node->semanticFct = Semantic::resolveCompilerMixin;
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
-        boolExpression = node;
-        break;
-    }
-    case TokenId::CompilerCode:
-    {
-        const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerCode, sourceFile, nullptr);
-        SWAG_CHECK(eatToken());
-        if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
-        else
-            SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
-        const auto typeCode = makeType<TypeInfoCode>();
-        typeCode->content   = node->children.front();
-        typeCode->content->addAstFlag(AST_NO_SEMANTIC);
-        node->typeInfo = typeCode;
-        node->addAstFlag(AST_NO_BYTECODE);
-        boolExpression = node;
-        break;
-    }
+        case TokenId::CompilerAst:
+        case TokenId::CompilerFuncInit:
+        case TokenId::CompilerFuncDrop:
+        case TokenId::CompilerFuncPreMain:
+        case TokenId::CompilerFuncMain:
+        case TokenId::CompilerFuncTest:
+            return error(token, FMT(Err(Err0285), token.c_str()));
 
-    case TokenId::CompilerAst:
-    case TokenId::CompilerFuncInit:
-    case TokenId::CompilerFuncDrop:
-    case TokenId::CompilerFuncPreMain:
-    case TokenId::CompilerFuncMain:
-    case TokenId::CompilerFuncTest:
-        return error(token, FMT(Err(Err0285), token.c_str()));
-
-    default:
-        SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
-        Ast::removeFromParent(boolExpression);
-        break;
+        default:
+            SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
+            Ast::removeFromParent(boolExpression);
+            break;
     }
 
     // A ? B : C
@@ -1276,14 +1276,14 @@ void Parser::isForceTakeAddress(AstNode* node)
     node->addAstFlag(AST_TAKE_ADDRESS);
     switch (node->kind)
     {
-    case AstNodeKind::IdentifierRef:
-        isForceTakeAddress(node->children.back());
-        break;
-    case AstNodeKind::ArrayPointerIndex:
-        isForceTakeAddress(castAst<AstArrayPointerIndex>(node)->array);
-        break;
-    default:
-        break;
+        case AstNodeKind::IdentifierRef:
+            isForceTakeAddress(node->children.back());
+            break;
+        case AstNodeKind::ArrayPointerIndex:
+            isForceTakeAddress(castAst<AstArrayPointerIndex>(node)->array);
+            break;
+        default:
+            break;
     }
 }
 
@@ -1291,89 +1291,89 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 {
     switch (token.id)
     {
-    case TokenId::SymLeftParen:
-    {
-        const auto multi    = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
-        *result             = multi;
-        const auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken());
-        while (true)
+        case TokenId::SymLeftParen:
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, FMT(Err(Err0698), token.c_str())));
-            SWAG_CHECK(doIdentifierRef(multi, &dummyResult, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
-            if (token.id != TokenId::SymComma)
-                break;
+            const auto multi    = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
+            *result             = multi;
+            const auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0133)));
-        }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the tuple unpacking"));
-        break;
-    }
-
-    case TokenId::Identifier:
-    case TokenId::CompilerUp:
-    case TokenId::CompilerSelf:
-    {
-        AstNode* exprNode     = nullptr;
-        AstNode* multi        = nullptr;
-        bool     prePrendWith = withNode != nullptr;
-        while (true)
-        {
-            if (token.id == TokenId::SymDot)
+            while (true)
             {
-                SWAG_VERIFY(withNode, error(token, Err(Err0507)));
-                prePrendWith = true;
-                eatToken();
+                SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, FMT(Err(Err0698), token.c_str())));
+                SWAG_CHECK(doIdentifierRef(multi, &dummyResult, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
+                if (token.id != TokenId::SymComma)
+                    break;
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0133)));
             }
 
-            SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
-            if (multi == nullptr)
-                Ast::removeFromParent(exprNode);
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the tuple unpacking"));
+            break;
+        }
 
-            // Prepend the 'with' identifier
-            if (withNode && prePrendWith)
+        case TokenId::Identifier:
+        case TokenId::CompilerUp:
+        case TokenId::CompilerSelf:
+        {
+            AstNode* exprNode     = nullptr;
+            AstNode* multi        = nullptr;
+            bool     prePrendWith = withNode != nullptr;
+            while (true)
             {
-                prePrendWith = false;
-                SWAG_ASSERT(exprNode->kind == AstNodeKind::IdentifierRef);
-                for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
+                if (token.id == TokenId::SymDot)
                 {
-                    const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], castAst<AstIdentifierRef>(exprNode), exprNode, this);
-                    id->addAstFlag(AST_GENERATED);
-                    id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
-                    id->allocateIdentifierExtension();
-                    id->identifierExtension->fromAlternateVar = withNode->children.front();
-                    id->inheritTokenLocation(exprNode);
-                    exprNode->children.pop_back();
-                    Ast::addChildFront(exprNode, id);
+                    SWAG_VERIFY(withNode, error(token, Err(Err0507)));
+                    prePrendWith = true;
+                    eatToken();
+                }
+
+                SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
+                if (multi == nullptr)
+                    Ast::removeFromParent(exprNode);
+
+                // Prepend the 'with' identifier
+                if (withNode && prePrendWith)
+                {
+                    prePrendWith = false;
+                    SWAG_ASSERT(exprNode->kind == AstNodeKind::IdentifierRef);
+                    for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
+                    {
+                        const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], castAst<AstIdentifierRef>(exprNode), exprNode, this);
+                        id->addAstFlag(AST_GENERATED);
+                        id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
+                        id->allocateIdentifierExtension();
+                        id->identifierExtension->fromAlternateVar = withNode->children.front();
+                        id->inheritTokenLocation(exprNode);
+                        exprNode->children.pop_back();
+                        Ast::addChildFront(exprNode, id);
+                    }
+                }
+
+                if (token.id != TokenId::SymComma)
+                    break;
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id != TokenId::SymEqual && token.id != TokenId::SymSemiColon, error(token, Err(Err0134)));
+
+                if (!multi)
+                {
+                    multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifier, sourceFile, parent);
+                    Ast::addChildBack(multi, exprNode);
                 }
             }
 
-            if (token.id != TokenId::SymComma)
-                break;
-            SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id != TokenId::SymEqual && token.id != TokenId::SymSemiColon, error(token, Err(Err0134)));
-
-            if (!multi)
-            {
-                multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifier, sourceFile, parent);
-                Ast::addChildBack(multi, exprNode);
-            }
+            Ast::removeFromParent(multi);
+            *result = multi ? multi : exprNode;
+            break;
         }
 
-        Ast::removeFromParent(multi);
-        *result = multi ? multi : exprNode;
-        break;
-    }
-
-    default:
-    {
-        const Diagnostic  err{sourceFile, token, FMT(Err(Err0408), token.c_str())};
-        const Diagnostic* note = nullptr;
-        if (Tokenizer::isKeyword(token.id))
-            note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
-        return context->report(err, note);
-    }
+        default:
+        {
+            const Diagnostic  err{sourceFile, token, FMT(Err(Err0408), token.c_str())};
+            const Diagnostic* note = nullptr;
+            if (Tokenizer::isKeyword(token.id))
+                note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
+            return context->report(err, note);
+        }
     }
 
     return true;
@@ -1383,41 +1383,41 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
 {
     switch (token.id)
     {
-    case TokenId::IntrinsicGetContext:
-    case TokenId::IntrinsicGetProcessInfos:
-    case TokenId::IntrinsicDbgAlloc:
-    case TokenId::IntrinsicSysAlloc:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        return true;
-    case TokenId::SymLeftParen:
-    case TokenId::Identifier:
-    case TokenId::CompilerUp:
-    case TokenId::CompilerSelf:
-        SWAG_CHECK(doLeftExpressionVar(parent, result, 0, withNode));
-        Ast::removeFromParent(*result);
-        return true;
+        case TokenId::IntrinsicGetContext:
+        case TokenId::IntrinsicGetProcessInfos:
+        case TokenId::IntrinsicDbgAlloc:
+        case TokenId::IntrinsicSysAlloc:
+            SWAG_CHECK(doIdentifierRef(parent, result));
+            return true;
+        case TokenId::SymLeftParen:
+        case TokenId::Identifier:
+        case TokenId::CompilerUp:
+        case TokenId::CompilerSelf:
+            SWAG_CHECK(doLeftExpressionVar(parent, result, 0, withNode));
+            Ast::removeFromParent(*result);
+            return true;
 
-    case TokenId::KwdTry:
-    case TokenId::KwdCatch:
-    case TokenId::KwdTryCatch:
-    case TokenId::KwdAssume:
-        SWAG_CHECK(doTryCatchAssume(parent, result));
-        return true;
-    case TokenId::KwdThrow:
-        SWAG_CHECK(doThrow(parent, result));
-        return true;
+        case TokenId::KwdTry:
+        case TokenId::KwdCatch:
+        case TokenId::KwdTryCatch:
+        case TokenId::KwdAssume:
+            SWAG_CHECK(doTryCatchAssume(parent, result));
+            return true;
+        case TokenId::KwdThrow:
+            SWAG_CHECK(doThrow(parent, result));
+            return true;
 
-    case TokenId::KwdDeRef:
-    {
-        AstNode* id;
-        SWAG_CHECK(doDeRef(parent, &id));
-        *result = id;
-        id->addAstFlag(AST_L_VALUE);
-        return true;
-    }
+        case TokenId::KwdDeRef:
+        {
+            AstNode* id;
+            SWAG_CHECK(doDeRef(parent, &id));
+            *result = id;
+            id->addAstFlag(AST_L_VALUE);
+            return true;
+        }
 
-    default:
-        return invalidTokenError(InvalidTokenError::LeftExpression);
+        default:
+            return invalidTokenError(InvalidTokenError::LeftExpression);
     }
 }
 
@@ -1647,19 +1647,19 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
     const auto node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::Drop, sourceFile, parent);
     switch (token.id)
     {
-    case TokenId::IntrinsicDrop:
-        node->token.text = g_LangSpec->name_atdrop;
-        break;
-    case TokenId::IntrinsicPostCopy:
-        node->token.text = g_LangSpec->name_atpostCopy;
-        node->kind = AstNodeKind::PostCopy;
-        break;
-    case TokenId::IntrinsicPostMove:
-        node->token.text = g_LangSpec->name_atpostMove;
-        node->kind = AstNodeKind::PostMove;
-        break;
-    default:
-        break;
+        case TokenId::IntrinsicDrop:
+            node->token.text = g_LangSpec->name_atdrop;
+            break;
+        case TokenId::IntrinsicPostCopy:
+            node->token.text = g_LangSpec->name_atpostCopy;
+            node->kind = AstNodeKind::PostCopy;
+            break;
+        case TokenId::IntrinsicPostMove:
+            node->token.text = g_LangSpec->name_atpostMove;
+            node->kind = AstNodeKind::PostMove;
+            break;
+        default:
+            break;
     }
 
     node->semanticFct = Semantic::resolveDropCopyMove;

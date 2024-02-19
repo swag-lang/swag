@@ -97,18 +97,18 @@ void BackendLinker::getArguments(const BuildParameters& buildParameters, Vector<
     const auto objFileType = Backend::getObjType(g_CommandLine.target);
     switch (objFileType)
     {
-    case BackendObjType::Coff:
-        getArgumentsCoff(buildParameters, arguments, outputKind);
-        break;
-    case BackendObjType::Elf:
-        SWAG_ASSERT(false);
-        break;
-    case BackendObjType::MachO:
-        SWAG_ASSERT(false);
-        break;
-    case BackendObjType::Wasm:
-        SWAG_ASSERT(false);
-        break;
+        case BackendObjType::Coff:
+            getArgumentsCoff(buildParameters, arguments, outputKind);
+            break;
+        case BackendObjType::Elf:
+            SWAG_ASSERT(false);
+            break;
+        case BackendObjType::MachO:
+            SWAG_ASSERT(false);
+            break;
+        case BackendObjType::Wasm:
+            SWAG_ASSERT(false);
+            break;
     }
 
     // Add user additional linker arguments
@@ -161,18 +161,18 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     bool       result      = true;
     switch (objFileType)
     {
-    case BackendObjType::Coff:
-        result = lld::coff::link(llvmArgs, myStdOut, myStdErr, false, false);
-        break;
-    case BackendObjType::Elf:
-        result = lld::elf::link(llvmArgs, myStdOut, myStdErr, false, false);
-        break;
-    case BackendObjType::MachO:
-        result = lld::macho::link(llvmArgs, myStdOut, myStdErr, false, false);
-        break;
-    case BackendObjType::Wasm:
-        result = lld::wasm::link(llvmArgs, myStdOut, myStdErr, false, false);
-        break;
+        case BackendObjType::Coff:
+            result = lld::coff::link(llvmArgs, myStdOut, myStdErr, false, false);
+            break;
+        case BackendObjType::Elf:
+            result = lld::elf::link(llvmArgs, myStdOut, myStdErr, false, false);
+            break;
+        case BackendObjType::MachO:
+            result = lld::macho::link(llvmArgs, myStdOut, myStdErr, false, false);
+            break;
+        case BackendObjType::Wasm:
+            result = lld::wasm::link(llvmArgs, myStdOut, myStdErr, false, false);
+            break;
     }
 
     if (!result)
@@ -191,17 +191,17 @@ bool BackendLinker::link(const BuildParameters& buildParameters)
 
     switch (buildParameters.buildCfg->backendKind)
     {
-    case BuildCfgBackendKind::Executable:
-        getArguments(buildParameters, linkArguments, BuildCfgOutputKind::Executable);
-        SWAG_CHECK(link(buildParameters, linkArguments));
-        break;
-    case BuildCfgBackendKind::Library:
-        getArguments(buildParameters, linkArguments, BuildCfgOutputKind::DynamicLib);
-        SWAG_CHECK(link(buildParameters, linkArguments));
-        break;
-    default:
-        SWAG_ASSERT(false);
-        return true;
+        case BuildCfgBackendKind::Executable:
+            getArguments(buildParameters, linkArguments, BuildCfgOutputKind::Executable);
+            SWAG_CHECK(link(buildParameters, linkArguments));
+            break;
+        case BuildCfgBackendKind::Library:
+            getArguments(buildParameters, linkArguments, BuildCfgOutputKind::DynamicLib);
+            SWAG_CHECK(link(buildParameters, linkArguments));
+            break;
+        default:
+            SWAG_ASSERT(false);
+            return true;
     }
 
     return true;

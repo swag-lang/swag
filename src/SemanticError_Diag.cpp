@@ -515,82 +515,82 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     // See if it would have worked with an explicit cast, to give a hint in the error message
     switch (oneTry.symMatchContext.result)
     {
-    case MatchResult::BadSignature:
-    case MatchResult::BadGenericSignature:
-        if (bi.badSignatureGivenType->isPointer())
+        case MatchResult::BadSignature:
+        case MatchResult::BadGenericSignature:
+            if (bi.badSignatureGivenType->isPointer())
+                break;
+
+            if (bi.badSignatureRequestedType->isNative() || bi.badSignatureRequestedType->isStruct())
+            {
+                if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
+                {
+                    errorParam.explicitCastMsg = FMT(Nte(Nte0033), bi.badSignatureRequestedType->name.c_str());
+                    break;
+                }
+            }
+
             break;
 
-        if (bi.badSignatureRequestedType->isNative() || bi.badSignatureRequestedType->isStruct())
-        {
-            if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
-            {
-                errorParam.explicitCastMsg = FMT(Nte(Nte0033), bi.badSignatureRequestedType->name.c_str());
-                break;
-            }
-        }
-
-        break;
-
-    default:
-        break;
+        default:
+            break;
     }
 
     switch (oneTry.symMatchContext.result)
     {
-    case MatchResult::ValidIfFailed:
-        errorValidIfFailed(context, errorParam);
-        break;
+        case MatchResult::ValidIfFailed:
+            errorValidIfFailed(context, errorParam);
+            break;
 
-    case MatchResult::MissingNamedParameter:
-        errorMissingNamedParameter(context, errorParam);
-        break;
+        case MatchResult::MissingNamedParameter:
+            errorMissingNamedParameter(context, errorParam);
+            break;
 
-    case MatchResult::InvalidNamedParameter:
-        errorInvalidNamedParameter(context, errorParam);
-        break;
+        case MatchResult::InvalidNamedParameter:
+            errorInvalidNamedParameter(context, errorParam);
+            break;
 
-    case MatchResult::DuplicatedNamedParameter:
-        errorDuplicatedNamedParameter(context, errorParam);
-        break;
+        case MatchResult::DuplicatedNamedParameter:
+            errorDuplicatedNamedParameter(context, errorParam);
+            break;
 
-    case MatchResult::MissingParameters:
-        errorMissingParameters(context, errorParam);
-        break;
+        case MatchResult::MissingParameters:
+            errorMissingParameters(context, errorParam);
+            break;
 
-    case MatchResult::NotEnoughParameters:
-        errorNotEnoughParameters(context, errorParam);
-        break;
+        case MatchResult::NotEnoughParameters:
+            errorNotEnoughParameters(context, errorParam);
+            break;
 
-    case MatchResult::NotEnoughGenericParameters:
-        errorNotEnoughGenericParameters(context, errorParam);
-        break;
+        case MatchResult::NotEnoughGenericParameters:
+            errorNotEnoughGenericParameters(context, errorParam);
+            break;
 
-    case MatchResult::TooManyParameters:
-        errorTooManyParameters(context, errorParam);
-        break;
+        case MatchResult::TooManyParameters:
+            errorTooManyParameters(context, errorParam);
+            break;
 
-    case MatchResult::TooManyGenericParameters:
-        errorTooManyGenericParameters(context, errorParam);
-        break;
+        case MatchResult::TooManyGenericParameters:
+            errorTooManyGenericParameters(context, errorParam);
+            break;
 
-    case MatchResult::MismatchGenericValue:
-        errorMismatchGenericValue(context, errorParam);
-        break;
+        case MatchResult::MismatchGenericValue:
+            errorMismatchGenericValue(context, errorParam);
+            break;
 
-    case MatchResult::CannotDeduceGenericType:
-        errorCannotDeduceGenericType(context, errorParam);
-        break;
+        case MatchResult::CannotDeduceGenericType:
+            errorCannotDeduceGenericType(context, errorParam);
+            break;
 
-    case MatchResult::BadGenericSignature:
-        errorBadGenericSignature(context, errorParam);
-        break;
+        case MatchResult::BadGenericSignature:
+            errorBadGenericSignature(context, errorParam);
+            break;
 
-    case MatchResult::BadSignature:
-        errorBadSignature(context, errorParam);
-        break;
+        case MatchResult::BadSignature:
+            errorBadSignature(context, errorParam);
+            break;
 
-    default:
-        SWAG_ASSERT(false);
-        break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 }

@@ -303,31 +303,31 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     Utf8 archName;
     switch (g_CommandLine.target.arch)
     {
-    case SwagTargetArch::X86_64:
-        archName = reinterpret_cast<const char*>(llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin());
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case SwagTargetArch::X86_64:
+            archName = reinterpret_cast<const char*>(llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin());
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     Utf8 vendorName, osName, abiName;
     switch (g_CommandLine.target.os)
     {
-    case SwagTargetOs::Windows:
-        osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin());
-        vendorName = reinterpret_cast<const char*>(llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin());
-        abiName    = reinterpret_cast<const char*>(llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin());
-        break;
-    case SwagTargetOs::Linux:
-        osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin());
-        break;
-    case SwagTargetOs::MacOsX:
-        osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin());
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case SwagTargetOs::Windows:
+            osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin());
+            vendorName = reinterpret_cast<const char*>(llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin());
+            abiName    = reinterpret_cast<const char*>(llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin());
+            break;
+        case SwagTargetOs::Linux:
+            osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin());
+            break;
+        case SwagTargetOs::MacOsX:
+            osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin());
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     Utf8 targetTriple = FMT("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
@@ -383,20 +383,20 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 
     switch (buildParameters.buildCfg->backendOptimize)
     {
-    case BuildCfgBackendOptim::O0:
-        targetMachine->setOptLevel(llvm::CodeGenOpt::None);
-        break;
-    case BuildCfgBackendOptim::O1:
-        targetMachine->setOptLevel(llvm::CodeGenOpt::Less);
-        break;
-    case BuildCfgBackendOptim::O2:
-    case BuildCfgBackendOptim::Os:
-    case BuildCfgBackendOptim::Oz:
-        targetMachine->setOptLevel(llvm::CodeGenOpt::Default);
-        break;
-    case BuildCfgBackendOptim::O3:
-        targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
-        break;
+        case BuildCfgBackendOptim::O0:
+            targetMachine->setOptLevel(llvm::CodeGenOpt::None);
+            break;
+        case BuildCfgBackendOptim::O1:
+            targetMachine->setOptLevel(llvm::CodeGenOpt::Less);
+            break;
+        case BuildCfgBackendOptim::O2:
+        case BuildCfgBackendOptim::Os:
+        case BuildCfgBackendOptim::Oz:
+            targetMachine->setOptLevel(llvm::CodeGenOpt::Default);
+            break;
+        case BuildCfgBackendOptim::O3:
+            targetMachine->setOptLevel(llvm::CodeGenOpt::Aggressive);
+            break;
     }
 
     targetMachine->setO0WantsFastISel(true);
@@ -433,24 +433,24 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     llvm::OptimizationLevel optLevel;
     switch (buildParameters.buildCfg->backendOptimize)
     {
-    case BuildCfgBackendOptim::O0:
-        optLevel = llvm::OptimizationLevel::O0;
-        break;
-    case BuildCfgBackendOptim::O1:
-        optLevel = llvm::OptimizationLevel::O1;
-        break;
-    case BuildCfgBackendOptim::O2:
-        optLevel = llvm::OptimizationLevel::O2;
-        break;
-    case BuildCfgBackendOptim::O3:
-        optLevel = llvm::OptimizationLevel::O3;
-        break;
-    case BuildCfgBackendOptim::Os:
-        optLevel = llvm::OptimizationLevel::Os;
-        break;
-    case BuildCfgBackendOptim::Oz:
-        optLevel = llvm::OptimizationLevel::Oz;
-        break;
+        case BuildCfgBackendOptim::O0:
+            optLevel = llvm::OptimizationLevel::O0;
+            break;
+        case BuildCfgBackendOptim::O1:
+            optLevel = llvm::OptimizationLevel::O1;
+            break;
+        case BuildCfgBackendOptim::O2:
+            optLevel = llvm::OptimizationLevel::O2;
+            break;
+        case BuildCfgBackendOptim::O3:
+            optLevel = llvm::OptimizationLevel::O3;
+            break;
+        case BuildCfgBackendOptim::Os:
+            optLevel = llvm::OptimizationLevel::Os;
+            break;
+        case BuildCfgBackendOptim::Oz:
+            optLevel = llvm::OptimizationLevel::Oz;
+            break;
     }
 
     llvm::ModulePassManager modulePassMgr;

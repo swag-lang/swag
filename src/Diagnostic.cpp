@@ -152,29 +152,29 @@ void Diagnostic::printErrorLevel()
 
     switch (errorLevel)
     {
-    case DiagnosticLevel::Error:
-        g_Log.setColor(errorColor);
-        g_Log.print("error: ");
-        break;
+        case DiagnosticLevel::Error:
+            g_Log.setColor(errorColor);
+            g_Log.print("error: ");
+            break;
 
-    case DiagnosticLevel::Panic:
-        g_Log.setColor(errorColor);
-        g_Log.print("panic: ");
-        break;
+        case DiagnosticLevel::Panic:
+            g_Log.setColor(errorColor);
+            g_Log.print("panic: ");
+            break;
 
-    case DiagnosticLevel::Warning:
-        g_Log.setColor(warningColor);
-        g_Log.print("warning: ");
-        break;
+        case DiagnosticLevel::Warning:
+            g_Log.setColor(warningColor);
+            g_Log.print("warning: ");
+            break;
 
-    case DiagnosticLevel::Note:
-        g_Log.setColor(noteTitleColor);
-        g_Log.print("note: ");
-        g_Log.setColor(noteColor);
-        break;
+        case DiagnosticLevel::Note:
+            g_Log.setColor(noteTitleColor);
+            g_Log.print("note: ");
+            g_Log.setColor(noteColor);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     if (!id.empty())
@@ -437,18 +437,18 @@ void Diagnostic::setColorRanges(DiagnosticLevel level) const
 {
     switch (level)
     {
-    case DiagnosticLevel::Error:
-    case DiagnosticLevel::Panic:
-        g_Log.setColor(errorColor);
-        break;
-    case DiagnosticLevel::Warning:
-        g_Log.setColor(warningColor);
-        break;
-    case DiagnosticLevel::Note:
-        g_Log.setColor(rangeNoteColor);
-        break;
-    default:
-        break;
+        case DiagnosticLevel::Error:
+        case DiagnosticLevel::Panic:
+            g_Log.setColor(errorColor);
+            break;
+        case DiagnosticLevel::Warning:
+            g_Log.setColor(warningColor);
+            break;
+        case DiagnosticLevel::Note:
+            g_Log.setColor(rangeNoteColor);
+            break;
+        default:
+            break;
     }
 }
 

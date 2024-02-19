@@ -266,51 +266,51 @@ void SCBE::emitBinOpDivIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CP
 
     switch (numBits)
     {
-    case CPUBits::B8:
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emit_Load32_Immediate(RAX, ip->a.u8);
-        else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-            pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
-        else
-            pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
-        break;
+        case CPUBits::B8:
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emit_Load32_Immediate(RAX, ip->a.u8);
+            else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
+            else
+                pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
+            break;
 
-    case CPUBits::B16:
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emit_Load16_Immediate(RAX, ip->a.u16);
-        else
-            pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-            pp.emit_Cwd();
-        else
-            pp.emit_ClearN(RDX, CPUBits::B16);
-        break;
+        case CPUBits::B16:
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emit_Load16_Immediate(RAX, ip->a.u16);
+            else
+                pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                pp.emit_Cwd();
+            else
+                pp.emit_ClearN(RDX, CPUBits::B16);
+            break;
 
-    case CPUBits::B32:
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emit_Load32_Immediate(RAX, ip->a.u32);
-        else
-            pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-            pp.emit_Cdq();
-        else
-            pp.emit_ClearN(RDX, CPUBits::B32);
-        break;
+        case CPUBits::B32:
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emit_Load32_Immediate(RAX, ip->a.u32);
+            else
+                pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                pp.emit_Cdq();
+            else
+                pp.emit_ClearN(RDX, CPUBits::B32);
+            break;
 
-    case CPUBits::B64:
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emit_Load64_Immediate(RAX, ip->a.u64);
-        else
-            pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-            pp.emit_Cqo();
-        else
-            pp.emit_ClearN(RDX, CPUBits::B64);
-        break;
+        case CPUBits::B64:
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emit_Load64_Immediate(RAX, ip->a.u64);
+            else
+                pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                pp.emit_Cqo();
+            else
+                pp.emit_ClearN(RDX, CPUBits::B64);
+            break;
 
-    default:
-        SWAG_ASSERT(false);
-        break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     if (ip->hasFlag(BCI_IMM_B))

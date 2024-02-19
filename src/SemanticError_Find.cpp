@@ -9,26 +9,26 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<U
     Utf8 appendMsg;
     switch (best.size())
     {
-    case 1:
-    {
-        Utf8 a0 = searchName;
-        Utf8 a1 = best[0];
-        a0.makeLower();
-        a1.makeLower();
-        if (a0 == a1)
-            appendMsg = FMT("do you mean [[%s]]? (notice the capitalization)", best[0].c_str());
-        else
-            appendMsg = FMT("do you mean [[%s]]?", best[0].c_str());
-        break;
-    }
-    case 2:
-        appendMsg = FMT("do you mean [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str());
-        break;
-    case 3:
-        appendMsg = FMT("do you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
-        break;
-    default:
-        break;
+        case 1:
+        {
+            Utf8 a0 = searchName;
+            Utf8 a1 = best[0];
+            a0.makeLower();
+            a1.makeLower();
+            if (a0 == a1)
+                appendMsg = FMT("do you mean [[%s]]? (notice the capitalization)", best[0].c_str());
+            else
+                appendMsg = FMT("do you mean [[%s]]?", best[0].c_str());
+            break;
+        }
+        case 2:
+            appendMsg = FMT("do you mean [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str());
+            break;
+        case 3:
+            appendMsg = FMT("do you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
+            break;
+        default:
+            break;
     }
 
     return appendMsg;
@@ -123,34 +123,34 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
     {
         switch (searchFor)
         {
-        case IdentifierSearchFor::TopLevelInstruction:
-            if (Tokenizer::isTopLevelInst(g_LangSpec->keywords.buffer[i].value))
-                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
-            break;
+            case IdentifierSearchFor::TopLevelInstruction:
+                if (Tokenizer::isTopLevelInst(g_LangSpec->keywords.buffer[i].value))
+                    searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+                break;
 
-        case IdentifierSearchFor::Keyword:
-            if (Tokenizer::isKeyword(g_LangSpec->keywords.buffer[i].value))
-                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
-            break;
+            case IdentifierSearchFor::Keyword:
+                if (Tokenizer::isKeyword(g_LangSpec->keywords.buffer[i].value))
+                    searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+                break;
 
-        case IdentifierSearchFor::Type:
-            if (g_LangSpec->keywords.buffer[i].value == TokenId::NativeType)
-                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
-            break;
+            case IdentifierSearchFor::Type:
+                if (g_LangSpec->keywords.buffer[i].value == TokenId::NativeType)
+                    searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+                break;
 
-        case IdentifierSearchFor::Function:
-            if (searchName[0] == '@' || searchName[0] == '#')
-            {
-                const auto& k = g_LangSpec->keywords.buffer[i].key;
-                if (k && k[0] == searchName[0])
-                    searchList.push_back(k);
-            }
-            break;
+            case IdentifierSearchFor::Function:
+                if (searchName[0] == '@' || searchName[0] == '#')
+                {
+                    const auto& k = g_LangSpec->keywords.buffer[i].key;
+                    if (k && k[0] == searchName[0])
+                        searchList.push_back(k);
+                }
+                break;
 
-        default:
-            if (g_LangSpec->keywords.buffer[i].key)
-                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
-            break;
+            default:
+                if (g_LangSpec->keywords.buffer[i].key)
+                    searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+                break;
         }
     }
 

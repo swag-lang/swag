@@ -88,43 +88,43 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
         {
             switch (ip->op)
             {
-            case ByteCodeOp::JumpIfZero32:
-            case ByteCodeOp::JumpIfNotZero32:
-                if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
-                {
-                    const auto it = mapCopyRA.find(ip->a.u32);
-                    if (it)
+                case ByteCodeOp::JumpIfZero32:
+                case ByteCodeOp::JumpIfNotZero32:
+                    if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
                     {
-                        const auto it1 = mapCopyRB.find((*it)->b.u32);
-                        if (it1 && *it == *it1)
+                        const auto it = mapCopyRA.find(ip->a.u32);
+                        if (it)
                         {
-                            ip->a.u32 = (*it)->b.u32;
-                            context->setDirtyPass();
+                            const auto it1 = mapCopyRB.find((*it)->b.u32);
+                            if (it1 && *it == *it1)
+                            {
+                                ip->a.u32 = (*it)->b.u32;
+                                context->setDirtyPass();
+                            }
                         }
                     }
-                }
-                break;
+                    break;
 
-            case ByteCodeOp::SetAtPointer32:
-            case ByteCodeOp::SetAtStackPointer32:
-            case ByteCodeOp::AffectOpPlusEqS32:
-                if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
-                {
-                    const auto it = mapCopyRA.find(ip->b.u32);
-                    if (it)
+                case ByteCodeOp::SetAtPointer32:
+                case ByteCodeOp::SetAtStackPointer32:
+                case ByteCodeOp::AffectOpPlusEqS32:
+                    if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
                     {
-                        const auto it1 = mapCopyRB.find((*it)->b.u32);
-                        if (it1 && *it == *it1)
+                        const auto it = mapCopyRA.find(ip->b.u32);
+                        if (it)
                         {
-                            ip->b.u32 = (*it)->b.u32;
-                            context->setDirtyPass();
+                            const auto it1 = mapCopyRB.find((*it)->b.u32);
+                            if (it1 && *it == *it1)
+                            {
+                                ip->b.u32 = (*it)->b.u32;
+                                context->setDirtyPass();
+                            }
                         }
                     }
-                }
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
         else if (op == ByteCodeOp::CopyRBtoRA64)

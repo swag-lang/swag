@@ -17,24 +17,24 @@ namespace
     {
         switch (kind)
         {
-        case AstNodeKind::Namespace:
-            return 0;
-        case AstNodeKind::StructDecl:
-            return 1;
-        case AstNodeKind::InterfaceDecl:
-            return 2;
-        case AstNodeKind::EnumDecl:
-            return 3;
-        case AstNodeKind::ConstDecl:
-            return 4;
-        case AstNodeKind::TypeAlias:
-            return 5;
-        case AstNodeKind::FuncDecl:
-            return 6;
-        case AstNodeKind::AttrDecl:
-            return 7;
-        default:
-            return 8;
+            case AstNodeKind::Namespace:
+                return 0;
+            case AstNodeKind::StructDecl:
+                return 1;
+            case AstNodeKind::InterfaceDecl:
+                return 2;
+            case AstNodeKind::EnumDecl:
+                return 3;
+            case AstNodeKind::ConstDecl:
+                return 4;
+            case AstNodeKind::TypeAlias:
+                return 5;
+            case AstNodeKind::FuncDecl:
+                return 6;
+            case AstNodeKind::AttrDecl:
+                return 7;
+            default:
+                return 8;
         }
     }
 
@@ -53,17 +53,17 @@ namespace
 
         switch (node->kind)
         {
-        case AstNodeKind::Namespace:
-        case AstNodeKind::StructDecl:
-        case AstNodeKind::InterfaceDecl:
-        case AstNodeKind::FuncDecl:
-        case AstNodeKind::EnumDecl:
-        case AstNodeKind::ConstDecl:
-        case AstNodeKind::AttrDecl:
-        case AstNodeKind::TypeAlias:
-            break;
-        default:
-            return false;
+            case AstNodeKind::Namespace:
+            case AstNodeKind::StructDecl:
+            case AstNodeKind::InterfaceDecl:
+            case AstNodeKind::FuncDecl:
+            case AstNodeKind::EnumDecl:
+            case AstNodeKind::ConstDecl:
+            case AstNodeKind::AttrDecl:
+            case AstNodeKind::TypeAlias:
+                break;
+            default:
+                return false;
         }
 
         if (node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
@@ -212,33 +212,33 @@ void GenDoc::outputTitle(OneRef& c)
 
     switch (c.nodes[0]->kind)
     {
-    case AstNodeKind::Namespace:
-        name = "namespace";
-        break;
-    case AstNodeKind::FuncDecl:
-        name = "func";
-        break;
-    case AstNodeKind::EnumDecl:
-        name = "enum";
-        break;
-    case AstNodeKind::StructDecl:
-        name = "struct";
-        break;
-    case AstNodeKind::InterfaceDecl:
-        name = "interface";
-        break;
-    case AstNodeKind::AttrDecl:
-        name = "attr";
-        break;
-    case AstNodeKind::ConstDecl:
-        name = "const";
-        break;
-    case AstNodeKind::TypeAlias:
-        name = "type alias";
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case AstNodeKind::Namespace:
+            name = "namespace";
+            break;
+        case AstNodeKind::FuncDecl:
+            name = "func";
+            break;
+        case AstNodeKind::EnumDecl:
+            name = "enum";
+            break;
+        case AstNodeKind::StructDecl:
+            name = "struct";
+            break;
+        case AstNodeKind::InterfaceDecl:
+            name = "interface";
+            break;
+        case AstNodeKind::AttrDecl:
+            name = "attr";
+            break;
+        case AstNodeKind::ConstDecl:
+            name = "const";
+            break;
+        case AstNodeKind::TypeAlias:
+            name = "type alias";
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     helpContent += "<p>\n";
@@ -540,177 +540,61 @@ void GenDoc::generateContent()
 
         switch (n0->kind)
         {
-        case AstNodeKind::Namespace:
-        {
-            outputTitle(c);
-
-            UserComment userComment;
-            auto        docComment = getDocComment(n0);
-            if (!docComment.empty())
+            case AstNodeKind::Namespace:
             {
-                computeUserComments(userComment, docComment);
-                outputUserComment(userComment);
-            }
+                outputTitle(c);
 
-            auto namespaceDecl = castAst<AstNameSpace>(n0, AstNodeKind::Namespace);
-            if (namespaceDecl->typeInfo)
-            {
-                auto scope = castTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
-                outputTable(scope, AstNodeKind::StructDecl, "Structs", COLLECT_TABLE_ZERO);
-                outputTable(scope, AstNodeKind::EnumDecl, "Enums", COLLECT_TABLE_ZERO);
-                outputTable(scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
-                outputTable(scope, AstNodeKind::AttrDecl, "Attributes", COLLECT_TABLE_ZERO);
-            }
-
-            break;
-        }
-
-        case AstNodeKind::ConstDecl:
-        {
-            outputTitle(c);
-
-            helpContent += "<table class=\"table-enumeration\">\n";
-
-            for (int j = i; j < static_cast<int>(allNodes.size()); j++)
-            {
-                auto& c1 = allNodes[j];
-                auto  n  = c1.nodes[0];
-                if (n->kind != AstNodeKind::ConstDecl)
+                UserComment userComment;
+                auto        docComment = getDocComment(n0);
+                if (!docComment.empty())
                 {
-                    i = j - 1;
-                    break;
+                    computeUserComments(userComment, docComment);
+                    outputUserComment(userComment);
                 }
 
-                helpContent += "<tr>\n";
-
-                helpContent += FMT("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
-                helpContent += n->token.text;
-                helpContent += "</td>\n";
-
-                helpContent += "<td class=\"code-type\">";
-                auto varDecl = castAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
-                outputType(varDecl);
-                helpContent += "</td>\n";
-
-                helpContent += "<td>";
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(n);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc, 1, true);
-                helpContent += "</td>\n";
-
-                helpContent += "</tr>\n";
-            }
-
-            helpContent += "</table>\n";
-            break;
-        }
-
-        case AstNodeKind::TypeAlias:
-        {
-            outputTitle(c);
-
-            helpContent += "<table class=\"table-enumeration\">\n";
-
-            for (int j = i; j < static_cast<int>(allNodes.size()); j++)
-            {
-                auto& c1 = allNodes[j];
-                auto  n  = c1.nodes[0];
-                if (n->kind != AstNodeKind::TypeAlias)
+                auto namespaceDecl = castAst<AstNameSpace>(n0, AstNodeKind::Namespace);
+                if (namespaceDecl->typeInfo)
                 {
-                    i = j - 1;
-                    break;
+                    auto scope = castTypeInfo<TypeInfoNamespace>(namespaceDecl->typeInfo, namespaceDecl->typeInfo->kind)->scope;
+                    outputTable(scope, AstNodeKind::StructDecl, "Structs", COLLECT_TABLE_ZERO);
+                    outputTable(scope, AstNodeKind::EnumDecl, "Enums", COLLECT_TABLE_ZERO);
+                    outputTable(scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
+                    outputTable(scope, AstNodeKind::AttrDecl, "Attributes", COLLECT_TABLE_ZERO);
                 }
 
-                helpContent += "<tr>\n";
-
-                helpContent += FMT("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
-                helpContent += n->token.text;
-                helpContent += "</td>\n";
-
-                helpContent += "<td class=\"code-type\">";
-                auto typeDecl = castAst<AstAlias>(n, AstNodeKind::TypeAlias);
-                outputType(typeDecl);
-                helpContent += "</td>\n";
-
-                helpContent += "<td>";
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(n);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc, 1, true);
-                helpContent += "</td>\n";
-
-                helpContent += "</tr>\n";
+                break;
             }
 
-            helpContent += "</table>\n";
-            break;
-        }
-
-        case AstNodeKind::StructDecl:
-        case AstNodeKind::InterfaceDecl:
-        {
-            outputTitle(c);
-
-            UserComment userComment;
-            auto        docComment = getDocComment(n0);
-            if (!docComment.empty())
+            case AstNodeKind::ConstDecl:
             {
-                computeUserComments(userComment, docComment);
-                outputUserBlock(userComment.shortDesc);
-            }
+                outputTitle(c);
 
-            auto structNode = castAst<AstStruct>(n0, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+                helpContent += "<table class=\"table-enumeration\">\n";
 
-            // Output signature if structure is generic
-            if (structNode->typeInfo && structNode->typeInfo->isGeneric())
-            {
-                Utf8 code;
-                code += "struct ";
-                code += structNode->token.text;
-                code += getOutputNode(structNode->genericParameters);
-                outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
-            }
-
-            // Fields
-            if (!structNode->hasAttribute(ATTRIBUTE_OPAQUE))
-            {
-                bool first = true;
-                for (auto structVal : structNode->scope->symTable.allSymbols)
+                for (int j = i; j < static_cast<int>(allNodes.size()); j++)
                 {
-                    auto n1 = structVal->nodes[0];
-                    if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
-                        continue;
-                    if (!n1->hasAstFlag(AST_STRUCT_MEMBER))
-                        continue;
-                    if (structVal->name.find("item") == 0)
-                        continue;
-
-                    if (first)
+                    auto& c1 = allNodes[j];
+                    auto  n  = c1.nodes[0];
+                    if (n->kind != AstNodeKind::ConstDecl)
                     {
-                        helpContent += "<table class=\"table-enumeration\">\n";
-                        first = false;
+                        i = j - 1;
+                        break;
                     }
-
-                    auto varDecl = castAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
                     helpContent += "<tr>\n";
 
-                    helpContent += "<td>";
-                    Utf8 n2;
-                    if (varDecl->hasAstFlag(AST_DECL_USING))
-                        n2 += "using ";
-                    n2 += structVal->name;
-                    helpContent += n2;
+                    helpContent += FMT("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                    helpContent += n->token.text;
                     helpContent += "</td>\n";
 
                     helpContent += "<td class=\"code-type\">";
+                    auto varDecl = castAst<AstVarDecl>(n, AstNodeKind::ConstDecl);
                     outputType(varDecl);
                     helpContent += "</td>\n";
 
                     helpContent += "<td>";
                     UserComment subUserComment;
-                    auto        subDocComment = getDocComment(varDecl);
+                    auto        subDocComment = getDocComment(n);
                     computeUserComments(subUserComment, subDocComment);
                     outputUserBlock(subUserComment.shortDesc, 1, true);
                     helpContent += "</td>\n";
@@ -718,190 +602,306 @@ void GenDoc::generateContent()
                     helpContent += "</tr>\n";
                 }
 
-                if (!first)
-                    helpContent += "</table>\n";
+                helpContent += "</table>\n";
+                break;
             }
 
-            outputUserComment(userComment);
-
-            // Functions
-            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
-            outputTable(structNode->scope, AstNodeKind::FuncDecl, "Special Functions", COLLECT_TABLE_SPEC_FUNC);
-            break;
-        }
-
-        case AstNodeKind::EnumDecl:
-        {
-            outputTitle(c);
-
-            UserComment userComment;
-            auto        docComment = getDocComment(n0);
-            if (!docComment.empty())
+            case AstNodeKind::TypeAlias:
             {
-                computeUserComments(userComment, docComment);
-                outputUserBlock(userComment.shortDesc);
-            }
+                outputTitle(c);
 
-            auto enumNode = castAst<AstEnum>(n0, AstNodeKind::EnumDecl);
+                helpContent += "<table class=\"table-enumeration\">\n";
 
-            helpContent += "<table class=\"table-enumeration\">\n";
-            for (auto enumVal : enumNode->scope->symTable.allSymbols)
-            {
-                if (enumVal->nodes[0]->kind != AstNodeKind::EnumValue)
-                    continue;
-
-                helpContent += "<tr>\n";
-                helpContent += "<td>";
-                helpContent += enumVal->name;
-                helpContent += "</td>\n";
-
-                helpContent += "<td>";
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(enumVal->nodes[0]);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc, 1, true);
-                helpContent += "</td>\n";
-
-                helpContent += "</tr>\n";
-            }
-
-            helpContent += "</table>\n";
-
-            outputUserComment(userComment);
-            break;
-        }
-
-        case AstNodeKind::FuncDecl:
-        {
-            outputTitle(c);
-
-            Utf8 code;
-            for (auto n : c.nodes)
-            {
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(n);
-                computeUserComments(subUserComment, subDocComment);
-
-                auto funcNode = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
-
-                if (n->hasAttribute(ATTRIBUTE_MACRO))
-                    code += "#[Swag.Macro]\n";
-                else if (n->hasAttribute(ATTRIBUTE_MIXIN))
-                    code += "#[Swag.Mixin]\n";
-
-                code += "func";
-                code += getOutputNode(funcNode->genericParameters);
-                code += " ";
-                code += funcNode->token.text;
-                if (!funcNode->parameters)
-                    code += "()";
-                else
-                    code += getOutputNode(funcNode->parameters);
-
-                if (funcNode->typeInfo)
+                for (int j = i; j < static_cast<int>(allNodes.size()); j++)
                 {
-                    auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                    if (typeFunc->returnType && !typeFunc->returnType->isVoid())
+                    auto& c1 = allNodes[j];
+                    auto  n  = c1.nodes[0];
+                    if (n->kind != AstNodeKind::TypeAlias)
                     {
-                        typeFunc->returnType->computeScopedNameExport();
-                        code += "->";
-                        code += typeFunc->returnType->scopedNameExport;
+                        i = j - 1;
+                        break;
                     }
-                }
-                else
-                {
-                    code += getOutputNode(funcNode->returnType);
+
+                    helpContent += "<tr>\n";
+
+                    helpContent += FMT("<td id=\"%s\">", toRef(n->getScopedName()).c_str());
+                    helpContent += n->token.text;
+                    helpContent += "</td>\n";
+
+                    helpContent += "<td class=\"code-type\">";
+                    auto typeDecl = castAst<AstAlias>(n, AstNodeKind::TypeAlias);
+                    outputType(typeDecl);
+                    helpContent += "</td>\n";
+
+                    helpContent += "<td>";
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(n);
+                    computeUserComments(subUserComment, subDocComment);
+                    outputUserBlock(subUserComment.shortDesc, 1, true);
+                    helpContent += "</td>\n";
+
+                    helpContent += "</tr>\n";
                 }
 
-                if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
-                    code += " throw";
-                else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
-                    code += " assume";
-                code += "\n";
+                helpContent += "</table>\n";
+                break;
+            }
 
-                if (!subUserComment.shortDesc.lines.empty())
+            case AstNodeKind::StructDecl:
+            case AstNodeKind::InterfaceDecl:
+            {
+                outputTitle(c);
+
+                UserComment userComment;
+                auto        docComment = getDocComment(n0);
+                if (!docComment.empty())
                 {
-                    outputUserBlock(subUserComment.shortDesc);
+                    computeUserComments(userComment, docComment);
+                    outputUserBlock(userComment.shortDesc);
+                }
+
+                auto structNode = castAst<AstStruct>(n0, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+
+                // Output signature if structure is generic
+                if (structNode->typeInfo && structNode->typeInfo->isGeneric())
+                {
+                    Utf8 code;
+                    code += "struct ";
+                    code += structNode->token.text;
+                    code += getOutputNode(structNode->genericParameters);
                     outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
-                    code.clear();
                 }
+
+                // Fields
+                if (!structNode->hasAttribute(ATTRIBUTE_OPAQUE))
+                {
+                    bool first = true;
+                    for (auto structVal : structNode->scope->symTable.allSymbols)
+                    {
+                        auto n1 = structVal->nodes[0];
+                        if (n1->kind != AstNodeKind::VarDecl && n1->kind != AstNodeKind::ConstDecl)
+                            continue;
+                        if (!n1->hasAstFlag(AST_STRUCT_MEMBER))
+                            continue;
+                        if (structVal->name.find("item") == 0)
+                            continue;
+
+                        if (first)
+                        {
+                            helpContent += "<table class=\"table-enumeration\">\n";
+                            first = false;
+                        }
+
+                        auto varDecl = castAst<AstVarDecl>(n1, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+
+                        helpContent += "<tr>\n";
+
+                        helpContent += "<td>";
+                        Utf8 n2;
+                        if (varDecl->hasAstFlag(AST_DECL_USING))
+                            n2 += "using ";
+                        n2 += structVal->name;
+                        helpContent += n2;
+                        helpContent += "</td>\n";
+
+                        helpContent += "<td class=\"code-type\">";
+                        outputType(varDecl);
+                        helpContent += "</td>\n";
+
+                        helpContent += "<td>";
+                        UserComment subUserComment;
+                        auto        subDocComment = getDocComment(varDecl);
+                        computeUserComments(subUserComment, subDocComment);
+                        outputUserBlock(subUserComment.shortDesc, 1, true);
+                        helpContent += "</td>\n";
+
+                        helpContent += "</tr>\n";
+                    }
+
+                    if (!first)
+                        helpContent += "</table>\n";
+                }
+
+                outputUserComment(userComment);
+
+                // Functions
+                outputTable(structNode->scope, AstNodeKind::FuncDecl, "Functions", COLLECT_TABLE_ZERO);
+                outputTable(structNode->scope, AstNodeKind::FuncDecl, "Special Functions", COLLECT_TABLE_SPEC_FUNC);
+                break;
             }
 
-            outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
-
-            for (auto n : c.nodes)
+            case AstNodeKind::EnumDecl:
             {
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(n);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserComment(subUserComment);
+                outputTitle(c);
+
+                UserComment userComment;
+                auto        docComment = getDocComment(n0);
+                if (!docComment.empty())
+                {
+                    computeUserComments(userComment, docComment);
+                    outputUserBlock(userComment.shortDesc);
+                }
+
+                auto enumNode = castAst<AstEnum>(n0, AstNodeKind::EnumDecl);
+
+                helpContent += "<table class=\"table-enumeration\">\n";
+                for (auto enumVal : enumNode->scope->symTable.allSymbols)
+                {
+                    if (enumVal->nodes[0]->kind != AstNodeKind::EnumValue)
+                        continue;
+
+                    helpContent += "<tr>\n";
+                    helpContent += "<td>";
+                    helpContent += enumVal->name;
+                    helpContent += "</td>\n";
+
+                    helpContent += "<td>";
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(enumVal->nodes[0]);
+                    computeUserComments(subUserComment, subDocComment);
+                    outputUserBlock(subUserComment.shortDesc, 1, true);
+                    helpContent += "</td>\n";
+
+                    helpContent += "</tr>\n";
+                }
+
+                helpContent += "</table>\n";
+
+                outputUserComment(userComment);
+                break;
             }
 
-            break;
-        }
-
-        case AstNodeKind::AttrDecl:
-        {
-            outputTitle(c);
-
-            for (auto n : c.nodes)
+            case AstNodeKind::FuncDecl:
             {
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(n);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserBlock(subUserComment.shortDesc);
-
-                auto attrNode = castAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
-                auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(attrNode->typeInfo, TypeInfoKind::FuncAttr);
-
-                helpContent += "<div class=\"api-additional-infos\">";
-                helpContent += "<b>Usage</b>: ";
-                if (typeInfo->attributeUsage & All)
-                    helpContent += "all ";
-                if (typeInfo->attributeUsage & Function)
-                    helpContent += "function ";
-                if (typeInfo->attributeUsage & FunctionParameter)
-                    helpContent += "func-param ";
-                if (typeInfo->attributeUsage & Enum)
-                    helpContent += "enum ";
-                if (typeInfo->attributeUsage & EnumValue)
-                    helpContent += "enum-value ";
-                if (typeInfo->attributeUsage & Struct)
-                    helpContent += "struct ";
-                if (typeInfo->attributeUsage & StructVariable)
-                    helpContent += "struct-var ";
-                if (typeInfo->attributeUsage & Variable)
-                    helpContent += "var ";
-                if (typeInfo->attributeUsage & GlobalVariable)
-                    helpContent += "global-var ";
-                if (typeInfo->attributeUsage & Constant)
-                    helpContent += "const ";
-                if (typeInfo->attributeUsage & Multi)
-                    helpContent += "multi ";
-                helpContent += "\n";
-                helpContent += "</div>\n";
+                outputTitle(c);
 
                 Utf8 code;
-                code += "attr ";
-                code += attrNode->token.text;
-                if (attrNode->parameters)
-                    code += getOutputNode(attrNode->parameters);
-                code += "\n";
+                for (auto n : c.nodes)
+                {
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(n);
+                    computeUserComments(subUserComment, subDocComment);
+
+                    auto funcNode = castAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+
+                    if (n->hasAttribute(ATTRIBUTE_MACRO))
+                        code += "#[Swag.Macro]\n";
+                    else if (n->hasAttribute(ATTRIBUTE_MIXIN))
+                        code += "#[Swag.Mixin]\n";
+
+                    code += "func";
+                    code += getOutputNode(funcNode->genericParameters);
+                    code += " ";
+                    code += funcNode->token.text;
+                    if (!funcNode->parameters)
+                        code += "()";
+                    else
+                        code += getOutputNode(funcNode->parameters);
+
+                    if (funcNode->typeInfo)
+                    {
+                        auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                        if (typeFunc->returnType && !typeFunc->returnType->isVoid())
+                        {
+                            typeFunc->returnType->computeScopedNameExport();
+                            code += "->";
+                            code += typeFunc->returnType->scopedNameExport;
+                        }
+                    }
+                    else
+                    {
+                        code += getOutputNode(funcNode->returnType);
+                    }
+
+                    if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
+                        code += " throw";
+                    else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
+                        code += " assume";
+                    code += "\n";
+
+                    if (!subUserComment.shortDesc.lines.empty())
+                    {
+                        outputUserBlock(subUserComment.shortDesc);
+                        outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
+                        code.clear();
+                    }
+                }
+
                 outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
+
+                for (auto n : c.nodes)
+                {
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(n);
+                    computeUserComments(subUserComment, subDocComment);
+                    outputUserComment(subUserComment);
+                }
+
+                break;
             }
 
-            for (auto n : c.nodes)
+            case AstNodeKind::AttrDecl:
             {
-                UserComment subUserComment;
-                auto        subDocComment = getDocComment(n);
-                computeUserComments(subUserComment, subDocComment);
-                outputUserComment(subUserComment);
-            }
+                outputTitle(c);
 
-            break;
-        }
-        default:
-            break;
+                for (auto n : c.nodes)
+                {
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(n);
+                    computeUserComments(subUserComment, subDocComment);
+                    outputUserBlock(subUserComment.shortDesc);
+
+                    auto attrNode = castAst<AstAttrDecl>(n, AstNodeKind::AttrDecl);
+                    auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(attrNode->typeInfo, TypeInfoKind::FuncAttr);
+
+                    helpContent += "<div class=\"api-additional-infos\">";
+                    helpContent += "<b>Usage</b>: ";
+                    if (typeInfo->attributeUsage & All)
+                        helpContent += "all ";
+                    if (typeInfo->attributeUsage & Function)
+                        helpContent += "function ";
+                    if (typeInfo->attributeUsage & FunctionParameter)
+                        helpContent += "func-param ";
+                    if (typeInfo->attributeUsage & Enum)
+                        helpContent += "enum ";
+                    if (typeInfo->attributeUsage & EnumValue)
+                        helpContent += "enum-value ";
+                    if (typeInfo->attributeUsage & Struct)
+                        helpContent += "struct ";
+                    if (typeInfo->attributeUsage & StructVariable)
+                        helpContent += "struct-var ";
+                    if (typeInfo->attributeUsage & Variable)
+                        helpContent += "var ";
+                    if (typeInfo->attributeUsage & GlobalVariable)
+                        helpContent += "global-var ";
+                    if (typeInfo->attributeUsage & Constant)
+                        helpContent += "const ";
+                    if (typeInfo->attributeUsage & Multi)
+                        helpContent += "multi ";
+                    helpContent += "\n";
+                    helpContent += "</div>\n";
+
+                    Utf8 code;
+                    code += "attr ";
+                    code += attrNode->token.text;
+                    if (attrNode->parameters)
+                        code += getOutputNode(attrNode->parameters);
+                    code += "\n";
+                    outputCode(code, GENDOC_CODE_REFS | GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
+                }
+
+                for (auto n : c.nodes)
+                {
+                    UserComment subUserComment;
+                    auto        subDocComment = getDocComment(n);
+                    computeUserComments(subUserComment, subDocComment);
+                    outputUserComment(subUserComment);
+                }
+
+                break;
+            }
+            default:
+                break;
         }
     }
 }

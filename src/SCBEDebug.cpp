@@ -385,14 +385,14 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
 
     switch (typeInfo->sizeOf)
     {
-    case 1:
-        return UnsignedCharacter;
-    case 2:
-        return UInt16;
-    case 4:
-        return UInt32;
-    default:
-        return UInt64;
+        case 1:
+            return UnsignedCharacter;
+        case 2:
+            return UInt16;
+        case 4:
+            return UInt32;
+        default:
+            return UInt64;
     }
 }
 
@@ -402,34 +402,34 @@ SCBEDebugTypeIndex SCBEDebug::getSimpleType(const TypeInfo* typeInfo)
     {
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::Void:
-            return Void;
-        case NativeTypeKind::Bool:
-            return Boolean8;
-        case NativeTypeKind::S8:
-            return SByte;
-        case NativeTypeKind::S16:
-            return Int16;
-        case NativeTypeKind::S32:
-            return Int32;
-        case NativeTypeKind::S64:
-            return Int64;
-        case NativeTypeKind::U8:
-            return Byte;
-        case NativeTypeKind::U16:
-            return UInt16;
-        case NativeTypeKind::U32:
-            return UInt32;
-        case NativeTypeKind::U64:
-            return UInt64;
-        case NativeTypeKind::F32:
-            return Float32;
-        case NativeTypeKind::F64:
-            return Float64;
-        case NativeTypeKind::Rune:
-            return Character32;
-        default:
-            break;
+            case NativeTypeKind::Void:
+                return Void;
+            case NativeTypeKind::Bool:
+                return Boolean8;
+            case NativeTypeKind::S8:
+                return SByte;
+            case NativeTypeKind::S16:
+                return Int16;
+            case NativeTypeKind::S32:
+                return Int32;
+            case NativeTypeKind::S64:
+                return Int64;
+            case NativeTypeKind::U8:
+                return Byte;
+            case NativeTypeKind::U16:
+                return UInt16;
+            case NativeTypeKind::U32:
+                return UInt32;
+            case NativeTypeKind::U64:
+                return UInt64;
+            case NativeTypeKind::F32:
+                return Float32;
+            case NativeTypeKind::F64:
+                return Float64;
+            case NativeTypeKind::Rune:
+                return Character32;
+            default:
+                break;
         }
     }
 

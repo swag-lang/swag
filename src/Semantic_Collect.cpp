@@ -156,20 +156,20 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
 
     switch (typeInfo->sizeOf)
     {
-    case 1:
-        *ptrDest = value->reg.u8;
-        break;
-    case 2:
-        *reinterpret_cast<uint16_t*>(ptrDest) = value->reg.u16;
-        break;
-    case 4:
-        *reinterpret_cast<uint32_t*>(ptrDest) = value->reg.u32;
-        break;
-    case 8:
-        *reinterpret_cast<uint64_t*>(ptrDest) = value->reg.u64;
-        break;
-    default:
-        break;
+        case 1:
+            *ptrDest = value->reg.u8;
+            break;
+        case 2:
+            *reinterpret_cast<uint16_t*>(ptrDest) = value->reg.u16;
+            break;
+        case 4:
+            *reinterpret_cast<uint32_t*>(ptrDest) = value->reg.u32;
+            break;
+        case 8:
+            *reinterpret_cast<uint64_t*>(ptrDest) = value->reg.u64;
+            break;
+        default:
+            break;
     }
 
     return true;
@@ -204,20 +204,20 @@ bool Semantic::collectStructLiterals(JobContext* context, DataSegment* storageSe
             {
                 switch (typeInfo->sizeOf)
                 {
-                case 1:
-                    *reinterpret_cast<uint8_t*>(ptrDest) = value ? value->reg.u8 : 0;
-                    break;
-                case 2:
-                    *reinterpret_cast<uint16_t*>(ptrDest) = value ? value->reg.u16 : 0;
-                    break;
-                case 4:
-                    *reinterpret_cast<uint32_t*>(ptrDest) = value ? value->reg.u32 : 0;
-                    break;
-                case 8:
-                    *reinterpret_cast<uint64_t*>(ptrDest) = value ? value->reg.u64 : 0;
-                    break;
-                default:
-                    return Report::internalError(context->node, "collectStructLiterals, invalid native type sizeof");
+                    case 1:
+                        *reinterpret_cast<uint8_t*>(ptrDest) = value ? value->reg.u8 : 0;
+                        break;
+                    case 2:
+                        *reinterpret_cast<uint16_t*>(ptrDest) = value ? value->reg.u16 : 0;
+                        break;
+                    case 4:
+                        *reinterpret_cast<uint32_t*>(ptrDest) = value ? value->reg.u32 : 0;
+                        break;
+                    case 8:
+                        *reinterpret_cast<uint64_t*>(ptrDest) = value ? value->reg.u64 : 0;
+                        break;
+                    default:
+                        return Report::internalError(context->node, "collectStructLiterals, invalid native type sizeof");
                 }
 
                 SWAG_ASSERT(typeInfo->sizeOf);
@@ -350,20 +350,20 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
                 {
                     switch (typeArr->finalType->sizeOf)
                     {
-                    case 1:
-                        *addrDst = node->assignment->computedValue()->reg.u8;
-                        break;
-                    case 2:
-                        *reinterpret_cast<uint16_t*>(addrDst) = node->assignment->computedValue()->reg.u16;
-                        break;
-                    case 4:
-                        *reinterpret_cast<uint32_t*>(addrDst) = node->assignment->computedValue()->reg.u32;
-                        break;
-                    case 8:
-                        *reinterpret_cast<uint64_t*>(addrDst) = node->assignment->computedValue()->reg.u64;
-                        break;
-                    default:
-                        return Report::internalError(node->assignment, "invalid size constant collectAssignment");
+                        case 1:
+                            *addrDst = node->assignment->computedValue()->reg.u8;
+                            break;
+                        case 2:
+                            *reinterpret_cast<uint16_t*>(addrDst) = node->assignment->computedValue()->reg.u16;
+                            break;
+                        case 4:
+                            *reinterpret_cast<uint32_t*>(addrDst) = node->assignment->computedValue()->reg.u32;
+                            break;
+                        case 8:
+                            *reinterpret_cast<uint64_t*>(addrDst) = node->assignment->computedValue()->reg.u64;
+                            break;
+                        default:
+                            return Report::internalError(node->assignment, "invalid size constant collectAssignment");
                     }
                     addrDst += typeArr->finalType->sizeOf;
                 }
@@ -650,97 +650,97 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
 
     switch (typeInfo->nativeType)
     {
-    case NativeTypeKind::String:
-    {
-        const auto slice = reinterpret_cast<SwagSlice*>(ptr);
-        node->setFlagsValueIsComputed();
-        node->computedValue()->text = Utf8{static_cast<const char*>(slice->buffer), static_cast<uint32_t>(slice->count)};
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoString;
-        break;
-    }
+        case NativeTypeKind::String:
+        {
+            const auto slice = reinterpret_cast<SwagSlice*>(ptr);
+            node->setFlagsValueIsComputed();
+            node->computedValue()->text = Utf8{static_cast<const char*>(slice->buffer), static_cast<uint32_t>(slice->count)};
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoString;
+            break;
+        }
 
-    case NativeTypeKind::Any:
-        node->setFlagsValueIsComputed();
-        node->computedValue()->storageSegment = storageSegment;
-        node->computedValue()->storageOffset  = storageSegment->offset(ptr);
-        break;
+        case NativeTypeKind::Any:
+            node->setFlagsValueIsComputed();
+            node->computedValue()->storageSegment = storageSegment;
+            node->computedValue()->storageOffset  = storageSegment->offset(ptr);
+            break;
 
-    case NativeTypeKind::S8:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoS8;
-        node->computedValue()->reg.s8 = *reinterpret_cast<int8_t*>(ptr);
-        break;
-    case NativeTypeKind::U8:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoU8;
-        node->computedValue()->reg.u8 = *ptr;
-        break;
-    case NativeTypeKind::S16:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoS16;
-        node->computedValue()->reg.s16 = *reinterpret_cast<int16_t*>(ptr);
-        break;
-    case NativeTypeKind::U16:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoU16;
-        node->computedValue()->reg.u16 = *reinterpret_cast<uint16_t*>(ptr);
-        break;
-    case NativeTypeKind::S32:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoS32;
-        node->computedValue()->reg.s32 = *reinterpret_cast<int32_t*>(ptr);
-        break;
-    case NativeTypeKind::U32:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoU32;
-        node->computedValue()->reg.u32 = *reinterpret_cast<uint32_t*>(ptr);
-        break;
-    case NativeTypeKind::F32:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoF32;
-        node->computedValue()->reg.f32 = *reinterpret_cast<float*>(ptr);
-        break;
-    case NativeTypeKind::Rune:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoRune;
-        node->computedValue()->reg.ch = *reinterpret_cast<uint32_t*>(ptr);
-        break;
-    case NativeTypeKind::S64:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoS64;
-        node->computedValue()->reg.s64 = *reinterpret_cast<int64_t*>(ptr);
-        break;
-    case NativeTypeKind::U64:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoU64;
-        node->computedValue()->reg.u64 = *reinterpret_cast<uint64_t*>(ptr);
-        break;
-    case NativeTypeKind::F64:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoF64;
-        node->computedValue()->reg.f64 = *reinterpret_cast<double*>(ptr);
-        break;
-    case NativeTypeKind::Bool:
-        node->setFlagsValueIsComputed();
-        if (!node->typeInfo)
-            node->typeInfo = g_TypeMgr->typeInfoBool;
-        node->computedValue()->reg.b = *reinterpret_cast<bool*>(ptr);
-        break;
+        case NativeTypeKind::S8:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoS8;
+            node->computedValue()->reg.s8 = *reinterpret_cast<int8_t*>(ptr);
+            break;
+        case NativeTypeKind::U8:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoU8;
+            node->computedValue()->reg.u8 = *ptr;
+            break;
+        case NativeTypeKind::S16:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoS16;
+            node->computedValue()->reg.s16 = *reinterpret_cast<int16_t*>(ptr);
+            break;
+        case NativeTypeKind::U16:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoU16;
+            node->computedValue()->reg.u16 = *reinterpret_cast<uint16_t*>(ptr);
+            break;
+        case NativeTypeKind::S32:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoS32;
+            node->computedValue()->reg.s32 = *reinterpret_cast<int32_t*>(ptr);
+            break;
+        case NativeTypeKind::U32:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoU32;
+            node->computedValue()->reg.u32 = *reinterpret_cast<uint32_t*>(ptr);
+            break;
+        case NativeTypeKind::F32:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoF32;
+            node->computedValue()->reg.f32 = *reinterpret_cast<float*>(ptr);
+            break;
+        case NativeTypeKind::Rune:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoRune;
+            node->computedValue()->reg.ch = *reinterpret_cast<uint32_t*>(ptr);
+            break;
+        case NativeTypeKind::S64:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoS64;
+            node->computedValue()->reg.s64 = *reinterpret_cast<int64_t*>(ptr);
+            break;
+        case NativeTypeKind::U64:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoU64;
+            node->computedValue()->reg.u64 = *reinterpret_cast<uint64_t*>(ptr);
+            break;
+        case NativeTypeKind::F64:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoF64;
+            node->computedValue()->reg.f64 = *reinterpret_cast<double*>(ptr);
+            break;
+        case NativeTypeKind::Bool:
+            node->setFlagsValueIsComputed();
+            if (!node->typeInfo)
+                node->typeInfo = g_TypeMgr->typeInfoBool;
+            node->computedValue()->reg.b = *reinterpret_cast<bool*>(ptr);
+            break;
 
-    default:
-        return false;
+        default:
+            return false;
     }
 
     return true;

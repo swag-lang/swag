@@ -47,18 +47,18 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
         ByteCodeInstruction* inst = nullptr;
         switch (typeInfo->sizeOf)
         {
-        case 1:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRc[regIdx]);
-            break;
-        case 2:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRc[regIdx]);
-            break;
-        case 4:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRc[regIdx]);
-            break;
-        default:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRc[regIdx]);
-            break;
+            case 1:
+                inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRc[regIdx]);
+                break;
+            case 2:
+                inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRc[regIdx]);
+                break;
+            case 4:
+                inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRc[regIdx]);
+                break;
+            default:
+                inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRc[regIdx]);
+                break;
         }
 
         inst->b.s32 = child0->resultRegisterRc.size(); // After the "if not null"
@@ -387,60 +387,60 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     {
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.b = node->computedValue()->reg.b;
-            if (mustEmitSafety(context, SAFETY_BOOL) && node->computedValue()->reg.u8 & 0xFE)
-                return context->report({node, Err(Saf0003)});
-            return true;
-        case NativeTypeKind::U8:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u8 = node->computedValue()->reg.u8;
-            return true;
-        case NativeTypeKind::U16:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u16 = node->computedValue()->reg.u16;
-            return true;
-        case NativeTypeKind::U32:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue()->reg.u32;
-            return true;
-        case NativeTypeKind::U64:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.u64 = node->computedValue()->reg.u64;
-            return true;
-        case NativeTypeKind::S8:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.s8 = node->computedValue()->reg.s8;
-            return true;
-        case NativeTypeKind::S16:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.s16 = node->computedValue()->reg.s16;
-            return true;
-        case NativeTypeKind::S32:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.s32 = node->computedValue()->reg.s32;
-            return true;
-        case NativeTypeKind::S64:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.s64 = node->computedValue()->reg.s64;
-            return true;
-        case NativeTypeKind::F32:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.f32 = node->computedValue()->reg.f32;
-            if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue()->reg.f32))
-                return context->report({node, Err(Saf0016)});
-            return true;
-        case NativeTypeKind::F64:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.f64 = node->computedValue()->reg.f64;
-            if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue()->reg.f64))
-                return context->report({node, Err(Saf0016)});
-            return true;
-        case NativeTypeKind::Rune:
-            EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue()->reg.u32;
-            return true;
-        case NativeTypeKind::String:
-        {
-            reserveLinearRegisterRC2(context, regList);
-            const auto storageSegment = Semantic::getConstantSegFromContext(node);
-            const auto storageOffset  = storageSegment->addString(node->computedValue()->text);
-            SWAG_ASSERT(storageOffset != UINT32_MAX);
-            emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue()->text.length();
-            return true;
-        }
-        default:
-            return Report::internalError(context->node, "emitLiteral, type not supported");
+            case NativeTypeKind::Bool:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.b = node->computedValue()->reg.b;
+                if (mustEmitSafety(context, SAFETY_BOOL) && node->computedValue()->reg.u8 & 0xFE)
+                    return context->report({node, Err(Saf0003)});
+                return true;
+            case NativeTypeKind::U8:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u8 = node->computedValue()->reg.u8;
+                return true;
+            case NativeTypeKind::U16:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u16 = node->computedValue()->reg.u16;
+                return true;
+            case NativeTypeKind::U32:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue()->reg.u32;
+                return true;
+            case NativeTypeKind::U64:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.u64 = node->computedValue()->reg.u64;
+                return true;
+            case NativeTypeKind::S8:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.s8 = node->computedValue()->reg.s8;
+                return true;
+            case NativeTypeKind::S16:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.s16 = node->computedValue()->reg.s16;
+                return true;
+            case NativeTypeKind::S32:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.s32 = node->computedValue()->reg.s32;
+                return true;
+            case NativeTypeKind::S64:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.s64 = node->computedValue()->reg.s64;
+                return true;
+            case NativeTypeKind::F32:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.f32 = node->computedValue()->reg.f32;
+                if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue()->reg.f32))
+                    return context->report({node, Err(Saf0016)});
+                return true;
+            case NativeTypeKind::F64:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.f64 = node->computedValue()->reg.f64;
+                if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue()->reg.f64))
+                    return context->report({node, Err(Saf0016)});
+                return true;
+            case NativeTypeKind::Rune:
+                EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue()->reg.u32;
+                return true;
+            case NativeTypeKind::String:
+            {
+                reserveLinearRegisterRC2(context, regList);
+                const auto storageSegment = Semantic::getConstantSegFromContext(node);
+                const auto storageOffset  = storageSegment->addString(node->computedValue()->text);
+                SWAG_ASSERT(storageOffset != UINT32_MAX);
+                emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue()->text.length();
+                return true;
+            }
+            default:
+                return Report::internalError(context->node, "emitLiteral, type not supported");
         }
     }
     else if (typeInfo->isPointerNull())

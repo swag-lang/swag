@@ -222,114 +222,114 @@ llvm::DIType* LLVMDebug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::Enum:
-        return getEnumType(typeInfo, file);
+        case TypeInfoKind::Enum:
+            return getEnumType(typeInfo, file);
 
-    case TypeInfoKind::Struct:
-        return getStructType(typeInfo, file);
+        case TypeInfoKind::Struct:
+            return getStructType(typeInfo, file);
 
-    case TypeInfoKind::Array:
-    {
-        const auto                    typeInfoPtr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        VectorNative<llvm::Metadata*> subscripts;
-
-        auto* countNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::getSigned(llvm::Type::getInt64Ty(*llvmContext), typeInfoPtr->count));
-        subscripts.push_back(dbgBuilder->getOrCreateSubrange(countNode, nullptr, nullptr, nullptr));
-
-        const auto subscriptArray = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
-        const auto result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
-        mapTypes[typeInfo]        = result;
-        return result;
-    }
-
-    case TypeInfoKind::Pointer:
-    {
-        const auto    typeInfoPtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        llvm::DIType* result      = nullptr;
-        if (typeInfoPtr->isPointerArithmetic())
-            result = getPointerToType(typeInfoPtr->pointedType, file);
-        else
-            result = getReferenceToType(typeInfoPtr->pointedType, file);
-        mapTypes[typeInfo] = result;
-        return result;
-    }
-
-    case TypeInfoKind::Slice:
-    {
-        const auto typeInfoPtr = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        return getSliceType(typeInfo, typeInfoPtr->pointedType, file);
-    }
-
-    case TypeInfoKind::TypedVariadic:
-    {
-        const auto typeInfoPtr = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        return getSliceType(typeInfo, typeInfoPtr->rawType, file);
-    }
-
-    case TypeInfoKind::Variadic:
-    {
-        return getSliceType(typeInfo, g_TypeMgr->typeInfoAny, file);
-    }
-
-    case TypeInfoKind::LambdaClosure:
-    {
-        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure);
-        return dbgBuilder->createPointerType(getFunctionType(typeFunc, file), 64);
-    }
-
-    case TypeInfoKind::Interface:
-        return interfaceTy;
-
-    case TypeInfoKind::Native:
-    {
-        switch (typeInfo->nativeType)
+        case TypeInfoKind::Array:
         {
-        case NativeTypeKind::S8:
-            return s8Ty;
-        case NativeTypeKind::S16:
-            return s16Ty;
-        case NativeTypeKind::S32:
-            return s32Ty;
-        case NativeTypeKind::S64:
-            return s64Ty;
-        case NativeTypeKind::U8:
-            return u8Ty;
-        case NativeTypeKind::U16:
-            return u16Ty;
-        case NativeTypeKind::U32:
-            return u32Ty;
-        case NativeTypeKind::U64:
-            return u64Ty;
-        case NativeTypeKind::F32:
-            return f32Ty;
-        case NativeTypeKind::F64:
-            return f64Ty;
-        case NativeTypeKind::Rune:
-            return charTy;
-        case NativeTypeKind::Bool:
-            return boolTy;
-        case NativeTypeKind::String:
-            return stringTy;
-        case NativeTypeKind::Any:
-            return anyTy;
-        default:
-            return s64Ty;
+            const auto                    typeInfoPtr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            VectorNative<llvm::Metadata*> subscripts;
+
+            auto* countNode = llvm::ConstantAsMetadata::get(llvm::ConstantInt::getSigned(llvm::Type::getInt64Ty(*llvmContext), typeInfoPtr->count));
+            subscripts.push_back(dbgBuilder->getOrCreateSubrange(countNode, nullptr, nullptr, nullptr));
+
+            const auto subscriptArray = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
+            const auto result         = dbgBuilder->createArrayType(typeInfoPtr->totalCount, 0, getType(typeInfoPtr->pointedType, file), subscriptArray);
+            mapTypes[typeInfo]        = result;
+            return result;
         }
-    }
-    default:
-        break;
+
+        case TypeInfoKind::Pointer:
+        {
+            const auto    typeInfoPtr = castTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            llvm::DIType* result      = nullptr;
+            if (typeInfoPtr->isPointerArithmetic())
+                result = getPointerToType(typeInfoPtr->pointedType, file);
+            else
+                result = getReferenceToType(typeInfoPtr->pointedType, file);
+            mapTypes[typeInfo] = result;
+            return result;
+        }
+
+        case TypeInfoKind::Slice:
+        {
+            const auto typeInfoPtr = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            return getSliceType(typeInfo, typeInfoPtr->pointedType, file);
+        }
+
+        case TypeInfoKind::TypedVariadic:
+        {
+            const auto typeInfoPtr = castTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+            return getSliceType(typeInfo, typeInfoPtr->rawType, file);
+        }
+
+        case TypeInfoKind::Variadic:
+        {
+            return getSliceType(typeInfo, g_TypeMgr->typeInfoAny, file);
+        }
+
+        case TypeInfoKind::LambdaClosure:
+        {
+            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure);
+            return dbgBuilder->createPointerType(getFunctionType(typeFunc, file), 64);
+        }
+
+        case TypeInfoKind::Interface:
+            return interfaceTy;
+
+        case TypeInfoKind::Native:
+        {
+            switch (typeInfo->nativeType)
+            {
+                case NativeTypeKind::S8:
+                    return s8Ty;
+                case NativeTypeKind::S16:
+                    return s16Ty;
+                case NativeTypeKind::S32:
+                    return s32Ty;
+                case NativeTypeKind::S64:
+                    return s64Ty;
+                case NativeTypeKind::U8:
+                    return u8Ty;
+                case NativeTypeKind::U16:
+                    return u16Ty;
+                case NativeTypeKind::U32:
+                    return u32Ty;
+                case NativeTypeKind::U64:
+                    return u64Ty;
+                case NativeTypeKind::F32:
+                    return f32Ty;
+                case NativeTypeKind::F64:
+                    return f64Ty;
+                case NativeTypeKind::Rune:
+                    return charTy;
+                case NativeTypeKind::Bool:
+                    return boolTy;
+                case NativeTypeKind::String:
+                    return stringTy;
+                case NativeTypeKind::Any:
+                    return anyTy;
+                default:
+                    return s64Ty;
+            }
+        }
+        default:
+            break;
     }
 
     switch (typeInfo->sizeOf)
     {
-    case 1:
-        return s8Ty;
-    case 2:
-        return s16Ty;
-    case 4:
-        return s32Ty;
-    default:
-        return s64Ty;
+        case 1:
+            return s8Ty;
+        case 2:
+            return s16Ty;
+        case 4:
+            return s32Ty;
+        default:
+            return s64Ty;
     }
 }
 
@@ -566,13 +566,13 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
                 llvm::DIType* type = nullptr;
                 switch (typeParam->kind)
                 {
-                case TypeInfoKind::Array:
-                    type = getPointerToType(typeParam, file);
-                    break;
+                    case TypeInfoKind::Array:
+                        type = getPointerToType(typeParam, file);
+                        break;
 
-                default:
-                    type = getType(typeParam, file);
-                    break;
+                    default:
+                        type = getType(typeParam, file);
+                        break;
                 }
 
                 llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
@@ -781,42 +781,42 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             {
                 switch (typeInfo->nativeType)
                 {
-                case NativeTypeKind::S8:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s32, true);
-                    break;
-                case NativeTypeKind::S16:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s16, true);
-                    break;
-                case NativeTypeKind::S32:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s32, true);
-                    break;
-                case NativeTypeKind::S64:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s64, true);
-                    break;
-                case NativeTypeKind::U8:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s32, false);
-                    break;
-                case NativeTypeKind::U16:
-                    constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s16, false);
-                    break;
-                case NativeTypeKind::U32:
-                case NativeTypeKind::Rune:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s32, false);
-                    break;
-                case NativeTypeKind::U64:
-                    constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s64, false);
-                    break;
-                case NativeTypeKind::F32:
-                    constant = llvm::ConstantFP::get(F32_TY(), node->computedValue()->reg.f32);
-                    break;
-                case NativeTypeKind::F64:
-                    constant = llvm::ConstantFP::get(F64_TY(), node->computedValue()->reg.f64);
-                    break;
-                case NativeTypeKind::Bool:
-                    constant = llvm::ConstantInt::get(I1_TY(), node->computedValue()->reg.b, false);
-                    break;
-                default:
-                    break;
+                    case NativeTypeKind::S8:
+                        constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s32, true);
+                        break;
+                    case NativeTypeKind::S16:
+                        constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s16, true);
+                        break;
+                    case NativeTypeKind::S32:
+                        constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s32, true);
+                        break;
+                    case NativeTypeKind::S64:
+                        constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s64, true);
+                        break;
+                    case NativeTypeKind::U8:
+                        constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s32, false);
+                        break;
+                    case NativeTypeKind::U16:
+                        constant = llvm::ConstantInt::get(I8_TY(), node->computedValue()->reg.s16, false);
+                        break;
+                    case NativeTypeKind::U32:
+                    case NativeTypeKind::Rune:
+                        constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s32, false);
+                        break;
+                    case NativeTypeKind::U64:
+                        constant = llvm::ConstantInt::get(I32_TY(), node->computedValue()->reg.s64, false);
+                        break;
+                    case NativeTypeKind::F32:
+                        constant = llvm::ConstantFP::get(F32_TY(), node->computedValue()->reg.f32);
+                        break;
+                    case NativeTypeKind::F64:
+                        constant = llvm::ConstantFP::get(F64_TY(), node->computedValue()->reg.f64);
+                        break;
+                    case NativeTypeKind::Bool:
+                        constant = llvm::ConstantInt::get(I1_TY(), node->computedValue()->reg.b, false);
+                        break;
+                    default:
+                        break;
                 }
             }
 

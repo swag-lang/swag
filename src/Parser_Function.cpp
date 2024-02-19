@@ -29,58 +29,58 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
         param->token     = static_cast<Token>(token);
         switch (token.id)
         {
-        case TokenId::Identifier:
-            SWAG_CHECK(doIdentifierRef(param, &dummyResult, IDENTIFIER_NO_FCT_PARAMS));
-            break;
+            case TokenId::Identifier:
+                SWAG_CHECK(doIdentifierRef(param, &dummyResult, IDENTIFIER_NO_FCT_PARAMS));
+                break;
 
-        case TokenId::KwdTrue:
-        case TokenId::KwdFalse:
-        case TokenId::KwdNull:
-        case TokenId::CompilerFile:
-        case TokenId::CompilerModule:
-        case TokenId::CompilerLine:
-        case TokenId::CompilerBuildVersion:
-        case TokenId::CompilerBuildRevision:
-        case TokenId::CompilerBuildNum:
-        case TokenId::LiteralNumber:
-        case TokenId::LiteralString:
-        case TokenId::LiteralCharacter:
-            SWAG_CHECK(doLiteral(param, &dummyResult));
-            break;
+            case TokenId::KwdTrue:
+            case TokenId::KwdFalse:
+            case TokenId::KwdNull:
+            case TokenId::CompilerFile:
+            case TokenId::CompilerModule:
+            case TokenId::CompilerLine:
+            case TokenId::CompilerBuildVersion:
+            case TokenId::CompilerBuildRevision:
+            case TokenId::CompilerBuildNum:
+            case TokenId::LiteralNumber:
+            case TokenId::LiteralString:
+            case TokenId::LiteralCharacter:
+                SWAG_CHECK(doLiteral(param, &dummyResult));
+                break;
 
-        case TokenId::CompilerLocation:
-            SWAG_CHECK(doCompilerSpecialValue(param, &dummyResult));
-            break;
+            case TokenId::CompilerLocation:
+                SWAG_CHECK(doCompilerSpecialValue(param, &dummyResult));
+                break;
 
-        case TokenId::SymLeftSquare:
-        {
-            // This is ambiguous. Can be a literal array or an array type.
-            // If parameters are inside parenthesis, then this means that we can differentiate between the 2 cases
-            // without the need of #type, as what follows a literal should be another parameter (,) or the closing parenthesis.
-            // And this is a good idea to write Arr'([2] s32) instead of Arr'[2] s32 anyway. So this should remove some ambiguities.
-            tokenizer.saveState(token);
-            SWAG_CHECK(doExpressionListArray(param, &dummyResult));
-            if (multi && token.id != TokenId::SymComma && token.id != TokenId::SymRightParen)
+            case TokenId::SymLeftSquare:
             {
-                tokenizer.restoreState(token);
-                Ast::removeFromParent(param->children.back());
-                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
+                // This is ambiguous. Can be a literal array or an array type.
+                // If parameters are inside parenthesis, then this means that we can differentiate between the 2 cases
+                // without the need of #type, as what follows a literal should be another parameter (,) or the closing parenthesis.
+                // And this is a good idea to write Arr'([2] s32) instead of Arr'[2] s32 anyway. So this should remove some ambiguities.
+                tokenizer.saveState(token);
+                SWAG_CHECK(doExpressionListArray(param, &dummyResult));
+                if (multi && token.id != TokenId::SymComma && token.id != TokenId::SymRightParen)
+                {
+                    tokenizer.restoreState(token);
+                    Ast::removeFromParent(param->children.back());
+                    SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
+                }
+                break;
             }
-            break;
-        }
 
-        case TokenId::CompilerType:
-        {
-            SWAG_CHECK(eatToken());
-            AstNode* resNode;
-            SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &resNode));
-            resNode->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
-            break;
-        }
+            case TokenId::CompilerType:
+            {
+                SWAG_CHECK(eatToken());
+                AstNode* resNode;
+                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &resNode));
+                resNode->addSpecFlag(AstType::SPEC_FLAG_FORCE_TYPE);
+                break;
+            }
 
-        default:
-            SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
-            break;
+            default:
+                SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &dummyResult));
+                break;
         }
 
         if (!multi)
@@ -627,74 +627,74 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         int id = g_UniqueID.fetch_add(1);
         switch (typeFuncId)
         {
-        case TokenId::CompilerFuncTest:
-            funcNode->token.text = "__test" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_TEST_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerFuncInit:
-            funcNode->token.text = "__init" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_INIT_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerFuncDrop:
-            funcNode->token.text = "__drop" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_DROP_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerFuncPreMain:
-            funcNode->token.text = "__premain" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerRun:
-            funcNode->token.text = "__run" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerGeneratedRun:
-            funcNode->token.text = "__run" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAstFlag(AST_GENERATED);
-            funcNode->addAttribute(ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerGeneratedRunExp:
-            funcNode->token.text = "__run" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAstFlag(AST_GENERATED);
-            funcNode->addAttribute(ATTRIBUTE_RUN_GENERATED_EXP | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerFuncMain:
-            funcNode->token.text = "__main" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerFuncMessage:
-            funcNode->token.text = "__compiler" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAttribute(ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
-            ++module->numCompilerFunctions;
-            break;
-        case TokenId::CompilerAst:
-            funcNode->token.text = "__ast" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAstFlag(AST_GENERATED);
-            funcNode->addAttribute(ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerValidIf:
-            funcNode->token.text = "__validif" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAstFlag(AST_GENERATED);
-            funcNode->addAttribute(ATTRIBUTE_MATCH_VALIDIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        case TokenId::CompilerValidIfx:
-            funcNode->token.text = "__validifx" + to_string(id);
-            funcNode->tokenName = funcNode->token;
-            funcNode->addAstFlag(AST_GENERATED);
-            funcNode->addAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
-            break;
-        default:
-            break;
+            case TokenId::CompilerFuncTest:
+                funcNode->token.text = "__test" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_TEST_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerFuncInit:
+                funcNode->token.text = "__init" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_INIT_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerFuncDrop:
+                funcNode->token.text = "__drop" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_DROP_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerFuncPreMain:
+                funcNode->token.text = "__premain" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerRun:
+                funcNode->token.text = "__run" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerGeneratedRun:
+                funcNode->token.text = "__run" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAstFlag(AST_GENERATED);
+                funcNode->addAttribute(ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerGeneratedRunExp:
+                funcNode->token.text = "__run" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAstFlag(AST_GENERATED);
+                funcNode->addAttribute(ATTRIBUTE_RUN_GENERATED_EXP | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerFuncMain:
+                funcNode->token.text = "__main" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerFuncMessage:
+                funcNode->token.text = "__compiler" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAttribute(ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
+                ++module->numCompilerFunctions;
+                break;
+            case TokenId::CompilerAst:
+                funcNode->token.text = "__ast" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAstFlag(AST_GENERATED);
+                funcNode->addAttribute(ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerValidIf:
+                funcNode->token.text = "__validif" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAstFlag(AST_GENERATED);
+                funcNode->addAttribute(ATTRIBUTE_MATCH_VALIDIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            case TokenId::CompilerValidIfx:
+                funcNode->token.text = "__validifx" + to_string(id);
+                funcNode->tokenName = funcNode->token;
+                funcNode->addAstFlag(AST_GENERATED);
+                funcNode->addAttribute(ATTRIBUTE_MATCH_VALIDIFX_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
+                break;
+            default:
+                break;
         }
     }
     else

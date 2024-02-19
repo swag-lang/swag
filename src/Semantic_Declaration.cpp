@@ -91,22 +91,22 @@ bool Semantic::resolveWith(SemanticContext* context)
     SWAG_ASSERT(typeResolved);
     switch (typeResolved->kind)
     {
-    case TypeInfoKind::Pointer:
-        if (!typeResolved->isPointerTo(TypeInfoKind::Struct))
+        case TypeInfoKind::Pointer:
+            if (!typeResolved->isPointerTo(TypeInfoKind::Struct))
+                return context->report({node, FMT(Err(Err0173), typeResolved->getDisplayNameC())});
+            break;
+
+        case TypeInfoKind::Namespace:
+        case TypeInfoKind::Struct:
+            break;
+
+        case TypeInfoKind::Enum:
+            if (fromVar)
+                return context->report({node, FMT(Err(Err0172), typeResolved->getDisplayNameC())});
+            break;
+
+        default:
             return context->report({node, FMT(Err(Err0173), typeResolved->getDisplayNameC())});
-        break;
-
-    case TypeInfoKind::Namespace:
-    case TypeInfoKind::Struct:
-        break;
-
-    case TypeInfoKind::Enum:
-        if (fromVar)
-            return context->report({node, FMT(Err(Err0172), typeResolved->getDisplayNameC())});
-        break;
-
-    default:
-        return context->report({node, FMT(Err(Err0173), typeResolved->getDisplayNameC())});
     }
 
     return true;
@@ -129,26 +129,26 @@ bool Semantic::resolveUsing(SemanticContext* context)
     const auto typeResolved = idref->resolvedSymbolOverload->typeInfo;
     switch (typeResolved->kind)
     {
-    case TypeInfoKind::Namespace:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
-        scope               = typeInfo->scope;
-        break;
-    }
-    case TypeInfoKind::Enum:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
-        scope               = typeInfo->scope;
-        break;
-    }
-    case TypeInfoKind::Struct:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
-        scope               = typeInfo->scope;
-        break;
-    }
-    default:
-        return context->report({node, FMT(Err(Err0472), typeResolved->getDisplayNameC())});
+        case TypeInfoKind::Namespace:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
+            scope               = typeInfo->scope;
+            break;
+        }
+        case TypeInfoKind::Enum:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
+            scope               = typeInfo->scope;
+            break;
+        }
+        case TypeInfoKind::Struct:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
+            scope               = typeInfo->scope;
+            break;
+        }
+        default:
+            return context->report({node, FMT(Err(Err0472), typeResolved->getDisplayNameC())});
     }
 
     node->parent->addAlternativeScope(scope, ALT_SCOPE_USING);

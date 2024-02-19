@@ -290,14 +290,14 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
         prevNodeLocal = prevJob->waitingHintNode;
         switch (prevJob->waitingHintNode->kind)
         {
-        case AstNodeKind::ConstDecl:
-        case AstNodeKind::VarDecl:
-        case AstNodeKind::EnumValue:
-            msg += " ";
-            msg += FMT("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.c_str());
-            break;
-        default:
-            break;
+            case AstNodeKind::ConstDecl:
+            case AstNodeKind::VarDecl:
+            case AstNodeKind::EnumValue:
+                msg += " ";
+                msg += FMT("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.c_str());
+                break;
+            default:
+                break;
         }
     }
 
@@ -311,24 +311,24 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     switch (prevJob->waitingKind)
     {
-    case JobWaitKind::WaitMethods:
-        remark = "waiting for all methods to be solved";
-        break;
-    case JobWaitKind::WaitInterfaces:
-        remark = "waiting for all interfaces to be solved";
-        break;
-    case JobWaitKind::GenExportedType:
-    case JobWaitKind::GenExportedType1:
-        remark = "waiting for the type to be exported";
-        break;
-    case JobWaitKind::SemFullResolve:
-        remark = FMT("waiting for %s to be fully solved", sym.c_str());
-        break;
-    case JobWaitKind::WaitSymbol:
-        remark = FMT("waiting for %s to be solved", sym.c_str());
-        break;
-    default:
-        break;
+        case JobWaitKind::WaitMethods:
+            remark = "waiting for all methods to be solved";
+            break;
+        case JobWaitKind::WaitInterfaces:
+            remark = "waiting for all interfaces to be solved";
+            break;
+        case JobWaitKind::GenExportedType:
+        case JobWaitKind::GenExportedType1:
+            remark = "waiting for the type to be exported";
+            break;
+        case JobWaitKind::SemFullResolve:
+            remark = FMT("waiting for %s to be fully solved", sym.c_str());
+            break;
+        case JobWaitKind::WaitSymbol:
+            remark = FMT("waiting for %s to be solved", sym.c_str());
+            break;
+        default:
+            break;
     }
 
     if (!remark.empty())
@@ -444,62 +444,62 @@ void Workspace::computeWaitingJobs()
 
         switch (pendingJob->waitingKind)
         {
-        case JobWaitKind::WaitSymbol:
-            SWAG_ASSERT(pendingJob->waitingSymbolSolved);
-            for (auto it : g_ThreadMgr.waitingJobs)
-            {
-                for (const auto it1 : pendingJob->waitingSymbolSolved->nodes)
+            case JobWaitKind::WaitSymbol:
+                SWAG_ASSERT(pendingJob->waitingSymbolSolved);
+                for (auto it : g_ThreadMgr.waitingJobs)
                 {
-                    if (it->originalNode == it1)
+                    for (const auto it1 : pendingJob->waitingSymbolSolved->nodes)
                     {
-                        pendingJob->waitingJobs.push_back_once(it);
+                        if (it->originalNode == it1)
+                        {
+                            pendingJob->waitingJobs.push_back_once(it);
+                        }
                     }
                 }
-            }
-            break;
+                break;
 
-        case JobWaitKind::GenExportedType:
-        case JobWaitKind::GenExportedType1:
-            SWAG_ASSERT(pendingJob->waitingType);
-            for (const auto& waitingJob : g_ThreadMgr.waitingJobs)
-            {
-                const auto it = dynamic_cast<TypeGenStructJob*>(waitingJob);
-                if (it && it->typeInfo == pendingJob->waitingType)
+            case JobWaitKind::GenExportedType:
+            case JobWaitKind::GenExportedType1:
+                SWAG_ASSERT(pendingJob->waitingType);
+                for (const auto& waitingJob : g_ThreadMgr.waitingJobs)
                 {
-                    pendingJob->waitingJobs.push_back_once(it);
+                    const auto it = dynamic_cast<TypeGenStructJob*>(waitingJob);
+                    if (it && it->typeInfo == pendingJob->waitingType)
+                    {
+                        pendingJob->waitingJobs.push_back_once(it);
+                        break;
+                    }
+                }
+                break;
+
+            default:
+                if (pendingJob->waitingNode)
+                {
+                    for (auto it : g_ThreadMgr.waitingJobs)
+                    {
+                        if (it->originalNode == pendingJob->waitingNode)
+                        {
+                            pendingJob->waitingJobs.push_back_once(it);
+                            break;
+                        }
+                    }
                     break;
                 }
-            }
-            break;
 
-        default:
-            if (pendingJob->waitingNode)
-            {
-                for (auto it : g_ThreadMgr.waitingJobs)
+                if (pendingJob->waitingType)
                 {
-                    if (it->originalNode == pendingJob->waitingNode)
+                    for (auto it : g_ThreadMgr.waitingJobs)
                     {
-                        pendingJob->waitingJobs.push_back_once(it);
-                        break;
+                        if (it->originalNode == pendingJob->waitingType->declNode)
+                        {
+                            pendingJob->waitingJobs.push_back_once(it);
+                            break;
+                        }
                     }
+                    break;
                 }
-                break;
-            }
 
-            if (pendingJob->waitingType)
-            {
-                for (auto it : g_ThreadMgr.waitingJobs)
-                {
-                    if (it->originalNode == pendingJob->waitingType->declNode)
-                    {
-                        pendingJob->waitingJobs.push_back_once(it);
-                        break;
-                    }
-                }
                 break;
-            }
-
-            break;
         }
     }
 }

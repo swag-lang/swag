@@ -62,51 +62,51 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
 
     switch (ip->op)
     {
-    case ByteCodeOp::CopyRBtoRA8:
-    case ByteCodeOp::CopyRBtoRA16:
-    case ByteCodeOp::CopyRBtoRA32:
-    case ByteCodeOp::CopyRBtoRA64:
-        context->contextBcFlags |= OCF_HAS_COPY_RBRA;
-        break;
+        case ByteCodeOp::CopyRBtoRA8:
+        case ByteCodeOp::CopyRBtoRA16:
+        case ByteCodeOp::CopyRBtoRA32:
+        case ByteCodeOp::CopyRBtoRA64:
+            context->contextBcFlags |= OCF_HAS_COPY_RBRA;
+            break;
 
-    case ByteCodeOp::CopyRTtoRA:
-        context->contextBcFlags |= OCF_HAS_COPY_RTRC;
-        break;
+        case ByteCodeOp::CopyRTtoRA:
+            context->contextBcFlags |= OCF_HAS_COPY_RTRC;
+            break;
 
-    case ByteCodeOp::CopyRAtoRT:
-        context->contextBcFlags |= OCF_HAS_COPY_RCRT;
-        break;
+        case ByteCodeOp::CopyRAtoRT:
+            context->contextBcFlags |= OCF_HAS_COPY_RCRT;
+            break;
 
-    case ByteCodeOp::MakeBssSegPointer:
-    case ByteCodeOp::MakeConstantSegPointer:
-    case ByteCodeOp::MakeMutableSegPointer:
-    case ByteCodeOp::SetImmediate32:
-    case ByteCodeOp::SetImmediate64:
-    case ByteCodeOp::GetParam64x2:
-    case ByteCodeOp::GetParam64DeRef8:
-    case ByteCodeOp::GetParam64DeRef16:
-    case ByteCodeOp::GetParam64DeRef32:
-    case ByteCodeOp::GetParam64DeRef64:
-    case ByteCodeOp::GetIncParam64DeRef8:
-    case ByteCodeOp::GetIncParam64DeRef16:
-    case ByteCodeOp::GetIncParam64DeRef32:
-    case ByteCodeOp::GetIncParam64DeRef64:
-        context->contextBcFlags |= OCF_HAS_DUP_COPY;
-        break;
+        case ByteCodeOp::MakeBssSegPointer:
+        case ByteCodeOp::MakeConstantSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
+        case ByteCodeOp::SetImmediate32:
+        case ByteCodeOp::SetImmediate64:
+        case ByteCodeOp::GetParam64x2:
+        case ByteCodeOp::GetParam64DeRef8:
+        case ByteCodeOp::GetParam64DeRef16:
+        case ByteCodeOp::GetParam64DeRef32:
+        case ByteCodeOp::GetParam64DeRef64:
+        case ByteCodeOp::GetIncParam64DeRef8:
+        case ByteCodeOp::GetIncParam64DeRef16:
+        case ByteCodeOp::GetIncParam64DeRef32:
+        case ByteCodeOp::GetIncParam64DeRef64:
+            context->contextBcFlags |= OCF_HAS_DUP_COPY;
+            break;
 
-    case ByteCodeOp::CopyRRtoRA:
-    case ByteCodeOp::GetParam64:
-    case ByteCodeOp::GetIncParam64:
-        context->contextBcFlags |= OCF_HAS_DUP_COPY;
-        context->contextBcFlags |= OCF_HAS_PARAM;
-        break;
+        case ByteCodeOp::CopyRRtoRA:
+        case ByteCodeOp::GetParam64:
+        case ByteCodeOp::GetIncParam64:
+            context->contextBcFlags |= OCF_HAS_DUP_COPY;
+            context->contextBcFlags |= OCF_HAS_PARAM;
+            break;
 
-    case ByteCodeOp::JumpIfNoError:
-        context->contextBcFlags |= OCF_HAS_ERR;
-        break;
+        case ByteCodeOp::JumpIfNoError:
+            context->contextBcFlags |= OCF_HAS_ERR;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

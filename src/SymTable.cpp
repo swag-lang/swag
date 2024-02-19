@@ -283,20 +283,20 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     // We need to reset it in order to avoid a double free
     switch (node->kind)
     {
-    case AstNodeKind::EnumDecl:
-    {
-        const auto enumNode = castAst<AstEnum>(node, AstNodeKind::EnumDecl);
-        enumNode->scope     = nullptr;
-        break;
-    }
-    case AstNodeKind::StructDecl:
-    {
-        const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
-        structNode->scope     = nullptr;
-        break;
-    }
-    default:
-        break;
+        case AstNodeKind::EnumDecl:
+        {
+            const auto enumNode = castAst<AstEnum>(node, AstNodeKind::EnumDecl);
+            enumNode->scope     = nullptr;
+            break;
+        }
+        case AstNodeKind::StructDecl:
+        {
+            const auto structNode = castAst<AstStruct>(node, AstNodeKind::StructDecl);
+            structNode->scope     = nullptr;
+            break;
+        }
+        default:
+            break;
     }
 }
 

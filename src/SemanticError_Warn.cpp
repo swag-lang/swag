@@ -21,38 +21,38 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     const ComputedValue* v      = nullptr;
     switch (node->kind)
     {
-    case AstNodeKind::FuncDecl:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::EnumDecl:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::StructDecl:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::InterfaceDecl:
-    {
-        const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    case AstNodeKind::EnumValue:
-    {
-        const auto typeInfo = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
-        v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
-        break;
-    }
-    default:
-        break;
+        case AstNodeKind::FuncDecl:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+            break;
+        }
+        case AstNodeKind::EnumDecl:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+            break;
+        }
+        case AstNodeKind::StructDecl:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+            break;
+        }
+        case AstNodeKind::InterfaceDecl:
+        {
+            const auto typeInfo = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+            v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+            break;
+        }
+        case AstNodeKind::EnumValue:
+        {
+            const auto typeInfo = castAst<AstEnumValue>(node, AstNodeKind::EnumValue);
+            v                   = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Deprecated, g_LangSpec->name_msg);
+            break;
+        }
+        default:
+            break;
     }
 
     const Diagnostic err{

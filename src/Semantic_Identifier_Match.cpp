@@ -37,20 +37,20 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
 
     switch (identifier->tokenId)
     {
-    case TokenId::IntrinsicAssert:
-    {
-        if (module->mustOptimizeBytecode(context->node))
+        case TokenId::IntrinsicAssert:
         {
-            // Remove assert(true)
-            SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
-            const auto param = identifier->callParameters->children.front();
-            if (param->hasComputedValue() && param->computedValue()->reg.b)
-                identifier->addAstFlag(AST_NO_BYTECODE);
+            if (module->mustOptimizeBytecode(context->node))
+            {
+                // Remove assert(true)
+                SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
+                const auto param = identifier->callParameters->children.front();
+                if (param->hasComputedValue() && param->computedValue()->reg.b)
+                    identifier->addAstFlag(AST_NO_BYTECODE);
+            }
+            break;
         }
-        break;
-    }
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -437,17 +437,17 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 continue;
             switch (funcParam->assignment->tokenId)
             {
-            case TokenId::CompilerCallerLocation:
-            case TokenId::CompilerCallerFunction:
-            case TokenId::CompilerBuildCfg:
-            case TokenId::CompilerOs:
-            case TokenId::CompilerArch:
-            case TokenId::CompilerCpu:
-            case TokenId::CompilerSwagOs:
-            case TokenId::CompilerBackend:
-                continue;
-            default:
-                break;
+                case TokenId::CompilerCallerLocation:
+                case TokenId::CompilerCallerFunction:
+                case TokenId::CompilerBuildCfg:
+                case TokenId::CompilerOs:
+                case TokenId::CompilerArch:
+                case TokenId::CompilerCpu:
+                case TokenId::CompilerSwagOs:
+                case TokenId::CompilerBackend:
+                    continue;
+                default:
+                    break;
             }
 
             const auto typeParam = TypeManager::concretePtrRefType(funcParam->typeInfo);
@@ -840,245 +840,498 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     auto idRef = identifier->identifierRef();
     switch (symbolKind)
     {
-    case SymbolKind::GenericType:
-        SWAG_CHECK(setupIdentifierRef(context, identifier));
-        break;
-
-    case SymbolKind::Namespace:
-        identifierRef->startScope = castTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
-        identifier->addAstFlag(AST_CONST_EXPR);
-        break;
-
-    case SymbolKind::Enum:
-        SWAG_CHECK(setupIdentifierRef(context, identifier));
-        identifier->addAstFlag(AST_CONST_EXPR);
-        break;
-
-    case SymbolKind::EnumValue:
-
-        if (idRef &&
-            idRef->previousResolvedNode &&
-            idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
-        {
-            Diagnostic err{idRef->previousResolvedNode, FMT(Err(Err0260), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
-            return context->report(err);
-        }
-
-        SWAG_CHECK(setupIdentifierRef(context, identifier));
-        identifier->setFlagsValueIsComputed();
-        identifier->addAstFlag(AST_R_VALUE);
-        *identifier->computedValue() = identifier->resolvedSymbolOverload->computedValue;
-        break;
-
-    case SymbolKind::Struct:
-    case SymbolKind::Interface:
-    {
-        if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
+        case SymbolKind::GenericType:
             SWAG_CHECK(setupIdentifierRef(context, identifier));
-        identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
+            break;
 
-        if (!identifier->callParameters)
+        case SymbolKind::Namespace:
+            identifierRef->startScope = castTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
             identifier->addAstFlag(AST_CONST_EXPR);
+            break;
 
-        // Be sure it's the NAME{} syntax
-        if (identifier->callParameters &&
-            !identifier->hasAstFlag(AST_GENERATED) &&
-            !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        {
-            Diagnostic err{identifier, identifier->token, Err(Err0377)};
-            return context->report(err);
-        }
+        case SymbolKind::Enum:
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
+            identifier->addAstFlag(AST_CONST_EXPR);
+            break;
 
-        // A struct with parameters is in fact the creation of a temporary variable
-        bool canConvertStructParams = false;
-        bool canOptimAffect         = false;
-        if (identifier->callParameters &&
-            !identifier->hasAstFlag(AST_GENERATED) &&
-            !identifier->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION) &&
-            !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
-        {
-            canConvertStructParams = true;
-            if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
+        case SymbolKind::EnumValue:
+
+            if (idRef &&
+                idRef->previousResolvedNode &&
+                idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                auto varNode = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                if (varNode->assignment == identifier->parent && !varNode->type)
+                Diagnostic err{idRef->previousResolvedNode, FMT(Err(Err0260), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
+                return context->report(err);
+            }
+
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
+            identifier->setFlagsValueIsComputed();
+            identifier->addAstFlag(AST_R_VALUE);
+            *identifier->computedValue() = identifier->resolvedSymbolOverload->computedValue;
+            break;
+
+        case SymbolKind::Struct:
+        case SymbolKind::Interface:
+        {
+            if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
+                SWAG_CHECK(setupIdentifierRef(context, identifier));
+            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
+
+            if (!identifier->callParameters)
+                identifier->addAstFlag(AST_CONST_EXPR);
+
+            // Be sure it's the NAME{} syntax
+            if (identifier->callParameters &&
+                !identifier->hasAstFlag(AST_GENERATED) &&
+                !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
+            {
+                Diagnostic err{identifier, identifier->token, Err(Err0377)};
+                return context->report(err);
+            }
+
+            // A struct with parameters is in fact the creation of a temporary variable
+            bool canConvertStructParams = false;
+            bool canOptimAffect         = false;
+            if (identifier->callParameters &&
+                !identifier->hasAstFlag(AST_GENERATED) &&
+                !identifier->hasAstFlag(AST_IN_TYPE_VAR_DECLARATION) &&
+                !identifier->hasAstFlag(AST_IN_FUNC_DECL_PARAMS))
+            {
+                canConvertStructParams = true;
+                if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
                 {
-                    // Optim if we have var = Struct{}
-                    // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-                    // of 'var'
-                    canOptimAffect = true;
+                    auto varNode = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                    if (varNode->assignment == identifier->parent && !varNode->type)
+                    {
+                        // Optim if we have var = Struct{}
+                        // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+                        // of 'var'
+                        canOptimAffect = true;
+                    }
                 }
             }
-        }
 
-        // Need to make all types compatible, in case a cast is necessary
-        if (identifier->callParameters)
-        {
-            sortParameters(identifier->callParameters);
-            auto maxParams = identifier->callParameters->children.size();
-            for (size_t i = 0; i < maxParams; i++)
+            // Need to make all types compatible, in case a cast is necessary
+            if (identifier->callParameters)
             {
-                auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
-                size_t idx      = nodeCall->indexParam;
-                if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
+                sortParameters(identifier->callParameters);
+                auto maxParams = identifier->callParameters->children.size();
+                for (size_t i = 0; i < maxParams; i++)
                 {
-                    CastFlags castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST | CAST_FLAG_PTR_REF;
-                    if (canOptimAffect)
-                        castFlags.add(CAST_FLAG_NO_TUPLE_TO_STRUCT);
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
+                    auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
+                    size_t idx      = nodeCall->indexParam;
+                    if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
+                    {
+                        CastFlags castFlags = CAST_FLAG_TRY_COERCE | CAST_FLAG_FORCE_UN_CONST | CAST_FLAG_PTR_REF;
+                        if (canOptimAffect)
+                            castFlags.add(CAST_FLAG_NO_TUPLE_TO_STRUCT);
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
 
-                    auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-                    if (!oneMatch.solvedParameters[idx]->typeInfo->isPointerRef() && typeCall->isPointerRef())
-                        setUnRef(nodeCall);
+                        auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+                        if (!oneMatch.solvedParameters[idx]->typeInfo->isPointerRef() && typeCall->isPointerRef())
+                            setUnRef(nodeCall);
+                    }
                 }
             }
-        }
 
-        // Optim if we have var = Struct{}
-        // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-        // of 'var'
-        if (canOptimAffect)
-        {
-            auto varNode        = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-            auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
-            varNode->type       = typeNode;
-            varNode->assignment = nullptr;
-            typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
-            typeNode->addSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN);
-            identifier->addSemFlag(SEMFLAG_ONCE);
-            Ast::removeFromParent(identifier->parent);
-            Ast::addChildBack(typeNode, identifier->parent);
-            typeNode->identifier = identifier->parent;
-            context->baseJob->nodes.pop_back();
-            context->baseJob->nodes.pop_back();
-            context->baseJob->nodes.push_back(typeNode);
-            context->result = ContextResult::NewChildren;
-            return true;
-        }
-
-        // A struct with parameters is in fact the creation of a temporary variable
-        if (canConvertStructParams)
-        {
-            if (identifier->parent->parent->kind != AstNodeKind::TypeExpression ||
-                !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
+            // Optim if we have var = Struct{}
+            // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+            // of 'var'
+            if (canOptimAffect)
             {
-                SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
+                auto varNode        = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+                auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
+                varNode->type       = typeNode;
+                varNode->assignment = nullptr;
+                typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
+                typeNode->addSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN);
+                identifier->addSemFlag(SEMFLAG_ONCE);
+                Ast::removeFromParent(identifier->parent);
+                Ast::addChildBack(typeNode, identifier->parent);
+                typeNode->identifier = identifier->parent;
+                context->baseJob->nodes.pop_back();
+                context->baseJob->nodes.pop_back();
+                context->baseJob->nodes.push_back(typeNode);
+                context->result = ContextResult::NewChildren;
                 return true;
             }
-        }
 
-        break;
-    }
-
-    case SymbolKind::Variable:
-    {
-        // If this is a struct variable, and it's referenced (identifierRef has a startScope), then we
-        // wait for the struct container to be solved. We do not want the semantic to continue with
-        // an unsolved struct, because that means that storageOffset has not been computed yet
-        // (and in some cases we can go to the bytecode generation with the struct not solved).
-        if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->startScope)
-        {
-            auto parentStructNode = identifier->identifierRef()->startScope->owner;
-            if (parentStructNode->resolvedSymbolOverload)
+            // A struct with parameters is in fact the creation of a temporary variable
+            if (canConvertStructParams)
             {
-                waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload);
-                YIELD();
-            }
-        }
-
-        overload->flags.add(OVERLOAD_USED);
-
-        // Be sure usage is valid
-        auto ownerFct = identifier->ownerFct;
-        if (ownerFct)
-        {
-            if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
-            {
-                Diagnostic err{identifier, FMT(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.c_str(), ownerFct->token.c_str())};
-                auto       note = Diagnostic::note(overload->node, overload->node->token, FMT(Nte(Nte0147), Naming::kindName(overload->node).c_str()));
-                return context->report(err, note);
-            }
-        }
-
-        // Transform the variable to a constant node
-        if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
-        {
-            if (overload->node->isConstantGenTypeInfo())
-                identifier->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
-            identifier->setFlagsValueIsComputed();
-            *identifier->computedValue() = overload->computedValue;
-
-            // If constant is inside an expression, everything before should be constant too.
-            // Otherwise, that means that we reference a constant threw a variable
-            //
-            // var x = y.Constant where y is a variable
-            //
-            auto checkParent = identifier->parent;
-            auto child       = castAst<AstNode>(identifier);
-            while (checkParent->kind == AstNodeKind::ArrayPointerIndex ||
-                   checkParent->kind == AstNodeKind::ArrayPointerSlicing)
-            {
-                child       = checkParent;
-                checkParent = checkParent->parent;
-            }
-
-            // In that case, we should not generate bytecode for everything before the constant,
-            // as we have the scope, and this is enough.
-            SWAG_ASSERT(checkParent->kind == AstNodeKind::IdentifierRef);
-            auto childIdx = child->childParentIdx();
-            for (uint32_t i = 0; i < childIdx; i++)
-            {
-                auto brother = checkParent->children[i];
-                if (!brother->hasComputedValue() &&
-                    brother->resolvedSymbolOverload &&
-                    brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
+                if (identifier->parent->parent->kind != AstNodeKind::TypeExpression ||
+                    !identifier->parent->parent->hasSpecFlag(AstTypeExpression::SPEC_FLAG_DONE_GEN))
                 {
-                    brother->addAstFlag(AST_NO_BYTECODE);
+                    SWAG_CHECK(Ast::convertStructParamsToTmpVar(context, identifier));
+                    return true;
                 }
             }
+
+            break;
         }
 
-        // Setup parent if necessary
-        SWAG_CHECK(setupIdentifierRef(context, identifier));
-
-        auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
-
-        // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
-        // for it, as this is not really a variable
-        if (typeInfo->isCode())
-            identifier->addAstFlag(AST_NO_BYTECODE);
-
-        // Lambda call
-        if (typeInfo->isLambdaClosure() && identifier->callParameters)
+        case SymbolKind::Variable:
         {
-            auto typeInfoRet = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
-            typeInfoRet      = TypeManager::concreteType(typeInfoRet, CONCRETE_FORCE_ALIAS);
+            // If this is a struct variable, and it's referenced (identifierRef has a startScope), then we
+            // wait for the struct container to be solved. We do not want the semantic to continue with
+            // an unsolved struct, because that means that storageOffset has not been computed yet
+            // (and in some cases we can go to the bytecode generation with the struct not solved).
+            if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->startScope)
+            {
+                auto parentStructNode = identifier->identifierRef()->startScope->owner;
+                if (parentStructNode->resolvedSymbolOverload)
+                {
+                    waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload);
+                    YIELD();
+                }
+            }
 
-            // Check return value
-            if (!typeInfoRet->isVoid())
+            overload->flags.add(OVERLOAD_USED);
+
+            // Be sure usage is valid
+            auto ownerFct = identifier->ownerFct;
+            if (ownerFct)
+            {
+                if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
+                {
+                    Diagnostic err{identifier, FMT(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.c_str(), ownerFct->token.c_str())};
+                    auto       note = Diagnostic::note(overload->node, overload->node->token, FMT(Nte(Nte0147), Naming::kindName(overload->node).c_str()));
+                    return context->report(err, note);
+                }
+            }
+
+            // Transform the variable to a constant node
+            if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+            {
+                if (overload->node->isConstantGenTypeInfo())
+                    identifier->addAstFlag(AST_VALUE_IS_GEN_TYPEINFO);
+                identifier->setFlagsValueIsComputed();
+                *identifier->computedValue() = overload->computedValue;
+
+                // If constant is inside an expression, everything before should be constant too.
+                // Otherwise, that means that we reference a constant threw a variable
+                //
+                // var x = y.Constant where y is a variable
+                //
+                auto checkParent = identifier->parent;
+                auto child       = castAst<AstNode>(identifier);
+                while (checkParent->kind == AstNodeKind::ArrayPointerIndex ||
+                       checkParent->kind == AstNodeKind::ArrayPointerSlicing)
+                {
+                    child       = checkParent;
+                    checkParent = checkParent->parent;
+                }
+
+                // In that case, we should not generate bytecode for everything before the constant,
+                // as we have the scope, and this is enough.
+                SWAG_ASSERT(checkParent->kind == AstNodeKind::IdentifierRef);
+                auto childIdx = child->childParentIdx();
+                for (uint32_t i = 0; i < childIdx; i++)
+                {
+                    auto brother = checkParent->children[i];
+                    if (!brother->hasComputedValue() &&
+                        brother->resolvedSymbolOverload &&
+                        brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
+                    {
+                        brother->addAstFlag(AST_NO_BYTECODE);
+                    }
+                }
+            }
+
+            // Setup parent if necessary
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
+
+            auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
+
+            // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
+            // for it, as this is not really a variable
+            if (typeInfo->isCode())
+                identifier->addAstFlag(AST_NO_BYTECODE);
+
+            // Lambda call
+            if (typeInfo->isLambdaClosure() && identifier->callParameters)
+            {
+                auto typeInfoRet = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
+                typeInfoRet      = TypeManager::concreteType(typeInfoRet, CONCRETE_FORCE_ALIAS);
+
+                // Check return value
+                if (!typeInfoRet->isVoid())
+                {
+                    if (isStatementIdentifier(identifier))
+                    {
+                        if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
+                        {
+                            Diagnostic err(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.c_str()));
+                            return context->report(err, Diagnostic::hereIs(overload));
+                        }
+
+                        identifier->addAstFlag(AST_DISCARD);
+                    }
+                }
+                else if (typeInfoRet->isVoid() && identifier->hasAstFlag(AST_DISCARD))
+                {
+                    Diagnostic err{identifier, identifier->token, Err(Err0158)};
+                    return context->report(err, Diagnostic::hereIs(overload));
+                }
+
+                // From now this is considered as a function, not a lambda
+                auto funcType           = castTypeInfo<TypeInfoFuncAttr>(typeInfo->clone());
+                funcType->kind          = TypeInfoKind::FuncAttr;
+                identifier->typeInfo    = funcType;
+                identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
+
+                // Try/Assume
+                if (identifier->hasExtOwner() &&
+                    identifier->extOwner()->ownerTryCatchAssume &&
+                    identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
+                {
+                    switch (identifier->extOwner()->ownerTryCatchAssume->kind)
+                    {
+                        case AstNodeKind::Try:
+                            identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
+                            break;
+                        case AstNodeKind::TryCatch:
+                            identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
+                            break;
+                        case AstNodeKind::Catch:
+                            identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
+                            break;
+                        case AstNodeKind::Assume:
+                            identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                // Need to make all types compatible, in case a cast is necessary
+                SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
+
+                // For a return by copy, need to reserve room on the stack for the return result
+                if (CallConv::returnNeedsStack(funcType))
+                {
+                    identifier->addAstFlag(AST_TRANSIENT);
+                    allocateOnStack(identifier, funcType->concreteReturnType());
+                }
+            }
+            else
             {
                 if (isStatementIdentifier(identifier))
                 {
-                    if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
+                    Diagnostic err{idRef, Err(Err0625)};
+                    return context->report(err);
+                }
+            }
+
+            break;
+        }
+
+        case SymbolKind::Function:
+        {
+            auto funcDecl = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+
+            // Be sure that we didn't use a variable as a 'scope'
+            auto childIdx = identifier->childParentIdx();
+            if (childIdx)
+            {
+                auto prev = identifier->identifierRef()->children[childIdx - 1];
+                if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
+                {
+                    Diagnostic err{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
+                    err.addNote(identifier->token, FMT(Nte(Nte0154), prev->typeInfo->getDisplayNameC()));
+                    return context->report(err, Diagnostic::hereIs(funcDecl));
+                }
+            }
+
+            identifier->addAstFlag(AST_SIDE_EFFECTS);
+
+            // Be sure it's () and not {}
+            if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
+                return context->report({identifier->callParameters, FMT(Err(Err0291), identifier->token.c_str())});
+
+            // Capture syntax
+            if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
+            {
+                if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+                {
+                    auto       cp = identifier->callParameters;
+                    Diagnostic err{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.c_str())};
+                    err.addNote(identifier->token, Nte(Nte0155));
+                    return context->report(err);
+                }
+            }
+
+            // Now we need to be sure that the function is now complete
+            // If not, we need to wait for it
+            waitOverloadCompleted(context->baseJob, overload);
+            YIELD();
+
+            if (identifier->token.text == g_LangSpec->name_opInit)
+                return context->report({identifier, identifier->token, Err(Err0109)});
+            if (identifier->token.text == g_LangSpec->name_opDrop)
+                return context->report({identifier, identifier->token, Err(Err0108)});
+            if (identifier->token.text == g_LangSpec->name_opPostCopy)
+                return context->report({identifier, identifier->token, Err(Err0110)});
+            if (identifier->token.text == g_LangSpec->name_opPostMove)
+                return context->report({identifier, identifier->token, Err(Err0111)});
+
+            // Be sure this is not a 'forward' decl
+            if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')
+            {
+                Diagnostic err{identifier, identifier->token, FMT(Err(Err0292), identifier->token.c_str())};
+                return context->report(err, Diagnostic::hereIs(overload));
+            }
+
+            if (identifier->callParameters)
+                identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
+            else if (identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
+                identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
+            else if (identifier->parent->parent->kind == AstNodeKind::MakePointer)
+                identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
+
+            // Need to make all types compatible, in case a cast is necessary
+            if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
+            {
+                SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
+                YIELD();
+            }
+
+            // Be sure the call is valid
+            if (identifier->token.text[0] != '@' && !funcDecl->isForeign())
+            {
+                auto ownerFct = identifier->ownerFct;
+                if (ownerFct)
+                {
+                    if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
                     {
-                        Diagnostic err(identifier, identifier->token, FMT(Err(Err0749), overload->node->token.c_str()));
+                        Diagnostic err{identifier, identifier->token, FMT(Err(Err0176), funcDecl->token.c_str(), ownerFct->token.c_str())};
+                        auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0156));
+                        return context->report(err, note);
+                    }
+                }
+            }
+
+            if (identifier->isForceTakeAddress())
+            {
+                // This is for a lambda
+                if (identifier->parent->parent->kind == AstNodeKind::MakePointer || identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
+                {
+                    if (!identifier->callParameters)
+                    {
+                        // The makePointer will deal with the real make lambda thing
+                        identifier->addAstFlag(AST_NO_BYTECODE);
+                        break;
+                    }
+                }
+            }
+
+            // The function call is constexpr if the function is, and all parameters are
+            auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+            if (identifier->resolvedSymbolOverload->node->hasAstFlag(AST_CONST_EXPR))
+            {
+                if (identifier->callParameters)
+                    identifier->inheritAstFlagsAnd(identifier->callParameters, AST_CONST_EXPR);
+                else
+                    identifier->addAstFlag(AST_CONST_EXPR);
+
+                // Be sure that the return type is compatible with a compile time execution.
+                // Otherwise, we do not want the AST_CONST_EXPR_FLAG
+                if (identifier->hasAstFlag(AST_CONST_EXPR))
+                {
+                    auto returnType = typeFunc->concreteReturnType();
+
+                    // :CheckConstExprFuncReturnType
+                    if (returnType &&
+                        !returnType->isString() &&
+                        !returnType->isNativeIntegerOrRune() &&
+                        !returnType->isNativeFloat() &&
+                        !returnType->isBool() &&
+                        !returnType->isPointerToTypeInfo() &&
+                        !returnType->isStruct() && // Treated later (as errors)
+                        !returnType->isArray() && // Treated later (as errors)
+                        !returnType->isClosure() && // Treated later (as errors)
+                        !identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
+                    {
+                        identifier->removeAstFlag(AST_CONST_EXPR);
+                    }
+                }
+            }
+
+            auto returnType = TypeManager::concreteType(identifier->typeInfo);
+
+            // Check return value
+            if (!returnType->isVoid())
+            {
+                if (isStatementIdentifier(identifier))
+                {
+                    if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
+                    {
+                        Diagnostic err(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.c_str()));
                         return context->report(err, Diagnostic::hereIs(overload));
                     }
 
                     identifier->addAstFlag(AST_DISCARD);
                 }
             }
-            else if (typeInfoRet->isVoid() && identifier->hasAstFlag(AST_DISCARD))
+            else if (returnType->isVoid() && identifier->hasAstFlag(AST_DISCARD))
             {
                 Diagnostic err{identifier, identifier->token, Err(Err0158)};
                 return context->report(err, Diagnostic::hereIs(overload));
             }
 
-            // From now this is considered as a function, not a lambda
-            auto funcType           = castTypeInfo<TypeInfoFuncAttr>(typeInfo->clone());
-            funcType->kind          = TypeInfoKind::FuncAttr;
-            identifier->typeInfo    = funcType;
-            identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
+            if (funcDecl->mustInline() && !isFunctionButNotACall(context, identifier, overload->symbol))
+            {
+                // Mixin and macros must be inlined here, because no call is possible
+                bool forceInline = false;
+                if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+                    forceInline = true;
+
+                if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) || forceInline)
+                {
+                    // Expand inline function. Do not expand an inline call inside a function marked as inline.
+                    // The expansion will be done at the lowest level possible
+                    if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
+                    {
+                        // Need to wait for function full semantic resolve
+                        waitFuncDeclFullResolve(context->baseJob, funcDecl);
+                        YIELD();
+
+                        // First pass, we inline the function.
+                        // The identifier for the function call will be re-resolved later when the content
+                        // of the inline os done.
+                        if (!identifier->hasAstFlag(AST_INLINED))
+                        {
+                            identifier->addAstFlag(AST_INLINED);
+
+                            // In case of an inline call inside an inline function, the identifier kind has been changed to
+                            // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
+                            identifier->kind = AstNodeKind::Identifier;
+
+                            SWAG_CHECK(makeInline(context, funcDecl, identifier));
+                        }
+                        else
+                        {
+                            SWAG_CHECK(setupIdentifierRef(context, identifier));
+                        }
+
+                        identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
+                        return true;
+                    }
+                }
+            }
+
+            identifier->kind = AstNodeKind::FuncCall;
+
+            // @print behaves like a normal function, so we want an emitCall in that case
+            if (identifier->token.text[0] == '@' && identifier->tokenId != TokenId::IntrinsicPrint)
+            {
+                dealWithIntrinsic(context, identifier);
+                identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
+            }
+            else if (funcDecl->isForeign())
+                identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
+            else
+                identifier->byteCodeFct = ByteCodeGen::emitCall;
 
             // Try/Assume
             if (identifier->hasExtOwner() &&
@@ -1087,297 +1340,44 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 switch (identifier->extOwner()->ownerTryCatchAssume->kind)
                 {
-                case AstNodeKind::Try:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
-                    break;
-                case AstNodeKind::TryCatch:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-                    break;
-                case AstNodeKind::Catch:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
-                    break;
-                case AstNodeKind::Assume:
-                    identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
-                    break;
-                default:
-                    break;
+                    case AstNodeKind::Try:
+                        identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
+                        break;
+                    case AstNodeKind::TryCatch:
+                        identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
+                        break;
+                    case AstNodeKind::Catch:
+                        identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
+                        break;
+                    case AstNodeKind::Assume:
+                        identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
+                        break;
+                    default:
+                        break;
                 }
             }
 
-            // Need to make all types compatible, in case a cast is necessary
-            SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
+            // Setup parent if necessary
+            if (returnType->isStruct())
+            {
+                identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
+                identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
+            }
+
+            SWAG_CHECK(setupIdentifierRef(context, identifier));
 
             // For a return by copy, need to reserve room on the stack for the return result
-            if (CallConv::returnNeedsStack(funcType))
+            // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
+            if (CallConv::returnNeedsStack(typeFunc))
             {
                 identifier->addAstFlag(AST_TRANSIENT);
-                allocateOnStack(identifier, funcType->concreteReturnType());
+                allocateOnStack(identifier, returnType);
             }
+
+            break;
         }
-        else
-        {
-            if (isStatementIdentifier(identifier))
-            {
-                Diagnostic err{idRef, Err(Err0625)};
-                return context->report(err);
-            }
-        }
-
-        break;
-    }
-
-    case SymbolKind::Function:
-    {
-        auto funcDecl = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-
-        // Be sure that we didn't use a variable as a 'scope'
-        auto childIdx = identifier->childParentIdx();
-        if (childIdx)
-        {
-            auto prev = identifier->identifierRef()->children[childIdx - 1];
-            if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
-            {
-                Diagnostic err{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
-                err.addNote(identifier->token, FMT(Nte(Nte0154), prev->typeInfo->getDisplayNameC()));
-                return context->report(err, Diagnostic::hereIs(funcDecl));
-            }
-        }
-
-        identifier->addAstFlag(AST_SIDE_EFFECTS);
-
-        // Be sure it's () and not {}
-        if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-            return context->report({identifier->callParameters, FMT(Err(Err0291), identifier->token.c_str())});
-
-        // Capture syntax
-        if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
-        {
-            if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
-            {
-                auto       cp = identifier->callParameters;
-                Diagnostic err{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.c_str())};
-                err.addNote(identifier->token, Nte(Nte0155));
-                return context->report(err);
-            }
-        }
-
-        // Now we need to be sure that the function is now complete
-        // If not, we need to wait for it
-        waitOverloadCompleted(context->baseJob, overload);
-        YIELD();
-
-        if (identifier->token.text == g_LangSpec->name_opInit)
-            return context->report({identifier, identifier->token, Err(Err0109)});
-        if (identifier->token.text == g_LangSpec->name_opDrop)
-            return context->report({identifier, identifier->token, Err(Err0108)});
-        if (identifier->token.text == g_LangSpec->name_opPostCopy)
-            return context->report({identifier, identifier->token, Err(Err0110)});
-        if (identifier->token.text == g_LangSpec->name_opPostMove)
-            return context->report({identifier, identifier->token, Err(Err0111)});
-
-        // Be sure this is not a 'forward' decl
-        if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')
-        {
-            Diagnostic err{identifier, identifier->token, FMT(Err(Err0292), identifier->token.c_str())};
-            return context->report(err, Diagnostic::hereIs(overload));
-        }
-
-        if (identifier->callParameters)
-            identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-        else if (identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
-            identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-        else if (identifier->parent->parent->kind == AstNodeKind::MakePointer)
-            identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
-
-        // Need to make all types compatible, in case a cast is necessary
-        if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_IS_GENERIC))
-        {
-            SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
-            YIELD();
-        }
-
-        // Be sure the call is valid
-        if (identifier->token.text[0] != '@' && !funcDecl->isForeign())
-        {
-            auto ownerFct = identifier->ownerFct;
-            if (ownerFct)
-            {
-                if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
-                {
-                    Diagnostic err{identifier, identifier->token, FMT(Err(Err0176), funcDecl->token.c_str(), ownerFct->token.c_str())};
-                    auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0156));
-                    return context->report(err, note);
-                }
-            }
-        }
-
-        if (identifier->isForceTakeAddress())
-        {
-            // This is for a lambda
-            if (identifier->parent->parent->kind == AstNodeKind::MakePointer || identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
-            {
-                if (!identifier->callParameters)
-                {
-                    // The makePointer will deal with the real make lambda thing
-                    identifier->addAstFlag(AST_NO_BYTECODE);
-                    break;
-                }
-            }
-        }
-
-        // The function call is constexpr if the function is, and all parameters are
-        auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-        if (identifier->resolvedSymbolOverload->node->hasAstFlag(AST_CONST_EXPR))
-        {
-            if (identifier->callParameters)
-                identifier->inheritAstFlagsAnd(identifier->callParameters, AST_CONST_EXPR);
-            else
-                identifier->addAstFlag(AST_CONST_EXPR);
-
-            // Be sure that the return type is compatible with a compile time execution.
-            // Otherwise, we do not want the AST_CONST_EXPR_FLAG
-            if (identifier->hasAstFlag(AST_CONST_EXPR))
-            {
-                auto returnType = typeFunc->concreteReturnType();
-
-                // :CheckConstExprFuncReturnType
-                if (returnType &&
-                    !returnType->isString() &&
-                    !returnType->isNativeIntegerOrRune() &&
-                    !returnType->isNativeFloat() &&
-                    !returnType->isBool() &&
-                    !returnType->isPointerToTypeInfo() &&
-                    !returnType->isStruct() && // Treated later (as errors)
-                    !returnType->isArray() && // Treated later (as errors)
-                    !returnType->isClosure() && // Treated later (as errors)
-                    !identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
-                {
-                    identifier->removeAstFlag(AST_CONST_EXPR);
-                }
-            }
-        }
-
-        auto returnType = TypeManager::concreteType(identifier->typeInfo);
-
-        // Check return value
-        if (!returnType->isVoid())
-        {
-            if (isStatementIdentifier(identifier))
-            {
-                if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
-                {
-                    Diagnostic err(identifier, identifier->token, FMT(Err(Err0747), overload->node->token.c_str()));
-                    return context->report(err, Diagnostic::hereIs(overload));
-                }
-
-                identifier->addAstFlag(AST_DISCARD);
-            }
-        }
-        else if (returnType->isVoid() && identifier->hasAstFlag(AST_DISCARD))
-        {
-            Diagnostic err{identifier, identifier->token, Err(Err0158)};
-            return context->report(err, Diagnostic::hereIs(overload));
-        }
-
-        if (funcDecl->mustInline() && !isFunctionButNotACall(context, identifier, overload->symbol))
-        {
-            // Mixin and macros must be inlined here, because no call is possible
-            bool forceInline = false;
-            if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
-                forceInline = true;
-
-            if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) || forceInline)
-            {
-                // Expand inline function. Do not expand an inline call inside a function marked as inline.
-                // The expansion will be done at the lowest level possible
-                if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
-                {
-                    // Need to wait for function full semantic resolve
-                    waitFuncDeclFullResolve(context->baseJob, funcDecl);
-                    YIELD();
-
-                    // First pass, we inline the function.
-                    // The identifier for the function call will be re-resolved later when the content
-                    // of the inline os done.
-                    if (!identifier->hasAstFlag(AST_INLINED))
-                    {
-                        identifier->addAstFlag(AST_INLINED);
-
-                        // In case of an inline call inside an inline function, the identifier kind has been changed to
-                        // AstNodeKind::FuncCall in the original function. So we restore it to be a simple identifier.
-                        identifier->kind = AstNodeKind::Identifier;
-
-                        SWAG_CHECK(makeInline(context, funcDecl, identifier));
-                    }
-                    else
-                    {
-                        SWAG_CHECK(setupIdentifierRef(context, identifier));
-                    }
-
-                    identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
-                    return true;
-                }
-            }
-        }
-
-        identifier->kind = AstNodeKind::FuncCall;
-
-        // @print behaves like a normal function, so we want an emitCall in that case
-        if (identifier->token.text[0] == '@' && identifier->tokenId != TokenId::IntrinsicPrint)
-        {
-            dealWithIntrinsic(context, identifier);
-            identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
-        }
-        else if (funcDecl->isForeign())
-            identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
-        else
-            identifier->byteCodeFct = ByteCodeGen::emitCall;
-
-        // Try/Assume
-        if (identifier->hasExtOwner() &&
-            identifier->extOwner()->ownerTryCatchAssume &&
-            identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
-        {
-            switch (identifier->extOwner()->ownerTryCatchAssume->kind)
-            {
-            case AstNodeKind::Try:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
-                break;
-            case AstNodeKind::TryCatch:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-                break;
-            case AstNodeKind::Catch:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
-                break;
-            case AstNodeKind::Assume:
-                identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
-                break;
-            default:
-                break;
-            }
-        }
-
-        // Setup parent if necessary
-        if (returnType->isStruct())
-        {
-            identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN_INHERIT);
-            identifier->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
-        }
-
-        SWAG_CHECK(setupIdentifierRef(context, identifier));
-
-        // For a return by copy, need to reserve room on the stack for the return result
-        // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
-        if (CallConv::returnNeedsStack(typeFunc))
-        {
-            identifier->addAstFlag(AST_TRANSIENT);
-            allocateOnStack(identifier, returnType);
-        }
-
-        break;
-    }
-    default:
-        break;
+        default:
+            break;
     }
 
     return true;

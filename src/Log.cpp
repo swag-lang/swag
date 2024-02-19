@@ -21,52 +21,52 @@ Utf8 Log::colorToVTS(LogColor color)
 
     switch (color)
     {
-    case LogColor::Bold:
-        return "\x1b[1m";
-    case LogColor::UnBold:
-        return "\x1b[22m";
-    case LogColor::Underline:
-        return "\x1b[4m";
-    case LogColor::UnUnderline:
-        return "\x1b[24m";
+        case LogColor::Bold:
+            return "\x1b[1m";
+        case LogColor::UnBold:
+            return "\x1b[22m";
+        case LogColor::Underline:
+            return "\x1b[4m";
+        case LogColor::UnUnderline:
+            return "\x1b[24m";
 
-    case LogColor::Black:
-        return "\x1b[30m";
+        case LogColor::Black:
+            return "\x1b[30m";
 
-    case LogColor::DarkRed:
-        return "\x1b[31m";
-    case LogColor::DarkGreen:
-        return "\x1b[32m";
-    case LogColor::DarkYellow:
-        return "\x1b[33m";
-    case LogColor::DarkBlue:
-        return "\x1b[34m";
-    case LogColor::DarkMagenta:
-        return "\x1b[35m";
-    case LogColor::DarkCyan:
-        return "\x1b[36m";
-    case LogColor::LegitGray:
-        return "\x1b[37m";
-    case LogColor::Gray:
-        return FMT("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
+        case LogColor::DarkRed:
+            return "\x1b[31m";
+        case LogColor::DarkGreen:
+            return "\x1b[32m";
+        case LogColor::DarkYellow:
+            return "\x1b[33m";
+        case LogColor::DarkBlue:
+            return "\x1b[34m";
+        case LogColor::DarkMagenta:
+            return "\x1b[35m";
+        case LogColor::DarkCyan:
+            return "\x1b[36m";
+        case LogColor::LegitGray:
+            return "\x1b[37m";
+        case LogColor::Gray:
+            return FMT("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
 
-    case LogColor::Red:
-        return "\x1b[91m";
-    case LogColor::Green:
-        return "\x1b[92m";
-    case LogColor::Yellow:
-        return "\x1b[93m";
-    case LogColor::Blue:
-        return "\x1b[94m";
-    case LogColor::Magenta:
-        return "\x1b[95m";
-    case LogColor::Cyan:
-        return "\x1b[96m";
-    case LogColor::White:
-        return "\x1b[97m";
+        case LogColor::Red:
+            return "\x1b[91m";
+        case LogColor::Green:
+            return "\x1b[92m";
+        case LogColor::Yellow:
+            return "\x1b[93m";
+        case LogColor::Blue:
+            return "\x1b[94m";
+        case LogColor::Magenta:
+            return "\x1b[95m";
+        case LogColor::Cyan:
+            return "\x1b[96m";
+        case LogColor::White:
+            return "\x1b[97m";
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return "";
@@ -86,90 +86,90 @@ void Log::print(LogSymbol symbol)
 {
     switch (symbol)
     {
-    case LogSymbol::VerticalLine:
-    case LogSymbol::VerticalLineDot:
-        if (g_CommandLine.logAscii)
-            print("|");
-        else
-            print("\xe2\x94\x82");
-        break;
+        case LogSymbol::VerticalLine:
+        case LogSymbol::VerticalLineDot:
+            if (g_CommandLine.logAscii)
+                print("|");
+            else
+                print("\xe2\x94\x82");
+            break;
 
-    case LogSymbol::VerticalLineUp:
-        if (g_CommandLine.logAscii)
-            print("|");
-        else
-            print("\xe2\x95\xb5");
-        break;
+        case LogSymbol::VerticalLineUp:
+            if (g_CommandLine.logAscii)
+                print("|");
+            else
+                print("\xe2\x95\xb5");
+            break;
 
-    case LogSymbol::DotCenter:
-        if (g_CommandLine.logAscii)
-            print(".");
-        else
-            print("\xc2\xb7");
-        break;
+        case LogSymbol::DotCenter:
+            if (g_CommandLine.logAscii)
+                print(".");
+            else
+                print("\xc2\xb7");
+            break;
 
-    case LogSymbol::DotList:
-        if (g_CommandLine.logAscii)
-            print("*");
-        else
-            print("\xE2\x80\xa2");
-        break;
+        case LogSymbol::DotList:
+            if (g_CommandLine.logAscii)
+                print("*");
+            else
+                print("\xE2\x80\xa2");
+            break;
 
-    case LogSymbol::HorizontalLine:
-        if (g_CommandLine.logAscii)
-            print("-");
-        else
-            print("\xe2\x94\x80");
-        break;
+        case LogSymbol::HorizontalLine:
+            if (g_CommandLine.logAscii)
+                print("-");
+            else
+                print("\xe2\x94\x80");
+            break;
 
-    case LogSymbol::HorizontalLine2:
-        if (g_CommandLine.logAscii)
-            print("=");
-        else
-            print("\xe2\x95\x90");
-        break;
+        case LogSymbol::HorizontalLine2:
+            if (g_CommandLine.logAscii)
+                print("=");
+            else
+                print("\xe2\x95\x90");
+            break;
 
-    case LogSymbol::HorizontalLineMidVert:
-        if (g_CommandLine.logAscii)
-            print("-");
-        else
-            print("\xe2\x94\xac");
-        break;
+        case LogSymbol::HorizontalLineMidVert:
+            if (g_CommandLine.logAscii)
+                print("-");
+            else
+                print("\xe2\x94\xac");
+            break;
 
-    case LogSymbol::HorizontalLine2MidVert:
-        if (g_CommandLine.logAscii)
-            print("=");
-        else
-            print("\xe2\x95\xa4");
-        break;
+        case LogSymbol::HorizontalLine2MidVert:
+            if (g_CommandLine.logAscii)
+                print("=");
+            else
+                print("\xe2\x95\xa4");
+            break;
 
-    case LogSymbol::DownRight:
-        if (g_CommandLine.logAscii)
-            print("|");
-        else
-            print("\xe2\x94\x94");
-        break;
+        case LogSymbol::DownRight:
+            if (g_CommandLine.logAscii)
+                print("|");
+            else
+                print("\xe2\x94\x94");
+            break;
 
-    case LogSymbol::DownLeft:
-        if (g_CommandLine.logAscii)
-            print("|");
-        else
-            print("\xe2\x94\x98");
-        break;
+        case LogSymbol::DownLeft:
+            if (g_CommandLine.logAscii)
+                print("|");
+            else
+                print("\xe2\x94\x98");
+            break;
 
-    case LogSymbol::UpRight:
-        if (g_CommandLine.logAscii)
-            print("|");
-        else
-            print("\xe2\x94\x8c");
-        break;
+        case LogSymbol::UpRight:
+            if (g_CommandLine.logAscii)
+                print("|");
+            else
+                print("\xe2\x94\x8c");
+            break;
 
-    case LogSymbol::RightDown:
-        if (g_CommandLine.logAscii)
-            print("|");
-        else
-            print("\xe2\x94\x90");
-        break;
+        case LogSymbol::RightDown:
+            if (g_CommandLine.logAscii)
+                print("|");
+            else
+                print("\xe2\x94\x90");
+            break;
     }
 }
 

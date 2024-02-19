@@ -560,48 +560,48 @@ bool Semantic::resolveCompilerPrint(SemanticContext* context)
     {
         switch (typeInfo->nativeType)
         {
-        case NativeTypeKind::Bool:
-            g_Log.print(expr->computedValue()->reg.b ? "true" : "false");
-            break;
-        case NativeTypeKind::S8:
-            g_Log.print(to_string(expr->computedValue()->reg.s8));
-            break;
-        case NativeTypeKind::S16:
-            g_Log.print(to_string(expr->computedValue()->reg.s16));
-            break;
-        case NativeTypeKind::S32:
-            g_Log.print(to_string(expr->computedValue()->reg.s32));
-            break;
-        case NativeTypeKind::S64:
-            g_Log.print(to_string(expr->computedValue()->reg.s64));
-            break;
-        case NativeTypeKind::U8:
-            g_Log.print(to_string(expr->computedValue()->reg.u8));
-            break;
-        case NativeTypeKind::U16:
-            g_Log.print(to_string(expr->computedValue()->reg.u16));
-            break;
-        case NativeTypeKind::U32:
-            g_Log.print(to_string(expr->computedValue()->reg.u32));
-            break;
-        case NativeTypeKind::U64:
-            g_Log.print(to_string(expr->computedValue()->reg.u64));
-            break;
-        case NativeTypeKind::F32:
-            g_Log.print(to_string(expr->computedValue()->reg.f32));
-            break;
-        case NativeTypeKind::F64:
-            g_Log.print(to_string(expr->computedValue()->reg.f64));
-            break;
-        case NativeTypeKind::Rune:
-            g_Log.print(to_string(expr->computedValue()->reg.ch));
-            break;
-        case NativeTypeKind::String:
-            g_Log.print(expr->computedValue()->text);
-            break;
-        default:
-            g_Log.print(FMT("<%s>", typeInfo->getDisplayNameC()));
-            break;
+            case NativeTypeKind::Bool:
+                g_Log.print(expr->computedValue()->reg.b ? "true" : "false");
+                break;
+            case NativeTypeKind::S8:
+                g_Log.print(to_string(expr->computedValue()->reg.s8));
+                break;
+            case NativeTypeKind::S16:
+                g_Log.print(to_string(expr->computedValue()->reg.s16));
+                break;
+            case NativeTypeKind::S32:
+                g_Log.print(to_string(expr->computedValue()->reg.s32));
+                break;
+            case NativeTypeKind::S64:
+                g_Log.print(to_string(expr->computedValue()->reg.s64));
+                break;
+            case NativeTypeKind::U8:
+                g_Log.print(to_string(expr->computedValue()->reg.u8));
+                break;
+            case NativeTypeKind::U16:
+                g_Log.print(to_string(expr->computedValue()->reg.u16));
+                break;
+            case NativeTypeKind::U32:
+                g_Log.print(to_string(expr->computedValue()->reg.u32));
+                break;
+            case NativeTypeKind::U64:
+                g_Log.print(to_string(expr->computedValue()->reg.u64));
+                break;
+            case NativeTypeKind::F32:
+                g_Log.print(to_string(expr->computedValue()->reg.f32));
+                break;
+            case NativeTypeKind::F64:
+                g_Log.print(to_string(expr->computedValue()->reg.f64));
+                break;
+            case NativeTypeKind::Rune:
+                g_Log.print(to_string(expr->computedValue()->reg.ch));
+                break;
+            case NativeTypeKind::String:
+                g_Log.print(expr->computedValue()->text);
+                break;
+            default:
+                g_Log.print(FMT("<%s>", typeInfo->getDisplayNameC()));
+                break;
         }
     }
     else
@@ -881,15 +881,15 @@ Utf8 Semantic::getCompilerFunctionString(const AstNode* node, TokenId id)
 {
     switch (id)
     {
-    case TokenId::CompilerCallerFunction:
-        return node->ownerFct->getNameForUserCompiler();
-    case TokenId::CompilerBuildCfg:
-        return g_CommandLine.buildCfg;
-    case TokenId::CompilerCpu:
-        return g_CommandLine.target.cpu;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        case TokenId::CompilerCallerFunction:
+            return node->ownerFct->getNameForUserCompiler();
+        case TokenId::CompilerBuildCfg:
+            return g_CommandLine.buildCfg;
+        case TokenId::CompilerCpu:
+            return g_CommandLine.target.cpu;
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
 
     return "";
@@ -900,72 +900,72 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
     auto node = context->node;
     switch (node->tokenId)
     {
-    case TokenId::CompilerBackend:
-        node->setFlagsValueIsComputed();
-        switch (g_CommandLine.backendGenType)
-        {
-        case BackendGenType::SCBE:
-            node->computedValue()->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::SCBE);
-            break;
-        case BackendGenType::LLVM:
-            node->computedValue()->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::LLVM);
-            break;
-        }
-        node->typeInfo = g_Workspace->swagScope.regTypeInfoBackend;
-        SWAG_ASSERT(node->typeInfo);
-        return true;
+        case TokenId::CompilerBackend:
+            node->setFlagsValueIsComputed();
+            switch (g_CommandLine.backendGenType)
+            {
+                case BackendGenType::SCBE:
+                    node->computedValue()->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::SCBE);
+                    break;
+                case BackendGenType::LLVM:
+                    node->computedValue()->reg.u64 = static_cast<uint64_t>(SwagBackendGenType::LLVM);
+                    break;
+            }
+            node->typeInfo = g_Workspace->swagScope.regTypeInfoBackend;
+            SWAG_ASSERT(node->typeInfo);
+            return true;
 
-    case TokenId::CompilerOs:
-        node->setFlagsValueIsComputed();
-        node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.os);
-        node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetOs;
-        SWAG_ASSERT(node->typeInfo);
-        return true;
+        case TokenId::CompilerOs:
+            node->setFlagsValueIsComputed();
+            node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.os);
+            node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetOs;
+            SWAG_ASSERT(node->typeInfo);
+            return true;
 
-    case TokenId::CompilerArch:
-        node->setFlagsValueIsComputed();
-        node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.arch);
-        node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetArch;
-        SWAG_ASSERT(node->typeInfo);
-        return true;
+        case TokenId::CompilerArch:
+            node->setFlagsValueIsComputed();
+            node->computedValue()->reg.u64 = static_cast<uint64_t>(g_CommandLine.target.arch);
+            node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetArch;
+            SWAG_ASSERT(node->typeInfo);
+            return true;
 
-    case TokenId::CompilerCpu:
-        node->setFlagsValueIsComputed();
-        node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
-        node->typeInfo              = g_TypeMgr->typeInfoString;
-        return true;
+        case TokenId::CompilerCpu:
+            node->setFlagsValueIsComputed();
+            node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
+            node->typeInfo              = g_TypeMgr->typeInfoString;
+            return true;
 
-    case TokenId::CompilerSwagOs:
-        node->setFlagsValueIsComputed();
-        node->computedValue()->reg.u64 = static_cast<uint64_t>(OS::getNativeTarget().os);
-        node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetOs;
-        SWAG_ASSERT(node->typeInfo);
-        return true;
+        case TokenId::CompilerSwagOs:
+            node->setFlagsValueIsComputed();
+            node->computedValue()->reg.u64 = static_cast<uint64_t>(OS::getNativeTarget().os);
+            node->typeInfo                 = g_Workspace->swagScope.regTypeInfoTargetOs;
+            SWAG_ASSERT(node->typeInfo);
+            return true;
 
-    case TokenId::CompilerBuildCfg:
-        node->setFlagsValueIsComputed();
-        node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
-        node->typeInfo              = g_TypeMgr->typeInfoString;
-        return true;
+        case TokenId::CompilerBuildCfg:
+            node->setFlagsValueIsComputed();
+            node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
+            node->typeInfo              = g_TypeMgr->typeInfoString;
+            return true;
 
-    case TokenId::CompilerLocation:
-        node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
-        node->setFlagsValueIsComputed();
-        ByteCodeGen::computeSourceLocation(context, node, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
-        SWAG_CHECK(setupIdentifierRef(context, node));
-        return true;
+        case TokenId::CompilerLocation:
+            node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
+            node->setFlagsValueIsComputed();
+            ByteCodeGen::computeSourceLocation(context, node, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
+            SWAG_CHECK(setupIdentifierRef(context, node));
+            return true;
 
-    case TokenId::CompilerCallerLocation:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0498)}));
-        node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
-        return true;
+        case TokenId::CompilerCallerLocation:
+            SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0498)}));
+            node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
+            return true;
 
-    case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0497)}));
-        node->typeInfo = g_TypeMgr->typeInfoString;
-        return true;
+        case TokenId::CompilerCallerFunction:
+            SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0497)}));
+            node->typeInfo = g_TypeMgr->typeInfoString;
+            return true;
 
-    default:
-        return Report::internalError(context->node, "resolveCompilerFunction, unknown token");
+        default:
+            return Report::internalError(context->node, "resolveCompilerFunction, unknown token");
     }
 }

@@ -451,15 +451,15 @@ void Module::allocateBackend()
     {
         switch (g_CommandLine.backendGenType)
         {
-        case BackendGenType::LLVM:
-            backend = new LLVM(this);
-            break;
-        case BackendGenType::SCBE:
-            backend = new SCBE(this);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
+            case BackendGenType::LLVM:
+                backend = new LLVM(this);
+                break;
+            case BackendGenType::SCBE:
+                backend = new SCBE(this);
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
         }
     }
     else
@@ -545,15 +545,15 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
     ScopedLock lk(mutexGlobalVars);
     switch (varKind)
     {
-    case GlobalVarKind::Mutable:
-        globalVarsMutable.push_back(node);
-        break;
-    case GlobalVarKind::Bss:
-        globalVarsBss.push_back(node);
-        break;
-    case GlobalVarKind::Constant:
-        globalVarsConstant.push_back(node);
-        break;
+        case GlobalVarKind::Mutable:
+            globalVarsMutable.push_back(node);
+            break;
+        case GlobalVarKind::Bss:
+            globalVarsBss.push_back(node);
+            break;
+        case GlobalVarKind::Constant:
+            globalVarsConstant.push_back(node);
+            break;
     }
 }
 
@@ -726,17 +726,17 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     {
         switch (i)
         {
-        case 0:
-            setVer = &dep->verNum;
-            break;
-        case 1:
-            setVer = &dep->revNum;
-            break;
-        case 2:
-            setVer = &dep->buildNum;
-            break;
-        default:
-            break;
+            case 0:
+                setVer = &dep->verNum;
+                break;
+            case 1:
+                setVer = &dep->revNum;
+                break;
+            case 2:
+                setVer = &dep->buildNum;
+                break;
+            default:
+                break;
         }
 
         if (splits[i] == '?')
@@ -756,14 +756,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         switch (i)
         {
-        case 1:
-            SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0127), dep->revNum)}));
-            break;
-        case 2:
-            SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0126), dep->buildNum)}));
-            break;
-        default:
-            break;
+            case 1:
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0127), dep->revNum)}));
+                break;
+            case 2:
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, FMT(Err(Err0126), dep->buildNum)}));
+                break;
+            default:
+                break;
         }
     }
 
@@ -1210,64 +1210,64 @@ void Module::logPass(ModuleBuildPass pass)
     Utf8 str;
     switch (pass)
     {
-    case ModuleBuildPass::Init:
-        // str = "Init";
-        break;
-    case ModuleBuildPass::Dependencies:
-        // str = "Dependencies";
-        break;
-    case ModuleBuildPass::Syntax:
-        // str = "Syntax";
-        break;
-    case ModuleBuildPass::IncludeSwg:
-        // str = "IncludeSwg";
-        break;
-    case ModuleBuildPass::BeforeCompilerMessagesPass0:
-        // str = "BeforeCompilerMessagesPass0";
-        break;
-    case ModuleBuildPass::CompilerMessagesPass0:
-        // str = "CompilerMessagesPass0";
-        break;
-    case ModuleBuildPass::BeforeCompilerMessagesPass1:
-        // str = "BeforeCompilerMessagesPass1";
-        break;
-    case ModuleBuildPass::AfterSemantic:
-        // str = "AfterSemantic";
-        break;
-    case ModuleBuildPass::WaitForDependencies:
-        // str = "WaitForDependencies";
-        break;
-    case ModuleBuildPass::FlushGenFiles:
-        // str = "FlushGenFiles";
-        break;
-    case ModuleBuildPass::OptimizeBc:
-        // str = "Optimizing";
-        break;
-    case ModuleBuildPass::Publish:
-        // str = "Publishing";
-        break;
-    case ModuleBuildPass::GenerateDoc:
-        str = "Documenting";
-        break;
-    case ModuleBuildPass::SemanticModule:
-        str = "Compiling";
-        break;
-    case ModuleBuildPass::RunByteCode:
-        if (kind == ModuleKind::Script)
-            str = "Running ByteCode";
-        break;
-    case ModuleBuildPass::Output:
-        if (backend->mustCompile && !g_CommandLine.genDoc)
-            str = "Generating";
-        break;
-    case ModuleBuildPass::RunNative:
-        if (mustGenerateTestExe() && g_CommandLine.runBackendTests)
-            str = "Testing Backend";
-        else
-            str = "Running Backend";
-        break;
-    default:
-        break;
+        case ModuleBuildPass::Init:
+            // str = "Init";
+            break;
+        case ModuleBuildPass::Dependencies:
+            // str = "Dependencies";
+            break;
+        case ModuleBuildPass::Syntax:
+            // str = "Syntax";
+            break;
+        case ModuleBuildPass::IncludeSwg:
+            // str = "IncludeSwg";
+            break;
+        case ModuleBuildPass::BeforeCompilerMessagesPass0:
+            // str = "BeforeCompilerMessagesPass0";
+            break;
+        case ModuleBuildPass::CompilerMessagesPass0:
+            // str = "CompilerMessagesPass0";
+            break;
+        case ModuleBuildPass::BeforeCompilerMessagesPass1:
+            // str = "BeforeCompilerMessagesPass1";
+            break;
+        case ModuleBuildPass::AfterSemantic:
+            // str = "AfterSemantic";
+            break;
+        case ModuleBuildPass::WaitForDependencies:
+            // str = "WaitForDependencies";
+            break;
+        case ModuleBuildPass::FlushGenFiles:
+            // str = "FlushGenFiles";
+            break;
+        case ModuleBuildPass::OptimizeBc:
+            // str = "Optimizing";
+            break;
+        case ModuleBuildPass::Publish:
+            // str = "Publishing";
+            break;
+        case ModuleBuildPass::GenerateDoc:
+            str = "Documenting";
+            break;
+        case ModuleBuildPass::SemanticModule:
+            str = "Compiling";
+            break;
+        case ModuleBuildPass::RunByteCode:
+            if (kind == ModuleKind::Script)
+                str = "Running ByteCode";
+            break;
+        case ModuleBuildPass::Output:
+            if (backend->mustCompile && !g_CommandLine.genDoc)
+                str = "Generating";
+            break;
+        case ModuleBuildPass::RunNative:
+            if (mustGenerateTestExe() && g_CommandLine.runBackendTests)
+                str = "Testing Backend";
+            else
+                str = "Running Backend";
+            break;
+        default:
+            break;
     }
 
     if (str.empty())

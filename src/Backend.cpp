@@ -154,14 +154,14 @@ Path Backend::getOutputFileName(const BackendTarget& target, const Utf8& name, B
     destFile.append(name);
     switch (type)
     {
-    case BuildCfgOutputKind::Executable:
-        break;
-    case BuildCfgOutputKind::DynamicLib:
-    case BuildCfgOutputKind::ImportLib:
-        break;
-    case BuildCfgOutputKind::StaticLib:
-        destFile += ".static";
-        break;
+        case BuildCfgOutputKind::Executable:
+            break;
+        case BuildCfgOutputKind::DynamicLib:
+        case BuildCfgOutputKind::ImportLib:
+            break;
+        case BuildCfgOutputKind::StaticLib:
+            destFile += ".static";
+            break;
     }
 
     destFile += getOutputFileExtension(target, type).c_str();
@@ -172,29 +172,29 @@ Utf8 Backend::getOutputFileExtension(const BackendTarget& target, BuildCfgOutput
 {
     switch (type)
     {
-    case BuildCfgOutputKind::Executable:
-        if (target.os == SwagTargetOs::Windows)
-            return ".exe";
-        return "";
+        case BuildCfgOutputKind::Executable:
+            if (target.os == SwagTargetOs::Windows)
+                return ".exe";
+            return "";
 
-    case BuildCfgOutputKind::StaticLib:
-        if (target.os == SwagTargetOs::Windows)
-            return ".lib";
-        return ".a";
+        case BuildCfgOutputKind::StaticLib:
+            if (target.os == SwagTargetOs::Windows)
+                return ".lib";
+            return ".a";
 
-    case BuildCfgOutputKind::ImportLib:
-        if (target.os == SwagTargetOs::Windows)
-            return ".lib";
-        if (isOsDarwin(target.os))
-            return ".dylib";
-        return ".so";
+        case BuildCfgOutputKind::ImportLib:
+            if (target.os == SwagTargetOs::Windows)
+                return ".lib";
+            if (isOsDarwin(target.os))
+                return ".dylib";
+            return ".so";
 
-    case BuildCfgOutputKind::DynamicLib:
-        if (target.os == SwagTargetOs::Windows)
-            return ".dll";
-        if (isOsDarwin(target.os))
-            return ".dylib";
-        return ".so";
+        case BuildCfgOutputKind::DynamicLib:
+            if (target.os == SwagTargetOs::Windows)
+                return ".dll";
+            if (isOsDarwin(target.os))
+                return ".dylib";
+            return ".so";
     }
 
     SWAG_ASSERT(false);
@@ -212,12 +212,12 @@ BackendObjType Backend::getObjType(const BackendTarget& target)
 {
     switch (target.os)
     {
-    case SwagTargetOs::Windows:
-        return BackendObjType::Coff;
-    case SwagTargetOs::MacOsX:
-        return BackendObjType::MachO;
-    case SwagTargetOs::Linux:
-        return BackendObjType::Elf;
+        case SwagTargetOs::Windows:
+            return BackendObjType::Coff;
+        case SwagTargetOs::MacOsX:
+            return BackendObjType::MachO;
+        case SwagTargetOs::Linux:
+            return BackendObjType::Elf;
     }
 
     SWAG_ASSERT(false);
@@ -228,8 +228,8 @@ const char* Backend::getArchName(const BackendTarget& target)
 {
     switch (target.arch)
     {
-    case SwagTargetArch::X86_64:
-        return "x86_64";
+        case SwagTargetArch::X86_64:
+            return "x86_64";
     }
 
     SWAG_ASSERT(false);
@@ -240,12 +240,12 @@ const char* Backend::getOsName(const BackendTarget& target)
 {
     switch (target.os)
     {
-    case SwagTargetOs::Windows:
-        return "windows";
-    case SwagTargetOs::Linux:
-        return "linux";
-    case SwagTargetOs::MacOsX:
-        return "osx";
+        case SwagTargetOs::Windows:
+            return "windows";
+        case SwagTargetOs::Linux:
+            return "linux";
+        case SwagTargetOs::MacOsX:
+            return "osx";
     }
 
     SWAG_ASSERT(false);

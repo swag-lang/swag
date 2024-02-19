@@ -24,57 +24,57 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
     {
         switch (returnType->nativeType)
         {
-        case NativeTypeKind::U8:
-        case NativeTypeKind::S8:
-        case NativeTypeKind::Bool:
-            if (imm)
-                returnResult = builder.getInt8(reg.u8);
-            else
-                returnResult = builder.CreateLoad(I8_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, TO_PTR_I8(allocResult));
-            break;
-        case NativeTypeKind::U16:
-        case NativeTypeKind::S16:
-            if (imm)
-                returnResult = builder.getInt16(reg.u16);
-            else
-                returnResult = builder.CreateLoad(I16_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, TO_PTR_I16(allocResult));
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::Rune:
-            if (imm)
-                returnResult = builder.getInt32(reg.u32);
-            else
-                returnResult = builder.CreateLoad(I32_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, TO_PTR_I32(allocResult));
-            break;
-        case NativeTypeKind::U64:
-        case NativeTypeKind::S64:
-            if (imm)
-                returnResult = builder.getInt64(reg.u64);
-            else
-                returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, allocResult);
-            break;
-        case NativeTypeKind::F32:
-            if (imm)
-                returnResult = llvm::ConstantFP::get(F32_TY(), reg.f32);
-            else
-                returnResult = builder.CreateLoad(F32_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, TO_PTR_F32(allocResult));
-            break;
-        case NativeTypeKind::F64:
-            if (imm)
-                returnResult = llvm::ConstantFP::get(F64_TY(), reg.f64);
-            else
-                returnResult = builder.CreateLoad(F64_TY(), GEP64(allocR, reg.u32));
-            builder.CreateStore(returnResult, TO_PTR_F64(allocResult));
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
+            case NativeTypeKind::U8:
+            case NativeTypeKind::S8:
+            case NativeTypeKind::Bool:
+                if (imm)
+                    returnResult = builder.getInt8(reg.u8);
+                else
+                    returnResult = builder.CreateLoad(I8_TY(), GEP64(allocR, reg.u32));
+                builder.CreateStore(returnResult, TO_PTR_I8(allocResult));
+                break;
+            case NativeTypeKind::U16:
+            case NativeTypeKind::S16:
+                if (imm)
+                    returnResult = builder.getInt16(reg.u16);
+                else
+                    returnResult = builder.CreateLoad(I16_TY(), GEP64(allocR, reg.u32));
+                builder.CreateStore(returnResult, TO_PTR_I16(allocResult));
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::S32:
+            case NativeTypeKind::Rune:
+                if (imm)
+                    returnResult = builder.getInt32(reg.u32);
+                else
+                    returnResult = builder.CreateLoad(I32_TY(), GEP64(allocR, reg.u32));
+                builder.CreateStore(returnResult, TO_PTR_I32(allocResult));
+                break;
+            case NativeTypeKind::U64:
+            case NativeTypeKind::S64:
+                if (imm)
+                    returnResult = builder.getInt64(reg.u64);
+                else
+                    returnResult = builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32));
+                builder.CreateStore(returnResult, allocResult);
+                break;
+            case NativeTypeKind::F32:
+                if (imm)
+                    returnResult = llvm::ConstantFP::get(F32_TY(), reg.f32);
+                else
+                    returnResult = builder.CreateLoad(F32_TY(), GEP64(allocR, reg.u32));
+                builder.CreateStore(returnResult, TO_PTR_F32(allocResult));
+                break;
+            case NativeTypeKind::F64:
+                if (imm)
+                    returnResult = llvm::ConstantFP::get(F64_TY(), reg.f64);
+                else
+                    returnResult = builder.CreateLoad(F64_TY(), GEP64(allocR, reg.u32));
+                builder.CreateStore(returnResult, TO_PTR_F64(allocResult));
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
         }
     }
     else if (returnType->isPointer() || returnType->isLambdaClosure())
@@ -117,33 +117,33 @@ void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncA
         {
             switch (returnType->nativeType)
             {
-            case NativeTypeKind::U8:
-            case NativeTypeKind::S8:
-            case NativeTypeKind::Bool:
-                builder.CreateRet(builder.CreateLoad(I8_TY(), allocResult));
-                break;
-            case NativeTypeKind::U16:
-            case NativeTypeKind::S16:
-                builder.CreateRet(builder.CreateLoad(I16_TY(), allocResult));
-                break;
-            case NativeTypeKind::U32:
-            case NativeTypeKind::S32:
-            case NativeTypeKind::Rune:
-                builder.CreateRet(builder.CreateLoad(I32_TY(), allocResult));
-                break;
-            case NativeTypeKind::U64:
-            case NativeTypeKind::S64:
-                builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
-                break;
-            case NativeTypeKind::F32:
-                builder.CreateRet(builder.CreateLoad(F32_TY(), allocResult));
-                break;
-            case NativeTypeKind::F64:
-                builder.CreateRet(builder.CreateLoad(F64_TY(), allocResult));
-                break;
-            default:
-                SWAG_ASSERT(false);
-                break;
+                case NativeTypeKind::U8:
+                case NativeTypeKind::S8:
+                case NativeTypeKind::Bool:
+                    builder.CreateRet(builder.CreateLoad(I8_TY(), allocResult));
+                    break;
+                case NativeTypeKind::U16:
+                case NativeTypeKind::S16:
+                    builder.CreateRet(builder.CreateLoad(I16_TY(), allocResult));
+                    break;
+                case NativeTypeKind::U32:
+                case NativeTypeKind::S32:
+                case NativeTypeKind::Rune:
+                    builder.CreateRet(builder.CreateLoad(I32_TY(), allocResult));
+                    break;
+                case NativeTypeKind::U64:
+                case NativeTypeKind::S64:
+                    builder.CreateRet(builder.CreateLoad(I64_TY(), allocResult));
+                    break;
+                case NativeTypeKind::F32:
+                    builder.CreateRet(builder.CreateLoad(F32_TY(), allocResult));
+                    break;
+                case NativeTypeKind::F64:
+                    builder.CreateRet(builder.CreateLoad(F64_TY(), allocResult));
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
             }
         }
         else if (returnType->isPointer() || returnType->isLambdaClosure())
@@ -313,18 +313,18 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                 {
                     switch (deRefSize)
                     {
-                    case 1:
-                        ra = builder.CreateAnd(ra, builder.getInt64(0xFF));
-                        break;
-                    case 2:
-                        ra = builder.CreateAnd(ra, builder.getInt64(0xFFFF));
-                        break;
-                    case 4:
-                        ra = builder.CreateAnd(ra, builder.getInt64(0xFFFFFFFF));
-                        break;
-                    default:
-                        SWAG_ASSERT(false);
-                        break;
+                        case 1:
+                            ra = builder.CreateAnd(ra, builder.getInt64(0xFF));
+                            break;
+                        case 2:
+                            ra = builder.CreateAnd(ra, builder.getInt64(0xFFFF));
+                            break;
+                        case 4:
+                            ra = builder.CreateAnd(ra, builder.getInt64(0xFFFFFFFF));
+                            break;
+                        default:
+                            SWAG_ASSERT(false);
+                            break;
                     }
                 }
 
@@ -357,23 +357,23 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
             llvm::Value* v1;
             switch (deRefSize)
             {
-            case 1:
-                v1 = builder.CreateLoad(I8_TY(), ra);
-                ra = builder.CreateIntCast(v1, I64_TY(), false);
-                break;
-            case 2:
-                v1 = builder.CreateLoad(I16_TY(), ra);
-                ra = builder.CreateIntCast(v1, I64_TY(), false);
-                break;
-            case 4:
-                v1 = builder.CreateLoad(I32_TY(), ra);
-                ra = builder.CreateIntCast(v1, I64_TY(), false);
-                break;
-            case 8:
-                ra = builder.CreateLoad(I64_TY(), ra);
-                break;
-            default:
-                break;
+                case 1:
+                    v1 = builder.CreateLoad(I8_TY(), ra);
+                    ra = builder.CreateIntCast(v1, I64_TY(), false);
+                    break;
+                case 2:
+                    v1 = builder.CreateLoad(I16_TY(), ra);
+                    ra = builder.CreateIntCast(v1, I64_TY(), false);
+                    break;
+                case 4:
+                    v1 = builder.CreateLoad(I32_TY(), ra);
+                    ra = builder.CreateIntCast(v1, I64_TY(), false);
+                    break;
+                case 8:
+                    ra = builder.CreateLoad(I64_TY(), ra);
+                    break;
+                default:
+                    break;
             }
 
             const auto r0 = GEP64(allocR, rDest);
@@ -608,33 +608,33 @@ bool LLVM::emitCallReturnValue(const BuildParameters&  buildParameters,
             llvm::Value* r = nullptr;
             switch (returnType->nativeType)
             {
-            case NativeTypeKind::S8:
-            case NativeTypeKind::U8:
-            case NativeTypeKind::Bool:
-            case NativeTypeKind::Void:
-                r = TO_PTR_I8(allocRR);
-                break;
-            case NativeTypeKind::S16:
-            case NativeTypeKind::U16:
-                r = TO_PTR_I16(allocRR);
-                break;
-            case NativeTypeKind::S32:
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Rune:
-                r = TO_PTR_I32(allocRR);
-                break;
-            case NativeTypeKind::S64:
-            case NativeTypeKind::U64:
-                r = TO_PTR_I64(allocRR);
-                break;
-            case NativeTypeKind::F32:
-                r = TO_PTR_F32(allocRR);
-                break;
-            case NativeTypeKind::F64:
-                r = TO_PTR_F64(allocRR);
-                break;
-            default:
-                break;
+                case NativeTypeKind::S8:
+                case NativeTypeKind::U8:
+                case NativeTypeKind::Bool:
+                case NativeTypeKind::Void:
+                    r = TO_PTR_I8(allocRR);
+                    break;
+                case NativeTypeKind::S16:
+                case NativeTypeKind::U16:
+                    r = TO_PTR_I16(allocRR);
+                    break;
+                case NativeTypeKind::S32:
+                case NativeTypeKind::U32:
+                case NativeTypeKind::Rune:
+                    r = TO_PTR_I32(allocRR);
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::U64:
+                    r = TO_PTR_I64(allocRR);
+                    break;
+                case NativeTypeKind::F32:
+                    r = TO_PTR_F32(allocRR);
+                    break;
+                case NativeTypeKind::F64:
+                    r = TO_PTR_F64(allocRR);
+                    break;
+                default:
+                    break;
             }
 
             if (!r)

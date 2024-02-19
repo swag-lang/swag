@@ -154,19 +154,19 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
             {
                 switch (nodeParam->assignment->tokenId)
                 {
-                case TokenId::CompilerCallerLocation:
-                case TokenId::CompilerCallerFunction:
-                case TokenId::CompilerBuildCfg:
-                case TokenId::CompilerOs:
-                case TokenId::CompilerArch:
-                case TokenId::CompilerCpu:
-                case TokenId::CompilerSwagOs:
-                case TokenId::CompilerBackend:
-                    break;
+                    case TokenId::CompilerCallerLocation:
+                    case TokenId::CompilerCallerFunction:
+                    case TokenId::CompilerBuildCfg:
+                    case TokenId::CompilerOs:
+                    case TokenId::CompilerArch:
+                    case TokenId::CompilerCpu:
+                    case TokenId::CompilerSwagOs:
+                    case TokenId::CompilerBackend:
+                        break;
 
-                default:
-                    context->report({nodeParam->assignment, FMT(Err(Err0250), nodeParam->assignment->token.c_str())});
-                    break;
+                    default:
+                        context->report({nodeParam->assignment, FMT(Err(Err0250), nodeParam->assignment->token.c_str())});
+                        break;
                 }
             }
         }
@@ -1738,20 +1738,20 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     {
         switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
         {
-        case AstNodeKind::Try:
-            inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);
-            break;
-        case AstNodeKind::TryCatch:
-            inlineNode->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
-            break;
-        case AstNodeKind::Catch:
-            inlineNode->setBcNotifyAfter(ByteCodeGen::emitCatch);
-            break;
-        case AstNodeKind::Assume:
-            inlineNode->setBcNotifyAfter(ByteCodeGen::emitAssume);
-            break;
-        default:
-            break;
+            case AstNodeKind::Try:
+                inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);
+                break;
+            case AstNodeKind::TryCatch:
+                inlineNode->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
+                break;
+            case AstNodeKind::Catch:
+                inlineNode->setBcNotifyAfter(ByteCodeGen::emitCatch);
+                break;
+            case AstNodeKind::Assume:
+                inlineNode->setBcNotifyAfter(ByteCodeGen::emitAssume);
+                break;
+            default:
+                break;
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that

@@ -347,262 +347,262 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     switch (tokenId)
     {
-    case TokenId::SymEqual:
-    {
-        if (!leftTypeInfo->isNative() &&
-            !leftTypeInfo->isPointer() &&
-            !leftTypeInfo->isSlice() &&
-            !leftTypeInfo->isLambdaClosure() &&
-            !leftTypeInfo->isListTuple() &&
-            !leftTypeInfo->isListArray() &&
-            !leftTypeInfo->isStruct() &&
-            !leftTypeInfo->isInterface() &&
-            !leftTypeInfo->isArray() &&
-            !leftTypeInfo->isAlias() &&
-            !leftTypeInfo->isEnum())
-            return context->report({left, FMT(Err(Err0105), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
-        if (!rightTypeInfo->isNative() &&
-            !rightTypeInfo->isPointer() &&
-            !rightTypeInfo->isSlice() &&
-            !rightTypeInfo->isLambdaClosure() &&
-            !rightTypeInfo->isListTuple() &&
-            !rightTypeInfo->isListArray() &&
-            !rightTypeInfo->isStruct() &&
-            !rightTypeInfo->isInterface() &&
-            !rightTypeInfo->isArray() &&
-            !rightTypeInfo->isAlias())
-            return context->report({right, FMT(Err(Err0107), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
-
-        if (forStruct)
+        case TokenId::SymEqual:
         {
-            if (arrayNode)
+            if (!leftTypeInfo->isNative() &&
+                !leftTypeInfo->isPointer() &&
+                !leftTypeInfo->isSlice() &&
+                !leftTypeInfo->isLambdaClosure() &&
+                !leftTypeInfo->isListTuple() &&
+                !leftTypeInfo->isListArray() &&
+                !leftTypeInfo->isStruct() &&
+                !leftTypeInfo->isInterface() &&
+                !leftTypeInfo->isArray() &&
+                !leftTypeInfo->isAlias() &&
+                !leftTypeInfo->isEnum())
+                return context->report({left, FMT(Err(Err0105), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
+            if (!rightTypeInfo->isNative() &&
+                !rightTypeInfo->isPointer() &&
+                !rightTypeInfo->isSlice() &&
+                !rightTypeInfo->isLambdaClosure() &&
+                !rightTypeInfo->isListTuple() &&
+                !rightTypeInfo->isListArray() &&
+                !rightTypeInfo->isStruct() &&
+                !rightTypeInfo->isInterface() &&
+                !rightTypeInfo->isArray() &&
+                !rightTypeInfo->isAlias())
+                return context->report({right, FMT(Err(Err0107), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
+
+            if (forStruct)
             {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CAST_FLAG_CAST))
+                if (arrayNode)
                 {
-                    SWAG_CHECK(waitForStructUserOps(context, left));
-                    YIELD();
-                }
-                else if (forTuple)
-                {
-                    return context->report({node, node->token, FMT(Err(Err0350), node->token.c_str())});
-                }
-                else
-                {
-                    SymbolName* symbol = nullptr;
-                    SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndexAffect, left, &symbol));
-                    if (!symbol)
+                    if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CAST_FLAG_CAST))
                     {
+                        SWAG_CHECK(waitForStructUserOps(context, left));
                         YIELD();
-
-                        Diagnostic err{right, FMT(Err(Err0341), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-                        err.hint = Diagnostic::isType(rightTypeInfo);
-                        err.addNote(left, Diagnostic::isType(leftTypeInfo));
-
-                        const auto note = Diagnostic::note(node, node->token, FMT(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
-                        return context->report(err, note);
                     }
+                    else if (forTuple)
+                    {
+                        return context->report({node, node->token, FMT(Err(Err0350), node->token.c_str())});
+                    }
+                    else
+                    {
+                        SymbolName* symbol = nullptr;
+                        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndexAffect, left, &symbol));
+                        if (!symbol)
+                        {
+                            YIELD();
 
-                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));
-                }
-            }
-            else
-            {
-                if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CAST_FLAG_CAST | CAST_FLAG_FOR_AFFECT))
-                {
-                    SWAG_CHECK(waitForStructUserOps(context, left));
-                    YIELD();
-                }
-                else if (rightTypeInfo->isInitializerList())
-                {
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_UN_CONST | CAST_FLAG_ACCEPT_PENDING));
-                    YIELD();
+                            Diagnostic err{right, FMT(Err(Err0341), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                            err.hint = Diagnostic::isType(rightTypeInfo);
+                            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+
+                            const auto note = Diagnostic::note(node, node->token, FMT(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                            return context->report(err, note);
+                        }
+
+                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));
+                    }
                 }
                 else
                 {
-                    if (leftTypeInfo->isTuple())
+                    if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CAST_FLAG_CAST | CAST_FLAG_FOR_AFFECT))
                     {
-                        Diagnostic err{node, node->token, Err(Err0216)};
-                        err.addNote(right, Diagnostic::isType(rightTypeInfo));
-                        return context->report(err);
+                        SWAG_CHECK(waitForStructUserOps(context, left));
+                        YIELD();
                     }
+                    else if (rightTypeInfo->isInitializerList())
+                    {
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_UN_CONST | CAST_FLAG_ACCEPT_PENDING));
+                        YIELD();
+                    }
+                    else
+                    {
+                        if (leftTypeInfo->isTuple())
+                        {
+                            Diagnostic err{node, node->token, Err(Err0216)};
+                            err.addNote(right, Diagnostic::isType(rightTypeInfo));
+                            return context->report(err);
+                        }
 
-                    SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
-                    YIELD();
+                        SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
+                        YIELD();
+                    }
                 }
+
+                break;
             }
 
+            CastFlags castFlags = CAST_FLAG_AUTO_BOOL | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT | CAST_FLAG_ACCEPT_PENDING;
+            if (leftTypeInfo->isStruct() ||
+                leftTypeInfo->isArray() ||
+                leftTypeInfo->isClosure())
+                castFlags.add(CAST_FLAG_UN_CONST);
+
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
+            YIELD();
             break;
         }
 
-        CastFlags castFlags = CAST_FLAG_AUTO_BOOL | CAST_FLAG_TRY_COERCE | CAST_FLAG_FOR_AFFECT | CAST_FLAG_ACCEPT_PENDING;
-        if (leftTypeInfo->isStruct() ||
-            leftTypeInfo->isArray() ||
-            leftTypeInfo->isClosure())
-            castFlags.add(CAST_FLAG_UN_CONST);
-
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
-        YIELD();
-        break;
-    }
-
-    case TokenId::SymLowerLowerEqual:
-    case TokenId::SymGreaterGreaterEqual:
-    {
-        if (forStruct)
+        case TokenId::SymLowerLowerEqual:
+        case TokenId::SymGreaterGreaterEqual:
         {
-            const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
-
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CAST_FLAG_TRY_COERCE));
-
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString ||
-            leftTypeInfo->nativeType == NativeTypeKind::F32 ||
-            leftTypeInfo->nativeType == NativeTypeKind::F64)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-
-        break;
-    }
-
-    case TokenId::SymAmpersandEqual:
-    case TokenId::SymVerticalEqual:
-    case TokenId::SymCircumflexEqual:
-    {
-        if (forStruct)
-        {
-            auto op = "&=";
-            if (tokenId == TokenId::SymVerticalEqual)
-                op = "|=";
-            else if (tokenId == TokenId::SymCircumflexEqual)
-                op = "^=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
-
-        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
-
-        if (leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString ||
-            leftTypeInfo->nativeType == NativeTypeKind::F32 ||
-            leftTypeInfo->nativeType == NativeTypeKind::F64)
-        {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
-
-    case TokenId::SymPlusEqual:
-    case TokenId::SymMinusEqual:
-    {
-        if (forStruct)
-        {
-            const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
-            break;
-        }
-
-        // :PointerArithmetic
-        if (leftTypeInfo->isPointer())
-        {
-            if (!leftTypeInfo->isPointerArithmetic())
+            if (forStruct)
             {
-                Diagnostic err{node, node->token, Err(Err0359)};
-                err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                const auto note = Diagnostic::note(Nte(Nte0103));
-                return context->report(err, note);
+                const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
+                if (arrayNode)
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+                else
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+                break;
             }
 
-            if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, left, right, CAST_FLAG_TRY_COERCE));
+
+            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+            if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+                leftTypeInfo->nativeType == NativeTypeKind::String ||
+                leftTypeInfo->nativeType == NativeTypeKind::CString ||
+                leftTypeInfo->nativeType == NativeTypeKind::F32 ||
+                leftTypeInfo->nativeType == NativeTypeKind::F64)
             {
-                Diagnostic err{node, node->token, Err(Err0358)};
-                err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(err);
+                return SemanticError::notAllowedError(context, node, leftTypeInfo);
             }
 
-            rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
-
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString)
+        case TokenId::SymAmpersandEqual:
+        case TokenId::SymVerticalEqual:
+        case TokenId::SymCircumflexEqual:
         {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+            if (forStruct)
+            {
+                auto op = "&=";
+                if (tokenId == TokenId::SymVerticalEqual)
+                    op = "|=";
+                else if (tokenId == TokenId::SymCircumflexEqual)
+                    op = "^=";
+                if (arrayNode)
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+                else
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+                break;
+            }
 
-    case TokenId::SymSlashEqual:
-    {
-        if (forStruct)
-        {
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, "/=", nullptr, left, right));
+            SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
+
+            if (leftTypeInfo->nativeType == NativeTypeKind::String ||
+                leftTypeInfo->nativeType == NativeTypeKind::CString ||
+                leftTypeInfo->nativeType == NativeTypeKind::F32 ||
+                leftTypeInfo->nativeType == NativeTypeKind::F64)
+            {
+                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+            }
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
-
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString)
+        case TokenId::SymPlusEqual:
+        case TokenId::SymMinusEqual:
         {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+            if (forStruct)
+            {
+                const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
+                if (arrayNode)
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+                else
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+                break;
+            }
 
-    case TokenId::SymPercentEqual:
-    case TokenId::SymAsteriskEqual:
-    {
-        if (forStruct)
-        {
-            const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
-            if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
-            else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+            // :PointerArithmetic
+            if (leftTypeInfo->isPointer())
+            {
+                if (!leftTypeInfo->isPointerArithmetic())
+                {
+                    Diagnostic err{node, node->token, Err(Err0359)};
+                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    const auto note = Diagnostic::note(Nte(Nte0103));
+                    return context->report(err, note);
+                }
+
+                if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
+                {
+                    Diagnostic err{node, node->token, Err(Err0358)};
+                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    return context->report(err);
+                }
+
+                rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
+                break;
+            }
+
+            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
+
+            if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+                leftTypeInfo->nativeType == NativeTypeKind::String ||
+                leftTypeInfo->nativeType == NativeTypeKind::CString)
+            {
+                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+            }
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
-
-        if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::String ||
-            leftTypeInfo->nativeType == NativeTypeKind::CString)
+        case TokenId::SymSlashEqual:
         {
-            return SemanticError::notAllowedError(context, node, leftTypeInfo);
-        }
-        break;
-    }
+            if (forStruct)
+            {
+                if (arrayNode)
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams));
+                else
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, "/=", nullptr, left, right));
+                break;
+            }
 
-    default:
-        return Report::internalError(context->node, "resolveAffect, invalid token");
+            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
+
+            if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+                leftTypeInfo->nativeType == NativeTypeKind::String ||
+                leftTypeInfo->nativeType == NativeTypeKind::CString)
+            {
+                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+            }
+            break;
+        }
+
+        case TokenId::SymPercentEqual:
+        case TokenId::SymAsteriskEqual:
+        {
+            if (forStruct)
+            {
+                const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
+                if (arrayNode)
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
+                else
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
+                break;
+            }
+
+            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CAST_FLAG_TRY_COERCE));
+
+            if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
+                leftTypeInfo->nativeType == NativeTypeKind::String ||
+                leftTypeInfo->nativeType == NativeTypeKind::CString)
+            {
+                return SemanticError::notAllowedError(context, node, leftTypeInfo);
+            }
+            break;
+        }
+
+        default:
+            return Report::internalError(context->node, "resolveAffect, invalid token");
     }
 
     node->byteCodeFct = ByteCodeGen::emitAffect;
