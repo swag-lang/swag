@@ -736,9 +736,9 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
 
 void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(llvm->perThread[ct][precompileIndex]);
+    const auto& pp              = llvm->encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.llvmContext;
     auto&       modu            = *pp.llvmModule;

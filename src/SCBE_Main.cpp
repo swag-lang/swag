@@ -10,7 +10,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&      concat          = pp.concat;
 
     concat.align(16);
@@ -57,7 +57,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&      concat          = pp.concat;
 
     concat.align(16);
@@ -238,9 +238,9 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
@@ -270,9 +270,9 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 
 void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
@@ -324,9 +324,9 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 
 void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
@@ -406,7 +406,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&      concat          = pp.concat;
 
     concat.align(16);

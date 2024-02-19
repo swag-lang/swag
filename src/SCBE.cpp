@@ -23,7 +23,7 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
 
     if (precompileIndex == 0)
     {
@@ -114,14 +114,14 @@ void SCBE::createRuntime(const BuildParameters& buildParameters) const
 
 JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
-    const int  ct              = buildParameters.compileType;
+    const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
     const auto objFileType     = getObjType(g_CommandLine.target);
 
     SWAG_ASSERT(module == buildParameters.module);
     allocatePerObj<SCBE_X64>(buildParameters);
 
-    auto& pp     = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto& pp     = encoder<SCBE_X64>(ct, precompileIndex);
     auto& concat = pp.concat;
 
     // Message

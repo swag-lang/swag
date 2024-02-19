@@ -59,6 +59,16 @@ struct Backend
     bool        setupExportFile(bool force = false);
     bool        generateOutput(const BuildParameters& buildParameters) const;
 
+    static void           setup();
+    static Path           getCacheFolder();
+    static Path           getOutputFileName(const BackendTarget& target, const Utf8& name, BuildCfgOutputKind type);
+    static Utf8           getObjectFileExtension(const BackendTarget& target);
+    static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgOutputKind type);
+    static BackendObjType getObjType(const BackendTarget& target);
+    static const char*    getArchName(const BackendTarget& target);
+    static const char*    getOsName(const BackendTarget& target);
+    static uint64_t       getRuntimeFlags();
+
     template<typename T>
     void allocatePerObj(const BuildParameters& buildParameters)
     {
@@ -71,6 +81,12 @@ struct Backend
             n->module                      = buildParameters.module;
             perThread[ct][precompileIndex] = n;
         }
+    }
+
+    template<typename T>
+    T& encoder(BackendCompileType ct, uint32_t th) const
+    {
+        return *static_cast<T*>(perThread[ct][th]);
     }
 
     BackendEncoder* perThread[Count][MAX_PRECOMPILE_BUFFERS];
@@ -86,15 +102,4 @@ struct Backend
 
     AstOutput::OutputContext outputContext;
     bool                     mustCompile = true;
-
-    static void setup();
-    static Path getCacheFolder();
-    static Path getOutputFileName(const BackendTarget& target, const Utf8& name, BuildCfgOutputKind type);
-
-    static Utf8           getObjectFileExtension(const BackendTarget& target);
-    static Utf8           getOutputFileExtension(const BackendTarget& target, BuildCfgOutputKind type);
-    static BackendObjType getObjType(const BackendTarget& target);
-    static const char*    getArchName(const BackendTarget& target);
-    static const char*    getOsName(const BackendTarget& target);
-    static uint64_t       getRuntimeFlags();
 };

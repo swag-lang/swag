@@ -18,15 +18,15 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
         return true;
 
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
-    auto& context         = *pp.llvmContext;
-    auto& builder         = *pp.builder;
-    auto& modu            = *pp.llvmModule;
-    auto  typeFunc        = bc->getCallType();
-    auto  returnType      = typeFunc->concreteReturnType();
-    bool  ok              = true;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      context         = *pp.llvmContext;
+    auto&      builder         = *pp.builder;
+    auto&      modu            = *pp.llvmModule;
+    auto       typeFunc        = bc->getCallType();
+    auto       returnType      = typeFunc->concreteReturnType();
+    bool       ok              = true;
 
     // Get function name
     Utf8         funcName   = bc->getCallNameFromDecl();
@@ -5835,9 +5835,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
 llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
 
     typeInfo = typeInfo->getConcreteAlias();

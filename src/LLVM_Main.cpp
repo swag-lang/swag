@@ -10,9 +10,9 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
-        const int   ct              = buildParameters.compileType;
+        const auto  ct              = buildParameters.compileType;
         const auto  precompileIndex = buildParameters.precompileIndex;
-        const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+        const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
         auto&       context         = *pp.llvmContext;
         auto&       builder         = *pp.builder;
         auto&       modu            = *pp.llvmModule;
@@ -69,12 +69,12 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
 
 void LLVM::emitMain(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
-    auto& context         = *pp.llvmContext;
-    auto& builder         = *pp.builder;
-    auto& modu            = *pp.llvmModule;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      context         = *pp.llvmContext;
+    auto&      builder         = *pp.builder;
+    auto&      modu            = *pp.llvmModule;
 
     emitOS(buildParameters);
 
@@ -279,7 +279,7 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp      = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;
@@ -302,7 +302,7 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp      = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;
@@ -342,7 +342,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    auto& pp      = encoder<LLVMEncoder>(ct, precompileIndex);
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
     auto& modu    = *pp.llvmModule;
@@ -420,7 +420,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp      = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;

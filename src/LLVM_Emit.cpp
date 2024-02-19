@@ -119,7 +119,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
     auto&      builder         = *pp.builder;
 
@@ -169,9 +169,9 @@ llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBui
 
 void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
 
     SWAG_ASSERT(value);
@@ -200,9 +200,9 @@ void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
                                llvm::AllocaInst*      allocR,
                                llvm::AllocaInst*      allocRR) const
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
 
     auto r0 = GEP64(allocR, reg0);

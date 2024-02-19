@@ -37,9 +37,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
         return true;
 
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = *static_cast<SCBE_X64*>(perThread[ct][precompileIndex]);
+    auto        ct              = buildParameters.compileType;
+    auto        precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&       concat          = pp.concat;
     auto        typeFunc        = bc->getCallType();
     auto        returnType      = typeFunc->concreteReturnType();

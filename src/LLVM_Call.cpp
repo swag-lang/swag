@@ -14,9 +14,9 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
                            llvm::AllocaInst*      allocR,
                            llvm::AllocaInst*      allocResult)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
 
     llvm::Value* returnResult = nullptr;
@@ -104,9 +104,9 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
 
 void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
 
@@ -172,7 +172,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
 
     // Already done ?
@@ -285,9 +285,9 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                         uint64_t               toAdd,
                         int                    deRefSize)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
 
     auto param = typeFunc->registerIdxToType(paramIdx);
@@ -471,9 +471,9 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
                               const Vector<llvm::Value*>&   values,
                               bool                          closureToLambda)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
 
@@ -590,9 +590,9 @@ bool LLVM::emitCallReturnValue(const BuildParameters&  buildParameters,
                                const TypeInfoFuncAttr* typeFuncBC,
                                llvm::Value*            callResult) const
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
 
@@ -663,9 +663,9 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
                             const Vector<llvm::Value*>&   values,
                             bool                          localCall)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
     auto&       modu            = *pp.llvmModule;
 
@@ -716,9 +716,9 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
                                       const Vector<llvm::Value*>& values,
                                       bool                        closureToLambda)
 {
-    const int   ct              = buildParameters.compileType;
+    const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = *static_cast<LLVMEncoder*>(perThread[ct][precompileIndex]);
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.llvmContext;
     int         popRAidx        = static_cast<int>(pushRAParams.size()) - 1;
