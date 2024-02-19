@@ -128,8 +128,8 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
 
-        if (implNode->hasExtOwner() && implNode->extOwner()->ownerCompilerIfBlock)
-            implNode->extOwner()->ownerCompilerIfBlock->interfacesCount.push_back(typeStruct);
+        if (implNode->hasOwnerCompilerIfBlock())
+            implNode->ownerCompilerIfBlock()->interfacesCount.push_back(typeStruct);
     }
 
     // For an interface implementation, creates a sub scope named like the interface

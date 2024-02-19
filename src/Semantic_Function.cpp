@@ -1057,10 +1057,10 @@ void Semantic::resolveSubDecls(const JobContext* context, AstFuncDecl* funcNode)
                 continue;
             f->addSemFlag(SEMFLAG_DISABLED); // To avoid multiple resolutions
 
-            if (f->hasExtOwner() && f->extOwner()->ownerCompilerIfBlock && f->extOwner()->ownerCompilerIfBlock->ownerFct == funcNode)
+            if (f->hasOwnerCompilerIfBlock() && f->ownerCompilerIfBlock()->ownerFct == funcNode)
             {
-                ScopedLock lk1(f->extOwner()->ownerCompilerIfBlock->mutex);
-                f->extOwner()->ownerCompilerIfBlock->subDecl.push_back(f);
+                ScopedLock lk1(f->ownerCompilerIfBlock()->mutex);
+                f->ownerCompilerIfBlock()->subDecl.push_back(f);
             }
             else
                 launchResolveSubDecl(context, f);
@@ -1713,10 +1713,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     inlineNode->scope          = identifier->ownerScope;
     inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
 
-    if (identifier->hasExtOwner() && identifier->extOwner()->ownerTryCatchAssume)
+    if (identifier->hasOwnerTryCatchAssume())
     {
         inlineNode->allocateExtension(ExtensionKind::Owner);
-        inlineNode->extOwner()->ownerTryCatchAssume = identifier->extOwner()->ownerTryCatchAssume;
+        inlineNode->extOwner()->ownerTryCatchAssume = identifier->ownerTryCatchAssume();
     }
 
     if (funcDecl->hasExtMisc())
@@ -1732,11 +1732,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // Try/Assume
-    if (inlineNode->hasExtOwner() &&
-        inlineNode->extOwner()->ownerTryCatchAssume &&
+    if (inlineNode->hasOwnerTryCatchAssume() &&
         inlineNode->func->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
     {
-        switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
+        switch (inlineNode->ownerTryCatchAssume()->kind)
         {
             case AstNodeKind::Try:
                 inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);

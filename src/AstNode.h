@@ -427,12 +427,16 @@ struct AstNode
     NodeExtensionOwner*    extOwner() const { return extension->owner; }
     NodeExtensionMisc*     extMisc() const { return extension->misc; }
 
-    AstInline*    ownerInline() const { return extOwner()->ownerInline; }
-    AstInline*    safeOwnerInline() const { return hasExtOwner() ? extOwner()->ownerInline : nullptr; }
-    bool          hasOwnerInline() const { return safeOwnerInline() != nullptr; }
-    AstBreakable* ownerBreakable() const { return extOwner()->ownerBreakable; }
-    AstBreakable* safeOwnerBreakable() const { return hasExtOwner() ? extOwner()->ownerBreakable : nullptr; }
-    bool          hasOwnerBreakable() const { return safeOwnerBreakable() != nullptr; }
+    AstTryCatchAssume*  ownerTryCatchAssume() const { return extOwner()->ownerTryCatchAssume; }
+    bool                hasOwnerTryCatchAssume() const { return hasExtOwner() && extOwner()->ownerTryCatchAssume; }
+    AstCompilerIfBlock* ownerCompilerIfBlock() const { return extOwner()->ownerCompilerIfBlock; }
+    bool                hasOwnerCompilerIfBlock() const { return hasExtOwner() && extOwner()->ownerCompilerIfBlock; }
+    AstInline*          ownerInline() const { return extOwner()->ownerInline; }
+    AstInline*          safeOwnerInline() const { return hasExtOwner() ? extOwner()->ownerInline : nullptr; }
+    bool                hasOwnerInline() const { return safeOwnerInline() != nullptr; }
+    AstBreakable*       ownerBreakable() const { return extOwner()->ownerBreakable; }
+    AstBreakable*       safeOwnerBreakable() const { return hasExtOwner() ? extOwner()->ownerBreakable : nullptr; }
+    bool                hasOwnerBreakable() const { return safeOwnerBreakable() != nullptr; }
 
     void setOwnerAttrUse(AstAttrUse* attrUse);
     void setOwnerBreakable(AstBreakable* bkp);

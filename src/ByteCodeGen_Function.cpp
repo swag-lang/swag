@@ -1463,7 +1463,7 @@ void ByteCodeGen::emitPushRAParams(const ByteCodeGenContext* context, VectorNati
 bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, const AstNode* callNode, const AstNode* funcNode, AstNode* parent, const TypeInfo* typeInfoFunc)
 {
     const bool raiseErrors = typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW);
-    if (raiseErrors && (!callNode->hasExtOwner() || !callNode->extOwner()->ownerTryCatchAssume))
+    if (raiseErrors && !callNode->hasOwnerTryCatchAssume())
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;

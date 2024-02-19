@@ -1145,8 +1145,8 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     newNode->cloneChildren(cloneContext, this);
     context.propagateResult(cloneContext);
 
-    if (newNode->hasExtOwner() && newNode->extOwner()->ownerCompilerIfBlock)
-        newNode->extOwner()->ownerCompilerIfBlock->blocks.push_back(newNode);
+    if (newNode->hasOwnerCompilerIfBlock())
+        newNode->ownerCompilerIfBlock()->blocks.push_back(newNode);
     return newNode;
 }
 

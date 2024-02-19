@@ -1081,11 +1081,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
 
                 // Try/Assume
-                if (identifier->hasExtOwner() &&
-                    identifier->extOwner()->ownerTryCatchAssume &&
+                if (identifier->hasOwnerTryCatchAssume() &&
                     identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
                 {
-                    switch (identifier->extOwner()->ownerTryCatchAssume->kind)
+                    switch (identifier->ownerTryCatchAssume()->kind)
                     {
                         case AstNodeKind::Try:
                             identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
@@ -1334,11 +1333,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 identifier->byteCodeFct = ByteCodeGen::emitCall;
 
             // Try/Assume
-            if (identifier->hasExtOwner() &&
-                identifier->extOwner()->ownerTryCatchAssume &&
+            if (identifier->hasOwnerTryCatchAssume() &&
                 identifier->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
             {
-                switch (identifier->extOwner()->ownerTryCatchAssume->kind)
+                switch (identifier->ownerTryCatchAssume()->kind)
                 {
                     case AstNodeKind::Try:
                         identifier->setBcNotifyAfter(ByteCodeGen::emitTry);

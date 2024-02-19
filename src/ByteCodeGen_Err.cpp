@@ -271,7 +271,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 
     PushICFlags ic(context, BCI_TRY_CATCH);
     const auto  node    = context->node;
-    const auto  tryNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
+    const auto  tryNode = castAst<AstTryCatchAssume>(node->ownerTryCatchAssume(), AstNodeKind::Try);
 
     // try in a top level function is equivalent to assume
     const AstFuncDecl* parentFct = nullptr;
@@ -304,7 +304,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
 {
     const auto node    = context->node;
-    const auto tryNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
+    const auto tryNode = castAst<AstTryCatchAssume>(node->ownerTryCatchAssume(), AstNodeKind::TryCatch);
 
     if (!node->hasSemFlag(SEMFLAG_TRY_1))
     {
@@ -340,7 +340,7 @@ bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
     PushICFlags ic(context, BCI_TRY_CATCH);
 
     const auto node       = context->node;
-    const auto assumeNode = castAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+    const auto assumeNode = castAst<AstTryCatchAssume>(node->ownerTryCatchAssume(), AstNodeKind::Try, AstNodeKind::Assume);
 
     SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
     const auto rt = reserveRegisterRC(context);

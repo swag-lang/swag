@@ -39,16 +39,16 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         }
     }
 
-    if (context.ownerCompilerIfBlock || (from->hasExtOwner() && from->extOwner()->ownerCompilerIfBlock))
+    if (context.ownerCompilerIfBlock || from->hasOwnerCompilerIfBlock())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->extOwner()->ownerCompilerIfBlock;
+        extOwner()->ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock();
     }
 
-    if (context.ownerTryCatchAssume || (from->hasExtOwner() && from->extOwner()->ownerTryCatchAssume))
+    if (context.ownerTryCatchAssume || from->hasOwnerTryCatchAssume())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extOwner()->ownerTryCatchAssume;
+        extOwner()->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->ownerTryCatchAssume();
     }
 
     if (context.ownerInline || from->hasOwnerInline())
@@ -649,10 +649,10 @@ void AstNode::inheritOwners(const AstNode* op)
     ownerScope       = op->ownerScope;
     ownerFct         = op->ownerFct;
 
-    if (op->hasExtOwner() && op->extOwner()->ownerCompilerIfBlock)
+    if (op->hasOwnerCompilerIfBlock())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerCompilerIfBlock = op->extOwner()->ownerCompilerIfBlock;
+        extOwner()->ownerCompilerIfBlock = op->ownerCompilerIfBlock();
     }
     else if (hasExtOwner())
     {

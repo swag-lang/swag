@@ -73,10 +73,10 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* n
     symbol->nodes.push_back(node);
 
     // Register the symbol in the corresponding #if block, in case the block is disabled
-    if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
+    if (node->hasOwnerCompilerIfBlock())
     {
         symbol->cptIfBlock++;
-        node->extOwner()->ownerCompilerIfBlock->addSymbol(node, symbol);
+        node->ownerCompilerIfBlock()->addSymbol(node, symbol);
     }
 
     if (!wasPlaceHolder)
