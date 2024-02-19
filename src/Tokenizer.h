@@ -90,9 +90,8 @@ struct TokenParse : Token
 
 struct Tokenizer
 {
-    bool        error(TokenParse& token, const Utf8& msg, const Utf8& hint = "") const;
-    static void trimMultilineString(Utf8& text);
-    void        appendTokenName(TokenParse& token) const;
+    bool error(TokenParse& token, const Utf8& msg, const Utf8& hint = "") const;
+    void appendTokenName(TokenParse& token) const;
 
     uint32_t readChar();
     uint32_t peekChar(unsigned& offset) const;

@@ -2,54 +2,57 @@
 #include "ErrorIds.h"
 #include "Tokenizer.h"
 
-// This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
-// from every other lines.
-// This is necessary to be able to indent a multiline string in the code
-void Tokenizer::trimMultilineString(Utf8& text)
+namespace
 {
-    // Count the blanks before the end
-    const char* pz    = text.buffer + text.length() - 1;
-    int         count = 0;
-    while (pz != text.buffer && SWAG_IS_BLANK(*pz))
+    // This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
+    // from every other lines.
+    // This is necessary to be able to indent a multiline string in the code
+    void trimMultilineString(Utf8& text)
     {
-        count++;
-        pz--;
+        // Count the blanks before the end
+        const char* pz    = text.buffer + text.length() - 1;
+        int         count = 0;
+        while (pz != text.buffer && SWAG_IS_BLANK(*pz))
+        {
+            count++;
+            pz--;
+        }
+
+        if (count == 0)
+            return;
+
+        // Now remove the same amount of blank at the start of each new line
+        Utf8 copyText;
+        copyText.reserve(text.length());
+        const auto endPz = pz;
+
+        pz     = text.buffer;
+        auto i = text.count;
+        while (i && pz != endPz)
+        {
+            auto toRemove = count;
+            while (i && SWAG_IS_BLANK(*pz) && toRemove)
+            {
+                pz++;
+                toRemove--;
+                i--;
+            }
+
+            while (i && *pz != '\n')
+            {
+                copyText += *pz++;
+                i--;
+            }
+
+            if (*pz == '\n')
+            {
+                copyText += *pz++;
+                i--;
+            }
+        }
+
+        text = copyText;
     }
-
-    if (count == 0)
-        return;
-
-    // Now remove the same amount of blank at the start of each new line
-    Utf8 copyText;
-    copyText.reserve(text.length());
-    const auto endPz = pz;
-
-    pz     = text.buffer;
-    auto i = text.count;
-    while (i && pz != endPz)
-    {
-        auto toRemove = count;
-        while (i && SWAG_IS_BLANK(*pz) && toRemove)
-        {
-            pz++;
-            toRemove--;
-            i--;
-        }
-
-        while (i && *pz != '\n')
-        {
-            copyText += *pz++;
-            i--;
-        }
-
-        if (*pz == '\n')
-        {
-            copyText += *pz++;
-            i--;
-        }
-    }
-
-    text = copyText;
 }
 
 bool Tokenizer::doStringLiteral(TokenParse& token)
