@@ -472,7 +472,7 @@ struct TypeInfoStruct final : TypeInfo
     VectorNative<TypeInfoParam*>          genericParameters;
     VectorNative<TypeInfo*>               deducedGenericParameters;
     VectorNative<TypeInfoParam*>          fields;
-    VectorNative<TypeInfoParam*>          consts;
+    VectorNative<TypeInfoParam*>          constDecl;
     VectorNative<TypeInfoParam*>          methods;
     VectorNative<TypeInfoParam*>          interfaces;
     VectorNative<TypeInfoParam*>          flattenFields;

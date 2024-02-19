@@ -40,26 +40,18 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     if (!typeStruct->declNode)
         return false;
 
-    auto        structNode = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-    SymbolName* symbol;
-
     bool isSuffix = false;
     if ((fromNode && fromNode->hasSemFlag(SEMFLAG_LITERAL_SUFFIX)) || castFlags.has(CAST_FLAG_LITERAL_SUFFIX))
         isSuffix = true;
 
-    if (isSuffix)
-        symbol = structNode->scope->symbolOpAffectSuffix;
-    else
-        symbol = structNode->scope->symbolOpAffect;
+    auto        structNode = castAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    SymbolName* symbol     = isSuffix ? structNode->scope->symbolOpAffectSuffix : structNode->scope->symbolOpAffect;
 
     // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the instantiated one
     if (!symbol && typeStruct->fromGeneric)
     {
         structNode = castAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-        if (isSuffix)
-            symbol = structNode->scope->symbolOpAffectSuffix;
-        else
-            symbol = structNode->scope->symbolOpAffect;
+        symbol     = isSuffix ? structNode->scope->symbolOpAffectSuffix : structNode->scope->symbolOpAffect;
     }
 
     if (!symbol)
@@ -96,41 +88,33 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     }
 
     VectorNative<SymbolOverload*> toAffect;
+    VectorNative<SymbolOverload*> overloads;
 
     // Wait for all opAffect to be solved
+    Semantic::waitForOverloads(context->baseJob, symbol);
+    YIELD();
+
     {
-        ScopedLock ls(symbol->mutex);
-        if (symbol->cptOverloads)
-        {
-            SWAG_ASSERT(context && context->baseJob);
-            SWAG_ASSERT(context->result == ContextResult::Done);
-            Semantic::waitSymbolNoLock(context->baseJob, symbol);
-            return true;
-        }
+        SharedLock ls(symbol->mutex);
+        overloads = symbol->overloads;
     }
 
     // Resolve opAffect that match
+    for (auto over : overloads)
     {
-        SharedLock ls(symbol->mutex);
-        for (auto over : symbol->overloads)
-        {
-            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CAST_FLAG_EXPLICIT))
-                continue;
-            if (typeFunc->parameters.size() <= 1)
-                continue;
-            if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CAST_FLAG_NO_LAST_MINUTE | CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
-                toAffect.push_back(over);
-        }
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+        if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CAST_FLAG_EXPLICIT))
+            continue;
+        if (typeFunc->parameters.size() <= 1)
+            continue;
+        if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CAST_FLAG_NO_LAST_MINUTE | CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
+            toAffect.push_back(over);
     }
 
     // Add in the cache of possible matches
     {
         ScopedLock lkOp(typeStruct->mutexCache);
-        if (isSuffix)
-            typeStruct->mapOpAffect[idxMap][fromType] = toAffect.empty() ? nullptr : toAffect[0];
-        else
-            typeStruct->mapOpAffect[idxMap][fromType] = toAffect.empty() ? nullptr : toAffect[0];
+        typeStruct->mapOpAffect[idxMap][fromType] = toAffect.empty() ? nullptr : toAffect[0];
     }
 
     if (toAffect.empty())

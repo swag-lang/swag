@@ -908,14 +908,14 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (child->kind == AstNodeKind::VarDecl)
                     typeInfo->fields.push_back(typeParam);
                 else
-                    typeInfo->consts.push_back(typeParam);
+                    typeInfo->constDecl.push_back(typeParam);
             }
 
             child->addAstFlag(AST_REGISTERED_IN_STRUCT);
             if (child->kind == AstNodeKind::VarDecl)
                 typeParam = typeInfo->fields[storageIndexField];
             else
-                typeParam = typeInfo->consts[storageIndexConst];
+                typeParam = typeInfo->constDecl[storageIndexConst];
             typeParam->typeInfo = child->typeInfo;
             typeParam->declNode = child;
 
@@ -1138,7 +1138,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     toAdd.flags          = overload->flags;
                     toAdd.storageOffset  = overload->computedValue.storageOffset;
                     toAdd.storageSegment = overload->computedValue.storageSegment;
-                    toAdd.aliasName      = &name;
+                    toAdd.aliasName      = name;
 
                     symTable.addSymbolTypeInfo(context, toAdd);
                 }

@@ -150,7 +150,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                     toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE;
                     toAdd.storageOffset       = callParam->computedValue()->storageOffset;
                     toAdd.storageSegment      = callParam->computedValue()->storageSegment;
-                    toAdd.aliasName           = &funcParam->token.text;
+                    toAdd.aliasName           = funcParam->token.text;
                     const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                     overload->fromInlineParam = orgCallParam;
                     isConstant                = true;

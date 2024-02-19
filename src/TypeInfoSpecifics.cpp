@@ -1021,13 +1021,13 @@ TypeInfo* TypeInfoStruct::clone()
         newType->fields.push_back(param);
     }
 
-    size = static_cast<int>(consts.size());
-    newType->consts.reserve(size);
+    size = static_cast<int>(constDecl.size());
+    newType->constDecl.reserve(size);
     for (int i = 0; i < size; i++)
     {
-        auto param = consts[i];
+        auto param = constDecl[i];
         param      = param->clone();
-        newType->consts.push_back(param);
+        newType->constDecl.push_back(param);
     }
 
     size = static_cast<int>(methods.size());

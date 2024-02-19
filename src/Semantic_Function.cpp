@@ -849,7 +849,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             toAdd.typeInfo  = c->typeInfo;
             toAdd.kind      = SymbolKind::Variable;
             toAdd.flags     = OVERLOAD_VAR_CAPTURE;
-            toAdd.aliasName = &name;
+            toAdd.aliasName = name;
 
             auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd);
             if (!overload)
@@ -978,7 +978,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         toAdd1.typeInfo  = returnType;
         toAdd1.kind      = SymbolKind::TypeAlias;
         toAdd1.flags     = overFlags | OVERLOAD_RETVAL;
-        toAdd1.aliasName = &retVal;
+        toAdd1.aliasName = retVal;
         funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd1);
     }
 
@@ -1876,7 +1876,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
                 toAdd.node      = param;
                 toAdd.typeInfo  = param->typeInfo;
                 toAdd.kind      = SymbolKind::Variable;
-                toAdd.aliasName = &param->resolvedParameter->name;
+                toAdd.aliasName = param->resolvedParameter->name;
 
                 inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
             }

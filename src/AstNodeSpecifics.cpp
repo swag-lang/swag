@@ -930,7 +930,7 @@ AstNode* AstImpl::clone(CloneContext& context)
         toAdd.typeInfo  = implTypeInfo;
         toAdd.kind      = SymbolKind::Struct;
         toAdd.flags     = OVERLOAD_IMPL_IN_STRUCT;
-        toAdd.aliasName = &itfName;
+        toAdd.aliasName = itfName;
         baseScope->symTable.addSymbolTypeInfo(nullptr, toAdd);
     }
 

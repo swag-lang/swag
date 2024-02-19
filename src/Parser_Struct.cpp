@@ -157,7 +157,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
             toAdd.typeInfo   = typeInfo;
             toAdd.kind       = SymbolKind::Struct;
             toAdd.flags      = OVERLOAD_IMPL_IN_STRUCT;
-            toAdd.aliasName  = &itfName;
+            toAdd.aliasName  = itfName;
             toAdd.symbolName = newScope->symTable.registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, &itfName);
             newScope->symTable.addSymbolTypeInfoNoLock(context, toAdd);
         }

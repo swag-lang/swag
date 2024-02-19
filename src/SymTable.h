@@ -13,12 +13,12 @@ struct Utf8;
 
 struct AddSymbolTypeInfo
 {
+    Utf8           aliasName;
     AstNode*       node           = nullptr;
     TypeInfo*      typeInfo       = nullptr;
     ComputedValue* computedValue  = nullptr;
     SymbolName*    symbolName     = nullptr;
     DataSegment*   storageSegment = nullptr;
-    Utf8*          aliasName      = nullptr;
     OverloadFlags  flags          = 0;
     uint32_t       storageOffset  = 0;
     SymbolKind     kind           = SymbolKind::Invalid;

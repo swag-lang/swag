@@ -94,14 +94,15 @@ SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* n
 
 SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolTypeInfo& toAdd)
 {
+    const auto& symName = !toAdd.aliasName.empty() ? toAdd.aliasName : toAdd.node->token.text;
+
     ScopedLock lk(mutex);
     occupied = true;
 
     // Be sure we have a symbol
-    const auto symName = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
-    toAdd.symbolName   = findNoLock(*symName);
+    toAdd.symbolName = findNoLock(symName);
     if (!toAdd.symbolName)
-        toAdd.symbolName = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
+        toAdd.symbolName = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, &symName);
 
     const auto res = addSymbolTypeInfoNoLock(context, toAdd);
     occupied       = false;
@@ -113,14 +114,14 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     auto symbol = toAdd.symbolName;
     SWAG_ASSERT(symbol);
 
-    ScopedLock lock(symbol->mutex);
+    const auto& symName = !toAdd.aliasName.empty() ? toAdd.aliasName : toAdd.node->token.text;
+    ScopedLock  lock(symbol->mutex);
 
     // In case an #if block has passed before us
     if (symbol->cptOverloadsInit == 0)
     {
-        const auto symName = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
-        symbol             = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
-        toAdd.symbolName   = symbol;
+        symbol           = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, &symName);
+        toAdd.symbolName = symbol;
     }
 
     // Only add an inline parameter/retval once in a given scope
