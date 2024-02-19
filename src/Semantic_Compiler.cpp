@@ -483,8 +483,8 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     CloneContext cloneContext;
     cloneContext.parent                 = node;
     cloneContext.parentScope            = node->ownerScope;
-    cloneContext.ownerBreakable         = node->ownerBreakable;
-    cloneContext.replaceTokensBreakable = node->ownerBreakable;
+    cloneContext.ownerBreakable         = node->safeOwnerBreakable();
+    cloneContext.replaceTokensBreakable = node->safeOwnerBreakable();
     cloneContext.ownerInline            = node->safeOwnerInline();
     cloneContext.replaceTokens          = node->replaceTokens;
     cloneContext.forceFlags             = AST_IN_MIXIN;

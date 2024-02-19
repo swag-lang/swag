@@ -1275,7 +1275,7 @@ void Semantic::propagateReturn(AstNode* node)
     AstNode* scanNode = node;
 
     // Search if we are in an infinite loop
-    auto breakable = node->ownerBreakable;
+    auto breakable = node->safeOwnerBreakable();
     while (breakable)
     {
         if (breakable->kind == AstNodeKind::Loop)
@@ -1302,7 +1302,7 @@ void Semantic::propagateReturn(AstNode* node)
             break;
         }
 
-        breakable = breakable->ownerBreakable;
+        breakable = breakable->safeOwnerBreakable();
     }
 
     // Propagate the return in the corresponding scope
@@ -1817,7 +1817,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     cloneContext.parent         = inlineNode;
     cloneContext.ownerInline    = inlineNode;
     cloneContext.ownerFct       = identifier->ownerFct;
-    cloneContext.ownerBreakable = identifier->ownerBreakable;
+    cloneContext.ownerBreakable = identifier->safeOwnerBreakable();
     cloneContext.parentScope    = newScope;
     cloneContext.forceFlags.add(identifier->flags.mask(AST_NO_BACKEND));
     cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));

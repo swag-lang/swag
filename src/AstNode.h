@@ -325,7 +325,6 @@ struct AstNode
     const Token& getTokenName() const;
     Utf8         getScopedName() const;
     void         setPassThrough();
-    void         setOwnerAttrUse(AstAttrUse* attrUse);
     void         swap2Children();
     bool         hasSpecialFuncCall() const;
     bool         hasSpecialFuncCall(const Utf8& name) const;
@@ -378,6 +377,7 @@ struct AstNode
         AstTryCatchAssume*     ownerTryCatchAssume  = nullptr;
         AstCompilerIfBlock*    ownerCompilerIfBlock = nullptr;
         AstInline*             ownerInline          = nullptr;
+        AstBreakable*          ownerBreakable       = nullptr;
         VectorNative<AstNode*> nodesToFree;
     };
 
@@ -427,9 +427,15 @@ struct AstNode
     NodeExtensionOwner*    extOwner() const { return extension->owner; }
     NodeExtensionMisc*     extMisc() const { return extension->misc; }
 
-    AstInline* ownerInline() const { return extOwner()->ownerInline; }
-    AstInline* safeOwnerInline() const { return hasExtOwner() ? extOwner()->ownerInline : nullptr; }
-    bool       hasOwnerInline() const { return safeOwnerInline() != nullptr; }
+    AstInline*    ownerInline() const { return extOwner()->ownerInline; }
+    AstInline*    safeOwnerInline() const { return hasExtOwner() ? extOwner()->ownerInline : nullptr; }
+    bool          hasOwnerInline() const { return safeOwnerInline() != nullptr; }
+    AstBreakable* ownerBreakable() const { return extOwner()->ownerBreakable; }
+    AstBreakable* safeOwnerBreakable() const { return hasExtOwner() ? extOwner()->ownerBreakable : nullptr; }
+    bool          hasOwnerBreakable() const { return safeOwnerBreakable() != nullptr; }
+
+    void setOwnerAttrUse(AstAttrUse* attrUse);
+    void setOwnerBreakable(AstBreakable* bkp);
 
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
@@ -442,10 +448,9 @@ struct AstNode
     Token                  token;
     VectorNative<AstNode*> children;
 
-    Scope*        ownerScope;
-    Scope*        ownerStructScope;
-    AstBreakable* ownerBreakable;
-    AstFuncDecl*  ownerFct;
+    Scope*       ownerScope;
+    Scope*       ownerStructScope;
+    AstFuncDecl* ownerFct;
 
     TypeInfo* typeInfo;
     TypeInfo* castedTypeInfo;

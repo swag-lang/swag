@@ -21,7 +21,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
-    ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
     ownerFct         = context.ownerFct || context.cloneFlags & CLONE_FORCE_OWNER_FCT ? context.ownerFct : from->ownerFct;
 
     // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
@@ -50,6 +49,18 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     {
         allocateExtension(ExtensionKind::Owner);
         extOwner()->ownerTryCatchAssume = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->extOwner()->ownerTryCatchAssume;
+    }
+
+    if (context.ownerInline || from->hasOwnerInline())
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerInline = context.ownerInline ? context.ownerInline : from->ownerInline();
+    }
+
+    if (context.ownerBreakable || from->hasOwnerBreakable())
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerBreakable = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable();
     }
 
     // Replace a type by another one during generic instantiation
@@ -117,17 +128,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extByteCode()->byteCodeAfterFct  = from->extByteCode()->byteCodeAfterFct;
     }
 
-    if (context.ownerInline)
-    {
-        allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerInline = context.ownerInline;
-    }
-    else if(from->safeOwnerInline())
-    {
-        allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerInline = from->ownerInline();
-    }
-    
     token.text = from->token.text;
     sourceFile = from->sourceFile;
 
@@ -648,7 +648,6 @@ void AstNode::inheritOwners(const AstNode* op)
     ownerStructScope = op->ownerStructScope;
     ownerScope       = op->ownerScope;
     ownerFct         = op->ownerFct;
-    ownerBreakable   = op->ownerBreakable;
 
     if (op->hasExtOwner() && op->extOwner()->ownerCompilerIfBlock)
     {
@@ -669,6 +668,16 @@ void AstNode::inheritOwners(const AstNode* op)
     {
         extOwner()->ownerInline = nullptr;
     }
+
+    if (op->hasOwnerBreakable())
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerBreakable = op->ownerBreakable();
+    }
+    else if (hasExtOwner())
+    {
+        extOwner()->ownerBreakable = nullptr;
+    }
 }
 
 void AstNode::inheritOwnersAndFlags(const Parser* parser)
@@ -676,7 +685,6 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
     ownerStructScope = parser->currentStructScope;
     ownerScope       = parser->currentScope;
     ownerFct         = parser->currentFct;
-    ownerBreakable   = parser->currentBreakable;
 
     if (parser->currentCompilerIfBlock)
     {
@@ -696,6 +704,16 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
     else if (hasExtOwner())
     {
         extOwner()->ownerInline = nullptr;
+    }
+
+    if (parser->currentBreakable)
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerBreakable = parser->currentBreakable;
+    }
+    else if (hasExtOwner())
+    {
+        extOwner()->ownerBreakable = nullptr;
     }
 
     if (parser->currentTryCatchAssume)
@@ -1343,4 +1361,12 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
             extOwner()->ownerAttrUse = attrUse;
             break;
     }
+}
+
+void AstNode::setOwnerBreakable(AstBreakable* bkp)
+{
+    if (!bkp)
+        return;
+    allocateExtension(ExtensionKind::Owner);
+    extOwner()->ownerBreakable = bkp;
 }

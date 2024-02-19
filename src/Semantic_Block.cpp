@@ -951,22 +951,22 @@ bool Semantic::resolveVisit(SemanticContext* context)
     });
 
     // First child is the let in the statement, and first child of this is the loop node
-    auto loopNode            = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
-    loopNode->ownerBreakable = node->ownerBreakable;
+    auto loopNode = castAst<AstLoop>(node->children.back()->children.back(), AstNodeKind::Loop);
+    loopNode->setOwnerBreakable(node->safeOwnerBreakable());
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
     Ast::visit(context, node->block, [&](ErrorContext*, AstNode* x)
     {
-        if (!x->ownerBreakable)
-            x->ownerBreakable = loopNode;
-        else if (x->ownerBreakable->isParentOf(loopNode))
+        if (!x->hasOwnerBreakable())
+            x->setOwnerBreakable(loopNode);
+        else if (x->ownerBreakable()->isParentOf(loopNode))
         {
             if (x->tokenId == TokenId::KwdBreak)
-                x->ownerBreakable->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
+                x->ownerBreakable()->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
             else if (x->tokenId == TokenId::KwdContinue)
-                x->ownerBreakable->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
-            x->ownerBreakable = loopNode;
+                x->ownerBreakable()->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
+            x->setOwnerBreakable(loopNode);
         }
         if (x->kind == AstNodeKind::Visit)
             return Ast::VisitResult::Stop;
@@ -992,9 +992,9 @@ bool Semantic::resolveIndex(SemanticContext* context)
 {
     auto node = context->node;
 
-    auto ownerBreakable = node->ownerBreakable;
+    auto ownerBreakable = node->safeOwnerBreakable();
     while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
-        ownerBreakable = ownerBreakable->ownerBreakable;
+        ownerBreakable = ownerBreakable->safeOwnerBreakable();
     SWAG_VERIFY(ownerBreakable, context->report({node, Err(Err0441)}));
 
     ownerBreakable->breakableFlags.add(BREAKABLE_NEED_INDEX);
@@ -1017,7 +1017,7 @@ bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
     const auto node = castAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
-    if (node->ownerBreakable == node->altSubstBreakable)
+    if (node->safeOwnerBreakable() == node->altSubstBreakable)
         node->defaultSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
     else
         node->altSubst->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
@@ -1032,15 +1032,15 @@ bool Semantic::resolveBreak(SemanticContext* context)
     // Label has been defined : search the corresponding ScopeBreakable node
     if (!node->label.text.empty())
     {
-        auto breakable = node->ownerBreakable;
+        auto breakable = node->safeOwnerBreakable();
         while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
-            breakable = breakable->ownerBreakable;
+            breakable = breakable->safeOwnerBreakable();
         SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, FMT(Err(Err0722), node->label.text.c_str())}));
-        node->ownerBreakable = breakable;
+        node->setOwnerBreakable(breakable);
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0455)}));
-    node->ownerBreakable->breakList.push_back(node);
+    SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, Err(Err0455)}));
+    node->ownerBreakable()->breakList.push_back(node);
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitBreak;
@@ -1058,19 +1058,19 @@ bool Semantic::resolveUnreachable(SemanticContext* context)
 bool Semantic::resolveFallThrough(SemanticContext* context)
 {
     auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Err(Err0463)}));
-    node->ownerBreakable->fallThroughList.push_back(node);
+    SWAG_VERIFY(node->hasOwnerBreakable() && node->ownerBreakable()->kind == AstNodeKind::Switch, context->report({node, Err(Err0463)}));
+    node->ownerBreakable()->fallThroughList.push_back(node);
 
     // Be sure we are in a case
     auto parent = node->parent;
-    while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
+    while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->safeOwnerBreakable())
         parent = parent->parent;
     SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0462)}));
     node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
     SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0462)}));
 
     // 'fallthrough' cannot be used on the last case, this has no sens
-    const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
+    const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable(), AstNodeKind::Switch);
     SWAG_VERIFY(node->switchCase->caseIndex < static_cast<int>(switchBlock->cases.size()) - 1, context->report({node, Err(Err0461)}));
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
@@ -1082,14 +1082,14 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
 bool Semantic::resolveContinue(SemanticContext* context)
 {
     auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0459)}));
+    SWAG_VERIFY(node->hasOwnerBreakable(), context->report({node, Err(Err0459)}));
 
-    auto checkBreakable = node->ownerBreakable;
+    auto checkBreakable = node->safeOwnerBreakable();
     while (checkBreakable && !checkBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_CONTINUE))
-        checkBreakable = checkBreakable->ownerBreakable;
+        checkBreakable = checkBreakable->safeOwnerBreakable();
     SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0459)}));
     checkBreakable->continueList.push_back(node);
-    node->ownerBreakable = checkBreakable;
+    node->setOwnerBreakable(checkBreakable);
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitContinue;

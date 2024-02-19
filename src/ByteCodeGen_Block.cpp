@@ -933,7 +933,7 @@ bool ByteCodeGen::emitFallThrough(ByteCodeGenContext* context)
     const auto node     = context->node;
     const auto fallNode = castAst<AstBreakContinue>(node, AstNodeKind::FallThrough);
 
-    Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->collectScopes);
+    Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable()->ownerScope, context->collectScopes);
     for (const auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
@@ -951,7 +951,7 @@ bool ByteCodeGen::emitBreak(ByteCodeGenContext* context)
     const auto node      = context->node;
     const auto breakNode = castAst<AstBreakContinue>(node, AstNodeKind::Break);
 
-    Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->collectScopes);
+    Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable()->ownerScope, context->collectScopes);
     for (const auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
@@ -969,7 +969,7 @@ bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
     const auto node         = context->node;
     const auto continueNode = castAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
-    Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->collectScopes);
+    Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable()->ownerScope, context->collectScopes);
     for (const auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
@@ -987,9 +987,9 @@ bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
     const auto node        = context->node;
     node->resultRegisterRc = reserveRegisterRC(context);
 
-    auto ownerBreakable = node->ownerBreakable;
+    auto ownerBreakable = node->safeOwnerBreakable();
     while (ownerBreakable && !ownerBreakable->breakableFlags.has(BREAKABLE_CAN_HAVE_INDEX))
-        ownerBreakable = ownerBreakable->ownerBreakable;
+        ownerBreakable = ownerBreakable->safeOwnerBreakable();
     SWAG_ASSERT(ownerBreakable);
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc, ownerBreakable->registerIndex);
     return true;
