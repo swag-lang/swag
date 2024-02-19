@@ -41,11 +41,11 @@ struct Concat
     void      addString3(const char* v);
     void      addString4(const char* v);
     void      addString5(const char* v);
-    void      addString(const char* v, int len);
+    void      addString(const char* v, uint32_t len);
     void      addString(const char* v);
     void      addString(const Utf8& v);
-    void      addEolIndent(int num);
-    void      addIndent(int num);
+    void      addEolIndent(uint32_t num);
+    void      addIndent(uint32_t num);
     void      addChar(char c);
     void      addEol();
     void      addStringFormat(const char* format, ...);

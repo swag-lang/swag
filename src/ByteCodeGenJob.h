@@ -9,7 +9,7 @@ struct ByteCodeGenJob final : Job
     static JobResult       leaveJob(AstNode* node);
     JobResult              execute() override;
     JobResult              waitForDependenciesGenerated();
-    static ByteCodeGenJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root);
+    static ByteCodeGenJob* newJob(Job* depJob, SourceFile* srcFile, AstNode* root);
 
     enum class Pass
     {

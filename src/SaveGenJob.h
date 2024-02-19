@@ -10,7 +10,7 @@ struct SaveGenJob final : Job
     void      release() override;
     JobResult execute() override;
 
-    static bool flush(Module* module);
+    static bool flush(Module* mdl);
 
     Utf8 content;
 };

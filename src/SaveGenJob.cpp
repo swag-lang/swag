@@ -15,32 +15,32 @@ void SaveGenJob::release()
     Allocator::free<SaveGenJob>(this);
 }
 
-bool SaveGenJob::flush(Module* module)
+bool SaveGenJob::flush(Module* mdl)
 {
-    ScopedLock lk(module->mutexFlushGenFiles);
-    for (size_t idx = 0; idx < module->contentJobGeneratedFile.size(); idx++)
+    ScopedLock lk(mdl->mutexFlushGenFiles);
+    for (size_t idx = 0; idx < mdl->contentJobGeneratedFile.size(); idx++)
     {
-        if (module->contentJobGeneratedFile[idx].empty())
+        if (mdl->contentJobGeneratedFile[idx].empty())
             continue;
 
-        auto publicPath  = module->publicPath;
+        auto publicPath  = mdl->publicPath;
         auto tmpFilePath = publicPath;
-        auto tmpFileName = FMT("%s%d.gwg", module->name.c_str(), idx);
+        auto tmpFileName = FMT("%s%d.gwg", mdl->name.c_str(), idx);
 
         publicPath.append(tmpFileName.c_str());
 
         FILE* h = nullptr;
         if (fopen_s(&h, publicPath.string().c_str(), "wN"))
         {
-            ++module->numErrors;
+            ++mdl->numErrors;
             Report::errorOS(FMT(Err(Err0096), publicPath.string().c_str()));
             return false;
         }
 
-        (void) fwrite(module->contentJobGeneratedFile[idx].c_str(), module->contentJobGeneratedFile[idx].length(), 1, h);
+        (void) fwrite(mdl->contentJobGeneratedFile[idx].c_str(), mdl->contentJobGeneratedFile[idx].length(), 1, h);
         (void) fflush(h);
         (void) fclose(h);
-        module->contentJobGeneratedFile[idx].clear();
+        mdl->contentJobGeneratedFile[idx].clear();
     }
 
     return true;

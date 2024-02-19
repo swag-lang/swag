@@ -11,12 +11,12 @@ void ByteCodeGenJob::release()
     Allocator::free<ByteCodeGenJob>(this);
 }
 
-ByteCodeGenJob* ByteCodeGenJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root)
+ByteCodeGenJob* ByteCodeGenJob::newJob(Job* depJob, SourceFile* srcFile, AstNode* root)
 {
     const auto byteCodeJob    = Allocator::alloc<ByteCodeGenJob>();
-    byteCodeJob->sourceFile   = sourceFile;
-    byteCodeJob->module       = sourceFile->module;
-    byteCodeJob->dependentJob = dependentJob;
+    byteCodeJob->sourceFile   = srcFile;
+    byteCodeJob->module       = srcFile->module;
+    byteCodeJob->dependentJob = depJob;
     byteCodeJob->nodes.push_back(root);
     return byteCodeJob;
 }

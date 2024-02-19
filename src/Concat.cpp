@@ -248,7 +248,7 @@ void Concat::addString5(const char* v)
     currentSP += 5;
 }
 
-void Concat::addString(const char* v, int len)
+void Concat::addString(const char* v, uint32_t len)
 {
     ensureSpace(len);
     memcpy(currentSP, v, len);
@@ -257,7 +257,7 @@ void Concat::addString(const char* v, int len)
 
 void Concat::addString(const char* v)
 {
-    const auto len = static_cast<int>(strlen(v));
+    const auto len = static_cast<uint32_t>(strlen(v));
     ensureSpace(len);
     memcpy(currentSP, v, len);
     currentSP += len;
@@ -276,13 +276,13 @@ void Concat::addEol()
     eolCount++;
 }
 
-void Concat::addIndent(int num)
+void Concat::addIndent(uint32_t num)
 {
     while (num--)
         addChar('\t');
 }
 
-void Concat::addEolIndent(int num)
+void Concat::addEolIndent(uint32_t num)
 {
     auto p = currentSP;
     while (p != lastBucket->data)

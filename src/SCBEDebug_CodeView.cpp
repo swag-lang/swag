@@ -179,8 +179,8 @@ namespace
                     concat.addU32(f->LF_Procedure.returnType);
                     concat.addU8(0); // calling convention
                     concat.addU8(0); // attributes
-                    concat.addU16(f->LF_Procedure.numArgs); // #params
-                    concat.addU32(f->LF_Procedure.argsType); // @argstype
+                    concat.addU16(f->LF_Procedure.numArgs);
+                    concat.addU32(f->LF_Procedure.argsType);
                     break;
 
                 // lfMFunc
@@ -190,8 +190,8 @@ namespace
                     concat.addU32(f->LF_MFunction.thisType);
                     concat.addU8(0); // calling convention
                     concat.addU8(0); // attributes
-                    concat.addU16(f->LF_MFunction.numArgs); // #params
-                    concat.addU32(f->LF_MFunction.argsType); // @argstype
+                    concat.addU16(f->LF_MFunction.numArgs);
+                    concat.addU32(f->LF_MFunction.argsType);
                     concat.addU32(0); // thisAdjust
                     break;
 
@@ -395,7 +395,7 @@ namespace
                              Utf8&              stringTable,
                              SourceFile*        sourceFile)
     {
-        auto checkSymIndex = 0;
+        uint32_t checkSymIndex = 0;
 
         using P = MapPath<uint32_t>;
         const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
@@ -543,7 +543,7 @@ namespace
                 concat.addU32(SCBEDebug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
             else
                 concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo)); // Type
-            concat.addU16(0); // CV_LVARFLAGS
+            concat.addU16(0); // Flags
             emitTruncatedString(pp, localVar->token.text);
             emitEndRecord(pp);
 
@@ -623,7 +623,6 @@ namespace
                 const auto patchSOffset = concat.totalCount();
 
                 // Proc ID
-                // PROCSYM32
                 /////////////////////////////////
                 emitStartRecord(pp, S_LPROC32_ID);
                 concat.addU32(0); // Parent = 0
@@ -700,7 +699,7 @@ namespace
                 if (decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
                 {
                     const auto countParams = decl->parameters->children.size();
-                    int        regCounter  = 0;
+                    uint32_t   regCounter  = 0;
                     for (size_t i = 0; i < countParams; i++)
                     {
                         const auto child     = decl->parameters->children[i];
@@ -799,7 +798,7 @@ namespace
                             emitEndRecord(pp);
                         }
 
-                        // Codeview seems to need this pointer to be named "this"...
+                        // codeview seems to need this pointer to be named "this"...
                         // So add it
                         if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
                         {
@@ -835,7 +834,7 @@ namespace
                 *patchSCount = concat.totalCount() - patchSOffset;
             }
 
-            // Inlineed lines table
+            // inline lines table
             /////////////////////////////////
             {
                 for (auto& dbgLines : f.dbgLines)
