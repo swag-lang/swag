@@ -24,88 +24,100 @@
         *(__cast*) addr = *(__cast*) addr2;                                    \
         break;                                                                 \
     }                                                                          \
-    invalidateCurStateStack(cxt);
+    invalidateCurStateStack(cxt)
 
-#define BINOPEQ(__cast, __op, __reg)                                                      \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-    if (ra->kind == ValueKind::StackAddr)                                                 \
-    {                                                                                     \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-        else                                                                              \
-        {                                                                                 \
-            *(__cast*) addr __op vb.reg.__reg;                                            \
-            setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));  \
-        }                                                                                 \
-    }
+#define BINOP_EQ(__cast, __op, __reg)                                                         \
+    do                                                                                        \
+    {                                                                                         \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
+        if (ra->kind == ValueKind::StackAddr)                                                 \
+        {                                                                                     \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
+            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
+            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
+            else                                                                              \
+            {                                                                                 \
+                *(__cast*) addr __op vb.reg.__reg;                                            \
+                setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));  \
+            }                                                                                 \
+        }                                                                                     \
+    } while(0)
 
-#define BINOPEQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                           \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                         \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                                                   \
-    if (ra->kind == ValueKind::StackAddr)                                                                                \
-    {                                                                                                                    \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                       \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                  \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                          \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                              \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                          \
-        else                                                                                                             \
-        {                                                                                                                \
-            SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
-            *(__cast*) addr __op vb.reg.__reg;                                                                           \
-            setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));                                 \
-        }                                                                                                                \
-    }
+#define BINOP_EQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                              \
+    do                                                                                                                       \
+    {                                                                                                                        \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                         \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                                                                   \
+        if (ra->kind == ValueKind::StackAddr)                                                                                \
+        {                                                                                                                    \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                                       \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                                \
+            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                                                  \
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                          \
+            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)                                              \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                          \
+            else                                                                                                             \
+            {                                                                                                                \
+                SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
+                *(__cast*) addr __op vb.reg.__reg;                                                                           \
+                setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));                                 \
+            }                                                                                                                \
+        }                                                                                                                    \
+    } while(0)
 
-#define ATOMEQ(__cast, __op, __reg)                                                       \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-    SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                          \
-    rc->kind = ValueKind::Unknown;                                                        \
-    if (ra->kind == ValueKind::StackAddr)                                                 \
-    {                                                                                     \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-        SWAG_CHECK(getStackValue(*rc, cxt, addr, sizeof(vb.reg.__reg)));                  \
-        SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                                      \
-        if (rc->kind == ValueKind::Unknown || rb->kind == ValueKind::Unknown)             \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-        else                                                                              \
-        {                                                                                 \
-            rc->reg.__reg = *(__cast*) addr;                                              \
-            *(__cast*) addr __op rb->reg.__reg;                                           \
-        }                                                                                 \
-    }
+#define ATOM_EQ(__cast, __op, __reg)                                                          \
+    do                                                                                        \
+    {                                                                                         \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                          \
+        rc->kind = ValueKind::Unknown;                                                        \
+        if (ra->kind == ValueKind::StackAddr)                                                 \
+        {                                                                                     \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
+            SWAG_CHECK(getStackValue(*rc, cxt, addr, sizeof(vb.reg.__reg)));                  \
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                                      \
+            if (rc->kind == ValueKind::Unknown || rb->kind == ValueKind::Unknown)             \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
+            else                                                                              \
+            {                                                                                 \
+                rc->reg.__reg = *(__cast*) addr;                                              \
+                *(__cast*) addr __op rb->reg.__reg;                                           \
+            }                                                                                 \
+        }                                                                                     \
+    } while(0)
 
-#define ATOMEQ_XCHG(__cast, __reg)                                                                              \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                                          \
-    SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));                                                                \
-    rd->kind = ValueKind::Unknown;                                                                              \
-    if (ra->kind == ValueKind::StackAddr)                                                                       \
-    {                                                                                                           \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                              \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                       \
-        SWAG_CHECK(getStackValue(*rd, cxt, addr, sizeof(vb.reg.__reg)));                                        \
-        SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                                                            \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                            \
-        if (rd->kind == ValueKind::Unknown || rb->kind == ValueKind::Unknown || rc->kind == ValueKind::Unknown) \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                 \
-        else                                                                                                    \
-        {                                                                                                       \
-            rd->reg.__reg = *(__cast*) addr;                                                                    \
-            if (rd->reg.__reg == rb->reg.__reg)                                                                 \
-                *(__cast*) addr = rc->reg.__reg;                                                                \
-        }                                                                                                       \
-    }
+#define ATOM_EQ_XCHG(__cast, __reg)                                                                                 \
+    do                                                                                                              \
+    {                                                                                                               \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                                                \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                                                          \
+        SWAG_CHECK(getRegister(rd, cxt, ip->d.u32));                                                                \
+        rd->kind = ValueKind::Unknown;                                                                              \
+        if (ra->kind == ValueKind::StackAddr)                                                                       \
+        {                                                                                                           \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));                              \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload));                       \
+            SWAG_CHECK(getStackValue(*rd, cxt, addr, sizeof(vb.reg.__reg)));                                        \
+            SWAG_CHECK(getRegister(rb, cxt, ip->b.u32));                                                            \
+            SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                            \
+            if (rd->kind == ValueKind::Unknown || rb->kind == ValueKind::Unknown || rc->kind == ValueKind::Unknown) \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);                                 \
+            else                                                                                                    \
+            {                                                                                                       \
+                rd->reg.__reg = *(__cast*) addr;                                                                    \
+                if (rd->reg.__reg == rb->reg.__reg)                                                                 \
+                    *(__cast*) addr = rc->reg.__reg;                                                                \
+            }                                                                                                       \
+        }                                                                                                           \
+    } while(0)
 
-#define BINOPEQ_DIV(__cast, __op, __reg)                                \
+#define BINOP_EQ_DIV(__cast, __op, __reg)                               \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
     SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
@@ -115,27 +127,30 @@
         rc->kind = ValueKind::Unknown;                                  \
         break;                                                          \
     }                                                                   \
-    BINOPEQ(__cast, __op, __reg);
+    BINOP_EQ(__cast, __op, __reg)
 
-#define BINOPEQ_SHIFT(__cast, __reg, __func, __isSigned)                                  \
-    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
-    SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
-    if (ra->kind == ValueKind::StackAddr)                                                 \
-    {                                                                                     \
-        SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
-        SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
-        SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
-        SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
-        if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
-            setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
-        else                                                                              \
-        {                                                                                 \
-            Register r;                                                                   \
-            r.__reg = *(__cast*) addr;                                                    \
-            __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                  \
-            *(__cast*) addr = r.__reg;                                                    \
-        }                                                                                 \
-    }
+#define BINOP_EQ_SHIFT(__cast, __reg, __func, __isSigned)                                     \
+    do                                                                                        \
+    {                                                                                         \
+        SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                                          \
+        SWAG_CHECK(checkNotNull(cxt, ra));                                                    \
+        if (ra->kind == ValueKind::StackAddr)                                                 \
+        {                                                                                     \
+            SWAG_CHECK(getStackAddress(addr, cxt, ra->reg.u32, sizeof(vb.reg.__reg)));        \
+            SWAG_CHECK(checkStackInitialized(cxt, addr, sizeof(vb.reg.__reg), ra->overload)); \
+            SWAG_CHECK(getStackValue(va, cxt, addr, sizeof(vb.reg.__reg)));                   \
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));                                           \
+            if (va.kind == ValueKind::Unknown || vb.kind == ValueKind::Unknown)               \
+                setStackValue(cxt, addr, sizeof(vb.reg.__reg), ValueKind::Unknown);           \
+            else                                                                              \
+            {                                                                                 \
+                Register r;                                                                   \
+                r.__reg = *(__cast*) addr;                                                    \
+                __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                  \
+                *(__cast*) addr = r.__reg;                                                    \
+            }                                                                                 \
+        }                                                                                     \
+    } while(0)
 
 #define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                                                      \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -146,7 +161,7 @@
     {                                                                                                                       \
         __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned);                                             \
     }                                                                                                                       \
-    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
 #define BINOP(__op, __reg)                                                                                                  \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -155,7 +170,7 @@
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
-    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
 #define BINOP_OVF(__op, __reg, __ovf, __msg, __type)                                                                        \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -167,7 +182,7 @@
         SWAG_CHECK(checkOverflow(cxt, !__ovf(ip, ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));                    \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;                                                                     \
     }                                                                                                                       \
-    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
 #define BINOP_DIV(__op, __reg)                                          \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
@@ -181,14 +196,14 @@
     }                                                                   \
     BINOP(__op, __reg)
 
-#define CMPOP(__op, __reg)                                                                                                  \
+#define CMP_OP(__op, __reg)                                                                                                 \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
     SWAG_CHECK(getImmediateB(vb, cxt, ip));                                                                                 \
     SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                                                                            \
     rc->kind = va.kind == ValueKind::Constant && vb.kind == ValueKind::Constant ? ValueKind::Constant : ValueKind::Unknown; \
     if (rc->kind == ValueKind::Constant)                                                                                    \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
-    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
+    setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC)
 
 #define JUMPT(__expr0, __expr1)                       \
     jmpAddState = nullptr;                            \
@@ -209,7 +224,7 @@
     *cxt.states.back()          = *STATE();           \
     cxt.states.back()->branchIp = ip;                 \
     cxt.states.back()->ip       = ip + ip->b.s32 + 1; \
-    cxt.states.back()->parent   = cxt.state;
+    cxt.states.back()->parent   = cxt.state
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(va, cxt, ip)); \
@@ -698,81 +713,81 @@ namespace
                     break;
 
                 case ByteCodeOp::IntrinsicAtomicAddS8:
-                    ATOMEQ(int8_t, +=, s8);
+                    ATOM_EQ(int8_t, +=, s8);
                     break;
                 case ByteCodeOp::IntrinsicAtomicAddS16:
-                    ATOMEQ(int16_t, +=, s16);
+                    ATOM_EQ(int16_t, +=, s16);
                     break;
                 case ByteCodeOp::IntrinsicAtomicAddS32:
-                    ATOMEQ(int32_t, +=, s32);
+                    ATOM_EQ(int32_t, +=, s32);
                     break;
                 case ByteCodeOp::IntrinsicAtomicAddS64:
-                    ATOMEQ(int64_t, +=, s64);
+                    ATOM_EQ(int64_t, +=, s64);
                     break;
 
                 case ByteCodeOp::IntrinsicAtomicAndS8:
-                    ATOMEQ(int8_t, &=, s8);
+                    ATOM_EQ(int8_t, &=, s8);
                     break;
                 case ByteCodeOp::IntrinsicAtomicAndS16:
-                    ATOMEQ(int16_t, &=, s16);
+                    ATOM_EQ(int16_t, &=, s16);
                     break;
                 case ByteCodeOp::IntrinsicAtomicAndS32:
-                    ATOMEQ(int32_t, &=, s32);
+                    ATOM_EQ(int32_t, &=, s32);
                     break;
                 case ByteCodeOp::IntrinsicAtomicAndS64:
-                    ATOMEQ(int64_t, &=, s64);
+                    ATOM_EQ(int64_t, &=, s64);
                     break;
 
                 case ByteCodeOp::IntrinsicAtomicOrS8:
-                    ATOMEQ(int8_t, |=, s8);
+                    ATOM_EQ(int8_t, |=, s8);
                     break;
                 case ByteCodeOp::IntrinsicAtomicOrS16:
-                    ATOMEQ(int16_t, |=, s16);
+                    ATOM_EQ(int16_t, |=, s16);
                     break;
                 case ByteCodeOp::IntrinsicAtomicOrS32:
-                    ATOMEQ(int32_t, |=, s32);
+                    ATOM_EQ(int32_t, |=, s32);
                     break;
                 case ByteCodeOp::IntrinsicAtomicOrS64:
-                    ATOMEQ(int64_t, |=, s64);
+                    ATOM_EQ(int64_t, |=, s64);
                     break;
 
                 case ByteCodeOp::IntrinsicAtomicXorS8:
-                    ATOMEQ(int8_t, ^=, s8);
+                    ATOM_EQ(int8_t, ^=, s8);
                     break;
                 case ByteCodeOp::IntrinsicAtomicXorS16:
-                    ATOMEQ(int16_t, ^=, s16);
+                    ATOM_EQ(int16_t, ^=, s16);
                     break;
                 case ByteCodeOp::IntrinsicAtomicXorS32:
-                    ATOMEQ(int32_t, ^=, s32);
+                    ATOM_EQ(int32_t, ^=, s32);
                     break;
                 case ByteCodeOp::IntrinsicAtomicXorS64:
-                    ATOMEQ(int64_t, ^=, s64);
+                    ATOM_EQ(int64_t, ^=, s64);
                     break;
 
                 case ByteCodeOp::IntrinsicAtomicXchgS8:
-                    ATOMEQ(int8_t, =, s8);
+                    ATOM_EQ(int8_t, =, s8);
                     break;
                 case ByteCodeOp::IntrinsicAtomicXchgS16:
-                    ATOMEQ(int16_t, =, s16);
+                    ATOM_EQ(int16_t, =, s16);
                     break;
                 case ByteCodeOp::IntrinsicAtomicXchgS32:
-                    ATOMEQ(int32_t, =, s32);
+                    ATOM_EQ(int32_t, =, s32);
                     break;
                 case ByteCodeOp::IntrinsicAtomicXchgS64:
-                    ATOMEQ(int64_t, =, s64);
+                    ATOM_EQ(int64_t, =, s64);
                     break;
 
                 case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
-                    ATOMEQ_XCHG(int8_t, s8);
+                    ATOM_EQ_XCHG(int8_t, s8);
                     break;
                 case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
-                    ATOMEQ_XCHG(int16_t, s16);
+                    ATOM_EQ_XCHG(int16_t, s16);
                     break;
                 case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
-                    ATOMEQ_XCHG(int32_t, s32);
+                    ATOM_EQ_XCHG(int32_t, s32);
                     break;
                 case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
-                    ATOMEQ_XCHG(int64_t, s64);
+                    ATOM_EQ_XCHG(int64_t, s64);
                     break;
 
                 case ByteCodeOp::IntrinsicItfTableOf:
@@ -1328,241 +1343,241 @@ namespace
                     break;
 
                 case ByteCodeOp::AffectOpPlusEqS8:
-                    BINOPEQ_OVF(int8_t, +=, s8, addWillOverflow, "+=", g_TypeMgr->typeInfoS8);
+                    BINOP_EQ_OVF(int8_t, +=, s8, addWillOverflow, "+=", g_TypeMgr->typeInfoS8);
                     break;
                 case ByteCodeOp::AffectOpPlusEqS16:
-                    BINOPEQ_OVF(int16_t, +=, s16, addWillOverflow, "+=", g_TypeMgr->typeInfoS16);
+                    BINOP_EQ_OVF(int16_t, +=, s16, addWillOverflow, "+=", g_TypeMgr->typeInfoS16);
                     break;
                 case ByteCodeOp::AffectOpPlusEqS32:
-                    BINOPEQ_OVF(int32_t, +=, s32, addWillOverflow, "+=", g_TypeMgr->typeInfoS32);
+                    BINOP_EQ_OVF(int32_t, +=, s32, addWillOverflow, "+=", g_TypeMgr->typeInfoS32);
                     break;
                 case ByteCodeOp::AffectOpPlusEqS64:
-                    BINOPEQ_OVF(int64_t, +=, s64, addWillOverflow, "+=", g_TypeMgr->typeInfoS64);
+                    BINOP_EQ_OVF(int64_t, +=, s64, addWillOverflow, "+=", g_TypeMgr->typeInfoS64);
                     break;
                 case ByteCodeOp::AffectOpPlusEqU8:
-                    BINOPEQ_OVF(uint8_t, +=, u8, addWillOverflow, "+=", g_TypeMgr->typeInfoU8);
+                    BINOP_EQ_OVF(uint8_t, +=, u8, addWillOverflow, "+=", g_TypeMgr->typeInfoU8);
                     break;
                 case ByteCodeOp::AffectOpPlusEqU16:
-                    BINOPEQ_OVF(uint16_t, +=, u16, addWillOverflow, "+=", g_TypeMgr->typeInfoU16);
+                    BINOP_EQ_OVF(uint16_t, +=, u16, addWillOverflow, "+=", g_TypeMgr->typeInfoU16);
                     break;
                 case ByteCodeOp::AffectOpPlusEqU32:
-                    BINOPEQ_OVF(uint32_t, +=, u32, addWillOverflow, "+=", g_TypeMgr->typeInfoU32);
+                    BINOP_EQ_OVF(uint32_t, +=, u32, addWillOverflow, "+=", g_TypeMgr->typeInfoU32);
                     break;
                 case ByteCodeOp::AffectOpPlusEqU64:
-                    BINOPEQ_OVF(uint64_t, +=, u64, addWillOverflow, "+=", g_TypeMgr->typeInfoU64);
+                    BINOP_EQ_OVF(uint64_t, +=, u64, addWillOverflow, "+=", g_TypeMgr->typeInfoU64);
                     break;
                 case ByteCodeOp::AffectOpPlusEqF32:
-                    BINOPEQ(float, +=, f32);
+                    BINOP_EQ(float, +=, f32);
                     break;
                 case ByteCodeOp::AffectOpPlusEqF64:
-                    BINOPEQ(double, +=, f64);
+                    BINOP_EQ(double, +=, f64);
                     break;
 
                 case ByteCodeOp::AffectOpMinusEqS8:
-                    BINOPEQ_OVF(int8_t, -=, s8, subWillOverflow, "-=", g_TypeMgr->typeInfoS8);
+                    BINOP_EQ_OVF(int8_t, -=, s8, subWillOverflow, "-=", g_TypeMgr->typeInfoS8);
                     break;
                 case ByteCodeOp::AffectOpMinusEqS16:
-                    BINOPEQ_OVF(int16_t, -=, s16, subWillOverflow, "-=", g_TypeMgr->typeInfoS16);
+                    BINOP_EQ_OVF(int16_t, -=, s16, subWillOverflow, "-=", g_TypeMgr->typeInfoS16);
                     break;
                 case ByteCodeOp::AffectOpMinusEqS32:
-                    BINOPEQ_OVF(int32_t, -=, s32, subWillOverflow, "-=", g_TypeMgr->typeInfoS32);
+                    BINOP_EQ_OVF(int32_t, -=, s32, subWillOverflow, "-=", g_TypeMgr->typeInfoS32);
                     break;
                 case ByteCodeOp::AffectOpMinusEqS64:
-                    BINOPEQ_OVF(int64_t, -=, s64, subWillOverflow, "-=", g_TypeMgr->typeInfoS64);
+                    BINOP_EQ_OVF(int64_t, -=, s64, subWillOverflow, "-=", g_TypeMgr->typeInfoS64);
                     break;
                 case ByteCodeOp::AffectOpMinusEqU8:
-                    BINOPEQ_OVF(uint8_t, -=, u8, subWillOverflow, "-=", g_TypeMgr->typeInfoU8);
+                    BINOP_EQ_OVF(uint8_t, -=, u8, subWillOverflow, "-=", g_TypeMgr->typeInfoU8);
                     break;
                 case ByteCodeOp::AffectOpMinusEqU16:
-                    BINOPEQ_OVF(uint16_t, -=, u16, subWillOverflow, "-=", g_TypeMgr->typeInfoU16);
+                    BINOP_EQ_OVF(uint16_t, -=, u16, subWillOverflow, "-=", g_TypeMgr->typeInfoU16);
                     break;
                 case ByteCodeOp::AffectOpMinusEqU32:
-                    BINOPEQ_OVF(uint32_t, -=, u32, subWillOverflow, "-=", g_TypeMgr->typeInfoU32);
+                    BINOP_EQ_OVF(uint32_t, -=, u32, subWillOverflow, "-=", g_TypeMgr->typeInfoU32);
                     break;
                 case ByteCodeOp::AffectOpMinusEqU64:
-                    BINOPEQ_OVF(uint64_t, -=, u64, subWillOverflow, "-=", g_TypeMgr->typeInfoU64);
+                    BINOP_EQ_OVF(uint64_t, -=, u64, subWillOverflow, "-=", g_TypeMgr->typeInfoU64);
                     break;
                 case ByteCodeOp::AffectOpMinusEqF32:
-                    BINOPEQ(float, -=, f32);
+                    BINOP_EQ(float, -=, f32);
                     break;
                 case ByteCodeOp::AffectOpMinusEqF64:
-                    BINOPEQ(double, -=, f64);
+                    BINOP_EQ(double, -=, f64);
                     break;
 
                 case ByteCodeOp::AffectOpMulEqS8:
-                    BINOPEQ_OVF(int8_t, *=, s8, mulWillOverflow, "*=", g_TypeMgr->typeInfoS8);
+                    BINOP_EQ_OVF(int8_t, *=, s8, mulWillOverflow, "*=", g_TypeMgr->typeInfoS8);
                     break;
                 case ByteCodeOp::AffectOpMulEqS16:
-                    BINOPEQ_OVF(int16_t, *=, s16, mulWillOverflow, "*=", g_TypeMgr->typeInfoS16);
+                    BINOP_EQ_OVF(int16_t, *=, s16, mulWillOverflow, "*=", g_TypeMgr->typeInfoS16);
                     break;
                 case ByteCodeOp::AffectOpMulEqS32:
-                    BINOPEQ_OVF(int32_t, *=, s32, mulWillOverflow, "*=", g_TypeMgr->typeInfoS32);
+                    BINOP_EQ_OVF(int32_t, *=, s32, mulWillOverflow, "*=", g_TypeMgr->typeInfoS32);
                     break;
                 case ByteCodeOp::AffectOpMulEqS64:
-                    BINOPEQ_OVF(int64_t, *=, s64, mulWillOverflow, "*=", g_TypeMgr->typeInfoS64);
+                    BINOP_EQ_OVF(int64_t, *=, s64, mulWillOverflow, "*=", g_TypeMgr->typeInfoS64);
                     break;
                 case ByteCodeOp::AffectOpMulEqU8:
-                    BINOPEQ_OVF(uint8_t, *=, u8, mulWillOverflow, "*=", g_TypeMgr->typeInfoU8);
+                    BINOP_EQ_OVF(uint8_t, *=, u8, mulWillOverflow, "*=", g_TypeMgr->typeInfoU8);
                     break;
                 case ByteCodeOp::AffectOpMulEqU16:
-                    BINOPEQ_OVF(uint16_t, *=, u16, mulWillOverflow, "*=", g_TypeMgr->typeInfoU16);
+                    BINOP_EQ_OVF(uint16_t, *=, u16, mulWillOverflow, "*=", g_TypeMgr->typeInfoU16);
                     break;
                 case ByteCodeOp::AffectOpMulEqU32:
-                    BINOPEQ_OVF(uint32_t, *=, u32, mulWillOverflow, "*=", g_TypeMgr->typeInfoU32);
+                    BINOP_EQ_OVF(uint32_t, *=, u32, mulWillOverflow, "*=", g_TypeMgr->typeInfoU32);
                     break;
                 case ByteCodeOp::AffectOpMulEqU64:
-                    BINOPEQ_OVF(uint64_t, *=, u64, mulWillOverflow, "*=", g_TypeMgr->typeInfoU64);
+                    BINOP_EQ_OVF(uint64_t, *=, u64, mulWillOverflow, "*=", g_TypeMgr->typeInfoU64);
                     break;
                 case ByteCodeOp::AffectOpMulEqF32:
-                    BINOPEQ(float, *=, f32);
+                    BINOP_EQ(float, *=, f32);
                     break;
                 case ByteCodeOp::AffectOpMulEqF64:
-                    BINOPEQ(double, *=, f64);
+                    BINOP_EQ(double, *=, f64);
                     break;
 
                 case ByteCodeOp::AffectOpDivEqS8:
-                    BINOPEQ_DIV(int8_t, /=, s8);
+                    BINOP_EQ_DIV(int8_t, /=, s8);
                     break;
                 case ByteCodeOp::AffectOpDivEqS16:
-                    BINOPEQ_DIV(int16_t, /=, s16);
+                    BINOP_EQ_DIV(int16_t, /=, s16);
                     break;
                 case ByteCodeOp::AffectOpDivEqS32:
-                    BINOPEQ_DIV(int32_t, /=, s32);
+                    BINOP_EQ_DIV(int32_t, /=, s32);
                     break;
                 case ByteCodeOp::AffectOpDivEqS64:
-                    BINOPEQ_DIV(int64_t, /=, s64);
+                    BINOP_EQ_DIV(int64_t, /=, s64);
                     break;
                 case ByteCodeOp::AffectOpDivEqU8:
-                    BINOPEQ_DIV(uint8_t, /=, u8);
+                    BINOP_EQ_DIV(uint8_t, /=, u8);
                     break;
                 case ByteCodeOp::AffectOpDivEqU16:
-                    BINOPEQ_DIV(uint16_t, /=, u16);
+                    BINOP_EQ_DIV(uint16_t, /=, u16);
                     break;
                 case ByteCodeOp::AffectOpDivEqU32:
-                    BINOPEQ_DIV(uint32_t, /=, u32);
+                    BINOP_EQ_DIV(uint32_t, /=, u32);
                     break;
                 case ByteCodeOp::AffectOpDivEqU64:
-                    BINOPEQ_DIV(uint64_t, /=, u64);
+                    BINOP_EQ_DIV(uint64_t, /=, u64);
                     break;
                 case ByteCodeOp::AffectOpDivEqF32:
-                    BINOPEQ_DIV(float, /=, f32);
+                    BINOP_EQ_DIV(float, /=, f32);
                     break;
                 case ByteCodeOp::AffectOpDivEqF64:
-                    BINOPEQ_DIV(double, /=, f64);
+                    BINOP_EQ_DIV(double, /=, f64);
                     break;
 
                 case ByteCodeOp::AffectOpModuloEqS8:
-                    BINOPEQ_DIV(int8_t, %=, s8);
+                    BINOP_EQ_DIV(int8_t, %=, s8);
                     break;
                 case ByteCodeOp::AffectOpModuloEqS16:
-                    BINOPEQ_DIV(int16_t, %=, s16);
+                    BINOP_EQ_DIV(int16_t, %=, s16);
                     break;
                 case ByteCodeOp::AffectOpModuloEqS32:
-                    BINOPEQ_DIV(int32_t, %=, s32);
+                    BINOP_EQ_DIV(int32_t, %=, s32);
                     break;
                 case ByteCodeOp::AffectOpModuloEqS64:
-                    BINOPEQ_DIV(int64_t, %=, s64);
+                    BINOP_EQ_DIV(int64_t, %=, s64);
                     break;
                 case ByteCodeOp::AffectOpModuloEqU8:
-                    BINOPEQ_DIV(uint8_t, %=, u8);
+                    BINOP_EQ_DIV(uint8_t, %=, u8);
                     break;
                 case ByteCodeOp::AffectOpModuloEqU16:
-                    BINOPEQ_DIV(uint16_t, %=, u16);
+                    BINOP_EQ_DIV(uint16_t, %=, u16);
                     break;
                 case ByteCodeOp::AffectOpModuloEqU32:
-                    BINOPEQ_DIV(uint32_t, %=, u32);
+                    BINOP_EQ_DIV(uint32_t, %=, u32);
                     break;
                 case ByteCodeOp::AffectOpModuloEqU64:
-                    BINOPEQ_DIV(uint64_t, %=, u64);
+                    BINOP_EQ_DIV(uint64_t, %=, u64);
                     break;
 
                 case ByteCodeOp::AffectOpAndEqU8:
-                    BINOPEQ(uint8_t, &=, u8);
+                    BINOP_EQ(uint8_t, &=, u8);
                     break;
                 case ByteCodeOp::AffectOpAndEqU16:
-                    BINOPEQ(uint16_t, &=, u16);
+                    BINOP_EQ(uint16_t, &=, u16);
                     break;
                 case ByteCodeOp::AffectOpAndEqU32:
-                    BINOPEQ(uint32_t, &=, u32);
+                    BINOP_EQ(uint32_t, &=, u32);
                     break;
                 case ByteCodeOp::AffectOpAndEqU64:
-                    BINOPEQ(uint64_t, &=, u64);
+                    BINOP_EQ(uint64_t, &=, u64);
                     break;
 
                 case ByteCodeOp::AffectOpOrEqU8:
-                    BINOPEQ(uint8_t, |=, u8);
+                    BINOP_EQ(uint8_t, |=, u8);
                     break;
                 case ByteCodeOp::AffectOpOrEqU16:
-                    BINOPEQ(uint16_t, |=, u16);
+                    BINOP_EQ(uint16_t, |=, u16);
                     break;
                 case ByteCodeOp::AffectOpOrEqU32:
-                    BINOPEQ(uint32_t, |=, u32);
+                    BINOP_EQ(uint32_t, |=, u32);
                     break;
                 case ByteCodeOp::AffectOpOrEqU64:
-                    BINOPEQ(uint64_t, |=, u64);
+                    BINOP_EQ(uint64_t, |=, u64);
                     break;
 
                 case ByteCodeOp::AffectOpXorEqU8:
-                    BINOPEQ(uint8_t, ^=, u8);
+                    BINOP_EQ(uint8_t, ^=, u8);
                     break;
                 case ByteCodeOp::AffectOpXorEqU16:
-                    BINOPEQ(uint16_t, ^=, u16);
+                    BINOP_EQ(uint16_t, ^=, u16);
                     break;
                 case ByteCodeOp::AffectOpXorEqU32:
-                    BINOPEQ(uint32_t, ^=, u32);
+                    BINOP_EQ(uint32_t, ^=, u32);
                     break;
                 case ByteCodeOp::AffectOpXorEqU64:
-                    BINOPEQ(uint64_t, ^=, u64);
+                    BINOP_EQ(uint64_t, ^=, u64);
                     break;
 
                 case ByteCodeOp::AffectOpShiftLeftEqS8:
-                    BINOPEQ_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, true);
+                    BINOP_EQ_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqS16:
-                    BINOPEQ_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, true);
+                    BINOP_EQ_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqS32:
-                    BINOPEQ_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, true);
+                    BINOP_EQ_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqS64:
-                    BINOPEQ_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, true);
+                    BINOP_EQ_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqU8:
-                    BINOPEQ_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, false);
+                    BINOP_EQ_SHIFT(uint8_t, u8, ByteCodeRun::executeLeftShift, false);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqU16:
-                    BINOPEQ_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, false);
+                    BINOP_EQ_SHIFT(uint16_t, u16, ByteCodeRun::executeLeftShift, false);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqU32:
-                    BINOPEQ_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, false);
+                    BINOP_EQ_SHIFT(uint32_t, u32, ByteCodeRun::executeLeftShift, false);
                     break;
                 case ByteCodeOp::AffectOpShiftLeftEqU64:
-                    BINOPEQ_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, false);
+                    BINOP_EQ_SHIFT(uint64_t, u64, ByteCodeRun::executeLeftShift, false);
                     break;
 
                 case ByteCodeOp::AffectOpShiftRightEqS8:
-                    BINOPEQ_SHIFT(int8_t, s8, ByteCodeRun::executeRightShift, true);
+                    BINOP_EQ_SHIFT(int8_t, s8, ByteCodeRun::executeRightShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqS16:
-                    BINOPEQ_SHIFT(int16_t, s16, ByteCodeRun::executeRightShift, true);
+                    BINOP_EQ_SHIFT(int16_t, s16, ByteCodeRun::executeRightShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqS32:
-                    BINOPEQ_SHIFT(int32_t, s32, ByteCodeRun::executeRightShift, true);
+                    BINOP_EQ_SHIFT(int32_t, s32, ByteCodeRun::executeRightShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqS64:
-                    BINOPEQ_SHIFT(int64_t, s64, ByteCodeRun::executeRightShift, true);
+                    BINOP_EQ_SHIFT(int64_t, s64, ByteCodeRun::executeRightShift, true);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqU8:
-                    BINOPEQ_SHIFT(uint8_t, u8, ByteCodeRun::executeRightShift, false);
+                    BINOP_EQ_SHIFT(uint8_t, u8, ByteCodeRun::executeRightShift, false);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqU16:
-                    BINOPEQ_SHIFT(uint16_t, u16, ByteCodeRun::executeRightShift, false);
+                    BINOP_EQ_SHIFT(uint16_t, u16, ByteCodeRun::executeRightShift, false);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqU32:
-                    BINOPEQ_SHIFT(uint32_t, u32, ByteCodeRun::executeRightShift, false);
+                    BINOP_EQ_SHIFT(uint32_t, u32, ByteCodeRun::executeRightShift, false);
                     break;
                 case ByteCodeOp::AffectOpShiftRightEqU64:
-                    BINOPEQ_SHIFT(uint64_t, u64, ByteCodeRun::executeRightShift, false);
+                    BINOP_EQ_SHIFT(uint64_t, u64, ByteCodeRun::executeRightShift, false);
                     break;
 
                 case ByteCodeOp::NegBool:
@@ -1784,165 +1799,165 @@ namespace
                     break;
 
                 case ByteCodeOp::CompareOpEqual8:
-                    CMPOP(==, u8);
+                    CMP_OP(==, u8);
                     break;
                 case ByteCodeOp::CompareOpEqual16:
-                    CMPOP(==, u16);
+                    CMP_OP(==, u16);
                     break;
                 case ByteCodeOp::CompareOpEqual32:
-                    CMPOP(==, u32);
+                    CMP_OP(==, u32);
                     break;
                 case ByteCodeOp::CompareOpEqual64:
-                    CMPOP(==, u64);
+                    CMP_OP(==, u64);
                     break;
                 case ByteCodeOp::CompareOpEqualF32:
-                    CMPOP(==, f32);
+                    CMP_OP(==, f32);
                     break;
                 case ByteCodeOp::CompareOpEqualF64:
-                    CMPOP(==, f64);
+                    CMP_OP(==, f64);
                     break;
 
                 case ByteCodeOp::CompareOpNotEqual8:
-                    CMPOP(!=, u8);
+                    CMP_OP(!=, u8);
                     break;
                 case ByteCodeOp::CompareOpNotEqual16:
-                    CMPOP(!=, u16);
+                    CMP_OP(!=, u16);
                     break;
                 case ByteCodeOp::CompareOpNotEqual32:
-                    CMPOP(!=, u32);
+                    CMP_OP(!=, u32);
                     break;
                 case ByteCodeOp::CompareOpNotEqual64:
-                    CMPOP(!=, u64);
+                    CMP_OP(!=, u64);
                     break;
                 case ByteCodeOp::CompareOpNotEqualF32:
-                    CMPOP(!=, f32);
+                    CMP_OP(!=, f32);
                     break;
                 case ByteCodeOp::CompareOpNotEqualF64:
-                    CMPOP(!=, f64);
+                    CMP_OP(!=, f64);
                     break;
 
                 case ByteCodeOp::CompareOpGreaterEqS8:
-                    CMPOP(>=, s8);
+                    CMP_OP(>=, s8);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqS16:
-                    CMPOP(>=, s16);
+                    CMP_OP(>=, s16);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqS32:
-                    CMPOP(>=, s32);
+                    CMP_OP(>=, s32);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqS64:
-                    CMPOP(>=, s64);
+                    CMP_OP(>=, s64);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqU8:
-                    CMPOP(>=, u8);
+                    CMP_OP(>=, u8);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqU16:
-                    CMPOP(>=, u16);
+                    CMP_OP(>=, u16);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqU32:
-                    CMPOP(>=, u32);
+                    CMP_OP(>=, u32);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqU64:
-                    CMPOP(>=, u64);
+                    CMP_OP(>=, u64);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqF32:
-                    CMPOP(>=, f32);
+                    CMP_OP(>=, f32);
                     break;
                 case ByteCodeOp::CompareOpGreaterEqF64:
-                    CMPOP(>=, f64);
+                    CMP_OP(>=, f64);
                     break;
 
                 case ByteCodeOp::CompareOpGreaterS8:
-                    CMPOP(>, s8);
+                    CMP_OP(>, s8);
                     break;
                 case ByteCodeOp::CompareOpGreaterS16:
-                    CMPOP(>, s16);
+                    CMP_OP(>, s16);
                     break;
                 case ByteCodeOp::CompareOpGreaterS32:
-                    CMPOP(>, s32);
+                    CMP_OP(>, s32);
                     break;
                 case ByteCodeOp::CompareOpGreaterS64:
-                    CMPOP(>, s64);
+                    CMP_OP(>, s64);
                     break;
                 case ByteCodeOp::CompareOpGreaterU8:
-                    CMPOP(>, u8);
+                    CMP_OP(>, u8);
                     break;
                 case ByteCodeOp::CompareOpGreaterU16:
-                    CMPOP(>, u16);
+                    CMP_OP(>, u16);
                     break;
                 case ByteCodeOp::CompareOpGreaterU32:
-                    CMPOP(>, u32);
+                    CMP_OP(>, u32);
                     break;
                 case ByteCodeOp::CompareOpGreaterU64:
-                    CMPOP(>, u64);
+                    CMP_OP(>, u64);
                     break;
                 case ByteCodeOp::CompareOpGreaterF32:
-                    CMPOP(>, f32);
+                    CMP_OP(>, f32);
                     break;
                 case ByteCodeOp::CompareOpGreaterF64:
-                    CMPOP(>, f64);
+                    CMP_OP(>, f64);
                     break;
 
                 case ByteCodeOp::CompareOpLowerEqS8:
-                    CMPOP(<=, s8);
+                    CMP_OP(<=, s8);
                     break;
                 case ByteCodeOp::CompareOpLowerEqS16:
-                    CMPOP(<=, s16);
+                    CMP_OP(<=, s16);
                     break;
                 case ByteCodeOp::CompareOpLowerEqS32:
-                    CMPOP(<=, s32);
+                    CMP_OP(<=, s32);
                     break;
                 case ByteCodeOp::CompareOpLowerEqS64:
-                    CMPOP(<=, s64);
+                    CMP_OP(<=, s64);
                     break;
                 case ByteCodeOp::CompareOpLowerEqU8:
-                    CMPOP(<=, u8);
+                    CMP_OP(<=, u8);
                     break;
                 case ByteCodeOp::CompareOpLowerEqU16:
-                    CMPOP(<=, u16);
+                    CMP_OP(<=, u16);
                     break;
                 case ByteCodeOp::CompareOpLowerEqU32:
-                    CMPOP(<=, u32);
+                    CMP_OP(<=, u32);
                     break;
                 case ByteCodeOp::CompareOpLowerEqU64:
-                    CMPOP(<=, u64);
+                    CMP_OP(<=, u64);
                     break;
                 case ByteCodeOp::CompareOpLowerEqF32:
-                    CMPOP(<=, f32);
+                    CMP_OP(<=, f32);
                     break;
                 case ByteCodeOp::CompareOpLowerEqF64:
-                    CMPOP(<=, f64);
+                    CMP_OP(<=, f64);
                     break;
 
                 case ByteCodeOp::CompareOpLowerS8:
-                    CMPOP(<, s8);
+                    CMP_OP(<, s8);
                     break;
                 case ByteCodeOp::CompareOpLowerS16:
-                    CMPOP(<, s16);
+                    CMP_OP(<, s16);
                     break;
                 case ByteCodeOp::CompareOpLowerS32:
-                    CMPOP(<, s32);
+                    CMP_OP(<, s32);
                     break;
                 case ByteCodeOp::CompareOpLowerS64:
-                    CMPOP(<, s64);
+                    CMP_OP(<, s64);
                     break;
                 case ByteCodeOp::CompareOpLowerU8:
-                    CMPOP(<, u8);
+                    CMP_OP(<, u8);
                     break;
                 case ByteCodeOp::CompareOpLowerU16:
-                    CMPOP(<, u16);
+                    CMP_OP(<, u16);
                     break;
                 case ByteCodeOp::CompareOpLowerU32:
-                    CMPOP(<, u32);
+                    CMP_OP(<, u32);
                     break;
                 case ByteCodeOp::CompareOpLowerU64:
-                    CMPOP(<, u64);
+                    CMP_OP(<, u64);
                     break;
                 case ByteCodeOp::CompareOpLowerF32:
-                    CMPOP(<, f32);
+                    CMP_OP(<, f32);
                     break;
                 case ByteCodeOp::CompareOpLowerF64:
-                    CMPOP(<, f64);
+                    CMP_OP(<, f64);
                     break;
 
                 case ByteCodeOp::ClearMaskU32:

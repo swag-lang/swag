@@ -819,46 +819,46 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEqU8:
-                MK_BINOPEQ8_CAB(CPUOp::XOR);
+                MK_BINOP_EQ8_CAB(CPUOp::XOR);
                 break;
             case ByteCodeOp::AffectOpXorEqU16:
-                MK_BINOPEQ16_CAB(CPUOp::XOR);
+                MK_BINOP_EQ16_CAB(CPUOp::XOR);
                 break;
             case ByteCodeOp::AffectOpXorEqU32:
-                MK_BINOPEQ32_CAB(CPUOp::XOR);
+                MK_BINOP_EQ32_CAB(CPUOp::XOR);
                 break;
             case ByteCodeOp::AffectOpXorEqU64:
-                MK_BINOPEQ64_CAB(CPUOp::XOR);
+                MK_BINOP_EQ64_CAB(CPUOp::XOR);
                 break;
 
             /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
-                MK_BINOPEQ8_CAB(CPUOp::OR);
+                MK_BINOP_EQ8_CAB(CPUOp::OR);
                 break;
             case ByteCodeOp::AffectOpOrEqU16:
-                MK_BINOPEQ16_CAB(CPUOp::OR);
+                MK_BINOP_EQ16_CAB(CPUOp::OR);
                 break;
             case ByteCodeOp::AffectOpOrEqU32:
-                MK_BINOPEQ32_CAB(CPUOp::OR);
+                MK_BINOP_EQ32_CAB(CPUOp::OR);
                 break;
             case ByteCodeOp::AffectOpOrEqU64:
-                MK_BINOPEQ64_CAB(CPUOp::OR);
+                MK_BINOP_EQ64_CAB(CPUOp::OR);
                 break;
 
             /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
-                MK_BINOPEQ8_CAB(CPUOp::AND);
+                MK_BINOP_EQ8_CAB(CPUOp::AND);
                 break;
             case ByteCodeOp::AffectOpAndEqU16:
-                MK_BINOPEQ16_CAB(CPUOp::AND);
+                MK_BINOP_EQ16_CAB(CPUOp::AND);
                 break;
             case ByteCodeOp::AffectOpAndEqU32:
-                MK_BINOPEQ32_CAB(CPUOp::AND);
+                MK_BINOP_EQ32_CAB(CPUOp::AND);
                 break;
             case ByteCodeOp::AffectOpAndEqU64:
-                MK_BINOPEQ64_CAB(CPUOp::AND);
+                MK_BINOP_EQ64_CAB(CPUOp::AND);
                 break;
 
             /////////////////////////////////////
@@ -1569,7 +1569,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::AffectOpPlusEqS8:
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
-                MK_BINOPEQ8_CAB(CPUOp::ADD);
+                MK_BINOP_EQ8_CAB(CPUOp::ADD);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_SSafe:
@@ -1577,16 +1577,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 else
-                    MK_BINOPEQ8_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQ8_SCAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
-                MK_BINOPEQ8_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQ8_SSCAB(CPUOp::ADD);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS16:
             case ByteCodeOp::AffectOpPlusEqS16_Safe:
-                MK_BINOPEQ16_CAB(CPUOp::ADD);
+                MK_BINOP_EQ16_CAB(CPUOp::ADD);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_SSafe:
@@ -1594,16 +1594,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 else
-                    MK_BINOPEQ16_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQ16_SCAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
-                MK_BINOPEQ16_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQ16_SSCAB(CPUOp::ADD);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS32:
             case ByteCodeOp::AffectOpPlusEqS32_Safe:
-                MK_BINOPEQ32_CAB(CPUOp::ADD);
+                MK_BINOP_EQ32_CAB(CPUOp::ADD);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_SSafe:
@@ -1611,16 +1611,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 else
-                    MK_BINOPEQ32_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQ32_SCAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
-                MK_BINOPEQ32_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQ32_SSCAB(CPUOp::ADD);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS64:
             case ByteCodeOp::AffectOpPlusEqS64_Safe:
-                MK_BINOPEQ64_CAB(CPUOp::ADD);
+                MK_BINOP_EQ64_CAB(CPUOp::ADD);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_SSafe:
@@ -1628,62 +1628,62 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitIncNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 else
-                    MK_BINOPEQ64_SCAB(CPUOp::ADD);
+                    MK_BINOP_EQ64_SCAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
-                MK_BINOPEQ64_SSCAB(CPUOp::ADD);
+                MK_BINOP_EQ64_SSCAB(CPUOp::ADD);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU8:
             case ByteCodeOp::AffectOpPlusEqU8_Safe:
-                MK_BINOPEQ8_CAB(CPUOp::ADD);
+                MK_BINOP_EQ8_CAB(CPUOp::ADD);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU16:
             case ByteCodeOp::AffectOpPlusEqU16_Safe:
-                MK_BINOPEQ16_CAB(CPUOp::ADD);
+                MK_BINOP_EQ16_CAB(CPUOp::ADD);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU32:
             case ByteCodeOp::AffectOpPlusEqU32_Safe:
-                MK_BINOPEQ32_CAB(CPUOp::ADD);
+                MK_BINOP_EQ32_CAB(CPUOp::ADD);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU64:
             case ByteCodeOp::AffectOpPlusEqU64_Safe:
-                MK_BINOPEQ64_CAB(CPUOp::ADD);
+                MK_BINOP_EQ64_CAB(CPUOp::ADD);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqF32:
-                MK_BINOPEQF32_CAB(CPUOp::FADD);
+                MK_BINOP_EQF32_CAB(CPUOp::FADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_S:
-                MK_BINOPEQF32_SCAB(CPUOp::FADD);
+                MK_BINOP_EQF32_SCAB(CPUOp::FADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_SS:
-                MK_BINOPEQF32_SSCAB(CPUOp::FADD);
+                MK_BINOP_EQF32_SSCAB(CPUOp::FADD);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqF64:
-                MK_BINOPEQF64_CAB(CPUOp::FADD);
+                MK_BINOP_EQF64_CAB(CPUOp::FADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF64_S:
-                MK_BINOPEQF64_SCAB(CPUOp::FADD);
+                MK_BINOP_EQF64_SCAB(CPUOp::FADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF64_SS:
-                MK_BINOPEQF64_SSCAB(CPUOp::FADD);
+                MK_BINOP_EQF64_SSCAB(CPUOp::FADD);
                 break;
 
             /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
             case ByteCodeOp::AffectOpMinusEqS8_Safe:
-                MK_BINOPEQ8_CAB(CPUOp::SUB);
+                MK_BINOP_EQ8_CAB(CPUOp::SUB);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
                 break;
             case ByteCodeOp::AffectOpMinusEqS8_SSafe:
@@ -1691,16 +1691,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 else
-                    MK_BINOPEQ8_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQ8_SCAB(CPUOp::SUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqS8_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU8_SSSafe:
-                MK_BINOPEQ8_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQ8_SSCAB(CPUOp::SUB);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS16:
             case ByteCodeOp::AffectOpMinusEqS16_Safe:
-                MK_BINOPEQ16_CAB(CPUOp::SUB);
+                MK_BINOP_EQ16_CAB(CPUOp::SUB);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
                 break;
             case ByteCodeOp::AffectOpMinusEqS16_SSafe:
@@ -1708,16 +1708,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 else
-                    MK_BINOPEQ16_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQ16_SCAB(CPUOp::SUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqS16_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU16_SSSafe:
-                MK_BINOPEQ16_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQ16_SSCAB(CPUOp::SUB);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS32:
             case ByteCodeOp::AffectOpMinusEqS32_Safe:
-                MK_BINOPEQ32_CAB(CPUOp::SUB);
+                MK_BINOP_EQ32_CAB(CPUOp::SUB);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
                 break;
             case ByteCodeOp::AffectOpMinusEqS32_SSafe:
@@ -1725,72 +1725,72 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 else
-                    MK_BINOPEQ32_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQ32_SCAB(CPUOp::SUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqS32_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU32_SSSafe:
-                MK_BINOPEQ32_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQ32_SSCAB(CPUOp::SUB);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS64:
             case ByteCodeOp::AffectOpMinusEqS64_Safe:
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
-                MK_BINOPEQ64_CAB(CPUOp::SUB);
+                MK_BINOP_EQ64_CAB(CPUOp::SUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqS64_SSafe:
             case ByteCodeOp::AffectOpMinusEqU64_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
                     pp.emitDecNIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 else
-                    MK_BINOPEQ64_SCAB(CPUOp::SUB);
+                    MK_BINOP_EQ64_SCAB(CPUOp::SUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqS64_SSSafe:
             case ByteCodeOp::AffectOpMinusEqU64_SSSafe:
-                MK_BINOPEQ64_SSCAB(CPUOp::SUB);
+                MK_BINOP_EQ64_SSCAB(CPUOp::SUB);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU8:
             case ByteCodeOp::AffectOpMinusEqU8_Safe:
-                MK_BINOPEQ8_CAB(CPUOp::SUB);
+                MK_BINOP_EQ8_CAB(CPUOp::SUB);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU16:
             case ByteCodeOp::AffectOpMinusEqU16_Safe:
-                MK_BINOPEQ16_CAB(CPUOp::SUB);
+                MK_BINOP_EQ16_CAB(CPUOp::SUB);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU32:
             case ByteCodeOp::AffectOpMinusEqU32_Safe:
-                MK_BINOPEQ32_CAB(CPUOp::SUB);
+                MK_BINOP_EQ32_CAB(CPUOp::SUB);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU64:
             case ByteCodeOp::AffectOpMinusEqU64_Safe:
-                MK_BINOPEQ64_CAB(CPUOp::SUB);
+                MK_BINOP_EQ64_CAB(CPUOp::SUB);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
                 break;
 
             case ByteCodeOp::AffectOpMinusEqF32:
-                MK_BINOPEQF32_CAB(CPUOp::FSUB);
+                MK_BINOP_EQF32_CAB(CPUOp::FSUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_S:
-                MK_BINOPEQF32_SCAB(CPUOp::FSUB);
+                MK_BINOP_EQF32_SCAB(CPUOp::FSUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_SS:
-                MK_BINOPEQF32_SSCAB(CPUOp::FSUB);
+                MK_BINOP_EQF32_SSCAB(CPUOp::FSUB);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqF64:
-                MK_BINOPEQF64_CAB(CPUOp::FSUB);
+                MK_BINOP_EQF64_CAB(CPUOp::FSUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF64_S:
-                MK_BINOPEQF64_SCAB(CPUOp::FSUB);
+                MK_BINOP_EQF64_SCAB(CPUOp::FSUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF64_SS:
-                MK_BINOPEQF64_SSCAB(CPUOp::FSUB);
+                MK_BINOP_EQF64_SSCAB(CPUOp::FSUB);
                 break;
 
             /////////////////////////////////////
@@ -3881,125 +3881,125 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ8_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ8_LOCK_CAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::IntrinsicAtomicAddS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ16_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ16_LOCK_CAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::IntrinsicAtomicAddS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ32_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ32_LOCK_CAB(CPUOp::ADD);
                 break;
             case ByteCodeOp::IntrinsicAtomicAddS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ64_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ64_LOCK_CAB(CPUOp::ADD);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicAndS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ8_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ8_LOCK_CAB(CPUOp::AND);
                 break;
             case ByteCodeOp::IntrinsicAtomicAndS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ16_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ16_LOCK_CAB(CPUOp::AND);
                 break;
             case ByteCodeOp::IntrinsicAtomicAndS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ32_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ32_LOCK_CAB(CPUOp::AND);
                 break;
             case ByteCodeOp::IntrinsicAtomicAndS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ64_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ64_LOCK_CAB(CPUOp::AND);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicOrS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ8_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ8_LOCK_CAB(CPUOp::OR);
                 break;
             case ByteCodeOp::IntrinsicAtomicOrS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ16_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ16_LOCK_CAB(CPUOp::OR);
                 break;
             case ByteCodeOp::IntrinsicAtomicOrS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ32_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ32_LOCK_CAB(CPUOp::OR);
                 break;
             case ByteCodeOp::IntrinsicAtomicOrS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ64_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ64_LOCK_CAB(CPUOp::OR);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicXorS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ8_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ8_LOCK_CAB(CPUOp::XOR);
                 break;
             case ByteCodeOp::IntrinsicAtomicXorS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ16_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ16_LOCK_CAB(CPUOp::XOR);
                 break;
             case ByteCodeOp::IntrinsicAtomicXorS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ32_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ32_LOCK_CAB(CPUOp::XOR);
                 break;
             case ByteCodeOp::IntrinsicAtomicXorS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ64_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ64_LOCK_CAB(CPUOp::XOR);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicXchgS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ8_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ8_LOCK_CAB(CPUOp::XCHG);
                 break;
             case ByteCodeOp::IntrinsicAtomicXchgS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ16_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ16_LOCK_CAB(CPUOp::XCHG);
                 break;
             case ByteCodeOp::IntrinsicAtomicXchgS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ32_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ32_LOCK_CAB(CPUOp::XCHG);
                 break;
             case ByteCodeOp::IntrinsicAtomicXchgS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX);
-                MK_BINOPEQ64_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ64_LOCK_CAB(CPUOp::XCHG);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicCmpXchgS8:

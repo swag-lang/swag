@@ -146,69 +146,69 @@
     llvm::Value* r1 = MK_IMMA_F64();                   \
     llvm::Value* r2 = MK_IMMB_F64()
 
-#define MK_BINOPEQ8_CAB()                                  \
+#define MK_BINOP_EQ8_CAB()                                  \
     auto         r0 = GEP64(allocR, ip->a.u32);            \
     auto         r1 = builder.CreateLoad(PTR_I8_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_8()
-#define MK_BINOPEQ8_SCAB()                         \
+#define MK_BINOP_EQ8_SCAB()                         \
     auto         r0 = GEP8(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_8()
-#define MK_BINOPEQ8_SSCAB()                        \
+#define MK_BINOP_EQ8_SSCAB()                        \
     auto         r0 = GEP8(allocStack, ip->a.u32); \
     llvm::Value* r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32)
 
-#define MK_BINOPEQ16_CAB()                                  \
+#define MK_BINOP_EQ16_CAB()                                  \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_I16_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_16()
-#define MK_BINOPEQ16_SCAB()                                \
+#define MK_BINOP_EQ16_SCAB()                                \
     auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_16()
-#define MK_BINOPEQ16_SSCAB()                               \
+#define MK_BINOP_EQ16_SSCAB()                               \
     auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32); \
     llvm::Value* r1 = GEP8_PTR_I16(allocStack, ip->b.u32)
 
-#define MK_BINOPEQ32_CAB()                                  \
+#define MK_BINOP_EQ32_CAB()                                  \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_I32_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_32()
-#define MK_BINOPEQ32_SCAB()                                \
+#define MK_BINOP_EQ32_SCAB()                                \
     auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_32()
-#define MK_BINOPEQ32_SSCAB()                               \
+#define MK_BINOP_EQ32_SSCAB()                               \
     auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32); \
     llvm::Value* r1 = GEP8_PTR_I32(allocStack, ip->b.u32)
 
-#define MK_BINOPEQ64_CAB()                                  \
+#define MK_BINOP_EQ64_CAB()                                  \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_I64_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_64()
-#define MK_BINOPEQ64_SCAB()                                \
+#define MK_BINOP_EQ64_SCAB()                                \
     auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_64()
-#define MK_BINOPEQ64_SSCAB()                               \
+#define MK_BINOP_EQ64_SSCAB()                               \
     auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32); \
     llvm::Value* r1 = GEP8_PTR_I64(allocStack, ip->b.u32)
 
-#define MK_BINOPEQF32_CAB()                                 \
+#define MK_BINOP_EQF32_CAB()                                 \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_F32_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_F32()
-#define MK_BINOPEQF32_SCAB()                               \
+#define MK_BINOP_EQF32_SCAB()                               \
     auto         r0 = GEP8_PTR_F32(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_F32()
-#define MK_BINOPEQF32_SSCAB()                      \
+#define MK_BINOP_EQF32_SSCAB()                      \
     auto r0 = GEP8_PTR_F32(allocStack, ip->a.u32); \
     auto r1 = GEP8_PTR_F32(allocStack, ip->b.u32)
 
-#define MK_BINOPEQF64_CAB()                                 \
+#define MK_BINOP_EQF64_CAB()                                 \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(PTR_F64_TY(), r0); \
     llvm::Value* r2 = MK_IMMB_F64()
-#define MK_BINOPEQF64_SCAB()                               \
+#define MK_BINOP_EQF64_SCAB()                               \
     auto         r0 = GEP8_PTR_F64(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_F64()
-#define MK_BINOPEQF64_SSCAB()                      \
+#define MK_BINOP_EQF64_SSCAB()                      \
     auto r0 = GEP8_PTR_F64(allocStack, ip->a.u32); \
     auto r1 = GEP8_PTR_F64(allocStack, ip->b.u32)
 
