@@ -1101,7 +1101,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             for (auto& p : dependentSymbols)
             {
                 SharedLock lkn(p.symbol->mutex);
-                if (!needToCompleteSymbol(context, identifier, p.symbol, false))
+                if (!needToCompleteSymbolNoLock(context, identifier, p.symbol, false))
                     return SemanticError::ambiguousSymbolError(context, identifier, p.symbol, dependentSymbols);
             }
         }
@@ -1115,18 +1115,18 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         // First test, with just a SharedLock for contention
         {
             SharedLock lkn(symbol->mutex);
-            if (!needToWaitForSymbol(context, identifier, symbol))
+            if (!needToWaitForSymbolNoLock(context, identifier, symbol))
                 continue;
         }
 
         {
             // Do the test again, this time with a lock
             ScopedLock lkn(symbol->mutex);
-            if (!needToWaitForSymbol(context, identifier, symbol))
+            if (!needToWaitForSymbolNoLock(context, identifier, symbol))
                 continue;
 
             // Can we make a partial match ?
-            if (needToCompleteSymbol(context, identifier, symbol, true))
+            if (needToCompleteSymbolNoLock(context, identifier, symbol, true))
             {
                 waitSymbolNoLock(job, symbol);
                 return true;

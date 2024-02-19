@@ -206,33 +206,28 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (!symbol)
         return false;
 
-    VectorNative<SymbolOverload*> toCast;
-
     // Wait for all opCast to be solved
+    Semantic::waitForOverloads(context->baseJob, symbol);
+    YIELD();
+
+    VectorNative<SymbolOverload*> toCast;
+    VectorNative<SymbolOverload*> overloads;
+
     {
-        ScopedLock ls(symbol->mutex);
-        if (symbol->cptOverloads)
-        {
-            SWAG_ASSERT(context && context->baseJob);
-            SWAG_ASSERT(context->result == ContextResult::Done);
-            Semantic::waitSymbolNoLock(context->baseJob, symbol);
-            return true;
-        }
+        SharedLock ls(symbol->mutex);
+        overloads = symbol->overloads;
     }
 
     // Resolve opCast that match
+    for (auto over : overloads)
     {
-        SharedLock ls(symbol->mutex);
-        for (auto over : symbol->overloads)
-        {
-            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
-                continue;
-            if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CAST_FLAG_EXPLICIT))
-                continue;
-            if (typeFunc->returnType->isSame(toType, CAST_FLAG_EXACT))
-                toCast.push_back(over);
-        }
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+        if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
+            continue;
+        if (!typeFunc->declNode->hasAttribute(ATTRIBUTE_IMPLICIT) && !castFlags.has(CAST_FLAG_EXPLICIT))
+            continue;
+        if (typeFunc->returnType->isSame(toType, CAST_FLAG_EXACT))
+            toCast.push_back(over);
     }
 
     // Add in the cache of possible matches

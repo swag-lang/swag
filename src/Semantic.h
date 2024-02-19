@@ -58,6 +58,7 @@ namespace Semantic
     void waitAllStructMethods(Job* job, TypeInfo* typeInfo);
     void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
     void waitStructGenerated(Job* job, TypeInfo* typeInfo);
+    void waitForOverloads(Job* job, SymbolName* symbol);
     void waitOverloadCompleted(Job* job, const SymbolOverload* overload);
     void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
     void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
@@ -175,8 +176,8 @@ namespace Semantic
     bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
     bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, const SymbolOverload* overload, AstNode* ufcsFirstParam);
     bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
-    bool           needToCompleteSymbol(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
-    bool           needToWaitForSymbol(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);
+    bool           needToCompleteSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
+    bool           needToWaitForSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);
     bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, ResolveIdFlags riFlags);
     TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
