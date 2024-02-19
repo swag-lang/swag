@@ -35,11 +35,11 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
 
     if (!getInline)
     {
-        if (ip->node->ownerInline && !ip->node->hasAstFlag(AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
+        if (ip->node->ownerInline() && !ip->node->hasAstFlag(AST_IN_MIXIN) && ip->node->ownerInline()->ownerFct == ip->node->ownerFct)
         {
             auto n = ip->node;
-            while (n->ownerInline && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline->ownerFct == n->ownerFct)
-                n = n->ownerInline;
+            while (n->ownerInline() && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline()->ownerFct == n->ownerFct)
+                n = n->ownerInline();
             loc.file     = n->sourceFile;
             loc.location = &n->token.startLocation;
         }

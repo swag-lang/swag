@@ -355,6 +355,7 @@ struct AstNode
     void removeSpecFlag(SpecFlags fl) { specFlags.remove(fl); }
 
     ComputedValue* computedValue() const { return extension && extension->semantic ? extension->semantic->computedValue : nullptr; }
+    AstInline*     ownerInline() const { return extension && extension->owner ? extension->owner->ownerInline : nullptr; }
 
     struct NodeExtensionByteCode
     {
@@ -377,6 +378,7 @@ struct AstNode
         AstAttrUse*            ownerAttrUse         = nullptr;
         AstTryCatchAssume*     ownerTryCatchAssume  = nullptr;
         AstCompilerIfBlock*    ownerCompilerIfBlock = nullptr;
+        AstInline*             ownerInline          = nullptr;
         VectorNative<AstNode*> nodesToFree;
     };
 
@@ -440,7 +442,6 @@ struct AstNode
     Scope*        ownerScope;
     Scope*        ownerStructScope;
     AstBreakable* ownerBreakable;
-    AstInline*    ownerInline;
     AstFuncDecl*  ownerFct;
 
     TypeInfo* typeInfo;

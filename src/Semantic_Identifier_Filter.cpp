@@ -64,9 +64,9 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         if (overSym->kind == SymbolKind::Function &&
             context->node->hasAttribute(ATTRIBUTE_MATCH_SELF_OFF))
         {
-            if (node->ownerInline)
+            if (node->ownerInline())
             {
-                if (node->ownerInline->func->resolvedSymbolOverload == over)
+                if (node->ownerInline()->func->resolvedSymbolOverload == over)
                 {
                     matches[i]->remove = true;
                     continue;
@@ -293,14 +293,14 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         }
 
         // Priority to the same inline scope
-        if (node->ownerInline)
+        if (node->ownerInline())
         {
-            if (!node->ownerInline->scope->isParentOf(over->node->ownerScope))
+            if (!node->ownerInline()->scope->isParentOf(over->node->ownerScope))
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     const auto nodeToKeep = matches[j]->symbolOverload->node;
-                    if (node->ownerInline->scope->isParentOf(nodeToKeep->ownerScope))
+                    if (node->ownerInline()->scope->isParentOf(nodeToKeep->ownerScope))
                     {
                         const auto inMixin = nodeToKeep->findParent(AstNodeKind::CompilerMixin);
                         if (inMixin)
@@ -676,8 +676,8 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
                 // Pick contextual generic type replacements
                 if (node->ownerFct)
                     toCheck.push_back(node->ownerFct);
-                if (node->ownerInline)
-                    toCheck.push_back(node->ownerInline->func);
+                if (node->ownerInline())
+                    toCheck.push_back(node->ownerInline()->func);
 
                 for (const auto c : toCheck)
                 {

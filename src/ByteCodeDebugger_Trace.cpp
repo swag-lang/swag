@@ -102,7 +102,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
 
     context->debugStackFrameOffset = 0;
     g_ByteCodeDebugger.stepMode    = DebugStepMode::FinishedFunction;
-    if (g_ByteCodeDebugger.lastBreakIp->node->ownerInline)
+    if (g_ByteCodeDebugger.lastBreakIp->node->ownerInline())
         g_ByteCodeDebugger.stepRc = context->curRC;
     else
         g_ByteCodeDebugger.stepRc = context->curRC - 1;

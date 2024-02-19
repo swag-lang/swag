@@ -27,7 +27,7 @@ uint32_t ByteCodeStack::maxLevel(const ByteCodeRunContext* runContext)
 
 Utf8 ByteCodeStack::getStepName(const AstNode* node, const ByteCodeInstruction* ip)
 {
-    const auto fct = node->ownerInline && node->ownerInline->ownerFct == ip->node->ownerFct ? node->ownerInline->func : node->ownerFct;
+    const auto fct = node->ownerInline() && node->ownerInline()->ownerFct == ip->node->ownerFct ? node->ownerInline()->func : node->ownerFct;
     if (fct && fct->hasExtByteCode() && fct->extByteCode()->bc)
         return fct->extByteCode()->bc->getPrintName();
     if (fct)
@@ -85,7 +85,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     if (name.empty())
         name = bc->getPrintName();
 
-    Utf8 str = ip->node->ownerInline ? inl.c_str() : header.c_str();
+    Utf8 str = ip->node->ownerInline() ? inl.c_str() : header.c_str();
     str += name;
     str += "\n";
     str += "      ";
@@ -104,7 +104,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             owner = owner->parent;
         if (owner)
         {
-            str += owner->ownerInline ? inl.c_str() : header.c_str();
+            str += owner->ownerInline() ? inl.c_str() : header.c_str();
             str += Log::colorToVTS(LogColor::Name);
             str += getStepName(owner, ip);
 
@@ -128,10 +128,10 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     }
 
     // Inline chain
-    auto parent = ip->node->ownerInline;
+    auto parent = ip->node->ownerInline();
     while (parent && parent->ownerFct == ip->node->ownerFct)
     {
-        str += parent->ownerInline ? inl.c_str() : header.c_str();
+        str += parent->ownerInline() ? inl.c_str() : header.c_str();
         str += Log::colorToVTS(LogColor::Name);
         str += getStepName(parent, ip);
 
@@ -151,7 +151,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         }
 
         str += "\n";
-        parent = parent->ownerInline;
+        parent = parent->ownerInline();
     }
 
     return str;

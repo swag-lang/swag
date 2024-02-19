@@ -556,7 +556,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 break;
             }
 
-            if (!lastBreakIp->node->ownerInline && ip->node->ownerInline)
+            if (!lastBreakIp->node->ownerInline() && ip->node->ownerInline())
             {
                 // Can only step into a mixin if we come from a not inlined block
                 if (!ip->node->hasAstFlag(AST_IN_MIXIN))
@@ -573,10 +573,10 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 }
             }
 
-            if (lastBreakIp->node->ownerInline)
+            if (lastBreakIp->node->ownerInline())
             {
                 // If i am still in an inline, but not in a mixin block, and was in a mixin block, zap
-                if (ip->node->ownerInline &&
+                if (ip->node->ownerInline() &&
                     lastBreakIp->node->hasAstFlag(AST_IN_MIXIN) &&
                     !ip->node->hasAstFlag(AST_IN_MIXIN))
                 {
@@ -636,14 +636,14 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
 
             // If last break was in an inline block, and we are in a sub inline block
-            if (lastBreakIp->node->ownerInline && lastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+            if (lastBreakIp->node->ownerInline() && lastBreakIp->node->ownerInline()->isParentOf(ip->node->ownerInline()))
             {
                 zapCurrentIp = true;
                 break;
             }
 
             // We are in the same inline block
-            if (ip->node->ownerInline && lastBreakIp->node->ownerInline == ip->node->ownerInline)
+            if (ip->node->ownerInline() && lastBreakIp->node->ownerInline() == ip->node->ownerInline())
             {
                 zapCurrentIp = true;
                 break;

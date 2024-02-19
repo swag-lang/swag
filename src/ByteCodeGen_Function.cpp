@@ -75,8 +75,8 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     TypeInfo*  returnType = nullptr;
 
     // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
-    if (node->ownerInline && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
-        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
+    if (node->ownerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+        returnType = TypeManager::concreteType(node->ownerInline()->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
 
@@ -113,20 +113,20 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         //
         // INLINE
         //
-        else if (node->ownerInline && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+        else if (node->ownerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         {
             if (returnType->isStruct())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->addAstFlag(AST_NO_LEFT_DROP);
-                SWAG_CHECK(emitCopyStruct(context, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc, exprType, returnExpression));
+                SWAG_CHECK(emitCopyStruct(context, node->ownerInline()->resultRegisterRc, returnExpression->resultRegisterRc, exprType, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
             else if (returnType->isArray())
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->addAstFlag(AST_NO_LEFT_DROP);
-                SWAG_CHECK(emitCopyArray(context, returnType, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc, returnExpression));
+                SWAG_CHECK(emitCopyArray(context, returnType, node->ownerInline()->resultRegisterRc, returnExpression->resultRegisterRc, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
             else if (returnType->isClosure())
@@ -142,21 +142,21 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     if (!typeBlock->fields.empty())
                     {
                         const auto r1 = reserveRegisterRC(context);
-                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, node->ownerInline->resultRegisterRc);
+                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, node->ownerInline()->resultRegisterRc);
                         EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
                         emitMemCpy(context, r1, returnExpression->resultRegisterRc[1], typeBlock->sizeOf);
                         freeRegisterRC(context, r1);
                     }
 
-                    EMIT_INST2(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc[0]);
-                    const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRc);
+                    EMIT_INST2(context, ByteCodeOp::SetAtPointer64, node->ownerInline()->resultRegisterRc, returnExpression->resultRegisterRc[0]);
+                    const auto inst = EMIT_INST1(context, ByteCodeOp::SetAtPointer64, node->ownerInline()->resultRegisterRc);
                     inst->addFlag(BCI_IMM_B);
                     inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
                     inst->c.u32 = sizeof(void*);
                 }
                 else
                 {
-                    emitMemCpy(context, node->ownerInline->resultRegisterRc, returnExpression->resultRegisterRc, SWAG_LIMIT_CLOSURE_SIZEOF);
+                    emitMemCpy(context, node->ownerInline()->resultRegisterRc, returnExpression->resultRegisterRc, SWAG_LIMIT_CLOSURE_SIZEOF);
                 }
 
                 freeRegisterRC(context, returnExpression);
@@ -167,7 +167,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 {
                     const auto sizeChildren = child->resultRegisterRc.size();
                     for (uint32_t r = 0; r < sizeChildren; r++)
-                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->ownerInline->resultRegisterRc[r], child->resultRegisterRc[r]);
+                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->ownerInline()->resultRegisterRc[r], child->resultRegisterRc[r]);
                     freeRegisterRC(context, child);
                 }
             }
@@ -295,11 +295,11 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     YIELD();
 
     // A return inside an inline function is just a jump to the end of the block
-    if (node->ownerInline && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
+    if (node->ownerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
     {
         node->seekJump = context->bc->numInstructions;
         EMIT_INST0(context, ByteCodeOp::Jump);
-        node->ownerInline->returnList.push_back(node);
+        node->ownerInline()->returnList.push_back(node);
     }
     else
     {
@@ -1507,11 +1507,11 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
         // Must be the last expression in the return expression (no deref !)
         if (node->parent->kind != AstNodeKind::IdentifierRef || node == node->parent->children.back())
         {
-            if (node->ownerInline)
+            if (node->ownerInline())
             {
-                SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerInline->func->typeInfo, TypeInfoKind::FuncAttr));
+                SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerInline()->func->typeInfo, TypeInfoKind::FuncAttr));
                 SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
-                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline->resultRegisterRc);
+                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline()->resultRegisterRc);
             }
             else
             {

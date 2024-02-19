@@ -323,7 +323,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     currentScope       = parent->ownerScope;
     currentStructScope = parent->ownerStructScope;
     currentFct         = parent->ownerFct;
-    currentInline      = parent->ownerInline;
+    currentInline      = parent->ownerInline();
 
     if (kind == CompilerAstKind::MissingInterfaceMtd)
     {

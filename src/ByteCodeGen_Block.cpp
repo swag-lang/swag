@@ -1134,14 +1134,14 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
 
     // Leave all scopes
     const Scope* topScope;
-    if (node->ownerInline && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
+    if (node->ownerInline() && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
         // inside. We do not want to release that scope, as we do not own it ! But we want to release all the
         // scopes until that one (excluded)
-        if (node->ownerInline->func->hasAttribute(ATTRIBUTE_MIXIN))
+        if (node->ownerInline()->func->hasAttribute(ATTRIBUTE_MIXIN))
         {
-            topScope   = node->ownerInline->scope;
+            topScope   = node->ownerInline()->scope;
             auto scope = node->ownerScope;
             if (scope == topScope)
                 return true;
@@ -1150,7 +1150,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
             topScope = scope;
         }
         else
-            topScope = node->ownerInline->scope;
+            topScope = node->ownerInline()->scope;
     }
     else
         topScope = funcNode->scope;

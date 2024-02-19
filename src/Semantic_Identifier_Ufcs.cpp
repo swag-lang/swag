@@ -231,12 +231,12 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 
                     // In case of a parameter of an inlined function, we will have to find the real OVERLOAD_VAR_INLINE variable
                     // :InlineUsingParam
-                    if (dependentVar->kind == AstNodeKind::FuncDeclParam && copyChild->ownerInline && copyChild->ownerInline->parametersScope)
+                    if (dependentVar->kind == AstNodeKind::FuncDeclParam && copyChild->ownerInline() && copyChild->ownerInline()->parametersScope)
                     {
                         // Really, but REALLY not sure about that fix !! Seems really like a hack...
                         if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload))
                         {
-                            const auto sym = copyChild->ownerInline->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload->symbol->name);
+                            const auto sym = copyChild->ownerInline()->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload->symbol->name);
                             if (sym)
                             {
                                 ScopedLock lk(sym->mutex);

@@ -452,7 +452,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
     node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
 
     // Be sure #macro is used inside a macro
-    if (!node->ownerInline || node->ownerInline->hasAttribute(ATTRIBUTE_MIXIN) || !node->ownerInline->hasAttribute(ATTRIBUTE_MACRO))
+    if (!node->ownerInline() || node->ownerInline()->hasAttribute(ATTRIBUTE_MIXIN) || !node->ownerInline()->hasAttribute(ATTRIBUTE_MACRO))
         return context->report({node, Err(Err0444)});
 
     return true;
@@ -485,7 +485,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     cloneContext.parentScope            = node->ownerScope;
     cloneContext.ownerBreakable         = node->ownerBreakable;
     cloneContext.replaceTokensBreakable = node->ownerBreakable;
-    cloneContext.ownerInline            = node->ownerInline;
+    cloneContext.ownerInline            = node->ownerInline();
     cloneContext.replaceTokens          = node->replaceTokens;
     cloneContext.forceFlags             = AST_IN_MIXIN;
     cloneContext.ownerFct               = node->ownerFct;

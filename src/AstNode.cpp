@@ -22,7 +22,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
-    ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
     ownerFct         = context.ownerFct || context.cloneFlags & CLONE_FORCE_OWNER_FCT ? context.ownerFct : from->ownerFct;
 
     // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
@@ -82,6 +81,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     semanticFct = from->semanticFct;
     byteCodeFct = from->byteCodeFct;
+
     if (from->hasExtMisc())
     {
         allocateExtension(ExtensionKind::Misc);
@@ -117,6 +117,17 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extByteCode()->byteCodeAfterFct  = from->extByteCode()->byteCodeAfterFct;
     }
 
+    if (context.ownerInline)
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerInline = context.ownerInline;
+    }
+    else if(from->hasExtOwner() && from->extOwner()->ownerInline)
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerInline = from->extOwner()->ownerInline;
+    }
+    
     token.text = from->token.text;
     sourceFile = from->sourceFile;
 
@@ -638,7 +649,6 @@ void AstNode::inheritOwners(const AstNode* op)
     ownerScope       = op->ownerScope;
     ownerFct         = op->ownerFct;
     ownerBreakable   = op->ownerBreakable;
-    ownerInline      = op->ownerInline;
 
     if (op->hasExtOwner() && op->extOwner()->ownerCompilerIfBlock)
     {
@@ -649,6 +659,16 @@ void AstNode::inheritOwners(const AstNode* op)
     {
         extOwner()->ownerCompilerIfBlock = nullptr;
     }
+
+    if (op->ownerInline())
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerInline = op->ownerInline();
+    }
+    else if (hasExtOwner())
+    {
+        extOwner()->ownerInline = nullptr;
+    }
 }
 
 void AstNode::inheritOwnersAndFlags(const Parser* parser)
@@ -657,7 +677,6 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
     ownerScope       = parser->currentScope;
     ownerFct         = parser->currentFct;
     ownerBreakable   = parser->currentBreakable;
-    ownerInline      = parser->currentInline;
 
     if (parser->currentCompilerIfBlock)
     {
@@ -669,7 +688,16 @@ void AstNode::inheritOwnersAndFlags(const Parser* parser)
         extOwner()->ownerCompilerIfBlock = nullptr;
     }
 
-    // A sub-function (or a generated lambda) does not inherit global throw or assume
+    if (parser->currentInline)
+    {
+        allocateExtension(ExtensionKind::Owner);
+        extOwner()->ownerInline = parser->currentInline;
+    }
+    else if (hasExtOwner())
+    {
+        extOwner()->ownerInline = nullptr;
+    }
+
     if (parser->currentTryCatchAssume)
     {
         allocateExtension(ExtensionKind::Owner);
@@ -1099,9 +1127,9 @@ bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
         return true;
     if (overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
         return true;
-    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !ownerInline)
+    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !ownerInline())
         return false;
-    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && ownerInline->ownerFct != ownerFct)
+    if (overload->hasFlag(OVERLOAD_VAR_INLINE) && ownerInline()->ownerFct != ownerFct)
         return false;
     if (!overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && !overload->hasFlag(OVERLOAD_VAR_LOCAL))
         return true;
