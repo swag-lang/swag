@@ -406,11 +406,11 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
 
     if (typeInfo->isStruct())
     {
-        if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload)
+        if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload())
         {
             // Do not initialize variable with type arguments, then again with an initialization
             const auto assign   = node->assignment;
-            const auto overload = assign->resolvedSymbolOverload;
+            const auto overload = assign->resolvedSymbolOverload();
             if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
             {
                 Diagnostic err{assign, Err(Err0063)};

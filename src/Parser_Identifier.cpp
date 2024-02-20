@@ -442,7 +442,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::resolveTypeAliasBefore;
     node->semanticFct                      = Semantic::resolveTypeAlias;
-    node->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias);
+    node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias));
     return true;
 }
 
@@ -469,8 +469,8 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("[[namealias]] expression"));
     expr->children.back()->addSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS);
 
-    node->semanticFct        = Semantic::resolveNameAlias;
-    node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
+    node->semanticFct = Semantic::resolveNameAlias;
+    node->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias));
     return true;
 }
 

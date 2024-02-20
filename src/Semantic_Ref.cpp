@@ -76,9 +76,9 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     SWAG_ASSERT(node->kind == AstNodeKind::IdentifierRef || node->kind == AstNodeKind::ArrayPointerIndex);
     if (!node->hasAstFlag(AST_L_VALUE))
     {
-        if (node->resolvedSymbolName->kind != SymbolKind::Variable)
+        if (node->resolvedSymbolName()->kind != SymbolKind::Variable)
         {
-            const Diagnostic err{node, FMT(Err(Err0179), Naming::aKindName(node->resolvedSymbolName->kind).c_str())};
+            const Diagnostic err{node, FMT(Err(Err0179), Naming::aKindName(node->resolvedSymbolName()->kind).c_str())};
             return context->report(err);
         }
 
@@ -103,10 +103,10 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->addAstFlag(AST_R_VALUE);
-    node->resolvedSymbolName     = child->resolvedSymbolName;
-    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
+    node->setResolvedSymbolName(child->resolvedSymbolName());
+    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
 
-    const auto funcNode = node->resolvedSymbolOverload->node;
+    const auto funcNode = node->resolvedSymbolOverload()->node;
     SWAG_CHECK(checkCanMakeFuncPointer(context, castAst<AstFuncDecl>(funcNode), child));
 
     const auto lambdaType = child->typeInfo->clone();
@@ -136,29 +136,29 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     const auto child    = node->children.front();
     auto       typeInfo = child->typeInfo;
 
-    if (!child->resolvedSymbolName)
+    if (!child->resolvedSymbolName())
     {
         Diagnostic err{node, node->token, Err(Err0187)};
         err.addNote(child, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
 
-    if (child->resolvedSymbolOverload)
+    if (child->resolvedSymbolOverload())
     {
-        ScopedLock lk(child->resolvedSymbolName->mutex);
-        child->resolvedSymbolOverload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+        ScopedLock lk(child->resolvedSymbolName()->mutex);
+        child->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_MAKE_POINTER);
     }
 
-    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_IS_LET))
+    if (child->resolvedSymbolOverload() && child->resolvedSymbolOverload()->hasFlag(OVERLOAD_IS_LET))
     {
         if (child->kind != AstNodeKind::IdentifierRef || child->children.back()->kind != AstNodeKind::ArrayPointerIndex)
         {
             const Diagnostic err{node, node->token, Err(Err0185)};
-            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload->node));
+            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()->node));
         }
     }
 
-    if (child->resolvedSymbolName->kind == SymbolKind::Function)
+    if (child->resolvedSymbolName()->kind == SymbolKind::Function)
     {
         // For a function, if no parameters, then this is for a lambda
         const auto back = child->children.back();
@@ -180,21 +180,21 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
             if (typeInfo->isVoid())
             {
                 const Diagnostic err{node, node->token, FMT(Err(Err0178), typeInfo->getDisplayNameC())};
-                return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload));
+                return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()));
             }
 
             const Diagnostic err{node, node->token, FMT(Err(Err0182), typeInfo->getDisplayNameC())};
             const auto       note = Diagnostic::note(FMT(Nte(Nte0100), Naming::aKindName(typeInfo).c_str()));
-            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload), note);
+            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()), note);
         }
     }
 
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->addAstFlag(AST_R_VALUE);
-    node->resolvedSymbolName     = child->resolvedSymbolName;
-    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
-    node->byteCodeFct            = ByteCodeGen::emitMakePointer;
+    node->setResolvedSymbolName(child->resolvedSymbolName());
+    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+    node->byteCodeFct = ByteCodeGen::emitMakePointer;
     node->inheritComputedValue(child);
 
     // A new pointer
@@ -240,11 +240,11 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     }
 
     // Type is constant if we take address of a readonly variable
-    else if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
+    else if (child->resolvedSymbolOverload() && !child->typeInfo->isPointerRef())
     {
-        const auto typeResolved = child->resolvedSymbolOverload->typeInfo->getConcreteAlias();
+        const auto typeResolved = child->resolvedSymbolOverload()->typeInfo->getConcreteAlias();
 
-        if (child->resolvedSymbolOverload->hasFlag(OVERLOAD_CONST_ASSIGN) &&
+        if (child->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_ASSIGN) &&
             !typeResolved->isPointerArithmetic() &&
             !typeResolved->isArray() &&
             !typeResolved->isSlice())
@@ -592,9 +592,9 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 {
-    const auto arrayNode              = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
-    arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
+    const auto arrayNode                = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    arrayNode->setResolvedSymbolName(arrayNode->array->resolvedSymbolName());
+    arrayNode->setResolvedSymbolOverload(arrayNode->array->resolvedSymbolOverload());
     arrayNode->inheritAstFlagsOr(arrayNode->array, AST_L_VALUE);
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
@@ -638,7 +638,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         {
             if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
             {
-                const Diagnostic err{arrayNode->array, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
+                const Diagnostic err{arrayNode->array, FMT(Err(Err0256), arrayNode->resolvedSymbolName()->name.c_str(), arrayType->getDisplayNameC())};
                 return context->report(err);
             }
 
@@ -802,7 +802,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
 
         if (isConstAccess)
         {
-            const auto overload = subArray->array->resolvedSymbolOverload;
+            const auto overload = subArray->array->resolvedSymbolOverload();
             if (overload && overload->hasFlag(OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
@@ -863,8 +863,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         }
     }
 
-    // Do not set resolvedSymbolOverload !
-    arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
+    // Do not set resolvedSymbolOverload() !
+    arrayNode->setResolvedSymbolName(arrayNode->array->resolvedSymbolName());
 
     // Can we dereference at compile time ?
     if (arrayType->isString())
@@ -872,10 +872,10 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
         if (arrayNode->access->hasFlagComputedValue())
         {
-            if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+            if (arrayNode->array->resolvedSymbolOverload() && arrayNode->array->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
             {
                 arrayNode->setFlagsValueIsComputed();
-                const auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
+                const auto& text = arrayNode->array->resolvedSymbolOverload()->computedValue.text;
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, text.length()));
                 const auto idx                     = arrayAccess->computedValue()->reg.u32;
                 arrayNode->computedValue()->reg.u8 = text[idx];
@@ -892,7 +892,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         {
             if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
             {
-                Diagnostic err{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
+                Diagnostic err{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName()->name.c_str(), arrayType->getDisplayNameC())};
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(err, Diagnostic::note(Nte(Nte0103)));
             }
@@ -979,9 +979,9 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             // Try to dereference as a constant if we can
             if (arrayNode->access->hasFlagComputedValue())
             {
-                if (arrayNode->array->resolvedSymbolOverload && arrayNode->array->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+                if (arrayNode->array->resolvedSymbolOverload() && arrayNode->array->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
                 {
-                    const auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
+                    const auto& computedValue = arrayNode->array->resolvedSymbolOverload()->computedValue;
                     const auto  slice         = static_cast<SwagSlice*>(computedValue.getStorageAddr());
                     SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
 
@@ -1113,11 +1113,11 @@ bool Semantic::resolveInit(SemanticContext* context)
     {
         expressionTypeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_ALIAS);
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
-        SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
+        SWAG_VERIFY(node->expression->resolvedSymbolOverload(), context->report({node->expression, FMT(Err(Err0199), node->token.c_str())}));
         SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, FMT(Err(Err0057), node->token.c_str(), expressionTypeInfo->getDisplayNameC())}));
         const auto back = node->expression->children.back();
         back->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
-        back->resolvedSymbolOverload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+        back->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_MAKE_POINTER);
     }
     else
     {
@@ -1160,7 +1160,7 @@ bool Semantic::resolveInit(SemanticContext* context)
             while (true)
             {
                 context->clearTryMatch();
-                const auto symbol = typeStruct->declNode->resolvedSymbolName;
+                const auto symbol = typeStruct->declNode->resolvedSymbolName();
 
                 {
                     SharedLock lk(symbol->mutex);

@@ -22,12 +22,12 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
     const auto id   = context->node;
     const auto node = castAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
-    if (id->resolvedSymbolName->kind != SymbolKind::Struct)
-        return context->report({id->children.back(), FMT(Err(Err0160), id->resolvedSymbolName->name.c_str(), Naming::aKindName(id->resolvedSymbolName->kind).c_str())});
+    if (id->resolvedSymbolName()->kind != SymbolKind::Struct)
+        return context->report({id->children.back(), FMT(Err(Err0160), id->resolvedSymbolName()->name.c_str(), Naming::aKindName(id->resolvedSymbolName()->kind).c_str())});
 
-    const auto structDecl = castAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+    const auto structDecl = castAst<AstStruct>(id->resolvedSymbolOverload()->node, AstNodeKind::StructDecl);
 
-    if (id->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
+    if (id->resolvedSymbolOverload()->hasFlag(OVERLOAD_GENERIC))
     {
         if (!node->hasAstFlag(AST_FROM_GENERIC))
         {
@@ -130,7 +130,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     if (!typeInfo->isInterface())
     {
         const Diagnostic err{node->identifier, FMT(Err(Err0162), node->identifier->token.c_str(), Naming::aKindName(typeInfo).c_str())};
-        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
+        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
     }
 
     // Be sure the second identifier is a struct
@@ -149,10 +149,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     // Be sure interface has been fully solved
     {
         ScopedLock lk(node->identifier->mutex);
-        ScopedLock lk1(node->identifier->resolvedSymbolName->mutex);
-        if (node->identifier->resolvedSymbolName->cptOverloads)
+        ScopedLock lk1(node->identifier->resolvedSymbolName()->mutex);
+        if (node->identifier->resolvedSymbolName()->cptOverloads)
         {
-            waitSymbolNoLock(job, node->identifier->resolvedSymbolName);
+            waitSymbolNoLock(job, node->identifier->resolvedSymbolName());
             return true;
         }
     }
@@ -454,15 +454,15 @@ bool Semantic::resolveInterface(SemanticContext* context)
             return context->report({attr->node, attr->node->token, Err(Err0484)});
         }
 
-        typeParam->offset                                          = storageOffset;
-        child->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
-        child->resolvedSymbolOverload->storageIndex                = storageIndex;
+        typeParam->offset                                            = storageOffset;
+        child->resolvedSymbolOverload()->computedValue.storageOffset = storageOffset;
+        child->resolvedSymbolOverload()->storageIndex                = storageIndex;
 
         SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
         typeITable->sizeOf += sizeof(void*);
 
         // Register lambda variable in the scope of the itable struct
-        const auto        overload = child->resolvedSymbolOverload;
+        const auto        overload = child->resolvedSymbolOverload();
         auto&             symTable = typeITable->scope->symTable;
         AddSymbolTypeInfo toAdd;
         toAdd.node          = child;
@@ -514,8 +514,8 @@ bool Semantic::resolveInterface(SemanticContext* context)
     {
         // :BecauseOfThat
         ScopedLock lk(node->mutex);
-        node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-        SWAG_CHECK(node->resolvedSymbolOverload);
+        node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+        SWAG_CHECK(node->resolvedSymbolOverload());
         node->dependentJobs.setRunning();
     }
 
@@ -570,7 +570,7 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Sc
     {
         const Diagnostic err{node, node->token, FMT(Err(Err0431), node->token.c_str())};
         const auto       note = Diagnostic::note(FMT(Nte(Nte0132), scopeImpl->parentScope->getFullName().c_str(), node->token.c_str(), scope->parentScope->getFullName().c_str()));
-        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload), note);
+        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()), note);
     }
 
     return true;
@@ -585,23 +585,23 @@ bool Semantic::resolveImpl(SemanticContext* context)
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
         const Diagnostic err{node->identifier, FMT(Err(Err0161), node->identifier->token.c_str(), typeInfo->getDisplayNameC())};
-        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
+        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
     }
 
-    const auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
+    const auto typeIdentifier = node->identifier->resolvedSymbolOverload()->typeInfo;
     SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, Err(Err0700)}));
 
     switch (typeInfo->kind)
     {
         case TypeInfoKind::Struct:
         {
-            const auto structNode = castAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+            const auto structNode = castAst<AstStruct>(node->identifier->resolvedSymbolOverload()->node, AstNodeKind::StructDecl);
             SWAG_CHECK(checkImplScopes(context, node, node->structScope, structNode->scope));
             break;
         }
         case TypeInfoKind::Enum:
         {
-            const auto enumNode = castAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
+            const auto enumNode = castAst<AstEnum>(node->identifier->resolvedSymbolOverload()->node, AstNodeKind::EnumDecl);
             SWAG_CHECK(checkImplScopes(context, node, node->structScope, enumNode->scope));
             break;
         }
@@ -714,7 +714,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     }
 
     if (node->hasAttribute(ATTRIBUTE_GEN))
-        node->resolvedSymbolName->flags.add(SYMBOL_ATTRIBUTE_GEN);
+        node->resolvedSymbolName()->flags.add(SYMBOL_ATTRIBUTE_GEN);
 
     AddSymbolTypeInfo toAdd;
     toAdd.node     = node;
@@ -722,9 +722,9 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     toAdd.kind     = symbolKind;
     toAdd.flags    = overFlags | OVERLOAD_INCOMPLETE;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-    node->resolvedSymbolName     = toAdd.symbolName;
-    SWAG_CHECK(node->resolvedSymbolOverload);
+    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+    node->setResolvedSymbolName(toAdd.symbolName);
+    SWAG_CHECK(node->resolvedSymbolOverload());
 
     return true;
 }
@@ -1091,9 +1091,9 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 storageOffset     = static_cast<uint32_t>(TypeManager::align(storageOffset, alignOf));
             }
 
-            typeParam->offset                                          = realStorageOffset;
-            child->resolvedSymbolOverload->computedValue.storageOffset = realStorageOffset;
-            child->resolvedSymbolOverload->storageIndex                = storageIndexField;
+            typeParam->offset                                            = realStorageOffset;
+            child->resolvedSymbolOverload()->computedValue.storageOffset = realStorageOffset;
+            child->resolvedSymbolOverload()->storageIndex                = storageIndexField;
 
             auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
             typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
@@ -1127,7 +1127,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
                 if (!hasItemName)
                 {
-                    auto  overload = child->resolvedSymbolOverload;
+                    auto  overload = child->resolvedSymbolOverload();
                     Utf8  name     = FMT("item%u", storageIndexField);
                     auto& symTable = node->scope->symTable;
 
@@ -1221,8 +1221,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
     {
         // :BecauseOfThat
         ScopedLock lk(node->mutex);
-        node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-        SWAG_CHECK(node->resolvedSymbolOverload);
+        node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+        SWAG_CHECK(node->resolvedSymbolOverload());
         node->dependentJobs.setRunning();
     }
 
@@ -1243,7 +1243,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         node->byteCodeFct      = ByteCodeGen::emitStruct;
 
         if (node->hasAttribute(ATTRIBUTE_GEN))
-            node->resolvedSymbolName->addDependentJob(extension->byteCodeJob);
+            node->resolvedSymbolName()->addDependentJob(extension->byteCodeJob);
         else
             g_ThreadMgr.addJob(extension->byteCodeJob);
     }

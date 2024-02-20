@@ -362,7 +362,7 @@ namespace
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = segSymIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU32(p->resolvedSymbolOverload->computedValue.storageOffset);
+            concat.addU32(p->resolvedSymbolOverload()->computedValue.storageOffset);
 
             // segment relocation
             reloc.type           = IMAGE_REL_AMD64_SECTION;
@@ -487,7 +487,7 @@ namespace
             if (localVar->ownerScope != scope)
                 continue;
 
-            const SymbolOverload* overload = localVar->resolvedSymbolOverload;
+            const SymbolOverload* overload = localVar->resolvedSymbolOverload();
             const auto            typeInfo = overload->typeInfo;
 
             SWAG_ASSERT(localVar->hasAttribute(ATTRIBUTE_GLOBAL));
@@ -534,7 +534,7 @@ namespace
             if (localVar->ownerScope != scope)
                 continue;
 
-            const SymbolOverload* overload = localVar->resolvedSymbolOverload;
+            const SymbolOverload* overload = localVar->resolvedSymbolOverload();
             const auto            typeInfo = overload->typeInfo;
 
             //////////
@@ -661,7 +661,7 @@ namespace
                         const auto typeParam = child->typeInfo;
                         if (child->kind == AstNodeKind::MakePointer)
                             child = child->children.front();
-                        const auto overload = child->resolvedSymbolOverload;
+                        const auto overload = child->resolvedSymbolOverload();
                         if (!typeParam || !overload)
                             continue;
 

@@ -16,14 +16,14 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     const auto node = castAst<AstAlias>(context->node, AstNodeKind::NameAlias);
     auto       back = node->children.back();
 
-    SWAG_ASSERT(node->resolvedSymbolName);
-    SWAG_ASSERT(back->resolvedSymbolName);
+    SWAG_ASSERT(node->resolvedSymbolName());
+    SWAG_ASSERT(back->resolvedSymbolName());
 
     SWAG_CHECK(collectAttributes(context, node, nullptr));
     node->addAstFlag(AST_NO_BYTECODE);
 
     // Constraints with alias on a variable
-    if (back->resolvedSymbolName->kind == SymbolKind::Variable)
+    if (back->resolvedSymbolName()->kind == SymbolKind::Variable)
     {
         // alias x = struct.x is not possible
         if (back->kind == AstNodeKind::IdentifierRef)
@@ -31,7 +31,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             int cptVar = 0;
             for (const auto& c : back->children)
             {
-                if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
+                if (c->resolvedSymbolName() && c->resolvedSymbolName()->kind == SymbolKind::Variable)
                 {
                     SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0163)}));
                     cptVar++;
@@ -40,27 +40,27 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         }
     }
 
-    if (back->resolvedSymbolName->kind != SymbolKind::Namespace &&
-        back->resolvedSymbolName->kind != SymbolKind::Function &&
-        back->resolvedSymbolName->kind != SymbolKind::Variable)
+    if (back->resolvedSymbolName()->kind != SymbolKind::Namespace &&
+        back->resolvedSymbolName()->kind != SymbolKind::Function &&
+        back->resolvedSymbolName()->kind != SymbolKind::Variable)
     {
-        const Diagnostic          err{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+        const Diagnostic          err{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName()->kind).c_str())};
         Vector<const Diagnostic*> notes;
 
         notes.push_back(Diagnostic::note(Nte(Nte0013)));
 
-        if (back->resolvedSymbolName->kind == SymbolKind::Enum ||
-            back->resolvedSymbolName->kind == SymbolKind::Interface ||
-            back->resolvedSymbolName->kind == SymbolKind::TypeAlias ||
-            back->resolvedSymbolName->kind == SymbolKind::Struct)
+        if (back->resolvedSymbolName()->kind == SymbolKind::Enum ||
+            back->resolvedSymbolName()->kind == SymbolKind::Interface ||
+            back->resolvedSymbolName()->kind == SymbolKind::TypeAlias ||
+            back->resolvedSymbolName()->kind == SymbolKind::Struct)
         {
-            notes.push_back(Diagnostic::note(node, node->kwdLoc, FMT(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
+            notes.push_back(Diagnostic::note(node, node->kwdLoc, FMT(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName()->kind).c_str())));
         }
 
         return context->report(err, notes);
     }
 
-    SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
+    SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName(), back->resolvedSymbolName(), back->resolvedSymbolOverload()));
     if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         node->ownerScope->addPublicNode(node);
     return true;
@@ -90,9 +90,9 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     // Keep resolution
     if (!node->typeInfo || !node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
     {
-        node->resolvedSymbolName     = childBack->resolvedSymbolName;
-        node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
-        node->typeInfo               = childBack->typeInfo;
+        node->setResolvedSymbolName(childBack->resolvedSymbolName());
+        node->setResolvedSymbolOverload(childBack->resolvedSymbolOverload());
+        node->typeInfo = childBack->typeInfo;
     }
 
     node->token.text  = childBack->token.text;
@@ -117,13 +117,13 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     node->inheritAstFlagsOr(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GEN_TYPEINFO | AST_SIDE_EFFECTS);
 
     // Symbol is in fact a constant value : no need for bytecode
-    if (node->resolvedSymbolOverload &&
-        node->resolvedSymbolOverload->hasFlag(OVERLOAD_COMPUTED_VALUE))
+    if (node->resolvedSymbolOverload() &&
+        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_COMPUTED_VALUE))
     {
         if (!node->hasFlagComputedValue())
         {
             node->setFlagsValueIsComputed();
-            *node->computedValue() = node->resolvedSymbolOverload->computedValue;
+            *node->computedValue() = node->resolvedSymbolOverload()->computedValue;
         }
 
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
@@ -141,7 +141,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->addAstFlag(AST_IS_CONST);
-    const auto overload = node->resolvedSymbolOverload;
+    const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_IS_CONST_ASSIGN);
 
@@ -672,9 +672,9 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
                 YIELD();
                 if (canTry)
                 {
-                    identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                    identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-                    identifierRef->previousResolvedNode   = dependentVar;
+                    identifierRef->setResolvedSymbolOverload(dependentVar->resolvedSymbolOverload());
+                    identifierRef->setResolvedSymbolName(dependentVar->resolvedSymbolOverload()->symbol);
+                    identifierRef->previousResolvedNode = dependentVar;
                 }
             }
         }
@@ -896,7 +896,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->baseJob);
-        context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
+        context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName(), funcDecl, nullptr);
         return true;
     }
 
@@ -1014,12 +1014,12 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     {
         for (auto c : identifier->callParameters->children)
         {
-            if (c->resolvedSymbolOverload &&
+            if (c->resolvedSymbolOverload() &&
                 c->typeInfo &&
                 c->typeInfo->isLambdaClosure() &&
-                c->typeInfo != c->resolvedSymbolOverload->typeInfo)
+                c->typeInfo != c->resolvedSymbolOverload()->typeInfo)
             {
-                auto newTypeInfo    = c->resolvedSymbolOverload->typeInfo->clone();
+                auto newTypeInfo    = c->resolvedSymbolOverload()->typeInfo->clone();
                 newTypeInfo->kind   = TypeInfoKind::LambdaClosure;
                 newTypeInfo->sizeOf = c->typeInfo->sizeOf;
                 c->typeInfo         = newTypeInfo;
@@ -1032,11 +1032,11 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         identifier->typeInfo &&
         !identifier->typeInfo->isUndefined())
     {
-        if (identifier->resolvedSymbolOverload)
+        if (identifier->resolvedSymbolOverload())
         {
             OneMatch oneMatch;
-            oneMatch.symbolOverload = identifier->resolvedSymbolOverload;
-            oneMatch.scope          = identifier->resolvedSymbolOverload->node->ownerScope;
+            oneMatch.symbolOverload = identifier->resolvedSymbolOverload();
+            oneMatch.scope          = identifier->resolvedSymbolOverload()->node->ownerScope;
             SWAG_CHECK(setSymbolMatch(context, identifierRef, identifier, oneMatch));
         }
 
@@ -1056,7 +1056,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         if (identifier->isSilentCall())
         {
             OneSymbolMatch sm;
-            sm.symbol = identifierRef->resolvedSymbolName;
+            sm.symbol = identifierRef->resolvedSymbolName();
             dependentSymbols.push_back(sm);
         }
         else
@@ -1142,9 +1142,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         }
 
         // Partial resolution
-        identifier->resolvedSymbolName     = symbol;
-        identifier->resolvedSymbolOverload = symbol->overloads[0];
-        identifier->typeInfo               = identifier->resolvedSymbolOverload->typeInfo;
+        identifier->setResolvedSymbolName(symbol);
+        identifier->setResolvedSymbolOverload(symbol->overloads[0]);
+        identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;
 
         // In case identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->children.back())
@@ -1153,8 +1153,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
     }
 
-    auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
-    auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
+    auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload();
+    auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName();
     auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
 
     // In case of a reevaluation, ufcsFirstParam will be null, but we still want to cast for ufcs
@@ -1198,10 +1198,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         for (auto& oneOver : toSolveOverload)
         {
-            auto symbolOverload                   = oneOver.overload;
-            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
-            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
-            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
+            auto symbolOverload = oneOver.overload;
+            identifierRef->setResolvedSymbolOverload(orgResolvedSymbolOverload);
+            identifierRef->setResolvedSymbolName(orgResolvedSymbolName);
+            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
 
             // Is there a using variable associated with the symbol to solve ?
             AstNode* dependentVar     = nullptr;
@@ -1278,18 +1278,18 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         if (context->result == ContextResult::Pending)
         {
-            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
-            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
-            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
+            identifierRef->setResolvedSymbolOverload(orgResolvedSymbolOverload);
+            identifierRef->setResolvedSymbolName(orgResolvedSymbolName);
+            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
             return true;
         }
 
         if (context->result == ContextResult::NewChildren1)
         {
-            identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
-            identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
-            identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
-            context->result                       = ContextResult::NewChildren;
+            identifierRef->setResolvedSymbolOverload(orgResolvedSymbolOverload);
+            identifierRef->setResolvedSymbolName(orgResolvedSymbolName);
+            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
+            context->result                     = ContextResult::NewChildren;
             return true;
         }
 
@@ -1321,8 +1321,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Name alias with overloads (more than one match)
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS) && context->cacheMatches.size() > 1)
     {
-        identifier->resolvedSymbolName     = context->cacheMatches[0]->symbolOverload->symbol;
-        identifier->resolvedSymbolOverload = nullptr;
+        identifier->setResolvedSymbolName(context->cacheMatches[0]->symbolOverload->symbol);
+        identifier->setResolvedSymbolOverload(nullptr);
         return true;
     }
 
@@ -1336,9 +1336,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (match->dependentVar && !identifierRef->previousResolvedNode)
             {
-                identifierRef->resolvedSymbolOverload = match->dependentVar->resolvedSymbolOverload;
-                identifierRef->resolvedSymbolName     = match->dependentVar->resolvedSymbolOverload->symbol;
-                identifierRef->previousResolvedNode   = match->dependentVar;
+                identifierRef->setResolvedSymbolOverload(match->dependentVar->resolvedSymbolOverload());
+                identifierRef->setResolvedSymbolName(match->dependentVar->resolvedSymbolOverload()->symbol);
+                identifierRef->previousResolvedNode = match->dependentVar;
             }
 
             SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, *match));

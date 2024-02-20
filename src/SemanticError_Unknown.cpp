@@ -89,8 +89,8 @@ namespace
 
         // Variable before
         if (prevIdentifier &&
-            prevIdentifier->resolvedSymbolName &&
-            prevIdentifier->resolvedSymbolName->kind == SymbolKind::Variable &&
+            prevIdentifier->resolvedSymbolName() &&
+            prevIdentifier->resolvedSymbolName()->kind == SymbolKind::Variable &&
             !prevIdentifier->hasAstFlag(AST_GENERATED))
         {
             err->addNote(prevIdentifier, Diagnostic::isType(prevIdentifier));
@@ -119,7 +119,7 @@ namespace
             return false;
 
         const auto prev = identifier->identifierRef()->children[identifier->childParentIdx() - 1];
-        if (!prev->resolvedSymbolName)
+        if (!prev->resolvedSymbolName())
             return false;
 
         if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
@@ -139,7 +139,7 @@ namespace
         else
         {
             const Diagnostic* note;
-            const auto        kindName = Naming::aKindName(prev->resolvedSymbolName->kind);
+            const auto        kindName = Naming::aKindName(prev->resolvedSymbolName()->kind);
             if (prev->typeInfo)
                 note = Diagnostic::note(prev, FMT(Nte(Nte0004), prev->token.c_str(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
             else

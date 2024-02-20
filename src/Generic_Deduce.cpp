@@ -150,14 +150,14 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             if (wantedArray->isGeneric() && wantedArray->hasFlag(TYPEINFO_GENERIC_COUNT))
             {
                 SWAG_ASSERT(wantedArray->sizeNode);
-                SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName);
+                SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName());
                 const auto typeSize = wantedArray->sizeNode->typeInfo;
 
                 ComputedValue* cv = Allocator::alloc<ComputedValue>();
                 cv->reg.s64       = count;
 
                 // Constant already defined ?
-                const auto& cstName = wantedArray->sizeNode->resolvedSymbolName->name;
+                const auto& cstName = wantedArray->sizeNode->resolvedSymbolName()->name;
                 const auto  it      = context.genericReplaceValues.find(cstName);
                 if (it != context.genericReplaceValues.end())
                 {
@@ -233,7 +233,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 else
                 {
                     const AstFuncDecl* decl = castAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
-                    if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
+                    if (decl->pendingLambdaJob && decl->resolvedSymbolOverload()->hasFlag(OVERLOAD_UNDEFINED))
                     {
                         const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
                         if (tt != wantedLambda)

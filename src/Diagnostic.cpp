@@ -714,8 +714,8 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 
 Utf8 Diagnostic::isType(const AstNode* node)
 {
-    if (node->resolvedSymbolOverload)
-        return isType(node->resolvedSymbolOverload);
+    if (node->resolvedSymbolOverload())
+        return isType(node->resolvedSymbolOverload());
     return isType(node->typeInfo);
 }
 

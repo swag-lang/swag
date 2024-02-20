@@ -304,7 +304,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                 break;
         }
 
-        structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(context, structNode, symbolKind);
+        structNode->setResolvedSymbolName(currentScope->symTable.registerSymbolNameNoLock(context, structNode, symbolKind));
     }
 
     // Dispatch owners

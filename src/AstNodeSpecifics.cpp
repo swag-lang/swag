@@ -140,8 +140,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
         newNode->typeInfo = it->second.typeInfoReplace;
         if (newNode->typeInfo->declNode)
         {
-            newNode->resolvedSymbolName     = newNode->typeInfo->declNode->resolvedSymbolName;
-            newNode->resolvedSymbolOverload = newNode->typeInfo->declNode->resolvedSymbolOverload;
+            newNode->setResolvedSymbolName(newNode->typeInfo->declNode->resolvedSymbolName());
+            newNode->setResolvedSymbolOverload(newNode->typeInfo->declNode->resolvedSymbolOverload());
         }
 
         newNode->addAstFlag(AST_FROM_GENERIC | AST_FROM_GENERIC_REPLACE);
@@ -266,12 +266,12 @@ void AstFuncDecl::computeFullNameForeignExport()
 
     // If the symbol has overloads, i.e. more than one definition, then we
     // append the type
-    if (resolvedSymbolName && resolvedSymbolName->overloads.size() > 1)
+    if (resolvedSymbolName() && resolvedSymbolName()->overloads.size() > 1)
     {
         // Empty (forward) decl are counted as overloads, so be sure it's not a bunch of
         // empty functions.
         uint32_t countNoEmpty = 0;
-        for (const auto r : resolvedSymbolName->overloads)
+        for (const auto r : resolvedSymbolName()->overloads)
         {
             if (!r->node->isEmptyFct())
             {
@@ -417,8 +417,8 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
             globalScope = globalScope->parentScope;
         sub->addAlternativeScope(globalScope);
 
-        sub->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, sub, symKind);
-        sub->resolvedSymbolOverload = nullptr;
+        sub->setResolvedSymbolName(subFuncScope->symTable.registerSymbolName(nullptr, sub, symKind));
+        sub->setResolvedSymbolOverload(nullptr);
 
         // Do it last to avoid a race condition with the file job
         Ast::addChildBack(f->parent, subF);
@@ -1137,10 +1137,10 @@ AstNode* AstInline::clone(CloneContext& context)
     return newNode;
 }
 
-void AstCompilerIfBlock::addSymbol(AstNode* node, SymbolName* symbolName)
+void AstCompilerIfBlock::addSymbol(AstNode* node, SymbolName* symName)
 {
     ScopedLock lk(mutex);
-    symbols.push_back({node, symbolName});
+    symbols.push_back({node, symName});
 }
 
 AstNode* AstCompilerIfBlock::clone(CloneContext& context)
@@ -1238,8 +1238,8 @@ AstNode* AstAlias::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstAlias>();
     newNode->copyFrom(context, this);
     newNode->kwdLoc = kwdLoc;
-    if (resolvedSymbolName)
-        newNode->resolvedSymbolName = newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, resolvedSymbolName->kind);
+    if (resolvedSymbolName())
+        newNode->setResolvedSymbolName(newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, resolvedSymbolName()->kind));
     return newNode;
 }
 

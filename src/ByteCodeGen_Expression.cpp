@@ -223,7 +223,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
                 if (!typeVar->isSlice() &&
                     (!varDecl->hasExtMisc() || !varDecl->extMisc()->resolvedUserOpSymbolOverload))
                 {
-                    startOffset     = listNode->parent->resolvedSymbolOverload->computedValue.storageOffset;
+                    startOffset     = listNode->parent->resolvedSymbolOverload()->computedValue.storageOffset;
                     const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
                     inst->b.u64     = startOffset;
                     canDrop         = false;

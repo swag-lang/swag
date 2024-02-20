@@ -1666,8 +1666,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             concat.addString(node->token.text);
             CONCAT_FIXED_STR(concat, " = ");
             const auto back = node->children.back();
-            if (back->resolvedSymbolName)
-                concat.addString(back->resolvedSymbolName->getFullName());
+            if (back->resolvedSymbolName())
+                concat.addString(back->resolvedSymbolName()->getFullName());
             else
                 SWAG_CHECK(outputNode(context, concat, back));
             break;
@@ -2191,7 +2191,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         if (scope->kind == ScopeKind::Impl)
         {
             const auto nodeImpl = castAst<AstImpl>(scope->owner, AstNodeKind::Impl);
-            const auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
+            const auto symbol   = nodeImpl->identifier->resolvedSymbolOverload();
             concat.addStringFormat("impl %s for ", symbol->node->getScopedName().c_str());
             concat.addString(scope->parentScope->name);
             concat.addEol();

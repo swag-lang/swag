@@ -40,8 +40,8 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
     if (!funcDecl && !bc)
         return;
 
-    if (funcDecl && funcDecl->resolvedSymbolName)
-        funcDecl->resolvedSymbolName->flags.add(SYMBOL_USED);
+    if (funcDecl && funcDecl->resolvedSymbolName())
+        funcDecl->resolvedSymbolName()->flags.add(SYMBOL_USED);
     if (bc)
         bc->isUsed = true;
 
@@ -714,8 +714,8 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
             }
             // :opAffectConstExpr
             else if (typeVar->isStruct() &&
-                     varDecl->resolvedSymbolOverload &&
-                     varDecl->resolvedSymbolOverload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
+                     varDecl->resolvedSymbolOverload() &&
+                     varDecl->resolvedSymbolOverload()->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
                      varDecl->computedValue() &&
                      varDecl->computedValue()->storageSegment)
             {
@@ -1207,7 +1207,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         {
             if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
             {
-                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->children.back()->computedValue()->storageOffset)
+                if (toDrop.overload == from->resolvedSymbolOverload() && toDrop.storageOffset == from->children.back()->computedValue()->storageOffset)
                 {
                     mustReinit        = false;
                     toDrop.typeStruct = nullptr;
@@ -1241,7 +1241,7 @@ void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverloa
     const auto node = context->node;
     if (retVal)
     {
-        const auto overload = node->resolvedSymbolOverload;
+        const auto overload = node->resolvedSymbolOverload();
         SWAG_ASSERT(overload);
         if (overload->node->hasOwnerInline() && overload->node->ownerInline()->resultRegisterRc.countResults)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline()->resultRegisterRc);
@@ -1260,7 +1260,7 @@ void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverloa
 bool ByteCodeGen::emitStructInit(const ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
     const auto node     = context->node;
-    const auto resolved = node->resolvedSymbolOverload;
+    const auto resolved = node->resolvedSymbolOverload();
 
     // All fields are explicitly not initialized, so we are done
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
@@ -1305,7 +1305,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 {
     PushContextFlags cf(context, BCC_FLAG_NO_SAFETY);
     const auto       node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-    const auto       resolved = node->resolvedSymbolOverload;
+    const auto       resolved = node->resolvedSymbolOverload();
 
     if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
     {

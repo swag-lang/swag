@@ -31,15 +31,15 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
         if (c->hasAstFlag(AST_CONST_EXPR))
             continue;
 
-        if (c->resolvedSymbolName)
+        if (c->resolvedSymbolName())
         {
-            if (c->resolvedSymbolName->kind == SymbolKind::Function)
+            if (c->resolvedSymbolName()->kind == SymbolKind::Function)
             {
-                if (c->resolvedSymbolOverload)
+                if (c->resolvedSymbolOverload())
                 {
-                    if (!c->resolvedSymbolOverload->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
+                    if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, FMT(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
+                        const auto result = Diagnostic::note(c, c->token, FMT(Nte(Nte0117), c->resolvedSymbolName()->name.c_str()));
                         result->hint      = Nte(Nte0079);
                         return result;
                     }
@@ -48,9 +48,9 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 }
             }
 
-            if (c->resolvedSymbolName->kind == SymbolKind::Variable)
+            if (c->resolvedSymbolName()->kind == SymbolKind::Variable)
             {
-                return Diagnostic::note(c, c->token, FMT(Nte(Nte0005), c->resolvedSymbolName->name.c_str()));
+                return Diagnostic::note(c, c->token, FMT(Nte(Nte0005), c->resolvedSymbolName()->name.c_str()));
             }
 
             return Diagnostic::note(c, Nte(Nte0056));
@@ -789,7 +789,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     auto       locNode = node->children.front();
     node->typeInfo     = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
 
-    if (locNode->isValidIfParam(locNode->resolvedSymbolOverload))
+    if (locNode->isValidIfParam(locNode->resolvedSymbolOverload()))
     {
         node->removeAstFlag(AST_NO_BYTECODE);
         locNode->addAstFlag(AST_NO_BYTECODE);
@@ -801,9 +801,9 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     while (true)
     {
         // If identifier is an inline param call replacement, take it
-        if (locNode->resolvedSymbolOverload && locNode->resolvedSymbolOverload->fromInlineParam)
+        if (locNode->resolvedSymbolOverload() && locNode->resolvedSymbolOverload()->fromInlineParam)
         {
-            locNode = locNode->resolvedSymbolOverload->fromInlineParam;
+            locNode = locNode->resolvedSymbolOverload()->fromInlineParam;
             done    = true;
             continue;
         }
@@ -859,8 +859,8 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     }
 
     // If identifier is an inline param call replacement, take it
-    if (locNode->resolvedSymbolOverload && !done)
-        locNode = locNode->resolvedSymbolOverload->node;
+    if (locNode->resolvedSymbolOverload() && !done)
+        locNode = locNode->resolvedSymbolOverload()->node;
 
     node->setFlagsValueIsComputed();
     ByteCodeGen::computeSourceLocation(context, locNode, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
@@ -872,7 +872,7 @@ bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
     const auto node = context->node;
     node->setFlagsValueIsComputed();
-    node->computedValue()->reg.b = node->children.back()->resolvedSymbolOverload != nullptr;
+    node->computedValue()->reg.b = node->children.back()->resolvedSymbolOverload() != nullptr;
     node->typeInfo               = g_TypeMgr->typeInfoBool;
     return true;
 }

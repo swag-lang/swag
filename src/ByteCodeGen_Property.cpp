@@ -107,11 +107,11 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 
     node->resultRegisterRc = reserveRegisterRC(context);
     const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicLocationSI, node->resultRegisterRc);
-    SWAG_ASSERT(front->resolvedSymbolOverload);
-    SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
-    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-    inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
-    inst->d.pointer     = reinterpret_cast<uint8_t*>(front->resolvedSymbolOverload);
+    SWAG_ASSERT(front->resolvedSymbolOverload());
+    SWAG_ASSERT(front->resolvedSymbolOverload()->node->ownerFct);
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload()->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload()->storageIndex);
+    inst->d.pointer     = reinterpret_cast<uint8_t*>(front->resolvedSymbolOverload());
 
     return true;
 }
@@ -123,11 +123,11 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 
     node->resultRegisterRc = reserveRegisterRC(context);
     const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRc);
-    SWAG_ASSERT(front->resolvedSymbolOverload);
-    SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
-    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-    inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
-    inst->d.pointer     = reinterpret_cast<uint8_t*>(front->resolvedSymbolOverload);
+    SWAG_ASSERT(front->resolvedSymbolOverload());
+    SWAG_ASSERT(front->resolvedSymbolOverload()->node->ownerFct);
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload()->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    inst->c.u32         = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload()->storageIndex);
+    inst->d.pointer     = reinterpret_cast<uint8_t*>(front->resolvedSymbolOverload());
 
     return true;
 }

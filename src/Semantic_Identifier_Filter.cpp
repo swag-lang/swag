@@ -66,13 +66,13 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         {
             if (node->hasOwnerInline())
             {
-                if (node->ownerInline()->func->resolvedSymbolOverload == over)
+                if (node->ownerInline()->func->resolvedSymbolOverload() == over)
                 {
                     matches[i]->remove = true;
                     continue;
                 }
             }
-            else if (node->ownerFct && node->ownerFct->resolvedSymbolOverload == over)
+            else if (node->ownerFct && node->ownerFct->resolvedSymbolOverload() == over)
             {
                 matches[i]->remove = true;
                 continue;

@@ -19,11 +19,11 @@ bool Semantic::resolveEnum(SemanticContext* context)
     node->addAstFlag(AST_NO_BYTECODE);
 
     // Be sure we have only one enum node
-    if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
+    if (node->resolvedSymbolName() && node->resolvedSymbolName()->nodes.size() > 1)
     {
-        const Diagnostic err({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName->name.c_str())});
+        const Diagnostic err({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName()->name.c_str())});
         Diagnostic*      note = nullptr;
-        for (const auto p : node->resolvedSymbolName->nodes)
+        for (const auto p : node->resolvedSymbolName()->nodes)
         {
             if (p != node)
             {
@@ -44,8 +44,8 @@ bool Semantic::resolveEnum(SemanticContext* context)
     toAdd.typeInfo = typeInfo;
     toAdd.kind     = SymbolKind::Enum;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-    SWAG_CHECK(node->resolvedSymbolOverload);
+    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+    SWAG_CHECK(node->resolvedSymbolOverload());
 
     // Be sure we don't have duplicated values
     if (node->hasAttribute(ATTRIBUTE_NO_DUPLICATE))
@@ -214,15 +214,15 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto node  = context->node;
     const auto child = node->children.front();
 
-    node->typeInfo               = child->typeInfo;
-    node->resolvedSymbolName     = child->resolvedSymbolName;
-    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
+    node->typeInfo = child->typeInfo;
+    node->setResolvedSymbolName(child->resolvedSymbolName());
+    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
 
     // Be sure the identifier is an enum
     if (!node->typeInfo->isEnum())
     {
         const Diagnostic err{node, FMT(Err(Err0261), node->typeInfo->getDisplayNameC())};
-        return context->report(err, Diagnostic::hereIs(node->resolvedSymbolOverload));
+        return context->report(err, Diagnostic::hereIs(node->resolvedSymbolOverload()));
     }
 
     const auto enumNode = castAst<AstEnum>(node->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
@@ -237,18 +237,18 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CAST_FLAG_EXACT))
     {
         const Diagnostic err{node, FMT(Err(Err0429), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
-        const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload);
+        const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload());
         const auto       note1 = Diagnostic::hereIs(enumNode->type);
         return context->report(err, note, note1);
     }
 
     // Add a symbol in the enum scope
     AddSymbolTypeInfo toAdd;
-    toAdd.node                   = node;
-    toAdd.typeInfo               = node->typeInfo;
-    toAdd.kind                   = SymbolKind::Enum;
-    node->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd);
-    SWAG_CHECK(node->resolvedSymbolOverload);
+    toAdd.node     = node;
+    toAdd.typeInfo = node->typeInfo;
+    toAdd.kind     = SymbolKind::Enum;
+    node->setResolvedSymbolOverload(typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd));
+    SWAG_CHECK(node->resolvedSymbolOverload());
 
     // Store the value in the enum type
     const auto typeParam = TypeManager::makeParam();
@@ -441,14 +441,14 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
 
     // Add a symbol in the enum scope
     AddSymbolTypeInfo toAdd;
-    toAdd.node                      = valNode;
-    toAdd.typeInfo                  = valNode->typeInfo;
-    toAdd.kind                      = SymbolKind::EnumValue;
-    toAdd.computedValue             = enumNode->computedValue();
-    toAdd.storageOffset             = storageOffset;
-    toAdd.storageSegment            = storageSegment;
-    valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd);
-    SWAG_CHECK(valNode->resolvedSymbolOverload);
+    toAdd.node           = valNode;
+    toAdd.typeInfo       = valNode->typeInfo;
+    toAdd.kind           = SymbolKind::EnumValue;
+    toAdd.computedValue  = enumNode->computedValue();
+    toAdd.storageOffset  = storageOffset;
+    toAdd.storageSegment = storageSegment;
+    valNode->setResolvedSymbolOverload(typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd));
+    SWAG_CHECK(valNode->resolvedSymbolOverload());
 
     // Store the value in the enum type
     const auto typeParam = TypeManager::makeParam();

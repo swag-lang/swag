@@ -185,7 +185,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     {
         truncRegisterRC(context, node->resultRegisterRc, 1);
         const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-        inst->d.pointer = reinterpret_cast<uint8_t*>(node->resolvedSymbolOverload);
+        inst->d.pointer = reinterpret_cast<uint8_t*>(node->resolvedSymbolOverload());
         return true;
     }
 
@@ -193,7 +193,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     {
         truncRegisterRC(context, node->resultRegisterRc, 1);
         const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
-        inst->d.pointer = reinterpret_cast<uint8_t*>(node->resolvedSymbolOverload);
+        inst->d.pointer = reinterpret_cast<uint8_t*>(node->resolvedSymbolOverload());
         return true;
     }
 
@@ -461,7 +461,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     else
         front = node->children.front();
 
-    const auto funcNode = castAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    const auto funcNode = castAst<AstFuncDecl>(front->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
 
     if (!funcNode->isForeign())
     {

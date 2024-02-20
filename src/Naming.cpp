@@ -291,7 +291,7 @@ Utf8 Naming::kindName(const AstNode* node, Utf8& article)
                 return "global variable";
             if (node->hasAstFlag(AST_STRUCT_MEMBER))
                 return "struct member";
-            if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
+            if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 return "function parameter";
             return "local variable";
 

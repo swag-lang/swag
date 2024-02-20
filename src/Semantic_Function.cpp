@@ -54,9 +54,9 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
 
         if (nodeParam->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
         {
-            SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
-            nodeParam->typeInfo                         = nodeParam->type->typeInfo;
-            nodeParam->resolvedSymbolOverload->typeInfo = nodeParam->typeInfo;
+            SWAG_ASSERT(nodeParam->resolvedSymbolOverload());
+            nodeParam->typeInfo                           = nodeParam->type->typeInfo;
+            nodeParam->resolvedSymbolOverload()->typeInfo = nodeParam->typeInfo;
         }
     }
 
@@ -363,16 +363,16 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
                 // Be sure interface has been fully solved
                 {
                     ScopedLock lk(forId->mutex);
-                    ScopedLock lk1(forId->resolvedSymbolName->mutex);
-                    if (forId->resolvedSymbolName->cptOverloads)
+                    ScopedLock lk1(forId->resolvedSymbolName()->mutex);
+                    if (forId->resolvedSymbolName()->cptOverloads)
                     {
-                        waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName);
+                        waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName());
                         return true;
                     }
                 }
 
                 {
-                    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload->typeInfo, TypeInfoKind::Interface);
+                    const auto typeBaseInterface = castTypeInfo<TypeInfoStruct>(forId->resolvedSymbolOverload()->typeInfo, TypeInfoKind::Interface);
                     const auto typeInterface     = castTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
                     ScopedLock lk(typeInterface->mutex);
 
@@ -434,7 +434,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
         if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
         {
             const auto param       = funcNode->parameters->children.back();
-            const auto resolved    = param->resolvedSymbolOverload;
+            const auto resolved    = param->resolvedSymbolOverload();
             resolved->storageIndex = 0; // Always the first one
             storageIndex += 2;
         }
@@ -445,7 +445,7 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
             if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
                 break;
             const auto param       = funcNode->parameters->children[i];
-            const auto resolved    = param->resolvedSymbolOverload;
+            const auto resolved    = param->resolvedSymbolOverload();
             resolved->storageIndex = storageIndex;
 
             const auto typeParam    = TypeManager::concreteType(resolved->typeInfo);
@@ -467,12 +467,12 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         setFuncDeclParamsIndex(funcNode);
         funcNode->pendingLambdaJob = nullptr;
 
-        ScopedLock lk(funcNode->resolvedSymbolName->mutex);
+        ScopedLock lk(funcNode->resolvedSymbolName()->mutex);
 
         // We were not a short lambda, so just wakeup our dependencies
-        if (!funcNode->resolvedSymbolOverload->hasFlag(OVERLOAD_UNDEFINED))
+        if (!funcNode->resolvedSymbolOverload()->hasFlag(OVERLOAD_UNDEFINED))
         {
-            funcNode->resolvedSymbolName->dependentJobs.setRunning();
+            funcNode->resolvedSymbolName()->dependentJobs.setRunning();
         }
 
         // We were a short lambda, and the return type is now valid
@@ -480,8 +480,8 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         // (because the registration was the same as an incomplete one)
         else if (!funcNode->returnType->typeInfo->isGeneric())
         {
-            funcNode->resolvedSymbolOverload->flags.remove(OVERLOAD_UNDEFINED);
-            funcNode->resolvedSymbolName->decreaseOverloadNoLock();
+            funcNode->resolvedSymbolOverload()->flags.remove(OVERLOAD_UNDEFINED);
+            funcNode->resolvedSymbolName()->decreaseOverloadNoLock();
         }
 
         // Return type is generic. We must evaluate the content to deduce it, so we
@@ -815,18 +815,18 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         {
             for (auto c : funcNode->genericParameters->children)
             {
-                if (!c->resolvedSymbolOverload)
+                if (!c->resolvedSymbolOverload())
                     continue;
 
                 for (auto sc : structDecl->genericParameters->children)
                 {
-                    if (!sc->resolvedSymbolOverload)
+                    if (!sc->resolvedSymbolOverload())
                         continue;
 
-                    if (c->resolvedSymbolOverload->node->token.text == sc->resolvedSymbolOverload->node->token.text)
+                    if (c->resolvedSymbolOverload()->node->token.text == sc->resolvedSymbolOverload()->node->token.text)
                     {
-                        Diagnostic err{c, FMT(Err(Err0114), c->resolvedSymbolOverload->node->token.c_str())};
-                        auto       note = Diagnostic::note(sc->resolvedSymbolOverload->node, Nte(Nte0073));
+                        Diagnostic err{c, FMT(Err(Err0114), c->resolvedSymbolOverload()->node->token.c_str())};
+                        auto       note = Diagnostic::note(sc->resolvedSymbolOverload()->node, Nte(Nte0073));
                         return context->report(err, note);
                     }
                 }
@@ -854,7 +854,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, toAdd);
             if (!overload)
                 return false;
-            c->resolvedSymbolOverload             = overload;
+            c->setResolvedSymbolOverload(overload);
             overload->computedValue.storageOffset = storageOffset;
             storageOffset += overload->typeInfo->sizeOf;
         }
@@ -872,21 +872,21 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // real function at some point.
     if (funcNode->isEmptyFct() && !funcNode->isForeign() && funcNode->token.text[0] != '@')
     {
-        ScopedLock lk(funcNode->resolvedSymbolName->mutex);
+        ScopedLock lk(funcNode->resolvedSymbolName()->mutex);
 
         // We need to be sure that we only have empty functions, and not a real one.
         // As we can have multiple times the same empty function prototype, count them.
         size_t cptEmpty = 0;
-        for (auto n : funcNode->resolvedSymbolName->nodes)
+        for (auto n : funcNode->resolvedSymbolName()->nodes)
         {
             if (!n->isEmptyFct())
                 break;
             cptEmpty++;
         }
 
-        if (cptEmpty == funcNode->resolvedSymbolName->nodes.size() && funcNode->resolvedSymbolName->cptOverloads == 1)
+        if (cptEmpty == funcNode->resolvedSymbolName()->nodes.size() && funcNode->resolvedSymbolName()->cptOverloads == 1)
         {
-            funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
+            funcNode->resolvedSymbolName()->kind = SymbolKind::PlaceHolder;
             return true;
         }
     }
@@ -937,18 +937,18 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     toAdd.kind     = SymbolKind::Function;
     toAdd.flags    = overFlags;
 
-    funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-    funcNode->resolvedSymbolName     = toAdd.symbolName;
-    SWAG_CHECK(funcNode->resolvedSymbolOverload);
+    funcNode->setResolvedSymbolOverload(funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+    funcNode->setResolvedSymbolName(toAdd.symbolName);
+    SWAG_CHECK(funcNode->resolvedSymbolOverload());
 
     // Be sure an overloaded function has the attribute
     if (!funcNode->hasAstFlag(AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
-        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
+        if (funcNode->resolvedSymbolName()->overloads.size() > 1 && !funcNode->hasAttribute(ATTRIBUTE_OVERLOAD))
         {
             AstFuncDecl* other = nullptr;
-            for (const auto n : funcNode->resolvedSymbolName->nodes)
+            for (const auto n : funcNode->resolvedSymbolName()->nodes)
             {
                 if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
                 {
@@ -1138,7 +1138,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
         if (c->hasFlagComputedValue())
             continue;
 
-        const auto symbol = c->children.front()->resolvedSymbolName;
+        const auto symbol = c->children.front()->resolvedSymbolName();
         if (!symbol)
             continue;
 
@@ -1208,8 +1208,8 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
         YIELD();
     }
 
-    node->resolvedSymbolName     = child->resolvedSymbolName;
-    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
+    node->setResolvedSymbolName(child->resolvedSymbolName());
+    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
 
     if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
     {
@@ -1221,10 +1221,10 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     // instead of a copy, in case the parameter to the tuple init is a local variable
     if (node->autoTupleReturn)
     {
-        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL))
+        if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_LOCAL))
         {
             node->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
-            node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
+            node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload());
         }
     }
 
@@ -1518,7 +1518,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
-    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL))
+    if (child->resolvedSymbolOverload() && child->resolvedSymbolOverload()->hasFlag(OVERLOAD_RETVAL))
     {
         node->typeInfo = child->typeInfo;
     }
@@ -1626,16 +1626,16 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // If we are returning a local variable, we can do a move
-    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL))
+    if (child->resolvedSymbolOverload() && child->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         child->addAstFlag(AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
-        node->forceNoDrop.push_back(child->resolvedSymbolOverload);
+        node->forceNoDrop.push_back(child->resolvedSymbolOverload());
     }
 
-    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL))
+    if (child->resolvedSymbolOverload() && child->resolvedSymbolOverload()->hasFlag(OVERLOAD_RETVAL))
     {
         child->addAstFlag(AST_NO_BYTECODE);
-        node->forceNoDrop.push_back(child->resolvedSymbolOverload);
+        node->forceNoDrop.push_back(child->resolvedSymbolOverload());
     }
 
     // Propagate return so that we can detect if some paths are missing one
@@ -1806,7 +1806,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         for (const auto child : funcDecl->genericParameters->children)
         {
             const auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);
-            symName->addOverloadNoLock(child, child->typeInfo, &child->resolvedSymbolOverload->computedValue);
+            symName->addOverloadNoLock(child, child->typeInfo, &child->resolvedSymbolOverload()->computedValue);
             symName->cptOverloads = 0; // Simulate a done resolution
         }
     }

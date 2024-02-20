@@ -79,8 +79,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         castedTypeInfo = from->castedTypeInfo;
     }
 
-    resolvedSymbolName     = from->resolvedSymbolName;
-    resolvedSymbolOverload = from->resolvedSymbolOverload;
+    setResolvedSymbolName(from->resolvedSymbolName());
+    setResolvedSymbolOverload(from->resolvedSymbolOverload());
 
     token   = from->token;
     tokenId = from->tokenId;
@@ -1369,4 +1369,14 @@ void AstNode::setOwnerBreakable(AstBreakable* bkp)
         return;
     allocateExtension(ExtensionKind::Owner);
     extOwner()->ownerBreakable = bkp;
+}
+
+void AstNode::setResolvedSymbolName(SymbolName* sym)
+{
+    symbolName = sym;
+}
+
+void AstNode::setResolvedSymbolOverload(SymbolOverload* sym)
+{
+    symbolOverload = sym;
 }

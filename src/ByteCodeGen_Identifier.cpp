@@ -43,7 +43,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         return true;
 
     const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-    const auto resolved   = node->resolvedSymbolOverload;
+    const auto resolved   = node->resolvedSymbolOverload();
     const auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
     SWAG_VERIFY(!typeInfo->isKindGeneric(), Report::internalError(context->node, "emitIdentifier, type is generic"));
 
@@ -74,7 +74,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
         // Get capture block pointer (first parameter)
         const auto inst    = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRc);
-        inst->b.u64u32.low = node->ownerFct->parameters->children.front()->resolvedSymbolOverload->computedValue.storageOffset;
+        inst->b.u64u32.low = node->ownerFct->parameters->children.front()->resolvedSymbolOverload()->computedValue.storageOffset;
 
         // :VariadicAndClosure
         // If function is variable, then parameter of the capture context is 2 (after the slice), and not 0.

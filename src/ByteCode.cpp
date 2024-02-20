@@ -115,7 +115,7 @@ Utf8 ByteCode::getCallName()
     // used to differentiate overloads)
     if (node && node->sourceFile && node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && !node->ownerStructScope)
     {
-        if (node->resolvedSymbolName && node->resolvedSymbolName->cptOverloadsInit == 1)
+        if (node->resolvedSymbolName() && node->resolvedSymbolName()->cptOverloadsInit == 1)
         {
             return name;
         }

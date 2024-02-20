@@ -251,9 +251,9 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
     typeInfo      = typeInfo->getConcreteAlias();
 
-    if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    if (expression->resolvedSymbolName() && expression->resolvedSymbolName()->kind == SymbolKind::EnumValue)
         typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
-    else if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::Variable)
+    else if (expression->resolvedSymbolName() && expression->resolvedSymbolName()->kind == SymbolKind::Variable)
         typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
 
     if (typeInfo->isEnum())
@@ -582,10 +582,10 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
             node->computedValue()->text.append(reinterpret_cast<const char*>(b->data), concat.bucketCount(b));
     }
-    else if (expr->resolvedSymbolName)
-        node->computedValue()->text = expr->resolvedSymbolName->getFullName();
-    else if (expr->resolvedSymbolOverload)
-        node->computedValue()->text = expr->resolvedSymbolOverload->symbol->getFullName();
+    else if (expr->resolvedSymbolName())
+        node->computedValue()->text = expr->resolvedSymbolName()->getFullName();
+    else if (expr->resolvedSymbolOverload())
+        node->computedValue()->text = expr->resolvedSymbolOverload()->symbol->getFullName();
     else
         return context->report({expr, Err(Err0734)});
 
@@ -604,10 +604,10 @@ bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
 
     if (expr->isConstantGenTypeInfo())
         node->computedValue()->text = Utf8{expr->getConstantGenTypeInfo()->name};
-    else if (expr->resolvedSymbolName)
-        node->computedValue()->text = expr->resolvedSymbolName->name;
-    else if (expr->resolvedSymbolOverload)
-        node->computedValue()->text = expr->resolvedSymbolOverload->symbol->name;
+    else if (expr->resolvedSymbolName())
+        node->computedValue()->text = expr->resolvedSymbolName()->name;
+    else if (expr->resolvedSymbolOverload())
+        node->computedValue()->text = expr->resolvedSymbolOverload()->symbol->name;
     else
         return context->report({expr, Err(Err0733)});
 
@@ -868,7 +868,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             expr->addAstFlag(AST_NO_BYTECODE);
 
             // Special case for a function parameter in a validif block, should be done at runtime
-            if (expr->isValidIfParam(expr->resolvedSymbolOverload))
+            if (expr->isValidIfParam(expr->resolvedSymbolOverload()))
             {
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicIsConstExprSI;
                 break;
@@ -908,9 +908,9 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         case TokenId::IntrinsicOffsetOf:
         {
             const auto expr = node->children.front();
-            SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload, expr));
+            SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload(), expr));
             node->setFlagsValueIsComputed();
-            node->computedValue()->reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
+            node->computedValue()->reg.u64 = expr->resolvedSymbolOverload()->computedValue.storageOffset;
             if (node->computedValue()->reg.u64 > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else

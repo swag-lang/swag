@@ -399,7 +399,7 @@ namespace
         {
             Ast::visit(ip->node, [&](AstNode* n)
                        {
-                           if (n->resolvedSymbolOverload == overload && !nodeLoc)
+                           if (n->resolvedSymbolOverload() == overload && !nodeLoc)
                            {
                                nodeLoc = n;
                                return;
@@ -2408,7 +2408,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     // Initialize information of stack
     for (const auto l : cxt.bc->localVars)
     {
-        const auto over = l->resolvedSymbolOverload;
+        const auto over = l->resolvedSymbolOverload();
         SWAG_ASSERT(over);
         if (over->computedValue.storageOffset == UINT32_MAX)
             continue;

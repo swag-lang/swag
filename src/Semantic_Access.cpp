@@ -46,9 +46,9 @@ bool Semantic::canInheritAccess(const AstNode* node)
 {
     if (!node->parent)
         return false;
-    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
         return false;
-    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
         return false;
 
     // Content of the function will propagate only if the function is inlined or generic
@@ -70,7 +70,7 @@ bool Semantic::canInheritAccess(const AstNode* node)
 
 void Semantic::setNodeAccess(AstNode* node)
 {
-    const auto overload = node->resolvedSymbolOverload;
+    const auto overload = node->resolvedSymbolOverload();
     if (!overload)
         return;
     if (!overload->node)
@@ -285,16 +285,16 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     node,
     node->getTokenName(),
     FMT(Err(Err0426),
-        Naming::kindName(node->resolvedSymbolOverload).c_str(),
+        Naming::kindName(node->resolvedSymbolOverload()).c_str(),
         node->token.c_str(),
-        Naming::kindName(culprit->resolvedSymbolOverload).c_str(),
+        Naming::kindName(culprit->resolvedSymbolOverload()).c_str(),
         culprit->token.c_str(),
         accessCulprit)};
 
     const Diagnostic* note  = nullptr;
     const Diagnostic* note1 = nullptr;
     if (onNode == culprit)
-        note = Diagnostic::note(culprit, culprit->token, FMT(Nte(Nte0146), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
+        note = Diagnostic::note(culprit, culprit->token, FMT(Nte(Nte0146), Naming::kindName(culprit->resolvedSymbolOverload()).c_str(), accessCulprit));
     else
     {
         note  = Diagnostic::note(onNode, onNode->token, FMT(Nte(Nte0157), accessCulprit, onNode->typeInfo->getDisplayNameC()));

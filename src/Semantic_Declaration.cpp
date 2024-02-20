@@ -71,20 +71,20 @@ bool Semantic::resolveWith(SemanticContext* context)
     if (front->kind == AstNodeKind::IdentifierRef)
     {
         front->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-        SWAG_ASSERT(front->resolvedSymbolName && front->resolvedSymbolOverload);
-        typeResolved = front->resolvedSymbolOverload->typeInfo;
-        fromVar      = front->resolvedSymbolName->kind == SymbolKind::Variable;
+        SWAG_ASSERT(front->resolvedSymbolName() && front->resolvedSymbolOverload());
+        typeResolved = front->resolvedSymbolOverload()->typeInfo;
+        fromVar      = front->resolvedSymbolName()->kind == SymbolKind::Variable;
     }
     else if (front->kind == AstNodeKind::VarDecl)
     {
-        SWAG_ASSERT(front->resolvedSymbolOverload);
-        typeResolved = front->resolvedSymbolOverload->typeInfo;
+        SWAG_ASSERT(front->resolvedSymbolOverload());
+        typeResolved = front->resolvedSymbolOverload()->typeInfo;
         fromVar      = true;
     }
     else if (front->kind == AstNodeKind::AffectOp)
     {
-        SWAG_ASSERT(front->children.front()->resolvedSymbolOverload);
-        typeResolved = front->children.front()->resolvedSymbolOverload->typeInfo;
+        SWAG_ASSERT(front->children.front()->resolvedSymbolOverload());
+        typeResolved = front->children.front()->resolvedSymbolOverload()->typeInfo;
         fromVar      = true;
     }
 
@@ -118,15 +118,15 @@ bool Semantic::resolveUsing(SemanticContext* context)
     const auto idref = castAst<AstIdentifierRef>(node->children[0], AstNodeKind::IdentifierRef);
     node->addAstFlag(AST_NO_BYTECODE);
 
-    SWAG_ASSERT(idref->resolvedSymbolName);
-    if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
+    SWAG_ASSERT(idref->resolvedSymbolName());
+    if (idref->resolvedSymbolName()->kind == SymbolKind::Variable)
     {
-        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload()->typeInfo));
         return true;
     }
 
     Scope*     scope;
-    const auto typeResolved = idref->resolvedSymbolOverload->typeInfo;
+    const auto typeResolved = idref->resolvedSymbolOverload()->typeInfo;
     switch (typeResolved->kind)
     {
         case TypeInfoKind::Namespace:

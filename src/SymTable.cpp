@@ -127,7 +127,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // Only add an inline parameter/retval once in a given scope
     if (toAdd.flags.has(OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL) && !symbol->overloads.empty())
     {
-        toAdd.node->resolvedSymbolOverload = symbol->overloads[0];
+        toAdd.node->setResolvedSymbolOverload(symbol->overloads[0]);
         return symbol->overloads[0];
     }
 

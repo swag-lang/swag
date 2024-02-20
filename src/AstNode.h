@@ -466,8 +466,13 @@ struct AstNode
     TypeInfo* typeInfo;
     TypeInfo* castedTypeInfo;
 
-    SymbolName*     resolvedSymbolName;
-    SymbolOverload* resolvedSymbolOverload;
+    SymbolName*     symbolName;
+    SymbolOverload* symbolOverload;
+
+    SymbolName*     resolvedSymbolName() const { return symbolName; }
+    SymbolOverload* resolvedSymbolOverload() const { return symbolOverload; }
+    void            setResolvedSymbolName(SymbolName* sym);
+    void            setResolvedSymbolOverload(SymbolOverload* sym);
 
     AstNode*       parent;
     SourceFile*    sourceFile;
@@ -995,7 +1000,7 @@ struct AstInline : AstNode
 struct AstCompilerIfBlock : AstNode
 {
     AstNode* clone(CloneContext& context);
-    void     addSymbol(AstNode* node, SymbolName* symbolName);
+    void     addSymbol(AstNode* node, SymbolName* symName);
 
     struct MethodCount
     {

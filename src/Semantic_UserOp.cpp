@@ -542,7 +542,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             err.hint = Diagnostic::isType(rightTypeInfo);
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             const auto note  = Diagnostic::note(context->node, context->node->token, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
-            const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
+            const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload());
             return context->report(err, note, note1);
         }
 

@@ -13,11 +13,11 @@
 
 bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {
-    const auto node = identifier->resolvedSymbolOverload->node;
+    const auto node = identifier->resolvedSymbolOverload()->node;
     if (!node->hasAttribute(ATTRIBUTE_DEPRECATED))
         return true;
 
-    const auto           symbol = identifier->resolvedSymbolOverload->symbol;
+    const auto           symbol = identifier->resolvedSymbolOverload()->symbol;
     const ComputedValue* v      = nullptr;
     switch (node->kind)
     {
@@ -56,7 +56,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     const Diagnostic err{
-    identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()),
+    identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload()->symbol->name.c_str()),
     DiagnosticLevel::Warning};
     const auto note1   = Diagnostic::note(node, node->token, Nte(Nte0066));
     note1->canBeMerged = false;
@@ -74,7 +74,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 {
     if (moduleToGen->kind == ModuleKind::Test)
         return true;
-    if (!one->node || !one->node->sourceFile || !one->node->resolvedSymbolName)
+    if (!one->node || !one->node->sourceFile || !one->node->resolvedSymbolName())
         return true;
     if (one->node->sourceFile->hasFlag(FILE_IS_EMBEDDED) || one->node->sourceFile->hasFlag(FILE_IS_EXTERNAL) || one->node->sourceFile->imported)
         return true;
@@ -91,7 +91,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
                                ATTRIBUTE_COMPILER))
         return true;
 
-    if (one->node->resolvedSymbolName->hasFlag(SYMBOL_USED) || one->isUsed)
+    if (one->node->resolvedSymbolName()->hasFlag(SYMBOL_USED) || one->isUsed)
         return true;
     if (funcDecl->token.text[0] == '_')
         return true;

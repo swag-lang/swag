@@ -37,14 +37,14 @@ bool Semantic::checkCanCatch(SemanticContext* context)
 
     for (const auto c : identifierRef->children)
     {
-        if (!c->resolvedSymbolOverload)
+        if (!c->resolvedSymbolOverload())
             continue;
-        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->isLambdaClosure())
+        if (c->resolvedSymbolOverload()->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload()->typeInfo->isLambdaClosure())
             return true;
     }
 
     const auto lastChild = identifierRef->children.back();
-    return context->report({node, node->token, FMT(Err(Err0499), node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
+    return context->report({node, node->token, FMT(Err(Err0499), node->token.c_str(), lastChild->token.c_str(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).c_str())});
 }
 
 bool Semantic::resolveTryBlock(SemanticContext* context)

@@ -74,7 +74,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
             definedType = typeDefinedFct->parameters[paramIdx]->typeInfo;
 
         childType->typeInfo                              = definedType;
-        childType->resolvedSymbolOverload->typeInfo      = definedType;
+        childType->resolvedSymbolOverload()->typeInfo      = definedType;
         typeUndefinedFct->parameters[paramIdx]->typeInfo = definedType;
     }
 
@@ -96,8 +96,8 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
                    if (it == typeDefinedFct->replaceTypes.end())
                        return;
                    p->token.text = it->second.typeInfoReplace->name;
-                   if (p->resolvedSymbolOverload)
-                       p->resolvedSymbolOverload->typeInfo = it->second.typeInfoReplace;
+                   if (p->resolvedSymbolOverload())
+                       p->resolvedSymbolOverload()->typeInfo = it->second.typeInfoReplace;
                    p->typeInfo = it->second.typeInfoReplace;
                });
 
@@ -118,10 +118,10 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     context->node->addSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
     funcDecl->removeSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING);
 
-    ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
+    ScopedLock lk(funcDecl->resolvedSymbolOverload()->symbol->mutex);
     if (typeUndefinedFct->returnType->isGeneric())
-        funcDecl->resolvedSymbolOverload->flags.add(OVERLOAD_INCOMPLETE);
-    waitSymbolNoLock(context->baseJob, funcDecl->resolvedSymbolOverload->symbol);
+        funcDecl->resolvedSymbolOverload()->flags.add(OVERLOAD_INCOMPLETE);
+    waitSymbolNoLock(context->baseJob, funcDecl->resolvedSymbolOverload()->symbol);
     context->baseJob->jobsToAdd.push_back(funcDecl->pendingLambdaJob);
 }
 
@@ -578,10 +578,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // Mark as used
     if (symbol)
         symbol->flags.add(SYMBOL_USED);
-    if (dependentVar && dependentVar->resolvedSymbolName)
-        dependentVar->resolvedSymbolName->flags.add(SYMBOL_USED);
-    if (dependentVar && dependentVar->resolvedSymbolOverload)
-        dependentVar->resolvedSymbolOverload->symbol->flags.add(SYMBOL_USED);
+    if (dependentVar && dependentVar->resolvedSymbolName())
+        dependentVar->resolvedSymbolName()->flags.add(SYMBOL_USED);
+    if (dependentVar && dependentVar->resolvedSymbolOverload())
+        dependentVar->resolvedSymbolOverload()->symbol->flags.add(SYMBOL_USED);
 
     auto prevNode = identifierRef->previousResolvedNode;
 
@@ -607,8 +607,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         symbol->kind == SymbolKind::Function &&
         identifierRef->startScope &&
         prevNode &&
-        prevNode->resolvedSymbolName &&
-        (prevNode->resolvedSymbolName->kind == SymbolKind::Variable || prevNode->resolvedSymbolName->kind == SymbolKind::Function) &&
+        prevNode->resolvedSymbolName() &&
+        (prevNode->resolvedSymbolName()->kind == SymbolKind::Variable || prevNode->resolvedSymbolName()->kind == SymbolKind::Function) &&
         !prevNode->hasAstFlag(AST_FROM_UFCS))
     {
         if (prevNode->kind == AstNodeKind::Identifier && prevNode->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
@@ -626,16 +626,16 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)
         {
-            Diagnostic err{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
+            Diagnostic err{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
             err.addNote(identifier->token, FMT(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC()));
             Vector<const Diagnostic*> notes;
-            notes.push_back(Diagnostic::note(FMT(Nte(Nte0109), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())));
+            notes.push_back(Diagnostic::note(FMT(Nte(Nte0109), Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())));
             notes.push_back(Diagnostic::hereIs(oneMatch.oneOverload->overload));
-            notes.push_back(Diagnostic::note(FMT(Nte(Nte0035), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
+            notes.push_back(Diagnostic::note(FMT(Nte(Nte0035), Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), identifierRef->startScope->name.c_str())));
             return context->report(err, notes);
         }
 
-        Diagnostic err{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
+        Diagnostic err{prevNode, FMT(Err(Err0585), Naming::kindName(prevNode->resolvedSymbolName()->kind).c_str(), prevNode->token.c_str(), symbol->name.c_str())};
         err.addNote(identifier->token, FMT(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC()));
         return context->report(err, Diagnostic::hereIs(oneMatch.oneOverload->overload));
     }
@@ -683,8 +683,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
-                    identifier->resolvedSymbolName      = overload->symbol;
-                    identifier->resolvedSymbolOverload  = overload;
+                    identifier->setResolvedSymbolName(overload->symbol);
+                    identifier->setResolvedSymbolOverload(overload);
                     return true;
                 }
             }
@@ -694,7 +694,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (prevNode->kind == AstNodeKind::ArrayPointerIndex && prevNode->typeInfo->isStruct())
         {
             auto arrayNode = castAst<AstArrayPointerIndex>(prevNode, AstNodeKind::ArrayPointerIndex);
-            auto arrayOver = arrayNode->array->resolvedSymbolOverload;
+            auto arrayOver = arrayNode->array->resolvedSymbolOverload();
             if (arrayOver && arrayOver->hasFlag(OVERLOAD_COMPUTED_VALUE) && arrayNode->access->hasFlagComputedValue())
             {
                 auto typePtr = castTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
@@ -704,8 +704,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
-                    identifier->resolvedSymbolName      = overload->symbol;
-                    identifier->resolvedSymbolOverload  = overload;
+                    identifier->setResolvedSymbolName(overload->symbol);
+                    identifier->setResolvedSymbolOverload(overload);
                     return true;
                 }
             }
@@ -734,12 +734,12 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // Do not register a sub impl scope, for ufcs to use the real variable
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
     {
-        identifierRef->resolvedSymbolName     = symbol;
-        identifierRef->resolvedSymbolOverload = overload;
+        identifierRef->setResolvedSymbolName(symbol);
+        identifierRef->setResolvedSymbolOverload(overload);
     }
 
-    identifier->resolvedSymbolName     = symbol;
-    identifier->resolvedSymbolOverload = overload;
+    identifier->setResolvedSymbolName(symbol);
+    identifier->setResolvedSymbolOverload(overload);
 
     if (identifier->typeInfo->isGeneric())
         identifier->addAstFlag(AST_IS_GENERIC);
@@ -858,7 +858,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
             if (idRef &&
                 idRef->previousResolvedNode &&
-                idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
+                idRef->previousResolvedNode->resolvedSymbolName()->kind == SymbolKind::Variable)
             {
                 Diagnostic err{idRef->previousResolvedNode, FMT(Err(Err0260), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
                 return context->report(err);
@@ -867,7 +867,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             SWAG_CHECK(setupIdentifierRef(context, identifier));
             identifier->setFlagsValueIsComputed();
             identifier->addAstFlag(AST_R_VALUE);
-            *identifier->computedValue() = identifier->resolvedSymbolOverload->computedValue;
+            *identifier->computedValue() = identifier->resolvedSymbolOverload()->computedValue;
             break;
 
         case SymbolKind::Struct:
@@ -979,9 +979,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->startScope)
             {
                 auto parentStructNode = identifier->identifierRef()->startScope->owner;
-                if (parentStructNode->resolvedSymbolOverload)
+                if (parentStructNode->resolvedSymbolOverload())
                 {
-                    waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload);
+                    waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload());
                     YIELD();
                 }
             }
@@ -1030,8 +1030,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     auto brother = checkParent->children[i];
                     if (!brother->hasFlagComputedValue() &&
-                        brother->resolvedSymbolOverload &&
-                        brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
+                        brother->resolvedSymbolOverload() &&
+                        brother->resolvedSymbolOverload()->symbol->kind == SymbolKind::Variable)
                     {
                         brother->addAstFlag(AST_NO_BYTECODE);
                     }
@@ -1134,9 +1134,9 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (childIdx)
             {
                 auto prev = identifier->identifierRef()->children[childIdx - 1];
-                if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
+                if (prev->resolvedSymbolName() && prev->resolvedSymbolName()->kind == SymbolKind::Variable && !prev->hasAstFlag(AST_FROM_UFCS))
                 {
-                    Diagnostic err{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
+                    Diagnostic err{prev, FMT(Err(Err0585), Naming::kindName(prev->resolvedSymbolOverload()->node).c_str(), prev->token.c_str(), identifier->token.c_str())};
                     err.addNote(identifier->token, FMT(Nte(Nte0154), prev->typeInfo->getDisplayNameC()));
                     return context->report(err, Diagnostic::hereIs(funcDecl));
                 }
@@ -1226,7 +1226,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
             // The function call is constexpr if the function is, and all parameters are
             auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-            if (identifier->resolvedSymbolOverload->node->hasAstFlag(AST_CONST_EXPR))
+            if (identifier->resolvedSymbolOverload()->node->hasAstFlag(AST_CONST_EXPR))
             {
                 if (identifier->callParameters)
                     identifier->inheritAstFlagsAnd(identifier->callParameters, AST_CONST_EXPR);

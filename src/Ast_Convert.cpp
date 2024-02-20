@@ -240,7 +240,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             varNode->addAstFlag(AST_GENERATED | AST_STRUCT_MEMBER);
             varNode->type                  = typeNode;
             varNode->ownerScope            = newScope;
-            structNode->resolvedSymbolName = newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable);
+            structNode->setResolvedSymbolName(newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable));
 
             typeNode->typeInfo = typeField;
             typeNode->addAstFlag(AST_NO_SEMANTIC);
@@ -407,15 +407,15 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
         toAdd.typeInfo                      = f->typeInfo;
         toAdd.storageOffset                 = f->offset;
         toAdd.flags                         = OVERLOAD_VAR_STRUCT;
-        f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd);
+        f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));
 
         if (!(f->flags & TYPEINFOPARAM_AUTO_NAME))
         {
             toAdd.aliasName                     = FMT("item%d", idx);
-            f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd);
+            f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));
         }
 
-        f->declNode->resolvedSymbolName = f->declNode->resolvedSymbolOverload->symbol;
+        f->declNode->setResolvedSymbolName(f->declNode->resolvedSymbolOverload()->symbol);
         idx++;
     }
 }

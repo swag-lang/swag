@@ -2281,7 +2281,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
             OneTryMatch               oneTry;
             oneTry.symMatchContext = symContext;
             oneTry.callParameters  = child;
-            oneTry.overload        = toTypeStruct->declNode->resolvedSymbolOverload;
+            oneTry.overload        = toTypeStruct->declNode->resolvedSymbolOverload();
             oneTry.type            = toTypeStruct;
             SemanticError::getDiagnosticForMatch(context, oneTry, result0, result1);
             SWAG_ASSERT(!result0.empty());
@@ -2657,15 +2657,15 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
         {
             // :BecauseOfThat
             ScopedLock lk(structNode->mutex);
-            if (!structNode->resolvedSymbolOverload)
+            if (!structNode->resolvedSymbolOverload())
             {
                 structNode->dependentJobs.add(context->baseJob);
-                context->baseJob->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName, structNode, nullptr);
+                context->baseJob->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName(), structNode, nullptr);
                 return true;
             }
         }
 
-        Semantic::waitOverloadCompleted(context->baseJob, structNode->resolvedSymbolOverload);
+        Semantic::waitOverloadCompleted(context->baseJob, structNode->resolvedSymbolOverload());
         YIELD();
 
         const TypeInfoParam*  foundField  = nullptr;
@@ -2758,7 +2758,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
         if (!structNode->hasSpecFlag(AstStruct::SPEC_FLAG_HAS_USING))
             continue;
 
-        Semantic::waitOverloadCompleted(context->baseJob, it.typeStruct->declNode->resolvedSymbolOverload);
+        Semantic::waitOverloadCompleted(context->baseJob, it.typeStruct->declNode->resolvedSymbolOverload());
         YIELD();
 
         for (const auto field : it.typeStruct->fields)

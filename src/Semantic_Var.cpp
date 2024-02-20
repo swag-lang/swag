@@ -44,9 +44,9 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (varDecl->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
     {
-        SWAG_ASSERT(varDecl->resolvedSymbolOverload);
+        SWAG_ASSERT(varDecl->resolvedSymbolOverload());
         varDecl->typeInfo                         = varDecl->type->typeInfo;
-        varDecl->resolvedSymbolOverload->typeInfo = varDecl->type->typeInfo;
+        varDecl->resolvedSymbolOverload()->typeInfo = varDecl->type->typeInfo;
         typeVar                                   = varDecl->typeInfo;
     }
 
@@ -165,7 +165,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     // We simulate a reference to the local variable, in the same context, to raise an error
     // if ambiguous. That way we have a direct error at the declaration, even if the variable
     // is not used later
-    if (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_LOCAL))
+    if (node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_LOCAL))
     {
         const auto id = createTmpId(context, node, node->token.text);
         SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_GHOSTING));
@@ -173,11 +173,11 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     }
 
     // :opAffectConstExpr
-    if (node->resolvedSymbolOverload &&
-        node->resolvedSymbolOverload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
-        node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
+    if (node->resolvedSymbolOverload() &&
+        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
+        node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
     {
-        const auto overload = node->resolvedSymbolOverload;
+        const auto overload = node->resolvedSymbolOverload();
         SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
 
         node->removeAstFlag(AST_NO_BYTECODE);
@@ -224,7 +224,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
     }
 
     // Compiler #message
-    if (node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_GLOBAL))
+    if (node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_GLOBAL))
     {
         sendCompilerMsgGlobalVar(context);
     }
@@ -390,7 +390,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDe
 
     if (varNode->isConstDecl())
         return &module->constantSegment;
-    if (varNode->resolvedSymbolOverload && varNode->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT))
+    if (varNode->resolvedSymbolOverload() && varNode->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_STRUCT))
         return &module->constantSegment;
 
     if (varNode->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
@@ -940,10 +940,10 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (node->typeInfo->isVoid())
         {
-            if (node->assignment->typeInfo->isFuncAttr() && node->assignment->resolvedSymbolOverload)
+            if (node->assignment->typeInfo->isFuncAttr() && node->assignment->resolvedSymbolOverload())
             {
                 auto nodeWhere = node->assignment;
-                auto over      = nodeWhere->resolvedSymbolOverload;
+                auto over      = nodeWhere->resolvedSymbolOverload();
                 if (nodeWhere->kind == AstNodeKind::IdentifierRef)
                     nodeWhere = nodeWhere->children.back();
                 Diagnostic err{nodeWhere, nodeWhere->token, Err(Err0371)};
@@ -1232,8 +1232,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             storageOffset = 0;
             for (auto& c : node->assignment->children)
             {
-                SWAG_ASSERT(c->resolvedSymbolOverload);
-                storageOffset += c->resolvedSymbolOverload->computedValue.storageOffset;
+                SWAG_ASSERT(c->resolvedSymbolOverload());
+                storageOffset += c->resolvedSymbolOverload()->computedValue.storageOffset;
             }
         }
 
@@ -1299,6 +1299,6 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(overload);
-    node->resolvedSymbolOverload = overload;
+    node->setResolvedSymbolOverload(overload);
     return true;
 }

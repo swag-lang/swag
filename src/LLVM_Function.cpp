@@ -4228,13 +4228,13 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicCompilerError:
             {
-                auto bcF = ip->node->resolvedSymbolOverload->node->extByteCode()->bc;
+                auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
                 emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }
             case ByteCodeOp::IntrinsicCompilerWarning:
             {
-                auto bcF = ip->node->resolvedSymbolOverload->node->extByteCode()->bc;
+                auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
                 emitCall(buildParameters, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }

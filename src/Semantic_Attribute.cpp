@@ -189,20 +189,20 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         const auto       nakedName = Naming::kindName(checkNode);
         const Diagnostic err{oneAttribute, FMT(Err(Err0491), oneAttribute->token.c_str(), specificMsg)};
         const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0024), nakedName.c_str()));
-        return context->report(err, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
+        return context->report(err, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     }
 
     const auto nakedName = Naming::aKindName(checkNode);
     if (nakedName == "<node>")
     {
         const Diagnostic err{oneAttribute, FMT(Err(Err0495), oneAttribute->token.c_str())};
-        return context->report(err, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
+        return context->report(err, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     }
 
     const auto       nakedName1 = Naming::kindName(checkNode);
     const Diagnostic err{oneAttribute, FMT(Err(Err0492), oneAttribute->token.c_str(), nakedName.c_str())};
     const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0063), nakedName1.c_str()));
-    return context->report(err, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
+    return context->report(err, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
 }
 
 void Semantic::inheritAttributesFromParent(AstNode* child)
@@ -652,8 +652,8 @@ bool Semantic::resolveAttrDecl(SemanticContext* context)
     toAdd.typeInfo = node->typeInfo;
     toAdd.kind     = SymbolKind::Attribute;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-    SWAG_CHECK(node->resolvedSymbolOverload);
+    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+    SWAG_CHECK(node->resolvedSymbolOverload());
 
     if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         node->ownerScope->addPublicAttribute(node);
@@ -685,8 +685,8 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         auto identifier    = castAst<AstIdentifier>(identifierRef->children.back());
 
         // Be sure this is an attribute
-        auto resolvedName = identifier->resolvedSymbolName;
-        auto resolved     = identifier->resolvedSymbolOverload;
+        auto resolvedName = identifier->resolvedSymbolName();
+        auto resolved     = identifier->resolvedSymbolOverload();
         if (resolvedName->kind != SymbolKind::Attribute)
         {
             Diagnostic err{identifier, identifier->token, FMT(Err(Err0217), resolvedName->name.c_str(), Naming::aKindName(resolvedName->kind).c_str())};

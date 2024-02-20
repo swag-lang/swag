@@ -68,7 +68,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
         typeInfo->scope    = newScope;
         enumNode->typeInfo = typeInfo;
         typeInfo->computeName();
-        enumNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(context, enumNode, SymbolKind::Enum);
+        enumNode->setResolvedSymbolName(currentScope->symTable.registerSymbolNameNoLock(context, enumNode, SymbolKind::Enum));
     }
 
     // Raw type

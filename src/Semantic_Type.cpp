@@ -120,7 +120,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     if (node->hasAstFlag(AST_FROM_GENERIC_REPLACE))
         return context->report({node, Err(Err0284)});
 
-    if (!node->resolvedSymbolName)
+    if (!node->resolvedSymbolName())
         return true;
 
     // If this is an identifier ref, then we need to be check concrete from left to right,
@@ -136,9 +136,9 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     }
 
     // Reference to a static struct member
-    if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->hasFlag(OVERLOAD_VAR_STRUCT))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        const Diagnostic  err{node, FMT(Err(Err0590), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str())};
+        const Diagnostic  err{node, FMT(Err(Err0590), node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
         const Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -147,7 +147,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
             node->ownerStructScope == context->node->ownerStructScope &&
             node->ownerFct)
         {
-            if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
+            if (node->ownerStructScope->symTable.find(node->resolvedSymbolName()->name))
             {
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -163,12 +163,12 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(err, note);
     }
 
-    const Diagnostic  err{node, FMT(Err(Err0589), Naming::kindName(node->resolvedSymbolName->kind).c_str(), node->resolvedSymbolName->name.c_str())};
+    const Diagnostic  err{node, FMT(Err(Err0589), Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
     const Diagnostic* note = nullptr;
 
     // struct.field
-    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct)
-        note = Diagnostic::note(FMT(Nte(Nte0088), node->resolvedSymbolName->name.c_str(), node->resolvedSymbolName->name.c_str()));
+    if (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Struct)
+        note = Diagnostic::note(FMT(Nte(Nte0088), node->resolvedSymbolName()->name.c_str(), node->resolvedSymbolName()->name.c_str()));
 
     return context->report(err, note);
 }
@@ -181,12 +181,12 @@ bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bo
     if (node->kind == AstNodeKind::TypeExpression ||
         node->kind == AstNodeKind::TypeLambda ||
         (node->kind == AstNodeKind::IdentifierRef && node->hasAstFlag(AST_FROM_GENERIC_REPLACE)) ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct) ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::TypeAlias) ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Interface) ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Attribute) ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Namespace) ||
-        (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Enum))
+        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Struct) ||
+        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::TypeAlias) ||
+        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Interface) ||
+        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Attribute) ||
+        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Namespace) ||
+        (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Enum))
     {
         TypeInfo* result = nullptr;
         SWAG_CHECK(resolveTypeAsExpression(context, node, &result));
@@ -388,13 +388,13 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // This is a generic type, not yet known
-    if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
+    if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload()->hasFlag(OVERLOAD_GENERIC))
     {
-        typeNode->resolvedSymbolName     = typeNode->identifier->resolvedSymbolName;
-        typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
-        typeNode->typeInfo               = makeType<TypeInfoGeneric>();
-        typeNode->typeInfo->name         = typeNode->resolvedSymbolName->name;
-        typeNode->typeInfo               = typeNode->typeInfo;
+        typeNode->setResolvedSymbolName(typeNode->identifier->resolvedSymbolName());
+        typeNode->setResolvedSymbolOverload(typeNode->identifier->resolvedSymbolOverload());
+        typeNode->typeInfo       = makeType<TypeInfoGeneric>();
+        typeNode->typeInfo->name = typeNode->resolvedSymbolName()->name;
+        typeNode->typeInfo       = typeNode->typeInfo;
     }
 
     // Otherwise, this is strange, we should have a type
@@ -406,10 +406,10 @@ bool Semantic::resolveType(SemanticContext* context)
         const auto child = typeNode->identifier->children.back();
         if (!child->typeInfo || !child->typeInfo->isUndefined())
         {
-            if (child->resolvedSymbolName)
+            if (child->resolvedSymbolName())
             {
-                const auto symName = child->resolvedSymbolName;
-                const auto symOver = child->resolvedSymbolOverload;
+                const auto symName = child->resolvedSymbolName();
+                const auto symOver = child->resolvedSymbolOverload();
                 if (symName->kind != SymbolKind::Enum &&
                     symName->kind != SymbolKind::TypeAlias &&
                     symName->kind != SymbolKind::GenericType &&
@@ -532,8 +532,8 @@ bool Semantic::resolveType(SemanticContext* context)
                 genericCount = true;
             }
             else if (!child->hasFlagComputedValue() &&
-                     child->resolvedSymbolOverload &&
-                     child->resolvedSymbolOverload->hasFlag(OVERLOAD_GENERIC))
+                     child->resolvedSymbolOverload() &&
+                     child->resolvedSymbolOverload()->hasFlag(OVERLOAD_GENERIC))
             {
                 genericCount = true;
             }
@@ -611,8 +611,8 @@ bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
     toAdd.kind     = SymbolKind::TypeAlias;
     toAdd.flags    = overFlags;
 
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
-    SWAG_CHECK(node->resolvedSymbolOverload);
+    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
+    SWAG_CHECK(node->resolvedSymbolOverload());
     if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         node->ownerScope->addPublicNode(node);
     return true;
@@ -627,7 +627,7 @@ bool Semantic::resolveTypeAlias(SemanticContext* context)
     typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_GENERIC));
     typeInfo->addFlag(typeInfo->rawType->flags.mask(TYPEINFO_CONST));
     typeInfo->computeName();
-    OverloadFlags overFlags = node->resolvedSymbolOverload->flags.maskInvert(OVERLOAD_INCOMPLETE);
+    OverloadFlags overFlags = node->resolvedSymbolOverload()->flags.maskInvert(OVERLOAD_INCOMPLETE);
     if (typeInfo->isGeneric())
         overFlags.add(OVERLOAD_GENERIC);
 
@@ -678,8 +678,8 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
     node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
-    node->resolvedSymbolName     = exprNode->resolvedSymbolName;
-    node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
+    node->setResolvedSymbolName(exprNode->resolvedSymbolName());
+    node->setResolvedSymbolOverload(exprNode->resolvedSymbolOverload());
 
     if (node->hasFlagComputedValue() && node->typeInfo->isNative())
     {
@@ -743,8 +743,8 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitExplicitCast;
     node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
     node->inheritComputedValue(exprNode);
-    node->resolvedSymbolName     = exprNode->resolvedSymbolName;
-    node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
+    node->setResolvedSymbolName(exprNode->resolvedSymbolName());
+    node->setResolvedSymbolOverload(exprNode->resolvedSymbolOverload());
 
     // In case case has triggered a special function call, need to get it
     // (usage of opAffect)

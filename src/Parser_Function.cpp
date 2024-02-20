@@ -746,15 +746,15 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     auto newScope                = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
     funcNode->typeInfo           = typeInfo;
     funcNode->scope              = newScope;
-    funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
+    funcNode->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function));
 
     // Store specific symbols for fast retrieve
     if (funcNode->token.text == g_LangSpec->name_opAffect)
-        currentScope->symbolOpAffect = funcNode->resolvedSymbolName;
+        currentScope->symbolOpAffect = funcNode->resolvedSymbolName();
     else if (funcNode->token.text == g_LangSpec->name_opAffectLiteral)
-        currentScope->symbolOpAffectSuffix = funcNode->resolvedSymbolName;
+        currentScope->symbolOpAffectSuffix = funcNode->resolvedSymbolName();
     else if (funcNode->token.text == g_LangSpec->name_opCast)
-        currentScope->symbolOpCast = funcNode->resolvedSymbolName;
+        currentScope->symbolOpCast = funcNode->resolvedSymbolName();
 
     // Count number of methods to resolve
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)

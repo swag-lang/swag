@@ -56,23 +56,23 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
         return true;
 
     // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
-    if (identifierRef->resolvedSymbolName && identifierRef->previousResolvedNode)
+    if (identifierRef->resolvedSymbolName() && identifierRef->previousResolvedNode)
     {
         bool canTry = false;
 
         // Before was a variable
-        if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+        if (identifierRef->resolvedSymbolName()->kind == SymbolKind::Variable)
             canTry = true;
         // Before was an enum value
-        else if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+        else if (identifierRef->resolvedSymbolName()->kind == SymbolKind::EnumValue)
             canTry = true;
         // Before was a function call
-        else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+        else if (identifierRef->resolvedSymbolName()->kind == SymbolKind::Function &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
             canTry = true;
         // Before was an inlined function call
-        else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+        else if (identifierRef->resolvedSymbolName()->kind == SymbolKind::Function &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
                  !identifierRef->previousResolvedNode->children.empty() &&
@@ -102,8 +102,8 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
     {
         bool fine = false;
 
-        if (identifierRef->resolvedSymbolName &&
-            identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+        if (identifierRef->resolvedSymbolName() &&
+            identifierRef->resolvedSymbolName()->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
             identifierRef->previousResolvedNode->hasAstFlag(AST_INLINED))
@@ -111,8 +111,8 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             fine = true;
         }
 
-        if (identifierRef->resolvedSymbolName &&
-            identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+        if (identifierRef->resolvedSymbolName() &&
+            identifierRef->resolvedSymbolName()->kind == SymbolKind::Function &&
             identifierRef->previousResolvedNode &&
             identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
         {
@@ -121,12 +121,12 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
 
         if (!fine)
         {
-            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+            if (identifierRef->resolvedSymbolName() && identifierRef->resolvedSymbolName()->kind != SymbolKind::Variable)
             {
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
                 Diagnostic err{
                 subNode, subNode->token,
-                FMT(Err(Err0317), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
+                FMT(Err(Err0317), identifierRef->resolvedSymbolName()->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName()->kind).c_str())};
                 err.addNote(node->token, Nte(Nte0159));
                 return context->report(err);
             }
@@ -222,36 +222,36 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 const auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
                 copyChild->inheritOwners(fctCallParam);
                 copyChild->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
-                if (!child->resolvedSymbolOverload)
+                if (!child->resolvedSymbolOverload())
                 {
-                    copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-                    copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                    copyChild->typeInfo               = dependentVar->typeInfo;
+                    copyChild->setResolvedSymbolName(dependentVar->resolvedSymbolOverload()->symbol);
+                    copyChild->setResolvedSymbolOverload(dependentVar->resolvedSymbolOverload());
+                    copyChild->typeInfo = dependentVar->typeInfo;
 
                     // In case of a parameter of an inlined function, we will have to find the real OVERLOAD_VAR_INLINE variable
                     // :InlineUsingParam
                     if (dependentVar->kind == AstNodeKind::FuncDeclParam && copyChild->hasOwnerInline() && copyChild->ownerInline()->parametersScope)
                     {
                         // Really, but REALLY not sure about that fix !! Seems really like a hack...
-                        if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload))
+                        if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload()))
                         {
-                            const auto sym = copyChild->ownerInline()->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload->symbol->name);
+                            const auto sym = copyChild->ownerInline()->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload()->symbol->name);
                             if (sym)
                             {
                                 ScopedLock lk(sym->mutex);
                                 SWAG_ASSERT(sym->overloads.size() == 1);
-                                copyChild->resolvedSymbolOverload = sym->overloads[0];
-                                copyChild->resolvedSymbolName     = copyChild->resolvedSymbolOverload->symbol;
-                                copyChild->typeInfo               = copyChild->resolvedSymbolOverload->typeInfo;
+                                copyChild->setResolvedSymbolOverload(sym->overloads[0]);
+                                copyChild->setResolvedSymbolName(copyChild->resolvedSymbolOverload()->symbol);
+                                copyChild->typeInfo = copyChild->resolvedSymbolOverload()->typeInfo;
                             }
                         }
                     }
                 }
                 else
                 {
-                    copyChild->resolvedSymbolName     = child->resolvedSymbolOverload->symbol;
-                    copyChild->resolvedSymbolOverload = child->resolvedSymbolOverload;
-                    copyChild->typeInfo               = child->typeInfo;
+                    copyChild->setResolvedSymbolName(child->resolvedSymbolOverload()->symbol);
+                    copyChild->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+                    copyChild->typeInfo = child->typeInfo;
                 }
 
                 copyChild->byteCodeFct = ByteCodeGen::emitIdentifier;

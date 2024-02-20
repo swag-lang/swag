@@ -164,16 +164,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = toType->getConcreteAlias();
     }
 
-    if (toNode && toNode->resolvedSymbolName && toNode->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    if (toNode && toNode->resolvedSymbolName() && toNode->resolvedSymbolName()->kind == SymbolKind::EnumValue)
     {
         toType   = toType->getConcreteAlias();
         fromType = fromType->getConcreteAlias();
     }
 
-    if (fromNode && fromNode->resolvedSymbolName)
+    if (fromNode && fromNode->resolvedSymbolName())
     {
-        if (fromNode->resolvedSymbolName->kind == SymbolKind::EnumValue ||
-            fromNode->resolvedSymbolName->kind == SymbolKind::Function)
+        if (fromNode->resolvedSymbolName()->kind == SymbolKind::EnumValue ||
+            fromNode->resolvedSymbolName()->kind == SymbolKind::Function)
         {
             toType   = toType->getConcreteAlias();
             fromType = fromType->getConcreteAlias();

@@ -17,9 +17,9 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, const ByteCodeInstruct
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 {
-    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload);
-    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload->typeInfo);
-    const auto  typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload());
+    SWAG_ASSERT(nodeFunc->resolvedSymbolOverload()->typeInfo);
+    const auto  typeFunc = castTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload()->typeInfo, TypeInfoKind::FuncAttr);
     const auto& funcName = nodeFunc->token.text;
 
     // Load module if specified

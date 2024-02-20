@@ -104,7 +104,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
         // RETVAL
         //
         if (node->hasSemFlag(SEMFLAG_RETVAL) ||
-            (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->hasFlag(OVERLOAD_RETVAL)))
+            (backExpression->resolvedSymbolOverload() && backExpression->resolvedSymbolOverload()->hasFlag(OVERLOAD_RETVAL)))
         {
             const auto child = node->children.front();
             freeRegisterRC(context, child->resultRegisterRc);
@@ -320,7 +320,7 @@ bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     SWAG_ASSERT(!node->ownerFct->parameters->children.empty());
     const auto param = node->ownerFct->parameters->children.back();
     SWAG_ASSERT(param->typeInfo->isCVariadic());
-    const auto storageOffset = param->resolvedSymbolOverload->computedValue.storageOffset;
+    const auto storageOffset = param->resolvedSymbolOverload()->computedValue.storageOffset;
     SWAG_ASSERT(storageOffset != UINT32_MAX);
     inst->b.u64         = storageOffset;
     const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -358,9 +358,9 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 
     // If the intrinsic is defined in runtime, then need to wait for the function bytecode
     // to be generated
-    if (node->resolvedSymbolOverload->node->hasAstFlag(AST_DEFINED_INTRINSIC))
+    if (node->resolvedSymbolOverload()->node->hasAstFlag(AST_DEFINED_INTRINSIC))
     {
-        askForByteCode(context->baseJob, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, node->resolvedSymbolOverload()->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1187,7 +1187,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 {
     const auto node     = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-    const auto overload = node->resolvedSymbolOverload;
+    const auto overload = node->resolvedSymbolOverload();
 
     SWAG_CHECK(emitIdentifier(context));
     node->allocateExtension(ExtensionKind::Misc);
@@ -1212,7 +1212,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
         node->extMisc()->additionalRegisterRC += reserveRegisterRC(context);
         auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
         inst->c.u64     = 8;
-        inst->d.pointer = reinterpret_cast<uint8_t*>(context->node->resolvedSymbolOverload);
+        inst->d.pointer = reinterpret_cast<uint8_t*>(context->node->resolvedSymbolOverload());
 
         // If 0, keep it 0, otherwise get the capture context by adding that offset to the address of the closure storage
         inst        = EMIT_INST2(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
@@ -1220,7 +1220,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 
         // Deref function pointer
         inst            = EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
-        inst->d.pointer = reinterpret_cast<uint8_t*>(context->node->resolvedSymbolOverload);
+        inst->d.pointer = reinterpret_cast<uint8_t*>(context->node->resolvedSymbolOverload());
     }
 
     emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
@@ -1258,7 +1258,7 @@ void ByteCodeGen::emitPostCallUfcs(ByteCodeGenContext* context)
 bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
 {
     AstNode*   node     = context->node;
-    const auto overload = node->resolvedSymbolOverload;
+    const auto overload = node->resolvedSymbolOverload();
     const auto funcNode = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     const auto allParams = node->children.empty() ? nullptr : node->children.back();
@@ -1543,7 +1543,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
         testReturn->parent->parent->parent->typeInfo->isStruct())
     {
         const auto varNode  = castAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-        const auto resolved = varNode->resolvedSymbolOverload;
+        const auto resolved = varNode->resolvedSymbolOverload();
         const auto param    = castAst<AstFuncCallParam>(testReturn->parent, AstNodeKind::FuncCallParam);
         SWAG_ASSERT(param->resolvedParameter);
         const auto typeParam = param->resolvedParameter;
@@ -1562,13 +1562,13 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
     context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-    if (node->resolvedSymbolOverload)
-        node->resolvedSymbolOverload->flags.add(OVERLOAD_EMITTED);
+    if (node->resolvedSymbolOverload())
+        node->resolvedSymbolOverload()->flags.add(OVERLOAD_EMITTED);
 
     // Push a var drop, except if we are in an expression (constexpr).
     // So check that the ownerScope will be executed (the bytecode should be a parent of the scope).
     if (context->bc->node->isParentOf(node->ownerScope->owner))
-        node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue()->storageOffset);
+        node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload(), typeInfoFunc->returnType, node->computedValue()->storageOffset);
 
     if (node->hasAstFlag(AST_DISCARD))
         freeRegisterRC(context, node->resultRegisterRc);
@@ -2198,7 +2198,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     if (funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         const auto param                      = node->children.back();
-        const auto resolved                   = param->resolvedSymbolOverload;
+        const auto resolved                   = param->resolvedSymbolOverload();
         resolved->computedValue.storageOffset = offset;
         offset += g_TypeMgr->typeInfoVariadic->sizeOf;
         SWAG_ASSERT(resolved->storageIndex == 0);
@@ -2211,7 +2211,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
         if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
             break;
         const auto param                      = node->children[i];
-        const auto resolved                   = param->resolvedSymbolOverload;
+        const auto resolved                   = param->resolvedSymbolOverload();
         resolved->computedValue.storageOffset = offset;
         SWAG_ASSERT(resolved->storageIndex == storageIndex);
 
@@ -2285,7 +2285,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
 {
     AstNode*   node      = context->node;
-    const auto overload  = node->resolvedSymbolOverload;
+    const auto overload  = node->resolvedSymbolOverload();
     const auto funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     const auto allParams = node->children.empty() ? nullptr : node->children.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);

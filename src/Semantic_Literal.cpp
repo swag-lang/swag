@@ -496,9 +496,9 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     // Check suffix type is correct (should be native)
     if (suffix->tokenId != TokenId::NativeType)
     {
-        if (suffix->resolvedSymbolName && suffix->resolvedSymbolName->kind != SymbolKind::TypeAlias)
+        if (suffix->resolvedSymbolName() && suffix->resolvedSymbolName()->kind != SymbolKind::TypeAlias)
         {
-            return context->report({suffix, FMT(Err(Err0319), suffix->resolvedSymbolName->name.c_str(), Naming::aKindName(suffix->resolvedSymbolName->kind).c_str())});
+            return context->report({suffix, FMT(Err(Err0319), suffix->resolvedSymbolName()->name.c_str(), Naming::aKindName(suffix->resolvedSymbolName()->kind).c_str())});
         }
     }
 

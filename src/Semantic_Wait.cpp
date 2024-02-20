@@ -127,7 +127,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     if (!structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED))
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName, structNode, nullptr);
+        job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName(), structNode, nullptr);
     }
 }
 
@@ -158,7 +158,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (!structNode->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName, structNode, nullptr);
+        job->setPending(JobWaitKind::SemByteCodeGenerated, structNode->resolvedSymbolName(), structNode, nullptr);
     }
 }
 
@@ -204,7 +204,7 @@ void Semantic::waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl)
     if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE))
     {
         funcDecl->dependentJobs.add(job);
-        job->setPending(JobWaitKind::SemFullResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
+        job->setPending(JobWaitKind::SemFullResolve, funcDecl->resolvedSymbolName(), funcDecl, nullptr);
     }
 }
 
@@ -229,14 +229,14 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
     //  :BecauseOfThat
     const auto structNode = castAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     ScopedLock lk(structNode->mutex);
-    if (!structNode->resolvedSymbolOverload)
+    if (!structNode->resolvedSymbolOverload())
     {
         structNode->dependentJobs.add(job);
-        job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName, structNode, nullptr);
+        job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName(), structNode, nullptr);
         return;
     }
 
-    waitOverloadCompleted(job, typeInfo->declNode->resolvedSymbolOverload);
+    waitOverloadCompleted(job, typeInfo->declNode->resolvedSymbolOverload());
     if (job->baseContext->result == ContextResult::Pending)
         return;
 
@@ -272,9 +272,9 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
         const auto declNode = typeInfo->declNode;
         if (!declNode)
             continue;
-        if (!declNode->resolvedSymbolOverload)
+        if (!declNode->resolvedSymbolOverload())
             continue;
-        if (declNode->resolvedSymbolOverload->symbol == match.symbolName)
+        if (declNode->resolvedSymbolOverload()->symbol == match.symbolName)
             continue;
         if (typeInfo->isStruct())
         {
@@ -287,7 +287,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
                 continue;
         }
 
-        waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload);
+        waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload());
         if (context->result == ContextResult::Pending)
             return;
 

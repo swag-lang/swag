@@ -507,10 +507,10 @@ namespace
 
                     if (firstChild->hasFlagComputedValue() && !firstChild->isConstantGenTypeInfo())
                         isValue = true;
-                    if (firstChild->resolvedSymbolOverload &&
-                        firstChild->resolvedSymbolOverload->node &&
-                        firstChild->resolvedSymbolOverload->node->kind == AstNodeKind::FuncDeclParam &&
-                        firstChild->resolvedSymbolOverload->node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
+                    if (firstChild->resolvedSymbolOverload() &&
+                        firstChild->resolvedSymbolOverload()->node &&
+                        firstChild->resolvedSymbolOverload()->node->kind == AstNodeKind::FuncDeclParam &&
+                        firstChild->resolvedSymbolOverload()->node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT))
                         isValue = true;
 
                     if (symbolParameter->typeInfo->isKindGeneric() && isValue)

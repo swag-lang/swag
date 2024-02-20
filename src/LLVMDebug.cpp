@@ -497,7 +497,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     {
         for (const auto localVar : bc->localVars)
         {
-            const SymbolOverload* overload = localVar->resolvedSymbolOverload;
+            const SymbolOverload* overload = localVar->resolvedSymbolOverload();
             if (overload->node->hasAstFlag(AST_GENERATED))
                 continue;
 
@@ -600,7 +600,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     uint32_t idxRetVal = 0;
     for (const auto localVar : bc->localVars)
     {
-        const SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        const SymbolOverload* overload = localVar->resolvedSymbolOverload();
         if (overload->node->hasAstFlag(AST_GENERATED))
             continue;
 
@@ -759,7 +759,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
 
     for (const auto node : *all)
     {
-        const auto resolved = node->resolvedSymbolOverload;
+        const auto resolved = node->resolvedSymbolOverload();
         const auto typeInfo = node->typeInfo;
         const auto file     = compileUnit->getFile();
         const auto dbgType  = getType(typeInfo, file);

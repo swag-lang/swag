@@ -73,17 +73,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* contex
 
     for (const auto n : m->globalVarsBss)
     {
-        if (!n->resolvedSymbolOverload)
+        if (!n->resolvedSymbolOverload())
             continue;
-        uint8_t* addr = m->bssSegment.address(n->resolvedSymbolOverload->computedValue.storageOffset);
+        uint8_t* addr = m->bssSegment.address(n->resolvedSymbolOverload()->computedValue.storageOffset);
         appendTypedValue(context, filter, n, nullptr, addr, result);
     }
 
     for (const auto n : m->globalVarsMutable)
     {
-        if (!n->resolvedSymbolOverload)
+        if (!n->resolvedSymbolOverload())
             continue;
-        uint8_t* addr = m->mutableSegment.address(n->resolvedSymbolOverload->computedValue.storageOffset);
+        uint8_t* addr = m->mutableSegment.address(n->resolvedSymbolOverload()->computedValue.storageOffset);
         appendTypedValue(context, filter, n, nullptr, addr, result);
     }
 

@@ -89,10 +89,10 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             Utf8 name;
             if (exp.node)
             {
-                if (exp.node->resolvedSymbolOverload && exp.node->resolvedSymbolOverload->node->ownerStructScope)
-                    name = FMT("%s.%s", exp.node->resolvedSymbolOverload->node->ownerStructScope->name.c_str(), exp.node->resolvedSymbolOverload->symbol->name.c_str());
-                else if (exp.node->resolvedSymbolName)
-                    name = exp.node->resolvedSymbolName->name;
+                if (exp.node->resolvedSymbolOverload() && exp.node->resolvedSymbolOverload()->node->ownerStructScope)
+                    name = FMT("%s.%s", exp.node->resolvedSymbolOverload()->node->ownerStructScope->name.c_str(), exp.node->resolvedSymbolOverload()->symbol->name.c_str());
+                else if (exp.node->resolvedSymbolName())
+                    name = exp.node->resolvedSymbolName()->name;
                 else
                     name = exp.node->token.text;
             }
@@ -131,7 +131,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::HereIs:
                 {
                     ScopedLock lk(exp.node->mutex);
-                    note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
+                    note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload());
                     if (!note)
                         continue;
                     break;

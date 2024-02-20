@@ -45,7 +45,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         SWAG_ASSERT(fctDecl);
         const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(typeFct->returnType->isStruct());
-        addDependentSymbol(dependentSymbols, typeFct->returnType->declNode->resolvedSymbolName, nullptr, 0);
+        addDependentSymbol(dependentSymbols, typeFct->returnType->declNode->resolvedSymbolName(), nullptr, 0);
         return true;
     }
 
@@ -83,7 +83,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             }
         }
 
-        addDependentSymbol(dependentSymbols, parent->resolvedSymbolName, nullptr, 0);
+        addDependentSymbol(dependentSymbols, parent->resolvedSymbolName(), nullptr, 0);
         return true;
     }
 
