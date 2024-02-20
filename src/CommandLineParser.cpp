@@ -116,15 +116,15 @@ namespace
                     defaultValue += "false";
                 break;
             case CommandLineType::Int:
-                value = "<integer>";
+                value        = "<integer>";
                 defaultValue = to_string(*static_cast<int*>(oneArg->buffer));
                 break;
             case CommandLineType::String:
-                value = "<string>";
+                value        = "<string>";
                 defaultValue = *static_cast<Utf8*>(oneArg->buffer);
                 break;
             case CommandLineType::StringPath:
-                value = "<path>";
+                value        = "<path>";
                 defaultValue = static_cast<Path*>(oneArg->buffer)->string();
                 break;
             case CommandLineType::StringSet:
@@ -139,7 +139,7 @@ namespace
                 break;
             }
             case CommandLineType::EnumString:
-                value = oneArg->param;
+                value        = oneArg->param;
                 defaultValue = *static_cast<Utf8*>(oneArg->buffer);
                 break;
         }

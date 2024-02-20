@@ -23,11 +23,11 @@ struct CommandLineArgument
     const char*     help;
     CommandLineType type;
 
-    CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help)
-        : buffer{buffer}
-        , param{param}
-        , help{help}
-        , type{type}
+    CommandLineArgument(const char* commands, CommandLineType type, void* buffer, const char* param, const char* help) :
+        buffer{buffer},
+        param{param},
+        help{help},
+        type{type}
     {
         Vector<Utf8> all;
         Utf8::tokenize(commands, ' ', all);
