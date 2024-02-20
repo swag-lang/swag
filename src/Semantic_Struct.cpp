@@ -722,8 +722,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     toAdd.kind     = symbolKind;
     toAdd.flags    = overFlags | OVERLOAD_INCOMPLETE;
 
-    node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
-    node->setResolvedSymbolName(toAdd.symbolName);
+    node->setResolvedSymbol(toAdd.symbolName, node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
     SWAG_CHECK(node->resolvedSymbolOverload());
 
     return true;

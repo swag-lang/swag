@@ -215,8 +215,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto child = node->children.front();
 
     node->typeInfo = child->typeInfo;
-    node->setResolvedSymbolName(child->resolvedSymbolName());
-    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+    node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
 
     // Be sure the identifier is an enum
     if (!node->typeInfo->isEnum())

@@ -139,10 +139,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 
         newNode->typeInfo = it->second.typeInfoReplace;
         if (newNode->typeInfo->declNode)
-        {
-            newNode->setResolvedSymbolName(newNode->typeInfo->declNode->resolvedSymbolName());
-            newNode->setResolvedSymbolOverload(newNode->typeInfo->declNode->resolvedSymbolOverload());
-        }
+            newNode->setResolvedSymbol(newNode->typeInfo->declNode->resolvedSymbolName(), newNode->typeInfo->declNode->resolvedSymbolOverload());
 
         newNode->addAstFlag(AST_FROM_GENERIC | AST_FROM_GENERIC_REPLACE);
     }
@@ -417,8 +414,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
             globalScope = globalScope->parentScope;
         sub->addAlternativeScope(globalScope);
 
-        sub->setResolvedSymbolName(subFuncScope->symTable.registerSymbolName(nullptr, sub, symKind));
-        sub->setResolvedSymbolOverload(nullptr);
+        sub->setResolvedSymbol(subFuncScope->symTable.registerSymbolName(nullptr, sub, symKind), nullptr);
 
         // Do it last to avoid a race condition with the file job
         Ast::addChildBack(f->parent, subF);

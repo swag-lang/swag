@@ -937,8 +937,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     toAdd.kind     = SymbolKind::Function;
     toAdd.flags    = overFlags;
 
-    funcNode->setResolvedSymbolOverload(funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
-    funcNode->setResolvedSymbolName(toAdd.symbolName);
+    funcNode->setResolvedSymbol(toAdd.symbolName, funcNode->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
     SWAG_CHECK(funcNode->resolvedSymbolOverload());
 
     // Be sure an overloaded function has the attribute
@@ -1208,8 +1207,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
         YIELD();
     }
 
-    node->setResolvedSymbolName(child->resolvedSymbolName());
-    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+    node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
 
     if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
     {

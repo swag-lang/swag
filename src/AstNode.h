@@ -473,6 +473,7 @@ struct AstNode
     SymbolOverload* resolvedSymbolOverload() const { return symbolOverload; }
     void            setResolvedSymbolName(SymbolName* sym);
     void            setResolvedSymbolOverload(SymbolOverload* sym);
+    void            setResolvedSymbol(SymbolName* sym, SymbolOverload* over);
 
     AstNode*       parent;
     SourceFile*    sourceFile;

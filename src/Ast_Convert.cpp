@@ -238,8 +238,8 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             const auto varNode  = newVarDecl(sourceFile, nameVar, contentNode);
             const auto typeNode = newTypeExpression(sourceFile, varNode);
             varNode->addAstFlag(AST_GENERATED | AST_STRUCT_MEMBER);
-            varNode->type                  = typeNode;
-            varNode->ownerScope            = newScope;
+            varNode->type       = typeNode;
+            varNode->ownerScope = newScope;
             structNode->setResolvedSymbolName(newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable));
 
             typeNode->typeInfo = typeField;
@@ -402,16 +402,16 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
         f->declNode->addAstFlag(AST_GENERATED);
 
         AddSymbolTypeInfo toAdd;
-        toAdd.kind                          = SymbolKind::Variable;
-        toAdd.node                          = f->declNode;
-        toAdd.typeInfo                      = f->typeInfo;
-        toAdd.storageOffset                 = f->offset;
-        toAdd.flags                         = OVERLOAD_VAR_STRUCT;
+        toAdd.kind          = SymbolKind::Variable;
+        toAdd.node          = f->declNode;
+        toAdd.typeInfo      = f->typeInfo;
+        toAdd.storageOffset = f->offset;
+        toAdd.flags         = OVERLOAD_VAR_STRUCT;
         f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));
 
         if (!(f->flags & TYPEINFOPARAM_AUTO_NAME))
         {
-            toAdd.aliasName                     = FMT("item%d", idx);
+            toAdd.aliasName = FMT("item%d", idx);
             f->declNode->setResolvedSymbolOverload(typeStruct->scope->symTable.addSymbolTypeInfo(context, toAdd));
         }
 

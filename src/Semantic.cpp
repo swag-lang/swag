@@ -179,8 +179,7 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
             {
                 const auto idRef  = castAst<AstIdentifierRef>(node);
                 idRef->startScope = nullptr;
-                idRef->setResolvedSymbolName(nullptr);
-                idRef->setResolvedSymbolOverload(nullptr);
+                idRef->setResolvedSymbol(nullptr, nullptr);
                 idRef->previousResolvedNode = nullptr;
                 break;
             }

@@ -683,8 +683,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
-                    identifier->setResolvedSymbolName(overload->symbol);
-                    identifier->setResolvedSymbolOverload(overload);
+                    identifier->setResolvedSymbol(overload->symbol, overload);
                     return true;
                 }
             }
@@ -704,8 +703,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
                     identifierRef->previousResolvedNode = context->node;
-                    identifier->setResolvedSymbolName(overload->symbol);
-                    identifier->setResolvedSymbolOverload(overload);
+                    identifier->setResolvedSymbol(overload->symbol, overload);
                     return true;
                 }
             }
@@ -734,12 +732,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     // Do not register a sub impl scope, for ufcs to use the real variable
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
     {
-        identifierRef->setResolvedSymbolName(symbol);
-        identifierRef->setResolvedSymbolOverload(overload);
+        identifierRef->setResolvedSymbol(symbol, overload);
     }
 
-    identifier->setResolvedSymbolName(symbol);
-    identifier->setResolvedSymbolOverload(overload);
+    identifier->setResolvedSymbol(symbol, overload);
 
     if (identifier->typeInfo->isGeneric())
         identifier->addAstFlag(AST_IS_GENERIC);

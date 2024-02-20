@@ -90,8 +90,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     // Keep resolution
     if (!node->typeInfo || !node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
     {
-        node->setResolvedSymbolName(childBack->resolvedSymbolName());
-        node->setResolvedSymbolOverload(childBack->resolvedSymbolOverload());
+        node->setResolvedSymbol(childBack->resolvedSymbolName(), childBack->resolvedSymbolOverload());
         node->typeInfo = childBack->typeInfo;
     }
 
@@ -672,8 +671,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
                 YIELD();
                 if (canTry)
                 {
-                    identifierRef->setResolvedSymbolOverload(dependentVar->resolvedSymbolOverload());
-                    identifierRef->setResolvedSymbolName(dependentVar->resolvedSymbolOverload()->symbol);
+                    identifierRef->setResolvedSymbol(dependentVar->resolvedSymbolOverload()->symbol, dependentVar->resolvedSymbolOverload());
                     identifierRef->previousResolvedNode = dependentVar;
                 }
             }
@@ -1142,8 +1140,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         }
 
         // Partial resolution
-        identifier->setResolvedSymbolName(symbol);
-        identifier->setResolvedSymbolOverload(symbol->overloads[0]);
+        identifier->setResolvedSymbol(symbol, symbol->overloads[0]);
         identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;
 
         // In case identifier is part of a reference, need to initialize it
@@ -1199,8 +1196,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         for (auto& oneOver : toSolveOverload)
         {
             auto symbolOverload = oneOver.overload;
-            identifierRef->setResolvedSymbolOverload(orgResolvedSymbolOverload);
-            identifierRef->setResolvedSymbolName(orgResolvedSymbolName);
+            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
             identifierRef->previousResolvedNode = orgPreviousResolvedNode;
 
             // Is there a using variable associated with the symbol to solve ?
@@ -1278,16 +1274,14 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         if (context->result == ContextResult::Pending)
         {
-            identifierRef->setResolvedSymbolOverload(orgResolvedSymbolOverload);
-            identifierRef->setResolvedSymbolName(orgResolvedSymbolName);
+            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
             identifierRef->previousResolvedNode = orgPreviousResolvedNode;
             return true;
         }
 
         if (context->result == ContextResult::NewChildren1)
         {
-            identifierRef->setResolvedSymbolOverload(orgResolvedSymbolOverload);
-            identifierRef->setResolvedSymbolName(orgResolvedSymbolName);
+            identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
             identifierRef->previousResolvedNode = orgPreviousResolvedNode;
             context->result                     = ContextResult::NewChildren;
             return true;
@@ -1321,8 +1315,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Name alias with overloads (more than one match)
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NAME_ALIAS) && context->cacheMatches.size() > 1)
     {
-        identifier->setResolvedSymbolName(context->cacheMatches[0]->symbolOverload->symbol);
-        identifier->setResolvedSymbolOverload(nullptr);
+        identifier->setResolvedSymbol(context->cacheMatches[0]->symbolOverload->symbol, nullptr);
         return true;
     }
 
@@ -1336,8 +1329,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (match->dependentVar && !identifierRef->previousResolvedNode)
             {
-                identifierRef->setResolvedSymbolOverload(match->dependentVar->resolvedSymbolOverload());
-                identifierRef->setResolvedSymbolName(match->dependentVar->resolvedSymbolOverload()->symbol);
+                identifierRef->setResolvedSymbol(match->dependentVar->resolvedSymbolOverload()->symbol, match->dependentVar->resolvedSymbolOverload());
                 identifierRef->previousResolvedNode = match->dependentVar;
             }
 

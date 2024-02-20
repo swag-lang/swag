@@ -224,8 +224,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 copyChild->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 if (!child->resolvedSymbolOverload())
                 {
-                    copyChild->setResolvedSymbolName(dependentVar->resolvedSymbolOverload()->symbol);
-                    copyChild->setResolvedSymbolOverload(dependentVar->resolvedSymbolOverload());
+                    copyChild->setResolvedSymbol(dependentVar->resolvedSymbolOverload()->symbol, dependentVar->resolvedSymbolOverload());
                     copyChild->typeInfo = dependentVar->typeInfo;
 
                     // In case of a parameter of an inlined function, we will have to find the real OVERLOAD_VAR_INLINE variable
@@ -240,8 +239,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                             {
                                 ScopedLock lk(sym->mutex);
                                 SWAG_ASSERT(sym->overloads.size() == 1);
-                                copyChild->setResolvedSymbolOverload(sym->overloads[0]);
-                                copyChild->setResolvedSymbolName(copyChild->resolvedSymbolOverload()->symbol);
+                                copyChild->setResolvedSymbol(copyChild->resolvedSymbolOverload()->symbol, sym->overloads[0]);
                                 copyChild->typeInfo = copyChild->resolvedSymbolOverload()->typeInfo;
                             }
                         }
@@ -249,8 +247,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                 }
                 else
                 {
-                    copyChild->setResolvedSymbolName(child->resolvedSymbolOverload()->symbol);
-                    copyChild->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+                    copyChild->setResolvedSymbol(child->resolvedSymbolOverload()->symbol, child->resolvedSymbolOverload());
                     copyChild->typeInfo = child->typeInfo;
                 }
 

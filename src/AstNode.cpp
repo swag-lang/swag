@@ -79,8 +79,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         castedTypeInfo = from->castedTypeInfo;
     }
 
-    setResolvedSymbolName(from->resolvedSymbolName());
-    setResolvedSymbolOverload(from->resolvedSymbolOverload());
+    setResolvedSymbol(from->resolvedSymbolName(), from->resolvedSymbolOverload());
 
     token   = from->token;
     tokenId = from->tokenId;
@@ -1376,7 +1375,13 @@ void AstNode::setResolvedSymbolName(SymbolName* sym)
     symbolName = sym;
 }
 
-void AstNode::setResolvedSymbolOverload(SymbolOverload* sym)
+void AstNode::setResolvedSymbolOverload(SymbolOverload* over)
 {
-    symbolOverload = sym;
+    symbolOverload = over;
+}
+
+void AstNode::setResolvedSymbol(SymbolName* sym, SymbolOverload* over)
+{
+    symbolName     = sym;
+    symbolOverload = over;
 }

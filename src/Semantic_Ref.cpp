@@ -103,8 +103,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->addAstFlag(AST_R_VALUE);
-    node->setResolvedSymbolName(child->resolvedSymbolName());
-    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+    node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
 
     const auto funcNode = node->resolvedSymbolOverload()->node;
     SWAG_CHECK(checkCanMakeFuncPointer(context, castAst<AstFuncDecl>(funcNode), child));
@@ -192,8 +191,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->addAstFlag(AST_R_VALUE);
-    node->setResolvedSymbolName(child->resolvedSymbolName());
-    node->setResolvedSymbolOverload(child->resolvedSymbolOverload());
+    node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
     node->byteCodeFct = ByteCodeGen::emitMakePointer;
     node->inheritComputedValue(child);
 
@@ -593,8 +591,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 {
     const auto arrayNode                = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    arrayNode->setResolvedSymbolName(arrayNode->array->resolvedSymbolName());
-    arrayNode->setResolvedSymbolOverload(arrayNode->array->resolvedSymbolOverload());
+    arrayNode->setResolvedSymbol(arrayNode->array->resolvedSymbolName(), arrayNode->array->resolvedSymbolOverload());
     arrayNode->inheritAstFlagsOr(arrayNode->array, AST_L_VALUE);
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));

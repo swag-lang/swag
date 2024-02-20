@@ -390,8 +390,7 @@ bool Semantic::resolveType(SemanticContext* context)
     // This is a generic type, not yet known
     if (!typeNode->typeInfo && typeNode->identifier && typeNode->identifier->resolvedSymbolOverload()->hasFlag(OVERLOAD_GENERIC))
     {
-        typeNode->setResolvedSymbolName(typeNode->identifier->resolvedSymbolName());
-        typeNode->setResolvedSymbolOverload(typeNode->identifier->resolvedSymbolOverload());
+        typeNode->setResolvedSymbol(typeNode->identifier->resolvedSymbolName(), typeNode->identifier->resolvedSymbolOverload());
         typeNode->typeInfo       = makeType<TypeInfoGeneric>();
         typeNode->typeInfo->name = typeNode->resolvedSymbolName()->name;
         typeNode->typeInfo       = typeNode->typeInfo;
@@ -678,8 +677,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitPassThrough;
     node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
-    node->setResolvedSymbolName(exprNode->resolvedSymbolName());
-    node->setResolvedSymbolOverload(exprNode->resolvedSymbolOverload());
+    node->setResolvedSymbol(exprNode->resolvedSymbolName(), exprNode->resolvedSymbolOverload());
 
     if (node->hasFlagComputedValue() && node->typeInfo->isNative())
     {
@@ -743,8 +741,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitExplicitCast;
     node->inheritAstFlagsOr(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_COMPUTED_VALUE | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
     node->inheritComputedValue(exprNode);
-    node->setResolvedSymbolName(exprNode->resolvedSymbolName());
-    node->setResolvedSymbolOverload(exprNode->resolvedSymbolOverload());
+    node->setResolvedSymbol(exprNode->resolvedSymbolName(), exprNode->resolvedSymbolOverload());
 
     // In case case has triggered a special function call, need to get it
     // (usage of opAffect)

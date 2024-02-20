@@ -64,8 +64,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         // function call parameter
         if (!node->findParent(AstNodeKind::FuncCallParam))
         {
-            node->setResolvedSymbolName(match.symbolName);
-            node->setResolvedSymbolOverload(match.symbolOverload);
+            node->setResolvedSymbol(match.symbolName, match.symbolOverload);
             node->typeInfo = match.symbolOverload->typeInfo;
 
             SWAG_CHECK(instantiateDefaultGenericFunc(context));
