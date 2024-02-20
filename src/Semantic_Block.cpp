@@ -476,7 +476,10 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else
                 {
-                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"); });
+                    PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]
+                    {
+                        return FMT(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression");
+                    });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
@@ -528,7 +531,10 @@ bool Semantic::resolveLoop(SemanticContext* context)
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return Nte(Nte0021); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, []
+                {
+                    return Nte(Nte0021);
+                }, true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 YIELD();
             }
@@ -930,8 +936,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     // In case of error (like an already defined identifier), we need to set the correct location of declared
     // variables
-    size_t                                 countVar   = 0;
-    size_t                                 countAlias = 0;
+    size_t countVar   = 0;
+    size_t countAlias = 0;
     Ast::visit(newExpression, [&](AstNode* x)
     {
         if (countAlias >= node->aliasNames.size())

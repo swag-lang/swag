@@ -3,7 +3,7 @@
 
 #define MK_ALIGN16(__s) \
     if ((__s) % 16)     \
-        (__s) += 16 - ((__s) % 16)
+    (__s) += 16 - ((__s) % 16)
 
 struct Allocator
 {
@@ -17,7 +17,7 @@ struct Allocator
     static T* alloc()
     {
         auto returnData = allocRaw<T>();
-        ::new(returnData) T;
+        ::new (returnData) T;
         return returnData;
     }
 

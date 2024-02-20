@@ -7,7 +7,7 @@ struct AstNode;
 struct ByteCode;
 struct SourceLocation;
 
-using InstructionFlags = Flags<uint16_t>;
+using InstructionFlags                        = Flags<uint16_t>;
 constexpr InstructionFlags BCI_JUMP_DEST      = 0x0001;
 constexpr InstructionFlags BCI_SAFETY         = 0x0002;
 constexpr InstructionFlags BCI_IMM_A          = 0x0004;
@@ -25,7 +25,7 @@ constexpr InstructionFlags BCI_START_STMT     = BCI_START_STMT_N | BCI_START_STM
 constexpr InstructionFlags BCI_NO_BACKEND     = 0x2000;
 constexpr InstructionFlags BCI_CANT_OVERFLOW  = 0x4000;
 
-using InstructionDynFlags = Flags<uint8_t>;
+using InstructionDynFlags                    = Flags<uint8_t>;
 constexpr InstructionDynFlags BCID_OPT_FLAG  = 0x01;
 constexpr InstructionDynFlags BCID_SAN_PASS  = 0x02;
 constexpr InstructionDynFlags BCID_SAFETY_OF = 0x04;

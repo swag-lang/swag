@@ -8,13 +8,13 @@
 #include "SCBE_SaveObjJob.h"
 #include "Workspace.h"
 
-SCBE::SCBE(Module* mdl)
-    : Backend{mdl}
+SCBE::SCBE(Module* mdl) :
+    Backend{mdl}
 {
 }
 
-SCBE::SCBE()
-    : Backend{nullptr}
+SCBE::SCBE() :
+    Backend{nullptr}
 {
     memset(perThread, 0, sizeof(perThread));
 }

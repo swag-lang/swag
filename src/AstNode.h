@@ -36,13 +36,13 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 
-using SemanticFct = bool(*)(SemanticContext* context);
-using ByteCodeFct = bool(*)(ByteCodeGenContext* context);
-using ByteCodeNotifyFct = bool(*)(ByteCodeGenContext* context);
-using AstNodeFlags = Flags<uint64_t>;
-using AstSemFlags = Flags<uint64_t>;
-using SpecFlags = Flags<uint16_t>;
-using SafetyFlags = Flags<uint16_t>;
+using SemanticFct       = bool       (*)(SemanticContext* context);
+using ByteCodeFct       = bool       (*)(ByteCodeGenContext* context);
+using ByteCodeNotifyFct = bool (*)(ByteCodeGenContext* context);
+using AstNodeFlags      = Flags<uint64_t>;
+using AstSemFlags       = Flags<uint64_t>;
+using SpecFlags         = Flags<uint16_t>;
+using SafetyFlags       = Flags<uint16_t>;
 
 constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -85,7 +85,7 @@ struct CloneContext
     }
 };
 
-using AltScopeFlags = Flags<uint32_t>;
+using AltScopeFlags                            = Flags<uint32_t>;
 constexpr AltScopeFlags ALT_SCOPE_STRUCT_USING = 0x00000001;
 constexpr AltScopeFlags ALT_SCOPE_FILE_PRIVATE = 0x00000002;
 constexpr AltScopeFlags ALT_SCOPE_UFCS         = 0x00000004;
@@ -543,7 +543,7 @@ struct AstIdentifier : AstNode
         IdentifierScopeUpMode scopeUpMode      = IdentifierScopeUpMode::None;
     };
 
-    ~AstIdentifier();
+    ~                 AstIdentifier();
     AstNode*          clone(CloneContext& context);
     void              allocateIdentifierExtension();
     AstIdentifierRef* identifierRef() const;
@@ -571,7 +571,7 @@ struct AstFuncDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_ASSUME               = 0x2000;
     static constexpr SpecFlags SPEC_FLAG_IMPL                 = 0x4000;
 
-    ~AstFuncDecl();
+    ~           AstFuncDecl();
     AstNode*    clone(CloneContext& context);
     bool        cloneSubDecl(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void        computeFullNameForeignExport();
@@ -691,7 +691,7 @@ struct AstBreakContinue : AstNode
     int            jumpInstruction;
 };
 
-using BreakableFlags = Flags<uint32_t>;
+using BreakableFlags                                       = Flags<uint32_t>;
 constexpr BreakableFlags BREAKABLE_CAN_HAVE_INDEX          = 0x00000001;
 constexpr BreakableFlags BREAKABLE_CAN_HAVE_CONTINUE       = 0x00000002;
 constexpr BreakableFlags BREAKABLE_NEED_INDEX              = 0x00000004;
@@ -716,7 +716,7 @@ struct AstBreakable : AstNode
 
 struct AstScopeBreakable : AstBreakable
 {
-    AstScopeBreakable();
+             AstScopeBreakable();
     AstNode* clone(CloneContext& context);
 
     AstNode* block;
@@ -732,7 +732,7 @@ struct AstWhile : AstBreakable
 
 struct AstFor : AstBreakable
 {
-    ~AstFor();
+    ~        AstFor();
     AstNode* clone(CloneContext& context);
 
     AstNode* preExpression;
@@ -746,7 +746,7 @@ struct AstLoop : AstBreakable
 {
     static constexpr SpecFlags SPEC_FLAG_BACK = 0x0001;
 
-    ~AstLoop();
+    ~        AstLoop();
     AstNode* clone(CloneContext& context);
 
     AstNode* specificName;
@@ -770,7 +770,7 @@ struct AstVisit : AstNode
 
 struct AstSwitch : AstBreakable
 {
-    AstSwitch();
+             AstSwitch();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstSwitchCase*> cases;
@@ -793,7 +793,7 @@ struct AstSwitchCase : AstNode
 
 struct AstSwitchCaseBlock : AstNode
 {
-    ~AstSwitchCaseBlock();
+    ~        AstSwitchCaseBlock();
     AstNode* clone(CloneContext& context);
 
     AstSwitchCase* ownerCase;
@@ -808,7 +808,7 @@ struct AstType : AstNode
     static constexpr SpecFlags SPEC_FLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
 };
 
-using TypeFlags = Flags<uint16_t>;
+using TypeFlags                                = Flags<uint16_t>;
 constexpr TypeFlags TYPEFLAG_IS_ARRAY          = 0x0001;
 constexpr TypeFlags TYPEFLAG_IS_SLICE          = 0x0002;
 constexpr TypeFlags TYPEFLAG_IS_CONST          = 0x0004;
@@ -894,7 +894,7 @@ struct AstStruct : AstNode
     static constexpr SpecFlags SPEC_FLAG_UNION     = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_ANONYMOUS = 0x0004;
 
-    ~AstStruct();
+    ~        AstStruct();
     AstNode* clone(CloneContext& context);
 
     DependentJobs dependentJobs;
@@ -910,7 +910,7 @@ struct AstStruct : AstNode
 
 struct AstEnum : AstNode
 {
-    ~AstEnum();
+    ~        AstEnum();
     AstNode* clone(CloneContext& context);
 
     Token    tokenName;
@@ -929,7 +929,7 @@ struct AstEnumValue : AstNode
 
 struct AstImpl : AstNode
 {
-    ~AstImpl();
+    ~        AstImpl();
     AstNode* clone(CloneContext& context);
 
     Scope*   structScope;
@@ -966,7 +966,7 @@ struct AstReturn : AstNode
 
 struct AstCompilerMacro : AstNode
 {
-    ~AstCompilerMacro();
+    ~        AstCompilerMacro();
     AstNode* clone(CloneContext& context);
 
     Scope* scope;
@@ -981,7 +981,7 @@ struct AstCompilerMixin : AstNode
 
 struct AstInline : AstNode
 {
-    ~AstInline();
+    ~        AstInline();
     AstNode* clone(CloneContext& context);
 
     VectorNative<AstReturn*> returnList;

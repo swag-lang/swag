@@ -11,8 +11,8 @@
 #include "Version.h"
 #include "Workspace.h"
 
-Backend::Backend(Module* mdl)
-    : module{mdl}
+Backend::Backend(Module* mdl) :
+    module{mdl}
 {
     memset(perThread, 0, sizeof(perThread));
 }

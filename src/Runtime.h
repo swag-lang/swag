@@ -7,7 +7,7 @@ struct ExportedTypeInfo;
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-using SafetyFlags = Flags<uint16_t>;
+using SafetyFlags                        = Flags<uint16_t>;
 constexpr SafetyFlags SAFETY_BOUND_CHECK = 0x0001;
 constexpr SafetyFlags SAFETY_OVERFLOW    = 0x0002;
 constexpr SafetyFlags SAFETY_MATH        = 0x0004;
@@ -91,7 +91,7 @@ struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
     uint32_t  lineStart, colStart;
-    uint32_t  lineEnd,   colEnd;
+    uint32_t  lineEnd, colEnd;
 };
 
 struct SwagCVaList
@@ -153,11 +153,11 @@ using SwagContext = struct SwagContext
     uint32_t                hasError;
 };
 
-using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*);
+using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*);
 
-using SwagBytecodeRun = void(*)(void*, ...);
-using SwagThreadRun = void(*)(void*);
-using SwagMakeCallback = FuncCB(*)(void*);
+using SwagBytecodeRun  = void    (*)(void*, ...);
+using SwagThreadRun    = void      (*)(void*);
+using SwagMakeCallback = FuncCB (*)(void*);
 
 enum class SwagBackendGenType : uint32_t
 {

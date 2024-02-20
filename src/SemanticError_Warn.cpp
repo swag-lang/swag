@@ -56,9 +56,8 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     const Diagnostic err{
-        identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()),
-        DiagnosticLevel::Warning
-    };
+    identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()),
+    DiagnosticLevel::Warning};
     const auto note1   = Diagnostic::note(node, node->token, Nte(Nte0066));
     note1->canBeMerged = false;
 

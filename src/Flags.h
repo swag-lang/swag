@@ -5,8 +5,8 @@ struct Flags
 {
     Flags() = default;
 
-    constexpr Flags(T other)
-        : flags{other}
+    constexpr Flags(T other) :
+        flags{other}
     {
     }
 

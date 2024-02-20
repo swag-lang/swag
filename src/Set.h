@@ -4,13 +4,13 @@
 template<typename T>
 struct Set : unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>
 {
-    Set()
-        : unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>()
+    Set() :
+        unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>()
     {
     }
 
-    Set(const Set& other)
-        : unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>(other)
+    Set(const Set& other) :
+        unordered_set<T, hash<T>, equal_to<T>, StdAllocator<T>>(other)
     {
     }
 };

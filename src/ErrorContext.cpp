@@ -6,8 +6,8 @@
 #include "Scope.h"
 #include "SourceFile.h"
 
-PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const function<Utf8()>& err, bool locIsToken)
-    : cxt{context}
+PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const function<Utf8()>& err, bool locIsToken) :
+    cxt{context}
 {
     ErrorCxtStep expNode;
     expNode.node       = node;
@@ -56,12 +56,12 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     break;
 
                 case ErrCxtStepKind::Inline:
-                    exp.hide = doneInline;
+                    exp.hide   = doneInline;
                     doneInline = true;
                     break;
 
                 case ErrCxtStepKind::CompileTime:
-                    exp.hide = doneCompTime;
+                    exp.hide     = doneCompTime;
                     doneCompTime = true;
                     break;
 
@@ -106,15 +106,15 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     msg = FMT(Nte(Nte0097), name.c_str());
                     break;
                 case ErrCxtStepKind::Generic:
-                    msg = FMT(Nte(Nte0095), name.c_str());
+                    msg            = FMT(Nte(Nte0095), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::Inline:
-                    msg = FMT(Nte(Nte0096), name.c_str());
+                    msg            = FMT(Nte(Nte0096), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::CompileTime:
-                    msg = FMT(Nte(Nte0091), name.c_str());
+                    msg            = FMT(Nte(Nte0091), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIf:
@@ -125,7 +125,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::ValidIfx:
-                    msg = FMT(Nte(Nte0094), name.c_str());
+                    msg            = FMT(Nte(Nte0094), name.c_str());
                     exp.locIsToken = true;
                     break;
                 case ErrCxtStepKind::HereIs:

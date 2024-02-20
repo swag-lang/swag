@@ -75,7 +75,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     const Utf8 funcName = FMT(g_LangSpec->name_globalInit, callName.c_str());
     if (const auto ptr = OS::getProcAddress(h, funcName.c_str()))
     {
-        using FuncCall = void(*)(void*);
+        using FuncCall = void (*)(void*);
         reinterpret_cast<FuncCall>(ptr)(&g_ProcessInfos);
     }
 

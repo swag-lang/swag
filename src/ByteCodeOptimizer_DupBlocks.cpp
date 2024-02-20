@@ -20,12 +20,12 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
             return;
 
         // If this is a return block, then when exactly should we factorise ?
-        // Is it a good idea to add a jump (for speed) ? 
+        // Is it a good idea to add a jump (for speed) ?
         // Should we test optimize for size versus optimize for speed ?
 
         // Here we consider that if the block has only 2 instructions, then we do not jump to a block with also 2 instructions.
         // But '2' is kind of magical...
-        //if (ByteCode::isRet(node->end) && countBlock <= 2)
+        // if (ByteCode::isRet(node->end) && countBlock <= 2)
         //    return;
 
         const auto it = context->map32Node.find(node->crc);

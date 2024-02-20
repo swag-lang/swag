@@ -57,7 +57,7 @@ struct VectorNative
             return;
 
         const auto oldAllocated = allocated;
-        allocated               = max(allocated*2, 4);
+        allocated               = max(allocated * 2, 4);
         allocated               = max(allocated, newCapacity);
         auto newPtr             = Allocator::alloc_n_aligned<T>(allocated);
         if (copy && count)
@@ -311,8 +311,8 @@ struct VectorNative
         allocated = other.allocated;
         buffer    = other.buffer;
 
-        other.count  = other.allocated = 0;
-        other.buffer = nullptr;
+        other.count = other.allocated = 0;
+        other.buffer                  = nullptr;
         return *this;
     }
 

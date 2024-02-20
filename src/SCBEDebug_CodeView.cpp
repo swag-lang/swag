@@ -44,7 +44,7 @@ namespace
         const auto patchRecordOffset = concat.totalCount();
         concat.addU16(S_COMPILE3); // Record kind enum (SymRecordKind or TypeRecordKind)
 
-        concat.addU32(0); // Flags/Language (C)
+        concat.addU32(0);    // Flags/Language (C)
         concat.addU16(0xD0); // CPU Type (X64)
 
         // Front end version
@@ -197,7 +197,7 @@ namespace
 
                 // lfFuncId
                 case LF_FUNC_ID:
-                    concat.addU32(0); // ParentScope
+                    concat.addU32(0);                 // ParentScope
                     concat.addU32(f->LF_FuncId.type); // @type
                     emitTruncatedString(pp, f->node->token.text);
                     break;
@@ -273,10 +273,10 @@ namespace
                 case LF_STRUCTURE:
                     concat.addU16(f->LF_Structure.memberCount);
                     concat.addU16(f->LF_Structure.forward ? 0x80 : 0); // properties
-                    concat.addU32(f->LF_Structure.fieldList); // field
-                    concat.addU32(f->LF_Structure.derivedList); // derivedFrom
-                    concat.addU32(0); // vTableShape
-                    concat.addU16(LF_ULONG); // LF_ULONG
+                    concat.addU32(f->LF_Structure.fieldList);          // field
+                    concat.addU32(f->LF_Structure.derivedList);        // derivedFrom
+                    concat.addU32(0);                                  // vTableShape
+                    concat.addU16(LF_ULONG);                           // LF_ULONG
                     concat.addU32(f->LF_Structure.sizeOf);
                     emitTruncatedString(pp, f->name);
                     break;
@@ -397,7 +397,7 @@ namespace
     {
         uint32_t checkSymIndex = 0;
 
-        using P = MapPath<uint32_t>;
+        using P                            = MapPath<uint32_t>;
         const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
         if (iter.second)
         {
@@ -447,13 +447,13 @@ namespace
         const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
 
         const auto numLines = lines.size();
-        concat.addU32(checkSymIndex); // File index in checksum buffer (in bytes!)
-        concat.addU32(numLines); // NumLines
+        concat.addU32(checkSymIndex);     // File index in checksum buffer (in bytes!)
+        concat.addU32(numLines);          // NumLines
         concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)
         for (const auto& line : lines)
         {
             concat.addU32(line.byteOffset - startByteIndex); // Offset in bytes from the start of the section
-            concat.addU32(line.line); // Line number
+            concat.addU32(line.line);                        // Line number
         }
 
         *patchLTCount = concat.totalCount() - patchLTOffset;
@@ -471,8 +471,8 @@ namespace
         // Header
         /////////////////////////////////
         emitStartRecord(pp, S_BLOCK32);
-        concat.addU32(0); // Parent = 0;
-        concat.addU32(0); // End = 0;
+        concat.addU32(0);                                       // Parent = 0;
+        concat.addU32(0);                                       // End = 0;
         concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
         emitSecRel(pp, f.symbolIndex, pp.symCOIndex, scope->backendStart);
         emitTruncatedString(pp, "");
@@ -543,14 +543,14 @@ namespace
                 concat.addU32(SCBEDebug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
             else
                 concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo)); // Type
-            concat.addU16(0); // Flags
+            concat.addU16(0);                                            // Flags
             emitTruncatedString(pp, localVar->token.text);
             emitEndRecord(pp);
 
             //////////
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-            concat.addU16(R_RDI); // Register
-            concat.addU16(0); // Flags
+            concat.addU16(R_RDI);                   // Register
+            concat.addU16(0);                       // Flags
             if (overload->hasFlag(OVERLOAD_RETVAL)) // Offset to register
                 concat.addU32(SCBE_CPU::getParamStackOffset(&f, typeFunc->numParamsRegisters()));
             else
@@ -625,13 +625,13 @@ namespace
                 // Proc ID
                 /////////////////////////////////
                 emitStartRecord(pp, S_LPROC32_ID);
-                concat.addU32(0); // Parent = 0
-                concat.addU32(0); // End = 0
-                concat.addU32(0); // Next = 0
+                concat.addU32(0);                             // Parent = 0
+                concat.addU32(0);                             // End = 0
+                concat.addU32(0);                             // Next = 0
                 concat.addU32(f.endAddress - f.startAddress); // CodeSize = 0
-                concat.addU32(0); // DbgStart = 0
-                concat.addU32(0); // DbgEnd = 0
-                concat.addU32(tr->index); // FuncID type index
+                concat.addU32(0);                             // DbgStart = 0
+                concat.addU32(0);                             // DbgEnd = 0
+                concat.addU32(tr->index);                     // FuncID type index
                 emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                 concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
                 auto nn = SCBEDebug::getScopedName(f.node);
@@ -642,12 +642,12 @@ namespace
                 /////////////////////////////////
                 emitStartRecord(pp, S_FRAMEPROC);
                 concat.addU32(f.frameSize); // FrameSize
-                concat.addU32(0); // Padding
-                concat.addU32(0); // Offset of padding
-                concat.addU32(0); // Bytes of callee saved registers
-                concat.addU32(0); // Exception handler offset
-                concat.addU32(0); // Exception handler section
-                concat.addU32(0); // Flags (defines frame register)
+                concat.addU32(0);           // Padding
+                concat.addU32(0);           // Offset of padding
+                concat.addU32(0);           // Bytes of callee saved registers
+                concat.addU32(0);           // Exception handler offset
+                concat.addU32(0);           // Exception handler section
+                concat.addU32(0);           // Flags (defines frame register)
                 emitEndRecord(pp);
 
                 // Capture parameters
@@ -686,7 +686,7 @@ namespace
                         //////////
                         emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_R12); // Register
-                        concat.addU16(0); // Flags
+                        concat.addU16(0);     // Flags
                         concat.addU32(overload->computedValue.storageOffset);
                         emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                         concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
@@ -745,7 +745,7 @@ namespace
                         //////////
                         emitStartRecord(pp, S_LOCAL);
                         concat.addU32(typeIdx); // Type
-                        concat.addU16(1); // set fIsParam. If not set, callstack signature won't be good.
+                        concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
 
                         // The real name, in case of 2 registers, will be created below without the 'fIsParam' flag set.
                         // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
@@ -770,7 +770,7 @@ namespace
                         //////////
                         emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_RDI); // Register
-                        concat.addU16(0); // Flags
+                        concat.addU16(0);     // Flags
                         concat.addU32(offsetStackParam);
                         emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                         concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
@@ -784,14 +784,14 @@ namespace
                             //////////
                             emitStartRecord(pp, S_LOCAL);
                             concat.addU32(typeIdx); // Type
-                            concat.addU16(0); // set fIsParam to 0
+                            concat.addU16(0);       // set fIsParam to 0
                             emitTruncatedString(pp, child->token.text);
                             emitEndRecord(pp);
 
                             //////////
                             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                             concat.addU16(R_RDI); // Register
-                            concat.addU16(0); // Flags
+                            concat.addU16(0);     // Flags
                             concat.addU32(offsetStackParam);
                             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                             concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
@@ -805,14 +805,14 @@ namespace
                             //////////
                             emitStartRecord(pp, S_LOCAL);
                             concat.addU32(typeIdx); // Type
-                            concat.addU16(1); // set fIsParam
+                            concat.addU16(1);       // set fIsParam
                             emitTruncatedString(pp, "this");
                             emitEndRecord(pp);
 
                             //////////
                             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                             concat.addU16(R_RDI); // Register
-                            concat.addU16(0); // Flags
+                            concat.addU16(0);     // Flags
                             concat.addU32(offsetStackParam);
                             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                             concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range

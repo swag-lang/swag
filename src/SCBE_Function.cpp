@@ -242,7 +242,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitNop();
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::MulAddVC64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->b.u32), RCX);
@@ -259,7 +259,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitOpNIndirectDst(REG_OFFSET(ip->a.u32), ip->b.u64, RDI, CPUOp::ADD, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::ClearRA:
                 pp.emitStore64Immediate(REG_OFFSET(ip->a.u32), 0, RDI);
@@ -280,7 +280,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Immediate(REG_OFFSET(ip->d.u32), 0, RDI);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA8:
                 pp.emitLoadU8U64Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
@@ -311,7 +311,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:
                 pp.emitLoad8Indirect(REG_OFFSET(ip->b.u32), RAX);
@@ -469,7 +469,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftLeftS8:
             case ByteCodeOp::BinOpShiftLeftU8:
@@ -488,7 +488,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftLogical(pp, ip, CPUOp::SHL, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftRightU8:
                 emitShiftLogical(pp, ip, CPUOp::SHR, CPUBits::B8);
@@ -516,7 +516,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftRightArithmetic(pp, ip, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpXorU8:
                 emitBinOpIntNAtReg(pp, ip, CPUOp::XOR, CPUBits::B8);
@@ -531,7 +531,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpIntNAtReg(pp, ip, CPUOp::XOR, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpMulS8:
             case ByteCodeOp::BinOpMulS8_Safe:
@@ -580,7 +580,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpFloat64AtReg(pp, ip, CPUOp::FMUL);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
                 emitBinOpDivIntNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B8);
@@ -607,7 +607,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpDivIntNAtReg(pp, ip, CPUOp::MOD, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpDivS8:
                 emitBinOpDivIntNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B8);
@@ -640,7 +640,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpFloat64AtReg(pp, ip, CPUOp::FDIV);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpPlusS8:
             case ByteCodeOp::BinOpPlusS8_Safe:
@@ -689,7 +689,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpFloat64AtReg(pp, ip, CPUOp::FADD);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpMinusS8:
             case ByteCodeOp::BinOpMinusS8_Safe:
@@ -739,7 +739,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpFloat64AtReg(pp, ip, CPUOp::FSUB);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskAnd8:
                 emitBinOpIntNAtReg(pp, ip, CPUOp::AND, CPUBits::B8);
@@ -754,7 +754,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpIntNAtReg(pp, ip, CPUOp::AND, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskOr8:
                 emitBinOpIntNAtReg(pp, ip, CPUOp::OR, CPUBits::B8);
@@ -769,7 +769,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpIntNAtReg(pp, ip, CPUOp::OR, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
             case ByteCodeOp::AffectOpShiftLeftEqU8:
@@ -788,7 +788,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftEqLogical(pp, ip, CPUOp::SHL, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqU8:
                 emitShiftEqLogical(pp, ip, CPUOp::SHR, CPUBits::B8);
@@ -816,7 +816,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitShiftRightEqArithmetic(pp, ip, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEqU8:
                 MK_BINOP_EQ8_CAB(CPUOp::XOR);
@@ -831,7 +831,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_BINOP_EQ64_CAB(CPUOp::XOR);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
                 MK_BINOP_EQ8_CAB(CPUOp::OR);
@@ -846,7 +846,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_BINOP_EQ64_CAB(CPUOp::OR);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
                 MK_BINOP_EQ8_CAB(CPUOp::AND);
@@ -861,7 +861,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_BINOP_EQ64_CAB(CPUOp::AND);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMulEqS8:
             case ByteCodeOp::AffectOpMulEqS8_Safe:
@@ -1107,7 +1107,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStoreF64Indirect(0, XMM0, RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpDivEqS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -1355,7 +1355,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStoreF64Indirect(0, XMM0, RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpModuloEqS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -1565,7 +1565,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(0, RDX, RCX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
@@ -1679,7 +1679,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_BINOP_EQF64_SSCAB(CPUOp::FADD);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
             case ByteCodeOp::AffectOpMinusEqS8_Safe:
@@ -1793,7 +1793,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_BINOP_EQF64_SSCAB(CPUOp::FSUB);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
                 pp.emitLoad32Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -1825,7 +1825,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOpGreaterS8:
                 MK_BINOP8_CAB(emitCmpNIndirectDst, emitCmpNIndirect, emitCmpN);
@@ -1929,7 +1929,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOpLowerS8:
                 MK_BINOP8_CAB(emitCmpNIndirectDst, emitCmpNIndirect, emitCmpN);
@@ -2033,7 +2033,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOp3Way8:
                 pp.emitClearN(R8, CPUBits::B32);
@@ -2090,7 +2090,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOpEqual8:
                 MK_BINOP8_CAB(emitCmpNIndirectDst, emitCmpNIndirect, emitCmpN);
@@ -2123,7 +2123,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CompareOpNotEqual8:
                 MK_BINOP8_CAB(emitCmpNIndirectDst, emitCmpNIndirect, emitCmpN);
@@ -2156,7 +2156,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
                 emitInternalCall(pp, g_LangSpec->name_atdbgalloc, {}, REG_OFFSET(ip->a.u32));
@@ -2174,7 +2174,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitInternalCall(pp, g_LangSpec->name_attypecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, REG_OFFSET(ip->d.u32));
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::TestNotZero8:
                 MK_IMMB_8(RAX);
@@ -2201,7 +2201,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::NegBool:
                 pp.emitLoad8Indirect(REG_OFFSET(ip->b.u32), RAX);
@@ -2245,7 +2245,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::InvertU8:
                 if (ip->a.u32 == ip->b.u32)
@@ -2288,7 +2288,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpDyn8:
             case ByteCodeOp::JumpDyn16:
@@ -2345,7 +2345,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfTrue:
                 pp.emitLoad8Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -2401,7 +2401,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitJump(JUMP, i, ip->b.s32);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotEqual8:
                 MK_JMPCMP_8(JNZ);
@@ -2422,7 +2422,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP2_F64(JP, JNZ);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfEqual8:
                 MK_JMPCMP_8(JZ);
@@ -2447,7 +2447,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_64(JZ);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerS8:
                 MK_JMPCMP_8(JL);
@@ -2480,7 +2480,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_F64(JB);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerEqS8:
                 MK_JMPCMP_8(JLE);
@@ -2513,7 +2513,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_F64(JBE);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterS8:
                 MK_JMPCMP_8(JG);
@@ -2546,7 +2546,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_F64(JA);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterEqS8:
                 MK_JMPCMP_8(JGE);
@@ -2579,7 +2579,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP_F64(JAE);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::DecrementRA32:
                 pp.emitDecNIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B32);
@@ -2591,7 +2591,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitDecNIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::DeRef8:
                 SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
@@ -2633,7 +2633,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetFromBssSeg8:
                 pp.emitSymbolRelocationAddr(RAX, pp.symBSIndex, 0);
@@ -2677,7 +2677,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8:
                 pp.emitLoadU8U64Indirect(offsetStack + ip->b.u32, RAX, RDI);
@@ -2701,7 +2701,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8x2:
                 pp.emitLoadU8U64Indirect(offsetStack + ip->b.u32, RAX, RDI);
@@ -2728,7 +2728,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetIncFromStack64DeRef8:
                 if (ip->c.u64 <= 0x7FFFFFFF)
@@ -2787,7 +2787,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CopyStack8:
                 pp.emitLoad8Indirect(offsetStack + ip->b.u32, RAX, RDI);
@@ -2806,7 +2806,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(offsetStack + ip->a.u32, RAX, RDI);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::ClearMaskU32:
                 if (ip->b.u32 == 0xFF)
@@ -2830,7 +2830,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetZeroAtPointer8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -2872,7 +2872,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::ClearRR8:
             {
@@ -2923,7 +2923,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetZeroStack8:
                 pp.emitStore8Immediate(offsetStack + ip->a.u32, 0, RDI);
@@ -2950,7 +2950,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetAtPointer8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -3002,7 +3002,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetAtStackPointer8:
                 if (ip->hasFlag(BCI_IMM_B))
@@ -3046,7 +3046,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetAtStackPointer8x2:
                 if (ip->hasFlag(BCI_IMM_B))
@@ -3127,7 +3127,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::MakeStackPointer:
                 pp.emitLoadAddressIndirect(offsetStack + ip->b.u32, RAX, RDI);
@@ -3144,7 +3144,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(offsetRT + REG_OFFSET(0), RAX, RDI);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
                 pp.emitSymbolRelocationAddr(RAX, pp.symMSIndex, ip->b.u32);
@@ -3161,7 +3161,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::MakeCompilerSegPointer:
                 return Report::report({ip->node, ip->node->token, Err(Err0177)});
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IncPointer64:
                 emitAddSubMul64(pp, ip, 1, CPUOp::ADD);
@@ -3173,7 +3173,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitAddSubMul64(pp, ip, ip->d.u64, CPUOp::ADD);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::Mul64byVB64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -3189,7 +3189,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore64Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::SetImmediate32:
                 pp.emitStore32Immediate(REG_OFFSET(ip->a.u32), ip->b.u32, RDI);
@@ -3204,7 +3204,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::MemCpy8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX);
@@ -3227,7 +3227,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitCopyX(RCX, RDX, 8, 0);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMemCpy:
                 if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 128 && !buildParameters.isDebug())
@@ -3441,7 +3441,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitInternalCall(pp, g_LangSpec->name_atitftableof, {ip->a.u32, ip->b.u32}, REG_OFFSET(ip->c.u32));
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
                 pp.emitLoadAddressIndirect(offsetResult, RAX, RDI);
@@ -3587,7 +3587,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::PushRVParam:
                 pushRVParams.push_back({ip->a.u32, ip->b.u32});
@@ -3612,7 +3612,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->d.u32);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetParam8:
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 1);
@@ -3634,7 +3634,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 1);
@@ -3649,7 +3649,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 8);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 1);
@@ -3664,7 +3664,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 8);
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::MakeLambda:
             {
@@ -3709,7 +3709,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
@@ -3791,7 +3791,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IncSPPostCall:
             case ByteCodeOp::IncSPPostCallCond:
@@ -3835,7 +3835,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitRet();
                 break;
 
-            /////////////////////////////////////
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMulAddF32:
             {

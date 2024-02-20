@@ -163,7 +163,10 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(err, note, note1);
     }
 
-    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node] { return getSpecialOpSignature(node); });
+    PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
+    {
+        return getSpecialOpSignature(node);
+    });
 
     const auto parameters = node->parameters;
     TypeInfo*  typeStruct = nullptr;
@@ -627,7 +630,10 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [&] { return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC()); }, true);
+        PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [&]
+        {
+            return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
+        }, true);
         Diagnostic     err(left, FMT(Err(Err0556), name.c_str()));
         return context->report(err);
     }
@@ -655,7 +661,10 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         }
 
         {
-            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC()); }, true);
+            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType]
+            {
+                return FMT(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC());
+            }, true);
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
         }
 

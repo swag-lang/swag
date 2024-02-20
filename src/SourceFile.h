@@ -15,7 +15,7 @@ struct Scope;
 
 using AttributeFlags = Flags<uint64_t>;
 
-using FileFlags = Flags<uint32_t>;
+using FileFlags                              = Flags<uint32_t>;
 constexpr FileFlags FILE_IS_EXTERNAL         = 0x00000001;
 constexpr FileFlags FILE_IS_FROM_AST         = 0x00000002;
 constexpr FileFlags FILE_IS_CFG_FILE         = 0x00000004;

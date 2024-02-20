@@ -16,7 +16,7 @@ struct TypeGenStructJob;
 struct TypeInfo;
 struct TypeInfoParam;
 
-using GenExportFlags = Flags<uint32_t>;
+using GenExportFlags                                      = Flags<uint32_t>;
 constexpr GenExportFlags GEN_EXPORTED_TYPE_SHOULD_WAIT    = 0x00000001;
 constexpr GenExportFlags GEN_EXPORTED_TYPE_FORCE_NO_SCOPE = 0x00000002;
 constexpr GenExportFlags GEN_EXPORTED_TYPE_PARTIAL        = 0x00000004;

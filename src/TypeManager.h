@@ -12,7 +12,7 @@ struct TypeInfoNative;
 struct TypeInfoVariadic;
 enum class LiteralType : uint8_t;
 
-using CastFlags = Flags<uint64_t>;
+using CastFlags                                  = Flags<uint64_t>;
 constexpr CastFlags CAST_FLAG_DEFAULT            = 0x0000000000000000;
 constexpr CastFlags CAST_FLAG_INTERFACE          = 0x0000000000000001;
 constexpr CastFlags CAST_FLAG_EXPLICIT           = 0x0000000000000002;
@@ -46,7 +46,7 @@ constexpr CastFlags CAST_FLAG_EXACT              = 0x0000000010000000;
 constexpr CastFlags CAST_FLAG_CAN_OVERFLOW       = 0x0000000020000000;
 constexpr CastFlags CAST_FLAG_EXACT_TUPLE_STRUCT = 0x0000000040000000;
 
-using CastFlagsResult = Flags<uint32_t>;
+using CastFlagsResult                                     = Flags<uint32_t>;
 constexpr CastFlagsResult CAST_RESULT_STRUCT_CONVERT      = 0x00000001;
 constexpr CastFlagsResult CAST_RESULT_AUTO_OP_CAST        = 0x00000002;
 constexpr CastFlagsResult CAST_RESULT_AUTO_OP_AFFECT      = 0x00000004;
@@ -59,7 +59,7 @@ constexpr CastFlagsResult CAST_RESULT_GEN_AUTO_OP_CAST    = 0x00000100;
 constexpr CastFlagsResult CAST_RESULT_FROM_REF            = 0x00000200;
 constexpr CastFlagsResult CAST_RESULT_CONST_COERCE        = 0x00000400;
 
-using ToConcreteFlags = Flags<uint32_t>;
+using ToConcreteFlags                          = Flags<uint32_t>;
 constexpr ToConcreteFlags CONCRETE_ALL         = 0xFFFFFFFF;
 constexpr ToConcreteFlags CONCRETE_ENUM        = 0x00000001;
 constexpr ToConcreteFlags CONCRETE_FUNC        = 0x00000002;

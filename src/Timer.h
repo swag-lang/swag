@@ -3,8 +3,8 @@
 
 struct Timer
 {
-    explicit Timer(atomic<uint64_t>* dest, bool force = false)
-        : destValue{dest}
+    explicit Timer(atomic<uint64_t>* dest, bool force = false) :
+        destValue{dest}
     {
         start(force);
     }

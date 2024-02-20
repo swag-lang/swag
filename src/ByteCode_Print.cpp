@@ -331,7 +331,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
             break;
     }
 
-    // DevMode
+        // DevMode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {

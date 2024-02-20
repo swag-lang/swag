@@ -41,8 +41,8 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             node->kind = AstNodeKind::TypeClosure;
             SWAG_CHECK(eatToken());
 
-        // :ClosureForceFirstParam
-        // A closure always has at least one parameter : the capture context
+            // :ClosureForceFirstParam
+            // A closure always has at least one parameter : the capture context
             params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
             node->parameters         = params;
             firstAddedType           = Ast::newTypeExpression(sourceFile, params);

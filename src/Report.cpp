@@ -513,7 +513,7 @@ namespace
                 sourceFile->numErrors++;
                 ++sourceFile->module->numErrors;
 
-            // Do not raise an error if we are waiting for one, during tests
+                // Do not raise an error if we are waiting for one, during tests
                 if (sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
                 {
                     bool dismiss = true;
@@ -553,7 +553,7 @@ namespace
                 sourceFile->numWarnings++;
                 ++sourceFile->module->numWarnings;
 
-            // Do not raise a warning if we are waiting for one, during tests
+                // Do not raise a warning if we are waiting for one, during tests
                 if (sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
                 {
                     bool dismiss = true;

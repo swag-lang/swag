@@ -83,7 +83,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
 
     // In the cache
     /////////////////////////////////
-    using P = Map<TypeInfo*, SCBEDebugTypeIndex>;
+    using P                      = Map<TypeInfo*, SCBEDebugTypeIndex>;
     pair<P::iterator, bool> iter = pp.dbgMapTypes.insert(P::value_type(typeInfo, 0));
     if (!iter.second)
         return iter.first->second;
@@ -334,7 +334,7 @@ SCBEDebugTypeIndex SCBEDebug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, 
         auto numArgs  = static_cast<uint16_t>(typeFunc->parameters.size());
 
         SCBEDebugTypeIndex argsTypeIndex;
-        using P1 = MapUtf8<SCBEDebugTypeIndex>;
+        using P1                       = MapUtf8<SCBEDebugTypeIndex>;
         pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
         if (iter1.second)
         {

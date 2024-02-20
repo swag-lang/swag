@@ -1,7 +1,7 @@
 #pragma once
 #include "Flags.h"
 
-using OpFlags = Flags<uint32_t>;
+using OpFlags                          = Flags<uint32_t>;
 constexpr OpFlags OPFLAG_WRITE_A       = 0x00000001;
 constexpr OpFlags OPFLAG_WRITE_B       = 0x00000002;
 constexpr OpFlags OPFLAG_WRITE_C       = 0x00000004;

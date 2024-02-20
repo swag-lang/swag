@@ -2350,9 +2350,9 @@ void SCBE_X64::emitCastU64F64(CPURegister regDst, CPURegister regSrc)
     SWAG_ASSERT(regSrc == RAX && regDst == XMM0);
     concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
     emitSymbolRelocationAddr(RCX, symCst_U64F64, 0);
-    concat.addString4("\x66\x0F\x62\x09"); // punpckldq xmm1, xmmword ptr [rcx]
+    concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
     concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
-    concat.addString4("\x66\x0F\x28\xC1"); // movapd xmm0, xmm1
-    concat.addString4("\x66\x0F\x15\xC1"); // unpckhpd xmm0, xmm1
-    concat.addString4("\xF2\x0F\x58\xC1"); // addsd xmm0, xmm1
+    concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
+    concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
+    concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
 }

@@ -203,13 +203,13 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
         case TypeInfoKind::TypeListArray:
         case TypeInfoKind::TypeListTuple:
             identifierRef->startScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
-            node->typeInfo = typeInfo;
+            node->typeInfo            = typeInfo;
             break;
 
         case TypeInfoKind::Interface:
         case TypeInfoKind::Struct:
             identifierRef->startScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
-            node->typeInfo = typeInfo;
+            node->typeInfo            = typeInfo;
             break;
 
         case TypeInfoKind::Array:
@@ -590,11 +590,11 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         if (dep.scope == symScope || dep.scope->getFullName() == symScope->getFullName())
             getIt = true;
 
-            // The symbol scope is an 'impl' inside a struct (impl for)
+        // The symbol scope is an 'impl' inside a struct (impl for)
         else if (symScope->kind == ScopeKind::Impl && symScope->parentScope == dep.scope)
             getIt = true;
 
-            // For mtd sub functions and ufcs
+        // For mtd sub functions and ufcs
         else if (okForUfcs)
         {
             hasUfcs = true;

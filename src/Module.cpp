@@ -411,8 +411,8 @@ void Module::buildTypesSlice()
         }
         else
         {
-            using FuncCall = uint8_t* (*)();
-            const auto valPtr = reinterpret_cast<FuncCall>(ptr)();
+            using FuncCall                   = uint8_t* (*) ();
+            const auto                valPtr = reinterpret_cast<FuncCall>(ptr)();
 
             moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
             moduleSlice[i].types.count  = *reinterpret_cast<uint64_t*>(valPtr);
@@ -953,10 +953,10 @@ bool Module::hasBytecodeToRun() const
     // If we have some #test functions, and we are in test mode
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !byteCodeTestFunc.empty())
         runByteCode = true;
-        // If we have #run functions
+    // If we have #run functions
     else if (!byteCodeRunFunc.empty())
         runByteCode = true;
-        // If we need to run in bytecode mode
+    // If we need to run in bytecode mode
     else if (g_CommandLine.run && g_CommandLine.scriptMode)
         runByteCode = true;
     return runByteCode;
@@ -1019,10 +1019,10 @@ bool Module::mustOutputSomething() const
         mustOutput = false;
     else if (files.empty())
         mustOutput = false;
-        // a test module needs swag to be in test mode
+    // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
         mustOutput = false;
-        // if all files are exported, then do not generate a module
+    // if all files are exported, then do not generate a module
     else if (buildCfg.backendKind == BuildCfgBackendKind::Export)
         mustOutput = false;
     else if (kind != ModuleKind::Test && buildCfg.backendKind == BuildCfgBackendKind::None)
@@ -1151,7 +1151,7 @@ void Module::callPreMain()
         const auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
         if (!ptr)
             continue;
-        using FuncCall = void(*)(SwagProcessInfos*);
+        using FuncCall = void (*)(SwagProcessInfos*);
         reinterpret_cast<FuncCall>(ptr)(&processInfos);
     }
 }

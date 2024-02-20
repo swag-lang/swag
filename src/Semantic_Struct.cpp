@@ -261,10 +261,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 case MatchResult::BadSignature:
                 {
                     const Diagnostic err{childFct, childFct->getTokenName(), FMT(Err(Err0430), child->token.c_str(), typeBaseInterface->name.c_str())};
-                    const auto       note = Diagnostic::note(childFct->parameters->children[bi.badSignatureNum2],
-                                                       FMT(Nte(Nte0102), childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                    const auto note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
-                                                        FMT(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                    const auto       note  = Diagnostic::note(childFct->parameters->children[bi.badSignatureNum2],
+                                                              FMT(Nte(Nte0102), childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                    const auto       note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode,
+                                                              FMT(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                     return context->report(err, note, note1);
                 }
 
@@ -705,7 +705,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
             symbolKind = SymbolKind::Struct;
             break;
         case AstNodeKind::InterfaceDecl:
-            symbolKind = SymbolKind::Interface;
+            symbolKind     = SymbolKind::Interface;
             typeInfo->kind = TypeInfoKind::Interface;
             break;
         default:

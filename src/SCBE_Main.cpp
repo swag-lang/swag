@@ -24,21 +24,21 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
         cpuFct->startAddress = concat.totalCount();
         if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
-            concat.addString1("\x51"); // push rcx
-            concat.addString1("\x50"); // push rax
-            concat.addString("\x48\x3d\x00\x10\x00\x00", 6); // cmp rax, 1000h
-            concat.addString5("\x48\x8d\x4c\x24\x18"); // lea rcx[rsp+18h]
-            concat.addString2("\x72\x18"); // jb @1
+            concat.addString1("\x51");                           // push rcx
+            concat.addString1("\x50");                           // push rax
+            concat.addString("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
+            concat.addString5("\x48\x8d\x4c\x24\x18");           // lea rcx[rsp+18h]
+            concat.addString2("\x72\x18");                       // jb @1
             concat.addString("\x48\x81\xe9\x00\x10\x00\x00", 7); // @2 sub rcx, 1000h
-            concat.addString3("\x48\x85\x09"); // test qword ptr [rcx], rax
-            concat.addString("\x48\x2d\x00\x10\x00\x00", 6); // sub rax, 1000h
-            concat.addString("\x48\x3d\x00\x10\x00\x00", 6); // cmp rax, 1000h
-            concat.addString2("\x77\xe8"); // ja @2
-            concat.addString3("\x48\x29\xc1"); // @1 sub rcx, rax
-            concat.addString3("\x48\x85\x09"); // test qword ptr [rcx], rcx
-            concat.addString1("\x58"); // pop rax
-            concat.addString1("\x59"); // pop rcx
-            concat.addString1("\xc3"); // ret
+            concat.addString3("\x48\x85\x09");                   // test qword ptr [rcx], rax
+            concat.addString("\x48\x2d\x00\x10\x00\x00", 6);     // sub rax, 1000h
+            concat.addString("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
+            concat.addString2("\x77\xe8");                       // ja @2
+            concat.addString3("\x48\x29\xc1");                   // @1 sub rcx, rax
+            concat.addString3("\x48\x85\x09");                   // test qword ptr [rcx], rcx
+            concat.addString1("\x58");                           // pop rax
+            concat.addString1("\x59");                           // pop rcx
+            concat.addString1("\xc3");                           // ret
         }
         cpuFct->endAddress = concat.totalCount();
 
@@ -207,7 +207,10 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     }
 
     // Call to main
-    if (module->byteCodeMainFunc) { pp.emitCall(module->byteCodeMainFunc->getCallName()); }
+    if (module->byteCodeMainFunc)
+    {
+        pp.emitCall(module->byteCodeMainFunc->getCallName());
+    }
 
     // Call to global drop of this module
     const auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);

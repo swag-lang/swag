@@ -15,7 +15,7 @@ enum class CommandLineType
 
 struct CommandLineArgument
 {
-    SetUtf8         cmds;
+    SetUtf8         cmdSet;
     Utf8            longName;
     Utf8            shortName;
     void*           buffer;
@@ -36,35 +36,35 @@ struct CommandLineArgument
         {
             if (p == "all" || p == "bu")
             {
-                cmds.insert("build");
-                cmds.insert("run");
+                cmdSet.insert("build");
+                cmdSet.insert("run");
             }
 
             if (p == "all" || p == "sc")
             {
-                cmds.insert("script");
+                cmdSet.insert("script");
             }
 
             if (p == "all" || p == "bu" || p == "te")
-                cmds.insert("test");
+                cmdSet.insert("test");
 
             if (p == "all" || p == "cl")
-                cmds.insert("clean");
+                cmdSet.insert("clean");
 
             if (p == "all" || p == "ne")
-                cmds.insert("new");
+                cmdSet.insert("new");
 
             if (p == "all" || p == "li")
-                cmds.insert("list");
+                cmdSet.insert("list");
 
             if (p == "all" || p == "ge")
-                cmds.insert("get");
+                cmdSet.insert("get");
 
             if (p == "all" || p == "ru")
-                cmds.insert("run");
+                cmdSet.insert("run");
 
             if (p == "all" || p == "doc")
-                cmds.insert("doc");
+                cmdSet.insert("doc");
         }
     }
 };

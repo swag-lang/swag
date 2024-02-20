@@ -23,8 +23,8 @@ struct SharedMutex
 template<typename T>
 struct ScopedLock
 {
-    explicit ScopedLock(T& mtx)
-        : mt{&mtx}
+    explicit ScopedLock(T& mtx) :
+        mt{&mtx}
     {
         mt->lock();
     }
@@ -39,8 +39,8 @@ struct ScopedLock
 
 struct SharedLock
 {
-    explicit SharedLock(SharedMutex& mtx)
-        : mt{&mtx}
+    explicit SharedLock(SharedMutex& mtx) :
+        mt{&mtx}
     {
         mt->lock_shared();
     }

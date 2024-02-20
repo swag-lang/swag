@@ -151,10 +151,10 @@ namespace
         FuncCB cb;
     };
 
-#define DECL_CB(__idx)                                                                         \
+#define DECL_CB(__idx)                                                                  \
     void* __callback##__idx(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6) \
-    {                                                                                          \
-        return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6);                         \
+    {                                                                                   \
+        return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6);                  \
     }
 
 #define USE_CB(__idx)              \
@@ -199,9 +199,33 @@ namespace
     DECL_CB(aai);
 
     Callback g_CallbackArr[] = {
-        USE_CB(a), USE_CB(b), USE_CB(c), USE_CB(d), USE_CB(e), USE_CB(f), USE_CB(g), USE_CB(h), USE_CB(i),
-        USE_CB(aa), USE_CB(ab), USE_CB(ac), USE_CB(ad), USE_CB(ae), USE_CB(af), USE_CB(ag), USE_CB(ah), USE_CB(ai),
-        USE_CB(aaa), USE_CB(aab), USE_CB(aac), USE_CB(aad), USE_CB(aae), USE_CB(aaf), USE_CB(aag), USE_CB(aah), USE_CB(aai),
+    USE_CB(a),
+    USE_CB(b),
+    USE_CB(c),
+    USE_CB(d),
+    USE_CB(e),
+    USE_CB(f),
+    USE_CB(g),
+    USE_CB(h),
+    USE_CB(i),
+    USE_CB(aa),
+    USE_CB(ab),
+    USE_CB(ac),
+    USE_CB(ad),
+    USE_CB(ae),
+    USE_CB(af),
+    USE_CB(ag),
+    USE_CB(ah),
+    USE_CB(ai),
+    USE_CB(aaa),
+    USE_CB(aab),
+    USE_CB(aac),
+    USE_CB(aad),
+    USE_CB(aae),
+    USE_CB(aaf),
+    USE_CB(aag),
+    USE_CB(aah),
+    USE_CB(aai),
     };
 
     // This is the actual callback that will be called by external libraries

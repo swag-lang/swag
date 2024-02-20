@@ -10,9 +10,9 @@
 class MyOStream final : public llvm::raw_ostream
 {
 public:
-    MyOStream()
-        : raw_ostream(true)
-        , pos(0)
+    MyOStream() :
+        raw_ostream(true),
+        pos(0)
     {
     }
 

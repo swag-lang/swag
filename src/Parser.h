@@ -42,7 +42,7 @@ enum class SyntaxStructType
     Interface,
 };
 
-using ModifierFlags = Flags<uint32_t>;
+using ModifierFlags                            = Flags<uint32_t>;
 constexpr ModifierFlags MODIFIER_OVERFLOW      = 0x00000001;
 constexpr ModifierFlags MODIFIER_UP            = 0x00000002;
 constexpr ModifierFlags MODIFIER_NO_LEFT_DROP  = 0x00000004;
@@ -52,7 +52,7 @@ constexpr ModifierFlags MODIFIER_BIT           = 0x00000020;
 constexpr ModifierFlags MODIFIER_UN_CONST      = 0x00000040;
 constexpr ModifierFlags MODIFIER_BACK          = 0x00000080;
 
-using IdentifierFlags = Flags<uint32_t>;
+using IdentifierFlags                                = Flags<uint32_t>;
 constexpr IdentifierFlags IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
 constexpr IdentifierFlags IDENTIFIER_TYPE_DECL       = 0x00000004;
@@ -60,7 +60,7 @@ constexpr IdentifierFlags IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
 constexpr IdentifierFlags IDENTIFIER_NO_ARRAY        = 0x00000010;
 constexpr IdentifierFlags IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 
-using ExprFlags = Flags<uint32_t>;
+using ExprFlags                                     = Flags<uint32_t>;
 constexpr ExprFlags EXPR_FLAG_NONE                  = 0x00000000;
 constexpr ExprFlags EXPR_FLAG_SIMPLE                = 0x00000001;
 constexpr ExprFlags EXPR_FLAG_ALIAS                 = 0x00000002;

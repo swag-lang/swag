@@ -30,15 +30,15 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             const auto  module = node->sourceFile->module;
             bool        done   = false;
 
-#define CHECK_SAFETY_NAME(__name, __flag)                                      \
-    do                                                                         \
-    {                                                                          \
-        if (w == g_LangSpec->__name)                                           \
-        {                                                                      \
-            done                       = true;                                 \
+#define CHECK_SAFETY_NAME(__name, __flag)                                        \
+    do                                                                           \
+    {                                                                            \
+        if (w == g_LangSpec->__name)                                             \
+        {                                                                        \
+            done                         = true;                                 \
             node->computedValue()->reg.b = module->mustEmitSafety(node, __flag); \
-        }                                                                      \
-    } while(0)
+        }                                                                        \
+    } while (0)
 
             CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUND_CHECK);
             CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);

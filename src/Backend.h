@@ -44,7 +44,7 @@ struct BackendEncoder
 struct Backend
 {
     explicit Backend(Module* mdl);
-    virtual  ~Backend() = default;
+    virtual ~Backend() = default;
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc);

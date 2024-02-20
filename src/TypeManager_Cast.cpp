@@ -2371,7 +2371,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     {
         const auto oldSizeof = fromTypeList->sizeOf;
         fromTypeList         = castTypeInfo<TypeInfoList>(fromTypeList->clone());
-        for (size_t i                           = 0; i < fromTypeList->subTypes.size(); i++)
+        for (size_t i = 0; i < fromTypeList->subTypes.size(); i++)
             fromTypeList->subTypes[i]->typeInfo = fromNode->children[i]->typeInfo;
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;
@@ -2700,9 +2700,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
                             const Diagnostic err{
-                                fromNode, FMT(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(),
-                                              toStruct->getDisplayNameC())
-                            };
+                            fromNode, FMT(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(),
+                                          toStruct->getDisplayNameC())};
                             const auto note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
                             const auto note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
                             return context->report(err, note1, note2);

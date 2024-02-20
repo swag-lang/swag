@@ -62,8 +62,8 @@ namespace OS
         g_WinSdkFolder = str.c_str();
         g_WinSdkFolder.append("Lib");
 
-        int                                                           bestVersion[4] = {0};
-        Utf8                                                          bestName;
+        int  bestVersion[4] = {0};
+        Utf8 bestName;
         visitFolders(g_WinSdkFolder.string().c_str(), [&](const char* cFileName)
         {
             int        i0, i1, i2, i3;
@@ -507,10 +507,10 @@ namespace OS
 #pragma pack(push, 8)
     struct ThreadNameInfo
     {
-        DWORD  dwType; // Must be 0x1000.
-        LPCSTR szName; // Pointer to name (in user address space).
+        DWORD  dwType;     // Must be 0x1000.
+        LPCSTR szName;     // Pointer to name (in user address space).
         DWORD  dwThreadID; // Thread ID (-1=caller thread).
-        DWORD  dwFlags; // Reserved for future use, must be zero.
+        DWORD  dwFlags;    // Reserved for future use, must be zero.
     };
 #pragma pack(pop)
 
@@ -526,7 +526,7 @@ namespace OS
         {
             RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), reinterpret_cast<ULONG_PTR*>(&info));
         }
-        SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
         }
     }
@@ -997,8 +997,8 @@ namespace OS
         gen.emitRet();
 
         // The real deal : make the call
-        using FuncPtr = void(*)();
-        const auto ptr = reinterpret_cast<FuncPtr>(gen.concat.firstBucket->data + startOffset);
+        using FuncPtr            = void (*)();
+        const auto           ptr = reinterpret_cast<FuncPtr>(gen.concat.firstBucket->data + startOffset);
         ptr();
 
         gen.concat.currentSP = reinterpret_cast<uint8_t*>(ptr);

@@ -95,7 +95,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
     switch (kind)
     {
         case InvalidTokenError::TopLevelInstruction:
-            msg = FMT(Err(Err0381), token.c_str());
+            msg  = FMT(Err(Err0381), token.c_str());
             note = Nte(Nte0167);
             break;
         case InvalidTokenError::EmbeddedInstruction:

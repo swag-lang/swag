@@ -11,7 +11,7 @@ struct SymTable;
 struct SymbolName;
 struct TypeInfo;
 
-using OverloadFlags = Flags<uint32_t>;
+using OverloadFlags                               = Flags<uint32_t>;
 constexpr OverloadFlags OVERLOAD_VAR_BSS          = 0x00000001;
 constexpr OverloadFlags OVERLOAD_VAR_CAPTURE      = 0x00000002;
 constexpr OverloadFlags OVERLOAD_VAR_COMPILER     = 0x00000004;
@@ -79,7 +79,7 @@ enum class SymbolKind : uint8_t
     PlaceHolder,
 };
 
-using SymbolFlags = Flags<uint16_t>;
+using SymbolFlags                          = Flags<uint16_t>;
 constexpr SymbolFlags SYMBOL_ATTRIBUTE_GEN = 0x0001;
 constexpr SymbolFlags SYMBOL_USED          = 0x0002;
 

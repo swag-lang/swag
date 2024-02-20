@@ -5,18 +5,18 @@ struct Path : filesystem::path
 {
     Path() = default;
 
-    Path(const char* other)
-        : path{other}
+    Path(const char* other) :
+        path{other}
     {
     }
 
-    Path(const Utf8& other)
-        : path{other.c_str()}
+    Path(const Utf8& other) :
+        path{other.c_str()}
     {
     }
 
-    Path(const path& other)
-        : path{other}
+    Path(const path& other) :
+        path{other}
     {
     }
 

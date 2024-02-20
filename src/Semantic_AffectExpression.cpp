@@ -272,18 +272,21 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // Be sure modifiers are relevant
     if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
     {
-        PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo] { return Diagnostic::isType(rightTypeInfo); });
+        PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]
+        {
+            return Diagnostic::isType(rightTypeInfo);
+        });
 
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                    context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                    context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                    context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, FMT(Err(Err0651), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any

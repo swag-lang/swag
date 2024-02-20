@@ -29,7 +29,7 @@ enum class ScopeKind : uint8_t
     Macro,
 };
 
-using ScopeFlags = Flags<uint8_t>;
+using ScopeFlags                            = Flags<uint8_t>;
 constexpr ScopeFlags SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 constexpr ScopeFlags SCOPE_FILE             = 0x00000002;
 constexpr ScopeFlags SCOPE_AUTO_GENERATED   = 0x00000004;
@@ -45,7 +45,7 @@ struct ScopePublicSet
 
 struct Scope
 {
-    Scope();
+         Scope();
     void release();
     void addPublicFunc(AstNode* node);
     void addPublicAttribute(AstNode* node);

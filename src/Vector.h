@@ -3,13 +3,13 @@
 template<typename T>
 struct Vector : vector<T, StdAllocator<T>>
 {
-    Vector()
-        : vector<T, StdAllocator<T>>()
+    Vector() :
+        vector<T, StdAllocator<T>>()
     {
     }
 
-    Vector(const initializer_list<T>& other)
-        : vector<T, StdAllocator<T>>(other)
+    Vector(const initializer_list<T>& other) :
+        vector<T, StdAllocator<T>>(other)
     {
     }
 
@@ -42,7 +42,7 @@ struct Vector : vector<T, StdAllocator<T>>
     void release() noexcept
     {
         this->~Vector<T>();
-        ::new(this) Vector;
+        ::new (this) Vector;
     }
 };
 

@@ -490,7 +490,7 @@ void Diagnostic::printLastRangeHint(int curColumn)
 
     Vector<Utf8> tokens;
     const int    maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
-    Utf8::wordWrap(r.hint, tokens, max(maxLength, (int)g_CommandLine.errorRightColumn / 2));
+    Utf8::wordWrap(r.hint, tokens, max(maxLength, (int) g_CommandLine.errorRightColumn / 2));
 
     for (size_t i = 0; i < tokens.size(); i++)
     {

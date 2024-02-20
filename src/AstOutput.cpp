@@ -398,7 +398,7 @@ bool AstOutput::outputAttributesUsage(const OutputContext& context, Concat& conc
             CONCAT_FIXED_STR(concat, "AttributeUsage."); \
             CONCAT_FIXED_STR(concat, __n);               \
         }                                                \
-    } while(0)
+    } while (0)
 
     ADD_ATTR_USAGE(AttributeUsage::Enum, "Enum");
     ADD_ATTR_USAGE(AttributeUsage::EnumValue, "EnumValue");

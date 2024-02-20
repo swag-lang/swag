@@ -540,16 +540,16 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     return true;
 }
 
-#define OPT_PASS(__func)                         \
-    do                                           \
-    {                                            \
-        optContext.passHasDoneSomething = false; \
-        if (!__func(&optContext))                \
-            return false;                        \
-        if (optContext.hasError)                 \
-            return false;                        \
+#define OPT_PASS(__func)                                                          \
+    do                                                                            \
+    {                                                                             \
+        optContext.passHasDoneSomething = false;                                  \
+        if (!__func(&optContext))                                                 \
+            return false;                                                         \
+        if (optContext.hasError)                                                  \
+            return false;                                                         \
         optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething; \
-    } while(0)
+    } while (0)
 
 bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart)
 {

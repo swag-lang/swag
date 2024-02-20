@@ -120,19 +120,19 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
 
     OS::visitFolders(path.string().c_str(),
                      [&](const char* cFileName)
-                     {
-                         auto cfgPath = path;
-                         cfgPath.append(cFileName);
-                         cfgPath = getAliasPath(cfgPath);
+    {
+        auto cfgPath = path;
+        cfgPath.append(cFileName);
+        cfgPath = getAliasPath(cfgPath);
 
-                         auto cfgName = cfgPath;
-                         cfgName.append(SWAG_CFG_FILE);
+        auto cfgName = cfgPath;
+        cfgName.append(SWAG_CFG_FILE);
 
-                         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
-                         error_code err;
-                         if (exists(cfgName, err))
-                             newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
-                     });
+        // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
+        error_code err;
+        if (exists(cfgName, err))
+            newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
+    });
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())

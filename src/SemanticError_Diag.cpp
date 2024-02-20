@@ -217,7 +217,7 @@ namespace
                 errNode = genericParameters->children[match.badSignatureInfos.badSignatureNum2];
             const auto msg = FMT(Err(Err0631), match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(),
                                  match.badSignatureInfos.badSignatureNum1);
-            err = new Diagnostic{errNode, msg};
+            err            = new Diagnostic{errNode, msg};
         }
 
         errorParam.addError(err);
@@ -322,7 +322,7 @@ namespace
             typeStruct->flattenUsingFields();
             const auto msg = FMT(Err(Err0653), bi.badSignatureRequestedType->getDisplayNameC(), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(),
                                  bi.badSignatureGivenType->getDisplayNameC());
-            err = new Diagnostic{callParamNode, msg};
+            err            = new Diagnostic{callParamNode, msg};
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {

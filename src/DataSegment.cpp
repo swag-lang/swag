@@ -304,19 +304,19 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* t
     switch (typeInfo->sizeOf)
     {
         case 1:
-            *addr = computedValue.reg.u8;
+            *addr                               = computedValue.reg.u8;
             storedValues8[computedValue.reg.u8] = {storageOffset, addr};
             break;
         case 2:
-            *reinterpret_cast<uint16_t*>(addr) = computedValue.reg.u16;
+            *reinterpret_cast<uint16_t*>(addr)    = computedValue.reg.u16;
             storedValues16[computedValue.reg.u16] = {storageOffset, addr};
             break;
         case 4:
-            *reinterpret_cast<uint32_t*>(addr) = computedValue.reg.u32;
+            *reinterpret_cast<uint32_t*>(addr)    = computedValue.reg.u32;
             storedValues32[computedValue.reg.u32] = {storageOffset, addr};
             break;
         case 8:
-            *reinterpret_cast<uint64_t*>(addr) = computedValue.reg.u64;
+            *reinterpret_cast<uint64_t*>(addr)    = computedValue.reg.u64;
             storedValues64[computedValue.reg.u64] = {storageOffset, addr};
             break;
         default:
@@ -337,7 +337,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     SWAG_RACE_CONDITION_WRITE(raceC);
 
     // Same string already there ?
-    using P = MapUtf8<CacheValue>;
+    using P                            = MapUtf8<CacheValue>;
     const pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
     if (!iter.second)
     {

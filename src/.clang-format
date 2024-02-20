@@ -1,5 +1,4 @@
-﻿---
-Language: Cpp
+﻿Language: Cpp
 BasedOnStyle: Microsoft
 AccessModifierOffset: -4
 AlignConsecutiveAssignments: true
@@ -7,6 +6,7 @@ AlignConsecutiveDeclarations: true
 AlignOperands: true
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLambdasOnASingleLine: None
+AllowShortFunctionsOnASingleLine: InlineOnly
 AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakTemplateDeclarations: Yes
 BinPackParameters: false
@@ -48,4 +48,3 @@ SpaceAfterTemplateKeyword: false
 SpacesInAngles: false
 SortIncludes: false
 TabWidth: 4
-...

@@ -531,8 +531,8 @@ void Parser::registerSubDecl(AstNode* subDecl)
     if (subDecl->parent->kind == AstNodeKind::AttrUse)
         subDecl = subDecl->parent;
 
-        // Else if we are in an attr-use block, we need to duplicate each of them, in order
-        // for the sub-decl to have its own attr-use
+    // Else if we are in an attr-use block, we need to duplicate each of them, in order
+    // for the sub-decl to have its own attr-use
     else if (subDecl->parent->kind == AstNodeKind::Statement)
     {
         auto testParent  = subDecl->parent;

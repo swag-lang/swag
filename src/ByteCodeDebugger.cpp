@@ -277,13 +277,13 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
     {                                    \
         (void) fputs("\x1B[1D", stdout); \
         cursorX--;                       \
-    } while(0)
+    } while (0)
 #define MOVE_RIGHT()                     \
     do                                   \
     {                                    \
         (void) fputs("\x1B[1C", stdout); \
         cursorX++;                       \
-    } while(0)
+    } while (0)
 
         switch (key)
         {

@@ -267,7 +267,7 @@ void CommandLineParser::addArg(const char* commands, const char* longName, const
 
 bool CommandLineParser::isArgValidFor(const Utf8& swagCmd, const CommandLineArgument* arg)
 {
-    return arg->cmds.contains(swagCmd);
+    return arg->cmdSet.contains(swagCmd);
 }
 
 bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[])

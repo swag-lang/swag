@@ -1483,7 +1483,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             case ByteCodeOp::JumpIfFalse:
                 destIp = ip + ip->b.s32 + 1;
 
-            // Jump if false to a jump if false with the same register
+                // Jump if false to a jump if false with the same register
                 if (destIp->op == ByteCodeOp::JumpIfFalse &&
                     destIp->a.u32 == ip->a.u32 &&
                     !ip->hasFlag(BCI_IMM_A) &&
@@ -1523,7 +1523,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             case ByteCodeOp::JumpIfTrue:
                 destIp = ip + ip->b.s32 + 1;
 
-            // Jump if true to a jump if true with the same register
+                // Jump if true to a jump if true with the same register
                 if (destIp->op == ByteCodeOp::JumpIfTrue &&
                     destIp->a.u32 == ip->a.u32 &&
                     !ip->hasFlag(BCI_IMM_A) &&
@@ -1597,7 +1597,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         {                                 \
             setNop(context, ip);          \
         }                                 \
-    } while(0)
+    } while (0)
 
         if (ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
         {
@@ -1781,7 +1781,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         {                                 \
             setNop(context, ip);          \
         }                                 \
-    } while(0)
+    } while (0)
 
         // Evaluate the jump if the condition is constant
         if (ip->hasFlag(BCI_IMM_A))
@@ -1981,7 +1981,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         const auto patchCompiler       = reinterpret_cast<int32_t*>(addrCompiler);
 
         // Set table to default jump
-        for (uint32_t i      = 0; i < range + 1; i++)
+        for (uint32_t i = 0; i < range + 1; i++)
             patchCompiler[i] = static_cast<int32_t>(defaultIp - ipStart) - 1;
 
         // Then register each value

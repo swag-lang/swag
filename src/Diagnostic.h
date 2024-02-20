@@ -19,105 +19,105 @@ enum class DiagnosticLevel
 
 struct Diagnostic
 {
-    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , startLocation{start}
-        , endLocation{end}
-        , sourceFile{file}
-        , showSourceCode{true}
-        , hasLocation{true}
+    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        startLocation{start},
+        endLocation{end},
+        sourceFile{file},
+        showSourceCode{true},
+        hasLocation{true}
     {
         setup();
     }
 
-    Diagnostic(SourceFile* file, const SourceLocation& start, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , startLocation{start}
-        , endLocation{start}
-        , sourceFile{file}
-        , showSourceCode{true}
-        , hasLocation{true}
+    Diagnostic(SourceFile* file, const SourceLocation& start, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        startLocation{start},
+        endLocation{start},
+        sourceFile{file},
+        showSourceCode{true},
+        hasLocation{true}
     {
         setup();
     }
 
-    Diagnostic(SourceFile* file, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , startLocation{token.startLocation}
-        , endLocation{token.endLocation}
-        , sourceFile{file}
-        , showSourceCode{true}
-        , hasLocation{true}
+    Diagnostic(SourceFile* file, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        startLocation{token.startLocation},
+        endLocation{token.endLocation},
+        sourceFile{file},
+        showSourceCode{true},
+        hasLocation{true}
     {
         setup();
     }
 
-    Diagnostic(AstNode* node, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , startLocation{token.startLocation}
-        , endLocation{token.endLocation}
-        , sourceFile{node->sourceFile}
-        , sourceNode{node}
-        , showSourceCode{true}
-        , hasLocation{true}
+    Diagnostic(AstNode* node, const Token& token, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        startLocation{token.startLocation},
+        endLocation{token.endLocation},
+        sourceFile{node->sourceFile},
+        sourceNode{node},
+        showSourceCode{true},
+        hasLocation{true}
     {
         setup();
     }
 
-    Diagnostic(AstNode* node, const Token& token, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , startLocation{token.startLocation}
-        , endLocation{token.endLocation}
-        , hint{std::move(hint)}
-        , sourceFile{node->sourceFile}
-        , sourceNode{node}
-        , showSourceCode{true}
-        , hasLocation{true}
+    Diagnostic(AstNode* node, const Token& token, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        startLocation{token.startLocation},
+        endLocation{token.endLocation},
+        hint{std::move(hint)},
+        sourceFile{node->sourceFile},
+        sourceNode{node},
+        showSourceCode{true},
+        hasLocation{true}
     {
         setup();
     }
 
-    Diagnostic(AstNode* node, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , sourceFile{node->sourceFile}
-        , sourceNode{node}
-        , showSourceCode{true}
-        , hasLocation{true}
-    {
-        node->computeLocation(startLocation, endLocation);
-        setup();
-    }
-
-    Diagnostic(AstNode* node, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , hint{std::move(hint)}
-        , sourceFile{node->sourceFile}
-        , sourceNode{node}
-        , showSourceCode{true}
-        , hasLocation{true}
+    Diagnostic(AstNode* node, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        sourceFile{node->sourceFile},
+        sourceNode{node},
+        showSourceCode{true},
+        hasLocation{true}
     {
         node->computeLocation(startLocation, endLocation);
         setup();
     }
 
-    Diagnostic(SourceFile* file, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
-        , sourceFile{file}
+    Diagnostic(AstNode* node, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        hint{std::move(hint)},
+        sourceFile{node->sourceFile},
+        sourceNode{node},
+        showSourceCode{true},
+        hasLocation{true}
+    {
+        node->computeLocation(startLocation, endLocation);
+        setup();
+    }
+
+    Diagnostic(SourceFile* file, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level},
+        sourceFile{file}
     {
         setup();
     }
 
-    Diagnostic(Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : textMsg{std::move(msg)}
-        , errorLevel{level}
+    Diagnostic(Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
+        textMsg{std::move(msg)},
+        errorLevel{level}
     {
         setup();
     }

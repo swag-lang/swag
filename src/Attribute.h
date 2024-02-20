@@ -6,7 +6,7 @@
 
 struct TypeInfo;
 
-using AttributeFlags = Flags<uint64_t>;
+using AttributeFlags                                   = Flags<uint64_t>;
 constexpr AttributeFlags ATTRIBUTE_CONSTEXPR           = 0x0000000000000001;
 constexpr AttributeFlags ATTRIBUTE_PRINT_BC            = 0x0000000000000002;
 constexpr AttributeFlags ATTRIBUTE_TEST_FUNC           = 0x0000000000000004;
@@ -112,5 +112,5 @@ struct AttributeList
     }
 
     Vector<OneAttribute> allAttributes;
-    SWAG_RACE_CONDITION_INSTANCE(raceCond);
+                         SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };

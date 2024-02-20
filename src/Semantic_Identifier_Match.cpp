@@ -1246,8 +1246,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                         !returnType->isNativeFloat() &&
                         !returnType->isBool() &&
                         !returnType->isPointerToTypeInfo() &&
-                        !returnType->isStruct() && // Treated later (as errors)
-                        !returnType->isArray() && // Treated later (as errors)
+                        !returnType->isStruct() &&  // Treated later (as errors)
+                        !returnType->isArray() &&   // Treated later (as errors)
                         !returnType->isClosure() && // Treated later (as errors)
                         !identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
                     {
@@ -1608,8 +1608,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                         asMatch = true;
                     else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymEqualEqual && overload->symbol->kind == SymbolKind::Struct)
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymExclamEqual && overload->symbol->kind ==
-                             SymbolKind::Struct)
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymExclamEqual && overload->symbol->kind == SymbolKind::Struct)
                         asMatch = true;
                     else if (grandParent->kind == AstNodeKind::IntrinsicDefined)
                         asMatch = true;

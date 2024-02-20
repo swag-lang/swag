@@ -45,7 +45,7 @@
                 setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));  \
             }                                                                                 \
         }                                                                                     \
-    } while(0)
+    } while (0)
 
 #define BINOP_EQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                              \
     do                                                                                                                       \
@@ -67,7 +67,7 @@
                 setStackConstant(cxt, va.kind, ip, ra->reg.u32, addr, sizeof(vb.reg.__reg));                                 \
             }                                                                                                                \
         }                                                                                                                    \
-    } while(0)
+    } while (0)
 
 #define ATOM_EQ(__cast, __op, __reg)                                                          \
     do                                                                                        \
@@ -90,7 +90,7 @@
                 *(__cast*) addr __op rb->reg.__reg;                                           \
             }                                                                                 \
         }                                                                                     \
-    } while(0)
+    } while (0)
 
 #define ATOM_EQ_XCHG(__cast, __reg)                                                                                 \
     do                                                                                                              \
@@ -115,7 +115,7 @@
                     *(__cast*) addr = rc->reg.__reg;                                                                \
             }                                                                                                       \
         }                                                                                                           \
-    } while(0)
+    } while (0)
 
 #define BINOP_EQ_DIV(__cast, __op, __reg)                               \
     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
@@ -150,7 +150,7 @@
                 *(__cast*) addr = r.__reg;                                                    \
             }                                                                                 \
         }                                                                                     \
-    } while(0)
+    } while (0)
 
 #define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                                                      \
     SWAG_CHECK(getImmediateA(va, cxt, ip));                                                                                 \
@@ -562,7 +562,7 @@ namespace
     {
         const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - STATE()->stack.buffer);
         SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
-        for (uint32_t i                 = offset; i < offset + sizeOf; i++)
+        for (uint32_t i = offset; i < offset + sizeOf; i++)
             STATE()->stackValue[i].kind = kind;
     }
 

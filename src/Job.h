@@ -14,7 +14,7 @@ struct SymbolName;
 struct SymbolOverload;
 struct TypeInfo;
 
-using JobFlags = Flags<uint32_t>;
+using JobFlags                              = Flags<uint32_t>;
 constexpr JobFlags JOB_IS_IN_QUEUE          = 0x00000001;
 constexpr JobFlags JOB_IS_IN_THREAD         = 0x00000002;
 constexpr JobFlags JOB_IS_PENDING           = 0x00000004;
@@ -89,7 +89,7 @@ struct Job
 {
     virtual JobResult execute() = 0;
     virtual void      release();
-    virtual           ~Job() = default;
+    virtual ~         Job() = default;
 
     void addDependentJob(Job* job);
     void setPendingInfos(JobWaitKind waitKind, SymbolName* symbolToWait = nullptr, AstNode* node = nullptr, TypeInfo* typeInfo = nullptr);

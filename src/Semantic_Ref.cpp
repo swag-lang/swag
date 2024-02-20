@@ -304,11 +304,17 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     uint64_t maxBound = 0;
 
     {
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node] { return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
+        {
+            return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC());
+        });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->lowerBound, CAST_FLAG_TRY_COERCE));
     }
     {
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node] { return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]
+        {
+            return FMT(Nte(Nte0135), node->lowerBound->typeInfo->getDisplayNameC());
+        });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->upperBound, CAST_FLAG_TRY_COERCE));
     }
 
@@ -725,7 +731,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
             arrayNode->typeInfo = arrayType;
 
-        // In fact we are taking the address of an operator [] call result
+            // In fact we are taking the address of an operator [] call result
             if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
             {
                 SWAG_CHECK(resolveArrayPointerDeRef(context));
@@ -733,7 +739,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 arrayNode->typeInfo = TypeManager::concreteType(arrayNode->typeInfo);
             }
 
-        // Only the top level ArrayPointerIndex node will deal with the call
+            // Only the top level ArrayPointerIndex node will deal with the call
             if (arrayNode->parent->kind != AstNodeKind::ArrayPointerIndex)
             {
                 // Flatten all indexes. self and value will be set before the call later

@@ -1535,13 +1535,19 @@ bool Semantic::resolveReturn(SemanticContext* context)
 
         if (funcNode->hasAttribute(ATTRIBUTE_AST_FUNC))
         {
-            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [] { return Nte(Nte0134); }, true};
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, []
+            {
+                return Nte(Nte0134);
+            }, true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }
         else if (funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC))
         {
-            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType] { return FMT(Nte(Nte0007), returnType->getDisplayNameC()); }, true};
+            PushErrCxtStep ec{context, funcNode, ErrCxtStepKind::Note, [returnType]
+            {
+                return FMT(Nte(Nte0007), returnType->getDisplayNameC());
+            }, true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }
@@ -1550,7 +1556,10 @@ bool Semantic::resolveReturn(SemanticContext* context)
             auto nodeErr = funcNode->returnType;
             if (nodeErr->kind == AstNodeKind::FuncDeclType && !funcNode->returnType->children.empty())
                 nodeErr = funcNode->returnType->children.front();
-            PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType] { return FMT(Nte(Nte0007), returnType->getDisplayNameC()); }};
+            PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType]
+            {
+                return FMT(Nte(Nte0007), returnType->getDisplayNameC());
+            }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }

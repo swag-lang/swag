@@ -33,8 +33,8 @@ struct ErrorCxtStep
 
 struct PushErrCxtStep
 {
-    PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const function<Utf8()>& err, bool locIsToken = false);
-    ~PushErrCxtStep();
+                  PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const function<Utf8()>& err, bool locIsToken = false);
+    ~             PushErrCxtStep();
     ErrorContext* cxt;
 };
 

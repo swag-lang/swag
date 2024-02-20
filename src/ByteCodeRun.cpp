@@ -16,40 +16,40 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-#define IMMA_U8(ip)  ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u8  : registersRC[(ip)->a.u32].u8)
+#define IMMA_U8(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u8 : registersRC[(ip)->a.u32].u8)
 #define IMMA_U16(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u16 : registersRC[(ip)->a.u32].u16)
 #define IMMA_U32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u32 : registersRC[(ip)->a.u32].u32)
 #define IMMA_U64(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.u64 : registersRC[(ip)->a.u32].u64)
-#define IMMA_S8(ip)  ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s8  : registersRC[(ip)->a.u32].s8)
+#define IMMA_S8(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s8 : registersRC[(ip)->a.u32].s8)
 #define IMMA_S16(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s16 : registersRC[(ip)->a.u32].s16)
 #define IMMA_S32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s32 : registersRC[(ip)->a.u32].s32)
 #define IMMA_S64(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.s64 : registersRC[(ip)->a.u32].s64)
 #define IMMA_F32(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.f32 : registersRC[(ip)->a.u32].f32)
 #define IMMA_F64(ip) ((ip)->hasFlag(BCI_IMM_A) ? (ip)->a.f64 : registersRC[(ip)->a.u32].f64)
 
-#define IMMB_U8(ip)  ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u8  : registersRC[(ip)->b.u32].u8)
+#define IMMB_U8(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u8 : registersRC[(ip)->b.u32].u8)
 #define IMMB_U16(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u16 : registersRC[(ip)->b.u32].u16)
 #define IMMB_U32(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u32 : registersRC[(ip)->b.u32].u32)
 #define IMMB_U64(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.u64 : registersRC[(ip)->b.u32].u64)
-#define IMMB_S8(ip)  ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s8  : registersRC[(ip)->b.u32].s8)
+#define IMMB_S8(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s8 : registersRC[(ip)->b.u32].s8)
 #define IMMB_S16(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s16 : registersRC[(ip)->b.u32].s16)
 #define IMMB_S32(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s32 : registersRC[(ip)->b.u32].s32)
 #define IMMB_S64(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.s64 : registersRC[(ip)->b.u32].s64)
 #define IMMB_F32(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.f32 : registersRC[(ip)->b.u32].f32)
 #define IMMB_F64(ip) ((ip)->hasFlag(BCI_IMM_B) ? (ip)->b.f64 : registersRC[(ip)->b.u32].f64)
 
-#define IMMC_U8(ip)  ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u8  : registersRC[(ip)->c.u32].u8)
+#define IMMC_U8(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u8 : registersRC[(ip)->c.u32].u8)
 #define IMMC_U16(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u16 : registersRC[(ip)->c.u32].u16)
 #define IMMC_U32(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u32 : registersRC[(ip)->c.u32].u32)
 #define IMMC_U64(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.u64 : registersRC[(ip)->c.u32].u64)
-#define IMMC_S8(ip)  ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s8  : registersRC[(ip)->c.u32].s8)
+#define IMMC_S8(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s8 : registersRC[(ip)->c.u32].s8)
 #define IMMC_S16(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s16 : registersRC[(ip)->c.u32].s16)
 #define IMMC_S32(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s32 : registersRC[(ip)->c.u32].s32)
 #define IMMC_S64(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.s64 : registersRC[(ip)->c.u32].s64)
 #define IMMC_F32(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.f32 : registersRC[(ip)->c.u32].f32)
 #define IMMC_F64(ip) ((ip)->hasFlag(BCI_IMM_C) ? (ip)->c.f64 : registersRC[(ip)->c.u32].f64)
 
-#define IMMD_U8(ip)  ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u8  : registersRC[(ip)->d.u32].u8)
+#define IMMD_U8(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u8 : registersRC[(ip)->d.u32].u8)
 #define IMMD_U16(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u16 : registersRC[(ip)->d.u32].u16)
 #define IMMD_U32(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u32 : registersRC[(ip)->d.u32].u32)
 #define IMMD_U64(ip) ((ip)->hasFlag(BCI_IMM_D) ? (ip)->d.u64 : registersRC[(ip)->d.u32].u64)
@@ -3290,7 +3290,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
         }
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpPlusEqS8:
             if (addWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip)))
@@ -3432,7 +3432,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<double*>(context->bp + ip->a.u32) += *reinterpret_cast<double*>(context->bp + ip->b.u32);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpMinusEqS8:
             if (subWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip)))
@@ -3574,7 +3574,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<double*>(context->bp + ip->a.u32) -= *reinterpret_cast<double*>(context->bp + ip->b.u32);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpMulEqS8:
             if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip)))
@@ -3716,7 +3716,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<double*>(context->bp + ip->a.u32) *= *reinterpret_cast<double*>(context->bp + ip->b.u32);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpDivEqS8:
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) /= IMMB_S8(ip);
@@ -3818,7 +3818,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<double*>(context->bp + ip->a.u32) /= *reinterpret_cast<double*>(context->bp + ip->b.u32);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpModuloEqS8:
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) %= IMMB_S8(ip);
@@ -3900,7 +3900,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint64_t*>(context->bp + ip->a.u32) %= *reinterpret_cast<uint64_t*>(context->bp + ip->b.u32);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpAndEqU8:
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) &= IMMB_S8(ip);
@@ -3918,7 +3918,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer) &= IMMB_S64(ip);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpOrEqU8:
             *registersRC[ip->a.u32].pointer |= IMMB_S8(ip);
@@ -3936,7 +3936,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer) |= IMMB_S64(ip);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpXorEqU8:
             *registersRC[ip->a.u32].pointer ^= IMMB_S8(ip);
@@ -3954,7 +3954,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer) ^= IMMB_S64(ip);
             break;
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftLeftEqS8:
         case ByteCodeOp::AffectOpShiftLeftEqU8:
@@ -4001,7 +4001,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
         }
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
         {
@@ -4085,7 +4085,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
         }
 
-        /////////////////////////////////////
+            /////////////////////////////////////
 
         case ByteCodeOp::ZeroToTrue:
             registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 == 0;
@@ -4200,7 +4200,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
 void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
 {
-    while (executeInstruction(context, context->ip++));
+    while (executeInstruction(context, context->ip++))
+        ;
 }
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
@@ -4257,9 +4258,9 @@ namespace
 
         tmpLoc.fileName.buffer = static_cast<void*>(_strdup(loc.file->path.string().c_str()));
         tmpLoc.fileName.count  = loc.file->path.string().length();
-        tmpLoc.lineStart       = tmpLoc.lineEnd = loc.location->line;
-        tmpLoc.colStart        = tmpLoc.colEnd  = loc.location->column;
-        location               = &tmpLoc;
+        tmpLoc.lineStart = tmpLoc.lineEnd = loc.location->line;
+        tmpLoc.colStart = tmpLoc.colEnd = loc.location->column;
+        location                        = &tmpLoc;
 
         // Exception 666 raised during bytecode execution
         /////////////////////////////////////////////////
@@ -4298,7 +4299,7 @@ namespace
                     else
                         userMsg = txt;
 
-                // Additional panic infos
+                    // Additional panic infos
                     if (runContext->internalPanicSymbol)
                     {
                         notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node));
@@ -4352,12 +4353,12 @@ namespace
             err->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
         else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
             err->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-            // Otherwise get the source file from the top of the bytecode stack if possible
+        // Otherwise get the source file from the top of the bytecode stack if possible
         else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
             err->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
         else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
             err->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
-            // Otherwise take the current bytecode source file
+        // Otherwise take the current bytecode source file
         else
             err->contextFile = runContext->bc->sourceFile;
 
@@ -4389,7 +4390,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         {
             return module->runner.runLoop(runContext);
         }
-        SWAG_EXCEPT (exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
+        SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
         {
             if (runContext->forDebugger)
                 continue;

@@ -28,7 +28,7 @@ constexpr int COMPUTE_SCOPED_NAME        = 1;
 constexpr int COMPUTE_SCOPED_NAME_EXPORT = 2;
 constexpr int COMPUTE_DISPLAY_NAME       = 3;
 
-using TypeInfoFlags = Flags<uint64_t>;
+using TypeInfoFlags                                       = Flags<uint64_t>;
 constexpr TypeInfoFlags TYPEINFO_SELF                     = 0x00000000'00000001;
 constexpr TypeInfoFlags TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr TypeInfoFlags TYPEINFO_INTEGER                  = 0x00000000'00000004;
@@ -92,17 +92,17 @@ constexpr uint8_t TYPEINFOPARAM_FROM_GENERIC     = 0x00000020;
 
 struct TypeInfo
 {
-    TypeInfo()          = default;
+             TypeInfo() = default;
     virtual ~TypeInfo() = default;
 
-    explicit TypeInfo(const char* name, TypeInfoKind kind)
-        : name{name}
-        , kind{kind}
+    explicit TypeInfo(const char* name, TypeInfoKind kind) :
+        name{name},
+        kind{kind}
     {
     }
 
-    explicit TypeInfo(TypeInfoKind kind)
-        : kind{kind}
+    explicit TypeInfo(TypeInfoKind kind) :
+        kind{kind}
     {
     }
 
@@ -240,8 +240,8 @@ struct TypeInfoParam
 
 struct TypeInfoNative final : TypeInfo
 {
-    TypeInfoNative()
-        : TypeInfo{TypeInfoKind::Native}
+    TypeInfoNative() :
+        TypeInfo{TypeInfoKind::Native}
     {
         valueInteger = 0;
     }
@@ -268,8 +268,8 @@ struct TypeInfoNative final : TypeInfo
 
 struct TypeInfoNamespace final : TypeInfo
 {
-    TypeInfoNamespace()
-        : TypeInfo{TypeInfoKind::Namespace}
+    TypeInfoNamespace() :
+        TypeInfo{TypeInfoKind::Namespace}
     {
     }
 
@@ -280,8 +280,8 @@ struct TypeInfoNamespace final : TypeInfo
 
 struct TypeInfoEnum final : TypeInfo
 {
-    TypeInfoEnum()
-        : TypeInfo{TypeInfoKind::Enum}
+    TypeInfoEnum() :
+        TypeInfo{TypeInfoKind::Enum}
     {
     }
 
@@ -301,8 +301,8 @@ struct TypeInfoEnum final : TypeInfo
 
 struct TypeInfoFuncAttr final : TypeInfo
 {
-    TypeInfoFuncAttr()
-        : TypeInfo{TypeInfoKind::FuncAttr}
+    TypeInfoFuncAttr() :
+        TypeInfo{TypeInfoKind::FuncAttr}
     {
     }
 
@@ -344,8 +344,8 @@ struct TypeInfoFuncAttr final : TypeInfo
 
 struct TypeInfoPointer final : TypeInfo
 {
-    TypeInfoPointer()
-        : TypeInfo{TypeInfoKind::Pointer}
+    TypeInfoPointer() :
+        TypeInfo{TypeInfoKind::Pointer}
     {
     }
 
@@ -359,8 +359,8 @@ struct TypeInfoPointer final : TypeInfo
 
 struct TypeInfoArray final : TypeInfo
 {
-    TypeInfoArray()
-        : TypeInfo{TypeInfoKind::Array}
+    TypeInfoArray() :
+        TypeInfo{TypeInfoKind::Array}
     {
     }
 
@@ -383,8 +383,8 @@ struct TypeInfoArray final : TypeInfo
 
 struct TypeInfoSlice final : TypeInfo
 {
-    TypeInfoSlice()
-        : TypeInfo{TypeInfoKind::Slice}
+    TypeInfoSlice() :
+        TypeInfo{TypeInfoKind::Slice}
     {
         sizeOf = 2 * sizeof(void*);
     }
@@ -416,8 +416,8 @@ struct TypeInfoList final : TypeInfo
 
 struct TypeInfoVariadic final : TypeInfo
 {
-    TypeInfoVariadic()
-        : TypeInfo{TypeInfoKind::Variadic}
+    TypeInfoVariadic() :
+        TypeInfo{TypeInfoKind::Variadic}
     {
     }
 
@@ -430,8 +430,8 @@ struct TypeInfoVariadic final : TypeInfo
 
 struct TypeInfoGeneric final : TypeInfo
 {
-    TypeInfoGeneric()
-        : TypeInfo{TypeInfoKind::Generic}
+    TypeInfoGeneric() :
+        TypeInfo{TypeInfoKind::Generic}
     {
         flags.add(TYPEINFO_GENERIC);
     }
@@ -444,8 +444,8 @@ struct TypeInfoGeneric final : TypeInfo
 
 struct TypeInfoStruct final : TypeInfo
 {
-    TypeInfoStruct()
-        : TypeInfo{TypeInfoKind::Struct}
+    TypeInfoStruct() :
+        TypeInfo{TypeInfoKind::Struct}
     {
     }
 
@@ -508,8 +508,8 @@ struct TypeInfoStruct final : TypeInfo
 
 struct TypeInfoAlias final : TypeInfo
 {
-    TypeInfoAlias()
-        : TypeInfo{TypeInfoKind::Alias}
+    TypeInfoAlias() :
+        TypeInfo{TypeInfoKind::Alias}
     {
     }
 
@@ -527,8 +527,8 @@ struct TypeInfoAlias final : TypeInfo
 
 struct TypeInfoCode final : TypeInfo
 {
-    TypeInfoCode()
-        : TypeInfo{"code", TypeInfoKind::Code}
+    TypeInfoCode() :
+        TypeInfo{"code", TypeInfoKind::Code}
     {
     }
 

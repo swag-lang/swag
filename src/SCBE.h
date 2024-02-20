@@ -15,7 +15,7 @@ struct ByteCodeInstruction;
 struct SCBE final : Backend
 {
     explicit SCBE(Module* mdl);
-    SCBE();
+             SCBE();
 
     void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;

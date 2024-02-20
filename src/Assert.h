@@ -11,13 +11,16 @@ void swagAssert(const char* expr, const char* file, int line);
         {                                            \
             swagAssert(#__expr, __FILE__, __LINE__); \
         }                                            \
-    } while(0)
+    } while (0)
 
 #define SWAG_IF_ASSERT(__expr) __expr
 
 #else // !SWAG_HAS_ASSERT
 
-#define SWAG_ASSERT(__expr) do {} while(0)
+#define SWAG_ASSERT(__expr) \
+    do                      \
+    {                       \
+    } while (0)
 #define SWAG_IF_ASSERT(__expr)
 
 #endif // SWAG_HAS_ASSERT

@@ -5,11 +5,11 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 
-#define OK()                                  \
-    do                                        \
-    {                                         \
-        context->setDirtyPass(); \
-        ip->removeFlag(BCI_IMM_A);              \
+#define OK()                       \
+    do                             \
+    {                              \
+        context->setDirtyPass();   \
+        ip->removeFlag(BCI_IMM_A); \
     } while (0)
 
 #define CMP3(__a, __b) __a < (__b) ? -1 : ((__a) > (__b) ? 1 : 0)

@@ -324,7 +324,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-        // GetErr/Jump just after
+            // GetErr/Jump just after
             if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
                 ip[1].a.u32 == ip[0].a.u32 &&
                 ip[0].hasFlag(BCI_TRY_CATCH) &&
@@ -336,7 +336,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-        // Useless InternalHasErr
+            // Useless InternalHasErr
             if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
                 ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
                 ip[3].op == ByteCodeOp::InternalStackTrace &&
@@ -360,7 +360,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-        // Useless InternalHasErr
+            // Useless InternalHasErr
             if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
                 ip[2].op == ByteCodeOp::InternalHasErr &&
                 ip[3].op == ByteCodeOp::JumpIfZero32 &&
@@ -371,7 +371,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-        // GetErr/Jump on another GetErr/Jump, make a shortcut
+            // GetErr/Jump on another GetErr/Jump, make a shortcut
             if (ip[1].op == ByteCodeOp::JumpIfZero32)
             {
                 const auto ipNext = &ip[1] + ip[1].b.s32 + 1;
@@ -383,7 +383,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 }
             }
 
-        // InternalHasErr followed by return
+            // InternalHasErr followed by return
             if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
                 ip[2].op == ByteCodeOp::Ret &&
                 ip[1].b.s32 == 1 &&
@@ -396,7 +396,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-        // Compact error test
+            // Compact error test
             if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
                 ip[0].a.u32 == ip[1].a.u32)
             {
@@ -416,7 +416,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
-        // If there's not SetErr between push and pop, then remove them
+            // If there's not SetErr between push and pop, then remove them
             {
                 auto                 ipScan    = ip + 1;
                 auto                 cpt       = 1;
@@ -1413,8 +1413,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 break;
             }
 
-        // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
-        // leave the MakeStackPointer which will be removed later (?) if no more used
+            // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
+            // leave the MakeStackPointer which will be removed later (?) if no more used
             if (ip[1].op == ByteCodeOp::SetAtPointer8 &&
                 ip[0].a.u32 == ip[1].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))

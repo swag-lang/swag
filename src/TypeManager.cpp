@@ -125,7 +125,7 @@ void TypeManager::setup()
     {                                                                              \
         promoteMatrix[(int) NativeTypeKind::__a][(int) NativeTypeKind::__b] = __c; \
         promoteMatrix[(int) NativeTypeKind::__b][(int) NativeTypeKind::__a] = __c; \
-    } while(0)
+    } while (0)
 
     PR(U8, U8, typeInfoU8);
     PR(U8, U16, typeInfoU16);

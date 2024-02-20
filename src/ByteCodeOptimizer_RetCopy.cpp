@@ -226,7 +226,7 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, const Byte
             if (ip[1].op == ByteCodeOp::IncPointer64 && ip[1].a.u32 == ip[1].c.u32 && ip[0].a.u32 == ip[1].a.u32)
                 break;
 
-        // If parameter is a simple native, then this is a copy, so this is safe
+            // If parameter is a simple native, then this is a copy, so this is safe
             if (context->bc->typeInfoFunc)
             {
                 const auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);

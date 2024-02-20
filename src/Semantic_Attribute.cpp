@@ -11,22 +11,22 @@
 #include "SourceFile.h"
 #include "TypeManager.h"
 
-#define INHERIT_ATTR(__c, __f)                               \
-    do                                                       \
-    {                                                        \
-        if (!(__c)->attributeFlags.has(__f))                 \
-			(__c)->attributeFlags.add(attributeFlags.mask(__f)); \
-    } while(0)
+#define INHERIT_ATTR(__c, __f)                                   \
+    do                                                           \
+    {                                                            \
+        if (!(__c)->attributeFlags.has(__f))                     \
+            (__c)->attributeFlags.add(attributeFlags.mask(__f)); \
+    } while (0)
 
-#define INHERIT_SAFETY(__c, __f)                                       \
-    do                                                                 \
-    {                                                                  \
-        if (!(__c)->safetyOn.has(__f) && !(__c)->safetyOff.has(__f))   \
-        {                                                              \
-            (__c)->safetyOn.add(safetyOn.mask(__f));                   \
-            (__c)->safetyOff.add(safetyOff.mask(__f));                 \
-        }                                                              \
-    } while(0)
+#define INHERIT_SAFETY(__c, __f)                                     \
+    do                                                               \
+    {                                                                \
+        if (!(__c)->safetyOn.has(__f) && !(__c)->safetyOff.has(__f)) \
+        {                                                            \
+            (__c)->safetyOn.add(safetyOn.mask(__f));                 \
+            (__c)->safetyOff.add(safetyOff.mask(__f));               \
+        }                                                            \
+    } while (0)
 
 #define CHECK_SAFETY_NAME(__name, __flag)       \
     do                                          \
@@ -41,7 +41,7 @@
             else                                \
                 forNode->safetyOff.add(__flag); \
         }                                       \
-    } while(0)
+    } while (0)
 
 bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {

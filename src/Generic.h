@@ -15,7 +15,7 @@ struct SymbolOverload;
 struct TypeInfo;
 struct TypeInfoParam;
 
-using CastFlags = Flags<uint64_t>;
+using CastFlags          = Flags<uint64_t>;
 using MatchIdParamsFlags = Flags<uint32_t>;
 
 struct GenericReplaceType
