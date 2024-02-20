@@ -1,9 +1,11 @@
 #pragma once
+#include "AstFlags.h"
 #include "Attribute.h"
 #include "DependentJobs.h"
 #include "Flags.h"
 #include "Mutex.h"
 #include "Register.h"
+#include "Symbol.h"
 #include "Tokenizer.h"
 
 struct AstAttrUse;
@@ -466,13 +468,16 @@ struct AstNode
     TypeInfo* typeInfo;
     TypeInfo* castedTypeInfo;
 
-    SymbolName*     symbolName;
-    SymbolOverload* symbolOverload;
+    union
+    {
+        SymbolName*     symbolName;
+        SymbolOverload* symbolOverload;
+    };
 
-    SymbolName*     resolvedSymbolName() const { return symbolName; }
-    SymbolOverload* resolvedSymbolOverload() const { return symbolOverload; }
+    SymbolName*     resolvedSymbolName() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? symbolName : (symbolOverload ? symbolOverload->symbol : nullptr); }
+    SymbolOverload* resolvedSymbolOverload() const { return hasSemFlag(SEMFLAG_HAS_SYMBOL_NAME) ? nullptr : symbolOverload; }
     void            setResolvedSymbolName(SymbolName* sym);
-    void            setResolvedSymbolOverload(SymbolOverload* sym);
+    void            setResolvedSymbolOverload(SymbolOverload* over);
     void            setResolvedSymbol(SymbolName* sym, SymbolOverload* over);
 
     AstNode*       parent;

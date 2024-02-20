@@ -239,7 +239,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                             {
                                 ScopedLock lk(sym->mutex);
                                 SWAG_ASSERT(sym->overloads.size() == 1);
-                                copyChild->setResolvedSymbol(copyChild->resolvedSymbolOverload()->symbol, sym->overloads[0]);
+                                copyChild->setResolvedSymbol(sym->overloads[0]->symbol, sym->overloads[0]);
                                 copyChild->typeInfo = copyChild->resolvedSymbolOverload()->typeInfo;
                             }
                         }

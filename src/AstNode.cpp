@@ -79,7 +79,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         castedTypeInfo = from->castedTypeInfo;
     }
 
-    setResolvedSymbol(from->resolvedSymbolName(), from->resolvedSymbolOverload());
+    addSemFlag(from->semFlags.mask(SEMFLAG_HAS_SYMBOL_NAME));
+    symbolName = from->symbolName;
 
     token   = from->token;
     tokenId = from->tokenId;
@@ -1372,16 +1373,34 @@ void AstNode::setOwnerBreakable(AstBreakable* bkp)
 
 void AstNode::setResolvedSymbolName(SymbolName* sym)
 {
+    addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
     symbolName = sym;
 }
 
 void AstNode::setResolvedSymbolOverload(SymbolOverload* over)
 {
-    symbolOverload = over;
+    if (over)
+    {
+        symbolOverload = over;
+        removeSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
+    }
+    else
+    {
+        addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
+    }
 }
 
 void AstNode::setResolvedSymbol(SymbolName* sym, SymbolOverload* over)
 {
-    symbolName     = sym;
-    symbolOverload = over;
+    if(!over)
+    {
+        addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
+        symbolName = sym;
+    }
+    else
+    {
+        SWAG_ASSERT(sym == over->symbol);
+        removeSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
+        symbolOverload = over;
+    }
 }
