@@ -33,12 +33,15 @@ BreakConstructorInitializers: AfterColon
 ColumnLimit: 0
 ContinuationIndentWidth: 0
 FixNamespaceComments: false
+IncludeIsMainRegex: 'pch\.h'
 IndentCaseLabels: true
 IndentWidth: 4
 InsertNewlineAtEOF: true
+KeepEmptyLinesAtTheStartOfBlocks: false
 LambdaBodyIndentation: Signature
 MacroBlockBegin: ''
 MacroBlockEnd: ''
+MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
 PackConstructorInitializers: Never
 PointerAlignment: Left
