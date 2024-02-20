@@ -1,7 +1,9 @@
 #pragma once
 #include "Flags.h"
 
-using AstNodeFlags                                    = Flags<uint64_t>;
+using AstNodeFlags = Flags<uint64_t>;
+using AstSemFlags  = Flags<uint64_t>;
+
 constexpr AstNodeFlags AST_CONST_EXPR                 = 0x00000000'00000001;
 constexpr AstNodeFlags AST_COMPUTED_VALUE             = 0x00000000'00000002;
 constexpr AstNodeFlags AST_GLOBAL_NODE                = 0x00000000'00000004;
@@ -63,7 +65,6 @@ constexpr AstNodeFlags AST_SPEC_SEMANTIC2             = 0x02000000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC3             = 0x04000000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC_HAS3         = 0x08000000'00000000;
 
-using AstSemFlags                                        = Flags<uint64_t>;
 constexpr AstSemFlags SEMFLAG_VAR_DECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 constexpr AstSemFlags SEMFLAG_VAR_DECL_REF_CALL          = 0x00000000'00000002;
 constexpr AstSemFlags SEMFLAG_EMIT_DEFERRED              = 0x00000000'00000004;

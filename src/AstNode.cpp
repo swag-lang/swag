@@ -21,7 +21,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
-    ownerFct         = context.ownerFct || context.cloneFlags & CLONE_FORCE_OWNER_FCT ? context.ownerFct : from->ownerFct;
+    ownerFct         = context.ownerFct || context.cloneFlags.has(CLONE_FORCE_OWNER_FCT) ? context.ownerFct : from->ownerFct;
 
     // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
     if (context.ownerDeferScope)
@@ -71,7 +71,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // This should not be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and auto cast, as inline functions are evaluated
     // as functions, and also each time they are inline.
-    if (context.cloneFlags & CLONE_RAW)
+    if (context.cloneFlags.has(CLONE_RAW))
     {
         addSemFlag(from->semFlags.mask(SEMFLAG_USER_CAST));
         addSemFlag(from->semFlags.mask(SEMFLAG_FROM_REF));

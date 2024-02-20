@@ -1831,7 +1831,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));
     cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
     cloneContext.removeFlags.add(AST_R_VALUE);
-    cloneContext.cloneFlags |= CLONE_FORCE_OWNER_FCT;
+    cloneContext.cloneFlags.add(CLONE_FORCE_OWNER_FCT);
 
     // Here we inline a call in a global declaration, like a variable/constant initialization
     // We do not want the function to be the original one, in case of local variables, because we

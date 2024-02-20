@@ -368,7 +368,7 @@ AstNode* Ast::cloneRaw(AstNode* source, AstNode* parent, AstNodeFlags forceFlags
     cloneContext.parent      = parent;
     cloneContext.forceFlags  = forceFlags;
     cloneContext.removeFlags = removeFlags;
-    cloneContext.cloneFlags |= CLONE_RAW;
+    cloneContext.cloneFlags.add(CLONE_RAW);
     return source->clone(cloneContext);
 }
 

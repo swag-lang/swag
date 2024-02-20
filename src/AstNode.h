@@ -39,13 +39,17 @@ struct TypeInfoStruct;
 using SemanticFct       = bool       (*)(SemanticContext* context);
 using ByteCodeFct       = bool       (*)(ByteCodeGenContext* context);
 using ByteCodeNotifyFct = bool (*)(ByteCodeGenContext* context);
-using AstNodeFlags      = Flags<uint64_t>;
-using AstSemFlags       = Flags<uint64_t>;
-using SpecFlags         = Flags<uint16_t>;
-using SafetyFlags       = Flags<uint16_t>;
 
-constexpr uint32_t CLONE_RAW             = 0x00000001;
-constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
+using AstNodeFlags   = Flags<uint64_t>;
+using AstSemFlags    = Flags<uint64_t>;
+using SpecFlags      = Flags<uint16_t>;
+using SafetyFlags    = Flags<uint16_t>;
+using AltScopeFlags  = Flags<uint32_t>;
+using BreakableFlags = Flags<uint32_t>;
+using CloneFlags     = Flags<uint32_t>;
+
+constexpr CloneFlags CLONE_RAW             = 0x00000001;
+constexpr CloneFlags CLONE_FORCE_OWNER_FCT = 0x00000002;
 
 struct CloneUpdateRef
 {
@@ -76,7 +80,7 @@ struct CloneContext
     Token*              forceLocation          = nullptr;
     AstNodeFlags        forceFlags             = 0;
     AstNodeFlags        removeFlags            = 0;
-    uint32_t            cloneFlags             = 0;
+    CloneFlags          cloneFlags             = 0;
 
     void propagateResult(CloneContext& context)
     {
@@ -85,7 +89,6 @@ struct CloneContext
     }
 };
 
-using AltScopeFlags                            = Flags<uint32_t>;
 constexpr AltScopeFlags ALT_SCOPE_STRUCT_USING = 0x00000001;
 constexpr AltScopeFlags ALT_SCOPE_FILE_PRIVATE = 0x00000002;
 constexpr AltScopeFlags ALT_SCOPE_UFCS         = 0x00000004;
@@ -691,7 +694,6 @@ struct AstBreakContinue : AstNode
     int            jumpInstruction;
 };
 
-using BreakableFlags                                       = Flags<uint32_t>;
 constexpr BreakableFlags BREAKABLE_CAN_HAVE_INDEX          = 0x00000001;
 constexpr BreakableFlags BREAKABLE_CAN_HAVE_CONTINUE       = 0x00000002;
 constexpr BreakableFlags BREAKABLE_NEED_INDEX              = 0x00000004;

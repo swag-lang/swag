@@ -797,7 +797,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     // Otherwise we can have a out of frame error, because the original symbol is not in the same stack frame.
     if (hasSpecFlag(SPEC_FLAG_CREATED_STRUCT_PARAMETERS))
     {
-        if (context.cloneFlags & CLONE_FORCE_OWNER_FCT)
+        if (context.cloneFlags.has(CLONE_FORCE_OWNER_FCT))
         {
             SWAG_ASSERT(newNode->identifier);
             newNode->identifier->removeAstFlag(AST_NO_SEMANTIC);
@@ -1062,7 +1062,7 @@ AstNode* AstReturn::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     // If return in an inline block has already been solved, we need this flag !
-    if (context.cloneFlags & CLONE_RAW)
+    if (context.cloneFlags.has(CLONE_RAW))
         newNode->addSemFlag(semFlags.mask(SEMFLAG_EMBEDDED_RETURN));
 
     return newNode;
