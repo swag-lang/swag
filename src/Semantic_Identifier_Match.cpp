@@ -22,11 +22,11 @@ void Semantic::sortParameters(AstNode* allParams)
         return;
 
     ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2)
-    {
-        const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-        const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-        return p1->indexParam < p2->indexParam;
-    });
+                 {
+                     const AstFuncCallParam* p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+                     const AstFuncCallParam* p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+                     return p1->indexParam < p2->indexParam;
+                 });
 
     allParams->removeAstFlag(AST_MUST_SORT_CHILDREN);
 }
@@ -91,15 +91,15 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
 
     // Replace every types inside the function
     Ast::visit(funcDecl, [&](AstNode* p)
-    {
-        const auto it = typeDefinedFct->replaceTypes.find(p->token.text);
-        if (it == typeDefinedFct->replaceTypes.end())
-            return;
-        p->token.text = it->second.typeInfoReplace->name;
-        if (p->resolvedSymbolOverload)
-            p->resolvedSymbolOverload->typeInfo = it->second.typeInfoReplace;
-        p->typeInfo = it->second.typeInfoReplace;
-    });
+               {
+                   const auto it = typeDefinedFct->replaceTypes.find(p->token.text);
+                   if (it == typeDefinedFct->replaceTypes.end())
+                       return;
+                   p->token.text = it->second.typeInfoReplace->name;
+                   if (p->resolvedSymbolOverload)
+                       p->resolvedSymbolOverload->typeInfo = it->second.typeInfoReplace;
+                   p->typeInfo = it->second.typeInfoReplace;
+               });
 
     // Set return type
     if (typeUndefinedFct->returnType->isUndefined())

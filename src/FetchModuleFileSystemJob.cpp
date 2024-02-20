@@ -33,37 +33,37 @@ JobResult FetchModuleFileSystemJob::execute()
     SetUtf8 srcFiles;
     OS::visitFilesRec(dep->resolvedLocation.string().c_str(),
                       [&](const char* fileName)
-    {
-        const Path n    = fileName;
-        const Utf8 subN = fileName + dep->resolvedLocation.string().length() + 1;
+                      {
+                          const Path n    = fileName;
+                          const Utf8 subN = fileName + dep->resolvedLocation.string().length() + 1;
 
-        if (collectSourceFiles)
-        {
-            Path cfgFile = dep->resolvedLocation;
-            cfgFile.append(SWAG_CFG_FILE);
-            if (cfgFile == fileName)
-            {
-                srcFiles.insert(subN);
-                return;
-            }
+                          if (collectSourceFiles)
+                          {
+                              Path cfgFile = dep->resolvedLocation;
+                              cfgFile.append(SWAG_CFG_FILE);
+                              if (cfgFile == fileName)
+                              {
+                                  srcFiles.insert(subN);
+                                  return;
+                              }
 
-            Path srcFolder = dep->resolvedLocation;
-            srcFolder.append(SWAG_SRC_FOLDER);
-            if (n.string().find(srcFolder.string()) == 0)
-            {
-                srcFiles.insert(subN);
-                return;
-            }
-        }
+                              Path srcFolder = dep->resolvedLocation;
+                              srcFolder.append(SWAG_SRC_FOLDER);
+                              if (n.string().find(srcFolder.string()) == 0)
+                              {
+                                  srcFiles.insert(subN);
+                                  return;
+                              }
+                          }
 
-        Path publishFolder = dep->resolvedLocation;
-        publishFolder.append(SWAG_PUBLISH_FOLDER);
-        if (n.string().find(publishFolder.string()) == 0)
-        {
-            srcFiles.insert(subN);
-            return;
-        }
-    });
+                          Path publishFolder = dep->resolvedLocation;
+                          publishFolder.append(SWAG_PUBLISH_FOLDER);
+                          if (n.string().find(publishFolder.string()) == 0)
+                          {
+                              srcFiles.insert(subN);
+                              return;
+                          }
+                      });
 
     auto destPath = g_Workspace->dependenciesPath;
     destPath.append(dep->name.c_str());
@@ -72,18 +72,18 @@ JobResult FetchModuleFileSystemJob::execute()
     Vector<Utf8> dstFiles;
     OS::visitFilesRec(destPath.string().c_str(),
                       [&](const char* fileName)
-    {
-        const Path n    = fileName;
-        const Utf8 subN = fileName + destPath.string().length() + 1;
+                      {
+                          const Path n    = fileName;
+                          const Utf8 subN = fileName + destPath.string().length() + 1;
 
-        // Do not collect public folder
-        Path publicFolder = dep->resolvedLocation;
-        publicFolder.append(SWAG_PUBLIC_FOLDER);
-        if (n.string().find(publicFolder.string()) == 0)
-            return;
+                          // Do not collect public folder
+                          Path publicFolder = dep->resolvedLocation;
+                          publicFolder.append(SWAG_PUBLIC_FOLDER);
+                          if (n.string().find(publicFolder.string()) == 0)
+                              return;
 
-        dstFiles.push_back(subN);
-    });
+                          dstFiles.push_back(subN);
+                      });
 
     // Remove all files in the dependency folder that are no more in the module source folder
     for (const auto& f : dstFiles)

@@ -89,9 +89,9 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
 bool GenDoc::generateExamples()
 {
     ranges::sort(module->files, [](const SourceFile* a, const SourceFile* b)
-    {
-        return strcmp(a->name.c_str(), b->name.c_str()) < 0;
-    });
+                 {
+                     return strcmp(a->name.c_str(), b->name.c_str()) < 0;
+                 });
 
     helpToc += "<ul>\n";
 

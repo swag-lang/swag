@@ -856,9 +856,9 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
 {
     result = moduleDependencies;
     ranges::sort(result, [](const ModuleDependency* n1, const ModuleDependency* n2)
-    {
-        return n2->module->hasDependencyTo(n1->module);
-    });
+                 {
+                     return n2->module->hasDependencyTo(n1->module);
+                 });
 }
 
 void Module::setBuildPass(BuildPass buildP)
@@ -1173,9 +1173,9 @@ bool Module::filterFunctionsToEmit()
     }
 
     ranges::sort(byteCodeFuncToGen, [](ByteCode* bc1, ByteCode* bc2)
-    {
-        return reinterpret_cast<size_t>(bc1->sourceFile) < reinterpret_cast<size_t>(bc2->sourceFile);
-    });
+                 {
+                     return reinterpret_cast<size_t>(bc1->sourceFile) < reinterpret_cast<size_t>(bc2->sourceFile);
+                 });
 
     return true;
 }

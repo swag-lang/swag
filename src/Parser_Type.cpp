@@ -398,11 +398,11 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
 
     Ast::visit(structNode->content, [&](AstNode* n)
-    {
-        n->inheritOwners(structNode);
-        n->ownerStructScope = newScope;
-        n->ownerScope       = newScope;
-    });
+               {
+                   n->inheritOwners(structNode);
+                   n->ownerStructScope = newScope;
+                   n->ownerScope       = newScope;
+               });
 
     return true;
 }

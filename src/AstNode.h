@@ -42,11 +42,12 @@ using ByteCodeNotifyFct = bool (*)(ByteCodeGenContext* context);
 
 using AstNodeFlags   = Flags<uint64_t>;
 using AstSemFlags    = Flags<uint64_t>;
-using SpecFlags      = Flags<uint16_t>;
-using SafetyFlags    = Flags<uint16_t>;
 using AltScopeFlags  = Flags<uint32_t>;
 using BreakableFlags = Flags<uint32_t>;
 using CloneFlags     = Flags<uint32_t>;
+using SpecFlags      = Flags<uint16_t>;
+using SafetyFlags    = Flags<uint16_t>;
+using TypeFlags      = Flags<uint16_t>;
 
 constexpr CloneFlags CLONE_RAW             = 0x00000001;
 constexpr CloneFlags CLONE_FORCE_OWNER_FCT = 0x00000002;
@@ -810,7 +811,6 @@ struct AstType : AstNode
     static constexpr SpecFlags SPEC_FLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
 };
 
-using TypeFlags                                = Flags<uint16_t>;
 constexpr TypeFlags TYPEFLAG_IS_ARRAY          = 0x0001;
 constexpr TypeFlags TYPEFLAG_IS_SLICE          = 0x0002;
 constexpr TypeFlags TYPEFLAG_IS_CONST          = 0x0004;

@@ -6,114 +6,114 @@
 bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt)
-    {
-        const auto ip    = parseCxt.curIp;
-        const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
+              {
+                  const auto ip    = parseCxt.curIp;
+                  const auto flags = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
 
-        uint32_t regScan = UINT32_MAX;
-        if (flags.has(OPFLAG_WRITE_A) && !flags.has(OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
-            regScan = ip->a.u32;
-        if (flags.has(OPFLAG_WRITE_B) && !flags.has(OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
-            regScan = ip->b.u32;
-        if (flags.has(OPFLAG_WRITE_C) && !flags.has(OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D))
-            regScan = ip->c.u32;
-        if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
-            regScan = ip->d.u32;
+                  uint32_t regScan = UINT32_MAX;
+                  if (flags.has(OPFLAG_WRITE_A) && !flags.has(OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
+                      regScan = ip->a.u32;
+                  if (flags.has(OPFLAG_WRITE_B) && !flags.has(OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D))
+                      regScan = ip->b.u32;
+                  if (flags.has(OPFLAG_WRITE_C) && !flags.has(OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D))
+                      regScan = ip->c.u32;
+                  if (flags.has(OPFLAG_WRITE_D) && !flags.has(OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C))
+                      regScan = ip->d.u32;
 
-        if (regScan == UINT32_MAX)
-            return;
+                  if (regScan == UINT32_MAX)
+                      return;
 
-        bool hasRead = false;
+                  bool hasRead = false;
 
-        parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext*, ByteCodeOptTreeParseContext& parseCxt1)
-        {
-            const auto ip1 = parseCxt1.curIp;
-            if (ip1 == ip)
-                return;
+                  parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext*, ByteCodeOptTreeParseContext& parseCxt1)
+                            {
+                                const auto ip1 = parseCxt1.curIp;
+                                if (ip1 == ip)
+                                    return;
 
-            const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
-            if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
-            {
-                if (ip1->a.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
+                                const auto flags1 = g_ByteCodeOpDesc[static_cast<int>(ip1->op)].flags;
+                                if (flags1.has(OPFLAG_READ_A) && !ip1->hasFlag(BCI_IMM_A))
+                                {
+                                    if (ip1->a.u32 == regScan)
+                                    {
+                                        hasRead               = true;
+                                        parseCxt1.mustStopAll = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_READ_B) && !ip1->hasFlag(BCI_IMM_B))
-            {
-                if (ip1->b.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
+                                if (flags1.has(OPFLAG_READ_B) && !ip1->hasFlag(BCI_IMM_B))
+                                {
+                                    if (ip1->b.u32 == regScan)
+                                    {
+                                        hasRead               = true;
+                                        parseCxt1.mustStopAll = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_READ_C) && !ip1->hasFlag(BCI_IMM_C))
-            {
-                if (ip1->c.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
+                                if (flags1.has(OPFLAG_READ_C) && !ip1->hasFlag(BCI_IMM_C))
+                                {
+                                    if (ip1->c.u32 == regScan)
+                                    {
+                                        hasRead               = true;
+                                        parseCxt1.mustStopAll = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_READ_D) && !ip1->hasFlag(BCI_IMM_D))
-            {
-                if (ip1->d.u32 == regScan)
-                {
-                    hasRead               = true;
-                    parseCxt1.mustStopAll = true;
-                    return;
-                }
-            }
+                                if (flags1.has(OPFLAG_READ_D) && !ip1->hasFlag(BCI_IMM_D))
+                                {
+                                    if (ip1->d.u32 == regScan)
+                                    {
+                                        hasRead               = true;
+                                        parseCxt1.mustStopAll = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_WRITE_A))
-            {
-                if (ip1->a.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
+                                if (flags1.has(OPFLAG_WRITE_A))
+                                {
+                                    if (ip1->a.u32 == regScan)
+                                    {
+                                        parseCxt1.mustStopBlock = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_WRITE_B))
-            {
-                if (ip1->b.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
+                                if (flags1.has(OPFLAG_WRITE_B))
+                                {
+                                    if (ip1->b.u32 == regScan)
+                                    {
+                                        parseCxt1.mustStopBlock = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_WRITE_C))
-            {
-                if (ip1->c.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
+                                if (flags1.has(OPFLAG_WRITE_C))
+                                {
+                                    if (ip1->c.u32 == regScan)
+                                    {
+                                        parseCxt1.mustStopBlock = true;
+                                        return;
+                                    }
+                                }
 
-            if (flags1.has(OPFLAG_WRITE_D))
-            {
-                if (ip1->d.u32 == regScan)
-                {
-                    parseCxt1.mustStopBlock = true;
-                    return;
-                }
-            }
-        });
+                                if (flags1.has(OPFLAG_WRITE_D))
+                                {
+                                    if (ip1->d.u32 == regScan)
+                                    {
+                                        parseCxt1.mustStopBlock = true;
+                                        return;
+                                    }
+                                }
+                            });
 
-        if (hasRead)
-            return;
+                  if (hasRead)
+                      return;
 
-        setNop(context, ip);
-    });
+                  setNop(context, ip);
+              });
 
     return true;
 }
@@ -240,43 +240,43 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 {
     context->mark = 0;
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, const ByteCodeOptTreeParseContext& parseCxt)
-    {
-        const auto ip = parseCxt.curIp;
-        switch (ip->op)
-        {
-            case ByteCodeOp::GetParam8:
-            case ByteCodeOp::GetParam16:
-            case ByteCodeOp::GetParam32:
-            case ByteCodeOp::GetParam64:
-            case ByteCodeOp::MakeStackPointer:
-            case ByteCodeOp::MakeConstantSegPointer:
-            case ByteCodeOp::MakeCompilerSegPointer:
-            case ByteCodeOp::MakeBssSegPointer:
-            case ByteCodeOp::MakeMutableSegPointer:
-            case ByteCodeOp::ClearRA:
-            case ByteCodeOp::SetImmediate32:
-            case ByteCodeOp::SetImmediate64:
-            case ByteCodeOp::GetIncParam64:
-                break;
+              {
+                  const auto ip = parseCxt.curIp;
+                  switch (ip->op)
+                  {
+                      case ByteCodeOp::GetParam8:
+                      case ByteCodeOp::GetParam16:
+                      case ByteCodeOp::GetParam32:
+                      case ByteCodeOp::GetParam64:
+                      case ByteCodeOp::MakeStackPointer:
+                      case ByteCodeOp::MakeConstantSegPointer:
+                      case ByteCodeOp::MakeCompilerSegPointer:
+                      case ByteCodeOp::MakeBssSegPointer:
+                      case ByteCodeOp::MakeMutableSegPointer:
+                      case ByteCodeOp::ClearRA:
+                      case ByteCodeOp::SetImmediate32:
+                      case ByteCodeOp::SetImmediate64:
+                      case ByteCodeOp::GetIncParam64:
+                          break;
 
-            default:
-                return;
-        }
+                      default:
+                          return;
+                  }
 
-        ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
-        if (node->parent.empty())
-            return;
+                  ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
+                  if (node->parent.empty())
+                      return;
 
-        bool canRemove = false;
-        context->mark++;
-        if (!optimizePassDeadStoreDupScan(context, parseCxt.curNode, node, ip, ip - 1, canRemove))
-            return;
+                  bool canRemove = false;
+                  context->mark++;
+                  if (!optimizePassDeadStoreDupScan(context, parseCxt.curNode, node, ip, ip - 1, canRemove))
+                      return;
 
-        if (canRemove)
-        {
-            setNop(context, ip);
-        }
-    });
+                  if (canRemove)
+                  {
+                      setNop(context, ip);
+                  }
+              });
 
     return true;
 }

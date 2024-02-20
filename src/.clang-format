@@ -36,7 +36,7 @@ FixNamespaceComments: false
 IndentCaseLabels: true
 IndentWidth: 4
 InsertNewlineAtEOF: true
-LambdaBodyIndentation: OuterScope
+LambdaBodyIndentation: Signature
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 NamespaceIndentation: All

@@ -286,9 +286,9 @@ namespace
 void Diagnostic::sortRanges()
 {
     ranges::sort(ranges, [](auto& r1, auto& r2)
-    {
-        return r1.startLocation.column < r2.startLocation.column;
-    });
+                 {
+                     return r1.startLocation.column < r2.startLocation.column;
+                 });
 }
 
 void Diagnostic::collectRanges()

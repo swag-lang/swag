@@ -557,9 +557,10 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             {
                 isType = true;
                 PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam]
-                {
-                    return FMT(Nte(Nte0083), oneParam->token.c_str());
-                }, true);
+                                   {
+                                       return FMT(Nte(Nte0083), oneParam->token.c_str());
+                                   },
+                                   true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else
@@ -779,10 +780,10 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     if (funcNode->genericParameters)
     {
         Ast::visit(funcNode->genericParameters, [&](AstNode* n)
-        {
-            n->ownerFct   = funcNode;
-            n->ownerScope = newScope;
-        });
+                   {
+                       n->ownerFct   = funcNode;
+                       n->ownerScope = newScope;
+                   });
     }
 
     // Parameters
@@ -1069,9 +1070,9 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         {
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []
-                {
-                    return Nte(Nte0011);
-                });
+                                  {
+                                      return Nte(Nte0011);
+                                  });
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
             }
 

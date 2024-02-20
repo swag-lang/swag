@@ -398,13 +398,13 @@ namespace
         if (overload && ip->node)
         {
             Ast::visit(ip->node, [&](AstNode* n)
-            {
-                if (n->resolvedSymbolOverload == overload && !nodeLoc)
-                {
-                    nodeLoc = n;
-                    return;
-                }
-            });
+                       {
+                           if (n->resolvedSymbolOverload == overload && !nodeLoc)
+                           {
+                               nodeLoc = n;
+                               return;
+                           }
+                       });
         }
 
         if (nodeLoc)

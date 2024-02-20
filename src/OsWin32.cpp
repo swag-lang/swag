@@ -65,36 +65,36 @@ namespace OS
         int  bestVersion[4] = {0};
         Utf8 bestName;
         visitFolders(g_WinSdkFolder.string().c_str(), [&](const char* cFileName)
-        {
-            int        i0, i1, i2, i3;
-            const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
-            if (success < 4)
-                return;
+                     {
+                         int        i0, i1, i2, i3;
+                         const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
+                         if (success < 4)
+                             return;
 
-            if (i0 < bestVersion[0])
-                return;
-            if (i0 == bestVersion[0])
-            {
-                if (i1 < bestVersion[1])
-                    return;
-                if (i1 == bestVersion[1])
-                {
-                    if (i2 < bestVersion[2])
-                        return;
-                    if (i2 == bestVersion[2])
-                    {
-                        if (i3 < bestVersion[3])
-                            return;
-                    }
-                }
-            }
+                         if (i0 < bestVersion[0])
+                             return;
+                         if (i0 == bestVersion[0])
+                         {
+                             if (i1 < bestVersion[1])
+                                 return;
+                             if (i1 == bestVersion[1])
+                             {
+                                 if (i2 < bestVersion[2])
+                                     return;
+                                 if (i2 == bestVersion[2])
+                                 {
+                                     if (i3 < bestVersion[3])
+                                         return;
+                                 }
+                             }
+                         }
 
-            bestName       = cFileName;
-            bestVersion[0] = i0;
-            bestVersion[1] = i1;
-            bestVersion[2] = i2;
-            bestVersion[3] = i3;
-        });
+                         bestName       = cFileName;
+                         bestVersion[0] = i0;
+                         bestVersion[1] = i1;
+                         bestVersion[2] = i2;
+                         bestVersion[3] = i3;
+                     });
 
         if (bestVersion[0] == 0)
             return false;

@@ -21,9 +21,9 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
     VectorNative<AstNode*> children;
 
     Ast::visit(node, [&](AstNode* n)
-    {
-        children.push_back(n);
-    });
+               {
+                   children.push_back(n);
+               });
 
     for (int i = static_cast<int>(children.size()) - 1; i >= 0; i--)
     {

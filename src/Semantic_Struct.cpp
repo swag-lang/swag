@@ -645,12 +645,12 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
         Ast::addChildFront(structNode, structNode->genericParameters);
 
         Ast::visit(structNode->genericParameters, [&](AstNode* n)
-        {
-            n->inheritOwners(structNode);
-            n->ownerStructScope = structNode->scope;
-            n->ownerScope       = structNode->scope;
-            n->addAstFlag(AST_IS_GENERIC);
-        });
+                   {
+                       n->inheritOwners(structNode);
+                       n->ownerStructScope = structNode->scope;
+                       n->ownerScope       = structNode->scope;
+                       n->addAstFlag(AST_IS_GENERIC);
+                   });
     }
 
     return true;

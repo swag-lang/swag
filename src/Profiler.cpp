@@ -128,9 +128,9 @@ void profiler()
     //////////////////////////////////////////
 
     ranges::sort(bcs, [](const ByteCode* a, const ByteCode* b)
-    {
-        return b->profileCumTime < a->profileCumTime;
-    });
+                 {
+                     return b->profileCumTime < a->profileCumTime;
+                 });
     while (!bcs.empty() && OS::timerToSeconds(bcs.back()->profileCumTime) <= g_CommandLine.profileMinTime)
         bcs.pop_back();
 
@@ -167,9 +167,9 @@ void profiler()
     for (auto& val : ffi | views::values)
         linFFi.push_back(val);
     ranges::sort(linFFi, [](const FFIStat& a, const FFIStat& b)
-    {
-        return b.cum < a.cum;
-    });
+                 {
+                     return b.cum < a.cum;
+                 });
     while (!linFFi.empty() && OS::timerToSeconds(linFFi.back().cum) <= g_CommandLine.profileMinTime)
         linFFi.pop_back();
 

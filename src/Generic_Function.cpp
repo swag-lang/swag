@@ -270,9 +270,9 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 context->result     = ContextResult::NewChildren1;
                 node->semanticState = AstNodeResolveState::Enter;
                 Ast::visit(node, [](AstNode* n)
-                {
-                    n->removeSemFlag(SEMFLAG_ONCE);
-                });
+                           {
+                               n->removeSemFlag(SEMFLAG_ONCE);
+                           });
                 return true;
             }
         }

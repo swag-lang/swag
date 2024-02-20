@@ -567,9 +567,9 @@ namespace
         if (scope->childScopes.size() > 1)
         {
             ranges::sort(scope->childScopes, [](const Scope* n1, const Scope* n2)
-            {
-                return n1->backendStart < n2->backendStart;
-            });
+                         {
+                             return n1->backendStart < n2->backendStart;
+                         });
         }
 
         for (const auto c : scope->childScopes)
