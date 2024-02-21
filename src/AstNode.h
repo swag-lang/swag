@@ -1137,5 +1137,8 @@ struct AstLiteral : AstNode
 
 struct AstStatement : AstNode
 {
+    static constexpr SpecFlags SPEC_FLAG_NEED_SCOPE = 0x0001;
+
+    ~        AstStatement();
     AstNode* clone(CloneContext& context);
 };

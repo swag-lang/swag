@@ -181,9 +181,6 @@ void AstNode::release()
     ++g_Stats.releaseNodes;
 #endif
 
-    if (hasAstFlag(AST_NEED_SCOPE))
-        ownerScope->release();
-
     if (hasExtByteCode())
     {
         if (extByteCode()->bc)

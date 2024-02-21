@@ -52,7 +52,7 @@ constexpr AstNodeFlags AST_FROM_UFCS                  = 0x00001000'00000000;
 constexpr AstNodeFlags AST_TO_UFCS                    = 0x00002000'00000000;
 constexpr AstNodeFlags AST_TUPLE_UNPACK               = 0x00004000'00000000;
 constexpr AstNodeFlags AST_INLINED                    = 0x00008000'00000000;
-constexpr AstNodeFlags AST_NEED_SCOPE                 = 0x00010000'00000000;
+constexpr AstNodeFlags AST_SPEC_SEMANTIC_HAS3         = 0x00010000'00000000;
 constexpr AstNodeFlags AST_IN_RUN_BLOCK               = 0x00020000'00000000;
 constexpr AstNodeFlags AST_NO_BACKEND                 = 0x00040000'00000000;
 constexpr AstNodeFlags AST_STRUCT_MEMBER              = 0x00080000'00000000;
@@ -63,7 +63,6 @@ constexpr AstNodeFlags AST_SPEC_STACK_SIZE            = 0x00800000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC1             = 0x01000000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC2             = 0x02000000'00000000;
 constexpr AstNodeFlags AST_SPEC_SEMANTIC3             = 0x04000000'00000000;
-constexpr AstNodeFlags AST_SPEC_SEMANTIC_HAS3         = 0x08000000'00000000;
 
 constexpr AstSemFlags SEMFLAG_VAR_DECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 constexpr AstSemFlags SEMFLAG_VAR_DECL_REF_CALL          = 0x00000000'00000002;

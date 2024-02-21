@@ -397,12 +397,13 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     const auto newScope = Ast::newScope(parent, "", scopeKind, currentScope);
     Scoped     scoped(this, newScope);
 
-    AstNode* statement;
-    SWAG_CHECK(doCurlyStatement(parent, &statement));
-    *result = statement;
+    AstNode* node;
+    SWAG_CHECK(doCurlyStatement(parent, &node));
+    *result = node;
 
-    newScope->owner = statement;
-    statement->addAstFlag(AST_NEED_SCOPE);
+    const auto statement = castAst<AstStatement>(node, AstNodeKind::Statement, AstNodeKind::StatementNoScope);
+    newScope->owner      = statement;
+    statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE);
     statement->byteCodeFct = ByteCodeGen::emitDebugNop;
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
@@ -443,13 +444,15 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         SWAG_ASSERT(!currentScope->isGlobalOrImpl());
 
         const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-        Scoped     scoped(this, newScope);
-        AstNode*   statement = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
-        *result              = statement;
+
+        Scoped   scoped(this, newScope);
+        AstNode* statement = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+        *result            = statement;
+
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
         statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
-        statement->addAstFlag(AST_NEED_SCOPE);
+        statement->addSpecFlag(AstStatement::SPEC_FLAG_NEED_SCOPE);
         newScope->owner = statement;
         SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     }
