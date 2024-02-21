@@ -6,11 +6,11 @@
 struct Concat;
 struct JobContext;
 struct Scope;
-struct SourceFile;
 struct TypeInfoEnum;
 struct TypeInfoList;
 struct TypeInfoStruct;
 struct Utf8;
+
 enum class ScopeKind : uint8_t;
 
 namespace Ast
