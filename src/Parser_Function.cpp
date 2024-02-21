@@ -1244,7 +1244,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
 
     // Retrieve the pointer of the function
     const auto exprNode = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
-    exprNode->inheritTokenLocation(lambda);
+    exprNode->inheritTokenLocation(lambda->token);
     exprNode->lambda      = lambdaDecl;
     exprNode->semanticFct = Semantic::resolveMakePointerLambda;
 
@@ -1261,19 +1261,19 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
 
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
-        identifierRef->inheritTokenLocation(lambda);
-        identifierRef->children.back()->inheritTokenLocation(lambda);
+        identifierRef->inheritTokenLocation(lambda->token);
+        identifierRef->children.back()->inheritTokenLocation(lambda->token);
         isForceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
         const auto nameCaptureBlock = FMT("__captureblock%d", g_UniqueID.fetch_add(1));
         const auto block            = Ast::newVarDecl(sourceFile, nameCaptureBlock, exprNode, this);
-        block->inheritTokenLocation(lambdaDecl->captureParameters);
+        block->inheritTokenLocation(lambdaDecl->captureParameters->token);
         block->addAstFlag(AST_GENERATED);
         const auto exprList   = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = Semantic::resolveExpressionListTuple;
         exprList->addSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE | AstExpressionList::SPEC_FLAG_FOR_CAPTURE);
-        exprList->inheritTokenLocation(lambdaDecl->captureParameters);
+        exprList->inheritTokenLocation(lambdaDecl->captureParameters->token);
         block->assignment = exprList;
         Semantic::setVarDeclResolve(block);
 
@@ -1284,16 +1284,16 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
 
         // Reference to the captured block
         identifierRef = Ast::newIdentifierRef(sourceFile, nameCaptureBlock, exprNode, this);
-        identifierRef->inheritTokenLocation(lambdaDecl->captureParameters);
-        identifierRef->children.back()->inheritTokenLocation(lambdaDecl->captureParameters);
+        identifierRef->inheritTokenLocation(lambdaDecl->captureParameters->token);
+        identifierRef->children.back()->inheritTokenLocation(lambdaDecl->captureParameters->token);
         isForceTakeAddress(identifierRef);
     }
     else
     {
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
-        identifierRef->inheritTokenLocation(lambda);
-        identifierRef->children.back()->inheritTokenLocation(lambda);
+        identifierRef->inheritTokenLocation(lambda->token);
+        identifierRef->children.back()->inheritTokenLocation(lambda->token);
         isForceTakeAddress(identifierRef);
     }
 

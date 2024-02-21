@@ -85,7 +85,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
     id->token.sourceFile      = context->sourceFile;
     id->token.text            = node->token.text;
     id->inheritOwners(node);
-    id->inheritTokenLocation(node);
+    id->inheritTokenLocation(node->token);
     return id;
 }
 

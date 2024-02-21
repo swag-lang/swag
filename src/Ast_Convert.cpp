@@ -40,11 +40,11 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     // :ReverseLiteralStruct
     fromNode->parent->addAstFlag(AST_REVERSE_SEMANTIC);
 
-    varNode->inheritTokenLocation(fromNode);
+    varNode->inheritTokenLocation(fromNode->token);
     varNode->addAstFlag(AST_GENERATED);
 
     const auto typeNode = newTypeExpression(sourceFile, varNode);
-    typeNode->inheritTokenLocation(fromNode);
+    typeNode->inheritTokenLocation(fromNode->token);
     typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
     varNode->type = typeNode;
 
@@ -53,7 +53,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     typeNode->identifier = newIdentifierRef(sourceFile, typeStruct->declNode->token.text, typeNode);
 
     typeNode->identifier->addAstFlag(AST_GENERATED);
-    typeNode->identifier->inheritTokenLocation(fromNode);
+    typeNode->identifier->inheritTokenLocation(fromNode->token);
 
     const auto back = typeNode->identifier->children.back();
     back->removeAstFlag(AST_NO_BYTECODE);
@@ -69,7 +69,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
     // Make parameters
     const auto identifier = castAst<AstIdentifier>(typeNode->identifier->children.back(), AstNodeKind::Identifier);
-    identifier->inheritTokenLocation(fromNode);
+    identifier->inheritTokenLocation(fromNode->token);
     identifier->callParameters = newFuncCallParams(sourceFile, identifier);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
 
@@ -82,7 +82,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         const auto   oneParam = newFuncCallParam(sourceFile, identifier->callParameters);
         CloneContext cloneContext;
         cloneContext.parent = oneParam;
-        oneParam->inheritTokenLocation(oneChild);
+        oneParam->inheritTokenLocation(oneChild->token);
         oneChild->clone(cloneContext);
         oneChild->addAstFlag(AST_NO_BYTECODE | AST_NO_SEMANTIC);
         if (oneChild->kind == AstNodeKind::Identifier)
@@ -302,7 +302,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
         }
 
         const auto paramNode = newVarDecl(sourceFile, varName, contentNode);
-        paramNode->inheritTokenLocation(subAffect);
+        paramNode->inheritTokenLocation(subAffect->token);
 
         if (autoName)
         {

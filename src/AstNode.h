@@ -303,7 +303,6 @@ struct AstNode
     void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3);
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
-    void inheritTokenLocation(const AstNode* node);
     void inheritOwners(const AstNode* op);
     void inheritOwnersAndFlags(const Parser* parser);
 

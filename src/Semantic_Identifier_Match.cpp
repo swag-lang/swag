@@ -212,7 +212,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 if (front->hasFlagComputedValue() || nodeCall->typeInfo->isListArray())
                 {
                     const auto varNode = Ast::newVarDecl(sourceFile, FMT("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
-                    varNode->inheritTokenLocation(nodeCall);
+                    varNode->inheritTokenLocation(nodeCall->token);
                     varNode->addAstFlag(AST_GENERATED);
                     Ast::removeFromParent(front);
                     Ast::addChildBack(varNode, front);
@@ -225,7 +225,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     nodeCall->typeInfo = toPtr->pointedType;
 
                     const auto idNode = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
-                    idNode->inheritTokenLocation(nodeCall);
+                    idNode->inheritTokenLocation(nodeCall->token);
                     idNode->addAstFlag(AST_GENERATED);
                     Ast::removeFromParent(idNode);
                     Ast::addChildFront(nodeCall, idNode);
@@ -347,7 +347,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 nodeCall->castedTypeInfo = nullptr;
 
                 const auto varNode = Ast::newVarDecl(sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
-                varNode->inheritTokenLocation(nodeCall);
+                varNode->inheritTokenLocation(nodeCall->token);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -753,7 +753,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     auto child  = dependentVar->children[i];
                     auto idNode = Ast::newIdentifier(dependentVar->token.sourceFile, child->token.text, idRef, nullptr);
                     idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
-                    idNode->inheritTokenLocation(idRef);
+                    idNode->inheritTokenLocation(idRef->token);
                     idNode->allocateIdentifierExtension();
                     idNode->identifierExtension->fromAlternateVar = child;
                     Ast::addChildFront(idRef, idNode);
@@ -771,7 +771,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 auto idNode = Ast::newIdentifier(dependentVar->token.sourceFile, dependentVar->token.text, idRef, nullptr);
                 idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
-                idNode->inheritTokenLocation(identifier);
+                idNode->inheritTokenLocation(identifier->token);
 
                 // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
                 // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is

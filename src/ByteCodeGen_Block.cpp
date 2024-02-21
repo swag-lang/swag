@@ -73,7 +73,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         auto arrayNode              = slicing->array;
         parameters.flags            = 0;
         parameters.token.sourceFile = parent->token.sourceFile;
-        parameters.inheritTokenLocation(parent);
+        parameters.inheritTokenLocation(parent->token);
         parameters.inheritOwners(parent);
         parameters.children.push_back(arrayNode);
         allParams        = &parameters;
@@ -87,7 +87,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         auto switchNode             = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
         parameters.flags            = 0;
         parameters.token.sourceFile = parent->token.sourceFile;
-        parameters.inheritTokenLocation(parent);
+        parameters.inheritTokenLocation(parent->token);
         parameters.inheritOwners(parent);
         parameters.children.push_back(switchNode->expression);
         parameters.children.push_back(caseNode->children.front());
@@ -98,7 +98,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     {
         parameters.flags            = 0;
         parameters.token.sourceFile = parent->token.sourceFile;
-        parameters.inheritTokenLocation(parent);
+        parameters.inheritTokenLocation(parent->token);
         parameters.inheritOwners(parent);
         SWAG_ASSERT(parent->children.front()->kind == AstNodeKind::IdentifierRef);
         auto ptIdx = castAst<AstArrayPointerIndex>(parent->children.front()->children.back(), AstNodeKind::ArrayPointerIndex);

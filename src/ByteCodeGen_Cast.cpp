@@ -733,7 +733,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             context->allParamsTmp->children.push_back(exprNode);
             context->allParamsTmp->addExtraPointer(ExtraPointerKind::UserOp, exprNode->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp));
             context->allParamsTmp->inheritOwners(exprNode);
-            context->allParamsTmp->inheritTokenLocation(exprNode);
+            context->allParamsTmp->inheritTokenLocation(exprNode->token);
             context->allParamsTmp->semFlags = 0;
             context->allParamsTmp->removeAstFlag(AST_INLINED);
         }

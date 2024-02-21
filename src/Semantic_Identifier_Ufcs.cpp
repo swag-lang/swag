@@ -155,7 +155,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->parent   = node->callParameters;
     fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
     fctCallParam->token    = identifierRef->previousResolvedNode->token;
-    fctCallParam->inheritTokenLocation(node);
+    fctCallParam->inheritTokenLocation(node->token);
     fctCallParam->byteCodeFct = ByteCodeGen::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
     fctCallParam->addAstFlag(AST_TO_UFCS | AST_GENERATED);

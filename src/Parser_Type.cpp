@@ -84,7 +84,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         Ast::removeFromParent(firstAddedType);
         Ast::addChildBack(param, firstAddedType);
         param->type = firstAddedType;
-        param->inheritTokenLocation(firstAddedType);
+        param->inheritTokenLocation(firstAddedType->token);
     }
 
     auto startLoc = token.startLocation;
@@ -244,9 +244,9 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 Ast::addChildBack(param, typeExpr);
                 param->type = typeExpr;
                 if (namedParam)
-                    param->inheritTokenLocation(namedParam);
+                    param->inheritTokenLocation(namedParam->token);
                 else
-                    param->inheritTokenLocation(typeExpr);
+                    param->inheritTokenLocation(typeExpr->token);
 
                 if (namedParam)
                     param->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);

@@ -340,10 +340,10 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
         child->addSemFlag(SEMFLAG_TYPE_SOLVED);
-        param->inheritTokenLocation(child);
+        param->inheritTokenLocation(child->token);
     }
 
-    identifier->callParameters->inheritTokenLocation(varDecl->assignment);
+    identifier->callParameters->inheritTokenLocation(varDecl->assignment->token);
     identifier->callParameters->inheritAstFlagsOr(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
     identifier->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);

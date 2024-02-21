@@ -632,7 +632,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         callVisit = Ast::newIdentifier(sourceFile, FMT("opVisit%s", node->extraNameToken.c_str()), identifierRef, identifierRef);
         callVisit->allocateIdentifierExtension();
         callVisit->identifierExtension->aliasNames = node->aliasNames;
-        callVisit->inheritTokenLocation(node);
+        callVisit->inheritTokenLocation(node->token);
 
         // Generic parameters
         callVisit->genericParameters = Ast::newFuncCallGenParams(sourceFile, callVisit);

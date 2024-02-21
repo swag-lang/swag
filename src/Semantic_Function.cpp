@@ -1590,7 +1590,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             child->castedTypeInfo = nullptr;
 
             const auto varNode = Ast::newVarDecl(context->sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
-            varNode->inheritTokenLocation(child);
+            varNode->inheritTokenLocation(child->token);
 
             const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode);
             typeExpr->typeInfo  = child->typeInfo;

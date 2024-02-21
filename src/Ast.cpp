@@ -20,7 +20,7 @@ void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, Sou
     }
     else if (parent)
     {
-        node->inheritTokenLocation(parent);
+        node->inheritTokenLocation(parent->token);
         node->inheritOwners(parent);
     }
 

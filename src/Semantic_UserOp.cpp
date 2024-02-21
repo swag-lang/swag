@@ -608,10 +608,10 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     Ast::constructNode(&literal);
     ComputedValue cValue;
     parameters.token.sourceFile = left->token.sourceFile;
-    parameters.inheritTokenLocation(left);
+    parameters.inheritTokenLocation(left->token);
     parameters.inheritOwners(left);
     literal.token.sourceFile = left->token.sourceFile;
-    literal.inheritTokenLocation(left);
+    literal.inheritTokenLocation(left->token);
     literal.inheritOwners(left);
     literal.allocateExtension(ExtensionKind::Semantic);
     literal.extSemantic()->computedValue = &cValue;

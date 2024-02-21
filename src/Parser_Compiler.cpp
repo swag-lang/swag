@@ -255,13 +255,13 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
     {
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
-        funcNode->inheritTokenLocation(node);
+        funcNode->inheritTokenLocation(node->token);
 
         const auto idRef = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
-        idRef->inheritTokenLocation(node);
+        idRef->inheritTokenLocation(node->token);
         const auto identifier      = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, this);
-        identifier->inheritTokenLocation(node);
+        identifier->inheritTokenLocation(node->token);
     }
     else
     {

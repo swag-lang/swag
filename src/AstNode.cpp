@@ -620,15 +620,9 @@ void AstNode::inheritTokenName(Token& tkn)
 
 void AstNode::inheritTokenLocation(const Token& tkn)
 {
+    token.sourceFile    = tkn.sourceFile;
     token.startLocation = tkn.startLocation;
     token.endLocation   = tkn.endLocation;
-}
-
-void AstNode::inheritTokenLocation(const AstNode* node)
-{
-    token.sourceFile    = node->token.sourceFile;
-    token.startLocation = node->token.startLocation;
-    token.endLocation   = node->token.endLocation;
 }
 
 void AstNode::inheritOwners(const AstNode* op)

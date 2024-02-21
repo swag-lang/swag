@@ -177,7 +177,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                         id->allocateIdentifierExtension();
                         id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
                         id->identifierExtension->fromAlternateVar = withNode->children.front();
-                        id->inheritTokenLocation(identifierRef);
+                        id->inheritTokenLocation(identifierRef->token);
                         identifierRef->children.pop_back();
                         Ast::addChildFront(identifierRef, id);
                         identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);

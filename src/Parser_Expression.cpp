@@ -1342,7 +1342,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                         id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
                         id->identifierExtension->fromAlternateVar = withNode->children.front();
-                        id->inheritTokenLocation(exprNode);
+                        id->inheritTokenLocation(exprNode->token);
                         exprNode->children.pop_back();
                         Ast::addChildFront(exprNode, id);
                     }
@@ -1501,7 +1501,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 else if (affectNode->tokenId != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
                 {
                     const auto newAffect = Ast::clone(affectExpression, affectNode);
-                    newAffect->inheritTokenLocation(affectExpression);
+                    newAffect->inheritTokenLocation(affectExpression->token);
                 }
 
                 // In case of an affectation, create 'otherVar = firstVar'

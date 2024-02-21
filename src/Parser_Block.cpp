@@ -31,7 +31,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
         node->boolExpression = Ast::newIdentifierRef(sourceFile, varDecl->token.text, node, this);
         node->boolExpression->addAstFlag(AST_GENERATED);
-        node->boolExpression->inheritTokenLocation(varDecl);
+        node->boolExpression->inheritTokenLocation(varDecl->token);
 
         SWAG_CHECK(doScopedStatement(node, node->token, reinterpret_cast<AstNode**>(&node->ifBlock)));
 
@@ -383,7 +383,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 
         const auto identifer   = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
         identifer->semanticFct = Semantic::resolveIndex;
-        identifer->inheritTokenLocation(var);
+        identifer->inheritTokenLocation(var->token);
 
         var->assignment = identifer;
     }
