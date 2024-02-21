@@ -268,6 +268,12 @@ enum class DeferKind
     NoError,
 };
 
+enum class ExtraPointerKind
+{
+    CastItf,
+    AnyTypeSegment
+};
+
 struct AstNode
 {
     template<typename T>
@@ -392,19 +398,18 @@ struct AstNode
 
     struct NodeExtensionMisc
     {
-        SharedMutex                       mutexAltScopes;
-        VectorNative<AlternativeScope>    alternativeScopes;
-        VectorNative<AlternativeScopeVar> alternativeScopesVars;
-        VectorNative<uint32_t>            registersToRelease;
-        RegisterList                      additionalRegisterRC;
-        Utf8                              docComment;
+        SharedMutex                        mutexAltScopes;
+        VectorNative<AlternativeScope>     alternativeScopes;
+        VectorNative<AlternativeScopeVar>  alternativeScopesVars;
+        VectorNative<uint32_t>             registersToRelease;
+        RegisterList                       additionalRegisterRC;
+        Utf8                               docComment;
+        VectorMap<ExtraPointerKind, void*> extraPointers;
 
         SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
         TypeInfo*       collectTypeInfo              = nullptr;
         AstNode*        alternativeNode              = nullptr;
         AstNode*        exportNode                   = nullptr;
-        DataSegment*    anyTypeSegment               = nullptr;
-        TypeInfoParam*  castItf                      = nullptr;
         AstNode*        isNamed                      = nullptr;
 
         uint32_t castOffset    = 0;
@@ -446,6 +451,38 @@ struct AstNode
     AstBreakable*       ownerBreakable() const { return extOwner()->ownerBreakable; }
     AstBreakable*       safeOwnerBreakable() const { return hasExtOwner() ? extOwner()->ownerBreakable : nullptr; }
     bool                hasOwnerBreakable() const { return safeOwnerBreakable() != nullptr; }
+
+    template<typename T>
+    T* extraPointer(ExtraPointerKind extraPtrKind)
+    {
+        const auto it = extMisc()->extraPointers.find(extraPtrKind);
+        if (it != extMisc()->extraPointers.end())
+            return static_cast<T*>(it->second);
+        return nullptr;
+    }
+
+    template<typename T>
+    const T* extraPointer(ExtraPointerKind extraPtrKind) const
+    {
+        const auto it = extMisc()->extraPointers.find(extraPtrKind);
+        if (it != extMisc()->extraPointers.end())
+            return static_cast<const T*>(it->second);
+        return nullptr;
+    }
+
+    template<typename T>
+    void addExtraPointer(ExtraPointerKind extraPtrKind, T* value)
+    {
+        allocateExtension(ExtensionKind::Misc);
+        extMisc()->extraPointers[extraPtrKind] = value;
+    }
+
+    bool hasExtraPointer(ExtraPointerKind extraPtrKind) const
+    {
+        if (!hasExtMisc())
+            return false;
+        return extMisc()->extraPointers.contains(extraPtrKind);
+    }
 
     void setOwnerAttrUse(AstAttrUse* attrUse);
     void setOwnerBreakable(AstBreakable* bkp);

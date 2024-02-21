@@ -67,9 +67,9 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
 
     // This is the type part.
     // :AnyTypeSegment
-    SWAG_ASSERT(exprNode->hasExtMisc());
-    SWAG_ASSERT(exprNode->extMisc()->anyTypeSegment);
-    emitMakeSegPointer(context, exprNode->extMisc()->anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0[1]);
+    SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
+    const auto anyTypeSegment = exprNode->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
+    emitMakeSegPointer(context, anyTypeSegment, exprNode->extMisc()->anyTypeOffset, r0[1]);
 
     exprNode->resultRegisterRc      = r0;
     context->node->resultRegisterRc = r0;
@@ -102,13 +102,12 @@ bool ByteCodeGen::emitCastToInterface(const ByteCodeGenContext* context, AstNode
     }
 
     SWAG_ASSERT(fromTypeStruct->cptRemainingInterfaces == 0);
-    SWAG_ASSERT(exprNode->hasExtMisc());
-    SWAG_ASSERT(exprNode->extMisc()->castItf);
+    SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::CastItf));
 
     transformResultToLinear2(context, exprNode->resultRegisterRc);
 
     // Need to make the pointer on the data
-    if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
+    if (exprNode->extMisc()->castOffset)
     {
         const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRc, 0, exprNode->resultRegisterRc);
         inst->b.u64     = exprNode->extMisc()->castOffset;
@@ -116,7 +115,9 @@ bool ByteCodeGen::emitCastToInterface(const ByteCodeGenContext* context, AstNode
     }
 
     // :ItfIsConstantSeg
-    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->extMisc()->castItf->offset, exprNode->resultRegisterRc[1]);
+    SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::CastItf));
+    const auto castItf = exprNode->extraPointer<TypeInfoParam>(ExtraPointerKind::CastItf);
+    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, castItf->offset, exprNode->resultRegisterRc[1]);
     node->resultRegisterRc = exprNode->resultRegisterRc;
 
     return true;
@@ -766,7 +767,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
         // Check that the type is correct
         auto anyNode = exprNode;
-        if (!anyNode->hasExtMisc() || !anyNode->extMisc()->anyTypeSegment)
+        if (!anyNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment))
         {
             SWAG_ASSERT(!anyNode->children.empty());
             anyNode = anyNode->children.front();

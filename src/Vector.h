@@ -15,7 +15,7 @@ struct Vector : vector<T, StdAllocator<T>>
 
     uint32_t size() const { return static_cast<uint32_t>(vector<T, StdAllocator<T>>::size()); }
 
-    bool contains(const T& value)
+    bool contains(const T& value) const
     {
         for (auto& it : *this)
         {
@@ -26,7 +26,7 @@ struct Vector : vector<T, StdAllocator<T>>
         return false;
     }
 
-    int find(const T& value)
+    int find(const T& value) const
     {
         int idx = 0;
         for (auto& it : *this)
@@ -49,7 +49,19 @@ struct Vector : vector<T, StdAllocator<T>>
 template<typename K, typename V>
 struct VectorMap : Vector<pair<K, V>>
 {
-    using It = typename Vector<pair<K, V>>::iterator;
+    using It      = typename Vector<pair<K, V>>::iterator;
+    using ConstIt = typename Vector<pair<K, V>>::const_iterator;
+
+    ConstIt find(const K& key) const
+    {
+        for (auto it = this->begin(); it != this->end(); ++it)
+        {
+            if (it->first == key)
+                return it;
+        }
+
+        return this->end();
+    }
 
     It find(const K& key)
     {
@@ -60,6 +72,11 @@ struct VectorMap : Vector<pair<K, V>>
         }
 
         return this->end();
+    }    
+
+    bool contains(const K& key) const
+    {
+        return find(key) != this->end();
     }
 
     V& operator[](const K& key)

@@ -64,9 +64,8 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
             // :AnyTypeSegment
-            SWAG_ASSERT(assignment->hasExtMisc());
-            SWAG_ASSERT(assignment->extMisc()->anyTypeSegment);
-            constSegment = assignment->extMisc()->anyTypeSegment;
+            SWAG_ASSERT(assignment->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
+            constSegment = assignment->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
             ptrAny->type = reinterpret_cast<ExportedTypeInfo*>(constSegment->address(assignment->extMisc()->anyTypeOffset));
             storageSegment->addInitPtr(storageOffset + 8, assignment->extMisc()->anyTypeOffset, constSegment->kind);
         }
