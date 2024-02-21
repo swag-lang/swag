@@ -1654,13 +1654,9 @@ uint32_t Semantic::getMaxStackSize(AstNode* node)
 
     if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
     {
-        auto p = node;
-        while (p->parent && p->parent->kind != AstNodeKind::File)
-            p = p->parent;
-        SWAG_ASSERT(p);
+        const auto p = castAst<AstFile>(node->findParentOrMe(AstNodeKind::File), AstNodeKind::File);
         ScopedLock mk(p->mutex);
-        p->allocateExtensionNoLock(ExtensionKind::Misc);
-        decSP = max(decSP, p->extMisc()->stackSize);
+        decSP = max(decSP, p->stackSize);
         return decSP;
     }
 
@@ -1676,13 +1672,9 @@ void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 
     if (node->hasAstFlag(AST_SPEC_STACK_SIZE))
     {
-        auto p = node;
-        while (p->parent && p->parent->kind != AstNodeKind::File)
-            p = p->parent;
-        SWAG_ASSERT(p);
+        const auto p = castAst<AstFile>(node->findParentOrMe(AstNodeKind::File), AstNodeKind::File);
         ScopedLock mk(p->mutex);
-        p->allocateExtensionNoLock(ExtensionKind::Misc);
-        p->extMisc()->stackSize = max(p->extMisc()->stackSize, size);
+        p->stackSize = max(p->stackSize, size);
     }
     else if (node->ownerFct)
     {

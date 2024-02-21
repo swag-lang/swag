@@ -297,9 +297,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         {
             if (forUsing)
             {
-                while (parent->kind != AstNodeKind::File)
-                    parent = parent->parent;
-                parent->allocateExtension(ExtensionKind::Misc);
+                parent = parent->findParentOrMe(AstNodeKind::File);
                 parent->addAlternativeScope(newScope);
             }
 

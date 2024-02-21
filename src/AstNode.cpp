@@ -390,6 +390,9 @@ void AstNode::release()
         case AstNodeKind::StatementNoScope:
             Allocator::free<AstStatement>(this);
             break;
+        case AstNodeKind::File:
+            Allocator::free<AstFile>(this);
+            break;
         default:
             Allocator::free<AstNode>(this);
             break;
@@ -523,6 +526,8 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::Statement:
         case AstNodeKind::StatementNoScope:
             return clone<AstStatement>(this, context);
+        case AstNodeKind::File:
+            return clone<AstFile>(this, context);
 
         default:
         {
@@ -1265,6 +1270,14 @@ AstNode* AstNode::findParent(TokenId tkn) const
 AstNode* AstNode::findParent(AstNodeKind parentKind) const
 {
     auto find = parent;
+    while (find && find->kind != parentKind)
+        find = find->parent;
+    return find;
+}
+
+AstNode* AstNode::findParentOrMe(AstNodeKind parentKind)
+{
+    auto find = this;
     while (find && find->kind != parentKind)
         find = find->parent;
     return find;

@@ -1374,3 +1374,11 @@ AstNode* AstStatement::clone(CloneContext& context)
         newNode->copyFrom(context, this);
     return newNode;
 }
+
+AstNode* AstFile::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstFile>();
+    newNode->copyFrom(context, this);
+    newNode->stackSize = stackSize;
+    return newNode;
+}

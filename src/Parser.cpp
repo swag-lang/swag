@@ -406,7 +406,7 @@ bool Parser::generateAst()
 #endif
 
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
+    sourceFile->astRoot = Ast::newNode<AstFile>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;

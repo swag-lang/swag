@@ -340,6 +340,7 @@ struct AstNode
     AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild) const;
     AstNode* findParent(AstNodeKind parentKind) const;
     AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) const;
+    AstNode* findParentOrMe(AstNodeKind parentKind);
     AstNode* findChild(AstNodeKind childKind) const;
     AstNode* findParentAttrUse(const Utf8& name) const;
     AstNode* findParent(TokenId tkn) const;
@@ -407,14 +408,13 @@ struct AstNode
         VectorNative<AlternativeScope>     alternativeScopes;
         VectorNative<AlternativeScopeVar>  alternativeScopesVars;
         VectorNative<uint32_t>             registersToRelease;
-        RegisterList                       additionalRegisterRC;
         Utf8                               docComment;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
-        uint32_t castOffset    = 0;
-        uint32_t stackOffset   = 0;
-        uint32_t anyTypeOffset = 0;
-        uint32_t stackSize     = 0;
+        RegisterList additionalRegisterRC;
+        uint32_t     castOffset    = 0;
+        uint32_t     stackOffset   = 0;
+        uint32_t     anyTypeOffset = 0;
     };
 
     struct NodeExtension
@@ -1183,4 +1183,11 @@ struct AstStatement : AstNode
 
     ~        AstStatement();
     AstNode* clone(CloneContext& context);
+};
+
+struct AstFile : AstNode
+{
+    AstNode* clone(CloneContext& context);
+
+    uint32_t stackSize;
 };
