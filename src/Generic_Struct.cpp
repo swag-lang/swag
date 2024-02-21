@@ -23,7 +23,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                 const auto identifier = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
                 if (!identifier->genericParameters)
                 {
-                    identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
+                    identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier, nullptr);
                     identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
 
                     CloneContext cloneContext;
@@ -36,7 +36,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                             return context->report(err, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload()));
                         }
 
-                        const auto child    = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
+                        const auto child    = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters, nullptr);
                         cloneContext.parent = child;
                         param->assignment->clone(cloneContext);
                     }

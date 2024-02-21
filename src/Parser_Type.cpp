@@ -45,7 +45,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             // A closure always has at least one parameter : the capture context
             params                   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node, sourceFile);
             node->parameters         = params;
-            firstAddedType           = Ast::newTypeExpression(sourceFile, params);
+            firstAddedType           = Ast::newTypeExpression(sourceFile, params, nullptr);
             firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
             firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
             break;
@@ -166,7 +166,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             {
                 curIsAlone = false;
                 SWAG_VERIFY(currentStructScope, error(token, Err(Err0470)));
-                typeExpr = Ast::newTypeExpression(sourceFile, params);
+                typeExpr = Ast::newTypeExpression(sourceFile, params, nullptr);
                 typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
                 typeExpr->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
                 typeExpr->token.endLocation = token.endLocation;
@@ -179,7 +179,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             else if (token.id == TokenId::SymDotDotDot)
             {
                 curIsAlone                  = false;
-                typeExpr                    = Ast::newTypeExpression(sourceFile, params);
+                typeExpr                    = Ast::newTypeExpression(sourceFile, params, nullptr);
                 typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                 typeExpr->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
@@ -190,7 +190,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             else if (token.id == TokenId::KwdCVarArgs)
             {
                 curIsAlone                  = false;
-                typeExpr                    = Ast::newTypeExpression(sourceFile, params);
+                typeExpr                    = Ast::newTypeExpression(sourceFile, params, nullptr);
                 typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
                 typeExpr->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
@@ -207,7 +207,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 {
                     curIsAlone = false;
                     Ast::removeFromParent(typeExpr);
-                    auto newTypeExpression               = Ast::newTypeExpression(sourceFile, params);
+                    auto newTypeExpression               = Ast::newTypeExpression(sourceFile, params, nullptr);
                     newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                     newTypeExpression->token.endLocation = token.endLocation;
                     SWAG_CHECK(eatToken());

@@ -1589,10 +1589,10 @@ bool Semantic::resolveReturn(SemanticContext* context)
             child->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
             child->castedTypeInfo = nullptr;
 
-            const auto varNode = Ast::newVarDecl(context->sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
+            const auto varNode = Ast::newVarDecl(context->sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), node, nullptr);
             varNode->inheritTokenLocation(child->token);
 
-            const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode);
+            const auto typeExpr = Ast::newTypeExpression(context->sourceFile, varNode, nullptr);
             typeExpr->typeInfo  = child->typeInfo;
             typeExpr->addAstFlag(AST_NO_SEMANTIC);
             varNode->type = typeExpr;
@@ -1605,7 +1605,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             Ast::removeFromParent(child);
 
             Ast::removeFromParent(varNode);
-            const auto idRef = Ast::newIdentifierRef(context->sourceFile, varNode->token.text, node);
+            const auto idRef = Ast::newIdentifierRef(context->sourceFile, varNode->token.text, node, nullptr);
             Ast::addChildBack(node, varNode);
 
             idRef->addExtraPointer(ExtraPointerKind::ExportNode, child);
@@ -1705,7 +1705,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // The content will be inline in its separated syntax block
-    const auto inlineNode      = Ast::newInline(identifier->token.sourceFile, identifier);
+    const auto inlineNode      = Ast::newInline(identifier->token.sourceFile, identifier, nullptr);
     inlineNode->attributeFlags = funcDecl->attributeFlags;
     inlineNode->func           = funcDecl;
     inlineNode->scope          = identifier->ownerScope;

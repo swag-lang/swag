@@ -226,7 +226,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
         {
-            const auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
+            const auto typeNode = Ast::newTypeExpression(sourceFile, paramNode, nullptr);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF);
             if (paramNode->hasAstFlag(AST_DECL_USING))
                 typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
@@ -236,7 +236,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         else
         {
             SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Err(Err0470)));
-            const auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
+            const auto typeNode = Ast::newTypeExpression(sourceFile, paramNode, nullptr);
             typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
             if (paramNode->hasAstFlag(AST_DECL_USING))
@@ -304,7 +304,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
+                const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode, nullptr);
                 paramNode->type                      = newTypeExpression;
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                 newTypeExpression->token.endLocation = token.endLocation;
@@ -313,7 +313,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
-                const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
+                const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode, nullptr);
                 paramNode->type                      = newTypeExpression;
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
                 newTypeExpression->token.endLocation = token.endLocation;
@@ -328,7 +328,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 if (token.id == TokenId::SymDotDotDot)
                 {
                     Ast::removeFromParent(typeExpression);
-                    const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
+                    const auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode, nullptr);
                     paramNode->type                      = newTypeExpression;
                     newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                     newTypeExpression->token.endLocation = token.endLocation;
@@ -449,7 +449,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
                 paramNode->addAstFlag(AST_DECL_USING);
             paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
             paramNode->token.text = g_LangSpec->name_self;
-            const auto typeNode   = Ast::newTypeExpression(sourceFile, paramNode);
+            const auto typeNode   = Ast::newTypeExpression(sourceFile, paramNode, nullptr);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
             if (!isItfMethod)
                 typeNode->typeFlags.add(TYPEFLAG_HAS_USING);

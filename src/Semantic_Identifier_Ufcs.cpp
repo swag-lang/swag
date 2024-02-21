@@ -144,7 +144,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
 
     const auto fctCallParam = Ast::newNode<AstFuncCallParam>(AstNodeKind::FuncCallParam, nullptr, nullptr, node->token.sourceFile);
     if (!node->callParameters)
-        node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
+        node->callParameters = Ast::newFuncCallParams(context->sourceFile, node, nullptr);
 
     SWAG_CHECK(checkIsConcrete(context, identifierRef->previousResolvedNode));
 
@@ -170,7 +170,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
     fctCallParam->resolvedParameter = match.solvedParameters[0];
 
-    const auto idRef = Ast::newIdentifierRef(node->token.sourceFile, fctCallParam);
+    const auto idRef = Ast::newIdentifierRef(node->token.sourceFile, fctCallParam, nullptr);
     if (symbol->kind == SymbolKind::Variable)
     {
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
@@ -180,12 +180,12 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // :SpecUfcsNode
             identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
-            const auto id              = Ast::newIdentifier(node->token.sourceFile, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
+            const auto id              = Ast::newIdentifier(node->token.sourceFile, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef, nullptr);
             id->addAstFlag(AST_NO_BYTECODE);
         }
         else
         {
-            // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
+            // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifier-ref
             // Copy all previous references to the one we want to pass as parameter
             // X.Y.call(...) => X.Y.call(X.Y, ...)
             for (const auto child : identifierRef->children)
@@ -219,7 +219,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
         {
             for (const auto child : dependentVar->children)
             {
-                const auto copyChild = Ast::newIdentifier(node->token.sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
+                const auto copyChild = Ast::newIdentifier(node->token.sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef, nullptr);
                 copyChild->inheritOwners(fctCallParam);
                 copyChild->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 if (!child->resolvedSymbolOverload())

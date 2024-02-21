@@ -1480,7 +1480,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             while (!leftNode->children.empty())
             {
                 const auto child      = leftNode->children.front();
-                const auto affectNode = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
+                const auto affectNode = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags, nullptr);
                 affectNode->token     = static_cast<Token>(savedtoken);
                 affectNode->token.id  = savedtoken.id;
                 Ast::removeFromParent(child);
@@ -1559,7 +1559,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                     continue;
                 }
 
-                const auto affectNode  = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
+                const auto affectNode  = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags, nullptr);
                 affectNode->token.id   = savedtoken.id;
                 affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
