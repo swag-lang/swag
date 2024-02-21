@@ -11,7 +11,7 @@
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
-    const auto node   = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
+    const auto node   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, this, parent, sourceFile);
     *result           = node;
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
@@ -43,7 +43,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
             // :ClosureForceFirstParam
             // A closure always has at least one parameter : the capture context
-            params                   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+            params                   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node, sourceFile);
             node->parameters         = params;
             firstAddedType           = Ast::newTypeExpression(sourceFile, params);
             firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
@@ -93,7 +93,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     {
         if (!params)
         {
-            params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+            params           = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node, sourceFile);
             node->parameters = params;
         }
 
@@ -144,7 +144,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Err0690)));
                     SWAG_VERIFY(!isConst, error(constToken, Err(Err0662)));
 
-                    namedParam        = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
+                    namedParam        = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, nullptr, sourceFile);
                     namedParam->token = static_cast<Token>(tokenName);
                     SWAG_CHECK(eatToken());
                     curIsAlone  = false;
@@ -324,7 +324,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
     structNode->addExtraPointer(ExtraPointerKind::ExportNode, structNode);
 
-    const auto contentNode = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
+    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, this, structNode, sourceFile);
     structNode->content    = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
@@ -646,7 +646,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
 
 bool Parser::doCast(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
+    const auto node   = Ast::newNode<AstCast>(AstNodeKind::Cast, this, parent, sourceFile);
     *result           = node;
     node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
@@ -687,7 +687,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
 bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
+    const auto node   = Ast::newNode<AstCast>(AstNodeKind::AutoCast, this, parent, sourceFile);
     *result           = node;
     node->semanticFct = Semantic::resolveExplicitAutoCast;
 

@@ -406,7 +406,7 @@ bool Parser::generateAst()
 #endif
 
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode<AstFile>(this, AstNodeKind::File, sourceFile, module->astRoot);
+    sourceFile->astRoot = Ast::newNode<AstFile>(AstNodeKind::File, this, module->astRoot, sourceFile);
 
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
@@ -422,7 +422,7 @@ bool Parser::generateAst()
             npName = moduleForNp->name;
         Ast::normalizeIdentifierName(npName);
 
-        const auto namespaceNode  = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        const auto namespaceNode  = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, sourceFile->astRoot, sourceFile);
         namespaceNode->token.text = npName;
 
         ScopedLock lk(parentScope->symTable.mutex);

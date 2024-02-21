@@ -412,7 +412,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         }
 
         // Add a safety test in a switch default to catch runtime invalid values
-        const auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
+        const auto caseNode = Ast::newNode<AstSwitchCase>(AstNodeKind::SwitchCase, nullptr, node, context->sourceFile);
         caseNode->addAstFlag(AST_GENERATED);
         caseNode->specFlags   = AstSwitchCase::SPEC_FLAG_IS_DEFAULT;
         caseNode->ownerSwitch = node;

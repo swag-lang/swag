@@ -47,7 +47,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     path = modulePath;
 
     scopeRoot                = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
-    astRoot                  = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
+    astRoot                  = Ast::newNode<AstNode>(AstNodeKind::Module, nullptr, nullptr, nullptr);
     scopeRoot->owner         = astRoot;
     buildPass                = g_CommandLine.buildPass;
     buildParameters.buildCfg = &buildCfg;
@@ -1051,7 +1051,7 @@ bool Module::compileString(const Utf8& text)
         return false;
     }
 
-    const auto parent = Ast::newNode<AstStatement>(nullptr, AstNodeKind::StatementNoScope, files[0], sourceFile->astRoot);
+    const auto parent = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, nullptr, sourceFile->astRoot, files[0]);
 
     JobContext jobContext;
     Parser     parser;

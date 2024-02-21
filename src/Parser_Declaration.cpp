@@ -70,7 +70,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
     SWAG_ASSERT(newScope);
     Scoped     scoped(this, newScope);
-    const auto attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent, sourceFile);
     *result            = attrUse;
     attrUse->addAstFlag(AST_GENERATED);
     attrUse->attributeFlags = attr;
@@ -86,7 +86,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     else
     {
         attrUse->addAstFlag(AST_GLOBAL_NODE);
-        topStmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, attrUse);
+        topStmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, attrUse, sourceFile);
         topStmt->addAstFlag(AST_GLOBAL_NODE);
         while (token.id != TokenId::EndOfFile)
             SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
@@ -107,7 +107,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, FMT(Err(Err0481), token.c_str())));
 
     auto       privName = token;
-    const auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    const auto attrUse  = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent, sourceFile);
     *result             = attrUse;
     attrUse->addAstFlag(AST_GENERATED);
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
@@ -142,7 +142,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             AstNode* varNode;
             SWAG_CHECK(doVarDecl(parent, &varNode));
 
-            const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+            const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent, sourceFile);
             *result           = node;
             node->semanticFct = Semantic::resolveUsing;
             Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
@@ -183,7 +183,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
     while (true)
     {
-        const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+        const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent, sourceFile);
         *result           = node;
         node->semanticFct = Semantic::resolveUsing;
 
@@ -229,7 +229,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     const bool scopeFilePriv = privName != nullptr;
     while (true)
     {
-        namespaceNode = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
+        namespaceNode = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, parent, sourceFile);
         if (privName)
             namespaceNode->token.text = privName->text;
 
@@ -350,7 +350,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
 bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+    const auto node = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
     *result         = node;
 
     const auto startLoc = token.startLocation;
@@ -363,7 +363,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+    const auto node = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
     *result         = node;
 
     const bool isGlobal = currentScope->isGlobalOrImpl();
@@ -444,7 +444,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
 
         Scoped   scoped(this, newScope);
-        AstNode* statement = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+        AstNode* statement = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
         *result            = statement;
 
         statement->allocateExtension(ExtensionKind::Semantic);
@@ -486,7 +486,7 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
 
         if (currentScope->isGlobalOrImpl())
         {
-            *result = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+            *result = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
             SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
         }
         else
@@ -547,7 +547,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
             if (testParent->kind != AstNodeKind::AttrUse)
                 break;
             if (!newAttrUse)
-                newAttrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, subDecl->token.sourceFile, subDecl->parent);
+                newAttrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, subDecl->parent, subDecl->token.sourceFile);
 
             // Clone all attributes
             CloneContext cloneContext;
@@ -605,7 +605,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     // when it is evaluated.
     if (orgSubDecl->kind != AstNodeKind::FuncDecl || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
     {
-        const auto solver   = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
+        const auto solver   = Ast::newNode<AstRefSubDecl>(AstNodeKind::RefSubDecl, this, orgParent, sourceFile);
         solver->semanticFct = Semantic::resolveSubDeclRef;
         solver->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
         solver->refSubDecl = orgSubDecl;
@@ -615,7 +615,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
 bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 {
-    const auto labelNode   = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
+    const auto labelNode   = Ast::newNode<AstScopeBreakable>(AstNodeKind::ScopeBreakable, this, parent, sourceFile);
     *result                = labelNode;
     labelNode->semanticFct = Semantic::resolveScopeBreakable;
 

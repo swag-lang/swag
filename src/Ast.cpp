@@ -4,18 +4,16 @@
 #include "Parser.h"
 #include "TypeManager.h"
 
-void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
+void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, AstNode* parent, SourceFile* sourceFile)
 {
-    node->kind             = kind;
-    node->parent           = parent;
-    node->token.sourceFile = sourceFile;
+    node->kind   = kind;
+    node->parent = parent;
 
     if (parser)
     {
-        node->tokenId             = parser->token.id;
-        node->token.text          = parser->token.text;
-        node->token.startLocation = parser->token.startLocation;
-        node->token.endLocation   = parser->token.endLocation;
+        node->tokenId    = parser->token.id;
+        node->token.text = parser->token.text;
+        node->inheritTokenLocation(parser->token);
         node->inheritOwnersAndFlags(parser);
     }
     else if (parent)
@@ -23,6 +21,10 @@ void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, Sou
         node->inheritTokenLocation(parent->token);
         node->inheritOwners(parent);
     }
+
+    node->token.sourceFile = sourceFile;
+
+    SWAG_ASSERT(!node->token.sourceFile || node->token.sourceFile == sourceFile);
 
     if (parent)
     {

@@ -10,7 +10,7 @@
 
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    const auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
+    const auto attrNode = Ast::newNode<AstAttrDecl>(AstNodeKind::AttrDecl, this, parent, sourceFile);
     *result             = attrNode;
     attrNode->allocateExtension(ExtensionKind::Semantic);
     attrNode->extSemantic()->semanticBeforeFct = Semantic::preResolveAttrDecl;
@@ -62,7 +62,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 
 bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 {
-    const auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    const auto attrBlockNode = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent, sourceFile);
     *result                  = attrBlockNode;
 
     if (tokenizer.comment.length())

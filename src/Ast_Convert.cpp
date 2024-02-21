@@ -159,7 +159,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
     structNode->addExtraPointer(ExtraPointerKind::ExportNode, paramNode);
 
-    const auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
+    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, nullptr, structNode, sourceFile);
     structNode->content    = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
@@ -263,7 +263,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
     if (assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE))
         structNode->packing = 1;
 
-    const auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
+    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, nullptr, structNode, sourceFile);
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
@@ -509,13 +509,13 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
     if (childType->isLambdaClosure())
     {
         const auto typeLambda       = castTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
-        const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
+        const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, nullptr, parent, sourceFile);
         typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
         if (childType->hasFlag(TYPEINFO_CAN_THROW))
             typeExprLambda->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
 
         // Parameters
-        const auto params          = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
+        const auto params          = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, nullptr, typeExprLambda, sourceFile);
         typeExprLambda->parameters = params;
         for (const auto p : typeLambda->parameters)
         {

@@ -123,7 +123,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
     {
         while (true)
         {
-            const auto param   = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
+            const auto param   = Ast::newNode<AstFuncCallParam>(AstNodeKind::FuncCallParam, this, callParams, sourceFile);
             param->semanticFct = Semantic::resolveFuncCallParam;
             param->token       = static_cast<Token>(token);
             AstNode* paramExpression;
@@ -496,7 +496,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
 bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    const auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
+    const auto allParams = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, parent, sourceFile);
     *result              = allParams;
 
     SWAG_ASSERT(token.id == TokenId::SymLeftParen);
@@ -589,7 +589,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
 bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     ScopedTryCatchAssume sct(this, nullptr);
-    auto                 funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    auto                 funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, parent, sourceFile);
     *result                       = funcNode;
     funcNode->semanticFct         = Semantic::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
@@ -813,7 +813,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     // Return type
-    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    auto typeNode         = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode, sourceFile);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = Semantic::resolveFuncDeclType;
     if (!funcForCompiler)
@@ -894,34 +894,34 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
             if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
             {
-                auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
+                auto node         = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Try, this, funcNode, sourceFile);
                 node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 funcNode->content = node;
 
                 ScopedTryCatchAssume sc(this, node);
-                auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node);
+                auto                 returnNode = Ast::newNode<AstReturn>(AstNodeKind::Return, this, node, sourceFile);
                 returnNode->semanticFct         = Semantic::resolveReturn;
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
             }
             else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
             {
-                auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Assume, sourceFile, funcNode);
+                auto node         = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Assume, this, funcNode, sourceFile);
                 node->semanticFct = Semantic::resolveAssumeBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 funcNode->content = node;
 
                 ScopedTryCatchAssume sc(this, node);
-                auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node);
+                auto                 returnNode = Ast::newNode<AstReturn>(AstNodeKind::Return, this, node, sourceFile);
                 returnNode->semanticFct         = Semantic::resolveReturn;
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
             }
             else
             {
-                auto stmt               = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, funcNode);
-                auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
+                auto stmt               = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, funcNode, sourceFile);
+                auto returnNode         = Ast::newNode<AstReturn>(AstNodeKind::Return, this, stmt, sourceFile);
                 returnNode->semanticFct = Semantic::resolveReturn;
                 funcNode->content       = returnNode;
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
@@ -940,31 +940,31 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
             if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
             {
-                auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
+                auto node         = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Try, this, funcNode, sourceFile);
                 node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 funcNode->content = node;
 
-                auto stmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, node);
+                auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node, sourceFile);
 
                 ScopedTryCatchAssume sc(this, node);
                 SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
             }
             else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
             {
-                auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Assume, sourceFile, funcNode);
+                auto node         = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Assume, this, funcNode, sourceFile);
                 node->semanticFct = Semantic::resolveAssumeBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 funcNode->content = node;
 
-                auto stmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, node);
+                auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node, sourceFile);
 
                 ScopedTryCatchAssume sc(this, node);
                 SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
             }
             else
             {
-                auto stmt         = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, funcNode);
+                auto stmt         = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, funcNode, sourceFile);
                 funcNode->content = stmt;
 
                 SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
@@ -980,7 +980,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         {
             if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
             {
-                auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
+                auto node         = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Try, this, funcNode, sourceFile);
                 funcNode->content = node; // :AutomaticTryContent
                 node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
@@ -990,7 +990,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             }
             else if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_ASSUME))
             {
-                auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Assume, sourceFile, funcNode);
+                auto node         = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Assume, this, funcNode, sourceFile);
                 funcNode->content = node; // :AutomaticTryContent
                 node->semanticFct = Semantic::resolveAssumeBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
@@ -1016,7 +1016,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
 bool Parser::doReturn(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
+    const auto node   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, parent, sourceFile);
     *result           = node;
     node->semanticFct = Semantic::resolveReturn;
 
@@ -1033,7 +1033,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
 {
     ScopedTryCatchAssume sc(this, nullptr);
-    const auto           funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
+    const auto           funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, parent, sourceFile);
     *result                       = funcNode;
     funcNode->semanticFct         = Semantic::resolveFuncDecl;
     funcNode->addAstFlag(AST_GENERATED);
@@ -1081,14 +1081,14 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
                 auto byRef    = false;
                 if (token.id == TokenId::SymAmpersand)
                 {
-                    parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, capture);
+                    parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, capture, sourceFile);
                     parentId->semanticFct = Semantic::resolveMakePointer;
                     eatToken();
                     byRef = true;
                 }
                 else if (token.id == TokenId::KwdRef)
                 {
-                    parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, parentId);
+                    parentId              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, parentId, sourceFile);
                     parentId->semanticFct = Semantic::resolveMakePointer;
                     parentId->addSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF);
                     eatToken();
@@ -1146,7 +1146,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     }
 
     // Return type
-    const auto typeNode   = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+    const auto typeNode   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode, sourceFile);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = Semantic::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
@@ -1170,7 +1170,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            const auto returnNode   = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
+            const auto returnNode   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, funcNode, sourceFile);
             returnNode->semanticFct = Semantic::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
@@ -1243,7 +1243,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         Ast::addChildBack(sourceFile->astRoot, lambda);
 
     // Retrieve the pointer of the function
-    const auto exprNode = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
+    const auto exprNode = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointerLambda, this, parent, sourceFile);
     exprNode->inheritTokenLocation(lambda->token);
     exprNode->lambda      = lambdaDecl;
     exprNode->semanticFct = Semantic::resolveMakePointerLambda;
@@ -1270,7 +1270,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         const auto block            = Ast::newVarDecl(sourceFile, nameCaptureBlock, exprNode, this);
         block->inheritTokenLocation(lambdaDecl->captureParameters->token);
         block->addAstFlag(AST_GENERATED);
-        const auto exprList   = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
+        const auto exprList   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, block, sourceFile);
         exprList->semanticFct = Semantic::resolveExpressionListTuple;
         exprList->addSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE | AstExpressionList::SPEC_FLAG_FOR_CAPTURE);
         exprList->inheritTokenLocation(lambdaDecl->captureParameters->token);

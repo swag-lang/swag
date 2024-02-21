@@ -146,7 +146,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         fcp->addAstFlag(AST_GENERATED);
         identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM);
 
-        const auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
+        const auto node = Ast::newNode<AstLiteral>(AstNodeKind::Literal, nullptr, fcp, context->sourceFile);
         node->setFlagsValueIsComputed();
         node->addAstFlag(AST_GENERATED);
         node->typeInfo = g_TypeMgr->typeInfoNull;
@@ -377,10 +377,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // If the match is against a 'moveref', then we should have a 'moveref' node and a make pointer.
                 if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())
                 {
-                    const auto moveRefNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::MoveRef, sourceFile, newParam);
+                    const auto moveRefNode = Ast::newNode<AstNode>(AstNodeKind::MoveRef, nullptr, newParam, sourceFile);
                     moveRefNode->addAstFlag(AST_GENERATED);
                     moveRefNode->semanticFct = resolveMoveRef;
-                    const auto mkPtrNode     = Ast::newNode<AstMakePointer>(nullptr, AstNodeKind::MakePointer, sourceFile, moveRefNode);
+                    const auto mkPtrNode     = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, nullptr, moveRefNode, sourceFile);
                     mkPtrNode->addAstFlag(AST_GENERATED);
                     mkPtrNode->semanticFct = resolveMakePointer;
                     Ast::newIdentifierRef(sourceFile, varNode->token.text, mkPtrNode);

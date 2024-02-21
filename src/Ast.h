@@ -22,7 +22,7 @@ namespace Ast
         NoChildren,
     };
 
-    void initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent);
+    void initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, AstNode* parent, SourceFile* sourceFile);
     void removeFromParent(AstNode* child);
     void insertChild(AstNode* parent, AstNode* child, uint32_t index);
     void addChildBack(AstNode* parent, AstNode* child);
@@ -87,11 +87,11 @@ namespace Ast
     }
 
     template<typename T>
-    T* newNode(Parser* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
+    T* newNode(AstNodeKind kind, Parser* parser, AstNode* parent, SourceFile* sourceFile)
     {
         auto node = Allocator::allocRaw<T>();
         constructNode<T>(node);
-        initNewNode(node, job, kind, sourceFile, parent);
+        initNewNode(kind, node, parser, parent, sourceFile);
 #ifdef SWAG_STATS
         ++g_Stats.numNodes;
         g_Stats.memNodes += Allocator::alignSize(sizeof(T));

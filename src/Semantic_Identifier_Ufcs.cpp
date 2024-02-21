@@ -142,7 +142,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     const auto dependentVar = match.dependentVar;
     const auto node         = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
-    const auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->token.sourceFile, nullptr);
+    const auto fctCallParam = Ast::newNode<AstFuncCallParam>(AstNodeKind::FuncCallParam, nullptr, nullptr, node->token.sourceFile);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
 

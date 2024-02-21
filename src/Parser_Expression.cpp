@@ -10,7 +10,7 @@
 
 bool Parser::doLiteral(AstNode* parent, AstNode** result)
 {
-    const auto node    = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, parent);
+    const auto node    = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, parent, sourceFile);
     *result            = node;
     node->semanticFct  = Semantic::resolveLiteral;
     node->literalType  = token.literalType;
@@ -58,7 +58,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 
     if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
     {
-        const auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, nullptr);
+        const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, nullptr, sourceFile);
         firstExpr          = literal;
         firstExpr->allocateComputedValue();
         firstExpr->addAstFlag(AST_GENERATED);
@@ -74,7 +74,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
     // Slicing
     if (token.id == TokenId::SymDotDot || token.id == TokenId::SymDotDotLess)
     {
-        const auto arrayNode   = Ast::newNode<AstArrayPointerSlicing>(this, AstNodeKind::ArrayPointerSlicing, sourceFile, nullptr);
+        const auto arrayNode   = Ast::newNode<AstArrayPointerSlicing>(AstNodeKind::ArrayPointerSlicing, this, nullptr, sourceFile);
         arrayNode->semanticFct = Semantic::resolveArrayPointerSlicing;
         arrayNode->array       = *exprNode;
         Ast::addChildBack(arrayNode, *exprNode);
@@ -98,7 +98,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
                 return context->report(err);
             }
 
-            arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode);
+            arrayNode->upperBound = Ast::newNode<AstNode>(AstNodeKind::AutoSlicingUp, this, arrayNode, sourceFile);
             arrayNode->array->allocateExtension(ExtensionKind::Semantic);
             SWAG_ASSERT(!arrayNode->array->extSemantic()->semanticAfterFct);
             arrayNode->array->extSemantic()->semanticAfterFct = Semantic::resolveArrayPointerSlicingUpperBound;
@@ -114,7 +114,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
     {
         while (true)
         {
-            const auto arrayNode   = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, nullptr);
+            const auto arrayNode   = Ast::newNode<AstArrayPointerIndex>(AstNodeKind::ArrayPointerIndex, this, nullptr, sourceFile);
             arrayNode->token       = firstExpr ? firstExpr->token : token;
             arrayNode->semanticFct = Semantic::resolveArrayPointerIndex;
 
@@ -146,7 +146,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 
 bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstIntrinsicProp>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
+    const auto node   = Ast::newNode<AstIntrinsicProp>(AstNodeKind::IntrinsicProp, this, parent, sourceFile);
     *result           = node;
     node->semanticFct = Semantic::resolveIntrinsicProperty;
     node->inheritTokenName(token);
@@ -446,7 +446,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
 
 bool Parser::doKeepRef(AstNode* parent, AstNode** result)
 {
-    const auto refNode   = Ast::newNode<AstNode>(this, AstNodeKind::KeepRef, sourceFile, parent);
+    const auto refNode   = Ast::newNode<AstNode>(AstNodeKind::KeepRef, this, parent, sourceFile);
     *result              = refNode;
     refNode->semanticFct = Semantic::resolveKeepRef;
     SWAG_CHECK(eatToken());
@@ -456,7 +456,7 @@ bool Parser::doKeepRef(AstNode* parent, AstNode** result)
 
 bool Parser::doMoveRef(AstNode* parent, AstNode** result)
 {
-    const auto refNode   = Ast::newNode<AstNode>(this, AstNodeKind::MoveRef, sourceFile, parent);
+    const auto refNode   = Ast::newNode<AstNode>(AstNodeKind::MoveRef, this, parent, sourceFile);
     *result              = refNode;
     refNode->semanticFct = Semantic::resolveMoveRef;
     SWAG_CHECK(eatToken());
@@ -467,14 +467,14 @@ bool Parser::doMoveRef(AstNode* parent, AstNode** result)
 bool Parser::doDeRef(AstNode* parent, AstNode** result)
 {
     const auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
-    const auto arrayNode     = Ast::newNode<AstArrayPointerIndex>(this, AstNodeKind::ArrayPointerIndex, sourceFile, identifierRef);
+    const auto arrayNode     = Ast::newNode<AstArrayPointerIndex>(AstNodeKind::ArrayPointerIndex, this, identifierRef, sourceFile);
     arrayNode->semanticFct   = Semantic::resolveArrayPointerIndex;
     arrayNode->specFlags     = AstArrayPointerIndex::SPEC_FLAG_IS_DEREF;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
 
-    const auto literal = Ast::newNode<AstLiteral>(this, AstNodeKind::Literal, sourceFile, arrayNode);
+    const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, arrayNode, sourceFile);
     literal->setFlagsValueIsComputed();
     literal->computedValue()->reg.u64 = 0;
     literal->literalType              = LiteralType::TypeSigned32;
@@ -492,7 +492,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     // Take pointer
     if (token.id == TokenId::SymAmpersand)
     {
-        exprNode              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, nullptr);
+        exprNode              = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, this, nullptr, sourceFile);
         exprNode->semanticFct = Semantic::resolveMakePointer;
         SWAG_CHECK(eatToken());
 
@@ -574,7 +574,7 @@ bool Parser::doUnaryExpression(AstNode* parent, ExprFlags exprFlags, AstNode** r
         case TokenId::SymExclam:
         case TokenId::SymTilde:
         {
-            const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::SingleOp, sourceFile, parent);
+            const auto node   = Ast::newNode<AstNode>(AstNodeKind::SingleOp, this, parent, sourceFile);
             *result           = node;
             node->semanticFct = Semantic::resolveUnaryOp;
             node->token       = static_cast<Token>(token);
@@ -898,7 +898,7 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
         token.id == TokenId::SymPlusPlus ||
         token.id == TokenId::SymCircumflex)
     {
-        auto binaryNode = Ast::newNode<AstOp>(this, AstNodeKind::FactorOp, sourceFile, *parent);
+        auto binaryNode = Ast::newNode<AstOp>(AstNodeKind::FactorOp, this, *parent, sourceFile);
 
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
             binaryNode->semanticFct = Semantic::resolveShiftExpression;
@@ -935,7 +935,7 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
              token.id == TokenId::SymGreater ||
              token.id == TokenId::SymLowerEqualGreater)
     {
-        auto binaryNode         = castAst<AstNode>(Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent ? *parent : nullptr));
+        auto binaryNode         = castAst<AstNode>(Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, parent ? *parent : nullptr, sourceFile));
         binaryNode->semanticFct = Semantic::resolveCompareExpression;
         binaryNode->token       = static_cast<Token>(token);
 
@@ -985,7 +985,7 @@ bool Parser::doBoolExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     bool isBinary = false;
     if (token.id == TokenId::KwdOr || token.id == TokenId::KwdAnd)
     {
-        const auto binaryNode   = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
+        const auto binaryNode   = Ast::newNode<AstBinaryOpNode>(AstNodeKind::BinaryOp, this, parent, sourceFile);
         binaryNode->semanticFct = Semantic::resolveBoolExpression;
         binaryNode->token       = static_cast<Token>(token);
 
@@ -1017,7 +1017,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
     // no drop left
     if (mdfFlags.has(MODIFIER_NO_LEFT_DROP))
     {
-        const auto exprNode   = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
+        const auto exprNode   = Ast::newNode<AstNode>(AstNodeKind::NoDrop, this, parent, sourceFile);
         *result               = exprNode;
         exprNode->semanticFct = Semantic::resolveMove;
         exprNode->addAstFlag(AST_NO_LEFT_DROP);
@@ -1028,7 +1028,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
     // move
     if (mdfFlags.has(MODIFIER_MOVE))
     {
-        auto exprNode         = Ast::newNode<AstNode>(this, AstNodeKind::Move, sourceFile, parent);
+        auto exprNode         = Ast::newNode<AstNode>(AstNodeKind::Move, this, parent, sourceFile);
         *result               = exprNode;
         exprNode->semanticFct = Semantic::resolveMove;
         exprNode->addAstFlag(AST_FORCE_MOVE);
@@ -1038,7 +1038,7 @@ bool Parser::doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* p
         // no drop right
         if (mdfFlags.has(MODIFIER_NO_RIGHT_DROP))
         {
-            exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::NoDrop, sourceFile, parent);
+            exprNode              = Ast::newNode<AstNode>(AstNodeKind::NoDrop, this, parent, sourceFile);
             *result               = exprNode;
             exprNode->semanticFct = Semantic::resolveMove;
             exprNode->addAstFlag(AST_NO_RIGHT_DROP);
@@ -1059,7 +1059,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         case TokenId::CompilerRun:
         {
             ScopedFlags sf(this, AST_IN_RUN_BLOCK);
-            const auto  node  = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRunExpression, sourceFile, nullptr);
+            const auto  node  = Ast::newNode<AstCompilerSpecFunc>(AstNodeKind::CompilerRunExpression, this, nullptr, sourceFile);
             node->semanticFct = Semantic::resolveCompilerRun;
             SWAG_CHECK(eatToken());
 
@@ -1092,7 +1092,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         }
         case TokenId::CompilerMixin:
         {
-            const auto node   = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, nullptr);
+            const auto node   = Ast::newNode<AstCompilerMixin>(AstNodeKind::CompilerMixin, this, nullptr, sourceFile);
             node->semanticFct = Semantic::resolveCompilerMixin;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
@@ -1101,7 +1101,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         }
         case TokenId::CompilerCode:
         {
-            const auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerCode, sourceFile, nullptr);
+            const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerCode, this, nullptr, sourceFile);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymLeftCurly)
                 SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
@@ -1134,7 +1134,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
     if (token.id == TokenId::SymQuestion)
     {
         SWAG_CHECK(eatToken());
-        const auto triNode   = Ast::newNode<AstConditionalOpNode>(this, AstNodeKind::ConditionalExpression, sourceFile, parent);
+        const auto triNode   = Ast::newNode<AstConditionalOpNode>(AstNodeKind::ConditionalExpression, this, parent, sourceFile);
         triNode->semanticFct = Semantic::resolveConditionalOp;
         *result              = triNode;
         Ast::addChildBack(triNode, boolExpression);
@@ -1147,7 +1147,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
     // A orelse B
     else if (token.id == TokenId::KwdOrElse)
     {
-        const auto triNode   = Ast::newNode<AstNode>(this, AstNodeKind::NullConditionalExpression, sourceFile, parent);
+        const auto triNode   = Ast::newNode<AstNode>(AstNodeKind::NullConditionalExpression, this, parent, sourceFile);
         triNode->semanticFct = Semantic::resolveNullConditionalOp;
         *result              = triNode;
         Ast::addChildBack(triNode, boolExpression);
@@ -1170,7 +1170,7 @@ bool Parser::doAssignmentExpression(AstNode* parent, AstNode** result)
 
 bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
 {
-    const auto initNode   = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
+    const auto initNode   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, parent, sourceFile);
     *result               = initNode;
     initNode->semanticFct = Semantic::resolveExpressionListTuple;
     initNode->addSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE);
@@ -1225,7 +1225,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
 
 bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 {
-    const auto initNode   = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
+    const auto initNode   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, parent, sourceFile);
     *result               = initNode;
     initNode->semanticFct = Semantic::resolveExpressionListArray;
     const auto startLoc   = token.startLocation;
@@ -1258,7 +1258,7 @@ bool Parser::doInitializationExpression(const TokenParse& forToken, AstNode* par
     // var x: type = undefined => not initialized
     if (token.id == TokenId::KwdUndefined)
     {
-        const auto node   = Ast::newNode<AstNode>(this, AstNodeKind::ExplicitNoInit, sourceFile, parent);
+        const auto node   = Ast::newNode<AstNode>(AstNodeKind::ExplicitNoInit, this, parent, sourceFile);
         *result           = node;
         node->semanticFct = Semantic::resolveExplicitNoInit;
         if (parent)
@@ -1292,7 +1292,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
     {
         case TokenId::SymLeftParen:
         {
-            const auto multi    = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
+            const auto multi    = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifierTuple, this, nullptr, sourceFile);
             *result             = multi;
             const auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken());
@@ -1355,7 +1355,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
                 if (!multi)
                 {
-                    multi = Ast::newNode<AstNode>(this, AstNodeKind::MultiIdentifier, sourceFile, parent);
+                    multi = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifier, this, parent, sourceFile);
                     Ast::addChildBack(multi, exprNode);
                 }
             }
@@ -1462,7 +1462,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         if (leftNode->kind == AstNodeKind::MultiIdentifier)
         {
             savedtoken.startLocation = token.startLocation;
-            const auto parentNode    = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+            const auto parentNode    = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
             *result                  = parentNode;
 
             // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
@@ -1519,7 +1519,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
             savedtoken.startLocation = token.startLocation;
-            const auto parentNode    = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
+            const auto parentNode    = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
             *result                  = parentNode;
 
             // Get right side
@@ -1616,7 +1616,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 
 bool Parser::doInit(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstInit>(this, AstNodeKind::Init, sourceFile, parent);
+    const auto node   = Ast::newNode<AstInit>(AstNodeKind::Init, this, parent, sourceFile);
     node->semanticFct = Semantic::resolveInit;
     SWAG_CHECK(eatToken());
 
@@ -1643,7 +1643,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
 
 bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::Drop, sourceFile, parent);
+    const auto node = Ast::newNode<AstDropCopyMove>(AstNodeKind::Drop, this, parent, sourceFile);
     switch (token.id)
     {
         case TokenId::IntrinsicDrop:
@@ -1680,7 +1680,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
 
 bool Parser::doRange(AstNode* parent, AstNode* expression, AstNode** result)
 {
-    const auto rangeNode   = Ast::newNode<AstRange>(this, AstNodeKind::Range, sourceFile, parent);
+    const auto rangeNode   = Ast::newNode<AstRange>(AstNodeKind::Range, this, parent, sourceFile);
     *result                = rangeNode;
     rangeNode->semanticFct = Semantic::resolveRange;
     Ast::removeFromParent(expression);

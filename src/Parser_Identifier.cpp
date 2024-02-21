@@ -124,7 +124,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         return invalidIdentifierError(token);
     }
 
-    auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
+    auto identifier = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, parent, sourceFile);
     identifier->inheritTokenLocation(token);
     identifier->semanticFct = Semantic::resolveIdentifier;
 
@@ -214,7 +214,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             {
                 // :SilentCall
                 SWAG_CHECK(eatToken());
-                identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
+                identifier = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, parent, sourceFile);
                 identifier->inheritTokenLocation(token);
                 identifier->token.text = "";
                 identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL);
@@ -339,22 +339,22 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     AstNode* node = nullptr;
     if (token.id == TokenId::KwdTry)
     {
-        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Try, this, parent, sourceFile);
         node->semanticFct = Semantic::resolveTry;
     }
     else if (token.id == TokenId::KwdCatch)
     {
-        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Catch, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Catch, this, parent, sourceFile);
         node->semanticFct = Semantic::resolveCatch;
     }
     else if (token.id == TokenId::KwdTryCatch)
     {
-        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::TryCatch, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(AstNodeKind::TryCatch, this, parent, sourceFile);
         node->semanticFct = Semantic::resolveTryCatch;
     }
     else if (token.id == TokenId::KwdAssume)
     {
-        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Assume, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Assume, this, parent, sourceFile);
         node->semanticFct = Semantic::resolveAssume;
     }
 
@@ -397,7 +397,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 
 bool Parser::doThrow(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
+    const auto node = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Throw, this, parent, sourceFile);
     *result         = node;
     SWAG_VERIFY(node->ownerFct, error(node, Err(Err0471)));
     node->semanticFct = Semantic::resolveThrow;
@@ -420,7 +420,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
 
 bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
+    const auto node   = Ast::newNode<AstAlias>(AstNodeKind::TypeAlias, this, parent, sourceFile);
     node->kwdLoc      = static_cast<Token>(token);
     node->semanticFct = Semantic::resolveUsing;
 
@@ -448,7 +448,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 
 bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
+    const auto node   = Ast::newNode<AstAlias>(AstNodeKind::NameAlias, this, parent, sourceFile);
     node->kwdLoc      = static_cast<Token>(token);
     node->semanticFct = Semantic::resolveUsing;
 
