@@ -554,8 +554,9 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             auto typeReturn = node->array->typeInfo;
 
             // There's a 'opIndex' function
-            if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
-                typeReturn = TypeManager::concreteType(node->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
+            const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+            if (userOp)
+                typeReturn = TypeManager::concreteType(userOp->typeInfo);
 
             // Unref
             if (typeReturn->isPointerRef() && !node->hasSemFlag(SEMFLAG_FROM_REF))
@@ -590,7 +591,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 {
-    const auto arrayNode                = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayNode = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->setResolvedSymbol(arrayNode->array->resolvedSymbolName(), arrayNode->array->resolvedSymbolOverload());
     arrayNode->inheritAstFlagsOr(arrayNode->array, AST_L_VALUE);
 

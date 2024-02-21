@@ -507,7 +507,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
     const auto slicing   = castAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     const auto arrayNode = slicing->array;
 
-    if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
+    if (upperNode->hasExtraPointer(ExtraPointerKind::UserOp))
     {
         context->allocateTempCallParams();
         context->allParamsTmp->children.push_back(arrayNode);

@@ -907,8 +907,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 {
                     overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
-                    SWAG_ASSERT(node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload);
-                    if (!node->extMisc()->resolvedUserOpSymbolOverload->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
+                    SWAG_ASSERT(node->hasExtraPointer(ExtraPointerKind::UserOp));
+                    const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+                    if (!userOp->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic err{node->assignment, Err(Err0040)};
                         err.hint = FMT(Nte(Nte0178), leftConcreteType->getDisplayNameC());
@@ -1159,7 +1160,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 break;
         }
 
-        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+        if (node->hasExtraPointer(ExtraPointerKind::UserOp))
         {
             storageOffset = 0;
             overFlags.add(OVERLOAD_INCOMPLETE);

@@ -746,11 +746,9 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
     // In case case has triggered a special function call, need to get it
     // (usage of opAffect)
-    if (exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload)
-    {
-        node->allocateExtension(ExtensionKind::Misc);
-        node->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
-    }
+    const auto userOp = exprNode->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+    if (userOp)
+        node->addExtraPointer(ExtraPointerKind::UserOp, userOp);
 
     // Revert the implicit cast information
     // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode

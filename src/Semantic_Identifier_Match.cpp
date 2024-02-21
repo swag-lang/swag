@@ -74,7 +74,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
             definedType = typeDefinedFct->parameters[paramIdx]->typeInfo;
 
         childType->typeInfo                              = definedType;
-        childType->resolvedSymbolOverload()->typeInfo      = definedType;
+        childType->resolvedSymbolOverload()->typeInfo    = definedType;
         typeUndefinedFct->parameters[paramIdx]->typeInfo = definedType;
     }
 
@@ -337,14 +337,14 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
     for (size_t i = 0; i < maxParams; i++)
     {
         const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
-        if (nodeCall->hasExtMisc() && nodeCall->extMisc()->resolvedUserOpSymbolOverload)
+        const auto userOp   = nodeCall->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+        if (userOp)
         {
-            const auto overload = nodeCall->extMisc()->resolvedUserOpSymbolOverload;
-            if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectLiteral)
+            if (userOp->symbol->name == g_LangSpec->name_opAffect || userOp->symbol->name == g_LangSpec->name_opAffectLiteral)
             {
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
-                nodeCall->extMisc()->resolvedUserOpSymbolOverload = nullptr;
-                nodeCall->castedTypeInfo                          = nullptr;
+                nodeCall->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
+                nodeCall->castedTypeInfo = nullptr;
 
                 const auto varNode = Ast::newVarDecl(sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
                 varNode->inheritTokenLocation(nodeCall);

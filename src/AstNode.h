@@ -275,7 +275,8 @@ enum class ExtraPointerKind
     ExportNode,
     CollectTypeInfo,
     AlternativeNode,
-    IsNamed
+    IsNamed,
+    UserOp
 };
 
 struct AstNode
@@ -410,8 +411,6 @@ struct AstNode
         Utf8                               docComment;
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
-        SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
-        
         uint32_t castOffset    = 0;
         uint32_t stackOffset   = 0;
         uint32_t anyTypeOffset = 0;
@@ -474,8 +473,7 @@ struct AstNode
         return nullptr;
     }
 
-    template<typename T>
-    void addExtraPointer(ExtraPointerKind extraPtrKind, T* value)
+    void addExtraPointer(ExtraPointerKind extraPtrKind, void* value)
     {
         allocateExtension(ExtensionKind::Misc);
         extMisc()->extraPointers[extraPtrKind] = value;
@@ -485,7 +483,10 @@ struct AstNode
     {
         if (!hasExtMisc())
             return false;
-        return extMisc()->extraPointers.contains(extraPtrKind);
+        const auto it = extMisc()->extraPointers.find(extraPtrKind);
+        if (it == extMisc()->extraPointers.end())
+            return false;
+        return it->second != nullptr;
     }
 
     void setOwnerAttrUse(AstAttrUse* attrUse);

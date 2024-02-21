@@ -18,7 +18,8 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     if (expression->hasSpecialFuncCall())
     {
         Diagnostic err{expression, expression->token, FMT(Err(Err0042), expression->typeInfo->getDisplayNameC())};
-        err.hint = FMT(Nte(Nte0144), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+        err.hint          = FMT(Nte(Nte0144), userOp->symbol->name.c_str());
         return context->report(err, note);
     }
 

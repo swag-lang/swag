@@ -1209,11 +1209,9 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
 
     node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
 
-    if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
-    {
-        node->allocateExtension(ExtensionKind::Misc);
-        node->extMisc()->resolvedUserOpSymbolOverload = child->extMisc()->resolvedUserOpSymbolOverload;
-    }
+    const auto userOp = child->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+    if (userOp)
+        node->addExtraPointer(ExtraPointerKind::UserOp, userOp);
 
     // If the call has been generated because of a 'return tuple', then we force a move
     // instead of a copy, in case the parameter to the tuple init is a local variable
@@ -1582,14 +1580,14 @@ bool Semantic::resolveReturn(SemanticContext* context)
     }
 
     // :opAffectParam
-    if (child->hasExtMisc() && child->extMisc()->resolvedUserOpSymbolOverload)
+    const auto userOp = child->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+    if (userOp)
     {
-        const auto overload = child->extMisc()->resolvedUserOpSymbolOverload;
-        if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectLiteral)
+        if (userOp->symbol->name == g_LangSpec->name_opAffect || userOp->symbol->name == g_LangSpec->name_opAffectLiteral)
         {
             SWAG_ASSERT(child->castedTypeInfo);
-            child->extMisc()->resolvedUserOpSymbolOverload = nullptr;
-            child->castedTypeInfo                          = nullptr;
+            child->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
+            child->castedTypeInfo = nullptr;
 
             const auto varNode = Ast::newVarDecl(context->sourceFile, FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), node);
             varNode->inheritTokenLocation(child);

@@ -128,7 +128,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             if (node->hasSpecialFuncCall())
             {
                 Diagnostic err{node, FMT(Err(Err0042), realType->getDisplayNameC())};
-                err.hint = FMT(Nte(Nte0144), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+                err.hint          = FMT(Nte(Nte0144), userOp->symbol->name.c_str());
                 return context->report(err);
             }
 
@@ -154,7 +155,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             }
             else
             {
-                SWAG_ASSERT(!context->node->hasExtMisc() || !context->node->extMisc()->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(!context->node->hasExtraPointer(ExtraPointerKind::UserOp));
                 auto saveTypeStruct = node->typeInfo;
 
                 // opCount
@@ -166,9 +167,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
                 SWAG_ASSERT(context->node->hasExtMisc());
 
-                auto extension                          = context->node->extMisc();
-                execParams.specReturnOpCount            = extension->resolvedUserOpSymbolOverload;
-                extension->resolvedUserOpSymbolOverload = nullptr;
+                execParams.specReturnOpCount = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+                context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
                 ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
@@ -184,8 +184,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 node->typeInfo = saveTypeStruct;
                 YIELD();
 
-                execParams.specReturnOpSlice            = extension->resolvedUserOpSymbolOverload;
-                extension->resolvedUserOpSymbolOverload = nullptr;
+                execParams.specReturnOpSlice = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+                context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
                 ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
@@ -230,8 +230,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     node->typeInfo = saveTypeStruct;
                     YIELD();
 
-                    execParams.specReturnOpPostMove         = extension->resolvedUserOpSymbolOverload;
-                    extension->resolvedUserOpSymbolOverload = nullptr;
+                    execParams.specReturnOpPostMove = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+                    context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
 
                     {
@@ -251,8 +251,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     node->typeInfo = saveTypeStruct;
                     YIELD();
 
-                    execParams.specReturnOpDrop             = extension->resolvedUserOpSymbolOverload;
-                    extension->resolvedUserOpSymbolOverload = nullptr;
+                    execParams.specReturnOpDrop = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+                    context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
                     ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);

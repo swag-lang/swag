@@ -77,7 +77,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
                 fromNode->castedTypeInfo = fromType;
                 fromNode->typeInfo       = toType;
                 fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
+                fromNode->addExtraPointer(ExtraPointerKind::UserOp, it->second);
             }
 
             context->castFlagsResult.add(CAST_RESULT_AUTO_OP_AFFECT);
@@ -126,8 +126,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         fromNode->addAstFlag(AST_OP_AFFECT_CAST);
         fromNode->castedTypeInfo = fromType;
         fromNode->typeInfo       = toType;
-        fromNode->allocateExtension(ExtensionKind::Misc);
-        fromNode->extMisc()->resolvedUserOpSymbolOverload = toAffect[0];
+        fromNode->addExtraPointer(ExtraPointerKind::UserOp, toAffect[0]);
     }
 
     context->castFlagsResult.add(CAST_RESULT_AUTO_OP_AFFECT);
@@ -167,8 +166,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             {
                 fromNode->castedTypeInfo = fromType;
                 fromNode->typeInfo       = toType;
-                fromNode->allocateExtension(ExtensionKind::Misc);
-                fromNode->extMisc()->resolvedUserOpSymbolOverload = it->second;
+                fromNode->addExtraPointer(ExtraPointerKind::UserOp, it->second);
                 fromNode->addSemFlag(SEMFLAG_USER_CAST);
             }
 
@@ -227,8 +225,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         fromNode->castedTypeInfo = fromType;
         fromNode->typeInfo       = toType;
-        fromNode->allocateExtension(ExtensionKind::Misc);
-        fromNode->extMisc()->resolvedUserOpSymbolOverload = toCast[0];
+        fromNode->addExtraPointer(ExtraPointerKind::UserOp, toCast[0]);
         fromNode->addSemFlag(SEMFLAG_USER_CAST);
     }
 

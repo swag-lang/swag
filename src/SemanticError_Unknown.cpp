@@ -122,10 +122,11 @@ namespace
         if (!prev->resolvedSymbolName())
             return false;
 
-        if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
+        if (prev->hasExtraPointer(ExtraPointerKind::UserOp))
         {
-            const auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
-            const auto msg      = FMT(Nte(Nte0114), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC());
+            const auto userOp   = prev->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+            const auto typeInfo = TypeManager::concreteType(userOp->typeInfo);
+            const auto msg      = FMT(Nte(Nte0114), userOp->symbol->name.c_str(), typeInfo->getDisplayNameC());
             const auto note     = Diagnostic::note(prev, msg);
             notes.push_back(note);
         }

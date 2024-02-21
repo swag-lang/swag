@@ -96,12 +96,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (from->hasExtMisc())
     {
         allocateExtension(ExtensionKind::Misc);
-        extMisc()->extraPointers                = from->extMisc()->extraPointers;
-        extMisc()->resolvedUserOpSymbolOverload = from->extMisc()->resolvedUserOpSymbolOverload;
-        extMisc()->castOffset                   = from->extMisc()->castOffset;
-        extMisc()->stackOffset                  = from->extMisc()->stackOffset;
-        extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;
-        extMisc()->alternativeScopes            = from->extMisc()->alternativeScopes;
+        extMisc()->extraPointers     = from->extMisc()->extraPointers;
+        extMisc()->castOffset        = from->extMisc()->castOffset;
+        extMisc()->stackOffset       = from->extMisc()->stackOffset;
+        extMisc()->anyTypeOffset     = from->extMisc()->anyTypeOffset;
+        extMisc()->alternativeScopes = from->extMisc()->alternativeScopes;
     }
 
     if (from->hasExtSemantic())
@@ -850,17 +849,14 @@ void AstNode::swap2Children()
 
 bool AstNode::hasSpecialFuncCall() const
 {
-    return hasExtMisc() &&
-           extMisc()->resolvedUserOpSymbolOverload &&
-           extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
+    const auto userOp = extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+    return userOp && userOp->symbol->kind == SymbolKind::Function;
 }
 
 bool AstNode::hasSpecialFuncCall(const Utf8& name) const
 {
-    return hasExtMisc() &&
-           extMisc()->resolvedUserOpSymbolOverload &&
-           extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
-           extMisc()->resolvedUserOpSymbolOverload->symbol->name == name;
+    const auto userOp = extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
+    return userOp && userOp->symbol->kind == SymbolKind::Function && userOp->symbol->name == name;
 }
 
 AstNode* AstNode::inSimpleReturn() const

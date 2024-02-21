@@ -724,15 +724,14 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     // opCast
     if (exprNode->hasSemFlag(SEMFLAG_USER_CAST))
     {
-        SWAG_ASSERT(exprNode->hasExtMisc() && exprNode->extMisc()->resolvedUserOpSymbolOverload);
+        SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::UserOp));
 
         if (!exprNode->hasSemFlag(SEMFLAG_FLAT_PARAMS))
         {
             exprNode->addSemFlag(SEMFLAG_FLAT_PARAMS);
             context->allocateTempCallParams();
             context->allParamsTmp->children.push_back(exprNode);
-            context->allParamsTmp->allocateExtension(ExtensionKind::Misc);
-            context->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
+            context->allParamsTmp->addExtraPointer(ExtraPointerKind::UserOp, exprNode->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp));
             context->allParamsTmp->inheritOwners(exprNode);
             context->allParamsTmp->inheritTokenLocation(exprNode);
             context->allParamsTmp->semFlags = 0;

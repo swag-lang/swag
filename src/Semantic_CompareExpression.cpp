@@ -148,7 +148,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right);
         g_SilentError--;
         YIELD();
-        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+        if (node->hasExtraPointer(ExtraPointerKind::UserOp))
             return true;
 
         leftTypeInfo  = leftTypeInfo->getConstAlias();

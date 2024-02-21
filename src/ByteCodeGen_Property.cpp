@@ -180,7 +180,7 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* nod
 {
     const auto typeInfo = TypeManager::concretePtrRefType(expr->typeInfo);
 
-    if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+    if (node->hasExtraPointer(ExtraPointerKind::UserOp))
     {
         SWAG_CHECK(emitUserOp(context));
         YIELD();
@@ -222,7 +222,7 @@ bool ByteCodeGen::emitIntrinsicDataOf(ByteCodeGenContext* context)
     const auto front    = node->children.front();
     const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
 
-    if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+    if (node->hasExtraPointer(ExtraPointerKind::UserOp))
     {
         SWAG_CHECK(emitUserOp(context));
         YIELD();

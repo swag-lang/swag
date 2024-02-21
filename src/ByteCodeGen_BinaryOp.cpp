@@ -769,9 +769,8 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode, bool freeRegisterParams)
 {
-    AstNode* node = forNode ? forNode : context->node;
-    SWAG_ASSERT(node->extension);
-    const auto symbolOverload = node->extMisc()->resolvedUserOpSymbolOverload;
+    AstNode*   node           = forNode ? forNode : context->node;
+    const auto symbolOverload = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
     SWAG_ASSERT(symbolOverload);
     const auto funcDecl = castAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 

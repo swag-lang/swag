@@ -482,7 +482,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     }
 
     storageSegment = getSegmentForVar(context, node);
-    if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+    if (node->hasExtraPointer(ExtraPointerKind::UserOp))
     {
         storageOffset = 0;
         symbolFlags.add(OVERLOAD_INCOMPLETE);

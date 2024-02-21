@@ -376,7 +376,7 @@ bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& na
         resolveUserOp(context, name, opConst, opType, left, right, ropFlags);
         g_SilentError--;
         YIELD();
-        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+        if (node->hasExtraPointer(ExtraPointerKind::UserOp))
             return true;
     }
 
@@ -386,7 +386,7 @@ bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& na
         resolveUserOp(context, name, opConst, opType, right, left, ropFlags);
         g_SilentError--;
         YIELD();
-        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+        if (node->hasExtraPointer(ExtraPointerKind::UserOp))
         {
             node->addSemFlag(SEMFLAG_INVERSE_PARAMS);
             return true;
@@ -783,8 +783,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     // Result
     auto overload  = oneMatch->symbolOverload;
     node->typeInfo = overload->typeInfo;
-    node->allocateExtension(ExtensionKind::Misc);
-    node->extMisc()->resolvedUserOpSymbolOverload = overload;
+    node->addExtraPointer(ExtraPointerKind::UserOp, overload);
     SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
     SWAG_ASSERT(overload);
 

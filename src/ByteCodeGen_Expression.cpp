@@ -220,8 +220,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             if (varDecl->assignment == listNode)
             {
                 const auto typeVar = TypeManager::concreteType(varDecl->typeInfo, CONCRETE_ALIAS);
-                if (!typeVar->isSlice() &&
-                    (!varDecl->hasExtMisc() || !varDecl->extMisc()->resolvedUserOpSymbolOverload))
+                if (!typeVar->isSlice() && !varDecl->hasExtraPointer(ExtraPointerKind::UserOp))
                 {
                     startOffset     = listNode->parent->resolvedSymbolOverload()->computedValue.storageOffset;
                     const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
