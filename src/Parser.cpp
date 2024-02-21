@@ -473,10 +473,10 @@ bool Parser::generateAst()
         for (const auto s : module->buildParameters.globalUsing)
         {
             CloneContext cxt;
-            cxt.parent       = sourceFile->astRoot;
-            cxt.parentScope  = currentScope;
-            cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
-            const auto node  = s->clone(cxt);
+            cxt.parent             = sourceFile->astRoot;
+            cxt.parentScope        = currentScope;
+            cxt.removeFlags        = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
+            const auto node        = s->clone(cxt);
             node->token.sourceFile = sourceFile;
         }
     }
@@ -485,10 +485,10 @@ bool Parser::generateAst()
         for (const auto s : sourceFile->globalUsingEmbedded)
         {
             CloneContext cxt;
-            cxt.parent       = sourceFile->astRoot;
-            cxt.parentScope  = currentScope;
-            cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
-            const auto node  = s->clone(cxt);
+            cxt.parent             = sourceFile->astRoot;
+            cxt.parentScope        = currentScope;
+            cxt.removeFlags        = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
+            const auto node        = s->clone(cxt);
             node->token.sourceFile = sourceFile;
         }
     }

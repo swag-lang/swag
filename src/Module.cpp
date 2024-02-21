@@ -1051,7 +1051,7 @@ bool Module::compileString(const Utf8& text)
         return false;
     }
 
-    const auto parent = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, nullptr, sourceFile->astRoot, files[0]);
+    const auto parent = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, nullptr, sourceFile->astRoot, sourceFile);
 
     JobContext jobContext;
     Parser     parser;

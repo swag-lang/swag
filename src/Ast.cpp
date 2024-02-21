@@ -24,8 +24,6 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
 
     node->token.sourceFile = sourceFile;
 
-    SWAG_ASSERT(!node->token.sourceFile || node->token.sourceFile == sourceFile);
-
     if (parent)
     {
         // Count nodes (not precise). Just to have a hint on the number of bytecode instructions
