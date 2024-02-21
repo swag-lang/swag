@@ -47,7 +47,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         }
 
         SWAG_ASSERT(otherNode);
-        return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
+        return duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
     }
 
     const Diagnostic err{node, node->token, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};

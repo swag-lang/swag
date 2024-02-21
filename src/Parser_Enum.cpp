@@ -46,7 +46,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             }
 
             const Utf8       asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
-            const Diagnostic err{enumNode->sourceFile, token, FMT(Err(Err0626), "enum", enumNode->token.c_str(), asA.c_str())};
+            const Diagnostic err{enumNode->token.sourceFile, token, FMT(Err(Err0626), "enum", enumNode->token.c_str(), asA.c_str())};
             const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
             return context->report(err, note);
         }

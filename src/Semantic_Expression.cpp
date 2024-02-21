@@ -310,7 +310,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 
     if (typeInfo->isStruct())
     {
-        Diagnostic err{node->sourceFile, node->token, Err(Err0166)};
+        Diagnostic err{node->token.sourceFile, node->token, Err(Err0166)};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }
@@ -323,7 +323,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isLambdaClosure())
     {
-        Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0165), typeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, FMT(Err(Err0165), typeInfo->getDisplayNameC())};
         err.addNote(expression, Diagnostic::isType(typeInfo));
         return context->report(err);
     }

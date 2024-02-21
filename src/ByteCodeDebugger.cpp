@@ -228,7 +228,7 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
     SemanticJob                       semJob;
     VectorNative<AlternativeScope>    scopeHierarchy;
     VectorNative<AlternativeScopeVar> scopeHierarchyVars;
-    semContext.sourceFile = cxtIp->node->sourceFile;
+    semContext.sourceFile = cxtIp->node->token.sourceFile;
     semContext.node       = cxtIp->node;
     semContext.baseJob    = &semJob;
 
@@ -428,7 +428,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             //////////////////////////////////
             case OS::Key::Tab:
             {
-                if (!cxtIp || !cxtIp->node || !cxtIp->node->sourceFile)
+                if (!cxtIp || !cxtIp->node || !cxtIp->node->token.sourceFile)
                     continue;
                 if (cursorX != line.count)
                     continue;
@@ -695,8 +695,8 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             const Module* module = nullptr;
             if (context->bc->sourceFile)
                 module = context->bc->sourceFile->module;
-            if (!module && context->bc->node && context->bc->node->sourceFile)
-                module = context->bc->node->sourceFile->module;
+            if (!module && context->bc->node && context->bc->node->token.sourceFile)
+                module = context->bc->node->token.sourceFile->module;
             if (module)
             {
                 g_Log.print(FMT("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));

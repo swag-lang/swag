@@ -31,7 +31,7 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 
         node->allocateComputedValue();
         node->computedValue()->storageSegment = getConstantSegFromContext(node);
-        auto& typeGen                         = node->sourceFile->module->typeGen;
+        auto& typeGen                         = node->token.sourceFile->module->typeGen;
 
         TypeInfo* resultTypeInfo = nullptr;
         SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue()->storageSegment, &node->computedValue()->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &resultTypeInfo));
@@ -55,12 +55,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
     if (!leftTypeInfo->isNative())
     {
-        Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));
         return context->report(err);
     }
 
-    Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
+    Diagnostic err{node->token.sourceFile, node->token, FMT(Err(Err0351), node->token.c_str(), rightTypeInfo->getDisplayNameC())};
     err.addNote(right, Diagnostic::isType(rightTypeInfo));
     return context->report(err);
 }
@@ -416,7 +416,7 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic        err{child->sourceFile, child->token, FMT(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
+                    Diagnostic        err{child->token.sourceFile, child->token, FMT(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     const Diagnostic* note = Diagnostic::hereIs(symOver);
                     if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
                     {
@@ -580,7 +580,7 @@ bool Semantic::resolveType(SemanticContext* context)
         !typeC->isArray() &&
         !typeC->isStruct())
     {
-        const Diagnostic err{typeNode->sourceFile, typeNode->locConst, FMT(Err(Err0395), typeNode->typeInfo->getDisplayNameC())};
+        const Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, FMT(Err(Err0395), typeNode->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 

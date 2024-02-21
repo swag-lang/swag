@@ -1042,7 +1042,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
         auto breakable = node->safeOwnerBreakable();
         while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label.text))
             breakable = breakable->safeOwnerBreakable();
-        SWAG_VERIFY(breakable, context->report({node->sourceFile, node->label, FMT(Err(Err0722), node->label.text.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node->token.sourceFile, node->label, FMT(Err(Err0722), node->label.text.c_str())}));
         node->setOwnerBreakable(breakable);
     }
 

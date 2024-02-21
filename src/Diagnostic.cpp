@@ -65,7 +65,7 @@ void Diagnostic::addNote(AstNode* node, const Utf8& h)
 
     SourceLocation start, end;
     node->computeLocation(start, end);
-    const auto note = Diagnostic::note(node->sourceFile, start, end, h);
+    const auto note = Diagnostic::note(node->token.sourceFile, start, end, h);
     notes.push_back(note);
 }
 

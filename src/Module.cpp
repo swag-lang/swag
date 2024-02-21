@@ -629,7 +629,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
         if (attributeFlags.has(ATTRIBUTE_TEST_FUNC))
         {
-            if (g_CommandLine.testFilter.empty() || bc->node->sourceFile->name.containsNoCase(g_CommandLine.testFilter))
+            if (g_CommandLine.testFilter.empty() || bc->node->token.sourceFile->name.containsNoCase(g_CommandLine.testFilter))
                 byteCodeTestFunc.push_back(bc);
         }
         else if (attributeFlags.has(ATTRIBUTE_INIT_FUNC))
@@ -1039,10 +1039,10 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(g_RunContext->callerContext->baseJob);
     SWAG_ASSERT(g_RunContext->ip);
     SWAG_ASSERT(g_RunContext->ip->node);
-    SWAG_ASSERT(g_RunContext->ip->node->sourceFile);
+    SWAG_ASSERT(g_RunContext->ip->node->token.sourceFile);
 
     const auto ip         = g_RunContext->ip != g_RunContext->bc->out ? g_RunContext->ip - 1 : g_RunContext->ip;
-    const auto sourceFile = ip->node->sourceFile;
+    const auto sourceFile = ip->node->token.sourceFile;
 
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)

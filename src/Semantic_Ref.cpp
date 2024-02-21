@@ -403,7 +403,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         YIELD();
         if (!symbol)
         {
-            Diagnostic err{node->sourceFile, node->token, FMT(Err(Err0374), node->array->token.c_str(), typeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, FMT(Err(Err0374), node->array->token.c_str(), typeInfo->getDisplayNameC())};
             err.hint = FMT(Nte(Nte0144), g_LangSpec->name_opSlice.c_str());
             err.addNote(node->array, Diagnostic::isType(typeInfo));
             return context->report(err);

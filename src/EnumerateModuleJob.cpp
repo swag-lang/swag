@@ -97,7 +97,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
                 filePath = filePath1;
             if (!exists(filePath, err))
             {
-                Report::report({n->sourceFile, n->token, FMT(Err(Err0709), n->token.c_str())});
+                Report::report({n->token.sourceFile, n->token, FMT(Err(Err0709), n->token.c_str())});
                 return false;
             }
         }

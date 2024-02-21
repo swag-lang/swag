@@ -28,7 +28,7 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
 
     Location loc;
 
-    loc.file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
+    loc.file = ip && ip->node && ip->node->token.sourceFile ? ip->node->token.sourceFile : bc->sourceFile;
     if (loc.file && loc.file->fileForSourceLocation)
         loc.file = loc.file->fileForSourceLocation;
     loc.location = ip->location;
@@ -40,7 +40,7 @@ ByteCode::Location ByteCode::getLocation(const ByteCode* bc, const ByteCodeInstr
             auto n = ip->node;
             while (n->hasOwnerInline() && !n->hasAstFlag(AST_IN_MIXIN) && n->ownerInline()->ownerFct == n->ownerFct)
                 n = n->ownerInline();
-            loc.file     = n->sourceFile;
+            loc.file     = n->token.sourceFile;
             loc.location = &n->token.startLocation;
         }
     }
@@ -113,7 +113,7 @@ Utf8 ByteCode::getCallName()
     // If this is an intrinsic that can be called by the compiler itself, it should not
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
-    if (node && node->sourceFile && node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && !node->ownerStructScope)
+    if (node && node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && !node->ownerStructScope)
     {
         if (node->resolvedSymbolName() && node->resolvedSymbolName()->cptOverloadsInit == 1)
         {
@@ -257,7 +257,7 @@ bool ByteCode::canEmit() const
     if (!funcNode->content && !funcNode->isSpecialFunctionGenerated())
         return false;
 
-    if (funcNode->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) || funcNode->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (funcNode->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) || funcNode->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
         return true;
     if (funcNode->hasAttribute(ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
         return true;

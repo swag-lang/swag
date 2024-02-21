@@ -725,7 +725,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         }
 
                         const auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                        const auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                        const auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->token.sourceFile, fctCallParam);
                         codeNode->addAstFlag(AST_NO_BYTECODE);
 
                         Ast::removeFromParent(brother);

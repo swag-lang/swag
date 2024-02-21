@@ -295,7 +295,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
         {
             const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->b.pointer);
             SWAG_ASSERT(funcNode);
-            line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
+            line.pretty += Utf8::truncateDisplay(funcNode->token.sourceFile->name, 30);
             line.pretty += "/";
             line.pretty += funcNode->token.text;
             line.pretty += " ";

@@ -1274,7 +1274,7 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     const auto seg  = Semantic::getConstantSegFromContext(context->node, forceCompiler);
     *storageSegment = seg;
 
-    const auto sourceFile = node->sourceFile;
+    const auto sourceFile = node->token.sourceFile;
     const auto module     = sourceFile->module;
 
     const auto str = sourceFile->path;
@@ -1467,7 +1467,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        const Diagnostic err{callNode->sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.c_str())};
+        const Diagnostic err{callNode->token.sourceFile, callNode->token, FMT(Err(Err0544), funcNode->token.c_str())};
         return context->report(err, Diagnostic::hereIs(srcNode, Nte(Nte0130)));
     }
 

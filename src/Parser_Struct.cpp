@@ -266,7 +266,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                 return context->report(err, note);
             }
             const Utf8       asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
-            const Diagnostic err{structNode->sourceFile, token, FMT(Err(Err0626), "struct", structNode->token.c_str(), asA.c_str())};
+            const Diagnostic err{structNode->token.sourceFile, token, FMT(Err(Err0626), "struct", structNode->token.c_str(), asA.c_str())};
             const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
             return context->report(err, note);
         }

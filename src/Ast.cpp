@@ -6,9 +6,9 @@
 
 void Ast::initNewNode(AstNode* node, const Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
 {
-    node->kind       = kind;
-    node->parent     = parent;
-    node->sourceFile = sourceFile;
+    node->kind             = kind;
+    node->parent           = parent;
+    node->token.sourceFile = sourceFile;
 
     if (parser)
     {

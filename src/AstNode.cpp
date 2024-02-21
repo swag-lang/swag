@@ -123,8 +123,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extByteCode()->byteCodeAfterFct  = from->extByteCode()->byteCodeAfterFct;
     }
 
-    token.text = from->token.text;
-    sourceFile = from->sourceFile;
+    token.text       = from->token.text;
+    token.sourceFile = from->token.sourceFile;
 
     attributeFlags = from->attributeFlags;
     safetyOn       = from->safetyOn;
@@ -626,9 +626,9 @@ void AstNode::inheritTokenLocation(const Token& tkn)
 
 void AstNode::inheritTokenLocation(const AstNode* node)
 {
+    token.sourceFile    = node->token.sourceFile;
     token.startLocation = node->token.startLocation;
     token.endLocation   = node->token.endLocation;
-    sourceFile          = node->sourceFile;
 }
 
 void AstNode::inheritOwners(const AstNode* op)
@@ -1150,9 +1150,9 @@ bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
 
 void AstNode::printLoc() const
 {
-    if (!sourceFile)
+    if (!token.sourceFile)
         return;
-    printf("%s:%d:%d\n", sourceFile->path.string().c_str(), token.startLocation.line + 1, token.startLocation.column + 1);
+    printf("%s:%d:%d\n", token.sourceFile->path.string().c_str(), token.startLocation.line + 1, token.startLocation.column + 1);
 }
 
 uint32_t AstNode::childParentIdx() const

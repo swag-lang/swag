@@ -404,7 +404,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(node, &id));
         if (id->kind != AstNodeKind::VarDecl)
         {
-            const Diagnostic err{id->sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
+            const Diagnostic err{id->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
             const auto       note = Diagnostic::note(Nte(Nte0014));
             return context->report(err, note);
         }
@@ -419,7 +419,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
         if (id->kind == AstNodeKind::StatementNoScope)
         {
-            const Diagnostic err{node->sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
+            const Diagnostic err{node->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
             const auto       note = Diagnostic::note(Nte(Nte0014));
             return context->report(err, note);
         }

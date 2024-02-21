@@ -131,7 +131,7 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
 
     for (const auto bc : byteCodeCompiler[static_cast<int>(msg->kind)])
     {
-        SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
+        SWAG_CHECK(executeNode(bc->node->token.sourceFile, bc->node, &context));
     }
 
     g_RunContext->currentCompilerMessage = nullptr;

@@ -61,7 +61,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         return true;
     if (!castFlags.has(CAST_FLAG_EXPLICIT))
         return true;
-    if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
+    if (!fromNode->token.sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
         return true;
 
     auto msg  = ByteCodeGen::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);

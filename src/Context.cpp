@@ -47,18 +47,18 @@ namespace
         const auto node = bc->node ? bc->node : saveNode;
         SWAG_ASSERT(node);
 
-        const auto module         = node->sourceFile->module;
+        const auto module         = node->token.sourceFile->module;
         bool       stackAllocated = false;
 
         if (!g_RunContext->stack)
         {
             SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
-            g_RunContext->setup(node->sourceFile, node, node->extByteCode()->bc);
+            g_RunContext->setup(node->token.sourceFile, node, node->extByteCode()->bc);
             stackAllocated = true;
         }
         else
         {
-            g_RunContext->jc.sourceFile = node->sourceFile;
+            g_RunContext->jc.sourceFile = node->token.sourceFile;
             g_RunContext->node          = node;
         }
 

@@ -109,7 +109,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         node->ownerScope->addPublicNode(node);
 
     // We are parsing the swag module
-    if (node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
         g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;

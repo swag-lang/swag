@@ -368,7 +368,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
         const auto pendingJob = it.pendingJob;
         const auto node       = it.node;
 
-        if (node->sourceFile->module->hasCycleError)
+        if (node->token.sourceFile->module->hasCycleError)
             continue;
 
         // Is there a dependency cycle ?

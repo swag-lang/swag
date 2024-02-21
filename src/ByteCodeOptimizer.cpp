@@ -46,9 +46,9 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
 {
     // Mark some instructions for some specific passes
     if (ip->node &&
-        ip->node->sourceFile &&
-        ip->node->sourceFile->module &&
-        ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
+        ip->node->token.sourceFile &&
+        ip->node->token.sourceFile->module &&
+        ip->node->token.sourceFile->module->mustEmitSafetyOverflow(ip->node))
     {
         ip->dynFlags.add(BCID_SAFETY_OF);
     }

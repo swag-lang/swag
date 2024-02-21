@@ -79,7 +79,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         return "";
 
     // Current ip
-    auto sourceFile = ip->node->sourceFile;
+    auto sourceFile = ip->node->token.sourceFile;
     auto location   = ip->location;
     auto name       = getStepName(ip->node, ip);
     if (name.empty())
@@ -108,19 +108,19 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             str += Log::colorToVTS(LogColor::Name);
             str += getStepName(owner, ip);
 
-            if (owner->sourceFile)
+            if (owner->token.sourceFile)
             {
                 str += "\n";
                 str += "      ";
                 str += Log::colorToVTS(LogColor::Location);
                 str += FMT(" %s:%d:%d:%d:%d",
-                           owner->sourceFile->path.string().c_str(),
+                           owner->token.sourceFile->path.string().c_str(),
                            owner->token.startLocation.line + 1,
                            owner->token.startLocation.column + 1,
                            owner->token.endLocation.line + 1,
                            owner->token.endLocation.column + 1);
                 str += "\n";
-                str += sourceLine(owner->sourceFile, owner->token.startLocation.line);
+                str += sourceLine(owner->token.sourceFile, owner->token.startLocation.line);
             }
 
             str += "\n";
@@ -135,19 +135,19 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         str += Log::colorToVTS(LogColor::Name);
         str += getStepName(parent, ip);
 
-        if (parent->sourceFile)
+        if (parent->token.sourceFile)
         {
             str += "\n";
             str += "      ";
             str += Log::colorToVTS(LogColor::Location);
             str += FMT(" %s:%d:%d:%d:%d",
-                       parent->sourceFile->path.string().c_str(),
+                       parent->token.sourceFile->path.string().c_str(),
                        parent->token.startLocation.line + 1,
                        parent->token.startLocation.column + 1,
                        parent->token.endLocation.line + 1,
                        parent->token.endLocation.column + 1);
             str += "\n";
-            str += sourceLine(parent->sourceFile, parent->token.startLocation.line);
+            str += sourceLine(parent->token.sourceFile, parent->token.startLocation.line);
         }
 
         str += "\n";

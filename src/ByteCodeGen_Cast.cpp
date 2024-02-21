@@ -117,7 +117,7 @@ bool ByteCodeGen::emitCastToInterface(const ByteCodeGenContext* context, AstNode
     // :ItfIsConstantSeg
     SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::CastItf));
     const auto castItf = exprNode->extraPointer<TypeInfoParam>(ExtraPointerKind::CastItf);
-    emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, castItf->offset, exprNode->resultRegisterRc[1]);
+    emitMakeSegPointer(context, &node->token.sourceFile->module->constantSegment, castItf->offset, exprNode->resultRegisterRc[1]);
     node->resultRegisterRc = exprNode->resultRegisterRc;
 
     return true;

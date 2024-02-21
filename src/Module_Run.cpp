@@ -225,7 +225,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Pointer
     if (realType->isPointerToTypeInfo())
     {
-        const auto module = node->sourceFile->module;
+        const auto module = node->token.sourceFile->module;
         uint32_t   offset = module->compilerSegment.tryOffset(runContext->registersRR[0].pointer);
         if (offset != UINT32_MAX)
         {
@@ -251,9 +251,9 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
     // In case bytecode generation has raised an error
-    if (node->sourceFile->numErrors)
+    if (node->token.sourceFile->numErrors)
         return false;
-    if (node->sourceFile->module->numErrors)
+    if (node->token.sourceFile->module->numErrors)
         return false;
 
     SWAG_ASSERT(node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED));

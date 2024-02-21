@@ -223,9 +223,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         g_Log.eol();
     }
 
-    if (ipNode && ipNode->sourceFile)
+    if (ipNode && ipNode->token.sourceFile)
     {
-        const auto loc = FMT("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
+        const auto loc = FMT("%s:%u:%u", ipNode->token.sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("instruction location", loc, "");
     }
 
@@ -545,7 +545,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     const auto toLogIp        = g_ByteCodeDebugger.cxtIp;
     g_ByteCodeDebugger.bcMode = false;
 
-    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
+    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->token.sourceFile)
     {
         uint32_t offset = 3;
         if (arg.split.size() == 2)
@@ -555,12 +555,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         if (inl)
         {
             const auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
-            g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->sourceFile, loc.location, offset);
+            g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->token.sourceFile, loc.location, offset);
         }
         else
         {
             const auto loc = ByteCode::getLocation(toLogBc, toLogIp, false);
-            g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->sourceFile, loc.location, offset);
+            g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->token.sourceFile, loc.location, offset);
         }
     }
     else
@@ -587,7 +587,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         toLogIp = toLogBc->out;
     }
 
-    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
+    if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->token.sourceFile)
     {
         const auto funcNode = castAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)
@@ -600,14 +600,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
                 const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);
                 const uint32_t startLine = inl->func->token.startLocation.line;
                 const uint32_t endLine   = inl->func->content->token.endLocation.line;
-                g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->sourceFile, loc.location, startLine, endLine);
+                g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->token.sourceFile, loc.location, startLine, endLine);
             }
             else
             {
                 const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, false);
                 const uint32_t startLine = toLogBc->node->token.startLocation.line;
                 const uint32_t endLine   = funcNode->content->token.endLocation.line;
-                g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->sourceFile, loc.location, startLine, endLine);
+                g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->token.sourceFile, loc.location, startLine, endLine);
             }
         }
         else

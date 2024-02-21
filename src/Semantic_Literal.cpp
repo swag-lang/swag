@@ -23,7 +23,7 @@ bool Semantic::getDigitHex(SemanticContext* context, const SourceLocation& start
     {
         auto endLoc = startLoc;
         endLoc.column += static_cast<uint32_t>(*pzr - pzs);
-        return context->report({node->sourceFile, startLoc, endLoc, errMsg});
+        return context->report({node->token.sourceFile, startLoc, endLoc, errMsg});
     }
 
     if (c >= 'a' && c <= 'z')
@@ -149,7 +149,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
                 SWAG_CHECK(getDigitHex(context, loc, pzs, &pz, c8, msg));
                 const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
                 if (cw > Utf8::MAX_ENCODED_UNICODE)
-                    return context->report({node->sourceFile, loc, FMT(Err(Err0405), cw)});
+                    return context->report({node->token.sourceFile, loc, FMT(Err(Err0405), cw)});
                 result.append(cw);
                 loc.column += 8;
                 continue;
@@ -158,7 +158,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
                 break;
         }
 
-        return context->report({node->sourceFile, loc, FMT(Err(Err0275), c)});
+        return context->report({node->token.sourceFile, loc, FMT(Err(Err0275), c)});
     }
 
     node->computedValue()->text = result;

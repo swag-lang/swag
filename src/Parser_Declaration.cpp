@@ -547,7 +547,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
             if (testParent->kind != AstNodeKind::AttrUse)
                 break;
             if (!newAttrUse)
-                newAttrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, subDecl->sourceFile, subDecl->parent);
+                newAttrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, subDecl->token.sourceFile, subDecl->parent);
 
             // Clone all attributes
             CloneContext cloneContext;

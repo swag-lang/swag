@@ -11,7 +11,7 @@ inline bool overflowIsEnabled(const ByteCodeInstruction* ip, const AstNode* node
         return true;
     if (node && node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON))
         return true;
-    if (!node->sourceFile->module->mustEmitSafetyOverflow(node))
+    if (!node->token.sourceFile->module->mustEmitSafetyOverflow(node))
         return true;
     return false;
 }

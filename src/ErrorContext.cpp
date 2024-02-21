@@ -159,9 +159,9 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
     const auto exportNode = sourceNode ? sourceNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode) : nullptr;
     if (exportNode)
         sourceNode = exportNode;
-    if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->fromNode && !sourceNode->sourceFile->fileForSourceLocation)
+    if (sourceNode && sourceNode->token.sourceFile && sourceNode->token.sourceFile->fromNode && !sourceNode->token.sourceFile->fileForSourceLocation)
     {
-        const auto note = Diagnostic::note(sourceNode->sourceFile->fromNode, Nte(Nte0098));
+        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, Nte(Nte0098));
         notes.push_back(note);
     }
     else if (diagnostic.sourceFile && diagnostic.sourceFile->hasFlag(FILE_IS_EXTERNAL) && diagnostic.sourceFile->hasFlag(FILE_IS_FROM_AST) && sourceNode)

@@ -751,7 +751,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 for (int i = static_cast<int>(dependentVar->children.size()) - 1; i >= 0; i--)
                 {
                     auto child  = dependentVar->children[i];
-                    auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
+                    auto idNode = Ast::newIdentifier(dependentVar->token.sourceFile, child->token.text, idRef, nullptr);
                     idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                     idNode->inheritTokenLocation(idRef);
                     idNode->allocateIdentifierExtension();
@@ -769,7 +769,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
             else
             {
-                auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
+                auto idNode = Ast::newIdentifier(dependentVar->token.sourceFile, dependentVar->token.text, idRef, nullptr);
                 idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 idNode->inheritTokenLocation(identifier);
 
@@ -1147,7 +1147,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
                 {
                     auto       cp = identifier->callParameters;
-                    Diagnostic err{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.c_str())};
+                    Diagnostic err{cp->token.sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, FMT(Err(Err0675), identifier->token.c_str())};
                     err.addNote(identifier->token, Nte(Nte0155));
                     return context->report(err);
                 }
@@ -1794,7 +1794,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
             auto symbol = overloads[0]->overload->symbol;
             auto match  = matches[0];
-            return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind,
+            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind,
                                                         match->symbolOverload->node);
         }
 

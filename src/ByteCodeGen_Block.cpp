@@ -69,10 +69,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->kind == AstNodeKind::AutoSlicingUp)
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
-        auto slicing          = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
-        auto arrayNode        = slicing->array;
-        parameters.flags      = 0;
-        parameters.sourceFile = parent->sourceFile;
+        auto slicing                = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
+        auto arrayNode              = slicing->array;
+        parameters.flags            = 0;
+        parameters.token.sourceFile = parent->token.sourceFile;
         parameters.inheritTokenLocation(parent);
         parameters.inheritOwners(parent);
         parameters.children.push_back(arrayNode);
@@ -83,10 +83,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->kind == AstNodeKind::SwitchCase)
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opEquals));
-        auto caseNode         = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-        auto switchNode       = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
-        parameters.flags      = 0;
-        parameters.sourceFile = parent->sourceFile;
+        auto caseNode               = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+        auto switchNode             = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
+        parameters.flags            = 0;
+        parameters.token.sourceFile = parent->token.sourceFile;
         parameters.inheritTokenLocation(parent);
         parameters.inheritOwners(parent);
         parameters.children.push_back(switchNode->expression);
@@ -96,8 +96,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
     else if (parent->kind == AstNodeKind::AffectOp && (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
     {
-        parameters.flags      = 0;
-        parameters.sourceFile = parent->sourceFile;
+        parameters.flags            = 0;
+        parameters.token.sourceFile = parent->token.sourceFile;
         parameters.inheritTokenLocation(parent);
         parameters.inheritOwners(parent);
         SWAG_ASSERT(parent->children.front()->kind == AstNodeKind::IdentifierRef);

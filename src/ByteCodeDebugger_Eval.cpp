@@ -29,10 +29,10 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     // Syntax
     AstNode parent;
     Ast::constructNode(&parent);
-    parent.ownerScope = cxtIp->node ? cxtIp->node->ownerScope : nullptr;
-    parent.ownerFct   = castAst<AstFuncDecl>(cxtBc->node, AstNodeKind::FuncDecl);
-    parent.sourceFile = sourceFile;
-    parent.parent     = cxtIp->node;
+    parent.ownerScope       = cxtIp->node ? cxtIp->node->ownerScope : nullptr;
+    parent.ownerFct         = castAst<AstFuncDecl>(cxtBc->node, AstNodeKind::FuncDecl);
+    parent.token.sourceFile = sourceFile;
+    parent.parent           = cxtIp->node;
 
     JobContext jobContext;
     Parser     parser;

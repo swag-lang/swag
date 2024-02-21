@@ -314,9 +314,9 @@ bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* nod
             if (kind != SymbolKind::Namespace && symbol->kind != SymbolKind::Namespace)
                 return true;
             // Except if the namespace name is the name of the current module
-            if (symbol->kind != SymbolKind::Namespace && node->sourceFile->module->name == symbol->name)
+            if (symbol->kind != SymbolKind::Namespace && node->token.sourceFile->module->name == symbol->name)
                 return true;
-            if (kind != SymbolKind::Namespace && node->sourceFile->module->name == node->token.text)
+            if (kind != SymbolKind::Namespace && node->token.sourceFile->module->name == node->token.text)
                 return true;
         }
     }
@@ -344,7 +344,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
     if (symbol->kind != kind)
     {
         const auto front = symbol->nodes.front();
-        return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, kind, symbol->name, symbol->kind, front);
+        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, *token, kind, symbol->name, symbol->kind, front);
     }
 
     if (symbol->kind == SymbolKind::Namespace)
@@ -357,7 +357,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
     if (!canOverload && !symbol->overloads.empty())
     {
         const auto firstOverload = symbol->overloads[0];
-        return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
+        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
     }
 
     // A symbol with the same type already exists
@@ -372,7 +372,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
             !overload->node->hasAstFlag(AST_HAS_SELECT_IF))
         {
             const auto firstOverload = overload;
-            return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
+            return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
         }
     }
 
@@ -396,7 +396,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, const AstNode* node, Sym
             }
         }
 
-        return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, firstOverload->node);
+        return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, firstOverload->node);
     }
 
     SWAG_ASSERT(!otherSymbol->cptOverloads);

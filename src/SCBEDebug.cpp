@@ -504,7 +504,7 @@ void SCBEDebug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteC
         dbgLine.line       = cpuFct->node->token.startLocation.line + 1;
         dbgLine.byteOffset = byteOffset;
         SCBEDebugLines dbgLines;
-        dbgLines.sourceFile = cpuFct->node->sourceFile;
+        dbgLines.sourceFile = cpuFct->node->token.sourceFile;
         dbgLines.lines.push_back(dbgLine);
         cpuFct->dbgLines.push_back(dbgLines);
         return;

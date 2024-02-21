@@ -60,7 +60,7 @@ struct Diagnostic
         errorLevel{level},
         startLocation{token.startLocation},
         endLocation{token.endLocation},
-        sourceFile{node->sourceFile},
+        sourceFile{node->token.sourceFile},
         sourceNode{node},
         showSourceCode{true},
         hasLocation{true}
@@ -74,7 +74,7 @@ struct Diagnostic
         startLocation{token.startLocation},
         endLocation{token.endLocation},
         hint{std::move(hint)},
-        sourceFile{node->sourceFile},
+        sourceFile{node->token.sourceFile},
         sourceNode{node},
         showSourceCode{true},
         hasLocation{true}
@@ -85,7 +85,7 @@ struct Diagnostic
     Diagnostic(AstNode* node, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
         textMsg{std::move(msg)},
         errorLevel{level},
-        sourceFile{node->sourceFile},
+        sourceFile{node->token.sourceFile},
         sourceNode{node},
         showSourceCode{true},
         hasLocation{true}
@@ -98,7 +98,7 @@ struct Diagnostic
         textMsg{std::move(msg)},
         errorLevel{level},
         hint{std::move(hint)},
-        sourceFile{node->sourceFile},
+        sourceFile{node->token.sourceFile},
         sourceNode{node},
         showSourceCode{true},
         hasLocation{true}

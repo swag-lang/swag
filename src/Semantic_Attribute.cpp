@@ -84,7 +84,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     // Check specific hard coded attributes
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
-    if (oneAttribute->typeInfo->declNode->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (oneAttribute->typeInfo->declNode->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
     {
         if (oneAttribute->token.text == g_LangSpec->name_Complete)
         {
@@ -262,7 +262,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse)
 {
     if (!attrUse)
-        attrUse = forNode->sourceFile->astAttrUse;
+        attrUse = forNode->token.sourceFile->astAttrUse;
 
     if (!attrUse)
         return true;
@@ -624,7 +624,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             result->add(curAttr->attributes);
 
         if (!curAttr->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL) && (!curAttr->hasExtOwner() || !curAttr->extOwner()->ownerAttrUse))
-            curAttr = forNode->sourceFile->astAttrUse;
+            curAttr = forNode->token.sourceFile->astAttrUse;
         else
             curAttr = curAttr->hasExtOwner() ? curAttr->extOwner()->ownerAttrUse : nullptr;
     }

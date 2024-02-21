@@ -380,7 +380,7 @@ bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node
 
 DataSegment* Semantic::getSegmentForVar(SemanticContext* context, const AstVarDecl* varNode)
 {
-    const auto module   = varNode->sourceFile->module;
+    const auto module   = varNode->token.sourceFile->module;
     const auto typeInfo = TypeManager::concreteType(varNode->typeInfo);
 
     if (varNode->hasAttribute(ATTRIBUTE_TLS))

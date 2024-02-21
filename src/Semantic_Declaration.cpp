@@ -154,7 +154,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
     node->parent->addAlternativeScope(scope, ALT_SCOPE_USING);
 
     if (!idref->ownerFct)
-        node->parent->sourceFile->addGlobalUsing(scope);
+        node->parent->token.sourceFile->addGlobalUsing(scope);
 
     return true;
 }

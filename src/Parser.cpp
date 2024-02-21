@@ -257,7 +257,7 @@ bool Parser::eatSemiCol(const char* msg)
 
 bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine)
 {
-    const auto modl = fromNode->sourceFile->module;
+    const auto modl = fromNode->token.sourceFile->module;
 
     tmpFilePath = modl->publicPath;
     tmpFileName = FMT("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
@@ -270,7 +270,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path&
             countEol++;
     }
 
-    const Utf8 sourceCode = FMT("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1,
+    const Utf8 sourceCode = FMT("// %s:%d:%d:%d:%d\n", fromNode->token.sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1,
                                 fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
     modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
@@ -299,9 +299,9 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
         fromNode &&
         !g_CommandLine.scriptCommand &&
         g_CommandLine.output &&
-        !fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR) &&
-        !fromNode->sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING) &&
-        fromNode->sourceFile->module->buildCfg.backendDebugInfos)
+        !fromNode->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR) &&
+        !fromNode->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING) &&
+        fromNode->token.sourceFile->module->buildCfg.backendDebugInfos)
     {
         SWAG_CHECK(saveEmbeddedAst(content, fromNode, tmpFilePath, tmpFileName, previousLogLine));
     }
@@ -309,15 +309,15 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     sourceFile = Allocator::alloc<SourceFile>();
     sourceFile->setExternalBuffer(content);
     sourceFile->addFlag(FILE_IS_FROM_AST);
-    sourceFile->module = parent->sourceFile->module;
+    sourceFile->module = parent->token.sourceFile->module;
     sourceFile->name   = tmpFileName;
     sourceFile->path   = tmpFilePath;
     sourceFile->path.append(tmpFileName);
     if (fromNode)
     {
         sourceFile->fromNode = fromNode;
-        sourceFile->addFlag(fromNode->sourceFile->flags.mask(FILE_SHOULD_HAVE_ERROR));
-        sourceFile->addFlag(fromNode->sourceFile->flags.mask(FILE_SHOULD_HAVE_WARNING));
+        sourceFile->addFlag(fromNode->token.sourceFile->flags.mask(FILE_SHOULD_HAVE_ERROR));
+        sourceFile->addFlag(fromNode->token.sourceFile->flags.mask(FILE_SHOULD_HAVE_WARNING));
     }
 
     currentScope       = parent->ownerScope;
@@ -341,7 +341,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     }
     else
     {
-        sourceFile->fileForSourceLocation = parent->sourceFile;
+        sourceFile->fileForSourceLocation = parent->token.sourceFile;
         tokenizer.location                = parent->token.startLocation;
     }
 
@@ -477,7 +477,7 @@ bool Parser::generateAst()
             cxt.parentScope  = currentScope;
             cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
             const auto node  = s->clone(cxt);
-            node->sourceFile = sourceFile;
+            node->token.sourceFile = sourceFile;
         }
     }
     else if (sourceFile->hasFlag(FILE_IS_EMBEDDED))
@@ -489,7 +489,7 @@ bool Parser::generateAst()
             cxt.parentScope  = currentScope;
             cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
             const auto node  = s->clone(cxt);
-            node->sourceFile = sourceFile;
+            node->token.sourceFile = sourceFile;
         }
     }
 

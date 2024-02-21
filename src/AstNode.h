@@ -523,7 +523,6 @@ struct AstNode
     void            setResolvedSymbol(SymbolName* sym, SymbolOverload* over);
 
     AstNode*       parent;
-    SourceFile*    sourceFile;
     NodeExtension* extension;
 
     SemanticFct semanticFct;

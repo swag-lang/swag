@@ -151,7 +151,7 @@ bool AstFuncDecl::mustAutoInline() const
 {
     if (!content)
         return false;
-    if (sourceFile->module->buildCfg.byteCodeAutoInline == false)
+    if (token.sourceFile->module->buildCfg.byteCodeAutoInline == false)
         return false;
     if (hasAttribute(ATTRIBUTE_NO_INLINE))
         return false;
@@ -169,7 +169,7 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
         return false;
     if (hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
         return true;
-    if (sourceFile->module->buildCfg.byteCodeInline == false && !forExport)
+    if (token.sourceFile->module->buildCfg.byteCodeInline == false && !forExport)
         return false;
     if (hasAttribute(ATTRIBUTE_INLINE))
         return true;
@@ -595,7 +595,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         const auto it = context.replaceTokens.find(tokenId);
         if (it != context.replaceTokens.end())
         {
-            const auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
+            const auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, token.sourceFile, context.parent);
             newNode->allocateExtension(ExtensionKind::Semantic);
             newNode->extSemantic()->semanticBeforeFct = Semantic::preResolveSubstBreakContinue;
 

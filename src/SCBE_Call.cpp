@@ -131,9 +131,9 @@ void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcNa
     // the call. That's why we add a nop.
     if (!typeFunc->returnType || typeFunc->returnType->isVoid())
     {
-        if (typeFunc->declNode && typeFunc->declNode->sourceFile && typeFunc->declNode->sourceFile->module)
+        if (typeFunc->declNode && typeFunc->declNode->token.sourceFile && typeFunc->declNode->token.sourceFile->module)
         {
-            if (typeFunc->declNode->sourceFile->module->buildCfg.errorStackTrace)
+            if (typeFunc->declNode->token.sourceFile->module->buildCfg.errorStackTrace)
             {
                 pp.emitNop();
             }

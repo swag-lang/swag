@@ -136,7 +136,7 @@ void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, con
 
 void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
 {
-    const auto np = node->sourceFile->path.string();
+    const auto np = node->token.sourceFile->path.string();
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(np.c_str())});
     pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.line});

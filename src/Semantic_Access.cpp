@@ -35,7 +35,7 @@ bool Semantic::canHaveAccess(const AstNode* node)
         return false;
     if (node->hasAstFlag(AST_FROM_GENERIC))
         return false;
-    if (node->sourceFile->hasFlag(FILE_FORCE_EXPORT) || node->sourceFile->imported)
+    if (node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT) || node->token.sourceFile->imported)
         return false;
     if (node->token.text[0] == '@')
         return false;
@@ -46,9 +46,9 @@ bool Semantic::canInheritAccess(const AstNode* node)
 {
     if (!node->parent)
         return false;
-    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
         return false;
-    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
         return false;
 
     // Content of the function will propagate only if the function is inlined or generic
@@ -158,9 +158,9 @@ void Semantic::setDefaultAccess(AstNode* node)
         return;
     if (node->hasAttribute(ATTRIBUTE_ACCESS_MASK))
         return;
-    if (node->sourceFile && node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
         return;
-    if (node->sourceFile && node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+    if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
         return;
     if (node->hasAstFlag(AST_STRUCT_MEMBER))
         return;
@@ -190,15 +190,15 @@ void Semantic::setDefaultAccess(AstNode* node)
         return;
     }
 
-    if (node->sourceFile && node->sourceFile->globalAttr.has(ATTRIBUTE_ACCESS_MASK))
-        node->addSemFlag(attributeToAccess(node->sourceFile->globalAttr));
+    if (node->token.sourceFile && node->token.sourceFile->globalAttr.has(ATTRIBUTE_ACCESS_MASK))
+        node->addSemFlag(attributeToAccess(node->token.sourceFile->globalAttr));
     else if (node->ownerStructScope && !node->hasAstFlag(AST_IN_IMPL))
         node->addSemFlag(attributeToAccess(node->ownerStructScope->owner->attributeFlags));
-    else if (node->sourceFile && node->sourceFile->hasFlag(FILE_FROM_TESTS))
+    else if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_FROM_TESTS))
         node->addSemFlag(attributeToAccess(ATTRIBUTE_PRIVATE));
-    else if (node->sourceFile && node->sourceFile->hasFlag(FILE_FORCE_EXPORT))
+    else if (node->token.sourceFile && node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT))
         node->addSemFlag(attributeToAccess(ATTRIBUTE_PUBLIC));
-    else if (node->sourceFile && node->sourceFile->imported)
+    else if (node->token.sourceFile && node->token.sourceFile->imported)
         node->addSemFlag(attributeToAccess(ATTRIBUTE_PUBLIC));
     else
         node->addSemFlag(attributeToAccess(ATTRIBUTE_INTERNAL));

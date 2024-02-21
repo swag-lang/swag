@@ -82,7 +82,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
 
     context->tmpIdRef->parent = node;
     const auto id             = castAst<AstIdentifier>(context->tmpIdRef->children.back(), AstNodeKind::Identifier);
-    id->sourceFile            = context->sourceFile;
+    id->token.sourceFile      = context->sourceFile;
     id->token.text            = node->token.text;
     id->inheritOwners(node);
     id->inheritTokenLocation(node);
@@ -160,7 +160,7 @@ bool Semantic::isCompilerContext(const AstNode* node)
 
 DataSegment* Semantic::getConstantSegFromContext(const AstNode* node, bool forceCompiler)
 {
-    const auto module = node->sourceFile->module;
+    const auto module = node->token.sourceFile->module;
     if (forceCompiler || isCompilerContext(node))
         return &module->compilerSegment;
     return &module->constantSegment;

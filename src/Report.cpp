@@ -29,7 +29,7 @@ namespace
             // (because of @location in a @compilererror for example).
             // So hack to avoid displaying generic information not relevant.
             const auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
-            if (genCheckNode && genCheckNode->sourceFile == note->sourceFile)
+            if (genCheckNode && genCheckNode->token.sourceFile == note->sourceFile)
             {
                 // This is a generic instance. Display type replacements.
                 if (genCheckNode->ownerFct &&
@@ -685,8 +685,8 @@ SourceFile* Report::getDiagFile(const Diagnostic& err)
     SourceFile* sourceFile = err.contextFile;
     if (!err.contextFile)
         sourceFile = err.sourceFile;
-    if (err.sourceNode && err.sourceNode->sourceFile == err.sourceFile && err.sourceNode->hasOwnerInline())
-        sourceFile = err.sourceNode->ownerInline()->sourceFile;
+    if (err.sourceNode && err.sourceNode->token.sourceFile == err.sourceFile && err.sourceNode->hasOwnerInline())
+        sourceFile = err.sourceNode->ownerInline()->token.sourceFile;
     if (sourceFile->fileForSourceLocation)
         sourceFile = sourceFile->fileForSourceLocation;
     return sourceFile;

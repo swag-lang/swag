@@ -27,7 +27,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             node->setFlagsValueIsComputed();
 
             const auto& w      = front->computedValue()->text;
-            const auto  module = node->sourceFile->module;
+            const auto  module = node->token.sourceFile->module;
             bool        done   = false;
 
 #define CHECK_SAFETY_NAME(__name, __flag)                                        \

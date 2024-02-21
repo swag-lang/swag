@@ -118,7 +118,7 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             continue;
 
         auto       node       = ip->node;
-        const auto sourceFile = node->sourceFile;
+        const auto sourceFile = node->token.sourceFile;
 
         if (ip->hasFlag(BCI_IMM_C))
         {

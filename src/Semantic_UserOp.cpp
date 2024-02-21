@@ -130,7 +130,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         auto start = node->tokenName.startLocation;
         start.column += 7;
-        const Diagnostic err{node->sourceFile, start, node->getTokenName().endLocation, FMT(Err(Err0164), node->token.c_str() + 7)};
+        const Diagnostic err{node->token.sourceFile, start, node->getTokenName().endLocation, FMT(Err(Err0164), node->token.c_str() + 7)};
         return context->report(err);
     }
 
@@ -314,7 +314,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
     }
-    else if (name == g_LangSpec->name_opInit && node->sourceFile->hasFlag(FILE_IS_GENERATED))
+    else if (name == g_LangSpec->name_opInit && node->token.sourceFile->hasFlag(FILE_IS_GENERATED))
     {
     }
     else
@@ -580,13 +580,13 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         if (!opConst)
         {
-            Diagnostic err{left->parent->sourceFile, left->parent->token, FMT(Err(Err0344), name.c_str(), leftType->getDisplayNameC())};
+            Diagnostic err{left->parent->token.sourceFile, left->parent->token, FMT(Err(Err0344), name.c_str(), leftType->getDisplayNameC())};
             err.hint = FMT(Nte(Nte0144), name.c_str());
             err.addNote(left, Diagnostic::isType(leftType));
             return context->report(err, note);
         }
 
-        Diagnostic err{left->parent->sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
+        Diagnostic err{left->parent->token.sourceFile, left->parent->token, FMT(Err(Err0343), name.c_str(), leftType->getDisplayNameC(), opConst)};
         err.hint = FMT(Nte(Nte0144), name.c_str());
         err.addNote(left, Diagnostic::isType(leftType));
         return context->report(err, note);
@@ -607,10 +607,10 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     Ast::constructNode(&parameters);
     Ast::constructNode(&literal);
     ComputedValue cValue;
-    parameters.sourceFile = left->sourceFile;
+    parameters.token.sourceFile = left->token.sourceFile;
     parameters.inheritTokenLocation(left);
     parameters.inheritOwners(left);
-    literal.sourceFile = left->sourceFile;
+    literal.token.sourceFile = left->token.sourceFile;
     literal.inheritTokenLocation(left);
     literal.inheritOwners(left);
     literal.allocateExtension(ExtensionKind::Semantic);
@@ -727,7 +727,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         auto oldIdx    = makePtrL->childParentIdx();
                         Ast::removeFromParent(makePtrL);
 
-                        auto nodeCall = Ast::newFuncCallParam(makePtrL->sourceFile, oldParent);
+                        auto nodeCall = Ast::newFuncCallParam(makePtrL->token.sourceFile, oldParent);
                         nodeCall->addAstFlag(AST_REVERSE_SEMANTIC);
                         Ast::removeFromParent(nodeCall);
                         Ast::insertChild(oldParent, nodeCall, oldIdx);

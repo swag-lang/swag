@@ -74,13 +74,13 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 {
     if (moduleToGen->kind == ModuleKind::Test)
         return true;
-    if (!one->node || !one->node->sourceFile || !one->node->resolvedSymbolName())
+    if (!one->node || !one->node->token.sourceFile || !one->node->resolvedSymbolName())
         return true;
-    if (one->node->sourceFile->hasFlag(FILE_IS_EMBEDDED) || one->node->sourceFile->hasFlag(FILE_IS_EXTERNAL) || one->node->sourceFile->imported)
+    if (one->node->token.sourceFile->hasFlag(FILE_IS_EMBEDDED) || one->node->token.sourceFile->hasFlag(FILE_IS_EXTERNAL) || one->node->token.sourceFile->imported)
         return true;
-    if (one->node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) || one->node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+    if (one->node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) || one->node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
         return true;
-    if (one->node->sourceFile->hasFlag(FILE_FORCE_EXPORT) || one->node->sourceFile->globalAttr.has(ATTRIBUTE_PUBLIC))
+    if (one->node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT) || one->node->token.sourceFile->globalAttr.has(ATTRIBUTE_PUBLIC))
         return true;
     const auto funcDecl = castAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
     if (funcDecl->fromItfSymbol)
@@ -105,7 +105,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* scope)
 {
     const auto node = context->node;
-    if (!node->sourceFile || !node->sourceFile->module)
+    if (!node->token.sourceFile || !node->token.sourceFile->module)
         return true;
     if (node->isEmptyFct())
         return true;

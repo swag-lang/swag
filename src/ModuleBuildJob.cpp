@@ -592,12 +592,12 @@ JobResult ModuleBuildJob::execute()
         auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_priv_setupRuntime);
         SWAG_ASSERT(setupFct);
 
-        module->logStage(FMT("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
+        module->logStage(FMT("__setupRuntime %s\n", setupFct->node->token.sourceFile->name.c_str()));
         ExecuteNodeParams execParams;
         auto              runtimeFlags = Backend::getRuntimeFlags();
         runtimeFlags |= static_cast<uint64_t>(SwagRuntimeFlags::FromCompiler);
         execParams.callParams.push_back(runtimeFlags);
-        module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext, &execParams);
+        module->executeNode(setupFct->node->token.sourceFile, setupFct->node, baseContext, &execParams);
 
         if (module->criticalErrors)
             return JobResult::ReleaseJob;
@@ -615,8 +615,8 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeInitFunc)
             {
-                module->logStage(FMT("#init %s\n", func->node->sourceFile->name.c_str()));
-                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                module->logStage(FMT("#init %s\n", func->node->token.sourceFile->name.c_str()));
+                module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
@@ -625,8 +625,8 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodePreMainFunc)
             {
-                module->logStage(FMT("#premain %s\n", func->node->sourceFile->name.c_str()));
-                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                module->logStage(FMT("#premain %s\n", func->node->token.sourceFile->name.c_str()));
+                module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
@@ -647,8 +647,8 @@ JobResult ModuleBuildJob::execute()
 #ifdef SWAG_STATS
                 ++g_Stats.runFunctions;
 #endif
-                module->logStage(FMT("#run %s\n", func->node->sourceFile->name.c_str()));
-                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                module->logStage(FMT("#run %s\n", func->node->token.sourceFile->name.c_str()));
+                module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
@@ -673,8 +673,8 @@ JobResult ModuleBuildJob::execute()
 #ifdef SWAG_STATS
                     ++g_Stats.testFunctions;
 #endif
-                    module->logStage(FMT("#test %s\n", func->node->sourceFile->name.c_str()));
-                    module->executeNode(func->node->sourceFile, func->node, baseContext);
+                    module->logStage(FMT("#test %s\n", func->node->token.sourceFile->name.c_str()));
+                    module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
                         return JobResult::ReleaseJob;
                 }
@@ -703,10 +703,10 @@ JobResult ModuleBuildJob::execute()
             }
             else
             {
-                module->logStage(FMT("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
+                module->logStage(FMT("#main %s\n", module->byteCodeMainFunc->node->token.sourceFile->name.c_str()));
                 ExecuteNodeParams params;
                 params.breakOnStart = g_CommandLine.dbgMain;
-                module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
+                module->executeNode(module->byteCodeMainFunc->node->token.sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
@@ -720,8 +720,8 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeDropFunc)
             {
-                module->logStage(FMT("#drop %s\n", func->node->sourceFile->name.c_str()));
-                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                module->logStage(FMT("#drop %s\n", func->node->token.sourceFile->name.c_str()));
+                module->executeNode(func->node->token.sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }

@@ -673,7 +673,7 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
 {
     const auto node         = context->node;
     const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    const auto module       = node->sourceFile->module;
+    const auto module       = node->token.sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -783,7 +783,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
 {
     const auto node         = context->node;
     const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    const auto module       = node->sourceFile->module;
+    const auto module       = node->token.sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -1167,7 +1167,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CAST_FLAG_TRY_COERCE));
-    const auto module = node->sourceFile->module;
+    const auto module = node->token.sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
@@ -1245,7 +1245,7 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CAST_FLAG_TRY_COERCE));
-    const auto module = node->sourceFile->module;
+    const auto module = node->token.sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {

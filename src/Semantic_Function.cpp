@@ -388,7 +388,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         }
 
         // Be sure 'impl' is justified
-        SWAG_VERIFY(implFor, context->report({funcNode->sourceFile, funcNode->implLoc, funcNode->implLoc, Err(Err0667)}));
+        SWAG_VERIFY(implFor, context->report({funcNode->token.sourceFile, funcNode->implLoc, funcNode->implLoc, Err(Err0667)}));
     }
 
     // Warnings
@@ -515,7 +515,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         typeNode->typeInfo = front->typeInfo;
         if (typeNode->typeInfo->getConcreteAlias()->isVoid())
         {
-            Diagnostic err{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0369)};
+            Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0369)};
             return context->report(err);
         }
     }
@@ -861,10 +861,10 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     }
 
     // Register runtime libc function type, by name
-    if (funcNode->sourceFile && funcNode->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && funcNode->isEmptyFct())
+    if (funcNode->token.sourceFile && funcNode->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && funcNode->isEmptyFct())
     {
-        ScopedLock lk(funcNode->sourceFile->module->mutexFile);
-        funcNode->sourceFile->module->mapRuntimeFctTypes[funcNode->token.text] = typeInfo;
+        ScopedLock lk(funcNode->token.sourceFile->module->mutexFile);
+        funcNode->token.sourceFile->module->mapRuntimeFctTypes[funcNode->token.text] = typeInfo;
     }
 
     // We should never reference an empty function
@@ -1705,7 +1705,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // The content will be inline in its separated syntax block
-    const auto inlineNode      = Ast::newInline(identifier->sourceFile, identifier);
+    const auto inlineNode      = Ast::newInline(identifier->token.sourceFile, identifier);
     inlineNode->attributeFlags = funcDecl->attributeFlags;
     inlineNode->func           = funcDecl;
     inlineNode->scope          = identifier->ownerScope;

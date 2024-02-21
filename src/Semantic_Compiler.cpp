@@ -729,13 +729,13 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         const auto filename = back->computedValue()->text;
 
         // Search first in the same folder as the source file
-        Path fullFileName = node->sourceFile->path.parent_path();
+        Path fullFileName = node->token.sourceFile->path.parent_path();
         fullFileName.append(filename.c_str());
         error_code err;
         if (!exists(fullFileName, err))
         {
             // Search relative to the module path
-            fullFileName = node->sourceFile->module->path;
+            fullFileName = node->token.sourceFile->module->path;
             fullFileName.append(filename.c_str());
             if (!exists(fullFileName, err))
             {

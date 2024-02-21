@@ -48,7 +48,7 @@ namespace
             return false;
         if (node->hasAttribute(ATTRIBUTE_NO_DOC))
             return false;
-        if (!node->sourceFile)
+        if (!node->token.sourceFile)
             return false;
 
         switch (node->kind)
@@ -66,11 +66,11 @@ namespace
                 return false;
         }
 
-        if (node->sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
+        if (node->token.sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
             return true;
-        if (node->sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
+        if (node->token.sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE))
             return true;
-        if (!node->sourceFile->hasFlag(FILE_FORCE_EXPORT) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
+        if (!node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
             return false;
 
         return true;
@@ -281,13 +281,13 @@ void GenDoc::outputTitle(OneRef& c)
         {
             if (module != g_Workspace->runtimeModule)
             {
-                Utf8 pathFile = c.nodes[0]->sourceFile->path.string();
+                Utf8 pathFile = c.nodes[0]->token.sourceFile->path.string();
                 pathFile.remove(0, static_cast<uint32_t>(module->path.string().size()) + 1);
                 str.append(pathFile.c_str());
             }
             else
             {
-                str.append(c.nodes[0]->sourceFile->name.c_str());
+                str.append(c.nodes[0]->token.sourceFile->name.c_str());
             }
 
             helpContent += FMT("<a href=\"%s#L%d\" class=\"src\">[src]</a>", str.string().c_str(), c.nodes[0]->token.startLocation.line + 1);
@@ -930,8 +930,8 @@ bool GenDoc::generateApi()
             // as sourceFile can be irrelevant
             if (c.second[0]->kind != AstNodeKind::Namespace)
             {
-                oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
-                const auto len  = static_cast<uint32_t>(c.second[0]->sourceFile->module->path.string().size());
+                oneRef.category = c.second[0]->token.sourceFile->path.parent_path().string();
+                const auto len  = static_cast<uint32_t>(c.second[0]->token.sourceFile->module->path.string().size());
                 if (oneRef.category.length() <= len + 5) // +5 because of /src/
                     oneRef.category.clear();
                 else

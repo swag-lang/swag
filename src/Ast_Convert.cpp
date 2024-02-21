@@ -419,7 +419,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
 bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier)
 {
     const auto node       = context->node;
-    const auto sourceFile = identifier->sourceFile;
+    const auto sourceFile = identifier->token.sourceFile;
     auto       callP      = identifier->callParameters;
     identifier->addAstFlag(AST_R_VALUE | AST_NO_BYTECODE);
 

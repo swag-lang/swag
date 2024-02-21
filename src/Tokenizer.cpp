@@ -168,6 +168,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 #endif
 
     token.literalType   = LiteralType::TypeMax;
+    token.sourceFile    = sourceFile;
     bool hasEol         = forceLastTokenIsEOL;
     token.flags         = forceLastTokenIsEOL ? TOKEN_PARSE_LAST_EOL : 0;
     forceLastTokenIsEOL = false;

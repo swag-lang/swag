@@ -70,6 +70,7 @@ struct Token
 {
     const char* c_str() const { return text.c_str(); }
 
+    SourceFile*    sourceFile = nullptr;
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;

@@ -142,7 +142,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     const auto dependentVar = match.dependentVar;
     const auto node         = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
-    const auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+    const auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->token.sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
 
@@ -170,7 +170,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
     fctCallParam->resolvedParameter = match.solvedParameters[0];
 
-    const auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
+    const auto idRef = Ast::newIdentifierRef(node->token.sourceFile, fctCallParam);
     if (symbol->kind == SymbolKind::Variable)
     {
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
@@ -180,7 +180,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // :SpecUfcsNode
             identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
-            const auto id              = Ast::newIdentifier(node->sourceFile, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
+            const auto id              = Ast::newIdentifier(node->token.sourceFile, FMT("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
             id->addAstFlag(AST_NO_BYTECODE);
         }
         else
@@ -219,7 +219,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
         {
             for (const auto child : dependentVar->children)
             {
-                const auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
+                const auto copyChild = Ast::newIdentifier(node->token.sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
                 copyChild->inheritOwners(fctCallParam);
                 copyChild->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 if (!child->resolvedSymbolOverload())

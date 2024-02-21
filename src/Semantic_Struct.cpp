@@ -32,7 +32,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
         if (!node->hasAstFlag(AST_FROM_GENERIC))
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
-            node->sourceFile->module->decImplForToSolve(typeStruct);
+            node->token.sourceFile->module->decImplForToSolve(typeStruct);
         }
 
         return true;
@@ -44,7 +44,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
         ScopedLock lk1(typeStruct->mutex);
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
-        node->sourceFile->module->decImplForToSolve(typeStruct);
+        node->token.sourceFile->module->decImplForToSolve(typeStruct);
 
         ScopedLock lk2(node->structScope->parentScope->mutex);
         ScopedLock lk3(node->structScope->mutex);
@@ -59,7 +59,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
     else
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
-        node->sourceFile->module->decImplForToSolve(typeStruct);
+        node->token.sourceFile->module->decImplForToSolve(typeStruct);
     }
 
     return true;
@@ -68,7 +68,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 bool Semantic::resolveImplForType(SemanticContext* context)
 {
     const auto node       = castAst<AstImpl>(context->node, AstNodeKind::Impl);
-    const auto sourceFile = node->sourceFile;
+    const auto sourceFile = node->token.sourceFile;
     const auto module     = sourceFile->module;
     AstNode*   first;
     AstNode*   back;
@@ -244,7 +244,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 child->allocateExtensionNoLock(ExtensionKind::ByteCode);
                 child->extByteCode()->bc             = Allocator::alloc<ByteCode>();
                 child->extByteCode()->bc->node       = child;
-                child->extByteCode()->bc->sourceFile = child->sourceFile;
+                child->extByteCode()->bc->sourceFile = child->token.sourceFile;
             }
 
             child->extByteCode()->bc->forceEmit = true;
