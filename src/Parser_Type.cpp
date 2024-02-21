@@ -78,9 +78,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
         if (firstAddedType->typeFlags.has(TYPEFLAG_IS_SELF))
             param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
 
-        param->allocateExtension(ExtensionKind::Misc);
-        param->extMisc()->exportNode = firstAddedType;
-
+        param->addExtraPointer(ExtraPointerKind::ExportNode, firstAddedType);
         param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
         Ast::removeFromParent(firstAddedType);
@@ -242,8 +240,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 if (!namedParam)
                     param->addSpecFlag(AstVarDecl::SPEC_FLAG_UNNAMED);
 
-                param->allocateExtension(ExtensionKind::Misc);
-                param->extMisc()->exportNode = typeExpr;
+                param->addExtraPointer(ExtraPointerKind::ExportNode, typeExpr);
                 param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
                 Ast::removeFromParent(typeExpr);
@@ -331,8 +328,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->addSpecFlag(AstStruct::SPEC_FLAG_ANONYMOUS);
     if (isUnion)
         structNode->addSpecFlag(AstStruct::SPEC_FLAG_UNION);
-    structNode->allocateExtension(ExtensionKind::Misc);
-    structNode->extMisc()->exportNode = structNode;
+    structNode->addExtraPointer(ExtraPointerKind::ExportNode, structNode);
 
     const auto contentNode = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content    = contentNode;

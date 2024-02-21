@@ -271,7 +271,8 @@ enum class DeferKind
 enum class ExtraPointerKind
 {
     CastItf,
-    AnyTypeSegment
+    AnyTypeSegment,
+    ExportNode
 };
 
 struct AstNode
@@ -409,7 +410,6 @@ struct AstNode
         SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
         TypeInfo*       collectTypeInfo              = nullptr;
         AstNode*        alternativeNode              = nullptr;
-        AstNode*        exportNode                   = nullptr;
         AstNode*        isNamed                      = nullptr;
 
         uint32_t castOffset    = 0;
@@ -455,6 +455,8 @@ struct AstNode
     template<typename T>
     T* extraPointer(ExtraPointerKind extraPtrKind)
     {
+        if (!hasExtMisc())
+            return nullptr;
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it != extMisc()->extraPointers.end())
             return static_cast<T*>(it->second);
@@ -464,6 +466,8 @@ struct AstNode
     template<typename T>
     const T* extraPointer(ExtraPointerKind extraPtrKind) const
     {
+        if (!hasExtMisc())
+            return nullptr;
         const auto it = extMisc()->extraPointers.find(extraPtrKind);
         if (it != extMisc()->extraPointers.end())
             return static_cast<const T*>(it->second);

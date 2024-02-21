@@ -316,8 +316,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 varNode->type->addAstFlag(AST_NO_SEMANTIC);
 
                 const auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
-                idRef->allocateExtension(ExtensionKind::Misc);
-                idRef->extMisc()->exportNode = makePtrL;
+                idRef->addExtraPointer(ExtraPointerKind::ExportNode, makePtrL);
 
                 // Add the 2 nodes to the semantic
                 context->baseJob->nodes.push_back(idRef);
@@ -392,8 +391,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 }
 
                 // We want to export the original parameter, not the temporary variable reference
-                newParam->allocateExtension(ExtensionKind::Misc);
-                newParam->extMisc()->exportNode = nodeCall;
+                newParam->addExtraPointer(ExtraPointerKind::ExportNode, nodeCall);
                 newParam->allocateExtension(ExtensionKind::Owner);
                 newParam->extOwner()->nodesToFree.push_back(nodeCall);
 

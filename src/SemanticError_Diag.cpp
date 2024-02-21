@@ -71,8 +71,8 @@ namespace
         if (errorParam.destStructDecl)
         {
             errorParam.addError(new Diagnostic{isNamed, FMT(Err(Err0735), isNamed->token.c_str(), typeInfo->getDisplayNameC())});
-            if (typeInfo->declNode->hasExtMisc() && typeInfo->declNode->extMisc()->exportNode)
-                errorParam.addNote(Diagnostic::note(typeInfo->declNode->extMisc()->exportNode, Nte(Nte0078)));
+            if (typeInfo->declNode->hasExtraPointer(ExtraPointerKind::ExportNode))
+                errorParam.addNote(Diagnostic::note(typeInfo->declNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode), Nte(Nte0078)));
             else if (errorParam.oneTry->overload)
                 errorParam.addNote(Diagnostic::hereIs(errorParam.oneTry->overload));
 

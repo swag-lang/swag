@@ -520,8 +520,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
                 const auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
                 retNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
                 funcNode->returnType = retNode;
-                funcNode->returnType->allocateExtension(ExtensionKind::Misc);
-                funcNode->returnType->extMisc()->exportNode = typeNode->returnType;
+                funcNode->returnType->addExtraPointer(ExtraPointerKind::ExportNode, typeNode->returnType);
 
                 CloneContext cloneContext;
                 cloneContext.parent = retNode;
@@ -535,8 +534,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
                 funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_THROW);
             }
 
-            varNode->allocateExtension(ExtensionKind::Misc);
-            varNode->extMisc()->exportNode = funcNode;
+            varNode->addExtraPointer(ExtraPointerKind::ExportNode, funcNode);
 
             if (!tokenizer.comment.empty())
             {

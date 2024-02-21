@@ -954,8 +954,8 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
             const auto typeFunc  = castTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             expNode.node         = context->node;
             expNode.replaceTypes = typeFunc->replaceTypes;
-            if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
-                expNode.node = expNode.node->extMisc()->exportNode;
+            if (expNode.node->hasExtraPointer(ExtraPointerKind::ExportNode))
+                expNode.node = expNode.node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
             expNode.type = ErrCxtStepKind::Generic;
             job->context.errCxtSteps.push_back(expNode);
         }

@@ -883,9 +883,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     {
         // Identifier can have an export node, so in that case we need to export by node, not by type, in
         // order to export the real node (for example for an array of lambdas/closures)
-        if (!node->identifier ||
-            !node->identifier->hasExtMisc() ||
-            !node->identifier->extMisc()->exportNode)
+        if (!node->identifier || !node->identifier->hasExtraPointer(ExtraPointerKind::ExportNode))
         {
             SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
 
@@ -1026,8 +1024,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 {
     if (!node)
         return true;
-    if (node->hasExtMisc() && node->extMisc()->exportNode)
-        node = node->extMisc()->exportNode;
+    if (node->hasExtraPointer(ExtraPointerKind::ExportNode))
+        node = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
     if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
         return true;
 
@@ -1123,8 +1121,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             bool first = true;
             for (auto c : node->children)
             {
-                if (c->hasExtMisc() && c->extMisc()->exportNode)
-                    c = c->extMisc()->exportNode;
+                if (c->hasExtraPointer(ExtraPointerKind::ExportNode))
+                    c = c->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
                 if (c->hasAstFlag(AST_GENERATED) && !c->hasAstFlag(AST_GENERATED_USER))
                     continue;
                 if (!first)

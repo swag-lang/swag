@@ -159,8 +159,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     structNode->originalParent = newParent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
-    structNode->allocateExtension(ExtensionKind::Misc);
-    structNode->extMisc()->exportNode = paramNode;
+    structNode->addExtraPointer(ExtraPointerKind::ExportNode, paramNode);
 
     const auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content    = contentNode;
@@ -383,9 +382,8 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     // This peace of code is necessary to solve something like :
     // let s = [{1, 2}, {3, 4}]
     const auto structDecl = newStructDecl(context->sourceFile, nullptr);
-    structDecl->allocateExtension(ExtensionKind::Misc);
-    structDecl->extMisc()->exportNode = typeStruct->declNode;
-    typeStruct->declNode              = structDecl;
+    structDecl->addExtraPointer(ExtraPointerKind::ExportNode, typeStruct->declNode);
+    typeStruct->declNode = structDecl;
     typeStruct->declNode->addAstFlag(AST_GENERATED);
     typeStruct->declNode->typeInfo   = typeStruct;
     typeStruct->declNode->ownerScope = context->sourceFile->scopeFile;
@@ -480,9 +478,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // And make a reference to that variable
     const auto identifierRef = identifier->identifierRef();
-
-    identifierRef->allocateExtension(ExtensionKind::Misc);
-    identifierRef->extMisc()->exportNode = identifier;
+    identifierRef->addExtraPointer(ExtraPointerKind::ExportNode, identifier);
 
     identifierRef->allocateExtension(ExtensionKind::Owner);
     for (auto c : identifierRef->children)

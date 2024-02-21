@@ -29,8 +29,8 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     ErrorCxtStep expNode;
     expNode.node         = context->node;
     expNode.replaceTypes = replaceTypes;
-    if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
-        expNode.node = expNode.node->extMisc()->exportNode;
+    if (expNode.node->hasExtraPointer(ExtraPointerKind::ExportNode))
+        expNode.node = expNode.node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
     expNode.type = ErrCxtStepKind::Generic;
     destCxt->errCxtSteps.push_back(expNode);
 

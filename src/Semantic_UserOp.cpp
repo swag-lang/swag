@@ -763,8 +763,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         varNode->type->addAstFlag(AST_NO_SEMANTIC);
 
                         auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
-                        idRef->allocateExtension(ExtensionKind::Misc);
-                        idRef->extMisc()->exportNode = makePtrL;
+                        idRef->addExtraPointer(ExtraPointerKind::ExportNode, makePtrL);
 
                         // Put child front, because emitFuncCallParam wants the parameter to be the first
                         Ast::removeFromParent(idRef);

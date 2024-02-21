@@ -158,8 +158,8 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 
     // When exporting func inside interfaces, we need to "func" form to be typed, in order
     // to export correctly
-    if (node->hasExtMisc() && node->extMisc()->exportNode)
-        node->extMisc()->exportNode->typeInfo = node->type->typeInfo;
+    if (node->hasExtraPointer(ExtraPointerKind::ExportNode))
+        node->extraPointer<AstNode>(ExtraPointerKind::ExportNode)->typeInfo = node->type->typeInfo;
 
     // Ghosting check
     // We simulate a reference to the local variable, in the same context, to raise an error

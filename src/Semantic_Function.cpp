@@ -1610,8 +1610,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             const auto idRef = Ast::newIdentifierRef(context->sourceFile, varNode->token.text, node);
             Ast::addChildBack(node, varNode);
 
-            idRef->allocateExtension(ExtensionKind::Misc);
-            idRef->extMisc()->exportNode = child;
+            idRef->addExtraPointer(ExtraPointerKind::ExportNode, child);
             idRef->allocateExtension(ExtensionKind::Owner);
             idRef->extOwner()->nodesToFree.push_back(child);
 
