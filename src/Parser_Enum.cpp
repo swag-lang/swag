@@ -9,7 +9,7 @@
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)
 {
-    const auto enumNode   = Ast::newNode<AstEnum>(AstNodeKind::EnumDecl, this, parent, sourceFile);
+    const auto enumNode   = Ast::newNode<AstEnum>(AstNodeKind::EnumDecl, this, parent);
     enumNode->semanticFct = Semantic::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
     enumNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
@@ -73,7 +73,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
 
     // Raw type
     SWAG_CHECK(eatToken());
-    const auto typeNode   = Ast::newNode<AstNode>(AstNodeKind::EnumType, this, enumNode, sourceFile);
+    const auto typeNode   = Ast::newNode<AstNode>(AstNodeKind::EnumType, this, enumNode);
     typeNode->semanticFct = Semantic::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
@@ -96,7 +96,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
     {
         const auto startLoc = token.startLocation;
-        const auto stmt     = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
+        const auto stmt     = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
         *result             = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
@@ -147,7 +147,7 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
 
-    const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent, sourceFile);
+    const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent);
     enumValue->addSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING);
     enumValue->semanticFct = Semantic::resolveSubEnumValue;
     *result                = enumValue;
@@ -172,7 +172,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0265), token.c_str())));
 
-    const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent, sourceFile);
+    const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent);
     *result              = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = Semantic::resolveEnumValue;

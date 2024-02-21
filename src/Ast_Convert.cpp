@@ -158,7 +158,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
     structNode->addExtraPointer(ExtraPointerKind::ExportNode, paramNode);
 
-    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, nullptr, structNode, sourceFile);
+    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, nullptr, structNode);
     structNode->content    = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
@@ -231,7 +231,8 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             if (p->typeInfo->isGeneric())
                 typeInfo->deducedGenericParameters.push_back(typeField);
 
-            const auto varNode  = newVarDecl(nameVar, nullptr, contentNode, contentNode->token.sourceFile);
+            const auto varNode = newVarDecl(nameVar, nullptr, contentNode, contentNode->token.sourceFile);
+            SWAG_ASSERT(varNode->token.sourceFile);
             const auto typeNode = newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
             varNode->addAstFlag(AST_GENERATED | AST_STRUCT_MEMBER);
             varNode->type       = typeNode;
@@ -253,16 +254,17 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
 bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignment, AstStruct** result)
 {
-    const auto sourceFile = context->sourceFile;
-    AstStruct* structNode = newStructDecl(nullptr, nullptr, sourceFile);
-    *result               = structNode;
+    const auto sourceFile        = context->sourceFile;
+    AstStruct* structNode        = newStructDecl(nullptr, nullptr, nullptr);
+    structNode->token.sourceFile = sourceFile;
+    *result                      = structNode;
     structNode->addAstFlag(AST_GENERATED);
 
     // A capture block is packed
     if (assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE))
         structNode->packing = 1;
 
-    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, nullptr, structNode, sourceFile);
+    const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::TupleContent, nullptr, structNode);
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
@@ -302,6 +304,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
         const auto paramNode = newVarDecl(varName, nullptr, contentNode, contentNode->token.sourceFile);
         paramNode->inheritTokenLocation(subAffect->token);
+        SWAG_ASSERT(paramNode->token.sourceFile);
 
         if (autoName)
         {
@@ -377,7 +380,8 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     // Generate some fake nodes
     // This peace of code is necessary to solve something like :
     // let s = [{1, 2}, {3, 4}]
-    const auto structDecl = newStructDecl(nullptr, nullptr, context->sourceFile);
+    const auto structDecl        = newStructDecl(nullptr, nullptr, context->sourceFile);
+    structDecl->token.sourceFile = context->sourceFile;
     structDecl->addExtraPointer(ExtraPointerKind::ExportNode, typeStruct->declNode);
     typeStruct->declNode = structDecl;
     typeStruct->declNode->addAstFlag(AST_GENERATED);
@@ -394,6 +398,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
         f->declNode           = newVarDecl(f->name, nullptr, typeStruct->declNode, typeStruct->declNode->token.sourceFile);
         f->declNode->typeInfo = f->typeInfo;
         f->declNode->addAstFlag(AST_GENERATED);
+        SWAG_ASSERT(f->declNode->token.sourceFile);
 
         AddSymbolTypeInfo toAdd;
         toAdd.kind          = SymbolKind::Variable;
@@ -501,19 +506,17 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
 AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
 {
-    const auto sourceFile = context->sourceFile;
-
     // Tuple item is a lambda
     if (childType->isLambdaClosure())
     {
         const auto typeLambda       = castTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
-        const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, nullptr, parent, sourceFile);
+        const auto typeExprLambda   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, nullptr, parent);
         typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
         if (childType->hasFlag(TYPEINFO_CAN_THROW))
             typeExprLambda->addSpecFlag(AstTypeLambda::SPEC_FLAG_CAN_THROW);
 
         // Parameters
-        const auto params          = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, nullptr, typeExprLambda, sourceFile);
+        const auto params          = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, nullptr, typeExprLambda);
         typeExprLambda->parameters = params;
         for (const auto p : typeLambda->parameters)
         {

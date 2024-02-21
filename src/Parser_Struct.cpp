@@ -11,7 +11,7 @@
 
 bool Parser::doImpl(AstNode* parent, AstNode** result)
 {
-    auto implNode         = Ast::newNode<AstImpl>(AstNodeKind::Impl, this, parent, sourceFile);
+    auto implNode         = Ast::newNode<AstImpl>(AstNodeKind::Impl, this, parent);
     *result               = implNode;
     implNode->semanticFct = Semantic::resolveImpl;
 
@@ -187,7 +187,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 
 bool Parser::doStruct(AstNode* parent, AstNode** result)
 {
-    const auto structNode   = Ast::newNode<AstStruct>(AstNodeKind::StructDecl, this, parent, sourceFile);
+    const auto structNode   = Ast::newNode<AstStruct>(AstNodeKind::StructDecl, this, parent);
     *result                 = structNode;
     structNode->semanticFct = Semantic::resolveStruct;
     structNode->allocateExtension(ExtensionKind::Semantic);
@@ -340,7 +340,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
 
-        const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::StructContent, this, structNode, sourceFile);
+        const auto contentNode = Ast::newNode<AstNode>(AstNodeKind::StructContent, this, structNode);
         structNode->content    = contentNode;
         contentNode->allocateExtension(ExtensionKind::Semantic);
         contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
@@ -360,7 +360,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     const auto startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftCurly)
     {
-        const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent, sourceFile);
+        const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
         *result         = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
@@ -483,7 +483,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
                 SWAG_CHECK(eatToken());
             }
 
-            const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr, sourceFile);
+            const auto funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, nullptr);
 
             SWAG_CHECK(checkIsValidUserName(funcNode));
             SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0295), token.c_str())));
@@ -502,7 +502,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             Semantic::setVarDeclResolve(varNode);
             varNode->addAstFlag(AST_R_VALUE);
 
-            const auto typeNode   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, this, varNode, sourceFile);
+            const auto typeNode   = Ast::newNode<AstTypeLambda>(AstNodeKind::TypeLambda, this, varNode);
             typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
             varNode->type         = typeNode;
             varNode->type->inheritTokenLocation(funcNode->token);
@@ -517,7 +517,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
 
-                const auto retNode = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode, sourceFile);
+                const auto retNode = Ast::newNode<AstNode>(AstNodeKind::FuncDeclType, this, funcNode);
                 retNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
                 funcNode->returnType = retNode;
                 funcNode->returnType->addExtraPointer(ExtraPointerKind::ExportNode, typeNode->returnType);

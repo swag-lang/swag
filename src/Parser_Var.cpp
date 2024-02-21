@@ -95,7 +95,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         auto parentNode = parent;
         if (acceptDeref || parent->kind == AstNodeKind::AttrUse)
         {
-            parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent, sourceFile);
+            parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
             *result    = parentNode;
         }
 
@@ -157,7 +157,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     {
         SWAG_VERIFY(acceptDeref, error(leftNode, FMT(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
 
-        const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent, sourceFile);
+        const auto parentNode = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, this, parent);
         *result               = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"

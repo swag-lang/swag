@@ -595,7 +595,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         const auto it = context.replaceTokens.find(token.id);
         if (it != context.replaceTokens.end())
         {
-            const auto newNode = Ast::newNode<AstSubstBreakContinue>(AstNodeKind::SubstBreakContinue, nullptr, context.parent, token.sourceFile);
+            const auto newNode = Ast::newNode<AstSubstBreakContinue>(AstNodeKind::SubstBreakContinue, nullptr, context.parent);
             newNode->allocateExtension(ExtensionKind::Semantic);
             newNode->extSemantic()->semanticBeforeFct = Semantic::preResolveSubstBreakContinue;
 

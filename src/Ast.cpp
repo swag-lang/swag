@@ -4,7 +4,7 @@
 #include "Parser.h"
 #include "TypeManager.h"
 
-void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, AstNode* parent, SourceFile* sourceFile)
+void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, AstNode* parent)
 {
     node->kind   = kind;
     node->parent = parent;
@@ -21,11 +21,6 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
         node->inheritTokenLocation(parent->token);
         node->inheritOwners(parent);
     }
-
-    if(node->token.sourceFile && node->token.sourceFile != sourceFile)
-        SWAG_ASSERT(false);
-    
-    node->token.sourceFile = sourceFile;
 
     if (parent)
     {
@@ -293,6 +288,8 @@ void Ast::addChildFront(AstNode* parent, AstNode* child)
         parent->children.push_front(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);
+        if (!child->token.sourceFile)
+            child->token.sourceFile = parent->token.sourceFile;
     }
 
     child->parent = parent;
@@ -310,6 +307,8 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
         parent->children.push_back(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);
+        if (!child->token.sourceFile)
+            child->token.sourceFile = parent->token.sourceFile;
     }
 
     child->parent = parent;
