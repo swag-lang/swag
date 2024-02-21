@@ -225,10 +225,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
             // We have a name
             if (namedParam)
-            {
-                typeExpr->allocateExtension(ExtensionKind::Misc);
-                typeExpr->extMisc()->isNamed = namedParam;
-            }
+                typeExpr->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);
 
             SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Err0253)));
 
@@ -252,10 +249,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     param->inheritTokenLocation(typeExpr);
 
                 if (namedParam)
-                {
-                    param->allocateExtension(ExtensionKind::Misc);
-                    param->extMisc()->isNamed = namedParam;
-                }
+                    param->addExtraPointer(ExtraPointerKind::IsNamed, namedParam);
 
                 if (token.id == TokenId::SymEqual)
                 {

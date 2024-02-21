@@ -230,8 +230,9 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
             typeParam->typeInfo = param->typeInfo;
             typeParam->declNode = param;
 
-            if (param->hasExtMisc() && param->extMisc()->isNamed)
-                typeParam->name = param->extMisc()->isNamed->token.text;
+            const auto isNamed = param->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+            if (isNamed)
+                typeParam->name = isNamed->token.text;
 
             if (typeParam->typeInfo->isGeneric())
                 typeInfo->addFlag(TYPEINFO_GENERIC);

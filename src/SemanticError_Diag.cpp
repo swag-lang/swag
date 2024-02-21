@@ -62,9 +62,9 @@ namespace
 
     void errorInvalidNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
     {
-        SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
+        SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
 
-        const auto isNamed  = errorParam.failedParam->extMisc()->isNamed;
+        const auto isNamed  = errorParam.failedParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
         const auto typeInfo = errorParam.oneTry->type;
         SWAG_ASSERT(typeInfo);
 
@@ -90,9 +90,10 @@ namespace
 
     void errorDuplicatedNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
     {
-        SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
-        const auto msg = FMT(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.c_str());
-        const auto err = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
+        SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
+        const auto isNamed = errorParam.failedParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+        const auto msg     = FMT(Err(Err0023), isNamed->token.c_str());
+        const auto err     = new Diagnostic{isNamed, msg};
         errorParam.addError(err);
 
         const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;

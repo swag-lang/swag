@@ -507,8 +507,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 // Make it a named param, in case some other default "normal" parameters are before (because in that case
                 // we let the emitCall to deal with those default parameters)
-                newParam->allocateExtension(ExtensionKind::Misc);
-                newParam->extMisc()->isNamed = funcParam;
+                newParam->addExtraPointer(ExtraPointerKind::IsNamed, funcParam);
 
                 newParam->indexParam = i;
                 newParam->addAstFlag(AST_GENERATED);

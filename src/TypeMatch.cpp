@@ -26,7 +26,7 @@ namespace
         {
             const auto callParameter = context.parameters[i];
 
-            if (callParameter->hasExtMisc() && callParameter->extMisc()->isNamed)
+            if (callParameter->hasExtraPointer(ExtraPointerKind::IsNamed))
             {
                 context.hasNamedParameters = true;
                 break;
@@ -190,9 +190,8 @@ namespace
         for (size_t j = 0; j < parameters.size(); j++)
         {
             const auto wantedParameter = parameters[j];
-            if (callParameter->hasExtMisc() &&
-                callParameter->extMisc()->isNamed &&
-                parameters[j]->name == callParameter->extMisc()->isNamed->token.text)
+            auto       isNamed         = callParameter->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+            if (isNamed && parameters[j]->name == isNamed->token.text)
             {
                 if (context.doneParameters[j])
                 {
@@ -200,9 +199,8 @@ namespace
                     for (size_t k = 0; k < context.parameters.size(); k++)
                     {
                         const auto checkParam = context.parameters[k];
-                        if (checkParam->hasExtMisc() &&
-                            checkParam->extMisc()->isNamed &&
-                            checkParam->extMisc()->isNamed->token.text == parameters[j]->name)
+                        isNamed               = checkParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+                        if (isNamed && isNamed->token.text == parameters[j]->name)
                         {
                             context.badSignatureInfos.badSignatureNum1 = static_cast<int>(k);
                             break;
@@ -313,7 +311,7 @@ namespace
                 break;
             }
 
-            if (!param->hasExtMisc() || !param->extMisc()->isNamed)
+            if (!param->hasExtraPointer(ExtraPointerKind::IsNamed))
             {
                 context.badSignatureInfos.badSignatureParameterIdx = static_cast<int>(i);
                 context.result                                     = MatchResult::MissingNamedParameter;

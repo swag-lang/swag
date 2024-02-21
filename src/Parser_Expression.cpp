@@ -1202,8 +1202,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
                 else
                     SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE, &paramExpression));
 
-                paramExpression->allocateExtension(ExtensionKind::Misc);
-                paramExpression->extMisc()->isNamed  = namedExpression;
+                paramExpression->addExtraPointer(ExtraPointerKind::IsNamed, namedExpression);
                 paramExpression->token.startLocation = namedExpression->token.startLocation;
                 paramExpression->allocateExtension(ExtensionKind::Owner);
                 paramExpression->extOwner()->nodesToFree.push_back(namedToFree);

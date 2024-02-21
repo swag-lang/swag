@@ -274,7 +274,8 @@ enum class ExtraPointerKind
     AnyTypeSegment,
     ExportNode,
     CollectTypeInfo,
-    AlternativeNode
+    AlternativeNode,
+    IsNamed
 };
 
 struct AstNode
@@ -410,8 +411,7 @@ struct AstNode
         VectorMap<ExtraPointerKind, void*> extraPointers;
 
         SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
-        AstNode*        isNamed                      = nullptr;
-
+        
         uint32_t castOffset    = 0;
         uint32_t stackOffset   = 0;
         uint32_t anyTypeOffset = 0;

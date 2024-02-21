@@ -88,11 +88,9 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         if (oneChild->kind == AstNodeKind::Identifier)
             oneChild->addSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE);
 
-        if (oneChild->hasExtMisc() && oneChild->extMisc()->isNamed)
-        {
-            oneParam->allocateExtension(ExtensionKind::Misc);
-            oneParam->extMisc()->isNamed = oneChild->extMisc()->isNamed;
-        }
+        const auto isNamed = oneChild->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+        if (isNamed)
+            oneParam->addExtraPointer(ExtraPointerKind::IsNamed, isNamed);
 
         // If this is for a return, remember it, in order to make a move or a copy
         if (typeStruct->isTuple() && fromNode->parent->kind == AstNodeKind::Return)

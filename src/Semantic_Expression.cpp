@@ -91,11 +91,12 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         typeInfo->subTypes.push_back(typeParam);
 
         // Value has been named
-        if (child->hasExtMisc() && child->extMisc()->isNamed)
+        const auto isNamed = child->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+        if (isNamed)
         {
-            typeInfo->name += child->extMisc()->isNamed->token.text;
+            typeInfo->name += isNamed->token.text;
             typeInfo->name += ": ";
-            typeParam->name = child->extMisc()->isNamed->token.text;
+            typeParam->name = isNamed->token.text;
         }
 
         typeInfo->name += typeParam->typeInfo->name;

@@ -1031,9 +1031,10 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         return true;
 
     // Prepend some stuff
-    if (node->hasExtMisc() && node->extMisc()->isNamed)
+    const auto isNamed = node->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+    if (isNamed)
     {
-        concat.addString(node->extMisc()->isNamed->token.text);
+        concat.addString(isNamed->token.text);
         CONCAT_FIXED_STR(concat, ": ");
     }
 

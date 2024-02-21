@@ -136,8 +136,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->children.size() != 1)
                     return context->report({paramExpression, FMT(Err(Err0329), paramExpression->token.c_str())});
-                param->allocateExtension(ExtensionKind::Misc);
-                param->extMisc()->isNamed = paramExpression->children.front();
+                param->addExtraPointer(ExtraPointerKind::IsNamed, paramExpression->children.front());
                 param->allocateExtension(ExtensionKind::Owner);
                 param->extOwner()->nodesToFree.push_back(paramExpression);
                 SWAG_CHECK(eatToken());

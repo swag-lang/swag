@@ -102,7 +102,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extMisc()->stackOffset                  = from->extMisc()->stackOffset;
         extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;
         extMisc()->alternativeScopes            = from->extMisc()->alternativeScopes;
-        extMisc()->isNamed                      = from->extMisc()->isNamed;
     }
 
     if (from->hasExtSemantic())
