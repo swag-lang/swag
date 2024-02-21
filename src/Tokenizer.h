@@ -12,7 +12,9 @@ enum class TokenId : uint16_t
 #include "TokenIds.h"
 };
 
-using TokenFlags                              = Flags<uint32_t>;
+using TokenFlags      = Flags<uint32_t>;
+using TokenParseFlags = Flags<uint8_t>;
+
 constexpr TokenFlags TOKEN_SYM                = 0x00000001;
 constexpr TokenFlags TOKEN_INTRINSIC_NORETURN = 0x00000002;
 constexpr TokenFlags TOKEN_INTRINSIC_RETURN   = 0x00000004;
@@ -79,7 +81,6 @@ struct Token
 };
 #pragma pack(pop)
 
-using TokenParseFlags                                    = Flags<uint8_t>;
 constexpr TokenParseFlags TOKEN_PARSE_LAST_EOL           = 0x01;
 constexpr TokenParseFlags TOKEN_PARSE_LAST_BLANK         = 0x02;
 constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
