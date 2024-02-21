@@ -1463,7 +1463,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         if (leftNode->kind == AstNodeKind::MultiIdentifier)
         {
             savedtoken.startLocation = token.startLocation;
-            const auto parentNode    = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            const auto parentNode    = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
             *result                  = parentNode;
 
             // Generate an expression of the form "var firstVar = assignment", and "secondVar = firstVar" for the rest
@@ -1520,7 +1520,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
             savedtoken.startLocation = token.startLocation;
-            const auto parentNode    = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            const auto parentNode    = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
             *result                  = parentNode;
 
             // Get right side

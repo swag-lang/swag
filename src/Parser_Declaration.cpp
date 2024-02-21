@@ -86,7 +86,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     else
     {
         attrUse->addAstFlag(AST_GLOBAL_NODE);
-        topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, attrUse);
+        topStmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, attrUse);
         topStmt->addAstFlag(AST_GLOBAL_NODE);
         while (token.id != TokenId::EndOfFile)
             SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
@@ -352,7 +352,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
 bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+    const auto node = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
     *result         = node;
 
     const auto startLoc = token.startLocation;
@@ -365,7 +365,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    const auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+    const auto node = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
     *result         = node;
 
     const bool isGlobal = currentScope->isGlobalOrImpl();
@@ -444,7 +444,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 
         const auto newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
         Scoped     scoped(this, newScope);
-        AstNode*   statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        AstNode*   statement = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
         *result              = statement;
         statement->allocateExtension(ExtensionKind::Semantic);
         statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
@@ -485,7 +485,7 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
 
         if (currentScope->isGlobalOrImpl())
         {
-            *result = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            *result = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
         }
         else

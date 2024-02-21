@@ -394,6 +394,10 @@ void AstNode::release()
         case AstNodeKind::RefSubDecl:
             Allocator::free<AstRefSubDecl>(this);
             break;
+        case AstNodeKind::Statement:
+        case AstNodeKind::StatementNoScope:
+            Allocator::free<AstStatement>(this);
+            break;
         default:
             Allocator::free<AstNode>(this);
             break;
@@ -524,25 +528,14 @@ AstNode* AstNode::clone(CloneContext& context)
             return clone<AstLiteral>(this, context);
         case AstNodeKind::RefSubDecl:
             return clone<AstRefSubDecl>(this, context);
+        case AstNodeKind::Statement:
+        case AstNodeKind::StatementNoScope:
+            return clone<AstStatement>(this, context);
 
         default:
         {
             const auto newNode = Ast::newNode<AstNode>();
-            if (hasAstFlag(AST_NEED_SCOPE))
-            {
-                auto cloneContext        = context;
-                cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
-
-                // We need to register sub declarations
-                // All of this is a hack, not cool
-                if (cloneContext.forceFlags.has(AST_IN_MIXIN))
-                    cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
-
-                newNode->copyFrom(cloneContext, this);
-                context.propagateResult(cloneContext);
-            }
-            else
-                newNode->copyFrom(context, this);
+            newNode->copyFrom(context, this);
             return newNode;
         }
     }
@@ -1392,7 +1385,7 @@ void AstNode::setResolvedSymbolOverload(SymbolOverload* over)
 
 void AstNode::setResolvedSymbol(SymbolName* sym, SymbolOverload* over)
 {
-    if(!over)
+    if (!over)
     {
         addSemFlag(SEMFLAG_HAS_SYMBOL_NAME);
         symbolName = sym;

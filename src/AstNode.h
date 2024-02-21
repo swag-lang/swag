@@ -1134,3 +1134,8 @@ struct AstLiteral : AstNode
     Register    literalValue;
     LiteralType literalType;
 };
+
+struct AstStatement : AstNode
+{
+    AstNode* clone(CloneContext& context);
+};

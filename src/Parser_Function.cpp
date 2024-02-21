@@ -921,7 +921,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             }
             else
             {
-                auto stmt               = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
+                auto stmt               = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, funcNode);
                 auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
                 returnNode->semanticFct = Semantic::resolveReturn;
                 funcNode->content       = returnNode;
@@ -946,7 +946,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 funcNode->content = node;
 
-                auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, node);
+                auto stmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, node);
 
                 ScopedTryCatchAssume sc(this, node);
                 SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
@@ -958,14 +958,14 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 funcNode->content = node;
 
-                auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, node);
+                auto stmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, node);
 
                 ScopedTryCatchAssume sc(this, node);
                 SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
             }
             else
             {
-                auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
+                auto stmt         = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, funcNode);
                 funcNode->content = stmt;
 
                 SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));

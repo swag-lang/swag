@@ -1348,3 +1348,24 @@ AstNode* AstLiteral::clone(CloneContext& context)
     newNode->literalValue = literalValue;
     return newNode;
 }
+
+AstNode* AstStatement::clone(CloneContext& context)
+{
+    const auto newNode = Ast::newNode<AstStatement>();
+    if (hasAstFlag(AST_NEED_SCOPE))
+    {
+        auto cloneContext        = context;
+        cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+
+        // We need to register sub declarations
+        // All of this is a hack, not cool
+        if (cloneContext.forceFlags.has(AST_IN_MIXIN))
+            cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
+
+        newNode->copyFrom(cloneContext, this);
+        context.propagateResult(cloneContext);
+    }
+    else
+        newNode->copyFrom(context, this);    
+    return newNode;
+}

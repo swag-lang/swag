@@ -96,7 +96,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
     {
         const auto startLoc = token.startLocation;
-        const auto stmt     = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        const auto stmt     = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
         *result             = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)

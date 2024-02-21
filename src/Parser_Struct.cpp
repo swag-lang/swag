@@ -360,7 +360,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     const auto startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftCurly)
     {
-        const auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        const auto stmt = Ast::newNode<AstStatement>(this, AstNodeKind::Statement, sourceFile, parent);
         *result         = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
