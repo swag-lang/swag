@@ -257,8 +257,9 @@ bool Semantic::collectLiteralsToSegment(JobContext* context, DataSegment* storag
         auto typeInfo = child->typeInfo;
 
         // Special type when collecting (like an array collected to a slice)
-        if (child->hasExtraPointer(ExtraPointerKind::CollectTypeInfo))
-            typeInfo = child->extraPointer<TypeInfo>(ExtraPointerKind::CollectTypeInfo);
+        const auto collectType = child->extraPointer<TypeInfo>(ExtraPointerKind::CollectTypeInfo);
+        if (collectType)
+            typeInfo = collectType;
 
         // In case of a struct to field match
         auto assignment = child;

@@ -155,9 +155,10 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
     }
 
     // From generated code
-    auto sourceNode = diagnostic.sourceNode ? diagnostic.sourceNode : diagnostic.contextNode;
-    if (sourceNode && sourceNode->hasExtraPointer(ExtraPointerKind::ExportNode))
-        sourceNode = sourceNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+    auto       sourceNode = diagnostic.sourceNode ? diagnostic.sourceNode : diagnostic.contextNode;
+    const auto exportNode = sourceNode ? sourceNode->extraPointer<AstNode>(ExtraPointerKind::ExportNode) : nullptr;
+    if (exportNode)
+        sourceNode = exportNode;
     if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->fromNode && !sourceNode->sourceFile->fileForSourceLocation)
     {
         const auto note = Diagnostic::note(sourceNode->sourceFile->fromNode, Nte(Nte0098));

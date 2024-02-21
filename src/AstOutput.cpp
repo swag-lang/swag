@@ -1024,8 +1024,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 {
     if (!node)
         return true;
-    if (node->hasExtraPointer(ExtraPointerKind::ExportNode))
-        node = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+    const auto exportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+    if (exportNode)
+        node = exportNode;
     if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
         return true;
 
@@ -1121,8 +1122,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             bool first = true;
             for (auto c : node->children)
             {
-                if (c->hasExtraPointer(ExtraPointerKind::ExportNode))
-                    c = c->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+                const auto subExportNode = c->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+                if (subExportNode)
+                    c = subExportNode;
                 if (c->hasAstFlag(AST_GENERATED) && !c->hasAstFlag(AST_GENERATED_USER))
                     continue;
                 if (!first)

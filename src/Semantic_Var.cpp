@@ -45,9 +45,9 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     if (varDecl->hasSemFlag(SEMFLAG_TUPLE_CONVERT))
     {
         SWAG_ASSERT(varDecl->resolvedSymbolOverload());
-        varDecl->typeInfo                         = varDecl->type->typeInfo;
+        varDecl->typeInfo                           = varDecl->type->typeInfo;
         varDecl->resolvedSymbolOverload()->typeInfo = varDecl->type->typeInfo;
-        typeVar                                   = varDecl->typeInfo;
+        typeVar                                     = varDecl->typeInfo;
     }
 
     if (!typeVar->isStruct())
@@ -156,10 +156,11 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
-    // When exporting func inside interfaces, we need to "func" form to be typed, in order
+    // When exporting func inside interfaces, we need the "func" form to be typed, in order
     // to export correctly
-    if (node->hasExtraPointer(ExtraPointerKind::ExportNode))
-        node->extraPointer<AstNode>(ExtraPointerKind::ExportNode)->typeInfo = node->type->typeInfo;
+    const auto exportNode = node->extraPointer<AstNode>(ExtraPointerKind::ExportNode);
+    if (exportNode)
+        exportNode->typeInfo = node->type->typeInfo;
 
     // Ghosting check
     // We simulate a reference to the local variable, in the same context, to raise an error
