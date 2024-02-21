@@ -98,7 +98,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         allocateExtension(ExtensionKind::Misc);
         extMisc()->extraPointers                = from->extMisc()->extraPointers;
         extMisc()->resolvedUserOpSymbolOverload = from->extMisc()->resolvedUserOpSymbolOverload;
-        extMisc()->collectTypeInfo              = from->extMisc()->collectTypeInfo;
         extMisc()->castOffset                   = from->extMisc()->castOffset;
         extMisc()->stackOffset                  = from->extMisc()->stackOffset;
         extMisc()->anyTypeOffset                = from->extMisc()->anyTypeOffset;

@@ -2303,10 +2303,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 
         // Collect array to slice : will need special treatment when collecting constants
         if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
-        {
-            childJ->allocateExtension(ExtensionKind::Misc);
-            childJ->extMisc()->collectTypeInfo = fieldJ->typeInfo;
-        }
+            childJ->addExtraPointer(ExtraPointerKind::CollectTypeInfo, fieldJ->typeInfo);
 
         // We use castOffset to store the offset to the field, in order to collect later at the right position
         // Note that offset is +1 to differentiate it from a "default" 0.
