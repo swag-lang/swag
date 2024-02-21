@@ -528,15 +528,15 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     if (!startNode)
         return;
 
-    if (startNode->hasExtMisc() && startNode->extMisc()->alternativeNode)
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extMisc()->alternativeNode, flags, scopeUpMode, scopeUpValue);
+    const auto alternativeNode = startNode->extraPointer<AstNode>(ExtraPointerKind::AlternativeNode);
+    if (alternativeNode)
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, alternativeNode, flags, scopeUpMode, scopeUpValue);
     else if (startNode->parent)
         collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags, scopeUpMode, scopeUpValue);
 
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
-    if (startNode->hasExtMisc() &&
-        startNode->extMisc()->alternativeNode &&
+    if (alternativeNode &&
         startNode->parent->kind == AstNodeKind::CompilerMixin)
     {
         // We authorize mixin code to access the parameters of the Swag.mixin function, except if there's a #macro block

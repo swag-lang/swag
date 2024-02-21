@@ -356,8 +356,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
         rootScope = newParent->ownerScope;
     structNode->content->addAlternativeScope(currentScope);
     SWAG_ASSERT(parent);
-    structNode->allocateExtension(ExtensionKind::Misc);
-    structNode->extMisc()->alternativeNode = parent;
+    structNode->addExtraPointer(ExtraPointerKind::AlternativeNode, parent);
 
     const auto newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope   = newScope;

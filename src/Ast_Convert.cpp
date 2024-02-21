@@ -178,7 +178,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
         rootScope = newParent->ownerScope;
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->addAlternativeScope(fromNode->parent->ownerScope);
-    structNode->extMisc()->alternativeNode = newParent;
+    structNode->addExtraPointer(ExtraPointerKind::AlternativeNode, newParent);
 
     const auto newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope   = newScope;
