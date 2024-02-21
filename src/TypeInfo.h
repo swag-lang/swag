@@ -23,12 +23,13 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 
+using TypeInfoFlags = Flags<uint64_t>;
+
 constexpr int COMPUTE_NAME               = 0;
 constexpr int COMPUTE_SCOPED_NAME        = 1;
 constexpr int COMPUTE_SCOPED_NAME_EXPORT = 2;
 constexpr int COMPUTE_DISPLAY_NAME       = 3;
 
-using TypeInfoFlags                                       = Flags<uint64_t>;
 constexpr TypeInfoFlags TYPEINFO_SELF                     = 0x00000000'00000001;
 constexpr TypeInfoFlags TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr TypeInfoFlags TYPEINFO_INTEGER                  = 0x00000000'00000004;

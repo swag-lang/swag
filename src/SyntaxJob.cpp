@@ -19,7 +19,7 @@ JobResult SyntaxJob::execute()
     if (sourceFile->numErrors)
         return JobResult::ReleaseJob;
 
-    // Then load the file
+    // Load the file if not already done
     if (!sourceFile->buffer)
     {
         const auto loadJob  = Allocator::alloc<LoadSourceFileJob>();
