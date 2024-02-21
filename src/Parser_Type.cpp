@@ -653,7 +653,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     // Cast modifiers
     ModifierFlags mdfFlags = 0;
-    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
+    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
     if (mdfFlags.has(MODIFIER_OVERFLOW))
     {
         node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);

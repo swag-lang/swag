@@ -532,7 +532,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         if (binNode->children.size() == 2)
         {
             auto child1 = binNode->children[1];
-            while (child1->kind == AstNodeKind::BinaryOp && (child1->tokenId == TokenId::KwdAnd || child1->tokenId == TokenId::KwdOr))
+            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
             {
                 const auto child0 = child1->children[0];
                 child0->allocateExtension(ExtensionKind::Misc);
@@ -596,7 +596,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         if (binNode->children.size() == 2)
         {
             auto child1 = binNode->children[1];
-            while (child1->kind == AstNodeKind::BinaryOp && (child1->tokenId == TokenId::KwdAnd || child1->tokenId == TokenId::KwdOr))
+            while (child1->kind == AstNodeKind::BinaryOp && (child1->token.id == TokenId::KwdAnd || child1->token.id == TokenId::KwdOr))
             {
                 const auto child0 = child1->children[0];
                 child0->allocateExtension(ExtensionKind::Misc);
@@ -655,7 +655,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             YIELD();
             node->addSemFlag(SEMFLAG_EMIT_OP);
         }
-        else if (node->tokenId == TokenId::SymPlus && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
+        else if (node->token.id == TokenId::SymPlus && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
         {
             const auto front       = node->children[0];
             const auto typeInfo    = TypeManager::concreteType(front->typeInfo);
@@ -680,7 +680,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             freeRegisterRC(context, node->children[1]->resultRegisterRc);
             node->addSemFlag(SEMFLAG_EMIT_OP);
         }
-        else if (node->tokenId == TokenId::SymAsterisk && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
+        else if (node->token.id == TokenId::SymAsterisk && node->hasSpecFlag(AstOp::SPEC_FLAG_FMA))
         {
             node->addSemFlag(SEMFLAG_EMIT_OP);
         }
@@ -692,7 +692,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 
             // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test
             // So we take it as the result register.
-            if (node->tokenId == TokenId::KwdAnd || node->tokenId == TokenId::KwdOr)
+            if (node->token.id == TokenId::KwdAnd || node->token.id == TokenId::KwdOr)
             {
                 // :BinOpAndOr
                 const auto front       = node->children[0];
@@ -709,7 +709,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
             typeInfoExpr      = TypeManager::concretePtrRefType(typeInfoExpr);
 
-            switch (node->tokenId)
+            switch (node->token.id)
             {
                 case TokenId::SymPlus:
                     SWAG_CHECK(emitBinaryOpPlus(context, typeInfoExpr, r0, r1, r2));

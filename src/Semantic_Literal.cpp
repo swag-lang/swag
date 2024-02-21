@@ -375,7 +375,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
     const auto node = context->node;
 
     // Can be a predefined native type
-    if (node->tokenId == TokenId::NativeType)
+    if (node->token.id == TokenId::NativeType)
     {
         const auto it = g_LangSpec->nativeTypes.find(node->token.text);
         SWAG_ASSERT(it);
@@ -384,7 +384,7 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
     }
 
     // Search if identifier is a type
-    if (node->tokenId == TokenId::Identifier)
+    if (node->token.id == TokenId::Identifier)
     {
         const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
@@ -409,50 +409,50 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     auto       node       = castAst<AstLiteral>(context->node, AstNodeKind::Literal);
     const auto sourceFile = context->sourceFile;
 
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::KwdTrue:
-            node->tokenId        = TokenId::LiteralNumber;
+            node->token.id       = TokenId::LiteralNumber;
             node->literalType    = LiteralType::TypeBool;
             node->literalValue.b = true;
             break;
         case TokenId::KwdFalse:
-            node->tokenId        = TokenId::LiteralNumber;
+            node->token.id       = TokenId::LiteralNumber;
             node->literalType    = LiteralType::TypeBool;
             node->literalValue.b = false;
             break;
         case TokenId::KwdNull:
-            node->tokenId              = TokenId::LiteralNumber;
+            node->token.id             = TokenId::LiteralNumber;
             node->literalType          = LiteralType::TypeNull;
             node->literalValue.pointer = nullptr;
             break;
         case TokenId::CompilerFile:
-            node->tokenId     = TokenId::LiteralString;
+            node->token.id    = TokenId::LiteralString;
             node->literalType = LiteralType::TypeString;
             node->token.text  = sourceFile->path.string();
             break;
         case TokenId::CompilerModule:
-            node->tokenId     = TokenId::LiteralString;
+            node->token.id    = TokenId::LiteralString;
             node->literalType = LiteralType::TypeString;
             node->token.text  = sourceFile->module ? sourceFile->module->name : Utf8("?");
             break;
         case TokenId::CompilerLine:
-            node->tokenId          = TokenId::LiteralNumber;
+            node->token.id         = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeUntypedInt;
             node->literalValue.u32 = node->token.startLocation.line + 1;
             break;
         case TokenId::CompilerBuildVersion:
-            node->tokenId          = TokenId::LiteralNumber;
+            node->token.id         = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_VERSION;
             break;
         case TokenId::CompilerBuildRevision:
-            node->tokenId          = TokenId::LiteralNumber;
+            node->token.id         = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_REVISION;
             break;
         case TokenId::CompilerBuildNum:
-            node->tokenId          = TokenId::LiteralNumber;
+            node->token.id         = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_NUM;
             break;
@@ -477,7 +477,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         SWAG_ASSERT(!suffix || node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX));
 
         // Convert to unsigned int for a character without suffix
-        if (node->tokenId == TokenId::LiteralCharacter)
+        if (node->token.id == TokenId::LiteralCharacter)
         {
             auto errMsg = checkLiteralValue(*node->computedValue(), node->literalType, node->literalValue, g_TypeMgr->typeInfoCharacter, false);
             if (!errMsg.empty())
@@ -494,7 +494,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     }
 
     // Check suffix type is correct (should be native)
-    if (suffix->tokenId != TokenId::NativeType)
+    if (suffix->token.id != TokenId::NativeType)
     {
         if (suffix->resolvedSymbolName() && suffix->resolvedSymbolName()->kind != SymbolKind::TypeAlias)
         {
@@ -526,7 +526,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     // Check if this is in fact a negative literal. This is important to know now, in order
     // to be able to correctly check bounds.
     bool negApplied = false;
-    if (node->parent->kind == AstNodeKind::SingleOp && node->parent->tokenId == TokenId::SymMinus)
+    if (node->parent->kind == AstNodeKind::SingleOp && node->parent->token.id == TokenId::SymMinus)
     {
         switch (suffix->typeInfo->nativeType)
         {

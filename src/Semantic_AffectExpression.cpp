@@ -226,7 +226,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     auto       node    = castAst<AstOp>(context->node, AstNodeKind::AffectOp);
     auto       left    = node->children[0];
     auto       right   = node->children[1];
-    const auto tokenId = node->tokenId;
+    const auto tokenId = node->token.id;
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcreteOrType(context, right));
@@ -246,7 +246,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags = false;
-    if (node->tokenId != TokenId::SymEqual)
+    if (node->token.id != TokenId::SymEqual)
     {
         const auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         if (leftReal->kind != TypeInfoKind::Struct)
@@ -254,9 +254,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
             if (leftTypeInfo->getConcreteAlias()->isEnum() || rightTypeInfo->getConcreteAlias()->isEnum())
             {
                 SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-                if (node->tokenId != TokenId::SymVerticalEqual &&
-                    node->tokenId != TokenId::SymAmpersandEqual &&
-                    node->tokenId != TokenId::SymCircumflexEqual)
+                if (node->token.id != TokenId::SymVerticalEqual &&
+                    node->token.id != TokenId::SymAmpersandEqual &&
+                    node->token.id != TokenId::SymCircumflexEqual)
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
                 if (!leftTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS) || !rightTypeInfo->getConcreteAlias()->hasFlag(TYPEINFO_ENUM_FLAGS))
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]", left);
@@ -290,7 +290,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     }
 
     // No direct operations on any, except affect any to any
-    if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
+    if (leftTypeInfo->isAny() && node->token.id != TokenId::SymEqual)
     {
         Diagnostic err{node, node->token, FMT(Err(Err0351), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
         err.addNote(left, Diagnostic::isType(leftTypeInfo));

@@ -969,9 +969,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
                        x->setOwnerBreakable(loopNode);
                    else if (x->ownerBreakable()->isParentOf(loopNode))
                    {
-                       if (x->tokenId == TokenId::KwdBreak)
+                       if (x->token.id == TokenId::KwdBreak)
                            x->ownerBreakable()->breakList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
-                       else if (x->tokenId == TokenId::KwdContinue)
+                       else if (x->token.id == TokenId::KwdContinue)
                            x->ownerBreakable()->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
                        x->setOwnerBreakable(loopNode);
                    }

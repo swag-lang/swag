@@ -114,7 +114,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             AstVarDecl* varNode  = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind        = kind;
             varNode->token       = identifier->token;
-            varNode->tokenId     = identifier->tokenId;
+            varNode->token.id    = identifier->token.id;
             varNode->assignToken = assignToken;
             varNode->addAstFlag(AST_R_VALUE);
             varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);

@@ -66,6 +66,7 @@ struct SourceLocation
     uint32_t column = 0;
 };
 
+#pragma pack(push, 2)
 struct Token
 {
     const char* c_str() const { return text.c_str(); }
@@ -74,7 +75,9 @@ struct Token
     Utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
+    TokenId        id = TokenId::Invalid;
 };
+#pragma pack(pop)
 
 using TokenParseFlags                                    = Flags<uint8_t>;
 constexpr TokenParseFlags TOKEN_PARSE_LAST_EOL           = 0x01;
@@ -84,7 +87,6 @@ constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
 struct TokenParse : Token
 {
     Register        literalValue;
-    TokenId         id          = TokenId::Invalid;
     LiteralType     literalType = static_cast<LiteralType>(0);
     TokenParseFlags flags       = 0;
 };

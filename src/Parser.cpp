@@ -125,17 +125,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
             msg = FMT(Err(Err0283), token.c_str());
             if (parent)
             {
-                if (Tokenizer::isKeyword(parent->tokenId))
+                if (Tokenizer::isKeyword(parent->token.id))
                 {
                     const Utf8 forWhat = FMT("[[%s]]", parent->token.c_str());
                     msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
                 }
-                else if (Tokenizer::isCompiler(parent->tokenId))
+                else if (Tokenizer::isCompiler(parent->token.id))
                 {
                     const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.c_str());
                     msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());
                 }
-                else if (Tokenizer::isSymbol(parent->tokenId))
+                else if (Tokenizer::isSymbol(parent->token.id))
                 {
                     const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.c_str());
                     msg                = FMT(Err(Err0281), forWhat.c_str(), token.c_str());

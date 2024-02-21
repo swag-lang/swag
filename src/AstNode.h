@@ -491,15 +491,14 @@ struct AstNode
     void setOwnerAttrUse(AstAttrUse* attrUse);
     void setOwnerBreakable(AstBreakable* bkp);
 
+    Token               token;
+    SpecFlags           specFlags;
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
     uint8_t             padding0;
-    TokenId             tokenId;
-    SpecFlags           specFlags;
 
     mutable SharedMutex    mutex;
-    Token                  token;
     VectorNative<AstNode*> children;
 
     Scope*       ownerScope;

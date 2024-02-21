@@ -275,12 +275,12 @@ bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, co
                 grandParent->kind == AstNodeKind::NameAlias ||
                 grandParent->kind == AstNodeKind::IntrinsicDefined ||
                 grandParent->kind == AstNodeKind::IntrinsicLocation ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicStringOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicRunes) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicTypeOf) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicDeclType) ||
-                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicKindOf))
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicRunes) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicDeclType) ||
+                (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
             {
                 return true;
             }

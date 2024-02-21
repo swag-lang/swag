@@ -820,7 +820,7 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitUserOp(context));
         YIELD();
-        SWAG_CHECK(emitCompareOpPostSpecialFunc(context, node->tokenId));
+        SWAG_CHECK(emitCompareOpPostSpecialFunc(context, node->token.id));
     }
     else
     {
@@ -830,7 +830,7 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
         const RegisterList r2  = reserveRegisterRC(context);
         node->resultRegisterRc = r2;
 
-        switch (node->tokenId)
+        switch (node->token.id)
         {
             case TokenId::SymEqualEqual:
                 SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));

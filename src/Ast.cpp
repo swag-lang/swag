@@ -11,7 +11,7 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
 
     if (parser)
     {
-        node->tokenId    = parser->token.id;
+        node->token.id   = parser->token.id;
         node->token.text = parser->token.text;
         node->inheritTokenLocation(parser->token);
         node->inheritOwnersAndFlags(parser);

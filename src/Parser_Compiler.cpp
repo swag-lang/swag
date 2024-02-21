@@ -21,7 +21,7 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, Err(Err0528)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
-    if (node->tokenId == TokenId::IntrinsicGetTag)
+    if (node->token.id == TokenId::IntrinsicGetTag)
     {
         SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));

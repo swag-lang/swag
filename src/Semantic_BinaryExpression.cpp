@@ -191,7 +191,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     // Must be float, without a dynamic cast
     if (leftTypeInfo->isNativeFloat() && !left->castedTypeInfo && !node->castedTypeInfo)
     {
-        if (left->kind == AstNodeKind::FactorOp && left->tokenId == TokenId::SymAsterisk)
+        if (left->kind == AstNodeKind::FactorOp && left->token.id == TokenId::SymAsterisk)
         {
             left->addSpecFlag(AstOp::SPEC_FLAG_FMA);
             node->addSpecFlag(AstOp::SPEC_FLAG_FMA);
@@ -1003,9 +1003,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 
-        if (node->tokenId != TokenId::SymVertical &&
-            node->tokenId != TokenId::SymAmpersand &&
-            node->tokenId != TokenId::SymCircumflex)
+        if (node->token.id != TokenId::SymVertical &&
+            node->token.id != TokenId::SymAmpersand &&
+            node->token.id != TokenId::SymCircumflex)
             return SemanticError::notAllowedError(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !leftTypeInfo->hasFlag(TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
@@ -1055,9 +1055,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
     // Determine if we must promote.
-    if (node->tokenId != TokenId::SymVertical &&
-        node->tokenId != TokenId::SymAmpersand &&
-        node->tokenId != TokenId::SymCircumflex)
+    if (node->token.id != TokenId::SymVertical &&
+        node->token.id != TokenId::SymAmpersand &&
+        node->token.id != TokenId::SymCircumflex)
     {
         SWAG_CHECK(TypeManager::promote(context, left, right));
         if (node->hasSpecFlag(AstOp::SPEC_FLAG_UP))
@@ -1074,7 +1074,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     // Must invert if commutative operation
     if (!leftTypeInfo->isStruct() && rightTypeInfo->isStruct())
     {
-        switch (node->tokenId)
+        switch (node->token.id)
         {
             case TokenId::SymPlus:
             case TokenId::SymAsterisk:
@@ -1101,7 +1101,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         return context->report(err);
     }
 
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::SymPlus:
             SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
@@ -1132,9 +1132,9 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
                 node->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
             }
 
-            if (node->tokenId == TokenId::SymVertical)
+            if (node->token.id == TokenId::SymVertical)
                 SWAG_CHECK(resolveBitmaskOr(context, left, right));
-            else if (node->tokenId == TokenId::SymAmpersand)
+            else if (node->token.id == TokenId::SymAmpersand)
                 SWAG_CHECK(resolveBitmaskAnd(context, left, right));
             else
                 SWAG_CHECK(resolveXor(context, left, right));
@@ -1350,7 +1350,7 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
     node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritAstFlagsOr(AST_SIDE_EFFECTS);
 
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::SymLowerLower:
             SWAG_CHECK(resolveShiftLeft(context, left, right));
@@ -1411,7 +1411,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
 
     // In case of && or ||, this is special cause we do not want to evaluate the right part if the left part
     // fails. So we need to do some work once the left part has been emitted
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::KwdAnd:
             left->setBcNotifyAfter(ByteCodeGen::emitLogicalAndAfterLeft);
@@ -1429,7 +1429,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
     if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
     {
         node->setFlagsValueIsComputed();
-        switch (node->tokenId)
+        switch (node->token.id)
         {
             case TokenId::KwdAnd:
                 node->computedValue()->reg.b = left->computedValue()->reg.b && right->computedValue()->reg.b;
@@ -1441,7 +1441,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
                 return Report::internalError(context->node, "resolveBoolExpression, token not supported");
         }
     }
-    else if (node->tokenId == TokenId::KwdAnd)
+    else if (node->token.id == TokenId::KwdAnd)
     {
         if (module->mustOptimizeBytecode(node))
         {
@@ -1473,7 +1473,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
             }
         }
     }
-    else if (node->tokenId == TokenId::KwdOr)
+    else if (node->token.id == TokenId::KwdOr)
     {
         if (module->mustOptimizeBytecode(node))
         {

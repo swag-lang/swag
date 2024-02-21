@@ -897,7 +897,7 @@ Utf8 Semantic::getCompilerFunctionString(const AstNode* node, TokenId id)
 bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 {
     auto node = context->node;
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::CompilerBackend:
             node->setFlagsValueIsComputed();
@@ -930,7 +930,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 
         case TokenId::CompilerCpu:
             node->setFlagsValueIsComputed();
-            node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
+            node->computedValue()->text = getCompilerFunctionString(node, node->token.id);
             node->typeInfo              = g_TypeMgr->typeInfoString;
             return true;
 
@@ -943,7 +943,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 
         case TokenId::CompilerBuildCfg:
             node->setFlagsValueIsComputed();
-            node->computedValue()->text = getCompilerFunctionString(node, node->tokenId);
+            node->computedValue()->text = getCompilerFunctionString(node, node->token.id);
             node->typeInfo              = g_TypeMgr->typeInfoString;
             return true;
 

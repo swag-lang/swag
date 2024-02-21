@@ -14,7 +14,7 @@
 bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 {
     const auto node = context->node;
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::IntrinsicSafety:
         {
@@ -855,7 +855,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto node = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
 
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::IntrinsicSpread:
             SWAG_CHECK(resolveIntrinsicSpread(context));
@@ -1009,14 +1009,14 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             typeInfo->computeScopedName();
             SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, FMT(Err(Err0650), typeInfo->getDisplayNameC())}));
 
-            if (node->tokenId == TokenId::IntrinsicCVaStart)
+            if (node->token.id == TokenId::IntrinsicCVaStart)
             {
                 SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && !node->ownerFct->parameters->children.empty(), context->report({node, node->token, Err(Err0452)}));
                 const auto typeParam = node->ownerFct->parameters->children.back()->typeInfo;
                 SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, Err(Err0452)}));
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaStart;
             }
-            else if (node->tokenId == TokenId::IntrinsicCVaEnd)
+            else if (node->token.id == TokenId::IntrinsicCVaEnd)
             {
                 node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaEnd;
             }

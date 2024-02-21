@@ -21,7 +21,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
     // Type suffix
     if (token.id == TokenId::SymQuote)
     {
-        if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)
+        if (node->token.id == TokenId::LiteralCharacter || node->token.id == TokenId::LiteralNumber)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, FMT(Err(Err0404), token.c_str())));
@@ -31,7 +31,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         }
         else
         {
-            switch (node->tokenId)
+            switch (node->token.id)
             {
                 case TokenId::KwdTrue:
                 case TokenId::KwdFalse:
@@ -158,7 +158,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err0568)));
 
     // Three parameters
-    if (node->tokenId == TokenId::IntrinsicMakeInterface)
+    if (node->token.id == TokenId::IntrinsicMakeInterface)
     {
         AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE, &dummyResult));
@@ -169,9 +169,9 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // Two parameters
-    else if (node->tokenId == TokenId::IntrinsicMakeSlice ||
-             node->tokenId == TokenId::IntrinsicMakeString ||
-             node->tokenId == TokenId::IntrinsicMakeAny)
+    else if (node->token.id == TokenId::IntrinsicMakeSlice ||
+             node->token.id == TokenId::IntrinsicMakeString ||
+             node->token.id == TokenId::IntrinsicMakeAny)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
@@ -179,7 +179,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // Two parameters
-    else if (node->tokenId == TokenId::IntrinsicCVaArg)
+    else if (node->token.id == TokenId::IntrinsicCVaArg)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
@@ -187,10 +187,10 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     }
 
     // One single parameter
-    else if (node->tokenId == TokenId::IntrinsicTypeOf ||
-             node->tokenId == TokenId::IntrinsicKindOf ||
-             node->tokenId == TokenId::IntrinsicSizeOf ||
-             node->tokenId == TokenId::IntrinsicDeclType)
+    else if (node->token.id == TokenId::IntrinsicTypeOf ||
+             node->token.id == TokenId::IntrinsicKindOf ||
+             node->token.id == TokenId::IntrinsicSizeOf ||
+             node->token.id == TokenId::IntrinsicDeclType)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF, &dummyResult));
     }
@@ -822,8 +822,8 @@ namespace
 
         if ((right->kind == AstNodeKind::FactorOp || right->kind == AstNodeKind::BinaryOp) && !right->hasAstFlag(AST_IN_ATOMIC_EXPR))
         {
-            const auto myPrecedence    = getPrecedence(factor->tokenId);
-            const auto rightPrecedence = getPrecedence(right->tokenId);
+            const auto myPrecedence    = getPrecedence(factor->token.id);
+            const auto rightPrecedence = getPrecedence(right->token.id);
 
             bool shuffle = false;
             if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
@@ -833,7 +833,7 @@ namespace
             //
             // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
             //
-            else if (!isAssociative(factor->tokenId) && myPrecedence == rightPrecedence)
+            else if (!isAssociative(factor->token.id) && myPrecedence == rightPrecedence)
                 shuffle = true;
 
             if (shuffle)
@@ -909,7 +909,7 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
 
         // Modifiers
         ModifierFlags mdfFlags = 0;
-        SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->tokenId, mdfFlags));
+        SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->token.id, mdfFlags));
         if (mdfFlags.has(MODIFIER_OVERFLOW))
         {
             binaryNode->addSpecFlag(AstOp::SPEC_FLAG_OVERFLOW);
@@ -1482,7 +1482,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 const auto child      = leftNode->children.front();
                 const auto affectNode = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
                 affectNode->token     = static_cast<Token>(savedtoken);
-                affectNode->tokenId   = savedtoken.id;
+                affectNode->token.id   = savedtoken.id;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 isForceTakeAddress(child);
@@ -1491,14 +1491,14 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 if (!firstDone)
                 {
                     firstDone = true;
-                    if (affectNode->tokenId == TokenId::SymEqual)
-                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, EXPR_FLAG_NONE, &affectExpression));
+                    if (affectNode->token.id == TokenId::SymEqual)
+                        SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->token.id, affectNode, EXPR_FLAG_NONE, &affectExpression));
                     else
                         SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
                 }
 
                 // This is not an initialization, so we need to duplicate the right expression
-                else if (affectNode->tokenId != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
+                else if (affectNode->token.id != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
                 {
                     const auto newAffect = Ast::clone(affectExpression, affectNode);
                     newAffect->inheritTokenLocation(affectExpression->token);
@@ -1560,7 +1560,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 }
 
                 const auto affectNode  = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                affectNode->tokenId    = savedtoken.id;
+                affectNode->token.id    = savedtoken.id;
                 affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -1578,14 +1578,14 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         else
         {
             const auto affectNode = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
-            affectNode->tokenId   = savedtoken.id;
+            affectNode->token.id   = savedtoken.id;
             affectNode->token     = static_cast<Token>(std::move(savedtoken));
 
             Ast::addChildBack(affectNode, leftNode);
             isForceTakeAddress(leftNode);
 
-            if (affectNode->tokenId == TokenId::SymEqual)
-                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, EXPR_FLAG_NONE, &dummyResult));
+            if (affectNode->token.id == TokenId::SymEqual)
+                SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->token.id, affectNode, EXPR_FLAG_NONE, &dummyResult));
             else
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
 

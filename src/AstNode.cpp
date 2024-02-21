@@ -82,8 +82,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     addSemFlag(from->semFlags.mask(SEMFLAG_HAS_SYMBOL_NAME));
     symbolName = from->symbolName;
 
-    token   = from->token;
-    tokenId = from->tokenId;
+    token = from->token;
     if (context.forceLocation)
     {
         token.startLocation = context.forceLocation->startLocation;
@@ -1256,7 +1255,7 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name) const
 AstNode* AstNode::findParent(TokenId tkn) const
 {
     auto find = parent;
-    while (find && find->tokenId != tkn)
+    while (find && find->token.id != tkn)
         find = find->parent;
     return find;
 }

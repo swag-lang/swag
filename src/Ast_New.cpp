@@ -71,7 +71,7 @@ AstVarDecl* Ast::newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* p
 AstIntrinsicProp* Ast::newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, Parser* parser)
 {
     const auto node   = Ast::newNode<AstIntrinsicProp>(AstNodeKind::IntrinsicProp, parser, parent, sourceFile);
-    node->tokenId     = id;
+    node->token.id    = id;
     node->semanticFct = Semantic::resolveIntrinsicProperty;
     return node;
 }
@@ -113,7 +113,7 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, const Utf8& name
     const auto id   = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, parser, node, sourceFile);
     id->semanticFct = Semantic::resolveIdentifier;
     id->token.text  = name;
-    id->tokenId     = TokenId::Identifier;
+    id->token.id    = TokenId::Identifier;
     id->inheritOwners(node);
 
     return node;
@@ -147,7 +147,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
             id->token.text.allocated = name.allocated;
         }
 
-        id->tokenId = TokenId::Identifier;
+        id->token.id = TokenId::Identifier;
 
         if (pz != pzEnd)
             pz++;

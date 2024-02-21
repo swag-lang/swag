@@ -732,9 +732,9 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         return nullptr;
 
     if (node->hasAstFlag(AST_GENERATED) &&
-        node->tokenId != TokenId::KwdPrivate &&
-        node->tokenId != TokenId::KwdInternal &&
-        node->tokenId != TokenId::KwdPublic)
+        node->token.id != TokenId::KwdPrivate &&
+        node->token.id != TokenId::KwdInternal &&
+        node->token.id != TokenId::KwdPublic)
         return nullptr;
 
     const Utf8 txt  = msg ? Utf8{msg} : Nte(Nte0062);

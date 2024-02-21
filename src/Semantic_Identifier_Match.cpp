@@ -35,7 +35,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
 {
     const auto module = context->sourceFile->module;
 
-    switch (identifier->tokenId)
+    switch (identifier->token.id)
     {
         case TokenId::IntrinsicAssert:
         {
@@ -433,7 +433,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             const auto funcParam = castAst<AstVarDecl>(parameters->children[i], AstNodeKind::FuncDeclParam);
             if (!funcParam->assignment)
                 continue;
-            switch (funcParam->assignment->tokenId)
+            switch (funcParam->assignment->token.id)
             {
                 case TokenId::CompilerCallerLocation:
                 case TokenId::CompilerCallerFunction:
@@ -1315,7 +1315,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             identifier->kind = AstNodeKind::FuncCall;
 
             // @print behaves like a normal function, so we want an emitCall in that case
-            if (identifier->token.text[0] == '@' && identifier->tokenId != TokenId::IntrinsicPrint)
+            if (identifier->token.text[0] == '@' && identifier->token.id != TokenId::IntrinsicPrint)
             {
                 dealWithIntrinsic(context, identifier);
                 identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
@@ -1593,15 +1593,15 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                             isLast = true;
                     }
 
-                    if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicTypeOf)
+                    if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf)
                         asMatch = true;
-                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicKindOf)
+                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf)
                         asMatch = true;
-                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf)
+                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicNameOf)
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymEqualEqual && overload->symbol->kind == SymbolKind::Struct)
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymEqualEqual && overload->symbol->kind == SymbolKind::Struct)
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymExclamEqual && overload->symbol->kind == SymbolKind::Struct)
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->token.id == TokenId::SymExclamEqual && overload->symbol->kind == SymbolKind::Struct)
                         asMatch = true;
                     else if (grandParent->kind == AstNodeKind::IntrinsicDefined)
                         asMatch = true;

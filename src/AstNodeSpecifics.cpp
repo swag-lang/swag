@@ -592,7 +592,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     // not a 'new' breakable in the user code
     if (context.ownerBreakable == context.replaceTokensBreakable)
     {
-        const auto it = context.replaceTokens.find(tokenId);
+        const auto it = context.replaceTokens.find(token.id);
         if (it != context.replaceTokens.end())
         {
             const auto newNode = Ast::newNode<AstSubstBreakContinue>(AstNodeKind::SubstBreakContinue, nullptr, context.parent, token.sourceFile);

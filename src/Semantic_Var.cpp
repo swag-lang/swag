@@ -482,7 +482,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
             }
 
             // op match
-            if (op->tokenId == TokenId::SymEqual)
+            if (op->token.id == TokenId::SymEqual)
             {
                 mpl->typeInfo = g_TypeMgr->typeInfoUndefined;
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, mpl, ROP_SIMPLE_CAST));

@@ -368,7 +368,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
     if (mustEmitSafety(context, SAFETY_MATH))
     {
         PushICFlags ic(context, BCI_SAFETY);
-        switch (node->tokenId)
+        switch (node->token.id)
         {
             case TokenId::IntrinsicAbs:
             {
@@ -428,7 +428,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             case TokenId::IntrinsicACos:
             {
                 auto t0  = TypeManager::concreteType(callParams->children[0]->typeInfo);
-                auto msg = node->tokenId == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
+                auto msg = node->token.id == TokenId::IntrinsicASin ? safetyMsg(SafetyMsg::IntrinsicASin, t0) : safetyMsg(SafetyMsg::IntrinsicACos, t0);
                 auto re  = reserveRegisterRC(context);
                 if (t0->nativeType == NativeTypeKind::F32)
                 {
@@ -460,7 +460,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         }
     }
 
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::IntrinsicCompilerError:
         {
@@ -928,7 +928,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             }
 
             auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            inst->d.u32 = static_cast<uint32_t>(node->token.id);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
             break;
@@ -964,7 +964,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             }
 
             auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            inst->d.u32 = static_cast<uint32_t>(node->token.id);
             freeRegisterRC(context, child);
             break;
         }
@@ -999,7 +999,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             }
 
             auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            inst->d.u32 = static_cast<uint32_t>(node->token.id);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
             break;
@@ -1030,7 +1030,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             }
 
             auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            inst->d.u32 = static_cast<uint32_t>(node->token.id);
             freeRegisterRC(context, child);
             break;
         }
@@ -1110,7 +1110,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             }
 
             auto inst   = EMIT_INST3(context, op, node->resultRegisterRc, child0->resultRegisterRc, child1->resultRegisterRc);
-            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            inst->d.u32 = static_cast<uint32_t>(node->token.id);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
             break;
@@ -1169,7 +1169,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             }
 
             auto inst   = EMIT_INST2(context, op, node->resultRegisterRc, child->resultRegisterRc);
-            inst->d.u32 = static_cast<uint32_t>(node->tokenId);
+            inst->d.u32 = static_cast<uint32_t>(node->token.id);
             freeRegisterRC(context, child);
             break;
         }
@@ -1339,7 +1339,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
 
     if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialValue)
     {
-        switch (defaultParam->assignment->tokenId)
+        switch (defaultParam->assignment->token.id)
         {
             case TokenId::CompilerCallerLocation:
             {
@@ -1387,7 +1387,7 @@ bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* pa
             case TokenId::CompilerCpu:
             {
                 reserveLinearRegisterRC2(context, regList);
-                const auto str            = Semantic::getCompilerFunctionString(node, defaultParam->assignment->tokenId);
+                const auto str            = Semantic::getCompilerFunctionString(node, defaultParam->assignment->token.id);
                 const auto storageSegment = Semantic::getConstantSegFromContext(context->node);
                 const auto storageOffset  = storageSegment->addString(str);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);

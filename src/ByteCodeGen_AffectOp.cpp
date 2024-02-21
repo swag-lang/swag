@@ -832,7 +832,7 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
     auto r0 = node->children[0]->resultRegisterRc;
     auto r1 = node->children[1]->resultRegisterRc;
 
-    switch (node->tokenId)
+    switch (node->token.id)
     {
         case TokenId::SymEqual:
             SWAG_CHECK(emitAffectEqual(context, r0, r1, nullptr, rightNode));

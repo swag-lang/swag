@@ -86,7 +86,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
         {
             const auto typeInfoExpr = front->castedTypeInfo ? front->castedTypeInfo : front->typeInfo;
 
-            switch (node->tokenId)
+            switch (node->token.id)
             {
                 case TokenId::SymExclam:
                 {
