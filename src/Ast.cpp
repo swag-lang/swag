@@ -22,6 +22,9 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, const Parser* parser, Ast
         node->inheritOwners(parent);
     }
 
+    if(node->token.sourceFile && node->token.sourceFile != sourceFile)
+        SWAG_ASSERT(false);
+    
     node->token.sourceFile = sourceFile;
 
     if (parent)

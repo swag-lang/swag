@@ -170,7 +170,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
     fctCallParam->resolvedParameter = match.solvedParameters[0];
 
-    const auto idRef = Ast::newIdentifierRef(nullptr, fctCallParam, node->token.sourceFile);
+    const auto idRef = Ast::newIdentifierRef(nullptr, fctCallParam, fctCallParam->token.sourceFile);
     if (symbol->kind == SymbolKind::Variable)
     {
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)

@@ -142,7 +142,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             }
             else
             {
-                varNode->assignment = Ast::newIdentifierRef(front->token.text, this, varNode, sourceFile);
+                varNode->assignment = Ast::newIdentifierRef(front->token.text, this, varNode, varNode->token.sourceFile);
             }
 
             Semantic::setVarDeclResolve(varNode);

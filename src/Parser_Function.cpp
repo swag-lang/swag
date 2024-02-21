@@ -226,22 +226,22 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
         {
-            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode, sourceFile);
+            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode, paramNode->token.sourceFile);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF);
             if (paramNode->hasAstFlag(AST_DECL_USING))
                 typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
-            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode, sourceFile);
+            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode, typeNode->token.sourceFile);
             paramNode->type      = typeNode;
         }
         else
         {
             SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Err(Err0470)));
-            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode, sourceFile);
+            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode, paramNode->token.sourceFile);
             typeNode->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
             if (paramNode->hasAstFlag(AST_DECL_USING))
                 typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
-            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode, sourceFile);
+            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode, typeNode->token.sourceFile);
             paramNode->type      = typeNode;
         }
 
@@ -304,7 +304,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode, sourceFile);
+                const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode, paramNode->token.sourceFile);
                 paramNode->type                      = newTypeExpression;
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                 newTypeExpression->token.endLocation = token.endLocation;
@@ -313,7 +313,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
-                const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode, sourceFile);
+                const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode, paramNode->token.sourceFile);
                 paramNode->type                      = newTypeExpression;
                 newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
                 newTypeExpression->token.endLocation = token.endLocation;
@@ -328,7 +328,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 if (token.id == TokenId::SymDotDotDot)
                 {
                     Ast::removeFromParent(typeExpression);
-                    const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode, sourceFile);
+                    const auto newTypeExpression         = Ast::newTypeExpression(nullptr, paramNode, paramNode->token.sourceFile);
                     paramNode->type                      = newTypeExpression;
                     newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                     newTypeExpression->token.endLocation = token.endLocation;
@@ -449,13 +449,13 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
                 paramNode->addAstFlag(AST_DECL_USING);
             paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
             paramNode->token.text = g_LangSpec->name_self;
-            const auto typeNode   = Ast::newTypeExpression(nullptr, paramNode, sourceFile);
+            const auto typeNode   = Ast::newTypeExpression(nullptr, paramNode, paramNode->token.sourceFile);
             typeNode->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
             if (!isItfMethod)
                 typeNode->typeFlags.add(TYPEFLAG_HAS_USING);
             if (isConstMethod)
                 typeNode->typeFlags.add(TYPEFLAG_IS_CONST);
-            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode, sourceFile);
+            typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode, typeNode->token.sourceFile);
             paramNode->type      = typeNode;
         }
 
@@ -846,7 +846,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         typeNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        auto      typeExpression        = Ast::newTypeExpression(this, typeNode, sourceFile);
+        auto      typeExpression        = Ast::newTypeExpression(this, typeNode, typeNode->token.sourceFile);
         typeExpression->typeFromLiteral = g_TypeMgr->typeInfoString;
     }
     else if (typeFuncId == TokenId::CompilerValidIf || typeFuncId == TokenId::CompilerValidIfx)
@@ -854,7 +854,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         typeNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        auto      typeExpression        = Ast::newTypeExpression(this, typeNode, sourceFile);
+        auto      typeExpression        = Ast::newTypeExpression(this, typeNode, typeNode->token.sourceFile);
         typeExpression->typeFromLiteral = g_TypeMgr->typeInfoBool;
     }
 
@@ -1140,7 +1140,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         v->addAstFlag(AST_GENERATED);
         Ast::removeFromParent(v);
         Ast::addChildFront(funcNode->parameters, v);
-        v->type           = Ast::newTypeExpression(this, v, sourceFile);
+        v->type           = Ast::newTypeExpression(this, v, v->token.sourceFile);
         v->type->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         v->type->addAstFlag(AST_NO_SEMANTIC);
     }
@@ -1260,17 +1260,17 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         lambdaDecl->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1);
 
         // Reference to the function
-        AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode, sourceFile);
+        AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode, exprNode->token.sourceFile);
         identifierRef->inheritTokenLocation(lambda->token);
         identifierRef->children.back()->inheritTokenLocation(lambda->token);
         isForceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
         const auto nameCaptureBlock = FMT("__captureblock%d", g_UniqueID.fetch_add(1));
-        const auto block            = Ast::newVarDecl(nameCaptureBlock, this, exprNode, sourceFile);
+        const auto block            = Ast::newVarDecl(nameCaptureBlock, this, exprNode, exprNode->token.sourceFile);
         block->inheritTokenLocation(lambdaDecl->captureParameters->token);
         block->addAstFlag(AST_GENERATED);
-        const auto exprList   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, block, sourceFile);
+        const auto exprList   = Ast::newNode<AstExpressionList>(AstNodeKind::ExpressionList, this, block, block->token.sourceFile);
         exprList->semanticFct = Semantic::resolveExpressionListTuple;
         exprList->addSpecFlag(AstExpressionList::SPEC_FLAG_FOR_TUPLE | AstExpressionList::SPEC_FLAG_FOR_CAPTURE);
         exprList->inheritTokenLocation(lambdaDecl->captureParameters->token);
@@ -1283,7 +1283,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         }
 
         // Reference to the captured block
-        identifierRef = Ast::newIdentifierRef(nameCaptureBlock, this, exprNode, sourceFile);
+        identifierRef = Ast::newIdentifierRef(nameCaptureBlock, this, exprNode, exprNode->token.sourceFile);
         identifierRef->inheritTokenLocation(lambdaDecl->captureParameters->token);
         identifierRef->children.back()->inheritTokenLocation(lambdaDecl->captureParameters->token);
         isForceTakeAddress(identifierRef);
@@ -1291,7 +1291,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     else
     {
         // Reference to the function
-        AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode, sourceFile);
+        AstNode* identifierRef = Ast::newIdentifierRef(lambda->token.text, this, exprNode, exprNode->token.sourceFile);
         identifierRef->inheritTokenLocation(lambda->token);
         identifierRef->children.back()->inheritTokenLocation(lambda->token);
         isForceTakeAddress(identifierRef);

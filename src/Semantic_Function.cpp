@@ -1589,10 +1589,10 @@ bool Semantic::resolveReturn(SemanticContext* context)
             child->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
             child->castedTypeInfo = nullptr;
 
-            const auto varNode = Ast::newVarDecl(FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, node, context->sourceFile);
+            const auto varNode = Ast::newVarDecl(FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, node, node->token.sourceFile);
             varNode->inheritTokenLocation(child->token);
 
-            const auto typeExpr = Ast::newTypeExpression(nullptr, varNode, context->sourceFile);
+            const auto typeExpr = Ast::newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
             typeExpr->typeInfo  = child->typeInfo;
             typeExpr->addAstFlag(AST_NO_SEMANTIC);
             varNode->type = typeExpr;
@@ -1605,7 +1605,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             Ast::removeFromParent(child);
 
             Ast::removeFromParent(varNode);
-            const auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, node, context->sourceFile);
+            const auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, node, node->token.sourceFile);
             Ast::addChildBack(node, varNode);
 
             idRef->addExtraPointer(ExtraPointerKind::ExportNode, child);

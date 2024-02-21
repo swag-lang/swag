@@ -45,7 +45,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             // A closure always has at least one parameter : the capture context
             params                   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node, sourceFile);
             node->parameters         = params;
-            firstAddedType           = Ast::newTypeExpression(nullptr, params, sourceFile);
+            firstAddedType           = Ast::newTypeExpression(nullptr, params, params->token.sourceFile);
             firstAddedType->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
             firstAddedType->addAstFlag(AST_NO_SEMANTIC | AST_GENERATED);
             break;
@@ -166,12 +166,12 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             {
                 curIsAlone = false;
                 SWAG_VERIFY(currentStructScope, error(token, Err(Err0470)));
-                typeExpr = Ast::newTypeExpression(nullptr, params, sourceFile);
+                typeExpr = Ast::newTypeExpression(nullptr, params, params->token.sourceFile);
                 typeExpr->typeFlags.add(isConst ? TYPEFLAG_IS_CONST : 0);
                 typeExpr->typeFlags.add(TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE);
                 typeExpr->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
-                typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr, sourceFile);
+                typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr, typeExpr->token.sourceFile);
                 if (token.id == TokenId::SymEqual)
                     return error(token, Err(Err0252));
             }
@@ -179,7 +179,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             else if (token.id == TokenId::SymDotDotDot)
             {
                 curIsAlone                  = false;
-                typeExpr                    = Ast::newTypeExpression(nullptr, params, sourceFile);
+                typeExpr                    = Ast::newTypeExpression(nullptr, params, params->token.sourceFile);
                 typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                 typeExpr->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
@@ -190,7 +190,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             else if (token.id == TokenId::KwdCVarArgs)
             {
                 curIsAlone                  = false;
-                typeExpr                    = Ast::newTypeExpression(nullptr, params, sourceFile);
+                typeExpr                    = Ast::newTypeExpression(nullptr, params, params->token.sourceFile);
                 typeExpr->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
                 typeExpr->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
@@ -207,7 +207,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 {
                     curIsAlone = false;
                     Ast::removeFromParent(typeExpr);
-                    auto newTypeExpression               = Ast::newTypeExpression(nullptr, params, sourceFile);
+                    auto newTypeExpression               = Ast::newTypeExpression(nullptr, params, params->token.sourceFile);
                     newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
                     newTypeExpression->token.endLocation = token.endLocation;
                     SWAG_CHECK(eatToken());
@@ -368,7 +368,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     }
 
     // Reference to that struct
-    const auto idRef = Ast::newIdentifierRef(structNode->token.text, this, parent, sourceFile);
+    const auto idRef = Ast::newIdentifierRef(structNode->token.text, this, parent, parent->token.sourceFile);
     *result          = idRef;
 
     idRef->children.back()->addAstFlag(AST_GENERATED);
@@ -621,7 +621,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         SWAG_CHECK(eatToken());
         if (!token.flags.has(TOKEN_PARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
         {
-            node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node, sourceFile);
+            node->identifier = Ast::newIdentifierRef(g_LangSpec->name_retval, this, node, node->token.sourceFile);
             const auto id    = castAst<AstIdentifier>(node->identifier->children.back(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));

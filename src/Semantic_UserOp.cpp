@@ -592,8 +592,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         return context->report(err, note);
     }
 
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
+    auto node = context->node;
 
     SymbolMatchContext symMatchContext;
     symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UN_CONST; // Do not test const
@@ -733,7 +732,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                         Ast::insertChild(oldParent, nodeCall, oldIdx);
                         Ast::addChildBack(nodeCall, makePtrL);
 
-                        auto varNode = Ast::newVarDecl(FMT("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall, sourceFile);
+                        auto varNode = Ast::newVarDecl(FMT("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall, nodeCall->token.sourceFile);
 
                         if (makePtrL->typeInfo->isLambda())
                         {
@@ -758,11 +757,11 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                             varNode->assignment = makePtrL;
                         }
 
-                        varNode->type           = Ast::newTypeExpression(nullptr, varNode, sourceFile);
+                        varNode->type           = Ast::newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
                         varNode->type->typeInfo = toType;
                         varNode->type->addAstFlag(AST_NO_SEMANTIC);
 
-                        auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall, sourceFile);
+                        auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall, nodeCall->token.sourceFile);
                         idRef->addExtraPointer(ExtraPointerKind::ExportNode, makePtrL);
 
                         // Put child front, because emitFuncCallParam wants the parameter to be the first

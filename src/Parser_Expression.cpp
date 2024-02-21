@@ -25,7 +25,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, FMT(Err(Err0404), token.c_str())));
-            const auto identifierRef = Ast::newIdentifierRef(this, node, sourceFile);
+            const auto identifierRef = Ast::newIdentifierRef(this, node, node->token.sourceFile);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
             identifierRef->children.back()->semanticFct = Semantic::resolveLiteralSuffix;
         }
@@ -1076,7 +1076,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
                 SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
                 funcNode->addAttribute(ATTRIBUTE_COMPILER);
 
-                const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node, sourceFile);
+                const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node, node->token.sourceFile);
                 idRef->token.startLocation      = node->token.startLocation;
                 idRef->token.endLocation        = node->token.endLocation;
                 const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);

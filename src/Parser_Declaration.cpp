@@ -142,10 +142,10 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             AstNode* varNode;
             SWAG_CHECK(doVarDecl(parent, &varNode));
 
-            const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent, sourceFile);
+            const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent, parent->token.sourceFile);
             *result           = node;
             node->semanticFct = Semantic::resolveUsing;
-            Ast::newIdentifierRef(varNode->token.text, this, node, sourceFile);
+            Ast::newIdentifierRef(varNode->token.text, this, node, node->token.sourceFile);
             return true;
         }
         default:
