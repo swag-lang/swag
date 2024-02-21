@@ -14,7 +14,7 @@ void ByteCodeGenContext::release() const
 void ByteCodeGenContext::allocateTempCallParams()
 {
     if (!allParamsTmp)
-        allParamsTmp = Ast::newFuncCallParams(nullptr, nullptr, nullptr);
+        allParamsTmp = Ast::newFuncCallParams(nullptr, nullptr);
     allParamsTmp->token.sourceFile = node->token.sourceFile;
     allParamsTmp->children.clear();
 }

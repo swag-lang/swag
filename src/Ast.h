@@ -38,20 +38,20 @@ namespace Ast
     AstNode*    clone(AstNode* source, AstNode* parent, AstNodeFlags forceFlags = 0, AstNodeFlags removeFlags = 0);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
-    AstStruct*         newStructDecl(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstNode*           newFuncDeclParams(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstFuncCallParams* newFuncCallGenParams(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstFuncCallParams* newFuncCallParams(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstFuncCallParam*  newFuncCallParam(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstVarDecl*        newVarDecl(const Utf8& name, Parser* parser, AstNode* parent, SourceFile* sourceFile, AstNodeKind kind = AstNodeKind::VarDecl);
-    AstIntrinsicProp*  newIntrinsicProp(TokenId id, Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstTypeExpression* newTypeExpression(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstIdentifier*     newIdentifier(const AstIdentifierRef* identifierRef, const Utf8& name, Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstIdentifierRef*  newIdentifierRef(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstIdentifierRef*  newIdentifierRef(const Utf8& name, Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstIdentifierRef*  newMultiIdentifierRef(const Utf8& name, Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstInline*         newInline(Parser* parser, AstNode* parent, SourceFile* sourceFile);
-    AstNode*           newAffectOp(SpecFlags specFlags, AttributeFlags attributeFlags, Parser* parser, AstNode* parent, SourceFile* sourceFile);
+    AstStruct*         newStructDecl(Parser* parser, AstNode* parent);
+    AstNode*           newFuncDeclParams(Parser* parser, AstNode* parent);
+    AstFuncCallParams* newFuncCallGenParams(Parser* parser, AstNode* parent);
+    AstFuncCallParams* newFuncCallParams(Parser* parser, AstNode* parent);
+    AstFuncCallParam*  newFuncCallParam(Parser* parser, AstNode* parent);
+    AstVarDecl*        newVarDecl(const Utf8& name, Parser* parser, AstNode* parent, AstNodeKind kind = AstNodeKind::VarDecl);
+    AstIntrinsicProp*  newIntrinsicProp(TokenId id, Parser* parser, AstNode* parent);
+    AstTypeExpression* newTypeExpression(Parser* parser, AstNode* parent);
+    AstIdentifier*     newIdentifier(const AstIdentifierRef* identifierRef, const Utf8& name, Parser* parser, AstNode* parent);
+    AstIdentifierRef*  newIdentifierRef(Parser* parser, AstNode* parent);
+    AstIdentifierRef*  newIdentifierRef(const Utf8& name, Parser* parser, AstNode* parent);
+    AstIdentifierRef*  newMultiIdentifierRef(const Utf8& name, Parser* parser, AstNode* parent);
+    AstInline*         newInline(Parser* parser, AstNode* parent);
+    AstNode*           newAffectOp(SpecFlags specFlags, AttributeFlags attributeFlags, Parser* parser, AstNode* parent);
 
     bool     convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
     bool     convertLiteralTupleToStructType(JobContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode);

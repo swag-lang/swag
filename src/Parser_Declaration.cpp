@@ -145,7 +145,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
             const auto node   = Ast::newNode<AstNode>(AstNodeKind::Using, this, parent);
             *result           = node;
             node->semanticFct = Semantic::resolveUsing;
-            Ast::newIdentifierRef(varNode->token.text, this, node, node->token.sourceFile);
+            Ast::newIdentifierRef(varNode->token.text, this, node);
             return true;
         }
         default:

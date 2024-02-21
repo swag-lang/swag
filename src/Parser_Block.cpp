@@ -29,7 +29,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
         SWAG_VERIFY(varDecl->children.size() == 1, error(varDecl->children.back()->token, Err(Err0406)));
 
-        node->boolExpression = Ast::newIdentifierRef(varDecl->token.text, this, node, node->token.sourceFile);
+        node->boolExpression = Ast::newIdentifierRef(varDecl->token.text, this, node);
         node->boolExpression->addAstFlag(AST_GENERATED);
         node->boolExpression->inheritTokenLocation(varDecl->token);
 
@@ -376,7 +376,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     // Creates a variable if we have a named index
     if (!name.empty())
     {
-        const auto var = Ast::newVarDecl(name, this, node, node->token.sourceFile, AstNodeKind::VarDecl);
+        const auto var = Ast::newVarDecl(name, this, node, AstNodeKind::VarDecl);
         var->token     = tokenName;
         var->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         node->specificName = var;

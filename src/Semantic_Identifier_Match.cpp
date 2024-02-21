@@ -130,14 +130,13 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
     if (!identifier->callParameters)
         return true;
 
-    const auto sourceFile   = context->sourceFile;
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
 
     // :ClosureForceFirstParam
     // Add a first dummy parameter in case of closure
     if (typeInfoFunc->isClosure() && !identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM))
     {
-        const auto fcp = Ast::newFuncCallParam(nullptr, identifier->callParameters, identifier->token.sourceFile);
+        const auto fcp = Ast::newFuncCallParam(nullptr, identifier->callParameters);
         Ast::removeFromParent(fcp);
         Ast::addChildFront(identifier->callParameters, fcp);
         fcp->setFlagsValueIsComputed();
@@ -211,7 +210,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 // We need to create a temporary variable to store the value, in order to have an address.
                 if (front->hasFlagComputedValue() || nodeCall->typeInfo->isListArray())
                 {
-                    const auto varNode = Ast::newVarDecl(FMT("__7tmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall, nodeCall->token.sourceFile);
+                    const auto varNode = Ast::newVarDecl(FMT("__7tmp_%d", g_UniqueID.fetch_add(1)), nullptr, nodeCall);
                     varNode->inheritTokenLocation(nodeCall->token);
                     varNode->addAstFlag(AST_GENERATED);
                     Ast::removeFromParent(front);
@@ -219,12 +218,12 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     varNode->assignment = front;
 
                     const auto toPtr        = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-                    varNode->type           = Ast::newIdentifierRef("dummy", nullptr, varNode, varNode->token.sourceFile);
+                    varNode->type           = Ast::newIdentifierRef("dummy", nullptr, varNode);
                     varNode->type->typeInfo = toPtr->pointedType;
                     varNode->type->addAstFlag(AST_NO_SEMANTIC);
                     nodeCall->typeInfo = toPtr->pointedType;
 
-                    const auto idNode = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall, nodeCall->token.sourceFile);
+                    const auto idNode = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall);
                     idNode->inheritTokenLocation(nodeCall->token);
                     idNode->addAstFlag(AST_GENERATED);
                     Ast::removeFromParent(idNode);
@@ -282,7 +281,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 convert = true;
             if (convert)
             {
-                const auto varNode = Ast::newVarDecl(FMT("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier, identifier->token.sourceFile);
+                const auto varNode = Ast::newVarDecl(FMT("__ctmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -311,11 +310,11 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     varNode->assignment = makePtrL;
                 }
 
-                varNode->type           = Ast::newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
+                varNode->type           = Ast::newTypeExpression(nullptr, varNode);
                 varNode->type->typeInfo = toType;
                 varNode->type->addAstFlag(AST_NO_SEMANTIC);
 
-                const auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall, nodeCall->token.sourceFile);
+                const auto idRef = Ast::newIdentifierRef(varNode->token.text, nullptr, nodeCall);
                 idRef->addExtraPointer(ExtraPointerKind::ExportNode, makePtrL);
 
                 // Add the 2 nodes to the semantic
@@ -346,14 +345,14 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 nodeCall->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 nodeCall->castedTypeInfo = nullptr;
 
-                const auto varNode = Ast::newVarDecl(FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier, identifier->token.sourceFile);
+                const auto varNode = Ast::newVarDecl(FMT("__2tmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->inheritTokenLocation(nodeCall->token);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
-                const auto typeExpr = Ast::newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
+                const auto typeExpr = Ast::newTypeExpression(nullptr, varNode);
                 typeExpr->typeInfo  = nodeCall->typeInfo;
                 typeExpr->addAstFlag(AST_NO_SEMANTIC);
                 varNode->type = typeExpr;
@@ -369,7 +368,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 Ast::removeFromParent(nodeCall);
 
-                const auto newParam  = Ast::newFuncCallParam(nullptr, identifier->callParameters, sourceFile);
+                const auto newParam  = Ast::newFuncCallParam(nullptr, identifier->callParameters);
                 newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
                 Ast::insertChild(identifier->callParameters, newParam, static_cast<uint32_t>(i));
@@ -383,11 +382,11 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     const auto mkPtrNode     = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointer, nullptr, moveRefNode);
                     mkPtrNode->addAstFlag(AST_GENERATED);
                     mkPtrNode->semanticFct = resolveMakePointer;
-                    Ast::newIdentifierRef(varNode->token.text, nullptr, mkPtrNode, mkPtrNode->token.sourceFile);
+                    Ast::newIdentifierRef(varNode->token.text, nullptr, mkPtrNode);
                 }
                 else
                 {
-                    Ast::newIdentifierRef(varNode->token.text, nullptr, newParam, newParam->token.sourceFile);
+                    Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
                 }
 
                 // We want to export the original parameter, not the temporary variable reference
@@ -470,7 +469,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
             if (!covered)
             {
-                const auto varNode = Ast::newVarDecl(FMT("__3tmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier, identifier->token.sourceFile);
+                const auto varNode = Ast::newVarDecl(FMT("__3tmp_%d", g_UniqueID.fetch_add(1)), nullptr, identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -503,7 +502,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     varNode->assignment->inheritOwners(identifier);
                 }
 
-                const auto newParam = Ast::newFuncCallParam(nullptr, identifier->callParameters, sourceFile);
+                const auto newParam = Ast::newFuncCallParam(nullptr, identifier->callParameters);
 
                 // Make it a named param, in case some other default "normal" parameters are before (because in that case
                 // we let the emitCall to deal with those default parameters)
@@ -511,7 +510,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 newParam->indexParam = i;
                 newParam->addAstFlag(AST_GENERATED);
-                Ast::newIdentifierRef(varNode->token.text, nullptr, newParam, newParam->token.sourceFile);
+                Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
 
                 // Add the 2 nodes to the semantic
                 context->baseJob->nodes.push_back(newParam);
@@ -750,7 +749,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 for (int i = static_cast<int>(dependentVar->children.size()) - 1; i >= 0; i--)
                 {
                     const auto child         = dependentVar->children[i];
-                    const auto idNode        = Ast::newIdentifier(idRef, child->token.text, nullptr, nullptr, nullptr);
+                    const auto idNode        = Ast::newIdentifier(idRef, child->token.text, nullptr, nullptr);
                     idNode->token.sourceFile = dependentVar->token.sourceFile;
                     idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                     idNode->inheritTokenLocation(idRef->token);
@@ -769,7 +768,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
             else
             {
-                const auto idNode        = Ast::newIdentifier(idRef, dependentVar->token.text, nullptr, nullptr, nullptr);
+                const auto idNode        = Ast::newIdentifier(idRef, dependentVar->token.text, nullptr, nullptr);
                 idNode->token.sourceFile = dependentVar->token.sourceFile;
                 idNode->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
                 idNode->inheritTokenLocation(identifier->token);
@@ -934,7 +933,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (canOptimAffect)
             {
                 const auto varNode  = castAst<AstVarDecl>(identifier->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-                const auto typeNode = Ast::newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
+                const auto typeNode = Ast::newTypeExpression(nullptr, varNode);
                 varNode->type       = typeNode;
                 varNode->assignment = nullptr;
                 typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);

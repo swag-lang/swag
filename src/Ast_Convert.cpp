@@ -32,7 +32,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         parentForRef = fromNode->parent;
 
     // Declare a variable
-    const auto varNode = newVarDecl(FMT("__6tmp_%d", g_UniqueID.fetch_add(1)), nullptr, fromNode->parent, fromNode->parent->token.sourceFile);
+    const auto varNode = newVarDecl(FMT("__6tmp_%d", g_UniqueID.fetch_add(1)), nullptr, fromNode->parent);
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure if this will always work.
@@ -42,14 +42,14 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     varNode->inheritTokenLocation(fromNode->token);
     varNode->addAstFlag(AST_GENERATED);
 
-    const auto typeNode = newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
+    const auto typeNode = newTypeExpression(nullptr, varNode);
     typeNode->inheritTokenLocation(fromNode->token);
     typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
     varNode->type = typeNode;
 
     SWAG_ASSERT(typeStruct->declNode);
     varNode->addAlternativeScope(typeStruct->declNode->ownerScope);
-    typeNode->identifier = newIdentifierRef(typeStruct->declNode->token.text, nullptr, typeNode, typeNode->token.sourceFile);
+    typeNode->identifier = newIdentifierRef(typeStruct->declNode->token.text, nullptr, typeNode);
 
     typeNode->identifier->addAstFlag(AST_GENERATED);
     typeNode->identifier->inheritTokenLocation(fromNode->token);
@@ -63,13 +63,13 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         typeNode->typeFlags.add(TYPEFLAG_IS_RETVAL);
 
     // And make a reference to that variable
-    const auto identifierRef = newIdentifierRef(varNode->token.text, nullptr, parentForRef, parentForRef->token.sourceFile);
+    const auto identifierRef = newIdentifierRef(varNode->token.text, nullptr, parentForRef);
     identifierRef->addAstFlag(AST_R_VALUE | AST_TRANSIENT | AST_GENERATED);
 
     // Make parameters
     const auto identifier = castAst<AstIdentifier>(typeNode->identifier->children.back(), AstNodeKind::Identifier);
     identifier->inheritTokenLocation(fromNode->token);
-    identifier->callParameters = newFuncCallParams(nullptr, identifier, identifier->token.sourceFile);
+    identifier->callParameters = newFuncCallParams(nullptr, identifier);
     identifier->callParameters->addSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT);
 
     int countParams = static_cast<int>(fromNode->children.size());
@@ -78,7 +78,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
     for (int i = 0; i < countParams; i++)
     {
         const auto   oneChild = fromNode->children[i];
-        const auto   oneParam = newFuncCallParam(nullptr, identifier->callParameters, identifier->token.sourceFile);
+        const auto   oneParam = newFuncCallParam(nullptr, identifier->callParameters);
         CloneContext cloneContext;
         cloneContext.parent = oneParam;
         oneParam->inheritTokenLocation(oneChild->token);
@@ -148,7 +148,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
         SWAG_ASSERT(newParent);
     }
 
-    const auto structNode = newStructDecl(nullptr, fromNode, sourceFile);
+    const auto structNode = newStructDecl(nullptr, fromNode);
     structNode->addAstFlag(AST_INTERNAL | AST_GENERATED);
     structNode->addSemFlag(SEMFLAG_FILE_JOB_PASS);
     removeFromParent(structNode);
@@ -231,9 +231,9 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             if (p->typeInfo->isGeneric())
                 typeInfo->deducedGenericParameters.push_back(typeField);
 
-            const auto varNode = newVarDecl(nameVar, nullptr, contentNode, contentNode->token.sourceFile);
+            const auto varNode = newVarDecl(nameVar, nullptr, contentNode);
             SWAG_ASSERT(varNode->token.sourceFile);
-            const auto typeNode = newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
+            const auto typeNode = newTypeExpression(nullptr, varNode);
             varNode->addAstFlag(AST_GENERATED | AST_STRUCT_MEMBER);
             varNode->type       = typeNode;
             varNode->ownerScope = newScope;
@@ -255,7 +255,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignment, AstStruct** result)
 {
     const auto sourceFile        = context->sourceFile;
-    AstStruct* structNode        = newStructDecl(nullptr, nullptr, nullptr);
+    AstStruct* structNode        = newStructDecl(nullptr, nullptr);
     structNode->token.sourceFile = sourceFile;
     *result                      = structNode;
     structNode->addAstFlag(AST_GENERATED);
@@ -302,7 +302,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
             varName  = FMT("item%u", idx);
         }
 
-        const auto paramNode = newVarDecl(varName, nullptr, contentNode, contentNode->token.sourceFile);
+        const auto paramNode = newVarDecl(varName, nullptr, contentNode);
         paramNode->inheritTokenLocation(subAffect->token);
         SWAG_ASSERT(paramNode->token.sourceFile);
 
@@ -368,9 +368,9 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, 
     SWAG_CHECK(convertLiteralTupleToStructDecl(context, assignment, &structNode));
 
     // Reference to that generated structure
-    const auto typeExpression = newTypeExpression(nullptr, parent, parent->token.sourceFile);
+    const auto typeExpression = newTypeExpression(nullptr, parent);
     typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDREN | AST_GENERATED);
-    typeExpression->identifier = newIdentifierRef(structNode->token.text, nullptr, typeExpression, typeExpression->token.sourceFile);
+    typeExpression->identifier = newIdentifierRef(structNode->token.text, nullptr, typeExpression);
     *result                    = typeExpression;
     return true;
 }
@@ -380,7 +380,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     // Generate some fake nodes
     // This peace of code is necessary to solve something like :
     // let s = [{1, 2}, {3, 4}]
-    const auto structDecl        = newStructDecl(nullptr, nullptr, context->sourceFile);
+    const auto structDecl        = newStructDecl(nullptr, nullptr);
     structDecl->token.sourceFile = context->sourceFile;
     structDecl->addExtraPointer(ExtraPointerKind::ExportNode, typeStruct->declNode);
     typeStruct->declNode = structDecl;
@@ -395,7 +395,7 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     int idx = 0;
     for (const auto f : typeStruct->fields)
     {
-        f->declNode           = newVarDecl(f->name, nullptr, typeStruct->declNode, typeStruct->declNode->token.sourceFile);
+        f->declNode           = newVarDecl(f->name, nullptr, typeStruct->declNode);
         f->declNode->typeInfo = f->typeInfo;
         f->declNode->addAstFlag(AST_GENERATED);
         SWAG_ASSERT(f->declNode->token.sourceFile);
@@ -421,9 +421,8 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
 
 bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier)
 {
-    const auto node       = context->node;
-    const auto sourceFile = identifier->token.sourceFile;
-    auto       callP      = identifier->callParameters;
+    const auto node  = context->node;
+    auto       callP = identifier->callParameters;
     identifier->addAstFlag(AST_R_VALUE | AST_NO_BYTECODE);
 
     // Be sure it's the NAME{} syntax
@@ -435,7 +434,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
         varParent = varParent->parent;
 
     // Declare a variable
-    const auto varNode = newVarDecl(FMT("__1tmp_%d", g_UniqueID.fetch_add(1)), nullptr, varParent, varParent->token.sourceFile);
+    const auto varNode = newVarDecl(FMT("__1tmp_%d", g_UniqueID.fetch_add(1)), nullptr, varParent);
 
     // Inherit alternative scopes.
     if (identifier->parent->hasExtMisc())
@@ -450,7 +449,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     else if (identifier->ownerScope->isGlobalOrImpl())
         varNode->kind = AstNodeKind::ConstDecl;
 
-    const auto typeNode = newTypeExpression(nullptr, varNode, varNode->token.sourceFile);
+    const auto typeNode = newTypeExpression(nullptr, varNode);
     typeNode->addSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS);
     typeNode->addSpecFlag(AstType::SPEC_FLAG_CREATED_STRUCT_PARAMETERS);
     varNode->addAstFlag(AST_GENERATED);
@@ -485,7 +484,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     for (auto c : identifierRef->children)
         identifierRef->extOwner()->nodesToFree.push_back(c);
     identifierRef->children.clear();
-    const auto idNode = newIdentifier(identifierRef, varNode->token.text, nullptr, identifierRef, sourceFile);
+    const auto idNode = newIdentifier(identifierRef, varNode->token.text, nullptr, identifierRef);
     idNode->addAstFlag(AST_R_VALUE | AST_TRANSIENT);
 
     // Reset parsing
@@ -536,7 +535,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
         return typeExprLambda;
     }
 
-    const auto typeExpression = newTypeExpression(nullptr, parent, parent->token.sourceFile);
+    const auto typeExpression = newTypeExpression(nullptr, parent);
     typeExpression->addAstFlag(AST_NO_BYTECODE_CHILDREN);
     if (childType->isConst())
         typeExpression->typeFlags.add(TYPEFLAG_IS_CONST);
@@ -546,7 +545,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
         AstStruct* inStructNode;
         if (!convertLiteralTupleToStructDecl(context, assignment, &inStructNode))
             return nullptr;
-        typeExpression->identifier = newIdentifierRef(inStructNode->token.text, nullptr, typeExpression, typeExpression->token.sourceFile);
+        typeExpression->identifier = newIdentifierRef(inStructNode->token.text, nullptr, typeExpression);
         return typeExpression;
     }
 

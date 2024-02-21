@@ -224,11 +224,11 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, tokenId));
 
-        const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node, node->token.sourceFile);
+        const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
-        identifier->callParameters      = Ast::newFuncCallParams(this, identifier, sourceFile);
+        identifier->callParameters      = Ast::newFuncCallParams(this, identifier);
         identifier->token.startLocation = node->token.startLocation;
         identifier->token.endLocation   = node->token.endLocation;
     }
@@ -257,10 +257,10 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
         funcNode->inheritTokenLocation(node->token);
 
-        const auto idRef = Ast::newIdentifierRef(funcNode->token.text, this, node, node->token.sourceFile);
+        const auto idRef = Ast::newIdentifierRef(funcNode->token.text, this, node);
         idRef->inheritTokenLocation(node->token);
         const auto identifier      = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
-        identifier->callParameters = Ast::newFuncCallParams(this, identifier, identifier->token.sourceFile);
+        identifier->callParameters = Ast::newFuncCallParams(this, identifier);
         identifier->inheritTokenLocation(node->token);
     }
     else
@@ -307,11 +307,11 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRun));
 
-        const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node, node->token.sourceFile);
+        const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
-        identifier->callParameters      = Ast::newFuncCallParams(this, identifier, identifier->token.sourceFile);
+        identifier->callParameters      = Ast::newFuncCallParams(this, identifier);
         identifier->token.startLocation = node->token.startLocation;
         identifier->token.endLocation   = node->token.endLocation;
     }

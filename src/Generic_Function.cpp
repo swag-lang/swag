@@ -242,7 +242,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
             if (nodeFunc->genericParameters)
             {
                 identifier->typeInfo          = nullptr;
-                identifier->genericParameters = Ast::newFuncCallGenParams(nullptr, identifier, context->sourceFile);
+                identifier->genericParameters = Ast::newFuncCallGenParams(nullptr, identifier);
                 identifier->genericParameters->addAstFlag(AST_NO_BYTECODE);
                 Ast::removeFromParent(identifier->genericParameters);
                 Ast::addChildFront(identifier, identifier->genericParameters);
@@ -257,7 +257,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                         return context->report(err, Diagnostic::hereIs(identifier->resolvedSymbolOverload()));
                     }
 
-                    const auto child    = Ast::newFuncCallParam(nullptr, identifier->genericParameters, context->sourceFile);
+                    const auto child    = Ast::newFuncCallParam(nullptr, identifier->genericParameters);
                     cloneContext.parent = child;
                     param->assignment->clone(cloneContext);
                 }

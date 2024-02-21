@@ -75,7 +75,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
 {
     if (!context->tmpIdRef)
     {
-        context->tmpIdRef = Ast::newIdentifierRef(name, nullptr, nullptr, nullptr);
+        context->tmpIdRef = Ast::newIdentifierRef(name, nullptr, nullptr);
         context->tmpIdRef->token.sourceFile = context->sourceFile;
         context->tmpIdRef->children.back()->addAstFlag(AST_SILENT_CHECK);
         context->tmpIdRef->addAstFlag(AST_SILENT_CHECK);

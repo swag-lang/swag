@@ -82,12 +82,12 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         {
             SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
             const auto identifier         = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-            identifier->genericParameters = Ast::newFuncCallGenParams(nullptr, node, node->token.sourceFile);
+            identifier->genericParameters = Ast::newFuncCallGenParams(nullptr, node);
             genericParameters             = identifier->genericParameters;
             for (int i = 0; i < static_cast<int>(firstMatch.genericParametersCallTypes.size()); i++)
             {
                 const auto& param     = firstMatch.genericParametersCallTypes[i];
-                const auto  callParam = Ast::newFuncCallParam(nullptr, genericParameters, node->token.sourceFile);
+                const auto  callParam = Ast::newFuncCallParam(nullptr, genericParameters);
                 callParam->typeInfo   = param.typeInfoReplace;
                 if (param.fromNode)
                     callParam->token = param.fromNode->token;
