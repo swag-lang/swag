@@ -25,7 +25,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, FMT(Err(Err0404), token.c_str())));
-            const auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
+            const auto identifierRef = Ast::newIdentifierRef(this, node, sourceFile);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
             identifierRef->children.back()->semanticFct = Semantic::resolveLiteralSuffix;
         }
@@ -160,7 +160,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     // Three parameters
     if (node->token.id == TokenId::IntrinsicMakeInterface)
     {
-        AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
+        AstNode* params = Ast::newFuncCallParams(this, node, sourceFile);
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE, &dummyResult));
         SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE, &dummyResult));
@@ -466,7 +466,7 @@ bool Parser::doMoveRef(AstNode* parent, AstNode** result)
 
 bool Parser::doDeRef(AstNode* parent, AstNode** result)
 {
-    const auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
+    const auto identifierRef = Ast::newIdentifierRef(this, parent, sourceFile);
     const auto arrayNode     = Ast::newNode<AstArrayPointerIndex>(AstNodeKind::ArrayPointerIndex, this, identifierRef, sourceFile);
     arrayNode->semanticFct   = Semantic::resolveArrayPointerIndex;
     arrayNode->specFlags     = AstArrayPointerIndex::SPEC_FLAG_IS_DEREF;
@@ -1076,11 +1076,11 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
                 SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
                 funcNode->addAttribute(ATTRIBUTE_COMPILER);
 
-                const auto idRef                = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+                const auto idRef                = Ast::newIdentifierRef(funcNode->token.text, this, node, sourceFile);
                 idRef->token.startLocation      = node->token.startLocation;
                 idRef->token.endLocation        = node->token.endLocation;
                 const auto identifier           = castAst<AstIdentifier>(idRef->children.back(), AstNodeKind::Identifier);
-                identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
+                identifier->callParameters      = Ast::newFuncCallParams(this, identifier, sourceFile);
                 identifier->token.startLocation = node->token.startLocation;
                 identifier->token.endLocation   = node->token.endLocation;
                 return true;
@@ -1337,7 +1337,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                     SWAG_ASSERT(exprNode->kind == AstNodeKind::IdentifierRef);
                     for (int wi = static_cast<int>(withNode->id.size()) - 1; wi >= 0; wi--)
                     {
-                        const auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], castAst<AstIdentifierRef>(exprNode), exprNode, this);
+                        const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode, sourceFile);
                         id->addAstFlag(AST_GENERATED);
                         id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
@@ -1480,7 +1480,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             while (!leftNode->children.empty())
             {
                 const auto child      = leftNode->children.front();
-                const auto affectNode = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags, nullptr);
+                const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode, sourceFile);
                 affectNode->token     = static_cast<Token>(savedtoken);
                 affectNode->token.id  = savedtoken.id;
                 Ast::removeFromParent(child);
@@ -1531,7 +1531,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
 
             // Generate an expression of the form "var __tmp_0 = assignment"
             const auto  tmpVarName = FMT("__4tmp_%d", g_UniqueID.fetch_add(1));
-            AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+            AstVarDecl* varNode    = Ast::newVarDecl(tmpVarName, this, parentNode, sourceFile);
             varNode->addAstFlag(AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
             Ast::addChildBack(varNode, assignment);
             assignment->inheritOwners(varNode);
@@ -1559,13 +1559,13 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                     continue;
                 }
 
-                const auto affectNode  = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags, nullptr);
+                const auto affectNode  = Ast::newAffectOp(opFlags, opAttrFlags, nullptr, parentNode, sourceFile);
                 affectNode->token.id   = savedtoken.id;
                 affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 isForceTakeAddress(child);
-                const auto idRef = Ast::newMultiIdentifierRef(sourceFile, FMT("%s.item%u", tmpVarName.c_str(), idx++), affectNode, this);
+                const auto idRef = Ast::newMultiIdentifierRef(FMT("%s.item%u", tmpVarName.c_str(), idx++), this, affectNode, sourceFile);
 
                 // Force a move between the generated temporary variable and the real var
                 idRef->addAstFlag(AST_FORCE_MOVE);
@@ -1577,7 +1577,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         // One normal simple affectation
         else
         {
-            const auto affectNode = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
+            const auto affectNode = Ast::newAffectOp(opFlags, opAttrFlags, this, parent, sourceFile);
             affectNode->token.id  = savedtoken.id;
             affectNode->token     = static_cast<Token>(std::move(savedtoken));
 

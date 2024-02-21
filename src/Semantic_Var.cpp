@@ -330,13 +330,13 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     }
 
     const auto sourceFile      = context->sourceFile;
-    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier, nullptr);
+    identifier->callParameters = Ast::newFuncCallParams(nullptr, identifier, sourceFile);
 
     const auto numParams = assign->children.size();
     for (size_t i = 0; i < numParams; i++)
     {
         const auto child = assign->children[0];
-        const auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters, nullptr);
+        const auto param = Ast::newFuncCallParam(nullptr, identifier->callParameters, sourceFile);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
         child->addSemFlag(SEMFLAG_TYPE_SOLVED);

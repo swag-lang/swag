@@ -229,7 +229,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
 bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags)
 {
-    const auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
+    const auto identifierRef = Ast::newIdentifierRef(this, parent, sourceFile);
     *result                  = identifierRef;
 
     switch (token.id)

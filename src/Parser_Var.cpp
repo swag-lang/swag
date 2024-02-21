@@ -111,7 +111,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             identifier->computeName();
             SWAG_CHECK(checkIsValidVarName(identifier));
 
-            AstVarDecl* varNode  = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            AstVarDecl* varNode  = Ast::newVarDecl(identifier->token.text, this, parentNode, sourceFile);
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->token.id    = identifier->token.id;
@@ -142,7 +142,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             }
             else
             {
-                varNode->assignment = Ast::newIdentifierRef(sourceFile, front->token.text, varNode, this);
+                varNode->assignment = Ast::newIdentifierRef(front->token.text, this, varNode, sourceFile);
             }
 
             Semantic::setVarDeclResolve(varNode);
@@ -162,7 +162,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
 
         // Generate an expression of the form "var __tmp_0 = assignment"
         const auto  tmpVarName  = FMT("__5tmp_%d", g_UniqueID.fetch_add(1));
-        AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+        AstVarDecl* orgVarNode  = Ast::newVarDecl(tmpVarName, this, parentNode, sourceFile);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
         orgVarNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
@@ -217,7 +217,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
                 orgVarNode->publicName += ", ";
             orgVarNode->publicName += identifier->token.text;
 
-            const auto varNode   = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            const auto varNode   = Ast::newVarDecl(identifier->token.text, this, parentNode, sourceFile);
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
@@ -226,7 +226,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
-            identifier          = Ast::newMultiIdentifierRef(sourceFile, FMT("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
+            identifier          = Ast::newMultiIdentifierRef(FMT("%s.item%u", tmpVarName.c_str(), idx++), this, varNode, sourceFile);
             varNode->assignment = identifier;
             Semantic::setVarDeclResolve(varNode);
             varNode->assignment->addAstFlag(AST_TUPLE_UNPACK);
@@ -241,7 +241,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
         const auto identifier = leftNode->children.back();
         SWAG_CHECK(checkIsValidVarName(identifier));
-        AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
+        AstVarDecl* varNode = Ast::newVarDecl(identifier->token.text, this, parent, sourceFile);
         *result             = varNode;
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode->token);

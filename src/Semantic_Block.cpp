@@ -614,13 +614,13 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         if (node->expression->kind != AstNodeKind::IdentifierRef)
         {
-            varNode = Ast::newVarDecl(sourceFile, FMT("__9tmp_%d", g_UniqueID.fetch_add(1)), node, nullptr);
+            varNode = Ast::newVarDecl(FMT("__9tmp_%d", g_UniqueID.fetch_add(1)), nullptr, node, sourceFile);
             varNode->addAstFlag(AST_GENERATED);
             newExpression       = Ast::clone(node->expression, varNode);
             varNode->assignment = newExpression;
 
             Ast::removeFromParent(node->expression);
-            identifierRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, node, nullptr);
+            identifierRef = Ast::newIdentifierRef(varNode->token.text, nullptr, node, sourceFile);
             newExpression = identifierRef;
         }
         else
@@ -629,29 +629,29 @@ bool Semantic::resolveVisit(SemanticContext* context)
             newExpression = identifierRef;
         }
 
-        callVisit = Ast::newIdentifier(sourceFile, FMT("opVisit%s", node->extraNameToken.c_str()), identifierRef, identifierRef, nullptr);
+        callVisit = Ast::newIdentifier(identifierRef, FMT("opVisit%s", node->extraNameToken.c_str()), nullptr, identifierRef, sourceFile);
         callVisit->allocateIdentifierExtension();
         callVisit->identifierExtension->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node->token);
 
         // Generic parameters
-        callVisit->genericParameters = Ast::newFuncCallGenParams(sourceFile, callVisit, nullptr);
+        callVisit->genericParameters = Ast::newFuncCallGenParams(nullptr, callVisit, sourceFile);
         callVisit->genericParameters->addAstFlag(AST_NO_BYTECODE);
 
-        auto child0      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters, nullptr);
+        auto child0      = Ast::newFuncCallParam(nullptr, callVisit->genericParameters, sourceFile);
         child0->typeInfo = g_TypeMgr->typeInfoBool;
         child0->setFlagsValueIsComputed();
         child0->computedValue()->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER);
         child0->addAstFlag(AST_NO_SEMANTIC);
 
-        auto child1      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters, nullptr);
+        auto child1      = Ast::newFuncCallParam(nullptr, callVisit->genericParameters, sourceFile);
         child1->typeInfo = g_TypeMgr->typeInfoBool;
         child1->setFlagsValueIsComputed();
         child1->computedValue()->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK);
         child1->addAstFlag(AST_NO_SEMANTIC);
 
         // Call with arguments
-        callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit, nullptr);
+        callVisit->callParameters = Ast::newFuncCallParams(nullptr, callVisit, sourceFile);
 
         Ast::removeFromParent(node->block);
         Ast::addChildBack(node, node->block);
@@ -708,9 +708,9 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
-        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node, nullptr);
+        auto varDecl = Ast::newVarDecl(Utf8::format("__tmp%u", id), nullptr, node, sourceFile);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
-        varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl, nullptr);
+        varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl, sourceFile);
         Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
         newVar = varDecl;
@@ -749,8 +749,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto typeArray   = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
 
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node, nullptr);
-        varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl, nullptr);
+        auto varDecl        = Ast::newVarDecl(Utf8::format("__addr%u", id), nullptr, node, sourceFile);
+        varDecl->assignment = Ast::newIntrinsicProp(TokenId::IntrinsicDataOf, nullptr, varDecl, sourceFile);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         Ast::clone(node->expression, varDecl->assignment);
         varDecl->assignment->children.front()->addAstFlag(AST_NO_SEMANTIC);
@@ -789,7 +789,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto typeSlice   = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto pointedType = typeSlice->pointedType;
 
-        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node, nullptr);
+        auto varDecl = Ast::newVarDecl(Utf8::format("__tmp%u", id), nullptr, node, sourceFile);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
@@ -825,7 +825,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // String
     else if (typeInfo->isString())
     {
-        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node, nullptr);
+        auto varDecl = Ast::newVarDecl(Utf8::format("__tmp%u", id), nullptr, node, sourceFile);
         varDecl->addSpecFlag(AstVarDecl::SPEC_FLAG_CONST_ASSIGN | AstVarDecl::SPEC_FLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
