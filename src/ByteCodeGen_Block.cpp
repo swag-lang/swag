@@ -45,6 +45,9 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 
     AstNode parameters;
     Ast::constructNode(&parameters);
+    parameters.inheritTokenLocation(parent->token);
+    parameters.inheritOwners(parent);
+
     if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
     {
         allParams     = parent;
@@ -69,12 +72,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->kind == AstNodeKind::AutoSlicingUp)
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
-        auto slicing                = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
-        auto arrayNode              = slicing->array;
-        parameters.flags            = 0;
-        parameters.token.sourceFile = parent->token.sourceFile;
-        parameters.inheritTokenLocation(parent->token);
-        parameters.inheritOwners(parent);
+        auto slicing   = castAst<AstArrayPointerSlicing>(parent->parent, AstNodeKind::ArrayPointerSlicing);
+        auto arrayNode = slicing->array;
         parameters.children.push_back(arrayNode);
         allParams        = &parameters;
         numCallParams    = parameters.children.size();
@@ -83,12 +82,8 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     else if (parent->kind == AstNodeKind::SwitchCase)
     {
         SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opEquals));
-        auto caseNode               = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
-        auto switchNode             = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
-        parameters.flags            = 0;
-        parameters.token.sourceFile = parent->token.sourceFile;
-        parameters.inheritTokenLocation(parent->token);
-        parameters.inheritOwners(parent);
+        auto caseNode   = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+        auto switchNode = castAst<AstSwitch>(caseNode->ownerSwitch, AstNodeKind::Switch);
         parameters.children.push_back(switchNode->expression);
         parameters.children.push_back(caseNode->children.front());
         allParams     = &parameters;
@@ -96,10 +91,6 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     }
     else if (parent->kind == AstNodeKind::AffectOp && (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
     {
-        parameters.flags            = 0;
-        parameters.token.sourceFile = parent->token.sourceFile;
-        parameters.inheritTokenLocation(parent->token);
-        parameters.inheritOwners(parent);
         SWAG_ASSERT(parent->children.front()->kind == AstNodeKind::IdentifierRef);
         auto ptIdx = castAst<AstArrayPointerIndex>(parent->children.front()->children.back(), AstNodeKind::ArrayPointerIndex);
         auto arr   = ptIdx->array;

@@ -75,7 +75,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
 {
     if (!context->tmpIdRef)
     {
-        context->tmpIdRef = Ast::newIdentifierRef(name, nullptr, nullptr);
+        context->tmpIdRef                   = Ast::newIdentifierRef(name, nullptr, nullptr);
         context->tmpIdRef->token.sourceFile = context->sourceFile;
         context->tmpIdRef->children.back()->addAstFlag(AST_SILENT_CHECK);
         context->tmpIdRef->addAstFlag(AST_SILENT_CHECK);
@@ -130,18 +130,15 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
             return false;
         if (value1->storageOffset == value2->storageOffset)
             return true;
-
-        const void* addr1 = value1->getStorageAddr();
-        const void* addr2 = value2->getStorageAddr();
-        return memcmp(addr1, addr2, typeInfo->sizeOf) == 0;
+        return memcmp(value1->getStorageAddr(), value2->getStorageAddr(), typeInfo->sizeOf) == 0;
     }
 
     if (typeInfo->isNativeIntegerOrRune())
         return value1->reg.u64 == value2->reg.u64;
     if (typeInfo->isNative(NativeTypeKind::F32))
-        return value1->reg.f32 == value2->reg.f32;
+        return std::bit_cast<uint32_t>(value1->reg.f32) == std::bit_cast<uint32_t>(value2->reg.f32);
     if (typeInfo->isNative(NativeTypeKind::F64))
-        return value1->reg.f32 == value2->reg.f32;
+        return std::bit_cast<uint32_t>(value1->reg.f32) == std::bit_cast<uint32_t>(value2->reg.f32);
     if (typeInfo->isString())
         return value1->text == value2->text;
 

@@ -121,10 +121,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extByteCode()->byteCodeBeforeFct = from->extByteCode()->byteCodeBeforeFct;
         extByteCode()->byteCodeAfterFct  = from->extByteCode()->byteCodeAfterFct;
     }
-
-    token.text       = from->token.text;
-    token.sourceFile = from->token.sourceFile;
-
+    
     attributeFlags = from->attributeFlags;
     safetyOn       = from->safetyOn;
     safetyOff      = from->safetyOff;

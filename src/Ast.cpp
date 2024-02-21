@@ -288,8 +288,6 @@ void Ast::addChildFront(AstNode* parent, AstNode* child)
         parent->children.push_front(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);
-        if (!child->token.sourceFile)
-            child->token.sourceFile = parent->token.sourceFile;
     }
 
     child->parent = parent;
@@ -307,8 +305,6 @@ void Ast::addChildBack(AstNode* parent, AstNode* child)
         parent->children.push_back(child);
         if (!child->ownerScope)
             child->inheritOwners(parent);
-        if (!child->token.sourceFile)
-            child->token.sourceFile = parent->token.sourceFile;
     }
 
     child->parent = parent;
