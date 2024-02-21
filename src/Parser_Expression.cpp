@@ -1482,7 +1482,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 const auto child      = leftNode->children.front();
                 const auto affectNode = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
                 affectNode->token     = static_cast<Token>(savedtoken);
-                affectNode->token.id   = savedtoken.id;
+                affectNode->token.id  = savedtoken.id;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 isForceTakeAddress(child);
@@ -1560,7 +1560,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
                 }
 
                 const auto affectNode  = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                affectNode->token.id    = savedtoken.id;
+                affectNode->token.id   = savedtoken.id;
                 affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -1578,7 +1578,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
         else
         {
             const auto affectNode = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
-            affectNode->token.id   = savedtoken.id;
+            affectNode->token.id  = savedtoken.id;
             affectNode->token     = static_cast<Token>(std::move(savedtoken));
 
             Ast::addChildBack(affectNode, leftNode);

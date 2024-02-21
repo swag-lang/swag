@@ -72,7 +72,7 @@ struct VectorMap : Vector<pair<K, V>>
         }
 
         return this->end();
-    }    
+    }
 
     bool contains(const K& key) const
     {

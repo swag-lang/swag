@@ -740,11 +740,11 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     }
 
     // Register function name
-    auto typeInfo                = makeType<TypeInfoFuncAttr>();
-    typeInfo->declNode           = funcNode;
-    auto newScope                = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
-    funcNode->typeInfo           = typeInfo;
-    funcNode->scope              = newScope;
+    auto typeInfo      = makeType<TypeInfoFuncAttr>();
+    typeInfo->declNode = funcNode;
+    auto newScope      = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
+    funcNode->typeInfo = typeInfo;
+    funcNode->scope    = newScope;
     funcNode->setResolvedSymbolName(currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function));
 
     // Store specific symbols for fast retrieve
