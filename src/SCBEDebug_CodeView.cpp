@@ -390,10 +390,7 @@ namespace
         *patchSCount = concat.totalCount() - patchSOffset;
     }
 
-    uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
-                             Vector<uint32_t>&  arrFileNames,
-                             Utf8&              stringTable,
-                             SourceFile*        sourceFile)
+    uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames, Vector<uint32_t>& arrFileNames, Utf8& stringTable, SourceFile* sourceFile)
     {
         uint32_t checkSymIndex = 0;
 
@@ -421,7 +418,7 @@ namespace
                    Utf8&              stringTable,
                    Concat&            concat,
                    const CPUFunction& f,
-                   size_t             idxDbgLines)
+                   uint32_t           idxDbgLines)
     {
         const auto& dbgLines   = f.dbgLines[idxDbgLines];
         const auto  sourceFile = dbgLines.sourceFile;
@@ -460,28 +457,8 @@ namespace
         return true;
     }
 
-    bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
+    void emitLocalGlobalVars(SCBE_CPU& pp, const Scope* scope, Concat& concat, AstFuncDecl* const funcDecl)
     {
-        auto& concat = pp.concat;
-
-        // Empty scope
-        if (!scope->backendEnd)
-            return true;
-
-        // Header
-        /////////////////////////////////
-        emitStartRecord(pp, S_BLOCK32);
-        concat.addU32(0);                                       // Parent = 0;
-        concat.addU32(0);                                       // End = 0;
-        concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
-        emitSecRel(pp, f.symbolIndex, pp.symCOIndex, scope->backendStart);
-        emitTruncatedString(pp, "");
-        emitEndRecord(pp);
-
-        // Local variables marked as global
-        /////////////////////////////////
-        const auto funcDecl = castAst<AstFuncDecl>(f.node);
-        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
         for (const auto localVar : funcDecl->localGlobalVars)
         {
             if (localVar->ownerScope != scope)
@@ -515,19 +492,10 @@ namespace
             emitTruncatedString(pp, localVar->token.text);
             emitEndRecord(pp);
         }
+    }
 
-        // Local constants
-        /////////////////////////////////
-        for (const auto localConst : funcDecl->localConstants)
-        {
-            if (localConst->ownerScope != scope)
-                continue;
-
-            emitConstant(pp, localConst, localConst->token.text);
-        }
-
-        // Local variables
-        /////////////////////////////////
+    void emitLocalVars(SCBE_CPU& pp, const CPUFunction& f, const Scope* scope, Concat& concat, TypeInfoFuncAttr* const typeFunc)
+    {
         for (int i = 0; i < static_cast<int>(f.node->extByteCode()->bc->localVars.size()); i++)
         {
             const auto localVar = f.node->extByteCode()->bc->localVars[i];
@@ -560,6 +528,51 @@ namespace
             concat.addU16(static_cast<uint16_t>(endOffsetVar - localVar->ownerScope->backendStart)); // Range
             emitEndRecord(pp);
         }
+    }
+
+    void emitLocalConstants(SCBE_CPU& pp, const Scope* scope, AstFuncDecl* const funcDecl)
+    {
+        for (const auto localConst : funcDecl->localConstants)
+        {
+            if (localConst->ownerScope != scope)
+                continue;
+
+            emitConstant(pp, localConst, localConst->token.text);
+        }
+    }
+
+    bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
+    {
+        auto& concat = pp.concat;
+
+        // Empty scope
+        if (!scope->backendEnd)
+            return true;
+
+        // Header
+        /////////////////////////////////
+        emitStartRecord(pp, S_BLOCK32);
+        concat.addU32(0);                                       // Parent = 0;
+        concat.addU32(0);                                       // End = 0;
+        concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
+        emitSecRel(pp, f.symbolIndex, pp.symCOIndex, scope->backendStart);
+        emitTruncatedString(pp, "");
+        emitEndRecord(pp);
+
+        const auto funcDecl = castAst<AstFuncDecl>(f.node);
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+
+        // Local variables marked as global
+        /////////////////////////////////
+        emitLocalGlobalVars(pp, scope, concat, funcDecl);
+
+        // Local constants
+        /////////////////////////////////
+        emitLocalConstants(pp, scope, funcDecl);
+
+        // Local variables
+        /////////////////////////////////
+        emitLocalVars(pp, f, scope, concat, typeFunc);
 
         // Sub scopes
         // Must be sorted, from first to last. We use the byte index of the first instruction in the block
@@ -580,6 +593,208 @@ namespace
         emitStartRecord(pp, S_END);
         emitEndRecord(pp);
         return true;
+    }
+
+    void emitInlineTable(SCBE_CPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, Vector<CPUFunction>::value_type& f)
+    {
+        for (auto& dbgLines : f.dbgLines)
+        {
+            if (!dbgLines.inlined)
+                continue;
+
+            concat.addU32(DEBUG_S_INLINEELINES);
+            const auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+            const auto patchLTOffset = concat.totalCount();
+
+            constexpr uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
+            concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
+
+            const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
+            const auto typeIdx       = SCBEDebug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
+
+            for (const auto l : dbgLines.lines)
+            {
+                concat.addU32(typeIdx);
+                concat.addU32(checkSymIndex);
+                concat.addU32(l.line);
+            }
+
+            *patchLTCount = concat.totalCount() - patchLTOffset;
+        }
+    }
+
+    void emitFuncParameters(SCBE_CPU& pp, Concat& concat, Vector<CPUFunction>::value_type& f, AstFuncDecl* const decl, TypeInfoFuncAttr* const typeFunc)
+    {
+        if (!decl->parameters)
+            return;
+        if (decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+            return;
+
+        const auto countParams = decl->parameters->children.size();
+        uint32_t   regCounter  = 0;
+        for (size_t i = 0; i < countParams; i++)
+        {
+            const auto child     = decl->parameters->children[i];
+            const auto typeParam = typeFunc->parameters[i]->typeInfo;
+
+            SCBEDebugTypeIndex typeIdx;
+            switch (typeParam->kind)
+            {
+                case TypeInfoKind::Struct:
+                    if (CallConv::structParamByValue(typeFunc, typeParam))
+                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                    else
+                        typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
+                    break;
+
+                case TypeInfoKind::Pointer:
+                    if (typeParam->isAutoConstPointerRef())
+                    {
+                        const auto typeRef = TypeManager::concretePtrRefType(typeParam);
+                        if (CallConv::structParamByValue(typeFunc, typeRef))
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
+                        else
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                    }
+                    else
+                    {
+                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                    }
+                    break;
+
+                case TypeInfoKind::Array:
+                    typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
+                    break;
+
+                default:
+                    typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                    break;
+            }
+
+            //////////
+            emitStartRecord(pp, S_LOCAL);
+            concat.addU32(typeIdx); // Type
+            concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
+
+            // The real name, in case of 2 registers, will be created below without the 'fIsParam' flag set.
+            // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
+            // but the signature has only one visible parameter).
+            if (typeParam->numRegisters() == 2)
+                emitTruncatedString(pp, "__" + child->token.text);
+            else
+                emitTruncatedString(pp, child->token.text);
+
+            emitEndRecord(pp);
+
+            //////////
+            uint32_t offsetStackParam = 0;
+            uint32_t regParam         = regCounter;
+            if (typeFunc->isFctVariadic() && i != countParams - 1)
+                regParam += 2;
+            else if (typeFunc->isFctVariadic())
+                regParam = 0;
+            offsetStackParam = SCBE_CPU::getParamStackOffset(&f, regParam);
+            regCounter += typeParam->numRegisters();
+
+            //////////
+            emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+            concat.addU16(R_RDI); // Register
+            concat.addU16(0);     // Flags
+            concat.addU32(offsetStackParam);
+            emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
+            concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
+            emitEndRecord(pp);
+
+            // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
+            if (typeParam->numRegisters() == 2)
+            {
+                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+
+                //////////
+                emitStartRecord(pp, S_LOCAL);
+                concat.addU32(typeIdx); // Type
+                concat.addU16(0);       // set fIsParam to 0
+                emitTruncatedString(pp, child->token.text);
+                emitEndRecord(pp);
+
+                //////////
+                emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+                concat.addU16(R_RDI); // Register
+                concat.addU16(0);     // Flags
+                concat.addU32(offsetStackParam);
+                emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
+                concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
+                emitEndRecord(pp);
+            }
+
+            // codeview seems to need this pointer to be named "this"...
+            // So add it
+            if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
+            {
+                //////////
+                emitStartRecord(pp, S_LOCAL);
+                concat.addU32(typeIdx); // Type
+                concat.addU16(1);       // set fIsParam
+                emitTruncatedString(pp, "this");
+                emitEndRecord(pp);
+
+                //////////
+                emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+                concat.addU16(R_RDI); // Register
+                concat.addU16(0);     // Flags
+                concat.addU32(offsetStackParam);
+                emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
+                concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
+                emitEndRecord(pp);
+            }
+        }
+    }
+
+    void emitFuncCaptureParameters(SCBE_CPU& pp, Concat& concat, Vector<CPUFunction>::value_type& f, AstFuncDecl* const decl)
+    {
+        if (!decl->captureParameters)
+            return;
+        if (decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
+            return;
+
+        const auto countParams = decl->captureParameters->children.size();
+        for (size_t i = 0; i < countParams; i++)
+        {
+            auto       child     = decl->captureParameters->children[i];
+            const auto typeParam = child->typeInfo;
+            if (child->kind == AstNodeKind::MakePointer)
+                child = child->children.front();
+            const auto overload = child->resolvedSymbolOverload();
+            if (!typeParam || !overload)
+                continue;
+
+            SCBEDebugTypeIndex typeIdx;
+            switch (typeParam->kind)
+            {
+                case TypeInfoKind::Array:
+                    typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
+                    break;
+                default:
+                    typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                    break;
+            }
+
+            //////////
+            emitStartRecord(pp, S_LOCAL);
+            concat.addU32(typeIdx); // Type
+            concat.addU16(0);
+            emitTruncatedString(pp, child->token.text);
+            emitEndRecord(pp);
+
+            //////////
+            emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+            concat.addU16(R_R12); // Register
+            concat.addU16(0);     // Flags
+            concat.addU32(overload->computedValue.storageOffset);
+            emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
+            concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
+            emitEndRecord(pp);
+        }
     }
 
     bool emitFctDebugS(SCBE_CPU& pp)
@@ -617,258 +832,66 @@ namespace
 
             // Symbol
             /////////////////////////////////
-            {
-                concat.addU32(DEBUG_S_SYMBOLS);
-                const auto patchSCount  = concat.addU32Addr(0);
-                const auto patchSOffset = concat.totalCount();
+            concat.addU32(DEBUG_S_SYMBOLS);
+            const auto patchSCount  = concat.addU32Addr(0);
+            const auto patchSOffset = concat.totalCount();
 
-                // Proc ID
-                /////////////////////////////////
-                emitStartRecord(pp, S_LPROC32_ID);
-                concat.addU32(0);                             // Parent = 0
-                concat.addU32(0);                             // End = 0
-                concat.addU32(0);                             // Next = 0
-                concat.addU32(f.endAddress - f.startAddress); // CodeSize = 0
-                concat.addU32(0);                             // DbgStart = 0
-                concat.addU32(0);                             // DbgEnd = 0
-                concat.addU32(tr->index);                     // FuncID type index
-                emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-                auto nn = SCBEDebug::getScopedName(f.node);
-                emitTruncatedString(pp, nn);
-                emitEndRecord(pp);
+            // Proc ID
+            /////////////////////////////////
+            emitStartRecord(pp, S_LPROC32_ID);
+            concat.addU32(0);                             // Parent = 0
+            concat.addU32(0);                             // End = 0
+            concat.addU32(0);                             // Next = 0
+            concat.addU32(f.endAddress - f.startAddress); // CodeSize = 0
+            concat.addU32(0);                             // DbgStart = 0
+            concat.addU32(0);                             // DbgEnd = 0
+            concat.addU32(tr->index);                     // FuncID type index
+            emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
+            concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
+            auto nn = SCBEDebug::getScopedName(f.node);
+            emitTruncatedString(pp, nn);
+            emitEndRecord(pp);
 
-                // Frame Proc
-                /////////////////////////////////
-                emitStartRecord(pp, S_FRAMEPROC);
-                concat.addU32(f.frameSize); // FrameSize
-                concat.addU32(0);           // Padding
-                concat.addU32(0);           // Offset of padding
-                concat.addU32(0);           // Bytes of callee saved registers
-                concat.addU32(0);           // Exception handler offset
-                concat.addU32(0);           // Exception handler section
-                concat.addU32(0);           // Flags (defines frame register)
-                emitEndRecord(pp);
+            // Frame Proc
+            /////////////////////////////////
+            emitStartRecord(pp, S_FRAMEPROC);
+            concat.addU32(f.frameSize); // FrameSize
+            concat.addU32(0);           // Padding
+            concat.addU32(0);           // Offset of padding
+            concat.addU32(0);           // Bytes of callee saved registers
+            concat.addU32(0);           // Exception handler offset
+            concat.addU32(0);           // Exception handler section
+            concat.addU32(0);           // Flags (defines frame register)
+            emitEndRecord(pp);
 
-                // Capture parameters
-                /////////////////////////////////
-                if (decl->captureParameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
-                {
-                    const auto countParams = decl->captureParameters->children.size();
-                    for (size_t i = 0; i < countParams; i++)
-                    {
-                        auto       child     = decl->captureParameters->children[i];
-                        const auto typeParam = child->typeInfo;
-                        if (child->kind == AstNodeKind::MakePointer)
-                            child = child->children.front();
-                        const auto overload = child->resolvedSymbolOverload();
-                        if (!typeParam || !overload)
-                            continue;
+            // Capture parameters
+            /////////////////////////////////
+            emitFuncCaptureParameters(pp, concat, f, decl);
 
-                        SCBEDebugTypeIndex typeIdx;
-                        switch (typeParam->kind)
-                        {
-                            case TypeInfoKind::Array:
-                                typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
-                                break;
-                            default:
-                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                                break;
-                        }
+            // Parameters
+            /////////////////////////////////
+            emitFuncParameters(pp, concat, f, decl, typeFunc);
 
-                        //////////
-                        emitStartRecord(pp, S_LOCAL);
-                        concat.addU32(typeIdx); // Type
-                        concat.addU16(0);
-                        emitTruncatedString(pp, child->token.text);
-                        emitEndRecord(pp);
+            // Lexical blocks
+            /////////////////////////////////
+            const auto funcDecl = castAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+            emitScope(pp, f, funcDecl->scope);
 
-                        //////////
-                        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                        concat.addU16(R_R12); // Register
-                        concat.addU16(0);     // Flags
-                        concat.addU32(overload->computedValue.storageOffset);
-                        emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                        concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
-                        emitEndRecord(pp);
-                    }
-                }
+            // End
+            /////////////////////////////////
+            emitStartRecord(pp, S_PROC_ID_END);
+            emitEndRecord(pp);
 
-                // Parameters
-                /////////////////////////////////
-                if (decl->parameters && !decl->hasAttribute(ATTRIBUTE_COMPILER_FUNC))
-                {
-                    const auto countParams = decl->parameters->children.size();
-                    uint32_t   regCounter  = 0;
-                    for (size_t i = 0; i < countParams; i++)
-                    {
-                        const auto child     = decl->parameters->children[i];
-                        const auto typeParam = typeFunc->parameters[i]->typeInfo;
-
-                        SCBEDebugTypeIndex typeIdx;
-                        switch (typeParam->kind)
-                        {
-                            case TypeInfoKind::Struct:
-                                if (CallConv::structParamByValue(typeFunc, typeParam))
-                                    typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                                else
-                                    typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
-                                break;
-
-                            case TypeInfoKind::Pointer:
-                            {
-                                if (typeParam->isAutoConstPointerRef())
-                                {
-                                    const auto typeRef = TypeManager::concretePtrRefType(typeParam);
-                                    if (CallConv::structParamByValue(typeFunc, typeRef))
-                                        typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
-                                    else
-                                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                                }
-                                else
-                                {
-                                    typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                                }
-
-                                break;
-                            }
-
-                            case TypeInfoKind::Array:
-                                typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
-                                break;
-
-                            default:
-                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-                                break;
-                        }
-
-                        //////////
-                        emitStartRecord(pp, S_LOCAL);
-                        concat.addU32(typeIdx); // Type
-                        concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
-
-                        // The real name, in case of 2 registers, will be created below without the 'fIsParam' flag set.
-                        // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
-                        // but the signature has only one visible parameter).
-                        if (typeParam->numRegisters() == 2)
-                            emitTruncatedString(pp, "__" + child->token.text);
-                        else
-                            emitTruncatedString(pp, child->token.text);
-
-                        emitEndRecord(pp);
-
-                        //////////
-                        uint32_t offsetStackParam = 0;
-                        uint32_t regParam         = regCounter;
-                        if (typeFunc->isFctVariadic() && i != countParams - 1)
-                            regParam += 2;
-                        else if (typeFunc->isFctVariadic())
-                            regParam = 0;
-                        offsetStackParam = SCBE_CPU::getParamStackOffset(&f, regParam);
-                        regCounter += typeParam->numRegisters();
-
-                        //////////
-                        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                        concat.addU16(R_RDI); // Register
-                        concat.addU16(0);     // Flags
-                        concat.addU32(offsetStackParam);
-                        emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                        concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
-                        emitEndRecord(pp);
-
-                        // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
-                        if (typeParam->numRegisters() == 2)
-                        {
-                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
-
-                            //////////
-                            emitStartRecord(pp, S_LOCAL);
-                            concat.addU32(typeIdx); // Type
-                            concat.addU16(0);       // set fIsParam to 0
-                            emitTruncatedString(pp, child->token.text);
-                            emitEndRecord(pp);
-
-                            //////////
-                            emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                            concat.addU16(R_RDI); // Register
-                            concat.addU16(0);     // Flags
-                            concat.addU32(offsetStackParam);
-                            emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                            concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
-                            emitEndRecord(pp);
-                        }
-
-                        // codeview seems to need this pointer to be named "this"...
-                        // So add it
-                        if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
-                        {
-                            //////////
-                            emitStartRecord(pp, S_LOCAL);
-                            concat.addU32(typeIdx); // Type
-                            concat.addU16(1);       // set fIsParam
-                            emitTruncatedString(pp, "this");
-                            emitEndRecord(pp);
-
-                            //////////
-                            emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                            concat.addU16(R_RDI); // Register
-                            concat.addU16(0);     // Flags
-                            concat.addU32(offsetStackParam);
-                            emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
-                            concat.addU16(static_cast<uint16_t>(f.endAddress - f.startAddress)); // Range
-                            emitEndRecord(pp);
-                        }
-                    }
-                }
-
-                // Lexical blocks
-                /////////////////////////////////
-                const auto funcDecl = castAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
-                emitScope(pp, f, funcDecl->scope);
-
-                // End
-                /////////////////////////////////
-                emitStartRecord(pp, S_PROC_ID_END);
-                emitEndRecord(pp);
-
-                *patchSCount = concat.totalCount() - patchSOffset;
-            }
+            *patchSCount = concat.totalCount() - patchSOffset;
 
             // inline lines table
             /////////////////////////////////
-            {
-                for (auto& dbgLines : f.dbgLines)
-                {
-                    if (!dbgLines.inlined)
-                        continue;
-
-                    concat.addU32(DEBUG_S_INLINEELINES);
-                    const auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
-                    const auto patchLTOffset = concat.totalCount();
-
-                    constexpr uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
-                    concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
-
-                    const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                    const auto typeIdx       = SCBEDebug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
-
-                    for (const auto l : dbgLines.lines)
-                    {
-                        concat.addU32(typeIdx);
-                        concat.addU32(checkSymIndex);
-                        concat.addU32(l.line);
-                    }
-
-                    *patchLTCount = concat.totalCount() - patchLTOffset;
-                }
-            }
+            emitInlineTable(pp, concat, mapFileNames, arrFileNames, stringTable, f);
 
             // Lines table
             /////////////////////////////////
-            for (size_t idxDbgLines = 0; idxDbgLines < f.dbgLines.size(); idxDbgLines++)
-            {
+            for (uint32_t idxDbgLines = 0; idxDbgLines < f.dbgLines.size(); idxDbgLines++)
                 emitLines(pp, mapFileNames, arrFileNames, stringTable, concat, f, idxDbgLines);
-            }
         }
 
         // File checksum table
