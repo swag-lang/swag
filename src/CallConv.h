@@ -36,6 +36,13 @@ enum CPURegister : uint8_t
 
 struct CallConv
 {
+    static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
+    static bool returnByAddress(const TypeInfoFuncAttr* typeFunc);
+    static bool returnByStackAddress(const TypeInfoFuncAttr* typeFunc);
+    static bool returnNeedsStack(const TypeInfoFuncAttr* typeFunc);
+    static bool returnByValue(const TypeInfoFuncAttr* typeFunc);
+    static bool returnStructByValue(const TypeInfoFuncAttr* typeFunc);
+
     // The number of parameters to pass by register
     uint32_t paramByRegisterCount = 4;
 
@@ -63,13 +70,6 @@ struct CallConv
     // Scratch registers used to optimized generation (x64 backend)
     CPURegister firstScratchRegister = R12;
     uint32_t    numScratchRegisters  = 4;
-
-    static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
-    static bool returnByAddress(const TypeInfoFuncAttr* typeFunc);
-    static bool returnByStackAddress(const TypeInfoFuncAttr* typeFunc);
-    static bool returnNeedsStack(const TypeInfoFuncAttr* typeFunc);
-    static bool returnByValue(const TypeInfoFuncAttr* typeFunc);
-    static bool returnStructByValue(const TypeInfoFuncAttr* typeFunc);
 };
 
 extern CallConv g_CallConv[Max];
