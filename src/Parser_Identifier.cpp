@@ -469,26 +469,29 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
+bool Parser::errorTopLevelIdentifier()
 {
     const auto tokenIdentifier = token;
     eatToken();
 
-    const Diagnostic          err{sourceFile, tokenIdentifier, FMT(Err(Err0689), tokenIdentifier.c_str())};
-    Vector<const Diagnostic*> notes;
+    Diagnostic err{sourceFile, tokenIdentifier, FMT(Err(Err0689), tokenIdentifier.c_str())};
 
     if (token.id == TokenId::Identifier)
     {
         if (tokenIdentifier.text == "function" || tokenIdentifier.text == "fn" || tokenIdentifier.text == "def")
-            notes.push_back(Diagnostic::note(Nte(Nte0040)));
+            err.addNote(Nte(Nte0040));
     }
     else if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
     {
-        notes.push_back(Diagnostic::note(Nte(Nte0053)));
+        err.addNote(Nte(Nte0053));
     }
 
-    const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
-    if (!appendMsg.empty())
-        notes.push_back(Diagnostic::note(appendMsg));
-    return context->report(err, notes);
+    if(!err.hasNotes())
+    {
+        const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
+        if (!appendMsg.empty())
+            err.addNote(appendMsg);
+    }
+
+    return context->report(err);
 }

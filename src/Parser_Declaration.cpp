@@ -1043,7 +1043,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
             SWAG_CHECK(doCompilerForeignLib(parent, result));
             break;
         case TokenId::Identifier:
-            SWAG_CHECK(doTopLevelIdentifier(parent, result));
+            SWAG_CHECK(errorTopLevelIdentifier());
             break;
 
         default:

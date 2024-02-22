@@ -58,6 +58,11 @@ void Diagnostic::addNote(const Token& token, const Utf8& h)
     addNote(token.startLocation, token.endLocation, h);
 }
 
+void Diagnostic::addNote(const Utf8& msg)
+{
+    notes.push_back(note(msg));
+}
+
 void Diagnostic::addNote(AstNode* node, const Utf8& h)
 {
     if (!node)
@@ -65,8 +70,7 @@ void Diagnostic::addNote(AstNode* node, const Utf8& h)
 
     SourceLocation start, end;
     node->computeLocation(start, end);
-    const auto note = Diagnostic::note(node->token.sourceFile, start, end, h);
-    notes.push_back(note);
+    notes.push_back(note(node->token.sourceFile, start, end, h));
 }
 
 void Diagnostic::printSourceLine() const
