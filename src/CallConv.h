@@ -52,15 +52,6 @@ struct CallConv
     // The registers to use when passing parameter by register, and if it's float
     VectorNative<CPURegister> paramByRegisterFloat;
 
-    // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
-    bool useRegisterFloat = true;
-
-    // If a const struct fits in a register, pass it by value instead of by pointer
-    bool structParamByRegister = true;
-
-    // Returns a struct by register if it fits
-    bool structReturnByRegister = true;
-
     // The register used to return an integer
     CPURegister returnByRegisterInteger = RAX;
 
@@ -70,6 +61,15 @@ struct CallConv
     // Scratch registers used to optimized generation (x64 backend)
     CPURegister firstScratchRegister = R12;
     uint32_t    numScratchRegisters  = 4;
+
+    // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
+    bool useRegisterFloat = true;
+
+    // If a const struct fits in a register, pass it by value instead of by pointer
+    bool structParamByRegister = true;
+
+    // Returns a struct by register if it fits
+    bool structReturnByRegister = true;
 };
 
 extern CallConv g_CallConv[Max];
