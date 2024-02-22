@@ -124,9 +124,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             if (identifierRef->resolvedSymbolName() && identifierRef->resolvedSymbolName()->kind != SymbolKind::Variable)
             {
                 const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-                Diagnostic err{
-                subNode, subNode->token,
-                FMT(Err(Err0317), identifierRef->resolvedSymbolName()->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName()->kind).c_str())};
+                Diagnostic err{subNode, subNode->token, FMT(Err(Err0317), identifierRef->resolvedSymbolName()->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName()->kind).c_str())};
                 err.addNote(node->token, Nte(Nte0159));
                 return context->report(err);
             }
@@ -142,7 +140,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     const auto dependentVar = match.dependentVar;
     const auto node         = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
-    const auto fctCallParam = Ast::newNode<AstFuncCallParam>(AstNodeKind::FuncCallParam, nullptr, nullptr);
+    const auto fctCallParam        = Ast::newNode<AstFuncCallParam>(AstNodeKind::FuncCallParam, nullptr, nullptr);
     fctCallParam->token.sourceFile = node->token.sourceFile;
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(nullptr, node);

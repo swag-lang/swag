@@ -24,9 +24,9 @@ void compileString(Module* module, const char* str, uint32_t count)
 namespace
 {
     void* g_ItfTable[] = {
-    reinterpret_cast<void*>(getMessage),
-    reinterpret_cast<void*>(getBuildCfg),
-    reinterpret_cast<void*>(compileString),
+        reinterpret_cast<void*>(getMessage),
+        reinterpret_cast<void*>(getBuildCfg),
+        reinterpret_cast<void*>(compileString),
     };
 }
 

@@ -259,10 +259,8 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 const auto       implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                const Diagnostic err{
-                implNode->identifier,
-                FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
-                const auto note = Diagnostic::hereIs(structNode);
+                const Diagnostic err{implNode->identifier, FMT(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.c_str(), Naming::kindName(ScopeKind::Struct).c_str())};
+                const auto       note = Diagnostic::hereIs(structNode);
                 return context->report(err, note);
             }
             const Utf8       asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
