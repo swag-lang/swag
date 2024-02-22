@@ -400,55 +400,45 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, Ex
 {
     const bool inTypeVarDecl = exprFlags.has(EXPR_FLAG_IN_VAR_DECL);
 
-    // This is a @typeof
-    if (token.id == TokenId::IntrinsicDeclType)
+    switch (token.id)
     {
-        SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-        return true;
-    }
+        case TokenId::IntrinsicDeclType:
+            SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+            return true;
 
-    if (token.id == TokenId::NativeType)
-    {
-        node->literalType       = token.literalType;
-        node->token.endLocation = token.endLocation;
-        SWAG_CHECK(eatToken());
-        return true;
-    }
+        case TokenId::NativeType:
+            node->literalType       = token.literalType;
+            node->token.endLocation = token.endLocation;
+            SWAG_CHECK(eatToken());
+            return true;
 
-    if (token.id == TokenId::Identifier)
-    {
-        SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
-        if (inTypeVarDecl)
-            node->identifier->children.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
-        node->token.endLocation = node->identifier->token.endLocation;
-        return true;
-    }
+        case TokenId::Identifier:
+            SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
+            if (inTypeVarDecl)
+                node->identifier->children.back()->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
+            node->token.endLocation = node->identifier->token.endLocation;
+            return true;
 
-    if (token.id == TokenId::KwdStruct)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), false));
-        return true;
-    }
+        case TokenId::KwdStruct:
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), false));
+            return true;
 
-    if (token.id == TokenId::KwdUnion)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), true));
-        return true;
-    }
+        case TokenId::KwdUnion:
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), true));
+            return true;
 
-    if (token.id == TokenId::SymLeftCurly)
-    {
-        SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), false));
-        return true;
-    }
+        case TokenId::SymLeftCurly:
+            SWAG_CHECK(doAnonymousStruct(node, &node->identifier, node->typeFlags.has(TYPEFLAG_IS_CONST), false));
+            return true;
 
-    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
-    {
-        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
-        SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
-        return true;
+        case TokenId::KwdFunc:
+        case TokenId::KwdClosure:
+        case TokenId::KwdMethod:
+            SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err0668)}));
+            SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
+            return true;
     }
 
     // Specific error messages
