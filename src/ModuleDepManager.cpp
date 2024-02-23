@@ -673,7 +673,7 @@ bool ModuleDepManager::execute()
 
                     fetchJob = Allocator::alloc<FetchModuleFileSystemJob>();
 
-                    static_cast<FetchModuleFileSystemJob*>(fetchJob)->collectSourceFiles = false;
+                    reinterpret_cast<FetchModuleFileSystemJob*>(fetchJob)->collectSourceFiles = false;
                     break;
                 }
                 default:

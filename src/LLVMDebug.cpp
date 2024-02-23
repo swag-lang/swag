@@ -394,7 +394,7 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
     // Already created ?
     const auto it = mapScopes.find(decl->content->ownerScope);
     if (it != mapScopes.end())
-        return static_cast<llvm::DISubprogram*>(it->second);
+        return reinterpret_cast<llvm::DISubprogram*>(it->second);
 
     // Type
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);

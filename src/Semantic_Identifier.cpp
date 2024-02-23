@@ -943,7 +943,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running
         const auto job     = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
-        const auto baseJob = static_cast<SemanticJob*>(context->baseJob);
+        const auto baseJob = reinterpret_cast<SemanticJob*>(context->baseJob);
         job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(), baseJob->context.errCxtSteps.begin(), baseJob->context.errCxtSteps.end());
 
         // This comes from a generic instantiation. Add context

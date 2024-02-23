@@ -1,13 +1,13 @@
 #include "pch.h"
+#include "LLVM.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
-#include "LanguageSpec.h"
-#include "LLVM.h"
 #include "LLVMDebug.h"
 #include "LLVM_Macros.h"
+#include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
 #include "TypeManager.h"
@@ -34,7 +34,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Function prototype
     auto funcType = getOrCreateFuncType(buildParameters, typeFunc);
-    auto func     = static_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee());
+    auto func     = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee());
     setFuncAttributes(buildParameters, bcFuncNode, bc, func);
 
     // Content
@@ -62,7 +62,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     llvm::AllocaInst* allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
     allocResult->setAlignment(llvm::Align{16});
 
-    // To store variadics
+    // To store variadic
     llvm::AllocaInst* allocVA = nullptr;
     if (bc->maxSpVaargs)
     {
@@ -4197,8 +4197,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 // :OptimizedAwayDebugCrap
                 // Hack thanks to llvm in debug mode : we need to force the usage of function parameters until the very end of the function (i.e. each return),
-                // otherwhise :
-                // - parameters not used in the function body will be removed by llvm (even without optims activated !)
+                // otherwise :
+                // - parameters not used in the function body will be removed by llvm (even without optim activated !)
                 // - a parameter will not be visible anymore ("optimized away") after its last usage.
                 // So we force a read/write of each parameter just before the "ret" to avoid that debug mess.
                 // RIDICULOUS !!
@@ -5076,7 +5076,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     //
                     // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
                     int idx      = 0;
-                    int idxParam = static_cast<int>(pushRAParams.size()) - sizeB / sizeof(Register) - 1;
+                    int idxParam = static_cast<int>(pushRAParams.size()) - sizeB / static_cast<int>(sizeof(Register)) - 1;
                     while (idxParam >= 0)
                     {
                         SWAG_ASSERT(static_cast<uint32_t>(idx) < bc->maxSpVaargs);
@@ -5100,11 +5100,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 Utf8              callName     = funcNode->getCallName();
                 TypeInfoFuncAttr* typeFuncNode = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-                auto T = getOrCreateFuncType(buildParameters, typeFuncNode);
-                auto F = static_cast<llvm::Function*>(modu.getOrInsertFunction(callName.c_str(), T).getCallee());
+                auto llvmFctTy = getOrCreateFuncType(buildParameters, typeFuncNode);
+                auto llvmFct   = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(callName.c_str(), llvmFctTy).getCallee());
 
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(TO_PTR_I8(F), r0);
+                builder.CreateStore(TO_PTR_I8(llvmFct), r0);
 
                 auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
                 builder.CreateStore(v0, GEP64(allocR, ip->a.u32));
@@ -5127,8 +5127,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cst0_i32, pp.cst5_i32});
                     auto r1 = builder.CreateLoad(PTR_I8_TY(), r0);
-                    auto PT = llvm::PointerType::getUnqual(pp.makeCallbackTy);
-                    auto r2 = builder.CreatePointerCast(r1, PT);
+                    auto pt = llvm::PointerType::getUnqual(pp.makeCallbackTy);
+                    auto r2 = builder.CreatePointerCast(r1, pt);
                     auto v2 = builder.CreateIntToPtr(v0, PTR_I8_TY());
                     auto v1 = builder.CreateCall(pp.makeCallbackTy, r2, {v2});
                     auto r3 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
@@ -5957,7 +5957,7 @@ void LLVM::setFuncAttributes(const BuildParameters& buildParameters, const AstFu
             arg->addAttr(llvm::Attribute::NoCapture);
 
             // No pointer aliasing, on all pointers. Is this correct ??
-            // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
+            // Note that without the NoAlias flag, some optim will not trigger (like vectorisation)
             // arg->addAttr(llvm::Attribute::NoAlias);
         }
 
