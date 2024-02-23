@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "Log.h"
 #include "Module.h"
+#include "Tokenizer.h"
 #include "TypeInfo.h"
 
 void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile) const

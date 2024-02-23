@@ -7,7 +7,7 @@
 #include "JobGroup.h"
 #include "Path.h"
 #include "SymTable.h"
-#include "Tokenizer.h"
+#include "Token.h"
 #include "TypeGen.h"
 
 enum class ModuleBuildPass

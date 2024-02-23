@@ -2,7 +2,7 @@
 #include "Flags.h"
 #include "LangHashTable.h"
 #include "Parser.h"
-#include "Tokenizer.h"
+#include "Token.h"
 
 struct TypeInfoNative;
 using AttributeFlags = Flags<uint64_t>;

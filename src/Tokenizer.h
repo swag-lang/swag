@@ -1,19 +1,13 @@
 #pragma once
 #include "Flags.h"
-#include "Register.h"
+#include "Token.h"
+#include "TokenParse.h"
 
 struct SourceFile;
 struct TypeInfo;
 struct ErrorContext;
 
-enum class TokenId : uint16_t
-{
-#define DEFINE_TOKEN_ID(__id, __flags) __id,
-#include "TokenIds.h"
-};
-
 using TokenFlags      = Flags<uint32_t>;
-using TokenParseFlags = Flags<uint8_t>;
 
 constexpr TokenFlags TOKEN_SYM                = 0x00000001;
 constexpr TokenFlags TOKEN_INTRINSIC_NORETURN = 0x00000002;
@@ -26,72 +20,6 @@ constexpr TokenFlags TOKEN_TOP_LEVEL_INST     = 0x00000080;
 
 extern const char*      g_TokenNames[];
 extern const TokenFlags g_TokenFlags[];
-
-enum class LiteralType : uint8_t
-{
-    TypeUnsigned8,
-    TypeUnsigned16,
-    TypeUnsigned32,
-    TypeUnsigned64,
-    TypeSigned8,
-    TypeSigned16,
-    TypeSigned32,
-    TypeSigned64,
-    TypeBool,
-    TypeString,
-    TypeStringRaw,
-    TypeStringMultiLine,
-    TypeStringEscape,
-    TypeStringMultiLineEscape,
-    TypeCharacter,
-    TypeCharacterEscape,
-    TypeRune,
-    TypeFloat32,
-    TypeFloat64,
-    TypeNull,
-    TypeAny,
-    TypeVoid,
-    TypeType,
-    TypeCString,
-    TypeUntypedBinHexa,
-    TypeUntypedInt,
-    TypeUntypedFloat,
-    TypeMax,
-};
-
-struct SourceLocation
-{
-    bool operator==(const SourceLocation& other) const { return line == other.line && column == other.column; }
-    bool operator!=(const SourceLocation& other) const { return line != other.line || column != other.column; }
-
-    uint32_t line   = 0;
-    uint32_t column = 0;
-};
-
-#pragma pack(push, 2)
-struct Token
-{
-    const char* c_str() const { return text.c_str(); }
-
-    SourceFile*    sourceFile = nullptr;
-    Utf8           text;
-    SourceLocation startLocation;
-    SourceLocation endLocation;
-    TokenId        id = TokenId::Invalid;
-};
-#pragma pack(pop)
-
-constexpr TokenParseFlags TOKEN_PARSE_LAST_EOL           = 0x01;
-constexpr TokenParseFlags TOKEN_PARSE_LAST_BLANK         = 0x02;
-constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
-
-struct TokenParse
-{
-    Token           token;
-    Register        literalValue;
-    LiteralType     literalType = static_cast<LiteralType>(0);
-    TokenParseFlags flags       = 0;
-};
 
 struct Tokenizer
 {

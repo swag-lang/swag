@@ -2,7 +2,7 @@
 #include "ByteCode.h"
 #include "ByteCodeRun.h"
 #include "Os.h"
-#include "Tokenizer.h"
+#include "Token.h"
 
 void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned)
 {

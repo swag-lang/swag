@@ -6,7 +6,8 @@
 #include "Mutex.h"
 #include "Register.h"
 #include "Symbol.h"
-#include "Tokenizer.h"
+#include "Token.h"
+#include "TokenParse.h"
 
 struct AstAttrUse;
 struct AstBreakable;

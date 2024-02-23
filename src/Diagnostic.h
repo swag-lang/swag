@@ -1,6 +1,6 @@
 #pragma once
 #include "AstNode.h"
-#include "Tokenizer.h"
+#include "Token.h"
 
 struct SourceFile;
 struct TypeInfo;

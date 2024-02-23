@@ -2,7 +2,7 @@
 #include "ComputedValue.h"
 #include "Flags.h"
 #include "RaceCondition.h"
-#include "Tokenizer.h"
+#include "Token.h"
 
 struct TypeInfo;
 

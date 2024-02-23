@@ -2,15 +2,13 @@
 #include "CommandLine.h"
 #include "Flags.h"
 #include "Mutex.h"
-#include "Tokenizer.h"
+#include "Token.h"
 
-struct Module;
-struct AstNode;
-struct Diagnostic;
-struct Scope;
-struct Token;
 struct AstAttrUse;
 struct AstIdentifierRef;
+struct AstNode;
+struct Diagnostic;
+struct Module;
 struct Scope;
 
 using AttributeFlags = Flags<uint64_t>;
