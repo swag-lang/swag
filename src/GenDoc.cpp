@@ -20,91 +20,93 @@ void GenDoc::outputStyles()
 {
     helpOutput += "<style>\n";
 
-    helpOutput += "\n\
-        .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }\n\
-        .left       { display: block; overflow-y: scroll; width: 500px; }\n\
-        .left-page  { margin: 10px; }\n\
-        .right      { display: block; width: 100%; }\n\
-        .right-page { max-width: 1024px; margin: 10px auto; }\n\
-        \n\
-        @media(min-width: 640px)  { .container { max-width: 640px; }}\n\
-        @media(min-width: 768px)  { .container { max-width: 768px; }}\n\
-        @media(min-width: 1024px) { .container { max-width: 1024px; }}\n\
-        @media(min-width: 1280px) { .container { max-width: 1280px; }}\n\
-        @media(min-width: 1536px) { .container { max-width: 1536px; }}\n\
-        \n\
-        @media screen and (max-width: 600px) {\n\
-            .left       { display: none; }\n\
-            .right-page { margin:  10px; }\n\
-        }\n";
+    helpOutput += R"(
+    .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }
+    .left       { display: block; overflow-y: scroll; width: 500px; }
+    .left-page  { margin: 10px; }
+    .right      { display: block; width: 100%; }
+    .right-page { max-width: 1024px; margin: 10px auto; }
+    
+    @media(min-width: 640px)  { .container { max-width: 640px; }}
+    @media(min-width: 768px)  { .container { max-width: 768px; }}
+    @media(min-width: 1024px) { .container { max-width: 1024px; }}
+    @media(min-width: 1280px) { .container { max-width: 1280px; }}
+    @media(min-width: 1536px) { .container { max-width: 1536px; }}
+    
+    @media screen and (max-width: 600px) {
+        .left       { display: none; }
+        .right-page { margin:  10px; }
+    }
+)";
 
     // Layout
     if (docKind != BuildCfgDocKind::Pages)
     {
-        helpOutput += "\n\
-            .container { height: 100vh; }\n\
-            .right     { overflow-y: scroll; }\n";
+        helpOutput += R"(
+            .container { height: 100vh; }
+            .right     { overflow-y: scroll; }
+        )";
     }
 
-    helpOutput += "\n\
-        html { font-family: ui-sans-serif, system-ui, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif; }\n\
-        body { margin: 0px; line-height: 1.3em; }\n\
-        \n\
-        .container a        { color: DoggerBlue; }\n\
-        .container a:hover  { text-decoration: underline; }\n\
-        .container img      { margin: 0 auto; }\n\
-        \n\
-        .left a     { text-decoration: none; }\n\
-        .left ul    { list-style-type: none; margin-left: -20px; }\n\
-        .left h3    { background-color: Black; color: White; padding: 6px; }\n\
-        .right h1   { margin-top: 50px; margin-bottom: 50px; }\n\
-        .right h2   { margin-top: 35px; }\n\
-        \n\
-        .strikethrough-text { text-decoration: line-through; }\n\
-        .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }\n\
-        .swag-watermark a   { text-decoration: none; color: inherit; }\n\
-        \n\
-        .blockquote               { border-radius: 5px; border: 1px solid; margin: 20px; padding: 10px; }\n\
-        .blockquote-default       { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }\n\
-        .blockquote-note          { border-color: #ADCEDD; background-color: #CDEEFD; }\n\
-        .blockquote-tip           { border-color: #BCCFBC; background-color: #DCEFDC; }\n\
-        .blockquote-warning       { border-color: #DFBDB3; background-color: #FFDDD3; }\n\
-        .blockquote-attention     { border-color: #DDBAB8; background-color: #FDDAD8; }\n\
-        .blockquote-example       { border: 2px solid LightGrey; }\n\
-        .blockquote-title-block   { margin-bottom: 10px; }\n\
-        .blockquote-title         { font-weight: bold; }\n\
-        .blockquote-default       p:first-child { margin-top: 0px; }\n\
-        .blockquote-default       p:last-child  { margin-bottom: 0px; }\n\
-        .blockquote               p:last-child  { margin-bottom: 0px; }\n\
-        \n\
-        .description-list-title   { font-weight: bold; font-style: italic; }\n\
-        .description-list-block   { margin-left: 30px; }\n\
-        \n\
-        .container table          { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }\n\
-        .container td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }\n\
-        .container th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }\n\
-        \n\
-        table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }\n\
-        .api-item td              { font-size: revert; border: 0; }\n\
-        .api-item td:first-child  { width: 33%; white-space: nowrap; }\n\
-        .api-item-title-src-ref   { text-align:  right; }\n\
-        .api-item-title-src-ref a { color:       inherit; }\n\
-        .api-item-title-kind      { font-weight: normal; font-size: 80%; }\n\
-        .api-item-title-light     { font-weight: normal; }\n\
-        .api-item-title-strong    { font-weight: bold; font-size: 100%; }\n\
-        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }\n\
-        \n\
-        table.table-enumeration           { width: calc(100% - 40px); }\n\
-        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }\n\
-        .table-enumeration td:last-child  { width: 100%; }\n\
-        .table-enumeration td.code-type   { background-color: #eeeeee; }\n\
-        .table-enumeration a              { text-decoration: none; color: inherit; }\n\
-        \n\
-        .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }\n\
-        .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }\n\
-        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; }\n\
-        .code-block a { color: inherit; }\n\
-        \n";
+    helpOutput += R"(
+    html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+    body { margin: 0px; line-height: 1.3em; }     
+
+    .container a        { color: DoggerBlue; }
+    .container a:hover  { text-decoration: underline; }
+    .container img      { margin: 0 auto; }
+   
+    .left a     { text-decoration: none; }
+    .left ul    { list-style-type: none; margin-left: -20px; }
+    .left h3    { background-color: Black; color: White; padding: 6px; }
+    .right h1   { margin-top: 50px; margin-bottom: 50px; }
+    .right h2   { margin-top: 35px; }
+
+    .strikethrough-text { text-decoration: line-through; }
+    .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
+    .swag-watermark a   { text-decoration: none; color: inherit; }
+
+    .blockquote               { border-radius: 5px; border: 1px solid; margin: 20px; padding: 10px; }
+    .blockquote-default       { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+    .blockquote-note          { border-color: #ADCEDD; background-color: #CDEEFD; }
+    .blockquote-tip           { border-color: #BCCFBC; background-color: #DCEFDC; }
+    .blockquote-warning       { border-color: #DFBDB3; background-color: #FFDDD3; }
+    .blockquote-attention     { border-color: #DDBAB8; background-color: #FDDAD8; }
+    .blockquote-example       { border: 2px solid LightGrey; }
+    .blockquote-title-block   { margin-bottom: 10px; }
+    .blockquote-title         { font-weight: bold; }
+    .blockquote-default       p:first-child { margin-top: 0px; }
+    .blockquote-default       p:last-child  { margin-bottom: 0px; }
+    .blockquote               p:last-child  { margin-bottom: 0px; }
+
+    .description-list-title   { font-weight: bold; font-style: italic; }
+    .description-list-block   { margin-left: 30px; }
+
+    .container table          { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
+    .container td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+    .container th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
+
+    table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+    .api-item td              { font-size: revert; border: 0; }
+    .api-item td:first-child  { width: 33%; white-space: nowrap; }
+    .api-item-title-src-ref   { text-align:  right; }
+    .api-item-title-src-ref a { color:       inherit; }
+    .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+    .api-item-title-light     { font-weight: normal; }
+    .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+    .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+
+    table.table-enumeration           { width: calc(100% - 40px); }
+    .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+    .table-enumeration td:last-child  { width: 100%; }
+    .table-enumeration td.code-type   { background-color: #eeeeee; }
+    .table-enumeration a              { text-decoration: none; color: inherit; }
+
+    .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
+    .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+    .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .code-block a { color: inherit; }
+)";
 
     const float    lum        = module->buildCfg.genDoc.syntaxColorLum;
     const uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
@@ -655,7 +657,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     auto pz = user.c_str();
     while (*pz)
     {
-        char prevC = pz == user.c_str() ? 0 : pz[-1];
+        char prevC = pz == user.c_str() ? '\0' : pz[-1];
 
         // Escape char
         if (*pz == '\\')
@@ -867,9 +869,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     if (user.lines.empty() && user.subBlocks.empty())
         return;
 
-    int               startLine     = 0;
-    int               tableColCount = 0;
-    VectorNative<int> tableAlignCols;
+    uint32_t               startLine     = 0;
+    uint32_t               tableColCount = 0;
+    VectorNative<uint32_t> tableAlignCols;
 
     switch (user.kind)
     {
@@ -1058,7 +1060,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 else
                 {
                     helpContent += "<tr>";
-                    for (int it = 0; it < static_cast<int>(tkn0.size()); it++)
+                    for (uint32_t it = 0; it < tkn0.size(); it++)
                     {
                         switch (tableAlignCols[it])
                         {
@@ -1107,7 +1109,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         }
     }
 
-    for (int i = startLine; i < static_cast<int>(user.lines.size()); i++)
+    for (uint32_t i = startLine; i < user.lines.size(); i++)
     {
         auto line = user.lines[i];
         line.trim();
@@ -1119,9 +1121,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             if (tkn.back().empty())
                 tkn.pop_back();
-            while (static_cast<int>(tkn.size()) < tableColCount)
+            while (tkn.size() < tableColCount)
                 tkn.push_back("");
-            while (static_cast<int>(tkn.size()) > tableColCount)
+            while (tkn.size() > tableColCount)
                 tkn.pop_back();
 
             helpContent += "<tr>";
@@ -1168,7 +1170,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             // Add one line break after each line, except the last line from a raw block, because we do
             // not want one useless empty line
-            if (i != static_cast<int>(user.lines.size()) - 1)
+            if (i != user.lines.size() - 1)
                 helpContent += "\n";
         }
         else if (user.kind == UserBlockKind::Paragraph)
@@ -1325,8 +1327,7 @@ void GenDoc::constructPage()
         std::ostringstream oss;
         oss << std::put_time(&nt, "%d-%m-%Y");
         const string dateTime = oss.str();
-        helpOutput += FMT("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION,
-                          SWAG_BUILD_NUM);
+        helpOutput += FMT("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         helpOutput += "</div>\n";
     }
 
