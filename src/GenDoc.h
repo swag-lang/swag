@@ -2,15 +2,18 @@
 #include "AstNode.h"
 #include "AstOutput.h"
 #include "Concat.h"
+#include "Flags.h"
 
 struct Scope;
 struct AstStruct;
 struct AstFuncDecl;
 enum class BuildCfgDocKind;
 
-static constexpr uint32_t GENDOC_CODE_REFS       = 0x00000001;
-static constexpr uint32_t GENDOC_CODE_BLOCK      = 0x00000002;
-static constexpr uint32_t GENDOC_CODE_SYNTAX_COL = 0x00000004;
+using GenDocFlags = Flags<uint32_t>;
+
+static constexpr GenDocFlags GENDOC_CODE_REFS       = 0x00000001;
+static constexpr GenDocFlags GENDOC_CODE_BLOCK      = 0x00000002;
+static constexpr GenDocFlags GENDOC_CODE_SYNTAX_COL = 0x00000004;
 
 struct GenDoc
 {
@@ -65,7 +68,7 @@ struct GenDoc
     static void        computeUserComments(UserComment& result, Vector<Utf8>& lines, bool shortDesc = true);
     static const char* tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink = true);
     Utf8               getFormattedText(const Utf8& user);
-    void               outputCode(const Utf8& code, uint32_t flags);
+    void               outputCode(const Utf8& code, GenDocFlags flags);
     void               outputUserBlock(const UserBlock& user, int titleLevel = 1, bool shortDescTd = false);
     void               outputUserComment(const UserComment& user, int titleLevel = 1);
 

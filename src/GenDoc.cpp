@@ -184,7 +184,7 @@ Utf8 GenDoc::findReference(const Utf8& name)
     return "";
 }
 
-void GenDoc::outputCode(const Utf8& code, uint32_t flags)
+void GenDoc::outputCode(const Utf8& code, GenDocFlags flags)
 {
     if (code.empty())
         return;
@@ -205,7 +205,7 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
     if (repl.empty())
         return;
 
-    if (flags & GENDOC_CODE_BLOCK)
+    if (flags.has(GENDOC_CODE_BLOCK))
     {
         helpContent += "<div class=\"code-block\">";
     }
@@ -219,7 +219,7 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 
     // Syntax coloration
     Utf8 codeText;
-    if (flags & GENDOC_CODE_SYNTAX_COL)
+    if (flags.has(GENDOC_CODE_SYNTAX_COL))
     {
         SyntaxColorContext cxt;
         cxt.mode = SyntaxColorMode::ForDoc;
@@ -233,7 +233,7 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
     }
 
     // References
-    if (!(flags & GENDOC_CODE_REFS))
+    if (!flags.has(GENDOC_CODE_REFS))
         repl = std::move(codeText);
     else
     {
@@ -262,10 +262,8 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 
     helpContent += repl;
 
-    if (flags & GENDOC_CODE_BLOCK)
-    {
+    if (flags.has(GENDOC_CODE_BLOCK))
         helpContent += "</div>\n";
-    }
 }
 
 void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, bool shortDesc)
@@ -886,9 +884,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 block += "\n";
             }
 
-            uint32_t flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
+            GenDocFlags flags = GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL;
             if (user.kind != UserBlockKind::CodeSwag)
-                flags &= ~GENDOC_CODE_SYNTAX_COL;
+                flags.remove(GENDOC_CODE_SYNTAX_COL);
 
             outputCode(block, flags);
             return;
