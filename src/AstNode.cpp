@@ -621,38 +621,39 @@ void AstNode::inheritTokenLocation(const Token& tkn)
     token.endLocation   = tkn.endLocation;
 }
 
-void AstNode::inheritOwners(const AstNode* op)
+void AstNode::inheritOwners(const AstNode* from)
 {
-    if (!op)
+    if (!from)
         return;
-    ownerStructScope = op->ownerStructScope;
-    ownerScope       = op->ownerScope;
-    ownerFct         = op->ownerFct;
 
-    if (op->hasOwnerCompilerIfBlock())
+    ownerStructScope = from->ownerStructScope;
+    ownerScope       = from->ownerScope;
+    ownerFct         = from->ownerFct;
+
+    if (from->hasOwnerCompilerIfBlock())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerCompilerIfBlock = op->ownerCompilerIfBlock();
+        extOwner()->ownerCompilerIfBlock = from->ownerCompilerIfBlock();
     }
     else if (hasExtOwner())
     {
         extOwner()->ownerCompilerIfBlock = nullptr;
     }
 
-    if (op->hasOwnerInline())
+    if (from->hasOwnerInline())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerInline = op->ownerInline();
+        extOwner()->ownerInline = from->ownerInline();
     }
     else if (hasExtOwner())
     {
         extOwner()->ownerInline = nullptr;
     }
 
-    if (op->hasOwnerBreakable())
+    if (from->hasOwnerBreakable())
     {
         allocateExtension(ExtensionKind::Owner);
-        extOwner()->ownerBreakable = op->ownerBreakable();
+        extOwner()->ownerBreakable = from->ownerBreakable();
     }
     else if (hasExtOwner())
     {

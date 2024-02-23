@@ -304,7 +304,7 @@ struct AstNode
     void inheritAstFlagsAnd(AstNode* who, AstNodeFlags flag1, AstNodeFlags flag2, AstNodeFlags flag3);
     void inheritTokenName(Token& tkn);
     void inheritTokenLocation(const Token& tkn);
-    void inheritOwners(const AstNode* op);
+    void inheritOwners(const AstNode* from);
     void inheritOwnersAndFlags(const Parser* parser);
 
     void allocateComputedValue();
