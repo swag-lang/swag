@@ -559,7 +559,7 @@ struct AstVarDecl : AstNode
 
     AttributeList attributes;
     Utf8          publicName;
-    TokenParse    assignToken;
+    Token         assignToken;
     AstNode*      type;
     AstNode*      assignment;
     AstNode*      typeConstraint;

@@ -115,7 +115,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->token.id    = identifier->token.id;
-            varNode->assignToken = assignToken;
+            varNode->assignToken = assignToken.token;
             varNode->addAstFlag(AST_R_VALUE);
             varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
@@ -164,7 +164,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         const auto  tmpVarName  = FMT("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl* orgVarNode  = Ast::newVarDecl(tmpVarName, this, parentNode);
         orgVarNode->kind        = kind;
-        orgVarNode->assignToken = assignToken;
+        orgVarNode->assignToken = assignToken.token;
         orgVarNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
         // This will avoid to initialize the tuple before the affectation
@@ -220,7 +220,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             const auto varNode   = Ast::newVarDecl(identifier->token.text, this, parentNode);
             varNode->kind        = kind;
             varNode->token       = identifier->token;
-            varNode->assignToken = assignToken;
+            varNode->assignToken = assignToken.token;
             varNode->addAstFlag(AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS);
             varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
             varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_TUPLE_AFFECT);
@@ -245,7 +245,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         *result             = varNode;
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode->token);
-        varNode->assignToken = assignToken;
+        varNode->assignToken = assignToken.token;
         varNode->addSpecFlag(forLet ? AstVarDecl::SPEC_FLAG_IS_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
         Ast::addChildBack(varNode, type);

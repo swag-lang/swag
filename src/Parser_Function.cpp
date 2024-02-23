@@ -355,7 +355,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 return context->report(err);
             }
 
-            paramNode->assignToken = tokenParse;
+            paramNode->assignToken = tokenParse.token;
             hasAssignment          = true;
 
             SWAG_CHECK(eatToken());
