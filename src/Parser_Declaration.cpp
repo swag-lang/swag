@@ -173,9 +173,9 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                     [[fallthrough]];
                 default:
                 {
-                    const Diagnostic err{sourceFile, token, Err(Err0510)};
-                    const auto       note = Diagnostic::note(child, child->token, Nte(Nte0074));
-                    return context->report(err, note);
+                    Diagnostic err{sourceFile, token, Err(Err0510)};
+                    err.addNote(child, child->token, Nte(Nte0074));
+                    return context->report(err);
                 }
             }
         }
@@ -425,9 +425,9 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
             const auto tokenDo = token;
             if (token.id != TokenId::KwdDo)
             {
-                const Diagnostic err{sourceFile, token, FMT(Err(Err0533), token.c_str())};
-                const auto       note = Diagnostic::note(parent, forToken, FMT(Nte(Nte0016), forToken.c_str()));
-                return context->report(err, note);
+                Diagnostic err{sourceFile, token, FMT(Err(Err0533), token.c_str())};
+                err.addNote(parent, forToken, FMT(Nte(Nte0016), forToken.c_str()));
+                return context->report(err);
             }
 
             SWAG_CHECK(eatToken());
@@ -471,9 +471,9 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
         const auto tokenDo = token;
         if (token.id != TokenId::CompilerDo)
         {
-            const Diagnostic err{sourceFile, token, FMT(Err(Err0516), token.c_str())};
-            const auto       note = Diagnostic::note(parent->parent, parent->parent->token, FMT(Nte(Nte0015), parent->parent->token.c_str()));
-            return context->report(err, note);
+            Diagnostic err{sourceFile, token, FMT(Err(Err0516), token.c_str())};
+            err.addNote(parent->parent, parent->parent->token, FMT(Nte(Nte0015), parent->parent->token.c_str()));
+            return context->report(err);
         }
 
         SWAG_CHECK(eatToken());
@@ -912,12 +912,11 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         case TokenId::NativeType:
         {
-            const Diagnostic err{sourceFile, token, Err(Err0699)};
+            Diagnostic err{sourceFile, token, Err(Err0699)};
             eatToken();
-            const Diagnostic* note = nullptr;
             if (token.id == TokenId::Identifier)
-                note = Diagnostic::note(Nte(Nte0181));
-            return context->report(err, note);
+                err.addNote(Nte(Nte0181));
+            return context->report(err);
         }
 
         default:

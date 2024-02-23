@@ -23,17 +23,15 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, const SymbolOverlo
     if (context->node->isSameStackFrame(overload))
         return true;
 
-    const Diagnostic err{context->node, FMT(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
+    Diagnostic err{context->node, FMT(Err(Err0081), Naming::kindName(overload).c_str(), overload->symbol->name.c_str())};
 
-    Vector<const Diagnostic*> notes;
-
-    notes.push_back(Diagnostic::hereIs(overload));
+    err.addNote(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
-        notes.push_back(Diagnostic::note(FMT(Nte(Nte0194), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str())));
+        err.addNote(FMT(Nte(Nte0194), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str()));
     if (overload->fromInlineParam)
-        notes.push_back(Diagnostic::note(overload->fromInlineParam, FMT(Nte(Nte0077), overload->symbol->name.c_str())));
+        err.addNote(overload->fromInlineParam, FMT(Nte(Nte0077), overload->symbol->name.c_str()));
 
-    return context->report(err, notes);
+    return context->report(err);
 }
 
 bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)

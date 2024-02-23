@@ -685,16 +685,16 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                const Diagnostic err{importNode, tokenLocation, FMT(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
-                const auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
-                return Report::report(err, note);
+                Diagnostic err{importNode, tokenLocation, FMT(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
+                err.addNote(dep->node, Nte(Nte0073));
+                return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                const Diagnostic err{importNode, tokenVersion, FMT(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
-                const auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
-                return Report::report(err, note);
+                Diagnostic err{importNode, tokenVersion, FMT(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
+                err.addNote(dep->node, Nte(Nte0073));
+                return Report::report(err);
             }
 
             return true;
@@ -716,9 +716,9 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        const Diagnostic err{importNode, tokenVersion, Err(Err0312)};
-        const auto       note = Diagnostic::note(Nte(Nte0142));
-        return Report::report(err, note);
+        Diagnostic err{importNode, tokenVersion, Err(Err0312)};
+        err.addNote(Nte(Nte0142));
+        return Report::report(err);
     }
 
     uint32_t* setVer = nullptr;
@@ -747,9 +747,9 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (!Utf8::isNumber(splits[i]))
         {
-            const Diagnostic err{importNode, tokenVersion, Err(Err0312)};
-            const auto       note = Diagnostic::note(Err(Nte0142));
-            return Report::report(err, note);
+            Diagnostic err{importNode, tokenVersion, Err(Err0312)};
+            err.addNote(Err(Nte0142));
+            return Report::report(err);
         }
 
         *setVer = splits[i].toInt();

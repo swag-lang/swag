@@ -1367,11 +1367,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
         default:
         {
-            const Diagnostic  err{sourceFile, token, FMT(Err(Err0408), token.c_str())};
-            const Diagnostic* note = nullptr;
+            Diagnostic err{sourceFile, token, FMT(Err(Err0408), token.c_str())};
             if (Tokenizer::isKeyword(token.id))
-                note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
-            return context->report(err, note);
+                err.addNote(FMT(Nte(Nte0125), token.c_str()));
+            return context->report(err);
         }
     }
 

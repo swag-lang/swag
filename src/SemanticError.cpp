@@ -83,9 +83,9 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     if (thisKind != otherKind)
         as = FMT("as %s", Naming::aKindName(otherKind).c_str());
 
-    const Diagnostic err{sourceFile, token, FMT(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
-    const auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
-    return context->report(err, note);
+    Diagnostic err{sourceFile, token, FMT(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
+    return context->report(err);
 }
 
 bool SemanticError::error(SemanticContext* context, const Utf8& msg)

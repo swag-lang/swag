@@ -418,7 +418,8 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
             if (!note)
                 continue;
             Diagnostic err{note->sourceFile, note->startLocation, note->endLocation, Err(Err0087)};
-            Report::report(err, note);
+            err.addNote(note);
+            Report::report(err);
         }
     }
 }

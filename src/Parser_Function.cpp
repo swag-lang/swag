@@ -374,13 +374,12 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (!acceptMissingType)
             {
                 prepareExpectTokenError();
-                const Diagnostic err{sourceFile, token, FMT(Err(Err0571), token.c_str())};
-                Diagnostic*      note;
+                Diagnostic err{sourceFile, token, FMT(Err(Err0571), token.c_str())};
                 if (otherVariables.empty())
-                    note = Diagnostic::note(paramNode, Nte(Nte0169));
+                    err.addNote(paramNode, Nte(Nte0169));
                 else
-                    note = Diagnostic::note(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, Nte(Nte0168));
-                return context->report(err, note);
+                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, Nte(Nte0168));
+                return context->report(err);
             }
             if (hasMissingType)
             {

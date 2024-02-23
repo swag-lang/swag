@@ -44,20 +44,19 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         back->resolvedSymbolName()->kind != SymbolKind::Function &&
         back->resolvedSymbolName()->kind != SymbolKind::Variable)
     {
-        const Diagnostic          err{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName()->kind).c_str())};
-        Vector<const Diagnostic*> notes;
+        Diagnostic err{back, FMT(Err(Err0328), Naming::aKindName(back->resolvedSymbolName()->kind).c_str())};
 
-        notes.push_back(Diagnostic::note(Nte(Nte0013)));
+        err.addNote(Nte(Nte0013));
 
         if (back->resolvedSymbolName()->kind == SymbolKind::Enum ||
             back->resolvedSymbolName()->kind == SymbolKind::Interface ||
             back->resolvedSymbolName()->kind == SymbolKind::TypeAlias ||
             back->resolvedSymbolName()->kind == SymbolKind::Struct)
         {
-            notes.push_back(Diagnostic::note(node, node->kwdLoc, FMT(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName()->kind).c_str())));
+            err.addNote(node, node->kwdLoc, FMT(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName()->kind).c_str()));
         }
 
-        return context->report(err, notes);
+        return context->report(err);
     }
 
     SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName(), back->resolvedSymbolName(), back->resolvedSymbolOverload()));
@@ -645,16 +644,16 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->isGeneratedSelf())
             {
-                const Diagnostic err{dependentVar, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
-                const auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
-                const auto       note1 = Diagnostic::note(Nte(Nte0034));
-                return context->report(err, note, note1);
+                Diagnostic err{dependentVar, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
+                err.addNote(Nte(Nte0034));
+                return context->report(err);
             }
 
-            const Diagnostic err{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
-            const auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
-            const auto       note1 = Diagnostic::note(Nte(Nte0034));
-            return context->report(err, note, note1);
+            Diagnostic err{dep.node, FMT(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+            err.addNote(dependentVar, Nte(Nte0060));
+            err.addNote(Nte(Nte0034));
+            return context->report(err);
         }
 
         dependentVar     = dep.node;
@@ -863,10 +862,11 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias)
         {
-            const auto       firstNode = symbol->nodes.front();
-            const Diagnostic err{genericParameters, FMT(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
-            const auto       note = Diagnostic::note(node, node->token, FMT(Nte(Nte0199), node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
-            return context->report(err, note, Diagnostic::hereIs(firstNode));
+            const auto firstNode = symbol->nodes.front();
+            Diagnostic err{genericParameters, FMT(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
+            err.addNote(node, node->token, FMT(Nte(Nte0199), node->token.c_str(), Naming::aKindName(symbol->kind).c_str()));
+            err.addNote(Diagnostic::hereIs(firstNode));
+            return context->report(err);
         }
 
         const auto childCount = genericParameters->children.size();

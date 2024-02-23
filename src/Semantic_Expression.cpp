@@ -20,7 +20,8 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
         Diagnostic err{expression, expression->token, FMT(Err(Err0042), expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
         err.hint          = FMT(Nte(Nte0144), userOp->symbol->name.c_str());
-        return context->report(err, note);
+        err.addNote(note);
+        return context->report(err);
     }
 
     Utf8 message;
@@ -45,7 +46,8 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
         note = nullptr;
     }
 
-    return context->report(err, note);
+    err.addNote(note);
+    return context->report(err);
 }
 
 bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
@@ -413,8 +415,9 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        const Diagnostic err{node->expressionLow, FMT(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
-        return context->report(err, Diagnostic::note(Nte(Nte0200)));
+        Diagnostic err{node->expressionLow, FMT(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
+        err.addNote(Nte(Nte0200));
+        return context->report(err);
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CAST_FLAG_COMMUTATIVE));

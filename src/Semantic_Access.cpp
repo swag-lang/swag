@@ -280,24 +280,22 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     if (!onNode)
         onNode = culprit;
 
-    const auto       accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
-    const Diagnostic err{node,
-                         node->getTokenName(),
-                         FMT(Err(Err0426),
-                             Naming::kindName(node->resolvedSymbolOverload()).c_str(),
-                             node->token.c_str(),
-                             Naming::kindName(culprit->resolvedSymbolOverload()).c_str(),
-                             culprit->token.c_str(),
-                             accessCulprit)};
+    const auto accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
+    Diagnostic err{node,
+                   node->getTokenName(),
+                   FMT(Err(Err0426),
+                       Naming::kindName(node->resolvedSymbolOverload()).c_str(),
+                       node->token.c_str(),
+                       Naming::kindName(culprit->resolvedSymbolOverload()).c_str(),
+                       culprit->token.c_str(),
+                       accessCulprit)};
 
-    const Diagnostic* note  = nullptr;
-    const Diagnostic* note1 = nullptr;
     if (onNode == culprit)
-        note = Diagnostic::note(culprit, culprit->token, FMT(Nte(Nte0146), Naming::kindName(culprit->resolvedSymbolOverload()).c_str(), accessCulprit));
+        err.addNote(culprit, culprit->token, FMT(Nte(Nte0146), Naming::kindName(culprit->resolvedSymbolOverload()).c_str(), accessCulprit));
     else
     {
-        note  = Diagnostic::note(onNode, onNode->token, FMT(Nte(Nte0157), accessCulprit, onNode->typeInfo->getDisplayNameC()));
-        note1 = Diagnostic::hereIs(culprit);
+        err.addNote(onNode, onNode->token, FMT(Nte(Nte0157), accessCulprit, onNode->typeInfo->getDisplayNameC()));
+        err.addNote(Diagnostic::hereIs(culprit));
     }
-    return context->report(err, note, note1);
+    return context->report(err);
 }

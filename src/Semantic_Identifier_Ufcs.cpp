@@ -85,9 +85,9 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             SWAG_ASSERT(identifierRef->previousResolvedNode);
             if (!node->callParameters)
             {
-                const Diagnostic err{node, FMT(Err(Err0540), Naming::kindName(overload).c_str())};
-                const auto       note = Diagnostic::hereIs(overload);
-                return context->report(err, note);
+                Diagnostic err{node, FMT(Err(Err0540), Naming::kindName(overload).c_str())};
+                err.addNote(Diagnostic::hereIs(overload));
+                return context->report(err);
             }
 
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);

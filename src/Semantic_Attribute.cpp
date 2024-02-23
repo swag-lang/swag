@@ -186,23 +186,25 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (specificMsg)
     {
-        const auto       nakedName = Naming::kindName(checkNode);
-        const Diagnostic err{oneAttribute, FMT(Err(Err0491), oneAttribute->token.c_str(), specificMsg)};
-        const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0024), nakedName.c_str()));
-        return context->report(err, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+        const auto nakedName = Naming::kindName(checkNode);
+        Diagnostic err{oneAttribute, FMT(Err(Err0491), oneAttribute->token.c_str(), specificMsg)};
+        err.addNote(checkNode, checkNode->token, FMT(Nte(Nte0024), nakedName.c_str()));
+        err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+        return context->report(err);
     }
 
     const auto nakedName = Naming::aKindName(checkNode);
     if (nakedName == "<node>")
     {
-        const Diagnostic err{oneAttribute, FMT(Err(Err0495), oneAttribute->token.c_str())};
-        return context->report(err, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+        Diagnostic err{oneAttribute, FMT(Err(Err0495), oneAttribute->token.c_str())};
+        err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+        return context->report(err);
     }
 
-    const auto       nakedName1 = Naming::kindName(checkNode);
-    const Diagnostic err{oneAttribute, FMT(Err(Err0492), oneAttribute->token.c_str(), nakedName.c_str())};
-    const auto       note1 = Diagnostic::note(checkNode, checkNode->token, FMT(Nte(Nte0063), nakedName1.c_str()));
-    return context->report(err, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+    Diagnostic err{oneAttribute, FMT(Err(Err0492), oneAttribute->token.c_str(), nakedName.c_str())};
+    err.addNote(checkNode, checkNode->token, FMT(Nte(Nte0063), Naming::kindName(checkNode).c_str()));
+    err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
+    return context->report(err);
 }
 
 void Semantic::inheritAttributesFromParent(AstNode* child)

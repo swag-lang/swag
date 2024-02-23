@@ -545,11 +545,10 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     const auto errMsg = checkLiteralValue(*node->computedValue(), node->literalType, node->literalValue, suffixType, negApplied);
     if (!errMsg.empty())
     {
-        const Diagnostic  err{node, node->token, errMsg};
-        const Diagnostic* note = nullptr;
+        Diagnostic err{node, node->token, errMsg};
         if (suffix && suffix->typeInfo)
-            note = Diagnostic::note(suffix, FMT(Nte(Nte0198), suffix->typeInfo->getDisplayNameC()));
-        return context->report(err, note);
+            err.addNote(suffix, FMT(Nte(Nte0198), suffix->typeInfo->getDisplayNameC()));
+        return context->report(err);
     }
 
     node->typeInfo    = suffixType;

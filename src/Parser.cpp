@@ -15,33 +15,30 @@
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint) const
 {
-    Diagnostic        err{node, msg.c_str()};
-    const Diagnostic* note = nullptr;
-    if (help)
-        note = Diagnostic::note(help);
+    Diagnostic err{node, msg.c_str()};
     if (hint)
         err.hint = hint;
-    return context->report(err, note);
+    if (help)
+        err.addNote(help);
+    return context->report(err);
 }
 
 bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint) const
 {
-    Diagnostic        err{sourceFile, tk, msg.c_str()};
-    const Diagnostic* note = nullptr;
-    if (help)
-        note = Diagnostic::note(help);
+    Diagnostic err{sourceFile, tk, msg.c_str()};
     if (hint)
         err.hint = hint;
-    return context->report(err, note);
+    if (help)
+        err.addNote(help);
+    return context->report(err);
 }
 
 bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help) const
 {
-    const Diagnostic  err{sourceFile, startLocation, endLocation, msg.c_str()};
-    const Diagnostic* note = nullptr;
+    Diagnostic err{sourceFile, startLocation, endLocation, msg.c_str()};
     if (help)
-        note = Diagnostic::note(help);
-    return context->report(err, note);
+        err.addNote(help);
+    return context->report(err);
 }
 
 bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
@@ -150,13 +147,10 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 
 bool Parser::invalidIdentifierError(const TokenParse& tokenParse, const char* msg) const
 {
-    const Diagnostic* note = nullptr;
-
+    Diagnostic err{sourceFile, token, msg ? msg : FMT(Err(Err0310), token.c_str()).c_str()};
     if (Tokenizer::isKeyword(tokenParse.id))
-        note = Diagnostic::note(FMT(Nte(Nte0125), tokenParse.c_str()));
-
-    const Diagnostic err{sourceFile, token, msg ? msg : FMT(Err(Err0310), token.c_str()).c_str()};
-    return context->report(err, note);
+        err.addNote(FMT(Nte(Nte0125), tokenParse.c_str()));
+    return context->report(err);
 }
 
 bool Parser::eatToken()
@@ -181,9 +175,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             return context->report(err);
         }
 
-        const Diagnostic err{sourceFile, token, diagMsg};
-        const auto       note = Diagnostic::note(sourceFile, start, start, FMT(Nte(Nte0180), related.c_str()));
-        return context->report(err, note);
+        Diagnostic err{sourceFile, token, diagMsg};
+        err.addNote(sourceFile, start, start, FMT(Nte(Nte0180), related.c_str()));
+        return context->report(err);
     }
 
     SWAG_CHECK(eatToken());

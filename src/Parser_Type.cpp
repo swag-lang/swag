@@ -279,9 +279,11 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     tokenAmb.endLocation   = token.startLocation;
 
                     Diagnostic err{sourceFile, tokenAmb, Err(Err0022)};
-                    auto       note = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
-                    note->hint      = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
-                    return context->report(err, note);
+
+                    auto note  = Diagnostic::note(lastParameter, FMT(Nte(Nte0008), lastParameter->type->token.c_str()));
+                    note->hint = FMT(Nte(Nte0189), lastParameter->type->token.c_str());
+                    err.addNote(note);
+                    return context->report(err);
                 }
 
                 lastWasAlone  = curIsAlone;
@@ -448,18 +450,18 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, Ex
         return context->report(err);
     }
 
-    const Diagnostic* note = nullptr;
-    if (token.id == TokenId::SymLeftParen)
-        note = Diagnostic::note(Nte(Nte0084));
-    else if (token.id == TokenId::SymDotDotDot)
-        note = Diagnostic::note(Nte(Nte0138));
-    else if (Tokenizer::isKeyword(token.id))
-        note = Diagnostic::note(FMT(Nte(Nte0125), token.c_str()));
-    else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
-        note = Diagnostic::note(Nte(Nte0085));
+    Diagnostic err{sourceFile, token, FMT(Err(Err0400), token.c_str())};
 
-    const Diagnostic err{sourceFile, token, FMT(Err(Err0400), token.c_str())};
-    return context->report(err, note);
+    if (token.id == TokenId::SymLeftParen)
+        err.addNote(Nte(Nte0084));
+    else if (token.id == TokenId::SymDotDotDot)
+        err.addNote(Nte(Nte0138));
+    else if (Tokenizer::isKeyword(token.id))
+        err.addNote(FMT(Nte(Nte0125), token.c_str()));
+    else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
+        err.addNote(Nte(Nte0085));
+
+    return context->report(err);
 }
 
 bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)

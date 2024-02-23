@@ -34,8 +34,8 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, Err(Err0359)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            const auto note = Diagnostic::note(Nte(Nte0103));
-            return context->report(err, note);
+            err.addNote(Nte(Nte0103));
+            return context->report(err);
         }
 
         if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
@@ -57,8 +57,8 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, Err(Err0359)};
             err.addNote(right, Diagnostic::isType(rightTypeInfo));
-            const auto note = Diagnostic::note(Nte(Nte0103));
-            return context->report(err, note);
+            err.addNote(Nte(Nte0103));
+            return context->report(err);
         }
 
         if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
@@ -96,7 +96,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
             Diagnostic err{node, node->token, FMT(Err(Err0346), node->token.c_str(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             if (left->hasFlagComputedValue() || right->hasFlagComputedValue())
-                return context->report(err, Diagnostic::note(Nte(Nte0037)));
+                err.addNote(Nte(Nte0037));
             return context->report(err);
         }
         default:
@@ -233,8 +233,8 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         {
             Diagnostic err{node, node->token, Err(Err0359)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            const auto note = Diagnostic::note(Nte(Nte0103));
-            return context->report(err, note);
+            err.addNote(Nte(Nte0103));
+            return context->report(err);
         }
 
         SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, FMT(Err(Err0360), rightTypeInfo->getDisplayNameC())}));
@@ -1171,9 +1171,9 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        const Diagnostic err{node, node->token, FMT(Err(Err0388), leftTypeInfo->getDisplayNameC())};
-        const auto       note = Diagnostic::note(left, Diagnostic::isType(left));
-        return context->report(err, note);
+        Diagnostic err{node, node->token, FMT(Err(Err0388), leftTypeInfo->getDisplayNameC())};
+        err.addNote(left, Diagnostic::isType(left));
+        return context->report(err);
     }
 
     if (left->hasFlagComputedValue() && right->hasFlagComputedValue())
@@ -1249,9 +1249,9 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        const Diagnostic err{node, node->token, FMT(Err(Err0389), leftTypeInfo->getDisplayNameC())};
-        const auto       note = Diagnostic::note(left, Diagnostic::isType(left));
-        return context->report(err, note);
+        Diagnostic err{node, node->token, FMT(Err(Err0389), leftTypeInfo->getDisplayNameC())};
+        err.addNote(left, Diagnostic::isType(left));
+        return context->report(err);
     }
 
     if (left->hasFlagComputedValue() && right->hasFlagComputedValue())

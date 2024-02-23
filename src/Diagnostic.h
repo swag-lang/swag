@@ -134,9 +134,13 @@ struct Diagnostic
 
     void setup();
     void addNote(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
+    void addNote(AstNode* node, const Token& token, const Utf8& msg);
     void addNote(AstNode* node, const Utf8& h);
     void addNote(const Token& token, const Utf8& h);
     void addNote(const Utf8& msg);
+    void addNote(const Diagnostic* note);
+    void addNote(SourceFile* file, const Token& token, const Utf8& msg);
+    void addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg);
     bool hasNotes() const { return !notes.empty(); }
 
     void setupColors();

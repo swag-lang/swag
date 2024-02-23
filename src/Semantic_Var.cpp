@@ -73,8 +73,8 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic err{varDecl, varDecl->token, FMT(Err(Err0728), numUnpack, typeStruct->fields.size())};
         err.addNote(varDecl->assignment, FMT(Nte(Nte0175), typeStruct->fields.size()));
-        const auto note = Diagnostic::note(Nte(Nte0038));
-        return context->report(err, note);
+        err.addNote(Nte(Nte0038));
+        return context->report(err);
     }
 
     if (numUnpack > typeStruct->fields.size())
@@ -555,8 +555,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            auto note = Diagnostic::note(Nte(Nte0002));
-            return context->report({node, FMT(Err(Err0356), node->token.c_str())}, note);
+            Diagnostic err{node, FMT(Err(Err0356), node->token.c_str())};
+            err.addNote(Nte(Nte0002));
+            return context->report(err);
         }
     }
 
@@ -573,8 +574,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            auto note = Diagnostic::note(Nte(Nte0001));
-            return context->report({node, node->token, FMT(Err(Err0356), node->token.c_str())}, note);
+            Diagnostic err{node, node->token, FMT(Err(Err0356), node->token.c_str())};
+            err.addNote(Nte(Nte0001));
+            return context->report(err);
         }
     }
 
@@ -639,8 +641,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         Diagnostic err{node, node->token, FMT(Err(Err0489), concreteNodeType->getDisplayNameC())};
         auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
-        auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-        return context->report(err, note);
+        err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
+        return context->report(err);
     }
 
     // Check for missing initialization
@@ -733,8 +735,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             if (!ok)
             {
                 Diagnostic err{node, FMT(Err(Err0566), node->token.c_str(), concreteTypeEnum->getDisplayNameC())};
-                auto       note = Diagnostic::hereIs(concreteNodeType->declNode);
-                return context->report(err, note);
+                err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
+                return context->report(err);
             }
         }
     }
@@ -769,14 +771,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             Diagnostic err(node->typeConstraint, FMT(Err(Err0088), node->typeInfo->getDisplayNameC()));
             if (node->genTypeComesFrom && node->typeConstraint->kind == AstNodeKind::IdentifierRef)
             {
-                auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
-                return context->report(err, note);
+                err.addNote(node->genTypeComesFrom, FMT(Nte(Nte0139), node->typeInfo->getDisplayNameC(), node->typeConstraint->token.c_str()));
+                return context->report(err);
             }
 
             if (node->genTypeComesFrom)
             {
-                auto note = Diagnostic::note(node->genTypeComesFrom, FMT(Nte(Nte0140), node->typeInfo->getDisplayNameC()));
-                return context->report(err, note);
+                err.addNote(node->genTypeComesFrom, FMT(Nte(Nte0140), node->typeInfo->getDisplayNameC()));
+                return context->report(err);
             }
 
             return context->report(err);
@@ -854,13 +856,15 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (isCompilerConstant)
         {
             Diagnostic err{node->assignment, Err(Err0562)};
-            return context->report(err, Diagnostic::note(Nte(Nte0036)));
+            err.addNote(Nte(Nte0036));
+            return context->report(err);
         }
 
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_IS_LET))
         {
             Diagnostic err{node->assignment, Err(Err0564)};
-            return context->report(err, Diagnostic::note(Nte(Nte0036)));
+            err.addNote(Nte(Nte0036));
+            return context->report(err);
         }
     }
 
@@ -1141,8 +1145,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (node->hasAttribute(ATTRIBUTE_PUBLIC))
         {
             Diagnostic err{node, node->getTokenName(), Err(Err0479)};
-            auto       note = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
-            return context->report(err, note);
+            err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
+            return context->report(err);
         }
 
         node->addAstFlag(AST_R_VALUE);

@@ -58,9 +58,31 @@ void Diagnostic::addNote(const Token& token, const Utf8& h)
     addNote(token.startLocation, token.endLocation, h);
 }
 
+void Diagnostic::addNote(AstNode* node, const Token& token, const Utf8& msg)
+{
+    notes.push_back(note(node, token, msg));
+}
+
 void Diagnostic::addNote(const Utf8& msg)
 {
     notes.push_back(note(msg));
+}
+
+void Diagnostic::addNote(const Diagnostic* note)
+{
+    if (!note)
+        return;
+    notes.push_back(note);
+}
+
+void Diagnostic::addNote(SourceFile* file, const Token& token, const Utf8& msg)
+{
+    notes.push_back(note(file, token, msg));
+}
+
+void Diagnostic::addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg)
+{
+    notes.push_back(note(file, start, end, msg));
 }
 
 void Diagnostic::addNote(AstNode* node, const Utf8& h)

@@ -361,9 +361,9 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             case CompareVersionResult::VersionGreater:
             case CompareVersionResult::VersionLower:
             {
-                const Diagnostic err{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-                const auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
-                Report::report(err, note);
+                Diagnostic err{dep->node, FMT(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+                err.addNote(cfgModule->fetchDep->node, Nte(Nte0070));
+                Report::report(err);
                 return false;
             }
 

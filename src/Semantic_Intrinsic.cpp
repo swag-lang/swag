@@ -96,10 +96,8 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
             {
                 if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
                 {
-                    const Diagnostic err{typeNode, FMT(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
-                    const auto       note = Diagnostic::note(typeNode, FMT(Nte(Nte0022), tag->cmdLine.c_str()));
-                    note->sourceFile      = nullptr;
-                    note->showSourceCode  = false;
+                    Diagnostic err{typeNode, FMT(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
+                    err.addNote(FMT(Nte(Nte0022), tag->cmdLine.c_str()));
                     return context->report(err);
                 }
 

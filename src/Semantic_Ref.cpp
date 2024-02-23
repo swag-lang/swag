@@ -62,10 +62,10 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 
     if (!msg.empty())
     {
-        const Diagnostic err{node, msg};
-        const auto       note  = Diagnostic::hereIs(funcNode);
-        const auto       note1 = Diagnostic::note(msg1);
-        return context->report(err, note, note1);
+        Diagnostic err{node, msg};
+        err.addNote(Diagnostic::hereIs(funcNode));
+        err.addNote(msg1);
+        return context->report(err);
     }
 
     return true;
@@ -182,9 +182,9 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
                 return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()));
             }
 
-            const Diagnostic err{node, node->token, FMT(Err(Err0182), typeInfo->getDisplayNameC())};
-            const auto       note = Diagnostic::note(FMT(Nte(Nte0100), Naming::aKindName(typeInfo).c_str()));
-            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()), note);
+            Diagnostic err{node, node->token, FMT(Err(Err0182), typeInfo->getDisplayNameC())};
+            err.addNote(FMT(Nte(Nte0100), Naming::aKindName(typeInfo).c_str()));
+            return context->report(err, Diagnostic::hereIs(child->resolvedSymbolOverload()));
         }
     }
 
@@ -498,9 +498,9 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
         if (front->kind == AstNodeKind::IdentifierRef)
         {
-            err.hint        = Nte(Nte0129);
-            const auto note = Diagnostic::note(front, FMT(Nte(Nte0195), front->token.c_str()));
-            return context->report(err, note);
+            err.hint = Nte(Nte0129);
+            err.addNote(front, FMT(Nte(Nte0195), front->token.c_str()));
+            return context->report(err);
         }
 
         err.addNote(front, Diagnostic::isType(typeInfo));
@@ -892,7 +892,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 Diagnostic err{arrayNode->access, FMT(Err(Err0256), arrayNode->resolvedSymbolName()->name.c_str(), arrayType->getDisplayNameC())};
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-                return context->report(err, Diagnostic::note(Nte(Nte0103)));
+                err.addNote(Nte(Nte0103));
+                return context->report(err);
             }
 
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));

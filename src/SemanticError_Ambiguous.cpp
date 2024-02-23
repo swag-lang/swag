@@ -12,18 +12,17 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     if (!node)
         node = context->node;
 
-    const Diagnostic err{node, node->token, FMT(Err(Err0019), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, FMT(Err(Err0019), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
-    Vector<const Diagnostic*> notes;
     for (const auto match : genericMatches)
     {
         const auto overload = match->symbolOverload;
         const auto note     = Diagnostic::note(overload->node, overload->node->getTokenName(), Nte(Nte0051));
         note->canBeMerged   = false;
-        notes.push_back(note);
+        err.addNote(note);
     }
 
-    return context->report(err, notes);
+    return context->report(err);
 }
 
 bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, MatchIdParamsFlags flags)
@@ -50,9 +49,8 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         return duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
     }
 
-    const Diagnostic err{node, node->token, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
+    Diagnostic err{node, node->token, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
 
-    Vector<const Diagnostic*> notes;
     for (const auto match : matches)
     {
         const auto  overload = match->symbolOverload;
@@ -81,24 +79,23 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         }
 
         note->canBeMerged = false;
-        notes.push_back(note);
+        err.addNote(note);
     }
 
-    return context->report(err, notes);
+    return context->report(err);
 }
 
 bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& matches)
 {
-    const Diagnostic err{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
+    Diagnostic err{identifier, FMT(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.c_str())};
 
-    Vector<const Diagnostic*> notes;
     for (const auto& p1 : matches)
     {
         auto       couldBe = FMT(Nte(Nte0047), Naming::aKindName(p1.symbol->kind).c_str());
         const auto note    = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->getTokenName(), couldBe);
         note->canBeMerged  = false;
-        notes.push_back(note);
+        err.addNote(note);
     }
 
-    return context->report(err, notes);
+    return context->report(err);
 }

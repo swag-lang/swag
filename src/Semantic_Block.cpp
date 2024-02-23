@@ -274,10 +274,10 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
     if (node->hasAttribute(ATTRIBUTE_COMPLETE) && !node->expression)
     {
-        const Diagnostic err{node, node->token, Err(Err0483)};
-        const auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-        const auto       note = Diagnostic::note(attr, FMT(Nte(Nte0063), "attribute"));
-        return context->report(err, note);
+        Diagnostic err{node, node->token, Err(Err0483)};
+        const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
+        return context->report(err);
     }
 
     node->byteCodeFct = ByteCodeGen::emitSwitch;
@@ -324,8 +324,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     const int idx = valText.find(expr->computedValue()->text);
                     if (idx != -1)
                     {
-                        const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
-                        return context->report({expr, FMT(Err(Err0011), expr->computedValue()->text.c_str())}, note);
+                        Diagnostic err{expr, FMT(Err(Err0011), expr->computedValue()->text.c_str())};
+                        err.addNote(valDef[idx], Nte(Nte0071));
+                        return context->report(err);
                     }
 
                     valText.push_back(expr->computedValue()->text);
@@ -388,9 +389,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!valText.contains(one->value->text))
                         {
-                            const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
-                            const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
-                            return context->report(err, note);
+                            Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            err.addNote(one->declNode, one->declNode->token, Nte(Nte0126));
+                            return context->report(err);
                         }
                     }
                 }
@@ -402,9 +403,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                             continue;
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            const Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
-                            const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
-                            return context->report(err, note);
+                            Diagnostic err{node, node->token, FMT(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            err.addNote(one->declNode, one->declNode->token, Nte(Nte0126));
+                            return context->report(err);
                         }
                     }
                 }
@@ -857,8 +858,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             Diagnostic err{node, node->wantPointerToken, Err(Err0416)};
-            auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
-            return context->report(err, note);
+            err.addNote(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            return context->report(err);
         }
 
         content += FMT("{ loop%s %s { ", visitBack.c_str(), reinterpret_cast<const char*>(concat.firstBucket->data));
@@ -878,8 +879,8 @@ bool Semantic::resolveVisit(SemanticContext* context)
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             Diagnostic err{node, node->wantPointerToken, Err(Err0417)};
-            auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
-            return context->report(err, note);
+            err.addNote(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            return context->report(err);
         }
 
         auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);

@@ -404,9 +404,9 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(node, &id));
         if (id->kind != AstNodeKind::VarDecl)
         {
-            const Diagnostic err{id->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
-            const auto       note = Diagnostic::note(Nte(Nte0014));
-            return context->report(err, note);
+            Diagnostic err{id->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
+            err.addNote(Nte(Nte0014));
+            return context->report(err);
         }
 
         SWAG_ASSERT(id->extSemantic()->semanticAfterFct == Semantic::resolveVarDeclAfter);
@@ -419,9 +419,9 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
         if (id->kind == AstNodeKind::StatementNoScope)
         {
-            const Diagnostic err{node->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
-            const auto       note = Diagnostic::note(Nte(Nte0014));
-            return context->report(err, note);
+            Diagnostic err{node->token.sourceFile, id->children.front()->token.startLocation, id->children.back()->token.endLocation, Err(Err0311)};
+            err.addNote(Nte(Nte0014));
+            return context->report(err);
         }
 
         if (id->kind != AstNodeKind::IdentifierRef &&

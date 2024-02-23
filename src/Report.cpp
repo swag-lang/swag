@@ -698,14 +698,9 @@ bool Report::report(const Diagnostic& err, const Vector<const Diagnostic*>& note
     return result;
 }
 
-bool Report::report(const Diagnostic& err, const Diagnostic* note, const Diagnostic* note1)
+bool Report::report(const Diagnostic& err)
 {
-    Vector<const Diagnostic*> notes;
-    if (note)
-        notes.push_back(note);
-    if (note1)
-        notes.push_back(note1);
-    return report(err, notes);
+    return report(err, {});
 }
 
 bool Report::error(Module* module, const Utf8& msg)

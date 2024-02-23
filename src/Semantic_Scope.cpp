@@ -119,15 +119,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    const Diagnostic          err{identifierRef, FMT(Err(Err0018), node->token.c_str())};
-                    Vector<const Diagnostic*> notes;
+                    Diagnostic err{identifierRef, FMT(Err(Err0018), node->token.c_str())};
                     for (const auto t : typeEnum)
                     {
                         auto msg = FMT(Nte(Nte0197), t->getDisplayNameC());
-                        notes.push_back(Diagnostic::note(t->declNode, t->declNode->getTokenName(), msg));
+                        err.addNote(t->declNode, t->declNode->getTokenName(), msg);
                     }
 
-                    return context->report(err, notes);
+                    return context->report(err);
                 }
 
                 // One single match : we are done
@@ -146,24 +145,23 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (!hasEnum.empty())
                         {
-                            const Diagnostic          err{identifierRef, FMT(Err(Err0708), node->token.c_str(), hasEnum[0].second->getDisplayNameC())};
-                            Vector<const Diagnostic*> notes;
-                            const auto                closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                            Diagnostic err{identifierRef, FMT(Err(Err0708), node->token.c_str(), hasEnum[0].second->getDisplayNameC())};
+                            const auto closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
-                                notes.push_back(Diagnostic::note(closest));
+                                err.addNote(closest);
                             if (hasEnum[0].first)
-                                notes.push_back(Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first)));
-                            notes.push_back(Diagnostic::hereIs(hasEnum[0].second->declNode));
-                            return context->report(err, notes);
+                                err.addNote(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first));
+                            err.addNote(Diagnostic::hereIs(hasEnum[0].second->declNode));
+                            return context->report(err);
                         }
 
-                        const Diagnostic err{identifierRef, FMT(Err(Err0718), node->token.c_str())};
+                        Diagnostic err{identifierRef, FMT(Err(Err0718), node->token.c_str())};
 
                         // Call to a function ?
-                        const Diagnostic* note = nullptr;
                         if (testedOver.size() == 1)
-                            note = Diagnostic::hereIs(testedOver[0]);
-                        return context->report(err, note);
+                            err.addNote(Diagnostic::hereIs(testedOver[0]));
+                        
+                        return context->report(err);
                     }
 
                     const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);

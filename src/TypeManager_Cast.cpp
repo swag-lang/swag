@@ -2696,10 +2696,10 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                     {
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
-                            const Diagnostic err{fromNode, FMT(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                            const auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
-                            const auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
-                            return context->report(err, note1, note2);
+                            Diagnostic err{fromNode, FMT(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                            err.addNote(foundField->declNode, Nte(Nte0061));
+                            err.addNote(field->declNode, Nte(Nte0060));
+                            return context->report(err);
                         }
                     }
                 }
@@ -2734,10 +2734,10 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             {
                 if (foundField)
                 {
-                    const Diagnostic err{context->node, FMT(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                    const auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0150));
-                    const auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0152));
-                    return context->report(err, note1, note2);
+                    Diagnostic err{context->node, FMT(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                    err.addNote(it.field->declNode, Nte(Nte0150));
+                    err.addNote(foundField->declNode, Nte(Nte0152));
+                    return context->report(err);
                 }
 
                 ref.itf         = foundItf;

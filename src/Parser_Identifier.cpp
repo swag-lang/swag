@@ -299,10 +299,10 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         default:
             if (Tokenizer::isIntrinsicReturn(token.id))
             {
-                const Diagnostic err{sourceFile, token, FMT(Err(Err0748), token.c_str())};
-                const auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte0149));
-                const auto       note1 = Diagnostic::note(Nte(Nte0012));
-                return context->report(err, note, note1);
+                Diagnostic err{sourceFile, token, FMT(Err(Err0748), token.c_str())};
+                err.addNote(sourceFile, discardToken, Nte(Nte0149));
+                err.addNote(Nte(Nte0012));
+                return context->report(err);
             }
 
             return error(token, FMT(Err(Err0159), token.c_str()));

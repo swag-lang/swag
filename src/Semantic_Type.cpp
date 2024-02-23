@@ -138,8 +138,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // Reference to a static struct member
     if (node->resolvedSymbolOverload() && node->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        const Diagnostic  err{node, FMT(Err(Err0590), node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
-        const Diagnostic* note = nullptr;
+        Diagnostic err{node, FMT(Err(Err0590), node->resolvedSymbolOverload()->symbol->ownerTable->scope->name.c_str())};
 
         // Missing self ?
         if (node->children.size() <= 1 &&
@@ -152,25 +151,24 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
-                    note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
+                    err.addNote(node->ownerFct, node->ownerFct->token, Nte(Nte0041));
                 else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    note = Diagnostic::note(nodeFct->parameters->children.front(), Nte(Nte0027));
+                    err.addNote(nodeFct->parameters->children.front(), Nte(Nte0027));
                 else
-                    note = Diagnostic::note(Nte(Nte0045));
+                    err.addNote(Nte(Nte0045));
             }
         }
 
-        return context->report(err, note);
+        return context->report(err);
     }
 
-    const Diagnostic  err{node, FMT(Err(Err0589), Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
-    const Diagnostic* note = nullptr;
+    Diagnostic err{node, FMT(Err(Err0589), Naming::kindName(node->resolvedSymbolName()->kind).c_str(), node->resolvedSymbolName()->name.c_str())};
 
     // struct.field
     if (node->resolvedSymbolName() && node->resolvedSymbolName()->kind == SymbolKind::Struct)
-        note = Diagnostic::note(FMT(Nte(Nte0088), node->resolvedSymbolName()->name.c_str(), node->resolvedSymbolName()->name.c_str()));
+        err.addNote(FMT(Nte(Nte0088), node->resolvedSymbolName()->name.c_str(), node->resolvedSymbolName()->name.c_str()));
 
-    return context->report(err, note);
+    return context->report(err);
 }
 
 bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly)
@@ -416,22 +414,22 @@ bool Semantic::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic        err{child->token.sourceFile, child->token, FMT(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
-                    const Diagnostic* note = Diagnostic::hereIs(symOver);
+                    Diagnostic err{child->token.sourceFile, child->token, FMT(Err(Err0399), child->token.c_str(), Naming::aKindName(symName->kind).c_str())};
                     if (typeNode->typeFlags.has(TYPEFLAG_IS_PTR) && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
-                            err.hint         = Nte(Nte0160);
-                            const auto note1 = Diagnostic::note(FMT(Nte(Nte0182), symName->name.c_str(), symName->name.c_str()));
-                            return context->report(err, note1, note);
+                            err.hint = Nte(Nte0160);
+                            err.addNote(FMT(Nte(Nte0182), symName->name.c_str(), symName->name.c_str()));
+                            err.addNote(Diagnostic::hereIs(symOver));
+                            return context->report(err);
                         }
 
                         err.hint = Nte(Nte0160);
-                        return context->report(err, note);
                     }
 
-                    return context->report(err, note);
+                    err.addNote(Diagnostic::hereIs(symOver));
+                    return context->report(err);
                 }
             }
         }

@@ -55,17 +55,16 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
             break;
     }
 
-    const Diagnostic err{identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload()->symbol->name.c_str()), DiagnosticLevel::Warning};
-    const auto       note1 = Diagnostic::note(node, node->token, Nte(Nte0066));
-    note1->canBeMerged     = false;
+    Diagnostic err{identifier, identifier->token, FMT(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload()->symbol->name.c_str()), DiagnosticLevel::Warning};
+    const auto note1   = Diagnostic::note(node, node->token, Nte(Nte0066));
+    note1->canBeMerged = false;
+    err.addNote(note1);
 
     if (v && v->text.empty())
-    {
-        return context->report(err, note1);
-    }
+        return context->report(err);
 
-    const auto note2 = Diagnostic::note(v->text);
-    return context->report(err, note1, note2);
+    err.addNote(v->text);
+    return context->report(err);
 }
 
 bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode* one)
@@ -182,8 +181,8 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         {
             const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-            isOk            = isOk && context->report(err, note);
+            err.addNote(FMT(Nte(Nte0082), sym->name.c_str()));
+            isOk = isOk && context->report(err);
         }
         else if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
         {
@@ -200,31 +199,31 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
             {
                 const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
                 Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
-                err.hint        = Nte(Nte0145);
-                const auto note = Diagnostic::note(Nte(Nte0039));
-                isOk            = isOk && context->report(err, note);
+                err.hint = Nte(Nte0145);
+                err.addNote(Nte(Nte0039));
+                isOk = isOk && context->report(err);
             }
             else
             {
                 const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
                 Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-                const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-                isOk            = isOk && context->report(err, note);
+                err.addNote(FMT(Nte(Nte0082), sym->name.c_str()));
+                isOk = isOk && context->report(err);
             }
         }
         else if (overload->hasFlag(OVERLOAD_VAR_CAPTURE))
         {
             const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-            isOk            = isOk && context->report(err, note);
+            err.addNote(FMT(Nte(Nte0082), sym->name.c_str()));
+            isOk = isOk && context->report(err);
         }
         else if (overload->hasFlag(OVERLOAD_CONSTANT))
         {
             const auto msg = FMT(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            const auto note = Diagnostic::note(FMT(Nte(Nte0082), sym->name.c_str()));
-            isOk            = isOk && context->report(err, note);
+            err.addNote(FMT(Nte(Nte0082), sym->name.c_str()));
+            isOk = isOk && context->report(err);
         }
     }
 

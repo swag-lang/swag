@@ -21,19 +21,19 @@ bool Semantic::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName() && node->resolvedSymbolName()->nodes.size() > 1)
     {
-        const Diagnostic err({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName()->name.c_str())});
-        Diagnostic*      note = nullptr;
+        Diagnostic err({node, node->getTokenName(), FMT(Err(Err0080), node->resolvedSymbolName()->name.c_str())});
         for (const auto p : node->resolvedSymbolName()->nodes)
         {
             if (p != node)
             {
-                note              = Diagnostic::note(p, p->getTokenName(), Nte(Nte0071));
+                auto note         = Diagnostic::note(p, p->getTokenName(), Nte(Nte0071));
                 note->canBeMerged = false;
+                err.addNote(note);
                 break;
             }
         }
 
-        return context->report(err, note);
+        return context->report(err);
     }
 
     typeInfo->declNode = node;
@@ -72,11 +72,11 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     auto it = valText.find(one->value->text);
                     if (it != valText.end())
                     {
-                        const Diagnostic err{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
-                        const auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0071));
-                        const auto       val   = Ast::literalToString(rawType, *one->value);
-                        const auto       note1 = Diagnostic::note(FMT(Nte(Nte0116), val.c_str()));
-                        return context->report(err, note, note1);
+                        Diagnostic err{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
+                        err.addNote(it->second, it->second->getTokenName(), Nte(Nte0071));
+                        const auto val = Ast::literalToString(rawType, *one->value);
+                        err.addNote(FMT(Nte(Nte0116), val.c_str()));
+                        return context->report(err);
                     }
 
                     valText[one->value->text] = one->declNode;
@@ -91,11 +91,11 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     auto it = val64.find(one->value->reg.u64);
                     if (it != val64.end())
                     {
-                        const Diagnostic err{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
-                        const auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0071));
-                        const auto       val   = Ast::literalToString(rawType, *one->value);
-                        const auto       note1 = Diagnostic::note(FMT(Nte(Nte0116), val.c_str()));
-                        return context->report(err, note, note1);
+                        Diagnostic err{one->declNode, one->declNode->token, FMT(Err(Err0069), one->name.c_str())};
+                        err.addNote(it->second, it->second->getTokenName(), Nte(Nte0071));
+                        const auto val = Ast::literalToString(rawType, *one->value);
+                        err.addNote(FMT(Nte(Nte0116), val.c_str()));
+                        return context->report(err);
                     }
 
                     val64[one->value->reg.u64] = one->declNode;
@@ -175,10 +175,10 @@ bool Semantic::resolveEnumType(SemanticContext* context)
 
             if (!rawTypeInfo->isConst())
             {
-                const auto       front = typeNode->children.front();
-                const Diagnostic err{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
-                const auto       note = Diagnostic::note(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
-                return context->report(err, note);
+                const auto front = typeNode->children.front();
+                Diagnostic err{front, FMT(Err(Err0270), rawTypeInfo->getDisplayNameC())};
+                err.addNote(FMT(Nte(Nte0171), rawTypeInfo->getDisplayNameC()));
+                return context->report(err);
             }
 
             return true;

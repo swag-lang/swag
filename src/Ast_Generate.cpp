@@ -119,9 +119,9 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         const auto missingNode = typeInterface->fields[idx];
         if (!itfRef.itf)
         {
-            const Diagnostic err{node, node->getTokenName(), FMT(Err(Err0129), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            const auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->getTokenName(), FMT("missing [[%s]]", missingNode->name.c_str()));
-            return context->report(err, note);
+            Diagnostic err{node, node->getTokenName(), FMT(Err(Err0129), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
+            err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), FMT("missing [[%s]]", missingNode->name.c_str()));
+            return context->report(err);
         }
 
         content += "func impl ";
