@@ -26,7 +26,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                auto note         = Diagnostic::note(p, p->getTokenName(), Nte(Nte0071));
+                const auto note   = Diagnostic::note(p, p->getTokenName(), Nte(Nte0071));
                 note->canBeMerged = false;
                 err.addNote(note);
                 break;

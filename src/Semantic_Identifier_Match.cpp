@@ -371,7 +371,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 const auto newParam  = Ast::newFuncCallParam(nullptr, identifier->callParameters);
                 newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
-                Ast::insertChild(identifier->callParameters, newParam, static_cast<uint32_t>(i));
+                Ast::insertChild(identifier->callParameters, newParam, i);
 
                 // If the match is against a 'moveref', then we should have a 'moveref' node and a make pointer.
                 if (typeInfoFunc->parameters[nodeCall->indexParam]->typeInfo->isPointerMoveRef())

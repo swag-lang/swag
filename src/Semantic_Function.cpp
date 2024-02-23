@@ -458,8 +458,8 @@ void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
 
 bool Semantic::resolveFuncDeclType(SemanticContext* context)
 {
-    auto typeNode = context->node;
-    auto funcNode = castAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
+    const auto typeNode = context->node;
+    auto       funcNode = castAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
 
     // This is a lambda that was waiting for a match.
     // We are now awake, so everything has been done already
@@ -499,8 +499,8 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // If this is a #message function, we must have a flag mask as parameters
     if (funcNode->hasAttribute(ATTRIBUTE_COMPILER_FUNC) && funcNode->parameters)
     {
-        auto parameters = funcNode->parameters;
-        auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+        auto       parameters = funcNode->parameters;
+        const auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         SWAG_VERIFY(paramType->isEnum(), context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
         paramType->computeScopedName();
         SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, FMT(Err(Err0355), paramType->getDisplayNameC())}));
@@ -512,11 +512,11 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // Return type
     if (!typeNode->children.empty())
     {
-        auto front         = typeNode->children.front();
+        const auto front   = typeNode->children.front();
         typeNode->typeInfo = front->typeInfo;
         if (typeNode->typeInfo->getConcreteAlias()->isVoid())
         {
-            Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0369)};
+            const Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0369)};
             return context->report(err);
         }
     }
@@ -529,17 +529,17 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE) &&
             !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
         {
-            auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
+            const auto deducedType = getDeducedLambdaType(context, funcNode->makePointerLambda);
             if (deducedType->isLambdaClosure())
             {
-                auto typeFct       = castTypeInfo<TypeInfoFuncAttr>(deducedType, TypeInfoKind::LambdaClosure);
+                const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(deducedType, TypeInfoKind::LambdaClosure);
                 typeNode->typeInfo = typeFct->returnType;
             }
         }
     }
 
     // Collect function attributes
-    auto       typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     ScopedLock lkT(typeInfo->mutex);
 
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChildren);
@@ -566,7 +566,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
             {
                 Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0224), funcNode->getDisplayNameC())};
-                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
                 err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
                 return context->report(err);
             }
@@ -574,7 +574,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
             {
                 Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0225), funcNode->getDisplayNameC())};
-                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
                 err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
                 return context->report(err);
             }
@@ -582,7 +582,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
             {
                 Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0223), funcNode->getDisplayNameC())};
-                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
                 err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
                 return context->report(err);
             }
@@ -590,7 +590,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
                 Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0226), funcNode->getDisplayNameC())};
-                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
                 return context->report(err);
             }
@@ -598,7 +598,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN))
             {
                 Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0222), funcNode->getDisplayNameC())};
-                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
                 err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
                 return context->report(err);
             }
@@ -610,7 +610,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         funcNode->token.text != g_LangSpec->name_opAffectLiteral)
     {
         Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0488), funcNode->token.c_str())};
-        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
         err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
         return context->report(err);
     }
@@ -621,7 +621,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         funcNode->token.text != g_LangSpec->name_opCast)
     {
         Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0490), funcNode->token.c_str())};
-        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
+        const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
         err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
         context->report(err);
     }
@@ -629,7 +629,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasAttribute(ATTRIBUTE_CALLEE_RETURN) && !funcNode->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
     {
         Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0487), funcNode->token.c_str())};
-        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+        const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
         err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
         return context->report(err);
     }
@@ -646,7 +646,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         if (!ok)
         {
             Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0486), funcNode->getDisplayNameC())};
-            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
+            const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
             err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
             return context->report(err);
         }
@@ -668,7 +668,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC))
             {
                 Diagnostic err{funcNode->genericParameters, FMT(Err(Err0687), funcNode->token.c_str())};
-                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+                const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
                 err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
                 return context->report(err);
             }
@@ -682,7 +682,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->hasAttribute(ATTRIBUTE_NOT_GENERIC) && funcNode->hasAstFlag(AST_IS_GENERIC))
         {
             Diagnostic err{funcNode, funcNode->tokenName, FMT(Err(Err0684), funcNode->token.c_str())};
-            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+            const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
             err.addNote(attr, FMT(Nte(Nte0063), "attribute"));
             return context->report(err);
         }
@@ -694,7 +694,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     }
     else
     {
-        for (auto t : typeInfo->parameters)
+        for (const auto t : typeInfo->parameters)
         {
             if (t->typeInfo->isGeneric())
             {
@@ -768,31 +768,31 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     {
         if (funcNode->token.text == g_LangSpec->name_opInit)
         {
-            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserInitFct = funcNode;
         }
         else if (funcNode->token.text == g_LangSpec->name_opDrop)
         {
-            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
             SWAG_VERIFY(!typeStruct->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0102), typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
-            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
             SWAG_VERIFY(!typeStruct->hasFlag(TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->tokenName, FMT(Err(Err0103), typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostMove)
         {
-            auto       typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
-            auto       typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            const auto typePointer = castTypeInfo<TypeInfoPointer>(funcNode->parameters->children[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typeStruct  = castTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
         }
@@ -816,15 +816,15 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     // has the same generic parameter name (this is useless and implicit)
     if (funcNode->genericParameters && funcNode->ownerStructScope)
     {
-        auto structDecl = castAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
+        const auto structDecl = castAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
         if (structDecl->typeInfo->isGeneric())
         {
-            for (auto c : funcNode->genericParameters->children)
+            for (const auto c : funcNode->genericParameters->children)
             {
                 if (!c->resolvedSymbolOverload())
                     continue;
 
-                for (auto sc : structDecl->genericParameters->children)
+                for (const auto sc : structDecl->genericParameters->children)
                 {
                     if (!sc->resolvedSymbolOverload())
                         continue;
@@ -844,7 +844,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->captureParameters)
     {
         uint32_t storageOffset = 0;
-        for (auto c : funcNode->captureParameters->children)
+        for (const auto c : funcNode->captureParameters->children)
         {
             Utf8 name = c->token.text;
             if (c->kind == AstNodeKind::MakePointer)
@@ -883,7 +883,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         // We need to be sure that we only have empty functions, and not a real one.
         // As we can have multiple times the same empty function prototype, count them.
         size_t cptEmpty = 0;
-        for (auto n : funcNode->resolvedSymbolName()->nodes)
+        for (const auto n : funcNode->resolvedSymbolName()->nodes)
         {
             if (!n->isEmptyFct())
                 break;
