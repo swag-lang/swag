@@ -5,7 +5,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 
-bool Tokenizer::doIdentifier(TokenParse& token)
+bool Tokenizer::doIdentifier(TokenParse& tokenParse)
 {
     while (idLetters[static_cast<uint8_t>(curBuffer[0])])
     {
@@ -13,33 +13,33 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         location.column++;
     }
 
-    appendTokenName(token);
+    appendTokenName(tokenParse);
 
-    const auto it = g_LangSpec->keywords.find(token.text);
+    const auto it = g_LangSpec->keywords.find(tokenParse.token.text);
     if (it)
     {
-        token.id = *it;
-        if (token.id == TokenId::NativeType)
+        tokenParse.token.id = *it;
+        if (tokenParse.token.id == TokenId::NativeType)
         {
-            const auto it1 = g_LangSpec->nativeTypes.find(token.text);
+            const auto it1 = g_LangSpec->nativeTypes.find(tokenParse.token.text);
             SWAG_ASSERT(it1);
-            token.literalType = *it1;
+            tokenParse.literalType = *it1;
         }
     }
-    else if (token.text[0] == '#')
+    else if (tokenParse.token.text[0] == '#')
     {
-        if (token.text.startsWith(g_LangSpec->name_atalias))
+        if (tokenParse.token.text.startsWith(g_LangSpec->name_atalias))
         {
-            token.id = TokenId::Identifier;
+            tokenParse.token.id = TokenId::Identifier;
         }
-        else if (token.text.startsWith(g_LangSpec->name_atmixin))
+        else if (tokenParse.token.text.startsWith(g_LangSpec->name_atmixin))
         {
-            token.id = TokenId::Identifier;
+            tokenParse.token.id = TokenId::Identifier;
         }
         else
         {
-            token.endLocation = location;
-            Diagnostic err{sourceFile, token, FMT(Err(Err0245), token.c_str())};
+            tokenParse.token.endLocation = location;
+            Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0245), tokenParse.token.c_str())};
 
             Vector<Utf8> searchList{};
             for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
@@ -50,17 +50,17 @@ bool Tokenizer::doIdentifier(TokenParse& token)
             }
 
             Vector<Utf8> result;
-            SemanticError::findClosestMatches(token.text, searchList, result);
+            SemanticError::findClosestMatches(tokenParse.token.text, searchList, result);
             if (!result.empty())
-                err.addNote(SemanticError::findClosestMatchesMsg(token.text, result));
+                err.addNote(SemanticError::findClosestMatchesMsg(tokenParse.token.text, result));
 
             return errorContext->report(err);
         }
     }
-    else if (token.text[0] == '@')
+    else if (tokenParse.token.text[0] == '@')
     {
-        token.endLocation = location;
-        Diagnostic err{sourceFile, token, FMT(Err(Err0316), token.c_str())};
+        tokenParse.token.endLocation = location;
+        Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0316), tokenParse.token.c_str())};
 
         Vector<Utf8> searchList{};
         for (int i = 0; i < static_cast<int>(g_LangSpec->keywords.allocated); i++)
@@ -71,15 +71,15 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         }
 
         Vector<Utf8> result;
-        SemanticError::findClosestMatches(token.text, searchList, result);
+        SemanticError::findClosestMatches(tokenParse.token.text, searchList, result);
         if (!result.empty())
-            err.addNote(SemanticError::findClosestMatchesMsg(token.text, result));
+            err.addNote(SemanticError::findClosestMatchesMsg(tokenParse.token.text, result));
 
         return errorContext->report(err);
     }
     else
     {
-        token.id = TokenId::Identifier;
+        tokenParse.token.id = TokenId::Identifier;
     }
 
     return true;

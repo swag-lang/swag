@@ -125,7 +125,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
             varDecl->type->typeInfo->isVariadic() ||
             varDecl->type->typeInfo->isCVariadic())
         {
-            const Diagnostic err{varDecl, varDecl->assignToken, Err(Err0678)};
+            const Diagnostic err{varDecl, varDecl->assignToken.token, Err(Err0678)};
             return context->report(err);
         }
     }
@@ -916,7 +916,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     {
                         Diagnostic err{node->assignment, Err(Err0040)};
                         err.hint = FMT(Nte(Nte0178), leftConcreteType->getDisplayNameC());
-                        err.addNote(node->assignToken, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
+                        err.addNote(node->assignToken.token, FMT(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
                         return context->report(err);
                     }
                 }

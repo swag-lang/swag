@@ -267,20 +267,20 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
     // First variable
     AstNodeKind kind;
     bool        isLet = false;
-    if (tokenParse.id == TokenId::KwdConst)
+    if (tokenParse.token.id == TokenId::KwdConst)
     {
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
-        if (tokenParse.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0249), tokenParse.c_str())));
+        if (tokenParse.token.id != TokenId::SymLeftParen)
+            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0249), tokenParse.token.c_str())));
     }
     else
     {
-        isLet = tokenParse.id == TokenId::KwdLet;
+        isLet = tokenParse.token.id == TokenId::KwdLet;
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
-        if (tokenParse.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0409), isLet ? "let" : "var", tokenParse.c_str())));
+        if (tokenParse.token.id != TokenId::SymLeftParen)
+            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0409), isLet ? "let" : "var", tokenParse.token.c_str())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
@@ -295,30 +295,30 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         SWAG_CHECK(doLeftExpressionVar(parent, &leftNode, IDENTIFIER_NO_PARAMS));
         Ast::removeFromParent(leftNode);
 
-        if (tokenParse.id != TokenId::SymColon && tokenParse.id != TokenId::SymEqual)
+        if (tokenParse.token.id != TokenId::SymColon && tokenParse.token.id != TokenId::SymEqual)
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = FMT(Err(Err0546), tokenParse.c_str());
+                msg = FMT(Err(Err0546), tokenParse.token.c_str());
             else
-                msg = FMT(Err(Err0584), tokenParse.c_str());
+                msg = FMT(Err(Err0584), tokenParse.token.c_str());
 
-            Diagnostic err{sourceFile, tokenParse, msg};
-            if (tokenParse.id == TokenId::SymEqualEqual)
+            Diagnostic err{sourceFile, tokenParse.token, msg};
+            if (tokenParse.token.id == TokenId::SymEqualEqual)
                 err.addNote(Nte(Nte0010));
             return context->report(err);
         }
 
         // Type
         AstNode* type = nullptr;
-        if (tokenParse.id == TokenId::SymColon)
+        if (tokenParse.token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_IN_VAR_DECL, &type));
             Ast::removeFromParent(type);
 
             // Ambiguous {
-            if (tokenParse.id == TokenId::SymLeftCurly &&
+            if (tokenParse.token.id == TokenId::SymLeftCurly &&
                 tokenParse.flags.has(TOKEN_PARSE_LAST_BLANK) &&
                 !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL) &&
                 type->kind == AstNodeKind::TypeExpression)
@@ -326,7 +326,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 const auto typeExpr = castAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    Diagnostic err{sourceFile, tokenParse, FMT(Err(Err0021), typeExpr->identifier->token.c_str())};
+                    Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0021), typeExpr->identifier->token.c_str())};
                     err.addNote(FMT(Nte(Nte0183), typeExpr->identifier->token.c_str(), typeExpr->identifier->token.c_str()));
                     err.addNote(Nte(Nte0179));
                     return context->report(err);
@@ -337,7 +337,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         // Value
         AstNode* assign      = nullptr;
         auto     assignToken = tokenParse;
-        if (tokenParse.id == TokenId::SymEqual)
+        if (tokenParse.token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doInitializationExpression(assignToken, parent, type ? EXPR_FLAG_IN_VAR_DECL_WITH_TYPE : EXPR_FLAG_IN_VAR_DECL, &assign));
@@ -372,16 +372,16 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             }
         }
 
-        if (tokenParse.id != TokenId::SymComma)
+        if (tokenParse.token.id != TokenId::SymComma)
             break;
         SWAG_CHECK(eatToken());
     }
 
-    if (!forStruct || tokenParse.id != TokenId::SymRightCurly)
+    if (!forStruct || tokenParse.token.id != TokenId::SymRightCurly)
     {
         if (!parent || parent->kind != AstNodeKind::If)
         {
-            SWAG_VERIFY(tokenParse.id != TokenId::SymEqualEqual, error(tokenParse, Err(Err0677)));
+            SWAG_VERIFY(tokenParse.token.id != TokenId::SymEqualEqual, error(tokenParse.token, Err(Err0677)));
             SWAG_CHECK(eatSemiCol("variable declaration"));
         }
     }

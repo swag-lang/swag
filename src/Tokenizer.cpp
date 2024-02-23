@@ -23,21 +23,21 @@ const TokenFlags g_TokenFlags[] =
 #include "TokenIds.h"
 };
 
-bool Tokenizer::error(TokenParse& token, const Utf8& msg, const Utf8& hint) const
+bool Tokenizer::error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint) const
 {
-    token.endLocation = location;
+    tokenParse.token.endLocation = location;
 
-    Diagnostic err{sourceFile, token, msg};
+    Diagnostic err{sourceFile, tokenParse.token, msg};
     err.hint = hint;
     return errorContext->report(err);
 }
 
-void Tokenizer::appendTokenName(TokenParse& token) const
+void Tokenizer::appendTokenName(TokenParse& tokenParse) const
 {
     if (realAppendName)
-        token.text.append(startTokenName, static_cast<int>(curBuffer - startTokenName));
+        tokenParse.token.text.append(startTokenName, static_cast<int>(curBuffer - startTokenName));
     else
-        token.text.setView(startTokenName, static_cast<int>(curBuffer - startTokenName));
+        tokenParse.token.text.setView(startTokenName, static_cast<int>(curBuffer - startTokenName));
 }
 
 void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
@@ -160,18 +160,18 @@ TokenId Tokenizer::tokenRelated(TokenId id)
     return TokenId::SymQuestion;
 }
 
-bool Tokenizer::nextToken(TokenParse& token)
+bool Tokenizer::nextToken(TokenParse& tokenParse)
 {
 #ifdef SWAG_STATS
     Timer timer(&g_Stats.tokenizerTime);
     ++g_Stats.numTokens;
 #endif
 
-    token.literalType   = LiteralType::TypeMax;
-    token.sourceFile    = sourceFile;
-    bool hasEol         = forceLastTokenIsEOL;
-    token.flags         = forceLastTokenIsEOL ? TOKEN_PARSE_LAST_EOL : 0;
-    forceLastTokenIsEOL = false;
+    tokenParse.literalType      = LiteralType::TypeMax;
+    tokenParse.token.sourceFile = sourceFile;
+    bool hasEol                 = forceLastTokenIsEOL;
+    tokenParse.flags            = forceLastTokenIsEOL ? TOKEN_PARSE_LAST_EOL : 0;
+    forceLastTokenIsEOL         = false;
 
     if (!propagateComment)
         comment.clear();
@@ -179,9 +179,9 @@ bool Tokenizer::nextToken(TokenParse& token)
 
     while (true)
     {
-        token.text.clear();
-        startTokenName      = curBuffer;
-        token.startLocation = location;
+        tokenParse.token.text.clear();
+        startTokenName                 = curBuffer;
+        tokenParse.token.startLocation = location;
 
         const auto c = readChar();
 
@@ -189,9 +189,9 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == 0)
         {
-            token.id          = TokenId::EndOfFile;
-            token.text        = "<end of file>";
-            token.endLocation = token.startLocation;
+            tokenParse.token.id          = TokenId::EndOfFile;
+            tokenParse.token.text        = "<end of file>";
+            tokenParse.token.endLocation = tokenParse.token.startLocation;
             return true;
         }
 
@@ -201,7 +201,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             while (SWAG_IS_EOL(curBuffer[0]))
                 readChar();
-            token.flags.add(TOKEN_PARSE_LAST_EOL);
+            tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
             hasEol = true;
             comment.clear();
             continue;
@@ -213,7 +213,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             while (SWAG_IS_BLANK(curBuffer[0]))
                 readChar();
-            token.flags.add(TOKEN_PARSE_LAST_BLANK);
+            tokenParse.flags.add(TOKEN_PARSE_LAST_BLANK);
             continue;
         }
 
@@ -228,7 +228,7 @@ bool Tokenizer::nextToken(TokenParse& token)
 
                 if (hasEol)
                 {
-                    token.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
+                    tokenParse.flags.add(TOKEN_PARSE_EOL_BEFORE_COMMENT);
                     hasEol = false;
                 }
 
@@ -238,19 +238,19 @@ bool Tokenizer::nextToken(TokenParse& token)
 
                 if (curBuffer[0])
                 {
-                    token.flags.add(TOKEN_PARSE_LAST_EOL);
+                    tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
                     readChar();
                 }
 
                 if (trackComments)
                 {
-                    appendTokenName(token);
-                    comment += token.text;
+                    appendTokenName(tokenParse);
+                    comment += tokenParse.token.text;
                     if (comment.back() != '\n')
                         comment += "\n";
 
                     // In case of end of line comments, skip all blanks after
-                    if (!token.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
+                    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
                     {
                         while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
                             readChar();
@@ -266,23 +266,23 @@ bool Tokenizer::nextToken(TokenParse& token)
                 readChar();
 
                 startTokenName = curBuffer;
-                SWAG_CHECK(doMultiLineComment(token));
+                SWAG_CHECK(doMultiLineComment(tokenParse));
 
                 if (trackComments)
                 {
-                    appendTokenName(token);
-                    comment += token.text;
+                    appendTokenName(tokenParse);
+                    comment += tokenParse.token.text;
                     comment.removeBack();
                     comment.removeBack();
 
                     // In case of end of line comments, skip all blanks after
-                    if (!token.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
+                    if (!tokenParse.flags.has(TOKEN_PARSE_EOL_BEFORE_COMMENT))
                     {
                         while (curBuffer[0] && (SWAG_IS_EOL(curBuffer[0]) || SWAG_IS_BLANK(curBuffer[0])))
                         {
                             if (SWAG_IS_EOL(curBuffer[0]))
                             {
-                                token.flags.add(TOKEN_PARSE_LAST_EOL);
+                                tokenParse.flags.add(TOKEN_PARSE_LAST_EOL);
                                 hasEol = true;
                             }
 
@@ -302,23 +302,23 @@ bool Tokenizer::nextToken(TokenParse& token)
             if (curBuffer[0] == '"')
             {
                 readChar();
-                token.literalType = LiteralType::TypeStringRaw;
-                SWAG_CHECK(doStringLiteral(token));
+                tokenParse.literalType = LiteralType::TypeStringRaw;
+                SWAG_CHECK(doStringLiteral(tokenParse));
                 return true;
             }
 
             if (curBuffer[0] == '[')
             {
                 readChar();
-                token.text = "#[";
-                token.id   = TokenId::SymAttrStart;
+                tokenParse.token.text = "#[";
+                tokenParse.token.id   = TokenId::SymAttrStart;
             }
             else
             {
-                SWAG_CHECK(doIdentifier(token));
+                SWAG_CHECK(doIdentifier(tokenParse));
             }
 
-            token.endLocation = location;
+            tokenParse.token.endLocation = location;
             return true;
         }
 
@@ -326,8 +326,8 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '@')
         {
-            SWAG_CHECK(doIdentifier(token));
-            token.endLocation = location;
+            SWAG_CHECK(doIdentifier(tokenParse));
+            tokenParse.token.endLocation = location;
             return true;
         }
 
@@ -335,8 +335,8 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_ALPHA(c) || c == '_')
         {
-            SWAG_CHECK(doIdentifier(token));
-            token.endLocation = location;
+            SWAG_CHECK(doIdentifier(tokenParse));
+            tokenParse.token.endLocation = location;
             return true;
         }
 
@@ -344,7 +344,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_DIGIT(c))
         {
-            SWAG_CHECK(doNumberLiteral(token, c));
+            SWAG_CHECK(doNumberLiteral(tokenParse, c));
             return true;
         }
 
@@ -352,7 +352,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '`')
         {
-            SWAG_CHECK(doCharacterLiteral(token));
+            SWAG_CHECK(doCharacterLiteral(tokenParse));
             return true;
         }
 
@@ -364,13 +364,13 @@ bool Tokenizer::nextToken(TokenParse& token)
             {
                 readChar();
                 readChar();
-                token.literalType = LiteralType::TypeStringMultiLine;
-                SWAG_CHECK(doStringLiteral(token));
+                tokenParse.literalType = LiteralType::TypeStringMultiLine;
+                SWAG_CHECK(doStringLiteral(tokenParse));
             }
             else
             {
-                token.literalType = LiteralType::TypeString;
-                SWAG_CHECK(doStringLiteral(token));
+                tokenParse.literalType = LiteralType::TypeString;
+                SWAG_CHECK(doStringLiteral(tokenParse));
             }
 
             return true;
@@ -378,17 +378,17 @@ bool Tokenizer::nextToken(TokenParse& token)
 
         // Symbols
         ///////////////////////////////////////////
-        if (doSymbol(token, c))
+        if (doSymbol(tokenParse, c))
         {
-            token.endLocation = location;
-            appendTokenName(token);
+            tokenParse.token.endLocation = location;
+            appendTokenName(tokenParse);
             return true;
         }
 
         // Unknown character
         ///////////////////////////////////////////
-        token.text = c;
-        token.id   = TokenId::Invalid;
-        return error(token, FMT(Err(Err0234), token.c_str()));
+        tokenParse.token.text = c;
+        tokenParse.token.id   = TokenId::Invalid;
+        return error(tokenParse, FMT(Err(Err0234), tokenParse.token.c_str()));
     }
 }

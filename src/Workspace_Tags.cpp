@@ -98,38 +98,38 @@ void Workspace::setupUserTags()
                 ErrorContext errorContext;
                 SourceFile   fakeFile;
                 Tokenizer    tokenizer;
-                TokenParse   token;
+                TokenParse   tokenParse;
                 fakeFile.setExternalBuffer(tokenVal);
                 tokenizer.setup(&errorContext, &fakeFile);
 
                 bool neg = false;
-                tokenizer.nextToken(token);
+                tokenizer.nextToken(tokenParse);
 
-                if (token.id == TokenId::KwdTrue)
+                if (tokenParse.token.id == TokenId::KwdTrue)
                 {
                     if (defaultType)
                         oneTag.type = g_TypeMgr->typeInfoBool;
-                    token.literalValue.b = true;
+                    tokenParse.literalValue.b = true;
                 }
-                else if (token.id == TokenId::KwdFalse)
+                else if (tokenParse.token.id == TokenId::KwdFalse)
                 {
                     if (defaultType)
                         oneTag.type = g_TypeMgr->typeInfoBool;
-                    token.literalValue.b = false;
+                    tokenParse.literalValue.b = false;
                 }
                 else
                 {
-                    if (token.id == TokenId::SymMinus)
+                    if (tokenParse.token.id == TokenId::SymMinus)
                     {
                         neg = true;
-                        tokenizer.nextToken(token);
+                        tokenizer.nextToken(tokenParse);
                     }
-                    else if (token.id == TokenId::SymPlus)
+                    else if (tokenParse.token.id == TokenId::SymPlus)
                     {
-                        tokenizer.nextToken(token);
+                        tokenizer.nextToken(tokenParse);
                     }
 
-                    if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
+                    if (tokenParse.token.id != TokenId::LiteralNumber && tokenParse.token.id != TokenId::LiteralString)
                     {
                         Report::error(FMT(Err(Fat0032), tokenVal.c_str(), oneTagName.c_str()));
                         helpUserTags();
@@ -139,11 +139,11 @@ void Workspace::setupUserTags()
 
                 // Check type and value
                 if (literalType == LiteralType::TypeMax)
-                    literalType = token.literalType;
-                oneTag.value.reg  = token.literalValue;
-                oneTag.value.text = token.text;
+                    literalType = tokenParse.literalType;
+                oneTag.value.reg  = tokenParse.literalValue;
+                oneTag.value.text = tokenParse.token.text;
 
-                auto errMsg = Semantic::checkLiteralValue(oneTag.value, literalType, token.literalValue, oneTag.type, neg);
+                auto errMsg = Semantic::checkLiteralValue(oneTag.value, literalType, tokenParse.literalValue, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
                     auto err = FMT(Err(Fat0024), oneTagName.c_str(), errMsg.c_str());

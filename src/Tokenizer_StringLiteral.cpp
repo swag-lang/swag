@@ -55,23 +55,23 @@ namespace
     }
 }
 
-bool Tokenizer::doStringLiteral(TokenParse& token)
+bool Tokenizer::doStringLiteral(TokenParse& tokenParse)
 {
     bool multiline = false;
     bool verbatim  = false;
 
-    if (token.literalType == LiteralType::TypeStringMultiLine)
+    if (tokenParse.literalType == LiteralType::TypeStringMultiLine)
     {
         multiline = true;
     }
-    else if (token.literalType != LiteralType::TypeString)
+    else if (tokenParse.literalType != LiteralType::TypeString)
     {
         verbatim  = true;
         multiline = true;
     }
 
-    token.id = TokenId::LiteralString;
-    token.text.clear();
+    tokenParse.token.id = TokenId::LiteralString;
+    tokenParse.token.text.clear();
 
     unsigned offset;
     startTokenName = curBuffer;
@@ -83,16 +83,16 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
         // Can't have a newline inside a normal string (but this is legit in raw string literals)
         if (!multiline && SWAG_IS_EOL(c))
         {
-            token.startLocation = location;
-            error(token, Err(Err0132));
+            tokenParse.token.startLocation = location;
+            error(tokenParse, Err(Err0132));
             return false;
         }
 
         // End of file
         if (!c)
         {
-            location = token.startLocation;
-            error(token, Err(Err0132));
+            location = tokenParse.token.startLocation;
+            error(tokenParse, Err(Err0132));
             return false;
         }
 
@@ -102,22 +102,22 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
             // Window \r\n
             if (SWAG_IS_WIN_EOL(curBuffer[1]) && SWAG_IS_EOL(curBuffer[2]))
             {
-                appendTokenName(token);
+                appendTokenName(tokenParse);
                 processChar('\n', 1);
                 realAppendName = true;
                 curBuffer += 3;
-                startTokenName    = curBuffer;
-                token.endLocation = location;
+                startTokenName               = curBuffer;
+                tokenParse.token.endLocation = location;
                 continue;
             }
             if (SWAG_IS_EOL(curBuffer[1]))
             {
-                appendTokenName(token);
+                appendTokenName(tokenParse);
                 processChar('\n', 1);
                 realAppendName = true;
                 curBuffer += 2;
-                startTokenName    = curBuffer;
-                token.endLocation = location;
+                startTokenName               = curBuffer;
+                tokenParse.token.endLocation = location;
                 continue;
             }
         }
@@ -125,12 +125,12 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
         // Escape sequence
         if (!verbatim && c == '\\')
         {
-            token.literalType = multiline ? LiteralType::TypeStringMultiLineEscape : LiteralType::TypeStringEscape;
+            tokenParse.literalType = multiline ? LiteralType::TypeStringMultiLineEscape : LiteralType::TypeStringEscape;
             eatChar(c, offset);
             c = peekChar(offset);
             if (c)
                 eatChar(c, offset);
-            token.endLocation = location;
+            tokenParse.token.endLocation = location;
             continue;
         }
 
@@ -139,45 +139,45 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
         {
             if (!verbatim && !multiline)
             {
-                appendTokenName(token);
+                appendTokenName(tokenParse);
                 eatChar(c, offset);
-                token.endLocation = location;
+                tokenParse.token.endLocation = location;
                 break;
             }
 
             if (multiline && curBuffer[1] == '"' && curBuffer[2] == '"')
             {
-                appendTokenName(token);
+                appendTokenName(tokenParse);
                 curBuffer += 3;
                 location.column += 3;
-                trimMultilineString(token.text);
+                trimMultilineString(tokenParse.token.text);
                 break;
             }
 
             if (verbatim && curBuffer[1] == '#')
             {
-                appendTokenName(token);
+                appendTokenName(tokenParse);
                 curBuffer += 2;
                 location.column += 2;
-                trimMultilineString(token.text);
+                trimMultilineString(tokenParse.token.text);
                 break;
             }
         }
 
         eatChar(c, offset);
-        token.endLocation = location;
+        tokenParse.token.endLocation = location;
     }
 
     realAppendName = false;
     return true;
 }
 
-bool Tokenizer::doCharacterLiteral(TokenParse& token)
+bool Tokenizer::doCharacterLiteral(TokenParse& tokenParse)
 {
     unsigned offset;
-    token.id          = TokenId::LiteralCharacter;
-    token.literalType = LiteralType::TypeCharacter;
-    token.text.clear();
+    tokenParse.token.id    = TokenId::LiteralCharacter;
+    tokenParse.literalType = LiteralType::TypeCharacter;
+    tokenParse.token.text.clear();
 
     startTokenName = curBuffer;
     while (true)
@@ -187,42 +187,42 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         // Can't have a newline inside a normal string (but this is legit in raw string literals)
         if (SWAG_IS_EOL(c))
         {
-            token.startLocation = location;
-            error(token, Err(Err0124));
+            tokenParse.token.startLocation = location;
+            error(tokenParse, Err(Err0124));
             return false;
         }
 
         // End of file
         if (!c)
         {
-            location = token.startLocation;
-            error(token, Err(Err0124));
+            location = tokenParse.token.startLocation;
+            error(tokenParse, Err(Err0124));
             return false;
         }
 
         // Escape sequence
         if (c == '\\')
         {
-            token.literalType = LiteralType::TypeCharacterEscape;
+            tokenParse.literalType = LiteralType::TypeCharacterEscape;
             eatChar(c, offset);
             c = peekChar(offset);
             if (c)
                 eatChar(c, offset);
-            token.endLocation = location;
+            tokenParse.token.endLocation = location;
             continue;
         }
 
         // End marker
         if (c == '`')
         {
-            appendTokenName(token);
+            appendTokenName(tokenParse);
             eatChar(c, offset);
-            token.endLocation = location;
+            tokenParse.token.endLocation = location;
             break;
         }
 
         eatChar(c, offset);
-        token.endLocation = location;
+        tokenParse.token.endLocation = location;
     }
 
     return true;

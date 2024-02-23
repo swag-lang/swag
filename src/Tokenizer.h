@@ -85,8 +85,9 @@ constexpr TokenParseFlags TOKEN_PARSE_LAST_EOL           = 0x01;
 constexpr TokenParseFlags TOKEN_PARSE_LAST_BLANK         = 0x02;
 constexpr TokenParseFlags TOKEN_PARSE_EOL_BEFORE_COMMENT = 0x04;
 
-struct TokenParse : Token
+struct TokenParse
 {
+    Token           token;
     Register        literalValue;
     LiteralType     literalType = static_cast<LiteralType>(0);
     TokenParseFlags flags       = 0;
@@ -94,31 +95,31 @@ struct TokenParse : Token
 
 struct Tokenizer
 {
-    bool error(TokenParse& token, const Utf8& msg, const Utf8& hint = "") const;
-    void appendTokenName(TokenParse& token) const;
+    bool error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint = "") const;
+    void appendTokenName(TokenParse& tokenParse) const;
 
     uint32_t readChar();
     uint32_t peekChar(unsigned& offset) const;
     void     processChar(uint32_t c, unsigned offset);
     void     eatChar(uint32_t c, unsigned offset);
 
-    bool doMultiLineComment(TokenParse& token);
-    bool doIdentifier(TokenParse& token);
-    bool doNumberLiteral(TokenParse& token, uint32_t c);
-    bool doHexLiteral(TokenParse& token);
-    bool doBinLiteral(TokenParse& token);
-    bool doIntFloatLiteral(TokenParse& token, uint32_t c);
+    bool doMultiLineComment(TokenParse& tokenParse);
+    bool doIdentifier(TokenParse& tokenParse);
+    bool doNumberLiteral(TokenParse& tokenParse, uint32_t c);
+    bool doHexLiteral(TokenParse& tokenParse);
+    bool doBinLiteral(TokenParse& tokenParse);
+    bool doIntFloatLiteral(TokenParse& tokenParse, uint32_t c);
     bool doIntLiteral(TokenParse& token, uint32_t c);
     bool doFloatLiteral(TokenParse& token, uint32_t c);
-    bool doSymbol(TokenParse& token, uint32_t c);
-    bool doCharacterLiteral(TokenParse& token);
-    bool doStringLiteral(TokenParse& token);
+    bool doSymbol(TokenParse& tokenParse, uint32_t c);
+    bool doCharacterLiteral(TokenParse& tokenParse);
+    bool doStringLiteral(TokenParse& tokenParse);
 
     void saveState(const TokenParse& token);
     void restoreState(TokenParse& token);
 
     void setup(ErrorContext* errorCxt, SourceFile* file);
-    bool nextToken(TokenParse& token);
+    bool nextToken(TokenParse& tokenParse);
 
     static TokenId tokenRelated(TokenId id);
 

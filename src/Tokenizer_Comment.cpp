@@ -2,7 +2,7 @@
 #include "ErrorIds.h"
 #include "Tokenizer.h"
 
-bool Tokenizer::doMultiLineComment(TokenParse& token)
+bool Tokenizer::doMultiLineComment(TokenParse& tokenParse)
 {
     int countEmb = 1;
     while (true)
@@ -13,9 +13,9 @@ bool Tokenizer::doMultiLineComment(TokenParse& token)
 
         if (!c)
         {
-            location = token.startLocation;
+            location = tokenParse.token.startLocation;
             location.column += 2;
-            return error(token, Err(Err0681));
+            return error(tokenParse, Err(Err0681));
         }
 
         if (c == '*')

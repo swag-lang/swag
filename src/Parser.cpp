@@ -43,43 +43,43 @@ bool Parser::error(const SourceLocation& startLocation, const SourceLocation& en
 
 bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
 {
-    switch (tokenParse.id)
+    switch (tokenParse.token.id)
     {
         case TokenId::SymAmpersandAmpersand:
             if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse, FMT(Err(Err0323), "and", "&&"));
+                return error(tokenParse.token, FMT(Err(Err0323), "and", "&&"));
             break;
         case TokenId::SymVerticalVertical:
             if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse, FMT(Err(Err0323), "or", "||"));
+                return error(tokenParse.token, FMT(Err(Err0323), "or", "||"));
             break;
         case TokenId::KwdElse:
             if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse, Err(Err0665));
+                return error(tokenParse.token, Err(Err0665));
             break;
         case TokenId::KwdElif:
             if (kind == InvalidTokenError::EmbeddedInstruction)
-                return error(tokenParse, Err(Err0664));
+                return error(tokenParse.token, Err(Err0664));
             break;
         case TokenId::CompilerElse:
             if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse, Err(Err0657));
+                return error(tokenParse.token, Err(Err0657));
             break;
         case TokenId::CompilerElseIf:
             if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse, Err(Err0656));
+                return error(tokenParse.token, Err(Err0656));
             break;
         case TokenId::SymRightParen:
             if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse, Err(Err0660));
+                return error(tokenParse.token, Err(Err0660));
             break;
         case TokenId::SymRightCurly:
             if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse, Err(Err0673));
+                return error(tokenParse.token, Err(Err0673));
             break;
         case TokenId::SymRightSquare:
             if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-                return error(tokenParse, Err(Err0661));
+                return error(tokenParse.token, Err(Err0661));
             break;
 
         default:
@@ -92,64 +92,64 @@ bool Parser::invalidTokenError(InvalidTokenError kind, const AstNode* parent)
     switch (kind)
     {
         case InvalidTokenError::TopLevelInstruction:
-            msg  = FMT(Err(Err0381), tokenParse.c_str());
+            msg  = FMT(Err(Err0381), tokenParse.token.c_str());
             note = Nte(Nte0167);
             break;
         case InvalidTokenError::EmbeddedInstruction:
-            msg = FMT(Err(Err0262), tokenParse.c_str());
+            msg = FMT(Err(Err0262), tokenParse.token.c_str());
             break;
         case InvalidTokenError::LeftExpression:
-            msg = FMT(Err(Err0283), tokenParse.c_str());
+            msg = FMT(Err(Err0283), tokenParse.token.c_str());
             break;
         case InvalidTokenError::PrimaryExpression:
 
             // Bad character syntax as an expression
-            if (tokenParse.id == TokenId::SymQuote)
+            if (tokenParse.token.id == TokenId::SymQuote)
             {
                 const auto startToken = tokenParse;
                 eatToken();
                 const auto inToken = tokenParse;
                 eatToken();
-                if (tokenParse.id == TokenId::SymQuote)
+                if (tokenParse.token.id == TokenId::SymQuote)
                 {
-                    const Diagnostic err{sourceFile, startToken.startLocation, tokenParse.endLocation, FMT(Err(Err0237), inToken.c_str())};
+                    const Diagnostic err{sourceFile, startToken.token.startLocation, tokenParse.token.endLocation, FMT(Err(Err0237), inToken.token.c_str())};
                     return context->report(err);
                 }
 
                 tokenParse = startToken;
             }
 
-            msg = FMT(Err(Err0283), tokenParse.c_str());
+            msg = FMT(Err(Err0283), tokenParse.token.c_str());
             if (parent)
             {
                 if (Tokenizer::isKeyword(parent->token.id))
                 {
                     const Utf8 forWhat = FMT("[[%s]]", parent->token.c_str());
-                    msg                = FMT(Err(Err0281), forWhat.c_str(), tokenParse.c_str());
+                    msg                = FMT(Err(Err0281), forWhat.c_str(), tokenParse.token.c_str());
                 }
                 else if (Tokenizer::isCompiler(parent->token.id))
                 {
                     const Utf8 forWhat = FMT("the compiler directive [[%s]]", parent->token.c_str());
-                    msg                = FMT(Err(Err0281), forWhat.c_str(), tokenParse.c_str());
+                    msg                = FMT(Err(Err0281), forWhat.c_str(), tokenParse.token.c_str());
                 }
                 else if (Tokenizer::isSymbol(parent->token.id))
                 {
                     const Utf8 forWhat = FMT("the symbol [[%s]]", parent->token.c_str());
-                    msg                = FMT(Err(Err0281), forWhat.c_str(), tokenParse.c_str());
+                    msg                = FMT(Err(Err0281), forWhat.c_str(), tokenParse.token.c_str());
                 }
             }
 
             break;
     }
 
-    return error(tokenParse, msg, note.empty() ? nullptr : note.c_str());
+    return error(tokenParse.token, msg, note.empty() ? nullptr : note.c_str());
 }
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    Diagnostic err{sourceFile, myToken, msg ? msg : FMT(Err(Err0310), myToken.c_str()).c_str()};
-    if (Tokenizer::isKeyword(myToken.id))
-        err.addNote(FMT(Nte(Nte0125), myToken.c_str()));
+    Diagnostic err{sourceFile, myToken.token, msg ? msg : FMT(Err(Err0310), myToken.token.c_str()).c_str()};
+    if (Tokenizer::isKeyword(myToken.token.id))
+        err.addNote(FMT(Nte(Nte0125), myToken.token.c_str()));
     return context->report(err);
 }
 
@@ -164,18 +164,18 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 {
     SWAG_ASSERT(msg);
 
-    if (tokenParse.id != id)
+    if (tokenParse.token.id != id)
     {
         const Utf8 related = Naming::tokenToName(id);
-        const auto diagMsg = FMT(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.c_str());
+        const auto diagMsg = FMT(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str());
 
-        if (tokenParse.id == TokenId::EndOfFile)
+        if (tokenParse.token.id == TokenId::EndOfFile)
         {
             const Diagnostic err{sourceFile, start, start, diagMsg};
             return context->report(err);
         }
 
-        Diagnostic err{sourceFile, tokenParse, diagMsg};
+        Diagnostic err{sourceFile, tokenParse.token, diagMsg};
         err.addNote(sourceFile, start, start, FMT(Nte(Nte0180), related.c_str()));
         return context->report(err);
     }
@@ -190,17 +190,17 @@ void Parser::prepareExpectTokenError()
     // it's better to display the requested token at the end of the previous line
     if (tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
     {
-        tokenParse.startLocation = prevTokenParse.endLocation;
-        tokenParse.endLocation   = tokenParse.startLocation;
+        tokenParse.token.startLocation = prevTokenParse.token.endLocation;
+        tokenParse.token.endLocation   = tokenParse.token.startLocation;
     }
 }
 
 bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 {
-    if (tokenParse.id != id)
+    if (tokenParse.token.id != id)
     {
         prepareExpectTokenError();
-        const Diagnostic err{sourceFile, tokenParse, FMT(msg.c_str(), tokenParse.c_str())};
+        const Diagnostic err{sourceFile, tokenParse.token, FMT(msg.c_str(), tokenParse.token.c_str())};
         return context->report(err);
     }
 
@@ -211,10 +211,10 @@ bool Parser::eatTokenError(TokenId id, const Utf8& msg)
 bool Parser::eatToken(TokenId id, const char* msg)
 {
     SWAG_ASSERT(msg);
-    if (tokenParse.id != id)
+    if (tokenParse.token.id != id)
     {
         prepareExpectTokenError();
-        const Diagnostic err{sourceFile, tokenParse, FMT(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.c_str())};
+        const Diagnostic err{sourceFile, tokenParse.token, FMT(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, tokenParse.token.c_str())};
         return context->report(err);
     }
 
@@ -226,25 +226,25 @@ bool Parser::eatSemiCol(const char* msg)
 {
     SWAG_ASSERT(msg);
 
-    if (tokenParse.id != TokenId::SymSemiColon && tokenParse.id != TokenId::EndOfFile && !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
+    if (tokenParse.token.id != TokenId::SymSemiColon && tokenParse.token.id != TokenId::EndOfFile && !tokenParse.flags.has(TOKEN_PARSE_LAST_EOL))
     {
-        if (tokenParse.id == TokenId::SymAsterisk)
+        if (tokenParse.token.id == TokenId::SymAsterisk)
         {
             const auto st = tokenParse;
             eatToken();
-            if (tokenParse.id == TokenId::SymSlash)
+            if (tokenParse.token.id == TokenId::SymSlash)
             {
-                tokenParse.startLocation = st.startLocation;
-                return error(tokenParse, FMT(Err(Err0680), msg));
+                tokenParse.token.startLocation = st.token.startLocation;
+                return error(tokenParse.token, FMT(Err(Err0680), msg));
             }
 
             tokenParse = st;
         }
 
-        return error(tokenParse, FMT(Err(Err0550), msg, tokenParse.c_str()));
+        return error(tokenParse.token, FMT(Err(Err0550), msg, tokenParse.token.c_str()));
     }
 
-    if (tokenParse.id == TokenId::SymSemiColon)
+    if (tokenParse.token.id == TokenId::SymSemiColon)
         SWAG_CHECK(eatToken());
     return true;
 }
@@ -352,7 +352,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     while (true)
     {
-        if (tokenParse.id == TokenId::EndOfFile)
+        if (tokenParse.token.id == TokenId::EndOfFile)
             break;
         switch (kind)
         {
@@ -400,8 +400,8 @@ bool Parser::generateAst()
 #endif
 
     // Setup root ast for file
-    tokenParse.sourceFile = sourceFile;
-    sourceFile->astRoot   = Ast::newNode<AstFile>(AstNodeKind::File, this, module->astRoot);
+    tokenParse.token.sourceFile = sourceFile;
+    sourceFile->astRoot         = Ast::newNode<AstFile>(AstNodeKind::File, this, module->astRoot);
 
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
@@ -500,7 +500,7 @@ bool Parser::generateAst()
         module->docComment = std::move(tokenizer.comment);
 
     // Parse !!!
-    while (tokenParse.id != TokenId::EndOfFile)
+    while (tokenParse.token.id != TokenId::EndOfFile)
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 
     return true;

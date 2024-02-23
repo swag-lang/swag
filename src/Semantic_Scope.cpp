@@ -585,13 +585,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 
                 if (!startScope && i == 0)
                 {
-                    const Diagnostic err{context->node, *scopeUpValue, Err(Err0449)};
+                    const Diagnostic err{context->node, scopeUpValue->token, Err(Err0449)};
                     return context->report(err);
                 }
 
                 if (!startScope && i)
                 {
-                    const Diagnostic err{context->node, *scopeUpValue, FMT(Err(Err0148), scopeUpValue->literalValue.u8)};
+                    const Diagnostic err{context->node, scopeUpValue->token, FMT(Err(Err0148), scopeUpValue->literalValue.u8)};
                     return context->report(err);
                 }
 

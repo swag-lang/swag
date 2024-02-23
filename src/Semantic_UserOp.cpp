@@ -488,8 +488,8 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
     {
         varDecl    = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
         savedToken = varDecl->token;
-        if (varDecl->assignToken.id != TokenId::Invalid)
-            varDecl->token = static_cast<Token>(varDecl->assignToken);
+        if (varDecl->assignToken.token.id != TokenId::Invalid)
+            varDecl->token = varDecl->assignToken.token;
     }
 
     // opAffectLiteral
