@@ -1055,6 +1055,12 @@
     <ClInclude Include="..\src\Flags.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\TokenParse.h">
+      <Filter>Syntax\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Token.h">
+      <Filter>Syntax\Tokenizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
