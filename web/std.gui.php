@@ -9,84 +9,83 @@
 <script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
 
-        .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }
-        .left       { display: block; overflow-y: scroll; width: 500px; }
-        .left-page  { margin: 10px; }
-        .right      { display: block; width: 100%; }
-        .right-page { max-width: 1024px; margin: 10px auto; }
-        
-        @media(min-width: 640px)  { .container { max-width: 640px; }}
-        @media(min-width: 768px)  { .container { max-width: 768px; }}
-        @media(min-width: 1024px) { .container { max-width: 1024px; }}
-        @media(min-width: 1280px) { .container { max-width: 1280px; }}
-        @media(min-width: 1536px) { .container { max-width: 1536px; }}
-        
-        @media screen and (max-width: 600px) {
-            .left       { display: none; }
-            .right-page { margin:  10px; }
-        }
+    .container  { display: flex; flex-wrap: nowrap; flex-direction: row; margin: 0px auto; padding: 0px; }
+    .left       { display: block; overflow-y: scroll; width: 500px; }
+    .left-page  { margin: 10px; }
+    .right      { display: block; width: 100%; }
+    .right-page { max-width: 1024px; margin: 10px auto; }
+    
+    @media(min-width: 640px)  { .container { max-width: 640px; }}
+    @media(min-width: 768px)  { .container { max-width: 768px; }}
+    @media(min-width: 1024px) { .container { max-width: 1024px; }}
+    @media(min-width: 1280px) { .container { max-width: 1280px; }}
+    @media(min-width: 1536px) { .container { max-width: 1536px; }}
+    
+    @media screen and (max-width: 600px) {
+        .left       { display: none; }
+        .right-page { margin:  10px; }
+    }
 
             .container { height: 100vh; }
             .right     { overflow-y: scroll; }
+        
+    html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+    body { margin: 0px; line-height: 1.3em; }     
 
-        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
-        body { margin: 0px; line-height: 1.3em; }
-        
-        .container a        { color: DoggerBlue; }
-        .container a:hover  { text-decoration: underline; }
-        .container img      { margin: 0 auto; }
-        
-        .left a     { text-decoration: none; }
-        .left ul    { list-style-type: none; margin-left: -20px; }
-        .left h3    { background-color: Black; color: White; padding: 6px; }
-        .right h1   { margin-top: 50px; margin-bottom: 50px; }
-        .right h2   { margin-top: 35px; }
-        
-        .strikethrough-text { text-decoration: line-through; }
-        .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
-        .swag-watermark a   { text-decoration: none; color: inherit; }
-        
-        .blockquote               { border-radius: 5px; border: 1px solid; margin: 20px; padding: 10px; }
-        .blockquote-default       { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
-        .blockquote-note          { border-color: #ADCEDD; background-color: #CDEEFD; }
-        .blockquote-tip           { border-color: #BCCFBC; background-color: #DCEFDC; }
-        .blockquote-warning       { border-color: #DFBDB3; background-color: #FFDDD3; }
-        .blockquote-attention     { border-color: #DDBAB8; background-color: #FDDAD8; }
-        .blockquote-example       { border: 2px solid LightGrey; }
-        .blockquote-title-block   { margin-bottom: 10px; }
-        .blockquote-title         { font-weight: bold; }
-        .blockquote-default       p:first-child { margin-top: 0px; }
-        .blockquote-default       p:last-child  { margin-bottom: 0px; }
-        .blockquote               p:last-child  { margin-bottom: 0px; }
-        
-        .description-list-title   { font-weight: bold; font-style: italic; }
-        .description-list-block   { margin-left: 30px; }
-        
-        .container table          { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
-        .container td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
-        .container th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
-        
-        table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
-        .api-item td              { font-size: revert; border: 0; }
-        .api-item td:first-child  { width: 33%; white-space: nowrap; }
-        .api-item-title-src-ref   { text-align:  right; }
-        .api-item-title-src-ref a { color:       inherit; }
-        .api-item-title-kind      { font-weight: normal; font-size: 80%; }
-        .api-item-title-light     { font-weight: normal; }
-        .api-item-title-strong    { font-weight: bold; font-size: 100%; }
-        .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
-        
-        table.table-enumeration           { width: calc(100% - 40px); }
-        .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
-        .table-enumeration td:last-child  { width: 100%; }
-        .table-enumeration td.code-type   { background-color: #eeeeee; }
-        .table-enumeration a              { text-decoration: none; color: inherit; }
-        
-        .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
-        .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
-        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-        .code-block a { color: inherit; }
-        
+    .container a        { color: DoggerBlue; }
+    .container a:hover  { text-decoration: underline; }
+    .container img      { margin: 0 auto; }
+   
+    .left a     { text-decoration: none; }
+    .left ul    { list-style-type: none; margin-left: -20px; }
+    .left h3    { background-color: Black; color: White; padding: 6px; }
+    .right h1   { margin-top: 50px; margin-bottom: 50px; }
+    .right h2   { margin-top: 35px; }
+
+    .strikethrough-text { text-decoration: line-through; }
+    .swag-watermark     { text-align:right; font-size: 80%; margin-top: 30px; }
+    .swag-watermark a   { text-decoration: none; color: inherit; }
+
+    .blockquote               { border-radius: 5px; border: 1px solid; margin: 20px; padding: 10px; }
+    .blockquote-default       { border-color: Orange; border-left: 6px solid Orange; background-color: LightYellow; }
+    .blockquote-note          { border-color: #ADCEDD; background-color: #CDEEFD; }
+    .blockquote-tip           { border-color: #BCCFBC; background-color: #DCEFDC; }
+    .blockquote-warning       { border-color: #DFBDB3; background-color: #FFDDD3; }
+    .blockquote-attention     { border-color: #DDBAB8; background-color: #FDDAD8; }
+    .blockquote-example       { border: 2px solid LightGrey; }
+    .blockquote-title-block   { margin-bottom: 10px; }
+    .blockquote-title         { font-weight: bold; }
+    .blockquote-default       p:first-child { margin-top: 0px; }
+    .blockquote-default       p:last-child  { margin-bottom: 0px; }
+    .blockquote               p:last-child  { margin-bottom: 0px; }
+
+    .description-list-title   { font-weight: bold; font-style: italic; }
+    .description-list-block   { margin-left: 30px; }
+
+    .container table          { border: 1px solid LightGrey; border-collapse: collapse; font-size: 90%; margin-left: 20px; margin-right: 20px; }
+    .container td             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; }
+    .container th             { border: 1px solid LightGrey; border-collapse: collapse; padding: 6px; min-width: 100px; background-color: #eeeeee; }
+
+    table.api-item            { border-collapse: separate; background-color: Black; color: White; width: 100%; margin-top: 70px; margin-right: 0px; font-size: 110%; }
+    .api-item td              { font-size: revert; border: 0; }
+    .api-item td:first-child  { width: 33%; white-space: nowrap; }
+    .api-item-title-src-ref   { text-align:  right; }
+    .api-item-title-src-ref a { color:       inherit; }
+    .api-item-title-kind      { font-weight: normal; font-size: 80%; }
+    .api-item-title-light     { font-weight: normal; }
+    .api-item-title-strong    { font-weight: bold; font-size: 100%; }
+    .api-additional-infos     { font-size: 90%; white-space: break-spaces; overflow-wrap: break-word; }
+
+    table.table-enumeration           { width: calc(100% - 40px); }
+    .table-enumeration td:first-child { background-color: #f8f8f8; white-space: nowrap; }
+    .table-enumeration td:last-child  { width: 100%; }
+    .table-enumeration td.code-type   { background-color: #eeeeee; }
+    .table-enumeration a              { text-decoration: none; color: inherit; }
+
+    .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
+    .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+    .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .code-block a { color: inherit; }
     .SCde { color: #222222; }
     .SCmt { color: #71a35b; }
     .SCmp { color: #7f7f7f; }
@@ -7465,7 +7464,7 @@
 <span id="Gui_ListCtrl_addColumn"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">addColumn</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1000" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1002" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7478,7 +7477,7 @@
 <span id="Gui_ListCtrl_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L989" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L991" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7491,7 +7490,7 @@
 <span id="Gui_ListCtrl_collapse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">collapse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1244" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1246" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7504,7 +7503,7 @@
 <span id="Gui_ListCtrl_collapseAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">collapseAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1286" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1288" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7517,7 +7516,7 @@
 <span id="Gui_ListCtrl_computeLayout"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">computeLayout</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L920" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L922" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7530,7 +7529,7 @@
 <span id="Gui_ListCtrl_createLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">createLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L958" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L960" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7545,7 +7544,7 @@
 <span id="Gui_ListCtrl_createMultiColumns"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">createMultiColumns</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L787" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L789" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7557,7 +7556,7 @@
 <span id="Gui_ListCtrl_createSimple"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">createSimple</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L769" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L771" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7569,7 +7568,7 @@
 <span id="Gui_ListCtrl_ensureVisibleLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">ensureVisibleLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1051" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1053" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7582,7 +7581,7 @@
 <span id="Gui_ListCtrl_expand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">expand</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7595,7 +7594,7 @@
 <span id="Gui_ListCtrl_getCheckedLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getCheckedLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1093" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1095" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7608,7 +7607,7 @@
 <span id="Gui_ListCtrl_getFirstVisibleLineIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getFirstVisibleLineIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1023" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1025" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7621,7 +7620,7 @@
 <span id="Gui_ListCtrl_getFocusLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getFocusLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1069" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1071" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7634,7 +7633,7 @@
 <span id="Gui_ListCtrl_getLastVisibleLineIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getLastVisibleLineIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1033" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1035" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7647,7 +7646,7 @@
 <span id="Gui_ListCtrl_getLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L943" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L945" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7660,7 +7659,7 @@
 <span id="Gui_ListCtrl_getLineCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getLineCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L949" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L951" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7673,7 +7672,7 @@
 <span id="Gui_ListCtrl_getLineHeight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getLineHeight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L937" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L939" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7686,7 +7685,7 @@
 <span id="Gui_ListCtrl_getSelectedLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getSelectedLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7699,7 +7698,7 @@
 <span id="Gui_ListCtrl_getSelectedLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">getSelectedLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1077" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1079" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7712,7 +7711,7 @@
 <span id="Gui_ListCtrl_isLineSelected"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">isLineSelected</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L867" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L869" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7725,7 +7724,7 @@
 <span id="Gui_ListCtrl_isSelectedLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">isSelectedLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1062" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1064" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7738,7 +7737,7 @@
 <span id="Gui_ListCtrl_selectLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">selectLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L878" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L880" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7751,7 +7750,7 @@
 <span id="Gui_ListCtrl_selectLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">selectLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L899" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L901" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7764,7 +7763,7 @@
 <span id="Gui_ListCtrl_setColumnWidth"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">setColumnWidth</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1007" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1009" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7777,7 +7776,7 @@
 <span id="Gui_ListCtrl_setFocus"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">setFocus</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1317" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1319" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7790,7 +7789,7 @@
 <span id="Gui_ListCtrl_setVirtualCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">setVirtualCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1014" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1016" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7803,7 +7802,7 @@
 <span id="Gui_ListCtrl_sort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">sort</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1193" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1195" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7818,7 +7817,7 @@
 <span id="Gui_ListCtrl_toggleExpand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">toggleExpand</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1308" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L1310" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7831,7 +7830,7 @@
 <span id="Gui_ListCtrl_unselectAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ListCtrl.</span><span class="api-item-title-strong">unselectAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L857" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L859" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8166,7 +8165,7 @@
 <span id="Gui_ListView_IWnd_onPaintEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onPaintEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L490" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\listctrl.swg#L492" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19975,7 +19974,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 12-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
+Generated on 23-02-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.29.0</div>
 </div>
 </div>
 </div>
