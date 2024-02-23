@@ -2097,7 +2097,7 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // Add all C variadic parameters
     if (typeFunc->isFctCVariadic())
     {
-        for (size_t i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
+        for (uint32_t i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
         {
             auto index = pushRAParams[indexParam--];
             pushParams3.push_back(index);

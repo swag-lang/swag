@@ -551,7 +551,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
             // Clone all attributes
             CloneContext cloneContext;
-            for (size_t i = 0; i < testParent->children.size() - 1; i++) // Do not clone content
+            for (uint32_t i = 0; i < testParent->children.size() - 1; i++) // Do not clone content
             {
                 cloneContext.parent = newAttrUse;
                 const auto child    = testParent->children[i]->clone(cloneContext);

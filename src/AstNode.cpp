@@ -148,7 +148,7 @@ void AstNode::cloneChildren(CloneContext& context, AstNode* from)
     const auto oldParent = context.parent;
     context.parent       = this;
     const auto num       = from->children.size();
-    for (size_t i = 0; i < num; i++)
+    for (uint32_t i = 0; i < num; i++)
     {
         // Do not duplicate a struct if it's a child of something else (i.e. another struct), because
         // in case of generics, we do want the normal generic stuff to be done (cloning)
@@ -1297,7 +1297,7 @@ AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild) const
 {
     if (!ref)
         return nullptr;
-    for (size_t i = 0; i < children.size(); i++)
+    for (uint32_t i = 0; i < children.size(); i++)
     {
         if (children[i] == ref)
             return fromChild->children[i];
@@ -1312,7 +1312,7 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild) const
         return nullptr;
     if (this == ref)
         return fromChild;
-    for (size_t i = 0; i < children.size(); i++)
+    for (uint32_t i = 0; i < children.size(); i++)
     {
         if (children[i] == ref)
             return fromChild->children[i];

@@ -51,7 +51,7 @@ void ByteCodeDebugger::printDisplayList() const
     }
 
     g_Log.setColor(LogColor::Gray);
-    for (size_t i = 0; i < display.size(); i++)
+    for (uint32_t i = 0; i < display.size(); i++)
     {
         g_Log.print(FMT("#%d: %s", i + 1, display[i].c_str()));
         g_Log.eol();

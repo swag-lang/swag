@@ -10,7 +10,7 @@ namespace
 {
     void cleanMatches(VectorNative<OneMatch*>& matches)
     {
-        for (size_t i = 0; i < matches.size(); i++)
+        for (uint32_t i = 0; i < matches.size(); i++)
         {
             if (matches[i]->remove)
             {
@@ -39,7 +39,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         }
     }
 
-    for (size_t i = 0; i < countMatches; i++)
+    for (uint32_t i = 0; i < countMatches; i++)
     {
         const auto curMatch = matches[i];
         const auto over     = curMatch->symbolOverload;
@@ -91,7 +91,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         return true;
 
     const auto node = context->node;
-    for (size_t i = 0; i < countMatches; i++)
+    for (uint32_t i = 0; i < countMatches; i++)
     {
         const auto curMatch = matches[i];
         const auto over     = curMatch->symbolOverload;
@@ -101,7 +101,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Not sure this is true, perhaps one day will have to change the way we find it.
         if (overSym->name.find(g_LangSpec->name_atalias) == 0)
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (i != j)
                     matches[j]->remove = true;
@@ -113,7 +113,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to 'ufcs'
         if (!curMatch->ufcs)
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->ufcs)
                 {
@@ -126,7 +126,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to a 'moveref' call
         if (curMatch->castFlagsResult.has(CAST_RESULT_AUTO_MOVE_OP_AFFECT))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->castFlagsResult.has(CAST_RESULT_AUTO_MOVE_OP_AFFECT))
                 {
@@ -138,7 +138,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to a guess 'moveref' call
         if (curMatch->castFlagsResult.has(CAST_RESULT_GUESS_MOVE))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->castFlagsResult.has(CAST_RESULT_GUESS_MOVE))
                 {
@@ -150,7 +150,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority if no CAST_RESULT_STRUCT_CONVERT
         if (curMatch->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
                 {
@@ -163,7 +163,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to a match without an auto cast
         if (curMatch->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST))
                 {
@@ -176,7 +176,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to no coerce
         if (curMatch->castFlagsResult.has(CAST_RESULT_COERCE))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->castFlagsResult.has(CAST_RESULT_COERCE))
                 {
@@ -189,7 +189,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to a non empty function
         if (over->node->isEmptyFct())
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->symbolOverload->node->isEmptyFct() &&
                     matches[j]->symbolOverload->symbol == curMatch->symbolOverload->symbol)
@@ -203,7 +203,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to a local var/parameter versus a function
         if (over->typeInfo->isFuncAttr())
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
                 {
@@ -217,7 +217,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         const auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->isGeneric())
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 const auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
                 if (newOverloadType && !newOverloadType->isGeneric())
@@ -232,7 +232,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // from the sub scope inside a struct (OVERLOAD_IMPL_IN_STRUCT).
         if (over->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->symbolOverload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
                 {
@@ -249,7 +249,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to a user generic parameters, instead of a copy one
         if (over->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->symbolOverload->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM))
                 {
@@ -262,7 +262,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to the same stack frame
         if (!node->isSameStackFrame(over))
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (node->isSameStackFrame(matches[j]->symbolOverload))
                 {
@@ -278,7 +278,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             const auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
             if (callParams)
             {
-                for (size_t j = 0; j < countMatches; j++)
+                for (uint32_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Function)
                     {
@@ -297,7 +297,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         {
             if (!node->ownerInline()->scope->isParentOf(over->node->ownerScope))
             {
-                for (size_t j = 0; j < countMatches; j++)
+                for (uint32_t j = 0; j < countMatches; j++)
                 {
                     const auto nodeToKeep = matches[j]->symbolOverload->node;
                     if (node->ownerInline()->scope->isParentOf(nodeToKeep->ownerScope))
@@ -322,7 +322,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Priority to not a namespace (??)
         if (curMatch->symbolOverload->symbol->kind == SymbolKind::Namespace)
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
                 {
@@ -335,7 +335,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         // Closure variable has a priority over a "out of scope" one
         if (curMatch->symbolOverload->symbol->kind == SymbolKind::Variable)
         {
-            for (size_t j = 0; j < countMatches; j++)
+            for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (i == j)
                     continue;
@@ -356,7 +356,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isSelf())
             {
-                for (size_t j = 0; j < countMatches; j++)
+                for (uint32_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
@@ -377,7 +377,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isSelf())
             {
-                for (size_t j = 0; j < countMatches; j++)
+                for (uint32_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
@@ -398,7 +398,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters[0]->typeInfo->isConst())
             {
-                for (size_t j = 0; j < countMatches; j++)
+                for (uint32_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->ufcs && matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
@@ -520,7 +520,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
         size_t bestGenId    = 0;
 
         auto idCost = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
-        for (size_t i = 0; i < genMatches.size(); i++)
+        for (uint32_t i = 0; i < genMatches.size(); i++)
         {
             const auto& p    = genMatches[i];
             const auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
@@ -546,7 +546,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
     {
         size_t bestS = 0;
         size_t bestI = 0;
-        for (size_t i = 0; i < genMatches.size(); i++)
+        for (uint32_t i = 0; i < genMatches.size(); i++)
         {
             if (genMatches[i]->genericReplaceTypes.size() > bestS)
             {
@@ -555,7 +555,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
             }
         }
 
-        for (size_t i = 0; i < genMatches.size(); i++)
+        for (uint32_t i = 0; i < genMatches.size(); i++)
         {
             if (genMatches[i]->genericReplaceTypes.size() < bestS)
             {
@@ -571,11 +571,11 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
     }
 
     // priority to 'ufcs'
-    for (size_t i = 0; i < genMatches.size(); i++)
+    for (uint32_t i = 0; i < genMatches.size(); i++)
     {
         if (!genMatches[i]->ufcs)
         {
-            for (size_t j = 0; j < genMatches.size(); j++)
+            for (uint32_t j = 0; j < genMatches.size(); j++)
             {
                 if (genMatches[j]->ufcs)
                 {
@@ -589,11 +589,11 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
     }
 
     // A match with a struct conversion has less priority
-    for (size_t i = 0; i < genMatches.size(); i++)
+    for (uint32_t i = 0; i < genMatches.size(); i++)
     {
         if (genMatches[i]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
         {
-            for (size_t j = 0; j < genMatches.size(); j++)
+            for (uint32_t j = 0; j < genMatches.size(); j++)
             {
                 if (!genMatches[j]->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
                 {
@@ -645,7 +645,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
     if (matches.size() <= 1)
         return true;
 
-    for (size_t i = 0; i < matches.size(); i++)
+    for (uint32_t i = 0; i < matches.size(); i++)
     {
         const auto                                       oneMatch = matches[i];
         const auto                                       over     = oneMatch->symbolOverload;
@@ -797,7 +797,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
     }
 
     // Eliminate all matches tag as 'remove'
-    for (size_t i = 0; i < dependentSymbols.size(); i++)
+    for (uint32_t i = 0; i < dependentSymbols.size(); i++)
     {
         if (dependentSymbols[i].remove)
         {

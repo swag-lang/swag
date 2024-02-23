@@ -2206,7 +2206,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     }
 
     const auto childSize = node->children.size();
-    for (size_t i = 0; i < childSize; i++)
+    for (uint32_t i = 0; i < childSize; i++)
     {
         if (i == childSize - 1 && funcNode->typeInfo->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
             break;

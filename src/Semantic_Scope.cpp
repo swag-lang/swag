@@ -230,7 +230,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         // Search symbol in all the scopes of the hierarchy
         while (!scopeHierarchy.empty())
         {
-            for (size_t i = 0; i < scopeHierarchy.size(); i++)
+            for (uint32_t i = 0; i < scopeHierarchy.size(); i++)
             {
                 const auto& as = scopeHierarchy[i];
                 if (!as.scope)
@@ -622,7 +622,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
         addAlternativeScope(toProcess, g_Workspace->runtimeModule->scopeRoot);
     }
 
-    for (size_t i = 0; i < toProcess.size(); i++)
+    for (uint32_t i = 0; i < toProcess.size(); i++)
     {
         const auto& as    = toProcess[i];
         auto        scope = as.scope;

@@ -351,7 +351,7 @@ bool TypeInfoList::isSame(const TypeInfo* to, CastFlags castFlags) const
     if (subTypes.size() != other->subTypes.size())
         return false;
 
-    for (size_t i = 0; i < subTypes.size(); i++)
+    for (uint32_t i = 0; i < subTypes.size(); i++)
     {
         if (!subTypes[i]->isSame(other->subTypes[i], castFlags))
             return false;
@@ -502,7 +502,7 @@ bool TypeInfoEnum::isSame(const TypeInfo* to, CastFlags castFlags) const
         const auto childSize = values.size();
         if (childSize != other->values.size())
             return false;
-        for (size_t i = 0; i < childSize; i++)
+        for (uint32_t i = 0; i < childSize; i++)
         {
             if (!values[i]->isSame(other->values[i], castFlags))
                 return false;
@@ -553,7 +553,7 @@ namespace
         else
             resName += "'";
 
-        for (size_t i = 0; i < genericParameters.size(); i++)
+        for (uint32_t i = 0; i < genericParameters.size(); i++)
         {
             if (i)
                 resName += ", ";
@@ -612,7 +612,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     // Parameters
     resName += "(";
     bool first = true;
-    for (size_t i = 0; i < parameters.size(); i++)
+    for (uint32_t i = 0; i < parameters.size(); i++)
     {
         // First parameter of a closure is generated, so do not count it in the name
         if (isClosure() && !i)
@@ -736,7 +736,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
 
     if (genericParameters.size() == other->genericParameters.size())
     {
-        for (size_t i = 0; i < genericParameters.size(); i++)
+        for (uint32_t i = 0; i < genericParameters.size(); i++)
         {
             if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, castFlags))
                 return false;
@@ -750,7 +750,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
     {
         if (capture.size() != other->capture.size())
             return false;
-        for (size_t i = 0; i < capture.size(); i++)
+        for (uint32_t i = 0; i < capture.size(); i++)
         {
             if (capture[i]->typeInfo->isUndefined())
                 continue;
@@ -767,7 +767,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
     if (!isClosure() && other->isClosure())
         firstParam = 1;
 
-    for (size_t i = 0; i < parameters.size(); i++)
+    for (uint32_t i = 0; i < parameters.size(); i++)
     {
         auto type1 = parameters[i]->typeInfo;
         auto type2 = other->parameters[i + firstParam]->typeInfo;
@@ -1095,7 +1095,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
             const auto numGenParams = genericParameters.size();
             if (numGenParams != other->genericParameters.size())
                 return false;
-            for (size_t i = 0; i < numGenParams; i++)
+            for (uint32_t i = 0; i < numGenParams; i++)
             {
                 const auto myGenParam    = genericParameters[i];
                 const auto otherGenParam = other->genericParameters[i];
@@ -1152,7 +1152,7 @@ bool TypeInfoStruct::isSame(const TypeInfo* to, CastFlags castFlags) const
         if (childCount != other->fields.size())
             return false;
 
-        for (size_t i = 0; i < childCount; i++)
+        for (uint32_t i = 0; i < childCount; i++)
         {
             // Compare field type
             if (!fields[i]->isSame(other->fields[i], castFlags))

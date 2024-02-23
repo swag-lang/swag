@@ -332,7 +332,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     identifier->callParameters = Ast::newFuncCallParams(nullptr, identifier);
 
     const auto numParams = assign->children.size();
-    for (size_t i = 0; i < numParams; i++)
+    for (uint32_t i = 0; i < numParams; i++)
     {
         const auto child = assign->children[0];
         const auto param = Ast::newFuncCallParam(nullptr, identifier->callParameters);
@@ -470,7 +470,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
                 if (nodeParam->ownerFct->captureParameters)
                     tryType->addFlag(TYPEINFO_CLOSURE);
 
-                for (size_t i = 0; i < nodeParam->ownerFct->parameters->children.size(); i++)
+                for (uint32_t i = 0; i < nodeParam->ownerFct->parameters->children.size(); i++)
                 {
                     auto p      = TypeManager::makeParam();
                     p->typeInfo = g_TypeMgr->typeInfoUndefined;

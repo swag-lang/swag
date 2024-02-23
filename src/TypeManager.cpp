@@ -271,7 +271,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->addFlag(TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GHOST_TUPLE);
 
     typeStruct->fields.reserve(static_cast<int>(typeList->subTypes.size()));
-    for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
+    for (uint32_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
         const auto one       = typeList->subTypes[idx];
         auto       typeParam = one->clone();

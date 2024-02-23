@@ -464,7 +464,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             countParams--;
         }
 
-        for (size_t i = 0; i < countParams; i++)
+        for (uint32_t i = 0; i < countParams; i++)
         {
             const auto typeParam = typeFunc->parameters[i]->typeInfo;
             if (typeParam->isString() || typeParam->isSlice())
@@ -533,7 +533,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             dbgBuilder->insertDeclare(allocaVariadic, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
 
-        for (size_t i = 0; i < countParams; i++)
+        for (uint32_t i = 0; i < countParams; i++)
         {
             const auto  child     = decl->parameters->children[i];
             const auto& loc       = child->token.startLocation;

@@ -79,7 +79,7 @@ void ByteCodeGen::reserveLinearRegisterRC2(const ByteCodeGenContext* context, Re
     if (size > 1)
     {
         sortRegistersRC(context);
-        for (size_t i = 0; i < size - 1; i++)
+        for (uint32_t i = 0; i < size - 1; i++)
         {
             if (context->bc->availableRegistersRC[i] == context->bc->availableRegistersRC[i + 1] + 1)
             {

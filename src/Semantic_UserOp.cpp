@@ -677,7 +677,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         return true;
 
     auto oneMatch = context->cacheMatches[0];
-    for (size_t i = 0; i < params.size(); i++)
+    for (uint32_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {

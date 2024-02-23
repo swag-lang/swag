@@ -87,7 +87,7 @@ namespace
 
         // Additional error message per overload
         Vector<Utf8> addMsg;
-        for (size_t i = 0; i < maxOverloads; i++)
+        for (uint32_t i = 0; i < maxOverloads; i++)
         {
             Vector<const Diagnostic*> errs0, errs1;
             Vector<Utf8>              parts;
@@ -100,7 +100,7 @@ namespace
 
         // Determine if all "per function" errors are the same
         bool allAddMsgAreEquals = true;
-        for (size_t i = 1; i < maxOverloads; i++)
+        for (uint32_t i = 1; i < maxOverloads; i++)
         {
             if (addMsg[i] != addMsg[0])
                 allAddMsgAreEquals = false;
@@ -113,7 +113,7 @@ namespace
                 note->textMsg = addMsg[0];
         }
 
-        for (size_t i = 0; i < maxOverloads; i++)
+        for (uint32_t i = 0; i < maxOverloads; i++)
         {
             // Output the function signature
             concat.clear();

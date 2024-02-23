@@ -17,7 +17,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                                        AstNode*                      callGenericParameters,
                                        OneMatch&                     match)
 {
-    for (size_t i = 0; i < typeGenericParameters.size(); i++)
+    for (uint32_t i = 0; i < typeGenericParameters.size(); i++)
     {
         const auto param = typeGenericParameters[i];
 
@@ -281,7 +281,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
             }
 
             const auto numParams = typeLambda->parameters.size();
-            for (size_t idx = 0; idx < numParams; idx++)
+            for (uint32_t idx = 0; idx < numParams; idx++)
             {
                 const auto param = typeLambda->parameters[idx];
                 newType          = replaceGenericTypes(replaceTypes, param->typeInfo);

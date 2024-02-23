@@ -114,7 +114,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
             const auto t1 = castTypeInfo<TypeInfoStruct>(newType);
 
             bool same = true;
-            for (size_t i = 0; i < t0->genericParameters.size(); i++)
+            for (uint32_t i = 0; i < t0->genericParameters.size(); i++)
             {
                 if (!t0->genericParameters[i]->typeInfo->isSame(t1->genericParameters[i]->typeInfo, CAST_FLAG_EXACT))
                 {

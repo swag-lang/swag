@@ -105,7 +105,7 @@ namespace
         g_RunContext->firstRC       = saveFirstRC;
 
         // Get result
-        for (size_t i = 0; i < returnRegisters.size(); i++)
+        for (uint32_t i = 0; i < returnRegisters.size(); i++)
         {
             const auto r = returnRegisters[i];
             *r           = g_RunContext->registersRR[i];

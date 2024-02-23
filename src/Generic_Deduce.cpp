@@ -23,7 +23,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 if (!callStruct->genericParameters.empty())
                 {
                     const auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
-                    for (size_t idx = 0; idx < num; idx++)
+                    for (uint32_t idx = 0; idx < num; idx++)
                     {
                         wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
                         callTypeInfos.push_back(callStruct->genericParameters[idx]->typeInfo);
@@ -32,7 +32,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 else
                 {
                     const auto num = min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
-                    for (size_t idx = 0; idx < num; idx++)
+                    for (uint32_t idx = 0; idx < num; idx++)
                     {
                         wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
                         callTypeInfos.push_back(callStruct->deducedGenericParameters[idx]);
@@ -43,7 +43,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             {
                 const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
                 const auto num      = min(wantedStruct->genericParameters.size(), callList->subTypes.size());
-                for (size_t idx = 0; idx < num; idx++)
+                for (uint32_t idx = 0; idx < num; idx++)
                 {
                     // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of
                     // fields is irrelevant, as we can write {b: 2, a: 1} too.
@@ -53,7 +53,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                     // specified).
                     const auto p       = wantedStruct->genericParameters[idx];
                     Utf8       nameVar = p->name;
-                    for (size_t idx1 = 0; idx1 < wantedStruct->fields.size(); idx1++)
+                    for (uint32_t idx1 = 0; idx1 < wantedStruct->fields.size(); idx1++)
                     {
                         if (wantedStruct->fields[idx1]->typeInfo->name == wantedStruct->genericParameters[idx]->typeInfo->name)
                         {
@@ -246,7 +246,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             }
 
             const auto num = wantedLambda->parameters.size();
-            for (size_t idx = 0; idx < num; idx++)
+            for (uint32_t idx = 0; idx < num; idx++)
             {
                 if (wantedLambda->isClosure() && !idx)
                     continue;
@@ -333,7 +333,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
             !callStruct->genericParameters.empty())
         {
             const auto newStructType = castTypeInfo<TypeInfoStruct>(callStruct->clone());
-            for (size_t i = 0; i < callStruct->genericParameters.size(); i++)
+            for (uint32_t i = 0; i < callStruct->genericParameters.size(); i++)
                 newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
             regTypeInfo = newStructType;
         }

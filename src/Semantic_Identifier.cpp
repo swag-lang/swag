@@ -410,7 +410,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 else if (subResult.size() > 1)
                 {
                     int enumIdx = 0;
-                    for (size_t i = 0; i < fctCallParam->parent->children.size(); i++)
+                    for (uint32_t i = 0; i < fctCallParam->parent->children.size(); i++)
                     {
                         const auto child = fctCallParam->parent->children[i];
                         if (child == fctCallParam)
@@ -805,7 +805,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
     if (callParameters)
     {
         const auto childCount = callParameters->children.size();
-        for (size_t i = 0; i < childCount; i++)
+        for (uint32_t i = 0; i < childCount; i++)
         {
             const auto oneParam = castAst<AstFuncCallParam>(callParameters->children[i], AstNodeKind::FuncCallParam);
             symMatchContext.parameters.push_back(oneParam);
@@ -870,7 +870,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         }
 
         const auto childCount = genericParameters->children.size();
-        for (size_t i = 0; i < childCount; i++)
+        for (uint32_t i = 0; i < childCount; i++)
         {
             const auto oneParam = castAst<AstFuncCallParam>(genericParameters->children[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);

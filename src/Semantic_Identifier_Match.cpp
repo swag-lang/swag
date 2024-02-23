@@ -63,7 +63,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     const auto typeDefinedFct   = castTypeInfo<TypeInfoFuncAttr>(concreteType, TypeInfoKind::LambdaClosure);
 
     // Replace every parameters types
-    for (size_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
+    for (uint32_t paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
     {
         const auto childType = funcDecl->parameters->children[paramIdx];
 
@@ -153,7 +153,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
     sortParameters(identifier->callParameters);
     const auto maxParams = identifier->callParameters->children.size();
-    for (size_t idx = 0; idx < maxParams; idx++)
+    for (uint32_t idx = 0; idx < maxParams; idx++)
     {
         const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[idx], AstNodeKind::FuncCallParam);
 
@@ -333,7 +333,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
     // Deal with opAffect automatic conversion
     // :opAffectParam
-    for (size_t i = 0; i < maxParams; i++)
+    for (uint32_t i = 0; i < maxParams; i++)
     {
         const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
         const auto userOp   = nodeCall->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
@@ -907,7 +907,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 sortParameters(identifier->callParameters);
                 const auto maxParams = identifier->callParameters->children.size();
-                for (size_t i = 0; i < maxParams; i++)
+                for (uint32_t i = 0; i < maxParams; i++)
                 {
                     const auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
                     const size_t idx      = nodeCall->indexParam;
@@ -1458,7 +1458,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                         rawTypeStruct = castTypeInfo<TypeInfoStruct>(rawTypeInfo->clone());
                         rawTypeInfo   = rawTypeStruct;
                         typeWasForced = rawTypeInfo;
-                        for (size_t i = 0; i < returnStructType->genericParameters.size(); i++)
+                        for (uint32_t i = 0; i < returnStructType->genericParameters.size(); i++)
                         {
                             rawTypeStruct->genericParameters[i]->name = returnStructType->genericParameters[i]->name;
                         }
@@ -1810,7 +1810,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     // We remove all generated nodes, because if they exist, they do not participate in the
     // error
     auto oneTry = overloads[0];
-    for (size_t i = 0; i < overloads.size(); i++)
+    for (uint32_t i = 0; i < overloads.size(); i++)
     {
         if (overloads[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
         {

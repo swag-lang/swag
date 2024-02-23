@@ -495,7 +495,7 @@ int Diagnostic::printRangesVerticalBars(size_t maxMarks)
     g_Log.eol();
     printMargin(false, true);
     int curColumn = minBlanks;
-    for (size_t ii = 0; ii < maxMarks; ii++)
+    for (uint32_t ii = 0; ii < maxMarks; ii++)
     {
         auto& rr  = ranges[ii];
         rr.hasBar = true;
@@ -518,7 +518,7 @@ void Diagnostic::printLastRangeHint(int curColumn)
     const int    maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
     Utf8::wordWrap(r.hint, tokens, max(maxLength, (int) g_CommandLine.errorRightColumn / 2));
 
-    for (size_t i = 0; i < tokens.size(); i++)
+    for (uint32_t i = 0; i < tokens.size(); i++)
     {
         g_Log.setColor(rangeNoteColor);
         g_Log.print(tokens[i]);
@@ -539,7 +539,7 @@ void Diagnostic::printRanges()
 
     // Print all underlines
     int curColumn = minBlanks;
-    for (size_t i = 0; i < ranges.size(); i++)
+    for (uint32_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
         setColorRanges(r.errorLevel);
@@ -556,7 +556,7 @@ void Diagnostic::printRanges()
     }
 
     // Remove all ranges with an empty message
-    for (size_t i = 0; i < ranges.size(); i++)
+    for (uint32_t i = 0; i < ranges.size(); i++)
     {
         if (ranges[i].hint.empty())
         {
@@ -648,7 +648,7 @@ void Diagnostic::report()
 
             Vector<Utf8> tokens;
             Utf8::wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
-            for (size_t i = 0; i < tokens.size(); i++)
+            for (uint32_t i = 0; i < tokens.size(); i++)
             {
                 g_Log.setColor(rangeNoteColor);
                 g_Log.print(tokens[i]);

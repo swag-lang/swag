@@ -2291,7 +2291,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
             break;
     }
 
-    for (size_t j = 0; j < child->children.size(); j++)
+    for (uint32_t j = 0; j < child->children.size(); j++)
     {
         const auto           childJ = child->children[j];
         const TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
@@ -2343,7 +2343,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     if (fromNode)
         fromNode->addAstFlag(AST_CONST_EXPR);
 
-    for (size_t i = 0; i < fromSize; i++)
+    for (uint32_t i = 0; i < fromSize; i++)
     {
         const auto child = fromNode ? fromNode->children[i] : nullptr;
 
@@ -2368,7 +2368,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     {
         const auto oldSizeof = fromTypeList->sizeOf;
         fromTypeList         = castTypeInfo<TypeInfoList>(fromTypeList->clone());
-        for (size_t i = 0; i < fromTypeList->subTypes.size(); i++)
+        for (uint32_t i = 0; i < fromTypeList->subTypes.size(); i++)
             fromTypeList->subTypes[i]->typeInfo = fromNode->children[i]->typeInfo;
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;

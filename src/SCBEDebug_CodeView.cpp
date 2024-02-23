@@ -632,7 +632,7 @@ namespace
 
         const auto countParams = decl->parameters->children.size();
         uint32_t   regCounter  = 0;
-        for (size_t i = 0; i < countParams; i++)
+        for (uint32_t i = 0; i < countParams; i++)
         {
             const auto child     = decl->parameters->children[i];
             const auto typeParam = typeFunc->parameters[i]->typeInfo;
@@ -758,7 +758,7 @@ namespace
             return;
 
         const auto countParams = decl->captureParameters->children.size();
-        for (size_t i = 0; i < countParams; i++)
+        for (uint32_t i = 0; i < countParams; i++)
         {
             auto       child     = decl->captureParameters->children[i];
             const auto typeParam = child->typeInfo;

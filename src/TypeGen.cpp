@@ -257,7 +257,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                 uint32_t       storageArray;
                 const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
                                                                                             &concreteType->generics.buffer, storageArray));
-                for (size_t param = 0; param < concreteType->generics.count; param++)
+                for (uint32_t param = 0; param < concreteType->generics.count; param++)
                 {
                     SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], genFlags));
                     storageArray += sizeof(ExportedTypeValue);
@@ -282,7 +282,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                 uint32_t       storageArray;
                 const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
                                                                                             &concreteType->parameters.buffer, storageArray));
-                for (size_t param = firstParam; param < realType->parameters.size(); param++)
+                for (uint32_t param = firstParam; param < realType->parameters.size(); param++)
                 {
                     SWAG_CHECK(genExportedTypeValue(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], genFlags));
                     storageArray += sizeof(ExportedTypeValue);
@@ -308,7 +308,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
                 uint32_t       storageArray;
                 const auto     addrArray = static_cast<ExportedTypeValue*>(genExportedSlice(context, count * sizeof(ExportedTypeValue), exportedTypeInfoValue, storageSegment, storageOffset,
                                                                                             &concreteType->values.buffer, storageArray));
-                for (size_t param = 0; param < concreteType->values.count; param++)
+                for (uint32_t param = 0; param < concreteType->values.count; param++)
                 {
                     SWAG_CHECK(genExportedTypeValue(context, addrArray + param, storageSegment, storageArray, realType->values[param], genFlags));
                     storageArray += sizeof(ExportedTypeValue);

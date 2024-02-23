@@ -139,7 +139,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         {
             const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint              = "this is equivalent to [[";
-            for (size_t ic = 0; ic < orgLeft->children.size(); ic++)
+            for (uint32_t ic = 0; ic < orgLeft->children.size(); ic++)
             {
                 const auto c = orgLeft->children[ic];
                 if (ic)

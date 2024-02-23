@@ -13,7 +13,7 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
     }
 
     g_Log.setColor(LogColor::Gray);
-    for (size_t i = 0; i < breakpoints.size(); i++)
+    for (uint32_t i = 0; i < breakpoints.size(); i++)
     {
         const auto& bkp = breakpoints[i];
         g_Log.print(FMT("#%d: ", i + 1));

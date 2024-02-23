@@ -230,7 +230,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
         if (typeFunc->isClosure() && closureToLambda)
             idxFirst = 1;
 
-        for (size_t i = idxFirst; i < numParams; i++)
+        for (uint32_t i = idxFirst; i < numParams; i++)
         {
             auto param = TypeManager::concreteType(typeFunc->parameters[i]->typeInfo);
             if (param->isAutoConstPointerRef())
@@ -575,7 +575,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     // Add all C variadic parameters
     if (typeFuncBC->isFctCVariadic())
     {
-        for (size_t i = typeFuncBC->numParamsRegisters(); i < pushParams.size(); i++)
+        for (uint32_t i = typeFuncBC->numParamsRegisters(); i < pushParams.size(); i++)
         {
             const auto index = pushParams[idxParam--];
             params.push_back(builder.CreateLoad(I64_TY(), GEP64(allocR, index)));

@@ -403,7 +403,7 @@ Job* ThreadManager::getJob(JobQueue& queue)
     else if (jEmpty)
     {
         job = nullptr;
-        for (size_t i = 0; i < queue.affinity.size(); i++)
+        for (uint32_t i = 0; i < queue.affinity.size(); i++)
         {
             if (!queue.affinity[i].empty())
             {

@@ -132,7 +132,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         // Simple case, every parameters are covered by the call, and there's no named param
         if (numFuncParams == numCallParams)
         {
-            for (size_t i = 0; i < numCallParams; i++)
+            for (uint32_t i = 0; i < numCallParams; i++)
             {
                 auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
                 auto callParam = allParams->children[i];
@@ -159,11 +159,11 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         else
         {
             // Determine if this parameter has been covered by the call
-            for (size_t i = 0; i < numFuncParams; i++)
+            for (uint32_t i = 0; i < numFuncParams; i++)
             {
                 auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
                 bool covered   = false;
-                for (size_t j = 0; j < numCallParams; j++)
+                for (uint32_t j = 0; j < numCallParams; j++)
                 {
                     auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == static_cast<int>(i))
@@ -1087,7 +1087,7 @@ bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* sco
     {
         context->result = ContextResult::NewChildren;
         const auto job  = context->baseJob;
-        for (size_t i = 0; i < numDeferred; i++)
+        for (uint32_t i = 0; i < numDeferred; i++)
         {
             const auto node = scope->deferredNodes[i];
 

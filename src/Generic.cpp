@@ -141,7 +141,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             {
                 const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
                 newStructType            = castTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
-                for (size_t i = 0; i < genericParameters->children.size(); i++)
+                for (uint32_t i = 0; i < genericParameters->children.size(); i++)
                 {
                     newStructType->genericParameters[i]->name     = genericParameters->children[i]->typeInfo->name;
                     newStructType->genericParameters[i]->typeInfo = genericParameters->children[i]->typeInfo;

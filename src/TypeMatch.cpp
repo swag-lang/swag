@@ -187,7 +187,7 @@ namespace
 
     void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, uint32_t parameterIndex, VectorNative<TypeInfoParam*>& parameters, CastFlags forceCastFlags = 0)
     {
-        for (size_t j = 0; j < parameters.size(); j++)
+        for (uint32_t j = 0; j < parameters.size(); j++)
         {
             const auto wantedParameter = parameters[j];
             auto       isNamed         = callParameter->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
@@ -196,7 +196,7 @@ namespace
                 if (context.doneParameters[j])
                 {
                     context.badSignatureInfos.badSignatureNum1 = static_cast<int>(j);
-                    for (size_t k = 0; k < context.parameters.size(); k++)
+                    for (uint32_t k = 0; k < context.parameters.size(); k++)
                     {
                         const auto checkParam = context.parameters[k];
                         isNamed               = checkParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);

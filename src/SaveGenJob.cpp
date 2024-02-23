@@ -18,7 +18,7 @@ void SaveGenJob::release()
 bool SaveGenJob::flush(Module* mdl)
 {
     ScopedLock lk(mdl->mutexFlushGenFiles);
-    for (size_t idx = 0; idx < mdl->contentJobGeneratedFile.size(); idx++)
+    for (uint32_t idx = 0; idx < mdl->contentJobGeneratedFile.size(); idx++)
     {
         if (mdl->contentJobGeneratedFile[idx].empty())
             continue;

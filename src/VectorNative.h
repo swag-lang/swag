@@ -100,7 +100,7 @@ struct VectorNative
 
     void reverse()
     {
-        for (size_t i = 0; i < count / 2; i++)
+        for (uint32_t i = 0; i < count / 2; i++)
             swap(buffer[i], buffer[count - i - 1]);
     }
 

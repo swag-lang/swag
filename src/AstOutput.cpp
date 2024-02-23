@@ -465,7 +465,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
                 {
                     concat.addChar('(');
 
-                    for (size_t i = 0; i < one.parameters.size(); i++)
+                    for (uint32_t i = 0; i < one.parameters.size(); i++)
                     {
                         auto& oneParam = one.parameters[i];
                         if (i)

@@ -2423,7 +2423,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
 
     cxt.states.emplace_back(state);
 
-    for (size_t i = 0; i < cxt.states.size(); i++)
+    for (uint32_t i = 0; i < cxt.states.size(); i++)
     {
         cxt.state = static_cast<int>(i);
         SWAG_CHECK(optimizePassSanityStack(context, cxt));

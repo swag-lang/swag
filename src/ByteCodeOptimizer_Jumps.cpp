@@ -6,7 +6,7 @@
 // Eliminate unnecessary jumps
 bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 {
-    for (size_t idx = 0; idx < context->jumps.size(); idx++)
+    for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
     {
         const auto ip = context->jumps[idx];
         if (!ByteCode::isJump(ip))
@@ -1850,7 +1850,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
     constexpr int64_t maxJumpTableSize = UINT32_MAX;
     constexpr int64_t minDensity       = 10;
 
-    for (size_t idx = 0; idx < context->jumps.size(); idx++)
+    for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
     {
         const auto ip = context->jumps[idx];
         if (!ByteCode::isJump(ip))

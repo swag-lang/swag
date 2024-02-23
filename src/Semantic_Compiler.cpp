@@ -656,7 +656,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     // Clean array
     for (const auto typeStruct : allStructs)
     {
-        for (size_t i = 0; i < typeStruct->methods.size(); i++)
+        for (uint32_t i = 0; i < typeStruct->methods.size(); i++)
         {
             if (!typeStruct->methods[i])
             {

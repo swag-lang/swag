@@ -44,7 +44,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     }
     else
     {
-        for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
+        for (uint32_t i = 0; i < typeLeftStruct->fields.size(); i++)
         {
             const auto typeField = typeLeftStruct->fields[i];
             const auto leftN     = typeLeftStruct->fields[i]->name.c_str();
@@ -129,7 +129,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
 
         content += "(using self";
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
-        for (size_t i = 1; i < typeFunc->parameters.size(); i++)
+        for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
         {
             content += ", ";
             const auto type = typeFunc->parameters[i]->typeInfo;
@@ -146,7 +146,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         content += missingNode->name;
 
         content += "(";
-        for (size_t i = 1; i < typeFunc->parameters.size(); i++)
+        for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
         {
             if (i != 1)
                 content += ",";
@@ -164,7 +164,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         parser.setup(context, context->sourceFile->module, context->sourceFile);
         SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
 
-        for (size_t i = numChildren; i < node->children.size(); i++)
+        for (uint32_t i = numChildren; i < node->children.size(); i++)
             context->baseJob->nodes.push_back(node->children[i]);
         context->result = ContextResult::NewChildren;
         return true;

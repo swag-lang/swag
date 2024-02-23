@@ -661,7 +661,7 @@ bool Workspace::buildTarget()
         toBuild.clear();
         toBuild.push_back(filteredModule);
         filteredModule->addedToBuild = true;
-        for (size_t i = 0; i < toBuild.size(); i++)
+        for (uint32_t i = 0; i < toBuild.size(); i++)
         {
             for (const auto& dep : toBuild[i]->moduleDependencies)
             {
@@ -710,7 +710,7 @@ bool Workspace::buildTarget()
 
         bool restart     = false;
         auto waitingJobs = g_ThreadMgr.waitingJobs;
-        for (size_t i = 0; i < waitingJobs.size(); i++)
+        for (uint32_t i = 0; i < waitingJobs.size(); i++)
         {
             const auto job = waitingJobs[i];
             if (job->hasFlag(JOB_PENDING_PLACE_HOLDER))

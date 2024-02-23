@@ -186,7 +186,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         {
             hasFormat = true;
             expr.clear();
-            for (size_t i = 2; i < arg.split.size(); i++)
+            for (uint32_t i = 2; i < arg.split.size(); i++)
                 expr += arg.split[i] + " ";
             expr.trim();
             if (expr.empty())

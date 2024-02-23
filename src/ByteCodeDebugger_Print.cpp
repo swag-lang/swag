@@ -361,7 +361,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Print format
     ValueFormat fmt;
-    size_t      startIdx = 0;
+    uint32_t    startIdx = 0;
     if (!exprCmds.empty() && getValueFormat(exprCmds[0], fmt))
         startIdx++;
     fmt.print0X = false;
@@ -383,7 +383,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     // Expression
     Utf8 expr;
-    for (size_t i = startIdx; i < exprCmds.size(); i++)
+    for (uint32_t i = startIdx; i < exprCmds.size(); i++)
     {
         expr += exprCmds[i];
         expr += " ";

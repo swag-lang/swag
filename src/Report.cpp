@@ -130,7 +130,7 @@ namespace
         }
 
         // Move ranges from note to note if they share the same line of code, and they do not overlap
-        for (size_t idxNote = 0; idxNote < notes.size(); idxNote++)
+        for (uint32_t idxNote = 0; idxNote < notes.size(); idxNote++)
         {
             const auto note = notes[idxNote];
             if (!note->display || !note->canBeMerged)
@@ -158,11 +158,11 @@ namespace
                     !note1->ranges.empty() &&
                     note1->errorLevel == DiagnosticLevel::Note)
                 {
-                    for (size_t i = 0; i < note1->ranges.size(); i++)
+                    for (uint32_t i = 0; i < note1->ranges.size(); i++)
                     {
                         bool  canAdd = true;
                         auto& r1     = note1->ranges[i];
-                        for (size_t j = 0; j < note->ranges.size(); j++)
+                        for (uint32_t j = 0; j < note->ranges.size(); j++)
                         {
                             auto& r0 = note->ranges[j];
                             if (r0.endLocation.column <= r1.startLocation.column)
@@ -212,7 +212,7 @@ namespace
         }
 
         // No need to repeat the same source file line reference
-        for (size_t idxNote = 0; idxNote < notes.size(); idxNote++)
+        for (uint32_t idxNote = 0; idxNote < notes.size(); idxNote++)
         {
             const auto note = notes[idxNote];
             if (!note->display)
@@ -224,7 +224,7 @@ namespace
             if (sourceFile0 && sourceFile0->fileForSourceLocation)
                 sourceFile0 = sourceFile0->fileForSourceLocation;
 
-            for (size_t idxNote1 = idxNote + 1; idxNote1 < notes.size(); idxNote1++)
+            for (uint32_t idxNote1 = idxNote + 1; idxNote1 < notes.size(); idxNote1++)
             {
                 const auto note1 = notes[idxNote1];
                 if (!note1->display || !note1->hasLocation)
