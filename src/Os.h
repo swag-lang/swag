@@ -109,11 +109,11 @@ namespace OS
     uint64_t byteSwap(uint64_t value);
 
 #ifdef _WIN32
-#define SWAG_TRY __try
-#define SWAG_EXCEPT __except
-#define SWAG_EXCEPTION_EXECUTE_HANDLER EXCEPTION_EXECUTE_HANDLER
+#define SWAG_TRY                          __try
+#define SWAG_EXCEPT                       __except
+#define SWAG_EXCEPTION_EXECUTE_HANDLER    EXCEPTION_EXECUTE_HANDLER
 #define SWAG_EXCEPTION_CONTINUE_EXECUTION EXCEPTION_CONTINUE_EXECUTION
-#define SWAG_LPEXCEPTION_POINTERS LPEXCEPTION_POINTERS
-#define SWAG_GET_EXCEPTION_INFOS() GetExceptionInformation()
+#define SWAG_LPEXCEPTION_POINTERS         LPEXCEPTION_POINTERS
+#define SWAG_GET_EXCEPTION_INFOS()        GetExceptionInformation()
 #endif
 } // namespace OS

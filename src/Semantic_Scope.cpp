@@ -160,7 +160,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                         // Call to a function ?
                         if (testedOver.size() == 1)
                             err.addNote(Diagnostic::hereIs(testedOver[0]));
-                        
+
                         return context->report(err);
                     }
 

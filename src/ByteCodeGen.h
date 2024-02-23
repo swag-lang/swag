@@ -326,8 +326,8 @@ namespace ByteCodeGen
     void     ensureCanBeChangedRC(const ByteCodeGenContext* context, RegisterList& r0);
 }
 
-#define EMIT_INST0(__cxt, __op) ByteCodeGen::emitInstruction(__cxt, __op, 0, 0, 0, 0, __FILE__, __LINE__)
-#define EMIT_INST1(__cxt, __op, __r0) ByteCodeGen::emitInstruction(__cxt, __op, __r0, 0, 0, 0, __FILE__, __LINE__)
-#define EMIT_INST2(__cxt, __op, __r0, __r1) ByteCodeGen::emitInstruction(__cxt, __op, __r0, __r1, 0, 0, __FILE__, __LINE__)
-#define EMIT_INST3(__cxt, __op, __r0, __r1, __r2) ByteCodeGen::emitInstruction(__cxt, __op, __r0, __r1, __r2, 0, __FILE__, __LINE__)
+#define EMIT_INST0(__cxt, __op)                         ByteCodeGen::emitInstruction(__cxt, __op, 0, 0, 0, 0, __FILE__, __LINE__)
+#define EMIT_INST1(__cxt, __op, __r0)                   ByteCodeGen::emitInstruction(__cxt, __op, __r0, 0, 0, 0, __FILE__, __LINE__)
+#define EMIT_INST2(__cxt, __op, __r0, __r1)             ByteCodeGen::emitInstruction(__cxt, __op, __r0, __r1, 0, 0, __FILE__, __LINE__)
+#define EMIT_INST3(__cxt, __op, __r0, __r1, __r2)       ByteCodeGen::emitInstruction(__cxt, __op, __r0, __r1, __r2, 0, __FILE__, __LINE__)
 #define EMIT_INST4(__cxt, __op, __r0, __r1, __r2, __r3) ByteCodeGen::emitInstruction(__cxt, __op, __r0, __r1, __r2, __r3, __FILE__, __LINE__)

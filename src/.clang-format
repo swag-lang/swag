@@ -3,6 +3,7 @@ BasedOnStyle: Microsoft
 AccessModifierOffset: -4
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
+AlignConsecutiveMacros: true
 AlignOperands: true
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLambdasOnASingleLine: None

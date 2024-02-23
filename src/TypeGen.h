@@ -62,5 +62,5 @@ struct TypeGen
     VectorNative<MapPerSeg*> mapPerSegment;
 };
 
-#define OFFSET_OF(__field) (storageOffset + (uint32_t) ((uint64_t) & (__field) - (uint64_t) exportedTypeInfoValue))
+#define OFFSET_OF(__field)   (storageOffset + (uint32_t) ((uint64_t) & (__field) - (uint64_t) exportedTypeInfoValue))
 #define OFFSET_OF_R(__field) (storageOffset + (uint32_t) ((uint64_t) (__field) - (uint64_t) exportedTypeInfoValue))

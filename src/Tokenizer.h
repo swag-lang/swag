@@ -7,7 +7,7 @@ struct SourceFile;
 struct TypeInfo;
 struct ErrorContext;
 
-using TokenFlags      = Flags<uint32_t>;
+using TokenFlags = Flags<uint32_t>;
 
 constexpr TokenFlags TOKEN_SYM                = 0x00000001;
 constexpr TokenFlags TOKEN_INTRINSIC_NORETURN = 0x00000002;

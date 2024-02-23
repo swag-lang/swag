@@ -7,13 +7,13 @@
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #pragma clang diagnostic ignored "-Wreorder-ctor"
 #define SWAG_FORCE_INLINE __attribute__((always_inline))
-#define SWAG_UNREACHABLE __builtin_unreachable()
+#define SWAG_UNREACHABLE  __builtin_unreachable()
 
 #else
 
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #define SWAG_FORCE_INLINE __forceinline
-#define SWAG_UNREACHABLE __assume(false)
+#define SWAG_UNREACHABLE  __assume(false)
 
 #endif
 

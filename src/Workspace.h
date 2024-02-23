@@ -13,16 +13,16 @@ struct Diagnostic;
 struct ByteCode;
 enum class ModuleKind;
 
-#define SWAG_CACHE_FOLDER "swag_cache"
-#define SWAG_SCRIPT_WORKSPACE "__workspace"
-#define SWAG_TESTS_FOLDER "tests"
-#define SWAG_MODULES_FOLDER "modules"
-#define SWAG_OUTPUT_FOLDER "output"
+#define SWAG_CACHE_FOLDER        "swag_cache"
+#define SWAG_SCRIPT_WORKSPACE    "__workspace"
+#define SWAG_TESTS_FOLDER        "tests"
+#define SWAG_MODULES_FOLDER      "modules"
+#define SWAG_OUTPUT_FOLDER       "output"
 #define SWAG_DEPENDENCIES_FOLDER "dependencies"
-#define SWAG_ALIAS_FILENAME "alias"
+#define SWAG_ALIAS_FILENAME      "alias"
 
-#define SWAG_SRC_FOLDER "src"
-#define SWAG_PUBLIC_FOLDER "public"
+#define SWAG_SRC_FOLDER     "src"
+#define SWAG_PUBLIC_FOLDER  "public"
 #define SWAG_PUBLISH_FOLDER "publish"
 
 #define SWAG_CFG_FILE "module.swg"

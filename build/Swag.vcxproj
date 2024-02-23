@@ -314,8 +314,8 @@
         <ClInclude Include="..\src\Symbol.h"/>
         <ClInclude Include="..\src\SymTableHash.h"/>
         <ClInclude Include="..\src\SyntaxColor.h"/>
-        <ClInclude Include="..\src\Token.h" />
-        <ClInclude Include="..\src\TokenParse.h" />
+        <ClInclude Include="..\src\Token.h"/>
+        <ClInclude Include="..\src\TokenParse.h"/>
         <ClInclude Include="..\src\TypeGen.h"/>
         <ClInclude Include="..\src\TypeGenStructJob.h"/>
         <ClInclude Include="../src/Utf8.h"/>

@@ -28,4 +28,3 @@ struct Token
     TokenId        id = TokenId::Invalid;
 };
 #pragma pack(pop)
-
