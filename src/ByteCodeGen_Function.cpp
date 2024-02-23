@@ -1755,7 +1755,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             for (int j = 0; j < numCallParams; j++)
             {
                 auto param = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
-                if (param->indexParam == i)
+                if (param->indexParam == static_cast<uint32_t>(i))
                 {
                     if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
                     {

@@ -274,8 +274,7 @@ namespace
         errorParam.addError(err);
 
         // Here is
-        if (errorParam.destFuncDecl &&
-            bi.badSignatureParameterIdx < static_cast<int>(errorParam.destFuncDecl->genericParameters->children.size()))
+        if (errorParam.destFuncDecl && bi.badSignatureParameterIdx < errorParam.destFuncDecl->genericParameters->children.size())
         {
             const auto reqParam = errorParam.destFuncDecl->genericParameters->children[bi.badSignatureParameterIdx];
             const auto note     = Diagnostic::note(reqParam, FMT(Nte(Nte0068), reqParam->token.c_str(), Naming::kindName(overload).c_str()));
@@ -311,7 +310,7 @@ namespace
         }
 
         AstNode* destParamNode = nullptr;
-        if (errorParam.destParameters && bi.badSignatureParameterIdx < static_cast<int>(errorParam.destParameters->children.size()))
+        if (errorParam.destParameters && bi.badSignatureParameterIdx < errorParam.destParameters->children.size())
             destParamNode = errorParam.destParameters->children[bi.badSignatureParameterIdx];
         const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 

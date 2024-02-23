@@ -357,7 +357,12 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
     }
 }
 
-void Generic::deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, CastFlags castFlags)
+void Generic::deduceGenericTypes(SymbolMatchContext& context,
+                                 AstNode*            callParameter,
+                                 TypeInfo*           callTypeInfo,
+                                 TypeInfo*           wantedTypeInfo,
+                                 uint32_t            idxParam,
+                                 CastFlags           castFlags)
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
 

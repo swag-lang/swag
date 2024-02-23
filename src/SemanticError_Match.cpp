@@ -12,7 +12,7 @@ namespace
 {
     bool cannotMatchIdentifier(SemanticContext*            context,
                                const MatchResult           result,
-                               int                         paramIdx,
+                               uint32_t                    paramIdx,
                                VectorNative<OneTryMatch*>& tryMatches,
                                AstNode*                    node,
                                Vector<const Diagnostic*>&  notes,
@@ -24,7 +24,7 @@ namespace
         // Filter matches depending on argument
         bool                       hasCorrectResult = false;
         VectorNative<OneTryMatch*> tryResult;
-        for (size_t i = 0; i < tryMatches.size(); i++)
+        for (uint32_t i = 0; i < tryMatches.size(); i++)
         {
             auto one = tryMatches[i];
             if (one->symMatchContext.result == result)

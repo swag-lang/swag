@@ -189,8 +189,8 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
 
-    const int countParams = static_cast<int>(typeList->subTypes.size());
-    const int maxCount    = static_cast<int>(toType->fields.size());
+    const auto countParams = typeList->subTypes.size();
+    const auto maxCount    = toType->fields.size();
     if (countParams > maxCount)
         return context->report({fromNode->children.front()->children[maxCount], FMT(Err(Err0636), maxCount, countParams)});
     if (countParams < maxCount)

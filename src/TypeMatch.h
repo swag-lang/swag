@@ -57,9 +57,9 @@ struct BadSignatureInfos
 
     CastFlags     castErrorFlags;
     CastErrorType castErrorType            = CastErrorType::Zero;
-    int           badSignatureParameterIdx = 0;
-    int           badSignatureNum1         = 0;
-    int           badSignatureNum2         = 0;
+    uint32_t      badSignatureParameterIdx = UINT32_MAX;
+    uint32_t      badSignatureNum1         = 0;
+    uint32_t      badSignatureNum2         = 0;
 
     void clear()
     {
@@ -75,7 +75,7 @@ struct BadSignatureInfos
         matchResult               = MatchResult::Ok;
         castErrorFlags            = 0;
         castErrorType             = CastErrorType::Zero;
-        badSignatureParameterIdx  = -1;
+        badSignatureParameterIdx  = UINT32_MAX;
         badSignatureNum1          = 0;
         badSignatureNum2          = 0;
     }
@@ -110,7 +110,7 @@ struct SymbolMatchContext
     uint32_t        matchFlags;
     CastFlagsResult castFlagsResult;
     MatchResult     result;
-    int             cptResolved;
+    uint32_t        cptResolved;
     uint32_t        firstDefault;
 
     bool hasNamedParameters;
