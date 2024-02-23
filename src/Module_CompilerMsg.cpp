@@ -11,8 +11,7 @@ bool Module::postCompilerMessage(CompilerMessage& msg)
     // We can decide to filter the message only if all #message functions have been registered
     if (numCompilerFunctions == 0)
     {
-        const int index = static_cast<int>(msg.concrete.kind);
-        if (byteCodeCompiler[index].empty())
+        if (byteCodeCompiler[static_cast<int>(msg.concrete.kind)].empty())
             return true;
     }
 
@@ -27,13 +26,12 @@ bool Module::postCompilerMessage(CompilerMessage& msg)
 bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
 {
     // Eliminate messages without a corresponding #message
-    for (size_t i = 0; i < compilerMessages[pass].size(); i++)
+    for (uint32_t i = 0; i < compilerMessages[pass].size(); i++)
     {
         auto& msg = compilerMessages[pass][i];
 
         // If no #message function corresponding to the message, remove
-        const int index = static_cast<int>(msg.concrete.kind);
-        if (byteCodeCompiler[index].empty())
+        if (byteCodeCompiler[static_cast<int>(msg.concrete.kind)].empty())
         {
             compilerMessages[pass][i] = compilerMessages[pass].back();
             compilerMessages[pass].pop_back();
@@ -46,17 +44,17 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
         return true;
 
     // Batch prepare
-    auto count        = compilerMessages[pass].size() / g_ThreadMgr.numWorkers;
-    count             = max(count, 1);
-    count             = min(count, compilerMessages[pass].size());
-    size_t startIndex = 0;
+    auto count          = compilerMessages[pass].size() / g_ThreadMgr.numWorkers;
+    count               = max(count, 1);
+    count               = min(count, compilerMessages[pass].size());
+    uint32_t startIndex = 0;
     while (startIndex < compilerMessages[pass].size())
     {
         const auto newJob    = Allocator::alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
         newJob->pass         = pass;
-        newJob->startIndex   = static_cast<int>(startIndex);
-        newJob->endIndex     = static_cast<int>(min(startIndex + count, compilerMessages[pass].size()));
+        newJob->startIndex   = startIndex;
+        newJob->endIndex     = min(startIndex + count, compilerMessages[pass].size());
         newJob->dependentJob = context->baseJob;
         startIndex += count;
         context->baseJob->jobsToAdd.push_back(newJob);
@@ -116,7 +114,7 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
         return true;
 
     // Convert to a concrete message for the user
-    msg->moduleName.buffer = (void*) name.c_str();
+    msg->moduleName.buffer = static_cast<void*>(const_cast<char*>(name.c_str()));
     msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (no multithreading)
@@ -135,6 +133,5 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
     }
 
     g_RunContext->currentCompilerMessage = nullptr;
-
     return true;
 }

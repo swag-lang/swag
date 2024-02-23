@@ -563,6 +563,6 @@ constexpr uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
 
 inline void setSlice(SwagSlice& slice, const char* value)
 {
-    slice.buffer = (void*) value;
+    slice.buffer = static_cast<void*>(const_cast<char*>(value));
     slice.count  = strlen(value);
 }

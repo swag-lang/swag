@@ -14,7 +14,7 @@ JobResult PrepCompilerMsgJob::execute()
     context.baseJob    = this;
     baseContext        = &context;
 
-    for (int i = startIndex; i < endIndex; i++)
+    for (uint32_t i = startIndex; i < endIndex; i++)
     {
         auto& msg = module->compilerMessages[pass][i];
         SWAG_ASSERT(!module->byteCodeCompiler[static_cast<int>(msg.concrete.kind)].empty());

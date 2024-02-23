@@ -349,13 +349,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     bool result = true;
 
     if (foreignCall)
-    {
         ByteCodeRun::ffiCall(g_RunContext, &bc->out[0]);
-    }
     else
-    {
         result = ByteCodeRun::run(g_RunContext);
-    }
 
     g_ByteCodeStackTrace->clear();
 

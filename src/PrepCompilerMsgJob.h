@@ -6,6 +6,6 @@ struct PrepCompilerMsgJob final : Job
     JobResult execute() override;
 
     uint32_t pass;
-    int      startIndex;
-    int      endIndex;
+    uint32_t startIndex;
+    uint32_t endIndex;
 };
