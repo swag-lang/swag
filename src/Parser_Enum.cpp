@@ -22,11 +22,11 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id != TokenId::SymColon, error(token, Err(Err0553)));
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0552)));
-    SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0266), token.c_str())));
-    enumNode->inheritTokenName(token);
-    enumNode->tokenName = static_cast<Token>(token);
+    SWAG_VERIFY(tokenParse.id != TokenId::SymColon, error(tokenParse, Err(Err0553)));
+    SWAG_VERIFY(tokenParse.id != TokenId::SymLeftCurly, error(tokenParse, Err(Err0552)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0266), tokenParse.c_str())));
+    enumNode->inheritTokenName(tokenParse);
+    enumNode->tokenName = static_cast<Token>(tokenParse);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
     // Add enum type and scope
@@ -46,7 +46,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             }
 
             const Utf8 asA = FMT("as %s", Naming::aKindName(newScope->kind).c_str());
-            Diagnostic err{enumNode->token.sourceFile, token, FMT(Err(Err0626), "enum", enumNode->token.c_str(), asA.c_str())};
+            Diagnostic err{enumNode->token.sourceFile, tokenParse, FMT(Err(Err0626), "enum", enumNode->token.c_str(), asA.c_str())};
             err.addNote(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
             return context->report(err);
         }
@@ -75,7 +75,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     const auto typeNode   = Ast::newNode<AstNode>(AstNodeKind::EnumType, this, enumNode);
     typeNode->semanticFct = Semantic::resolveEnumType;
-    if (token.id == TokenId::SymColon)
+    if (tokenParse.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &enumNode->type));
@@ -83,9 +83,9 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
 
     // Content of enum
     Scoped     scoped(this, newScope);
-    const auto startLoc = token.startLocation;
+    const auto startLoc = tokenParse.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[enum]] body"));
-    while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
+    while (tokenParse.id != TokenId::SymRightCurly && tokenParse.id != TokenId::EndOfFile)
         SWAG_CHECK(doEnumContent(enumNode, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[enum]] body"));
     return true;
@@ -93,19 +93,19 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
 
 bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 {
-    if (token.id == TokenId::SymLeftCurly)
+    if (tokenParse.id == TokenId::SymLeftCurly)
     {
-        const auto startLoc = token.startLocation;
+        const auto startLoc = tokenParse.startLocation;
         const auto stmt     = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
         *result             = stmt;
         SWAG_CHECK(eatToken());
-        while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
+        while (tokenParse.id != TokenId::SymRightCurly && tokenParse.id != TokenId::EndOfFile)
             SWAG_CHECK(doEnumContent(stmt, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
         return true;
     }
 
-    switch (token.id)
+    switch (tokenParse.id)
     {
         case TokenId::CompilerAst:
             SWAG_CHECK(doCompilerAst(parent, result));
@@ -160,9 +160,9 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
         enumValue->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
-    if (token.id == TokenId::SymComma)
+    if (tokenParse.id == TokenId::SymComma)
         SWAG_CHECK(eatToken());
-    else if (token.id != TokenId::SymRightCurly)
+    else if (tokenParse.id != TokenId::SymRightCurly)
         SWAG_CHECK(eatSemiCol("enum value"));
 
     return true;
@@ -170,16 +170,16 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 
 bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0265), token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0265), tokenParse.c_str())));
 
     const auto enumValue = Ast::newNode<AstEnumValue>(AstNodeKind::EnumValue, this, parent);
     *result              = enumValue;
-    enumValue->inheritTokenName(token);
+    enumValue->inheritTokenName(tokenParse);
     enumValue->semanticFct = Semantic::resolveEnumValue;
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);
 
     SWAG_CHECK(eatToken());
-    if (token.id == TokenId::SymEqual)
+    if (tokenParse.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &dummyResult));
@@ -191,9 +191,9 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
         enumValue->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
-    if (token.id == TokenId::SymComma)
+    if (tokenParse.id == TokenId::SymComma)
         SWAG_CHECK(eatToken());
-    else if (token.id != TokenId::SymRightCurly)
+    else if (tokenParse.id != TokenId::SymRightCurly)
         SWAG_CHECK(eatSemiCol("enum value"));
 
     return true;

@@ -15,7 +15,7 @@
 bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 {
     // Check following instruction
-    switch (token.id)
+    switch (tokenParse.id)
     {
         case TokenId::SymLeftCurly:
         case TokenId::KwdFunc:
@@ -34,13 +34,13 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         case TokenId::KwdNamespace:
             break;
         case TokenId::SymAttrStart:
-            return error(token, FMT(Err(Err0494), tokenAttr.c_str(), tokenAttr.c_str()));
+            return error(tokenParse, FMT(Err(Err0494), tokenAttr.c_str(), tokenAttr.c_str()));
         case TokenId::KwdPublic:
         case TokenId::KwdPrivate:
         case TokenId::KwdInternal:
-            return error(token, FMT(Err(Err0012), token.c_str(), tokenAttr.c_str()));
+            return error(tokenParse, FMT(Err(Err0012), tokenParse.c_str(), tokenAttr.c_str()));
         default:
-            return error(token, FMT(Err(Err0480), tokenAttr.c_str(), token.c_str(), token.c_str()));
+            return error(tokenParse, FMT(Err(Err0480), tokenAttr.c_str(), tokenParse.c_str(), tokenParse.c_str()));
     }
 
     return true;
@@ -48,15 +48,15 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 
 bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
-    SWAG_ASSERT(token.id == TokenId::KwdPublic || token.id == TokenId::KwdInternal);
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, FMT(Err(Err0481), token.c_str())));
-    SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(token, FMT(Err(Err0615), token.c_str())));
+    SWAG_ASSERT(tokenParse.id == TokenId::KwdPublic || tokenParse.id == TokenId::KwdInternal);
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, FMT(Err(Err0481), tokenParse.c_str())));
+    SWAG_VERIFY(!sourceFile->hasFlag(FILE_FORCE_EXPORT), error(tokenParse, FMT(Err(Err0615), tokenParse.c_str())));
 
     Scope*     newScope  = currentScope;
-    const auto tokenAttr = token;
+    const auto tokenAttr = tokenParse;
 
     AttributeFlags attr;
-    if (token.id == TokenId::KwdPublic)
+    if (tokenParse.id == TokenId::KwdPublic)
         attr = ATTRIBUTE_PUBLIC;
     else
         attr = ATTRIBUTE_INTERNAL;
@@ -88,7 +88,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
         attrUse->addAstFlag(AST_GLOBAL_NODE);
         topStmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, attrUse);
         topStmt->addAstFlag(AST_GLOBAL_NODE);
-        while (token.id != TokenId::EndOfFile)
+        while (tokenParse.id != TokenId::EndOfFile)
             SWAG_CHECK(doTopLevelInstruction(topStmt, &dummyResult));
     }
 
@@ -104,9 +104,9 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
 bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, FMT(Err(Err0481), token.c_str())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, FMT(Err(Err0481), tokenParse.c_str())));
 
-    auto       privName = token;
+    auto       privName = tokenParse;
     const auto attrUse  = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
     *result             = attrUse;
     attrUse->addAstFlag(AST_GENERATED);
@@ -131,7 +131,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
 bool Parser::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
-    switch (token.id)
+    switch (tokenParse.id)
     {
         case TokenId::KwdNamespace:
             SWAG_CHECK(doNamespace(parent, result, false, true));
@@ -173,7 +173,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                     [[fallthrough]];
                 default:
                 {
-                    Diagnostic err{sourceFile, token, Err(Err0510)};
+                    Diagnostic err{sourceFile, tokenParse, Err(Err0510)};
                     err.addNote(child, child->token, Nte(Nte0074));
                     return context->report(err);
                 }
@@ -189,7 +189,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
         SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
 
-        if (token.id != TokenId::SymComma)
+        if (tokenParse.id != TokenId::SymComma)
         {
             SWAG_CHECK(eatSemiCol("[[using]] declaration"));
             break;
@@ -203,7 +203,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
 bool Parser::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Err0505)));
+    SWAG_VERIFY(currentScope->isGlobal(), error(tokenParse, Err(Err0505)));
     SWAG_CHECK(doNamespace(parent, result, false, false));
     return true;
 }
@@ -223,7 +223,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
     // There is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
-    if (sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && token.text == g_LangSpec->name_Swag)
+    if (sourceFile->hasFlag(FILE_IS_RUNTIME_FILE) && tokenParse.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
     const bool scopeFilePriv = privName != nullptr;
@@ -240,25 +240,25 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         namespaceNode->addAttribute(sourceFile->globalAttr);
         first = false;
 
-        switch (token.id)
+        switch (tokenParse.id)
         {
             case TokenId::Identifier:
                 break;
             case TokenId::SymLeftCurly:
                 if (!privName)
-                    return error(token, FMT(Err(Err0079), "{"));
+                    return error(tokenParse, FMT(Err(Err0079), "{"));
                 break;
             case TokenId::SymSemiColon:
-                return error(token, FMT(Err(Err0079), ";"));
+                return error(tokenParse, FMT(Err(Err0079), ";"));
             default:
                 if (!privName)
-                    return error(token, FMT(Err(Err0330), token.c_str()));
+                    return error(tokenParse, FMT(Err(Err0330), tokenParse.c_str()));
                 break;
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->hasFlag(FILE_IS_BOOTSTRAP_FILE) && !sourceFile->hasFlag(FILE_IS_RUNTIME_FILE))
-            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, FMT(Err(Err0618), token.c_str())));
+            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(tokenParse, FMT(Err(Err0618), tokenParse.c_str())));
 
         // Add/Get namespace
         {
@@ -282,7 +282,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                return SemanticError::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
+                return SemanticError::duplicatedSymbolError(context, sourceFile, tokenParse, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
             }
             else
                 newScope = castTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
@@ -293,7 +293,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         else
             SWAG_CHECK(eatToken());
 
-        if (token.id != TokenId::SymDot)
+        if (tokenParse.id != TokenId::SymDot)
         {
             if (forUsing)
             {
@@ -310,28 +310,28 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     }
 
     currentScope   = oldScope;
-    auto openCurly = token;
+    auto openCurly = tokenParse;
 
     if (forGlobal)
     {
         SWAG_CHECK(eatSemiCol("[[#global namespace]]"));
         Scoped scoped(this, newScope);
-        while (token.id != TokenId::EndOfFile)
+        while (tokenParse.id != TokenId::EndOfFile)
         {
             SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
         }
     }
     else
     {
-        const auto startLoc = token.startLocation;
+        const auto startLoc = tokenParse.startLocation;
 
         // Content of namespace is toplevel
-        if (token.id == TokenId::SymLeftCurly)
+        if (tokenParse.id == TokenId::SymLeftCurly)
         {
             eatToken();
 
             Scoped scoped(this, newScope);
-            while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+            while (tokenParse.id != TokenId::EndOfFile && tokenParse.id != TokenId::SymRightCurly)
             {
                 SWAG_CHECK(doTopLevelInstruction(namespaceNode, &dummyResult));
             }
@@ -353,9 +353,9 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     const auto node = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, parent);
     *result         = node;
 
-    const auto startLoc = token.startLocation;
+    const auto startLoc = tokenParse.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
-    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    while (tokenParse.id != TokenId::EndOfFile && tokenParse.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
@@ -367,25 +367,25 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
     *result         = node;
 
     const bool isGlobal = currentScope->isGlobalOrImpl();
-    const auto startLoc = token.startLocation;
+    const auto startLoc = tokenParse.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
 
     if (isGlobal)
     {
-        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        while (tokenParse.id != TokenId::EndOfFile && tokenParse.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
         }
     }
     else
     {
-        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        while (tokenParse.id != TokenId::EndOfFile && tokenParse.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
         }
     }
 
-    node->token.endLocation = token.startLocation;
+    node->token.endLocation = tokenParse.startLocation;
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
     return true;
 }
@@ -412,9 +412,9 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
 bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo)
 {
-    SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Err0264), Nte(Nte0054)));
+    SWAG_VERIFY(tokenParse.id != TokenId::SymSemiColon, error(tokenParse, Err(Err0264), Nte(Nte0054)));
 
-    if (token.id == TokenId::SymLeftCurly)
+    if (tokenParse.id == TokenId::SymLeftCurly)
     {
         SWAG_CHECK(doScopedCurlyStatement(parent, result));
     }
@@ -422,17 +422,17 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     {
         if (mustHaveDo)
         {
-            const auto tokenDo = token;
-            if (token.id != TokenId::KwdDo)
+            const auto tokenDo = tokenParse;
+            if (tokenParse.id != TokenId::KwdDo)
             {
-                Diagnostic err{sourceFile, token, FMT(Err(Err0533), token.c_str())};
+                Diagnostic err{sourceFile, tokenParse, FMT(Err(Err0533), tokenParse.c_str())};
                 err.addNote(parent, forToken, FMT(Nte(Nte0016), forToken.c_str()));
                 return context->report(err);
             }
 
             SWAG_CHECK(eatToken());
 
-            if (token.id == TokenId::SymLeftCurly)
+            if (tokenParse.id == TokenId::SymLeftCurly)
             {
                 const Diagnostic err{sourceFile, tokenDo, Err(Err0460)};
                 return context->report(err);
@@ -460,25 +460,25 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 
 bool Parser::doStatement(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Err0264), Nte(Nte0054)));
+    SWAG_VERIFY(tokenParse.id != TokenId::SymSemiColon, error(tokenParse, Err(Err0264), Nte(Nte0054)));
 
-    if (token.id == TokenId::SymLeftCurly)
+    if (tokenParse.id == TokenId::SymLeftCurly)
     {
         SWAG_CHECK(doCurlyStatement(parent, result));
     }
     else
     {
-        const auto tokenDo = token;
-        if (token.id != TokenId::CompilerDo)
+        const auto tokenDo = tokenParse;
+        if (tokenParse.id != TokenId::CompilerDo)
         {
-            Diagnostic err{sourceFile, token, FMT(Err(Err0516), token.c_str())};
+            Diagnostic err{sourceFile, tokenParse, FMT(Err(Err0516), tokenParse.c_str())};
             err.addNote(parent->parent, parent->parent->token, FMT(Nte(Nte0015), parent->parent->token.c_str()));
             return context->report(err);
         }
 
         SWAG_CHECK(eatToken());
 
-        if (token.id == TokenId::SymLeftCurly)
+        if (tokenParse.id == TokenId::SymLeftCurly)
         {
             const Diagnostic err{sourceFile, tokenDo, Err(Err0434)};
             return context->report(err);
@@ -620,11 +620,11 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     labelNode->semanticFct = Semantic::resolveScopeBreakable;
 
     SWAG_CHECK(eatToken());
-    if (token.id != TokenId::SymLeftCurly)
+    if (tokenParse.id != TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0144), token.c_str())));
-        labelNode->inheritTokenName(token);
-        labelNode->inheritTokenLocation(token);
+        SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0144), tokenParse.c_str())));
+        labelNode->inheritTokenName(tokenParse);
+        labelNode->inheritTokenLocation(tokenParse);
         SWAG_CHECK(eatToken());
     }
 
@@ -635,7 +635,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 
 bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
-    switch (token.id)
+    switch (tokenParse.id)
     {
         case TokenId::KwdReturn:
             SWAG_CHECK(doReturn(parent, result));
@@ -728,7 +728,7 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
 
 bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
-    switch (token.id)
+    switch (tokenParse.id)
     {
         case TokenId::KwdReturn:
         case TokenId::KwdIf:
@@ -851,7 +851,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
             *result = attrUse;
             // We do not want a #[] to create a new scope when inside a function
-            if (token.id == TokenId::SymLeftCurly)
+            if (tokenParse.id == TokenId::SymLeftCurly)
                 SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
             else
                 SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
@@ -898,30 +898,30 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::KwdPublic:
         case TokenId::KwdInternal:
         case TokenId::KwdPrivate:
-            return error(token, FMT(Err(Err0481), token.c_str()));
+            return error(tokenParse, FMT(Err(Err0481), tokenParse.c_str()));
 
         case TokenId::SymDot:
         {
             const auto withNode = parent->findParent(AstNodeKind::With);
-            SWAG_VERIFY(withNode, error(token, Err(Err0507)));
-            Token tokenDot = token;
+            SWAG_VERIFY(withNode, error(tokenParse, Err(Err0507)));
+            Token tokenDot = tokenParse;
             eatToken();
-            SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0367), token.c_str())));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0367), tokenParse.c_str())));
             return doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With));
         }
 
         case TokenId::NativeType:
         {
-            Diagnostic err{sourceFile, token, Err(Err0699)};
+            Diagnostic err{sourceFile, tokenParse, Err(Err0699)};
             eatToken();
-            if (token.id == TokenId::Identifier)
+            if (tokenParse.id == TokenId::Identifier)
                 err.addNote(Nte(Nte0181));
             return context->report(err);
         }
 
         default:
-            if (Tokenizer::isIntrinsicReturn(token.id))
-                return error(token, FMT(Err(Err0748), token.c_str()));
+            if (Tokenizer::isIntrinsicReturn(tokenParse.id))
+                return error(tokenParse, FMT(Err(Err0748), tokenParse.c_str()));
             return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 
@@ -931,13 +931,13 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
 {
     // #global is invalid if afterGlobal is true
-    if (token.id != TokenId::CompilerGlobal && token.id != TokenId::SymSemiColon)
+    if (tokenParse.id != TokenId::CompilerGlobal && tokenParse.id != TokenId::SymSemiColon)
         afterGlobal = true;
     // Do not generate AST if buildPass does not allow it
     if (sourceFile->buildPass < BuildPass::Syntax)
         return eatToken();
 
-    switch (token.id)
+    switch (tokenParse.id)
     {
         case TokenId::SymLeftCurly:
             SWAG_CHECK(doGlobalCurlyStatement(parent, result));

@@ -87,7 +87,7 @@ struct Parser
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr) const;
     bool invalidTokenError(InvalidTokenError kind, const AstNode* parent = nullptr);
-    bool invalidIdentifierError(const TokenParse& tokenParse, const char* msg = nullptr) const;
+    bool invalidIdentifierError(const TokenParse& myToken, const char* msg = nullptr) const;
 
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
@@ -98,7 +98,7 @@ struct Parser
 
     static bool testIsSingleIdentifier(AstNode* node);
     bool        checkIsSingleIdentifier(AstNode* node, const char* msg) const;
-    bool        checkIsIdentifier(const TokenParse& tokenParse, const char* msg) const;
+    bool        checkIsIdentifier(const TokenParse& myToken, const char* msg) const;
     bool        testIsValidUserName(const AstNode* node) const;
     bool        checkIsValidUserName(AstNode* node, const Token* loc = nullptr) const;
     bool        checkIsValidVarName(AstNode* node) const;
@@ -227,8 +227,8 @@ struct Parser
     Module*       module     = nullptr;
 
     Tokenizer  tokenizer;
-    TokenParse prevToken;
-    TokenParse token;
+    TokenParse prevTokenParse;
+    TokenParse tokenParse;
 
     AstNode*            dummyResult            = nullptr;
     Scope*              currentScope           = nullptr;

@@ -17,10 +17,10 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->semanticFct                      = Semantic::resolveAttrDecl;
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0219), token.c_str())));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0219), tokenParse.c_str())));
 
-    attrNode->inheritTokenName(token);
-    attrNode->tokenName = static_cast<Token>(token);
+    attrNode->inheritTokenName(tokenParse);
+    attrNode->tokenName = static_cast<Token>(tokenParse);
 
     const auto typeInfo = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode  = attrNode;
@@ -42,8 +42,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, Err(Err0676), Nte(Nte0020)));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Err(Err0671), Nte(Nte0020)));
+    SWAG_VERIFY(tokenParse.id != TokenId::SymMinusGreat, error(tokenParse, Err(Err0676), Nte(Nte0020)));
+    SWAG_VERIFY(tokenParse.id != TokenId::KwdThrow, error(tokenParse, Err(Err0671), Nte(Nte0020)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////
@@ -71,26 +71,26 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
         attrBlockNode->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
-    while (token.id == TokenId::SymAttrStart)
+    while (tokenParse.id == TokenId::SymAttrStart)
     {
         SWAG_CHECK(eatToken());
-        while (token.id == TokenId::Identifier)
+        while (tokenParse.id == TokenId::Identifier)
         {
             AstNode* params;
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
 
-            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, FMT(Err(Err0220), token.c_str())));
+            SWAG_VERIFY(tokenParse.id == TokenId::SymRightSquare || tokenParse.id == TokenId::SymComma, error(tokenParse, FMT(Err(Err0220), tokenParse.c_str())));
 
-            if (token.id != TokenId::SymRightSquare)
+            if (tokenParse.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
-                SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Err0543)));
-                SWAG_CHECK(checkIsIdentifier(token, FMT(Err(Err0219), token.c_str())));
+                SWAG_VERIFY(tokenParse.id != TokenId::SymLeftParen, error(tokenParse, Err(Err0543)));
+                SWAG_CHECK(checkIsIdentifier(tokenParse, FMT(Err(Err0219), tokenParse.c_str())));
             }
         }
 
-        attrBlockNode->token.endLocation = token.endLocation;
+        attrBlockNode->token.endLocation = tokenParse.endLocation;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare, "to end the attribute list"));
         if (single)
             break;
