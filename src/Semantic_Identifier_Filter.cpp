@@ -436,7 +436,7 @@ void Semantic::computeMatchesCoerceCast(VectorNative<OneMatch*>& matches)
     }
 }
 
-bool Semantic::filterMatchesCoerceCast(SemanticContext* context, VectorNative<OneMatch*>& matches)
+bool Semantic::filterMatchesCoerceCast(SemanticContext*, VectorNative<OneMatch*>& matches)
 {
     if (matches.size() <= 1)
         return true;

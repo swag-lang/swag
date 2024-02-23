@@ -2,7 +2,7 @@
 #include "Context.h"
 #include "Module.h"
 
-void* getMessage(Module* module)
+void* getMessage(Module* /*module*/)
 {
     return (void*) g_RunContext->currentCompilerMessage;
 }

@@ -6,7 +6,7 @@
 #include "Module.h"
 #include "Workspace.h"
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
@@ -46,7 +46,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;

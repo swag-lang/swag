@@ -229,7 +229,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         if (typeArray->pointedType->isListTuple())
         {
             typeList               = castTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListTuple);
-            typeArray->pointedType = convertTypeListToStruct(context, typeList, isCompilerConstant);
+            typeArray->pointedType = convertTypeListToStruct(context, typeList);
             finalType              = typeArray->pointedType;
             break;
         }
@@ -260,7 +260,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
     return orgTypeArray;
 }
 
-TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
+TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList)
 {
     const auto typeStruct = makeType<TypeInfoStruct>();
 

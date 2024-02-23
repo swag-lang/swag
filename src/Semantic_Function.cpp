@@ -418,7 +418,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     return true;
 }
 
-bool Semantic::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
+bool Semantic::setFullResolve(SemanticContext*, AstFuncDecl* funcNode)
 {
     ScopedLock lk(funcNode->funcMutex);
     computeAccess(funcNode);

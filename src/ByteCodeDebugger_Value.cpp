@@ -119,7 +119,7 @@ bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     return false;
 }
 
-void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+void ByteCodeDebugger::appendLiteralValueProtected(ByteCodeRunContext* /*context*/, Utf8& result, const ValueFormat& fmt, const void* addr)
 {
     switch (fmt.bitCount)
     {

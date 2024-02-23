@@ -595,7 +595,7 @@ namespace
         return true;
     }
 
-    void emitInlineTable(SCBE_CPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, Vector<CPUFunction>::value_type& f)
+    void emitInlineTable(SCBE_CPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, const Vector<CPUFunction>::value_type& f)
     {
         for (auto& dbgLines : f.dbgLines)
         {
@@ -623,7 +623,7 @@ namespace
         }
     }
 
-    void emitFuncParameters(SCBE_CPU& pp, Concat& concat, Vector<CPUFunction>::value_type& f, AstFuncDecl* const decl, TypeInfoFuncAttr* const typeFunc)
+    void emitFuncParameters(SCBE_CPU& pp, Concat& concat, const Vector<CPUFunction>::value_type& f, const AstFuncDecl* decl, const TypeInfoFuncAttr* typeFunc)
     {
         if (!decl->parameters)
             return;
@@ -750,7 +750,7 @@ namespace
         }
     }
 
-    void emitFuncCaptureParameters(SCBE_CPU& pp, Concat& concat, Vector<CPUFunction>::value_type& f, AstFuncDecl* const decl)
+    void emitFuncCaptureParameters(SCBE_CPU& pp, Concat& concat, const Vector<CPUFunction>::value_type& f, const AstFuncDecl* decl)
     {
         if (!decl->captureParameters)
             return;

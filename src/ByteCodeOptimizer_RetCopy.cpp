@@ -377,7 +377,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 }
 
 // Optimize the return value when this is a struct
-// If we affect the result to a local variable, then remove on unecessary copy
+// If we affect the result to a local variable, then remove on unnecessary copy
 bool ByteCodeOptimizer::optimizePassRetCopyStructVal(ByteCodeOptContext* context)
 {
     if (!(context->contextBcFlags & OCF_HAS_COPY_RTRC))

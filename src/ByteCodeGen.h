@@ -123,9 +123,9 @@ namespace ByteCodeGen
     bool emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, const RegisterList& r0, const RegisterList& r2);
     bool emitBinaryOpModulo(ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitLogicalAndAfterLeft(ByteCodeGenContext* context);
-    bool emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    bool emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r1, uint32_t r2);
     bool emitLogicalOrAfterLeft(ByteCodeGenContext* context);
-    bool emitLogicalOr(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    bool emitLogicalOr(const ByteCodeGenContext* context, uint32_t r1, uint32_t r2);
     bool emitBinaryOp(ByteCodeGenContext* context);
     bool emitCompareOpEqual(const ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);
     bool emitCompareOpNotEqual(const ByteCodeGenContext* context, AstNode* left, const AstNode* right, const RegisterList& r0, const RegisterList& r1, const RegisterList& r2);

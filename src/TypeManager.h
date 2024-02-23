@@ -120,7 +120,7 @@ struct TypeManager
 
     static void            convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
     static TypeInfoArray*  convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant);
-    static TypeInfoStruct* convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant);
+    static TypeInfoStruct* convertTypeListToStruct(JobContext* context, TypeInfoList* typeList);
 
     static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, const TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
     static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);

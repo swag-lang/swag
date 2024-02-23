@@ -74,7 +74,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
     const auto funcNode   = node->ownerFct;
     TypeInfo*  returnType = nullptr;
 
-    // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
+    // Get the function return type. In case of an embedded return, this is the type of the original function to inline
     if (node->hasOwnerInline() && node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
         returnType = TypeManager::concreteType(node->ownerInline()->func->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
     else

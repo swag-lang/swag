@@ -2740,7 +2740,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             }
 
             if (ip[0].hasFlag(BCI_IMM_B) &&
-                ip[0].b.s64 > 0 && // Offset cannot be negative, so zap if incpointer is negative
+                ip[0].b.s64 > 0 && // Offset cannot be negative, so zap if inc pointer is negative
                 !ip[1].hasFlag(BCI_START_STMT))
             {
                 // followed by DeRefStringSlice, set constant to deref

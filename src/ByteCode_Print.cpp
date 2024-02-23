@@ -482,7 +482,7 @@ namespace
     }
 }
 
-void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen)
+void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& /*options*/, Vector<PrintInstructionLine>& lines, bool defaultLen)
 {
     align(lines, RankStr::Rank, false, defaultLen ? 10 : 0);
     align(lines, RankStr::Name, true, defaultLen ? 25 : 0);

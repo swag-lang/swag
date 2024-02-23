@@ -2339,7 +2339,7 @@ namespace
                     if (vb.kind == ValueKind::Constant)
                     {
                         ra->kind = ValueKind::Constant;
-                        SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, {}, {}, false));
+                        SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, {}, {}));
                     }
                     break;
 
@@ -2360,7 +2360,7 @@ namespace
                     if (vb.kind == ValueKind::Constant && vc.kind == ValueKind::Constant)
                     {
                         ra->kind = ValueKind::Constant;
-                        SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, {}, false));
+                        SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, ra->reg, vb.reg, vc.reg, {}));
                     }
                     break;
 

@@ -237,7 +237,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                     {
                         const auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
                         if (tt != wantedLambda)
-                            Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
+                            Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt);
                         return;
                     }
 

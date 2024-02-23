@@ -228,7 +228,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
-uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, const TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
+uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
 {
     SWAG_ASSERT(typeInfo->isNative());
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);

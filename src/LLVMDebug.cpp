@@ -12,19 +12,19 @@
 
 namespace
 {
-    llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
+    llvm::DILocation* debugLocGet(unsigned line, unsigned col, const llvm::MDNode* scope, const llvm::MDNode* inlinedAt = nullptr, bool implicitCode = false)
     {
-        return llvm::DILocation::get(Scope->getContext(), Line, Col, const_cast<llvm::MDNode*>(Scope), const_cast<llvm::MDNode*>(InlinedAt), ImplicitCode);
+        return llvm::DILocation::get(scope->getContext(), line, col, const_cast<llvm::MDNode*>(scope), const_cast<llvm::MDNode*>(inlinedAt), implicitCode);
     }
 }
 
-void LLVMDebug::setup(LLVM* m, llvm::Module* modu)
+void LLVMDebug::setup(LLVM* m, llvm::Module* module)
 {
     llvm                = m;
     isOptimized         = !m->module->buildParameters.isDebug();
-    dbgBuilder          = new llvm::DIBuilder(*modu, true);
-    llvmModule          = modu;
-    llvmContext         = &modu->getContext();
+    dbgBuilder          = new llvm::DIBuilder(*module, true);
+    llvmModule          = module;
+    llvmContext         = &module->getContext();
     mainFile            = dbgBuilder->createFile("<stdin>", "c:/");
     const Path expPath  = m->exportFilePath;
     exportFile          = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
@@ -39,9 +39,9 @@ void LLVMDebug::setup(LLVM* m, llvm::Module* modu)
                                                         llvm::DICompileUnit::DebugEmissionKind::FullDebug,
                                                         0);
 
-    modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+    module->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
 #ifdef _WIN32
-    modu->addModuleFlag(llvm::Module::Warning, "CodeView", 1);
+    module->addModuleFlag(llvm::Module::Warning, "CodeView", 1);
 #endif
 
     s8Ty    = dbgBuilder->createBasicType("s8", 8, llvm::dwarf::DW_ATE_signed);
@@ -77,7 +77,7 @@ void LLVMDebug::setup(LLVM* m, llvm::Module* modu)
     // any
     {
         const auto              ptrType = getPointerToType(g_Workspace->swagScope.regTypeInfo, mainFile);
-        auto                    v1      = dbgBuilder->createMemberType(mainFile->getScope(), "ptrvalue", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto                    v1      = dbgBuilder->createMemberType(mainFile->getScope(), R"(ptrvalue)", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         auto                    v2      = dbgBuilder->createMemberType(mainFile->getScope(), "typeinfo", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrType);
         const llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
         anyTy                           = dbgBuilder->createStructType(mainFile->getScope(), "any", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
@@ -412,11 +412,11 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
 
     // Register function
     const auto          mangledName = typeFunc->declNode->getScopedName();
-    llvm::DISubprogram* SP          = dbgBuilder->createFunction(file, name.c_str(), mangledName.c_str(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
+    llvm::DISubprogram* sp          = dbgBuilder->createFunction(file, name.c_str(), mangledName.c_str(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
     if (decl)
-        mapScopes[decl->content->ownerScope] = SP;
+        mapScopes[decl->content->ownerScope] = sp;
 
-    return SP;
+    return sp;
 }
 
 void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVMEncoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)

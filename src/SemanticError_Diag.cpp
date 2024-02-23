@@ -39,7 +39,7 @@ struct ErrorParam
 
 namespace
 {
-    void errorValidIfFailed(SemanticContext* context, const ErrorParam& errorParam)
+    void errorValidIfFailed(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto destFuncDecl = errorParam.destFuncDecl;
         const auto msg          = FMT(Err(Err0085), destFuncDecl->validIf->token.c_str(), destFuncDecl->token.c_str(), destFuncDecl->validIf->token.c_str());
@@ -48,7 +48,7 @@ namespace
         errorParam.addNote(Diagnostic::hereIs(destFuncDecl->validIf));
     }
 
-    void errorMissingNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
+    void errorMissingNamedParameter(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam);
         SWAG_ASSERT(errorParam.badParamIdx >= 2);
@@ -60,7 +60,7 @@ namespace
         errorParam.addNote(note);
     }
 
-    void errorInvalidNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
+    void errorInvalidNamedParameter(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
 
@@ -88,7 +88,7 @@ namespace
         }
     }
 
-    void errorDuplicatedNamedParameter(SemanticContext* context, const ErrorParam& errorParam)
+    void errorDuplicatedNamedParameter(SemanticContext*, const ErrorParam& errorParam)
     {
         SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtraPointer(ExtraPointerKind::IsNamed));
         const auto isNamed = errorParam.failedParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
@@ -102,7 +102,7 @@ namespace
         errorParam.addNote(note);
     }
 
-    void errorMissingParameters(SemanticContext* context, const ErrorParam& errorParam)
+    void errorMissingParameters(SemanticContext*, const ErrorParam& errorParam)
     {
         auto node = errorParam.oneTry->callParameters;
         if (!node)
@@ -114,7 +114,7 @@ namespace
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
 
-    void errorNotEnoughParameters(SemanticContext* context, const ErrorParam& errorParam)
+    void errorNotEnoughParameters(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto  node           = errorParam.errorNode;
         const auto  overload       = errorParam.oneTry->overload;
@@ -176,7 +176,7 @@ namespace
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
 
-    void errorTooManyParameters(SemanticContext* context, const ErrorParam& errorParam)
+    void errorTooManyParameters(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto  overload = errorParam.oneTry->overload;
         const auto& match    = errorParam.oneTry->symMatchContext;
@@ -225,7 +225,7 @@ namespace
         errorParam.addNote(Diagnostic::hereIs(overload));
     }
 
-    void errorMismatchGenericValue(SemanticContext* context, const ErrorParam& errorParam)
+    void errorMismatchGenericValue(SemanticContext*, const ErrorParam& errorParam)
     {
         const BadSignatureInfos& bi = errorParam.oneTry->symMatchContext.badSignatureInfos;
 
@@ -235,7 +235,7 @@ namespace
         errorParam.addError(err);
     }
 
-    void errorCannotDeduceGenericType(SemanticContext* context, const ErrorParam& errorParam)
+    void errorCannotDeduceGenericType(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto&              match = errorParam.oneTry->symMatchContext;
         const BadSignatureInfos& bi    = match.badSignatureInfos;
@@ -245,7 +245,7 @@ namespace
         errorParam.addError(err);
     }
 
-    void errorBadGenericSignature(SemanticContext* context, const ErrorParam& errorParam)
+    void errorBadGenericSignature(SemanticContext*, const ErrorParam& errorParam)
     {
         const auto               overload  = errorParam.oneTry->overload;
         const auto&              match     = errorParam.oneTry->symMatchContext;

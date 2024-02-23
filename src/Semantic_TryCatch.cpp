@@ -112,7 +112,7 @@ bool Semantic::resolveCatch(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveAssumeBlock(SemanticContext* context)
+bool Semantic::resolveAssumeBlock(SemanticContext*)
 {
     return true;
 }

@@ -153,7 +153,7 @@ void SCBE::emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadF32Indirect(REG_OFFSET(ip->a.u32), XMM0);
-        pp.emitOpF32(REG_OFFSET(ip->b.u32), XMM0, RDI, op);
+        pp.emitOpF32(REG_OFFSET(ip->b.u32), op);
     }
     else
     {
@@ -180,7 +180,7 @@ void SCBE::emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadF64Indirect(REG_OFFSET(ip->a.u32), XMM0);
-        pp.emitOpF64(REG_OFFSET(ip->b.u32), XMM0, RDI, op);
+        pp.emitOpF64(REG_OFFSET(ip->b.u32), op);
     }
     else
     {
@@ -219,7 +219,7 @@ void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, 
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emitOpN(REG_OFFSET(ip->b.u32), RAX, RDI, op, numBits);
+        pp.emitOpN(REG_OFFSET(ip->b.u32), op, numBits);
     }
     // Mul by power of 2 => shift by log2
     else if (op == CPUOp::MUL &&

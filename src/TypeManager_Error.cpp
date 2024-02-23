@@ -125,8 +125,8 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
                                   Vector<Utf8>& remarks,
                                   TypeInfo*     toType,
                                   TypeInfo*     fromType,
-                                  AstNode*      fromNode,
-                                  CastFlags     castFlags,
+                                  AstNode*      /*fromNode*/,
+                                  CastFlags     /*castFlags*/,
                                   CastErrorType castError,
                                   bool          forNote)
 {

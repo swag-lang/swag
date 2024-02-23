@@ -2309,8 +2309,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // Note:
                 //
                 // This is not optimal yet.
-                // The sub could be removed by baking it in the 'cmp', and by changing the jump table address by substracting the min value
-                // Also, if the jumptable was encoded in the text segment, then there will be no need to have two relocations
+                // The sub could be removed by baking it in the 'cmp', and by changing the jump table address by subtracting the min value
+                // Also, if the jump table was encoded in the text segment, then there will be no need to have two relocations
                 //
                 // We could in the end remove two instructions and be as the llvm generation
 

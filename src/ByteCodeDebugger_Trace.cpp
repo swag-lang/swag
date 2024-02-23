@@ -218,7 +218,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, cons
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;

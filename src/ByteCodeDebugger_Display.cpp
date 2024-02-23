@@ -13,7 +13,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayAdd(ByteCodeRunContext* context, 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() == 2)
     {
@@ -58,7 +58,7 @@ void ByteCodeDebugger::printDisplayList() const
     }
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdDisplayPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdDisplayPrint(ByteCodeRunContext*, const BcDbgCommandArg&)
 {
     g_ByteCodeDebugger.printDisplayList();
     return BcDbgCommandResult::Continue;
@@ -81,7 +81,7 @@ void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context) const
     for (const auto& line : display)
     {
         BcDbgCommandArg arg;
-        tokenizeCommand(context, line, arg);
+        tokenizeCommand(line, arg);
         cmdPrint(context, arg);
     }
 }

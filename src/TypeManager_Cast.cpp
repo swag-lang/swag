@@ -2192,7 +2192,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     return true;
 }
 
-bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
+bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* /*toNode*/, AstNode* fromNode, CastFlags castFlags)
 {
     auto toEnum = castTypeInfo<TypeInfoEnum>(toType, TypeInfoKind::Enum);
 

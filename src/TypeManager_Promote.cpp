@@ -91,7 +91,7 @@ bool TypeManager::promote(SemanticContext* context, AstNode* left, AstNode* righ
     return true;
 }
 
-bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* right)
+bool TypeManager::promoteLeft(SemanticContext*, AstNode* left, AstNode* right)
 {
     TypeInfo* leftTypeInfo  = concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = concreteType(right->typeInfo);

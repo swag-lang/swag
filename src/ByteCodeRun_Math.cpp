@@ -4,7 +4,7 @@
 #include "Os.h"
 #include "Token.h"
 
-void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned)
+void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool /*isSigned*/)
 {
     const auto shift = regRight.u32;
     if (shift >= numBits)
@@ -85,7 +85,7 @@ void ByteCodeRun::executeRightShift(Register* regDest, const Register& regLeft, 
     }
 }
 
-bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc, const Register& rd, bool runtime)
+bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc, const Register& rd)
 {
     switch (ip->op)
     {

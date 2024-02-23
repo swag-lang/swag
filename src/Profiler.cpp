@@ -53,7 +53,7 @@ namespace
         return line;
     }
 
-    Utf8 getProfileFFI(const FFIStat& ffi, int level)
+    Utf8 getProfileFFI(const FFIStat& ffi)
     {
         Utf8 line;
         line += Log::colorToVTS(LogColor::Index);
@@ -187,7 +187,7 @@ void profiler()
 
     for (auto& it : linFFi)
     {
-        line = getProfileFFI(it, 0);
+        line = getProfileFFI(it);
         g_Log.print(line);
         g_Log.eol();
     }

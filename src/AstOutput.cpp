@@ -109,7 +109,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
-bool AstOutput::outputFuncName(OutputContext& context, Concat& concat, const AstFuncDecl* node)
+bool AstOutput::outputFuncName(OutputContext&, Concat& concat, const AstFuncDecl* node)
 {
     concat.addString(node->token.text);
     return true;

@@ -553,7 +553,7 @@ bool ByteCodeGen::emitCompareOp3Way(const ByteCodeGenContext* context, uint32_t 
     return Report::internalError(context->node, "emitCompareOp3Way, type not native");
 }
 
-bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, const AstNode* left, AstNode* /*right*/, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -614,7 +614,7 @@ bool ByteCodeGen::emitCompareOpLower(const ByteCodeGenContext* context, uint32_t
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* /*right*/, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -675,7 +675,7 @@ bool ByteCodeGen::emitCompareOpLowerEq(const ByteCodeGenContext* context, uint32
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, const AstNode* left, AstNode* /*right*/, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -736,7 +736,7 @@ bool ByteCodeGen::emitCompareOpGreater(const ByteCodeGenContext* context, uint32
     return true;
 }
 
-bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreaterEq(const ByteCodeGenContext* context, const AstNode* left, AstNode* /*right*/, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     const auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())

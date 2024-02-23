@@ -161,7 +161,7 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
     void                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
-    static void                    tokenizeCommand(ByteCodeRunContext* context, const Utf8& line, BcDbgCommandArg& arg);
+    static void                    tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg);
     void                           setup();
     static void                    printLong(const Utf8& all);
     static void                    printLong(const Vector<Utf8>& all);

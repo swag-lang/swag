@@ -280,7 +280,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
     return true;
 }
 
-void Semantic::forceConstType(SemanticContext* context, AstTypeExpression* node)
+void Semantic::forceConstType(SemanticContext*, AstTypeExpression* node)
 {
     const auto concrete = node->typeInfo->getConcreteAlias();
     if (concrete->isStruct() ||

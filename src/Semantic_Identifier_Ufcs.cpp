@@ -8,7 +8,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
-bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit)
+bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit)
 {
     if (!ufcsNode || typeFunc->parameters.empty())
         return false;
@@ -91,7 +91,7 @@ bool Semantic::getUfcs(SemanticContext* context, const AstIdentifierRef* identif
             }
 
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-            canTry              = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
+            canTry              = canTryUfcs(context, typeFunc, identifierRef->previousResolvedNode, true);
             YIELD();
             if (canTry)
                 *ufcsFirstParam = identifierRef->previousResolvedNode;

@@ -44,7 +44,7 @@ SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, S
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext* context, AstNode* node, SymbolKind kind, const Utf8* aliasName)
+SymbolName* SymTable::registerSymbolNameNoLock(ErrorContext*, AstNode* node, SymbolKind kind, const Utf8* aliasName)
 {
     if (!aliasName)
         aliasName = &node->token.text;
@@ -172,7 +172,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         // No ghosting check for an inline parameter
         if (!toAdd.flags.has(OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL))
         {
-            if (!checkHiddenSymbolNoLock(context, toAdd.node, toAdd.typeInfo, toAdd.kind, symbol, toAdd.flags))
+            if (!checkHiddenSymbolNoLock(context, toAdd.node, toAdd.typeInfo, toAdd.kind, symbol))
                 return nullptr;
         }
 
@@ -301,7 +301,7 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     }
 }
 
-bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* node, SymbolKind kind, const SymbolName* symbol) const
+bool SymTable::acceptGhostSymbolNoLock(ErrorContext*, const AstNode* node, SymbolKind kind, const SymbolName* symbol) const
 {
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
@@ -324,7 +324,7 @@ bool SymTable::acceptGhostSymbolNoLock(ErrorContext* context, const AstNode* nod
     return false;
 }
 
-bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, OverloadFlags overFlags) const
+bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, const TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol) const
 {
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)

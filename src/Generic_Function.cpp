@@ -95,7 +95,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                     }
 
                     PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
-                    const auto     typeDest = TypeManager::convertTypeListToStruct(context, tpt, true);
+                    const auto     typeDest = TypeManager::convertTypeListToStruct(context, tpt);
                     SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, nullptr, typeDest, p));
                     SWAG_ASSERT(context->result != ContextResult::Done);
                     return true;

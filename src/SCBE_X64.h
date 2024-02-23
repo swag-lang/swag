@@ -101,9 +101,9 @@ struct SCBE_X64 : SCBE_CPU
     void emitOpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits = CPUBits::B32);
     void emitOpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits = CPUBits::B32);
 
-    void emitOpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits);
-    void emitOpF32(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op);
-    void emitOpF64(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op);
+    void emitOpN(uint32_t offsetStack, CPUOp op, CPUBits numBits);
+    void emitOpF32(uint32_t offsetStack, CPUOp op);
+    void emitOpF64(uint32_t offsetStack, CPUOp op);
 
     void emitOpNIndirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock = false);
     void emitOpF32Indirect(CPURegister reg, CPURegister memReg, CPUOp op);

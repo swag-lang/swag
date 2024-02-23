@@ -4,7 +4,7 @@
 #include "Log.h"
 #include "Workspace.h"
 
-void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
+void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* /*context*/) const
 {
     if (breakpoints.empty())
     {
@@ -127,7 +127,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
     }
 }
 
-bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp)
+bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* /*context*/, const DebugBreakpoint& bkp)
 {
     for (const auto& b : breakpoints)
     {
@@ -142,7 +142,7 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* context, const DebugBre
     return true;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* /*context*/, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
@@ -161,7 +161,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
@@ -180,7 +180,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() == 2)
     {
@@ -209,7 +209,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const BcDbgCommandArg&)
 {
     g_ByteCodeDebugger.printBreakpoints(context);
     return BcDbgCommandResult::Continue;

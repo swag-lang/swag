@@ -54,7 +54,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
     }
 }
 
-void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType, int i)
+void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType)
 {
     const auto funcDecl = castAst<AstFuncDecl>(funcNode, AstNodeKind::FuncDecl);
     SWAG_ASSERT(!funcDecl->hasAstFlag(AST_IS_GENERIC));
@@ -164,7 +164,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
         if (nodeCall->typeInfo->isLambdaClosure() && nodeCall->typeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
         {
-            resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, static_cast<uint32_t>(i));
+            resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo);
             YIELD();
         }
 

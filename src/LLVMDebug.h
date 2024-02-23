@@ -13,7 +13,7 @@ struct TypeInfoFuncAttr;
 
 struct LLVMDebug
 {
-    void                    setup(LLVM* m, llvm::Module* modu);
+    void                    setup(LLVM* m, llvm::Module* module);
     llvm::DISubprogram*     startFunction(const ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
     void                    startFunction(const BuildParameters& buildParameters, const LLVMEncoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void                    finalize() const;

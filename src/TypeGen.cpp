@@ -31,7 +31,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext*        context,
             typeInfo = TypeManager::convertTypeListToArray(context, castTypeInfo<TypeInfoList>(typeInfo), true);
             break;
         case TypeInfoKind::TypeListTuple:
-            typeInfo = TypeManager::convertTypeListToStruct(context, castTypeInfo<TypeInfoList>(typeInfo), true);
+            typeInfo = TypeManager::convertTypeListToStruct(context, castTypeInfo<TypeInfoList>(typeInfo));
             break;
         default:
             break;
@@ -375,7 +375,7 @@ bool TypeGen::genExportedSubTypeInfo(JobContext*        context,
     return true;
 }
 
-bool TypeGen::genExportedString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer)
+bool TypeGen::genExportedString(JobContext*, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer)
 {
     if (str.empty())
     {
@@ -391,7 +391,7 @@ bool TypeGen::genExportedString(JobContext* context, SwagSlice* result, const Ut
     return true;
 }
 
-void* TypeGen::genExportedSlice(JobContext*  context,
+void* TypeGen::genExportedSlice(JobContext*,
                                 uint32_t     sizeOf,
                                 void*        exportedTypeInfoValue,
                                 DataSegment* storageSegment,
@@ -410,7 +410,7 @@ void* TypeGen::genExportedSlice(JobContext*  context,
     return addrDst;
 }
 
-void* TypeGen::genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
+void* TypeGen::genExportedSlice(JobContext*, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
     uint8_t* addrDst;
     storageArray = storageSegment->reserve(sizeOf, &addrDst);
@@ -431,12 +431,11 @@ bool TypeGen::genExportedAny(JobContext*    context,
                              TypeInfo*      typeInfo,
                              GenExportFlags genFlags)
 {
-    const auto sourceFile = context->sourceFile;
-    ptrAny->value         = nullptr;
+    ptrAny->value = nullptr;
 
     if (typeInfo->isNative())
     {
-        const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, typeInfo, computedValue, reinterpret_cast<uint8_t**>(&ptrAny->value));
+        const auto storageOffsetValue = storageSegment->addComputedValue(typeInfo, computedValue, reinterpret_cast<uint8_t**>(&ptrAny->value));
         storageSegment->addInitPtr(storageOffset, storageOffsetValue);
     }
 
@@ -447,7 +446,6 @@ bool TypeGen::genExportedAny(JobContext*    context,
 
 bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, GenExportFlags genFlags)
 {
-    const auto sourceFile   = context->sourceFile;
     const auto concreteType = static_cast<ExportedTypeValue*>(exportedTypeInfoValue);
 
     concreteType->offsetOf = realType->offset;
@@ -469,7 +467,7 @@ bool TypeGen::genExportedTypeValue(JobContext* context, void* exportedTypeInfoVa
         else
         {
             SWAG_ASSERT(realType->value);
-            const auto storageOffsetValue = storageSegment->addComputedValue(sourceFile, realType->typeInfo, *realType->value, reinterpret_cast<uint8_t**>(&concreteType->value));
+            const auto storageOffsetValue = storageSegment->addComputedValue(realType->typeInfo, *realType->value, reinterpret_cast<uint8_t**>(&concreteType->value));
             storageSegment->addInitPtr(OFFSET_OF(concreteType->value), storageOffsetValue);
         }
     }

@@ -38,7 +38,7 @@ void ByteCodeDebugger::printHelp() const
         printHelp(c);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext*, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;

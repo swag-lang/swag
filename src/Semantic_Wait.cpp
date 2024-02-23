@@ -295,7 +295,7 @@ void Semantic::waitForGenericParameters(const SemanticContext* context, OneMatch
     }
 }
 
-auto Semantic::needToCompleteSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads) -> bool
+auto Semantic::needToCompleteSymbolNoLock(SemanticContext*, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads) -> bool
 {
     if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
         return true;

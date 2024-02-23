@@ -134,7 +134,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
+bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
 {
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
@@ -237,7 +237,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol)
+bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const SymbolName* symbol)
 {
     const AstIdentifier* id = nullptr;
     if (node && node->kind == AstNodeKind::Identifier)
@@ -666,7 +666,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             {
                 // Be sure we have a missing parameter in order to try ufcs
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                const bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
+                const bool canTry   = canTryUfcs(context, typeFunc, dependentVar, false);
                 YIELD();
                 if (canTry)
                 {

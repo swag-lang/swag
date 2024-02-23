@@ -991,7 +991,7 @@ void SCBE_X64::emitOpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBi
     concat.addU8(0xC0 | regSrc | regDst << 3);
 }
 
-void SCBE_X64::emitOpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpN(uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
     emitREX(concat, numBits);
     if (op == CPUOp::MUL)
@@ -1027,7 +1027,7 @@ void SCBE_X64::emitOpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg
     }
 }
 
-void SCBE_X64::emitOpF32(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op)
+void SCBE_X64::emitOpF32(uint32_t offsetStack, CPUOp op)
 {
     concat.addU8(0xF3);
     concat.addU8(0x0F);
@@ -1035,7 +1035,7 @@ void SCBE_X64::emitOpF32(uint32_t offsetStack, CPURegister reg, CPURegister memR
     emitModRM(concat, offsetStack, XMM0, RDI);
 }
 
-void SCBE_X64::emitOpF64(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op)
+void SCBE_X64::emitOpF64(uint32_t offsetStack, CPUOp op)
 {
     concat.addU8(0xF2);
     concat.addU8(0x0F);

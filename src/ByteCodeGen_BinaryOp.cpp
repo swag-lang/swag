@@ -554,7 +554,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitLogicalAnd(const ByteCodeGenContext* context, uint32_t r1, uint32_t r2)
 {
     const auto node = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
 
@@ -618,7 +618,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLogicalOr(const ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitLogicalOr(const ByteCodeGenContext* context, uint32_t r1, uint32_t r2)
 {
     const auto node = castAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)
@@ -742,10 +742,10 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
                     SWAG_CHECK(emitXor(context, typeInfoExpr, r0, r1, r2));
                     break;
                 case TokenId::KwdAnd:
-                    emitLogicalAnd(context, r0, r1, r2);
+                    emitLogicalAnd(context, r1, r2);
                     break;
                 case TokenId::KwdOr:
-                    emitLogicalOr(context, r0, r1, r2);
+                    emitLogicalOr(context, r1, r2);
                     break;
                 default:
                     return Report::internalError(context->node, "emitBinaryOp, invalid token op");

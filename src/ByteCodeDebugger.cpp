@@ -215,7 +215,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     }
 }
 
-Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const
+Utf8 ByteCodeDebugger::completion(ByteCodeRunContext*, const Utf8& line, Utf8& toComplete) const
 {
     Vector<Utf8> tokens;
     Utf8::tokenize(line, ' ', tokens);
@@ -760,7 +760,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         // Split in command + parameters
         BcDbgCommandArg arg;
-        tokenizeCommand(context, line, arg);
+        tokenizeCommand(line, arg);
         g_Log.eol();
 
         // Command
@@ -846,7 +846,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
     cmdExpr = result;
 }
 
-void ByteCodeDebugger::tokenizeCommand(ByteCodeRunContext* context, const Utf8& line, BcDbgCommandArg& arg)
+void ByteCodeDebugger::tokenizeCommand(const Utf8& line, BcDbgCommandArg& arg)
 {
     arg.cmd.clear();
     arg.cmdExpr.clear();

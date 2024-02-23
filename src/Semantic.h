@@ -72,7 +72,7 @@ namespace Semantic
     bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     bool checkFuncPrototypeOpNumParams(SemanticContext* context, const AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact = true);
     bool checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
-    bool checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted);
+    bool checkFuncPrototypeOpParam(SemanticContext* context, AstNode* parameters, uint32_t index, TypeInfo* wanted);
     bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
     bool checkIsConcrete(SemanticContext* context, AstNode* node);
     bool checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node);
@@ -138,7 +138,7 @@ namespace Semantic
     void           dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier);
     bool           setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    void           resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType, int i);
+    void           resolvePendingLambdaTyping(const SemanticContext* context, AstNode* funcNode, const TypeInfo* resolvedType);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics);
     Diagnostic*    computeNonConstExprNote(AstNode* node);
@@ -171,7 +171,7 @@ namespace Semantic
     bool           processLiteralString(SemanticContext* context);
     bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     bool           getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, const AstIdentifier* node, const SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
-    bool           canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
+    bool           canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstNode* ufcsNode, bool nodeIsExplicit);
     bool           getUfcs(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node, const SymbolOverload* overload, AstNode** ufcsFirstParam);
     bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
     bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, const SymbolOverload* overload, AstNode* ufcsFirstParam);

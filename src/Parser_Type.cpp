@@ -398,7 +398,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     return true;
 }
 
-bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ExprFlags exprFlags, AstNode** result)
+bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* /*parent*/, ExprFlags exprFlags, AstNode** result)
 {
     const bool inTypeVarDecl = exprFlags.has(EXPR_FLAG_IN_VAR_DECL);
 
