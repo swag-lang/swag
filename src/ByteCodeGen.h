@@ -145,7 +145,7 @@ namespace ByteCodeGen
     bool emitCall(ByteCodeGenContext* context);
     void emitPushRAParams(const ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic);
     bool emitReturnByCopyAddress(const ByteCodeGenContext* context, AstNode* node, const TypeInfoFuncAttr* typeInfoFunc);
-    bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams);
+    bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams);
     bool emitLambdaCall(ByteCodeGenContext* context);
     bool emitForeignCall(ByteCodeGenContext* context);
     bool emitIntrinsicCVaStart(ByteCodeGenContext* context);

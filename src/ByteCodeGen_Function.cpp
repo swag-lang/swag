@@ -1225,7 +1225,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 
     emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
 
-    SWAG_CHECK(emitCall(context, allParams, nullptr, castAst<AstVarDecl>(overload->node), node->extMisc()->additionalRegisterRC, false, true, true));
+    SWAG_CHECK(emitCall(context, allParams, nullptr, castAst<AstVarDecl>(overload->node), node->extMisc()->additionalRegisterRC, false, true));
     SWAG_ASSERT(context->result == ContextResult::Done);
     freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
     return true;
@@ -1263,7 +1263,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
 
     const auto allParams = node->children.empty() ? nullptr : node->children.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
-    SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, false, false, true));
+    SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, false, true));
     YIELD();
     emitPostCallUfcs(context);
     return true;
@@ -1582,7 +1582,6 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                            AstVarDecl*         varNode,
                            RegisterList&       varNodeRegisters,
                            bool                foreign,
-                           bool                lambda,
                            bool                freeRegistersParams)
 {
     AstNode* node = context->node;
@@ -2288,7 +2287,7 @@ bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
     const auto funcNode  = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     const auto allParams = node->children.empty() ? nullptr : node->children.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
-    emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, true, false, true);
+    emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRc, true, true);
     return true;
 }
 
