@@ -55,6 +55,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const 
     return checkIsConstExpr(context, expression->hasAstFlag(AST_CONST_EXPR), expression, errMsg, errParam);
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 {
     const auto node = context->node;
@@ -385,6 +386,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveDefer(SemanticContext* context)
 {
     const auto node   = castAst<AstDefer>(context->node, AstNodeKind::Defer);

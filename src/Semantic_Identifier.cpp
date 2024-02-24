@@ -65,6 +65,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 {
     const auto node = castAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
@@ -81,6 +82,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIdentifierRef(SemanticContext* context)
 {
     const auto node      = castAst<AstIdentifierRef>(context->node);

@@ -189,6 +189,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
     const auto node = context->node;
@@ -197,6 +198,7 @@ bool Semantic::resolveFuncDeclParams(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
 {
     const auto sourceFile = context->sourceFile;
@@ -1158,6 +1160,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
     const auto node = context->node;

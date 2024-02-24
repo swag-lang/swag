@@ -1562,7 +1562,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         // accurate error. We find the longest match (the one that failed on the right most parameter)
         if (oneOverload.symMatchContext.result != MatchResult::Ok)
         {
-            if (context->bestSignatureInfos.badSignatureParameterIdx == -1 ||
+            if (context->bestSignatureInfos.badSignatureParameterIdx == UINT32_MAX ||
                 oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > context->bestSignatureInfos.badSignatureParameterIdx)
             {
                 context->bestMatchResult    = oneOverload.symMatchContext.result;

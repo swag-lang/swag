@@ -59,7 +59,7 @@ struct OneMatch
     struct ParamParameter
     {
         AstFuncCallParam* param;
-        int               indexParam;
+        uint32_t          indexParam;
         TypeInfoParam*    resolvedParameter;
     };
 

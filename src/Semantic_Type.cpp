@@ -71,6 +71,7 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeIn
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
 {
     const auto sourceFile = context->sourceFile;
@@ -768,6 +769,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
     const auto node     = castAst<AstCast>(context->node, AstNodeKind::AutoCast);

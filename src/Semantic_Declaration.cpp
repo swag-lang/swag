@@ -159,6 +159,7 @@ bool Semantic::resolveUsing(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 {
     const auto node                  = context->node;
@@ -185,6 +186,7 @@ bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveSubDeclRef(SemanticContext* context)
 {
     const auto node = castAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);

@@ -1169,15 +1169,15 @@ namespace
 
                 case ByteCodeOp::Add64byVB64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->reg.s64 += ip->b.u64;
+                    ra->reg.s64 += ip->b.s64;
                     break;
                 case ByteCodeOp::Mul64byVB64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->reg.s64 *= ip->b.u64;
+                    ra->reg.s64 *= ip->b.s64;
                     break;
                 case ByteCodeOp::Div64byVB64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-                    ra->reg.s64 /= ip->b.u64;
+                    ra->reg.s64 /= ip->b.s64;
                     break;
                 case ByteCodeOp::MulAddVC64:
                     SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1810,10 +1810,10 @@ namespace
                     CMP_OP(==, u64);
                     break;
                 case ByteCodeOp::CompareOpEqualF32:
-                    CMP_OP(==, f32);
+                    CMP_OP(==, f32); // NOLINT(clang-diagnostic-float-equal)
                     break;
                 case ByteCodeOp::CompareOpEqualF64:
-                    CMP_OP(==, f64);
+                    CMP_OP(==, f64); // NOLINT(clang-diagnostic-float-equal)
                     break;
 
                 case ByteCodeOp::CompareOpNotEqual8:
@@ -1829,10 +1829,10 @@ namespace
                     CMP_OP(!=, u64);
                     break;
                 case ByteCodeOp::CompareOpNotEqualF32:
-                    CMP_OP(!=, f32);
+                    CMP_OP(!=, f32); // NOLINT(clang-diagnostic-float-equal)
                     break;
                 case ByteCodeOp::CompareOpNotEqualF64:
-                    CMP_OP(!=, f64);
+                    CMP_OP(!=, f64); // NOLINT(clang-diagnostic-float-equal)
                     break;
 
                 case ByteCodeOp::CompareOpGreaterEqS8:
