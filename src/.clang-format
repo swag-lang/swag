@@ -35,7 +35,6 @@ BreakConstructorInitializers: AfterColon
 ColumnLimit: 0
 ContinuationIndentWidth: 0
 FixNamespaceComments: false
-IncludeIsMainRegex: 'pch\.h'
 IndentCaseLabels: true
 IndentWidth: 4
 InsertNewlineAtEOF: true
@@ -51,5 +50,13 @@ ReferenceAlignment: Left
 SpaceAfterCStyleCast: true
 SpaceAfterTemplateKeyword: false
 SpacesInAngles: false
-SortIncludes: false
 TabWidth: 4
+IncludeCategories: 
+  - Regex: 'pch.*'
+    Priority: 0
+    SortPriority: 1
+  - Regex: '.*'
+    Priority: 1
+    SortPriority: 2
+IncludeIsMainRegex: '([-_](test|unittest))?$'
+
