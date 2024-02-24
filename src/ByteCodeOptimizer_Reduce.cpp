@@ -6512,7 +6512,7 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
         if (!isParam &&
             !ByteCode::isJump(ipn) &&
-            !(g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags.has(OPFLAG_IS_REGONLY)) &&
+            !(g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags.has(OPFLAG_IS_REG_ONLY)) &&
             ipn->op != ByteCodeOp::Nop)
             return;
 
@@ -6556,13 +6556,13 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
     const auto fl0 = g_ByteCodeOpDesc[static_cast<int>(ip->op)].flags;
     const auto fl1 = g_ByteCodeOpDesc[static_cast<int>(ipn->op)].flags;
 
-    if (fl0.has(OPFLAG_IS_8B) && !fl1.has(OPFLAG_IS_8B))
+    if (fl0.has(OPFLAG_IS_8) && !fl1.has(OPFLAG_IS_8))
         return;
-    if (fl0.has(OPFLAG_IS_16B) && !fl1.has(OPFLAG_IS_8B | OPFLAG_IS_16B))
+    if (fl0.has(OPFLAG_IS_16) && !fl1.has(OPFLAG_IS_8 | OPFLAG_IS_16))
         return;
-    if (fl0.has(OPFLAG_IS_32B) && !fl1.has(OPFLAG_IS_8B | OPFLAG_IS_16B | OPFLAG_IS_32B))
+    if (fl0.has(OPFLAG_IS_32) && !fl1.has(OPFLAG_IS_8 | OPFLAG_IS_16 | OPFLAG_IS_32))
         return;
-    if (fl0.has(OPFLAG_IS_64B) && !fl1.has(OPFLAG_IS_8B | OPFLAG_IS_16B | OPFLAG_IS_32B | OPFLAG_IS_64B))
+    if (fl0.has(OPFLAG_IS_64) && !fl1.has(OPFLAG_IS_8 | OPFLAG_IS_16 | OPFLAG_IS_32 | OPFLAG_IS_64))
         return;
 
     if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) &&

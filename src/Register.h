@@ -21,10 +21,11 @@ union Register
     {
         uint32_t low;
         uint32_t high;
-    } u64u32;
+    } mergeU64U32;
 
     Register() = default;
 
+    // ReSharper disable once CppNonExplicitConvertingConstructor
     Register(uint64_t val) :
         u64{val}
     {
@@ -42,6 +43,7 @@ struct RegisterList
 
     RegisterList() = default;
 
+    // ReSharper disable once CppNonExplicitConvertingConstructor
     RegisterList(uint32_t r)
     {
         SWAG_ASSERT(r < MAX_REGISTERS);
@@ -108,6 +110,7 @@ struct RegisterList
         return true;
     }
 
+    // ReSharper disable once CppNonExplicitConversionOperator
     operator uint32_t() const
     {
         return (*this)[0];

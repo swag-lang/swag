@@ -24,18 +24,18 @@ constexpr OpFlags OPFLAG_IMM_A         = 0x00010000;
 constexpr OpFlags OPFLAG_IMM_B         = 0x00020000;
 constexpr OpFlags OPFLAG_IMM_C         = 0x00040000;
 constexpr OpFlags OPFLAG_IMM_D         = 0x00080000;
-constexpr OpFlags OPFLAG_UNPURE        = 0x00100000;
+constexpr OpFlags OPFLAG_NOT_PURE      = 0x00100000;
 constexpr OpFlags OPFLAG_IS_JUMP       = 0x00200000;
 constexpr OpFlags OPFLAG_IS_MEMCPY     = 0x00400000;
 constexpr OpFlags OPFLAG_IS_FACTOR     = 0x00800000;
-constexpr OpFlags OPFLAG_IS_JUMPDYN    = 0x01000000;
-constexpr OpFlags OPFLAG_IS_REGONLY    = 0x02000000;
+constexpr OpFlags OPFLAG_IS_JUMP_DYN   = 0x01000000;
+constexpr OpFlags OPFLAG_IS_REG_ONLY   = 0x02000000;
 constexpr OpFlags OPFLAG_IS_PUSH_PARAM = 0x04000000;
 constexpr OpFlags OPFLAG_IS_CALL       = 0x08000000;
-constexpr OpFlags OPFLAG_IS_8B         = 0x10000000;
-constexpr OpFlags OPFLAG_IS_16B        = 0x20000000;
-constexpr OpFlags OPFLAG_IS_32B        = 0x40000000;
-constexpr OpFlags OPFLAG_IS_64B        = 0x80000000;
+constexpr OpFlags OPFLAG_IS_8          = 0x10000000;
+constexpr OpFlags OPFLAG_IS_16         = 0x20000000;
+constexpr OpFlags OPFLAG_IS_32         = 0x40000000;
+constexpr OpFlags OPFLAG_IS_64         = 0x80000000;
 
 enum class ByteCodeOp : uint16_t
 {

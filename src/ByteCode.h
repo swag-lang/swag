@@ -43,8 +43,8 @@ struct ByteCode
     static bool isPushParam(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_PUSH_PARAM); }
     static bool isCall(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_CALL); }
     static bool isJump(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP); }
-    static bool isJumpDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMPDYN); }
-    static bool isJumpOrDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP | OPFLAG_IS_JUMPDYN); }
+    static bool isJumpDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP_DYN); }
+    static bool isJumpOrDyn(const ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_IS_JUMP | OPFLAG_IS_JUMP_DYN); }
     static bool isRet(const ByteCodeInstruction* inst) { return inst->op == ByteCodeOp::Ret || inst->op == ByteCodeOp::CopyRBtoRRRet; }
 
     static bool hasRefToRegA(const ByteCodeInstruction* inst, uint32_t reg) { return inst->a.u32 == reg && !inst->hasFlag(BCI_IMM_A) && g_ByteCodeOpDesc[static_cast<int>(inst->op)].flags.has(OPFLAG_READ_A | OPFLAG_WRITE_A); }

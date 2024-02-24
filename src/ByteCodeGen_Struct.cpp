@@ -54,7 +54,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
     {
         SWAG_ASSERT(numParams == 1);
         auto inst          = EMIT_INST0(context, ByteCodeOp::GetParam64);
-        inst->b.u64u32.low = 24;
+        inst->b.mergeU64U32.low = 24;
         if (offset)
         {
             inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
@@ -445,7 +445,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context,
         if (pushParam)
         {
             auto inst          = EMIT_INST0(context, ByteCodeOp::GetParam64);
-            inst->b.u64u32.low = 24;
+            inst->b.mergeU64U32.low = 24;
             if (offset)
             {
                 inst        = EMIT_INST0(context, ByteCodeOp::IncPointer64);
@@ -620,7 +620,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
     if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         auto inst          = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
-        inst->b.u64u32.low = 24;
+        inst->b.mergeU64U32.low = 24;
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         EMIT_INST0(&cxt, ByteCodeOp::Ret);
         EMIT_INST0(&cxt, ByteCodeOp::End);
@@ -645,7 +645,7 @@ bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStr
 
         // Reference to the field
         auto inst          = EMIT_INST0(&cxt, ByteCodeOp::GetParam64);
-        inst->b.u64u32.low = 24;
+        inst->b.mergeU64U32.low = 24;
         if (param->offset)
         {
             inst = EMIT_INST0(&cxt, ByteCodeOp::IncPointer64);
