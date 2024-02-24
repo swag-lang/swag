@@ -1,3 +1,4 @@
+// ReSharper disable CommentTypo
 #include "pch.h"
 #include "SCBE_X64.h"
 #include "Math.h"
@@ -7,16 +8,16 @@ namespace
 {
     uint8_t getREX(bool w, bool r, bool x, bool b)
     {
-        uint8_t REX = 0x40;
+        uint8_t rex = 0x40;
         if (w) // 64 bits
-            REX |= 8;
+            rex |= 8;
         if (r) // extended MODRM.reg
-            REX |= 4;
+            rex |= 4;
         if (x) // extended SIB.index
-            REX |= 2;
+            rex |= 2;
         if (b) // extended MODRM.rm
-            REX |= 1;
-        return REX;
+            rex |= 1;
+        return rex;
     }
 
     uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
@@ -75,7 +76,7 @@ void SCBE_X64::emitSymbolRelocationRef(const Utf8& name)
     const auto callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
-        concat.addS32(callSym->value + textSectionOffset - (concat.totalCount() + 4));
+        concat.addS32(static_cast<int>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
     }
     else
     {
@@ -1780,7 +1781,7 @@ void SCBE_X64::emitCall(const Utf8& symbolName)
     const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
-        concat.addS32(callSym->value + textSectionOffset - (concat.totalCount() + 4));
+        concat.addS32(static_cast<int>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
     }
     else
     {
@@ -1795,7 +1796,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
     const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
 
     const uint32_t callConvRegisters    = cc.paramByRegisterCount;
-    const uint32_t maxParamsPerRegister = static_cast<int>(paramsRegisters.size());
+    const uint32_t maxParamsPerRegister = paramsRegisters.size();
 
     // Set the first N parameters. Can be return register, or function parameter.
     uint32_t i = 0;
@@ -2017,11 +2018,11 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 
 void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
-    int numCallParams = static_cast<int>(typeFunc->parameters.size());
+    uint32_t numCallParams = typeFunc->parameters.size();
     pushParams3.clear();
     pushParamsTypes.clear();
 
-    int indexParam = static_cast<int>(pushRAParams.size()) - 1;
+    uint32_t indexParam = pushRAParams.size() - 1;
 
     // Variadic are first
     if (typeFunc->isFctVariadic())
@@ -2041,7 +2042,7 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     }
 
     // All parameters
-    for (int i = 0; i < numCallParams; i++)
+    for (uint32_t i = 0; i < numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteType(typeFunc->parameters[i]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
