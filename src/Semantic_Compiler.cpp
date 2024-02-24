@@ -19,13 +19,9 @@
 Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
 {
     VectorNative<AstNode*> children;
+    Ast::visit(node, [&](AstNode* n) { children.push_back(n); });
 
-    Ast::visit(node, [&](AstNode* n)
-               {
-                   children.push_back(n);
-               });
-
-    for (int i = static_cast<int>(children.size()) - 1; i >= 0; i--)
+    for (auto i = children.size() - 1; i != UINT32_MAX; i--)
     {
         const auto c = children[i];
         if (c->hasAstFlag(AST_CONST_EXPR))
@@ -294,6 +290,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 {
     const auto node   = context->node;
@@ -500,6 +497,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 {
     const auto node = context->node;
@@ -618,7 +616,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     block->addAstFlag(AST_NO_BYTECODE);
     block->addAstFlag(AST_NO_SEMANTIC);
 
-    // Revert test errors in case #global testerror is inside a disabled #if branch
+    // Revert test errors in case the '#global testerror' is inside a disabled #if branch
     const auto sourceFile = context->sourceFile;
 
     // Unregister one overload
@@ -867,6 +865,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
     const auto node = context->node;
