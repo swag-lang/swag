@@ -469,7 +469,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context,
         inst->b.u64 = typeStructVar->sizeOf;
 
         EMIT_INST1(context, ByteCodeOp::DecrementRA32, r0);
-        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = static_cast<int>(seekJump - context->bc->numInstructions - 1);
 
         freeRegisterRC(context, r0);
     }
@@ -1522,8 +1522,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
                 inst->addFlag(BCI_IMM_B);
                 inst->b.u64                       = typeStruct->sizeOf;
                 const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
-                instJump->b.s32                   = startLoop - context->bc->numInstructions;
-                context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
+                instJump->b.s32                   = static_cast<int>(startLoop - context->bc->numInstructions);
+                context->bc->out[jumpAfter].b.s32 = static_cast<int>(context->bc->numInstructions - jumpAfter - 1);
             }
 
             // Constant loop
@@ -1534,7 +1534,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
                 inst->b.u64 = typeStruct->sizeOf;
                 EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
                 const auto instJump = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
-                instJump->b.s32     = startLoop - context->bc->numInstructions;
+                instJump->b.s32     = static_cast<int>(startLoop - context->bc->numInstructions);
                 freeRegisterRC(context, regCount);
             }
         }
@@ -1574,8 +1574,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             inst->b.u64 = pointedType->sizeOf;
 
             const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
-            instJump->b.s32                   = startLoop - context->bc->numInstructions;
-            context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
+            instJump->b.s32                   = static_cast<int>(startLoop - context->bc->numInstructions);
+            context->bc->out[jumpAfter].b.s32 = static_cast<int>(context->bc->numInstructions - jumpAfter - 1);
         }
 
         if (freeRegCount)
@@ -1625,8 +1625,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             inst->addFlag(BCI_IMM_B);
 
             const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
-            instJump->b.s32                   = startLoop - context->bc->numInstructions;
-            context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
+            instJump->b.s32                   = static_cast<int>(startLoop - context->bc->numInstructions);
+            context->bc->out[jumpAfter].b.s32 = static_cast<int>(context->bc->numInstructions - jumpAfter - 1);
         }
 
         for (const auto child : parameters->children)
@@ -1733,8 +1733,8 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
             inst->b.u64     = typeExpression->pointedType->sizeOf;
             inst->addFlag(BCI_IMM_B);
             const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
-            instJump->b.s32                   = startLoop - context->bc->numInstructions;
-            context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
+            instJump->b.s32                   = static_cast<int>(startLoop - context->bc->numInstructions);
+            context->bc->out[jumpAfter].b.s32 = static_cast<int>(context->bc->numInstructions - jumpAfter - 1);
         }
     }
 
