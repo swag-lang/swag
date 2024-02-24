@@ -21,7 +21,7 @@ namespace
 
     uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
     {
-        return mod << 6 | ((r & 0b111) << 3) | (m & 0b111);
+        return static_cast<uint8_t>(mod << 6 | ((r & 0b111) << 3) | (m & 0b111));
     }
 
     void emitREX(Concat& concat, CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX)
@@ -89,7 +89,7 @@ void SCBE_X64::emitSymbolRelocationAddr(CPURegister reg, uint32_t symbolIndex, u
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
     emitREX(concat, CPUBits::B64, reg);
     concat.addU8(0x8D);
-    concat.addU8(0x05 | ((reg & 0b111)) << 3);
+    concat.addU8(static_cast<uint8_t>(0x05 | ((reg & 0b111)) << 3));
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
@@ -99,7 +99,7 @@ void SCBE_X64::emitSymbolRelocationValue(CPURegister reg, uint32_t symbolIndex, 
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
     emitREX(concat, CPUBits::B64, reg);
     concat.addU8(0x8B);
-    concat.addU8(0x05 | ((reg & 0b111)) << 3);
+    concat.addU8(static_cast<uint8_t>(0x05 | ((reg & 0b111)) << 3));
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
@@ -605,7 +605,7 @@ void SCBE_X64::emitCopyF32(CPURegister regDst, CPURegister regSrc)
     concat.addU8(0x66);
     concat.addU8(0x0F);
     concat.addU8(0x6E);
-    concat.addU8(0xC0 | regDst << 3);
+    concat.addU8(static_cast<uint8_t>(0xC0 | regDst << 3));
 }
 
 void SCBE_X64::emitCopyF64(CPURegister regDst, CPURegister regSrc)
@@ -616,7 +616,7 @@ void SCBE_X64::emitCopyF64(CPURegister regDst, CPURegister regSrc)
     emitREX(concat, CPUBits::B64);
     concat.addU8(0x0F);
     concat.addU8(0x6E);
-    concat.addU8(0xC0 | regDst << 3);
+    concat.addU8(static_cast<uint8_t>(0xC0 | regDst << 3));
 }
 
 void SCBE_X64::emitCopyDownUp(CPURegister reg, CPUBits numBits)
@@ -968,7 +968,7 @@ void SCBE_X64::emitOpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBi
 
     concat.addU8(0x0F);
     concat.addU8(static_cast<uint8_t>(op));
-    concat.addU8(0xC0 | regSrc | regDst << 3);
+    concat.addU8(static_cast<uint8_t>(0xC0 | regSrc | regDst << 3));
 }
 
 void SCBE_X64::emitOpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits)
@@ -988,7 +988,7 @@ void SCBE_X64::emitOpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBi
 
     concat.addU8(0x0F);
     concat.addU8(static_cast<uint8_t>(op));
-    concat.addU8(0xC0 | regSrc | regDst << 3);
+    concat.addU8(static_cast<uint8_t>(0xC0 | regSrc | regDst << 3));
 }
 
 void SCBE_X64::emitOpN(uint32_t offsetStack, CPUOp op, CPUBits numBits)
@@ -1794,11 +1794,11 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
     const auto& cc                = typeFuncBC->getCallConv();
     const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
 
-    const int callConvRegisters    = cc.paramByRegisterCount;
-    const int maxParamsPerRegister = static_cast<int>(paramsRegisters.size());
+    const uint32_t callConvRegisters    = cc.paramByRegisterCount;
+    const uint32_t maxParamsPerRegister = static_cast<int>(paramsRegisters.size());
 
     // Set the first N parameters. Can be return register, or function parameter.
-    int i = 0;
+    uint32_t i = 0;
     for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
     {
         auto       type = paramsTypes[i];
@@ -1904,7 +1904,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
 
     // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
     uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
-    for (; i < static_cast<int>(paramsRegisters.size()); i++)
+    for (; i < paramsRegisters.size(); i++)
     {
         auto type = paramsTypes[i];
         if (type->isAutoConstPointerRef())
